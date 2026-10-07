@@ -25,16 +25,16 @@ They are listed at the bottom with exact next steps.
 | Item                                               | Status | Notes                                                                                                                                                                                                                                                                         |
 | -------------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | P0.1 — decouple `react-router` via adapter context | ✅     | `RouterContext` + `HdsRouterProvider`; `react-router` now optional peer. (#17)                                                                                                                                                                                                |
-| P0.3 — bundle fonts (option a)                     | ✅     | woff2 base64-embedded into `dist/tokens.css` via `scripts/embed-fonts.mjs`; app still serves from `/fonts/`. (#17)                                                                                                                                                            |
+| P0.3 — bundle fonts (option a)                     | ✅     | woff2 shipped as opt-in `fonts.css` + `dist/fonts/` via `scripts/build-fonts-css.mjs` (was base64 in tokens.css until hds#479); app still serves from `/fonts/`. (#17)                                                                                                        |
 | P0.4 — "Consuming HDS" docs                        | ✅     | `docs/CONSUMING.md` + README refreshed for 0.7.0; §8.5 documents the `/form` adapter. (#17, #26)                                                                                                                                                                              |
 | P0.5 — scope global CSS under `[data-hds]`         | 🟡 🔒  | Base resets + type baseline + theme transition scoped via `:where([data-hds])` (ADR-016, #17). **Remaining:** Tailwind v4 **preflight** is still global — scoping it safely needs a visual-regression pass on a browser machine, so it's left rather than shipped unverified. |
 
 ## P1 — missing components — ✅ COMPLETE
 
 All shipped (#17 / #20 / #21):
-Spinner, Skeleton, Progress, Avatar, Breadcrumb, Pagination, HdsCheckbox,
-HdsToggle/HdsRadio/HdsSlider (exported), Popover, Menu, Toast, Combobox,
-Form/FormField.
+Spinner, Skeleton, Progress, Avatar, Breadcrumb, Pagination, Checkbox,
+Toggle/Radio/Slider (exported), Popover, Menu, Toast, Combobox,
+Form/FormField (exported from `@hirobius/design-system/patterns` only since 0.20.0).
 
 | Optional follow-up                      | Status | Notes                                                                                                                                                                                                             |
 | --------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -54,14 +54,14 @@ Form/FormField.
 Single-source, derived navigation: page `meta` → generated `nav-model.json` →
 sidebar + Cmd-K search.
 
-| Phase                              | Status | Notes                                                                                                                                                                                                                                                                                             |
-| ---------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 — model + generator + drift test | ✅     | `scripts/generate-nav-model.mjs` → `nav-model.json`; drift test. (#28)                                                                                                                                                                                                                            |
-| 2 — colocate page `meta` as source | ✅     | 16 pages export `meta`; one-file edits to add a nav page. (#29)                                                                                                                                                                                                                                   |
-| 3 — sidebar reads the model        | ✅     | `HDS_NAV_SECTIONS` derived from the model; `buildNavSections`/`INTERNAL_NAV_ITEMS` deleted. (#30)                                                                                                                                                                                                 |
-| 3b — Cmd-K search reads the model  | ✅     | `FOUNDATION_SECTIONS` deleted; search corpus derived from the model (+ `description` on `meta`). No more search/sidebar drift. (#31)                                                                                                                                                              |
-| 4 — single active-state rule       | 🟡     | `isNavItemActive` centralizes the predicate (was copy-pasted ×3). (#32) **Remaining 🔒:** the full `NestedNavGroup`→ public `NavGroup` renderer swap — changes live sidebar UX (localStorage persistence + mobile drawer) and needs a browser to verify; pair with extending `NavGroup` to match. |
-| 5 — SSR/Astro guards               | ✅     | `window` reads in render guarded; `pnpm build:ssr` clean. (#33)                                                                                                                                                                                                                                   |
+| Phase                              | Status | Notes                                                                                                                                                                                                                                   |
+| ---------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 — model + generator + drift test | ✅     | `scripts/generate-nav-model.mjs` → `nav-model.json`; drift test. (#28)                                                                                                                                                                  |
+| 2 — colocate page `meta` as source | ✅     | 16 pages export `meta`; one-file edits to add a nav page. (#29)                                                                                                                                                                         |
+| 3 — sidebar reads the model        | ✅     | `HDS_NAV_SECTIONS` derived from the model; `buildNavSections`/`INTERNAL_NAV_ITEMS` deleted. (#30)                                                                                                                                       |
+| 3b — Cmd-K search reads the model  | ✅     | `FOUNDATION_SECTIONS` deleted; search corpus derived from the model (+ `description` on `meta`). No more search/sidebar drift. (#31)                                                                                                    |
+| 4 — single active-state rule       | ✅     | `isNavItemActive` centralizes the predicate (was copy-pasted ×3). (#32) **Closed by removal:** `NavGroup`, `NavItem`, `SideNav` and `isNavItemActive` were removed in 0.20.0 (hds#394), so there is no public renderer left to swap in. |
+| 5 — SSR/Astro guards               | ✅     | `window` reads in render guarded; `pnpm build:ssr` clean. (#33)                                                                                                                                                                         |
 
 ## #18 — chronic CI failures (repo-wide, predate this work)
 

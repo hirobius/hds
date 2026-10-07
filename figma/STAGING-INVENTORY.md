@@ -8,65 +8,38 @@ Every component below lives ONLY in the staging file `2VgBbVpKiDnu0aftJEVyBQ`. P
 the published library is read-only to agents, so promotion is a manual step
 Adrian performs.
 
-**Do not add an `@figma` JSDoc tag for anything on this list yet.** Staging node
-ids do not survive promotion — `figma/COMPONENT-DRAWING-RECIPE.md` §Promotion is
-the sequence: promote, take the NEW library node id, add the tag, then
-`pnpm manifest:generate`.
+**A component drawn on 2026-10-07 or later carries an `@figma` tag that points at
+STAGING** (so Figma coverage reads true and the manifest has a node). Staging node
+ids do not survive promotion, so after Adrian promotes, re-point each tag at the
+NEW library node id and run `pnpm manifest:generate`
+(`figma/COMPONENT-DRAWING-RECIPE.md` §Promotion). Components drawn before that date
+are not tagged yet; the same promotion step tags them.
 
 
-## Why the sync gate still reports these as missing
+## Why a tag is the only record the gate can read
 
 `check-sync-map` counts a library component as linked when it carries an
-`@figma` tag or a `figma/mapping-overrides.json` entry. The recipe forbids
-tagging a component that lives only in staging. So **staging work is
-structurally invisible to the gate**, and Figma coverage reads 47/88 until
-promotion — not because the components are absent, but because the only record
-the gate can read is the one the recipe says not to write yet. That is a gap in
-the measurement, not drift.
+`@figma` tag or a `figma/mapping-overrides.json` entry. A staged component with
+no tag is invisible to the gate: a gap in the measurement, not drift. Tagging it
+with its staging node (2026-10-07 onward) closes that gap, at the price of one
+re-point per tag at promotion.
 
-## Drawn 2026-09-23 (39 components)
+## Drawn in staging (12 components)
 
-| Component | Kind | Variants | Node |
-|---|---|---|---|
-| [ActivityFeed](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-184) | set | 4 | `2043-184` |
-| [AlertDialog](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2035-24) | component | — | `2035-24` |
-| [AssetImg](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-67) | set | 2 | `2041-67` |
-| [AvatarGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2030-63) | set | 6 | `2030-63` |
-| [Blockquote](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2024-18) | set | 6 | `2024-18` |
-| [ButtonGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2028-118) | set | 2 | `2028-118` |
-| [Calendar](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-3) | component | — | `2043-3` |
-| [Carousel](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-71) | component | — | `2042-71` |
-| [CinematicLink](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2040-34) | set | 2 | `2040-34` |
-| [CircularProgress](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2029-48) | set | 15 | `2029-48` |
-| [CommandPalette](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-99) | component | — | `2043-99` |
-| [ContextMenu](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2034-7) | component | — | `2034-7` |
-| [DateInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-3) | component | — | `2039-3` |
-| [DateRangeInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-37) | component | — | `2039-37` |
-| [DateTimeInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-23) | component | — | `2039-23` |
-| [DocLinkCard](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2044-51) | set | 2 | `2044-51` |
-| [FileInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2036-29) | set | 4 | `2036-29` |
-| [Frame](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2038-36) | set | 4 | `2038-36` |
-| [HeadingStack](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2025-21) | set | 6 | `2025-21` |
-| [HoverCard](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2034-3) | component | — | `2034-3` |
-| [InputGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2036-15) | set | 3 | `2036-15` |
-| [Kbd](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2026-9) | set | 3 | `2026-9` |
-| [Lightbox](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2043-125) | component | — | `2043-125` |
-| [MetadataList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-47) | set | 4 | `2041-47` |
-| [MultiSelector](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-54) | component | — | `2042-54` |
-| [OverflowList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2038-16) | component | — | `2038-16` |
-| [SelectableCard](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2032-9) | set | 2 | `2032-9` |
-| [StackedCardRail](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2044-53) | component | — | `2044-53` |
-| [Stepper](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2033-50) | set | 2 | `2033-50` |
-| [Text](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2022-31) | set | 14 | `2022-31` |
-| [TextLockup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2044-39) | set | 12 | `2044-39` |
-| [TimeInput](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2039-21) | set | 3 | `2039-21` |
-| [Timestamp](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2031-11) | set | 4 | `2031-11` |
-| [ToggleButton](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2028-27) | set | 12 | `2028-27` |
-| [Token](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-61) | set | 4 | `2041-61` |
-| [Tokenizer](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-52) | set | 2 | `2042-52` |
-| [Toolbar](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2038-3) | component | — | `2038-3` |
-| [TopNav](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2042-3) | component | — | `2042-3` |
-| [TreeList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2040-3) | component | — | `2040-3` |
+| Component | Kind | Variants | Drawn | Node |
+|---|---|---|---|---|
+| [AlertDialog](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2035-24) | component | — | 2026-09-23 | `2035-24` |
+| [AssetImg](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-67) | set | 2 | 2026-09-23 | `2041-67` |
+| [AvatarGroup](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2030-63) | set | 6 | 2026-09-23 | `2030-63` |
+| [Blockquote](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2024-18) | set | 6 | 2026-09-23 | `2024-18` |
+| [DataTableSection](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2075-268) | set | 4 | 2026-10-07 | `2075-268` |
+| [DestructiveSection](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2076-3) | component | — | 2026-10-07 | `2076-3` |
+| [FormActions](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2075-87) | set | 8 | 2026-10-07 | `2075-87` |
+| [Kbd](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2026-9) | set | 3 | 2026-09-23 | `2026-9` |
+| [MetadataList](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2041-47) | set | 4 | 2026-09-23 | `2041-47` |
+| [MetricTile](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2075-114) | set | 5 | 2026-10-07 | `2075-114` |
+| [Text](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2022-31) | set | 14 | 2026-09-23 | `2022-31` |
+| [Timestamp](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2031-11) | set | 4 | 2026-09-23 | `2031-11` |
 
 Drawn earlier, same status: **[Icon](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=27-2)** (70 components) and **[StatusDot](https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/?node-id=2003-2)** (1 set).
 

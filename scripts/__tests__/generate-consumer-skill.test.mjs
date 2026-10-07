@@ -51,16 +51,30 @@ const fixtureExports = {
   '.': {},
   './tokens': {},
   './styles.css': '',
+  './patterns': {},
   './package.json': '',
 };
+/** The /patterns barrel: Orphan is only importable from the subpath. */
+const fixturePatterns = "export * from './app/components/orphan';";
 
 const build = (over = {}) =>
   buildConsumerSkill({
     manifest: fixtureManifest(),
     indexSource: fixtureIndex,
+    patternsSource: fixturePatterns,
     packageExports: fixtureExports,
     ...over,
   });
+
+/** The body of a `## Heading` section, up to the next `## ` heading. */
+const section = (text, heading) => {
+  const start = text.indexOf(`\n## ${heading}`);
+  if (start === -1) return '';
+  const rest = text.slice(start + 1);
+  const next = rest.indexOf('\n## ', 4);
+  return next === -1 ? rest : rest.slice(0, next);
+};
+const PATTERNS_HEADING = 'Patterns: import from `@hirobius/design-system/patterns`';
 
 describe('firstSentence', () => {
   it('does not end on an abbreviation such as e.g.', () => {
@@ -110,12 +124,43 @@ describe('buildConsumerSkill (in-memory)', () => {
     expect(desc.length).toBeGreaterThan(20);
   });
 
-  it('excludes hidden entries and names whose module is not barrel-exported', () => {
-    const out = build();
+  it('excludes hidden entries and names whose module no barrel exports', () => {
+    const out = build({ patternsSource: '' });
     expect(out).not.toContain('`Ghost`');
     expect(out).not.toContain('`Orphan`');
     expect(out).toContain('`Zed`');
     expect(out).toContain('`Beta`');
+  });
+
+  it('lists /patterns components in their own section, driven by the patterns barrel (hds#389)', () => {
+    const out = build();
+    const root = section(out, 'Allow-list: components you may import');
+    const patterns = section(out, PATTERNS_HEADING);
+    expect(patterns).toContain('- `Orphan` — Not in barrel.');
+    expect(root).not.toContain('`Orphan`');
+    expect(patterns).not.toContain('`Zed`');
+    expect(patterns).toContain("import { Page } from '@hirobius/design-system/patterns'");
+  });
+
+  it('install text sends pattern imports to the /patterns subpath', () => {
+    const install = section(build(), 'Install and import');
+    expect(install).toContain(
+      'the pattern-tier components from `@hirobius/design-system/patterns`',
+    );
+  });
+
+  it('excludes deprecated specs, which stay importable but are no longer advertised (hds#390)', () => {
+    const manifest = fixtureManifest();
+    manifest.componentSpecs.Zed.deprecated = 'Zed is a docs/lab internal.';
+    manifest.componentSpecs.Zed.removeIn = '1.0.0';
+    const out = buildConsumerSkill({
+      manifest,
+      indexSource: fixtureIndex,
+      patternsSource: fixturePatterns,
+      packageExports: fixtureExports,
+    });
+    expect(out).not.toContain('`Zed`');
+    expect(out).toContain('`Alpha`');
   });
 
   it('groups by category, sorted, one first-sentence line each', () => {
@@ -194,6 +239,7 @@ describe('committed skills/hds-consumer/SKILL.md', () => {
     buildConsumerSkill({
       manifest,
       indexSource: read('src/index.ts'),
+      patternsSource: read('src/patterns.ts'),
       packageExports: JSON.parse(read('package.json')).exports,
     });
 
@@ -201,19 +247,51 @@ describe('committed skills/hds-consumer/SKILL.md', () => {
     expect(read(SKILL_PATH)).toBe(expected());
   });
 
-  it('allow-list is non-hidden inventory intersected with barrel modules', () => {
-    const index = read('src/index.ts');
+  /** Non-hidden, non-deprecated specs whose module the given barrel re-exports. */
+  const specsExportedBy = (barrel) => {
     const modules = new Set(
-      [...index.matchAll(/^export \* from '\.\/(app\/components\/[^']+)'/gm)].map((m) => m[1]),
+      [...read(barrel).matchAll(/^export \* from '\.\/(app\/components\/[^']+)'/gm)].map(
+        (m) => m[1],
+      ),
     );
-    const want = manifest.componentInventory.filter((n) => {
+    return Object.keys(manifest.componentSpecs).filter((n) => {
       const s = manifest.componentSpecs[n];
-      return s && !s.hidden && modules.has(s.filePath.replace(/^src\//, '').replace(/\.tsx?$/, ''));
+      return (
+        !s.hidden &&
+        !s.deprecated &&
+        !!s.filePath &&
+        modules.has(s.filePath.replace(/^src\//, '').replace(/\.tsx?$/, ''))
+      );
     });
-    const listed = [...read(SKILL_PATH).matchAll(/^- `([A-Za-z0-9]+)` — /gm)].map((m) => m[1]);
-    expect([...listed].sort()).toEqual([...want].sort());
+  };
+  const listedIn = (heading) =>
+    [...section(read(SKILL_PATH), heading).matchAll(/^- `([A-Za-z0-9]+)` — /gm)].map((m) => m[1]);
+
+  it('allow-list is the non-hidden, non-deprecated specs the root barrel exports', () => {
+    const listed = listedIn('Allow-list: components you may import');
+    expect([...listed].sort()).toEqual(specsExportedBy('src/index.ts').sort());
     expect(listed).not.toContain('StackedCardRail');
-    expect(listed).not.toContain('Tooltip');
+    expect(listed).not.toContain('Page');
+    expect(listed).toContain('Tooltip');
+  });
+
+  it('patterns list is the non-hidden, non-deprecated specs src/patterns.ts exports', () => {
+    const listed = listedIn(PATTERNS_HEADING);
+    expect([...listed].sort()).toEqual(specsExportedBy('src/patterns.ts').sort());
+    for (const name of ['Page', 'Form', 'FormField', 'CodeBlock', 'ErrorPattern', 'AssetImg']) {
+      expect(listed, `${name} missing from the /patterns list`).toContain(name);
+    }
+  });
+
+  it('every layout recipe step that names a /patterns component names the subpath', () => {
+    const patternNames = specsExportedBy('src/patterns.ts');
+    for (const step of layoutRecipeSteps) {
+      const named = patternNames.filter((n) => step.includes(`\`${n}\``));
+      if (named.length === 0) continue;
+      expect(step, `${named.join(', ')} named without its import path`).toContain(
+        '`@hirobius/design-system/patterns`',
+      );
+    }
   });
 
   it('lint install line appears verbatim in docs/CONSUMING.md', () => {

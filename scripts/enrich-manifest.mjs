@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { buildStoryIndex, findStoryFiles } from './lib/story-link.mjs';
+import { deriveRequiredProps, refreshSpecProps } from './lib/manifest-props.mjs';
 
 const repoRoot = process.cwd();
 const manifestPath = path.join(repoRoot, 'public', 'hds-manifest.json');
@@ -9,14 +10,11 @@ const componentApiPath = path.join(repoRoot, 'src', 'app', 'data', 'component-ap
 
 const targets = new Set([
   'Button',
-  'HdsButtonGroup',
-  'IconButton',
   'Alert',
   'Callout',
   'Stack',
   'Input',
   'SegmentedControl',
-  'StepperField',
   'Card',
   'Dialog',
   'Badge',
@@ -25,12 +23,7 @@ const targets = new Set([
   'Icon',
   'Tag',
   'Divider',
-  'HeadingStack',
-  'TextLockup',
-  'DocLinkCard',
   'InlineLink',
-  'NavGroup',
-  'NavItem',
   'AssetImg',
   'Table',
   'Field',
@@ -52,8 +45,6 @@ const allowedChildrenDefaults = {
   Alert: ['*'],
   Callout: ['*'],
   Input: [],
-  HeadingStack: [],
-  TextLockup: [],
   Field: ['*'],
   Stat: [],
   StatusListItem: [],
@@ -63,17 +54,6 @@ const a11yDefaults = {
   // ── Actions ──────────────────────────────────────────────────────────────────
   Button: [
     { rule: 'Must have accessible name via label prop or aria-label', required: true },
-    { rule: 'Focus ring visible in all interactive states (uses hds-focus class)', required: true },
-  ],
-  HdsButtonGroup: [
-    { rule: 'Buttons in group must each have accessible names', required: true },
-    {
-      rule: 'Group role (role="group") should be set when buttons are semantically related',
-      required: false,
-    },
-  ],
-  IconButton: [
-    { rule: 'Must have aria-label (icon-only buttons have no visible text)', required: true },
     { rule: 'Focus ring visible in all interactive states (uses hds-focus class)', required: true },
   ],
   // ── Inputs ───────────────────────────────────────────────────────────────────
@@ -94,10 +74,6 @@ const a11yDefaults = {
       required: true,
     },
   ],
-  StepperField: [
-    { rule: 'Must have associated label via label prop or aria-labelledby', required: true },
-    { rule: 'Decrement/increment buttons must have aria-label', required: true },
-  ],
   Tag: [
     {
       rule: 'When used as interactive chip (onClick), must have role="button" and keyboard activation',
@@ -109,30 +85,12 @@ const a11yDefaults = {
     },
   ],
   // ── Navigation ───────────────────────────────────────────────────────────────
-  DocLinkCard: [
-    { rule: 'Card link must have descriptive accessible name (not just the URL)', required: true },
-    { rule: 'Focus ring visible on keyboard navigation', required: true },
-  ],
   InlineLink: [
     { rule: 'Link text must be descriptive — avoid "click here" or "read more"', required: true },
     {
       rule: 'External links must signal new-tab behavior via aria-label or visually hidden text',
       required: false,
     },
-  ],
-  NavGroup: [
-    {
-      rule: 'Navigation group must have accessible label (aria-label on the nav element)',
-      required: true,
-    },
-    { rule: 'Expanded/collapsed state communicated via aria-expanded', required: true },
-  ],
-  NavItem: [
-    {
-      rule: 'Active item must be communicated via aria-current="page" or aria-selected',
-      required: true,
-    },
-    { rule: 'Focus ring visible in all interactive states (uses hds-focus class)', required: true },
   ],
   // ── Display / Media ──────────────────────────────────────────────────────────
   AssetImg: [
@@ -259,159 +217,12 @@ const compilerStubSpecs = {
 
 const legacyFilePaths = {
   AssetImg: 'src/app/components/AssetImg.tsx',
-  DocLinkCard: 'src/app/components/DocLinkCard.tsx',
   ComponentDocPage: 'src/app/components/ComponentDocPage.tsx',
   ReflectiveTokenTable: '',
 };
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-}
-
-function isPlainObject(value) {
-  return value !== null && typeof value === 'object' && !Array.isArray(value);
-}
-
-function stripQuotes(value) {
-  return value.replace(/^['"]|['"]$/g, '');
-}
-
-function parseEnumValues(type) {
-  const parts = String(type)
-    .split('|')
-    .map((part) => part.trim())
-    .filter(Boolean);
-
-  if (parts.length === 0) {
-    return null;
-  }
-
-  const quoted = parts.every((part) => /^['"][^'"]+['"]$/.test(part));
-  return quoted ? parts.map(stripQuotes) : null;
-}
-
-function parseDefaultValue(value) {
-  if (value === undefined) {
-    return undefined;
-  }
-
-  if (value === 'true') {
-    return true;
-  }
-
-  if (value === 'false') {
-    return false;
-  }
-
-  if (/^-?\d+(\.\d+)?$/.test(String(value))) {
-    return Number(value);
-  }
-
-  if (/^['"].*['"]$/.test(String(value))) {
-    return stripQuotes(String(value));
-  }
-
-  return value;
-}
-
-function normalizePropType(type) {
-  const typeText = String(type).trim();
-  const enumValues = parseEnumValues(typeText);
-
-  if (enumValues) {
-    return { type: 'enum', values: enumValues };
-  }
-
-  if (typeText === 'boolean' || /^boolean\s*\|/.test(typeText) || /\|\s*boolean$/.test(typeText)) {
-    return { type: 'boolean' };
-  }
-
-  if (typeText === 'string') {
-    return { type: 'string' };
-  }
-
-  if (typeText === 'number') {
-    return { type: 'number' };
-  }
-
-  return { type: typeText };
-}
-
-function normalizeApiProps(apiProps) {
-  if (!Array.isArray(apiProps)) {
-    return {};
-  }
-
-  const props = {};
-
-  for (const prop of apiProps) {
-    if (!prop || typeof prop.name !== 'string') {
-      continue;
-    }
-
-    const normalized = normalizePropType(prop.type ?? 'unknown');
-
-    if (normalized.values) {
-      props[prop.name] = { type: normalized.type, values: normalized.values };
-    } else {
-      props[prop.name] = { type: normalized.type };
-    }
-
-    const parsedDefault = parseDefaultValue(prop.default);
-    if (parsedDefault !== undefined) {
-      props[prop.name].default = parsedDefault;
-    }
-
-    if (prop.required === false && parsedDefault === undefined) {
-      props[prop.name].optional = true;
-    }
-  }
-
-  return props;
-}
-
-function ensureProps(spec, apiComponent) {
-  if (isPlainObject(spec.props)) {
-    return spec.props;
-  }
-
-  return normalizeApiProps(apiComponent?.props);
-}
-
-function deriveRequiredProps(props) {
-  return Object.entries(props)
-    .filter(([, config]) => isPlainObject(config))
-    .filter(
-      ([, config]) =>
-        config.optional !== true && !Object.prototype.hasOwnProperty.call(config, 'default'),
-    )
-    .map(([propName]) => propName);
-}
-
-function derivePropConstraints(props) {
-  const constraints = {};
-
-  for (const [propName, config] of Object.entries(props)) {
-    if (!isPlainObject(config) || typeof config.type !== 'string') {
-      continue;
-    }
-
-    if (config.type === 'enum' && Array.isArray(config.values)) {
-      constraints[propName] = { type: 'enum', values: [...config.values] };
-      continue;
-    }
-
-    if (config.type === 'boolean') {
-      constraints[propName] = { type: 'boolean' };
-      continue;
-    }
-
-    if (config.type === 'string') {
-      constraints[propName] = { type: 'string' };
-    }
-  }
-
-  return constraints;
 }
 
 const manifest = readJson(manifestPath);
@@ -427,23 +238,24 @@ for (const [name, stubSpec] of Object.entries(compilerStubSpecs)) {
 
 for (const [name, spec] of Object.entries(componentSpecs)) {
   const apiComponent = apiComponents[name];
-  const props = ensureProps(spec, apiComponent);
 
   if (typeof spec.filePath !== 'string') {
     spec.filePath = spec.sourcePath ?? apiComponent?.filePath ?? legacyFilePaths[name] ?? '';
   }
 
-  if (!isPlainObject(spec.props)) {
-    spec.props = props;
-  }
+  // hds#390: props and propConstraints follow component-api.json on every
+  // run. They used to be filled only when absent, so Stack.wrap stayed
+  // `boolean` after the code moved to FlexWrap.
+  const { props, propConstraints } = refreshSpecProps(spec, apiComponent, {
+    derive: targets.has(name),
+  });
+  spec.props = props;
 
   if (!('allowedChildren' in spec)) {
     spec.allowedChildren = targets.has(name) ? [...(allowedChildrenDefaults[name] ?? [])] : ['*'];
   }
 
-  if (!('propConstraints' in spec)) {
-    spec.propConstraints = targets.has(name) ? derivePropConstraints(props) : {};
-  }
+  spec.propConstraints = propConstraints;
 
   if (!('requiredProps' in spec)) {
     spec.requiredProps = targets.has(name) ? deriveRequiredProps(props) : [];

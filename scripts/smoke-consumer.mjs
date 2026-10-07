@@ -16,8 +16,8 @@
  *   3b. RENDER probe (jsdom): mount real components (Button, Spinner) via
  *      renderToStaticMarkup, exercise the router seam (anchor fallback with no
  *      provider + custom LinkComponent injection + window.location currentPath),
- *      and assert tokens.css still ships the token vars, embedded woff2 fonts,
- *      and [data-hds] scoping. Catches the font/CSS/router-context regressions
+ *      and assert tokens.css ships the token vars and [data-hds] scoping with no
+ *      embedded fonts, and fonts.css + its woff2 files resolve from the package. Catches the font/CSS/router-context regressions
  *      the resolve+import probe cannot see.
  *
  * Subpaths covered (must stay in sync with package.json#exports):
@@ -27,6 +27,8 @@
  *   './cn'         → cn() class-merge helper
  *   './manifest'   → hds-manifest.json as ESM (default export)
  *   './contexts'   → React context providers (ThemeProvider, …)
+ *   './eslint-plugin' → the consumer ESLint plugin (configs.recommended)
+ * plus AGENTS.md and the hds-mcp bin (section 3f).
  *
  * Any unresolved subpath, missing symbol, or unresolvable bare import inside the
  * bundle (e.g. a phantom dependency that isn't declared) FAILS the run. This is
@@ -39,8 +41,8 @@
  * failure for debugging.
  */
 
-import { execFileSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readdirSync } from 'node:fs';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { existsSync, mkdtempSync, mkdirSync, writeFileSync, rmSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -142,7 +144,7 @@ const failures = [];
 
 // Subpaths that must RESOLVE against the exports map (incl. the CSS asset,
 // which Node cannot import but must still resolve to a real file).
-const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui', './icons']
+const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui', './icons', './eslint-plugin']
   .map((s) => (s === '.' ? PKG : PKG + s.slice(1)));
 
 for (const spec of resolvable) {
@@ -166,6 +168,10 @@ const importChecks = [
   [PKG + '/manifest', (m) => assert.ok(m.default && typeof m.default === 'object', 'manifest default missing')],
   [PKG + '/icons', (m) => assert.equal(typeof m.Ellipsis, 'object', 'Ellipsis icon missing')],
   [PKG + '/contexts', (m) => assert.equal(typeof m.ThemeProvider, 'function', 'ThemeProvider missing')],
+  [PKG + '/eslint-plugin', (m) => {
+    assert.ok(Array.isArray(m.default?.configs?.recommended), 'eslint-plugin recommended config missing');
+    assert.equal(typeof m.default.rules['no-raw-controls'], 'object', 'no-raw-controls rule missing');
+  }],
   [PKG + '/mui', (m) => {
     assert.equal(typeof m.hdsMuiThemeOptions, 'function', 'hdsMuiThemeOptions missing');
     const opts = m.hdsMuiThemeOptions();
@@ -202,7 +208,8 @@ writeFileSync(join(app, 'probe.mjs'), probe);
 // window so the browser code paths (router fallback's window.location) execute.
 const renderProbe = `
 import { strict as assert } from 'node:assert';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
+import { join as pjoin, dirname as pdirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { JSDOM } from 'jsdom';
 
@@ -266,13 +273,30 @@ check('useHdsRouter reads window.location for currentPath (no provider)', () => 
   assert.ok(renderToStaticMarkup(React.createElement(Probe)).includes('/job/42'), 'currentPath did not read window.location');
 });
 
-check('tokens.css ships tokens + embedded fonts + [data-hds] scope', () => {
+check('tokens.css ships tokens + [data-hds] scope and NO fonts', () => {
   const cssPath = fileURLToPath(import.meta.resolve(PKG + '/tokens.css'));
   const css = readFileSync(cssPath, 'utf8');
   assert.ok(css.includes('--semantic-color-surface-page'), 'token var missing from tokens.css');
-  assert.ok(css.includes('@font-face'), 'no @font-face in tokens.css');
-  assert.ok(css.includes('data:font/woff2'), 'fonts not embedded (P0.3 regression)');
+  assert.ok(!css.includes('@font-face'), 'tokens.css carries @font-face (hds#479 regression)');
+  assert.ok(!css.includes('data:font'), 'tokens.css embeds fonts (hds#479 regression)');
+  assert.ok(css.includes('--hds-font-family'), 'font-family variables missing from tokens.css');
   assert.ok(css.includes('[data-hds]'), 'base styles not scoped to [data-hds] (P0.5 regression)');
+});
+
+// hds#479: fonts are an opt-in export. fonts.css must declare all four faces
+// with URLs relative to itself, and every woff2 it names must ship beside it.
+check('fonts.css ships 4 faces with relative URLs and the woff2 files', () => {
+  const cssPath = fileURLToPath(import.meta.resolve(PKG + '/fonts.css'));
+  const css = readFileSync(cssPath, 'utf8');
+  assert.equal(css.match(/@font-face/g)?.length, 4, 'expected 4 @font-face blocks');
+  assert.ok(css.includes('font-display: swap'), 'font-display: swap missing');
+  assert.ok(!css.includes('data:font'), 'fonts.css must reference files, not embed them');
+  const urls = [...css.matchAll(/url\\(['"]?([^'")]+)['"]?\\)/g)].map((m) => m[1]);
+  assert.equal(urls.length, 4, 'expected 4 font URLs');
+  for (const u of urls) {
+    assert.ok(u.startsWith('./fonts/'), 'font URL must be relative to fonts.css: ' + u);
+    assert.ok(existsSync(pjoin(pdirname(cssPath), u)), 'font file missing from package: ' + u);
+  }
 });
 
 // Gap 1: styles.css = tokens + components + utilities + fonts, but NO global
@@ -280,13 +304,13 @@ check('tokens.css ships tokens + embedded fonts + [data-hds] scope', () => {
 // changing ZERO host-element styles (no unscoped reset). Structural assertion
 // stands in for a browser: the global preflight signatures must be ABSENT and
 // the scoped base + utilities + fonts must be PRESENT.
-check('styles.css ships components/utilities/fonts with NO global reset', () => {
+check('styles.css ships components/utilities with NO global reset', () => {
   const cssPath = fileURLToPath(import.meta.resolve(PKG + '/styles.css'));
   const css = readFileSync(cssPath, 'utf8');
   // present: components can render + fonts + scoped base
   assert.ok(css.includes('@layer utilities'), 'utilities layer missing — components would be unstyled');
   assert.ok(css.includes(':where([data-hds])'), 'scoped [data-hds] base missing from styles.css');
-  assert.ok(css.includes('data:font/woff2'), 'fonts not embedded in styles.css');
+  assert.ok(!css.includes('@font-face'), 'styles.css carries @font-face (hds#479 regression)');
   assert.ok(css.includes('--semantic-color-surface-page'), 'token vars missing from styles.css');
   // absent: global preflight that would restyle host elements
   assert.ok(!css.includes('border:0 solid;margin:0;padding:0'), 'global universal reset leaked into styles.css');
@@ -368,14 +392,16 @@ if (ok) {
     join(app, 'consumer-typecheck.tsx'),
     [
       "import { Button, hds } from '@hirobius/design-system';",
-      "import { IconButton } from '@hirobius/design-system';",
+      "import { Icon } from '@hirobius/design-system';",
       "import { Ellipsis } from '@hirobius/design-system/icons';",
       "import { cn } from '@hirobius/design-system/cn';",
       "import manifest from '@hirobius/design-system/manifest';",
       '// Types must resolve from dist/*.d.ts (not source) under skipLibCheck.',
       'export const a = <Button className={cn(String(hds ? 1 : 0))}>Hi</Button>;',
       'export const b = Object.keys(manifest).length;',
-      'export const c = <IconButton icon={Ellipsis} label="Row actions" />;',
+      // Button iconOnly + Icon proves a LucideIcon from ./icons resolves from dist
+      // (the icon-only recipe since 0.20.0, hds#394).
+      'export const d = <Button iconOnly aria-label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />;',
       '',
     ].join('\n'),
   );
@@ -451,6 +477,66 @@ if (ok) {
   } catch {
     console.error('  build FAIL consumer vite build errored');
     ok = false;
+  }
+}
+
+// ── 3f. Agent tooling — AGENTS.md and the hds-mcp bin, as installed ─────────
+// The after arm of eval/consistency/CONDITIONS.md reads these from node_modules,
+// so check them there: the file is present, the bin is linked, and the server
+// answers initialize and one tools/call over stdio from the installed copy.
+if (ok) {
+  log('probing agent tooling (AGENTS.md, hds-mcp over stdio)…');
+  const pkgDir = join(app, 'node_modules', '@hirobius', 'design-system');
+  const binDir = join(app, 'node_modules', '.bin');
+  const problems = [];
+  if (!existsSync(join(pkgDir, 'AGENTS.md'))) problems.push('AGENTS.md missing from the package');
+  if (!existsSync(join(binDir, 'hds-mcp')) && !existsSync(join(binDir, 'hds-mcp.cmd'))) {
+    problems.push('hds-mcp bin not linked into node_modules/.bin');
+  }
+  const input =
+    [
+      {
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'initialize',
+        params: {
+          protocolVersion: '2025-06-18',
+          capabilities: {},
+          clientInfo: { name: 'smoke', version: '0' },
+        },
+      },
+      {
+        jsonrpc: '2.0',
+        id: 2,
+        method: 'tools/call',
+        params: { name: 'get_component', arguments: { name: 'MetricTiles' } },
+      },
+    ]
+      .map((m) => JSON.stringify(m))
+      .join('\n') + '\n';
+  const res = spawnSync(process.execPath, [join(pkgDir, 'mcp', 'hds-mcp.mjs')], {
+    input,
+    encoding: 'utf8',
+    timeout: 15_000,
+  });
+  try {
+    const [init, call] = res.stdout
+      .trim()
+      .split('\n')
+      .map((l) => JSON.parse(l));
+    if (init.result?.serverInfo?.name !== 'hds')
+      problems.push('initialize did not return serverInfo.name "hds"');
+    const data = JSON.parse(call.result.content[0].text);
+    if (data.import !== `${PKG}/patterns`)
+      problems.push(`get_component MetricTiles import was ${data.import}`);
+  } catch (err) {
+    problems.push(`hds-mcp did not answer (${err.message}); stderr: ${res.stderr}`);
+  }
+  if (problems.length) {
+    for (const p of problems) console.error(`  agents FAIL ${p}`);
+    ok = false;
+  } else {
+    console.log('  agents ok   AGENTS.md shipped, hds-mcp linked and answering over stdio');
   }
 }
 

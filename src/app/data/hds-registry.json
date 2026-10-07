@@ -66,12 +66,6 @@
     "summary": "Do/don't usage rules for the Hirobius Design System. Every rule traces back to a specific token or contrast requirement â€” nothing is subjective. Rules are grouped by category: color, typography, spacing, motion, and component usage."
   },
   {
-    "page": "HdsSystemDocLayout",
-    "path": "/hds/hds-system-doc-layout",
-    "category": "foundations",
-    "summary": "Internal HDS documentation layout primitive that composes the shared sidebar, content column, and context-aware table of contents for system-authored doc pages."
-  },
-  {
     "page": "LegacyTokenExplorerPanel",
     "path": "/hds/legacy-token-explorer-panel",
     "category": "foundations",
@@ -510,15 +504,6 @@
           "secondary",
           "tertiary"
         ]
-      },
-      {
-        "name": "IconButton",
-        "description": "Icon-only action button. Same variants as HdsButton. Square aspect ratio. Accessible via aria-label.",
-        "variants": [
-          "primary",
-          "secondary",
-          "tertiary"
-        ]
       }
     ],
     "tokens": [
@@ -572,7 +557,7 @@
         ]
       },
       {
-        "name": "HdsSelect",
+        "name": "Select",
         "description": "Animated dropdown selector with accessible keyboard navigation.",
         "variants": [
           "default",
@@ -581,7 +566,7 @@
         ]
       },
       {
-        "name": "HdsRadio",
+        "name": "Radio",
         "description": "Single-choice radio control with five interactive states.",
         "variants": [
           "rest",
@@ -592,7 +577,7 @@
         ]
       },
       {
-        "name": "HdsSlider",
+        "name": "Slider",
         "description": "Range slider bound to the HDS scale, with a value readout.",
         "variants": [
           "default"
@@ -647,7 +632,7 @@
     "category": "components",
     "navSection": "Components",
     "navOrder": 3,
-    "summary": "Components for presenting information without triggering actions. Display covers icons, content surfaces, technical notation, and token references.",
+    "summary": "Components for presenting information without triggering actions. Display covers icons, content surfaces and technical notation.",
     "components": [
       {
         "name": "Icon",
@@ -659,21 +644,12 @@
         "description": "Bordered content surface with token-backed padding, gap, and radius for static information panels."
       },
       {
-        "name": "Token",
-        "description": "Inline token chip in monospace. Dot-notation paths (primitive.*, semantic.*, component.*) are deep-linkable â€” clicking navigates to the Interactive Token Explorer with the token pre-selected.",
-        "token": "semantic.color.surface.raised"
-      },
-      {
         "name": "InlineCode",
         "description": "Inline monospace code fragment for file paths, prop names, and code references. Non-linkable."
       },
       {
         "name": "CodeBlock",
         "description": "Code display with filename, optional language label, and copy-to-clipboard support."
-      },
-      {
-        "name": "Token node",
-        "description": "Visual token reference variant used in diagrams and explorer lists, with optional deep-link access."
       },
       {
         "name": "AssetImg",
@@ -708,14 +684,6 @@
     "summary": "Components that provide spatial orientation and page-level routing. Validated against Material Design, Ant Design, Radix UI, and Chakra UI â€” components whose primary purpose is spatial orientation are universally grouped under Navigation.",
     "components": [
       {
-        "name": "DocLinkCard",
-        "description": "Navigation card for cross-linking between case studies and docs.",
-        "variants": [
-          "feature",
-          "compact"
-        ]
-      },
-      {
         "name": "InlineLink",
         "description": "Routing-aware inline text link. Internal routes (href starts with /) use React Router for client-side navigation. External destinations open in a new tab with rel=noopener noreferrer. Always underlined â€” WCAG accessibility requirement.",
         "interactive": true
@@ -749,7 +717,7 @@
     ],
     "decisions": [
       {
-        "rule": "Directional icon buttons (prev/next arrows) are IconButton (Actions) used in a navigation context",
+        "rule": "Directional icon buttons (prev/next arrows) are icon-only Buttons (Actions) used in a navigation context",
         "rationale": "The component is a trigger; the combined navigation composition is documented as Sequential Navigator."
       }
     ]

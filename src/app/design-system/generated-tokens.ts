@@ -139,7 +139,8 @@ export const tokens = {
         "3xl": "var(--primitive-typography-size-3xl)",
         "4xl": "var(--primitive-typography-size-4xl)",
         "5xl": "var(--primitive-typography-size-5xl)",
-        "6xl": "var(--primitive-typography-size-6xl)"
+        "6xl": "var(--primitive-typography-size-6xl)",
+        code: "var(--primitive-typography-size-code)"
       },
       weight: {
         regular: "var(--primitive-typography-weight-regular)",
@@ -152,7 +153,9 @@ export const tokens = {
         tight: "var(--primitive-typography-lineHeight-tight)",
         snug: "var(--primitive-typography-lineHeight-snug)",
         normal: "var(--primitive-typography-lineHeight-normal)",
-        relaxed: "var(--primitive-typography-lineHeight-relaxed)"
+        relaxed: "var(--primitive-typography-lineHeight-relaxed)",
+        display: "var(--primitive-typography-lineHeight-display)",
+        body: "var(--primitive-typography-lineHeight-body)"
       },
       letterSpacing: {
         tight: "var(--primitive-typography-letterSpacing-tight)",
@@ -195,6 +198,7 @@ export const tokens = {
       "64": "var(--primitive-size-64)",
       "80": "var(--primitive-size-80)",
       "96": "var(--primitive-size-96)",
+      "120": "var(--primitive-size-120)",
       interactive: {
         min: "var(--primitive-size-interactive-min)",
         minCompact: "var(--primitive-size-interactive-minCompact)"
@@ -403,6 +407,7 @@ export const tokens = {
         lg: "var(--semantic-size-icon-lg)"
       },
       avatar: "var(--semantic-size-avatar)",
+      tile: "var(--semantic-size-tile)",
       row: {
         compact: "var(--semantic-size-row-compact)",
         comfortable: "var(--semantic-size-row-comfortable)"

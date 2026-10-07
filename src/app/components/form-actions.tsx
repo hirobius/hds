@@ -2,11 +2,13 @@
  * FormActions - the footer row of a form: primary right-most, secondary to its left.
  * @category Actions
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-87
  */
 
 import * as React from 'react';
 import { cn } from '../../lib/utils';
-import { Cluster } from './cluster';
+import { Button, type ButtonProps } from './button';
+import { Stack } from './stack';
 
 /** @public */
 export interface FormActionsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -33,6 +35,15 @@ export const FormActions = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Form
     { primary, secondary, destructive, sticky = false, className, style, ...props },
     ref,
   ) {
+    // Button defaults to `secondary`, so a bare <Button label="Save" /> in this slot rendered
+    // as an outline, not the primary action. The slot owns that meaning, so it sets `primary`
+    // on a Button that did not choose a variant (hds#522).
+    const primaryAction =
+      React.isValidElement<ButtonProps>(primary) &&
+      primary.type === Button &&
+      primary.props.variant === undefined
+        ? React.cloneElement(primary, { variant: 'primary' })
+        : primary;
     return (
       <div
         ref={ref}
@@ -42,16 +53,22 @@ export const FormActions = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Form
         style={sticky ? { position: 'sticky', bottom: 0, ...style } : style}
         {...props}
       >
-        <Cluster gap="tight" align="center" justify={destructive ? 'space-between' : 'end'}>
+        <Stack
+          direction="row"
+          wrap="wrap"
+          gap="tight"
+          align="center"
+          justify={destructive ? 'space-between' : 'end'}
+        >
           {destructive ? <div data-slot="destructive">{destructive}</div> : null}
           {/* ml-auto keeps the group right-aligned when the row wraps below the destructive slot. */}
           <div data-slot="group" className="ml-auto">
-            <Cluster gap="tight" align="center" justify="end">
+            <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
               {secondary}
-              {primary}
-            </Cluster>
+              {primaryAction}
+            </Stack>
           </div>
-        </Cluster>
+        </Stack>
       </div>
     );
   },

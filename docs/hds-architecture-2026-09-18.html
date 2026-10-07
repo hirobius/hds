@@ -1220,6 +1220,178 @@
         </p>
       </section>
 
+      <section id="erratum-2026-10-01">
+        <p class="eyebrow">Erratum · 2026-10-01</p>
+        <h2>The ops badges, re-measured</h2>
+        <p>
+          Measured against <code>hirobius/ops</code> <code>src/</code> at commit
+          <code>01fce2f</code>: 32 files import 23 components from
+          <code>@hirobius/design-system</code>, counting the deprecated alias
+          <code>HdsCheckbox</code> as
+          <code>Checkbox</code> (<code>scripts/count-consumer-usage.mjs</code>, hds#390). The tables
+          above are left as written; this block records where they differ.
+        </p>
+        <h3>
+          Stale <span class="u">ops</span> badges
+          <span style="color: var(--dim); font-weight: 400">(15)</span>
+        </h3>
+        <p>
+          Badged above, but no file in <code>ops/src</code> at <code>01fce2f</code> names them:
+          <code>Textarea</code>, <code>Grid</code>, <code>StackedCardRail</code>,
+          <code>StatusListItem</code>, <code>TextLockup</code>, <code>DocLinkCard</code>,
+          <code>CircularProgress</code>, <code>StatusDot</code>, <code>ButtonGroup</code>,
+          <code>IconButton</code>, <code>SelectableCard</code>, <code>ToggleButton</code>,
+          <code>ContextMenu</code>, <code>HoverCard</code>, <code>HeadingStack</code>.
+        </p>
+        <h3>
+          Missing <span class="u">ops</span> badges
+          <span style="color: var(--dim); font-weight: 400">(5)</span>
+        </h3>
+        <p>
+          Imported by <code>ops/src</code> at <code>01fce2f</code>, but shown without the badge:
+          <code>Breadcrumb</code>, <code>Divider</code>, <code>Input</code> and <code>Table</code>.
+          The fifth is <code>Checkbox</code>, which ops imports as <code>HdsCheckbox</code> in one
+          file. This page has a badged <code>HdsCheckbox</code> row and no
+          <code>Checkbox</code> row: hds#315 renamed the component to <code>Checkbox</code> and kept
+          <code>HdsCheckbox</code> as a deprecated alias.
+        </p>
+        <h3>Names with no row <span style="color: var(--dim); font-weight: 400">(30)</span></h3>
+        <p class="note">
+          Exported today, with no row in the tables above. Their disposition is recorded in hds#389
+          (decided 2026-10-01).
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Disposition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Menu</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>Popover</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>Tooltip</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>HdsRouterProvider</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>CardBody</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>CardDescription</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>CardFooter</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>CardHeader</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>CardMetric</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>CardProgress</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>CardTitle</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DialogClose</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DialogContent</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DialogDescription</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DialogFooter</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DialogHeader</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DialogOverlay</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DialogPortal</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DialogTitle</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DialogTrigger</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>PageHeader</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>MetricTiles</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>MetricTile</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>FormActions</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DestructiveSection</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>DataTableSection</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>HdsDocsShell</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>ErrorBoundary</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>HistoryCard</code></td>
+              <td>see #389</td>
+            </tr>
+            <tr>
+              <td><code>NotFoundPattern</code></td>
+              <td>see #389</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
       <footer>
         <p>
           Counts generated from <code>public/hds-manifest.json</code>; <code>ops</code> usage

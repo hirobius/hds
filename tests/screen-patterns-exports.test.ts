@@ -2,8 +2,8 @@
 /**
  * The screen-level patterns (hds#337, hds#338) ship on `./patterns` only. They are new
  * surface, so they never appear on the root barrel: consumers reach them through
- * `@hirobius/design-system/patterns`, and the root re-export window (hds#254)
- * does not apply to something that was never there.
+ * `@hirobius/design-system/patterns`, like every other pattern since 0.20.0
+ * removed the root re-exports (hds#254, hds#389).
  */
 
 import { describe, it, expect } from 'vitest';

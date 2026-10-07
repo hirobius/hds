@@ -25,6 +25,7 @@ import {
   buildTailwindThemeExtend,
   validateTenantOverlay,
   buildTenantCSS,
+  buildManifest,
 } from '../build-tokens.mjs';
 
 // ── pathToCSSVar ──────────────────────────────────────────────────────────────
@@ -1150,5 +1151,24 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
     const brokenHeader = css.replace(' * Source:', ' */ Source:');
     expect(brokenHeader).not.toBe(css);
     expect(cssWarnings(brokenHeader).length).toBeGreaterThan(0);
+  });
+});
+
+// ── buildManifest ─────────────────────────────────────────────────────────────
+
+describe('buildManifest', () => {
+  // hds#431: `health` was a 2026-06-18 snapshot that no script wrote. The token
+  // build forwarded it unchanged into ./manifest, where it still named removed
+  // components (NavGroup, StepperField, Sketch) and deleted file paths.
+  const repo = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const readJson = (rel) => JSON.parse(readFileSync(join(repo, rel), 'utf8'));
+
+  it('writes no health block', () => {
+    const raw = readJson('hirobius.tokens.json');
+    expect(buildManifest([...walkTokens(raw)], raw)).not.toHaveProperty('health');
+  });
+
+  it('keeps no health block in the committed public/hds-manifest.json', () => {
+    expect(readJson('public/hds-manifest.json')).not.toHaveProperty('health');
   });
 });

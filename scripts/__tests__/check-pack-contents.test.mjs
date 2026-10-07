@@ -2,7 +2,7 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { diffPackContents, REQUIRED, FORBIDDEN, packedPaths } from '../check-pack-contents.mjs';
@@ -41,6 +41,49 @@ describe('diffPackContents', () => {
       },
     );
     expect(r.forbidden).toEqual([]);
+  });
+});
+
+describe('agent tooling in the tarball', () => {
+  it('requires AGENTS.md, the hds-mcp server with its data, and the ESLint plugin entry', () => {
+    expect(REQUIRED).toEqual(
+      expect.arrayContaining([
+        'AGENTS.md',
+        'mcp/hds-mcp.mjs',
+        'mcp/catalog.mjs',
+        'mcp/server.mjs',
+        'mcp/guide.mjs',
+        'codemods/patterns-subpath.names.json',
+        'scripts/eslint-plugin-hds/index.mjs',
+        'scripts/eslint-plugin-hds/index.d.mts',
+        'scripts/eslint-plugin-hds/package.json',
+      ]),
+    );
+  });
+
+  it('requires every rule file the plugin ships, including no-raw-controls', () => {
+    const rules = readdirSync(join(ROOT, 'scripts/eslint-plugin-hds/rules')).map(
+      (f) => `scripts/eslint-plugin-hds/rules/${f}`,
+    );
+    expect(rules).toContain('scripts/eslint-plugin-hds/rules/no-raw-controls.mjs');
+    expect(REQUIRED).toEqual(expect.arrayContaining(rules));
+  });
+
+  it("flags the plugin's own tests, but no other plugin file", () => {
+    const r = diffPackContents(
+      [
+        ...good,
+        'scripts/eslint-plugin-hds/rules/no-raw-hex.mjs',
+        'scripts/eslint-plugin-hds/__tests__/no-raw-hex.test.mjs',
+        'scripts/eslint-plugin-hds/package.json',
+        'scripts/generate-agents-md.mjs',
+      ],
+      { required: REQUIRED, forbidden: FORBIDDEN },
+    );
+    expect(r.forbidden).toEqual([
+      'scripts/eslint-plugin-hds/__tests__/no-raw-hex.test.mjs',
+      'scripts/generate-agents-md.mjs',
+    ]);
   });
 });
 

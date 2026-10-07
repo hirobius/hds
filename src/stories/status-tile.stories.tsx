@@ -5,6 +5,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StatusTile } from '../app/components/status-tile';
 import { Badge } from '../app/components/badge';
+import { Grid } from '../app/components/grid';
 import { designParameters } from './design-parameters';
 
 const meta = {
@@ -67,18 +68,24 @@ export const Danger: Story = {
   },
 };
 
-export const TileGrid: Story = {
+export const InGrid: Story = {
   parameters: {
     layout: 'padded',
     docs: {
       description: {
-        story: 'A 2-column grid of status tiles as they appear in a dashboard.',
+        story:
+          'Status tiles as a dashboard lays them out: `Grid layout="auto-fill"` with `minItemWidth` on the fixed 12px `medium` gap, two columns at this width. TileGrid drew this until 0.20.0 removed it (hds-tile-grid rewrites it).',
       },
     },
   },
   render: () => (
-    // eslint-disable-next-line no-restricted-syntax -- story demo: a raw 2-col grid is the dashboard layout being shown
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '560px' }}>
+    <Grid
+      layout="auto-fill"
+      minItemWidth="260px"
+      gap="medium"
+      align="stretch"
+      style={{ width: '560px' }}
+    >
       <StatusTile
         tone="success"
         title="Design tokens"
@@ -103,6 +110,6 @@ export const TileGrid: Story = {
         notes={['3 outdated']}
         trailing={<Badge tone="danger">Fail</Badge>}
       />
-    </div>
+    </Grid>
   ),
 };

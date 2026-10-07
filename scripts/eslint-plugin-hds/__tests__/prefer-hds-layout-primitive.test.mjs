@@ -1,3 +1,4 @@
+// @vitest-environment node
 import rule from '../rules/prefer-hds-layout-primitive.mjs';
 import { makeRuleTester } from './test-helpers.mjs';
 

@@ -340,14 +340,6 @@
       "kind": "queued",
       "reason": "Divider exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
     },
-    "src/app/components/doc-link-card.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/heading-stack.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
     "src/app/components/inline-code.tsx": {
       "kind": "queued",
       "reason": "InlineCode (with CodeBlock) exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
@@ -359,10 +351,6 @@
     "src/app/components/toggle.tsx": {
       "kind": "queued",
       "reason": "Toggle exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/nav-item.tsx": {
-      "kind": "queued",
-      "reason": "NavItem exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
     },
     "src/app/components/progress.tsx": {
       "kind": "queued",
@@ -392,15 +380,7 @@
       "kind": "no-figma-component",
       "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
     },
-    "src/app/components/token.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
     "src/app/components/kbd.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/status-dot.tsx": {
       "kind": "no-figma-component",
       "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
     },
@@ -412,59 +392,7 @@
       "kind": "no-figma-component",
       "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
     },
-    "src/app/components/button-group.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/input-group.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/circular-progress.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/toggle-button.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/side-nav.tsx": {
-      "kind": "queued",
-      "reason": "SideNav exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/command-palette.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
     "src/app/components/metadata-list.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/app-shell.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/selectable-card.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/file-input.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/stepper.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/carousel.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/time-input.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/activity-feed.tsx": {
       "kind": "no-figma-component",
       "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
     },
@@ -475,14 +403,6 @@
     "src/app/components/disclosure.tsx": {
       "kind": "queued",
       "reason": "Disclosure exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/nav-group.tsx": {
-      "kind": "queued",
-      "reason": "NavGroup exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/text-lockup.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
     },
     "src/app/components/toast.tsx": {
       "kind": "queued",

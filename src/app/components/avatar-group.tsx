@@ -2,6 +2,7 @@
  * AvatarGroup — an overlapping cluster of Avatars with an overflow count.
  * @category Display
  * @tier primitive
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2030-63
  */
 
 import * as React from 'react';
@@ -14,13 +15,13 @@ import type { AvatarProps } from './avatar';
 // the only element AvatarGroup itself paints; sizing mirrors avatar.tsx's own
 // sm/md/lg ramp so the bubble lines up exactly with the avatars it follows.
 const overflowBubbleVariants = /* @__PURE__ */ cva(
-  'inline-flex -ml-2 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-muted-foreground ring-2 ring-background',
+  'inline-flex -ml-2 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground ring-2 ring-background',
   {
     variants: {
       size: {
-        sm: 'h-8 w-8 text-xs',
-        md: 'h-10 w-10 text-sm',
-        lg: 'h-12 w-12 text-base',
+        sm: 'h-8 w-8 hds-type-caption',
+        md: 'h-10 w-10 hds-type-ui',
+        lg: 'h-12 w-12 hds-type-body',
       },
     },
     defaultVariants: { size: 'md' },
@@ -81,6 +82,3 @@ export const AvatarGroup = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Avat
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via AvatarGroup props instead. */
-export { overflowBubbleVariants };

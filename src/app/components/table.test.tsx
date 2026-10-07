@@ -68,6 +68,18 @@ describe('Table — sortable columns', () => {
     expect(headerCell?.getAttribute('aria-sort')).toBe('descending');
   });
 
+  // check-motion (hds#403): the sort button was the table's only control and
+  // had no hover feedback. It now eases its colour on hover over the
+  // productive motion token, which the reduced-motion block zeroes.
+  it('eases the sort button colour on hover over the productive motion token', () => {
+    render(<Table columns={columnsWith({ sortable: true })} rows={rows} />);
+    const classes = screen.getByRole('button', { name: 'Name' }).className.split(/\s+/);
+    expect(classes).toContain('transition-colors');
+    expect(classes).toContain('duration-[var(--hds-motion-productive-duration)]');
+    expect(classes).toContain('ease-[var(--hds-motion-productive-easing)]');
+    expect(classes).toContain('hover:text-muted-foreground');
+  });
+
   it('fires onSort when the sort button is clicked', () => {
     const onSort = vi.fn();
     render(<Table columns={columnsWith({ sortable: true, onSort })} rows={rows} />);

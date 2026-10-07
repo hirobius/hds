@@ -1,8 +1,9 @@
 /**
  * Contract test: keyboard behaviour of the overlay and listbox primitives.
  *
- * Table-driven over Dialog, AlertDialog, Popover, Menu, ContextMenu, HoverCard,
- * Select, Tooltip, Combobox and MultiSelector. Every case drives the component
+ * Table-driven over Dialog, AlertDialog, Popover, Menu, Select, Tooltip and
+ * Combobox (MultiSelector went in 0.20.0 for Combobox multiple, whose keyboard
+ * contract is in combobox.contract.test.tsx). Every case drives the component
  * with a real keyboard (user-event) rather than synthetic click events, so a
  * wrapper that breaks the underlying Radix contract fails here.
  *
@@ -12,20 +13,16 @@
  *
  * jsdom polyfills live in tests/setup/jsdom-polyfills.ts.
  *
- * @primitive Dialog AlertDialog Popover Menu ContextMenu HoverCard Select Tooltip Combobox MultiSelector
+ * @primitive Dialog AlertDialog Popover Menu Select Tooltip Combobox
  */
-import { useState, type ReactElement } from 'react';
-import { describe, it, test, expect, afterEach } from 'vitest';
-import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
+import { type ReactElement } from 'react';
+import { describe, it, expect, afterEach } from 'vitest';
+import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import { AlertDialog } from '@/app/components/alert-dialog';
 import { Popover } from '@/app/components/popover';
-import { ContextMenu } from '@/app/components/context-menu';
-import { HoverCard } from '@/app/components/hover-card';
 import { Tooltip } from '@/app/components/hds-tooltip';
-import { MultiSelector } from '@/app/components/multi-selector';
 import {
   user,
-  FRUIT,
   DialogFixture,
   MenuFixture,
   SelectFixture,
@@ -33,9 +30,6 @@ import {
 } from './overlay-fixtures';
 
 afterEach(cleanup);
-
-/** Combobox regression: hirobius/hds#311. */
-const COMBOBOX_ISSUE = 'https://github.com/hirobius/hds/issues/311';
 
 // ── Fixtures (Dialog, Menu, Select, Combobox live in ./overlay-fixtures) ──────
 
@@ -69,33 +63,6 @@ function PopoverFixture() {
       <button type="button">After</button>
     </>
   );
-}
-
-function ContextMenuFixture() {
-  return (
-    <ContextMenu>
-      <ContextMenu.Trigger>Right-click me</ContextMenu.Trigger>
-      <ContextMenu.Content>
-        <ContextMenu.Item>Apple</ContextMenu.Item>
-        <ContextMenu.Item>Banana</ContextMenu.Item>
-        <ContextMenu.Item>Cherry</ContextMenu.Item>
-      </ContextMenu.Content>
-    </ContextMenu>
-  );
-}
-
-function HoverCardFixture() {
-  return (
-    <HoverCard openDelay={0} closeDelay={0}>
-      <HoverCard.Trigger href="#ada">@ada</HoverCard.Trigger>
-      <HoverCard.Content>Ada Lovelace</HoverCard.Content>
-    </HoverCard>
-  );
-}
-
-function MultiSelectorFixture() {
-  const [value, setValue] = useState<string[]>([]);
-  return <MultiSelector options={FRUIT} value={value} onChange={setValue} />;
 }
 
 // ── Table ───────────────────────────────────────────────────────────────────
@@ -163,14 +130,6 @@ const OVERLAYS: Spec[] = [
     openKeys: ['{Enter}', ' '],
     aria: true,
   },
-  {
-    name: 'MultiSelector',
-    ui: () => <MultiSelectorFixture />,
-    trigger: () => screen.getByRole('button', { name: /Select/ }),
-    surface: () => q('dialog'),
-    openKeys: ['{Enter}', ' '],
-    aria: true,
-  },
 ];
 
 /** Open a spec's surface with the first open key and wait for it. */
@@ -204,15 +163,7 @@ describe.each(OVERLAYS)('$name keyboard contract', (spec) => {
     await waitFor(() => expect(spec.surface()).toBeNull());
     await waitFor(() => expect(document.activeElement).toBe(trigger));
   };
-  if (spec.name === 'Combobox') {
-    // Known failure, tracked in hds#311 (see COMBOBOX_ISSUE).
-    test.fails(
-      `Escape closes and returns focus to the trigger (${COMBOBOX_ISSUE})`,
-      escapeReturnsFocus,
-    );
-  } else {
-    it('Escape closes and returns focus to the trigger', escapeReturnsFocus);
-  }
+  it('Escape closes and returns focus to the trigger', escapeReturnsFocus);
 
   it('Escape closes the surface', async () => {
     const { u } = await openWithKeyboard(spec);
@@ -278,21 +229,21 @@ describe('Tab behaviour', () => {
   // Radix Popover content runs a looping FocusScope: Tab cycles inside the open
   // content (it never walks the page behind it), but the popover is non-modal, so
   // the page stays reachable (no aria-hidden, no pointer-events lock).
-  it.each([
-    ['Popover', OVERLAYS[2]],
-    ['MultiSelector', OVERLAYS[6]],
-  ] as const)('%s loops Tab inside the content and leaves the page non-modal', async (_n, spec) => {
-    const { u, trigger } = await openWithKeyboard(spec);
-    const surface = spec.surface() as HTMLElement;
-    expect(surface.contains(document.activeElement)).toBe(true);
-    const presses = focusables(surface).length + 2;
-    for (let i = 0; i < presses; i++) {
-      await u.tab();
+  it.each([['Popover', OVERLAYS[2]]] as const)(
+    '%s loops Tab inside the content and leaves the page non-modal',
+    async (_n, spec) => {
+      const { u, trigger } = await openWithKeyboard(spec);
+      const surface = spec.surface() as HTMLElement;
       expect(surface.contains(document.activeElement)).toBe(true);
-    }
-    expect(trigger.closest('[aria-hidden="true"]')).toBeNull();
-    expect(document.body.style.pointerEvents).not.toBe('none');
-  });
+      const presses = focusables(surface).length + 2;
+      for (let i = 0; i < presses; i++) {
+        await u.tab();
+        expect(surface.contains(document.activeElement)).toBe(true);
+      }
+      expect(trigger.closest('[aria-hidden="true"]')).toBeNull();
+      expect(document.body.style.pointerEvents).not.toBe('none');
+    },
+  );
 
   it('Menu keeps Tab from leaving to the page while open', async () => {
     const spec = OVERLAYS[3];
@@ -444,142 +395,6 @@ describe('Combobox arrow keys', () => {
     await u.keyboard('{Enter}');
     await waitFor(() => expect(OVERLAYS[5].surface()).toBeNull());
     expect(trigger.textContent).toContain('Banana');
-  });
-});
-
-describe('MultiSelector keyboard selection', () => {
-  it('Tab reaches the options and Space toggles a checkbox', async () => {
-    const { u, trigger } = await openWithKeyboard(OVERLAYS[6]);
-    const boxes = screen.getAllByRole('checkbox');
-    await waitFor(() => expect(boxes).toContain(document.activeElement));
-    await u.keyboard(' ');
-    expect(boxes.filter((b) => (b as HTMLInputElement).checked)).toHaveLength(1);
-    expect(trigger.textContent).toContain('1 selected');
-    // Selecting keeps the popover open for further picks.
-    expect(OVERLAYS[6].surface()).not.toBeNull();
-  });
-});
-
-// ── ContextMenu ─────────────────────────────────────────────────────────────
-// Browsers translate Shift+F10 / the Menu key into a `contextmenu` event on the
-// focused element; jsdom does not, so the open step dispatches that event and the
-// rest of the contract is driven by real keystrokes.
-
-describe('ContextMenu keyboard contract', () => {
-  async function openContext() {
-    const u = user();
-    render(<ContextMenuFixture />);
-    const trigger = screen.getByText('Right-click me');
-    trigger.focus();
-    fireEvent.contextMenu(trigger);
-    await waitFor(() => expect(screen.queryByRole('menu')).not.toBeNull());
-    return { u, trigger };
-  }
-
-  it('is closed until a contextmenu event arrives', () => {
-    render(<ContextMenuFixture />);
-    expect(screen.queryByRole('menu')).toBeNull();
-  });
-
-  // The Radix ContextMenu trigger is a non-focusable span and Radix never
-  // refocuses it, so the contract is: the menu closes and focus is not stranded
-  // inside the removed content.
-  it('Escape closes the menu and does not strand focus in the removed content', async () => {
-    const { u } = await openContext();
-    await u.keyboard('{Escape}');
-    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull());
-    expect(document.body.contains(document.activeElement)).toBe(true);
-    expect(document.activeElement?.closest('[role="menu"]')).toBeNull();
-  });
-
-  it('ArrowDown/ArrowUp move the highlight inside the menu and stop at the ends', async () => {
-    const { u } = await openContext();
-    const items = screen.getAllByRole('menuitem');
-    await u.keyboard('{ArrowDown}');
-    const first = items.indexOf(document.activeElement as HTMLElement);
-    expect(first).toBeGreaterThanOrEqual(0);
-    await u.keyboard('{End}');
-    expect(document.activeElement).toBe(items[2]);
-    await u.keyboard('{ArrowDown}');
-    expect(document.activeElement).toBe(items[2]);
-    await u.keyboard('{ArrowUp}');
-    expect(document.activeElement).toBe(items[1]);
-  });
-
-  it('typeahead focuses the matching item', async () => {
-    const { u } = await openContext();
-    await u.keyboard('b');
-    expect(label()).toBe('Banana');
-  });
-
-  it('Enter selects the highlighted item and closes the menu', async () => {
-    const { u } = await openContext();
-    await u.keyboard('{ArrowDown}{Enter}');
-    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull());
-  });
-
-  it('Tab never walks the page while the menu is open', async () => {
-    const { u } = await openContext();
-    const menu = screen.getByRole('menu');
-    await u.tab();
-    // Radix ContextMenu content preventDefaults Tab: the menu stays open, focus stays inside.
-    expect(screen.queryByRole('menu')).not.toBeNull();
-    expect(menu.contains(document.activeElement)).toBe(true);
-  });
-});
-
-// ── HoverCard ───────────────────────────────────────────────────────────────
-// HoverCard is the non-interactive-content preview: keyboard users open it by
-// focusing the trigger (there is no Enter/Space activation, and no aria-expanded).
-
-describe('HoverCard keyboard contract', () => {
-  async function focusTrigger() {
-    const u = user();
-    render(
-      <>
-        <button type="button">Before</button>
-        <HoverCardFixture />
-      </>,
-    );
-    await u.tab();
-    await u.tab();
-    const trigger = screen.getByRole('link', { name: '@ada' });
-    expect(document.activeElement).toBe(trigger);
-    return { u, trigger };
-  }
-
-  it('is closed until the trigger is focused', () => {
-    render(<HoverCardFixture />);
-    expect(screen.queryByText('Ada Lovelace')).toBeNull();
-    expect(screen.getByRole('link', { name: '@ada' }).getAttribute('data-state')).toBe('closed');
-  });
-
-  it('opens when the trigger receives keyboard focus', async () => {
-    const { trigger } = await focusTrigger();
-    await waitFor(() => expect(screen.queryByText('Ada Lovelace')).not.toBeNull());
-    expect(trigger.getAttribute('data-state')).toBe('open');
-  });
-
-  it('Escape closes the card and keeps focus on the trigger', async () => {
-    const { u, trigger } = await focusTrigger();
-    await waitFor(() => expect(screen.queryByText('Ada Lovelace')).not.toBeNull());
-    await u.keyboard('{Escape}');
-    await waitFor(() => expect(screen.queryByText('Ada Lovelace')).toBeNull());
-    expect(document.activeElement).toBe(trigger);
-    expect(trigger.getAttribute('data-state')).toBe('closed');
-  });
-
-  it('Tab moves on without trapping and closes the card', async () => {
-    const { u, trigger } = await focusTrigger();
-    await waitFor(() => expect(screen.queryByText('Ada Lovelace')).not.toBeNull());
-    await u.tab();
-    expect(document.activeElement).not.toBe(trigger);
-    await waitFor(() => expect(screen.queryByText('Ada Lovelace')).toBeNull());
-  });
-
-  it('trigger stays a focusable link (Tab order intact)', async () => {
-    const { trigger } = await focusTrigger();
-    expect(trigger.tabIndex).toBe(0);
   });
 });
 

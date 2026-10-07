@@ -63,6 +63,11 @@ const MARKERS = [
   // check-spacing-vocabulary.mjs (hds#206) documents and honors this marker;
   // leaving it out made this gate reject the other gate's own escape hatch.
   'spacing-vocab-ok',
+  // check-layout-gap-vocabulary.mjs (hds#404) documents and honors this
+  // marker; the same omission as the two above would make this gate reject it.
+  'layout-gap-ok',
+  // check-type-ramp.mjs (hds#486) documents and honors this marker.
+  'type-ramp-ok',
 ];
 
 const markerPattern = new RegExp(`\\b(${MARKERS.join('|')}):\\s*(.*)$`);

@@ -1,7 +1,8 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * The ratified core set (hds#254, hds#374) where consumers read it. The 42
- * names in scripts/lib/core-components.mjs are the only source; the manifest
+ * The ratified core set (hds#254, hds#374) where consumers read it. The
+ * names in scripts/lib/core-components.mjs are the only source (their count
+ * and membership are pinned by check-contract-coverage.test.mjs); the manifest
  * `core` flag, component-api.json, the README block, llms.txt and the consumer
  * SKILL.md are all generated from them and compared here.
  */
@@ -16,6 +17,7 @@ import {
   applyCoreFlag,
   collectCoreSet,
   CORE_SET_BLOCK,
+  deprecatedSpecs,
   findCoreSetDrift,
   patternModuleNames,
   renderCoreSetBlock,
@@ -36,9 +38,8 @@ const flagged = (entries) =>
 describe('manifest core flag', () => {
   const manifest = readJson('public/hds-manifest.json');
 
-  it('marks exactly the 42 core components with core: true', () => {
+  it('marks exactly the core components with core: true', () => {
     expect(flagged(manifest.componentSpecs)).toEqual(CORE);
-    expect(CORE).toHaveLength(42);
   });
 
   it('writes no other value of core on any spec or utility', () => {
@@ -50,7 +51,7 @@ describe('manifest core flag', () => {
     expect(flagged(manifest.utilities ?? {})).toEqual([]);
   });
 
-  it('component-api.json carries the same 42', () => {
+  it('component-api.json carries the same set', () => {
     const api = readJson('src/app/data/component-api.json');
     expect(flagged(api.components)).toEqual(CORE);
   });
@@ -188,28 +189,53 @@ describe('patternModuleNames', () => {
   });
 });
 
+describe('deprecatedSpecs', () => {
+  it('lists the public deprecated specs by name, with removeIn when given', () => {
+    const specs = {
+      Zed: { deprecated: 'Use A.', removeIn: '0.21.0' },
+      Alpha: { deprecated: 'Use B.' },
+      Hidden: { deprecated: 'Internal.', hidden: true },
+      Live: {},
+    };
+    expect(deprecatedSpecs(specs)).toEqual([
+      { name: 'Alpha' },
+      { name: 'Zed', removeIn: '0.21.0' },
+    ]);
+  });
+});
+
 describe('renderCoreSetBlock', () => {
-  const out = renderCoreSetBlock({
+  const data = {
     core: [
-      { category: 'Actions', names: ['Button', 'ButtonGroup'] },
+      { category: 'Actions', names: ['Button', 'Menu'] },
       { category: 'Layout', names: ['Stack'] },
     ],
-    patterns: ['ActivityFeed', 'Page'],
-    rootDeprecated: 1,
-  });
+    patterns: ['Form', 'Page'],
+    deprecated: [{ name: 'Old', removeIn: '0.21.0' }, { name: 'Older' }],
+  };
+  const out = renderCoreSetBlock(data);
 
   it('states the counts and lists the core names by category', () => {
     expect(out).toContain('**3** components are the core set');
-    expect(out).toContain('- **Actions:** `Button`, `ButtonGroup`');
+    expect(out).toContain('- **Actions:** `Button`, `Menu`');
     expect(out).toContain('- **Layout:** `Stack`');
   });
 
-  it('names the /patterns modules and the root re-exports kept until 1.0', () => {
+  it('names the /patterns modules and what 0.20.0 removed from the root', () => {
     expect(out).toContain('**2** pattern modules ship from `@hirobius/design-system/patterns`');
-    expect(out).toContain('`ActivityFeed`, `Page`');
-    expect(out).toMatch(/\*\*1\*\* of the pattern modules[^\n]*until 1\.0/);
-    expect(out).toContain('(MIGRATIONS.md#pattern-components-move-to-patterns)');
-    expect(out).toMatch(/fold[^\n]*until 1\.0/);
+    expect(out).toContain('`Form`, `Page`');
+    expect(out).toMatch(/0\.20\.0 removed the root re-exports of the pattern modules/);
+    expect(out).toContain('(MIGRATIONS.md#0200-removals-2026-10-01)');
+  });
+
+  it('names each deprecated component still exported, and its removal release', () => {
+    expect(out).toContain(
+      'Deprecated, exported only until removed: `Old` (removed in 0.21.0), `Older`.',
+    );
+  });
+
+  it('leaves the deprecation note out when nothing is deprecated', () => {
+    expect(renderCoreSetBlock({ ...data, deprecated: [] })).not.toContain('Deprecated');
   });
 
   it('links the architecture doc and the ADR', () => {
@@ -237,12 +263,14 @@ describe('README "What belongs in the system"', () => {
   });
 
   it('reports drift when the block is edited by hand', () => {
-    const altered = readme.replace('`Button`, `ButtonGroup`', '`Button`');
+    const marker = `<!-- auto:start:${CORE_SET_BLOCK} -->`;
+    const [head, tail] = readme.split(marker);
+    const altered = head + marker + tail.replace(/`[A-Za-z]+`, /, '');
     expect(altered).not.toBe(readme);
     expect(findCoreSetDrift(altered, data)).toEqual([expect.stringMatching(/pnpm readme:counts/)]);
   });
 
-  it('names all 42 core components and every /patterns module', () => {
+  it('names every core component and every /patterns module', () => {
     const block = readme
       .split(`<!-- auto:start:${CORE_SET_BLOCK} -->`)[1]
       .split('<!-- auto:end')[0];
@@ -267,11 +295,11 @@ describe('llms.txt "Core set"', () => {
     expect(text.indexOf('\n## Core set\n')).toBeLessThan(text.indexOf('\n## Which one when\n'));
   });
 
-  it('lists the 42 core names, one per line', () => {
+  it('lists the core names, one per line', () => {
     const names = [...sectionOf(texts[1], 'Core set').matchAll(/^- ([A-Za-z]+) \(/gm)].map(
       (m) => m[1],
     );
-    expect(names).toHaveLength(42);
+    expect(names).toHaveLength(CORE.length);
     expect(sorted(names)).toEqual(CORE);
   });
 
@@ -298,7 +326,7 @@ describe('consumer SKILL.md "Core set"', () => {
     expect(skill.indexOf('\n## Core set\n')).toBeLessThan(skill.indexOf('\n## Allow-list'));
   });
 
-  it('names exactly the 42 core components', () => {
+  it('names exactly the core components', () => {
     const section = skill.split('\n## Core set\n')[1].split(/\n## /)[0];
     const names = [...section.matchAll(/`([A-Za-z]+)`/g)].map((m) => m[1]);
     expect(sorted(names)).toEqual(CORE);
@@ -315,7 +343,7 @@ describe('CONSUMING rows (hds#374)', () => {
 
   it.each(Object.keys(docs))('%s: the root row names the core set and links the README', (doc) => {
     const text = readFileSync(path.join(ROOT, doc), 'utf8');
-    expect(row(text, '')).toContain('42-component core set');
+    expect(row(text, '')).toContain(`${CORE.length}-component core set`);
     expect(row(text, '')).toContain(`(${docs[doc]}#what-belongs-in-the-system)`);
   });
 

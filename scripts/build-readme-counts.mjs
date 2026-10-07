@@ -11,9 +11,9 @@
  *
  * It also regenerates the "What belongs in the system" block between
  * <!-- auto:start:core-set --> and <!-- auto:end:core-set --> (hds#374): the
- * 42 core components by category and the /patterns modules, rendered by
- * scripts/lib/core-set.mjs from the manifest `core` flag, src/patterns.ts and
- * src/index.ts. scripts/__tests__/core-set.test.mjs compares it byte for byte.
+ * core components by category and the /patterns modules, rendered by
+ * scripts/lib/core-set.mjs from the manifest (`core` flag, deprecations) and
+ * src/patterns.ts. scripts/__tests__/core-set.test.mjs compares it byte for byte.
  *
  * `pnpm tokens` runs it, so token PRs refresh the README with the handoff docs.
  * scripts/__tests__/front-door.test.mjs checks the README one way (claim <= source):

@@ -1,15 +1,18 @@
 /**
- * Combobox stories — searchable single-select built on Popover.
+ * Combobox stories — searchable single- and multi-select built on Popover.
  * @see src/app/components/combobox.tsx
  *
  * NOTE: Overlays stay CLOSED on mount. jsdom lacks pointer-capture so the
  * smoke gate cannot handle the open Popover. Stories render the trigger
- * button only; the dropdown opens on click.
+ * button only; the dropdown opens on click. `Open` opens it in its play
+ * function, which the jsdom smoke gates never run, so the Storybook axe gate
+ * scans the open popover and listbox (hds#407).
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Combobox } from '../app/components/combobox';
 import { designParameters } from './design-parameters';
+import { openListbox } from './lib/open-listbox';
 
 const meta = {
   title: 'Primitives/Combobox',
@@ -74,6 +77,59 @@ function DefaultDemo() {
 
 export const Default: Story = {
   render: () => <DefaultDemo />,
+};
+
+// ── Open ─────────────────────────────────────────────────────────────────────
+
+// The play function opens it, so the Storybook axe gate scans the open
+// popover and listbox (hds#407). Docs pages do not run play functions, so it
+// is left off the docs page rather than shown there closed.
+export const Open: Story = {
+  tags: ['!autodocs'],
+  render: () => <DefaultDemo />,
+  play: async ({ canvasElement }) => {
+    await openListbox(canvasElement);
+  },
+};
+
+// ── Multiple ─────────────────────────────────────────────────────────────────
+
+function MultipleDemo() {
+  const [value, setValue] = useState<string[]>(['button', 'dialog']);
+  return (
+    <div style={{ width: '280px' }}>
+      <Combobox
+        multiple
+        options={COMPONENT_OPTIONS}
+        value={value}
+        onChange={setValue}
+        placeholder="Select components…"
+        aria-label="HDS components"
+      />
+    </div>
+  );
+}
+
+export const Multiple: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'With multiple, value is a string array. Picking toggles an option and keeps the list open; each value shows as a chip that removes it.',
+      },
+    },
+  },
+  render: () => <MultipleDemo />,
+};
+
+// Opened by its play function, so the axe gate scans the multi-select listbox
+// (aria-multiselectable, aria-selected per option) beside the chips (hds#393).
+export const OpenMultiple: Story = {
+  tags: ['!autodocs'],
+  render: () => <MultipleDemo />,
+  play: async ({ canvasElement }) => {
+    await openListbox(canvasElement);
+  },
 };
 
 // ── Pre-selected value ────────────────────────────────────────────────────────

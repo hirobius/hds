@@ -9,7 +9,7 @@
  * flag, so each surface is a projection that a test compares byte for byte.
  *
  * `core` is not the manifest `tier` (ADR-006): five core components are
- * `tier: pattern`, and most `tier: primitive` components are not core.
+ * `tier: pattern`, and not every `tier: primitive` component is core.
  */
 
 import { readFileSync } from 'node:fs';
@@ -101,40 +101,57 @@ export function patternModuleNames(modules, specs) {
 }
 
 /**
- * Reads the three sources: the manifest `core` flags, `src/patterns.ts`, and
- * `src/index.ts` (which of those modules the root still re-exports).
+ * Reads the two sources: the manifest (`core` flags, and which specs are
+ * deprecated) and `src/patterns.ts` (the `/patterns` modules).
  * @param {string} root repo root
  */
 export function collectCoreSet(root) {
   const manifest = JSON.parse(readFileSync(join(root, 'public', 'hds-manifest.json'), 'utf8'));
+  const specs = manifest.componentSpecs ?? {};
   const modules = patternModules(readFileSync(join(root, 'src', 'patterns.ts'), 'utf8'));
-  const index = readFileSync(join(root, 'src', 'index.ts'), 'utf8');
   return {
-    core: coreByCategory(manifest.componentSpecs ?? {}),
-    patterns: patternModuleNames(modules, manifest.componentSpecs ?? {}),
-    rootDeprecated: modules.filter((m) => index.includes(`export * from './app/components/${m}';`))
-      .length,
+    core: coreByCategory(specs),
+    patterns: patternModuleNames(modules, specs),
+    deprecated: deprecatedSpecs(specs),
   };
+}
+
+/**
+ * The public specs still exported with a `deprecated` notice, sorted, each with
+ * the release that removes it (`removeIn`, when the spec names one).
+ * @param {Record<string, { hidden?: boolean, deprecated?: string, removeIn?: string }>} specs
+ * @returns {{ name: string, removeIn?: string }[]}
+ */
+export function deprecatedSpecs(specs) {
+  return Object.entries(specs)
+    .filter(([, spec]) => spec?.deprecated && !spec.hidden)
+    .map(([name, spec]) => ({ name, ...(spec.removeIn ? { removeIn: spec.removeIn } : {}) }))
+    .sort((a, b) => byName(a.name, b.name));
 }
 
 // ── README ───────────────────────────────────────────────────────────────────
 const code = (names) => names.map((n) => `\`${n}\``).join(', ');
 
 /** The markdown inside `<!-- auto:start:core-set -->` in README.md. */
-export function renderCoreSetBlock({ core, patterns, rootDeprecated }) {
+export function renderCoreSetBlock({ core, patterns, deprecated = [] }) {
   const coreCount = core.reduce((n, group) => n + group.names.length, 0);
+  const deprecatedNote = deprecated.length
+    ? ` Deprecated, exported only until removed: ${deprecated
+        .map(({ name, removeIn }) => `\`${name}\`${removeIn ? ` (removed in ${removeIn})` : ''}`)
+        .join(', ')}.`
+    : '';
   return [
     `**${coreCount}** components are the core set: the brand-neutral, composable surface every HDS screen is built from, and the part of the system that has to be excellent. Import them from the package root; each carries \`core: true\` in \`public/hds-manifest.json\`.`,
     '',
     ...renderCoreSetByCategory(core),
     '',
-    `**${patterns.length}** pattern modules ship from \`@hirobius/design-system/patterns\`: composed surfaces that assume a product (app shells, navigation, feeds, rails, pickers, screen sections), built from the core set. One name per module; its parts and props types come with it.`,
+    `**${patterns.length}** pattern modules ship from \`@hirobius/design-system/patterns\`, and only from there: composed surfaces that assume a product (page shells, forms, code blocks, page sections), built from the core set. One name per module; its parts and props types come with it.`,
     '',
     code(patterns),
     '',
-    `The package root exports more than the core set until 1.0: **${rootDeprecated}** of the pattern modules are still re-exported there, marked \`@deprecated\` ([MIGRATIONS.md](MIGRATIONS.md#pattern-components-move-to-patterns)), and the components hds#254 folds into another one, along with the deprecated docs internals, stay exported until 1.0.`,
+    `The package root also exports the rest of the allow-list (compound parts, and the components outside the core set; the [consumer skill](skills/hds-consumer/SKILL.md) lists them by category): reach for the core set first. 0.20.0 removed the root re-exports of the pattern modules, the docs internals and 13 components that fold into a survivor ([MIGRATIONS.md](MIGRATIONS.md#0200-removals-2026-10-01)).${deprecatedNote}`,
     '',
-    `Every component's disposition (core, pattern, fold or internal) is in the [architecture doc](docs/hds-architecture-2026-09-18.html), ratified 2026-09-26 in [hds#254](https://github.com/hirobius/hds/issues/254); [ADR-031](docs/adr/031-core-set-and-dispositions.md) records the decision.`,
+    `Every component's disposition (core, pattern, fold or internal) is in the [architecture doc](docs/hds-architecture-2026-09-18.html), ratified 2026-09-26 in [hds#254](https://github.com/hirobius/hds/issues/254); [ADR-031](docs/adr/031-core-set-and-dispositions.md) records the decision and what has changed since.`,
   ].join('\n');
 }
 

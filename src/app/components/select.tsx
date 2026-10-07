@@ -18,13 +18,14 @@
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49
  */
 
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 import * as RSelect from '@radix-ui/react-select';
-import { ChevronDown, Check } from 'lucide-react';
+import { ChevronsUpDown, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
+import { FORM_CONTROL_WIDTH } from './form-control';
 
 const SelectPortal = /* @__PURE__ */ withHdsPortal(RSelect.Portal);
 
@@ -36,7 +37,7 @@ const SelectPortal = /* @__PURE__ */ withHdsPortal(RSelect.Portal);
  * tabs.tsx / command-palette.tsx; `ref` targets the trigger button.
  */
 export interface SelectProps {
-  /** Select label rendered above the control. */
+  /** Select label rendered above the control. It names the trigger, also when hidden. */
   label: string;
   /** Controls whether the label is rendered. */
   showLabel?: boolean;
@@ -51,20 +52,43 @@ export interface SelectProps {
    * overlay inherits its theme; pass `null` to use `document.body`.
    */
   container?: HTMLElement | null;
+  /**
+   * Id of the trigger, so a `<label for>` names it. `FormField` sets it, with
+   * `aria-describedby` and `aria-invalid`.
+   */
+  id?: string;
+  /** Ids of the elements that describe the trigger (helper text, error). */
+  'aria-describedby'?: string;
+  /** Marks the trigger invalid, for example while the field shows an error. */
+  'aria-invalid'?: boolean;
 }
 
 export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>(function Select(
-  { label, showLabel = true, options, value, onChange, container },
+  {
+    label,
+    showLabel = true,
+    options,
+    value,
+    onChange,
+    container,
+    id,
+    'aria-describedby': ariaDescribedBy,
+    'aria-invalid': ariaInvalid,
+  },
   ref,
 ) {
   const selected = options.find((o) => o.value === value) ?? options[0];
+  const labelId = useId();
+  const labelShown = showLabel && Boolean(label);
 
   return (
-    <div className="flex flex-col">
+    <div className={cn('flex flex-col', FORM_CONTROL_WIDTH)}>
       {showLabel ? (
         <span
-          className="text-secondary"
-          style={{ ...hds.typeStyles.caption, marginBottom: hds.semantic.space.scale.xs }}
+          id={labelId}
+          // Same label as Input, Textarea and FormField: 14px ui, foreground (hds#522).
+          className="hds-type-ui text-foreground"
+          style={{ marginBottom: hds.semantic.space.scale.xs }}
         >
           {label}
         </span>
@@ -73,16 +97,23 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
       <RSelect.Root value={value} onValueChange={onChange}>
         <RSelect.Trigger
           ref={ref}
-          aria-label={showLabel && label ? `${label}: ${selected.label}` : selected.label}
+          id={id}
+          // The field label and the value, also with the label hidden, so the
+          // closed trigger is read as the field and not only its value (hds#408).
+          aria-label={label ? `${label}: ${selected.label}` : selected.label}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid}
           className={cn(
-            'hds-focus group flex w-full items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm',
-            'border-input bg-muted text-foreground transition-colors',
+            // h-10 is the one md control height shared with Input, Combobox and Button;
+            // the trigger had py-2 and rendered 38px (hds#522). bg-background matches Input.
+            'hds-focus group flex h-10 w-full items-center justify-between gap-2 rounded-md border px-3 hds-type-ui',
+            'border-input bg-background text-foreground transition-colors',
             'hover:border-ring data-[state=open]:border-ring',
           )}
         >
           <RSelect.Value />
-          <RSelect.Icon className="flex shrink-0 -rotate-90 text-muted-foreground transition-transform group-data-[state=open]:rotate-0">
-            <Icon icon={ChevronDown} size="small" color="currentColor" />
+          <RSelect.Icon className="flex shrink-0 text-muted-foreground">
+            <Icon icon={ChevronsUpDown} size="small" color="currentColor" />
           </RSelect.Icon>
         </RSelect.Trigger>
 
@@ -90,6 +121,12 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
           <RSelect.Content
             position="popper"
             sideOffset={4}
+            // Radix gives the listbox no name (hds#398). Point it at the visible
+            // label, as Radix points its other overlays at what names them; with
+            // the label hidden, carry its text; with no label text at all, fall
+            // back to the trigger's own name.
+            aria-labelledby={labelShown ? labelId : undefined}
+            aria-label={labelShown ? undefined : label || selected.label}
             // Radix Popper vars: match trigger width and cap height to the
             // collision-aware available space (replaces the old fixed top:100% panel).
             style={{
@@ -107,7 +144,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
                   key={opt.value}
                   value={opt.value}
                   className={cn(
-                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 text-sm outline-none',
+                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 hds-type-ui outline-none',
                     'text-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
                     'data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring',
                   )}

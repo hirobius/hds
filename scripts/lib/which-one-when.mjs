@@ -2,7 +2,8 @@
 /**
  * which-one-when.mjs — the compact "Which one when" lines for llms.txt.
  *
- * One line per non-hidden component that has `usage.when`, sorted by name:
+ * One line per non-hidden, non-deprecated component that has `usage.when`,
+ * sorted by name:
  *   `Name: when. Use instead: A, B`
  * The `Use instead:` tail is left off when the component names no alternative.
  * A spec with `core: true` (the hds#254 core set, hds#374) reads
@@ -11,12 +12,12 @@
  */
 
 /**
- * @param {Record<string, { hidden?: boolean, core?: boolean, usage?: { when?: string, useInstead?: Array<{component: string}> } }>} specs
+ * @param {Record<string, { hidden?: boolean, core?: boolean, deprecated?: string, usage?: { when?: string, useInstead?: Array<{component: string}> } }>} specs
  * @returns {string} newline-joined lines, or '' when no component is tagged
  */
 export function buildWhichOneWhen(specs) {
   return Object.entries(specs)
-    .filter(([, spec]) => !spec?.hidden && spec?.usage?.when)
+    .filter(([, spec]) => !spec?.hidden && !spec?.deprecated && spec?.usage?.when)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([name, spec]) => {
       const when = spec.usage.when.replace(/[.\s]+$/, '');

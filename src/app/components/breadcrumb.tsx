@@ -101,6 +101,3 @@ export const Breadcrumb = /* @__PURE__ */ React.forwardRef<HTMLElement, Breadcru
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Breadcrumb instead. */
-export { crumbLabelVariants };

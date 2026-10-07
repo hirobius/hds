@@ -6,7 +6,7 @@
  * The reference site renders a component from its stories, so a component with
  * no story is invisible on it: no examples, and no rendered-geometry findings
  * either, which reads as "clean" when the truth is "never looked at". Coverage
- * is currently complete — library 88/88, layout 14/14, slot 18/18 — and this
+ * is complete (2026-10-01: library 93/93, layout 16/16, slot 19/19) and this
  * gate is what keeps the next component from landing storyless.
  *
  * WHO IS EXEMPT IS NOT A LIST KEPT HERE. It is the ratified disposition

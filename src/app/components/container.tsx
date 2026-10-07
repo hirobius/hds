@@ -15,8 +15,8 @@
  * NOT use the deprecated `padding` prop — it is a no-op; apply padding via
  * Surface or a Stack instead. Do NOT import Container directly inside a page
  * under src/app/pages — use Page, which wraps Container and owns vertical
- * rhythm. Use Center instead when you also need a horizontal gutter, which
- * Container does not support.
+ * rhythm. For a horizontal gutter, which Container does not support, put a
+ * Box with `style={{ paddingInline }}` inside it.
  *
  * Centers content horizontally and applies semantic max-width constraints.
  * - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout)

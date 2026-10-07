@@ -42,6 +42,15 @@ describe('buildWhichOneWhen', () => {
     expect(lines).toEqual(['Button: [core] Trigger an action.', 'Stat: Show one figure.']);
   });
 
+  it('leaves out a deprecated component (hds#390)', () => {
+    const lines = buildWhichOneWhen({
+      ...specs,
+      Old: { deprecated: 'Use Zed.', removeIn: '1.0.0', usage: { when: 'Old way.' } },
+    });
+    expect(lines).not.toContain('Old:');
+    expect(lines).toContain('Zed: Last one.');
+  });
+
   it('returns an empty string when nothing is tagged', () => {
     expect(buildWhichOneWhen({ A: {} })).toBe('');
   });

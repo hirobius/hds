@@ -66,9 +66,9 @@ export const StatusListItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, S
       >
         <span aria-hidden="true" className={statusListItemDotVariants({ tone })} />
         <div className="min-w-0 flex-1">
-          <p className="m-0 text-sm text-foreground">{title}</p>
+          <p className="m-0 hds-type-ui text-foreground">{title}</p>
           {notes?.map((note, i) => (
-            <p key={i} className="m-0 text-xs text-muted-foreground">
+            <p key={i} className="m-0 hds-type-caption text-muted-foreground">
               {note}
             </p>
           ))}
@@ -78,6 +78,3 @@ export const StatusListItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, S
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via StatusListItem props instead. */
-export { statusListItemDotVariants };

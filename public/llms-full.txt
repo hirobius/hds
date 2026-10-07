@@ -1,7 +1,66 @@
 # Hirobius Design System
 
-Generated: 2026-10-01T01:39:49.156Z
+Generated: 2026-10-07T16:09:09.631Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
+
+## Agents Using The Package: Start Here
+
+- Read `AGENTS.md` (package root, `node_modules/@hirobius/design-system/AGENTS.md`) first: which component to use for each screen need, the imports, and the rules.
+- MCP server `hds` ships in the package: run `npx hds-mcp` (stdio). Tools: `list_core`, `search_components`, `get_component`, `search_tokens`; each answer is under 2 KB.
+- Lint before you finish: `import hds from '@hirobius/design-system/eslint-plugin'` and spread `hds.configs.recommended` into `eslint.config.mjs`.
+
+## Pick By Need
+
+One answer per need. Use the components after the arrow; what follows "Not:" is what agents reached for instead, which is the wrong answer for that need even where it has a purpose of its own. Generated from `mcp/guide.mjs`, the same list as `AGENTS.md`.
+
+- **Outermost wrapper of a screen** → `Page`, `Stack`. Not: `Container`, `Box`, a bare Stack as the root.
+  `<Page><Stack gap="spacious">…one child per section…</Stack></Page>`. `Container` is for a full-bleed surface that is not a page.
+- **Screen title with breadcrumb, status and actions** → `PageHeader`, `Breadcrumb`, `Badge`. Not: Text as the page title, a Stack row of Text and Badge.
+  Exactly one per screen: `<PageHeader breadcrumb={<Breadcrumb items={[{ label, href }, { label }]} />} title="…" status={<Badge tone="success">Active</Badge>} />`.
+- **Row of headline numbers (stats, KPIs, counts, totals)** → `MetricTiles`, `MetricTile`. Not: `Stat`, `StatusTile`, `CardMetric`, Card with Text.
+  `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, `StatusTile` for a state with notes (never a number).
+- **Table of records with row actions** → `DataTableSection`, `Badge`, `Button`. Not: Table on its own, Card around a Table.
+  `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
+- **Switch between panels of related content** → `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. Not: `SegmentedControl`, Button rows.
+  `<Tabs defaultValue="a"><TabsList><TabsTrigger value="a">A</TabsTrigger></TabsList><TabsContent value="a">…</TabsContent></Tabs>`.
+- **Status label in a header or table cell** → `Badge`. Not: `Tag`, `Text`.
+  `<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.
+- **Form with fields and a submit button** → `Form`, `Textarea`, `Input`, `FormActions`, `Button`. Not: a raw `<form>`, a Stack of Buttons as the footer.
+  `<Form onSubmit={…}><Textarea label="Notes" … /><FormActions primary={<Button type="submit">Save note</Button>} /></Form>`; every field takes its own `label`.
+- **Confirm a destructive or irreversible action (delete, archive, remove)** → `AlertDialog`, `Button`. Not: `Dialog`, `window.confirm`.
+  Trigger, title, description, Cancel and Action parts: `<AlertDialog><AlertDialog.Trigger asChild><Button …>Archive</Button></AlertDialog.Trigger><AlertDialog.Content><AlertDialog.Header><AlertDialog.Title>…</AlertDialog.Title><AlertDialog.Description>…</AlertDialog.Description></AlertDialog.Header><AlertDialog.Footer><AlertDialog.Cancel asChild><Button variant="secondary">Cancel</Button></AlertDialog.Cancel><AlertDialog.Action asChild><Button tone="danger" onClick={…}>Archive</Button></AlertDialog.Action></AlertDialog.Footer></AlertDialog.Content></AlertDialog>`. Focus moves in and returns to the trigger for you.
+- **Brief confirmation after an action (saved, archived, sent)** → `ToastProvider`, `useToast`. Not: `Badge`, `Alert`, `Text`.
+  Wrap the app root once in `<ToastProvider>`, then `toast({ title: "Note saved", tone: "success" })` from `useToast()`.
+- **Message that stays next to its content (error, warning, info)** → `Alert`. Not: Text in a coloured Surface.
+  `<Alert tone="warning">…</Alert>`.
+- **Button or row action** → `Button`. Not: a raw `<button>`, InlineLink for an action.
+  Row actions: `<Button variant="tertiary" size="sm" aria-label="View Brand refresh">View</Button>`; the destructive one adds `tone="danger"`.
+- **Space between sections or items** → `Stack`, `Grid`. Not: margins on children, raw px gaps such as px8.
+  Stack `gap`: `spacious` between page sections, `normal` inside a section, `tight` between buttons. `Grid` for two-dimensional layout.
+- **Padded background or a titled content object** → `Surface`, `Card`. Not: a Box with background and padding.
+  `Surface` for a plain padded background; `Card` only when the content has a title or can be pressed.
+- **Progress bar or ring** → `Progress`. Not: a hand-built bar.
+  `<Progress value={60} label="Upload" />`; inside an existing `Card`, `CardProgress`.
+- **Body copy** → `Text`. Not: Text as a section heading.
+  Section headings come from the pattern that owns the section (`PageHeader` `title`, `DataTableSection` `title`), not from extra Text.
+- **Empty state for a list or section** → `EmptyState`. Not: Text saying "No items".
+  `DataTableSection` shows its own through `emptyTitle`; use `EmptyState` elsewhere.
+- **The one irreversible action of a screen (delete the client, close the account)** → `DestructiveSection`. Not: a danger Button that acts without a confirm.
+  Last on the screen: `<DestructiveSection title="Delete client" description="…" actionLabel="Delete" onConfirm={…} />`; it opens its own AlertDialog. A per-row destructive action uses AlertDialog directly.
+- **Read-only details as label and value pairs** → `MetadataList`, `Field`. Not: a Table with two columns, Text pairs in a Stack.
+  `<MetadataList items={[{ term: "Owner", description: "Ada" }]} />` for a set; `Field` for one pair.
+- **A person, or a group of people** → `Avatar`, `AvatarGroup`. Not: an image in a rounded Box.
+  `<Avatar src alt initials />`; several in a row: `<AvatarGroup max={3}>…Avatars…</AvatarGroup>`.
+- **A date or time** → `Timestamp`. Not: a formatted string in Text.
+  `<Timestamp date="2026-10-14" />` renders a `<time dateTime>`; a date in a table cell may stay plain text.
+- **A keyboard key or shortcut hint** → `Kbd`. Not: `InlineCode`, Text in a Box.
+  `<Kbd>⌘K</Kbd>`.
+- **A quotation with attribution** → `Blockquote`. Not: Callout for a quote, italic Text.
+  `<Blockquote attribution="Ada Lovelace">…</Blockquote>`.
+- **A fixed-width side rail beside fluid content, or a row that stacks when narrow** → `Sidebar`, `Switcher`. Not: a Grid with media queries.
+  `Sidebar` (`side`, `sideWidth`) for rail + content; `Switcher` (`threshold`) for a row that flips to a column. Neither needs a media query.
+- **Keep an element stuck while its region scrolls** → `Pin`. Not: position: sticky in style.
+  `<Pin top="…">…</Pin>` inside the scrolling region.
 
 ## System Architecture
 
@@ -38,10 +97,9 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 42 components of the ratified core set (hds#254, ADR-031): brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (app shells, navigation, feeds, screen sections) are imported from `@hirobius/design-system/patterns`.
+The 43 components of the ratified core set (hds#254, ADR-031): brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
-- ButtonGroup (Actions)
 - Avatar (Display)
 - Card (Display)
 - EmptyState (Display)
@@ -76,9 +134,11 @@ The 42 components of the ratified core set (hds#254, ADR-031): brand-neutral, co
 - InlineLink (Navigation)
 - Pagination (Navigation)
 - Tabs (Navigation)
-- ContextMenu (Overlays)
 - Dialog (Overlays)
-- HoverCard (Overlays)
+- Menu (Overlays)
+- Popover (Overlays)
+- Tooltip (Overlays)
+- HdsRouterProvider (Theming)
 - HdsThemeProvider (Theming)
 - Text (Typography)
 - VisuallyHidden (Utility)
@@ -88,34 +148,33 @@ The 42 components of the ratified core set (hds#254, ADR-031): brand-neutral, co
 One line per component that declares when to use it (`@usage` / `@useInstead` in its JSDoc); `[core]` marks the core set. Full detail, including `usage.whenNot`, `keyboard` and `aiRules`, is in `public/hds-manifest.json` and `src/app/data/component-api.json`.
 
 Alert: [core] Show a persistent inline message with a severity, next to the content it concerns. Use instead: ToastProvider, Badge
+AlertDialog: Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons. Use instead: Dialog, ToastProvider
 Avatar: [core] Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
-Badge: [core] Label a status, state or count with a compact neutral or semantic chip. Use instead: Tag, Alert
+Badge: [core] Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
-Button: [core] Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft. Use instead: InlineLink
-ButtonGroup: [core] Attach related Buttons into one segmented row or column that reads as a single control. Use instead: SegmentedControl, Stack
-Card: [core] Group related content on a raised surface with header, body, footer and metric slots. Use instead: Surface, Card.Metric
-CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card.
+Button: [core] Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
+Card: [core] Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option. Use instead: Surface, Card.Metric
+CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card. Use instead: MetricTiles
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
-Combobox: [core] Pick one value from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
+Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
 Container: [core] Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
-ContextMenu: [core] Offer actions for an item on right-click, or the equivalent keyboard gesture. Use instead: Menu
-Dialog: [core] Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: HoverCard, Alert, ToastProvider
+Dialog: [core] Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider, AlertDialog
 Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. Use instead: Tabs
 Divider: [core] Separate two regions of content with a thin semantic rule. Use instead: Stack, Surface
 EmptyState: [core] Say that a list, grid or section has no data yet, with a title and an optional description. Use instead: Skeleton, Alert
 Field: [core] Show a labelled read-only value, such as a name and its value in a detail view. Use instead: Input, Card.Metric
 Grid: [core] Lay out content in responsive columns with token-governed gaps, or align nested content with subgrid. Use instead: Stack, Box
+HdsRouterProvider: [core] Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors.
 HdsThemeProvider: [core] Wrap an app or region once to set theme, density and other root attributes for everything inside it. Use instead: Surface
-HoverCard: [core] Preview extra detail about a link or mention when it is hovered or focused, without navigating. Use instead: Dialog, Tooltip
 Icon: [core] Draw a Lucide glyph at a size and colour from the design tokens. Use instead: Button, Avatar
-IconButton: Trigger an action from a compact icon-only control, always with an accessible label. Use instead: Button
 InlineLink: [core] Link to a route or external URL from inside body copy. Use instead: Button, Text
-Input: [core] Collect a single line of text, a number, an email or a password, with label, helper and error slots. Use instead: Textarea, Select, Combobox
+Input: [core] Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots. Use instead: Textarea, Select, Combobox
 Kbd: [core] Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
-Menu: Offer a list of actions from a trigger, closed until opened. Use instead: Select
+Menu: [core] Offer a list of actions from a trigger, closed until opened. Use instead: Select
 Pagination: [core] Move between pages of a long result set, with truncated page numbers. Use instead: Breadcrumb
-Progress: [core] Show how far a task has got, as a bar that is determinate or indeterminate. Use instead: Spinner, Skeleton
+Popover: [core] Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open. Use instead: Tooltip, Menu, Dialog
+Progress: [core] Show how far a task has got, as a bar or ring that is determinate or indeterminate. Use instead: Spinner, Skeleton
 Radio: [core] Choose exactly one option from a small set that should stay visible together. Use instead: Checkbox, Select, SegmentedControl
 SegmentedControl: [core] Switch between two to five mutually exclusive views or modes in a compact row. Use instead: Radio, Tabs, Select
 Select: [core] Choose one value from a short list of options in a form field. Use instead: Menu, Combobox
@@ -123,8 +182,8 @@ Skeleton: [core] Reserve the shape of content that is still loading, so the layo
 Slider: [core] Pick a number within a known range by dragging, when the exact value matters less than the position. Use instead: Input
 Spinner: [core] Show that something is loading when the wait is short or has no measurable end. Use instead: Progress, Skeleton
 Stack: [core] Space a row or column of content with token gaps and simple flex alignment. Use instead: Grid, Surface
-Stat: Show one standalone headline figure with its label and an optional sub-line. Use instead: Card.Metric, StatusTile
-StatusTile: Show a titled status block with optional notes and a trailing badge or affordance. Use instead: Card.Metric, StatusListItem
+Stat: Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line. Use instead: MetricTiles, Card.Metric, StatusTile
+StatusTile: Show a titled status block with optional notes and a trailing badge or affordance. Use instead: MetricTiles, Card.Metric, StatusListItem
 Surface: [core] Wrap content in a padded, background-bearing inset surface with no header or footer anatomy. Use instead: Card, Stack
 Table: [core] Show rows of structured data in aligned columns, with optional sorting. Use instead: Field, Stack
 Tabs: [core] Switch between panels of related content in the same place, one visible at a time. Use instead: SegmentedControl, Disclosure
@@ -133,6 +192,7 @@ Text: [core] Set any text on the type ramp, with the element chosen by `as`. Use
 Textarea: [core] Collect multi-line free text such as a message, note or description. Use instead: Input
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
+Tooltip: [core] Name an icon-only control, or add a short hint that appears on hover and keyboard focus. Use instead: Popover, Text
 VisuallyHidden: [core] Give assistive technology a label or description that sighted people do not need to see. Use instead: Text
 
 ## Tokens (Primary Source Of Truth)
@@ -158,16 +218,16 @@ VisuallyHidden: [core] Give assistive technology a label or description that sig
 
 Canonical skeleton, outermost to innermost:
 
-1. `Page` (or `Container`/`Center` for a full-bleed, non-page surface) for the outermost width constraint. Never import `Container` directly inside `src/app/pages/**` — use `Page`, which wraps it and owns vertical rhythm.
+1. `Page` (from `@hirobius/design-system/patterns`; or `Container` for a full-bleed, non-page surface, with a `Box` inside it for a horizontal gutter) for the outermost width constraint. Never import `Container` directly inside `src/app/pages/**` — use `Page`, which wraps it and owns vertical rhythm.
 2. `Stack` (vertical rhythm between sections) or `Grid` (two-dimensional/column layout) for the structural skeleton. One section = one Section/Stack — never add a second wrapper to fake a section boundary.
-3. Reach for a named every-layout primitive before hand-rolling flex/grid math for a common intent: `Cluster` (wrapping row of same-ish things), `Center` (centered max-width column with optional gutter), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query), `Cover` (full-height shell with a centered main region), `Frame` (aspect-ratio-locked clipped media box), `Bleed` (controlled negative margin to escape a parent padding).
+3. Reach for a named layout primitive before hand-rolling flex/grid math for a common intent: `Stack direction="row" wrap="wrap"` (wrapping row of same-ish things), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query). A full-height shell with a centered main region, an aspect-ratio-locked media box or a negative margin that escapes a parent padding is a `Box` with `style` (not `sx`, which applies on the client only).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
-5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). Pick between `MetricTiles`, `Stat`, `Card.Metric` and `StatusTile`, and between `Card` and `Surface`, with the "Which one, when" table in `DESIGN.md`.
+5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). A row of headline numbers is always `MetricTiles`; `Stat`, `Card.Metric` and `StatusTile` answer other needs (see "Pick By Need" in `llms.txt`). Pick between `Card` and `Surface` with the "Which one, when" table in `DESIGN.md`.
 6. `Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
 
 Negative rules (apply everywhere, checked by `scripts/audit-tokens.mjs --full`, `check-hardcoded-spacing.mjs`, `check-hardcoded-colors.mjs`):
 
-- No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Cluster/Switcher/Sidebar/Cover) owns rhythm, not margin on the child.
+- No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Switcher/Sidebar) owns rhythm, not margin on the child.
 - No raw px or hex values in any layout or color prop — every spacing value comes from the semantic gap scale (`tight | normal | inset | spacious`, or a component/subgrid step) and every color comes from a `semantic.color.*` token.
 - No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.
 
@@ -222,7 +282,7 @@ When building any card component or card-like surface, ALL of the following rule
 
 Cards default to `elevation.flat`. Popovers/tooltips/dropdowns use `elevation.floating`. Dialogs/sheets use `elevation.overlay`. Interactive cards lift to `elevation.raised` on hover. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
-Overlays (Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
+Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
 
 ## Slices And Full Bundle
 
@@ -266,19 +326,19 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 Icons come from the curated subpath `@hirobius/design-system/icons`; nothing extra to install.
 
 ```tsx
-import { IconButton } from '@hirobius/design-system';
+import { Button, Icon } from '@hirobius/design-system';
 import { Ellipsis } from '@hirobius/design-system/icons';
 
-<IconButton icon={Ellipsis} label="Row actions" />
+<Button iconOnly label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />
 ```
 
-Rule: icon-only actions (row menus, close, edit) use `IconButton`; do not hand-roll a button with a glyph or text "...".
+Rule: icon-only actions (row menus, close, edit) use `Button iconOnly` with a `label` and an `Icon` in `iconLeft`; do not hand-roll a button with a glyph or text "...".
 
 Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Bell, Bookmark, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Info, Link, Lock, LogIn, LogOut, Mail, Menu, Minus, Pencil, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, X
 
 Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.
 
-Name collisions: `Calendar` and `Menu` share names with HDS components; alias the icon: `import { Calendar as CalendarIcon, Menu as MenuIcon } from '@hirobius/design-system/icons'`. For an icon outside the set, install `lucide-react@0.487.0` (same version keeps the `LucideIcon` type identical).
+Name collisions: `Menu` shares a name with an HDS component; alias the icon: `import { Menu as MenuIcon } from '@hirobius/design-system/icons'`. For an icon outside the set, install `lucide-react@0.487.0` (same version keeps the `LucideIcon` type identical).
 
 ## Token Rules
 
@@ -341,28 +401,29 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 <!-- auto:start:typography -->
 HDS ships three typefaces — each with a distinct and exclusive role:
 
-- **Display / Heading font**: Satoshi. Bound exclusively to `display`, `h1`, `h2`, and `h3` styles. Never used for body copy or UI labels.
+- **Display / Heading font**: Satoshi. Bound exclusively to the `display` and `title` styles. Never used for body copy or UI labels.
 - **Body / UI font**: Satoshi. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: Geist Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · h1 · h2 · h3) use `700` bold; body, UI, and caption use `500` medium. Declared but unused by any semantic role: `400` regular.
+Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · title) use `700` bold; body, UI, and caption use `400` regular / `500` medium.
 
 ### Type ramp
 
 | Role | Size (desktop max) | Weight | Use |
 | --- | --- | --- | --- |
-| `semantic.typography.display` | 60px | 700 | Display headline |
-| `semantic.typography.h1` | 48px | 700 | Primary section headings (h1) |
-| `semantic.typography.h2` | 30px | 700 | Secondary section headings (h2) |
-| `semantic.typography.h3` | 20px | 700 | Component and card headers (h3) |
-| `semantic.typography.body` | 16px | 500 | Body prose |
-| `semantic.typography.ui` | 14px | 500 | UI text for nav, labels, captions |
-| `semantic.typography.caption` | 12px | 500 | Caption / helper text |
-| `semantic.typography.eyebrow` | 12px | 500 | Eyebrow / kicker label |
-| `semantic.typography.mono` | 14px | 400 | Monospace for code, token names, shortcuts |
+| `semantic.typography.display` | 48px | 700 | One per page, hero only |
+| `semantic.typography.title` | 24px | 700 | Section and card headings |
+| `semantic.typography.body` | 16px | 400 | Prose |
+| `semantic.typography.ui` | 14px | 500 | Controls, nav, table text, values |
+| `semantic.typography.caption` | 12px | 500 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.mono` | 13px | 400 | Code and ids |
+| `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.eyebrow` | 12px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
-> Responsive `clamp()` overrides live in `src/styles/theme.css`; tokens store the desktop-max static value.
+> The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
 
 ## Spacing
@@ -372,8 +433,18 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 
 Scale: `0px` (`primitive.space.0`) · `1px` (`primitive.space.px1`) · `2px` (`primitive.space.px2`) · `4px` (`primitive.space.1`) · `6px` (`primitive.space.px6`) · `8px` (`primitive.space.2`) · `10px` (`primitive.space.px10`) · `12px` (`primitive.space.3`) · `16px` (`primitive.space.4`) · `20px` (`primitive.space.5`) · `24px` (`primitive.space.6`) · `28px` (`primitive.space.7`) · `32px` (`primitive.space.8`) · `40px` (`primitive.space.10`) · `48px` (`primitive.space.12`) · `64px` (`primitive.space.16`) · `80px` (`primitive.space.20`) · `96px` (`primitive.space.24`) · `128px` (`primitive.space.32`)
 
-Use `primitive.space.*` for layout rhythm, padding, and gaps. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
+Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
 <!-- auto:end:spacing -->
+
+## Layout contract (v1)
+
+Approved 2026-10-07. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`).
+
+1. **Sizing.** Every component declares `fill` or `hug` on each axis. Leaves hug. Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. One override prop, `width="hug|fill"`, on every component. Height always hugs; stretching is the parent's job (`align="stretch"`). No component sets `h-full`, `height: 100%` or `self-*` on its root.
+2. **Padding.** Only containers pad: Card, Surface, Alert, Callout, Dialog, Page. Compound parts (`Card.Header`, `Body`, `Footer`, `Metric`) have zero padding and the container's `gap` spaces them. Padding is `none | sm | md`, default `md`, density-aware. A padded container directly inside a padded container is an error unless the inner one is `padding="none"`.
+3. **Spacing.** One scale, `xs…xl` (plus `none`), for every `gap` and `padding` prop. Every gap defaults to `md`. No outer margins on any component; space between siblings is the parent's `gap`.
+4. **Primitives.** Stack, Grid, Page (absorbs Container) and Surface compose layouts. Box and Pin are escape hatches. Sidebar and Switcher fold into Stack and Grid.
+5. **Forms.** A form control in a form context has a max width (`40rem` by default) and siblings share one width.
 
 ## Corner-Radius Policy
 
@@ -403,7 +474,7 @@ Depth is communicated through 4 elevation roles bundled by `semantic.elevation.*
 
 Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
-Overlays (Dialog, AlertDialog, Menu, ContextMenu, Popover, Select, HoverCard, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
+Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
 
 ## Motion
 
@@ -442,7 +513,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 <!-- auto:start:components -->
 | Component | Radius | States | Guidance |
 | --- | --- | --- | --- |
-| **Buttons** (`Button`) | `8px` (`semantic.radius.action`) | default · hover · focus · active · disabled · loading | Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Pressed is a 5% `semantic.color.state.pressed.overlay` wash over the fill (`role.pressed-overlay`: black in light, white in dark), not a brightness filter. Icon buttons (`IconButton`) follow the same token surface. Icon-only actions use `IconButton` with an icon from `@hirobius/design-system/icons`. |
+| **Buttons** (`Button`) | `8px` (`semantic.radius.action`) | default · hover · focus · active · disabled · loading | Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Pressed is a 5% `semantic.color.state.pressed.overlay` wash over the fill (`role.pressed-overlay`: black in light, white in dark), not a brightness filter. Icon-only buttons (`iconOnly`) follow the same token surface. Icon-only actions use `Button iconOnly` with a `label` and an `Icon` from `@hirobius/design-system/icons` in `iconLeft`. |
 | **Inputs** (`Input`) | `8px` (`semantic.radius.action`) | default · focus · filled · error · disabled · loading | Border-driven treatment; no filled background by default. Focus uses `semantic.color.border.accent` plus a 2px outline offset. Error swaps to `component.input.borderError`. |
 | **Cards** (`Card`) | `12px` (`rounded-lg`, role radius + 4px) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (1px border `border.subtle`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
 | **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
@@ -465,7 +536,7 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
 | Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                          | Raw pixel values or ad hoc insets                                                           |
 | Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
-| Title                    | `hds.typeStyles.heading3` / `<HdsText variant="heading3">`                                               | Any other type style for the primary card heading                                           |
+| Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                        | Any other type style for the primary card heading                                           |
 | Subtitle / meta          | `hds.typeStyles.caption` + `var(--semantic-color-content-secondary)`                                     | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                 | Background fill change, border color shift, or opacity fade on hover                        |
 
@@ -477,7 +548,7 @@ Five patterns sit above the primitives so that every screen is composed the same
 
 ### Page title rule
 
-Every screen has exactly one `PageHeader`. The page title is `heading2` (30px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` and `h1` are reserved for marketing and landing surfaces and are never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
+Every screen has exactly one `PageHeader`. The page title is `title` (24px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` is reserved for marketing and landing surfaces and is never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
 
 ### Which one, when
 
@@ -489,14 +560,16 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `Stat`               | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
 | `Card.Metric`        | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
 | `StatusTile`         | State with notes and a trailing badge, never a number.                        | `MetricTiles` when the tile is a number; `StatusTile` never carries a value. |
-| `Card`               | A titled or interactive content object (header, body, footer, or selectable). | `Surface` when there is no title and nothing to press.                       |
+| `Card`               | A titled or interactive content object (header, body, footer, `selectable`).  | `Surface` when there is no title and nothing to press.                       |
 | `Surface`            | A plain padded background around content that has no header of its own.       | `Card` when the content is titled or interactive.                            |
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
 | `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                | `Table` alone when there is no heading, toolbar or empty state to show.      |
 
+Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state.
+
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 
-`MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `heading2`, the label as an eyebrow and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
+`MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `title`, the label in `caption` and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
 
 ### Destructive and table sections
 
@@ -528,7 +601,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked in
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (383 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (389 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -537,10 +610,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked in
 ## Component Props Digest
 
 Compact: name, first line of description, then prop: type = default. Full detail in `src/app/data/component-api.json`.
-
-### ActivityFeed
-ActivityFeed — chronological system event log. Renders a list of activity events using white space as the sole separator. No dividers, no borders between items…
-  - events: ActivityEvent[] = [ { id: 'evt-001', title: 'File Uploade…
 
 ### Alert
 Alert - compact feedback surface with contextual severity.
@@ -554,11 +623,6 @@ AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled 
   - defaultOpen: boolean
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
-
-### AspectRatio
-Locks its single child to the given width-to-height `ratio` so media reserves its box up front and never causes layout shift while it loads.
-  - asChild: boolean
-  - ratio: number = 1
 
 ### AssetImg
 AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.
@@ -597,16 +661,10 @@ Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
 ### Badge
 Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
-  - tone: "neutral" | "danger" | "success" | "warning" | "info" | "inProgress" | null
-
-### Bleed
-Bleed — controlled negative-margin full-bleed within a padded container. Every Layout reference: https://every-layout.dev/layouts/the-stack/ (bleed is the inve…
-  - amount: 'tight' | 'normal' | 'inset' | 'spacious' = normal
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - axis: 'x' | 'y' | 'both' = x
-  - children: ReactNode
-  - className: string
-  - style: CSSProperties
+  - dot: boolean = false
+  - label: string
+  - size: "sm" | "md" | "lg"
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" | "inProgress" | null
 
 ### Blockquote
 A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
@@ -627,22 +685,18 @@ Breadcrumb trail. Links route through the HDS router seam (plain anchors with no
 ### Button
 Triggers an action when activated.
   - asChild: boolean = false
+  - defaultPressed: boolean
   - disabled: boolean
   - iconLeft: ReactNode
   - iconOnly: boolean = false
   - iconRight: ReactNode
   - label: string
   - loading: boolean = false
+  - onPressedChange: ((pressed: boolean) => void)
+  - pressed: boolean
   - size: "sm" | "md" | "lg" | null
-  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - variant: "primary" | "secondary" | "tertiary" | null
-
-### ButtonGroup
-Groups Button (or button-like) children into a single attached segment.
-  - orientation: "horizontal" | "vertical" | null
-
-### Calendar
-Renders an accessible month grid; compose it inside a Popover for the date inputs.
 
 ### Callout
 Tone-driven side-rule callout for status, quotes, hypotheses.
@@ -655,7 +709,10 @@ Tagged per-export, not on the file block: this module exports eight components a
   - bordered: boolean = false
   - gap: GapOption = tight
   - noPadding: boolean = false
+  - onSelectedChange: ((selected: boolean) => void)
   - padding: PaddingOption = component
+  - selectable: boolean = false
+  - selected: boolean = false
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
   - variant: 'default' | 'accent' = default
 
@@ -673,7 +730,7 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
   - metadata: ReactNode
 
 ### CardMetric
-Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
+Card.Metric — one label, a large value and an optional sub-line inside a Card.
   - label: ReactNode
   - sub: ReactNode
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -689,51 +746,12 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
 ### CardTitle
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
-### Carousel
-Renders children as a snap-scrolling track with Prev/Next scroll buttons.
-  - ariaLabel: string = Carousel
-  - children: ReactNode
-  - showControls: boolean = true
-
-### Center
-Center — max-width column, auto-centered horizontally. Every Layout reference: https://every-layout.dev/layouts/center/
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - children: ReactNode
-  - className: string
-  - gutter: 'tight' | 'normal' | 'inset' | 'spacious'
-  - maxWidth: 'content' | 'max' = content
-  - style: CSSProperties
-
 ### Checkbox
 Checkbox — custom-drawn checkbox with check / indeterminate glyph.
   - checked: boolean
   - indeterminate: boolean = false
   - label: string
   - onChange: (v: boolean) => void
-
-### CinematicLink
-CinematicLink - cinematic editorial link treatment for portfolio surfaces.
-  - children: string
-  - href: string
-
-### CircularProgress
-A circular progress ring; pass `value`/`max` or set `indeterminate`.
-  - indeterminate: boolean = false
-  - label: string
-  - max: number = 100
-  - size: "sm" | "md" | "lg" = md
-  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
-  - value: number = 0
-
-### Cluster
-Cluster — wrapping horizontal group with even gaps. Every Layout reference: https://every-layout.dev/layouts/cluster/
-  - align: 'start' | 'center' | 'end' | 'stretch' = center
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - children: ReactNode
-  - className: string
-  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = tight
-  - justify: 'start' | 'center' | 'end' | 'space-between' = start
-  - style: CSSProperties
 
 ### CodeBlock
 CodeBlock - code display with copy button and optional collapsible toggle.
@@ -747,32 +765,20 @@ CodeBlock - code display with copy button and optional collapsible toggle.
   - variant: "inline" | "block" = block
 
 ### Combobox
-Combobox — searchable single-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection; openi…
+Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current select…
+  - aria-describedby: string
+  - aria-invalid: boolean
   - aria-label: string
   - className: string
   - disabled: boolean = false
   - emptyMessage: string = No results
-  - onChange: (value: string) => void
+  - id: string
+  - multiple: boolean
+  - onChange: ((value: string) => void) | ((value: string[]) => void)
   - options: ComboboxOption[]
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
-  - value: string | null
-
-### CommandPalette
-Mountable trigger + dialog. Drop into header slot; component manages its own open state and Cmd-K / Ctrl-K global keybinding.
-  - className: string
-
-### ComponentInstanceMatrix
-ComponentInstanceMatrix — responsive specimen matrix for variant and state parity.
-  - componentName: string
-  - dimensionX: string
-  - dimensionY: string
-  - freezeRowState: boolean = false
-  - isMobile: boolean
-  - renderInstance: (rowKey: string, columnKey: string) => ReactNode
-  - rowLabelTone: "primary" | "secondary" = primary
-  - rowLabelWidth: number = 120
-  - title: string
+  - value: string | readonly string[] | null
 
 ### Container
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
@@ -782,66 +788,16 @@ Container — semantic width-constrained layout. Centers content horizontally an
   - padding: string = var(--semantic-space-surface-padding)
   - style: CSSProperties
 
-### ContextMenu
-ContextMenu root + parts. Wrap the right-clickable area in `ContextMenu.Trigger`. Controlled via `onOpenChange`.
-  - children: React.ReactNode
-  - dir: ("ltr" | "rtl")
-  - modal: boolean
-  - onOpenChange: ((open: boolean) => void)
-  - open: boolean
-
-### Cover
-Cover — vertical shell with an auto-centered main region. Every Layout reference: https://every-layout.dev/layouts/cover/
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - centerSlot: ReactNode
-  - children: ReactNode
-  - className: string
-  - footer: ReactNode
-  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = normal
-  - header: ReactNode
-  - minHeight: string = 100svh
-  - style: CSSProperties
-
 ### DataTableSection
 Section heading and toolbar over a `Table`. Row actions are consumer nodes in a trailing column, the table scrolls horizontally on narrow widths without a `min…
   - actionsLabel: string = Actions
   - columns: TableColumn[]
   - emptyDescription: ReactNode
   - emptyTitle: ReactNode = Nothing here yet
-  - level: 2 | 3 | 4 | 5 | 6 = 2
+  - level: 6 | 3 | 4 | 2 | 5 = 2
   - rows: DataTableSectionRow[]
   - title: ReactNode
   - toolbar: ReactNode
-
-### DateInput
-Text field + calendar popover for picking a single date.
-  - aria-label: string
-  - disabled: boolean = false
-  - displayFormat: string = yyyy-MM-dd
-  - id: string
-  - onChange: ((date: Date) => void) | undefined
-  - placeholder: string
-  - value: Date
-
-### DateRangeInput
-DateRangeInput — date-range field composing the existing Popover with Calendar in range mode, so picking a start/end date reads as one overlay pattern with Com…
-  - aria-label: string
-  - disabled: boolean = false
-  - displayFormat: string = yyyy-MM-dd
-  - id: string
-  - numberOfMonths: number = 2
-  - onChange: ((range: DateRange) => void) | undefined
-  - placeholder: string = Select date range
-  - value: DateRange
-
-### DateTimeInput
-Text date field + calendar popover, paired with a native time field, producing one Date.
-  - aria-label: string
-  - dateFormat: string = yyyy-MM-dd
-  - disabled: boolean = false
-  - id: string
-  - onChange: ((date: Date) => void) | undefined
-  - value: Date
 
 ### DestructiveSection
 Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's …
@@ -850,7 +806,7 @@ Titled danger zone: a title, an explanation, and one danger `Button` that opens 
   - confirmBody: ReactNode
   - confirmLabel: string
   - description: ReactNode
-  - level: 2 | 3 | 4 | 5 | 6 = 2
+  - level: 6 | 3 | 4 | 2 | 5 = 2
   - onConfirm: () => void
   - title: ReactNode
 
@@ -928,19 +884,6 @@ Divider — semantic separator between content regions.
   - strong: boolean
   - variant: "strong" | "default" | null
 
-### DocLinkCard
-DocLinkCard - navigation card for editorial and documentation cross-links.
-  - accent: boolean = false
-  - affordance: "up-right" | "right" | "left" = up-right
-  - description: string
-  - disabled: boolean = false
-  - href: string
-  - icon: LucideIcon
-  - meta: string
-  - metaStyle: "caption" | "ui" = caption
-  - title: string
-  - variant: "feature" | "pager" = feature
-
 ### EmptyState
 EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - className: string
@@ -952,16 +895,8 @@ Caption label paired with a value — used in metadata grids and read-only forms
   - children: React.ReactNode
   - label: string
   - mono: boolean | null
-  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - value: ReactNode
-
-### FileInput
-A dashed dropzone that opens the native file picker or accepts a drag-and-drop.
-  - accept: string
-  - disabled: boolean
-  - label: ReactNode = Click to upload or drag and drop
-  - multiple: boolean
-  - onFiles: ((files: File[]) => void)
 
 ### Form
 Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-leve…
@@ -993,50 +928,23 @@ Presentational label + control slot + helper/error markup. Renders `children` ve
   - label: string
   - required: boolean = false
 
-### FoundationSwatch
-FoundationSwatch - governed foundation specimen for color and semantic role previews.
-  - background: string
-  - bordered: boolean = false
-  - details: string[]
-  - foreground: string = var(--semantic-color-content-primary)
-  - hidePreviewLabel: boolean = false
-  - label: string
-  - note: ReactNode
-  - previewPosition: 'bottom-left' | 'top-left' | 'center' = center
-  - specimen: ReactNode
-  - swatchVar: string
-  - tokenDisplayPreset: 'depth1' | 'depth2' | 'full' = depth2
-  - tokenPath: string
-  - value: string
-
-### Frame
-Frame — aspect-ratio-locked, token-clipped media box. Every Layout reference: https://every-layout.dev/layouts/frame/
-  - as: ElementType<any, keyof IntrinsicElements> = div
-  - children: ReactNode
-  - className: string
-  - radius: 'none' | 'sm' | 'md' | 'full' = md
-  - ratio: number = 16 / 9
-  - style: CSSProperties
-
 ### Grid
 Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via …
+  - align: "center" | "end" | "start" | "stretch" = start
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - className: string
   - columns: number = 12
-  - gap: 'tight' | 'normal' | 'inset' | 'spacious' = inset
-  - layout: 'fixed' | 'auto-fit' = fixed
+  - gap: 'medium' | 'tight' | 'normal' | 'inset' | 'spacious' = inset
+  - layout: 'fixed' | 'auto-fit' | 'auto-fill' = fixed
+  - minItemWidth: string
   - style: CSSProperties
   - subgrid: boolean = false
 
-### HdsDocsShell
-HdsDocsShell — three-region docs shell (left nav rail, content, right TOC rail), driven by grid columns that default to 0 and are set per breakpoint. hds#280 s…
+### HdsRouterProvider
+Provide a router adapter to all HDS components below. Wrap your app root once.
+  - adapter: HdsRouterAdapter
   - children: ReactNode
-  - className: string
-  - leftRail: ReactNode
-  - rightRail: ReactNode
-  - style: CSSProperties
-  - topOffset: string = 0px
 
 ### HdsThemeProvider
 Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.
@@ -1050,25 +958,6 @@ Renders a `data-hds` scope wrapper that carries the four theming dials as root a
   - style: CSSProperties
   - theme: 'light' | 'dark'
 
-### HeadingStack
-HeadingStack — enforced vertical rhythm for heading + subheading pairs. Automatically handles gap and secondary color, preventing manual stacking. - Heading le…
-  - as: ElementType = div
-  - gap: HdsHeadingGap = px8
-  - heading: string
-  - headingAs: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-  - level: HdsHeadingLevel
-  - subheading: string
-  - subheadingAs: 'p' | 'div' | 'span' = p
-
-### HoverCard
-HoverCard root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`; tune timing with `openDelay`/`closeDelay`.
-  - children: React.ReactNode
-  - closeDelay: number
-  - defaultOpen: boolean
-  - onOpenChange: ((open: boolean) => void)
-  - open: boolean
-  - openDelay: number
-
 ### Icon
 Icon — semantic icon wrapper for Lucide icons.
   - aria-hidden: boolean | "true" | "false" = true
@@ -1078,22 +967,6 @@ Icon — semantic icon wrapper for Lucide icons.
   - size: IconSize = small
   - style: CSSProperties
   - weight: "fill" | "bold" | "light" | "thin" | "regular" | "duotone"
-
-### IconButton
-IconButton ” icon-only action trigger built on the shared Button primitive.
-  - aria-label: string
-  - asChild: boolean
-  - disabled: boolean
-  - icon: LucideIcon
-  - iconColor: string
-  - iconLeft: ReactNode
-  - iconRight: ReactNode
-  - iconSize: IconSize
-  - label: string
-  - loading: boolean
-  - size: "sm" | "md" | "lg"
-  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
-  - variant: "primary" | "secondary" | "tertiary" | null
 
 ### InlineCode
 InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
@@ -1120,33 +993,16 @@ Input — text field primitive with label, helper, and error slots.
   - label: string
   - leadingVisual: ReactNode
   - loading: boolean = false
+  - prefix: ReactNode
   - size: InputSize = md
+  - suffix: ReactNode
   - textStyle: "body" | "mono" = body
   - trailingVisual: ReactNode
-  - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' = text
-
-### InputGroup
-A single-line input with optional `leading`/`trailing` adornments.
-  - className: string
-  - leading: ReactNode
-  - size: "sm" | "md" | "lg" | null
-  - trailing: ReactNode
+  - type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' | 'date' | … = text
 
 ### Kbd
 Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
   - size: "sm" | "md" | "lg" | null
-
-### Lightbox
-Lightbox — full-bleed image viewer built on Radix Dialog. Full-bleed image viewer built on Radix Dialog (raw primitives, not the card `Dialog` wrapper — a ligh…
-  - alt: string
-  - caption: string
-  - captionHref: string
-  - captionLabel: string
-  - naturalHeight: number
-  - naturalWidth: number
-  - onClose: () => void
-  - open: boolean
-  - src: string
 
 ### Menu
 Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
@@ -1174,44 +1030,6 @@ One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised 
 ### MetricTiles
 A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. The default for any row of hea…
   - children: ReactNode
-
-### MultiSelector
-MultiSelector — multi-select dropdown composing the existing Popover with a checkbox option list, so choosing several values from a fixed set reads as one over…
-  - className: string
-  - disabled: boolean = false
-  - onChange: (next: string[]) => void
-  - options: MultiSelectorOption[]
-  - placeholder: string = Select…
-  - value: string[]
-
-### NavGroup
-NavGroup - labeled navigation group for stacks of nav items.
-  - children: ReactNode
-  - className: string
-  - collapsible: boolean = false
-  - contentStyle: CSSProperties
-  - getExact: ((item: NavItem) => boolean)
-  - items: NavItem[]
-  - label: string
-  - level: NavLevel = section
-  - onNavigate: (() => void)
-  - style: CSSProperties
-  - variant: 'side' | 'toc' = side
-
-### NavItem
-NavItem - navigation row primitive for sidebars, table of contents, and list navigation.
-  - active: boolean = false
-  - disabled: boolean = false
-  - label: string
-  - level: NavLevel = root
-  - onNavigate: ((event: MouseEvent<HTMLAnchorElement, MouseEvent>) => void)
-  - variant: NavVariant = side
-
-### OverflowList
-Renders up to `max` children followed by a `+N` overflow chip (or custom node).
-  - children: ReactNode
-  - max: number
-  - renderOverflow: ((count: number) => ReactNode)
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
@@ -1254,10 +1072,13 @@ Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with
   - open: boolean
 
 ### Progress
-Linear progress. Determinate when `value` is a number, else indeterminate.
+Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.
   - label: string = Progress
+  - max: number = 100
   - size: "sm" | "md" | "lg" | null
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" = neutral
   - value: number | null = null
+  - variant: "linear" | "circular" = linear
 
 ### Radio
 Radio — radio button with animated selection indicator.
@@ -1288,29 +1109,15 @@ SegmentedControl " segmented selection input for compact mutually-exclusive choi
 
 ### Select
 Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead…
+  - aria-describedby: string
+  - aria-invalid: boolean
   - container: HTMLElement | null
+  - id: string
   - label: string
   - onChange: (v: string) => void
   - options: { value: string; label: string; }[]
   - showLabel: boolean = true
   - value: string
-
-### SelectableCard
-A card-shaped single checkbox — click or activate to toggle selection.
-  - disabled: boolean
-  - onSelectedChange: ((selected: boolean) => void)
-  - selected: boolean = false
-
-### SideNav
-SideNav - sidebar navigation row primitive. Two levels: root — top-level section link. Full-width row using the shared nav label type style. nested — child pag…
-  - active: boolean = false
-  - disabled: boolean = false
-  - href: string
-  - indent: number | boolean = 0
-  - label: string
-  - level: 'root' | 'nested' = nested
-  - onNavigate: ((event: MouseEvent<HTMLAnchorElement, MouseEvent>) => void)
-  - titleLabel: boolean = false
 
 ### Sidebar
 Sidebar — fixed-width rail beside fluid content, no media query. Every Layout reference: https://every-layout.dev/layouts/sidebar/
@@ -1326,14 +1133,8 @@ Sidebar — fixed-width rail beside fluid content, no media query. Every Layout 
 ### Skeleton
 Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.
   - height: string | number
-  - variant: "text" | "rectangular" | "circular" | null = rectangular
+  - variant: "text" | "circular" | "rectangular" | null = rectangular
   - width: string | number
-
-### Sketch
-Sketch — shared shell for generative canvases and WebGL sketches.
-  - children: ReactNode
-  - controls: ReactNode
-  - title: string
 
 ### Slider
 Slider — range slider with label and value display.
@@ -1361,28 +1162,18 @@ Stack — one-dimensional layout primitive.
   - style: CSSProperties
   - wrap: FlexWrap
 
-### StackedCardRail
-StackedCardRail — horizontally-scrolling stacked card carousel. Scroll mechanism: vertical scroll on an absolutely-positioned inner container is mapped to hori…
-  - cards: StackedCardRailCard[]
-
 ### Stat
-Headline metric — large value, uppercase caption label, optional sub-line.
+Headline metric — large value, caption label, optional sub-line.
   - label: string
   - sub: ReactNode
-  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - value: ReactNode
-
-### StatusDot
-A small solid dot conveying a semantic status via `tone`.
-  - label: string
-  - size: "sm" | "md" | "lg" | null
-  - tone: "neutral" | "danger" | "success" | "warning" | "info" | "inProgress" | null
 
 ### StatusListItem
 Status dot + title row with optional muted notes and trailing slot (e.g. badge).
   - notes: ReactNode[]
   - title: ReactNode
-  - tone: "neutral" | "danger" | "success" | "warning" | "info" | null
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - trailing: ReactNode
 
 ### StatusTile
@@ -1391,23 +1182,6 @@ Block-layout sibling of StatusListItem. Renders a raised surface tile with title
   - title: ReactNode
   - tone: 'success' | 'warning' | 'danger' | 'info' | 'neutral' = neutral
   - trailing: ReactNode
-
-### Stepper
-Step indicator for multi-step flows. Purely presentational — no navigation.
-  - activeStep: number
-  - orientation: "horizontal" | "vertical" = horizontal
-  - steps: Step[]
-
-### StepperField
-StepperField ” numeric input with decrement/increment controls. Classification baseline: Material Design, Chakra UI, and Ant Design treat steppers as numeric i…
-  - inputStep: number
-  - label: string
-  - max: number
-  - min: number
-  - onChange: (value: number) => void
-  - precision: number
-  - step: number
-  - value: number
 
 ### Surface
 Surface — governed inset surface primitive. Enforces the "Surface Inset" rule: backgrounds MUST have internal padding. - Default padding: px24 (cards) | px16 (…
@@ -1437,7 +1211,7 @@ Table - structured data table primitive for documentation and compact UI matrice
   - columns: TableColumn[]
   - density: 'compact' | 'comfortable'
   - description: ReactNode
-  - flush: boolean = false
+  - flush: boolean = true
   - labelledBy: string
   - minWidth: string | number
   - rows: TableRow[]
@@ -1476,23 +1250,11 @@ Tag — interactive filter and category chip. The outer <button> carries the acc
 
 ### Text
 Text — polymorphic typography primitive spanning the full HDS type ramp.
-  - as: "symbol" | "object" | "map" | "filter" | "title" | "a" | "button" | "div" | "fo… = defaultTagMap[variant]
+  - as: "symbol" | "object" | "title" | "a" | "button" | "div" | "form" | "h2" | "h3" |… = defaultTagMap[variant]
   - children: ReactNode
   - className: string
   - style: CSSProperties
   - variant: TextVariant
-
-### TextLockup
-TextLockup - governed title-and-description pairing primitive.
-  - align: 'left' | 'center' = left
-  - as: ElementType = div
-  - description: ReactNode
-  - descriptionAs: 'div' | 'p' | 'span' = div
-  - eyebrow: string
-  - id: string
-  - size: 'hero' | 'heroXl' | 'section' | 'metric' | 'detail' | 'numbered'
-  - title: string
-  - titleAs: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span'
 
 ### Textarea
 Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the …
@@ -1504,15 +1266,6 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - label: string
   - resize: TextareaResize = vertical
   - textareaClassName: string
-
-### TileGrid
-Auto-fill responsive grid for status/micro tiles. Wraps tile children in a one-line grid declaration so pages don't repeat the auto-fill minmax recipe.
-  - gap: "sm" | "md" | "xs" = sm
-  - minTileWidth: string = 260px
-
-### TimeInput
-A native time field skinned with HDS input chrome. Value is a `HH:mm` string.
-  - size: "sm" | "md" | "lg" | null
 
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.
@@ -1533,54 +1286,6 @@ Toggle — boolean on/off toggle with animated thumb.
   - label: string
   - onChange: (v: boolean) => void
 
-### ToggleButton
-A single two-state toggle button exposing a native `aria-pressed` contract — use for one independent on/off control such as bold, mute, or pin.
-  - asChild: boolean
-  - defaultPressed: boolean
-  - onPressedChange: ((pressed: boolean) => void)
-  - pressed: boolean
-  - size: "sm" | "md" | "lg" | null
-  - variant: "secondary" | "ghost" | null
-
-### Token
-Token - reflective token specimen for unified node-based token views. The `variant` axis (node | diagram — diagram is a deprecated alias that resolves to the s…
-  - accentColor: string
-  - aria-label: string
-  - className: string
-  - description: ReactNode
-  - fullWidth: boolean
-  - isSelected: boolean
-  - isSourceNode: boolean
-  - label: string
-  - leadingSlot: ReactNode
-  - nodeRef: ((el: HTMLElement | null) => void)
-  - nowrap: boolean
-  - onClick: (() => void) | (() => void)
-  - pathDisplayDepth: number
-  - pathDisplayLeadingDot: boolean
-  - pathDisplayMode: "full" | "compressed"
-  - rawValue: ReactNode
-  - swatchVar: string
-  - tokenPath: string
-  - truncateFromStart: boolean
-  - value: string
-  - variant: "node" | "diagram"
-
-### Tokenizer
-A bordered field of Tag chips followed by a text input for adding more.
-  - className: string
-  - disabled: boolean
-  - onChange: (next: string[]) => void
-  - placeholder: string
-  - value: string[]
-
-### Toolbar
-Toolbar root. Groups related controls with a single roving tab-stop. Supports the native `orientation` prop (`horizontal` | `vertical`).
-  - asChild: boolean
-  - dir: ("ltr" | "rtl")
-  - loop: boolean
-  - orientation: "horizontal" | "vertical"
-
 ### Tooltip
 Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or …
   - children: React.ReactNode
@@ -1589,19 +1294,6 @@ Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contai
   - disableHoverableContent: boolean
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
-
-### TopNav
-Top navigation bar with brand, nav, and trailing action slots.
-  - brand: ReactNode
-  - children: ReactNode
-  - sticky: boolean
-  - trailing: ReactNode
-
-### TreeList
-Renders a hierarchical `role="tree"` list; nodes with children get an expand/collapse toggle.
-  - defaultExpandedIds: string[]
-  - items: TreeNode[]
-  - onSelect: ((id: string) => void)
 
 ### VisuallyHidden
 Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-onl…

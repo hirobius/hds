@@ -1,11 +1,43 @@
 {
   "measuredFrom": "hirobius/ops",
-  "files": 35,
+  "files": 33,
   "components": 25,
   "consumers": {
-    "productApps": 2,
+    "productApps": 1,
     "tokenLevelSites": 4
   },
-  "commit": "01fce2f79f30a4a7585ef058c78289da5d45db1a",
-  "consumersConfirmed": false
+  "commit": "76ef65e40b622a8d6d5fa5800e6ab42acbece6bf",
+  "consumersConfirmed": true,
+  "names": [
+    "AssetImg",
+    "Badge",
+    "Box",
+    "Breadcrumb",
+    "Button",
+    "Callout",
+    "Card",
+    "Checkbox",
+    "CodeBlock",
+    "Divider",
+    "EmptyState",
+    "ErrorPattern",
+    "Input",
+    "Page",
+    "Progress",
+    "SegmentedControl",
+    "Stack",
+    "Stat",
+    "StatusDot",
+    "StatusTile",
+    "Table",
+    "Tag",
+    "Text",
+    "TileGrid",
+    "VisuallyHidden"
+  ],
+  "promptContracts": {
+    "files": ["scripts/page-clone.mjs", "scripts/video-clone.mjs"],
+    "components": ["Button", "Card", "Grid", "Stack", "Surface", "Text"]
+  },
+  "scope": "src"
 }

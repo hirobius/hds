@@ -277,6 +277,11 @@ describe('findViolationsInText: a name resolves to the declaration in scope (hds
     expect(found(text)).toEqual([]);
   });
 
+  it('does not follow a conditional initializer, a documented limit (hds#404)', () => {
+    const text = ['const s = x ? { p: 15 } : {};', '<Box sx={s} />;'].join('\n');
+    expect(found(text)).toEqual([]);
+  });
+
   it('follows a block-scoped declaration, a member of it and a spread in it', () => {
     const text = [
       "const base = { gap: 'sm' };",
@@ -307,6 +312,11 @@ describe('the gate documents what it does not follow', () => {
     expect(header).toMatch(/sx=\{\[/);
     expect(header).toMatch(/SxObject/);
     expect(entry.description).toMatch(/array/);
+  });
+
+  it('names a conditional initializer as a limit in the header and the registry', () => {
+    expect(header).toContain('const s = x ? { p: 15 } : {}');
+    expect(entry.description).toMatch(/conditional initializer/);
   });
 
   it('says a name resolves by scope in the header and the registry', () => {

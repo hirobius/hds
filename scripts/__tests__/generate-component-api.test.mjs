@@ -37,21 +37,13 @@ describe('generate-component-api: Radix passthrough props', () => {
     expect(row.description).not.toBe('');
   });
 
-  it('HoverCard and ContextMenu have at least 4 rows each', () => {
-    expect(names('HoverCard').length).toBeGreaterThanOrEqual(4);
-    expect(names('ContextMenu').length).toBeGreaterThanOrEqual(4);
+  // HoverCard and ContextMenu held this case until 0.20.0 removed them (hds#394).
+  it('Tooltip has at least 4 rows', () => {
+    expect(names('Tooltip').length).toBeGreaterThanOrEqual(4);
   });
 
   it('does not leak React/DOM attribute rows', () => {
-    for (const component of [
-      'Menu',
-      'Popover',
-      'AlertDialog',
-      'Tabs',
-      'HoverCard',
-      'ContextMenu',
-      'Dialog',
-    ]) {
+    for (const component of ['Menu', 'Popover', 'AlertDialog', 'Tabs', 'Tooltip', 'Dialog']) {
       for (const name of names(component)) {
         expect(['className', 'style', 'onClick']).not.toContain(name);
         expect(name.startsWith('aria-')).toBe(false);

@@ -19,7 +19,9 @@ import {
   buildUseFigmaPushScript,
   buildUseFigmaSnapshotScript,
   buildDevPlugin,
+  buildPromotePlugin,
   buildPushPayload,
+  buildSyncPlugin,
   PUSH_CHUNKS,
   runtimeSource,
 } from '../lib/figma-scripts.mjs';
@@ -124,7 +126,7 @@ describe('use_figma scripts', () => {
       lines.push(report.line);
     }
     expect(lines).toEqual([
-      'updated 0 · created 20 · deleted 0',
+      'updated 0 · created 21 · deleted 0',
       'updated 0 · created 29 · deleted 0',
       'updated 0 · created 7 · deleted 0',
       'updated 0 · created 6 · deleted 0',
@@ -139,7 +141,7 @@ describe('use_figma scripts', () => {
     await runUseFigma(buildUseFigmaPushScript(model), figma);
     const { checksum, snapshot } = await runUseFigma(buildUseFigmaSnapshotScript(), figma);
     expect(checksum).toBe(hdsChecksum(JSON.stringify(snapshot)));
-    expect(snapshot.collections.map((c) => c.variables.length)).toEqual([19, 27, 6, 5]);
+    expect(snapshot.collections.map((c) => c.variables.length)).toEqual([20, 27, 6, 5]);
   });
 
   it('a mistyped payload digit makes the script fail before writing', async () => {
@@ -193,18 +195,113 @@ describe('use_figma scripts', () => {
         buildUseFigmaPushScript(model).replace(/\n/g, '\r\n'),
         figma,
       );
-      expect(report.summary.variables.created).toBe(57);
+      expect(report.summary.variables.created).toBe(58);
     });
 
-    it('refuse, naming the plugin as the fix, where Figma hides function source', async () => {
-      const figma = newFixtureFile();
+    describe('where Figma hides function source, refuse and name the plugin that does the job (hds#415)', () => {
       const hidden =
         "Function.prototype.toString = function () { return 'function () { [native code] }'; };\n";
-      await expect(runUseFigma(hidden + buildUseFigmaPushScript(model), figma)).rejects.toThrow(
-        /cannot read its own code.*development plugin/,
-      );
-      expect(figma.writes).toEqual([]);
+      const HIDDEN =
+        'This Figma runtime does not expose function source, so the script cannot read its own code to check it. Nothing was read or written.';
+      const TO_SYNC =
+        'Use the Sync plugin "HDS tokens sync" (figma/push/plugin/manifest.json), which Figma loads from disk.';
+      const TO_PROMOTE =
+        'Use the promote plugin "HDS tokens promote (baked)" (figma/push/promote/manifest.json), which Figma loads from disk.';
+      /** The message a script throws in a sandbox that hides function source, and the writes it made. */
+      const refusal = async (script) => {
+        const figma = newFixtureFile();
+        const error = await runUseFigma(hidden + script, figma).then(
+          () => null,
+          (thrown) => thrown,
+        );
+        return { message: error && error.message, writes: figma.writes };
+      };
+
+      it('a --prune push script names the promote plugin, the only plugin that prunes', async () => {
+        for (const chunk of [{ id: 'full push', scope: null }, ...PUSH_CHUNKS]) {
+          const script = buildUseFigmaPushScript(model, { scope: chunk.scope, prune: true });
+          expect(await refusal(script), chunk.id).toEqual({
+            message: `${HIDDEN} ${TO_PROMOTE}`,
+            writes: [],
+          });
+        }
+      });
+
+      it('a push script without prune names the Sync plugin', async () => {
+        for (const chunk of [{ id: 'full push', scope: null }, ...PUSH_CHUNKS]) {
+          const script = buildUseFigmaPushScript(model, { scope: chunk.scope });
+          expect(await refusal(script), chunk.id).toEqual({
+            message: `${HIDDEN} ${TO_SYNC}`,
+            writes: [],
+          });
+        }
+      });
+
+      it('the snapshot script, which never prunes, names the Sync plugin', async () => {
+        expect(await refusal(buildUseFigmaSnapshotScript())).toEqual({
+          message: `${HIDDEN} ${TO_SYNC}`,
+          writes: [],
+        });
+      });
+
+      it('name each plugin exactly as its manifest does', () => {
+        const links = JSON.parse(
+          readFileSync(join(HERE, '..', '..', 'figma', 'links.json'), 'utf8'),
+        );
+        const nameOf = (files) => JSON.parse(files['manifest.json']).name;
+        expect(TO_SYNC).toContain(`"${nameOf(buildSyncPlugin(links))}"`);
+        expect(TO_PROMOTE).toContain(`"${nameOf(buildPromotePlugin(model, { prune: true }))}"`);
+      });
     });
+  });
+});
+
+describe('Sync plugin manifest (figma/push/plugin, hds#411)', () => {
+  const links = JSON.parse(readFileSync(join(HERE, '..', '..', 'figma', 'links.json'), 'utf8'));
+  const manifest = JSON.parse(buildSyncPlugin(links)['manifest.json']);
+
+  it('keeps the id Figma already imported, so no re-import is needed', () => {
+    expect(manifest.id).toBe('hds-tokens-sync-dev');
+    expect(manifest.name).toBe('HDS tokens sync');
+  });
+
+  it('declares Sync, Plan, Check and Mark, and asks Figma for the file key', () => {
+    expect(manifest.menu.filter((m) => m.command)).toEqual([
+      { name: 'Sync', command: 'sync' },
+      { name: 'Plan (dry run)', command: 'plan' },
+      { name: 'Check this file', command: 'check' },
+      { name: 'Mark this file as HDS staging', command: 'mark' },
+    ]);
+    expect(manifest.enablePrivatePluginApi).toBe(true);
+  });
+
+  it('may reach exactly one origin: the Storybook deploy that serves the bundle', () => {
+    expect(manifest.networkAccess.allowedDomains).toEqual([
+      'https://hirobius-design-system.vercel.app',
+    ]);
+    expect(manifest.networkAccess.reasoning).toMatch(/data only/);
+    expect(Object.keys(manifest.networkAccess).sort()).toEqual(['allowedDomains', 'reasoning']);
+  });
+});
+
+describe("promote plugin (figma/push/promote): today's baked plugin, renamed", () => {
+  it('equals buildDevPlugin output except the manifest id and name, with and without prune', () => {
+    for (const options of [{}, { prune: true, renames: { 'a.b': 'a.c' } }]) {
+      const baked = buildDevPlugin(model, options);
+      const promote = buildPromotePlugin(model, options);
+      expect(Object.keys(promote).sort()).toEqual(Object.keys(baked).sort());
+      expect(promote['code.js']).toBe(baked['code.js']);
+      expect(promote['ui.html']).toBe(baked['ui.html']);
+      const { id, name, ...rest } = JSON.parse(promote['manifest.json']);
+      const { id: bakedId, name: bakedName, ...bakedRest } = JSON.parse(baked['manifest.json']);
+      expect({ id, name }).toEqual({
+        id: 'hds-tokens-promote-dev',
+        name: 'HDS tokens promote (baked)',
+      });
+      expect({ id: bakedId, name: bakedName }).not.toEqual({ id, name });
+      expect(rest).toEqual(bakedRest);
+      expect(rest.networkAccess).toEqual({ allowedDomains: ['none'] });
+    }
   });
 });
 
@@ -244,7 +341,7 @@ describe('development plugin', () => {
 
     const pushed = await runPlugin(files, 'push', figma);
     expect(pushed.ok).toBe(true);
-    expect(pushed.result.summary.variables.created).toBe(57);
+    expect(pushed.result.summary.variables.created).toBe(58);
 
     const snap = await runPlugin(files, 'snapshot', figma);
     expect(snap.fileName).toBe('figma-snapshot.json');

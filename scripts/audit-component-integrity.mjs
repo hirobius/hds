@@ -32,6 +32,7 @@
  */
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
+import { spawnSync } from 'child_process';
 import { join, relative, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { isSpecFile } from './lib/gate-scope.mjs';
@@ -238,6 +239,25 @@ async function runCompletenessCheck() {
 
   const components = listHdsComponentFiles();
   const manifest = JSON.parse(readFileSync(MANIFEST_PATH, 'utf8'));
+  // component-api.json is gitignored generated output: a fresh clone, worktree
+  // or CI checkout lacks it. Generate on demand (writes only gitignored files;
+  // unlike `manifest:generate` it never touches the tracked manifest).
+  if (!existsSync(COMPONENT_API_PATH)) {
+    console.error(
+      'component-api.json missing (gitignored, generated) — running generate-component-api…',
+    );
+    const gen = spawnSync(process.execPath, [join(ROOT, 'scripts/generate-component-api.mjs')], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    });
+    if (gen.status !== 0 || !existsSync(COMPONENT_API_PATH)) {
+      console.error(gen.stdout ?? '', gen.stderr ?? '');
+      console.error(
+        '✗ could not generate src/app/data/component-api.json — run `pnpm manifest:generate`.',
+      );
+      process.exit(2);
+    }
+  }
   const api = JSON.parse(readFileSync(COMPONENT_API_PATH, 'utf8'));
   const specs = manifest.componentSpecs || {};
 

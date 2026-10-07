@@ -13,7 +13,7 @@ import {
   Badge,
   Breadcrumb,
   Button,
-  IconButton,
+  Icon,
   Stack,
   Tabs,
   TabsContent,
@@ -47,7 +47,15 @@ const projectRows = [
       'Oct 14',
       '$8,400',
     ],
-    actions: <IconButton icon={Pencil} label="Edit Site rebuild" size="sm" variant="tertiary" />,
+    actions: (
+      <Button
+        iconOnly
+        label="Edit Site rebuild"
+        size="sm"
+        variant="tertiary"
+        iconLeft={<Icon icon={Pencil} size="small" />}
+      />
+    ),
   },
   {
     key: 'brand',
@@ -59,7 +67,15 @@ const projectRows = [
       'Nov 2',
       '$3,200',
     ],
-    actions: <IconButton icon={Pencil} label="Edit Brand refresh" size="sm" variant="tertiary" />,
+    actions: (
+      <Button
+        iconOnly
+        label="Edit Brand refresh"
+        size="sm"
+        variant="tertiary"
+        iconLeft={<Icon icon={Pencil} size="small" />}
+      />
+    ),
   },
   {
     key: 'retainer',
@@ -72,7 +88,13 @@ const projectRows = [
       '$3,500',
     ],
     actions: (
-      <IconButton icon={Pencil} label="Edit Monthly retainer" size="sm" variant="tertiary" />
+      <Button
+        iconOnly
+        label="Edit Monthly retainer"
+        size="sm"
+        variant="tertiary"
+        iconLeft={<Icon icon={Pencil} size="small" />}
+      />
     ),
   },
 ];

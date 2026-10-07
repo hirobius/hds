@@ -22,7 +22,7 @@
  *   zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans).
  * - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its
  *   spacing — never crowds adjacent prose.
- * - Metric: single label-uppercase + big value (h2) + optional sub-line.
+ * - Metric: single label + big value (title) + optional sub-line.
  *   Reserved vertical block. Use multiple side-by-side via flex/grid container.
  * - Body: prose, lists, structured content. NO inline status, progress, or
  *   thin colored bars. Group sections via separate <Card.Body> blocks.
@@ -50,23 +50,21 @@ import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { Text } from './text';
 import { resolvePaddingValue, type PaddingOption } from './surface-padding';
+import { LAYOUT_GAP_NAMES, resolveSpacingValue, type SpacingVocabulary } from './box-sx';
 
 // ── Legacy padding/gap helpers (retained for backward compat) ─────────────────
 
 type GapOption = 'tight' | 'normal' | 'inset' | 'spacious' | keyof typeof hds.space;
 
-const GAP_MAP: Record<string, string> = {
-  tight: 'var(--semantic-space-scale-sm)',
-  normal: 'var(--semantic-space-scale-md)',
-  inset: 'var(--semantic-space-scale-lg)',
-  spacious: 'var(--semantic-space-scale-xl)',
-};
-
-function resolveGap(g: GapOption): string {
-  if (typeof g === 'string' && g in GAP_MAP) return GAP_MAP[g];
-  const fromSpace = (hds.space as Record<string, unknown>)[g as string];
-  return (fromSpace as string) ?? (g as string);
-}
+/**
+ * Card's `gap`: the four layout-gap names, plus the `hds.space` keys. Open,
+ * as it was before hds#404: any other string and any number pass through,
+ * a number as raw px.
+ */
+const CARD_GAP = {
+  names: { ...(hds.space as Record<string, string>), ...LAYOUT_GAP_NAMES },
+  numbers: 'raw',
+} satisfies SpacingVocabulary;
 
 // ── Root ──────────────────────────────────────────────────────────────────────
 
@@ -100,37 +98,52 @@ export type CardTone = 'neutral' | 'danger' | 'success' | 'warning' | 'info';
 // still `default` and tone is still `neutral`) so it never fights `accent`'s
 // border for the border-color utility group.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-accent/feedback border colors have no dedicated Tailwind border-color utility name; var()-based so still token-driven
-const cardVariants = /* @__PURE__ */ cva(
-  'flex h-full flex-col rounded-lg bg-card text-card-foreground',
-  {
-    variants: {
-      variant: {
-        default: 'border border-transparent', // 1px transparent preserves the layout box
-        accent: 'border-2 border-[var(--semantic-color-border-accent)]',
-      },
-      tone: {
-        neutral: '',
-        danger: '!border !border-[var(--semantic-color-feedback-error)]',
-        success: '!border !border-[var(--semantic-color-feedback-success)]',
-        warning: '!border !border-[var(--semantic-color-feedback-warning)]',
-        info: '!border !border-[var(--semantic-color-feedback-info)]',
-      },
-      bordered: {
-        true: '',
-        false: '',
-      },
+const cardVariants = /* @__PURE__ */ cva('flex flex-col rounded-lg bg-card text-card-foreground', {
+  variants: {
+    variant: {
+      default: 'border border-transparent', // 1px transparent preserves the layout box
+      accent: 'border-2 border-[var(--semantic-color-border-accent)]',
     },
-    compoundVariants: [
-      {
-        variant: 'default',
-        tone: 'neutral',
-        bordered: true,
-        className: 'border-[var(--semantic-color-border-default)]',
-      },
-    ],
-    defaultVariants: { variant: 'default', tone: 'neutral', bordered: false },
+    tone: {
+      neutral: '',
+      danger: '!border !border-[var(--semantic-color-feedback-error)]',
+      success: '!border !border-[var(--semantic-color-feedback-success)]',
+      warning: '!border !border-[var(--semantic-color-feedback-warning)]',
+      info: '!border !border-[var(--semantic-color-feedback-info)]',
+    },
+    bordered: {
+      true: '',
+      false: '',
+    },
   },
-);
+  compoundVariants: [
+    {
+      variant: 'default',
+      tone: 'neutral',
+      bordered: true,
+      className: 'border-[var(--semantic-color-border-default)]',
+    },
+  ],
+  defaultVariants: { variant: 'default', tone: 'neutral', bordered: false },
+});
+
+// `selectable` (hds#393): selection is a 2px inset ring, not a fill or border
+// change (cards are never tinted, and the border belongs to tone/variant), so
+// it composes with every tone and variant. Inset keeps it off hds-focus's
+// outline, which sits 2px outside the edge: selected, focused and both all look
+// different. No transition: the ring snaps, so reduced motion needs no override.
+const SELECTABLE_CARD =
+  'cursor-pointer hds-focus data-[selected=true]:ring-2 data-[selected=true]:ring-inset data-[selected=true]:ring-ring';
+
+// A click on a control inside a selectable card belongs to that control, the
+// same rule as Space typed into a nested field.
+const NESTED_CONTROL =
+  'a[href],button,input,select,textarea,label,summary,[contenteditable="true"],[tabindex],[role="button"],[role="link"],[role="checkbox"],[role="switch"],[role="option"],[role="menuitem"],[role="tab"]';
+
+function fromNestedControl(event: React.SyntheticEvent<HTMLElement>): boolean {
+  const control = (event.target as Element).closest?.(NESTED_CONTROL);
+  return !!control && control !== event.currentTarget && event.currentTarget.contains(control);
+}
 
 /** @public */
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -155,6 +168,12 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
    *  legibility. Default false — repeated cards in grids should stay
    *  borderless and rely on whitespace, rails, or section dividers. */
   bordered?: boolean;
+  /** Make the card one checkbox-like option (role="checkbox"): click or Space toggles it, Enter does not. A click on a control inside it is left to that control. */
+  selectable?: boolean;
+  /** Whether a selectable card is selected. Controlled: pair with onSelectedChange. */
+  selected?: boolean;
+  /** Called with the next selected state when a selectable card is toggled. */
+  onSelectedChange?: (selected: boolean) => void;
 }
 
 interface CardComponent extends React.ForwardRefExoticComponent<
@@ -180,6 +199,9 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
     variant = 'default',
     tone = 'neutral',
     bordered = false,
+    selectable = false,
+    selected = false,
+    onSelectedChange,
     children,
     ...rest
   },
@@ -188,7 +210,29 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
   const Comp = (as ?? 'div') as React.ElementType;
   const resolvedPadding = noPadding ? 'none' : padding;
   const paddingValue = resolvePaddingValue(resolvedPadding);
-  const gapValue = resolvedPadding === 'none' ? '0' : resolveGap(gap);
+  const gapValue = resolvedPadding === 'none' ? '0' : resolveSpacingValue(gap, CARD_GAP);
+  // Controlled only, like the other selection controls: the card reports the
+  // next state and the page decides it.
+  const selectableProps = selectable
+    ? {
+        role: 'checkbox',
+        'aria-checked': selected,
+        tabIndex: 0,
+        'data-selected': selected ? 'true' : 'false',
+        onClick: (event: React.MouseEvent<HTMLDivElement>) => {
+          rest.onClick?.(event);
+          if (!event.defaultPrevented && !fromNestedControl(event)) onSelectedChange?.(!selected);
+        },
+        onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
+          rest.onKeyDown?.(event);
+          // Only the card's own Space: not one typed into something inside it.
+          if (event.defaultPrevented || event.key !== ' ' || event.target !== event.currentTarget)
+            return;
+          event.preventDefault(); // Space would scroll the page
+          onSelectedChange?.(!selected);
+        },
+      }
+    : {};
 
   return (
     <Comp
@@ -197,7 +241,11 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
       data-variant={variant}
       data-tone={tone}
       data-bordered={bordered ? 'true' : 'false'}
-      className={cn(cardVariants({ variant, tone, bordered, className }))}
+      className={cn(
+        cardVariants({ variant, tone, bordered }),
+        selectable && SELECTABLE_CARD,
+        className,
+      )}
       // inline-ok: token-driven padding/gap legacy contract (not a variant-contract axis)
       style={{
         padding: paddingValue,
@@ -205,6 +253,7 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
         ...style,
       }}
       {...rest}
+      {...selectableProps}
     >
       {children}
     </Comp>
@@ -255,7 +304,7 @@ const CardTitle = /* @__PURE__ */ React.forwardRef<
   React.HTMLAttributes<HTMLHeadingElement>
 >(function CardTitle({ className, children, ...rest }, ref) {
   return (
-    <Text ref={ref} variant="heading3" className={className} {...rest}>
+    <Text ref={ref} as="h3" variant="title" className={className} {...rest}>
       {children}
     </Text>
   );
@@ -405,9 +454,10 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
+ * Card.Metric — one label, a large value and an optional sub-line inside a Card.
  * @usage Show one headline figure (a KPI, a count, a total) with its label inside a Card.
  * @whenNot A metric outside a Card, or several figures that share one label.
+ * @useInstead MetricTiles a row of headline numbers with no enclosing Card
  */
 const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricProps>(
   function CardMetric({ className, label, value, sub, tone = 'neutral', style, ...props }, ref) {
@@ -415,7 +465,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
       <div ref={ref} className={cn('flex flex-col px-6', className)} style={style} {...props}>
         <p
           style={{
-            ...hds.typeStyles.eyebrow,
+            ...hds.typeStyles.caption,
             margin: '0 0 6px',
             color: 'var(--semantic-color-content-secondary)',
           }}
@@ -425,7 +475,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
         <p
           // inline-ok: token-driven value, slot-internal
           style={{
-            ...hds.typeStyles.h2,
+            ...hds.typeStyles.title,
             margin: 0,
             color: METRIC_TONE_VALUE_COLOR[tone],
           }}
@@ -455,7 +505,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
  * Tagged per-export, not on the file block: this module exports eight
  * components and a file-level @figma would hand all eight this one node.
  * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11
- * @usage Group related content on a raised surface with header, body, footer and metric slots.
+ * @usage Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.
  * @whenNot A bare padded background with no slot anatomy, or a single headline figure.
  * @useInstead Surface a padded background without slot anatomy
  * @useInstead Card.Metric a single headline figure
@@ -474,6 +524,3 @@ export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
 });
 
 export { CardHeader, CardTitle, CardDescription, CardBody, CardFooter, CardProgress, CardMetric };
-
-/** @internal — CVA variant helper; compose via Card props instead. */
-export { cardVariants };

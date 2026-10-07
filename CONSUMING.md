@@ -29,6 +29,7 @@ version keeps the `LucideIcon` type identical).
 ```tsx
 import { Button, Card, Dialog } from '@hirobius/design-system';
 import '@hirobius/design-system/tokens.css'; // required — design tokens as CSS vars
+import '@hirobius/design-system/fonts.css'; // optional — the HDS brand fonts (Satoshi, Geist Mono)
 
 export function Example() {
   return (
@@ -41,19 +42,20 @@ export function Example() {
 
 Available subpaths:
 
-| Import                               | What                                                                                                                                                                                                                                                                                                                   |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`            | All public components: the 42-component core set plus the pattern modules and folds kept until 1.0 ([README → What belongs in the system](README.md#what-belongs-in-the-system))                                                                                                                                       |
-| `@hirobius/design-system/tokens.css` | Token CSS variables (import once at app root)                                                                                                                                                                                                                                                                          |
-| `@hirobius/design-system/tokens`     | Token values as TS constants                                                                                                                                                                                                                                                                                           |
-| `@hirobius/design-system/cn`         | `cn()` class-merge helper                                                                                                                                                                                                                                                                                              |
-| `@hirobius/design-system/manifest`   | The HDS manifest JSON                                                                                                                                                                                                                                                                                                  |
-| `@hirobius/design-system/contexts`   | Theme / language / tenant / font providers                                                                                                                                                                                                                                                                             |
-| `@hirobius/design-system/brand`      | Palette → HDS-semantic overlay bridge (static / SSR / Astro; see [`docs/CONSUMING.md` §12](docs/CONSUMING.md#12-static-astro-sites--the-brand-overlay-bridge))                                                                                                                                                         |
-| `@hirobius/design-system/scroll`     | Opt-in scroll-motion primitives — `SmoothScroll` (Lenis), `useScrollProgress` (Motion). Requires the optional peer `lenis`. See [`docs/CONSUMING.md` §13](docs/CONSUMING.md#13-scroll-motion-the-scroll-subpath)                                                                                                       |
-| `@hirobius/design-system/patterns`   | The 27 pattern modules: the hds#254 pattern tier plus the screen patterns (nav shells, feeds, rails, pickers, screen sections). 21 are also still re-exported from the root (`@deprecated`, removed at 1.0; see [MIGRATIONS.md](MIGRATIONS.md#pattern-components-move-to-patterns)) — prefer this subpath in new code. |
-| `@hirobius/design-system/icons`      | Curated Lucide icon set for `IconButton` / `Icon` (`Ellipsis`, `Pencil`, `Trash2`, `X`, …). Names listed in the manifest `iconSet`.                                                                                                                                                                                    |
-| `@hirobius/design-system/static.css` | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React. See [`docs/CONSUMING.md` §14](docs/CONSUMING.md#14-css-only-static-primitives--badgecardalertdividertag-with-no-react)                                                                            |
+| Import                               | What                                                                                                                                                                                                                                        |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@hirobius/design-system`            | The 43-component core set ([README → What belongs in the system](README.md#what-belongs-in-the-system)), the rest of the allow-list and the templates; the `pattern` tier is only in `/patterns`                                            |
+| `@hirobius/design-system/fonts.css`  | Optional brand fonts (Satoshi, Geist Mono); woff2 files ship in the package, relative URLs, `font-display: swap`                                                                                                                            |
+| `@hirobius/design-system/tokens.css` | Token CSS variables (import once at app root)                                                                                                                                                                                               |
+| `@hirobius/design-system/tokens`     | Token values as TS constants                                                                                                                                                                                                                |
+| `@hirobius/design-system/cn`         | `cn()` class-merge helper                                                                                                                                                                                                                   |
+| `@hirobius/design-system/manifest`   | The HDS manifest JSON                                                                                                                                                                                                                       |
+| `@hirobius/design-system/contexts`   | Theme / language / tenant / font providers                                                                                                                                                                                                  |
+| `@hirobius/design-system/brand`      | Palette → HDS-semantic overlay bridge (static / SSR / Astro; see [`docs/CONSUMING.md` §12](docs/CONSUMING.md#12-static-astro-sites--the-brand-overlay-bridge))                                                                              |
+| `@hirobius/design-system/scroll`     | Opt-in scroll-motion primitives — `SmoothScroll` (Lenis), `useScrollProgress` (Motion). Requires the optional peer `lenis`. See [`docs/CONSUMING.md` §13](docs/CONSUMING.md#13-scroll-motion-the-scroll-subpath)                            |
+| `@hirobius/design-system/patterns`   | The 12 pattern modules: the hds#254 `pattern` tier (page shells, forms, code blocks, page sections). The only entry that exports them: 0.20.0 removed their root re-exports (the `hds-patterns-subpath` codemod, see MIGRATIONS.md).        |
+| `@hirobius/design-system/icons`      | Curated Lucide icon set for `Icon`, and so for `Button iconOnly` (`Ellipsis`, `Pencil`, `Trash2`, `X`, …). Names listed in the manifest `iconSet`.                                                                                          |
+| `@hirobius/design-system/static.css` | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React. See [`docs/CONSUMING.md` §14](docs/CONSUMING.md#14-css-only-static-primitives--badgecardalertdividertag-with-no-react) |
 
 The package is **ESM-only**, so consume it with a modern bundler (Vite, Next.js,
 Remix, Webpack 5+) or a Node ≥ 20 ESM runtime. Built `.d.ts` declarations ship in
@@ -113,8 +115,11 @@ Releases follow [semver](https://semver.org/) and are tracked in
 pnpm update @hirobius/design-system   # latest within your version range
 ```
 
-For a major (breaking) release, bump the version explicitly and review the
-CHANGELOG entry. Token or export changes are released as majors.
+For a breaking release, bump the version explicitly and review the CHANGELOG
+entry. Before 1.0 a breaking change (a removed export or token) ships in a 0.x
+minor, which a caret range such as `^0.19` never picks up; from 1.0 on it ships
+in a major. Each removal is listed in [MIGRATIONS.md](MIGRATIONS.md) with its
+replacement and, where one applies, a codemod (ADR-014).
 
 ---
 
@@ -122,7 +127,7 @@ CHANGELOG entry. Token or export changes are released as majors.
 
 ```bash
 pnpm changeset add        # record a patch/minor/major bump + notes
-pnpm changeset:version    # apply bumps + regenerate CHANGELOG.md
+pnpm changeset:version    # apply bumps + regenerate CHANGELOG.md + refresh docs/api/api-baseline.json
 # commit + push to main → the Release workflow publishes to public npm
 ```
 

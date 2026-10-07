@@ -2,10 +2,10 @@
  * DataTableSection - a titled table with a toolbar, row actions and an empty state.
  * @category Display
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-268
  */
 
 import * as React from 'react';
-import { Cluster } from './cluster';
 import { EmptyState } from './empty-state';
 import { Stack } from './stack';
 import { Table, type TableColumn, type TableRow } from './table';
@@ -18,7 +18,7 @@ export interface DataTableSectionRow {
   /** One node per column, in column order. */
   cells: React.ReactNode[];
   /**
-   * Row actions (a `Button` group, a `Menu` trigger, `IconButton`s). Rendered in a
+   * Row actions (a `Button` group, a `Menu` trigger, icon-only `Button`s). Rendered in a
    * trailing column; the pattern bakes in no icon.
    */
   actions?: React.ReactNode;
@@ -94,9 +94,9 @@ export const DataTableSection = /* @__PURE__ */ React.forwardRef<
               slot: 'action' as const,
               align: 'right' as const,
               content: (
-                <Cluster gap="tight" align="center" justify="end">
+                <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
                   {row.actions}
-                </Cluster>
+                </Stack>
               ),
             },
           ]
@@ -109,18 +109,18 @@ export const DataTableSection = /* @__PURE__ */ React.forwardRef<
   return (
     <section ref={ref} data-hds-component="DataTableSection" aria-labelledby={headingId} {...props}>
       <Stack gap="tight">
-        <Cluster gap="normal" align="center" justify="space-between">
-          <Text id={headingId} as={`h${level}`} variant="heading3">
+        <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
+          <Text id={headingId} as={`h${level}`} variant="title">
             {title}
           </Text>
           {toolbar ? (
             <div data-slot="toolbar" className="ml-auto">
-              <Cluster gap="tight" align="center" justify="end">
+              <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
                 {toolbar}
-              </Cluster>
+              </Stack>
             </div>
           ) : null}
-        </Cluster>
+        </Stack>
         {rows.length === 0 ? (
           <EmptyState title={emptyTitle} description={emptyDescription} />
         ) : (

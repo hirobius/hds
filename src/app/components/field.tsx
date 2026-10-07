@@ -16,7 +16,7 @@ import { cn } from '../../lib/utils';
 // Non-interactive — no hover/active/focus states. Tone drives only the value
 // color; the label stays muted regardless. Renamed the pre-contract 'default'
 // value to the fixed vocabulary's 'neutral' (#60 — check-prop-vocabulary rule C).
-const fieldValueVariants = /* @__PURE__ */ cva('text-sm', {
+const fieldValueVariants = /* @__PURE__ */ cva('hds-type-ui', {
   variants: {
     tone: {
       neutral: 'text-foreground',
@@ -26,7 +26,7 @@ const fieldValueVariants = /* @__PURE__ */ cva('text-sm', {
       info: 'text-feedback-info',
     },
     mono: {
-      true: 'font-mono text-xs',
+      true: 'hds-type-mono',
       false: '',
     },
   },
@@ -60,13 +60,10 @@ export const Field = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FieldProps
       className={cn('flex flex-col gap-1', className)}
       {...props}
     >
-      <span className="text-xs uppercase tracking-caps text-muted-foreground">{label}</span>
+      <span className="hds-type-caption text-muted-foreground">{label}</span>
       {body !== undefined && body !== null && (
         <span className={fieldValueVariants({ tone, mono })}>{body}</span>
       )}
     </div>
   );
 });
-
-/** @internal — CVA variant helper; compose via Field props instead. */
-export { fieldValueVariants };

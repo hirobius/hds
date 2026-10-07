@@ -242,6 +242,28 @@ function validateContract(component, spec, violations) {
   }
 }
 
+// hds#390: deprecation metadata parsed from the @deprecated / @removeIn /
+// @useInstead JSDoc tags. removeIn and useInstead only mean something on a
+// deprecated spec.
+const SEMVER = /^\d+\.\d+\.\d+$/;
+
+function validateDeprecation(component, spec, violations) {
+  if ('deprecated' in spec && (typeof spec.deprecated !== 'string' || !spec.deprecated)) {
+    pushViolation(violations, component, 'deprecated', 'must be a non-empty string');
+  }
+  for (const field of ['removeIn', 'useInstead']) {
+    if (field in spec && !spec.deprecated) {
+      pushViolation(violations, component, field, 'is only valid on a deprecated spec');
+    }
+  }
+  if ('removeIn' in spec && (typeof spec.removeIn !== 'string' || !SEMVER.test(spec.removeIn))) {
+    pushViolation(violations, component, 'removeIn', 'must be a semver string (X.Y.Z)');
+  }
+  if ('useInstead' in spec && (typeof spec.useInstead !== 'string' || !spec.useInstead)) {
+    pushViolation(violations, component, 'useInstead', 'must be a non-empty string');
+  }
+}
+
 function validateComponent(component, spec, schemaRequired, violations) {
   if (!isPlainObject(spec)) {
     pushViolation(violations, component, 'componentSpecs', 'must be an object');
@@ -293,6 +315,7 @@ function validateComponent(component, spec, schemaRequired, violations) {
   }
 
   validateContract(component, spec, violations);
+  validateDeprecation(component, spec, violations);
 
   // hds#374: written only on the core set, and only as `true`; non-core specs omit it.
   if ('core' in spec && spec.core !== true) {

@@ -70,12 +70,24 @@ const COMBINATION_CAP = 5000;
 
 // ── Inputs ───────────────────────────────────────────────────────────────────
 
-/** Barrel modules (src/index.ts `export * from './app/components/x'`) whose source calls cva(). */
+/**
+ * Public component modules whose source calls cva(): every
+ * `export * from './app/components/x'` in src/index.ts or src/patterns.ts. The
+ * `/patterns` entry counts because 0.20.0 removed its modules' root re-exports
+ * (hds#389) without making them any less public.
+ */
 export function publicCvaModules(root = DEFAULT_ROOT) {
-  const barrel = fs.readFileSync(path.join(root, 'src', 'index.ts'), 'utf8');
-  const modules = [...barrel.matchAll(/export \* from '\.\/app\/components\/([^']+)'/g)].map(
-    (m) => m[1],
-  );
+  const entries = ['index.ts', 'patterns.ts']
+    .map((file) => path.join(root, 'src', file))
+    .filter((file) => fs.existsSync(file))
+    .map((file) => fs.readFileSync(file, 'utf8'));
+  const modules = [
+    ...new Set(
+      entries.flatMap((source) =>
+        [...source.matchAll(/export \* from '\.\/app\/components\/([^']+)'/g)].map((m) => m[1]),
+      ),
+    ),
+  ];
   const out = [];
   for (const mod of modules) {
     const file = ['tsx', 'ts']

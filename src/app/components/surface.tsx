@@ -40,7 +40,7 @@ import type { PaddingOption } from './surface-padding';
 // was a silent no-op.)
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/padding/elevation; var()-based, no Tailwind-theme utility exists
 const surfaceVariants = /* @__PURE__ */ cva(
-  'box-border h-full border-none rounded-lg bg-[color:var(--semantic-color-surface-raised)] text-[color:var(--semantic-color-content-primary)]',
+  'box-border border-none rounded-lg bg-[color:var(--semantic-color-surface-raised)] text-[color:var(--semantic-color-content-primary)]',
   {
     variants: {
       padding: {
@@ -127,6 +127,3 @@ export const Surface = /* @__PURE__ */ React.forwardRef<HTMLDivElement, SurfaceP
     );
   },
 );
-
-/** @internal — CVA variant helper; compose via Surface props instead. */
-export { surfaceVariants };

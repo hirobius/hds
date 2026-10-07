@@ -18,18 +18,12 @@ import type { StorybookConfig } from '@storybook/react-vite';
 
 const STORIES_DIR = join(dirname(fileURLToPath(import.meta.url)), '../src/stories');
 
-const INTERNAL_STORY_FILES = [
-  'cinematic-link',
-  'component-instance-matrix',
-  'foundation-swatch',
-  'history-card',
-  'sketch',
-  'token',
-];
+// Empty since 0.20.0: HistoryCard, the last internal, was deleted (hds#394).
+const INTERNAL_STORY_FILES = [] as string[];
 
 const config: StorybookConfig = {
-  // Internals (#308): six components are engineering scaffolding, not public
-  // API. Their metas carry `tags: ['!dev']`, which hides them in the dev
+  // Internals (#308): engineering scaffolding, not public API (none left: the
+  // five hds#232 ones went in hds#389 and HistoryCard in hds#394, 0.20.0). Their metas carry `tags: ['!dev']`, which hides them in the dev
   // sidebar; a static build still lists tagged entries in index.json, so the
   // PUBLISHED Storybook also leaves those files out. That is opt-in
   // (HDS_STORYBOOK_PUBLIC=1, set only in vercel.json) because the docs-site and
