@@ -14,7 +14,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Full-viewport governed recovery surface for routed application errors. Animates in on mount; provides a Back button that calls window.history.back(). For a 404 route, pass displayText="404" and message="Page not found" (the NotFound story).',
+          'Governed recovery surface for routed application errors. It fits its container; pass `fullPage` to fill the viewport and centre it, as a routed error or 404 page does. Animates in on mount; provides a Back button that calls window.history.back(). For a 404 route, pass displayText="404" and message="Page not found" with `fullPage` (the NotFound story).',
       },
     },
   },
@@ -34,6 +34,7 @@ export const NotFound: Story = {
   args: {
     displayText: '404',
     message: 'Page not found',
+    fullPage: true,
   },
   parameters: {
     docs: {

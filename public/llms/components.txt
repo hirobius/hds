@@ -139,7 +139,7 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
   - metadata: ReactNode
 
 ### CardMetric
-Card.Metric — one uppercase label, a large value and an optional sub-line inside a Card.
+Card.Metric — one label, a large value and an optional sub-line inside a Card.
   - label: ReactNode
   - sub: ReactNode
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -339,6 +339,7 @@ Presentational label + control slot + helper/error markup. Renders `children` ve
 
 ### Grid
 Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via …
+  - align: "center" | "end" | "start" | "stretch" = start
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - className: string
@@ -571,7 +572,7 @@ Stack — one-dimensional layout primitive.
   - wrap: FlexWrap
 
 ### Stat
-Headline metric — large value, uppercase caption label, optional sub-line.
+Headline metric — large value, caption label, optional sub-line.
   - label: string
   - sub: ReactNode
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
@@ -619,7 +620,7 @@ Table - structured data table primitive for documentation and compact UI matrice
   - columns: TableColumn[]
   - density: 'compact' | 'comfortable'
   - description: ReactNode
-  - flush: boolean = false
+  - flush: boolean = true
   - labelledBy: string
   - minWidth: string | number
   - rows: TableRow[]
