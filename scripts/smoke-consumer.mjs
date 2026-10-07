@@ -27,6 +27,8 @@
  *   './cn'         → cn() class-merge helper
  *   './manifest'   → hds-manifest.json as ESM (default export)
  *   './contexts'   → React context providers (ThemeProvider, …)
+ *   './eslint-plugin' → the consumer ESLint plugin (configs.recommended)
+ * plus AGENTS.md and the hds-mcp bin (section 3f).
  *
  * Any unresolved subpath, missing symbol, or unresolvable bare import inside the
  * bundle (e.g. a phantom dependency that isn't declared) FAILS the run. This is
@@ -39,8 +41,8 @@
  * failure for debugging.
  */
 
-import { execFileSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readdirSync } from 'node:fs';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { existsSync, mkdtempSync, mkdirSync, writeFileSync, rmSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -142,7 +144,7 @@ const failures = [];
 
 // Subpaths that must RESOLVE against the exports map (incl. the CSS asset,
 // which Node cannot import but must still resolve to a real file).
-const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui', './icons']
+const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui', './icons', './eslint-plugin']
   .map((s) => (s === '.' ? PKG : PKG + s.slice(1)));
 
 for (const spec of resolvable) {
@@ -166,6 +168,10 @@ const importChecks = [
   [PKG + '/manifest', (m) => assert.ok(m.default && typeof m.default === 'object', 'manifest default missing')],
   [PKG + '/icons', (m) => assert.equal(typeof m.Ellipsis, 'object', 'Ellipsis icon missing')],
   [PKG + '/contexts', (m) => assert.equal(typeof m.ThemeProvider, 'function', 'ThemeProvider missing')],
+  [PKG + '/eslint-plugin', (m) => {
+    assert.ok(Array.isArray(m.default?.configs?.recommended), 'eslint-plugin recommended config missing');
+    assert.equal(typeof m.default.rules['no-raw-controls'], 'object', 'no-raw-controls rule missing');
+  }],
   [PKG + '/mui', (m) => {
     assert.equal(typeof m.hdsMuiThemeOptions, 'function', 'hdsMuiThemeOptions missing');
     const opts = m.hdsMuiThemeOptions();
@@ -471,6 +477,66 @@ if (ok) {
   } catch {
     console.error('  build FAIL consumer vite build errored');
     ok = false;
+  }
+}
+
+// ── 3f. Agent tooling — AGENTS.md and the hds-mcp bin, as installed ─────────
+// The after arm of eval/consistency/CONDITIONS.md reads these from node_modules,
+// so check them there: the file is present, the bin is linked, and the server
+// answers initialize and one tools/call over stdio from the installed copy.
+if (ok) {
+  log('probing agent tooling (AGENTS.md, hds-mcp over stdio)…');
+  const pkgDir = join(app, 'node_modules', '@hirobius', 'design-system');
+  const binDir = join(app, 'node_modules', '.bin');
+  const problems = [];
+  if (!existsSync(join(pkgDir, 'AGENTS.md'))) problems.push('AGENTS.md missing from the package');
+  if (!existsSync(join(binDir, 'hds-mcp')) && !existsSync(join(binDir, 'hds-mcp.cmd'))) {
+    problems.push('hds-mcp bin not linked into node_modules/.bin');
+  }
+  const input =
+    [
+      {
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'initialize',
+        params: {
+          protocolVersion: '2025-06-18',
+          capabilities: {},
+          clientInfo: { name: 'smoke', version: '0' },
+        },
+      },
+      {
+        jsonrpc: '2.0',
+        id: 2,
+        method: 'tools/call',
+        params: { name: 'get_component', arguments: { name: 'MetricTiles' } },
+      },
+    ]
+      .map((m) => JSON.stringify(m))
+      .join('\n') + '\n';
+  const res = spawnSync(process.execPath, [join(pkgDir, 'mcp', 'hds-mcp.mjs')], {
+    input,
+    encoding: 'utf8',
+    timeout: 15_000,
+  });
+  try {
+    const [init, call] = res.stdout
+      .trim()
+      .split('\n')
+      .map((l) => JSON.parse(l));
+    if (init.result?.serverInfo?.name !== 'hds')
+      problems.push('initialize did not return serverInfo.name "hds"');
+    const data = JSON.parse(call.result.content[0].text);
+    if (data.import !== `${PKG}/patterns`)
+      problems.push(`get_component MetricTiles import was ${data.import}`);
+  } catch (err) {
+    problems.push(`hds-mcp did not answer (${err.message}); stderr: ${res.stderr}`);
+  }
+  if (problems.length) {
+    for (const p of problems) console.error(`  agents FAIL ${p}`);
+    ok = false;
+  } else {
+    console.log('  agents ok   AGENTS.md shipped, hds-mcp linked and answering over stdio');
   }
 }
 

@@ -25,8 +25,9 @@ export interface StatusTileProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * — every tile should look the same so feedback signals stay reserved for
  * genuinely interrupting states.
  * @usage Show a titled status block with optional notes and a trailing badge or affordance.
- * @whenNot A single headline figure, or a row inside a list.
- * @useInstead Card.Metric a headline figure (hds#254 folds StatusTile into the Card slot)
+ * @whenNot A headline number (never a value), or a row inside a list.
+ * @useInstead MetricTiles a row of headline numbers
+ * @useInstead Card.Metric a headline figure inside a Card (hds#254 folds StatusTile into the Card slot)
  * @useInstead StatusListItem a status row inside a list
  */
 export const StatusTile = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatusTileProps>(

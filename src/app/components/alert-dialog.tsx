@@ -170,6 +170,10 @@ interface AlertDialogComponent extends React.FC<
 /**
  * AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or
  * uncontrolled with `defaultOpen`.
+ * @usage Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.
+ * @whenNot A modal that collects input or shows content, or a confirmation after the action is done.
+ * @useInstead Dialog a modal with a form or other content
+ * @useInstead ToastProvider a brief confirmation after the action
  * @public
  */
 export const AlertDialog: AlertDialogComponent = /* @__PURE__ */ Object.assign(AlertDialogRoot, {

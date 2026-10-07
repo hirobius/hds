@@ -16,6 +16,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { collectPublicApi, diffSurfaces } from '../lib/check-public-api.mjs';
+import { TOOLING_EXPORTS } from '../lib/package-entries.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -195,7 +196,9 @@ describe('collectPublicApi walks every package.json#exports JS entry (hds#390)',
     }
     const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
     const jsSubpaths = Object.entries(pkg.exports)
-      .filter(([key, value]) => key !== '.' && typeof value === 'object')
+      .filter(
+        ([key, value]) => key !== '.' && typeof value === 'object' && !TOOLING_EXPORTS.has(key),
+      )
       .map(([key]) => `@subpath/${key.slice(2)}`);
     for (const key of jsSubpaths) expect(Object.keys(surface.modules)).toContain(key);
   }, 60_000);

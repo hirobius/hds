@@ -9,6 +9,13 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
+ * Tooling entries: shipped .mjs with hand-written types, not built from src/,
+ * so they are not part of the TypeScript API surface these gates read. Each has
+ * its own tests (./eslint-plugin: scripts/__tests__/eslint-plugin-subpath.test.mjs).
+ */
+export const TOOLING_EXPORTS = new Set(['./eslint-plugin']);
+
+/**
  * Each JS entry of package.json#exports, mapped from its `types` path
  * (`./dist/types/<path>.d.ts`, emitted by build:types from source) back to
  * the source file. Stylesheets and `./package.json` are strings, not
@@ -21,7 +28,7 @@ export function readJsExportEntries(root) {
   const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
   const entries = [];
   for (const [key, value] of Object.entries(pkg.exports ?? {})) {
-    if (!value || typeof value !== 'object') continue;
+    if (!value || typeof value !== 'object' || TOOLING_EXPORTS.has(key)) continue;
     const types = value.types;
     if (typeof types !== 'string' || !/^\.\/dist\/types\/.+\.d\.ts$/.test(types)) {
       throw new Error(

@@ -1,28 +1,26 @@
 # @hirobius/eslint-plugin-hds
 
 Consumer-facing ESLint plugin for apps built on `@hirobius/design-system`.
-Flags raw hex/px layout and color values that bypass HDS tokens — the same
-discipline `scripts/check-hardcoded-colors.mjs`, `scripts/check-hardcoded-spacing.mjs`,
-and `scripts/check-layout-discipline.mjs` enforce inside this repo, shipped as
-an installable plugin for downstream consumer apps (this repo's own source
-is governed by those scripts directly, not by this plugin).
+Flags raw hex/px layout and color values that bypass HDS tokens, and raw HTML
+form controls that an HDS component replaces — the same discipline
+`scripts/check-hardcoded-colors.mjs`, `scripts/check-hardcoded-spacing.mjs`,
+and `scripts/check-layout-discipline.mjs` enforce inside this repo, shipped for
+downstream consumer apps (this repo's own source is governed by those scripts
+directly, not by this plugin).
 
 Flat config only (ESLint 9+).
 
-## Packaging note
-
-This package lives at `scripts/eslint-plugin-hds/` rather than a top-level
-workspace package because the design-system repo is not currently a pnpm
-workspace (no `pnpm-workspace.yaml`). Promoting it to a real publishable
-package (`packages/eslint-plugin-hds/` with its own `pnpm-workspace.yaml`
-entry and CI publish step) is a follow-up — tracked as a scope note on #98,
-not done here to avoid an unrelated workspace-wide config change riding
-along with a guardrail/lint-rules PR. Until then, consume it via git/path
-dependency (see below) or copy `index.mjs` + `rules/` into your own repo.
-
 ## Install
 
-Not yet published to npm (see packaging note above). Point at the repo directly:
+It ships inside `@hirobius/design-system` as the `./eslint-plugin` subpath, so
+an app with the design system installed needs only `eslint`:
+
+```js
+import hds from '@hirobius/design-system/eslint-plugin';
+```
+
+Without the design system (a lint-only repo), install it from git and import
+it as `@hirobius/eslint-plugin-hds`:
 
 ```bash
 pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"
@@ -34,7 +32,7 @@ pnpm add -D eslint
 
 ```js
 // eslint.config.mjs
-import hds from '@hirobius/eslint-plugin-hds';
+import hds from '@hirobius/design-system/eslint-plugin';
 
 export default [
   {
@@ -50,13 +48,14 @@ export default [
 Or pick rules individually:
 
 ```js
-import hds from '@hirobius/eslint-plugin-hds';
+import hds from '@hirobius/design-system/eslint-plugin';
 
 export default [
   {
     files: ['**/*.{ts,tsx,jsx}'],
     plugins: { hds },
     rules: {
+      'hds/no-raw-controls': 'error',
       'hds/no-raw-hex': 'error',
       'hds/no-raw-px-spacing': 'error',
       'hds/sx-token-first': 'error',
@@ -70,10 +69,27 @@ export default [
 
 | Rule                                                                 | Default | What it catches                                                                                       |
 | -------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------- |
+| [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.          |
 | [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                   |
 | [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.        |
 | [`hds/prefer-hds-layout-primitive`](#hdsprefer-hds-layout-primitive) | warn    | Ad-hoc `display: 'flex' \| 'grid'` in `style={{…}}` where a named primitive (Stack/Grid) likely fits. |
 | [`hds/sx-token-first`](#hdssx-token-first)                           | error   | Raw hex/px string values inside a `Box` `sx={{…}}` prop — `sx` must resolve through token keys.       |
+
+### `hds/no-raw-controls`
+
+```tsx
+// ❌ error — use Button / Input / Select / Textarea / Form
+<form onSubmit={save}><textarea /><button>Save</button></form>
+
+// ✅ ok — Form and FormActions import from @hirobius/design-system/patterns
+<Form onSubmit={save}>
+  <Textarea label="Notes" />
+  <FormActions primary={<Button type="submit">Save</Button>} />
+</Form>
+```
+
+Only lowercase intrinsic JSX names are checked; `<Button>` and
+`<AlertDialog.Action>` are components.
 
 ### `hds/no-raw-hex`
 
@@ -170,12 +186,13 @@ walked recursively.
 ## Testing
 
 ```bash
-node --test scripts/eslint-plugin-hds/__tests__
+pnpm exec vitest run scripts/eslint-plugin-hds
 ```
 
-Uses ESLint's built-in `RuleTester` (from the `eslint` peer dependency) under
-Node's built-in test runner — no extra devDependencies. Run from the repo
-root so `RuleTester` resolves against the root `node_modules/eslint`.
+`pnpm test` runs these suites. They use ESLint's built-in `RuleTester`, wired to
+vitest's `describe`/`it` in `__tests__/test-helpers.mjs`;
+`scripts/__tests__/eslint-plugin-subpath.test.mjs` lints through the package's
+`./eslint-plugin` export with the `recommended` config.
 
 ## Design notes
 

@@ -55,6 +55,64 @@ inputs the spec allows (`specs/client-detail.md`, "Allowed inputs"):
 2. **By hand.** Build the screen in the spec three times and drop each under
    `runs/<date>/<app-id>/src/`.
 
+### The after arm
+
+`CONDITIONS.md` freezes two arms. The after arm (hds#515) adds four things the
+package now ships: `AGENTS.md`, the regenerated `llms.txt`, the `hds` MCP server
+(`hds-mcp` bin) and the ESLint plugin (`./eslint-plugin`). To run it:
+
+1. Pack the commit under test: `pnpm build:lib && npm pack --pack-destination <tmp>`.
+   Record the tarball sha256 and the commit; the harness re-packs and records
+   its own in step 6.
+2. For each of `after-sonnet`, `after-opus`, `after-haiku`, make a fresh
+   workspace outside the repository holding only: a copy of `template/`, the
+   tarball extracted to `node_modules/@hirobius/design-system/`, and `SPEC.md`
+   (`specs/client-detail.md` with its "Allowed inputs" section replaced by the
+   after-arm block in `CONDITIONS.md`, verbatim).
+3. Attach the MCP server to that generator's session, run from the workspace so
+   it reads the installed copy:
+
+   ```json
+   {
+     "mcpServers": {
+       "hds": {
+         "command": "node",
+         "args": ["node_modules/@hirobius/design-system/mcp/hds-mcp.mjs"]
+       }
+     }
+   }
+   ```
+
+   (`npx hds-mcp` is equivalent once `node_modules/.bin` is linked; an extracted
+   tarball has no `.bin`, so call the file.) Check it answers before starting:
+   `printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"list_core","arguments":{}}}' | node node_modules/@hirobius/design-system/mcp/hds-mcp.mjs`.
+
+4. Give each generator, in a fresh context, the prompt in `CONDITIONS.md`
+   verbatim, with the configured model from its generator table. The
+   generators have no shell, so "must pass the lint rules" means they follow
+   AGENTS.md "Rules" and the rule files under
+   `node_modules/@hirobius/design-system/scripts/eslint-plugin-hds/rules/`; the
+   harness's violation scan checks the outcome. Record any model fallback or
+   rule break in `runs/<date>/NOTES.md`.
+5. Copy each app's `src/` into `runs/<date>/after-<suffix>/src/` exactly as
+   delivered, and `git add -f` it with `NOTES.md`.
+6. On a clean tree: `pnpm eval:consistency -- --apps eval/consistency/runs/<date>`
+   (full run). It appends the ledger entry.
+7. `CONDITIONS.md` says anything else that changed in the package between the
+   runs goes in the after entry's notes. The harness writes only
+   `Harness run over <dir>.`, so before committing the new entry, append to its
+   `notes` (the entry is not yet in git, so this is still writing it, not
+   editing a recorded one) every non-tooling change since `6f0be12`. For
+   hds#515 that is the source JSDoc usage-tag edits, which change
+   `component-api.json`, the manifest and `llms.txt`: `AlertDialog` gained a
+   usage contract; `Dialog`, `Stat`, `StatusTile` and `Card.Metric` gained or
+   reworded `@usage` / `@whenNot` / `@useInstead` lines pointing at
+   `AlertDialog` or `MetricTiles`. Copy the same list into
+   `runs/<date>/NOTES.md`.
+
+`DIAGNOSIS-2026-10-05.md` explains why the baseline apps diverged and what each
+after-arm piece is meant to fix.
+
 `runs/` is gitignored and prettier-ignored; `git add -f` a run only when it
 backs a ledger entry.
 

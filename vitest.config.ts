@@ -43,6 +43,8 @@ export default defineConfig({
     // under /tests and are run via `pnpm test:*`.)
     include: [
       'scripts/__tests__/**/*.{test,spec}.mjs',
+      // The consumer ESLint plugin's RuleTester suites (shipped as ./eslint-plugin).
+      'scripts/eslint-plugin-hds/__tests__/**/*.test.mjs',
       'src/**/*.{test,spec}.{ts,tsx,js,jsx}',
       // Contract tests (tests/primitive-contracts/*.contract.test.tsx) are vitest +
       // React Testing Library, so collect .tsx here. Playwright (testMatch '**/*.spec.ts')

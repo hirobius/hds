@@ -19,6 +19,7 @@
  * the slices pick blocks by heading, so llms.txt and the slices share text.
  */
 
+import { NEEDS_INTRO, needsMarkdown } from './lib/guide-markdown.mjs';
 import { mkdirSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
@@ -194,6 +195,18 @@ Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> 
 
 Generated: ${generated}
 Primary sources: \`public/hds-manifest.json\`, \`src/app/data/component-api.json\`, \`hirobius.tokens.json\`
+
+## Agents Using The Package: Start Here
+
+- Read \`AGENTS.md\` (package root, \`node_modules/@hirobius/design-system/AGENTS.md\`) first: which component to use for each screen need, the imports, and the rules.
+- MCP server \`hds\` ships in the package: run \`npx hds-mcp\` (stdio). Tools: \`list_core\`, \`search_components\`, \`get_component\`, \`search_tokens\`; each answer is under 2 KB.
+- Lint before you finish: \`import hds from '@hirobius/design-system/eslint-plugin'\` and spread \`hds.configs.recommended\` into \`eslint.config.mjs\`.
+
+## Pick By Need
+
+${NEEDS_INTRO} Generated from \`mcp/guide.mjs\`, the same list as \`AGENTS.md\`.
+
+${needsMarkdown(componentApi.components ?? {})}
 
 ## System Architecture
 

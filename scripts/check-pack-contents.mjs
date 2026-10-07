@@ -4,8 +4,9 @@
  * check-pack-contents — does the npm tarball carry what consumers' agents need?
  *
  * Runs `npm pack --dry-run --json` and compares the file list against a
- * required set (agent context, manifest, tokens, entry point) and a forbidden
- * set (env files, repo `src/`, built Storybook). Forbidden entries match as a
+ * required set (agent context, AGENTS.md, the hds-mcp server, the ESLint plugin,
+ * manifest, tokens, entry point) and a forbidden set (env files, repo `src/`,
+ * repo `scripts/` other than the plugin, built Storybook). Forbidden entries match as a
  * path prefix at the tarball root, not as a substring: `dist/types/src/` is
  * correct and must not be flagged.
  *
@@ -15,8 +16,17 @@
  */
 
 import { spawnSync } from 'node:child_process';
+import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+const PLUGIN_DIR = 'scripts/eslint-plugin-hds';
+/** Every file under the plugin's rules/ (index.mjs imports them; a missing one breaks the import). */
+const PLUGIN_RULES = readdirSync(
+  path.join(path.dirname(fileURLToPath(import.meta.url)), '..', PLUGIN_DIR, 'rules'),
+)
+  .sort()
+  .map((f) => `${PLUGIN_DIR}/rules/${f}`);
 
 export const REQUIRED = [
   'llms.txt',
@@ -33,6 +43,18 @@ export const REQUIRED = [
   'public/hds-manifest.json',
   'hirobius.tokens.json',
   'dist/hirobius-ui.js',
+  // Agent tooling (the after arm of eval/consistency/CONDITIONS.md): the packaged
+  // AGENTS.md, the hds-mcp server and the data it reads, and the ESLint plugin.
+  'AGENTS.md',
+  'mcp/hds-mcp.mjs',
+  'mcp/catalog.mjs',
+  'mcp/server.mjs',
+  'mcp/guide.mjs',
+  'codemods/patterns-subpath.names.json',
+  `${PLUGIN_DIR}/index.mjs`,
+  `${PLUGIN_DIR}/index.d.mts`,
+  `${PLUGIN_DIR}/package.json`,
+  ...PLUGIN_RULES,
   'dist/fonts.css',
   'dist/fonts/satoshi-400.woff2',
   'dist/fonts/satoshi-500.woff2',
@@ -40,11 +62,19 @@ export const REQUIRED = [
   'dist/fonts/geist-mono-400.woff2',
 ];
 
-/** Prefix rules; a path is forbidden when it matches and is not in `allow`. */
+/**
+ * Prefix rules; a path is forbidden when it matches `prefix` and is neither in
+ * `allow` nor under one of `allowPrefix`.
+ */
 export const FORBIDDEN = [
   { prefix: '.env' },
   { prefix: 'src/', allow: ['src/app/data/component-api.json'] },
   { prefix: 'storybook-static/' },
+  {
+    prefix: 'scripts/',
+    allow: [`${PLUGIN_DIR}/index.mjs`, `${PLUGIN_DIR}/index.d.mts`, `${PLUGIN_DIR}/package.json`],
+    allowPrefix: [`${PLUGIN_DIR}/rules/`],
+  },
 ];
 
 /**
@@ -55,7 +85,12 @@ export function diffPackContents(packedPaths, { required, forbidden }) {
   const have = new Set(packedPaths);
   const missing = required.filter((p) => !have.has(p));
   const bad = packedPaths.filter((p) =>
-    forbidden.some((f) => p.startsWith(f.prefix) && !(f.allow ?? []).includes(p)),
+    forbidden.some(
+      (f) =>
+        p.startsWith(f.prefix) &&
+        !(f.allow ?? []).includes(p) &&
+        !(f.allowPrefix ?? []).some((a) => p.startsWith(a)),
+    ),
   );
   return { missing, forbidden: bad };
 }
