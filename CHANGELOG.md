@@ -1,5 +1,57 @@
 # Changelog
 
+## 0.21.0
+
+### Minor Changes
+
+- def444a: Agent tooling ships in the package (hds#515). Nothing changes on the main entry or any existing subpath.
+  - `AGENTS.md` at the package root: one answer per screen need (a row of numbers is `MetricTiles`, a destructive confirm is `AlertDialog`, a saved message is a toast through `useToast`, a form is `Form` with `FormActions`, and so on for 24 needs), the import path of each core component, and the rules. Generated from `mcp/guide.mjs`; `pnpm check:agents-md` keeps it in step.
+  - `hds-mcp` bin: an MCP server over stdio (run the `hds-mcp` bin in an app that has the package installed, or `npx -p @hirobius/design-system@^0.21 hds-mcp`; no dependencies, no network) with four tools, `list_core`, `search_components`, `get_component` and `search_tokens`. Each answer is compact JSON under 2 KB, read from the manifest and component API data the package already ships.
+  - `./eslint-plugin` subpath: the consumer ESLint plugin (`import hds from '@hirobius/design-system/eslint-plugin'`, then `...hds.configs.recommended`).
+  - **Breaking for anyone already using the plugin** (`@hirobius/eslint-plugin-hds` from git, now 0.2.0): the new rule `hds/no-raw-controls` is `error` in `recommended`. It fails raw `<button>`, `<input>`, `<select>`, `<textarea>` and `<form>`; replace them with `Button`, `Input`, `Select`, `Textarea` and `Form` (from `/patterns`), or turn the rule off in your config: `rules: { 'hds/no-raw-controls': 'off' }`.
+  - Usage contracts (`usage` in `component-api.json` and the manifest, shown in `llms.txt`): `AlertDialog` gains one (when to use it, when to use `Dialog` instead), and `Dialog` points to `AlertDialog` for a destructive confirm. `Stat` now reads as an inline figure inside prose or a dense list and, like `StatusTile` and `Card.Metric`, points to `MetricTiles` for a row of headline numbers. No component changes behaviour.
+  - `llms.txt` opens with a "Start here" section naming AGENTS.md, the MCP server and the lint plugin, then the same "Pick by need" list as AGENTS.md, rendered from the same source.
+
+- 57ef003: Component defects from the 2026-10-07 bug bash (hds#522).
+
+  Behaviour removed or changed, so this is a minor (0.x): `ErrorPattern` no longer fills 100vh unless `fullPage` is passed; `Grid.Item` no longer sets `height: 100%`; `Grid`'s default `align` is now `start` (it was `stretch`), so Cards, Surfaces and StatusTiles in a Grid hug instead of filling the row (pass `align="stretch"` where a row needs equal heights); `Table` is now flush by default (`flush={false}` restores the padding); Surface, Card and StatusTile lost their `h-full`. Alert, Toggle and labelled dot Badge/StatusDot roles also changed (see A11y).
+
+  Broken: Progress's neutral fill had the same colour as its track (`bg-accent` and `bg-muted` both map to near-white), so it was invisible; the fill is now the accent surface and `sm` is 6px. SegmentedControl `md` segments were `w-full` in a `w-fit` rail, so one segment filled the rail and the rest scrolled away; they now hug, and the rail is 40px like Button and Input (`sm` 32px). Slider's track was a padded Surface (48px slab, 0px fill, over the label); it is now an 8px bar with a visible fill. Checkbox, Radio and Toggle had two tab stops because motion's `whileTap` put `tabindex=0` on the label; the label is now `tabindex=-1`. Skeleton `rectangular` defaults to 5rem high and its fill is `surface-sunken`, so it shows on a Card. Disclosure `variant="card"` no longer clips its content or leaves empty space when closed. CodeBlock's `<pre>` is padded 16px, not the 80px section stack.
+
+  Layout: Input, Textarea, Select, Combobox and Slider cap at 40rem (override with `--hds-form-control-max-width`, or `max-w-none` on the control's `className`). Select matches Input (40px, 44px at 390; same fill, 14px label, up-down chevron), and the built-in labels of Input, Textarea and Select are the FormField label (14px). Card, Surface, StatusTile and Grid.Item no longer stretch to the tallest sibling: Grid takes `align` (default `start`, `stretch` to opt in; MetricTiles stretches). Where a row needs equal heights, pass `align="stretch"` to the Grid (Ops-style Grid usages with Cards need it). Table's scroll region is flush by default, so cells are not inset twice (`flush={false}` restores it). AssetImg's no-`src` fallback and ErrorPattern fit their container; ErrorPattern takes `fullPage` for the old 100vh behaviour, which is no longer the default. Checkbox, Toggle and Radio rows share one inset and height. Stat aligns to the start. MetadataList horizontal sizes its term column to its content. A vertical Divider stretches across a row without relying on a parent height.
+
+  A11y: Combobox returns focus to its trigger after Escape or a pick (hds#311). Alert is `role="status"` for info and success and `role="alert"` for danger and warning. Toggle is `role="switch"`. A labelled dot Badge and StatusDot are `role="img"`, not live regions. A pressed toggle Button fills with the accent surface. On touch, Checkbox, Radio and Toggle rows, the Pagination page buttons and the CodeBlock copy button reach 44px. Dialog and AlertDialog keep a 16px margin from the viewport edge at 390. `<FormActions primary>` makes a bare Button primary. Badge warns once in dev when `label` is used without `dot`.
+
+  Not in this patch (contract wave): Card.Header/Body/Footer double padding, the dark raised-surface contrast step, MetadataList inset across variants.
+
+- b9694ea: The ratified core set is published where consumers and agents read it (hds#374). The 43 core components (the hds#254 disposition table as updated by hds#393 and hds#394) carry `core: true` on their spec in `public/hds-manifest.json` (the `./manifest` subpath), in `component-api.json` and in the agent manifest projection; `core` is a new optional boolean in `manifest/schema.json`, independent of `tier` (five core components are `tier: pattern`, and not every `tier: primitive` component is core), and non-core specs omit it. `llms.txt` gains a "Core set" section listing the 43 by name and category, and its "Which one when" lines mark them `[core]` (`Button: [core] Trigger an action…`; the name still comes first). The `hds-consumer` agent skill gains a "Core set" section before its allow-list, and the README a generated "What belongs in the system" section naming the core set by category and the 12 modules on `@hirobius/design-system/patterns`.
+- 14eb027: Brand fonts are now an opt-in `fonts.css` instead of being base64-embedded in `tokens.css` and `styles.css` (hds#479). Consumers that want the HDS fonts must add one import:
+
+  ```ts
+  import '@hirobius/design-system/fonts.css'; // Satoshi 400/500/700 + Geist Mono 400
+  ```
+
+  Without it, text falls back to the family stack in `--hds-font-family` and `--hds-font-family-mono` (`"Satoshi", system-ui, …`), so a consumer that brings its own fonts no longer downloads ours. `fonts.css` ships with the four woff2 files in `dist/fonts/`; its URLs are relative (`./fonts/satoshi-400.woff2`), so Vite, Next and webpack resolve and hash them, and every face keeps `font-display: swap`.
+
+  Size: `tokens.css` goes from 152.8 kB to 20.3 kB gzipped (304 kB to 130 kB raw), and `styles.css` from 152.2 kB to 19.6 kB. The four woff2 files plus `fonts.css` are 132 kB raw, read only when a face is used.
+
+  Ops must add `import '@hirobius/design-system/fonts.css'` next to its `tokens.css` or `styles.css` import when it upgrades, or its UI renders in the system font.
+
+- 5d7c98c: **`StatusDot` and `StatusDotProps` are removed (hds#465).** Both were deprecated in 0.20.0 with `@removeIn 0.21.0`. Replace `<StatusDot tone size label>` with `<Badge dot tone size label>`: `tone`, `size` and `label` map one to one, and so does the dot. Badge takes no `style`, so there is no codemod: move any `style` to a wrapper element or a `className`, then swap the component (MIGRATIONS.md, "0.21.0 removals"). `npx @hirobius/design-system@latest upgrade` finds every use by import and by JSX tag. ADR-014 now allows a removal to ship with a manual step like this one.
+- 14eb027: Type ramp cut to 5 roles plus mono; old composite names are deprecated aliases; headings render smaller (hds#483, #485, #486, #487).
+
+  The ramp is now `display` 48/1.05 700, `title` 24/1.25 700, `body` 16/1.6 400, `ui` 14/1.5 500, `caption` 12/1.5 500 and `mono` 13/1.5 400. `semantic.typography.title` is new, and `display`, `body`, `ui`, `caption` and `mono` change value: display goes 60 to 48px, body 17 to 16px with 1.6 leading, caption gets 1.5 leading, mono 14 to 13px.
+
+  Every old name still resolves, so no import breaks, and each now holds its role's value: `h1`, `h2`, `h3` (48, 30 and 20px) and `typeStyles.heading1` to `heading3` render as `title` (24px, so headings render smaller); `eyebrow`, `badge` and `micro` render as `caption` in sentence case (the uppercase and wide tracking are gone); `technical`, `monoXs` and `monoSm` render as `mono`; `small`, `label` and `bodySmall` render as `ui`. `<Text variant>` takes the six role names; `heading1` to `heading3`, `technical`, `eyebrow`, `badge` and the four doc variants stay accepted, tagged `@deprecated` with `@removeIn 1.0.0`, as do the matching `hds.typeStyles` keys. The deprecated `Text` variants keep their old default elements (`heading1` is still an `h1`); the new `title` defaults to an `h2`, so pass `as` where another level matters.
+
+  The fluid `clamp()` size overrides on display and the headings are gone; the ramp is static. Title is 700 because Satoshi has no 600 face. Satoshi still ships 500 and 700 faces only, so body (400) draws on the 500 face until a Satoshi Regular face is added.
+
+  New: the `.hds-type-<role>` classes in `theme.css`, and `scripts/check-type-ramp.mjs`, a pre-commit gate that fails a raw size, weight or line height in `src/` and any deprecated composite. Figma text styles need a Sync after this ships (hds#489).
+
+### Patch Changes
+
+- dd00c68: `Button` and `Card` no longer use the Tailwind important modifier (`!`) for `tone` (hds#372, ADR-030). A status tone now wins over `variant` the way every other class override does, by tailwind-merge class-group replacement: Button's tone strings also set the hover fill and hover border, so no variant hover colour leaks through, and Card's tone sets `border` plus the feedback colour, replacing `accent`'s `border-2`. No visual change in any variant, tone, state (`iconOnly`, a toggle on or off, a selectable or selected Card) or theme; a toned toggle keeps the tone colours when on, as before. One behaviour change: a consumer `className` can now override a tone's colours the same way it already overrides a variant's (before, `!` made tone colours unoverridable), which is the documented escape-hatch model.
+
 ## 0.20.0
 
 ### Minor Changes
