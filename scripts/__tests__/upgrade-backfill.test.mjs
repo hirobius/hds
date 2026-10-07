@@ -251,6 +251,45 @@ describe('0.19.0', () => {
     }
   });
 
+  it('finds the overlays that 0.19.0 components open through Popover and Dialog too', () => {
+    // At v0.19.0, combobox.tsx, multi-selector.tsx and the three date inputs
+    // open a Popover, and command-palette.tsx a Dialog with its scrim.
+    const portals = byId('0.19.0/behavior/overlay-portals');
+    const composites = [
+      'Combobox',
+      'MultiSelector',
+      'DateInput',
+      'DateRangeInput',
+      'DateTimeInput',
+      'CommandPalette',
+    ];
+    for (const name of composites) {
+      expect(portals.detect.imports.find((i) => i.from === ROOT).names, name).toContain(name);
+      expect(portals.detect.jsx, name).toContain(name);
+    }
+    for (const named of ['Combobox', 'MultiSelector', 'CommandPalette', 'date inputs']) {
+      expect(portals.plain, named).toContain(named);
+    }
+    const patterns = portals.detect.imports.find((i) => i.from === `${ROOT}/patterns`);
+    expect(patterns.names).toContain('CommandPalette');
+
+    const scrim = byId('0.19.0/look/modal-scrim');
+    expect(scrim.detect.jsx).toContain('CommandPalette');
+    expect(scrim.plain).toContain('CommandPalette');
+  });
+
+  it('finds the three theme.css card rules that moved to the container radius', () => {
+    const step = byId('0.19.0/look/container-radius');
+    expect(step.detect.classes).toEqual(
+      expect.arrayContaining([
+        'hds-card',
+        'hds-doc-link-card',
+        'hds-soft-nav-card',
+        'hds-sketchbook-canvas-stage',
+      ]),
+    );
+  });
+
   it('records the compact density remap as a look step', () => {
     const step = byId('0.19.0/look/compact-density');
     expect(step.impact).toBe('look');
