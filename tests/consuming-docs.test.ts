@@ -10,6 +10,8 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { ONE_COMMAND, ONE_COMMAND_BIN, ONE_COMMAND_FROM } from '../scripts/upgrade/compile.mjs';
+import { compareVersions } from '../scripts/upgrade/schema.mjs';
 
 const ROOT = resolve(__dirname, '..');
 const read = (file: string) => readFileSync(resolve(ROOT, file), 'utf8');
@@ -81,4 +83,56 @@ describe('upgrading (hds#451)', () => {
     const top = read('README.md').split('\n').slice(0, 15).join('\n');
     expect(top).toContain('](UPGRADING.md)');
   });
+
+  // README and CONSUMING ship in the tarball, so "From 0.22.0, one command does
+  // it" must not ship in a 0.22.0 that lacks the command: the Version PR runs
+  // pnpm test, so this turns it red until hds#452 lands or the text changes.
+  const docs = () => ({
+    'README.md': read('README.md').split('\n').slice(0, 15).join('\n'),
+    'CONSUMING.md': section3(),
+  });
+
+  it('names the one command from the release compile.mjs plans it for', () => {
+    for (const [file, text] of Object.entries(docs())) {
+      expect(promisedFrom(text), file).toEqual([ONE_COMMAND_FROM]);
+    }
+  });
+
+  it('refuses a release that reaches that version without the design-system bin', () => {
+    const at = (version: string, bin?: Record<string, string>) =>
+      brokenPromise({ version, bin }, docs());
+    expect(at('0.21.0')).toBeNull();
+    expect(at(ONE_COMMAND_FROM)).toContain('hds#452');
+    expect(at(ONE_COMMAND_FROM)).toContain('README.md');
+    expect(at('0.23.1')).not.toBeNull();
+    expect(at(ONE_COMMAND_FROM, { [ONE_COMMAND_BIN]: 'codemods/upgrade.mjs' })).toBeNull();
+  });
+
+  it('holds for this package.json', () => {
+    expect(brokenPromise(JSON.parse(read('package.json')), docs())).toBeNull();
+  });
 });
+
+/** The versions `text` says the one command works from ("From 0.22.0, ..."). */
+function promisedFrom(text: string): string[] {
+  return [...text.matchAll(/\bFrom (\d+\.\d+\.\d+),/g)].map((m) => m[1]);
+}
+
+/**
+ * Why `docs` promise a command the package lacks, or null: they say the one
+ * command works from a version `pkg` has reached, and its bin has no
+ * design-system yet.
+ */
+function brokenPromise(
+  pkg: { version: string; bin?: Record<string, string> },
+  docs: Record<string, string>,
+): string | null {
+  if (Object.hasOwn(pkg.bin ?? {}, ONE_COMMAND_BIN)) return null;
+  for (const [file, text] of Object.entries(docs)) {
+    const from = promisedFrom(text).find((v) => compareVersions(pkg.version, v) >= 0);
+    if (from) {
+      return `${file} says \`${ONE_COMMAND}\` works from ${from}, but package.json is at ${pkg.version} with no ${ONE_COMMAND_BIN} bin: land hds#452 (the bin) before this release, or reword ${file} and ONE_COMMAND_FROM in scripts/upgrade/compile.mjs.`;
+    }
+  }
+  return null;
+}

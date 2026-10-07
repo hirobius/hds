@@ -129,9 +129,11 @@ in the package:
    "Fixed for you".
 3. Work through its "Do by hand" list.
 
-UPGRADING.md covers every release after 0.16.0. From an older version, follow
-[MIGRATIONS.md](MIGRATIONS.md) up to 0.16.0 first. `CHANGELOG.md` has the full
-notes; each section opens with an Upgrade block.
+UPGRADING.md covers every release after 0.16.0. From an older version, first
+reach 0.16.0 with the notes in [CHANGELOG.md](CHANGELOG.md);
+[MIGRATIONS.md](MIGRATIONS.md) has longer guides for the big releases.
+`CHANGELOG.md` has the full notes, and each section from 0.22.0 on opens with
+an Upgrade block.
 
 ---
 

@@ -59,9 +59,9 @@ const FIX = 'node scripts/upgrade/compile.mjs';
 
 /** The one command (hds#452): npx runs the bin named after the package. */
 export const ONE_COMMAND = `npx ${PACKAGE}@latest upgrade`;
-const ONE_COMMAND_BIN = 'design-system';
+export const ONE_COMMAND_BIN = 'design-system';
 /** The release the one command is planned to ship in, named while the bin is absent. */
-const ONE_COMMAND_FROM = '0.22.0';
+export const ONE_COMMAND_FROM = '0.22.0';
 const UPGRADING_URL = 'https://github.com/hirobius/hds/blob/main/UPGRADING.md';
 
 const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'));

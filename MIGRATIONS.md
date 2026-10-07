@@ -1,7 +1,9 @@
 # Migrations
 
 How HDS deprecates and removes public API, and the removals shipped so far.
-Token renames live in [TOKEN_MIGRATION.md](TOKEN_MIGRATION.md).
+Token renames live in
+[TOKEN_MIGRATION.md](https://github.com/hirobius/hds/blob/main/TOKEN_MIGRATION.md)
+(not in the package).
 
 ## The cycle
 
@@ -74,12 +76,11 @@ Upgrade the package to 0.17 first: `/patterns` does not exist in 0.16.
 
 ### First consumer run
 
-Ops (`hirobius/ops`) pins `^0.16.0`. A read-only dry run on 2026-09-29 found 11
-import sites in 11 files, all four names being `Page`, `ErrorPattern`,
-`AssetImg` and `CodeBlock`. The rewrite is tracked as an issue on the Ops repo.
-A second dry run on 2026-10-01 (ops main 76ef65e) found the same 11 sites;
-with StatusTile on `/patterns` (hds#395) it moves 12, the extra one in
-`ClientDashboardPage.tsx`.
+The first consumer app to run it pins `^0.16.0`. A read-only dry run on
+2026-09-29 found 11 import sites in 11 files, all four names being `Page`,
+`ErrorPattern`, `AssetImg` and `CodeBlock`. A second dry run on 2026-10-01
+found the same 11 sites; with StatusTile on `/patterns` (hds#395) it moves 12,
+the extra one a second import statement in a file that already imports Page.
 
 ## Spacing names move to the t-shirt scale
 
@@ -156,11 +157,11 @@ without a deprecation release, 32 components no consumer imports (87 names,
 from the root and `/patterns`) and makes the 38 remaining root `*Variants` cva
 helpers private (hds#389's 2026-10-01 decision update). Wave 4b removes 13
 components that fold into a survivor hds#393 shipped (27 root names; StatusDot
-stays for now). hds#395 (B5) removes the two that ops renders, NotFoundPattern
-and TileGrid (3 root names), each with a codemod of its own, and moves
-StatusTile from the root to `/patterns` (3 names). Nothing else left the public
-API. Ops, the one consumer that imports components, pins a caret range below
-0.20, so nothing breaks until it upgrades; run the codemods first.
+stays for now). hds#395 (B5) removes the two that a consumer app renders,
+NotFoundPattern and TileGrid (3 root names), each with a codemod of its own,
+and moves StatusTile from the root to `/patterns` (3 names). Nothing else left
+the public API. The one consumer app that imports components pins a caret range
+below 0.20, so nothing breaks until it upgrades; run the codemods first.
 
 ```bash
 # Preview, then rewrite in place. `-p` runs the bins from the 0.20 package
@@ -252,10 +253,9 @@ It also lists a file it cannot read to its end, as `hds-patterns-subpath` does.
 | `HdsToggle`                            | `Toggle`    | `npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .` |
 | `HdsTooltip`                           | `Tooltip`   | `npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .` |
 
-Ops imports `HdsCheckbox` in one file. A read-only dry run on 2026-10-01 (ops
-main 76ef65e) rewrites that import in
-`src/app/pages/ops/leads/LeadSweepPanel.tsx` to `Checkbox as HdsCheckbox` and
-leaves its JSX tag as written; no other `Hds*` alias is imported.
+A consumer app imports `HdsCheckbox` in one file. A read-only dry run on
+2026-10-01 rewrites that import to `Checkbox as HdsCheckbox` and leaves its JSX
+tag as written; no other `Hds*` alias is imported.
 
 ### Docs and lab components
 
@@ -282,10 +282,10 @@ staging file were never promoted and leave the promotion list.
 ### Components removed with no survivor (hds#394 wave 4a)
 
 Thirty-two components fail hds#389's survival rule and have no replacement in
-HDS (ADR-034 covers the date pickers). None is imported by a consumer: ops
-origin/main (76ef65e) has 0 import sites for any of them, folio and concrete
-import only `variables.css`, and site-engine has no HDS dependency. So there is
-no codemod to run. `hds-patterns-subpath --check` reports a named import or
+HDS (ADR-034 covers the date pickers). None is imported by a consumer: the
+consumer app that imports components has 0 import sites for any of them, and
+the other consumers import only `variables.css` or do not depend on HDS. So
+there is no codemod to run. `hds-patterns-subpath --check` reports a named import or
 re-export of any of these names from the root or from `/patterns` as "removed
 in 0.20.0, no replacement" for a manual edit (the list is
 `codemods/removed-0.20.json`). It reads named imports only: a removed name read
@@ -392,9 +392,8 @@ HoverCard also leave the curated core set; with Menu, Popover, Tooltip and HdsRo
 
 Thirteen components fold into a survivor that hds#393 shipped, so 0.20.0 removes
 them from the root with their props types. Each row gives the survivor and maps
-every prop; `tests/prune-wave-4b-survivors.test.tsx` renders each recipe. Ops
-origin/main (76ef65e) imports none of the thirteen, so there is no rewrite
-codemod: `hds-patterns-subpath --check` reports a named import of one for a
+every prop; `tests/prune-wave-4b-survivors.test.tsx` renders each recipe. No
+consumer imports any of the thirteen, so there is no rewrite codemod: `hds-patterns-subpath --check` reports a named import of one for a
 manual edit and names its survivor ("removed in 0.20.0, use Button iconOnly
 …", from `replaced` in `codemods/removed-0.20.json`). The layout recipes use
 `Box` with `style`, not `sx`, because `sx` injects its rule on the client only
@@ -405,8 +404,7 @@ bridge (`import hds from '@hirobius/design-system/tokens'`): the old `tight`,
 staging-promotion entries go with them.
 
 StatusDot is not removed. Badge `dot` takes its `tone`, `size` and `label`, but
-ops passes StatusDot a `style` (`src/app/pages/ops/audit/FleetAuditPage.tsx`),
-and Badge takes no `style` (it is className-only, `check-no-style-prop`), so no
+a consumer app passes StatusDot a `style`, and Badge takes no `style` (it is className-only, `check-no-style-prop`), so no
 codemod can rewrite that import mechanically. It is deprecated instead, for
 removal in 0.21.0: see [StatusDot is deprecated](#statusdot-is-deprecated-removed-in-0210-hds395).
 
@@ -440,11 +438,11 @@ removal in 0.21.0: see [StatusDot is deprecated](#statusdot-is-deprecated-remove
 | `ToggleButton`          | `<Button pressed={…} onPressedChange={…}>`. `pressed`, `defaultPressed`, `onPressedChange`, `size`, `disabled` and `aria-label` are the same, as is `variant="secondary"`; `variant="ghost"` becomes `variant="tertiary"`. `data-state="on"` becomes `data-pressed="true"`.                                                                                                                                                                                                                                   | none: no consumer imports it; `hds-patterns-subpath --check` names the survivor |
 | `ToggleButtonProps`     | `ButtonProps`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` names the survivor |
 
-### Components ops renders, each with a codemod (hds#395 B5)
+### Components a consumer renders, each with a codemod (hds#395 B5)
 
-Ops imports three names in hds#389's prune set: NotFoundPattern, TileGrid and
-StatusTile. Under the decision update a name ops imports goes in 0.20.0 once a
-codemod rewrites every ops site, so each has one:
+A consumer app imports three names in hds#389's prune set: NotFoundPattern,
+TileGrid and StatusTile. Under the decision update a name a consumer imports
+goes in 0.20.0 once a codemod rewrites every site it has, so each has one:
 
 - **NotFoundPattern** took no props and rendered
   `<ErrorPattern displayText="404" message="Page not found" />`. The
@@ -469,7 +467,7 @@ codemod rewrites every ops site, so each has one:
   (`codemods/tile-grid.mjs`) makes the rewrite, and the rendered tracks and
   gap are the same as TileGrid's under every tenant and density
   (`scripts/__tests__/grid-tile-grid-parity.test.mjs`, in Chromium, for each
-  ops tag). It leaves for a manual edit `gap="xs"` and `gap="md"`: TileGrid
+  tag that consumer renders). It leaves for a manual edit `gap="xs"` and `gap="md"`: TileGrid
   fixed them at 8px and 16px, and Grid's nearest steps, `tight` and `normal`,
   tighten to 6px and 12px under compact density. It does the same for a gap
   or spread it cannot read, a self-closing tag (Grid needs children) and an
@@ -488,22 +486,20 @@ it. That includes JSX text with the bare name in it
 stop rather than guess; reword the text or rewrite the file by hand. Their
 stories, manifest specs and Figma disposition rows go with them.
 
-| Removed from `@hirobius/design-system` | Use instead                                                                                                                              | Codemod                                                                     |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `NotFoundPattern`                      | `<ErrorPattern displayText="404" message="Page not found" />` from `@hirobius/design-system/patterns`                                    | `npx -p @hirobius/design-system@^0.20.0 hds-not-found-pattern --root .`     |
-| `TileGrid`                             | `<Grid layout="auto-fill" minItemWidth="…" gap="medium">` (`minTileWidth` is `minItemWidth`, 260px when unset; `gap="sm"` is `"medium"`) | `npx -p @hirobius/design-system@^0.20.0 hds-tile-grid --root .`             |
-| `TileGridProps`                        | `GridProps`                                                                                                                              | none: the codemod lists an import of it for a manual edit; ops imports none |
-| `StatusTile`                           | `StatusTile` from `@hirobius/design-system/patterns`                                                                                     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .`      |
-| `StatusTileProps`                      | `StatusTileProps` from `@hirobius/design-system/patterns`                                                                                | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .`      |
-| `StatusTileTone`                       | `StatusTileTone` from `@hirobius/design-system/patterns`                                                                                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .`      |
+| Removed from `@hirobius/design-system` | Use instead                                                                                                                              | Codemod                                                                           |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `NotFoundPattern`                      | `<ErrorPattern displayText="404" message="Page not found" />` from `@hirobius/design-system/patterns`                                    | `npx -p @hirobius/design-system@^0.20.0 hds-not-found-pattern --root .`           |
+| `TileGrid`                             | `<Grid layout="auto-fill" minItemWidth="…" gap="medium">` (`minTileWidth` is `minItemWidth`, 260px when unset; `gap="sm"` is `"medium"`) | `npx -p @hirobius/design-system@^0.20.0 hds-tile-grid --root .`                   |
+| `TileGridProps`                        | `GridProps`                                                                                                                              | none: the codemod lists an import of it for a manual edit; no consumer imports it |
+| `StatusTile`                           | `StatusTile` from `@hirobius/design-system/patterns`                                                                                     | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .`            |
+| `StatusTileProps`                      | `StatusTileProps` from `@hirobius/design-system/patterns`                                                                                | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .`            |
+| `StatusTileTone`                       | `StatusTileTone` from `@hirobius/design-system/patterns`                                                                                 | `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .`            |
 
-A read-only dry run on 2026-10-01 (ops main 76ef65e) rewrites:
-`hds-not-found-pattern` 1 file, 1 site (`src/app/pages/NotFoundPage.tsx`);
-`hds-tile-grid` 2 files, 7 sites (`src/app/pages/ops/ClientDashboardPage.tsx`
-6, `src/app/pages/ops/agentic-os/SurfacesRail.tsx` 1). `hds-patterns-subpath`
-now moves 12 import sites in the same 11 files: `ClientDashboardPage.tsx`
-imports StatusTile in a second statement, next to the one that imports Page.
-With `hds-prefix` that is 14 ops files, and each codemod's `--check` exits 0
+A read-only dry run on 2026-10-01 in that consumer app rewrites:
+`hds-not-found-pattern` 1 file, 1 site; `hds-tile-grid` 2 files, 7 sites (6
+and 1). `hds-patterns-subpath` now moves 12 import sites in the same 11 files:
+one file imports StatusTile in a second statement, next to the one that imports
+Page. With `hds-prefix` that is 14 files, and each codemod's `--check` exits 0
 after the run.
 
 ### StatusDot is deprecated (removed in 0.21.0, hds#395)
@@ -521,10 +517,9 @@ that `aria-label`; decorative without one) are the same, and so is the dot.
 | `StatusDotProps` | `BadgeProps` (`dot`, `tone`, `size`, `label`) | none                                                         |
 
 There is no codemod because Badge takes no `style` (it is className-only,
-`check-no-style-prop`), and ops passes StatusDot one:
-`<StatusDot tone={stateTone(row.state)} style={s.dot} />` in
-`src/app/pages/ops/audit/FleetAuditPage.tsx`, where `s.dot` is
-`{ marginTop: hds.space.px8 }`. Before 0.21.0 ops first replaces `style={…}`
+`check-no-style-prop`), and a consumer app passes StatusDot one:
+`<StatusDot tone={stateTone(row.state)} style={s.dot} />`, where `s.dot` is
+`{ marginTop: hds.space.px8 }`. Before 0.21.0 it first replaces `style={…}`
 with a wrapper or a `className`, then swaps the component:
 
 ```tsx
@@ -541,8 +536,7 @@ with a wrapper or a `className`, then swaps the component:
 
 The root no longer exports any `*Variants` cva helper. Each one still styles
 its own component inside the package; it is just not public API any more, so a
-component's look changes only through its props. No consumer imports one (ops
-origin/main: 0 sites). `hds-patterns-subpath --check` reports an import of one
+component's look changes only through its props. No consumer imports one. `hds-patterns-subpath --check` reports an import of one
 for a manual edit. The `/patterns` modules keep their exports, `*Variants`
 included. The helpers of the removed components above are listed in that table.
 
@@ -596,8 +590,8 @@ when the upgrade command can find every use. StatusDot is the first.
 
 StatusDot and StatusDotProps were deprecated in 0.20.0 with `@removeIn 0.21.0`
 (see [StatusDot is deprecated](#statusdot-is-deprecated-removed-in-0210-hds395)).
-Both are gone from the package root. Ops, the last consumer, drops them in
-hirobius/ops#538.
+Both are gone from the package root. The last consumer app that used them
+swaps them for Badge in its own repository.
 
 | Removed          | Use instead                                   | Codemod                                                      |
 | ---------------- | --------------------------------------------- | ------------------------------------------------------------ |

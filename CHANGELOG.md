@@ -18,7 +18,7 @@
 
   Broken: Progress's neutral fill had the same colour as its track (`bg-accent` and `bg-muted` both map to near-white), so it was invisible; the fill is now the accent surface and `sm` is 6px. SegmentedControl `md` segments were `w-full` in a `w-fit` rail, so one segment filled the rail and the rest scrolled away; they now hug, and the rail is 40px like Button and Input (`sm` 32px). Slider's track was a padded Surface (48px slab, 0px fill, over the label); it is now an 8px bar with a visible fill. Checkbox, Radio and Toggle had two tab stops because motion's `whileTap` put `tabindex=0` on the label; the label is now `tabindex=-1`. Skeleton `rectangular` defaults to 5rem high and its fill is `surface-sunken`, so it shows on a Card. Disclosure `variant="card"` no longer clips its content or leaves empty space when closed. CodeBlock's `<pre>` is padded 16px, not the 80px section stack.
 
-  Layout: Input, Textarea, Select, Combobox and Slider cap at 40rem (override with `--hds-form-control-max-width`, or `max-w-none` on the control's `className`). Select matches Input (40px, 44px at 390; same fill, 14px label, up-down chevron), and the built-in labels of Input, Textarea and Select are the FormField label (14px). Card, Surface, StatusTile and Grid.Item no longer stretch to the tallest sibling: Grid takes `align` (default `start`, `stretch` to opt in; MetricTiles stretches). Where a row needs equal heights, pass `align="stretch"` to the Grid (Ops-style Grid usages with Cards need it). Table's scroll region is flush by default, so cells are not inset twice (`flush={false}` restores it). AssetImg's no-`src` fallback and ErrorPattern fit their container; ErrorPattern takes `fullPage` for the old 100vh behaviour, which is no longer the default. Checkbox, Toggle and Radio rows share one inset and height. Stat aligns to the start. MetadataList horizontal sizes its term column to its content. A vertical Divider stretches across a row without relying on a parent height.
+  Layout: Input, Textarea, Select, Combobox and Slider cap at 40rem (override with `--hds-form-control-max-width`, or `max-w-none` on the control's `className`). Select matches Input (40px, 44px at 390; same fill, 14px label, up-down chevron), and the built-in labels of Input, Textarea and Select are the FormField label (14px). Card, Surface, StatusTile and Grid.Item no longer stretch to the tallest sibling: Grid takes `align` (default `start`, `stretch` to opt in; MetricTiles stretches). Where a row needs equal heights, pass `align="stretch"` to the Grid (a dashboard Grid of Cards needs it). Table's scroll region is flush by default, so cells are not inset twice (`flush={false}` restores it). AssetImg's no-`src` fallback and ErrorPattern fit their container; ErrorPattern takes `fullPage` for the old 100vh behaviour, which is no longer the default. Checkbox, Toggle and Radio rows share one inset and height. Stat aligns to the start. MetadataList horizontal sizes its term column to its content. A vertical Divider stretches across a row without relying on a parent height.
 
   A11y: Combobox returns focus to its trigger after Escape or a pick (hds#311). Alert is `role="status"` for info and success and `role="alert"` for danger and warning. Toggle is `role="switch"`. A labelled dot Badge and StatusDot are `role="img"`, not live regions. A pressed toggle Button fills with the accent surface. On touch, Checkbox, Radio and Toggle rows, the Pagination page buttons and the CodeBlock copy button reach 44px. Dialog and AlertDialog keep a 16px margin from the viewport edge at 390. `<FormActions primary>` makes a bare Button primary. Badge warns once in dev when `label` is used without `dot`.
 
@@ -35,7 +35,7 @@
 
   Size: `tokens.css` goes from 152.8 kB to 20.3 kB gzipped (304 kB to 130 kB raw), and `styles.css` from 152.2 kB to 19.6 kB. The four woff2 files plus `fonts.css` are 132 kB raw, read only when a face is used.
 
-  Ops must add `import '@hirobius/design-system/fonts.css'` next to its `tokens.css` or `styles.css` import when it upgrades, or its UI renders in the system font.
+  A consumer app must add `import '@hirobius/design-system/fonts.css'` next to its `tokens.css` or `styles.css` import when it upgrades, or its UI renders in the system font.
 
 - 5d7c98c: **`StatusDot` and `StatusDotProps` are removed (hds#465).** Both were deprecated in 0.20.0 with `@removeIn 0.21.0`. Replace `<StatusDot tone size label>` with `<Badge dot tone size label>`: `tone`, `size` and `label` map one to one, and so does the dot. Badge takes no `style`, so there is no codemod: move any `style` to a wrapper element or a `className`, then swap the component (MIGRATIONS.md, "0.21.0 removals"). `npx @hirobius/design-system@latest upgrade` finds every use by import and by JSX tag. ADR-014 now allows a removal to ship with a manual step like this one.
 - 14eb027: Type ramp cut to 5 roles plus mono; old composite names are deprecated aliases; headings render smaller (hds#483, #485, #486, #487).
@@ -70,12 +70,12 @@
   Manifest `props` and `propConstraints` now follow the code (hds#390). `pnpm manifest:generate` used to fill them from `component-api.json` only when a spec had none, so a prop kept the type it had when first recorded. They are now rebuilt from `component-api.json` on every run, including Button, Card, Input and Dialog, whose props `pnpm tokens` used to overwrite with a hand-kept list: 56 specs change, 132 props the code has are added and 14 it no longer has are dropped. For example `Stack.props.wrap` is `FlexWrap` (it said `boolean`), `SegmentedControl.size` is `sm | md` (it said `default | compact`), and `Stat.tone` lists `neutral`, not `default`. Literal unions stay enums. A prop typed by a named alias (`InputSize`, `NavVariant`, `GapOption`, `PaddingOption`) now carries the alias name instead of a hand-kept value list, because `component-api.json` does not expand aliases.
 
 - ebe0a41: Every root deprecation now says when it is removed (hds#390, hds#389 D6). The 27 deprecated root exports carry `@removeIn 1.0.0`: the 21 pattern-tier names that should be imported from `@hirobius/design-system/patterns` (ActivityFeed, AppShell, AssetImg, Calendar, Carousel, CodeBlock, CommandPalette, DocLinkCard, ErrorPattern, FileInput, Form, Lightbox, NavItem, OverflowList, Page, Reveal, SideNav, Stepper, Toolbar, TopNav, TreeList) and the six `Hds*` aliases (HdsCheckbox, HdsRadio, HdsSelect, HdsSlider, HdsToggle, HdsTooltip). So do the three deprecated `hds.semantic.space` tokens on the `/tokens` entry: `component.padding`, `component.gap` and `layout.gutter`. The 27 root names are then removed in this same release (hds#389 R1, see the BREAKING entry and MIGRATIONS.md); the three tokens still work and keep their 1.0.0 target. Imports from `/patterns` are not deprecated.
-- ecb0a04: **BREAKING (0.x minor): already-deprecated public API is removed (hds#389 R1).** Before 1.0, a deprecated name may now be removed in a minor; ADR-014 and MIGRATIONS.md's "The cycle" record the rule, and 1.0 stays parked (#396). Every removed name, its replacement and its codemod is listed in MIGRATIONS.md under "0.20.0 removals". A consumer on a caret range below 0.20 (ops pins `^0.16`) is not affected until it upgrades; run the codemods first.
+- ecb0a04: **BREAKING (0.x minor): already-deprecated public API is removed (hds#389 R1).** Before 1.0, a deprecated name may now be removed in a minor; ADR-014 and MIGRATIONS.md's "The cycle" record the rule, and 1.0 stays parked (#396). Every removed name, its replacement and its codemod is listed in MIGRATIONS.md under "0.20.0 removals". A consumer on a caret range below 0.20 (such as `^0.16`) is not affected until it upgrades; run the codemods first.
   - **The 21 root re-exports of `/patterns` components are gone** (hds#254): ActivityFeed, AppShell, AssetImg, Calendar, Carousel, CodeBlock, CommandPalette, DocLinkCard, ErrorPattern, FileInput, Form, Lightbox, NavItem, OverflowList, Page, Reveal, SideNav, Stepper, Toolbar, TopNav and TreeList, plus everything else their modules exported from the root (props types, parts such as `FormField` and `Step`, `useFieldWiring`, `*Variants`): 79 names in all. Import them from `@hirobius/design-system/patterns`, which exports them unchanged, except the 15 modules this release then removes outright (hds#394, see the wave 4a entry). `npx -p @hirobius/design-system@^0.20.0 hds-patterns-subpath --root .` moves the imports; its name list is now whatever `/patterns` exports and the root does not, so it moves the props types and parts too.
   - **The six `Hds*` aliases are gone** (hds#315): HdsCheckbox, HdsRadio, HdsSelect, HdsSlider, HdsToggle and HdsTooltip. Use `Checkbox`, `Radio`, `Select`, `Slider`, `Toggle` and `Tooltip`. The new `hds-prefix` codemod (`npx -p @hirobius/design-system@^0.20.0 hds-prefix --root .`, `codemods/hds-prefix.mjs`, with `--check` and `--dry-run`) rewrites each root import to the bare name under the old local name (`Checkbox as HdsCheckbox`) and changes nothing else in the file; renaming the binding afterwards is optional.
   - **Five docs/lab components are deleted** (hds#232, deprecated in 0.16): CinematicLink, ComponentInstanceMatrix, FoundationSwatch, Sketch and Token, with `CinematicLinkProps`, `FoundationSwatchProps`, `SketchProps`, `TokenProps`, `tokenLabelVariants`, `tokenNodeInlineVariants` and `tokenShellVariants` (12 names). They have no replacement and no consumer imports them. Their stories, manifest specs, Figma disposition rows, Code Connect exemption, staging-promotion entries and docs-site registry rows go with them, and nothing under `src/` imports `component-api.json` any more (it still ships as a package file).
 
-- b2e27a2: **BREAKING (0.x minor): 32 components with no survivor are removed, and the root `*Variants` helpers are private (hds#394 wave 4a, hds#389 decision update).** No consumer imports any of them (ops, the one product app, has 0 import sites, and it pins `^0.16`, which never resolves to 0.20). Every removed name has a row in MIGRATIONS.md under "0.20.0 removals", with its replacement where one exists.
+- b2e27a2: **BREAKING (0.x minor): 32 components with no survivor are removed, and the root `*Variants` helpers are private (hds#394 wave 4a, hds#389 decision update).** No consumer imports any of them (the one product app that imports components has 0 import sites, and it pins `^0.16`, which never resolves to 0.20). Every removed name has a row in MIGRATIONS.md under "0.20.0 removals", with its replacement where one exists.
   - **Removed from the root:** `CaseStudyLayout`, `HdsSystemDocLayout`, `HdsDocsShell`, `ErrorBoundary`, `HistoryCard`, `NavGroup`, `Tokenizer`, `StepperField`, `HeadingStack`, `TextLockup`, `DateInput`, `DateRangeInput`, `DateTimeInput`, `ContextMenu`, `HoverCard` and `ButtonGroup`, with their props types and helpers. `HeadingStack` and `TextLockup` become `Stack` + `Text` (recipe in docs/rules/REACT_COMPONENTS.md); `StepperField` becomes `Input type="number"`.
   - **Removed from `/patterns`:** `ActivityFeed`, `AppShell`, `Calendar`, `Carousel`, `CommandPalette`, `DocLinkCard`, `FileInput`, `Lightbox`, `NavItem`, `OverflowList`, `SideNav`, `StackedCardRail`, `Stepper`, `Toolbar`, `TopNav` and `TreeList`, with their props types, parts and `*Variants`.
   - **The date pickers are gone** (ADR-034 supersedes ADR-020): `Calendar` from `/patterns`, and `DateInput`, `DateRangeInput` and `DateTimeInput` from the root. Use `Input type="date"`, or `type="datetime-local"` for a date and time; a range is two date inputs.
@@ -100,24 +100,24 @@
   - `HdsRouterProvider` has a manifest spec (category Theming, tier primitive, doc-exempt), so the manifest lists 147 components instead of 146. Nothing about its API changes.
   - `DESIGN.md` "Which one, when" names the prop, not a separate component, for three needs: a pickable card is a `Card` with `selectable`, a wrapping row of equal non-metric tiles is a `Grid` with `layout="auto-fill"` and `minItemWidth`, and a bare state marker is a `Badge` with `dot` and a `label`. The table keeps its eight rows.
 
-- 69e0049: **BREAKING (0.x minor): 13 components that fold into a survivor are removed from the root, with their props types (hds#394 wave 4b, hds#389 decision update).** Each survivor shipped with hds#393, and MIGRATIONS.md ("0.20.0 removals", "Components folded into a survivor") maps every prop. Ops, the one product app, imports none of the 13.
+- 69e0049: **BREAKING (0.x minor): 13 components that fold into a survivor are removed from the root, with their props types (hds#394 wave 4b, hds#389 decision update).** Each survivor shipped with hds#393, and MIGRATIONS.md ("0.20.0 removals", "Components folded into a survivor") maps every prop. The one product app that imports components imports none of the 13.
   - `IconButton` becomes `Button iconOnly` with a `label` and an `Icon` in `iconLeft`; `ToggleButton` becomes `Button pressed` (`variant="ghost"` is `variant="tertiary"`).
   - `InputGroup` becomes `Input prefix` / `suffix`; `TimeInput` becomes `Input type="time"`.
   - `CircularProgress` becomes `Progress variant="circular"`; `SelectableCard` becomes `Card selectable`; `MultiSelector` becomes `Combobox multiple` (`MultiSelectorOption` is `ComboboxOption`).
   - `Cluster` becomes `Stack direction="row" wrap="wrap" align="center"`; `Center` becomes `Container` with a `Box` inside for the gutter.
   - `Cover`, `Frame`, `Bleed` and `AspectRatio` become a `Box` with `style` (`aspectRatio`, `marginInline`, `marginBlock: 'auto'` and so on). Use `style`, not `sx`: `sx` applies on the client only.
-  - `StatusDot` stays: ops passes it `style`, which Badge `dot` does not take.
+  - `StatusDot` stays: a consumer app passes it `style`, which Badge `dot` does not take.
   - `hds-patterns-subpath --check` reports a named import of any of the 13 for a manual edit and names its survivor ("removed in 0.20.0, use Button iconOnly …"), from the new `replaced` map in `codemods/removed-0.20.json`.
   - `@radix-ui/react-aspect-ratio` and `@radix-ui/react-toggle` leave `dependencies`: only the removed `AspectRatio` and `ToggleButton` imported them (`@radix-ui/react-toggle-group` stays and brings its own copy of the toggle primitive).
 
-- aa07aab: **BREAKING (0.x minor): NotFoundPattern and TileGrid are removed from the root, and StatusTile moves to `/patterns` (hds#395 B5, hds#389 decision update).** These are the prune-set names ops imports, so each comes with a codemod, and MIGRATIONS.md ("Components ops renders, each with a codemod") has every row.
+- aa07aab: **BREAKING (0.x minor): NotFoundPattern and TileGrid are removed from the root, and StatusTile moves to `/patterns` (hds#395 B5, hds#389 decision update).** These are the prune-set names a consumer app imports, so each comes with a codemod, and MIGRATIONS.md ("Components a consumer renders, each with a codemod") has every row.
   - `NotFoundPattern` becomes `<ErrorPattern displayText="404" message="Page not found" />` from `@hirobius/design-system/patterns`, which is what it rendered. `npx -p @hirobius/design-system@^0.20.0 hds-not-found-pattern --root .` rewrites it.
   - `TileGrid` becomes `<Grid layout="auto-fill" minItemWidth="…" gap="medium">`: `minTileWidth` is `minItemWidth` (260px when unset, since Grid defaults to 280px, and `?? '260px'` after a width expression that can be undefined) and `gap="sm"` is Grid's fixed 12px `medium`. The tracks and gap render the same under every tenant and density. `npx -p @hirobius/design-system@^0.20.0 hds-tile-grid --root .` rewrites it; `gap="xs"` or `"md"`, spreads, self-closing tags and `TileGridProps` are listed for a manual edit.
   - `StatusTile`, `StatusTileProps` and `StatusTileTone` are exported from `@hirobius/design-system/patterns` only (hds#389 D5). `hds-patterns-subpath` moves the import.
   - `hds-patterns-subpath --check` reports a NotFoundPattern or TileGrid import with its survivor until its codemod has run (`codemods/removed-0.20.json`).
-  - Ops (main 76ef65e, read-only dry run): `hds-not-found-pattern` 1 file, 1 site; `hds-tile-grid` 2 files, 7 sites; `hds-patterns-subpath` 12 sites in 11 files.
+  - A consumer app (read-only dry run): `hds-not-found-pattern` 1 file, 1 site; `hds-tile-grid` 2 files, 7 sites; `hds-patterns-subpath` 12 sites in 11 files.
 
-- aa07aab: **`StatusDot` is deprecated for `<Badge dot>`, and `StatusDotProps` for `BadgeProps`; both are removed in 0.21.0 (hds#395).** `tone`, `size` and `label` map one to one, and so does the dot; a development build logs one `[HDS deprecation]` warning. It stays in 0.20.0 because ops passes it a `style`, which Badge (className-only) does not take, so no codemod can rewrite that site: move the `style` to a wrapper or a `className` first (MIGRATIONS.md, "StatusDot is deprecated").
+- aa07aab: **`StatusDot` is deprecated for `<Badge dot>`, and `StatusDotProps` for `BadgeProps`; both are removed in 0.21.0 (hds#395).** `tone`, `size` and `label` map one to one, and so does the dot; a development build logs one `[HDS deprecation]` warning. It stays in 0.20.0 because a consumer app passes it a `style`, which Badge (className-only) does not take, so no codemod can rewrite that site: move the `style` to a wrapper or a `className` first (MIGRATIONS.md, "StatusDot is deprecated").
 
 ### Patch Changes
 
@@ -241,13 +241,13 @@
   own subpath (`vite.config.lib.ts` entry, `package.json#exports`). Non-breaking:
   21 of the 22 stay re-exported from the package root too, each now carrying a
   `@deprecated`/`@removeIn 1.0.0` JSDoc notice pointing at the new subpath; the
-  root re-export is dropped at the next major once ops has a codemod
+  root re-export is dropped at the next major once consumers have a codemod
   (`StackedCardRail` is new to the published surface either way — it was
   `pattern`-tiered in the manifest but missing from `src/index.ts`, so it has no
   root re-export to deprecate).
 
   This is the non-breaking half of the hds#254 decision. The 41 `fold` API
-  absorptions in the same disposition table wait for 1.0 and an `ops` codemod —
+  absorptions in the same disposition table wait for 1.0 and a consumer codemod —
   tracked on hds#254/hds#124, not filed as new issues.
 
 - d41c65e: Standard type ramp (Adrian's 2026-09-26 decision on hds#283): lift Tailwind 4's
@@ -270,12 +270,12 @@
     the ramp (`command-palette.tsx`, `badge.tsx`, `segmented-control.tsx`)
     replaced with ramp-driven `text-xs` / `text-sm` utilities (now that
     `tailwind.config.tokens.cjs` wires `fontSize.*` straight onto these same
-    primitives, this also closes the fork with `hirobius/concrete`'s Tailwind
+    primitives, this also closes the fork with a consumer app's Tailwind
     defaults).
 
-  Base-size rationale recorded in `DECISIONS.md`. Not in this pass: concrete's
+  Base-size rationale recorded in `DECISIONS.md`. Not in this pass: a consumer's
   duplicated display/h1 CSS clamp mins, Figma `figma:push`/`figma:snapshot
---ingest` re-sync, and ops's 54 call sites on the `xs` rung (tracked as
+--ingest` re-sync, and a consumer app's 54 call sites on the `xs` rung (tracked as
   remaining work on hds#283).
 
 - d41c65e: Table: `TableColumn` gains optional `sortable`, `sortDirection` (`'ascending' | 'descending' | 'none'`), and `onSort`. Sortable columns render a real button inside the header cell, set `aria-sort` on the header cell, and show a token-sized direction glyph (ArrowUp/ArrowDown/ArrowUpDown). Non-sortable columns render exactly as before (pixel parity).
@@ -397,7 +397,7 @@
   - **Fixes:** Radio's colour transition now actually animates (hds#257); StackedCardRail no longer breaks its styles when server-rendered (hds#284).
   - **Deprecations:** `ComponentInstanceMatrix`, `FoundationSwatch`, `Sketch`, `Token` and `CinematicLink` are docs-internal and now warn once. They leave the published barrel in 1.0.0 (hds#232).
   - **Smaller bundle:** the main entry drops from 202 to 183 kB gzip, because the docs-only token corpus no longer ships in the published library (hds#279).
-- Type-ramp prerequisites (hds#283, steps 0–3). **Removes six unused primitive tokens**: `--primitive-typography-size-2xs`, `--primitive-typography-weight-light`, `--primitive-typography-weight-semibold`, and `--primitive-typography-letterSpacing-tighter` / `-wide` / `-wider`. None had a consumer in hds, ops or concrete. Icons are now sized from `primitive.size.16/20/24` instead of the type scale; a `tracking-caps` utility replaces stock `tracking-wide` for eyebrow text; DateInput and DateTimeInput calendar buttons no longer collapse under flexbox; and a type specimen story documents the scale.
+- Type-ramp prerequisites (hds#283, steps 0–3). **Removes six unused primitive tokens**: `--primitive-typography-size-2xs`, `--primitive-typography-weight-light`, `--primitive-typography-weight-semibold`, and `--primitive-typography-letterSpacing-tighter` / `-wide` / `-wider`. None had a consumer in hds or the apps that use it. Icons are now sized from `primitive.size.16/20/24` instead of the type scale; a `tracking-caps` utility replaces stock `tracking-wide` for eyebrow text; DateInput and DateTimeInput calendar buttons no longer collapse under flexbox; and a type specimen story documents the scale.
 
 ## 0.15.0
 
@@ -440,7 +440,7 @@
   Router a module is a Server Component until it says otherwise, and a Server Component
   that calls a hook fails at render — so the first `import { Button } from
 '@hirobius/design-system'` in a Next.js page threw. No existing consumer had hit it
-  (ops is Vite, site-engine is Astro), which is exactly why a prospective user would have
+  (the consumer apps use Vite and Astro), which is exactly why a prospective user would have
   found it first.
 
   The directive is applied **per chunk, not as a blanket banner**. The framework-free
