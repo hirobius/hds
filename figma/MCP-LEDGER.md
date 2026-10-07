@@ -137,4 +137,19 @@ limit, then retried and committed, so 2 writes landed. **Session total: 13
 calls, 11 of them `use_figma`.** No rate-limit errors. The old library was only
 read; nothing was deleted or published.
 
+## 2026-10-07 · session `claude/dsr-74-figma-title-sync` (collect a Sync)
+
+Collecting the Sync Adrian ran in staging (plugin build 659efcc3, bundle from
+main 4ae32c7), per `figma/README.md` "Agent: collect a sync". Reads only; cap 6
+calls.
+
+| #   | Time (UTC) | Tool                                   | Kind | Purpose                                                | Result                                                                                                                                                                                                                                                                                                                       |
+| --- | ---------- | -------------------------------------- | ---- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 19:21      | `ReadMcpResource` (figma-use SKILL.md) | read | Mandatory skill load before any `use_figma`            | OK                                                                                                                                                                                                                                                                                                                           |
+| 2   | 19:21      | `use_figma`                            | read | Staging: `receipt.js` as generated (`const PAGE = 0;`) | OK. Head: Sync of 4ae32c7, model `61bd3dbf`, plugin 659efcc3, pushed 19:19:44Z, line `updated 56 · created 7 · deleted 0`, base `3029d7ea`, post `8f24178f`, 1 json page. Live: 6 collections, 9 modes, 389 variables, 10 text styles, 7 effect styles, `lastPush` matches. `--from-receipt` rebuilt `post`; drift 0, plan 0 |
+
+**Session total: 2 calls, 1 of them `use_figma` (read).** No rate-limit errors.
+Nothing was written to Figma. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not
+touched.
+
 Calls logged for 2026-10-07: 36 of 200 (16, 7 and 13).

@@ -1,15 +1,15 @@
 {
-  "checksum": "3029d7ea",
+  "checksum": "8f24178f",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-01T09:10:52.626Z",
+    "takenAt": "2026-10-07T19:19:44.761Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
-      "key": null
+      "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "0a5ebbff",
-      "pushedAt": "2026-10-01T09:10:52.592Z",
+      "modelHash": "61bd3dbf",
+      "pushedAt": "2026-10-07T19:19:44.750Z",
       "scope": null
     },
     "collections": [
@@ -1949,7 +1949,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 554.400024
+                "value": 546.400024
               }
             }
           },
@@ -2315,7 +2315,7 @@
             "name": "typography/family/display",
             "path": "primitive.typography.family.display",
             "resolvedType": "STRING",
-            "description": "Display face: Satoshi Bold (ITF), bound to display/h1/h2/h3 composites.",
+            "description": "Display face: Satoshi Bold (ITF), bound to the display and title composites.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2460,6 +2460,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 16
+              }
+            }
+          },
+          {
+            "id": "VariableID:2086:10",
+            "name": "typography/size/code",
+            "path": "primitive.typography.size.code",
+            "resolvedType": "FLOAT",
+            "description": "13px code size. The mono role (hds#485): one px below ui so code sits level with 14px prose.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-size-code)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 13
               }
             }
           },
@@ -5156,7 +5173,7 @@
             "name": "typography/body/font-family",
             "path": "semantic.typography.body.font-family",
             "resolvedType": "STRING",
-            "description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).",
+            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5180,7 +5197,7 @@
             "name": "typography/body/font-size",
             "path": "semantic.typography.body.font-size",
             "resolvedType": "FLOAT",
-            "description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).",
+            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -5204,7 +5221,7 @@
             "name": "typography/body/font-weight",
             "path": "semantic.typography.body.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).",
+            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -5214,12 +5231,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               },
               "Dark": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               }
             }
           },
@@ -5228,7 +5245,7 @@
             "name": "typography/body/letter-spacing",
             "path": "semantic.typography.body.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px). Converted from 0em at 16px.",
+            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6. Converted from 0em at 16px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -5250,7 +5267,7 @@
             "name": "typography/body/line-height",
             "path": "semantic.typography.body.line-height",
             "resolvedType": "FLOAT",
-            "description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).",
+            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6. Converted from 1.6 × 16px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -5260,10 +5277,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 24
+                "value": 25.6
               },
               "Dark": {
-                "value": 24
+                "value": 25.6
               }
             }
           },
@@ -5272,7 +5289,7 @@
             "name": "typography/caption/font-family",
             "path": "semantic.typography.caption.font-family",
             "resolvedType": "STRING",
-            "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283).",
+            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5296,7 +5313,7 @@
             "name": "typography/caption/font-size",
             "path": "semantic.typography.caption.font-size",
             "resolvedType": "FLOAT",
-            "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283).",
+            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -5320,7 +5337,7 @@
             "name": "typography/caption/font-weight",
             "path": "semantic.typography.caption.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283).",
+            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -5344,7 +5361,7 @@
             "name": "typography/caption/letter-spacing",
             "path": "semantic.typography.caption.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283). Converted from 0em at 12px.",
+            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6. Converted from 0em at 12px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -5366,7 +5383,7 @@
             "name": "typography/caption/line-height",
             "path": "semantic.typography.caption.line-height",
             "resolvedType": "FLOAT",
-            "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283).",
+            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6. Converted from 1.5 × 12px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -5376,10 +5393,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 16
+                "value": 18
               },
               "Dark": {
-                "value": 16
+                "value": 18
               }
             }
           },
@@ -5388,7 +5405,7 @@
             "name": "typography/display/font-family",
             "path": "semantic.typography.display.font-family",
             "resolvedType": "STRING",
-            "description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).",
+            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5412,7 +5429,7 @@
             "name": "typography/display/font-size",
             "path": "semantic.typography.display.font-size",
             "resolvedType": "FLOAT",
-            "description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).",
+            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -5422,12 +5439,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2018:726",
-                "to": "Hirobius/Primitives: typography/size/6xl"
+                "alias": "VariableID:5:43",
+                "to": "Hirobius/Primitives: typography/size/5xl"
               },
               "Dark": {
-                "alias": "VariableID:2018:726",
-                "to": "Hirobius/Primitives: typography/size/6xl"
+                "alias": "VariableID:5:43",
+                "to": "Hirobius/Primitives: typography/size/5xl"
               }
             }
           },
@@ -5436,7 +5453,7 @@
             "name": "typography/display/font-weight",
             "path": "semantic.typography.display.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).",
+            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -5460,7 +5477,7 @@
             "name": "typography/display/letter-spacing",
             "path": "semantic.typography.display.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl). Converted from -0.01em at 60px.",
+            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6. Converted from -0.01em at 48px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -5470,10 +5487,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": -0.6
+                "value": -0.48
               },
               "Dark": {
-                "value": -0.6
+                "value": -0.48
               }
             }
           },
@@ -5482,7 +5499,7 @@
             "name": "typography/display/line-height",
             "path": "semantic.typography.display.line-height",
             "resolvedType": "FLOAT",
-            "description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl). Converted from 1 × 60px.",
+            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6. Converted from 1.05 × 48px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -5492,10 +5509,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 60
+                "value": 50.400002
               },
               "Dark": {
-                "value": 60
+                "value": 50.400002
               }
             }
           },
@@ -5504,7 +5521,7 @@
             "name": "typography/eyebrow/font-family",
             "path": "semantic.typography.eyebrow.font-family",
             "resolvedType": "STRING",
-            "description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).",
+            "description": "deprecated: use semantic.typography.caption",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5528,7 +5545,7 @@
             "name": "typography/eyebrow/font-size",
             "path": "semantic.typography.eyebrow.font-size",
             "resolvedType": "FLOAT",
-            "description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).",
+            "description": "deprecated: use semantic.typography.caption",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -5552,7 +5569,7 @@
             "name": "typography/eyebrow/font-weight",
             "path": "semantic.typography.eyebrow.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).",
+            "description": "deprecated: use semantic.typography.caption",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -5576,7 +5593,7 @@
             "name": "typography/eyebrow/letter-spacing",
             "path": "semantic.typography.eyebrow.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px). Converted from 0.06em at 12px.",
+            "description": "deprecated: use semantic.typography.caption Converted from 0em at 12px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -5586,10 +5603,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 0.72
+                "value": 0
               },
               "Dark": {
-                "value": 0.72
+                "value": 0
               }
             }
           },
@@ -5598,7 +5615,7 @@
             "name": "typography/eyebrow/line-height",
             "path": "semantic.typography.eyebrow.line-height",
             "resolvedType": "FLOAT",
-            "description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).",
+            "description": "deprecated: use semantic.typography.caption Converted from 1.5 × 12px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -5608,10 +5625,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 16
+                "value": 18
               },
               "Dark": {
-                "value": 16
+                "value": 18
               }
             }
           },
@@ -5620,7 +5637,7 @@
             "name": "typography/h1/font-family",
             "path": "semantic.typography.h1.font-family",
             "resolvedType": "STRING",
-            "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).",
+            "description": "deprecated: use semantic.typography.title",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5644,7 +5661,7 @@
             "name": "typography/h1/font-size",
             "path": "semantic.typography.h1.font-size",
             "resolvedType": "FLOAT",
-            "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).",
+            "description": "deprecated: use semantic.typography.title",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -5654,12 +5671,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:43",
-                "to": "Hirobius/Primitives: typography/size/5xl"
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
               },
               "Dark": {
-                "alias": "VariableID:5:43",
-                "to": "Hirobius/Primitives: typography/size/5xl"
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
               }
             }
           },
@@ -5668,7 +5685,7 @@
             "name": "typography/h1/font-weight",
             "path": "semantic.typography.h1.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).",
+            "description": "deprecated: use semantic.typography.title",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -5692,7 +5709,7 @@
             "name": "typography/h1/letter-spacing",
             "path": "semantic.typography.h1.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged). Converted from -0.01em at 48px.",
+            "description": "deprecated: use semantic.typography.title Converted from -0.01em at 24px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -5702,10 +5719,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": -0.48
+                "value": -0.24
               },
               "Dark": {
-                "value": -0.48
+                "value": -0.24
               }
             }
           },
@@ -5714,7 +5731,7 @@
             "name": "typography/h1/line-height",
             "path": "semantic.typography.h1.line-height",
             "resolvedType": "FLOAT",
-            "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged). Converted from 1.25 × 48px.",
+            "description": "deprecated: use semantic.typography.title Converted from 1.25 × 24px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -5724,10 +5741,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 60
+                "value": 30
               },
               "Dark": {
-                "value": 60
+                "value": 30
               }
             }
           },
@@ -5736,7 +5753,7 @@
             "name": "typography/h2/font-family",
             "path": "semantic.typography.h2.font-family",
             "resolvedType": "STRING",
-            "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
+            "description": "deprecated: use semantic.typography.title",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5760,7 +5777,7 @@
             "name": "typography/h2/font-size",
             "path": "semantic.typography.h2.font-size",
             "resolvedType": "FLOAT",
-            "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
+            "description": "deprecated: use semantic.typography.title",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -5770,12 +5787,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:41",
-                "to": "Hirobius/Primitives: typography/size/3xl"
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
               },
               "Dark": {
-                "alias": "VariableID:5:41",
-                "to": "Hirobius/Primitives: typography/size/3xl"
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
               }
             }
           },
@@ -5784,7 +5801,7 @@
             "name": "typography/h2/font-weight",
             "path": "semantic.typography.h2.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
+            "description": "deprecated: use semantic.typography.title",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -5808,7 +5825,7 @@
             "name": "typography/h2/letter-spacing",
             "path": "semantic.typography.h2.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px). Converted from -0.01em at 30px.",
+            "description": "deprecated: use semantic.typography.title Converted from -0.01em at 24px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -5818,10 +5835,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": -0.3
+                "value": -0.24
               },
               "Dark": {
-                "value": -0.3
+                "value": -0.24
               }
             }
           },
@@ -5830,7 +5847,7 @@
             "name": "typography/h2/line-height",
             "path": "semantic.typography.h2.line-height",
             "resolvedType": "FLOAT",
-            "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
+            "description": "deprecated: use semantic.typography.title Converted from 1.25 × 24px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -5840,10 +5857,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 40
+                "value": 30
               },
               "Dark": {
-                "value": 40
+                "value": 30
               }
             }
           },
@@ -5852,7 +5869,7 @@
             "name": "typography/h3/font-family",
             "path": "semantic.typography.h3.font-family",
             "resolvedType": "STRING",
-            "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
+            "description": "deprecated: use semantic.typography.title",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5876,7 +5893,7 @@
             "name": "typography/h3/font-size",
             "path": "semantic.typography.h3.font-size",
             "resolvedType": "FLOAT",
-            "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
+            "description": "deprecated: use semantic.typography.title",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -5886,12 +5903,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:39",
-                "to": "Hirobius/Primitives: typography/size/xl"
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
               },
               "Dark": {
-                "alias": "VariableID:5:39",
-                "to": "Hirobius/Primitives: typography/size/xl"
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
               }
             }
           },
@@ -5900,7 +5917,7 @@
             "name": "typography/h3/font-weight",
             "path": "semantic.typography.h3.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
+            "description": "deprecated: use semantic.typography.title",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -5924,7 +5941,7 @@
             "name": "typography/h3/letter-spacing",
             "path": "semantic.typography.h3.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged). Converted from 0em at 20px.",
+            "description": "deprecated: use semantic.typography.title Converted from -0.01em at 24px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -5934,10 +5951,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 0
+                "value": -0.24
               },
               "Dark": {
-                "value": 0
+                "value": -0.24
               }
             }
           },
@@ -5946,7 +5963,7 @@
             "name": "typography/h3/line-height",
             "path": "semantic.typography.h3.line-height",
             "resolvedType": "FLOAT",
-            "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
+            "description": "deprecated: use semantic.typography.title Converted from 1.25 × 24px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -5956,10 +5973,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 28
+                "value": 30
               },
               "Dark": {
-                "value": 28
+                "value": 30
               }
             }
           },
@@ -5968,7 +5985,7 @@
             "name": "typography/mono/font-family",
             "path": "semantic.typography.mono.font-family",
             "resolvedType": "STRING",
-            "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
+            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5992,7 +6009,7 @@
             "name": "typography/mono/font-size",
             "path": "semantic.typography.mono.font-size",
             "resolvedType": "FLOAT",
-            "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
+            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6002,12 +6019,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:2086:10",
+                "to": "Hirobius/Primitives: typography/size/code"
               },
               "Dark": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:2086:10",
+                "to": "Hirobius/Primitives: typography/size/code"
               }
             }
           },
@@ -6016,7 +6033,7 @@
             "name": "typography/mono/font-weight",
             "path": "semantic.typography.mono.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
+            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -6040,7 +6057,7 @@
             "name": "typography/mono/letter-spacing",
             "path": "semantic.typography.mono.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px). Converted from 0em at 14px.",
+            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6. Converted from 0em at 13px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6062,7 +6079,7 @@
             "name": "typography/mono/line-height",
             "path": "semantic.typography.mono.line-height",
             "resolvedType": "FLOAT",
-            "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
+            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6. Converted from 1.5 × 13px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -6072,10 +6089,126 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 20
+                "value": 19.5
               },
               "Dark": {
-                "value": 20
+                "value": 19.5
+              }
+            }
+          },
+          {
+            "id": "VariableID:2086:11",
+            "name": "typography/title/font-family",
+            "path": "semantic.typography.title.font-family",
+            "resolvedType": "STRING",
+            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+            "scopes": [
+              "FONT_FAMILY"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-title-font-family)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:32",
+                "to": "Hirobius/Primitives: typography/family/display"
+              },
+              "Dark": {
+                "alias": "VariableID:5:32",
+                "to": "Hirobius/Primitives: typography/family/display"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2086:12",
+            "name": "typography/title/font-size",
+            "path": "semantic.typography.title.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-title-font-size)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
+              },
+              "Dark": {
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2086:13",
+            "name": "typography/title/font-weight",
+            "path": "semantic.typography.title.font-weight",
+            "resolvedType": "FLOAT",
+            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-title-font-weight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:49",
+                "to": "Hirobius/Primitives: typography/weight/bold"
+              },
+              "Dark": {
+                "alias": "VariableID:5:49",
+                "to": "Hirobius/Primitives: typography/weight/bold"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2086:14",
+            "name": "typography/title/letter-spacing",
+            "path": "semantic.typography.title.letter-spacing",
+            "resolvedType": "FLOAT",
+            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6. Converted from -0.01em at 24px.",
+            "scopes": [
+              "LETTER_SPACING"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-title-letter-spacing)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": -0.24
+              },
+              "Dark": {
+                "value": -0.24
+              }
+            }
+          },
+          {
+            "id": "VariableID:2086:15",
+            "name": "typography/title/line-height",
+            "path": "semantic.typography.title.line-height",
+            "resolvedType": "FLOAT",
+            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6. Converted from 1.25 × 24px.",
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-title-line-height)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 30
+              },
+              "Dark": {
+                "value": 30
               }
             }
           },
@@ -6084,7 +6217,7 @@
             "name": "typography/ui/font-family",
             "path": "semantic.typography.ui.font-family",
             "resolvedType": "STRING",
-            "description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).",
+            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -6108,7 +6241,7 @@
             "name": "typography/ui/font-size",
             "path": "semantic.typography.ui.font-size",
             "resolvedType": "FLOAT",
-            "description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).",
+            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6132,7 +6265,7 @@
             "name": "typography/ui/font-weight",
             "path": "semantic.typography.ui.font-weight",
             "resolvedType": "FLOAT",
-            "description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).",
+            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -6156,7 +6289,7 @@
             "name": "typography/ui/letter-spacing",
             "path": "semantic.typography.ui.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px). Converted from 0em at 14px.",
+            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6. Converted from 0em at 14px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6178,7 +6311,7 @@
             "name": "typography/ui/line-height",
             "path": "semantic.typography.ui.line-height",
             "resolvedType": "FLOAT",
-            "description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).",
+            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6. Converted from 1.5 × 14px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -6188,10 +6321,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 20
+                "value": 21
               },
               "Dark": {
-                "value": 20
+                "value": 21
               }
             }
           }
@@ -8347,13 +8480,13 @@
         "id": "S:e9a1ab5bc267352eb0a2c98b719647dd35552d63,",
         "name": "typography/body",
         "path": "semantic.typography.body",
-        "description": "Body prose. Satoshi medium, 16px, line-height 24px, max 60ch measure (hds#283: was 17px/28px).",
+        "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
         "fontFamily": "Satoshi",
-        "fontStyle": "Medium",
+        "fontStyle": "Regular",
         "fontSize": 16,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 24
+          "value": 25.6
         },
         "letterSpacing": {
           "unit": "PIXELS",
@@ -8372,13 +8505,13 @@
         "id": "S:13cc7b1dc5bb6d2099f8761089de4182291525de,",
         "name": "typography/caption",
         "path": "semantic.typography.caption",
-        "description": "Caption / helper text. Satoshi medium, 12px, line-height 16px. Matches the Figma typography/caption text style; now sourced from primitive.xs (hds#283).",
+        "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
         "fontFamily": "Satoshi",
         "fontStyle": "Medium",
         "fontSize": 12,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 16
+          "value": 18
         },
         "letterSpacing": {
           "unit": "PIXELS",
@@ -8397,17 +8530,17 @@
         "id": "S:b58ab8d66881d8332fb5c8cc929381d532dca46e,",
         "name": "typography/display",
         "path": "semantic.typography.display",
-        "description": "Display headline. 60px / Satoshi bold 700 / leading-none (hds#283: was 72px/5xl).",
+        "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
         "fontFamily": "Satoshi",
         "fontStyle": "Bold",
-        "fontSize": 60,
+        "fontSize": 48,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 60
+          "value": 50.400002
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": -0.6
+          "value": -0.48
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -8422,19 +8555,19 @@
         "id": "S:cbbb9de4dca75e29ab0543f170acf98350d2b3ef,",
         "name": "typography/eyebrow",
         "path": "semantic.typography.eyebrow",
-        "description": "Eyebrow / kicker label. Satoshi medium, 12px, caps tracking, uppercase (hds#283: was 13px/20px).",
+        "description": "deprecated: use semantic.typography.caption",
         "fontFamily": "Satoshi",
         "fontStyle": "Medium",
         "fontSize": 12,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 16
+          "value": 18
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": 0.72
+          "value": 0
         },
-        "textCase": "UPPER",
+        "textCase": "ORIGINAL",
         "boundVariables": {
           "fontFamily": "VariableID:13:22",
           "fontSize": "VariableID:13:23",
@@ -8447,17 +8580,17 @@
         "id": "S:c1eba418f3f10899f274da3be5f065b8224ad18e,",
         "name": "typography/h1",
         "path": "semantic.typography.h1",
-        "description": "Primary section headings (h1). 48px / Satoshi bold 700 / leading-tight (hds#283: rung renamed 4xl→5xl, px unchanged).",
+        "description": "deprecated: use semantic.typography.title",
         "fontFamily": "Satoshi",
         "fontStyle": "Bold",
-        "fontSize": 48,
+        "fontSize": 24,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 60
+          "value": 30
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": -0.48
+          "value": -0.24
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -8472,17 +8605,17 @@
         "id": "S:ce337aa4f18407405bd4eec0df14a8b209453744,",
         "name": "typography/h2",
         "path": "semantic.typography.h2",
-        "description": "Secondary section headings (h2). Satoshi bold 700, 30px, line-height 40px (hds#283: rung renamed, was 42px).",
+        "description": "deprecated: use semantic.typography.title",
         "fontFamily": "Satoshi",
         "fontStyle": "Bold",
-        "fontSize": 30,
+        "fontSize": 24,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 40
+          "value": 30
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": -0.3
+          "value": -0.24
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -8497,17 +8630,17 @@
         "id": "S:9d54f0f52fc7d0e8e9fd7b660f327a9a57c2df3e,",
         "name": "typography/h3",
         "path": "semantic.typography.h3",
-        "description": "Component and card headers (h3). 20px / Satoshi bold 700 500 / leading-snug (hds#283: rung renamed lg→xl, px unchanged).",
+        "description": "deprecated: use semantic.typography.title",
         "fontFamily": "Satoshi",
         "fontStyle": "Bold",
-        "fontSize": 20,
+        "fontSize": 24,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 28
+          "value": 30
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": 0
+          "value": -0.24
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -8522,13 +8655,13 @@
         "id": "S:3152dfb215c24e851e1a06cc92bb552a9c58b7e5,",
         "name": "typography/mono",
         "path": "semantic.typography.mono",
-        "description": "Monospace for code, token names, shortcuts. Geist Mono regular, 14px (hds#283: repointed xs→sm; xs alone would give 12px).",
+        "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
         "fontFamily": "Geist Mono",
         "fontStyle": "Regular",
-        "fontSize": 14,
+        "fontSize": 13,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 20
+          "value": 19.5
         },
         "letterSpacing": {
           "unit": "PIXELS",
@@ -8544,16 +8677,41 @@
         }
       },
       {
+        "id": "S:99bef052035a9b41fd89f515a7caf26e5543b184,",
+        "name": "typography/title",
+        "path": "semantic.typography.title",
+        "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+        "fontFamily": "Satoshi",
+        "fontStyle": "Bold",
+        "fontSize": 24,
+        "lineHeight": {
+          "unit": "PIXELS",
+          "value": 30
+        },
+        "letterSpacing": {
+          "unit": "PIXELS",
+          "value": -0.24
+        },
+        "textCase": "ORIGINAL",
+        "boundVariables": {
+          "fontFamily": "VariableID:2086:11",
+          "fontSize": "VariableID:2086:12",
+          "fontWeight": "VariableID:2086:13",
+          "letterSpacing": "VariableID:2086:14",
+          "lineHeight": "VariableID:2086:15"
+        }
+      },
+      {
         "id": "S:d0d958d10e42931dc895aff494d4223b234b1514,",
         "name": "typography/ui",
         "path": "semantic.typography.ui",
-        "description": "UI text for nav, labels, captions. Satoshi medium, 14px, line-height 20px (hds#283: was 15px/24px).",
+        "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
         "fontFamily": "Satoshi",
         "fontStyle": "Medium",
         "fontSize": 14,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 20
+          "value": 21
         },
         "letterSpacing": {
           "unit": "PIXELS",
