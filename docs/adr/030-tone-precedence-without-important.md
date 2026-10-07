@@ -1,6 +1,6 @@
 # ADR-030: Tone Precedence Without the Important Modifier
 
-**Status:** Accepted (2026-09-30)
+**Status:** Accepted (2026-09-30); amended 2026-10-07 for the 0.20.0 Button toggle and selectable Card
 
 ## Context
 
@@ -50,8 +50,18 @@ Tone beats variant by **class-group replacement in `cn`**, not by `!important`.
   empty.
 - **cva output is only ever rendered through `cn`.** Without tailwind-merge
   both the variant and the tone class reach the DOM and CSS source order picks
-  the winner. `buttonVariants` and `cardVariants` stay `@internal`, and both
-  components pass their cva output through `cn`.
+  the winner. `buttonVariants` and `cardVariants` stay module-private (0.20.0
+  stopped exporting root `*Variants`), and both components pass their cva
+  output through `cn`.
+- **A status tone owns a toggle's colours, on or off.** Button's toggle
+  on-state (`pressed`, hds#393) is a set of `data-[pressed=true]:` classes
+  added after cva. tailwind-merge cannot fold a variant-prefixed class into a
+  plain one, and the attribute selector outranks the tone class on
+  specificity, so Button adds the on-state classes only when `tone` is
+  `neutral`. A toned toggle renders the tone colours whether on or off, as it
+  did under the important tone; `aria-pressed` carries its state. Card's
+  `selectable` selection adds ring, focus and cursor classes only, none in a
+  border group, so it composes with tone unchanged.
 - **A consumer `className` overrides tone the same way it overrides variant.**
   cva appends `className` last, so it wins its group.
 - No `compoundVariants` for tone. Button's compound list stays the three
@@ -66,9 +76,11 @@ Tone beats variant by **class-group replacement in `cn`**, not by `!important`.
   and Card's `border` replaces `accent`'s `border-2`, giving the same 1px
   feedback border the important `border` gave.
 - The contract tests in `tests/primitive-contracts/` pin all 12 Button
-  variant x tone combos and Card's accent + danger combo at the class level,
-  and the `ToneMatrix` story puts every Button combo in front of the axe gate
-  and the Chromatic modes matrix.
+  variant x tone combos in every shape a Button renders in (a text label,
+  `iconOnly`, a toggle off and on, `asChild`) and every Card variant x tone
+  combo, plain, `bordered`, selectable and selected, at the class level. The
+  Button and Card `ToneMatrix` stories put the same combos in front of the axe
+  gate, and Button's also in front of the Chromatic modes matrix.
 
 ## Consequences
 
@@ -78,11 +90,13 @@ Tone beats variant by **class-group replacement in `cn`**, not by `!important`.
   Button or Card.
 - Adding a state group to a variant without adding it to every tone string
   lets the variant's state colour leak into toned buttons. The Button contract
-  test reads each variant's classes off `buttonVariants` rather than a list of
-  its own, so the variant x tone combos go red as soon as a variant gains a
+  test reads each variant's classes off a rendered Button rather than a list
+  of its own, so the variant x tone combos go red as soon as a variant gains a
   group that the tone strings do not replace.
 - Rendering `buttonVariants(...)` or `cardVariants(...)` without `cn` would
-  break tone precedence. Both helpers are `@internal` for that reason.
+  break tone precedence. Both helpers stay module-private for that reason.
+- A toned toggle has no visual on-state, the same as before this ADR. Giving
+  it one is a design change for its own issue, not part of this refactor.
 - The published CSS carries no important utility rule, and keeping it that way
   reaches past `src/`. Tailwind v4's automatic source detection reads every
   file the repo does not .gitignore, tests and docs included, so an
