@@ -68,6 +68,10 @@ const MARKERS = [
   'layout-gap-ok',
   // check-type-ramp.mjs (hds#486) documents and honors this marker.
   'type-ramp-ok',
+  // Same gap for src/app/components/__tests__/no-css-var-in-motion-animate.test.ts,
+  // which honors `motion-animate-var-ok` (hds#372).
+  // scripts/__tests__/check-exemptions.test.mjs pins every sibling-gate marker.
+  'motion-animate-var-ok',
 ];
 
 const markerPattern = new RegExp(`\\b(${MARKERS.join('|')}):\\s*(.*)$`);

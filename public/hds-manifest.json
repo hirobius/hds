@@ -2864,6 +2864,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ],
       "usage": {
@@ -3513,7 +3514,8 @@
         "primitives-button--primary",
         "primitives-button--secondary",
         "primitives-button--small",
-        "primitives-button--tertiary"
+        "primitives-button--tertiary",
+        "primitives-button--tone-matrix"
       ],
       "usage": {
         "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed.",
@@ -7008,6 +7010,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7054,6 +7057,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7100,6 +7104,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7151,6 +7156,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7219,6 +7225,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ],
       "usage": {
@@ -7298,6 +7305,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },
@@ -7344,6 +7352,7 @@
         "primitives-card--padding-variants",
         "primitives-card--progress-slot",
         "primitives-card--selectable",
+        "primitives-card--tone-matrix",
         "primitives-card--variant-accent"
       ]
     },

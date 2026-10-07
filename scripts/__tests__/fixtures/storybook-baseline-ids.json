@@ -123,6 +123,7 @@
     "primitives-button--secondary",
     "primitives-button--small",
     "primitives-button--tertiary",
+    "primitives-button--tone-matrix",
     "primitives-callout--accent",
     "primitives-callout--all-tones",
     "primitives-callout--danger",
@@ -408,6 +409,7 @@
     "primitives-card--selectable",
     "patterns-metrictile--default",
     "patterns-metrictile--danger",
-    "patterns-metrictile--docs"
+    "patterns-metrictile--docs",
+    "primitives-card--tone-matrix"
   ]
 }
