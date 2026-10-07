@@ -560,16 +560,19 @@ export function createFakeFigma({
 
 /**
  * An in-memory file holding exactly what `snapshot` records (a committed
- * figma/snapshot.json's `snapshot`), ids included, named as it records, with
+ * figma/snapshot.json's `snapshot`), ids included, named and keyed as it
+ * records (a snapshot taken where Figma gave no key leaves `fileKey` unset), with
  * every font its text styles use (plus Inter Regular, a new style's default),
  * and no writes logged yet.
  */
 export function seededFakeFigma(snapshot, options = {}) {
-  return createFakeFigma({
+  const figma = createFakeFigma({
     fileName: snapshot.file.name,
     fonts: textStyleFonts(snapshot.textStyles),
     ...options,
   }).seed(snapshot);
+  figma.fileKey = snapshot.file.key ?? undefined;
+  return figma;
 }
 
 /** The fonts these text styles (model or snapshot records) use, plus Inter Regular, a new text style's default. */
