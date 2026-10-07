@@ -528,7 +528,7 @@
     },
     {
       "id": "check-record-freshness",
-      "description": "ADR-010 retired the auto-generated docs/SYSTEMS-LOG.md ledger and named the replacement: git history + CHANGELOG.md + ADRs, plus status.json for the fleet dashboard. Nothing enforced staying current, so it held only when someone remembered (hds#249). Fails when a pushed commit touches src/, scripts/ or docs/adr/ and status.json updatedAt predates it, naming the offending commit and the fix. Separately fails when a pushed commit touches src/ with no pending .changeset/*.md and no \"skip-changeset\" marker in its own message, so a source change cannot ship with CHANGELOG.md left to go stale.",
+      "description": "ADR-010 retired the auto-generated docs/SYSTEMS-LOG.md ledger and named the replacement: git history + CHANGELOG.md + ADRs, plus status.json for the fleet dashboard. Nothing enforced staying current, so it held only when someone remembered (hds#249). Fails when a pushed commit touches src/, scripts/ or docs/adr/ and status.json updatedAt predates it, unless a pushed commit adds a `.status/<branch>.md` note (conflict-free; `pnpm status:fold` folds notes into status.json on main). Commits already on origin/main are ignored. Names the offending commit and the fix. Separately fails when a pushed commit touches src/ with no pending .changeset/*.md and no \"skip-changeset\" marker in its own message, so a source change cannot ship with CHANGELOG.md left to go stale.",
       "severity": "error",
       "gateScript": "scripts/check-record-freshness.mjs",
       "owner": "Adrian",

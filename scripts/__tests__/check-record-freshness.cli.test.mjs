@@ -130,4 +130,28 @@ describe('check-record-freshness CLI', () => {
     const result = runGate('HEAD~1..HEAD');
     expect(result.status).toBe(0);
   });
+
+  it('a .status/ note in the range replaces the updatedAt bump; the stale record still fails without one', () => {
+    writeFileSync(
+      path.join(dir, 'status.json'),
+      JSON.stringify({ updatedAt: '2020-01-01T00:00:00Z' }, null, 2),
+    );
+    commitAll(dir, 'chore(status): back to stale');
+    writeFileSync(path.join(dir, 'src', 'd.ts'), 'export const d = 4;\n');
+    commitAll(dir, 'fix: d\n\nskip-changeset', {
+      GIT_COMMITTER_DATE: '2032-01-01T00:00:00Z',
+      GIT_AUTHOR_DATE: '2032-01-01T00:00:00Z',
+    });
+
+    const stale = runGate('HEAD~1..HEAD');
+    expect(stale.status).not.toBe(0);
+    expect(stale.stderr).toMatch(/status\.json is stale/);
+    expect(stale.stderr).toMatch(/\.status\//);
+
+    mkdirSync(path.join(dir, '.status'), { recursive: true });
+    writeFileSync(path.join(dir, '.status', 'claude-d.md'), 'Added d.\n');
+    commitAll(dir, 'chore(status): note');
+
+    expect(runGate('HEAD~2..HEAD').status).toBe(0);
+  });
 });
