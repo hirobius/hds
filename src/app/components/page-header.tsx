@@ -51,9 +51,9 @@ export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHead
           <Stack direction="row" wrap="wrap" gap="normal" align="start" justify="space-between">
             <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="start">
               <Heading
-                // inline-ok: the one canonical page-title size, bound to the heading2 type style
+                // inline-ok: the one canonical page-title size, bound to the title role
                 style={{
-                  ...hds.typeStyles.heading2,
+                  ...hds.typeStyles.title,
                   margin: 0,
                   color: 'var(--semantic-color-content-primary)',
                 }}

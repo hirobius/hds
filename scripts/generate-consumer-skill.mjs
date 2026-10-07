@@ -99,7 +99,7 @@ function importSection(packageExports) {
     (k) => k !== '.' && k !== './package.json',
   );
   return [
-    `Install \`${PKG}\`, import core components from the root barrel (\`import { Button } from '${PKG}'\`) and the pattern-tier components from \`${PATTERNS}\` (\`import { Page } from '${PATTERNS}'\`), and load one stylesheet once at the app root.`,
+    `Install \`${PKG}\`, import core components from the root barrel (\`import { Button } from '${PKG}'\`) and the pattern-tier components from \`${PATTERNS}\` (\`import { Page } from '${PATTERNS}'\`), and load one stylesheet once at the app root. Add \`import '${PKG}/fonts.css'\` only if you want the HDS brand fonts (optional; skip it to bring your own).`,
     '',
     ...(subpaths.length
       ? ['Subpath exports:', '', ...subpaths.map((k) => `- \`${PKG}/${k.replace(/^\.\//, '')}\``)]

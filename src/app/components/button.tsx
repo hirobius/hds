@@ -42,7 +42,7 @@ import { isDevelopment } from '../../lib/env';
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (Tailwind has no single utility for transition-[colors,filter]) and the 9999px inset-shadow spread that fills the padding box for the pressed wash
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -69,9 +69,9 @@ const buttonVariants = /* @__PURE__ */ cva(
         info: '!border-transparent !bg-feedback-bg-info !text-feedback-info hover:!brightness-95 dark:hover:!brightness-110',
       },
       size: {
-        sm: 'h-8 px-3 text-xs [&_svg]:size-3.5',
-        md: 'h-10 px-4 py-2 text-sm [&_svg]:size-4',
-        lg: 'h-12 px-6 text-base [&_svg]:size-5',
+        sm: 'h-8 px-3 hds-type-caption [&_svg]:size-3.5',
+        md: 'h-10 px-4 py-2 hds-type-ui [&_svg]:size-4',
+        lg: 'h-12 px-6 hds-type-ui [&_svg]:size-5',
       },
       iconOnly: {
         true: 'p-0',
@@ -92,7 +92,11 @@ const buttonVariants = /* @__PURE__ */ cva(
   },
 );
 
-const toggleOnClasses = 'data-[pressed=true]:bg-accent data-[pressed=true]:text-accent-foreground';
+// On-state fills with the accent surface (`role.primary`), not `bg-accent`: that
+// role maps to accentSubtle, which is within 1 step of the secondary variant's
+// background, so a pressed toggle looked the same as an unpressed one (hds#522).
+const toggleOnClasses =
+  'data-[pressed=true]:border-transparent data-[pressed=true]:bg-primary data-[pressed=true]:text-primary-foreground data-[pressed=true]:hover:bg-primary/90';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -103,6 +107,8 @@ export interface ButtonProps
   extends
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
     Omit<ButtonVariantProps, 'iconOnly'> {
+  /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (an outline), so pass `primary` for the main action. */
+  variant?: ButtonVariantProps['variant'];
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
   /** Optional accessible label used when children are not suitable as the name. */
