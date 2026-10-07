@@ -35,7 +35,9 @@
  *         notes/<changeset>.json and must fit PendingNote. Each note step
  *         becomes a release step field for field, its id prefixed with the
  *         version and its source the note's citation unless it names its
- *         own. They were written before the release, so they are not marked
+ *         own. A note with no steps whose impact is look, behavior or
+ *         breaking becomes one step from its plain line (noteSteps). They
+ *         were written before the release, so they are not marked
  *         backfilled. The facts they list are theirs: no name rule
  *         classifies them.
  *   - the data files the rules name, such as 0.20.0's removed.json and
@@ -253,9 +255,19 @@ function handSteps(release) {
 }
 
 /**
+ * The step kind that records a stepless note's plain line, by its impact: no
+ * kind says breaking, so a breaking change with no step is a manual one.
+ */
+const PLAIN_LINE_KIND = { look: 'look', behavior: 'behavior', breaking: 'manual' };
+
+/**
  * The steps of the release's frozen upgrade notes: each note step with the
  * version on its id and, unless it names its own, its changeset's CHANGELOG
- * entry as its source. A CHANGELOG citation must carry its needle.
+ * entry as its source. A note with no steps whose impact is look, behavior
+ * or breaking is the change its plain line tells, so that line becomes one
+ * step, <version>/<kind>/<changeset> (PLAIN_LINE_KIND), rather than dropping
+ * out of the ledger; a none or additive note asks nothing of a consumer. A
+ * CHANGELOG citation must carry its needle.
  */
 function noteSteps(release, notes) {
   return Object.entries(release.notes ?? {}).flatMap(([name, cite]) => {
@@ -263,7 +275,20 @@ function noteSteps(release, notes) {
       throw new Error(`${release.version} note ${name} cites ${cite.source} with no needle`);
     }
     if (!cite.source) throw new Error(`${release.version} note ${name} has no source`);
-    return (notes[name].steps ?? []).map(({ id, source, ...step }) => ({
+    const note = notes[name];
+    const kind = PLAIN_LINE_KIND[note.impact];
+    if (!note.steps && kind) {
+      return [
+        {
+          id: `${release.version}/${kind}/${name}`,
+          kind,
+          impact: note.impact,
+          plain: note.plain,
+          source: cite.source,
+        },
+      ];
+    }
+    return (note.steps ?? []).map(({ id, source, ...step }) => ({
       id: `${release.version}/${id}`,
       ...step,
       source: source ?? cite.source,

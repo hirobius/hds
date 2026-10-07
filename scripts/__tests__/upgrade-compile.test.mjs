@@ -757,6 +757,18 @@ describe('compile.mjs --release, right after changeset version', () => {
     ]);
   });
 
+  it('keeps a note with no steps in the record: its plain line is the step', () => {
+    const root = versionedRepo();
+    const plain = 'Tooltip now opens after 300ms, so update tests that expect it at once.';
+    note(root, 'soft-shadow', { impact: 'behavior', plain });
+    expect(run(['--release', '--date', '2026-10-08', '--repo', root]).status).toBe(0);
+    const ledger = JSON.parse(read(root, 'upgrade/releases/0.21.0.json'));
+    expect(ledger.steps.map((step) => step.id)).toContain('0.21.0/behavior/soft-shadow');
+    expect(ledger.summary).toBe('2 changes to make by hand (1 breaking).');
+    expect(read(root, 'UPGRADING.md')).toContain(`- ${plain}\n`);
+    expect(read(root, 'CHANGELOG.md')).toContain(`- Do by hand: ${plain}\n`);
+  });
+
   it('records nothing a second time, and nothing on a tree whose version already has its snapshot', () => {
     const root = versionedRepo();
     run(['--release', '--date', '2026-10-08', '--repo', root]);

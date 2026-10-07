@@ -112,7 +112,10 @@ PR) runs `changeset version`, then `node scripts/upgrade/compile.mjs
 
 1. It builds the ledger in memory from the notes in `upgrade/pending/` and
    the snapshot of the tree, read from source with no build. A fact no note
-   step lists stops it with nothing written.
+   step lists, or a step listing a fact the diff lacks, stops it with nothing
+   written. A `look`, `behavior` or `breaking` note with no steps becomes one
+   step from its plain line (`<kind>/<changeset>`; kind `manual` when it is
+   breaking).
 2. It writes `docs/api/releases/<version>.json`, freezes each note byte for
    byte at `upgrade/sources/<version>/notes/<name>.json`, writes
    `upgrade/sources/<version>/release.json` (each note cites its changeset's

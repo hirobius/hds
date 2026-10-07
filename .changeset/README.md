@@ -36,6 +36,8 @@ Ralph gate) and fails until both are right.
      behaves, a deprecation with `removeIn`, a removed CSS variable). Give a
      step `detect` so the upgrade command can find a use, and `done` when it
      asks the consumer to add something, so the command can tell it is there.
+     A `look`, `behavior` or `breaking` note with no steps is recorded as one
+     step from its `plain` line, with nothing to detect.
 4. Commit both files with the change.
 
 `.changeset/README.md` and `config.json` need no note. A change that ships
@@ -49,7 +51,9 @@ push time when `src/`, the shipped codemods, `mcp/`, the ESLint plugin,
 
 - Every fact since the newest `docs/api/releases/<version>.json` is listed by
   a step's `facts` in some pending note.
-- Every changeset has its note, and every note fits the schema.
+- Every changeset has its note, every note has its changeset, and every note
+  fits the schema.
+- No step lists a fact the diff no longer has (a reverted removal).
 - Something breaking (a breaking fact, a note that says `breaking`, or a step
   that removes, moves, renames or folds something) comes with a minor
   changeset below 1.0 and a major from 1.0.
