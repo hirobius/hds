@@ -7,19 +7,14 @@
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
   "generatedAt": "2026-10-07",
-  "overrides": {
-    "StatusDot": {
-      "class": "internal",
-      "reason": "deprecated: @removeIn 0.21.0, replaced by Badge dot"
-    }
-  },
+  "overrides": {},
   "summary": {
-    "total": 98,
+    "total": 97,
     "byClass": {
       "library": 56,
       "slot": 19,
       "layout": 9,
-      "internal": 14
+      "internal": 13
     },
     "libraryLinked": 56,
     "libraryMissing": 0,
@@ -665,16 +660,6 @@
       "category": "Display",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-247"
-    },
-    {
-      "name": "StatusDot",
-      "class": "internal",
-      "parent": null,
-      "category": "Feedback",
-      "tier": "primitive",
-      "figmaUrl": null,
-      "overriddenFrom": "library",
-      "overrideReason": "deprecated: @removeIn 0.21.0, replaced by Badge dot"
     },
     {
       "name": "StatusListItem",

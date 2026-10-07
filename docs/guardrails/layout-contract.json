@@ -501,13 +501,6 @@
       "kind": "leaf",
       "probe": true
     },
-    "StatusDot": {
-      "width": "hug",
-      "height": "hug",
-      "pads": false,
-      "kind": "leaf",
-      "probe": true
-    },
     "StatusListItem": {
       "width": "fill",
       "height": "hug",

@@ -109,15 +109,15 @@ describe('readComponentTags — deprecation (hds#390)', () => {
 });
 
 describe('discoverHdsComponents — deprecations (hds#390)', () => {
-  it('finds only StatusDot deprecated once 0.20.0 removed the five hds#232 docs/lab internals', () => {
+  it('finds no component deprecated once 0.21.0 removed StatusDot (hds#465)', () => {
     // Deprecated JSDoc on a type or prop (ActivityFeed's ActivityStatus) does
     // not deprecate a component, so the assertion scopes to components.
-    // StatusDot is deprecated for Badge dot, removed in 0.21.0 (hds#395).
+    // StatusDot was the last one: deprecated for Badge dot, removed in 0.21.0 (hds#465).
     const { components } = discoverHdsComponents();
     const deprecated = components
       .filter((c) => c.deprecation && c.filePath.startsWith('src/app/components/'))
       .map((c) => [c.name, c.deprecation.removeIn]);
-    expect(deprecated).toEqual([['StatusDot', '0.21.0']]);
+    expect(deprecated).toEqual([]);
     const names = components.map((c) => c.name);
     for (const gone of [
       'CinematicLink',

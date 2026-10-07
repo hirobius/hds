@@ -66,7 +66,7 @@ To preserve accuracy, zero-debt architecture, and maintainability across automat
 
 ### Rule 4: Exclude 32 Removed Components & Deprecated Variants
 
-- Do not create component pages for the 32 components removed in v0.20.0 (e.g. `AppShell`, `Calendar`, `SideNav`, `TopNav`, `ContextMenu`, etc.) or deprecated primitives like `StatusDot`.
+- Do not create component pages for the 32 components removed in v0.20.0 (e.g. `AppShell`, `Calendar`, `SideNav`, `TopNav`, `ContextMenu`, etc.) or `StatusDot` (removed in 0.21.0).
 - Deprecated and removed components are documented exclusively in `guides/deprecation.mdx`.
 - Ground truth for core components is `scripts/lib/core-components.mjs`.
 
