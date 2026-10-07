@@ -46,6 +46,10 @@ This charter outranks the process rules below (not the HARD RULES above).
 3. **SELF-HEAL:** If your automated tests fail, do not ask the user for help. Read the terminal output, identify your CSS/layout math error, fix the code, and re-run the tests until they pass.
 4. **FINALIZATION:** Only report back to the user when the tests are 100% green. Do not claim a task is complete if the tests are failing.
 
+### Reporting to Adrian
+
+Message Adrian only when work is done, blocked, or needs his decision. No progress narration. Max 5 lines.
+
 ### 1a. GUARDRAILS (read once at session start)
 
 The repo has a **closed-loop guardrail system** every agent must understand:
