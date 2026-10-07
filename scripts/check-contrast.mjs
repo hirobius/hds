@@ -16,9 +16,9 @@
  * Exits 1 if any pair fails.
  */
 
-import { readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const tokenPath = resolve(__dirname, '../hirobius.tokens.json');
@@ -32,7 +32,7 @@ const fixtureFile = process.env.FIXTURE_FILE;
 // ── Token loading ─────────────────────────────────────────────
 
 const targetFile = isFixtureMode && fixtureFile ? resolve(fixtureFile) : tokenPath;
-const tokens = JSON.parse(readFileSync(targetFile, 'utf8'));
+const tokens = readTokenSource(targetFile);
 
 // ── Path resolver ─────────────────────────────────────────────
 

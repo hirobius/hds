@@ -19,6 +19,7 @@
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -48,7 +49,7 @@ function extractRootVar(css, varName) {
   return match ? match[1].trim() : null;
 }
 
-const raw = JSON.parse(readFileSync(join(INPUT_ROOT, 'hirobius.tokens.json'), 'utf8'));
+const raw = readTokenSource(join(INPUT_ROOT, 'hirobius.tokens.json'));
 const css = readFileSync(join(INPUT_ROOT, 'src', 'styles', 'theme.css'), 'utf8');
 
 const errors = [];

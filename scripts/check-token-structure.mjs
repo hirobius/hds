@@ -27,9 +27,9 @@
  * No suppression mechanism. All violations require a structural fix in the JSON.
  */
 
-import { readFileSync } from 'fs';
 import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -241,7 +241,7 @@ function walkTokens(node, path, inheritedType = null) {
 const targetFile = isFixtureMode && fixtureFile ? resolve(fixtureFile) : TOKENS_FILE;
 let tokens;
 try {
-  tokens = JSON.parse(readFileSync(targetFile, 'utf-8'));
+  tokens = readTokenSource(targetFile);
 } catch (err) {
   console.error(`✗ check-token-structure — failed to parse ${targetFile}: ${err.message}`);
   process.exit(1);
