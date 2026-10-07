@@ -113,7 +113,7 @@ export function buildTypography(raw) {
   const monoRaw = raw.primitive?.typography?.family?.mono?.$value;
   const family = (Array.isArray(fontRaw) ? fontRaw[0] : fontRaw) ?? 'Clash Grotesk';
   const displayFam = (Array.isArray(displayRaw) ? displayRaw[0] : displayRaw) ?? 'Clash Display';
-  const mono = (Array.isArray(monoRaw) ? monoRaw[0] : monoRaw) ?? 'Geist Mono';
+  const mono = (Array.isArray(monoRaw) ? monoRaw[0] : monoRaw) ?? 'IBM Plex Mono';
 
   const sizeMap = Object.fromEntries(
     Object.keys(sizes)

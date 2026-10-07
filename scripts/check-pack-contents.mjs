@@ -59,7 +59,7 @@ export const REQUIRED = [
   'dist/fonts/satoshi-400.woff2',
   'dist/fonts/satoshi-500.woff2',
   'dist/fonts/satoshi-700.woff2',
-  'dist/fonts/geist-mono-400.woff2',
+  'dist/fonts/ibm-plex-mono-400.woff2',
 ];
 
 /**

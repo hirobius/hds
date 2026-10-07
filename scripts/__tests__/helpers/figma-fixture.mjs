@@ -27,7 +27,7 @@ export const FIXTURE_FONTS = Object.freeze([
   { family: 'Satoshi', style: 'Regular' },
   { family: 'Satoshi', style: 'Medium' },
   { family: 'Satoshi', style: 'Bold' },
-  { family: 'Geist Mono', style: 'Medium' },
+  { family: 'IBM Plex Mono', style: 'Medium' },
 ]);
 
 /** An empty in-memory Figma file whose editor has every font the fixture needs. */

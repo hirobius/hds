@@ -207,7 +207,7 @@ describe('buildFigmaModel — ch widths', () => {
     const changed = structuredClone(fixture);
     changed.semantic.typography.body.$value.fontFamily = '{primitive.typography.family.mono}';
     expect(() => buildFigmaModel(changed)).toThrow(
-      /ch.*measured for Satoshi 400.*Geist Mono 400.*re-measure/,
+      /ch.*measured for Satoshi 400.*IBM Plex Mono 400.*re-measure/,
     );
   });
 });
@@ -343,7 +343,7 @@ describe('buildFigmaModel — typography', () => {
 
   it('carries textTransform as the text style case', () => {
     expect(style('typography/caption')).toMatchObject({
-      fontFamily: 'Geist Mono',
+      fontFamily: 'IBM Plex Mono',
       fontStyle: 'Medium',
       textCase: 'UPPER',
     });

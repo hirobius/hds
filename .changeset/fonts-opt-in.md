@@ -5,7 +5,7 @@
 Brand fonts are now an opt-in `fonts.css` instead of being base64-embedded in `tokens.css` and `styles.css` (hds#479). Consumers that want the HDS fonts must add one import:
 
 ```ts
-import '@hirobius/design-system/fonts.css'; // Satoshi 400/500/700 + Geist Mono 400
+import '@hirobius/design-system/fonts.css'; // Satoshi 400/500/700 + IBM Plex Mono 400
 ```
 
 Without it, text falls back to the family stack in `--hds-font-family` and `--hds-font-family-mono` (`"Satoshi", system-ui, …`), so a consumer that brings its own fonts no longer downloads ours. `fonts.css` ships with the four woff2 files in `dist/fonts/`; its URLs are relative (`./fonts/satoshi-400.woff2`), so Vite, Next and webpack resolve and hash them, and every face keeps `font-display: swap`.

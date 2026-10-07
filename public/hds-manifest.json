@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-07T05:00:54.950Z",
+  "generated": "2026-10-07T17:57:55.770Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -9726,8 +9726,8 @@
         "path": "primitive.typography.family.mono",
         "cssVar": "--primitive-typography-family-mono",
         "type": "fontFamily",
-        "description": "Monospace face: Geist Mono. Falls back to Courier New, monospace.",
-        "value": "\"Geist Mono\", \"Courier New\", monospace"
+        "description": "Monospace face: IBM Plex Mono. Falls back to Courier New, monospace.",
+        "value": "\"IBM Plex Mono\", \"Courier New\", monospace"
       },
       {
         "path": "primitive.typography.size.xs",
@@ -11055,7 +11055,7 @@
         "type": "typography",
         "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
         "composite": {
-          "fontFamily": "\"Geist Mono\", \"Courier New\", monospace",
+          "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
           "fontSize": "13px",
           "fontWeight": "400",
           "letterSpacing": "0em",
