@@ -1,0 +1,8 @@
+{
+  "version": "0.19.1",
+  "date": "2026-09-30",
+  "bump": "patch",
+  "summary": "Smaller Button-only bundles for webpack and esbuild, and Storybook accessibility fixes; nothing for a consumer to change.",
+  "backfilled": true,
+  "steps": []
+}

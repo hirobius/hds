@@ -1,0 +1,194 @@
+{
+  "$comment": "Every export 0.20.0 removed from the package root or @hirobius/design-system/patterns with no replacement (hds#389 R1 docs/lab components, hds#394 wave 4a and the root *Variants helpers), keyed by the source module that exported it. Hand-kept because the modules are gone; scripts/__tests__/patterns-subpath-removed.test.mjs fails if any listed name is exported from the root or /patterns again. codemods/patterns-subpath.mjs reports an import of a listed name for a manual edit instead of moving it. Names that moved (/patterns) or were renamed (Hds* aliases) are not here; MIGRATIONS.md '0.20.0 removals' has every row. `replaced` holds the names removed with a survivor (hds#394 wave 4b, and hds#395 B5 where a codemod of its own rewrites ops' sites), by module, each with the survivor the codemod's report names (\"use <survivor>\") instead of \"no replacement\".",
+  "release": "0.20.0",
+  "modules": {
+    "src/app/components/activity-feed.tsx": [
+      "activityAvatarVariants",
+      "ActivityEvent",
+      "ActivityFeed",
+      "ActivityFeedProps",
+      "ActivityStatus",
+      "ActivityTone",
+      "activityToneVariants",
+      "defaultActivityEvents"
+    ],
+    "src/app/components/app-shell.tsx": ["AppShell", "AppShellProps", "appShellVariants"],
+    "src/app/components/avatar-group.tsx": ["overflowBubbleVariants"],
+    "src/app/components/badge.tsx": ["badgeVariants"],
+    "src/app/components/blockquote.tsx": ["blockquoteVariants"],
+    "src/app/components/breadcrumb.tsx": ["crumbLabelVariants"],
+    "src/app/components/button-group.tsx": [
+      "ButtonGroup",
+      "ButtonGroupProps",
+      "buttonGroupVariants"
+    ],
+    "src/app/components/button.tsx": ["buttonVariants"],
+    "src/app/components/calendar.tsx": ["Calendar", "CalendarProps"],
+    "src/app/components/card.tsx": ["cardVariants"],
+    "src/app/components/carousel.tsx": ["Carousel", "carouselControlVariants", "CarouselProps"],
+    "src/app/components/cinematic-link.tsx": ["CinematicLink", "CinematicLinkProps"],
+    "src/app/components/circular-progress.tsx": ["circularProgressVariants"],
+    "src/app/components/command-palette.tsx": [
+      "cmdkDescriptionVariants",
+      "cmdkKindBadgeVariants",
+      "cmdkRowVariants",
+      "CommandPalette",
+      "CommandPaletteProps"
+    ],
+    "src/app/components/component-instance-matrix.tsx": ["ComponentInstanceMatrix"],
+    "src/app/components/context-menu.tsx": ["ContextMenu"],
+    "src/app/components/date-input.tsx": ["DateInput", "DateInputProps"],
+    "src/app/components/date-range-input.tsx": ["DateRangeInput", "DateRangeInputProps"],
+    "src/app/components/date-time-input.tsx": ["DateTimeInput", "DateTimeInputProps"],
+    "src/app/components/disclosure.tsx": ["disclosureTriggerVariants"],
+    "src/app/components/doc-link-card.tsx": [
+      "DocLinkCard",
+      "DocLinkCardProps",
+      "docLinkCardVariants"
+    ],
+    "src/app/components/error-boundary.tsx": ["ErrorBoundary", "ErrorBoundaryProps"],
+    "src/app/components/field.tsx": ["fieldValueVariants"],
+    "src/app/components/file-input.tsx": ["FileInput", "FileInputProps", "fileInputVariants"],
+    "src/app/components/foundation-swatch.tsx": ["FoundationSwatch", "FoundationSwatchProps"],
+    "src/app/components/heading-stack.tsx": [
+      "HeadingStack",
+      "headingStackLevelVariants",
+      "HeadingStackProps",
+      "headingStackVariants"
+    ],
+    "src/app/components/history-card.tsx": ["HistoryCard", "HistoryCardCommit", "HistoryCardProps"],
+    "src/app/components/hover-card.tsx": ["HoverCard"],
+    "src/app/components/image-lightbox.tsx": ["Lightbox", "LightboxProps"],
+    "src/app/components/inline-code.tsx": ["inlineCodeVariants"],
+    "src/app/components/input.tsx": ["inputVariants"],
+    "src/app/components/kbd.tsx": ["kbdVariants"],
+    "src/app/components/metadata-list.tsx": ["metadataListVariants"],
+    "src/app/components/nav-group.tsx": ["NavGroup", "navGroupLabelVariants", "NavGroupProps"],
+    "src/app/components/nav-item.tsx": [
+      "navIndicatorVariants",
+      "NavItem",
+      "navItemVariants",
+      "NavProps"
+    ],
+    "src/app/components/overflow-list.tsx": ["OverflowList", "OverflowListProps"],
+    "src/app/components/progress.tsx": ["progressTrackVariants"],
+    "src/app/components/segmented-control.tsx": [
+      "segmentedControlDescriptionVariants",
+      "segmentedControlFocusRingVariants",
+      "segmentedControlIndicatorVariants",
+      "segmentedControlItemVariants",
+      "segmentedControlLabelVariants",
+      "segmentedControlRailVariants",
+      "segmentedControlWrapperVariants"
+    ],
+    "src/app/components/selectable-card.tsx": ["selectableCardVariants"],
+    "src/app/components/side-nav.tsx": [
+      "SideNav",
+      "SideNavLevel",
+      "SideNavProps",
+      "sideNavVariants"
+    ],
+    "src/app/components/skeleton.tsx": ["skeletonVariants"],
+    "src/app/components/sketch.tsx": ["Sketch", "SketchProps"],
+    "src/app/components/spinner.tsx": ["spinnerVariants"],
+    "src/app/components/stacked-card-rail.tsx": [
+      "StackedCardRail",
+      "StackedCardRailCard",
+      "StackedCardRailProps"
+    ],
+    "src/app/components/stat.tsx": ["statVariants"],
+    "src/app/components/status-dot.tsx": ["statusDotVariants"],
+    "src/app/components/status-list-item.tsx": ["statusListItemDotVariants"],
+    "src/app/components/stepper-field.tsx": ["StepperField", "StepperFieldProps"],
+    "src/app/components/stepper.tsx": ["Step", "stepMarkerVariants", "Stepper", "StepperProps"],
+    "src/app/components/surface.tsx": ["surfaceVariants"],
+    "src/app/components/table.tsx": [
+      "tableDataCellVariants",
+      "tableHeaderCellVariants",
+      "tableSortButtonVariants"
+    ],
+    "src/app/components/tag.tsx": ["tagButtonVariants", "tagPillVariants"],
+    "src/app/components/text-lockup.tsx": ["TextLockup", "TextLockupProps"],
+    "src/app/components/text.tsx": ["textVariants"],
+    "src/app/components/textarea.tsx": ["textareaVariants"],
+    "src/app/components/time-input.tsx": ["hdsTimeInputVariants"],
+    "src/app/components/toast.tsx": ["toastIconVariants"],
+    "src/app/components/toggle-button.tsx": ["hdsToggleButtonVariants"],
+    "src/app/components/token.tsx": [
+      "Token",
+      "tokenLabelVariants",
+      "tokenNodeInlineVariants",
+      "TokenProps",
+      "tokenShellVariants"
+    ],
+    "src/app/components/tokenizer.tsx": ["Tokenizer", "TokenizerProps"],
+    "src/app/components/toolbar.tsx": ["Toolbar", "ToolbarComponent"],
+    "src/app/components/top-nav.tsx": ["TopNav", "TopNavProps"],
+    "src/app/components/tree-list.tsx": ["TreeList", "TreeListProps", "TreeNode"],
+    "src/app/layouts/CaseStudyLayout.tsx": ["CaseStudyLayout", "CaseStudyLayoutProps"],
+    "src/app/layouts/HdsDocsShell.tsx": ["HdsDocsShell", "HdsDocsShellProps"],
+    "src/app/layouts/HdsSystemDocLayout.tsx": ["HdsSystemDocLayout"]
+  },
+  "replaced": {
+    "src/app/components/aspect-ratio.tsx": {
+      "AspectRatio": "Box style={{ aspectRatio: '16 / 9' }}",
+      "AspectRatioProps": "BoxProps"
+    },
+    "src/app/components/bleed.tsx": {
+      "Bleed": "Box style={{ marginInline: 'calc(-1 * var(--semantic-space-scale-md))' }}",
+      "BleedProps": "BoxProps"
+    },
+    "src/app/components/center.tsx": {
+      "Center": "Container maxWidth=\"content\", with a Box style={{ paddingInline }} inside for the gutter",
+      "CenterProps": "ContainerProps"
+    },
+    "src/app/components/circular-progress.tsx": {
+      "CircularProgress": "Progress variant=\"circular\"",
+      "CircularProgressProps": "ProgressProps"
+    },
+    "src/app/components/cluster.tsx": {
+      "Cluster": "Stack direction=\"row\" wrap=\"wrap\" align=\"center\"",
+      "ClusterProps": "StackProps"
+    },
+    "src/app/components/cover.tsx": {
+      "Cover": "Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }} around a Box style={{ marginBlock: 'auto' }}",
+      "CoverProps": "BoxProps"
+    },
+    "src/app/components/frame.tsx": {
+      "Frame": "Box style={{ aspectRatio: '16 / 9', overflow: 'hidden', borderRadius: hds.borderRadius.md }}",
+      "FrameProps": "BoxProps"
+    },
+    "src/app/components/icon-button.tsx": {
+      "IconButton": "Button iconOnly label=\"…\" iconLeft={<Icon icon={…} />}",
+      "IconButtonProps": "ButtonProps"
+    },
+    "src/app/components/input-group.tsx": {
+      "InputGroup": "Input prefix / suffix",
+      "InputGroupProps": "InputProps"
+    },
+    "src/app/components/multi-selector.tsx": {
+      "MultiSelector": "Combobox multiple",
+      "MultiSelectorOption": "ComboboxOption",
+      "MultiSelectorProps": "ComboboxMultipleProps"
+    },
+    "src/app/components/not-found-pattern.tsx": {
+      "NotFoundPattern": "ErrorPattern displayText=\"404\" message=\"Page not found\" from @hirobius/design-system/patterns (hds-not-found-pattern rewrites it)"
+    },
+    "src/app/components/selectable-card.tsx": {
+      "SelectableCard": "Card selectable selected onSelectedChange",
+      "SelectableCardProps": "CardProps"
+    },
+    "src/app/components/tile-grid.tsx": {
+      "TileGrid": "Grid layout=\"auto-fill\" minItemWidth=\"…\" gap=\"medium\" (hds-tile-grid rewrites it)",
+      "TileGridProps": "GridProps (minTileWidth is minItemWidth, gap 'sm' is 'medium')"
+    },
+    "src/app/components/time-input.tsx": {
+      "TimeInput": "Input type=\"time\"",
+      "TimeInputProps": "InputProps"
+    },
+    "src/app/components/toggle-button.tsx": {
+      "ToggleButton": "Button pressed onPressedChange (variant=\"ghost\" is variant=\"tertiary\")",
+      "ToggleButtonProps": "ButtonProps"
+    }
+  }
+}

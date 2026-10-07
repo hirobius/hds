@@ -1,20 +1,21 @@
 /**
  * upgrade/releases/0.20.0.json (hds#447): the first release ledger, generated
- * by scripts/upgrade/build-ledger-0.20.mjs from the 0.19.1 and 0.20.0 release
- * snapshots, codemods/removed-0.20.json, the hds-prefix RENAMES map and the
- * CHANGELOG's 0.20.0 section.
+ * by scripts/upgrade/build-ledger.mjs from the 0.19.1 and 0.20.0 release
+ * snapshots and the inputs frozen in upgrade/sources/0.20.0 (hds#450): copies
+ * of codemods/removed-0.20.json and the hds-prefix RENAMES map as 0.20.0
+ * published them, and the steps from the CHANGELOG's 0.20.0 section.
  *
  * The expectations come from those sources directly, not from the generator:
- * the removed and renamed names from the codemod data, the moves and dropped
- * dependencies from the snapshot diff, the cited lines from hds#447 itself.
+ * the removed and renamed names from the frozen codemod data, the moves and
+ * dropped dependencies from the snapshot diff, the cited lines from hds#447
+ * itself.
  */
 import { describe, it, expect } from 'vitest';
-import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { RENAMES } from '../../codemods/hds-prefix.mjs';
-import { buildLedger020 } from '../upgrade/build-ledger-0.20.mjs';
+import { RENAMES as LIVE_RENAMES } from '../../codemods/hds-prefix.mjs';
+import { buildLedger } from '../upgrade/build-ledger.mjs';
 import { diffSnapshots } from '../upgrade/diff.mjs';
 import { formatJson } from '../upgrade/format.mjs';
 import { FACTS_NEEDING_A_STEP } from '../upgrade/ledger.mjs';
@@ -27,7 +28,8 @@ const LEDGER = read('upgrade/releases/0.20.0.json');
 const PREV = read('docs/api/releases/0.19.1.json');
 const NEXT = read('docs/api/releases/0.20.0.json');
 const FACTS = diffSnapshots(PREV, NEXT);
-const REMOVED = read('codemods/removed-0.20.json');
+const REMOVED = read('upgrade/sources/0.20.0/removed.json');
+const { renames: RENAMES } = read('upgrade/sources/0.20.0/renames.json');
 const ROOT = '@hirobius/design-system';
 const PATTERNS = '@hirobius/design-system/patterns';
 
@@ -37,16 +39,38 @@ const byId = (id) => LEDGER.steps.find((step) => step.id === id);
 const imported = (step) => step.detect?.imports?.flatMap((i) => i.names) ?? [];
 
 describe('upgrade/releases/0.20.0.json', () => {
-  it('is what the generator writes, byte for byte', () => {
+  it('is what the generator writes from upgrade/sources/0.20.0, byte for byte', () => {
     expect(readFileSync(join(REPO, 'upgrade/releases/0.20.0.json'), 'utf8')).toBe(
-      formatJson(buildLedger020()),
+      formatJson(buildLedger('0.20.0')),
     );
-    const check = spawnSync(
-      process.execPath,
-      [join(REPO, 'scripts/upgrade/build-ledger-0.20.mjs'), '--check'],
-      { encoding: 'utf8' },
+  });
+
+  it('freezes the codemod data 0.20.0 published: the six Hds* renames and the removed-0.20.json release', () => {
+    expect(RENAMES).toEqual({
+      HdsCheckbox: 'Checkbox',
+      HdsRadio: 'Radio',
+      HdsSelect: 'Select',
+      HdsSlider: 'Slider',
+      HdsToggle: 'Toggle',
+      HdsTooltip: 'Tooltip',
+    });
+    expect(REMOVED.release).toBe('0.20.0');
+  });
+
+  // The ledger is frozen; the codemods it names are not. They must keep doing
+  // what its `auto` promises, whatever else later releases teach them.
+  it('names codemods whose live data still handles every name the ledger hands them', () => {
+    const liveReplaced = new Map(
+      Object.values(read('codemods/removed-0.20.json').replaced).flatMap(Object.entries),
     );
-    expect(check.status, check.stderr).toBe(0);
+    for (const step of LEDGER.steps.filter((s) => s.auto)) {
+      const name = subject(step);
+      if (step.auto.codemod === 'hds-prefix') {
+        expect(LIVE_RENAMES[name], step.id).toBe(RENAMES[name]);
+      } else if (step.kind === 'folded') {
+        expect(liveReplaced.has(name), step.id).toBe(true);
+      }
+    }
   });
 
   it('validates, like every ledger in upgrade/releases', () => {
@@ -180,6 +204,67 @@ describe('0.20.0 package steps', () => {
         detect: { imports: [{ from: ROOT, names: [name] }] },
       });
     }
+  });
+});
+
+describe('0.20.0 deprecations the release announced for 1.0 (hds#450)', () => {
+  it("deprecates Stack's 'tight' to 'spacious' gap names, which CHANGELOG.md:8 removes in 1.0 with Box's", () => {
+    const step = byId('0.20.0/deprecated/Stack-gap-layout-names');
+    expect(step).toMatchObject({
+      impact: 'none',
+      removeIn: '1.0.0',
+      backfilled: true,
+      source: 'CHANGELOG.md:8',
+    });
+    for (const name of ['tight', 'normal', 'inset', 'spacious']) expect(step.plain).toContain(name);
+    // Only an explicit gap name is a use; a bare <Stack> is not.
+    const [source] = step.detect.regex;
+    const re = new RegExp(source);
+    expect(re.test('<Stack direction="row" gap="normal">')).toBe(true);
+    expect(re.test("<Stack gap={'spacious'}>")).toBe(true);
+    expect(re.test('<Stack gap="md">')).toBe(false);
+    expect(re.test('<Stack direction="row">')).toBe(false);
+    expect(step.detect.jsx).toBeUndefined();
+  });
+
+  it('deprecates the 16 Tailwind utilities CHANGELOG.md:80 keeps in styles.css and tokens.css until 1.0', () => {
+    expect(byId('0.20.0/deprecated/kept-utilities')).toMatchObject({
+      impact: 'none',
+      removeIn: '1.0.0',
+      backfilled: true,
+      source: 'CHANGELOG.md:80',
+      detect: {
+        classes: [
+          'pt-1',
+          'pb-8',
+          'p-16',
+          'max-w-2xl',
+          'h-3.5',
+          'w-3.5',
+          'sm:text-4xl',
+          'sm:inline-block',
+          'group-hover:opacity-100',
+          'text-muted-foreground/70',
+          'transition-[transform,opacity]',
+          'data-[highlighted]:text-foreground',
+          'data-[state=checked]:text-foreground',
+          'bg-[color:var(--semantic-color-feedback-bg-warning)]',
+          'border-[color:var(--semantic-color-feedback-warning)]/40',
+          'text-[color:var(--semantic-color-feedback-warning)]',
+        ],
+      },
+    });
+  });
+
+  it('records every deprecation 0.20.0 announced, and no other', () => {
+    expect(stepsOf('deprecated').map(subject).sort()).toEqual([
+      'Box-sx-layout-names',
+      'Stack-gap-layout-names',
+      'StatusDot',
+      'StatusDotProps',
+      'hds.density',
+      'kept-utilities',
+    ]);
   });
 });
 

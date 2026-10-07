@@ -1,0 +1,11 @@
+{
+  "$comment": "The RENAMES map of codemods/hds-prefix.mjs as the 0.20.0 tarball published it: each Hds* alias 0.20.0 removed from the package root, with the bare name of the same component. Frozen for the 0.20.0 ledger (scripts/upgrade/build-ledger.mjs).",
+  "renames": {
+    "HdsCheckbox": "Checkbox",
+    "HdsRadio": "Radio",
+    "HdsSelect": "Select",
+    "HdsSlider": "Slider",
+    "HdsToggle": "Toggle",
+    "HdsTooltip": "Tooltip"
+  }
+}

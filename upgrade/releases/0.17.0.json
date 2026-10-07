@@ -1,0 +1,962 @@
+{
+  "version": "0.17.0",
+  "date": "2026-09-30",
+  "bump": "minor",
+  "summary": "Adds /patterns and the standard type ramp; root pattern imports, Hds* names and seven spacing tokens are deprecated.",
+  "backfilled": true,
+  "steps": [
+    {
+      "id": "0.17.0/deprecated/ActivityFeed",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing ActivityFeed from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ActivityFeed"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/AppShell",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing AppShell from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AppShell"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/AssetImg",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing AssetImg from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AssetImg"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/Calendar",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing Calendar from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Calendar"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/Carousel",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing Carousel from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Carousel"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/CodeBlock",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing CodeBlock from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CodeBlock"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/CommandPalette",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing CommandPalette from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CommandPalette"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/DocLinkCard",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing DocLinkCard from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "DocLinkCard"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/ErrorPattern",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing ErrorPattern from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ErrorPattern"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/FileInput",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing FileInput from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FileInput"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/Form",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing Form from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Form"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/HdsCheckbox",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "HdsCheckbox still works but is deprecated; use Checkbox, the same component under its bare name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsCheckbox"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "id": "0.17.0/deprecated/HdsRadio",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "HdsRadio still works but is deprecated; use Radio, the same component under its bare name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsRadio"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "id": "0.17.0/deprecated/HdsSelect",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "HdsSelect still works but is deprecated; use Select, the same component under its bare name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsSelect"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "id": "0.17.0/deprecated/HdsSlider",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "HdsSlider still works but is deprecated; use Slider, the same component under its bare name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsSlider"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "id": "0.17.0/deprecated/HdsToggle",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "HdsToggle still works but is deprecated; use Toggle, the same component under its bare name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsToggle"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "id": "0.17.0/deprecated/HdsTooltip",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "HdsTooltip still works but is deprecated; use Tooltip, the same component under its bare name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsTooltip"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    },
+    {
+      "id": "0.17.0/deprecated/Lightbox",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing Lightbox from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Lightbox"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/NavItem",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing NavItem from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "NavItem"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/OverflowList",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing OverflowList from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "OverflowList"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/Page",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing Page from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Page"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/Reveal",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing Reveal from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Reveal"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/SideNav",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing SideNav from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "SideNav"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/Stepper",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing Stepper from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Stepper"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/Toolbar",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing Toolbar from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Toolbar"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/TopNav",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing TopNav from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TopNav"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/TreeList",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing TreeList from the package root still works but is deprecated; import it from @hirobius/design-system/patterns instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TreeList"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:60"
+    },
+    {
+      "id": "0.17.0/deprecated/semantic.space.component.gap",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The spacing token semantic.space.component.gap (--semantic-space-component-gap) still works but is deprecated; use semantic.space.scale.xs, the same 8px at the default density.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-component-gap"
+        ],
+        "regex": [
+          "\\bhds\\.semantic\\.space\\.component\\.gap\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.17.0/deprecated/semantic.space.component.padding",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The spacing token semantic.space.component.padding (--semantic-space-component-padding) still works but is deprecated; use semantic.space.surface.padding, which it now aliases.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-component-padding"
+        ],
+        "regex": [
+          "\\bhds\\.semantic\\.space\\.component\\.padding\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.17.0/deprecated/semantic.space.layout.gutter",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The spacing token semantic.space.layout.gutter (--semantic-space-layout-gutter) still works but is deprecated; use semantic.space.region.gutter, which it now aliases.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-gutter"
+        ],
+        "regex": [
+          "\\bhds\\.semantic\\.space\\.layout\\.gutter\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.17.0/deprecated/semantic.space.layout.inset",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The spacing token semantic.space.layout.inset (--semantic-space-layout-inset) still works but is deprecated; use semantic.space.scale.lg, the same 32px at the default density.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-inset"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.17.0/deprecated/semantic.space.layout.normal",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The spacing token semantic.space.layout.normal (--semantic-space-layout-normal) still works but is deprecated; use semantic.space.scale.md, the same 24px at the default density.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-normal"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.17.0/deprecated/semantic.space.layout.spacious",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The spacing token semantic.space.layout.spacious (--semantic-space-layout-spacious) still works but is deprecated; use semantic.space.scale.xl, the same 48px at the default density.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-spacious"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.17.0/deprecated/semantic.space.layout.tight",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The spacing token semantic.space.layout.tight (--semantic-space-layout-tight) still works but is deprecated; use semantic.space.scale.sm, the same 16px at the default density.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-tight"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.17.0/look/Badge-CommandPalette-SegmentedControl-text",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Badge text grows from 11px to 12px, CommandPalette's kind badges, shortcuts and footer from 10px to 12px, and SegmentedControl labels shrink from 15px to 14px on a 20px line, now that they use the ramp's text-xs and text-sm.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Badge",
+              "CommandPalette",
+              "SegmentedControl"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "CommandPalette"
+            ]
+          }
+        ],
+        "jsx": [
+          "Badge",
+          "CommandPalette",
+          "SegmentedControl"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:86"
+    },
+    {
+      "id": "0.17.0/look/Calendar-outside-days",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Calendar's days outside the shown month are no longer drawn at half opacity, so they read darker.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Calendar"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "Calendar"
+            ]
+          }
+        ],
+        "jsx": [
+          "Calendar"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "id": "0.17.0/look/Tokenizer-disabled",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A disabled Tokenizer shows muted text instead of fading the whole field to 70% opacity.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Tokenizer"
+            ]
+          }
+        ],
+        "jsx": [
+          "Tokenizer"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "id": "0.17.0/look/h2-line-height",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Second-level headings (Text and HeadingStack heading2, and any h2 inside HdsThemeProvider or another data-hds element) keep their 30px size, but their line height drops from 42px to 40px.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-h2-line-height"
+        ],
+        "regex": [
+          "\\bheading2\\b",
+          "<h2\\b"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:80"
+    },
+    {
+      "id": "0.17.0/look/hds-focus-ring",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Elements with the hds-focus class, which many HDS components use (Dialog, Select, Radio, Toggle and Slider among them), now show their focus ring on every keyboard focus, where before it showed only if the page set data-input-modality=\"keyboard\" on html, which no HDS code did.",
+      "detect": {
+        "classes": [
+          "hds-focus"
+        ],
+        "regex": [
+          "['\"]@hirobius/design-system(?:/[^'\"\\s]*)?['\"]"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "id": "0.17.0/look/highlighted-row-ring",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The highlighted option in Menu, Select, Combobox and MultiSelector now also shows an inset ring in the focus color.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Menu",
+              "Select",
+              "HdsSelect",
+              "Combobox",
+              "MultiSelector"
+            ]
+          }
+        ],
+        "jsx": [
+          "Menu",
+          "Select",
+          "Combobox",
+          "MultiSelector"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "id": "0.17.0/look/type-ramp",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Text follows Tailwind's default type ramp, so body text renders at 16px instead of 17px, UI and button text 1px smaller, captions and eyebrows at 12px instead of 13px, mono at 14px instead of 13px, display at 60px instead of 72px, and text-xs to text-6xl shrink to match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-size-xs",
+          "--primitive-typography-size-sm",
+          "--primitive-typography-size-base",
+          "--primitive-typography-size-lg",
+          "--primitive-typography-size-xl",
+          "--primitive-typography-size-2xl",
+          "--primitive-typography-size-3xl",
+          "--primitive-typography-size-4xl",
+          "--primitive-typography-size-5xl",
+          "--primitive-typography-size-6xl",
+          "--semantic-typography-body-font-size",
+          "--semantic-typography-ui-font-size",
+          "--semantic-typography-display-font-size",
+          "--semantic-typography-eyebrow-font-size",
+          "--semantic-typography-caption-font-size",
+          "--semantic-typography-mono-font-size"
+        ],
+        "classes": [
+          "text-xs",
+          "text-sm",
+          "text-base",
+          "text-lg",
+          "text-xl",
+          "text-2xl",
+          "text-3xl",
+          "text-4xl",
+          "text-5xl",
+          "text-6xl"
+        ],
+        "regex": [
+          "['\"]@hirobius/design-system(?:/[^'\"\\s]*)?['\"]"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:75"
+    },
+    {
+      "id": "0.17.0/behavior/AssetImg-aria",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "AssetImg with alt text is now role img named by it, and one with neither alt nor onClick is hidden from assistive technology, so tests that find it by role or name may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "AssetImg"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "AssetImg"
+            ]
+          }
+        ],
+        "jsx": [
+          "AssetImg"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "id": "0.17.0/behavior/CardProgress-name",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Card.Progress now carries an aria-label, its string label or \"Progress\", so tests that find it by role and name may need the new name.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Card",
+              "CardProgress"
+            ]
+          }
+        ],
+        "jsx": [
+          "Card.Progress",
+          "CardProgress"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "id": "0.17.0/behavior/StepperField-label",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "StepperField's label is now tied to its input, so the input is announced and found by its label text.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StepperField"
+            ]
+          }
+        ],
+        "jsx": [
+          "StepperField"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "id": "0.17.0/behavior/Table-aria-structure",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Table now renders role table, row, columnheader and cell, wrapping each row in an element with display: contents, so selectors and tests that query its cells by role or by position in the DOM may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Table"
+            ]
+          }
+        ],
+        "jsx": [
+          "Table"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:206"
+    },
+    {
+      "id": "0.17.0/behavior/list-semantics",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "OverflowList puts its +N item in a list item and names it with hidden text instead of aria-label, and MetadataList wraps its footer in a dt and dd pair, so tests that query that markup or the \"+N more\" label may need updating.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "OverflowList",
+              "MetadataList"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "OverflowList"
+            ]
+          }
+        ],
+        "jsx": [
+          "OverflowList",
+          "MetadataList"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:103"
+    },
+    {
+      "id": "0.17.0/behavior/scroll-region-tab-stop",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Carousel's slide strip and StackedCardRail's scroll areas are now named regions that take keyboard focus, so each adds a Tab stop and tests that count Tab presses past them need one more.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Carousel"
+            ]
+          },
+          {
+            "from": "@hirobius/design-system/patterns",
+            "names": [
+              "Carousel",
+              "StackedCardRail"
+            ]
+          }
+        ],
+        "jsx": [
+          "Carousel",
+          "StackedCardRail"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:103"
+    }
+  ]
+}
