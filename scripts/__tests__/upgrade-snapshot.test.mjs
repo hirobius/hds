@@ -238,6 +238,16 @@ describe('committed release snapshots (docs/api/releases)', () => {
       expect(compareVersions(baseline.version, versions.at(-1))).toBe(1);
       return;
     }
+    // A baseline regenerated after the release date describes work merged since
+    // (a removal such as StatusDot, hds#465, changes it before the version
+    // bumps), so it can no longer equal the published tarball.
+    const ledgerPath = join(REPO, `upgrade/releases/${baseline.version}.json`);
+    if (
+      existsSync(ledgerPath) &&
+      baseline.generatedAt > read(`upgrade/releases/${baseline.version}.json`).date
+    ) {
+      return;
+    }
     const snapshot = read(`docs/api/releases/${baseline.version}.json`);
     const expected = {};
     for (const [module, names] of Object.entries(baseline.modules)) {

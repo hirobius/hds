@@ -89,7 +89,7 @@ export const INTENTS = [
     need: 'Status label in a header or table cell',
     keywords: ['status', 'state', 'label', 'chip', 'pill', 'badge'],
     use: ['Badge'],
-    avoid: ['Tag', 'Text', 'StatusDot (deprecated)'],
+    avoid: ['Tag', 'Text'],
     how: '`<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.',
   },
   {
