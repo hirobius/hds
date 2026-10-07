@@ -66,8 +66,9 @@ npm install @hirobius/design-system react react-dom
 ```
 
 ```tsx
-// once at the app root — full bundle: tokens + theme + utilities + embedded fonts
+// once at the app root — full bundle: tokens + theme + utilities
 import '@hirobius/design-system/tokens.css';
+import '@hirobius/design-system/fonts.css'; // optional: the HDS brand fonts
 import { Button } from '@hirobius/design-system';
 
 // add data-hds to the root (or any section) so the scoped base styles apply

@@ -9,12 +9,13 @@ description: "Use when building or editing UI in an app that consumes @hirobius/
 
 ## Install and import
 
-Install `@hirobius/design-system`, import core components from the root barrel (`import { Button } from '@hirobius/design-system'`) and the pattern-tier components from `@hirobius/design-system/patterns` (`import { Page } from '@hirobius/design-system/patterns'`), and load one stylesheet once at the app root.
+Install `@hirobius/design-system`, import core components from the root barrel (`import { Button } from '@hirobius/design-system'`) and the pattern-tier components from `@hirobius/design-system/patterns` (`import { Page } from '@hirobius/design-system/patterns'`), and load one stylesheet once at the app root. Add `import '@hirobius/design-system/fonts.css'` only if you want the HDS brand fonts (optional; skip it to bring your own).
 
 Subpath exports:
 
 - `@hirobius/design-system/tokens.css`
 - `@hirobius/design-system/styles.css`
+- `@hirobius/design-system/fonts.css`
 - `@hirobius/design-system/variables.css`
 - `@hirobius/design-system/static.css`
 - `@hirobius/design-system/tokens`
