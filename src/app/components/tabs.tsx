@@ -57,7 +57,7 @@ export function TabsTrigger({
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'relative -mb-px inline-flex items-center px-3 py-2 text-sm transition-colors',
+        'relative -mb-px inline-flex items-center px-3 py-2 hds-type-ui transition-colors',
         'border-b-2 border-transparent text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
         'data-[state=active]:border-foreground data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',

@@ -3,6 +3,7 @@
  * Owner, Updated…). The idiomatic replacement for badge-stickers-on-prose.
  * @category Display
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47
  * @public
  */
 
@@ -14,11 +15,13 @@ import hds from '../design-system/tokens';
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Orientation is the only styling axis. Vertical stacks each term above its
 // description; horizontal lays each pair out as a two-column grid row.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-sized term column has no Tailwind-theme utility
 const metadataListVariants = /* @__PURE__ */ cva('', {
   variants: {
     orientation: {
       vertical: 'flex flex-col gap-3',
-      horizontal: 'grid grid-cols-2 gap-x-4 gap-y-2',
+      // The term column hugs its longest term; it was half the list (146px at 1280, hds#522).
+      horizontal: 'grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2',
     },
   },
   defaultVariants: { orientation: 'vertical' },
@@ -92,13 +95,13 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
               }
             >
               <dt
-                className="text-sm font-medium"
+                className="hds-type-ui"
                 style={{ color: 'var(--semantic-color-content-secondary)' }}
               >
                 {item.term}
               </dt>
               <dd
-                className="m-0 text-sm"
+                className="m-0 hds-type-ui"
                 style={{ color: 'var(--semantic-color-content-primary)' }}
               >
                 {item.description}
@@ -107,7 +110,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
           ))}
           {footer != null && (
             <div
-              className="p-5 text-sm"
+              className="p-5 hds-type-ui"
               style={{
                 borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-subtle)`,
                 background: 'var(--semantic-color-surface-raised)',
@@ -132,7 +135,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
         >
           {items.map((item, index) => (
             <React.Fragment key={index}>
-              <dt className="text-sm font-medium text-muted-foreground">{item.term}</dt>
+              <dt className="hds-type-ui text-muted-foreground">{item.term}</dt>
               <dd className={cn('m-0 text-foreground')}>{item.description}</dd>
             </React.Fragment>
           ))}
@@ -149,7 +152,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
       >
         {items.map((item, index) => (
           <div key={index} className="flex flex-col gap-0.5">
-            <dt className="text-sm font-medium text-muted-foreground">{item.term}</dt>
+            <dt className="hds-type-ui text-muted-foreground">{item.term}</dt>
             <dd className={cn('m-0 text-foreground')}>{item.description}</dd>
           </div>
         ))}

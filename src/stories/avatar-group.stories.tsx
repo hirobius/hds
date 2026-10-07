@@ -5,12 +5,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { AvatarGroup } from '../app/components/avatar-group';
 import { Avatar } from '../app/components/avatar';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Primitives/Avatar Group',
   component: AvatarGroup,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
+  parameters: { ...designParameters('AvatarGroup'), layout: 'padded' },
   argTypes: {
     size: { control: { type: 'select' }, options: ['sm', 'md', 'lg'] },
   },

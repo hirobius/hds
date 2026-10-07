@@ -14,19 +14,23 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
-const progressTrackVariants = /* @__PURE__ */ cva('w-full overflow-hidden rounded-full bg-muted', {
-  variants: {
-    size: {
-      sm: 'h-1',
-      md: 'h-2',
-      lg: 'h-3',
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- the track is surface-overlay, not the unmapped shadcn `bg-muted` that equalled the fill; semantic color token has no Tailwind-theme utility, var()-based so still token-driven
+const progressTrackVariants = /* @__PURE__ */ cva(
+  'w-full overflow-hidden rounded-full bg-[var(--semantic-color-surface-overlay)]',
+  {
+    variants: {
+      size: {
+        sm: 'h-1.5',
+        md: 'h-2',
+        lg: 'h-3',
+      },
     },
+    defaultVariants: { size: 'md' },
   },
-  defaultVariants: { size: 'md' },
-});
+);
 
 // Tone (hds#393) colors the fill: the bar's background, the ring's stroke via
-// currentColor. `neutral` keeps each shape's existing color: `bg-accent` for
+// currentColor. `neutral` keeps each shape's existing color: `bg-primary` (the accent surface, which contrasts with the track) for
 // the bar, `text-primary` for the ring (the color the standalone ring used).
 //
 // `tone` and `variant` are lookups here, not cva axes: a cva contract axis is a
@@ -35,7 +39,7 @@ const progressTrackVariants = /* @__PURE__ */ cva('w-full overflow-hidden rounde
 // them, move these into cva and list them in Progress's variantAxes in
 // scripts/build-tokens.mjs, like the dot-size lookup in badge.tsx.
 const PROGRESS_TONES = {
-  neutral: { bar: 'bg-accent', ring: 'text-primary' },
+  neutral: { bar: 'bg-primary', ring: 'text-primary' },
   danger: { bar: 'bg-feedback-danger', ring: 'text-feedback-danger' },
   success: { bar: 'bg-feedback-success', ring: 'text-feedback-success' },
   warning: { bar: 'bg-feedback-warning', ring: 'text-feedback-warning' },
@@ -135,7 +139,8 @@ export const Progress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Progres
               cy={box / 2}
               r={radius}
               strokeWidth={stroke}
-              className="stroke-muted"
+              // eslint-disable-next-line tailwindcss/no-arbitrary-value -- ring track matches the bar track (surface-overlay); var()-based so still token-driven
+              className="stroke-[var(--semantic-color-surface-overlay)]"
             />
             <circle
               cx={box / 2}

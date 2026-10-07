@@ -24,7 +24,7 @@ const Panel = ({ label }: { label: string }) => (
       background: 'var(--semantic-color-surface-raised, #f4f4f5)',
       border: '1px solid var(--semantic-color-border-default, #d4d4d8)',
       color: 'var(--semantic-color-content-primary, #18181b)',
-      fontSize: 14,
+      fontSize: 'var(--semantic-typography-ui-font-size)',
     }}
   >
     {label}

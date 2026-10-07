@@ -16,7 +16,7 @@
  * @primitive Dialog AlertDialog Popover Menu Select Tooltip Combobox
  */
 import { type ReactElement } from 'react';
-import { describe, it, test, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import { AlertDialog } from '@/app/components/alert-dialog';
 import { Popover } from '@/app/components/popover';
@@ -30,9 +30,6 @@ import {
 } from './overlay-fixtures';
 
 afterEach(cleanup);
-
-/** Combobox regression: hirobius/hds#311. */
-const COMBOBOX_ISSUE = 'https://github.com/hirobius/hds/issues/311';
 
 // ── Fixtures (Dialog, Menu, Select, Combobox live in ./overlay-fixtures) ──────
 
@@ -166,15 +163,7 @@ describe.each(OVERLAYS)('$name keyboard contract', (spec) => {
     await waitFor(() => expect(spec.surface()).toBeNull());
     await waitFor(() => expect(document.activeElement).toBe(trigger));
   };
-  if (spec.name === 'Combobox') {
-    // Known failure, tracked in hds#311 (see COMBOBOX_ISSUE).
-    test.fails(
-      `Escape closes and returns focus to the trigger (${COMBOBOX_ISSUE})`,
-      escapeReturnsFocus,
-    );
-  } else {
-    it('Escape closes and returns focus to the trigger', escapeReturnsFocus);
-  }
+  it('Escape closes and returns focus to the trigger', escapeReturnsFocus);
 
   it('Escape closes the surface', async () => {
     const { u } = await openWithKeyboard(spec);

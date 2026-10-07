@@ -16,8 +16,8 @@
  *   3b. RENDER probe (jsdom): mount real components (Button, Spinner) via
  *      renderToStaticMarkup, exercise the router seam (anchor fallback with no
  *      provider + custom LinkComponent injection + window.location currentPath),
- *      and assert tokens.css still ships the token vars, embedded woff2 fonts,
- *      and [data-hds] scoping. Catches the font/CSS/router-context regressions
+ *      and assert tokens.css ships the token vars and [data-hds] scoping with no
+ *      embedded fonts, and fonts.css + its woff2 files resolve from the package. Catches the font/CSS/router-context regressions
  *      the resolve+import probe cannot see.
  *
  * Subpaths covered (must stay in sync with package.json#exports):
@@ -202,7 +202,8 @@ writeFileSync(join(app, 'probe.mjs'), probe);
 // window so the browser code paths (router fallback's window.location) execute.
 const renderProbe = `
 import { strict as assert } from 'node:assert';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
+import { join as pjoin, dirname as pdirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { JSDOM } from 'jsdom';
 
@@ -266,13 +267,30 @@ check('useHdsRouter reads window.location for currentPath (no provider)', () => 
   assert.ok(renderToStaticMarkup(React.createElement(Probe)).includes('/job/42'), 'currentPath did not read window.location');
 });
 
-check('tokens.css ships tokens + embedded fonts + [data-hds] scope', () => {
+check('tokens.css ships tokens + [data-hds] scope and NO fonts', () => {
   const cssPath = fileURLToPath(import.meta.resolve(PKG + '/tokens.css'));
   const css = readFileSync(cssPath, 'utf8');
   assert.ok(css.includes('--semantic-color-surface-page'), 'token var missing from tokens.css');
-  assert.ok(css.includes('@font-face'), 'no @font-face in tokens.css');
-  assert.ok(css.includes('data:font/woff2'), 'fonts not embedded (P0.3 regression)');
+  assert.ok(!css.includes('@font-face'), 'tokens.css carries @font-face (hds#479 regression)');
+  assert.ok(!css.includes('data:font'), 'tokens.css embeds fonts (hds#479 regression)');
+  assert.ok(css.includes('--hds-font-family'), 'font-family variables missing from tokens.css');
   assert.ok(css.includes('[data-hds]'), 'base styles not scoped to [data-hds] (P0.5 regression)');
+});
+
+// hds#479: fonts are an opt-in export. fonts.css must declare all four faces
+// with URLs relative to itself, and every woff2 it names must ship beside it.
+check('fonts.css ships 4 faces with relative URLs and the woff2 files', () => {
+  const cssPath = fileURLToPath(import.meta.resolve(PKG + '/fonts.css'));
+  const css = readFileSync(cssPath, 'utf8');
+  assert.equal(css.match(/@font-face/g)?.length, 4, 'expected 4 @font-face blocks');
+  assert.ok(css.includes('font-display: swap'), 'font-display: swap missing');
+  assert.ok(!css.includes('data:font'), 'fonts.css must reference files, not embed them');
+  const urls = [...css.matchAll(/url\\(['"]?([^'")]+)['"]?\\)/g)].map((m) => m[1]);
+  assert.equal(urls.length, 4, 'expected 4 font URLs');
+  for (const u of urls) {
+    assert.ok(u.startsWith('./fonts/'), 'font URL must be relative to fonts.css: ' + u);
+    assert.ok(existsSync(pjoin(pdirname(cssPath), u)), 'font file missing from package: ' + u);
+  }
 });
 
 // Gap 1: styles.css = tokens + components + utilities + fonts, but NO global
@@ -280,13 +298,13 @@ check('tokens.css ships tokens + embedded fonts + [data-hds] scope', () => {
 // changing ZERO host-element styles (no unscoped reset). Structural assertion
 // stands in for a browser: the global preflight signatures must be ABSENT and
 // the scoped base + utilities + fonts must be PRESENT.
-check('styles.css ships components/utilities/fonts with NO global reset', () => {
+check('styles.css ships components/utilities with NO global reset', () => {
   const cssPath = fileURLToPath(import.meta.resolve(PKG + '/styles.css'));
   const css = readFileSync(cssPath, 'utf8');
   // present: components can render + fonts + scoped base
   assert.ok(css.includes('@layer utilities'), 'utilities layer missing — components would be unstyled');
   assert.ok(css.includes(':where([data-hds])'), 'scoped [data-hds] base missing from styles.css');
-  assert.ok(css.includes('data:font/woff2'), 'fonts not embedded in styles.css');
+  assert.ok(!css.includes('@font-face'), 'styles.css carries @font-face (hds#479 regression)');
   assert.ok(css.includes('--semantic-color-surface-page'), 'token vars missing from styles.css');
   // absent: global preflight that would restyle host elements
   assert.ok(!css.includes('border:0 solid;margin:0;padding:0'), 'global universal reset leaked into styles.css');
