@@ -1,0 +1,30 @@
+{
+  "$comment": "Frozen inputs of the 0.22.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.22.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.22.0",
+  "previous": "0.21.0",
+  "date": "2026-10-08",
+  "summary": "3 changes to make by hand (1 breaking), 1 that looks different and 2 deprecations.",
+  "backfilled": false,
+  "notes": {
+    "dtcg-strict-tokens": {
+      "needle": "cd10fa5: `hirobius.tokens.json` is now strict",
+      "source": "CHANGELOG.md:19"
+    },
+    "one-core-set-source": {
+      "needle": "4ae32c7: One source for the core set. The",
+      "source": "CHANGELOG.md:23"
+    },
+    "one-figma-library": {
+      "needle": "3c66e95: Figma links point at the one HDS",
+      "source": "CHANGELOG.md:24"
+    },
+    "upgrade-command": {
+      "needle": "fc61af3: One command now upgrades you (hds#452):",
+      "source": "CHANGELOG.md:25"
+    },
+    "upgrading-compile": {
+      "needle": "dc49033: The package now ships its upgrade",
+      "source": "CHANGELOG.md:26"
+    }
+  }
+}

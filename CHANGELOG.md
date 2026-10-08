@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.22.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The raw tokens (the tokens export and hirobius.tokens.json) are strict DTCG now, so read semantic.motion.\*.\$value.timingFunction instead of .easing, and the elastic spring and each semantic.elevation level from \$extensions\["com.hirobius.hds"].\$value.
+- Do by hand: The figmaUrl of each component in the ./manifest export (public/hds-manifest.json) now points at file 2VgBbVpKiDnu0aftJEVyBQ, "HDS Tokens & Components"; node ids are unchanged, so a stored link needs only the new file key.
+- Do by hand: The hds-mcp get_component tool now marks core: true only on the 43 ratified core components and recommended: true on the wider set AGENTS.md recommends, and list_core names its set, so read recommended where you relied on core for that wider set.
+- Looks different: --component-tag-lineHeight is now 1.5 instead of an invalid value the browser ignored, so text that reads it gets that line height.
+- And 2 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0220).
+
+### Minor Changes
+
+- cd10fa5: `hirobius.tokens.json` is now strict W3C DTCG. `component.tag.lineHeight` is typed `number`, matching the token it aliases, which also fixes `--component-tag-lineHeight` in `dist/hds-tokens.css` (it was `undefinedundefined`, now `1.5`). Generated CSS variables, TypeScript and Figma variables are otherwise unchanged, but the raw JSON (the file itself and the `tokens` export) changes shape in three places, so code that reads it directly must move: `semantic.motion.*.$value.easing` is now `semantic.motion.*.$value.timingFunction` (a DTCG `transition`, with a `delay` of 0ms, and the group's `$type` is `transition`); `primitive.easing.elastic.$value` is now a `cubicBezier` array, with the spring parameters under `$extensions["com.hirobius.hds"].$value`; and each `semantic.elevation.*` level has no `$value`, its surface, shadow and border sit under `$extensions["com.hirobius.hds"].$value`. The `$type` values `motion`, `spring` and `elevation` also moved into that extension. `fromDtcg` in `scripts/lib/token-dialect.mjs` returns the previous shape.
+
+### Patch Changes
+
+- 4ae32c7: One source for the core set. The ratified core list now lives in `mcp/core-set.mjs`, and the hds-mcp server and `AGENTS.md` build the guide's wider set on it. `list_core` and `AGENTS.md` now call that wider set "recommended" (`list_core` gains a `set` field, `get_component` marks `recommended: true`), and `get_component` marks `core: true` only for the 43 ratified components, matching the manifest flag. The names shown are unchanged.
+- 3c66e95: Figma links point at the one HDS library. Every `figmaUrl` in `public/hds-manifest.json` (the `./manifest` export) and every `@figma` tag now names file `2VgBbVpKiDnu0aftJEVyBQ`, "HDS Tokens & Components"; the file they named before is retired. Node ids are unchanged, so a tool that reads the node id keeps working, and one that stored a URL only needs the new file key. New components are drafted in a separate file, "HDS Staging", and redrawn in the library before they ship, so no link the package carries ever names HDS Staging. No component, prop, token or style changed.
+- fc61af3: One command now upgrades you (hds#452): `npx @hirobius/design-system@latest upgrade`. It reads the version you have from your lockfile (pnpm, npm, yarn or bun; then `node_modules`, then `--from`), upgrades every workspace package that uses HDS from its own version, runs each release's codemods, bumps the range with its operator kept, adds back a dependency HDS stopped installing that your code still imports, installs and runs your typecheck. It then prints four lists: Fixed for you, Looks different (only what your code uses), Coming next and Do by hand. It exits 0 when done, 1 while work is left and 2 when it refuses, changing nothing: below the 0.16.0 floor, a downgrade, or a version it has no steps for. `--dry-run` and `--check` write nothing, `--json` and `--report <file>` give the report as JSON (`upgrade/schema.json`, `$defs.upgradeReport`). The steps always come from the copy you run, so `@latest` brings the newest. `hds-upgrade` is the same command as a bin of its own.
+- dc49033: The package now ships its upgrade record (hds#451). `UPGRADING.md` lists what each release from 0.17.0 asks of you, newest first, in four lists: Fixed for you, Looks different, Coming next and Do by hand. `MIGRATIONS.md` and `CHANGELOG.md` ship too, so the links to them work inside `node_modules`, and so do `upgrade/index.json` (every release, its breaking count and the 0.16.0 floor), the per-release ledgers in `upgrade/releases/` and their schema, `upgrade/schema.json`. From this release on, each CHANGELOG section opens with an Upgrade block: the command to run, then what is left to do by hand. Divider's `strong` and InlineCode's `compact` props, deprecated before 0.16.0, join the record (removed in 1.0.0). Nothing in the code changes.
+
 ## 0.21.0
 
 ### Minor Changes
