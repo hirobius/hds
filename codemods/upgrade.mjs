@@ -15,19 +15,25 @@
  * workspace package), it:
  *
  *   1. reads the installed version: the lockfile, then node_modules, then
- *      --from; when the lockfile already says the target, the lockfile at git
- *      HEAD, then at the merge-base with the default branch;
+ *      --from; an older lockfile at git HEAD or at the merge-base with the
+ *      default branch wins (bumped by hand), and when the lockfile already
+ *      says the target, its git history is read too (lib/project.mjs);
  *   2. refuses, changing nothing (exit 2), a version below the record's floor,
  *      a downgrade, or a target the record has no ledger for;
  *   3. applies the ledgers after the installed version up to the target,
- *      oldest first: runs their codemods, bumps the dependency range (keeping
+ *      oldest first, plus any earlier step that takes a name away which the
+ *      code still uses (a hand bump that skipped it): runs their codemods, bumps the dependency range (keeping
  *      its operator), and adds back a dependency the package stopped
  *      installing that the code still imports;
  *   4. installs with the project's package manager and runs its typecheck
- *      script (or tsc --noEmit);
+ *      script (or tsc --noEmit); a lockfile still short of the target after
+ *      that is Do by hand, so the command never says done before an install;
  *   5. prints four lists: Fixed for you, Looks different (only what the code
  *      uses), Coming next (deprecations, with the release that removes them)
  *      and Do by hand (what the code still uses and has not changed yet).
+ *
+ * --dry-run and --check run the codemods on a copy of the code in a tmp
+ * directory, so they list exactly what the run would.
  *
  * Exit 0: done, nothing left by hand. 1: work left. 2: refused or error.
  * --json prints the report as JSON (upgrade/schema.json, $defs.upgradeReport);
@@ -36,26 +42,39 @@
 import { spawnSync } from 'node:child_process';
 import {
   existsSync,
+  mkdirSync,
+  mkdtempSync,
   readFileSync,
-  realpathSync,
   renameSync,
   rmSync,
   statSync,
   writeFileSync,
 } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isEntry } from './jsx-fold.mjs';
 import { HDS_PACKAGE } from './lib/installed-version.mjs';
 import {
   detectManager,
+  enclosingWorkspace,
   findImporters,
   installedVersions,
+  nodeModulesVersion,
   readRootLockfile,
 } from './lib/project.mjs';
 import { comingNextSteps, listOf, loadRecord } from './lib/record.mjs';
 import { collectFiles, matchDetect } from './lib/scan.mjs';
 import { bumpRange, compareVersions, isVersion } from './lib/semver.mjs';
 import { hasCodemod, runCodemod } from './registry.mjs';
+
+const readJson = (file) => {
+  try {
+    return JSON.parse(readFileSync(file, 'utf8'));
+  } catch {
+    return null;
+  }
+};
 
 const PKG_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -268,18 +287,26 @@ function runTool(cmd, args, cwd) {
   };
 }
 
+/** The only words the package manager is ever run with: names and subcommands, no paths. */
+const SAFE_WORD = /^[\w:-]+$/;
+
 /**
  * Run the package manager. On Windows it is a .cmd shim, which Node only
- * starts through cmd.exe, so the command line is built here from fixed words
- * (the manager's name and `install` / `run typecheck`): no path or user input
- * reaches the shell, and cwd is passed as an option.
+ * starts through cmd.exe, so cmd.exe is spawned directly (never `shell: true`)
+ * with a command line of fixed words (the manager's name and `install` /
+ * `run typecheck`), each checked against SAFE_WORD so no path or user input
+ * can reach it; cwd is passed as an option.
  */
 function runManager(pm, args, cwd) {
+  const words = [pm, ...args];
+  if (!words.every((w) => SAFE_WORD.test(w))) {
+    throw new Error(`refusing to run ${words.join(' ')}: only plain words reach the shell`);
+  }
   if (process.platform !== 'win32') return runTool(pm, args, cwd);
-  const res = spawnSync([pm, ...args].join(' '), {
+  const res = spawnSync(process.env.ComSpec ?? 'cmd.exe', ['/d', '/s', '/c', words.join(' ')], {
     cwd,
     encoding: 'utf8',
-    shell: true,
+    windowsVerbatimArguments: true,
     timeout: 15 * 60_000,
     maxBuffer: TOOL_MAX_BUFFER,
   });
@@ -288,6 +315,21 @@ function runManager(pm, args, cwd) {
     missing: res.status === 9009 || !!res.error,
     output: `${res.stdout ?? ''}${res.stderr ?? ''}`,
   };
+}
+
+/**
+ * A copy of `files` (from collectFiles) in a new tmp directory, for the
+ * codemods to rewrite in a preview: the detectors then read what the run
+ * would leave. The caller removes it.
+ */
+function overlayOf(files) {
+  const dir = mkdtempSync(join(tmpdir(), 'hds-upgrade-preview-'));
+  for (const file of files) {
+    const abs = join(dir, ...file.rel.split('/'));
+    mkdirSync(dirname(abs), { recursive: true });
+    writeFileSync(abs, file.text);
+  }
+  return dir;
 }
 
 /** The line of a tool's output that best says what failed. */
@@ -353,6 +395,17 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
       `No package.json under ${root} declares ${HDS_PACKAGE}, so there is nothing to upgrade.`,
     );
   }
+  const workspace = enclosingWorkspace(root);
+  if (workspace) {
+    const kind = detectManager(
+      workspace.dir,
+      readJson(join(workspace.dir, 'package.json')),
+    ).manager;
+    return refuse(
+      report,
+      `${workspace.rel} is part of the ${kind ?? 'npm'} workspace at ${workspace.dir}; run the command from ${workspace.dir} (or pass --root ${workspace.dir}), so the workspace's lockfile and package manager are used.`,
+    );
+  }
   const { manager, lockfile } = detectManager(root, rootPkg);
   report.packageManager = manager;
   report.lockfile = lockfile;
@@ -363,6 +416,7 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
     lock,
     importers,
     target,
+    floor: record.index.floor,
     from: options.from,
   });
   const problems = [];
@@ -375,7 +429,7 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
       );
     } else if (compareVersions(from, record.index.floor) < 0) {
       problems.push(
-        `Installed ${from} is older than the oldest release this tool can upgrade from (${record.index.floor}). Follow MIGRATIONS.md by hand up to ${record.index.floor}, or ask in hirobius/hds.`,
+        `Installed ${from} is older than the oldest release this tool can upgrade from (${record.index.floor}). Follow MIGRATIONS.md by hand up to ${record.index.floor}, or ask in hirobius/hds.${importer.dir === '.' ? '' : `\nIn ${importer.dir}.`}`,
       );
     } else if (compareVersions(from, target) > 0) {
       problems.push(
@@ -403,19 +457,49 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
     const scan = () => collectFiles(importer.abs, { skip: importer.nested });
     const before = scan();
     const rel = (files) => files.map((f) => under(dir, f));
-    const steps = record.ledgers
+    // A step from a release at or before `from` that takes a name away, or asks
+    // for a hand edit, still applies while the code matches it: a hand bump
+    // (or an earlier partial upgrade) can skip it, and the code then breaks.
+    const earlier = record.ledgers
+      .filter((l) => compareVersions(l.version, from) <= 0)
+      .flatMap((l) => l.steps)
       .filter(
-        (l) => compareVersions(l.version, from) > 0 && compareVersions(l.version, target) <= 0,
-      )
-      .flatMap((l) => l.steps);
+        (s) =>
+          (REMOVING.has(s.kind) || s.kind === 'manual') &&
+          s.detect &&
+          matchDetect(s.detect, before).length > 0 &&
+          !(s.done && matchDetect(s.done, before).length > 0),
+      );
+    const steps = [
+      ...earlier,
+      ...record.ledgers
+        .filter(
+          (l) => compareVersions(l.version, from) > 0 && compareVersions(l.version, target) <= 0,
+        )
+        .flatMap((l) => l.steps),
+    ];
 
     if (versions[i].noHistory) {
       const where = versions[i].source === 'node_modules' ? 'node_modules' : 'the lockfile';
+      const why =
+        versions[i].noHistory === 'at-target'
+          ? `every commit of it in git says ${target} too`
+          : 'no git history says which version it was upgraded from';
       addItem(report, 'doByHand', {
         id: 'tool/no-history',
-        plain: `${HDS_PACKAGE} is already ${target} in ${where}, and no git history says which version it was upgraded from. Pass --from <old version> to list what is left, or --from ${target} to confirm the upgrade is done.`,
+        plain: `${HDS_PACKAGE} is already ${target} in ${where}, and ${why}, so this checked it as already upgraded. If it was upgraded by hand, pass --from <old version> to list what is left.`,
         importer: dir,
         files: [pkgRel],
+        blocking: false,
+      });
+    }
+    if (versions[i].belowFloor) {
+      addItem(report, 'doByHand', {
+        id: 'tool/below-floor',
+        plain: `The lockfile's git history says ${HDS_PACKAGE} was ${versions[i].belowFloor}, older than ${record.index.floor}, the oldest release this tool knows, so it checked from ${record.index.floor} on. For the releases before it, follow MIGRATIONS.md.`,
+        importer: dir,
+        files: [pkgRel],
+        blocking: false,
       });
     }
 
@@ -425,14 +509,17 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
         steps.filter((s) => s.auto && hasCodemod(s.auto.codemod)).map((s) => s.auto.codemod),
       ),
     ];
+    // A preview runs the codemods on a copy, so the lists below match the run.
+    const overlay = !apply && codemods.length > 0 ? overlayOf(before) : null;
     for (const name of codemods) {
       let res;
       try {
-        res = await runCodemod(name, {
-          root: importer.abs,
-          write: apply,
-          skip: importer.nested,
-        });
+        res = await runCodemod(
+          name,
+          overlay
+            ? { root: overlay, write: true, skip: [] }
+            : { root: importer.abs, write: apply, skip: importer.nested },
+        );
       } catch (error) {
         addItem(report, 'doByHand', {
           id: `${name}/failed`,
@@ -457,14 +544,21 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
         });
       }
     }
-    const now = apply && codemods.length > 0 ? scan() : before;
+    let now = before;
+    if (overlay) {
+      try {
+        now = collectFiles(overlay);
+      } finally {
+        rmSync(overlay, { recursive: true, force: true });
+      }
+    } else if (apply && codemods.length > 0) now = scan();
 
     for (const step of steps) {
       if (step.kind === 'deprecated') continue; // Coming next, below
       const done = step.done && matchDetect(step.done, now).length > 0;
       if (step.auto && hasCodemod(step.auto.codemod)) {
         const was = matchDetect(step.detect, before);
-        const still = apply ? matchDetect(step.detect, now) : [];
+        const still = matchDetect(step.detect, now);
         if (still.length > 0) {
           addItem(report, 'doByHand', {
             id: step.id,
@@ -579,10 +673,12 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
   }
 
   // ── 4. install and typecheck
+  const pm = manager ?? 'npm';
+  let installed = false;
   if (apply && options.install) {
     const stale = importers.some((imp) => lock?.importers?.[imp.dir] !== target);
     if (changed.size > 0 || stale) {
-      const pm = manager ?? 'npm';
+      installed = true;
       const res = runManager(pm, ['install'], root);
       if (res.status !== 0) {
         addItem(report, 'doByHand', {
@@ -593,9 +689,23 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
       }
     }
   }
+  // Still short of the target (no install, --no-install, a preview, or an
+  // install that did not move it): never done until it is installed.
+  const after = installed ? readRootLockfile(root, lockfile, importers) : lock;
+  for (const importer of importers) {
+    const locked = after?.importers?.[importer.dir];
+    const now = isVersion(locked) ? locked : nodeModulesVersion(root, importer);
+    if (!now || compareVersions(now, target) === 0) continue;
+    const what = isVersion(locked) ? `${lockfile} still resolves` : 'node_modules still holds';
+    addItem(report, 'doByHand', {
+      id: 'tool/install',
+      plain: `Run \`${pm} install\` to finish: ${what} ${now}, not ${target}.`,
+      importer: importer.dir,
+      files: isVersion(locked) ? [lockfile] : [],
+    });
+  }
   if (apply && options.typecheck) {
     for (const importer of importers) {
-      const pm = manager ?? 'npm';
       let res = null;
       if (importer.pkg?.scripts?.typecheck) {
         res = runManager(pm, ['run', 'typecheck'], importer.abs);
@@ -762,18 +872,7 @@ export async function main(argv, invokedAs = '') {
   return report.exitCode;
 }
 
-// Compare real paths: npm/yarn link the bin and pnpm links the package
-// directory, so argv[1] is a symlink while import.meta.url is resolved.
-const isEntry = (() => {
-  try {
-    return (
-      !!process.argv[1] &&
-      realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))
-    );
-  } catch {
-    return false;
-  }
-})();
-if (isEntry) {
+// isEntry compares real paths: npm/yarn link the bin and pnpm links the package directory.
+if (isEntry(import.meta.url)) {
   process.exitCode = await main(process.argv.slice(2), basename(process.argv[1] ?? ''));
 }

@@ -14,7 +14,7 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join, relative, resolve } from 'node:path';
+import { delimiter, dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
@@ -96,9 +96,10 @@ export function snapshotTree(dir) {
 }
 
 /** Run the command as a child, the way npx runs the bin. */
-export function runCli(args, { cwd = REPO } = {}) {
+export function runCli(args, { cwd = REPO, env = process.env } = {}) {
   const res = spawnSync(process.execPath, [UPGRADE, ...args], {
     cwd,
+    env,
     encoding: 'utf8',
     timeout: 60_000,
   });
@@ -124,4 +125,43 @@ export function git(cwd, ...args) {
   );
   if (res.status !== 0) throw new Error(`git ${args.join(' ')} failed: ${res.stderr}`);
   return res.stdout.trim();
+}
+
+/**
+ * A tmp bin directory of fake package managers (pnpm, npm, yarn, bun) and the
+ * env that puts it first on PATH. Each fake appends `<name> <args> in <cwd>`
+ * to the log; `onInstall(name)` returns the files (relative to its cwd) the
+ * fake writes on `install`, such as an updated lockfile, and `fail` makes
+ * every call print an error and exit 1.
+ */
+export function fakeManagers({ installs = {}, fail = false } = {}) {
+  const dir = mkdtempSync(join(tmpdir(), 'hds-fake-pm-'));
+  const log = join(dir, 'calls.log');
+  for (const name of ['pnpm', 'npm', 'yarn', 'bun']) {
+    const writes = JSON.stringify(installs[name] ?? {});
+    const file = join(dir, name);
+    writeFileSync(
+      file,
+      [
+        '#!/usr/bin/env node',
+        "const fs = require('node:fs');",
+        "const path = require('node:path');",
+        `fs.appendFileSync(${JSON.stringify(log)}, ${JSON.stringify(name)} + ' ' + process.argv.slice(2).join(' ') + ' in ' + process.cwd() + '\\n');`,
+        fail
+          ? "console.error('ERR_FAKE install exploded'); process.exit(1);"
+          : `if (process.argv[2] === 'install') for (const [rel, text] of Object.entries(${writes})) fs.writeFileSync(path.join(process.cwd(), rel), text);`,
+        '',
+      ].join('\n'),
+      { mode: 0o755 },
+    );
+  }
+  const env = { ...process.env, PATH: `${dir}${delimiter}${process.env.PATH ?? ''}` };
+  const calls = () => {
+    try {
+      return readFileSync(log, 'utf8').split('\n').filter(Boolean);
+    } catch {
+      return [];
+    }
+  };
+  return { env, calls };
 }

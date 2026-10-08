@@ -6,14 +6,17 @@
  * Node builtins only. An importer is the root package or a workspace package
  * (pnpm-workspace.yaml, or package.json `workspaces` for npm, yarn and bun).
  * The installed version comes from, in order: the lockfile, the importer's
- * node_modules copy, `--from`. When the lockfile already says the target (the
- * dependency was bumped by hand), the old version is read from the lockfile at
- * git HEAD, then at the merge-base with the default branch, then along the
- * lockfile's own first-parent history.
+ * node_modules copy, `--from`. A lockfile at git HEAD or at the merge-base with
+ * the default branch that holds an older version wins (the dependency was
+ * bumped by hand and not yet committed or merged); when the lockfile already
+ * says the target, the lockfile's own first-parent history is read too. An
+ * explicit `--from` skips git. A version read from history below the floor
+ * becomes the floor, with `belowFloor` set: only a version actually installed
+ * is refused for it.
  */
 import { spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 import { HDS_PACKAGE, lockfileKind, pickLockfile, readLockfile } from './installed-version.mjs';
 import { compareVersions, isVersion } from './semver.mjs';
 
@@ -169,6 +172,31 @@ export function findImporters(root) {
   return out;
 }
 
+/**
+ * The workspace that `root` is a package of, when a parent directory declares
+ * one (pnpm-workspace.yaml, or package.json `workspaces`) whose globs name it:
+ * `{ dir, rel }`, the workspace root and root's path in it (posix), or null.
+ * Only the nearest parent that declares a workspace is asked.
+ */
+export function enclosingWorkspace(root) {
+  const abs = resolve(root);
+  for (let dir = dirname(abs); ; dir = dirname(dir)) {
+    const pkg = readJsonFile(join(dir, 'package.json'));
+    const globs = workspaceGlobs(dir, pkg);
+    if (globs.length > 0 || existsSync(join(dir, 'pnpm-workspace.yaml'))) {
+      const rel = relative(dir, abs).split(sep).join('/');
+      const names = (negated) =>
+        new Set(
+          globs
+            .filter((g) => g.startsWith('!') === negated)
+            .flatMap((g) => expandGlob(dir, negated ? g.slice(1) : g)),
+        );
+      return names(false).has(rel) && !names(true).has(rel) ? { dir, rel } : null;
+    }
+    if (dirname(dir) === dir) return null;
+  }
+}
+
 /** The package manager and lockfile at a root (lockfile null when there is none to read). */
 export function detectManager(root, rootPkg) {
   let names = [];
@@ -301,16 +329,24 @@ export function versionAtRevision(root, rev, lockfile, importer) {
 
 /**
  * The version each importer upgrades from, and where it was read.
- * @param {{ root: string, lockfile: string|null, lock: any, importers: any[], target: string, from?: string }} ctx
- * @returns {{ from: string|null, source: string, noHistory?: boolean }[]}
+ * `noHistory` is set when the version is already the target and nothing says
+ * which one it was upgraded from: 'none' (no git, or nothing in it to read) or
+ * 'at-target' (every commit of the lockfile says the target). `belowFloor`
+ * holds a version read from history older than `floor`, which `from` replaces.
+ * @param {{ root: string, lockfile: string|null, lock: any, importers: any[], target: string, floor?: string, from?: string }} ctx
+ * @returns {{ from: string|null, source: string, noHistory?: 'none'|'at-target', belowFloor?: string }[]}
  */
-export function installedVersions({ root, lockfile, lock, importers, target, from }) {
+export function installedVersions({ root, lockfile, lock, importers, target, floor, from }) {
   let revisions;
   let touched;
   const history = () =>
     revisions === undefined ? (revisions = historyRevisions(root)) : revisions;
   const commits = () =>
     touched === undefined ? (touched = lockfileCommits(root, lockfile)) : touched;
+  const recovered = (old, source) =>
+    floor && compareVersions(old, floor) < 0
+      ? { from: floor, source, belowFloor: old }
+      : { from: old, source };
   return importers.map((importer) => {
     const locked = lock?.importers?.[importer.dir];
     let found = null;
@@ -321,21 +357,26 @@ export function installedVersions({ root, lockfile, lock, importers, target, fro
     }
     if (!found)
       return isVersion(from) ? { from, source: 'flag' } : { from: null, source: 'unknown' };
-    if (compareVersions(found.from, target) !== 0) return found;
-    // Already at the target: bumped by hand, or already upgraded. Ask git.
+    const atTarget = compareVersions(found.from, target) === 0;
+    // An explicit --from beats anything inferred from history.
+    if (isVersion(from)) return atTarget ? { from, source: 'flag' } : found;
     const revs = lockfile && found.source === 'lockfile' ? history() : null;
     if (revs) {
+      // An older lockfile at HEAD or the merge-base: bumped by hand, not yet committed or merged.
       for (const { rev, source } of revs) {
         const old = versionAtRevision(root, rev, lockfile, importer);
-        if (old && compareVersions(old, target) < 0) return { from: old, source };
+        if (old && compareVersions(old, found.from) < 0) return recovered(old, source);
       }
-      for (const rev of commits()) {
-        const old = versionAtRevision(root, rev, lockfile, importer);
-        if (old && compareVersions(old, target) < 0) return { from: old, source: 'git-log' };
+      if (atTarget) {
+        for (const rev of commits()) {
+          const old = versionAtRevision(root, rev, lockfile, importer);
+          if (old && compareVersions(old, target) < 0) return recovered(old, 'git-log');
+        }
       }
     }
-    // No history below the target (or none readable): never a silent from = target.
-    if (isVersion(from)) return { from, source: 'flag' };
-    return { ...found, noHistory: true };
+    if (!atTarget) return found;
+    // No history below the target (or none readable): say so, never a silent from = target.
+    const readable = revs !== null && revs !== undefined && commits().length > 0;
+    return { ...found, noHistory: readable ? 'at-target' : 'none' };
   });
 }

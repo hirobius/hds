@@ -15,8 +15,7 @@
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
-
-export const HDS = '@hirobius/design-system';
+import { HDS_PACKAGE as HDS } from './installed-version.mjs';
 
 /** Directories never read: dependencies, VCS data and build output. */
 export const SKIP_DIRS = new Set([

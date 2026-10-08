@@ -572,12 +572,21 @@ if (ok) {
     'src/app.tsx': `import { HdsCheckbox } from '${PKG}';\nexport const a = <HdsCheckbox />;\n`,
   };
   for (const [file, text] of Object.entries(fixture)) writeFileSync(join(project, file), text);
-  const bin = join(binDir, process.platform === 'win32' ? 'design-system.cmd' : 'design-system');
-  const res = spawnSync(
-    bin,
-    ['upgrade', '--root', project, '--dry-run', '--no-install', '--no-typecheck'],
-    { encoding: 'utf8', shell: process.platform === 'win32', timeout: 60_000 },
-  );
+  // On Windows the bin is a .cmd shim that only cmd.exe starts, and the tmp
+  // project path may hold a space: run the file it points at through node
+  // instead, with the path as a plain argument (never a shell).
+  const upgradeArgs = ['upgrade', '--root', project, '--dry-run', '--no-install', '--no-typecheck'];
+  const res =
+    process.platform === 'win32'
+      ? spawnSync(
+          process.execPath,
+          [join(app, 'node_modules', ...PKG.split('/'), 'codemods', 'upgrade.mjs'), ...upgradeArgs],
+          { encoding: 'utf8', timeout: 60_000 },
+        )
+      : spawnSync(join(binDir, 'design-system'), upgradeArgs, {
+          encoding: 'utf8',
+          timeout: 60_000,
+        });
   if (res.status !== 1) {
     problems.push(`exit ${res.status} (want 1, work left); stderr: ${res.stderr}`);
   }

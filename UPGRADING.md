@@ -1,14 +1,14 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.21.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.21.0. For newer releases, read the newest copy at https://github.com/hirobius/hds/blob/main/UPGRADING.md. From 0.22.0, `npx @hirobius/design-system@latest upgrade` fetches the newest steps and applies them for you.
 
 ## How to upgrade
 
-```sh
-npx @hirobius/design-system@latest upgrade
-```
+1. Install the exact version: `pnpm add @hirobius/design-system@0.21.0`. `pnpm update` never crosses a 0.x minor.
+2. For each release you cross, run the codemods listed under Fixed for you.
+3. Then work through its Do by hand list.
 
-It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+This file covers every release after 0.16.0; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
 
 ## 0.21.0
 
@@ -65,7 +65,14 @@ Released 2026-10-01 (minor). Pattern components move to /patterns; deprecated, l
 
 ### Fixed for you
 
-The upgrade command runs these codemods for you.
+Run each codemod once from your project root:
+
+```sh
+npx -p @hirobius/design-system@0.21.0 hds-not-found-pattern --root .
+npx -p @hirobius/design-system@0.21.0 hds-patterns-subpath --root .
+npx -p @hirobius/design-system@0.21.0 hds-prefix --root .
+npx -p @hirobius/design-system@0.21.0 hds-tile-grid --root .
+```
 
 - Each of these is no longer exported from the package root; import it from @hirobius/design-system/patterns instead: `AssetImg`, `AssetImgProps`, `CodeBlock`, `CodeBlockProps`, `ErrorPattern`, `ErrorPatternProps`, `FieldWiring`, `FieldWiringInput`, `Form`, `FormField`, `FormFieldProps`, `FormFieldShell`, `FormFieldShellProps`, `FormProps`, `Page`, `PageProps`, `Reveal`, `RevealAnimation`, `RevealProps`, `StatusTile`, `StatusTileProps`, `StatusTileTone`, `blockCodeTextVariants`, `blockContainerVariants`, `blockHeaderVariants`, `chevronVariants`, `collapsibleToggleVariants`, `copyButtonVariants`, `inlineCodeTextVariants`, `inlineWrapperVariants`, `prePanelVariants` and `useFieldWiring`. Codemod: `hds-patterns-subpath`.
 - HdsCheckbox is removed from the package root; use Checkbox, the same component under its bare name. Codemod: `hds-prefix`.
