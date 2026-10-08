@@ -762,7 +762,7 @@ function buildHarvestMd({
     );
     if (typography.monoFamily) {
       lines.push(
-        `  --hds-font-family-mono: '${typography.monoFamily}', 'Geist Mono', 'Courier New', monospace;`,
+        `  --hds-font-family-mono: '${typography.monoFamily}', 'IBM Plex Mono', 'Courier New', monospace;`,
       );
     }
     lines.push('}');
@@ -773,7 +773,7 @@ function buildHarvestMd({
       lines.push(`Mono font source: \`${typography.monoVia}\` → **${typography.monoFamily}**.`);
     } else {
       lines.push(
-        'No mono/code font role found in source — mono stays at the HDS default (`Geist Mono`).',
+        'No mono/code font role found in source — mono stays at the HDS default (`IBM Plex Mono`).',
       );
     }
     if (typography.allRoles.length > 0) {

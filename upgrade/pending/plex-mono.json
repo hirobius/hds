@@ -1,0 +1,15 @@
+{
+  "impact": "look",
+  "plain": "Monospace text (code, tokens, metric numbers) now renders in IBM Plex Mono instead of Geist Mono; import fonts.css (you already do since 0.21) and nothing else changes.",
+  "steps": [
+    {
+      "id": "manual/geist-mono-hardcoded",
+      "kind": "manual",
+      "impact": "look",
+      "plain": "Your code names the font \"Geist Mono\" directly, and HDS no longer ships it, so that text falls back to the system monospace font; use var(--primitive-typography-family-mono) instead.",
+      "detect": {
+        "regex": ["Geist Mono"]
+      }
+    }
+  ]
+}

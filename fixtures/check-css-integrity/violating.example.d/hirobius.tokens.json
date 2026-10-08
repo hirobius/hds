@@ -14,7 +14,7 @@
           "$value": ["Satoshi", "system-ui", "sans-serif"]
         },
         "mono": {
-          "$value": ["Geist Mono", "monospace"]
+          "$value": ["IBM Plex Mono", "monospace"]
         }
       }
     }

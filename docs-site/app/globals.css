@@ -85,7 +85,7 @@ body {
 
 /*
  * Code font: IBM Plex Mono (self-hosted via @fontsource, imported in layout.tsx).
- * The docs app owns this choice; the HDS mono token (Geist Mono) stays the
+ * The docs app owns this choice; the HDS mono token (IBM Plex Mono) stays the
  * fallback so a missing font file degrades to the token, not to the browser default.
  */
 :root,
