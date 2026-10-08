@@ -690,6 +690,55 @@ describe('compile.mjs writes the generated files, and --check keeps them byte-eq
     ]);
   });
 
+  // One hand edit each, to a single value or byte: --check compares the whole
+  // file, and every field of the release object, not a key it happens to read.
+  const editJson = (repo, rel, edit) => {
+    const value = JSON.parse(read(repo, rel));
+    edit(value);
+    write(repo, rel, json(value));
+  };
+  it.each([
+    [
+      'upgrade/index.json',
+      'its floor',
+      (repo) => editJson(repo, 'upgrade/index.json', (index) => (index.floor = '0.9.0')),
+    ],
+    [
+      'upgrade/index.json',
+      'the breaking count of one release',
+      (repo) => editJson(repo, 'upgrade/index.json', (index) => (index.versions[0].breaking = 0)),
+    ],
+    [
+      'status.json',
+      'release.breaking',
+      (repo) => editJson(repo, 'status.json', (status) => (status.release.breaking = 2)),
+    ],
+    [
+      'status.json',
+      'release.upgrade set to the one command the package does not have yet',
+      (repo) =>
+        editJson(
+          repo,
+          'status.json',
+          (status) => (status.release.upgrade = 'npx @hirobius/design-system@latest upgrade'),
+        ),
+    ],
+    [
+      'UPGRADING.md',
+      'only its trailing newline removed',
+      (repo) => write(repo, 'UPGRADING.md', read(repo, 'UPGRADING.md').replace(/\n$/, '')),
+    ],
+  ])('--check fails on a hand edit to %s: %s, naming the file', (file, _edit, edit) => {
+    const repo = historyRepo();
+    expect(run(['--repo', repo]).status).toBe(0);
+    edit(repo);
+    const res = run(['--check', '--repo', repo, '--json']);
+    expect(res.status).toBe(1);
+    const { violations } = JSON.parse(res.stdout);
+    expect(violations.map((v) => v.file)).toEqual([file]);
+    expect(violations[0].message).toContain('node scripts/upgrade/compile.mjs');
+  });
+
   it('--check fails when a generated file is missing', () => {
     const res = run(['--check', '--repo', historyRepo()]);
     expect(res.status).toBe(1);
