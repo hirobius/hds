@@ -41,3 +41,13 @@ describe('Avatar', () => {
     expect(screen.getByText('AM')).not.toBeNull();
   });
 });
+
+describe('Avatar failed-state reset (hds#— bugfix)', () => {
+  it('shows the new image after a src change following a load error', () => {
+    const { container, rerender } = render(<Avatar src="/u.png" alt="Jane Doe" />);
+    fireEvent.error(container.querySelector('img')!);
+    expect(container.querySelector('img')).toBeNull(); // fallback initials
+    rerender(<Avatar src="/v.png" alt="Jane Doe" />);
+    expect(container.querySelector('img')).not.toBeNull(); // recovered
+  });
+});

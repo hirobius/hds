@@ -40,6 +40,24 @@ describe('Select', () => {
     render(<Select ref={ref} label="Plan" value="pro" onChange={() => {}} options={OPTIONS} />);
     expect(ref.current?.tagName).toBe('BUTTON');
   });
+
+  it('does not crash with empty options (async list not loaded) and labels the trigger with the field name', () => {
+    expect(() =>
+      render(<Select label="Plan" value="" onChange={() => {}} options={[]} />),
+    ).not.toThrow();
+    expect(screen.getByRole('combobox').getAttribute('aria-label')).toBe('Plan');
+  });
+
+  it('does not mislabel the trigger when the value matches no option', () => {
+    render(<Select label="Plan" value="does-not-exist" onChange={() => {}} options={OPTIONS} />);
+    // No bogus "Plan: Free" from the old `options[0]` fallback — just the field name.
+    expect(screen.getByRole('combobox').getAttribute('aria-label')).toBe('Plan');
+  });
+
+  it('includes the selected option label on the trigger when matched', () => {
+    render(<Select label="Plan" value="pro" onChange={() => {}} options={OPTIONS} />);
+    expect(screen.getByRole('combobox').getAttribute('aria-label')).toBe('Plan: Pro');
+  });
 });
 
 describe('Select highlighted row ring', () => {

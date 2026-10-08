@@ -270,7 +270,18 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
           align="start"
           className="p-0"
           style={{ width: 'var(--radix-popover-trigger-width)' }}
-          onInteractOutside={() => {
+          onInteractOutside={(event) => {
+            // A pointerdown on the trigger must NOT dismiss here: Radix would
+            // close, then the trigger's own onClick would immediately reopen, so
+            // the popover could never be closed by clicking the trigger. Let the
+            // onClick own that toggle; treat every other outside interaction as a
+            // real dismissal.
+            const oe = (event as { detail?: { originalEvent?: Event } }).detail?.originalEvent;
+            const target = (oe?.target ?? (event as unknown as Event).target) as Node | null;
+            if (target && triggerRef.current?.contains(target)) {
+              event.preventDefault();
+              return;
+            }
             interactedOutside.current = true;
           }}
           onCloseAutoFocus={(event) => {

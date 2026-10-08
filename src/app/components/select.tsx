@@ -77,7 +77,11 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
   },
   ref,
 ) {
-  const selected = options.find((o) => o.value === value) ?? options[0];
+  // May be undefined: options can be empty while an async list loads, or `value`
+  // can match nothing. Guard it — dereferencing `options[0]` here crashed the
+  // whole page on an empty list (hds#—), and mislabeled the trigger on a miss.
+  const selected = options.find((o) => o.value === value);
+  const selectedLabel = selected?.label ?? '';
   const labelId = useId();
   const labelShown = showLabel && Boolean(label);
 
@@ -100,7 +104,13 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
           id={id}
           // The field label and the value, also with the label hidden, so the
           // closed trigger is read as the field and not only its value (hds#408).
-          aria-label={label ? `${label}: ${selected.label}` : selected.label}
+          aria-label={
+            label
+              ? selectedLabel
+                ? `${label}: ${selectedLabel}`
+                : label
+              : selectedLabel || undefined
+          }
           aria-describedby={ariaDescribedBy}
           aria-invalid={ariaInvalid}
           className={cn(
@@ -126,7 +136,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
             // the label hidden, carry its text; with no label text at all, fall
             // back to the trigger's own name.
             aria-labelledby={labelShown ? labelId : undefined}
-            aria-label={labelShown ? undefined : label || selected.label}
+            aria-label={labelShown ? undefined : label || selectedLabel || undefined}
             // Radix Popper vars: match trigger width and cap height to the
             // collision-aware available space (replaces the old fixed top:100% panel).
             style={{

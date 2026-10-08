@@ -213,12 +213,17 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     );
 
     if (asChild) {
+      // A slotted element (e.g. an <a>) can't carry the native `disabled`
+      // attribute, so `disabled:` utilities never fire and the link stays
+      // clickable + undimmed. Enforce the disabled contract here: block pointer
+      // events, drop it from the tab order, and dim it to match the real button.
       return (
         <Slot
           ref={ref as React.Ref<HTMLElement>}
-          className={classes}
+          className={cn(classes, isDisabled && 'pointer-events-none opacity-50')}
           aria-disabled={isDisabled || undefined}
           aria-busy={loading || undefined}
+          tabIndex={isDisabled ? -1 : undefined}
           data-state={loading ? 'loading' : undefined}
           data-variant={variant ?? undefined}
           data-tone={tone ?? undefined}

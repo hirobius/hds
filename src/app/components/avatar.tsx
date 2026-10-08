@@ -60,6 +60,13 @@ export interface AvatarProps
 export const Avatar = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, AvatarProps>(
   function Avatar({ className, size, src, alt, initials, ...props }, ref) {
     const [failed, setFailed] = React.useState(false);
+    // Reset the fallback when `src` changes, so a new valid photo isn't masked
+    // by a previous one's load error. Adjust-during-render, not an effect.
+    const [prevSrc, setPrevSrc] = React.useState(src);
+    if (src !== prevSrc) {
+      setPrevSrc(src);
+      setFailed(false);
+    }
     const showImage = Boolean(src) && !failed;
     const label = initials || deriveInitials(alt);
 

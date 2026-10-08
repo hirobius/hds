@@ -212,3 +212,36 @@ describe('Button pressed (hds#393)', () => {
     expect(getByRole('button').getAttribute('data-pressed')).toBe('true');
   });
 });
+
+describe('Button asChild disabled contract (hds#— bugfix)', () => {
+  it('disables a slotted link: aria-disabled, out of tab order, non-interactive + dimmed', async () => {
+    const { Button } = await load();
+    const { container } = render(
+      <Button asChild disabled>
+        <a href="#x" className="hds-focus">
+          Link
+        </a>
+      </Button>,
+    );
+    const a = container.querySelector('a')!;
+    expect(a.getAttribute('aria-disabled')).toBe('true');
+    expect(a.getAttribute('tabindex')).toBe('-1');
+    expect(a.classList.contains('pointer-events-none')).toBe(true);
+    expect(a.classList.contains('opacity-50')).toBe(true);
+  });
+
+  it('leaves an enabled slotted link fully interactive', async () => {
+    const { Button } = await load();
+    const { container } = render(
+      <Button asChild>
+        <a href="#x" className="hds-focus">
+          Link
+        </a>
+      </Button>,
+    );
+    const a = container.querySelector('a')!;
+    expect(a.getAttribute('aria-disabled')).toBeNull();
+    expect(a.getAttribute('tabindex')).toBeNull();
+    expect(a.classList.contains('pointer-events-none')).toBe(false);
+  });
+});
