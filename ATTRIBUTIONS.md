@@ -33,6 +33,15 @@ Use this file to track:
 - Source: [shadcn/ui](https://ui.shadcn.com/)
 - License link: [MIT license](https://github.com/shadcn-ui/ui/blob/main/LICENSE.md)
 
+### anti-slop
+
+- Registry ID: library-anti-slop
+- Type: Vendored lint rules
+- Usage: Oxlint plugin vendored at tools/oxlint/anti-slop (upstream commit c44ef22, v0.1.2), run as a warn-first ratchet
+- License: MIT
+- Source: [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop)
+- License link: [MIT license](https://github.com/dmmulroy/anti-slop/blob/main/LICENSE)
+
 ### Unsplash
 
 - Registry ID: asset-unsplash

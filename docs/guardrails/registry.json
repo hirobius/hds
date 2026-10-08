@@ -109,6 +109,17 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-anti-slop",
+      "description": "Warn-first ratchet for the vendored anti-slop Oxlint rules. Runs oxlint with oxlint.config.ts, counts warnings per file per rule, and fails when any count rises above tools/oxlint/anti-slop-baseline.json. --update rewrites the baseline.",
+      "severity": "error",
+      "gateScript": "scripts/check-anti-slop.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "scope": "full-tree"
+    },
+    {
       "id": "check-attributions",
       "description": "Keeps the attribution registry machine-checkable. Checks that registry IDs in ATTRIBUTIONS.md are present and unique, and that asset manifest sourceId values resolve to known registry IDs.",
       "severity": "warn",
