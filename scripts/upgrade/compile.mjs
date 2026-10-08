@@ -112,15 +112,18 @@ const HEADINGS = {
 const REMOVING = new Set(['removed', 'moved', 'renamed', 'folded']);
 
 /**
- * The list a ledger step belongs to, from its fields alone:
+ * The list a ledger step belongs to, from its kind, impact and auto alone
+ * (its plain line is not read):
  *   - a deprecation (kind deprecated) is Coming next: it still works;
  *   - a step a codemod applies (auto) is Fixed for you;
- *   - a step whose only effect is how something looks (impact look), and
- *     that neither takes something away nor asks for a manual change, Looks
- *     different;
- *   - everything else is Do by hand: breaking and behavior changes, a removed
- *     or moved name with no codemod, a manual step, and an additive or
- *     none-impact step that tells the consumer what to do.
+ *   - a step with impact look that neither takes something away nor is a
+ *     manual step is Looks different; its plain line may say how to keep the
+ *     old look ("so pass fullPage where ..."), which is up to the consumer;
+ *   - every other step is Do by hand: breaking and behavior changes (impact
+ *     behavior may break a test or a flow even when the plain line names no
+ *     edit), a removed or moved name with no codemod, a manual step, and an
+ *     additive or none-impact step, which a note only records to tell the
+ *     consumer something to do.
  * @returns {'fixedForYou' | 'looksDifferent' | 'comingNext' | 'doByHand'}
  */
 export function listOf(step) {
@@ -420,7 +423,9 @@ const entryOf = (from) =>
  * deprecation (deprecationRemovals), one entry per imported name (with the
  * exports key it is imported from) and per class, or one named by the
  * step's subject when it lists neither (a token path, a prop, a prop value),
- * while any of it is left. Soonest removal first.
+ * while any of it is left. A subject is a label, not a name to find in code:
+ * a reader finds its uses by the detect of the step the entry names. Soonest
+ * removal first.
  */
 function deprecatedNow(ledgers) {
   const removals = deprecationRemovals(ledgers);

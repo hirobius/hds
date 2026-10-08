@@ -189,7 +189,7 @@
               "name": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The deprecated export or class or, for a deprecation that lists neither (a token path, a prop, a prop value), the subject of its step."
+                "description": "The deprecated export or class or, for a deprecation that lists neither (a token path, a prop, a prop value), the subject of its step: a label to show, not a name to search code for. To find its uses, read the detect of the step `step` names."
               },
               "entry": {
                 "description": "The package.json#exports key that exports it, such as `.`.",

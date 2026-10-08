@@ -174,7 +174,9 @@ release.
 - **`upgrade/index.json`**: every release with its breaking count, the
   [floor](#the-floor) and what is deprecated today with its `removeIn`: each
   imported name and class still deprecated, or the step's subject (a token
-  path, a prop) when it lists neither.
+  path, a prop) when it lists neither. A subject is a label, not a name to
+  search code for (`Text-variants`): the upgrade command finds its uses by the
+  `detect` of the ledger step that `step` names.
 - **`status.json` `release`**: the newest release for the fleet dashboard.
 
 `node scripts/upgrade/compile.mjs --check` runs in `pretest` and fails,
