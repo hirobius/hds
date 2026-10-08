@@ -1,6 +1,6 @@
 {
   "package": "@hirobius/design-system",
-  "latest": "0.21.0",
+  "latest": "0.22.0",
   "floor": "0.16.0",
   "versions": [
     {
@@ -44,6 +44,13 @@
       "bump": "minor",
       "breaking": 2,
       "summary": "StatusDot is removed, fonts move to an opt-in fonts.css, the type ramp is cut to 5 roles; AGENTS.md, hds-mcp and the ESLint plugin ship."
+    },
+    {
+      "version": "0.22.0",
+      "date": "2026-10-08",
+      "bump": "minor",
+      "breaking": 1,
+      "summary": "3 changes to make by hand (1 breaking), 1 that looks different and 2 deprecations."
     }
   ],
   "deprecated": [
@@ -51,6 +58,16 @@
       "name": "Box-sx-layout-names",
       "removeIn": "1.0.0",
       "step": "0.20.0/deprecated/Box-sx-layout-names"
+    },
+    {
+      "name": "Divider.strong",
+      "removeIn": "1.0.0",
+      "step": "0.22.0/deprecated/Divider.strong"
+    },
+    {
+      "name": "InlineCode.compact",
+      "removeIn": "1.0.0",
+      "step": "0.22.0/deprecated/InlineCode.compact"
     },
     {
       "name": "Stack-gap-layout-names",
