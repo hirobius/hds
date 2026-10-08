@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { ONE_COMMAND, ONE_COMMAND_BIN, ONE_COMMAND_FROM } from '../scripts/upgrade/compile.mjs';
 import { compareVersions } from '../scripts/upgrade/schema.mjs';
@@ -108,8 +108,38 @@ describe('upgrading (hds#451)', () => {
     expect(at(ONE_COMMAND_FROM, { [ONE_COMMAND_BIN]: 'codemods/upgrade.mjs' })).toBeNull();
   });
 
-  it('holds for this package.json', () => {
-    expect(brokenPromise(JSON.parse(read('package.json')), docs())).toBeNull();
+  // Every shipped doc, not only the two that promise it: a bare mention in a
+  // CHANGELOG entry or a MIGRATIONS guide promises the command just the same.
+  it('refuses a shipped doc that names the one command with no release before it', () => {
+    const at = (text: string, bin?: Record<string, string>) =>
+      brokenPromise({ version: '0.21.0', bin }, { 'GUIDE.md': text });
+    expect(at(`Run \`${ONE_COMMAND}\` to find each use.`)).toContain('GUIDE.md');
+    expect(at(`From ${ONE_COMMAND_FROM}, \`${ONE_COMMAND}\` finds each use.`)).toBeNull();
+    expect(
+      at(`From ${ONE_COMMAND_FROM}, one command does it:\n\n\`\`\`sh\n${ONE_COMMAND}\n\`\`\``),
+    ).toBeNull();
+    expect(at(`In a later release, \`${ONE_COMMAND}\` fetches the newest steps.`)).toBeNull();
+    expect(at(`Run \`${ONE_COMMAND}\`.`, { [ONE_COMMAND_BIN]: 'codemods/upgrade.mjs' })).toBeNull();
+  });
+
+  it('reads every Markdown and text file package.json#files ships, and README.md', () => {
+    expect(Object.keys(shippedDocs())).toEqual(
+      expect.arrayContaining([
+        'README.md',
+        'CONSUMING.md',
+        'docs/CONSUMING.md',
+        'UPGRADING.md',
+        'MIGRATIONS.md',
+        'CHANGELOG.md',
+        'AGENTS.md',
+        'llms.txt',
+        'public/llms-full.txt',
+      ]),
+    );
+  });
+
+  it('holds for this package.json, in every shipped doc', () => {
+    expect(brokenPromise(JSON.parse(read('package.json')), shippedDocs())).toBeNull();
   });
 });
 
@@ -119,19 +149,52 @@ function promisedFrom(text: string): string[] {
 }
 
 /**
- * Why `docs` promise a command the package lacks, or null: they say the one
- * command works from a version `pkg` has reached, and its bin has no
- * design-system yet.
+ * Every Markdown and text file the package ships, by path: README.md (npm
+ * always packs it) and each one package.json#files names or holds, but the
+ * dist build.
+ */
+function shippedDocs(): Record<string, string> {
+  const found = new Set<string>(['README.md']);
+  const walk = (rel: string) => {
+    const abs = resolve(ROOT, rel);
+    if (!existsSync(abs)) return;
+    if (statSync(abs).isDirectory()) {
+      for (const name of readdirSync(abs)) walk(`${rel.replace(/\/$/, '')}/${name}`);
+    } else if (/\.(?:md|txt)$/.test(rel)) found.add(rel);
+  };
+  for (const entry of JSON.parse(read('package.json')).files as string[]) {
+    if (entry !== 'dist') walk(entry);
+  }
+  return Object.fromEntries([...found].sort().map((file) => [file, read(file)]));
+}
+
+/**
+ * Why `docs` promise a command the package lacks, or null. Without the
+ * design-system bin, each paragraph naming the one command, or the paragraph
+ * before it (a code block's lead-in), must say which release brings it
+ * ("From 0.22.0," or "In a later release"), and `pkg` must not have reached
+ * that release.
  */
 function brokenPromise(
   pkg: { version: string; bin?: Record<string, string> },
   docs: Record<string, string>,
 ): string | null {
   if (Object.hasOwn(pkg.bin ?? {}, ONE_COMMAND_BIN)) return null;
+  const fix = `land hds#452 (the bin) before this release, or reword it and ONE_COMMAND_FROM in scripts/upgrade/compile.mjs`;
   for (const [file, text] of Object.entries(docs)) {
-    const from = promisedFrom(text).find((v) => compareVersions(pkg.version, v) >= 0);
-    if (from) {
-      return `${file} says \`${ONE_COMMAND}\` works from ${from}, but package.json is at ${pkg.version} with no ${ONE_COMMAND_BIN} bin: land hds#452 (the bin) before this release, or reword ${file} and ONE_COMMAND_FROM in scripts/upgrade/compile.mjs.`;
+    const blocks = text.split(/\n\s*\n/);
+    for (const [i, block] of blocks.entries()) {
+      if (!block.includes(ONE_COMMAND)) continue;
+      const near = `${blocks[i - 1] ?? ''}\n\n${block}`;
+      if (/\bIn a later release\b/.test(near)) continue;
+      const from = promisedFrom(near);
+      if (from.length === 0) {
+        return `${file} names \`${ONE_COMMAND}\` with no "From <version>," before it, but package.json is at ${pkg.version} with no ${ONE_COMMAND_BIN} bin: say "From ${ONE_COMMAND_FROM}, ..." there, or ${fix}. It reads: ${block.slice(0, 100)}`;
+      }
+      const reached = from.find((v) => compareVersions(pkg.version, v) >= 0);
+      if (reached) {
+        return `${file} says \`${ONE_COMMAND}\` works from ${reached}, but package.json is at ${pkg.version} with no ${ONE_COMMAND_BIN} bin: ${fix}.`;
+      }
     }
   }
   return null;

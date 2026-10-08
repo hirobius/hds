@@ -598,6 +598,6 @@ swaps them for Badge in its own repository.
 | `StatusDot`      | `<Badge dot tone={…} size={…} label={…} />`   | none: a `style` has no Badge mapping, so the edit is by hand |
 | `StatusDotProps` | `BadgeProps` (`dot`, `tone`, `size`, `label`) | none                                                         |
 
-`npx @hirobius/design-system@latest upgrade` finds each use by import and by
-JSX tag. Move any `style` to a wrapper or a `className` first, as the 0.20.0
-section shows.
+From 0.22.0, `npx @hirobius/design-system@latest upgrade` finds each use by
+import and by JSX tag. Move any `style` to a wrapper or a `className` first,
+as the 0.20.0 section shows.
