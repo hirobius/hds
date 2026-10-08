@@ -10,7 +10,7 @@
     "breaking": 2,
     "doByHand": 12,
     "floor": "0.16.0",
-    "upgrade": "pnpm add @hirobius/design-system@0.21.0"
+    "upgrade": "npx @hirobius/design-system@latest upgrade"
   },
   "next": [
     "Skills standardized 2026-10-06: /pr is the PR format; spec work runs /to-spec → /to-tickets → /implement-spec. Factory-loop epic ops#473 (7 tickets, kit-first: #474 frontier, #475 /pr bodies, #476 wedge).",

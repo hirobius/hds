@@ -126,6 +126,13 @@
     "codemods/jsx-fold.mjs",
     "codemods/not-found-pattern.mjs",
     "codemods/tile-grid.mjs",
+    "codemods/upgrade.mjs",
+    "codemods/registry.mjs",
+    "codemods/lib/installed-version.mjs",
+    "codemods/lib/project.mjs",
+    "codemods/lib/record.mjs",
+    "codemods/lib/scan.mjs",
+    "codemods/lib/semver.mjs",
     "AGENTS.md",
     "mcp/",
     "scripts/eslint-plugin-hds/index.mjs",
@@ -451,6 +458,8 @@
     "hds-prefix": "codemods/hds-prefix.mjs",
     "hds-not-found-pattern": "codemods/not-found-pattern.mjs",
     "hds-tile-grid": "codemods/tile-grid.mjs",
-    "hds-mcp": "mcp/hds-mcp.mjs"
+    "hds-mcp": "mcp/hds-mcp.mjs",
+    "design-system": "codemods/upgrade.mjs",
+    "hds-upgrade": "codemods/upgrade.mjs"
   }
 }

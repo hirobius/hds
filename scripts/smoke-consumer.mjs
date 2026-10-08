@@ -28,7 +28,8 @@
  *   './manifest'   → hds-manifest.json as ESM (default export)
  *   './contexts'   → React context providers (ThemeProvider, …)
  *   './eslint-plugin' → the consumer ESLint plugin (configs.recommended)
- * plus AGENTS.md and the hds-mcp bin (section 3f).
+ * plus AGENTS.md and the hds-mcp bin (section 3f), and the upgrade command's
+ * design-system bin run with --dry-run on a small project (section 3g).
  *
  * Any unresolved subpath, missing symbol, or unresolvable bare import inside the
  * bundle (e.g. a phantom dependency that isn't declared) FAILS the run. This is
@@ -42,7 +43,15 @@
  */
 
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, mkdirSync, writeFileSync, rmSync, readdirSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  rmSync,
+  readdirSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -537,6 +546,57 @@ if (ok) {
     ok = false;
   } else {
     console.log('  agents ok   AGENTS.md shipped, hds-mcp linked and answering over stdio');
+  }
+}
+
+// ── 3g. The upgrade command — the packed bin, --dry-run on a small project ───
+// `npx @hirobius/design-system@latest upgrade` runs the `design-system` bin of
+// the published tarball (hds#452), so run that bin as installed: against a
+// project on the floor release that still imports an Hds* alias, a dry run
+// must list the codemod fix, print the four sections, exit 1 (work left) and
+// write nothing.
+if (ok) {
+  log('running the packed upgrade bin (design-system upgrade --dry-run)…');
+  const problems = [];
+  const binDir = join(app, 'node_modules', '.bin');
+  for (const bin of ['design-system', 'hds-upgrade']) {
+    if (!existsSync(join(binDir, bin)) && !existsSync(join(binDir, `${bin}.cmd`))) {
+      problems.push(`${bin} bin not linked into node_modules/.bin`);
+    }
+  }
+  const project = join(scratch, 'upgrade-fixture');
+  mkdirSync(join(project, 'src'), { recursive: true });
+  const fixture = {
+    'package.json': `${JSON.stringify({ name: 'upgrade-fixture', private: true, version: '0.0.0', dependencies: { [PKG]: '^0.16.0' } }, null, 2)}\n`,
+    'package-lock.json': `${JSON.stringify({ name: 'upgrade-fixture', lockfileVersion: 3, requires: true, packages: { '': { name: 'upgrade-fixture', dependencies: { [PKG]: '^0.16.0' } }, [`node_modules/${PKG}`]: { version: '0.16.0' } } }, null, 2)}\n`,
+    'src/app.tsx': `import { HdsCheckbox } from '${PKG}';\nexport const a = <HdsCheckbox />;\n`,
+  };
+  for (const [file, text] of Object.entries(fixture)) writeFileSync(join(project, file), text);
+  const bin = join(binDir, process.platform === 'win32' ? 'design-system.cmd' : 'design-system');
+  const res = spawnSync(
+    bin,
+    ['upgrade', '--root', project, '--dry-run', '--no-install', '--no-typecheck'],
+    { encoding: 'utf8', shell: process.platform === 'win32', timeout: 60_000 },
+  );
+  if (res.status !== 1) {
+    problems.push(`exit ${res.status} (want 1, work left); stderr: ${res.stderr}`);
+  }
+  for (const heading of ['Fixed for you', 'Looks different', 'Coming next', 'Do by hand']) {
+    if (!res.stdout?.includes(heading)) problems.push(`no "${heading}" section in its output`);
+  }
+  if (!res.stdout?.includes('HdsCheckbox')) problems.push('the HdsCheckbox fix is not listed');
+  for (const [file, text] of Object.entries(fixture)) {
+    if (readFileSync(join(project, file), 'utf8') !== text)
+      problems.push(`--dry-run changed ${file}`);
+  }
+  if (problems.length) {
+    for (const p of problems) console.error(`  upgrade FAIL ${p}`);
+    if (res.stdout) console.error(res.stdout);
+    ok = false;
+  } else {
+    console.log(
+      '  upgrade ok   packed design-system bin ran --dry-run: 4 sections, exit 1, no file changed',
+    );
   }
 }
 
