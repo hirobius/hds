@@ -1326,6 +1326,24 @@ describe('wiring', () => {
     expect(res.status, res.stderr).toBe(0);
   });
 
+  // validate-guardrail-registry scans only top-level scripts/check-*.mjs and
+  // audit-*.mjs, so nothing else notices when these two entries go.
+  it.each([
+    ['upgrade-compile', 'scripts/upgrade/compile.mjs'],
+    ['upgrade-schema', 'scripts/upgrade/schema.mjs'],
+  ])('registers the %s gate in docs/guardrails/registry.json as a pretest error', (id, script) => {
+    const { gates } = JSON.parse(read(REPO, 'docs/guardrails/registry.json'));
+    expect(gates.filter((gate) => gate.id === id)).toEqual([
+      expect.objectContaining({
+        gateScript: script,
+        firingChannel: 'pnpm-meta',
+        severity: 'error',
+        supportsJson: true,
+      }),
+    ]);
+    expect(pkg.scripts.pretest).toContain(`node ${script} --check`);
+  });
+
   it('keeps the generated files out of Prettier, whose reflow would make them stale', () => {
     const ignored = read(REPO, '.prettierignore').split('\n');
     expect(ignored).toEqual(expect.arrayContaining(['UPGRADING.md', 'upgrade/index.json']));
