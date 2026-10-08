@@ -21,6 +21,7 @@ import {
   LISTS,
   compileHistory,
   compileOutputs,
+  leadsWithCommand,
   listOf,
   releaseSections,
   upgradeBlock,
@@ -196,6 +197,9 @@ function historyRepo({
   return root;
 }
 
+/** In the fixtures with the bin, the newest release (0.12.1) is one that ships it. */
+const SHIPS = '0.12.0';
+
 describe('UPGRADING.md: the first lines', () => {
   it('say the file only knows releases up to the installed version, and name the one command as coming in 0.22.0 while the bin is absent', () => {
     const { upgrading } = compileOutputs({ repo: historyRepo() });
@@ -208,13 +212,36 @@ describe('UPGRADING.md: the first lines', () => {
   });
 
   it('lead with the one command once package.json#bin has design-system', () => {
-    const { upgrading } = compileOutputs({ repo: historyRepo({ command: true }) });
+    const { upgrading } = compileOutputs({
+      repo: historyRepo({ command: true }),
+      oneCommandFrom: SHIPS,
+    });
     expect(upgrading.split('\n').slice(0, 4)).toEqual([
       `# Upgrading ${PKG}`,
       '',
       'This file only knows the releases up to the version you have installed, 0.12.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.',
       '',
     ]);
+  });
+});
+
+describe('the one command waits for the release that ships it', () => {
+  // On main, between the bin merging and its release, npm's latest still lacks
+  // the command: the text keeps the manual route until the newest release
+  // reaches ONE_COMMAND_FROM.
+  it('keeps the manual route while the newest release is before ONE_COMMAND_FROM', () => {
+    const { upgrading, release } = compileOutputs({ repo: historyRepo({ command: true }) });
+    expect(upgrading).toContain('From 0.22.0, `npx @hirobius/design-system@latest upgrade`');
+    expect(upgrading).toContain('1. Install the exact version');
+    expect(upgrading).toContain(`npx -p ${PKG}@0.12.1 hds-move`);
+    expect(release.upgrade).toBe(`pnpm add ${PKG}@0.12.1`);
+  });
+
+  it('leadsWithCommand: the bin and a release from ONE_COMMAND_FROM on', () => {
+    const bin = { 'design-system': 'codemods/upgrade.mjs' };
+    expect(leadsWithCommand(bin, '0.21.0')).toBe(false);
+    expect(leadsWithCommand(bin, '0.22.0')).toBe(true);
+    expect(leadsWithCommand({}, '0.22.0')).toBe(false);
   });
 });
 
@@ -288,7 +315,10 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
   });
 
   it('with the one command: the command first, and Fixed for you says the command runs the codemods', () => {
-    const { upgrading } = compileOutputs({ repo: historyRepo({ command: true }) });
+    const { upgrading } = compileOutputs({
+      repo: historyRepo({ command: true }),
+      oneCommandFrom: SHIPS,
+    });
     const lines = upgrading.split('\n');
     expect(lines.slice(4, 12)).toEqual([
       '## How to upgrade',
@@ -801,7 +831,7 @@ describe('the release object of status.json', () => {
       upgrade: `pnpm add ${PKG}@0.12.0`,
     });
     const withCommand = historyRepo({ command: true });
-    expect(compileOutputs({ repo: withCommand }).release).toMatchObject({
+    expect(compileOutputs({ repo: withCommand, oneCommandFrom: SHIPS }).release).toMatchObject({
       version: '0.12.1',
       breaking: 0,
       doByHand: 0,

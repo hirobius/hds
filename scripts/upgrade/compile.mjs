@@ -20,9 +20,12 @@
  *   - status.json `release`: the newest release, for the fleet dashboard.
  *
  * Generated text never promises a command the package lacks: with a
- * `design-system` bin (the one command, hds#452) it leads with
- * `npx @hirobius/design-system@latest upgrade`; without it, with the manual
- * route (install the exact version, run the codemods, then Do by hand).
+ * `design-system` bin (the one command, hds#452) and a newest release from
+ * ONE_COMMAND_FROM on, it leads with `npx @hirobius/design-system@latest
+ * upgrade`; otherwise with the manual route (install the exact version, run
+ * the codemods, then Do by hand). The release check keeps main's copy on the
+ * manual route between the bin merging and the release that ships it, while
+ * npm's latest still lacks the command.
  *
  *   node scripts/upgrade/compile.mjs             # write the three from the ledgers
  *   node scripts/upgrade/compile.mjs --release   # record the release changeset version
@@ -64,6 +67,13 @@ export const ONE_COMMAND_BIN = 'design-system';
 export const ONE_COMMAND_FROM = '0.22.0';
 const UPGRADING_URL = 'https://github.com/hirobius/hds/blob/main/UPGRADING.md';
 
+/**
+ * Whether the text for `version` leads with the one command: the package has
+ * the bin and `version` is a release that ships it (from `from` on).
+ */
+export const leadsWithCommand = (bin, version, from = ONE_COMMAND_FROM) =>
+  Object.hasOwn(bin, ONE_COMMAND_BIN) && compareVersions(version, from) >= 0;
+
 const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'));
 
 /**
@@ -71,7 +81,7 @@ const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'));
  * first, the floor (the oldest committed snapshot) and whether the package
  * ships the one command. Throws when a ledger does not fit the schema.
  */
-function readHistory(repo) {
+function readHistory(repo, oneCommandFrom = ONE_COMMAND_FROM) {
   const ledgersDir = join(repo, 'upgrade/releases');
   const ledgers = releaseVersions(ledgersDir).map((version) => {
     const result = Release.safeParse(readJson(join(ledgersDir, `${version}.json`)));
@@ -95,7 +105,7 @@ function readHistory(repo) {
     latest: ledgers.at(-1).version,
     floor: floor(join(repo, 'docs/api/releases')),
     bin,
-    command: Object.hasOwn(bin, ONE_COMMAND_BIN),
+    command: leadsWithCommand(bin, ledgers.at(-1).version, oneCommandFrom),
   };
 }
 
@@ -568,18 +578,20 @@ function releaseStatus(history) {
 
 /**
  * What the generated files are compiled from (readHistory), for a repo.
- * @param {{ repo?: string }} [options]
+ * @param {{ repo?: string, oneCommandFrom?: string }} [options]
  */
-export function compileHistory({ repo = REPO } = {}) {
-  return readHistory(repo);
+export function compileHistory({ repo = REPO, oneCommandFrom } = {}) {
+  return readHistory(repo, oneCommandFrom);
 }
 
 /**
  * Everything the compiler generates from the committed history.
- * @param {{ repo?: string }} [options]
+ * `oneCommandFrom` (default ONE_COMMAND_FROM) is the first release that ships
+ * the one command.
+ * @param {{ repo?: string, oneCommandFrom?: string }} [options]
  */
-export function compileOutputs({ repo = REPO } = {}) {
-  const history = readHistory(repo);
+export function compileOutputs({ repo = REPO, oneCommandFrom } = {}) {
+  const history = readHistory(repo, oneCommandFrom);
   return {
     upgrading: renderUpgrading(history),
     index: formatJson(buildIndex(history)),
@@ -843,7 +855,7 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
   const summary = written?.summary ?? summarize(build(draft));
   const bin = typeof pkg.bin === 'object' && pkg.bin ? pkg.bin : {};
   const block = upgradeBlock(build({ ...draft, summary }), {
-    command: Object.hasOwn(bin, ONE_COMMAND_BIN),
+    command: leadsWithCommand(bin, version),
     bin,
   });
   const changelog = withUpgradeBlock(

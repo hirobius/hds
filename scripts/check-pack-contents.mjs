@@ -73,6 +73,16 @@ export const REQUIRED = [
   'upgrade/schema.json',
   'upgrade/index.json',
   ...LEDGERS,
+  // The upgrade command (hds#452): the bin npx runs, the codemod registry it
+  // drives and the helpers it imports.
+  'codemods/upgrade.mjs',
+  'codemods/registry.mjs',
+  'codemods/lib/atomic-write.mjs',
+  'codemods/lib/installed-version.mjs',
+  'codemods/lib/project.mjs',
+  'codemods/lib/record.mjs',
+  'codemods/lib/scan.mjs',
+  'codemods/lib/semver.mjs',
 ];
 
 /**

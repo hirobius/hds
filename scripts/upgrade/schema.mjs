@@ -458,6 +458,85 @@ export const Snapshot = z
     'docs/api/releases/<version>.json: the public surface of one published release (scripts/upgrade/snapshot.mjs).',
   );
 
+const UpgradeItem = z
+  .object({
+    id: z
+      .string()
+      .min(1)
+      .describe(
+        'The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual.',
+      ),
+    plain: z.string().min(1).describe('What happened or what to do, in one sentence.'),
+    importers: z
+      .array(z.string())
+      .describe('The importers (. or a workspace directory) it applies to.'),
+    files: z
+      .array(z.string())
+      .describe('Where it was found or changed, relative to the project root.'),
+    removeIn: version().optional().describe('For Coming next: the version that removes it.'),
+    blocking: z
+      .boolean()
+      .optional()
+      .describe(
+        'For Do by hand: true while the code still needs an edit (exit 1); false for a behavior change to check, which never blocks.',
+      ),
+  })
+  .strict();
+
+export const UpgradeReport = z
+  .object({
+    package: z.literal('@hirobius/design-system'),
+    tool: version().describe('The version of the package the command ran from.'),
+    mode: z
+      .enum(['apply', 'dry-run', 'check'])
+      .describe('apply writes; dry-run and --check write nothing.'),
+    target: version().describe('The version upgraded to.'),
+    floor: version().describe('The oldest version the command upgrades from.'),
+    packageManager: z.enum(['pnpm', 'npm', 'yarn', 'bun']).nullable(),
+    lockfile: z.string().nullable().describe('The lockfile read, by name, or null.'),
+    importers: z
+      .array(
+        z
+          .object({
+            dir: z.string().min(1).describe('. for the root, else the workspace directory.'),
+            from: version().nullable().describe('The installed version, or null when unknown.'),
+            source: z
+              .enum([
+                'lockfile',
+                'node_modules',
+                'flag',
+                'git-head',
+                'git-merge-base',
+                'git-log',
+                'unknown',
+              ])
+              .describe('Where the installed version was read.'),
+            range: z.string().describe('The range package.json declared.'),
+            newRange: z
+              .string()
+              .nullable()
+              .describe('The range at the target, or null when it cannot be rewritten.'),
+          })
+          .strict(),
+      )
+      .describe('Every importer that declares the package.'),
+    split: z.boolean().describe('True when the importers start from different versions.'),
+    fixedForYou: z.array(UpgradeItem),
+    looksDifferent: z.array(UpgradeItem),
+    comingNext: z.array(UpgradeItem),
+    doByHand: z.array(UpgradeItem),
+    changedFiles: z.array(z.string()).describe('Files written, relative to the project root.'),
+    refused: z
+      .string()
+      .nullable()
+      .describe('Why the command refused (exit 2), having changed nothing; null otherwise.'),
+    exitCode: z.union([z.literal(0), z.literal(1), z.literal(2)]),
+  })
+  .strict()
+  .describe(
+    'What `npx @hirobius/design-system upgrade --json` prints (hds#452): the four lists, per importer versions, and the exit code.',
+  );
+
 /** upgrade/schema.json: a release ledger at the root; the other shapes in $defs. */
 export function buildJsonSchema() {
   const registry = z.registry();
@@ -469,13 +548,14 @@ export function buildJsonSchema() {
   registry.add(Snapshot, { id: 'snapshot' });
   registry.add(PendingStep, { id: 'pendingStep' });
   registry.add(PendingNote, { id: 'pendingNote' });
+  registry.add(UpgradeReport, { id: 'upgradeReport' });
   const { schemas } = z.toJSONSchema(registry, { uri: (id) => `#/$defs/${id}` });
   const defs = sortedObject(schemas, ({ $schema: _schema, $id: _id, ...body }) => body);
   return {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
     title: '@hirobius/design-system upgrade ledger',
     description:
-      "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json) and $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json).",
+      "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json), $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json) and $defs.upgradeReport what the upgrade command prints with --json.",
     $ref: '#/$defs/release',
     $defs: defs,
   };
