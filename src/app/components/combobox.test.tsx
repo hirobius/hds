@@ -158,3 +158,18 @@ describe('Combobox multiple', () => {
     expect(screen.queryByRole('listbox')).toBeNull();
   });
 });
+
+describe('Combobox close contract (hds#— bugfix)', () => {
+  // The close-then-reopen bug was a browser pointerdown behavior (trigger was a
+  // Popover.Anchor, so Radix treated a pointerdown on it as an outside dismissal
+  // and the onClick immediately reopened). jsdom clicks can't exercise that path,
+  // but this guards the "clicking the trigger closes an open list" contract.
+  it('closes the listbox when the trigger is clicked again', () => {
+    render(<Example />);
+    const trigger = screen.getByRole('combobox', { name: 'Country' });
+    fireEvent.click(trigger);
+    expect(screen.getByRole('listbox')).not.toBeNull();
+    fireEvent.click(trigger);
+    expect(screen.queryByRole('listbox')).toBeNull();
+  });
+});
