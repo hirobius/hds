@@ -36,12 +36,12 @@ export const FONTS = [
   'fonts/satoshi/satoshi-400.woff2',
   'fonts/satoshi/satoshi-500.woff2',
   'fonts/satoshi/satoshi-700.woff2',
-  'fonts/geist-mono/geist-mono-400.woff2',
+  'fonts/ibm-plex-mono/ibm-plex-mono-400.woff2',
 ];
 
 const banner =
   '/* @hirobius/design-system/fonts.css — OPTIONAL brand fonts: Satoshi 400/500/700\n' +
-  ' * and Geist Mono 400. tokens.css and styles.css do not include them. Import this\n' +
+  ' * and IBM Plex Mono 400. tokens.css and styles.css do not include them. Import this\n' +
   ' * once at the app root for the HDS faces, or skip it and load your own; the\n' +
   ' * font-family variables in tokens.css fall back to the family stack either way.\n' +
   ' * The woff2 URLs are relative to this file so your bundler resolves and hashes them. */\n';

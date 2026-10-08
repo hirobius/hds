@@ -15,7 +15,7 @@
 | Attribute         | Value                                                        |
 | ----------------- | ------------------------------------------------------------ |
 | Brand accent      | `#111111` (`semantic.accent.rest`)                           |
-| Font              | Satoshi (self-hosted) + Geist Mono (monospace)               |
+| Font              | Satoshi (self-hosted) + IBM Plex Mono (monospace)            |
 | Neutral scale     | True monochromatic — equal RGB channels, no warm/cool tint   |
 | Spacing base      | 4px                                                          |
 | Action radius     | `8px` (`semantic.radius.action`) for interactive controls    |
@@ -553,7 +553,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 <!-- auto:start:agent-constraints -->
 
 - **One accent color:** `#111111` (`semantic.accent.rest`) only — no other hues
-- **Body / UI typeface:** Satoshi — use Satoshi Bold (700) for headings and Geist Mono for code; no other faces
+- **Body / UI typeface:** Satoshi — use Satoshi Bold (700) for headings and IBM Plex Mono for code; no other faces
 - **Action radius:** `8px` for interactive controls; `12px` containers (`rounded-lg`, one step above the action radius)
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale
 - **True monochromatic neutrals:** No warm/cool tint in neutral scale

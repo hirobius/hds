@@ -78,7 +78,7 @@ export const tokenDescriptions: Record<string, string> = {
   "primitive.blur.16": "Fullscreen backdrop blur for portfolio lightbox overlays.",
   "primitive.typography.family.primary": "Self-hosted Satoshi (ITF) body typeface; falls back to system-ui sans-serif stack.",
   "primitive.typography.family.display": "Display face: Satoshi Bold (ITF), bound to the display and title composites.",
-  "primitive.typography.family.mono": "Monospace face: Geist Mono. Falls back to Courier New, monospace.",
+  "primitive.typography.family.mono": "Monospace face: IBM Plex Mono. Falls back to Courier New, monospace.",
   "primitive.typography.size.xs": "Tailwind 4 default text-xs (hds#283 ramp).",
   "primitive.typography.size.sm": "Tailwind 4 default text-sm (hds#283 ramp).",
   "primitive.typography.size.base": "Tailwind 4 default text-base (hds#283 ramp).",
