@@ -3,14 +3,14 @@
   "phase": "active",
   "headline": "0.20.0 is published (npm latest, provenance; main entry about 34 kB gzip). Now building the universal upgrade path (epic hds#445): one machine-readable record per release (upgrade/releases/<v>.json), one command for every consumer (npx @hirobius/design-system@latest upgrade), a generated upgrade page and an automatic notice per consumer. Landed: the release ledger schema, 0.19.1/0.20.0 snapshots and the 0.20.0 ledger (#447), and consumer discovery with redaction for private repos (#453). The core ships as 0.20.x patches; no 1.0 cut.",
   "release": {
-    "version": "0.21.0",
-    "date": "2026-10-07",
+    "version": "0.22.0",
+    "date": "2026-10-08",
     "bump": "minor",
-    "summary": "StatusDot is removed, fonts move to an opt-in fonts.css, the type ramp is cut to 5 roles; AGENTS.md, hds-mcp and the ESLint plugin ship.",
-    "breaking": 2,
-    "doByHand": 12,
+    "summary": "3 changes to make by hand (1 breaking), 1 that looks different and 2 deprecations.",
+    "breaking": 1,
+    "doByHand": 3,
     "floor": "0.16.0",
-    "upgrade": "pnpm add @hirobius/design-system@0.21.0"
+    "upgrade": "npx @hirobius/design-system@latest upgrade"
   },
   "next": [
     "Skills standardized 2026-10-06: /pr is the PR format; spec work runs /to-spec → /to-tickets → /implement-spec. Factory-loop epic ops#473 (7 tickets, kit-first: #474 frontier, #475 /pr bodies, #476 wedge).",
