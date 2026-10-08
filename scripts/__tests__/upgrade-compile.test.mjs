@@ -21,11 +21,12 @@ import {
   LISTS,
   compileHistory,
   compileOutputs,
+  listOf,
   releaseSections,
   upgradeBlock,
 } from '../upgrade/compile.mjs';
 import { formatJson } from '../upgrade/format.mjs';
-import { Index } from '../upgrade/schema.mjs';
+import { IMPACTS, Index, STEP_KINDS } from '../upgrade/schema.mjs';
 import { snapshotFromSource } from '../upgrade/snapshot.mjs';
 import {
   cleanUpRepos,
@@ -307,6 +308,170 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
       '',
       `- Page is no longer exported from the package root; import it from ${PKG}/patterns instead. Codemod: \`hds-move\`.`,
     ]);
+  });
+});
+
+describe('the list a step lands in: kind, impact and auto alone', () => {
+  const step = (kind, impact, auto) => ({
+    id: `0.11.0/${kind}/X`,
+    kind,
+    impact,
+    plain: 'X changed.',
+    ...(auto ? { auto: { codemod: 'hds-move', args: [] } } : {}),
+    ...(kind === 'deprecated' ? { removeIn: '1.0.0' } : {}),
+    source: 'x',
+  });
+
+  it.each([
+    // A deprecation still works, codemod or not: Coming next.
+    ['deprecated', 'none', false, 'comingNext'],
+    ['deprecated', 'none', true, 'comingNext'],
+    ['deprecated', 'look', true, 'comingNext'],
+    ['deprecated', 'breaking', false, 'comingNext'],
+    // A codemod applies it: Fixed for you, whatever it takes away.
+    ['moved', 'breaking', true, 'fixedForYou'],
+    ['removed', 'look', true, 'fixedForYou'],
+    ['manual', 'look', true, 'fixedForYou'],
+    ['look', 'look', true, 'fixedForYou'],
+    // A look that leaves every name in place: Looks different.
+    ['look', 'look', false, 'looksDifferent'],
+    ['value-changed', 'look', false, 'looksDifferent'],
+    ['tenant', 'look', false, 'looksDifferent'],
+    // A look that takes a name away, or asks for a hand edit: Do by hand.
+    ['removed', 'look', false, 'doByHand'],
+    ['moved', 'look', false, 'doByHand'],
+    ['renamed', 'look', false, 'doByHand'],
+    ['folded', 'look', false, 'doByHand'],
+    ['manual', 'look', false, 'doByHand'],
+    // Everything else with no codemod: Do by hand.
+    ['removed', 'breaking', false, 'doByHand'],
+    ['behavior', 'behavior', false, 'doByHand'],
+    ['dependency', 'breaking', false, 'doByHand'],
+    ['exports', 'additive', false, 'doByHand'],
+    ['manual', 'none', false, 'doByHand'],
+  ])('%s, impact %s, auto %s: %s', (kind, impact, auto, list) => {
+    expect(listOf(step(kind, impact, auto))).toBe(list);
+  });
+
+  it('decides every kind × impact × auto the schema allows, so a new kind needs a decision here', () => {
+    // Written out, not read from compile.mjs: the kinds whose look step keeps every name.
+    const lookKeepsNames = [
+      'value-changed',
+      'look',
+      'behavior',
+      'dependency',
+      'peer',
+      'engines',
+      'exports',
+      'tenant',
+    ];
+    const lookToHand = ['removed', 'moved', 'renamed', 'folded', 'manual'];
+    expect([...lookKeepsNames, ...lookToHand, 'deprecated'].sort()).toEqual([...STEP_KINDS].sort());
+    for (const kind of STEP_KINDS) {
+      for (const impact of IMPACTS) {
+        for (const auto of [false, true]) {
+          const expected =
+            kind === 'deprecated'
+              ? 'comingNext'
+              : auto
+                ? 'fixedForYou'
+                : impact === 'look' && lookKeepsNames.includes(kind)
+                  ? 'looksDifferent'
+                  : 'doByHand';
+          expect(listOf(step(kind, impact, auto)), `${kind} ${impact} auto=${auto}`).toBe(expected);
+        }
+      }
+    }
+  });
+});
+
+describe('a deprecation a later release takes away completely', () => {
+  // Uses named only by CSS variable, or by the step's subject alone.
+  const deprecations = {
+    ...LEDGER_0_11,
+    steps: [
+      {
+        id: '0.11.0/deprecated/old-space',
+        kind: 'deprecated',
+        impact: 'none',
+        plain: 'The --old-space variable still works but is deprecated; use --space-md.',
+        detect: { cssVars: ['--old-space'] },
+        removeIn: '0.12.0',
+        source: 'x',
+      },
+      {
+        id: '0.11.0/deprecated/size-prop',
+        kind: 'deprecated',
+        impact: 'none',
+        plain: "Button's size prop still works but is deprecated; use scale.",
+        detect: { jsx: ['Button'] },
+        removeIn: '0.12.0',
+        source: 'x',
+      },
+      {
+        id: '0.11.0/deprecated/old-gap',
+        kind: 'deprecated',
+        impact: 'none',
+        plain: 'The --old-gap variable still works but is deprecated; use --space-sm.',
+        detect: { cssVars: ['--old-gap'] },
+        removeIn: '1.0.0',
+        source: 'x',
+      },
+    ],
+  };
+  const removals = {
+    ...LEDGER_0_12,
+    steps: [
+      {
+        id: '0.12.0/removed/old-space',
+        kind: 'removed',
+        impact: 'look',
+        plain: 'The --old-space variable is removed; use --space-md.',
+        detect: { cssVars: ['--old-space'] },
+        source: 'x',
+      },
+      {
+        id: '0.12.0/removed/size-prop',
+        kind: 'removed',
+        impact: 'breaking',
+        plain: "Button's size prop is removed; use scale.",
+        detect: { jsx: ['Button'] },
+        source: 'x',
+      },
+    ],
+  };
+
+  it('leaves it out of upgrade/index.json, whether its uses are CSS variables or its subject', () => {
+    const { index } = compileOutputs({ repo: historyRepo({ ledgers: [deprecations, removals] }) });
+    expect(JSON.parse(index).deprecated).toEqual([
+      { name: 'old-gap', removeIn: '1.0.0', step: '0.11.0/deprecated/old-gap' },
+    ]);
+  });
+
+  it('keeps it in Coming next, linking the release that removed it', () => {
+    const { upgrading } = compileOutputs({
+      repo: historyRepo({ ledgers: [deprecations, removals] }),
+    });
+    expect(upgrading).toContain(
+      [
+        '### Coming next',
+        '',
+        '- The --old-space variable still works but is deprecated; use --space-md. Removed in [0.12.0](#0120).',
+        "- Button's size prop still works but is deprecated; use scale. Removed in [0.12.0](#0120).",
+        '- The --old-gap variable still works but is deprecated; use --space-sm. Removed in 1.0.0.',
+        '',
+      ].join('\n'),
+    );
+    // The removed CSS variable is a look that takes a name away: Do by hand.
+    expect(upgrading).toContain(
+      [
+        '### Do by hand',
+        '',
+        "- Button's size prop is removed; use scale.",
+        '- The --old-space variable is removed; use --space-md.',
+        '',
+      ].join('\n'),
+    );
   });
 });
 
