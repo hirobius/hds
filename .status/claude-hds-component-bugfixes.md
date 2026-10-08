@@ -1,0 +1,1 @@
+Component bugfix cluster (Tier-1 from the audit): Select empty/unmatched-options crash, Combobox close-by-trigger, disabled `asChild` Button non-interactive + dimmed, AssetImg/Avatar fallback recovery on src change. Patch bump; see PR.
