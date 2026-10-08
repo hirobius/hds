@@ -84,7 +84,9 @@ const radioRingVariants = /* @__PURE__ */ cva(
       state: {
         rest: '',
         hover: '',
-        focused: '',
+        focused:
+          // tier-ok: semantic-borderWidth-emphasis resolves to var(--primitive-borderWidth-sm) exactly — same ring as checkbox's focused glyph
+          'outline-offset-2 [outline:var(--semantic-borderWidth-emphasis)_solid_var(--semantic-color-border-accent)]',
         pressed: '',
         disabled: '',
       },
@@ -164,6 +166,7 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
     onPointerUp,
     onPointerCancel,
     onFocus,
+    onKeyDown,
     onBlur,
     ...rest
   },
@@ -215,8 +218,12 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
           onPointerCancel?.(e);
         }}
         onFocus={(e) => {
-          handlers.onFocus();
+          handlers.onFocus(e.currentTarget);
           onFocus?.(e);
+        }}
+        onKeyDown={(e) => {
+          handlers.onKeyDown(e.currentTarget);
+          onKeyDown?.(e);
         }}
         onBlur={(e) => {
           handlers.onBlur();

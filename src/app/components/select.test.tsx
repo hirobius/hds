@@ -71,3 +71,32 @@ describe('Select highlighted row ring', () => {
     expect(cls).toContain('data-[highlighted]:ring-ring');
   });
 });
+
+describe('Select label (a11y)', () => {
+  it('renders a real <label> wired to the trigger, so clicking it focuses the trigger', () => {
+    render(<Select label="Plan" value="pro" onChange={() => {}} options={OPTIONS} />);
+    const label = screen.getByText('Plan');
+    expect(label.tagName).toBe('LABEL');
+    const trigger = screen.getByRole('combobox');
+    expect(trigger.id).not.toBe('');
+    expect(label.getAttribute('for')).toBe(trigger.id);
+    // The label is a labelable association, not just markup.
+    expect((label as HTMLLabelElement).control).toBe(trigger);
+  });
+
+  it('uses the consumer-provided id for both label and trigger', () => {
+    render(<Select id="plan-id" label="Plan" value="pro" onChange={() => {}} options={OPTIONS} />);
+    expect(screen.getByRole('combobox').id).toBe('plan-id');
+    expect(screen.getByText('Plan').getAttribute('for')).toBe('plan-id');
+  });
+
+  it('still gives the trigger an id and no label element when the label is hidden', () => {
+    const { container } = render(
+      <Select label="Plan" showLabel={false} value="free" onChange={() => {}} options={OPTIONS} />,
+    );
+    expect(container.querySelector('label')).toBeNull();
+    const trigger = screen.getByRole('combobox');
+    expect(trigger.id).not.toBe('');
+    expect(trigger.getAttribute('aria-label')).toBe('Plan: Free');
+  });
+});

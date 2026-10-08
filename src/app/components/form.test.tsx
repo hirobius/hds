@@ -3,8 +3,8 @@
  * (aria-invalid, aria-describedby, required). Plain-DOM assertions (no jest-dom).
  */
 import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
-import { Form, FormField } from './form';
+import { render, screen, cleanup, renderHook } from '@testing-library/react';
+import { Form, FormField, useFieldWiring } from './form';
 
 afterEach(cleanup);
 
@@ -54,6 +54,29 @@ describe('FormField', () => {
     const alert = screen.getByRole('alert');
     expect(alert.textContent).toBe('Required field');
     expect(input.getAttribute('aria-describedby')).toContain(alert.id);
+  });
+
+  it('drops the description id while an error replaces it, so nothing dangles', () => {
+    render(
+      <FormField label="Email" description="We never share it." error="Required field">
+        <input />
+      </FormField>,
+    );
+    const input = screen.getByLabelText('Email');
+    const ids = (input.getAttribute('aria-describedby') ?? '').split(' ').filter(Boolean);
+    expect(ids).toHaveLength(1);
+    expect(document.getElementById(ids[0])?.textContent).toBe('Required field');
+  });
+
+  it('useFieldWiring only lists the description when it renders', () => {
+    const { result: withErr } = renderHook(() =>
+      useFieldWiring({ htmlFor: 'f', description: 'help', error: 'bad' }),
+    );
+    expect(withErr.current.describedBy).toBe('f-error');
+    const { result: noErr } = renderHook(() =>
+      useFieldWiring({ htmlFor: 'f', description: 'help' }),
+    );
+    expect(noErr.current.describedBy).toBe('f-description');
   });
 
   it('marks the control required and shows the asterisk', () => {
