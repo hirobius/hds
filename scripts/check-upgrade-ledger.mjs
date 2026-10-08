@@ -18,19 +18,31 @@
  *   2. a .changeset/*.md has no upgrade/pending/<same name>.json, or that note
  *      does not fit the schema: impact always stated ("none" included), a plain
  *      line unless impact is none, and no TODO left from `pnpm upgrade:note`;
+ *      or what `pnpm changeset:version` would refuse or misfile: a note step
+ *      listing a fact the diff no longer has (a reverted removal), or, once
+ *      package.json's version has its snapshot, a note with no changeset of
+ *      the same name (hds#541: it would be recorded citing a changeset that
+ *      never existed); or a step of package.json's ledger citing
+ *      `.changeset/<name>.md`, which its own Version PR deletes (compile.mjs
+ *      found no CHANGELOG entry for that changeset);
  *   3. something is breaking (a breaking fact, a note that says so, or a step
  *      that removes, moves, renames or folds something public) and the
  *      changesets bump @hirobius/design-system by less than minor below 1.0
- *      (major from 1.0). On the Version PR (package.json past the snapshot, no
- *      changesets left) the real bump is checked instead, and the ledger of
- *      package.json's version must not record a smaller bump than its breaking
- *      steps need. Once that release is published and changesets are pending
- *      again, but before anyone records it (snapshot, ledger, notes moved to
- *      upgrade/sources/<version>/notes; by hand until hds#451), the notes
- *      whose changesets are gone, and the facts their steps list, are that
- *      release's: they still cover their facts but do not count toward the
- *      next bump, and the gate names the release to record;
- *   4. a changeset bumps major below 1.0, or the version crosses 1.0, without
+ *      (major from 1.0). The ledger of package.json's version must not
+ *      record a smaller bump than its breaking steps need. `pnpm
+ *      changeset:version` records each release on its Version PR
+ *      (scripts/upgrade/compile.mjs --release, hds#451: snapshot, ledger,
+ *      notes moved to upgrade/sources/<version>/notes). A Version PR cut
+ *      without it (package.json past the snapshot, no changesets left) has
+ *      its real bump checked instead; once that release is published and
+ *      changesets are pending again, but before anyone records it by hand,
+ *      the notes whose changesets are gone, and the facts their steps list,
+ *      are that release's: they still cover their facts but do not count
+ *      toward the next bump, and the gate names the release to record. A
+ *      prerelease (changesets pre mode, or a prerelease tag) is never
+ *      recorded, so its notes stay the next release's;
+ *   4. a changeset bumps major below 1.0, or the version crosses 1.0 (on the
+ *      Version PR, or in the ledger compile.mjs recorded for it), without
  *      upgrade/ALLOW_1_0 (the 1.0 cut is a decision, #396).
  *
  * The fix it names is `pnpm upgrade:note`, which pre-fills the note from the
@@ -112,7 +124,8 @@ function list(items, shown = 3) {
 
 function factViolations(state) {
   const steps = state.notes.flatMap(noteSteps);
-  return uncoveredFacts(newFacts(state), steps).map((fact) =>
+  const facts = newFacts(state);
+  const uncovered = uncoveredFacts(facts, steps).map((fact) =>
     violation(
       `${PENDING_DIR}/`,
       'fact-without-step',
@@ -120,9 +133,30 @@ function factViolations(state) {
       { fact: fact.id },
     ),
   );
+  // A step listing a fact the diff lacks stops the release compiler
+  // (build-ledger.mjs ledgerFromSources), so the gate refuses it first.
+  const known = new Set(facts.map((fact) => fact.id));
+  const unknown = [];
+  for (const note of state.notes) {
+    for (const step of noteSteps(note)) {
+      const ids = (Array.isArray(step.facts) ? step.facts : []).filter(
+        (id) => typeof id === 'string' && !known.has(id),
+      );
+      if (ids.length === 0) continue;
+      unknown.push(
+        violation(
+          note.file,
+          'step-fact-unknown',
+          `${note.file}: step ${step.id} lists ${ids.join(', ')}, which the diff since ${state.previousVersion} does not have (the change was reverted, or an earlier release shipped it), so pnpm changeset:version would refuse this note. Take ${ids.length === 1 ? 'it' : 'them'} out of facts, and the step too if nothing is left to tell; ${NOTE} then adds a step for any fact still uncovered.`,
+          { facts: ids },
+        ),
+      );
+    }
+  }
+  return [...uncovered, ...unknown];
 }
 
-function noteViolations(state) {
+function noteViolations(state, versionPr) {
   const out = [];
   const noted = new Set(state.notes.map((note) => note.name));
   for (const changeset of state.changesets) {
@@ -150,6 +184,31 @@ function noteViolations(state) {
       out.push(violation(note.file, 'note-invalid', `${note.file}: ${note.problems.join('; ')}.`));
     }
   }
+  // hds#541: a note with no changeset of its name. Once package.json's version
+  // has its snapshot, or names a prerelease, no release is waiting to be
+  // recorded, so no note belongs to one (releasedNotes): the next release
+  // would merge it, citing a changeset that never existed.
+  if (!versionPr && !awaitingRecord(state)) {
+    const pending = new Set(state.changesets.map((changeset) => changeset.name));
+    for (const note of state.notes.filter((n) => !pending.has(n.name))) {
+      out.push(
+        violation(
+          note.file,
+          'note-without-changeset',
+          `${note.file} has no .changeset/${note.name}.md, and a note travels with the changeset of its name: rename it to its changeset's name, or delete it if its change is gone (${NOTE} --name <changeset> writes the note a changeset needs).`,
+        ),
+      );
+    }
+  }
+  if (state.summary?.problem) {
+    out.push(
+      violation(
+        state.summary.file,
+        'summary-invalid',
+        `${state.summary.problem}: shorten it to one line, or delete it to have the summary counted from the steps.`,
+      ),
+    );
+  }
   if (state.ledger?.problems.length > 0) {
     out.push(
       violation(
@@ -159,19 +218,56 @@ function noteViolations(state) {
       ),
     );
   }
+  out.push(...deadCitations(state));
   return out;
 }
 
 /**
+ * Steps of package.json's ledger that cite `.changeset/<name>.md`: compile.mjs
+ * --release found no single CHANGELOG entry for that changeset, and the
+ * Version PR that recorded the ledger deletes the file, so the published
+ * ledger would cite nothing. One violation per changeset.
+ */
+function deadCitations(state) {
+  const { ledger, version } = state;
+  const bySource = new Map();
+  for (const step of ledger?.release?.steps ?? []) {
+    if (!/^\.changeset\/.+\.md$/.test(step.source ?? '')) continue;
+    bySource.set(step.source, [...(bySource.get(step.source) ?? []), step.id]);
+  }
+  const sources = `upgrade/sources/${version}/release.json`;
+  return [...bySource].map(([source, ids]) => {
+    const name = source.slice('.changeset/'.length, -'.md'.length);
+    return violation(
+      ledger.file,
+      'ledger-cites-changeset',
+      `${ledger.file}: ${list(ids)} ${ids.length === 1 ? 'cites' : 'cite'} ${source}, a file this release deletes: compile.mjs --release found no single ${version} CHANGELOG entry for that changeset. In ${sources}, set notes.${name} to { "needle": <text of its entry>, "source": "CHANGELOG.md:<line>" }, then run node scripts/upgrade/build-ledger.mjs ${version} and node scripts/upgrade/compile.mjs.`,
+      { steps: ids },
+    );
+  });
+}
+
+/**
+ * True when package.json names a release past the newest snapshot that is
+ * still to be recorded: not a prerelease (changesets pre mode keeps the
+ * changesets it consumed, and compile.mjs --release records no prerelease,
+ * so its notes are still the next release's).
+ */
+const awaitingRecord = (state) =>
+  !state.prerelease && compareVersions(state.version, state.previousVersion) > 0;
+
+/**
  * The notes of a release that is published but not yet recorded: package.json
  * names a version past the newest release snapshot, and changesets are pending
- * again (not the Version PR). Until the release compiler (hds#451) records a
- * release, its notes stay in upgrade/pending after `changeset version`
- * consumed their changesets, so a note whose changeset is gone belongs to the
- * version package.json already names. Its Version PR checked its bump.
+ * again (not the Version PR). A release cut without the release compiler
+ * (scripts/upgrade/compile.mjs --release, hds#451) leaves its notes in
+ * upgrade/pending after `changeset version` consumed their changesets, so a
+ * note whose changeset is gone belongs to the version package.json already
+ * names. Its Version PR checked its bump. A release cut through `pnpm
+ * changeset:version` has its snapshot, so this is always empty for it.
  */
 function releasedNotes(state, versionPr) {
-  if (versionPr || compareVersions(state.version, state.previousVersion) <= 0) return [];
+  if (versionPr || !awaitingRecord(state)) return [];
   const pending = new Set(state.changesets.map((changeset) => changeset.name));
   return state.notes.filter((note) => !pending.has(note.name));
 }
@@ -278,6 +374,18 @@ function allowViolations(state, versionPr) {
         ]
       : [];
   }
+  // A Version PR the release compiler recorded (hds#451) has its snapshot, so
+  // it is not versionPr above; the ledger it wrote still names the 1.0 cut.
+  const ledger = state.ledger?.release;
+  if (ledger?.bump === 'major' && /^1\.0\.0(?:-|$)/.test(state.version)) {
+    return [
+      violation(
+        state.ledger.file,
+        'major-before-1.0',
+        `${state.ledger.file} records ${state.version} as a major release, which cuts 1.0. ${why}.`,
+      ),
+    ];
+  }
   if (major(state.version) !== 0) return [];
   return state.changesets
     .filter((c) => c.bump === 'major')
@@ -317,7 +425,7 @@ export function checkUpgradeLedger(root = REPO) {
     state.changesets.length === 0 && compareVersions(state.version, state.previousVersion) > 0;
   const violations = [
     ...factViolations(state),
-    ...noteViolations(state),
+    ...noteViolations(state, versionPr),
     ...bumpViolations(state, versionPr),
     ...allowViolations(state, versionPr),
   ];
@@ -338,10 +446,11 @@ export function checkUpgradeLedger(root = REPO) {
 
 /**
  * The published release no snapshot records yet, with the notes that belong
- * to it, or null. Recording it is a manual step until hds#451.
+ * to it, or null: a release cut without compile.mjs --release, which is
+ * then recorded by hand.
  */
 function unrecorded(state, versionPr) {
-  if (versionPr || compareVersions(state.version, state.previousVersion) <= 0) return null;
+  if (versionPr || !awaitingRecord(state)) return null;
   return {
     version: state.version,
     previous: state.previousVersion,

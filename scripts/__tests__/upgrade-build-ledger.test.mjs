@@ -441,6 +441,56 @@ describe('buildLedger from frozen upgrade notes', () => {
     ).toThrow(/notes\/core-flag\.json is not cited/);
   });
 
+  // A hand-written look or behavior note often has no step: `pnpm upgrade:note`
+  // writes steps only for diff facts. Its plain line is the change, so the
+  // ledger records it as one step rather than dropping it.
+  it('records the plain line of a look, behavior or breaking note with no steps as one step', () => {
+    const plain = {
+      tooltip: 'Tooltip now opens after 300ms, so update tests that expect it at once.',
+      shadow: 'Card has a softer shadow.',
+      select: 'Select fires onChange once per pick, so remove any dedupe you added.',
+    };
+    const notes = {
+      ...NOTES,
+      tooltip: { impact: 'behavior', plain: plain.tooltip },
+      shadow: { impact: 'look', plain: plain.shadow },
+      select: { impact: 'breaking', plain: plain.select },
+    };
+    const cites = {
+      ...CITES,
+      tooltip: { needle: '1111111: Tooltip', source: 'CHANGELOG.md:18' },
+      shadow: { needle: '2222222: Card', source: 'CHANGELOG.md:20' },
+      select: { needle: '3333333: Select', source: 'CHANGELOG.md:22' },
+    };
+    const repo = fixtureRepo({ release: { ...release, notes: cites }, data, notes });
+    const ledger = buildLedger('1.1.0', { repo });
+    const own = ['/shadow', '/tooltip', '/select', '/core-flag'];
+    expect(ledger.steps.filter((step) => own.some((end) => step.id.endsWith(end)))).toEqual([
+      {
+        id: '1.1.0/look/shadow',
+        kind: 'look',
+        impact: 'look',
+        plain: plain.shadow,
+        source: 'CHANGELOG.md:20',
+      },
+      {
+        id: '1.1.0/behavior/tooltip',
+        kind: 'behavior',
+        impact: 'behavior',
+        plain: plain.tooltip,
+        source: 'CHANGELOG.md:18',
+      },
+      // No step kind says breaking: a breaking change with no step is a manual one.
+      {
+        id: '1.1.0/manual/select',
+        kind: 'manual',
+        impact: 'breaking',
+        plain: plain.select,
+        source: 'CHANGELOG.md:22',
+      },
+    ]);
+  });
+
   it('refuses a note cited with no needle, a note file that is missing, and a note the schema rejects', () => {
     const bare = { ...release, notes: { ...CITES, 'drop-chart': { source: 'CHANGELOG.md:12' } } };
     expect(() =>
@@ -491,11 +541,13 @@ describe('the committed ledgers (upgrade/releases) and their sources (upgrade/so
     expect(check.status, check.stderr).toBe(0);
   });
 
-  it('has frozen sources for every backfilled ledger', () => {
-    const backfilled = releaseVersions(join(REPO, 'upgrade/releases')).filter(
-      (v) => JSON.parse(readFileSync(join(REPO, `upgrade/releases/${v}.json`), 'utf8')).backfilled,
-    );
-    expect(sourceVersions()).toEqual(backfilled);
+  // Backfilled ledgers (0.17.0 to 0.21.0) and the ones compile.mjs --release
+  // records at changeset version (hds#451) alike: every ledger is built from
+  // inputs frozen with its release.
+  it('has frozen sources for every ledger', () => {
+    const ledgers = releaseVersions(join(REPO, 'upgrade/releases'));
+    expect(ledgers).toEqual(expect.arrayContaining(['0.17.0', '0.20.0', '0.21.0']));
+    expect(sourceVersions()).toEqual(ledgers);
   });
 
   it('cites each CHANGELOG line that its needle still finds in that release section', () => {

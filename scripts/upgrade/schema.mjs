@@ -85,7 +85,9 @@ const date = () =>
   z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .describe('The day the release was published to npm, YYYY-MM-DD.');
+    .describe(
+      'The release day, YYYY-MM-DD: the day `pnpm changeset:version` cut it (its Version PR, which publishes when it merges, as last regenerated), or, for a release recorded after it shipped, the day npm published it.',
+    );
 
 const names = (description) => z.array(z.string().min(1)).min(1).describe(description);
 
@@ -410,7 +412,12 @@ export const Index = z
       .array(
         z
           .object({
-            name: z.string().min(1).describe('The deprecated export.'),
+            name: z
+              .string()
+              .min(1)
+              .describe(
+                'The deprecated export or class or, for a deprecation that lists neither (a token path, a prop, a prop value), the subject of its step: a label to show, not a name to search code for. To find its uses, read the detect of the step `step` names.',
+              ),
             entry: z
               .string()
               .optional()

@@ -22,6 +22,7 @@ import {
   editPkg,
   note,
   readPkg,
+  recordRelease,
   releasedRepo,
   removeCallout,
   write,
@@ -272,6 +273,49 @@ describe('checkUpgradeLedger: changesets need notes', () => {
   });
 });
 
+// What `pnpm changeset:version` (scripts/upgrade/compile.mjs --release) would
+// refuse or lose, the gate refuses first, so the Version PR never stops on it.
+describe('checkUpgradeLedger: notes the release could not record', () => {
+  it('fails a note step listing a fact the diff no longer has, such as a reverted removal, naming the note and the fact', () => {
+    const root = releasedRepo();
+    // Callout is still exported: the removal was reverted, its note left behind.
+    changeset(root, 'drop-callout', 'minor');
+    note(root, 'drop-callout', calloutRemoved);
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['step-fact-unknown']);
+    expect(result.violations[0].file).toBe('upgrade/pending/drop-callout.json');
+    expect(messages(result)).toContain('removed/Callout lists removed:.:Callout');
+    expect(messages(result)).toContain('pnpm upgrade:note');
+  });
+
+  it('fails a note with no changeset of the same name, naming both', () => {
+    const root = releasedRepo();
+    note(root, 'orphan', { impact: 'none' });
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['note-without-changeset']);
+    expect(result.violations[0].file).toBe('upgrade/pending/orphan.json');
+    expect(messages(result)).toContain(`${CHANGESETS}/orphan.md`);
+    expect(messages(result)).toContain('pnpm upgrade:note');
+  });
+
+  it('fails an upgrade/pending/summary.txt that is not one line of at most 140 characters', () => {
+    const root = releasedRepo();
+    write(root, 'upgrade/pending/summary.txt', 'One line.\n');
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+    write(root, 'upgrade/pending/summary.txt', `${'x'.repeat(141)}\n`);
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['summary-invalid']);
+    expect(messages(result)).toContain('upgrade/pending/summary.txt is 141 characters long');
+  });
+
+  it('passes a note whose changeset is pending beside it', () => {
+    const root = releasedRepo();
+    changeset(root, 'quiet', 'patch');
+    note(root, 'quiet', { impact: 'none' });
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+});
+
 describe('checkUpgradeLedger: no 1.0 cut', () => {
   it('fails a major changeset at 0.20.0 without upgrade/ALLOW_1_0', () => {
     const root = releasedRepo();
@@ -354,6 +398,18 @@ describe('checkUpgradeLedger: the Version PR checks the real bump', () => {
   it('fails a release that cuts 1.0 without upgrade/ALLOW_1_0', () => {
     const root = versioned('1.0.0', calloutRemoved.steps);
     expect(rules(checkUpgradeLedger(root))).toEqual(['major-before-1.0']);
+    write(root, 'upgrade/ALLOW_1_0', '');
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+
+  // hds#451: compile.mjs --release writes the new version's snapshot on the
+  // Version PR, so that PR no longer looks like one (package.json is not past
+  // the newest snapshot). The ledger it recorded still says major.
+  it('fails a recorded release that cuts 1.0 without upgrade/ALLOW_1_0', () => {
+    const root = versioned('1.0.0', calloutRemoved.steps);
+    recordRelease(root, '1.0.0');
+    expect(rules(checkUpgradeLedger(root))).toEqual(['major-before-1.0']);
+    expect(messages(checkUpgradeLedger(root))).toContain('upgrade/releases/1.0.0.json');
     write(root, 'upgrade/ALLOW_1_0', '');
     expect(checkUpgradeLedger(root).violations).toEqual([]);
   });
@@ -442,6 +498,68 @@ describe('checkUpgradeLedger: a release published but not yet recorded (until hd
     expect(messages(result)).not.toContain('drop-callout');
     expect(messages(result)).not.toContain('removed:.:Callout');
   });
+});
+
+// compile.mjs --release records no prerelease (hds#451), so the gate must not
+// read one as a release waiting to be recorded: no hint to record it, and a
+// note with no changeset is still an orphan, not the prerelease's own.
+describe('checkUpgradeLedger: a prerelease is not a release to record', () => {
+  /**
+   * After `changeset version` in changesets pre mode: package.json at
+   * 0.20.1-rc.0, and the docs changeset kept beside its note (pre.json lists
+   * it as consumed). With `preJson` false, the prerelease tag was set by hand.
+   */
+  function prereleaseRepo({ preJson = true } = {}) {
+    const root = releasedRepo();
+    changeset(root, 'docs', 'patch');
+    note(root, 'docs', { impact: 'none' });
+    if (preJson) {
+      write(
+        root,
+        `${CHANGESETS}/pre.json`,
+        formatJson({
+          mode: 'pre',
+          tag: 'rc',
+          initialVersions: { [PACKAGE]: '0.20.0' },
+          changesets: ['docs'],
+        }),
+      );
+    }
+    editPkg(root, (pkg) => (pkg.version = preJson ? '0.20.1-rc.0' : '0.20.1-next.0'));
+    return root;
+  }
+  const stray = {
+    impact: 'breaking',
+    plain: 'Button is removed, so use your own.',
+    steps: [
+      {
+        id: 'removed/Button',
+        kind: 'removed',
+        impact: 'breaking',
+        plain: 'Button is removed, so use your own.',
+      },
+    ],
+  };
+
+  for (const preJson of [true, false]) {
+    const how = preJson ? 'in changesets pre mode' : 'with a prerelease tag set by hand';
+    it(`passes ${how}, naming no release to record`, () => {
+      const result = checkUpgradeLedger(prereleaseRepo({ preJson }));
+      expect(result.violations).toEqual([]);
+      expect(result.summary.unrecorded).toBeNull();
+    });
+
+    it(`still fails a stray note ${how}: an orphan, and breaking under a patch`, () => {
+      const root = prereleaseRepo({ preJson });
+      note(root, 'stray', stray);
+      const result = checkUpgradeLedger(root);
+      expect(rules(result)).toEqual(['bump-too-small', 'note-without-changeset']);
+      expect(result.violations.find((v) => v.rule === 'note-without-changeset').file).toBe(
+        'upgrade/pending/stray.json',
+      );
+      expect(result.summary.unrecorded).toBeNull();
+    });
+  }
 });
 
 describe('checkUpgradeLedger: a release recorded from its tarball', () => {

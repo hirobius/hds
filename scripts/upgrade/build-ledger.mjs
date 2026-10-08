@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * build-ledger.mjs — builds upgrade/releases/<version>.json for a release that
- * shipped before its ledger was written (`backfilled`, hds#447, hds#450,
- * hds#448), from inputs frozen with that release, so no later edit elsewhere
- * in the repo can rewrite a shipped ledger.
+ * build-ledger.mjs — builds upgrade/releases/<version>.json from inputs frozen
+ * with that release, so no later edit elsewhere in the repo can rewrite a
+ * shipped ledger: for a release that shipped before its ledger was written
+ * (`backfilled`, hds#447, hds#450, hds#448), and for each release the release
+ * compiler records at `changeset version` time (./compile.mjs --release,
+ * hds#451), which freezes the inputs and then builds through
+ * ledgerFromSources.
  *
  * Inputs, all committed and never edited once the ledger ships:
  *
@@ -32,7 +35,9 @@
  *         notes/<changeset>.json and must fit PendingNote. Each note step
  *         becomes a release step field for field, its id prefixed with the
  *         version and its source the note's citation unless it names its
- *         own. They were written before the release, so they are not marked
+ *         own. A note with no steps whose impact is look, behavior or
+ *         breaking becomes one step from its plain line (noteSteps). They
+ *         were written before the release, so they are not marked
  *         backfilled. The facts they list are theirs: no name rule
  *         classifies them.
  *   - the data files the rules name, such as 0.20.0's removed.json and
@@ -46,8 +51,8 @@
  * the schema rejects, or a frozen note release.json does not cite stops it.
  * The frozen sources cover 0.17.0 through 0.21.0: 0.17.0 to 0.20.0 from their
  * CHANGELOG sections and codemod data, 0.21.0 from its seven changesets'
- * upgrade notes. Later releases get theirs compiled from the notes at
- * `changeset version` time (hds#451).
+ * upgrade notes. Later releases get theirs frozen and built by
+ * ./compile.mjs --release at `changeset version` time (hds#451).
  *
  *   node scripts/upgrade/build-ledger.mjs [<version>...]           # write (default: every release with sources)
  *   node scripts/upgrade/build-ledger.mjs --check [<version>...]   # exit 1 if a committed ledger is stale
@@ -250,9 +255,19 @@ function handSteps(release) {
 }
 
 /**
+ * The step kind that records a stepless note's plain line, by its impact: no
+ * kind says breaking, so a breaking change with no step is a manual one.
+ */
+const PLAIN_LINE_KIND = { look: 'look', behavior: 'behavior', breaking: 'manual' };
+
+/**
  * The steps of the release's frozen upgrade notes: each note step with the
  * version on its id and, unless it names its own, its changeset's CHANGELOG
- * entry as its source. A CHANGELOG citation must carry its needle.
+ * entry as its source. A note with no steps whose impact is look, behavior
+ * or breaking is the change its plain line tells, so that line becomes one
+ * step, <version>/<kind>/<changeset> (PLAIN_LINE_KIND), rather than dropping
+ * out of the ledger; a none or additive note asks nothing of a consumer. A
+ * CHANGELOG citation must carry its needle.
  */
 function noteSteps(release, notes) {
   return Object.entries(release.notes ?? {}).flatMap(([name, cite]) => {
@@ -260,7 +275,20 @@ function noteSteps(release, notes) {
       throw new Error(`${release.version} note ${name} cites ${cite.source} with no needle`);
     }
     if (!cite.source) throw new Error(`${release.version} note ${name} has no source`);
-    return (notes[name].steps ?? []).map(({ id, source, ...step }) => ({
+    const note = notes[name];
+    const kind = PLAIN_LINE_KIND[note.impact];
+    if (!note.steps && kind) {
+      return [
+        {
+          id: `${release.version}/${kind}/${name}`,
+          kind,
+          impact: note.impact,
+          plain: note.plain,
+          source: cite.source,
+        },
+      ];
+    }
+    return (note.steps ?? []).map(({ id, source, ...step }) => ({
       id: `${release.version}/${id}`,
       ...step,
       source: source ?? cite.source,
@@ -275,8 +303,24 @@ function noteSteps(release, notes) {
 export function buildLedger(version, { repo = REPO } = {}) {
   const { release, data, notes } = readSources(version, { repo });
   const snapshot = (v) => readJson(join(repo, 'docs/api/releases', `${v}.json`));
-  const next = snapshot(version);
-  const facts = diffSnapshots(snapshot(release.previous), next);
+  return ledgerFromSources({
+    release,
+    data,
+    notes,
+    previous: snapshot(release.previous),
+    next: snapshot(version),
+  });
+}
+
+/**
+ * buildLedger on inputs already in memory: release.json, its data files and
+ * notes (as readSources returns them) and the two snapshots. The release
+ * compiler (./compile.mjs) builds a ledger this way before it writes any of
+ * those inputs, so a fact no note covers stops it with nothing written.
+ */
+export function ledgerFromSources({ release, data = {}, notes = {}, previous, next }) {
+  const { version } = release;
+  const facts = diffSnapshots(previous, next);
 
   // Written steps (notes, then hand steps) own the facts they list; the rules
   // classify only what is left, so a note's removal is never classified twice.

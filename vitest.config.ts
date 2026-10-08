@@ -37,8 +37,9 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    // strip-git-env first: no test may inherit a hook's GIT_DIR (#546).
     // jsdom polyfills (ResizeObserver, pointer capture, scrollIntoView) for Radix overlays.
-    setupFiles: ['./tests/setup/jsdom-polyfills.ts'],
+    setupFiles: ['./tests/setup/strip-git-env.ts', './tests/setup/jsdom-polyfills.ts'],
     // Keep `pnpm test` focused on repo-owned unit tests. (Playwright specs live
     // under /tests and are run via `pnpm test:*`.)
     include: [
