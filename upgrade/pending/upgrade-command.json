@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "To move to a newer release, run npx @hirobius/design-system@latest upgrade: it applies the codemods, bumps the range and lists what is left for you."
+}

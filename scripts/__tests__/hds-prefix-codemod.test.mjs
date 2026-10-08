@@ -329,27 +329,38 @@ describe('findUnrewritable', () => {
 });
 
 describe('package', () => {
+  // Every codemods/ module a bin reaches through static imports, transitively
+  // (codemods/upgrade.mjs reaches codemods/lib/*, hds#452). Multi-line imports
+  // and `export … from` count.
+  const reached = (pkg) => {
+    const seen = new Set();
+    const visit = (file) => {
+      if (seen.has(file)) return;
+      seen.add(file);
+      const src = readFileSync(join(REPO, file), 'utf8');
+      for (const [, rel] of src.matchAll(/^(?:import|export)\b[^;]*?from '(\.{1,2}\/[^']+)';$/gm)) {
+        visit(join(dirname(file), rel).split('\\').join('/'));
+      }
+    };
+    for (const bin of Object.values(pkg.bin)) visit(bin);
+    return seen;
+  };
+
   it('ships every codemods/ module a codemod bin imports', () => {
     const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-    for (const bin of Object.values(pkg.bin)) {
-      const src = readFileSync(join(REPO, bin), 'utf8');
-      const dir = dirname(bin);
-      for (const [, rel] of src.matchAll(/^import .* from '\.\/([^']+)';$/gm)) {
-        // A bin outside codemods/ (mcp/hds-mcp.mjs) ships its whole directory.
-        if (dir !== 'codemods' && pkg.files.includes(`${dir}/`)) continue;
-        expect(pkg.files, `${bin} imports ./${rel}`).toContain(`codemods/${rel}`);
+    for (const file of reached(pkg)) {
+      // A bin outside codemods/ (mcp/hds-mcp.mjs) ships its whole directory.
+      if (!file.startsWith('codemods/')) {
+        expect(pkg.files, file).toContain(`${dirname(file).split('/')[0]}/`);
+        continue;
       }
+      expect(pkg.files, `a bin imports ${file}`).toContain(file);
     }
   });
 
   it('ships no codemods/ module that nothing imports', () => {
     const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-    const imported = new Set(Object.values(pkg.bin));
-    for (const bin of Object.values(pkg.bin))
-      for (const [, rel] of readFileSync(join(REPO, bin), 'utf8').matchAll(
-        /^import .* from '\.\/([^']+)';$/gm,
-      ))
-        imported.add(`codemods/${rel}`);
+    const imported = reached(pkg);
     const shipped = pkg.files.filter((f) => /^codemods\/.*\.mjs$/.test(f));
     expect(shipped.filter((f) => !imported.has(f))).toEqual([]);
   });

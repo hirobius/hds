@@ -1,0 +1,5 @@
+---
+'@hirobius/design-system': patch
+---
+
+One command now upgrades you (hds#452): `npx @hirobius/design-system@latest upgrade`. It reads the version you have from your lockfile (pnpm, npm, yarn or bun; then `node_modules`, then `--from`), upgrades every workspace package that uses HDS from its own version, runs each release's codemods, bumps the range with its operator kept, adds back a dependency HDS stopped installing that your code still imports, installs and runs your typecheck. It then prints four lists: Fixed for you, Looks different (only what your code uses), Coming next and Do by hand. It exits 0 when done, 1 while work is left and 2 when it refuses, changing nothing: below the 0.16.0 floor, a downgrade, or a version it has no steps for. `--dry-run` and `--check` write nothing, `--json` and `--report <file>` give the report as JSON (`upgrade/schema.json`, `$defs.upgradeReport`). The steps always come from the copy you run, so `@latest` brings the newest. `hds-upgrade` is the same command as a bin of its own.

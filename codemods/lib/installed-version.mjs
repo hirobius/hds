@@ -80,7 +80,8 @@ function parseYamlMap(text) {
 
 const SEMVER = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
 
-function compareVersions(a, b) {
+/** -1/0/1-signed difference of two semver versions; a pre-release sorts before its release. */
+export function compareVersions(a, b) {
   const [coreA, preA = ''] = a.split('-');
   const [coreB, preB = ''] = b.split('-');
   const na = coreA.split('.').map(Number);

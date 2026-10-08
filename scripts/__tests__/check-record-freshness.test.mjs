@@ -124,7 +124,9 @@ describe('what needs a changeset: what ships to consumers (hds#448)', () => {
   // pnpm upgrade:consumers here, and joins files when the upgrade command,
   // hds#452, ships it); package.json#files is the list that ships.
   it('counts only the codemods, MCP and plugin files package.json#files ships', () => {
-    expect(shipsToConsumers('codemods/lib/installed-version.mjs')).toBe(false);
+    // codemods/lib/ ships since the upgrade command imports it (hds#452); fixtures never do.
+    expect(shipsToConsumers('codemods/lib/installed-version.mjs')).toBe(true);
+    expect(shipsToConsumers('codemods/__fixtures__/clean/a.tsx')).toBe(false);
     expect(shipsToConsumers('codemods/hds-prefix.mjs')).toBe(true);
     expect(shipsToConsumers('codemods/patterns-subpath.names.json')).toBe(true);
     expect(shipsToConsumers('mcp/catalog.mjs')).toBe(true);

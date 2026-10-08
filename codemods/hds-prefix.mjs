@@ -30,7 +30,8 @@
  *                 end (codemods/unrewritable.mjs), needs a manual look
  *   --dry-run     write nothing; print each changed line before (-) and after (+), exit 0
  */
-import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, realpathSync } from 'node:fs';
+import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { relative, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findUnrewritable as findHidden, maskSource } from './unrewritable.mjs';
@@ -135,24 +136,38 @@ export function findUnrewritable(source, renames = RENAMES) {
   return findHidden(source, ROOT_PKG, Object.keys(renames));
 }
 
-function* walk(dir) {
-  for (const entry of readdirSync(dir)) {
-    if (SKIP_DIRS.has(entry)) continue;
-    const full = join(dir, entry);
-    const st = statSync(full);
-    if (st.isDirectory()) yield* walk(full);
-    else if (EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
+/** `skip`: absolute directories not to enter (the upgrade command's nested importers). */
+function* walk(dir, skip = new Set()) {
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return; // an unreadable directory has nothing to rewrite
+  }
+  // Symlinks are skipped, never followed: a dangling one cannot be read and a
+  // looping one never ends.
+  for (const entry of entries) {
+    if (SKIP_DIRS.has(entry.name)) continue;
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (!skip.has(full)) yield* walk(full, skip);
+    } else if (entry.isFile() && EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
   }
 }
 
-/** Scan a directory. Writes only when `write` is true. */
-export function runCodemod({ root, write = false, renames = RENAMES }) {
+/** Scan a directory. Writes only when `write` is true; `skip` lists directories not to enter. */
+export function runCodemod({ root, write = false, renames = RENAMES, skip = [] }) {
   const files = [];
   const manual = [];
   const renamed = new Set();
   let sites = 0;
-  for (const file of walk(root)) {
-    const src = readFileSync(file, 'utf8');
+  for (const file of walk(root, new Set(skip.map((d) => resolve(d))))) {
+    let src;
+    try {
+      src = readFileSync(file, 'utf8');
+    } catch {
+      continue; // unreadable: nothing to rewrite
+    }
     if (!src.includes(ROOT_PKG)) continue;
     const r = transformSource(src, renames);
     for (const stmt of findUnrewritable(r.source, renames))
@@ -161,7 +176,7 @@ export function runCodemod({ root, write = false, renames = RENAMES }) {
     files.push({ file: relative(root, file), sites: r.sites, renamed: r.renamed, edits: r.edits });
     r.renamed.forEach((n) => renamed.add(n));
     sites += r.sites;
-    if (write) writeFileSync(file, r.source);
+    if (write) writeFileAtomic(file, r.source);
   }
   return { files, sites, manual, names: [...renamed].sort() };
 }

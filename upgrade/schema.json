@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "@hirobius/design-system upgrade ledger",
-  "description": "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json) and $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json).",
+  "description": "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json), $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json) and $defs.upgradeReport what the upgrade command prints with --json.",
   "$ref": "#/$defs/release",
   "$defs": {
     "auto": {
@@ -611,6 +611,379 @@
       ],
       "additionalProperties": false,
       "description": "One thing a consumer may have to do, or should know, when crossing this release."
+    },
+    "upgradeReport": {
+      "type": "object",
+      "properties": {
+        "package": {
+          "type": "string",
+          "const": "@hirobius/design-system"
+        },
+        "tool": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$",
+          "description": "The version of the package the command ran from."
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "apply",
+            "dry-run",
+            "check"
+          ],
+          "description": "apply writes; dry-run and --check write nothing."
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$",
+          "description": "The version upgraded to."
+        },
+        "floor": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$",
+          "description": "The oldest version the command upgrades from."
+        },
+        "packageManager": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "pnpm",
+                "npm",
+                "yarn",
+                "bun"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lockfile": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The lockfile read, by name, or null."
+        },
+        "importers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "dir": {
+                "type": "string",
+                "minLength": 1,
+                "description": ". for the root, else the workspace directory."
+              },
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$",
+                    "description": "A semver version, such as 0.20.0."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The installed version, or null when unknown."
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "lockfile",
+                  "node_modules",
+                  "flag",
+                  "git-head",
+                  "git-merge-base",
+                  "git-log",
+                  "unknown"
+                ],
+                "description": "Where the installed version was read."
+              },
+              "range": {
+                "type": "string",
+                "description": "The range package.json declared."
+              },
+              "newRange": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The range at the target, or null when it cannot be rewritten."
+              }
+            },
+            "required": [
+              "dir",
+              "from",
+              "source",
+              "range",
+              "newRange"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Every importer that declares the package."
+        },
+        "split": {
+          "type": "boolean",
+          "description": "True when the importers start from different versions."
+        },
+        "fixedForYou": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual."
+              },
+              "plain": {
+                "type": "string",
+                "minLength": 1,
+                "description": "What happened or what to do, in one sentence."
+              },
+              "importers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "The importers (. or a workspace directory) it applies to."
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Where it was found or changed, relative to the project root."
+              },
+              "removeIn": {
+                "description": "For Coming next: the version that removes it.",
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+              },
+              "blocking": {
+                "description": "For Do by hand: true while the code still needs an edit (exit 1); false for a behavior change to check, which never blocks.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "plain",
+              "importers",
+              "files"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "looksDifferent": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual."
+              },
+              "plain": {
+                "type": "string",
+                "minLength": 1,
+                "description": "What happened or what to do, in one sentence."
+              },
+              "importers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "The importers (. or a workspace directory) it applies to."
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Where it was found or changed, relative to the project root."
+              },
+              "removeIn": {
+                "description": "For Coming next: the version that removes it.",
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+              },
+              "blocking": {
+                "description": "For Do by hand: true while the code still needs an edit (exit 1); false for a behavior change to check, which never blocks.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "plain",
+              "importers",
+              "files"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "comingNext": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual."
+              },
+              "plain": {
+                "type": "string",
+                "minLength": 1,
+                "description": "What happened or what to do, in one sentence."
+              },
+              "importers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "The importers (. or a workspace directory) it applies to."
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Where it was found or changed, relative to the project root."
+              },
+              "removeIn": {
+                "description": "For Coming next: the version that removes it.",
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+              },
+              "blocking": {
+                "description": "For Do by hand: true while the code still needs an edit (exit 1); false for a behavior change to check, which never blocks.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "plain",
+              "importers",
+              "files"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "doByHand": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual."
+              },
+              "plain": {
+                "type": "string",
+                "minLength": 1,
+                "description": "What happened or what to do, in one sentence."
+              },
+              "importers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "The importers (. or a workspace directory) it applies to."
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Where it was found or changed, relative to the project root."
+              },
+              "removeIn": {
+                "description": "For Coming next: the version that removes it.",
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+              },
+              "blocking": {
+                "description": "For Do by hand: true while the code still needs an edit (exit 1); false for a behavior change to check, which never blocks.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "plain",
+              "importers",
+              "files"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "changedFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Files written, relative to the project root."
+        },
+        "refused": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Why the command refused (exit 2), having changed nothing; null otherwise."
+        },
+        "exitCode": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 0
+            },
+            {
+              "type": "number",
+              "const": 1
+            },
+            {
+              "type": "number",
+              "const": 2
+            }
+          ]
+        }
+      },
+      "required": [
+        "package",
+        "tool",
+        "mode",
+        "target",
+        "floor",
+        "packageManager",
+        "lockfile",
+        "importers",
+        "split",
+        "fixedForYou",
+        "looksDifferent",
+        "comingNext",
+        "doByHand",
+        "changedFiles",
+        "refused",
+        "exitCode"
+      ],
+      "additionalProperties": false,
+      "description": "What `npx @hirobius/design-system upgrade --json` prints (hds#452): the four lists, per importer versions, and the exit code."
     }
   }
 }
