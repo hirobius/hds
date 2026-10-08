@@ -9,6 +9,10 @@
  * serve SegmentedControl (per-segment `string | null` cardinality), which keeps
  * its own deeper machine.
  *
+ * Focus is keyboard-only (`:focus-visible`) and outranks hover, so a mouse
+ * resting on a control never masks a keyboard user's ring (and a click never
+ * paints one). Press still outranks both.
+ *
  * The frozen demo state is passed in (the component still calls
  * `useFrozenState()`) so the hook stays a pure, context-free state machine that
  * is unit-tested directly with `renderHook` (ADR-011).
@@ -24,7 +28,13 @@ export interface InteractionHandlers {
   onPointerDown: () => void;
   onPointerUp: () => void;
   onPointerCancel: () => void;
-  onFocus: () => void;
+  /**
+   * Pass the focused element (`e.currentTarget`) so only keyboard-modality focus
+   * (`:focus-visible`) counts. Called with no argument it counts unconditionally.
+   */
+  onFocus: (target?: Element | null) => void;
+  /** Re-checks `:focus-visible` once a key is pressed on an already-focused element. */
+  onKeyDown: (target?: Element | null) => void;
   onBlur: () => void;
 }
 
@@ -45,6 +55,20 @@ export interface UseInteractionStateOptions {
   frozenState?: InteractionVisualState | null;
 }
 
+/**
+ * True when the browser would draw a focus ring on `target` (keyboard modality,
+ * or a text-entry control). Falls back to `true` where `:focus-visible` is
+ * unsupported so keyboard users are never left without an indicator.
+ */
+function matchesFocusVisible(target?: Element | null): boolean {
+  if (!target) return true;
+  try {
+    return target.matches(':focus-visible');
+  } catch {
+    return true;
+  }
+}
+
 export function useInteractionState({
   disabled,
   frozenState = null,
@@ -62,10 +86,10 @@ export function useInteractionState({
       ? 'disabled'
       : pressed
         ? 'pressed'
-        : hovered
-          ? 'hover'
-          : focused
-            ? 'focused'
+        : focused
+          ? 'focused'
+          : hovered
+            ? 'hover'
             : 'rest');
 
   return {
@@ -83,7 +107,12 @@ export function useInteractionState({
       onPointerDown: () => setPressed(true),
       onPointerUp: () => setPressed(false),
       onPointerCancel: () => setPressed(false),
-      onFocus: () => setFocused(true),
+      // `focused` means keyboard-visible focus, not just "has focus": a mouse
+      // click focuses a checkbox/radio/switch but must not draw the ring.
+      onFocus: (target) => setFocused(matchesFocusVisible(target)),
+      onKeyDown: (target) => {
+        if (matchesFocusVisible(target)) setFocused(true);
+      },
       onBlur: () => {
         setFocused(false);
         setPressed(false);

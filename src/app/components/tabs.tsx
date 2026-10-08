@@ -15,7 +15,9 @@
  * Overflow:
  *   TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`)
  *   for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar
- *   chrome is hidden cross-browser (-webkit / firefox / IE).
+ *   chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's
+ *   focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn
+ *   outside the list box (an outer ring was cut on the first/last tab).
  *
  * @category Navigation
  * @tier primitive
@@ -60,7 +62,7 @@ export function TabsTrigger({
         'relative -mb-px inline-flex items-center px-3 py-2 hds-type-ui transition-colors',
         'border-b-2 border-transparent text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
         'data-[state=active]:border-foreground data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
         'disabled:pointer-events-none disabled:opacity-50',
         className,
       )}

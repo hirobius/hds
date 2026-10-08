@@ -83,25 +83,29 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
   const selected = options.find((o) => o.value === value);
   const selectedLabel = selected?.label ?? '';
   const labelId = useId();
+  const generatedId = useId();
+  // One id for the trigger and the label's htmlFor, so clicking the label focuses it.
+  const triggerId = id ?? generatedId;
   const labelShown = showLabel && Boolean(label);
 
   return (
     <div className={cn('flex flex-col', FORM_CONTROL_WIDTH)}>
       {showLabel ? (
-        <span
+        <label
           id={labelId}
+          htmlFor={triggerId}
           // Same label as Input, Textarea and FormField: 14px ui, foreground (hds#522).
           className="hds-type-ui text-foreground"
           style={{ marginBottom: hds.semantic.space.scale.xs }}
         >
           {label}
-        </span>
+        </label>
       ) : null}
 
       <RSelect.Root value={value} onValueChange={onChange}>
         <RSelect.Trigger
           ref={ref}
-          id={id}
+          id={triggerId}
           // The field label and the value, also with the label hidden, so the
           // closed trigger is read as the field and not only its value (hds#408).
           aria-label={

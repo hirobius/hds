@@ -165,7 +165,7 @@ export interface ToggleProps extends Omit<
 }
 
 export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(function Toggle(
-  { label, checked, onChange, onFocus, onBlur, disabled, ...rest },
+  { label, checked, onChange, onFocus, onKeyDown, onBlur, disabled, ...rest },
   ref,
 ) {
   const frozenState = useFrozenState();
@@ -204,8 +204,12 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
         disabled={isDisabled}
         onChange={(e) => onChange(e.target.checked)}
         onFocus={(e) => {
-          handlers.onFocus();
+          handlers.onFocus(e.currentTarget);
           onFocus?.(e);
+        }}
+        onKeyDown={(e) => {
+          handlers.onKeyDown(e.currentTarget);
+          onKeyDown?.(e);
         }}
         onBlur={(e) => {
           handlers.onBlur();
