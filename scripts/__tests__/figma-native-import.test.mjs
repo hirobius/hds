@@ -70,7 +70,7 @@ describe('buildNativeImportFiles', () => {
     });
     expect(leaf(primitives, 'typography/family/mono')).toMatchObject({
       $type: 'fontFamily',
-      $value: 'Geist Mono',
+      $value: 'IBM Plex Mono',
     });
   });
 

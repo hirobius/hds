@@ -19,7 +19,7 @@ const fixture = {
     color: { neutral: { white: { $value: '#ffffff' }, 900: { $value: '#171717' } } },
     duration: { short: { $value: { value: 150, unit: 'ms' } } },
     easing: { decelerate: { $value: [0, 0, 0.2, 1] } },
-    typography: { family: { mono: { $value: ['Geist Mono', 'monospace'] } } },
+    typography: { family: { mono: { $value: ['IBM Plex Mono', 'monospace'] } } },
   },
   semantic: {
     color: {
@@ -71,7 +71,7 @@ describe('resolveTokenValue', () => {
 
   it('renders arrays as comma lists (font stacks, cubic-beziers)', () => {
     expect(resolveTokenValue(fixture, '{primitive.typography.family.mono}')).toBe(
-      'Geist Mono, monospace',
+      'IBM Plex Mono, monospace',
     );
   });
 

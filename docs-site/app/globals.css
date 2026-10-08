@@ -83,14 +83,10 @@ body {
   letter-spacing: -0.01em;
 }
 
-/*
- * Code font: IBM Plex Mono (self-hosted via @fontsource, imported in layout.tsx).
- * The docs app owns this choice; the HDS mono token (Geist Mono) stays the
- * fallback so a missing font file degrades to the token, not to the browser default.
- */
+/* Code font: the HDS mono token is IBM Plex Mono; layout.tsx self-hosts it via @fontsource. */
 :root,
 .dark {
-  --font-mono: 'IBM Plex Mono', var(--primitive-typography-family-mono);
+  --font-mono: var(--primitive-typography-family-mono);
 }
 
 code,

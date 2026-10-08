@@ -29,7 +29,7 @@ version keeps the `LucideIcon` type identical).
 ```tsx
 import { Button, Card, Dialog } from '@hirobius/design-system';
 import '@hirobius/design-system/tokens.css'; // required — design tokens as CSS vars
-import '@hirobius/design-system/fonts.css'; // optional — the HDS brand fonts (Satoshi, Geist Mono)
+import '@hirobius/design-system/fonts.css'; // optional — the HDS brand fonts (Satoshi, IBM Plex Mono)
 
 export function Example() {
   return (
@@ -45,7 +45,7 @@ Available subpaths:
 | Import                               | What                                                                                                                                                                                                                                        |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@hirobius/design-system`            | The 43-component core set ([README → What belongs in the system](README.md#what-belongs-in-the-system)), the rest of the allow-list and the templates; the `pattern` tier is only in `/patterns`                                            |
-| `@hirobius/design-system/fonts.css`  | Optional brand fonts (Satoshi, Geist Mono); woff2 files ship in the package, relative URLs, `font-display: swap`                                                                                                                            |
+| `@hirobius/design-system/fonts.css`  | Optional brand fonts (Satoshi, IBM Plex Mono); woff2 files ship in the package, relative URLs, `font-display: swap`                                                                                                                         |
 | `@hirobius/design-system/tokens.css` | Token CSS variables (import once at app root)                                                                                                                                                                                               |
 | `@hirobius/design-system/tokens`     | Token values as TS constants                                                                                                                                                                                                                |
 | `@hirobius/design-system/cn`         | `cn()` class-merge helper                                                                                                                                                                                                                   |

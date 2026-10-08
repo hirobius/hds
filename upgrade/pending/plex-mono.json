@@ -1,0 +1,15 @@
+{
+  "impact": "look",
+  "plain": "Code text now draws in IBM Plex Mono instead of Geist Mono, so if you preload or self-host geist-mono-400.woff2, point it at ibm-plex-mono-400.woff2 from fonts.css instead.",
+  "steps": [
+    {
+      "id": "look/mono-font-ibm-plex",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Code text now draws in IBM Plex Mono instead of Geist Mono, so if you preload or self-host geist-mono-400.woff2, point it at ibm-plex-mono-400.woff2 from fonts.css instead.",
+      "detect": {
+        "regex": ["Geist Mono", "geist-mono"]
+      }
+    }
+  ]
+}

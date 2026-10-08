@@ -16,7 +16,7 @@
  *   theme    data-theme                "dark" (light = unset)          light
  *   density  data-density              "compact" (comfortable = unset) comfortable
  *   brand    data-brand + data-tenant  overlay slug (e.g. "acme")      base
- *   font     --hds-font-family(-mono)  any CSS font-family value       Satoshi / Geist Mono
+ *   font     --hds-font-family(-mono)  any CSS font-family value       Satoshi / IBM Plex Mono
  *
  * This provider is a thin, typed convenience that renders a `data-hds` scope
  * wrapper carrying those attributes — it does NOT own state, storage, or a

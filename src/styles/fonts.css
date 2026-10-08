@@ -4,7 +4,7 @@
  *   - Satoshi 400 — body
  *   - Satoshi 500 — ui, caption
  *   - Satoshi 700 — display, title
- *   - Geist Mono 400 — mono
+ *   - IBM Plex Mono 400 — mono
  *
  * Audit gate: scripts/audit-typography-overrides.mjs fails on inline
  * fontWeight / textTransform outside the sketches lab and a small allowlist.
@@ -38,10 +38,10 @@
   font-display: swap;
 }
 
-/* Geist Mono — Vercel, OFL-1.1. */
+/* IBM Plex Mono — IBM, OFL-1.1. */
 @font-face {
-  font-family: 'Geist Mono'; /* impeccable-disable-line overused-font -- deliberate brand choice (Adrian directive 2026-05-04, see file header) */
-  src: url('/fonts/geist-mono/geist-mono-400.woff2') format('woff2');
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/ibm-plex-mono/ibm-plex-mono-400.woff2') format('woff2');
   /* App build: served from public/fonts (unchanged). Library build:
    * scripts/embed-fonts.mjs base64-inlines these into dist/tokens.css so
    * consumers get self-contained fonts (P0.3). Keep the /fonts/ paths in sync

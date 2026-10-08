@@ -289,7 +289,7 @@
       {
         "name": "mono",
         "token": "semantic.typography.mono",
-        "description": "Code, token paths, technical labels. Geist Mono regular. 15px / leading-relaxed."
+        "description": "Code, token paths, technical labels. IBM Plex Mono regular. 15px / leading-relaxed."
       }
     ],
     "decisions": [
@@ -302,8 +302,8 @@
         "rationale": "Token JSON stores static desktop-max primitive refs; clamp overrides live in CSS"
       },
       {
-        "rule": "Three typefaces: Satoshi (body / UI), Satoshi (display + h1, h2, h3 headings only), Geist Mono (code / technical metadata).",
-        "rationale": "Self-hosted only; Clash gives editorial weight on display and a clean grotesk on body, Geist Mono carries token paths and technical readouts."
+        "rule": "Three typefaces: Satoshi (body / UI), Satoshi (display + h1, h2, h3 headings only), IBM Plex Mono (code / technical metadata).",
+        "rationale": "Self-hosted only; Clash gives editorial weight on display and a clean grotesk on body, IBM Plex Mono carries token paths and technical readouts."
       }
     ]
   },

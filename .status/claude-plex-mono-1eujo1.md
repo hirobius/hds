@@ -1,0 +1,1 @@
+IBM Plex Mono 400 replaces Geist Mono as the code font (hds#535, refs #506). Merged main (0.22.0) into the branch: dropped the released fonts-opt-in changeset, kept main's upgrade-record pack list with ibm-plex-mono-400.woff2, regenerated manifest and sync-map, added upgrade/pending/plex-mono.json (impact look). Figma needs IBM Plex Mono installed, then Adrian's Sync.

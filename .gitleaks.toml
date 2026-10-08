@@ -27,4 +27,6 @@ paths = [
 regexes = [
   # HDS design-system token paths (not secrets)
   '''primitive\.(radius|size|color|space|border|shadow)\.[\w\.\-]+''',
+  # Figma file keys (public file ids in figma/links.json, not credentials)
+  '''2VgBbVpKiDnu0aftJEVyBQ|C85ZXnwtVc4AteeIOZfXRC|c8MaVgwxOlxm4wr8wnH0Z4|qhlYOkWPKs8MfO3x1M5W4f''',
 ]
