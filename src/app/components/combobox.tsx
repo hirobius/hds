@@ -12,7 +12,7 @@
  * @keyboard Enter Commits the active option and closes the list; with `multiple`, toggles it and keeps the list open.
  * @keyboard Escape Closes the list.
  * @keyboard Tab Stays inside the open list.
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237
  * @doc-exempt: no Inputs-overlay doc page yet — add demo when created
  *
  * A select-with-search built on the HDS Popover. The trigger shows the current

@@ -1,6 +1,1 @@
-# claude/plex-mono-1eujo1
-
-Session: https://claude.ai/code/session_01VerzDbWo9qSoyBQG3ZGC9u
-Task: HDS mono token Geist Mono -> IBM Plex Mono 400 (Adrian, 2026-10-07). Redoes stale #507.
-Status: PR open; awaiting review. status.json intentionally not edited.
-Note: figma/snapshot.json not regenerated (needs a human figma:push + snapshot).
+IBM Plex Mono 400 replaces Geist Mono as the code font (hds#535, refs #506). Merged main (0.22.0) into the branch: dropped the released fonts-opt-in changeset, kept main's upgrade-record pack list with ibm-plex-mono-400.woff2, regenerated manifest and sync-map, added upgrade/pending/plex-mono.json (impact look). Figma needs IBM Plex Mono installed, then Adrian's Sync.

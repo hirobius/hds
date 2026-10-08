@@ -161,7 +161,7 @@ describe('this repository', () => {
 
   it('links Alert to its component set, the one node URL the repo can verify (hds#72: node 33:34)', () => {
     const alert = computeDesignLinks(REPO).links.find((link) => link.name === 'Alert');
-    expect(alert).toMatchObject({ fileKey: 'c8MaVgwxOlxm4wr8wnH0Z4', nodeId: '33:34' });
+    expect(alert).toMatchObject({ fileKey: '2VgBbVpKiDnu0aftJEVyBQ', nodeId: '33:34' });
   });
 
   it('gives Storybook the manifest figmaUrl for every linked component, and nothing for the rest', () => {

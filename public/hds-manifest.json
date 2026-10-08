@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-07T17:57:55.770Z",
+  "generated": "2026-10-08T13:23:48.417Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -391,7 +391,7 @@
       "hidden": false,
       "filePath": "src/app/components/alert.tsx",
       "description": "Alert - compact feedback surface with contextual severity.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34",
       "figmaId": null,
       "preview": {
         "exportName": "Alert",
@@ -479,7 +479,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Alert.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34",
       "props": {
         "children": {
           "type": "ReactNode"
@@ -547,7 +547,7 @@
       "hidden": false,
       "filePath": "src/app/components/code-block.tsx",
       "description": "CodeBlock - code display with copy button and optional collapsible toggle.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-154",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154",
       "figmaId": null,
       "preview": {
         "exportName": "CodeBlock",
@@ -612,7 +612,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/CodeBlock.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-154",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154",
       "storyFiles": [
         "src/stories/code-block.stories.tsx"
       ],
@@ -721,7 +721,7 @@
       "hidden": false,
       "filePath": "src/app/components/disclosure.tsx",
       "description": "Disclosure - compact disclosure surface for optional explanatory content.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-453",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453",
       "figmaId": null,
       "preview": {
         "exportName": "Disclosure",
@@ -825,7 +825,7 @@
         }
       ],
       "sourcePath": "src/app/components/Disclosure.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-453",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453",
       "storyFiles": [
         "src/stories/disclosure.stories.tsx"
       ],
@@ -854,7 +854,7 @@
       "hidden": false,
       "filePath": "src/app/components/divider.tsx",
       "description": "Divider — semantic separator between content regions.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-26",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-26",
       "figmaId": null,
       "preview": {
         "exportName": "Divider",
@@ -893,7 +893,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Divider.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-26",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-26",
       "props": {
         "orientation": {
           "type": "enum",
@@ -1257,7 +1257,7 @@
       "hidden": false,
       "filePath": "src/app/components/icon.tsx",
       "description": "Icon — semantic icon wrapper for Lucide icons.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=27-2",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2",
       "figmaId": null,
       "preview": {
         "exportName": "Icon",
@@ -1393,7 +1393,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Icon.tsx",
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=27-2",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2",
       "storyFiles": [
         "src/stories/icon.stories.tsx"
       ],
@@ -1428,7 +1428,7 @@
       "hidden": false,
       "filePath": "src/app/components/inline-code.tsx",
       "description": "InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
       "figmaId": null,
       "preview": {
         "exportName": "InlineCode",
@@ -1484,7 +1484,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/InlineCode.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-155",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
       "storyFiles": [
         "src/stories/inline-code.stories.tsx"
       ],
@@ -1505,7 +1505,7 @@
       "hidden": false,
       "filePath": "src/app/components/inline-link.tsx",
       "description": "InlineLink ” inline navigation and external-link primitive for body copy.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
       "figmaId": null,
       "preview": {
         "exportName": "InlineLink",
@@ -1561,7 +1561,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/InlineLink.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-161",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
       "storyFiles": [
         "src/stories/inline-link.stories.tsx"
       ],
@@ -1594,7 +1594,7 @@
       "hidden": false,
       "filePath": "src/app/components/input.tsx",
       "description": "Input — text field primitive with label, helper, and error slots.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20",
       "figmaId": null,
       "preview": {
         "exportName": "Input",
@@ -1846,7 +1846,7 @@
       ],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=38-20",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20",
       "storyFiles": [
         "src/stories/input.stories.tsx"
       ],
@@ -1888,7 +1888,7 @@
       "hidden": false,
       "filePath": "src/app/components/segmented-control.tsx",
       "description": "SegmentedControl \" segmented selection input for compact mutually-exclusive choices. The active×hover×pressed×disabled×secondary state matrix is expressed through `cva` compound variants keyed by `active` / `interaction` (the live-or-frozen-demo hover/pressed/rest sub-state) / `variant` / `disabled`, each resolving to the same `--semantic-*` custom properties the pre-Tailwind inline styles referenced — same tokens, same pixels, just Tailwind classes instead of a `style` object. Per ADR-015 this control keeps its own hover/focus tracking (per-segment `string | null` cardinality) rather than the shared `useInteractionState` single-element machine; only the class composition changed, not the state machine feeding it.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
       "figmaId": null,
       "preview": {
         "exportName": "SegmentedControl",
@@ -2004,7 +2004,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/SegmentedControl.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-334",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
       "storyFiles": [
         "src/stories/segmented-control.stories.tsx"
       ],
@@ -2231,7 +2231,7 @@
       "hidden": false,
       "filePath": "src/app/components/table.tsx",
       "description": "Table - structured data table primitive for documentation and compact UI matrices.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300",
       "figmaId": null,
       "preview": {
         "exportName": "Table",
@@ -2327,7 +2327,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Table.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-300",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300",
       "storyFiles": [
         "src/stories/table.stories.tsx"
       ],
@@ -2364,7 +2364,7 @@
       "hidden": false,
       "filePath": "src/app/components/tag.tsx",
       "description": "Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps the visible surface compact. Colors (background, border-color, color) live in the pill's cva variants, painted through `group-hover`/`group-active` so the pill reacts to interaction on the shared outer button (converted off the former .hds-tag-btn/.hds-tag-pill theme.css rules for #60 — same behavior, now token-driven Tailwind classes). The `active` prop (aria-pressed selected state) is not one of the variant contract's four axes — it's expressed as the pill's `selected` cva variant, carrying the same rest → hover → pressed → focus-visible state matrix the contract expects, just keyed by selection instead of tone/size/density.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "figmaId": null,
       "preview": {
         "exportName": "Tag",
@@ -2480,7 +2480,7 @@
       "tier": "primitive",
       "docExempt": false,
       "sourcePath": "src/app/components/Tag.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=32-11",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "storyFiles": [
         "src/stories/tag.stories.tsx"
       ],
@@ -2511,7 +2511,7 @@
       "hidden": false,
       "filePath": "src/app/components/surface.tsx",
       "description": "Surface — governed inset surface primitive. Enforces the \"Surface Inset\" rule: backgrounds MUST have internal padding. - Default padding: px24 (cards) | px16 (items) - Default border: none (elevation model — use shadow for lift) - Radius: `rounded-lg` (role radius + 4px), the one container radius shared with Card - shadow prop: applies a two-layer elevation shadow for card lift Usage: <Surface>Card content</Surface> <Surface padding=\"item\">Compact item</Surface> <Surface shadow>Lifted card with elevation shadow.</Surface>",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-27",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27",
       "figmaId": null,
       "preview": {
         "exportName": "Surface",
@@ -2606,7 +2606,7 @@
       "tier": "primitive",
       "docExempt": true,
       "sourcePath": "src/app/components/Surface.tsx",
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=89-27",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27",
       "states": [
         "default"
       ],
@@ -2644,7 +2644,7 @@
       "hidden": false,
       "filePath": "src/app/components/card.tsx",
       "description": "Tagged per-export, not on the file block: this module exports eight components and a file-level @figma would hand all eight this one node.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
         "src/app/components/box-sx.test.ts",
@@ -2818,7 +2818,7 @@
         "Body",
         "Footer"
       ],
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11",
       "propConstraints": {
         "bordered": {
           "type": "boolean"
@@ -2916,7 +2916,7 @@
       "a11yRules": [],
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2022-31",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2022-31",
       "figmaId": null,
       "preview": {
         "exportName": "Text",
@@ -2953,7 +2953,7 @@
       "tier": "primitive",
       "docExempt": true,
       "sourcePath": "src/app/components/Text.tsx",
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2022-31",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2022-31",
       "storyFiles": [
         "src/stories/text.stories.tsx"
       ],
@@ -2992,7 +2992,7 @@
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-27",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-27",
       "figmaId": null,
       "tier": "primitive",
       "preview": {
@@ -3179,7 +3179,7 @@
         "Description",
         "Close"
       ],
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-27",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-27",
       "propConstraints": {
         "defaultOpen": {
           "type": "boolean"
@@ -3251,9 +3251,9 @@
       "docExempt": false,
       "filePath": "src/app/components/button.tsx",
       "description": "Triggers an action when activated.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=28-138",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138",
       "tier": "primitive",
       "preview": {
         "exportName": "Button",
@@ -3537,9 +3537,9 @@
       "docExempt": false,
       "filePath": "src/app/components/callout.tsx",
       "description": "Tone-driven side-rule callout for status, quotes, hypotheses.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-85",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-85",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-85",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-85",
       "tier": "primitive",
       "preview": {
         "exportName": "Callout",
@@ -3614,9 +3614,9 @@
       "docExempt": false,
       "filePath": "src/app/components/empty-state.tsx",
       "description": "EmptyState — consistent no-data placeholder for lists, grids, and sections.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-352",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-352",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352",
       "tier": "primitive",
       "preview": {
         "exportName": "EmptyState",
@@ -3684,9 +3684,9 @@
       "docExempt": false,
       "filePath": "src/app/components/field.tsx",
       "description": "Caption label paired with a value — used in metadata grids and read-only forms.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-81",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-81",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81",
       "tier": "primitive",
       "preview": {
         "exportName": "Field",
@@ -3886,9 +3886,9 @@
       "docExempt": false,
       "filePath": "src/app/components/stat.tsx",
       "description": "Headline metric — large value, caption label, optional sub-line.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-247",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-247",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-247",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-247",
       "tier": "primitive",
       "preview": {
         "exportName": "Stat",
@@ -3989,9 +3989,9 @@
       "docExempt": false,
       "filePath": "src/app/components/status-list-item.tsx",
       "description": "Status dot + title row with optional muted notes and trailing slot (e.g. badge).",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-350",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-350",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350",
       "tier": "pattern",
       "preview": {
         "exportName": "StatusListItem",
@@ -4071,9 +4071,9 @@
       "docExempt": false,
       "filePath": "src/app/components/status-tile.tsx",
       "description": "Block-layout sibling of StatusListItem. Renders a raised surface tile with title, optional muted notes, and a trailing slot for a badge or affordance. Status colour belongs in the trailing slot, never as a left rule on the tile — every tile should look the same so feedback signals stay reserved for genuinely interrupting states.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-292",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-292",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-292",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-292",
       "tier": "pattern",
       "preview": {
         "exportName": "StatusTile",
@@ -4240,9 +4240,9 @@
       "governedCategory": true,
       "hidden": false,
       "docExempt": false,
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=31-15",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=31-15",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=31-15",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=31-15",
       "tier": "primitive",
       "preview": {
         "exportName": "Badge",
@@ -4308,9 +4308,9 @@
       "docExempt": false,
       "filePath": "src/app/components/asset-img.tsx",
       "description": "AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-67",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-67",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67",
       "tier": "primitive",
       "preview": {
         "exportName": "AssetImg",
@@ -4482,9 +4482,9 @@
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
       "description": "The tab set itself. Tagged here rather than in the file block because TabsList and TabsContent share this module and have no Figma node of their own — a file-level @figma would silently claim this node for all four.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-89",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-89",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89",
       "tier": "primitive",
       "preview": {
         "exportName": "Tabs",
@@ -4726,7 +4726,7 @@
       "hidden": false,
       "filePath": "src/app/components/radio.tsx",
       "description": "Radio — radio button with animated selection indicator.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17",
       "figmaId": null,
       "preview": {
         "exportName": "Radio",
@@ -4776,7 +4776,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=36-17",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17",
       "storyFiles": [
         "src/stories/radio.stories.tsx"
       ],
@@ -4814,7 +4814,7 @@
       "hidden": false,
       "filePath": "src/app/components/select.tsx",
       "description": "Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead, full keyboard (Home/End/PageUp-Down/wrap), Popper collision/flip positioning, and dismissal. The HDS surface is styled with the token-backed Tailwind idiom used by tabs.tsx / command-palette.tsx; `ref` targets the trigger button.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49",
       "figmaId": null,
       "preview": {
         "exportName": "Select",
@@ -4891,7 +4891,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-49",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49",
       "storyFiles": [
         "src/stories/select.stories.tsx"
       ],
@@ -4953,7 +4953,7 @@
       "hidden": false,
       "filePath": "src/app/components/slider.tsx",
       "description": "Slider — range slider with label and value display.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265",
       "figmaId": null,
       "preview": {
         "exportName": "Slider",
@@ -5000,7 +5000,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-265",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265",
       "storyFiles": [
         "src/stories/slider.stories.tsx"
       ],
@@ -5029,7 +5029,7 @@
       "hidden": false,
       "filePath": "src/app/components/toggle.tsx",
       "description": "Toggle — boolean on/off toggle with animated thumb.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19",
       "figmaId": null,
       "preview": {
         "exportName": "Toggle",
@@ -5076,7 +5076,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": false,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=37-19",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19",
       "storyFiles": [
         "src/stories/toggle.stories.tsx"
       ],
@@ -5111,9 +5111,9 @@
       "docExempt": false,
       "filePath": "src/app/components/avatar.tsx",
       "description": "Circular avatar. Renders the image when available, else initials from `alt`.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=34-18",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=34-18",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18",
       "tier": "primitive",
       "preview": {
         "exportName": "Avatar",
@@ -5196,9 +5196,9 @@
       "docExempt": false,
       "filePath": "src/app/components/progress.tsx",
       "description": "Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-91",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-91",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-91",
       "tier": "primitive",
       "preview": {
         "exportName": "Progress",
@@ -5301,9 +5301,9 @@
       "docExempt": false,
       "filePath": "src/app/components/skeleton.tsx",
       "description": "Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-95",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-95",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
       "tier": "primitive",
       "preview": {
         "exportName": "Skeleton",
@@ -5380,9 +5380,9 @@
       "docExempt": false,
       "filePath": "src/app/components/spinner.tsx",
       "description": "Indeterminate spinner. Inherits the surrounding text color via currentColor.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-106",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-106",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=88-106",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-106",
       "tier": "primitive",
       "preview": {
         "exportName": "Spinner",
@@ -5453,9 +5453,9 @@
       "docExempt": false,
       "filePath": "src/app/components/breadcrumb.tsx",
       "description": "Breadcrumb trail. Links route through the HDS router seam (plain anchors with no router, client-side nav when a router adapter is provided). The final item is marked aria-current=\"page\".",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-159",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-159",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-159",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-159",
       "tier": "pattern",
       "preview": {
         "exportName": "Breadcrumb",
@@ -5522,9 +5522,9 @@
       "docExempt": false,
       "filePath": "src/app/components/pagination.tsx",
       "description": "Paged navigation with first/last anchors, sibling pages, and ellipses.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-194",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-194",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194",
       "tier": "pattern",
       "preview": {
         "exportName": "Pagination",
@@ -5594,9 +5594,9 @@
       "docExempt": true,
       "filePath": "src/app/components/toast.tsx",
       "description": "Provider + viewport for the toast system. Wrap the app root once.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-367",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-367",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-367",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-367",
       "tier": "pattern",
       "preview": {
         "exportName": "ToastProvider",
@@ -5666,9 +5666,9 @@
       "docExempt": true,
       "filePath": "src/app/components/combobox.tsx",
       "description": "Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection (with `multiple`, a count and a removable chip per value); opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=82-237",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237",
       "tier": "pattern",
       "preview": {
         "exportName": "Combobox",
@@ -5809,9 +5809,9 @@
       "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-level @figma would claim this one for all three.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-94",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-94",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94",
       "tier": "pattern",
       "preview": {
         "exportName": "Form",
@@ -6084,9 +6084,9 @@
       "docExempt": false,
       "filePath": "src/app/components/avatar-group.tsx",
       "description": "Renders up to `max` overlapping avatars followed by a `+N` overflow chip.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2030-63",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2030-63",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2030-63",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2030-63",
       "tier": "primitive",
       "preview": {
         "exportName": "AvatarGroup",
@@ -6140,9 +6140,9 @@
       "docExempt": false,
       "filePath": "src/app/components/blockquote.tsx",
       "description": "A quoted passage; pass `cite` for the source URL and `attribution` for a byline.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2024-18",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2024-18",
       "tier": "primitive",
       "preview": {
         "exportName": "Blockquote",
@@ -6193,9 +6193,9 @@
       "docExempt": false,
       "filePath": "src/app/components/kbd.tsx",
       "description": "Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2026-9",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2026-9",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9",
       "tier": "primitive",
       "preview": {
         "exportName": "Kbd",
@@ -6254,9 +6254,9 @@
       "docExempt": false,
       "filePath": "src/app/components/timestamp.tsx",
       "description": "Presents a date/time with a machine-readable `dateTime` for accessibility.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2031-11",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2031-11",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2031-11",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2031-11",
       "tier": "primitive",
       "preview": {
         "exportName": "Timestamp",
@@ -6367,9 +6367,9 @@
       "docExempt": false,
       "filePath": "src/app/components/metadata-list.tsx",
       "description": "Renders object metadata as a semantic `<dl>` of term/description pairs.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2041-47",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",
       "tier": "pattern",
       "preview": {
         "exportName": "MetadataList",
@@ -6430,9 +6430,9 @@
       "docExempt": true,
       "filePath": "src/app/components/alert-dialog.tsx",
       "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2035-24",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2035-24",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2035-24",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2035-24",
       "tier": "primitive",
       "preview": {
         "exportName": "AlertDialog",
@@ -6887,9 +6887,9 @@
       "docExempt": false,
       "filePath": "src/app/components/textarea.tsx",
       "description": "Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the four states Default / Focus / Error / Disabled map to the focus-ring, `error`, and `disabled` treatments below.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-14",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=85-14",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14",
       "tier": "primitive",
       "preview": {
         "exportName": "Textarea",
@@ -7807,7 +7807,7 @@
       "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
       "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15",
       "figmaId": null,
       "tier": "primitive",
       "preview": {
@@ -7826,7 +7826,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-15",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15",
       "props": {
         "children": {
           "type": "React.ReactNode",
@@ -7904,9 +7904,9 @@
       "docExempt": true,
       "filePath": "src/app/components/menu.tsx",
       "description": "Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-59",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-59",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59",
       "tier": "primitive",
       "preview": {
         "exportName": "Menu",
@@ -8028,9 +8028,9 @@
       "docExempt": true,
       "filePath": "src/app/components/popover.tsx",
       "description": "Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-32",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-32",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-32",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-32",
       "tier": "primitive",
       "preview": {
         "exportName": "Popover",
@@ -8130,9 +8130,9 @@
       "docExempt": false,
       "filePath": "src/app/components/checkbox.tsx",
       "description": "Checkbox — custom-drawn checkbox with check / indeterminate glyph.",
-      "figmaUrl": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=35-29",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=35-29",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=35-29",
       "tier": "primitive",
       "preview": {
         "exportName": "Checkbox",
@@ -8203,9 +8203,9 @@
       "docExempt": false,
       "filePath": "src/app/components/form-actions.tsx",
       "description": "Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most. Gap is the tight layout token.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-87",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-87",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-87",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-87",
       "tier": "pattern",
       "preview": {
         "exportName": "FormActions",
@@ -8260,9 +8260,9 @@
       "docExempt": false,
       "filePath": "src/app/components/metric-tiles.tsx",
       "description": "One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the eyebrow / h2 / caption scale) and adds the surface and the fixed height, so a tile needs no enclosing `Card`.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-114",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-114",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-114",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-114",
       "tier": "pattern",
       "preview": {
         "exportName": "MetricTile",
@@ -8447,9 +8447,9 @@
       "docExempt": false,
       "filePath": "src/app/components/data-table-section.tsx",
       "description": "Section heading and toolbar over a `Table`. Row actions are consumer nodes in a trailing column, the table scrolls horizontally on narrow widths without a `minWidth` from the caller, and zero rows shows an `EmptyState`.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-268",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-268",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2075-268",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-268",
       "tier": "pattern",
       "preview": {
         "exportName": "DataTableSection",
@@ -8519,9 +8519,9 @@
       "docExempt": false,
       "filePath": "src/app/components/destructive-section.tsx",
       "description": "Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's confirm does. Place it last on the screen, below the form.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2076-3",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3",
       "tier": "pattern",
       "preview": {
         "exportName": "DestructiveSection",
@@ -11577,10 +11577,10 @@
       {
         "path": "component.tag.lineHeight",
         "cssVar": "--component-tag-lineHeight",
-        "type": "dimension",
+        "type": "number",
         "description": "Readable label rhythm for tags.",
         "alias": "{primitive.typography.lineHeight.normal}",
-        "resolvedValue": "undefinedundefined"
+        "resolvedValue": "1.5"
       },
       {
         "path": "component.tag.minWidth",

@@ -5,10 +5,11 @@
  *
  * Runs `npm pack --dry-run --json` and compares the file list against a
  * required set (agent context, AGENTS.md, the hds-mcp server, the ESLint plugin,
- * manifest, tokens, entry point) and a forbidden set (env files, repo `src/`,
- * repo `scripts/` other than the plugin, built Storybook). Forbidden entries match as a
- * path prefix at the tarball root, not as a substring: `dist/types/src/` is
- * correct and must not be flagged.
+ * manifest, tokens, entry point, the upgrade record) and a forbidden set (env
+ * files, repo `src/`, repo `scripts/` other than the plugin, built Storybook,
+ * and everything under `upgrade/` but the record: pending notes, frozen
+ * sources). Forbidden entries match as a path prefix at the tarball root, not
+ * as a substring: `dist/types/src/` is correct and must not be flagged.
  *
  * Usage: node scripts/check-pack-contents.mjs [--require <path>]...
  * Requires `dist/` (run `pnpm build:lib` first; smoke:consumer does).
@@ -20,13 +21,17 @@ import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PLUGIN_DIR = 'scripts/eslint-plugin-hds';
 /** Every file under the plugin's rules/ (index.mjs imports them; a missing one breaks the import). */
-const PLUGIN_RULES = readdirSync(
-  path.join(path.dirname(fileURLToPath(import.meta.url)), '..', PLUGIN_DIR, 'rules'),
-)
+const PLUGIN_RULES = readdirSync(path.join(ROOT, PLUGIN_DIR, 'rules'))
   .sort()
   .map((f) => `${PLUGIN_DIR}/rules/${f}`);
+/** Every committed release ledger: the upgrade command reads each one it crosses (hds#451). */
+const LEDGERS = readdirSync(path.join(ROOT, 'upgrade/releases'))
+  .filter((f) => f.endsWith('.json'))
+  .sort()
+  .map((f) => `upgrade/releases/${f}`);
 
 export const REQUIRED = [
   'llms.txt',
@@ -60,6 +65,24 @@ export const REQUIRED = [
   'dist/fonts/satoshi-500.woff2',
   'dist/fonts/satoshi-700.woff2',
   'dist/fonts/ibm-plex-mono-400.woff2',
+  // The upgrade record (hds#451): what a person upgrading by hand reads, and
+  // what the upgrade command (hds#452) reads from the version it runs.
+  'UPGRADING.md',
+  'MIGRATIONS.md',
+  'CHANGELOG.md',
+  'upgrade/schema.json',
+  'upgrade/index.json',
+  ...LEDGERS,
+  // The upgrade command (hds#452): the bin npx runs, the codemod registry it
+  // drives and the helpers it imports.
+  'codemods/upgrade.mjs',
+  'codemods/registry.mjs',
+  'codemods/lib/atomic-write.mjs',
+  'codemods/lib/installed-version.mjs',
+  'codemods/lib/project.mjs',
+  'codemods/lib/record.mjs',
+  'codemods/lib/scan.mjs',
+  'codemods/lib/semver.mjs',
 ];
 
 /**
@@ -74,6 +97,13 @@ export const FORBIDDEN = [
     prefix: 'scripts/',
     allow: [`${PLUGIN_DIR}/index.mjs`, `${PLUGIN_DIR}/index.d.mts`, `${PLUGIN_DIR}/package.json`],
     allowPrefix: [`${PLUGIN_DIR}/rules/`],
+  },
+  // Only the record ships: upgrade/pending/ (notes of unreleased changes),
+  // upgrade/sources/ (a ledger's frozen inputs) and anything else are inputs.
+  {
+    prefix: 'upgrade/',
+    allow: ['upgrade/schema.json', 'upgrade/index.json'],
+    allowPrefix: ['upgrade/releases/'],
   },
 ];
 
@@ -112,7 +142,7 @@ export function packedPaths(cwd) {
 }
 
 function main() {
-  const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const root = ROOT;
   const args = process.argv.slice(2);
   const extra = [];
   for (let i = 0; i < args.length; i++) if (args[i] === '--require') extra.push(args[++i]);

@@ -1,0 +1,9 @@
+{
+  "$comment": "Frozen inputs of the 0.19.1 ledger (hds#450), read by scripts/upgrade/build-ledger.mjs. 0.19.1 shipped before ledgers existed, so its record was written after the fact from the published tarball's snapshot (docs/api/releases/0.19.1.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.19.1 shipped (its section starts on line 3, and is byte-identical to the one at tag v0.19.1); its needle is the text that finds the line. 0.19.1 has no step: its two entries change Storybook stories only, and assemble AlertDialog, Dialog and Card around a wrapper of their own with parts, names, types and markup unchanged.",
+  "version": "0.19.1",
+  "previous": "0.19.0",
+  "date": "2026-09-30",
+  "summary": "Smaller Button-only bundles for webpack and esbuild, and Storybook accessibility fixes; nothing for a consumer to change.",
+  "backfilled": true,
+  "steps": []
+}

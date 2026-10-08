@@ -1,0 +1,94 @@
+{
+  "version": "0.22.0",
+  "date": "2026-10-08",
+  "bump": "minor",
+  "summary": "3 changes to make by hand (1 breaking), 1 that looks different and 2 deprecations.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.22.0/deprecated/Divider.strong",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Divider's strong prop, deprecated since before 0.16.0, still works; use variant=\"strong\" instead.",
+      "detect": {
+        "regex": [
+          "<Divider\\b[^>]*\\sstrong\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.22.0/deprecated/InlineCode.compact",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "InlineCode's compact prop, deprecated since before 0.16.0, still works; use density=\"compact\" instead.",
+      "detect": {
+        "regex": [
+          "<InlineCode\\b[^>]*\\scompact\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.22.0/value-changed/manifest-figma-file-key",
+      "kind": "value-changed",
+      "impact": "behavior",
+      "plain": "The figmaUrl of each component in the ./manifest export (public/hds-manifest.json) now points at file 2VgBbVpKiDnu0aftJEVyBQ, \"HDS Tokens & Components\"; node ids are unchanged, so a stored link needs only the new file key.",
+      "detect": {
+        "regex": [
+          "\\bfigmaUrl\\b"
+        ]
+      },
+      "source": "CHANGELOG.md:24"
+    },
+    {
+      "id": "0.22.0/value-changed/tokens-json-dtcg",
+      "kind": "value-changed",
+      "impact": "breaking",
+      "plain": "The raw tokens (the tokens export and hirobius.tokens.json) are strict DTCG now, so read semantic.motion.*.$value.timingFunction instead of .easing, and the elastic spring and each semantic.elevation level from $extensions[\"com.hirobius.hds\"].$value.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tokens"
+            ]
+          }
+        ],
+        "regex": [
+          "hirobius\\.tokens\\.json"
+        ]
+      },
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.22.0/look/component-tag-lineHeight",
+      "kind": "look",
+      "impact": "look",
+      "plain": "--component-tag-lineHeight is now 1.5 instead of an invalid value the browser ignored, so text that reads it gets that line height.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-lineHeight"
+        ],
+        "regex": [
+          "\\bcomponent\\.tag\\.lineHeight\\b"
+        ]
+      },
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.22.0/behavior/hds-mcp-core-flag",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The hds-mcp get_component tool now marks core: true only on the 43 ratified core components and recommended: true on the wider set AGENTS.md recommends, and list_core names its set, so read recommended where you relied on core for that wider set.",
+      "detect": {
+        "regex": [
+          "\\bhds-mcp\\b"
+        ]
+      },
+      "source": "CHANGELOG.md:23"
+    }
+  ]
+}

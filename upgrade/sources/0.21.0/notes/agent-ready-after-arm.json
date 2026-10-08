@@ -1,0 +1,28 @@
+{
+  "impact": "breaking",
+  "plain": "If your ESLint config uses @hirobius/eslint-plugin-hds, its recommended config now fails raw <button>, <input>, <select>, <textarea> and <form>, so replace them with HDS components or turn hds/no-raw-controls off.",
+  "steps": [
+    {
+      "id": "behavior/eslint-no-raw-controls",
+      "kind": "behavior",
+      "impact": "breaking",
+      "plain": "The HDS ESLint plugin's recommended config now fails raw <button>, <input>, <select>, <textarea> and <form> (hds/no-raw-controls), so use Button, Input, Select, Textarea and Form instead or set the rule to 'off'.",
+      "detect": {
+        "bareImports": ["@hirobius/eslint-plugin-hds"]
+      }
+    },
+    {
+      "id": "exports/./eslint-plugin",
+      "kind": "exports",
+      "impact": "additive",
+      "plain": "The ESLint plugin now ships in the package, so import hds from '@hirobius/design-system/eslint-plugin' and drop the separate @hirobius/eslint-plugin-hds dependency.",
+      "detect": {
+        "bareImports": ["@hirobius/eslint-plugin-hds"]
+      },
+      "done": {
+        "regex": ["@hirobius/design-system/eslint-plugin['\"]"]
+      },
+      "facts": ["exports-key-added:./eslint-plugin"]
+    }
+  ]
+}

@@ -508,7 +508,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
 /**
  * Tagged per-export, not on the file block: this module exports eight
  * components and a file-level @figma would hand all eight this one node.
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=39-11
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11
  * @usage Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.
  * @whenNot A bare padded background with no slot anatomy, or a single headline figure.
  * @useInstead Surface a padded background without slot anatomy

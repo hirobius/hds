@@ -2,7 +2,7 @@
  * Blockquote — quoted passage with an optional attribution.
  * @category Typography
  * @tier primitive
- * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components-Copy?node-id=2024-18
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2024-18
  */
 
 import * as React from 'react';

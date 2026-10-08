@@ -36,6 +36,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 import { brandAccent } from './lib/brand-truth.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -500,7 +501,7 @@ export function buildDensity() {
 
 // ── CLI ───────────────────────────────────────────────────────────────────────
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const raw = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+  const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
   let handoff = readFileSync(join(ROOT, 'DESIGN-HANDOFF.md'), 'utf8');
 
   handoff = replaceSection(handoff, 'brand-identity', buildBrandIdentity(raw));

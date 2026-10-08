@@ -11,17 +11,20 @@
  *     pushes, snapshots and stamps a receipt. Import it once in Figma desktop;
  *     its files change only when its code does, never with the tokens.
  *   - the promote plugin: the development plugin with the model baked in
- *     (buildDevPlugin), renamed, for library promotion and deliberate prunes.
+ *     (buildDevPlugin), renamed, for a deliberate prune, which Adrian runs.
  *     Its Push and Snapshot clear the Sync receipt (hds#417).
  *   - receipt.js (buildUseFigmaReceiptScript, hds#417): a read-only use_figma
  *     script that returns the Sync receipt's head, one page and a live
- *     fingerprint of staging, for `pnpm figma:snapshot --from-receipt`.
+ *     fingerprint of the library, for `pnpm figma:snapshot --from-receipt`.
  *   - `use_figma` scripts for the remote Figma MCP server, one per collection plus
- *     one for styles, carrying only the out-of-scope variables they alias. An
- *     agent retypes each script into the `code` parameter, so the script checks
- *     two checksums before it reads or writes anything: one over its payload,
- *     one over the source of every runtime function. Only the closing call
- *     lines are not covered.
+ *     one for styles, carrying only the out-of-scope variables they alias, and
+ *     snapshot.js. Each first refuses any file but the library
+ *     (useFigmaLibraryGuard), and none prunes: an agent runs them, and an agent
+ *     never deletes anything in the library (ADR-026, amended 2026-10-07). An agent retypes
+ *     each script into the `code` parameter, so the script checks two
+ *     checksums before it reads or writes anything: one over its payload, one
+ *     over the source of every runtime function. Only the closing call lines
+ *     and the first statement are not covered.
  *
  * Nothing here talks to Figma.
  */
@@ -94,6 +97,28 @@ function scriptBody(fileName) {
     .trim();
 }
 
+/** A script's syntax tree without source positions: equal trees run the same code. */
+const syntaxOf = (code) =>
+  JSON.stringify(parse(code, { ecmaVersion: 2020, sourceType: 'script' }), (key, value) =>
+    key === 'start' || key === 'end' ? undefined : value,
+  );
+
+/**
+ * A script body without the indentation that starts its lines: the same
+ * program in fewer bytes (the Sync plugin's code.js has a 60,000 B budget).
+ * Throws if that changed its syntax tree, as a template literal spanning
+ * lines would.
+ */
+export function withoutIndentation(code) {
+  const flat = code.replace(/^[ \t]+/gm, '');
+  if (syntaxOf(flat) !== syntaxOf(code)) {
+    throw new Error(
+      'Removing indentation changed the syntax tree of a carrier, so leading whitespace meant something there (a template literal spanning lines). Keep that text on one line.',
+    );
+  }
+  return flat;
+}
+
 /**
  * The runtime's top-level functions exactly as a script carries them: each
  * name, and the source text `Function.prototype.toString` returns for it.
@@ -135,19 +160,39 @@ export function reachableRuntime(entries, source = runtimeSource()) {
 }
 
 /**
- * The runtime a carrier reaches, plus the statement that checks it. `prune`
- * (whether the carrier deletes) picks the plugin a refusal names.
+ * The runtime a carrier reaches, plus the statement that checks it. No
+ * use_figma carrier prunes, so a refusal names the Sync plugin.
  */
-function verifiedRuntime(entries, prune) {
+function verifiedRuntime(entries) {
   const functions = reachableRuntime(entries);
   const names = functions.map((fn) => fn.name);
   const texts = functions.map((fn) => fn.text.replace(/\r/g, ''));
   return [
     functions.map((fn) => fn.text).join('\n\n'),
     '',
-    `hdsVerifyRuntime([${names.join(', ')}], '${hdsChecksum(texts.join('\n'))}', ${prune === true});`,
+    `hdsVerifyRuntime([${names.join(', ')}], '${hdsChecksum(texts.join('\n'))}', false);`,
   ].join('\n');
 }
+
+/**
+ * The first statement of every use_figma carrier (ADR-026, amended
+ * 2026-10-07): before the script reads anything else, it throws unless
+ * figma.fileKey is the library key baked from figma/links.json, and on any
+ * retired key. `does` says what the script does there, for the refusal.
+ *
+ * @param {{ libraryFileKey: string, retiredFileKeys: string[] }} sync  syncConfigFromLinks' result
+ */
+export function useFigmaLibraryGuard(sync, does, nothing = 'Nothing was read or written.') {
+  return [
+    `if (figma.fileKey !== '${sync.libraryFileKey}' || ${JSON.stringify(sync.retiredFileKeys).replace(/"/g, "'")}.indexOf(figma.fileKey) !== -1) {`,
+    `  throw new Error('Refused: this is not the HDS library (${sync.libraryFileKey}). ${does} ${nothing}');`,
+    '}',
+  ].join('\n');
+}
+
+/** Why no use_figma script is built with prune: only the promote plugin deletes, and only Adrian runs it. */
+export const USE_FIGMA_PRUNE_REFUSAL =
+  'use_figma scripts never prune: an agent never deletes anything in the library (ADR-026, amended 2026-10-07). A deliberate prune is the promote plugin (pnpm figma:push --prune), and only Adrian runs it.';
 
 /** A JSON round trip gives the key order a JS engine will see when it parses the literal. */
 const canonical = (value) => JSON.parse(JSON.stringify(value));
@@ -235,11 +280,19 @@ const header = (lines) => lines.map((line) => `// ${line}`.trimEnd()).join('\n')
 
 /**
  * A `use_figma` script: plain JavaScript with top-level await and return, as
- * the Figma MCP server expects.
+ * the Figma MCP server expects. `links` is figma/links.json: the first
+ * statement refuses any file but the library. Refuses `prune`: an agent runs
+ * these, and an agent never deletes anything in the library.
+ *
+ * @param {object} model
+ * @param {{ links: object, scope?: string[]|null, renames?: object, dryRun?: boolean, prune?: false }} options
  */
-export function buildUseFigmaPushScript(model, options = {}, title = 'full push') {
+export function buildUseFigmaPushScript(model, { links, ...options } = {}, title = 'full push') {
+  if (options.prune) throw new Error(USE_FIGMA_PRUNE_REFUSAL);
+  const sync = syncConfigFromLinks(links);
   const { payload, checksum } = buildPushPayload(model, options);
   return [
+    useFigmaLibraryGuard(sync, 'A use_figma push writes to the library only.'),
     header([
       `HDS figma:push — ${title}. Generated by \`pnpm figma:push\`; run it unmodified.`,
       `Model ${payload.modelHash} · prune ${payload.options.prune} · dry run ${payload.options.dryRun}`,
@@ -247,20 +300,23 @@ export function buildUseFigmaPushScript(model, options = {}, title = 'full push'
     `const PAYLOAD = ${JSON.stringify(payload)};`,
     `const CHECKSUM = '${checksum}';`,
     '',
-    verifiedRuntime(['hdsRunPush'], payload.options.prune),
+    verifiedRuntime(['hdsRunPush']),
     'return await hdsRunPush(figma, PAYLOAD, CHECKSUM);',
     '',
   ].join('\n');
 }
 
-export function buildUseFigmaSnapshotScript() {
+/** figma/push/use-figma/snapshot.js: reads only, and only the library named in `links` (figma/links.json). */
+export function buildUseFigmaSnapshotScript(links) {
+  const sync = syncConfigFromLinks(links);
   return [
+    useFigmaLibraryGuard(sync, 'snapshot.js reads the library only.'),
     header([
       'HDS figma:snapshot. Generated by `pnpm figma:snapshot`; run it unmodified.',
       'Save the returned JSON to a file, then: pnpm figma:snapshot --ingest <file>',
     ]),
     '',
-    verifiedRuntime(['hdsRunSnapshot'], false),
+    verifiedRuntime(['hdsRunSnapshot']),
     'return await hdsRunSnapshot(figma);',
     '',
   ].join('\n');
@@ -325,9 +381,26 @@ const PLUGIN_UI = `<!doctype html>
  * `pnpm figma:push` writes it only as the promote plugin (buildPromotePlugin),
  * whose id does not collide with the Sync plugin's.
  *
+ * It runs in the HDS library only (ADR-026, amended 2026-10-07): before any
+ * command reads or writes, it applies the Sync plugin's file guard
+ * (hdsSyncFileGuard) to the library and retired files baked from `links`
+ * (figma/links.json), so it refuses HDS Staging, which has no local variables
+ * by design, a retired file and any other file. Like Sync, it bakes no staging
+ * key.
+ *
+ * @param {object} model
+ * @param {{ links: object, prune?: boolean, renames?: object }} options  links: figma/links.json
  * @returns {Record<string, string>} file name → contents
  */
-export function buildDevPlugin(model, { prune = false, renames = {} } = {}) {
+export function buildDevPlugin(model, { prune = false, renames = {}, links } = {}) {
+  const sync = syncConfigFromLinks(links);
+  const library = {
+    libraryFileKey: sync.libraryFileKey,
+    libraryFileName: sync.libraryFileName,
+    retiredFileKeys: sync.retiredFileKeys,
+    retiredFileNames: sync.retiredFileNames,
+  };
+  const guard = reachableRuntime(['hdsSyncFileGuard'], syncRuntimeSource());
   const { payload, checksum } = buildPushPayload(model, { prune, renames });
   const menu = [
     { name: 'Plan push (dry run, writes nothing)', command: 'plan' },
@@ -343,23 +416,34 @@ export function buildDevPlugin(model, { prune = false, renames = {} } = {}) {
     ui: 'ui.html',
     editorType: ['figma'],
     documentAccess: 'dynamic-page',
+    // figma.fileKey is only exposed to private and development plugins that ask for it.
+    enablePrivatePluginApi: true,
     networkAccess: { allowedDomains: ['none'] },
     menu,
   };
   const code = [
     header([
       'HDS tokens sync — development plugin. Generated by `pnpm figma:push`; do not edit.',
-      `Model ${payload.modelHash} · prune ${prune}`,
+      `Model ${payload.modelHash} · prune ${prune} · runs in the HDS library ${library.libraryFileKey} only`,
     ]),
+    `const LIBRARY = Object.freeze(${JSON.stringify(library)});`,
     `const PAYLOAD = ${JSON.stringify(payload)};`,
     `const CHECKSUM = '${checksum}';`,
     '',
     runtimeSource(),
     '',
+    guard.map((fn) => fn.text).join('\n\n'),
+    '',
     `figma.showUI(__html__, { width: 560, height: 500, themeColors: true });
 figma.ui.onmessage = (message) => {
   if (message === 'close') figma.closePlugin();
 };
+function hdsPromoteRefusal() {
+  const why = hdsSyncFileGuard(figma, LIBRARY);
+  if (why === null) return null;
+  return 'Refused: the promote plugin runs in the HDS library only ("' + LIBRARY.libraryFileName + '", ' + LIBRARY.libraryFileKey + '), never in HDS Staging or a retired file. ' +
+    why.replace(/The Sync plugin/g, 'The promote plugin').replace(/\\bSync\\b/g, 'the promote plugin');
+}
 function hdsClearSyncReceipt() {
   const keys = ['syncReceipt'];
   for (let i = 0; i < ${SYNC_MAX_PAGES}; i++) keys.push('syncSnapshot.' + i);
@@ -367,6 +451,11 @@ function hdsClearSyncReceipt() {
 }
 (async () => {
   try {
+    const refused = hdsPromoteRefusal();
+    if (refused) {
+      figma.ui.postMessage({ ok: false, error: refused });
+      return;
+    }
     if (figma.command === 'snapshot') {
       const result = await hdsRunSnapshot(figma);
       hdsClearSyncReceipt();
@@ -394,9 +483,11 @@ function hdsClearSyncReceipt() {
 /**
  * Today's baked development plugin under its own id and name, so it can sit
  * next to the Sync plugin in Figma: "HDS tokens promote (baked)". Its code and
- * window are buildDevPlugin's, byte for byte. Use it only to promote staging
- * into the library (ADR-026 §2) or for a deliberate prune; the Sync plugin
- * does neither.
+ * window are buildDevPlugin's, byte for byte, so it runs in the HDS library
+ * only, never in HDS Staging or a retired file. Adrian runs it for a deliberate
+ * prune (`pnpm figma:push --prune`), the one push that deletes; the Sync
+ * plugin and delta.js never do. Its name dates from the staging era (before
+ * 2026-10-07), when it also promoted staging into the library.
  *
  * @returns {Record<string, string>} file name → contents
  */
@@ -424,31 +515,107 @@ const PLUGIN_BUILD_PLACEHOLDER = '--------';
 const PLUGIN_BUILD_LINE = /^const PLUGIN_BUILD = '[^'\n]*';$/m;
 
 /**
+ * HDS Staging, the draft workbench (ADR-026, amendment A4), from
+ * figma/links.json: `{ fileKey, fileName }`, or null when links.json names
+ * none. It is optional, and it is never a target: no carrier bakes it, so the
+ * Sync plugin, delta.js and every use_figma script refuse it as they refuse any
+ * file but the library. Throws when only one of stagingFileKey and
+ * stagingFileName is set, or when either is the library's or a retired
+ * file's: names and keys must tell the three apart.
+ *
+ * @param {object} links  figma/links.json
+ * @param {string} [fix]  appended to every refusal (what was not done, and the fix)
+ */
+export function stagingFrom(links = {}, fix = '') {
+  const fields = [
+    ['stagingFileKey', links.stagingFileKey ?? null, 'file key'],
+    ['stagingFileName', links.stagingFileName ?? null, 'file name'],
+  ];
+  const given = fields.filter(([, value]) => value !== null);
+  if (given.length === 0) return null;
+  for (const [field, value, what] of given) {
+    if (typeof value !== 'string' || !value) {
+      throw new Error(
+        `figma/links.json: ${field} is ${JSON.stringify(value)}, not a ${what}. HDS Staging needs both stagingFileKey and stagingFileName, or neither.${fix}`,
+      );
+    }
+  }
+  if (given.length === 1) {
+    const [set] = given[0];
+    const [missing] = fields.find(([field]) => field !== set);
+    throw new Error(
+      `figma/links.json sets ${set} but has no ${missing}: HDS Staging needs both, or neither.${fix}`,
+    );
+  }
+  const key = links.stagingFileKey;
+  const name = links.stagingFileName;
+  const retired = Array.isArray(links.retiredFiles) ? links.retiredFiles : [];
+  if (key === links.libraryFileKey) {
+    throw new Error(
+      `figma/links.json: stagingFileKey is the library's key (${key}). HDS Staging is a separate draft workbench, never the library.${fix}`,
+    );
+  }
+  if (name === links.libraryFileName) {
+    throw new Error(
+      `figma/links.json: stagingFileName is the library's name ("${name}"), so names cannot tell the workbench from the library.${fix}`,
+    );
+  }
+  if (retired.some((file) => file && file.fileKey === key)) {
+    throw new Error(`figma/links.json: stagingFileKey (${key}) is a retired file's key.${fix}`);
+  }
+  if (retired.some((file) => file && file.fileName === name)) {
+    throw new Error(
+      `figma/links.json: stagingFileName ("${name}") is a retired file's name.${fix}`,
+    );
+  }
+  return { fileKey: key, fileName: name };
+}
+
+/**
  * What the Sync plugin bakes in from figma/links.json: the one host it may
- * fetch from and the files it may and may not write to. Refuses, before
- * anything is built, a links file that would give the plugin no safe target:
- * a missing or equal staging and library key, a missing file name, or a
+ * fetch from, the one file it may write to (the library, ADR-026 amended
+ * 2026-10-07) and the retired files it refuses by key or by name. HDS
+ * Staging, the draft workbench, is never baked in: Sync refuses it as any file
+ * but the library. Refuses, before anything is built, a links file that would
+ * give the plugin no safe target: a missing library key or name, a missing
+ * retiredFiles list, a retired file that has the library's key or name, a
+ * staging workbench that is the library or a retired file (stagingFrom), or a
  * Storybook URL that is not https.
  */
 export function syncConfigFromLinks(links = {}) {
   const fix = ' Set it in figma/links.json (ADR-026, ADR-032), then run pnpm figma:push again.';
-  for (const field of ['stagingFileKey', 'libraryFileKey', 'stagingFileName', 'libraryFileName']) {
+  for (const field of ['libraryFileKey', 'libraryFileName']) {
     if (typeof links[field] !== 'string' || !links[field]) {
       throw new Error(
         `figma/links.json has no ${field}, so the Sync plugin would have no safe file to write to. Nothing was built.${fix}`,
       );
     }
   }
-  if (links.stagingFileKey === links.libraryFileKey) {
+  if (!Array.isArray(links.retiredFiles)) {
     throw new Error(
-      `figma/links.json: stagingFileKey equals libraryFileKey (${links.libraryFileKey}), so the Sync plugin would write to the published library. Nothing was built.${fix}`,
+      `figma/links.json has no retiredFiles list, so the Sync plugin could not refuse the files it must never write to. Nothing was built. Keep the list, empty if nothing is retired.${fix}`,
     );
   }
-  if (links.stagingFileName === links.libraryFileName) {
-    throw new Error(
-      `figma/links.json: stagingFileName equals libraryFileName ("${links.libraryFileName}"), so names cannot tell staging from the library. Nothing was built.${fix}`,
-    );
-  }
+  links.retiredFiles.forEach((file, i) => {
+    for (const field of ['fileKey', 'fileName']) {
+      if (!file || typeof file[field] !== 'string' || !file[field]) {
+        throw new Error(
+          `figma/links.json retiredFiles[${i}] has no ${field}. Nothing was built.${fix}`,
+        );
+      }
+    }
+    if (file.fileKey === links.libraryFileKey) {
+      throw new Error(
+        `figma/links.json: retiredFiles[${i}] has the libraryFileKey (${links.libraryFileKey}), so the Sync plugin would refuse the library. Nothing was built.${fix}`,
+      );
+    }
+    if (file.fileName === links.libraryFileName) {
+      throw new Error(
+        `figma/links.json: retiredFiles[${i}] is named like libraryFileName ("${links.libraryFileName}"), so names cannot tell the library from a retired file. Nothing was built.${fix}`,
+      );
+    }
+  });
+  stagingFrom(links, ` Nothing was built.${fix}`);
   let origin = null;
   try {
     origin = new URL(links.storybookUrl).origin;
@@ -464,10 +631,10 @@ export function syncConfigFromLinks(links = {}) {
     schemaVersion: SYNC_BUNDLE_SCHEMA_VERSION,
     origin,
     bundleUrl: `${links.storybookUrl.replace(/\/+$/, '')}/${SYNC_BUNDLE_PATH}`,
-    stagingFileKey: links.stagingFileKey,
     libraryFileKey: links.libraryFileKey,
-    stagingFileName: links.stagingFileName,
     libraryFileName: links.libraryFileName,
+    retiredFileKeys: links.retiredFiles.map((file) => file.fileKey),
+    retiredFileNames: links.retiredFiles.map((file) => file.fileName),
     fetchTimeoutMs: SYNC_FETCH_TIMEOUT_MS,
     rawChars: SYNC_RAW_CHARS,
     pageChars: SYNC_PAGE_CHARS,
@@ -510,7 +677,7 @@ const SYNC_UI = `<!doctype html>
 </style>
 <h1 id="title">Working…</h1>
 <div id="mark" hidden>
-  <input id="key" placeholder="Staging file key" />
+  <input id="key" placeholder="This file's link (Share > Copy link)" />
   <button id="markGo">Mark this file</button>
 </div>
 <pre id="notes"></pre>
@@ -607,6 +774,9 @@ const SYNC_UI = `<!doctype html>
  */
 export function buildSyncPlugin(links) {
   const sync = syncConfigFromLinks(links);
+  const engine = withoutIndentation(
+    [runtimeSource(), deltaRuntimeSource(), syncRuntimeSource()].join('\n\n'),
+  );
   const { origin, ...baked } = sync;
   const manifest = `${JSON.stringify(
     {
@@ -628,7 +798,7 @@ export function buildSyncPlugin(links) {
         { name: 'Plan (dry run)', command: 'plan' },
         { separator: true },
         { name: 'Check this file', command: 'check' },
-        { name: 'Mark this file as HDS staging', command: 'mark' },
+        { name: 'Mark this file as the HDS library', command: 'mark' },
       ],
     },
     null,
@@ -643,11 +813,7 @@ export function buildSyncPlugin(links) {
       `const SYNC = Object.freeze(${JSON.stringify(baked)});`,
       `const PLUGIN_BUILD = '${build}';`,
       '',
-      runtimeSource(),
-      '',
-      deltaRuntimeSource(),
-      '',
-      syncRuntimeSource(),
+      engine,
       '',
       'hdsSyncMain(figma, SYNC, PLUGIN_BUILD, __html__, snapshotDelta);',
       '',
@@ -696,8 +862,8 @@ export function buildSyncBundle(model, { renames = {}, commit, base = null, plug
 /**
  * figma/push/use-figma/receipt.js: what an agent runs through use_figma to
  * collect a Sync. Its first statement refuses, before it reads anything else,
- * unless figma.fileKey is the staging key baked from figma/links.json (and is
- * not the library key). Then it reads only: the `syncReceipt` head, page PAGE
+ * unless figma.fileKey is the library key baked from figma/links.json (and is
+ * no retired key). Then it reads only: the `syncReceipt` head, page PAGE
  * (an agent sets 0, then 1 … up to the head's pages - 1), and a cheap live
  * fingerprint of the file (root lastPush; collection, mode, variable and
  * style counts) that `--from-receipt` checks the receipt against. At most
@@ -708,9 +874,7 @@ export function buildSyncBundle(model, { renames = {}, commit, base = null, plug
 export function buildUseFigmaReceiptScript(links) {
   const sync = syncConfigFromLinks(links);
   return [
-    `if (figma.fileKey !== '${sync.stagingFileKey}' || figma.fileKey === '${sync.libraryFileKey}') {`,
-    `  throw new Error('Refused: this is not the HDS staging file (${sync.stagingFileKey}). receipt.js reads staging only. Nothing was read.');`,
-    '}',
+    useFigmaLibraryGuard(sync, 'receipt.js reads the library only.', 'Nothing was read.'),
     header([
       'HDS sync receipt collector (hds#417). Generated by `pnpm figma:push`; reads only.',
       'Run it as generated (PAGE 0); when the head says pages > 1, again with PAGE 1, 2 …',

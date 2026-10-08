@@ -10,8 +10,9 @@
  *
  * What it scans:
  *   src/app/components/**\/*.tsx
- *   src/app/pages/**\/*.tsx
- *   src/app/layouts/**\/*.tsx
+ *
+ * src/app/pages and src/app/layouts no longer exist; SCAN_DIRS below is the
+ * source of truth and fails loudly if a configured root goes missing.
  *
  * What it flags (rule code | meaning):
  *   FONT_BOLD         — `font-bold`/extra/black className OR `fontWeight: bold|700+`
@@ -53,6 +54,7 @@ import {
   tailwindSpacingViolation,
 } from '../validators/canon-rules.mjs';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { resolveScanRoots } from './lib/scan-roots.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOFT = process.argv.includes('--soft');
@@ -64,7 +66,9 @@ const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 
-const SCAN_DIRS = ['src/app/components', 'src/app/layouts'];
+const SCAN_DIRS = ['src/app/components'];
+// Throws if a root disappears; returned absolute paths unused (report stays relative).
+resolveScanRoots(SCAN_DIRS, { root: ROOT, gate: 'check-source-canon' });
 
 // The sketches directory (formerly src/app/pages/sketches, removed with the
 // docs SPA teardown, #51) was the "Expressive Zone" and explicitly suspended

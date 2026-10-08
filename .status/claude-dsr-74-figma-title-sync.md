@@ -1,0 +1,1 @@
+Figma staging snapshot collected from the Sync of 4ae32c7 (post 8f24178f): the typography/title text style and its 5 variables, primitive.typography.size.code and the six-role type-ramp values are now in Figma (drift 0, plan 0). The snapshot now records the staging file key, so the seeded fake Figma in tests is keyed as the snapshot records.

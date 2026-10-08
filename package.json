@@ -20,7 +20,7 @@
   "author": "Adrian Milsap",
   "license": "SEE LICENSE IN NOTICE.md",
   "private": false,
-  "version": "0.20.0",
+  "version": "0.22.0",
   "engines": {
     "node": ">=20",
     "pnpm": ">=8"
@@ -111,6 +111,12 @@
     "DESIGN.md",
     "CONSUMING.md",
     "docs/CONSUMING.md",
+    "UPGRADING.md",
+    "MIGRATIONS.md",
+    "CHANGELOG.md",
+    "upgrade/schema.json",
+    "upgrade/index.json",
+    "upgrade/releases/",
     "src/app/data/component-api.json",
     "codemods/patterns-subpath.mjs",
     "codemods/patterns-subpath.names.json",
@@ -120,6 +126,14 @@
     "codemods/jsx-fold.mjs",
     "codemods/not-found-pattern.mjs",
     "codemods/tile-grid.mjs",
+    "codemods/upgrade.mjs",
+    "codemods/registry.mjs",
+    "codemods/lib/atomic-write.mjs",
+    "codemods/lib/installed-version.mjs",
+    "codemods/lib/project.mjs",
+    "codemods/lib/record.mjs",
+    "codemods/lib/scan.mjs",
+    "codemods/lib/semver.mjs",
     "AGENTS.md",
     "mcp/",
     "scripts/eslint-plugin-hds/index.mjs",
@@ -177,7 +191,7 @@
     "changelog:generate": "node scripts/generate-changelog.mjs",
     "changeset": "changeset",
     "changeset:add": "changeset",
-    "changeset:version": "changeset version && node scripts/audit-component-integrity.mjs --api --update-baseline",
+    "changeset:version": "changeset version && node scripts/upgrade/compile.mjs --release && node scripts/audit-component-integrity.mjs --api --update-baseline",
     "check": "pnpm check:full",
     "check:a11y": "pnpm lint --rule '{\"jsx-a11y/alt-text\":\"error\",\"jsx-a11y/img-redundant-alt\":\"error\"}'",
     "check:attributions": "node scripts/check-attributions.mjs",
@@ -198,7 +212,7 @@
     "check:figma-coverage": "node scripts/check-figma-coverage.mjs",
     "check:figma-drift": "node scripts/check-figma-drift.mjs",
     "check:figma-mapping": "node scripts/check-figma-mapping.mjs",
-    "check:figma-staging-urls": "node scripts/check-figma-staging-urls.mjs",
+    "check:figma-retired-keys": "node scripts/check-figma-retired-keys.mjs",
     "check:focus": "node scripts/check-focus-states.mjs",
     "check:font-files": "node scripts/check-typography-discipline.mjs --font-files-only",
     "check:fonts": "node scripts/check-typography-discipline.mjs --fonts-only",
@@ -275,7 +289,6 @@
     "figma:native-import": "node scripts/build-figma-native-import.mjs",
     "figma:push": "node scripts/figma-push.mjs",
     "figma:snapshot": "node scripts/figma-snapshot.mjs",
-    "figma:staging-inventory": "node scripts/generate-staging-inventory.mjs",
     "guardrail:sweep": "node scripts/guardrail-sweep.mjs",
     "harvest:design-md": "node scripts/harvest-design-md.mjs",
     "hds:new": "node scripts/scaffold-component.mjs",
@@ -295,7 +308,7 @@
     "prebuild:lib": "node scripts/generate-component-api.mjs",
     "prepare": "node scripts/setup-hooks.mjs",
     "prestorybook": "node scripts/generate-component-api.mjs",
-    "pretest": "node scripts/validate-manifest.mjs && node scripts/check-manifest-drift.mjs && node scripts/check-manifest-schema-semver.mjs && node scripts/audit-component-integrity.mjs --completeness && node scripts/audit-component-integrity.mjs --api && node scripts/check-source-canon.mjs && node scripts/check-binding-drift.mjs && node scripts/check-registry.mjs && node scripts/check-tenant-tokens.mjs && node scripts/check-props-exports.mjs && knip --no-exit-code && node scripts/check-dark-alias-flip.mjs && node scripts/check-focus-states.mjs && node scripts/generate-staging-inventory.mjs --check && node scripts/generate-consumer-skill.mjs --check && node scripts/generate-agents-md.mjs --check && node scripts/check-deprecations.mjs && node scripts/upgrade/schema.mjs --check && node scripts/check-docs.mjs && node --test scripts/check-docs.selftest.mjs",
+    "pretest": "node scripts/validate-manifest.mjs && node scripts/check-manifest-drift.mjs && node scripts/check-manifest-schema-semver.mjs && node scripts/audit-component-integrity.mjs --completeness && node scripts/audit-component-integrity.mjs --api && node scripts/check-source-canon.mjs && node scripts/check-binding-drift.mjs && node scripts/check-registry.mjs && node scripts/check-tenant-tokens.mjs && node scripts/check-props-exports.mjs && knip --no-exit-code && node scripts/check-dark-alias-flip.mjs && node scripts/check-focus-states.mjs && node scripts/generate-consumer-skill.mjs --check && node scripts/generate-agents-md.mjs --check && node scripts/check-deprecations.mjs && node scripts/upgrade/schema.mjs --check && node scripts/upgrade/compile.mjs --check && node scripts/check-docs.mjs && node --test scripts/check-docs.selftest.mjs && node scripts/check-upgrade-ledger.mjs",
     "pretypecheck": "node scripts/audit-tokens.mjs --report-only",
     "preview:build": "vite build --config preview/vite.config.mjs",
     "promote": "node scripts/promote.mjs",
@@ -334,7 +347,8 @@
     "upgrade:consumers": "node scripts/upgrade/consumers.mjs",
     "codemod:names": "node scripts/build-codemod-pattern-names.mjs",
     "agents:generate": "node scripts/generate-agents-md.mjs",
-    "check:agents-md": "node scripts/generate-agents-md.mjs --check"
+    "check:agents-md": "node scripts/generate-agents-md.mjs --check",
+    "upgrade:note": "node scripts/upgrade/note.mjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.18",
@@ -445,6 +459,8 @@
     "hds-prefix": "codemods/hds-prefix.mjs",
     "hds-not-found-pattern": "codemods/not-found-pattern.mjs",
     "hds-tile-grid": "codemods/tile-grid.mjs",
-    "hds-mcp": "mcp/hds-mcp.mjs"
+    "hds-mcp": "mcp/hds-mcp.mjs",
+    "design-system": "codemods/upgrade.mjs",
+    "hds-upgrade": "codemods/upgrade.mjs"
   }
 }

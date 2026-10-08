@@ -16,11 +16,14 @@
  * Trust. The plugin carries no model. Its window fetches the sync bundle the
  * Storybook deploy publishes, and this code treats it as data: JSON.parse,
  * never evaluated. Where the plugin may write is never read from the bundle:
- * the staging and library keys and names (`sync`) are baked into code.js from
- * figma/links.json when `pnpm figma:push` builds it, and prune is forced off
- * here, in code. Order of checks for Sync and Plan: the bundle (reachable,
- * JSON, this plugin's build, its checksum, no prune), then the file (the
- * library is denied before staging is allowed), then the push.
+ * the library's key and name and the retired files' keys and names (`sync`)
+ * are baked into code.js from figma/links.json when `pnpm figma:push` builds
+ * it, and prune is forced off here, in code. Order of checks for Sync and
+ * Plan: the bundle (reachable, JSON, this plugin's build, its checksum, no
+ * prune), then the file (a retired file is denied before the library is
+ * allowed), then the push. Sync writes to the one library (ADR-026, amended
+ * 2026-10-07); HDS Staging, the draft workbench (amendment A4), is never
+ * baked in, so it is refused like any file but the library.
  *
  * Receipt (hds#417). After a verified push and its snapshot, Sync writes the
  * snapshot back into the file as shared plugin data on figma.root: pages
@@ -45,125 +48,150 @@ export function hdsSyncFileKey(figma) {
 }
 
 /**
- * Null when Sync and Plan may run in this file, else why not. Deny first: the
- * library, by key or by name, is refused whatever else is true. Then allow
- * the staging key; where Figma gives no key, allow only a file that carries
- * the staging marker (Mark) AND is named exactly like staging, because a
- * duplicate of staging carries the marker too.
+ * Whether this file carries the HDS library marker (Mark) holding the library
+ * key. The staging-era marker counts too when it holds the library key: Mark
+ * stamped the copy that became the library before 2026-10-07, and only a file
+ * then named exactly like staging could take it.
+ */
+export function hdsSyncMarked(figma, sync) {
+  return (
+    hdsGetKey(figma.root, 'libraryFileKey') === sync.libraryFileKey ||
+    hdsGetKey(figma.root, 'stagingFileKey') === sync.libraryFileKey
+  );
+}
+
+/**
+ * Null when Sync and Plan may run in this file, else why not. Deny first: a
+ * retired file, by key or by name, is refused whatever else is true. Then
+ * allow the library key; where Figma gives no key, allow only a file that
+ * carries the library marker (Mark) AND is named exactly like the library,
+ * because a duplicate of the library carries the marker too.
  */
 export function hdsSyncFileGuard(figma, sync) {
   const key = hdsSyncFileKey(figma);
   const name = figma.root.name;
   const nothing = ' Nothing was read or written.';
-  if (key !== null && key === sync.libraryFileKey) {
+  const library = ' ("' + sync.libraryFileName + '", ' + sync.libraryFileKey + ')';
+  if (
+    (key !== null && sync.retiredFileKeys.indexOf(key) !== -1) ||
+    sync.retiredFileNames.indexOf(name) !== -1
+  ) {
     return (
-      'This is the published library (' +
-      key +
-      '). The Sync plugin writes to the staging file only ("' +
-      sync.stagingFileName +
-      '", ' +
-      sync.stagingFileKey +
-      ').' +
+      'This is a retired HDS file (' +
+      (key !== null && sync.retiredFileKeys.indexOf(key) !== -1 ? key : '"' + name + '"') +
+      '), the library before 2026-10-07. The Sync plugin writes to the HDS library only' +
+      library +
+      '.' +
       nothing +
-      ' Open the staging file and run Sync there. Promoting staging into the library is a separate step, with the "HDS tokens promote (baked)" plugin.'
-    );
-  }
-  if (name === sync.libraryFileName) {
-    return (
-      'This file is named "' +
-      name +
-      '", the published library\'s name, so the Sync plugin treats it as the library.' +
-      nothing +
-      ' Open the staging file ("' +
-      sync.stagingFileName +
-      '") and run Sync there.'
+      ' Open the library and run Sync there.'
     );
   }
   if (key !== null) {
-    if (key === sync.stagingFileKey) return null;
+    if (key === sync.libraryFileKey) return null;
     return (
       'This file (' +
       key +
-      ') is not the staging file named in figma/links.json (' +
-      sync.stagingFileKey +
-      ').' +
+      ') is not the HDS library named in figma/links.json' +
+      library +
+      '.' +
       nothing +
       ' Open "' +
-      sync.stagingFileName +
+      sync.libraryFileName +
       '" and run Sync there.'
     );
   }
-  if (hdsGetKey(figma.root, 'stagingFileKey') !== sync.stagingFileKey) {
+  if (!hdsSyncMarked(figma, sync)) {
     return (
-      'Figma gave this plugin no file key, and this file is not marked as HDS staging, so the plugin cannot tell staging from the library.' +
+      'Figma gave this plugin no file key, and this file is not marked as the HDS library, so the plugin cannot tell the library from another file.' +
       nothing +
-      ' If this is the staging file "' +
-      sync.stagingFileName +
-      '": Plugins > Development > HDS tokens sync > Mark this file as HDS staging, paste ' +
-      sync.stagingFileKey +
-      ', then run Sync again.'
+      " Check this file's link (Share > Copy link). If it holds " +
+      sync.libraryFileKey +
+      ', this is the library: Plugins > Development > HDS tokens sync > Mark this file as the HDS library, paste the link, then run Sync again. A link with any other key is not the library: do not Mark it.'
     );
   }
-  if (name !== sync.stagingFileName) {
+  if (name !== sync.libraryFileName) {
     return (
-      'This file carries the HDS staging marker but is named "' +
+      'This file carries the HDS library marker but is named "' +
       name +
       '", not "' +
-      sync.stagingFileName +
-      '". A copy of staging keeps the marker, so staging must be named exactly.' +
+      sync.libraryFileName +
+      '". A copy of the library keeps the marker, so the library must be named exactly.' +
       nothing +
-      ' Open the staging file itself and run Sync there.'
+      ' Open the library itself and run Sync there.'
     );
   }
   return null;
 }
 
-/** Null when Mark may stamp this file as staging with the pasted key, else why not. */
+/** The file key in a Figma file link (Share > Copy link), or null when `value` is not one. */
+export function hdsSyncLinkKey(value) {
+  const match = /^https:\/\/(www\.)?figma\.com\/(design|file)\/([0-9A-Za-z]+)([/?#]|$)/.exec(value);
+  return match ? match[3] : null;
+}
+
+/**
+ * Null when Mark may stamp this file as the library, else why not. `typed` is
+ * this file's link, never a bare key: where Figma gives no key, the link is
+ * the one thing that tells the library from the old library, which has the
+ * library's name until Adrian renames it "(old)".
+ */
 export function hdsSyncMarkGuard(figma, sync, typed) {
   const key = hdsSyncFileKey(figma);
   const name = figma.root.name;
   const value = typeof typed === 'string' ? typed.trim() : '';
+  const linked = hdsSyncLinkKey(value);
   const nothing = ' Nothing was written.';
+  const retired = (k) => k !== null && sync.retiredFileKeys.indexOf(k) !== -1;
   if (
-    (key !== null && key === sync.libraryFileKey) ||
-    name === sync.libraryFileName ||
-    value === sync.libraryFileKey
+    retired(key) ||
+    retired(linked) ||
+    retired(value) ||
+    sync.retiredFileNames.indexOf(name) !== -1
   ) {
     return (
-      'Refused: that is the published library. Only the staging file ("' +
-      sync.stagingFileName +
-      '") can be marked as HDS staging, never the library.' +
+      'Refused: that is a retired HDS file, the library before 2026-10-07. Only the library ("' +
+      sync.libraryFileName +
+      '") can be marked as the HDS library.' +
       nothing
     );
   }
-  if (name !== sync.stagingFileName) {
+  if (linked === null) {
+    return (
+      'Refused: "' +
+      hdsSyncPreview(value) +
+      '" is not a link to a Figma file.' +
+      nothing +
+      " Run Mark again and paste this file's link (Share > Copy link): its key, not its name, tells the library from the old library."
+    );
+  }
+  if (name !== sync.libraryFileName) {
     return (
       'Refused: this file is named "' +
       name +
       '". Only a file named exactly "' +
-      sync.stagingFileName +
-      '" can be marked as HDS staging.' +
+      sync.libraryFileName +
+      '" can be marked as the HDS library.' +
       nothing +
-      ' Open the staging file, then run Mark again.'
+      ' Open the library, then run Mark again.'
     );
   }
-  if (value !== sync.stagingFileKey) {
+  if (linked !== sync.libraryFileKey) {
     return (
-      'Refused: "' +
-      value.slice(0, 40) +
-      '" is not the staging file key from figma/links.json.' +
+      'Refused: that link is file ' +
+      linked +
+      ', not the library ' +
+      sync.libraryFileKey +
+      '.' +
       nothing +
-      ' Run Mark again and paste ' +
-      sync.stagingFileKey +
-      ' exactly.'
+      ' Open the library, then run Mark again.'
     );
   }
-  if (key !== null && key !== sync.stagingFileKey) {
+  if (key !== null && key !== sync.libraryFileKey) {
     return (
       'Refused: Figma says this file is ' +
       key +
-      ', not the staging file ' +
-      sync.stagingFileKey +
+      ', not the library ' +
+      sync.libraryFileKey +
       '.' +
       nothing
     );
@@ -455,8 +483,9 @@ export function hdsSyncCheck(figma, sync, pluginBuild) {
   const refused = hdsSyncFileGuard(figma, sync);
   return {
     file: { name: figma.root.name, key: key, fileKeyExposed: key !== null },
-    stagingMarker: hdsGetKey(figma.root, 'stagingFileKey'),
-    verdict: refused ? 'refused' : 'staging',
+    libraryMarker:
+      hdsGetKey(figma.root, 'libraryFileKey') || hdsGetKey(figma.root, 'stagingFileKey'),
+    verdict: refused ? 'refused' : 'library',
     reason: refused,
     pluginBuild: pluginBuild,
     bundleUrl: sync.bundleUrl,
@@ -523,7 +552,7 @@ export async function hdsSyncMain(figma, sync, pluginBuild, html, deltaOf) {
         ok: true,
         title:
           'Check: ' +
-          (result.verdict === 'staging' ? 'Sync may run here' : 'Sync refuses this file') +
+          (result.verdict === 'library' ? 'Sync may run here' : 'Sync refuses this file') +
           ' · Figma ' +
           (result.file.fileKeyExposed ? 'gives' : 'does not give') +
           ' this plugin the file key',
@@ -538,17 +567,17 @@ export async function hdsSyncMain(figma, sync, pluginBuild, html, deltaOf) {
         figma,
         {
           type: 'mark-form',
-          title: 'Mark this file as HDS staging: paste the staging file key from figma/links.json',
+          title: "Mark this file as the HDS library: paste this file's link (Share > Copy link)",
         },
         'mark',
         0,
       );
       const refused = hdsSyncMarkGuard(figma, sync, answer.key);
       if (refused) throw new Error(refused);
-      hdsSetKey(figma.root, 'stagingFileKey', sync.stagingFileKey);
+      hdsSetKey(figma.root, 'libraryFileKey', sync.libraryFileKey);
       show({
         ok: true,
-        title: 'Marked "' + figma.root.name + '" as HDS staging. Run Sync now.',
+        title: 'Marked "' + figma.root.name + '" as the HDS library. Run Sync now.',
         notes: [],
         fileName: 'figma-sync-mark.json',
         result: hdsSyncCheck(figma, sync, pluginBuild),

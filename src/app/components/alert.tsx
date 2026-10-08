@@ -6,7 +6,7 @@
  * @whenNot A brief confirmation that should disappear on its own, or a status label.
  * @useInstead ToastProvider a brief confirmation that fades away
  * @useInstead Badge a short status label
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=33-34
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34
  */
 
 import React from 'react';

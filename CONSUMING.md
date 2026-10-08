@@ -108,18 +108,32 @@ The same files are served at <https://hirobius-design-system.vercel.app/llms.txt
 
 ## 3. Receiving updates
 
-Releases follow [semver](https://semver.org/) and are tracked in
-`CHANGELOG.md`. To update:
+Releases follow [semver](https://semver.org/). Below 1.0 a breaking change
+ships in a 0.x minor, which `pnpm update` and a caret range such as `^0.21`
+never pick up, so upgrade to an exact version.
+
+From 0.22.0, one command does it:
 
 ```bash
-pnpm update @hirobius/design-system   # latest within your version range
+npx @hirobius/design-system@latest upgrade
 ```
 
-For a breaking release, bump the version explicitly and review the CHANGELOG
-entry. Before 1.0 a breaking change (a removed export or token) ships in a 0.x
-minor, which a caret range such as `^0.19` never picks up; from 1.0 on it ships
-in a major. Each removal is listed in [MIGRATIONS.md](MIGRATIONS.md) with its
-replacement and, where one applies, a codemod (ADR-014).
+It finds the version you have, moves you to the newest release, runs the
+codemods and lists what is left to do by hand.
+
+Until then, upgrade by hand with [UPGRADING.md](UPGRADING.md), which also ships
+in the package:
+
+1. Install the exact version: `pnpm add @hirobius/design-system@<version>`.
+2. For each release you cross, run the codemods UPGRADING.md lists under
+   "Fixed for you".
+3. Work through its "Do by hand" list.
+
+UPGRADING.md covers every release after 0.16.0. From an older version, first
+reach 0.16.0 with the notes in [CHANGELOG.md](CHANGELOG.md);
+[MIGRATIONS.md](MIGRATIONS.md) has longer guides for the big releases.
+`CHANGELOG.md` has the full notes, and each section from 0.22.0 on opens with
+an Upgrade block.
 
 ---
 
@@ -127,7 +141,7 @@ replacement and, where one applies, a codemod (ADR-014).
 
 ```bash
 pnpm changeset add        # record a patch/minor/major bump + notes
-pnpm changeset:version    # apply bumps + regenerate CHANGELOG.md + refresh docs/api/api-baseline.json
+pnpm changeset:version    # apply bumps, regenerate CHANGELOG.md, record the release (scripts/upgrade/compile.mjs) and refresh docs/api/api-baseline.json
 # commit + push to main → the Release workflow publishes to public npm
 ```
 

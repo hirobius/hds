@@ -39,6 +39,7 @@
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { dirname, join, relative, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import { parseDeprecation } from './lib/jsdoc-contract.mjs';
 import { readJsExportEntries } from './lib/package-entries.mjs';
 
@@ -137,7 +138,14 @@ function exportedModules(root) {
   return seen;
 }
 
-function scope(root) {
+/**
+ * Every source file a consumer can import from the package at `root`: the
+ * files this gate reads. scripts/__tests__/upgrade-deprecations.test.mjs
+ * reads the same set, so every deprecation here is in the upgrade record.
+ * @param {string} root
+ * @returns {string[]} absolute paths, sorted
+ */
+export function deprecationScope(root) {
   const files = new Set([
     ...SOURCE_DIRS.flatMap((dir) => topLevelSources(join(root, dir))),
     ...SOURCE_FILES.map((file) => join(root, file)),
@@ -146,33 +154,37 @@ function scope(root) {
   return [...files].sort();
 }
 
-const entries = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : scope(ROOT);
+function main() {
+  const entries = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : deprecationScope(ROOT);
 
-const violations = [];
-for (const full of entries) {
-  if (!isSource(full)) continue;
-  const content = readFileSync(full, 'utf-8');
-  if (content.includes('// deprecation-ok')) continue;
-  for (const detail of findViolations(content)) {
-    violations.push({ file: relative(ROOT, full).replace(/\\/g, '/'), detail });
+  const violations = [];
+  for (const full of entries) {
+    if (!isSource(full)) continue;
+    const content = readFileSync(full, 'utf-8');
+    if (content.includes('// deprecation-ok')) continue;
+    for (const detail of findViolations(content)) {
+      violations.push({ file: relative(ROOT, full).replace(/\\/g, '/'), detail });
+    }
   }
-}
 
-if (violations.length === 0) {
-  console.log(
-    `✓ check-deprecations — every @deprecated has a future @removeIn target (${entries.length} files).`,
-  );
-  process.exit(0);
-}
+  if (violations.length === 0) {
+    console.log(
+      `✓ check-deprecations — every @deprecated has a future @removeIn target (${entries.length} files).`,
+    );
+    process.exit(0);
+  }
 
-console.error(`✗ check-deprecations — ${violations.length} deprecation-lifecycle violation(s):`);
-console.error('');
-for (const { file, detail } of violations) {
-  console.error(`  ${file}`);
-  console.error(`    ${detail}`);
+  console.error(`✗ check-deprecations — ${violations.length} deprecation-lifecycle violation(s):`);
   console.error('');
+  for (const { file, detail } of violations) {
+    console.error(`  ${file}`);
+    console.error(`    ${detail}`);
+    console.error('');
+  }
+  console.error('  Fix: add `@removeIn <semver>` (a future version) to the @deprecated JSDoc, or');
+  console.error('       if past-due, remove the API and ship its codemod (codemods/).');
+  console.error('  Exempt: // deprecation-ok: <reason>');
+  process.exit(1);
 }
-console.error('  Fix: add `@removeIn <semver>` (a future version) to the @deprecated JSDoc, or');
-console.error('       if past-due, remove the API and ship its codemod (codemods/).');
-console.error('  Exempt: // deprecation-ok: <reason>');
-process.exit(1);
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

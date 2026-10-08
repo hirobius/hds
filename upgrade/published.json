@@ -1,0 +1,22 @@
+{
+  "$comment": "Every version of @hirobius/design-system published to npm, oldest first (npm view @hirobius/design-system versions --json), and the one its open Version PR will publish. scripts/upgrade/compile.mjs --release adds each release here on its Version PR, with its snapshot and its ledger, and the release workflow publishes it when that PR merges (upgrade/README.md, At release time); a release cut without it is added by hand the day it publishes (Recording a release by hand). scripts/__tests__/upgrade-history.test.mjs fails while a release after the 0.16.0 floor lacks either.",
+  "versions": [
+    "0.8.1",
+    "0.9.0",
+    "0.10.0",
+    "0.11.0",
+    "0.12.0",
+    "0.13.0",
+    "0.13.1",
+    "0.14.0",
+    "0.15.0",
+    "0.16.0",
+    "0.17.0",
+    "0.18.0",
+    "0.19.0",
+    "0.19.1",
+    "0.20.0",
+    "0.21.0",
+    "0.22.0"
+  ]
+}

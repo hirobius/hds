@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The 43 core components now carry core: true in the manifest and the component API data, and llms.txt marks them [core], so tools and agents can pick from the core set first."
+}

@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { REPO_NOTES_MARKER, buildAgentsMd } from '../generate-agents-md.mjs';
 import { CORE_COMPONENTS } from '../lib/core-components.mjs';
-import { HOOKS, INTENTS, RATIFIED_CORE } from '../../mcp/guide.mjs';
+import { HOOKS, INTENTS, recommendedComponents } from '../../mcp/guide.mjs';
 import { needsMarkdown } from '../lib/guide-markdown.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -39,8 +39,9 @@ describe('the consumer guide (mcp/guide.mjs)', () => {
     }
   });
 
-  it('keeps its core set equal to the ratified core', () => {
-    expect([...RATIFIED_CORE].sort()).toEqual([...CORE_COMPONENTS].sort());
+  it('keeps the ratified core inside the recommended set', () => {
+    const rec = recommendedComponents();
+    for (const name of CORE_COMPONENTS) expect(rec).toContain(name);
   });
 
   it('gives every need exactly one first answer, and one need per number row', () => {

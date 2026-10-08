@@ -5,7 +5,7 @@
  * @usage Move between pages of a long result set, with truncated page numbers.
  * @whenNot A hierarchy trail, or a short list that fits on one page.
  * @useInstead Breadcrumb a hierarchy trail
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=86-194
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194
  */
 // motion-ok: every interactive control is a Button, which owns its hover/press
 // motion feedback; Pagination adds no bespoke interactive surface of its own.

@@ -108,6 +108,20 @@ describe('figmaDrift', () => {
     expect(report.ok).toBe(false);
   });
 
+  it('says that only Adrian deletes extras, through the promote plugin, and where the rule is', async () => {
+    const figma = await pushedFile();
+    const semantic = await collection(figma, 'Hirobius/Semantic');
+    figma.variables.createVariable('legacy/unused', semantic, 'FLOAT');
+
+    const verdict = formatDrift(figmaDrift(model, await snapshotOf(figma)))
+      .split('\n')
+      .at(-1);
+    expect(verdict).toMatch(/Sync and delta\.js never delete/);
+    expect(verdict).toMatch(/promote plugin \(pnpm figma:push --prune\), which only Adrian runs/);
+    expect(verdict).toContain('figma/README.md, "Promote plugin and use_figma scripts"');
+    expect(verdict).not.toMatch(/add --prune to delete extras/);
+  });
+
   it('reports a text style whose size was edited and unbound', async () => {
     const figma = await pushedFile();
     const h1 = (await figma.getLocalTextStylesAsync()).find((s) => s.name === 'typography/h1');

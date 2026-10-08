@@ -56,7 +56,7 @@ The repo has a **closed-loop guardrail system** every agent must understand:
 
 - **`docs/guardrails/HARDENING_ROADMAP.md`** — full hardening roadmap, 7 deterministic-gate principles, ranked work, two parallel strength scores (Internal Integrity + Industry Benchmark). The single source of truth for "where are we, where are we going."
 - **`docs/guardrails/registry.json`** — every `scripts/check-*.mjs` and `scripts/audit-*.mjs` is registered with `firingChannel` declaring where it fires (pre-commit / pre-push / ci-pr / ci-scheduled / pnpm-meta / manual). Drift caught by `validate-guardrail-registry` + `check-validator-wiring`, both pre-commit gates.
-- **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt` unless a pushed commit adds a `.status/<branch>.md` note instead of editing status.json (no conflicts; `pnpm status:fold` folds on main), or when a commit touching `src/` has no pending `.changeset/*.md` and no `skip-changeset` marker in its own message.
+- **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt` unless a pushed commit adds a `.status/<branch>.md` note instead of editing status.json (no conflicts; `pnpm status:fold` folds on main), or when a commit changing what ships (`src/`, the files `package.json#files` ships from `codemods/`, `mcp/` and the ESLint plugin, `hirobius.tokens.json`, `tailwind.config.tokens.cjs`, or a consumer field of `package.json` such as `dependencies`) has no pending `.changeset/*.md` and no `skip-changeset` marker in its own message. Every changeset carries `upgrade/pending/<same name>.json`, and a breaking change needs a minor below 1.0 (`scripts/check-upgrade-ledger.mjs` in pretest; `pnpm upgrade:note` writes the note).
 
 Context Awareness: Always look for local `CLAUDE.md` files in subdirectories (like `/components` or `/sketches`) for specific overriding rules before editing.
 
@@ -92,10 +92,19 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
   Figma file by hand; `pnpm figma:snapshot --ingest` records the file into the committed
   `figma/snapshot.json`; `pnpm check:figma-drift` compares the two. Runbook:
   `figma/README.md`. Brand is modes of one `Hirobius/Brand` collection, demo tenants
-  only (`figma/brand-modes.json`) — a client tenant never enters the shared library. Agents
-  may read and write Figma live (ADR-026), but only to the staging duplicate named by
-  `stagingFileKey` in `figma/links.json`; the published library is read-only to agents, and
-  an unset `stagingFileKey` means no write target at all. Pro allows 200 MCP reads a day —
+  only (`figma/brand-modes.json`) — a client tenant never enters the shared library. In the
+  HDS library (`libraryFileKey` in `figma/links.json`, ADR-026 amended 2026-10-07) agents
+  may restyle, fix, add, copy or redraw components (one `use_figma` script naming the node
+  ids it touches, screenshots before and after), but never delete anything in the library
+  and never publish (Adrian publishes): a component removed from code moves to its
+  "Archive" page as `_<Name> (archived <date>)`, one deprecated in code to its "Deprecated"
+  page, and tokens reach the library only from code through the Sync plugin or `delta.js`,
+  never a `--prune` build (only Adrian prunes). HDS Staging (`stagingFileKey`) is the
+  scratch workbench where an agent drafts a new component with the library's variables and
+  styles, then ingests it by redrawing it in the library, points its `@figma` tag at the
+  library node and deletes the draft (agents may delete there; Sync and `delta.js` never
+  target it; steps in `figma/README.md`, "New components: draft in staging, ingest to the
+  library"). Pro allows 200 MCP calls a day —
   batch them, and never retry a rate-limit error. Code Connect
   v2 templates are generated and gated locally, but publishing needs a Figma
   Organization plan, so no mapping is live and Dev Mode shows no HDS snippets.

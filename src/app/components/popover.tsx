@@ -2,7 +2,7 @@
  * Popover — floating surface anchored to a trigger (shadcn baseline, compound parts).
  * @category Overlays
  * @tier primitive
- * @figma https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=93-32
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-32
  * @doc-exempt: no Overlays doc page yet — add demo when the overlays page is created
  *
  * Radix Popover (@radix-ui/react-popover) themed with role tokens. Provides

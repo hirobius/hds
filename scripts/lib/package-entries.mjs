@@ -12,6 +12,8 @@ import { join } from 'node:path';
  * Tooling entries: shipped .mjs with hand-written types, not built from src/,
  * so they are not part of the TypeScript API surface these gates read. Each has
  * its own tests (./eslint-plugin: scripts/__tests__/eslint-plugin-subpath.test.mjs).
+ * The release snapshot does read them (scripts/upgrade/snapshot.mjs), from the
+ * types file they ship, because a consumer imports them like any other entry.
  */
 export const TOOLING_EXPORTS = new Set(['./eslint-plugin']);
 

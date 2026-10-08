@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/c8MaVgwxOlxm4wr8wnH0Z4/HDS-Tokens-Components?node-id=34-18
+// url=https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18
 // source=src/app/components/avatar.tsx
 // component=Avatar
 //

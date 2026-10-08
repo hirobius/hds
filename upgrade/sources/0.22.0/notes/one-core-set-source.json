@@ -1,0 +1,15 @@
+{
+  "impact": "behavior",
+  "plain": "The hds-mcp get_component tool now marks core: true only on the 43 ratified core components and recommended: true on the wider set AGENTS.md recommends, so read recommended where you relied on core for that wider set.",
+  "steps": [
+    {
+      "id": "behavior/hds-mcp-core-flag",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The hds-mcp get_component tool now marks core: true only on the 43 ratified core components and recommended: true on the wider set AGENTS.md recommends, and list_core names its set, so read recommended where you relied on core for that wider set.",
+      "detect": {
+        "regex": ["\\bhds-mcp\\b"]
+      }
+    }
+  ]
+}

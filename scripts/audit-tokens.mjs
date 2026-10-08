@@ -34,6 +34,9 @@ import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from '
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { tmpdir } from 'node:os';
+import { readTokenSource } from './lib/token-source.mjs';
+
+import { resolveScanRoots } from './lib/scan-roots.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -119,12 +122,11 @@ function runScanSource() {
     };
   });
 
-  const TARGET_DIRS = [
-    join(ROOT, 'src/app/components'),
-    join(ROOT, 'src/app/styles'),
-    join(ROOT, 'src/app/pages'),
-    join(ROOT, 'src/app/design-system'),
-  ];
+  // src/app/styles and src/app/pages no longer exist; a missing root now throws.
+  const TARGET_DIRS = resolveScanRoots(['src/app/components', 'src/app/design-system'], {
+    root: ROOT,
+    gate: 'audit-tokens',
+  });
 
   let totalViolations = 0;
   let typographyViolations = 0;
@@ -982,7 +984,7 @@ function getIntegrityGrade(score) {
   return 'F';
 }
 
-const tokens = JSON.parse(readFileSync(join(INPUT_ROOT, 'hirobius.tokens.json'), 'utf8'));
+const tokens = readTokenSource(join(INPUT_ROOT, 'hirobius.tokens.json'));
 const themeCssPath = join(INPUT_ROOT, 'src', 'styles', 'theme.css');
 const tokensCssPath = join(INPUT_ROOT, 'src', 'styles', 'tokens.css');
 const themeCss = readFileSync(themeCssPath, 'utf8');

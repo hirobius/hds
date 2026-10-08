@@ -20,12 +20,22 @@
  *      docs/adr/ must be no newer than status.json's `updatedAt`. Wired to
  *      pre-push, not pre-commit: mid-branch commits should not each demand a
  *      status bump, but a push is a state change the fleet dashboard renders.
- *   2. Changeset presence — a pushed commit touching src/ needs either a
- *      pending changeset file (.changeset/*.md, excluding README.md) or a
- *      `skip-changeset` marker in its own commit message. Otherwise a source
- *      change ships with no release note and CHANGELOG.md goes stale exactly
- *      the way hds#249 found it (last touched two months before two ADRs and
- *      a wave of commits landed).
+ *   2. Changeset presence — a pushed commit that changes what ships to
+ *      consumers needs either a pending changeset file (.changeset/*.md,
+ *      excluding README.md) or a `skip-changeset` marker in its own commit
+ *      message. Otherwise the change ships with no release note (and, since
+ *      hds#448, no upgrade note) and CHANGELOG.md goes stale exactly the way
+ *      hds#249 found it (last touched two months before two ADRs and a wave
+ *      of commits landed). What ships (hds#448): anything under src/; the
+ *      shipped code beside it, which is what package.json#files lists under
+ *      codemods/, mcp/ and scripts/eslint-plugin-hds/ (codemods/lib/ does
+ *      not ship; tests and fixtures left out); hirobius.tokens.json and
+ *      tailwind.config.tokens.cjs; and package.json, but only the fields a
+ *      consumer installs or resolves (CONSUMER_PACKAGE_FIELDS: dependencies,
+ *      peers, engines, exports, bin, files and the like). A scripts or
+ *      devDependencies edit is tooling, and `version` is the release itself,
+ *      so neither asks for a changeset. 0.20.0 dropped five runtime
+ *      dependencies with only package.json changed, which src/ alone missed.
  *
  * Usage:
  *   node scripts/check-record-freshness.mjs
@@ -57,7 +67,47 @@ const STATUS_PATH = path.join(ROOT, 'status.json');
 const CHANGESET_DIR = path.join(ROOT, '.changeset');
 
 const WATCHED_PREFIXES = ['src/', 'scripts/', 'docs/adr/'];
-const CHANGESET_PREFIXES = ['src/'];
+/**
+ * Directories of shipped code beside src/. Not all of each ships: codemods/lib/
+ * serves `pnpm upgrade:consumers` here today and joins package.json#files when
+ * the upgrade command (hds#452) ships it. So package.json#files says which of
+ * their files ship, and a file it adds there needs a changeset from then on.
+ */
+const SHIPPED_CODE_DIRS = ['codemods/', 'mcp/', 'scripts/eslint-plugin-hds/'];
+/** Single files whose change reaches consumers through the build. */
+const CHANGESET_FILES = ['hirobius.tokens.json', 'tailwind.config.tokens.cjs'];
+/** Beside shipped code but never shipped: tests, fixtures, prose. */
+const NOT_SHIPPED = [
+  /(^|\/)(__tests__|__fixtures__|fixtures?)\//,
+  /\.(test|spec)\.[cm]?[jt]sx?$/,
+  /\.md$/i,
+];
+/**
+ * package.json fields a consumer installs or resolves. Everything else
+ * (scripts, devDependencies, lint and size config) is tooling, and `version`
+ * is written by `changeset version` itself.
+ */
+export const CONSUMER_PACKAGE_FIELDS = [
+  'name',
+  'type',
+  'main',
+  'module',
+  'types',
+  'typings',
+  'browser',
+  'exports',
+  'imports',
+  'bin',
+  'files',
+  'sideEffects',
+  'dependencies',
+  'optionalDependencies',
+  'bundleDependencies',
+  'bundledDependencies',
+  'peerDependencies',
+  'peerDependenciesMeta',
+  'engines',
+];
 const SKIP_MARKER = /skip-changeset/i;
 
 // ── pure logic (unit-tested against in-memory fixtures) ───────────────────
@@ -71,8 +121,106 @@ export function touchesWatchedPath(file, prefixes) {
 }
 
 /**
- * @typedef {{ sha: string, date: string, message: string, files: string[] }} Commit
+ * What shipsToConsumers matches a file under SHIPPED_CODE_DIRS against:
+ * package.json#files whole and as written (matchesFilesEntry reads each entry
+ * the way npm does), or the whole directories when there is no `files` list
+ * (npm then packs everything). Entries outside those directories, such as
+ * dist, never match a file in them, so they change nothing.
+ * @param {{ files?: unknown } | null | undefined} pkg - a parsed package.json
+ * @returns {string[]}
  */
+export function shippedCodeEntries(pkg) {
+  if (!Array.isArray(pkg?.files)) return SHIPPED_CODE_DIRS;
+  return pkg.files.filter((entry) => typeof entry === 'string');
+}
+
+/** shippedCodeEntries of this tree's package.json; the whole directories when it cannot be read. */
+function readShippedCode() {
+  try {
+    return shippedCodeEntries(JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8')));
+  } catch {
+    return SHIPPED_CODE_DIRS;
+  }
+}
+
+let shippedCode = null;
+
+/**
+ * True when `file` is `entry` of package.json#files or under it: a file, a
+ * directory (with or without a trailing slash) or a glob (`*`, `**`, `?`).
+ */
+export function matchesFilesEntry(file, entry) {
+  const clean = entry.replace(/^\.\//, '').replace(/\/+$/, '');
+  if (!/[*?]/.test(clean)) return file === clean || file.startsWith(`${clean}/`);
+  const source = clean
+    .split(/(\*\*|\*|\?)/)
+    .map((part) =>
+      part === '**'
+        ? '.*'
+        : part === '*'
+          ? '[^/]*'
+          : part === '?'
+            ? '[^/]'
+            : part.replace(/[.+^${}()|[\]\\]/g, '\\$&'),
+    )
+    .join('');
+  return new RegExp(`^${source}(?:/.*)?$`).test(file);
+}
+
+/**
+ * True when a change to `file` ships to consumers. src/ counts whole, as it
+ * always has, and so do the token files; beside src/, a file under
+ * SHIPPED_CODE_DIRS ships when package.json#files lists it (`shipped`),
+ * leaving out tests, fixtures and prose. Elsewhere (scripts/, docs) a file is
+ * tooling whatever `files` says.
+ * @param {string} file - a repo-relative path
+ * @param {string[]} [shipped] - package.json#files entries, as
+ *   shippedCodeEntries reads them (default: this tree's)
+ */
+export function shipsToConsumers(file, shipped = (shippedCode ??= readShippedCode())) {
+  if (file.startsWith('src/')) return true;
+  if (CHANGESET_FILES.includes(file)) return true;
+  if (!touchesWatchedPath(file, SHIPPED_CODE_DIRS)) return false;
+  if (!shipped.some((entry) => matchesFilesEntry(file, entry))) return false;
+  return !NOT_SHIPPED.some((pattern) => pattern.test(file));
+}
+
+/** JSON with object keys sorted, so a reordered map compares equal. */
+function stable(value) {
+  if (Array.isArray(value)) return `[${value.map(stable).join(',')}]`;
+  if (value && typeof value === 'object') {
+    const keys = Object.keys(value).sort();
+    return `{${keys.map((key) => `${JSON.stringify(key)}:${stable(value[key])}`).join(',')}}`;
+  }
+  return JSON.stringify(value ?? null);
+}
+
+/**
+ * The CONSUMER_PACKAGE_FIELDS that differ between two package.json objects.
+ * A side that could not be read (null) differs in every field it would hold,
+ * reported as `(unreadable)`.
+ * @param {object | null} before
+ * @param {object | null} after
+ */
+export function consumerPackageChanges(before, after) {
+  if (!before || !after) return ['(unreadable)'];
+  return CONSUMER_PACKAGE_FIELDS.filter((field) => stable(before[field]) !== stable(after[field]));
+}
+
+/**
+ * @typedef {{ sha: string, date: string, message: string, files: string[],
+ *   packageFields?: string[] }} Commit
+ * `packageFields`: the CONSUMER_PACKAGE_FIELDS the commit changed in
+ * package.json (empty or absent when it changed none).
+ */
+
+/** Why a commit needs a changeset: shipped files, then package.json fields. */
+export function changesetReasons(commit) {
+  return [
+    ...commit.files.filter((file) => shipsToConsumers(file)),
+    ...(commit.packageFields ?? []).map((field) => `package.json ${field}`),
+  ];
+}
 
 /**
  * Newest commit (by ISO `date`) that touches any of `prefixes`, or null.
@@ -127,10 +275,11 @@ export function checkChangesetPresence(commits, pendingChangesetFiles) {
   const hasPending = pendingChangesetFiles.length > 0;
   const offenders = [];
   for (const commit of commits) {
-    if (!commit.files.some((f) => touchesWatchedPath(f, CHANGESET_PREFIXES))) continue;
+    const reasons = changesetReasons(commit);
+    if (reasons.length === 0) continue;
     if (hasPending) continue;
     if (SKIP_MARKER.test(commit.message)) continue;
-    offenders.push(commit);
+    offenders.push({ ...commit, reasons });
   }
   return { ok: offenders.length === 0, offenders };
 }
@@ -185,8 +334,32 @@ function loadCommits(range) {
       } catch {
         files = [];
       }
-      return { sha, date, message: message ?? '', files };
+      const packageFields = files.includes('package.json') ? packageFieldsOf(sha) : [];
+      return { sha, date, message: message ?? '', files, packageFields };
     });
+}
+
+/** package.json at `rev`, parsed; null when absent or not JSON. */
+function packageJsonAt(rev) {
+  try {
+    return JSON.parse(git(['show', `${rev}:package.json`]));
+  } catch {
+    return null;
+  }
+}
+
+/** The consumer fields commit `sha` changed in package.json (a root commit: every field it has). */
+function packageFieldsOf(sha) {
+  const after = packageJsonAt(sha);
+  let before = packageJsonAt(`${sha}^`);
+  if (!before && after) {
+    try {
+      git(['rev-parse', '--verify', '--quiet', `${sha}^`]);
+    } catch {
+      before = {}; // a root commit adds package.json whole
+    }
+  }
+  return consumerPackageChanges(before, after);
 }
 
 function loadPendingChangesets() {
@@ -234,15 +407,20 @@ function main() {
   if (!changesetResult.ok) {
     hadFailure = true;
     console.error(
-      `✗ check-record-freshness — ${changesetResult.offenders.length} pushed commit(s) touch ` +
-        `src/ with no pending changeset and no "skip-changeset" marker in the commit message:`,
+      `✗ check-record-freshness — ${changesetResult.offenders.length} pushed commit(s) change ` +
+        `what ships to consumers with no pending changeset and no "skip-changeset" marker in ` +
+        `the commit message:`,
     );
     for (const commit of changesetResult.offenders) {
+      const shown = commit.reasons.slice(0, 3).join(', ');
+      const more = commit.reasons.length > 3 ? ` and ${commit.reasons.length - 3} more` : '';
       console.error(`    ${commit.sha.slice(0, 8)}  ${commit.message.split('\n')[0]}`);
+      console.error(`              (${shown}${more})`);
     }
     console.error(
-      '  fix: run `pnpm changeset` and commit the generated .changeset/*.md file, or add ' +
-        '"skip-changeset" to the commit message if this genuinely needs no release note.',
+      '  fix: run `pnpm changeset`, then `pnpm upgrade:note` for its upgrade/pending/*.json, ' +
+        'and commit both; or add "skip-changeset" to the commit message if this genuinely ' +
+        'needs no release note.',
     );
   }
 

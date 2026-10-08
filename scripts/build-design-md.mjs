@@ -42,6 +42,7 @@ import {
   replaceSection,
   containerRadius,
 } from './build-handoff.mjs';
+import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -466,7 +467,7 @@ export function stripSourceHeader(doc) {
 
 // ── CLI ───────────────────────────────────────────────────────────────────────
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const raw = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+  const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
   const manifest = JSON.parse(readFileSync(join(ROOT, 'public', 'hds-manifest.json'), 'utf8'));
   let doc = readFileSync(join(ROOT, 'DESIGN.source.md'), 'utf8');
 
