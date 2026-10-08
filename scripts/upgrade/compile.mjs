@@ -736,17 +736,6 @@ function withUpgradeBlock(changelog, version, block) {
 
 const today = () => new Date().toISOString().slice(0, 10);
 
-/** True when `changeset pre enter` put the repo in pre mode (.changeset/pre.json). */
-function inPreMode(repo) {
-  const file = join(repo, '.changeset/pre.json');
-  if (!existsSync(file)) return false;
-  try {
-    return readJson(file).mode === 'pre';
-  } catch {
-    return false;
-  }
-}
-
 /**
  * Records the release `changeset version` just cut (hds#451): package.json
  * names a version past the newest release snapshot and no changeset is
@@ -769,22 +758,24 @@ function inPreMode(repo) {
  * upgrade/pending. The summary is that file's one line when main has one
  * (the Version PR is regenerated from main on every push, so an edit there
  * does not last), else counted from the steps (summarize). Does nothing when
- * the version already has a snapshot or a ledger, or in changesets pre mode:
- * a prerelease is not recorded, and its notes wait for the release that exits
- * pre mode.
+ * the version already has a snapshot or a ledger, or for a prerelease
+ * (changesets pre mode, or any version with a prerelease tag:
+ * ./pending.mjs prereleaseReason): a prerelease is not recorded, and its
+ * notes wait for the release that follows it.
  *
  * @param {{ repo?: string, date?: string }} [options]
- * @returns {Promise<{ recorded: boolean, prerelease?: boolean, version: string, notes: string[], uncited: string[] }>}
+ * @returns {Promise<{ recorded: boolean, prerelease?: string, version: string, notes: string[], uncited: string[] }>}
  */
 export async function recordRelease({ repo = REPO, date = today() } = {}) {
   // Lazy: these read TypeScript sources, which --check never needs.
-  const { readChangesets, readPendingNotes, readReleaseSummary } = await import('./pending.mjs');
+  const { prereleaseReason, readChangesets, readPendingNotes, readReleaseSummary } =
+    await import('./pending.mjs');
   const { snapshotFromSource } = await import('./snapshot.mjs');
 
   const pkg = readJson(join(repo, 'package.json'));
   const { version } = pkg;
-  if (inPreMode(repo))
-    return { recorded: false, prerelease: true, version, notes: [], uncited: [] };
+  const prerelease = prereleaseReason(repo, version);
+  if (prerelease) return { recorded: false, prerelease, version, notes: [], uncited: [] };
   const snapshotsDir = join(repo, 'docs/api/releases');
   const snapshots = releaseVersions(snapshotsDir);
   const ledgerRel = `upgrade/releases/${version}.json`;
@@ -1048,7 +1039,7 @@ async function main(argv) {
     const result = await recordRelease({ repo, ...(date ? { date } : {}) });
     if (result.prerelease) {
       console.log(
-        `compile.mjs: ${result.version} is a prerelease (changesets pre mode, .changeset/pre.json), so it is not recorded; its upgrade notes stay in upgrade/pending for the release that exits pre mode.`,
+        `compile.mjs: ${result.version} is a prerelease (${result.prerelease}), so it is not recorded; its upgrade notes stay in upgrade/pending for the release that follows it.`,
       );
     } else if (result.recorded) {
       console.log(

@@ -140,9 +140,11 @@ PR) runs `changeset version`, then `node scripts/upgrade/compile.mjs
    `upgrade/index.json` and `status.json` `release`. A rerun replaces the
    Upgrade block rather than adding a second one.
 
-In changesets pre mode (`.changeset/pre.json`) it records nothing: the
-prerelease's notes stay in `upgrade/pending/` for the release that exits pre
-mode.
+For a prerelease (changesets pre mode, `.changeset/pre.json`, or any version
+with a prerelease tag such as `0.22.0-next.0`) it records nothing: the
+prerelease's notes stay in `upgrade/pending/` for the release that follows it,
+and `check-upgrade-ledger` treats them as that release's, so a note with no
+changeset still fails.
 
 The release workflow (changesets/action) regenerates the Version PR from main
 on every push to main, so an edit made on the PR itself is lost at the next

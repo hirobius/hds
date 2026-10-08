@@ -16,7 +16,8 @@
  *   - the pending notes, upgrade/pending/<changeset>.json, each validated
  *     against PendingNote (./schema.mjs), and upgrade/pending/summary.txt,
  *     the next release's summary when someone wrote one;
- *   - whether upgrade/ALLOW_1_0 exists.
+ *   - whether upgrade/ALLOW_1_0 exists, and whether package.json names a
+ *     prerelease (prereleaseReason), which is never recorded.
  *
  * Nothing here touches the network or builds anything.
  */
@@ -179,6 +180,32 @@ function readLedger(root, version) {
 }
 
 /**
+ * Why `version` is a prerelease, or null when it is not: changesets pre mode
+ * (`changeset pre enter` wrote .changeset/pre.json with mode pre), or a
+ * prerelease tag reached any other way (0.21.0-next.0 set by hand, a snapshot
+ * version). A prerelease is never recorded (compile.mjs --release, hds#451):
+ * its notes wait in upgrade/pending for the release that follows it.
+ * @param {string} root
+ * @param {string} version
+ * @returns {string | null}
+ */
+export function prereleaseReason(root, version) {
+  const file = join(root, '.changeset/pre.json');
+  if (existsSync(file)) {
+    try {
+      if (JSON.parse(readFileSync(file, 'utf8')).mode === 'pre') {
+        return 'changesets pre mode, .changeset/pre.json';
+      }
+    } catch {
+      // Not JSON: changesets itself refuses it, so read the version alone.
+    }
+  }
+  return /^\d+\.\d+\.\d+-/.test(version)
+    ? `its version has the prerelease tag ${version.split(/-(.*)/s)[1]}`
+    : null;
+}
+
+/**
  * The upgrade state of the tree at `root`. Throws when package.json or an
  * exports entry's source cannot be read.
  * @param {string} root
@@ -196,6 +223,7 @@ export function readUpgradeState(root) {
   return {
     root,
     version,
+    prerelease: prereleaseReason(root, version) !== null,
     previousVersion,
     facts,
     ledger: readLedger(root, version),

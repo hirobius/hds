@@ -1193,6 +1193,26 @@ describe('compile.mjs --release, right after changeset version', () => {
     expect(read(root, 'CHANGELOG.md')).toBe(changelog);
   });
 
+  // A prerelease tag reached another way (package.json set by hand, a
+  // snapshot version) is no release either: its notes wait the same way.
+  it('records no prerelease whose tag is set by hand, with no pre.json', () => {
+    const root = versionedRepo();
+    editPkg(root, (pkg) => (pkg.version = '0.21.0-next.0'));
+    const ledger = { ...LEDGER_0_12_1, version: '0.20.0', bump: 'minor', summary: 'Fixture.' };
+    write(root, 'upgrade/releases/0.20.0.json', json(ledger));
+    const changelog = read(root, 'CHANGELOG.md').replace('## 0.21.0', '## 0.21.0-next.0');
+    write(root, 'CHANGELOG.md', changelog);
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status, res.stderr).toBe(0);
+    expect(res.stdout).toContain('0.21.0-next.0 is a prerelease');
+    expect(res.stdout).not.toContain('recorded 0.21.0-next.0');
+    expect(existsSync(join(root, 'docs/api/releases/0.21.0-next.0.json'))).toBe(false);
+    expect(existsSync(join(root, 'upgrade/releases/0.21.0-next.0.json'))).toBe(false);
+    expect(existsSync(join(root, 'upgrade/pending/drop-callout.json'))).toBe(true);
+    expect(read(root, 'CHANGELOG.md')).toBe(changelog);
+    expect(JSON.parse(read(root, 'upgrade/published.json')).versions).toEqual(['0.20.0']);
+  });
+
   it('replaces the Upgrade block, not adds a second one, when a release is recorded again', () => {
     const root = versionedRepo();
     const notes = ['drop-callout', 'soft-shadow', 'docs', 'late'];

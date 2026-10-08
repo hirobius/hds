@@ -38,7 +38,9 @@
  *      changesets are pending again, but before anyone records it by hand,
  *      the notes whose changesets are gone, and the facts their steps list,
  *      are that release's: they still cover their facts but do not count
- *      toward the next bump, and the gate names the release to record;
+ *      toward the next bump, and the gate names the release to record. A
+ *      prerelease (changesets pre mode, or a prerelease tag) is never
+ *      recorded, so its notes stay the next release's;
  *   4. a changeset bumps major below 1.0, or the version crosses 1.0 (on the
  *      Version PR, or in the ledger compile.mjs recorded for it), without
  *      upgrade/ALLOW_1_0 (the 1.0 cut is a decision, #396).
@@ -183,10 +185,10 @@ function noteViolations(state, versionPr) {
     }
   }
   // hds#541: a note with no changeset of its name. Once package.json's version
-  // has its snapshot, no release is waiting to be recorded, so no note belongs
-  // to one (releasedNotes): the next release would merge it, citing a
-  // changeset that never existed.
-  if (!versionPr && compareVersions(state.version, state.previousVersion) <= 0) {
+  // has its snapshot, or names a prerelease, no release is waiting to be
+  // recorded, so no note belongs to one (releasedNotes): the next release
+  // would merge it, citing a changeset that never existed.
+  if (!versionPr && !awaitingRecord(state)) {
     const pending = new Set(state.changesets.map((changeset) => changeset.name));
     for (const note of state.notes.filter((n) => !pending.has(n.name))) {
       out.push(
@@ -246,6 +248,15 @@ function deadCitations(state) {
 }
 
 /**
+ * True when package.json names a release past the newest snapshot that is
+ * still to be recorded: not a prerelease (changesets pre mode keeps the
+ * changesets it consumed, and compile.mjs --release records no prerelease,
+ * so its notes are still the next release's).
+ */
+const awaitingRecord = (state) =>
+  !state.prerelease && compareVersions(state.version, state.previousVersion) > 0;
+
+/**
  * The notes of a release that is published but not yet recorded: package.json
  * names a version past the newest release snapshot, and changesets are pending
  * again (not the Version PR). A release cut without the release compiler
@@ -256,7 +267,7 @@ function deadCitations(state) {
  * changeset:version` has its snapshot, so this is always empty for it.
  */
 function releasedNotes(state, versionPr) {
-  if (versionPr || compareVersions(state.version, state.previousVersion) <= 0) return [];
+  if (versionPr || !awaitingRecord(state)) return [];
   const pending = new Set(state.changesets.map((changeset) => changeset.name));
   return state.notes.filter((note) => !pending.has(note.name));
 }
@@ -439,7 +450,7 @@ export function checkUpgradeLedger(root = REPO) {
  * then recorded by hand.
  */
 function unrecorded(state, versionPr) {
-  if (versionPr || compareVersions(state.version, state.previousVersion) <= 0) return null;
+  if (versionPr || !awaitingRecord(state)) return null;
   return {
     version: state.version,
     previous: state.previousVersion,

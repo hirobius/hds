@@ -500,6 +500,68 @@ describe('checkUpgradeLedger: a release published but not yet recorded (until hd
   });
 });
 
+// compile.mjs --release records no prerelease (hds#451), so the gate must not
+// read one as a release waiting to be recorded: no hint to record it, and a
+// note with no changeset is still an orphan, not the prerelease's own.
+describe('checkUpgradeLedger: a prerelease is not a release to record', () => {
+  /**
+   * After `changeset version` in changesets pre mode: package.json at
+   * 0.20.1-rc.0, and the docs changeset kept beside its note (pre.json lists
+   * it as consumed). With `preJson` false, the prerelease tag was set by hand.
+   */
+  function prereleaseRepo({ preJson = true } = {}) {
+    const root = releasedRepo();
+    changeset(root, 'docs', 'patch');
+    note(root, 'docs', { impact: 'none' });
+    if (preJson) {
+      write(
+        root,
+        `${CHANGESETS}/pre.json`,
+        formatJson({
+          mode: 'pre',
+          tag: 'rc',
+          initialVersions: { [PACKAGE]: '0.20.0' },
+          changesets: ['docs'],
+        }),
+      );
+    }
+    editPkg(root, (pkg) => (pkg.version = preJson ? '0.20.1-rc.0' : '0.20.1-next.0'));
+    return root;
+  }
+  const stray = {
+    impact: 'breaking',
+    plain: 'Button is removed, so use your own.',
+    steps: [
+      {
+        id: 'removed/Button',
+        kind: 'removed',
+        impact: 'breaking',
+        plain: 'Button is removed, so use your own.',
+      },
+    ],
+  };
+
+  for (const preJson of [true, false]) {
+    const how = preJson ? 'in changesets pre mode' : 'with a prerelease tag set by hand';
+    it(`passes ${how}, naming no release to record`, () => {
+      const result = checkUpgradeLedger(prereleaseRepo({ preJson }));
+      expect(result.violations).toEqual([]);
+      expect(result.summary.unrecorded).toBeNull();
+    });
+
+    it(`still fails a stray note ${how}: an orphan, and breaking under a patch`, () => {
+      const root = prereleaseRepo({ preJson });
+      note(root, 'stray', stray);
+      const result = checkUpgradeLedger(root);
+      expect(rules(result)).toEqual(['bump-too-small', 'note-without-changeset']);
+      expect(result.violations.find((v) => v.rule === 'note-without-changeset').file).toBe(
+        'upgrade/pending/stray.json',
+      );
+      expect(result.summary.unrecorded).toBeNull();
+    });
+  }
+});
+
 describe('checkUpgradeLedger: a release recorded from its tarball', () => {
   /**
    * The repo at a release with a tooling export (./eslint-plugin: hand-written
