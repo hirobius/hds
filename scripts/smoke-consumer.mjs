@@ -555,6 +555,7 @@ if (ok) {
 // project on the floor release that still imports an Hds* alias, a dry run
 // must list the codemod fix, print the four sections, exit 1 (work left) and
 // write nothing.
+let ranUpgrade = false;
 if (ok) {
   log('running the packed upgrade bin (design-system upgrade --dry-run)…');
   const problems = [];
@@ -603,6 +604,7 @@ if (ok) {
     if (res.stdout) console.error(res.stdout);
     ok = false;
   } else {
+    ranUpgrade = true;
     console.log(
       '  upgrade ok   packed design-system bin ran --dry-run: 4 sections, exit 1, no file changed',
     );
@@ -610,6 +612,13 @@ if (ok) {
 }
 
 // ── 4. Report + cleanup ──────────────────────────────────────────────────────
+
+// Outcome check: a green run must have actually run the 3g upgrade bin smoke,
+// so disabling that block cannot leave this script passing.
+if (ok && !ranUpgrade) {
+  console.error('  upgrade FAIL upgrade bin smoke did not run');
+  ok = false;
+}
 
 if (ok) {
   log('PASS — every public subpath resolves and imports cleanly.');

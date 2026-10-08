@@ -1067,6 +1067,41 @@ describe('review round 3 (hds#452)', () => {
   });
 });
 
+describe('StatusDot reached without a named ESM import (removed in 0.21.0)', () => {
+  const REMOVED = '0.21.0/removed/StatusDot';
+  const cases = {
+    'namespace import, JSX member tag': `import * as H from '${PKG}';\nexport const a = <H.StatusDot />;\n`,
+    'namespace import, member access': `import * as H from '${PKG}';\nexport const a = H.StatusDot;\n`,
+    'default import, JSX member tag': `import H from '${PKG}';\nexport const a = <H.StatusDot />;\n`,
+    'CJS destructure': `const { StatusDot } = require('${PKG}');\nexports.a = StatusDot;\n`,
+    'CJS destructure with rename, JSX': `const { StatusDot: Dot } = require('${PKG}');\nexports.a = <Dot />;\n`,
+    'dynamic import destructure': `const { StatusDot } = await import('${PKG}');\nexport const a = StatusDot;\n`,
+    'subpath destructure': `var { StatusDot } = require('${PKG}/patterns');\nexports.a = <StatusDot />;\n`,
+  };
+  for (const [label, source] of Object.entries(cases)) {
+    it(`flags it: ${label}`, () => {
+      const root = makeProject({
+        'package.json': pkgJson('ns', { [PKG]: '^0.20.0' }),
+        'pnpm-lock.yaml': pnpmLock({ '.': '0.20.0' }),
+        'src/a.tsx': source,
+      });
+      const { code, report } = json(root, '--dry-run');
+      expect(code).toBe(1);
+      expect(leftByHand(report)).toContain(REMOVED);
+    });
+  }
+
+  it('does not flag a namespace that is some other package', () => {
+    const root = makeProject({
+      'package.json': pkgJson('ns', { [PKG]: '^0.20.0' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.20.0' }),
+      'src/a.tsx': `import * as H from 'other-lib';\nexport const a = <H.StatusDot />;\n`,
+    });
+    const { report } = json(root, '--dry-run');
+    expect(leftByHand(report)).not.toContain(REMOVED);
+  });
+});
+
 describe('the bins', () => {
   const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
 
@@ -1090,6 +1125,11 @@ describe('the bins', () => {
     expect(block).toContain('res.status !== 1');
     expect(block).toContain("['Fixed for you', 'Looks different', 'Coming next', 'Do by hand']");
     expect(block).toContain('ok = false');
+    // Outcome check: the final section fails when 3g was skipped.
+    expect(block).toContain('ranUpgrade = true');
+    const final = smoke.slice(smoke.indexOf('// ── 4.'));
+    expect(final).toMatch(/ok && !ranUpgrade/);
+    expect(final).toContain('upgrade bin smoke did not run');
   });
 
   it('--help exits 0 and names every flag', () => {

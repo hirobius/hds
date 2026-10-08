@@ -132,9 +132,24 @@ const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\
 const NAMED =
   /\b(?:import|export)\s+(?:type\s+)?(?:[\w$]+\s*,\s*)?\{([^}]*)\}\s*from\s*(['"])([^'"\n]+)\2/g;
 
-/** Named imports and re-exports in a file: `{ from, name, local }`. */
+const DESTRUCTURED =
+  /\b(?:const|let|var)\s*\{([^}]*)\}\s*=\s*(?:await\s+)?(?:require|import)\s*\(\s*(['"])([^'"\n]+)\2\s*\)/g;
+
+/**
+ * Named imports and re-exports in a file: `{ from, name, local }`. Also the
+ * names a `const { a, b: c } = require(...)` or `= await import(...)`
+ * destructures, which bind the same exports.
+ */
 export function namedImports(text) {
   const out = [];
+  for (const m of text.matchAll(DESTRUCTURED)) {
+    for (const raw of stripComments(m[1]).split(',')) {
+      const spec = raw.trim().replace(/\s*=[\s\S]*$/, '');
+      if (!spec || spec.startsWith('...')) continue;
+      const [name, local = name] = spec.split(':').map((s) => s.trim());
+      if (/^[\w$]+$/.test(name) && /^[\w$]+$/.test(local)) out.push({ from: m[3], name, local });
+    }
+  }
   for (const m of text.matchAll(NAMED)) {
     for (const raw of stripComments(m[1]).split(',')) {
       const spec = raw.trim().replace(/^type\s+/, '');
@@ -142,6 +157,25 @@ export function namedImports(text) {
       const [name, local = name] = spec.split(/\s+as\s+/).map((s) => s.trim());
       out.push({ from: m[3], name, local });
     }
+  }
+  return out;
+}
+
+const NAMESPACE_FORMS = [
+  /\bimport\s+(?:type\s+)?(?:[\w$]+\s*,\s*)?\*\s*as\s+([\w$]+)\s+from\s*(['"])([^'"\n]+)\2/g,
+  /\bimport\s+(?:type\s+)?([\w$]+)\s*(?:,\s*\{[^}]*\}\s*)?from\s*(['"])([^'"\n]+)\2/g,
+  /\b(?:const|let|var)\s+([\w$]+)\s*=\s*(?:await\s+)?(?:require|import)\s*\(\s*(['"])([^'"\n]+)\2\s*\)/g,
+];
+
+/**
+ * Namespace bindings in a file: `import * as X from`, `import X from` and
+ * `const X = require(...)` bind the whole module, so `X.Name` is the export
+ * Name. `{ from, local }` for each.
+ */
+export function namespaceImports(text) {
+  const out = [];
+  for (const re of NAMESPACE_FORMS) {
+    for (const m of text.matchAll(re)) out.push({ from: m[3], local: m[1] });
   }
   return out;
 }
@@ -197,13 +231,37 @@ function hdsBindings(file) {
   return out;
 }
 
+/** The local names bound to the whole HDS module (or a subpath) in a file. */
+function hdsNamespaces(file) {
+  return namespaceImports(file.text)
+    .filter(({ from }) => from === HDS || from.startsWith(`${HDS}/`))
+    .map(({ local }) => local);
+}
+
 function usesJsx(file, tag) {
   const [head, ...rest] = tag.split('.');
   const locals = hdsBindings(file).get(head) ?? [];
   const tail = rest.map((part) => `\\.${escapeRe(part)}`).join('');
-  return locals.some((local) =>
-    new RegExp(`<${escapeRe(local)}${tail}(?=[\\s/>])`).test(file.text),
+  if (locals.some((local) => new RegExp(`<${escapeRe(local)}${tail}(?=[\\s/>])`).test(file.text))) {
+    return true;
+  }
+  // `<X.StatusDot` where X is a namespace binding of the package.
+  return hdsNamespaces(file).some((ns) =>
+    new RegExp(`<${escapeRe(ns)}\\.${escapeRe(tag)}(?=[\\s/>])`).test(file.text),
   );
+}
+
+/** Does the file reach one of `names` of `from` as `X.Name` on a namespace binding? */
+function usesNamespaceMember(file, from, names) {
+  return namespaceImports(file.text)
+    .filter((ns) => ns.from === from)
+    .some((ns) =>
+      names.some((name) =>
+        new RegExp(`(?<![\\w$.])${escapeRe(ns.local)}\\s*\\.\\s*${escapeRe(name)}(?![\\w$])`).test(
+          file.text,
+        ),
+      ),
+    );
 }
 
 const compiled = new Map();
@@ -221,6 +279,9 @@ function fileMatches(detect, file) {
       found.some((f) => f.from === want.from && want.names.includes(f.name)),
     );
     if (hit) return true;
+    if (detect.imports.some((want) => usesNamespaceMember(file, want.from, want.names))) {
+      return true;
+    }
   }
   if (code && detect.jsx?.some((tag) => usesJsx(file, tag))) return true;
   if (detect.bareImports) {
