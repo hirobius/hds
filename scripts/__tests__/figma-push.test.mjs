@@ -404,9 +404,9 @@ describe('figma:push safety checks', () => {
 
   it('writes nothing when a text style font is not installed', async () => {
     const figma = createFakeFigma({
-      fonts: FIXTURE_FONTS.filter((f) => f.family !== 'Geist Mono'),
+      fonts: FIXTURE_FONTS.filter((f) => f.family !== 'IBM Plex Mono'),
     });
-    await expect(push(figma)).rejects.toThrow(/needs the font "Geist Mono Medium"/);
+    await expect(push(figma)).rejects.toThrow(/needs the font "IBM Plex Mono Medium"/);
     expect(figma.writes).toEqual([]);
   });
 

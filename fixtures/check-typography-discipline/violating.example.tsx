@@ -3,7 +3,7 @@ export function ViolatingTypography() {
   return (
     <div
       style={{
-        fontFamily: 'Geist Mono',
+        fontFamily: 'IBM Plex Mono',
         fontWeight: '700',
       }}
     >

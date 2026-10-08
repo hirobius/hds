@@ -489,8 +489,8 @@
           "$description": "Display face: Satoshi Bold (ITF), bound to the display and title composites."
         },
         "mono": {
-          "$value": ["Geist Mono", "Courier New", "monospace"],
-          "$description": "Monospace face: Geist Mono. Falls back to Courier New, monospace."
+          "$value": ["IBM Plex Mono", "Courier New", "monospace"],
+          "$description": "Monospace face: IBM Plex Mono. Falls back to Courier New, monospace."
         }
       },
       "size": {

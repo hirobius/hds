@@ -18,7 +18,7 @@ describe('maskSource: a regex literal that starts a line after a comment', () =>
   const regexLine =
     String.raw`  /fontFamily\s*[=:]\s*["'` +
     BT +
-    String.raw`](?:Geist Mono|monospace)["'` +
+    String.raw`](?:IBM Plex Mono|monospace)["'` +
     BT +
     ']/i,';
 

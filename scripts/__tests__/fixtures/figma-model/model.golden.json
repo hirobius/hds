@@ -269,7 +269,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": "Geist Mono"
+              "value": "IBM Plex Mono"
             }
           }
         },
@@ -1287,7 +1287,7 @@
       "name": "typography/caption",
       "path": "semantic.typography.caption",
       "description": "",
-      "fontFamily": "Geist Mono",
+      "fontFamily": "IBM Plex Mono",
       "fontStyle": "Medium",
       "fontWeight": 500,
       "fontSize": 12,

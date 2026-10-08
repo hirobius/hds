@@ -1,5 +1,5 @@
 {
-  "checksum": "f8c46a94",
+  "checksum": "76ed6102",
   "snapshot": {
     "schemaVersion": 1,
     "takenAt": "2026-10-07T05:17:26.810Z",
@@ -265,7 +265,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Geist Mono"
+                "value": "IBM Plex Mono"
               }
             }
           },
@@ -1335,7 +1335,7 @@
         "name": "typography/caption",
         "path": "semantic.typography.caption",
         "description": "",
-        "fontFamily": "Geist Mono",
+        "fontFamily": "IBM Plex Mono",
         "fontStyle": "Medium",
         "fontSize": 12,
         "lineHeight": {
