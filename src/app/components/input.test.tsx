@@ -226,3 +226,58 @@ describe('Input horizontal padding (hds#393 review)', () => {
     expect(zero.parentElement?.contains(screen.getByLabelText('Count'))).toBe(true);
   });
 });
+
+describe('Input aria-describedby targets (a11y)', () => {
+  it('points at the helper while it renders', () => {
+    render(<Input label="Email" helperText="We never share it." />);
+    const field = screen.getByLabelText('Email');
+    const id = field.getAttribute('aria-describedby') as string;
+    expect(document.getElementById(id)?.textContent).toBe('We never share it.');
+  });
+
+  it('drops the helper id while an error replaces it, so nothing dangles', () => {
+    render(<Input label="Email" helperText="We never share it." error errorMessage="Bad email" />);
+    const field = screen.getByLabelText('Email');
+    const ids = (field.getAttribute('aria-describedby') ?? '').split(' ').filter(Boolean);
+    expect(ids).toHaveLength(1);
+    for (const id of ids) expect(document.getElementById(id)).not.toBeNull();
+    expect(document.getElementById(ids[0])?.textContent).toBe('Bad email');
+  });
+
+  it('has no aria-describedby when the error flag has no message and no helper', () => {
+    render(<Input label="Email" error />);
+    expect(screen.getByLabelText('Email').getAttribute('aria-describedby')).toBeNull();
+  });
+});
+
+describe('Input loading (a11y)', () => {
+  it('stays focusable (readOnly + aria-busy), not disabled, so typing keeps focus', () => {
+    render(<Input label="Search" type="search" loading />);
+    const field = screen.getByLabelText('Search') as HTMLInputElement;
+    expect(field.disabled).toBe(false);
+    expect(field.readOnly).toBe(true);
+    expect(field.getAttribute('aria-busy')).toBe('true');
+    expect(field.getAttribute('aria-disabled')).toBeNull();
+    field.focus();
+    expect(document.activeElement).toBe(field);
+  });
+
+  it('still shows the spinner and hides the clear button while loading', () => {
+    const { container } = render(<Input label="Search" defaultValue="abc" loading />);
+    expect(container.querySelector('svg.animate-spin')).not.toBeNull();
+    expect(screen.queryByRole('button', { name: /clear/i })).toBeNull();
+  });
+
+  it('is editable again once loading ends', () => {
+    const { rerender } = render(<Input label="Search" loading />);
+    rerender(<Input label="Search" loading={false} />);
+    const field = screen.getByLabelText('Search') as HTMLInputElement;
+    expect(field.readOnly).toBe(false);
+    expect(field.getAttribute('aria-busy')).toBeNull();
+  });
+
+  it('a real disabled prop still disables', () => {
+    render(<Input label="Search" disabled />);
+    expect((screen.getByLabelText('Search') as HTMLInputElement).disabled).toBe(true);
+  });
+});

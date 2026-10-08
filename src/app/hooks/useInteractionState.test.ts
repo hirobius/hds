@@ -25,13 +25,66 @@ describe('useInteractionState', () => {
     expect(result.current.isHover).toBe(true);
 
     act(() => result.current.handlers.onFocus());
-    // pressed/hover not set, but hover still active → hover wins over focus.
-    expect(result.current.visualState).toBe('hover');
+    // Focus outranks hover: a resting mouse must not mask the keyboard ring.
+    expect(result.current.visualState).toBe('focused');
+    expect(result.current.isFocused).toBe(true);
 
     act(() => result.current.handlers.onMouseLeave());
     // mouseLeave clears hover (and press); focus remains.
     expect(result.current.visualState).toBe('focused');
-    expect(result.current.isFocused).toBe(true);
+  });
+
+  it('shows hover (not focus) while hovering an unfocused control', () => {
+    const { result } = renderHook(() => useInteractionState({}));
+    act(() => result.current.handlers.onMouseEnter());
+    expect(result.current.visualState).toBe('hover');
+  });
+
+  describe('focus-visible gating', () => {
+    const el = (visible: boolean | 'throws') =>
+      ({
+        matches: (sel: string) => {
+          if (visible === 'throws') throw new SyntaxError(sel);
+          return sel === ':focus-visible' && visible;
+        },
+      }) as unknown as Element;
+
+    it('ignores pointer-modality focus (a mouse click does not draw the ring)', () => {
+      const { result } = renderHook(() => useInteractionState({}));
+      act(() => result.current.handlers.onFocus(el(false)));
+      expect(result.current.visualState).toBe('rest');
+      expect(result.current.isFocused).toBe(false);
+    });
+
+    it('counts keyboard-modality focus and keeps it while hovered', () => {
+      const { result } = renderHook(() => useInteractionState({}));
+      act(() => {
+        result.current.handlers.onMouseEnter();
+        result.current.handlers.onFocus(el(true));
+      });
+      expect(result.current.visualState).toBe('focused');
+    });
+
+    it('falls back to focused where :focus-visible is unsupported', () => {
+      const { result } = renderHook(() => useInteractionState({}));
+      act(() => result.current.handlers.onFocus(el('throws')));
+      expect(result.current.visualState).toBe('focused');
+    });
+
+    it('picks up the ring when a key is pressed on a mouse-focused control', () => {
+      const { result } = renderHook(() => useInteractionState({}));
+      act(() => result.current.handlers.onFocus(el(false)));
+      expect(result.current.visualState).toBe('rest');
+      act(() => result.current.handlers.onKeyDown(el(true)));
+      expect(result.current.visualState).toBe('focused');
+    });
+
+    it('blur clears focus', () => {
+      const { result } = renderHook(() => useInteractionState({}));
+      act(() => result.current.handlers.onFocus(el(true)));
+      act(() => result.current.handlers.onBlur());
+      expect(result.current.visualState).toBe('rest');
+    });
   });
 
   it('press outranks hover and focus', () => {

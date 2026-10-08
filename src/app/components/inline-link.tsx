@@ -26,9 +26,12 @@ export interface InlineLinkProps {
 // ── InlineLink ─────────────────────────────────────────────────────────────────
 // Single source of truth for all inline body text links in HDS docs.
 //
-// Internal links (href starts with "/") → React Router <Link> (client-side nav)
-// External links (everything else)      → <a target="_blank" rel="noopener noreferrer">
+// Internal links (one leading "/", not "//") → router <Link> (client-side nav)
+// Plain links (#hash, mailto:, tel:, other relative/non-http hrefs)
+//                                            → <a> in the same tab, no external icon
+// External links (http(s):// and //host)     → <a target="_blank" rel="noopener noreferrer">
 //                                         + optional small ExternalLink icon after the label
+//                                         + visually-hidden "(opens in new tab)"
 //
 // Visual contract: semantic accent-content token (mode-aware lightness), always underlined
 // (accessibility requirement — links must not rely on color alone), underline
@@ -38,20 +41,47 @@ export interface InlineLinkProps {
 // Hover state handled by CSS .hds-link class — no JS state needed.
 // motion-ok: transitions handled by .hds-link CSS class (color + underline, primitive-duration-fast via CSS)
 
+type LinkKind = 'internal' | 'external' | 'plain';
+
+/**
+ * Classify an href. Only a same-origin absolute path (a single leading "/") goes
+ * to the router; "//host" and "/\host" are protocol-relative, so they are external.
+ * Only http(s) and protocol-relative URLs open a new tab; #hash, mailto:, tel: and
+ * anything else stay in the current tab as plain anchors.
+ */
+function classifyHref(href: string): LinkKind {
+  const value = href.trim();
+  if (value.startsWith('//') || value.startsWith('/\\')) return 'external';
+  if (value.startsWith('/')) return 'internal';
+  if (/^https?:/i.test(value)) return 'external';
+  return 'plain';
+}
+
 /** @public */
 export function InlineLink({ href, children, externalIcon = true }: InlineLinkProps) {
   const { LinkComponent } = useHdsRouter();
-  if (href.startsWith('/')) {
+  const kind = classifyHref(href);
+
+  if (kind === 'internal') {
     return (
-      <LinkComponent to={href} className="hds-link">
+      <LinkComponent to={href} className="hds-focus hds-link">
         {children}
       </LinkComponent>
+    );
+  }
+
+  if (kind === 'plain') {
+    return (
+      <a href={href} className="hds-focus hds-link">
+        {children}
+      </a>
     );
   }
 
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="hds-focus hds-link">
       {children}
+      <span className="sr-only"> (opens in new tab)</span>
       {externalIcon && (
         <Icon
           icon={ExternalLinkIcon}

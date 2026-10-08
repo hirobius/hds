@@ -91,8 +91,9 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     const id = providedId ?? generatedId;
 
     const hasError = Boolean(error);
-    const helperTextId = helperText ? `${id}-hint` : undefined;
     const errorTextId = hasError && errorMessage ? `${id}-error` : undefined;
+    // The helper only renders while no error is shown, so only reference it then.
+    const helperTextId = helperText && !errorTextId ? `${id}-hint` : undefined;
     const describedBy = [helperTextId, errorTextId].filter(Boolean).join(' ') || undefined;
     const state = disabled ? 'disabled' : hasError ? 'error' : 'default';
 
@@ -118,7 +119,7 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
           {...rest}
         />
 
-        {helperText && !errorTextId && (
+        {helperTextId && (
           <span id={helperTextId} className="hds-type-caption text-muted-foreground">
             {helperText}
           </span>

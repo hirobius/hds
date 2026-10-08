@@ -173,3 +173,129 @@ describe('Combobox close contract (hds#— bugfix)', () => {
     expect(screen.queryByRole('listbox')).toBeNull();
   });
 });
+
+// ── keyboard / a11y fixes ────────────────────────────────────────────────────
+
+describe('Combobox keyboard a11y', () => {
+  const trigger = () => screen.getByRole('combobox', { name: 'Country' });
+  const search = () => screen.getByPlaceholderText('Search…');
+  const activeId = () => search().getAttribute('aria-activedescendant');
+  const activeLabel = () => document.getElementById(activeId() as string)?.textContent;
+
+  it('keeps options out of the tab order (focus stays on the search field)', () => {
+    render(<Example />);
+    fireEvent.click(trigger());
+    for (const option of screen.getAllByRole('option')) {
+      expect(option.getAttribute('tabindex')).toBe('-1');
+    }
+  });
+
+  it('builds option ids from the index, so values with spaces/special chars stay valid', () => {
+    const odd: ComboboxOption[] = [
+      { value: 'new york', label: 'New York' },
+      { value: 'a/b:c"d', label: 'Slashy' },
+    ];
+    render(<Combobox aria-label="Country" options={odd} value={null} onChange={() => {}} />);
+    fireEvent.click(trigger());
+    const ids = screen.getAllByRole('option').map((o) => o.id);
+    for (const id of ids) {
+      expect(id).not.toMatch(/\s/);
+      expect(id).toMatch(/^[^\s"/]+$/);
+    }
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(activeLabel()).toBe('New York');
+    fireEvent.keyDown(search(), { key: 'ArrowDown' });
+    expect(activeLabel()).toBe('Slashy');
+  });
+
+  it('scrolls the active option into view (nearest) on keyboard navigation', () => {
+    const spy = vi.spyOn(Element.prototype, 'scrollIntoView');
+    render(<Example />);
+    fireEvent.click(trigger());
+    spy.mockClear();
+    fireEvent.keyDown(search(), { key: 'ArrowDown' });
+    expect(spy).toHaveBeenCalledWith({ block: 'nearest' });
+    expect((spy.mock.contexts.at(-1) as HTMLElement).textContent).toBe('Canada');
+    spy.mockRestore();
+  });
+
+  it('resets the active option to the first when the list is reopened', () => {
+    render(<Example />);
+    fireEvent.click(trigger());
+    fireEvent.keyDown(search(), { key: 'ArrowDown' });
+    fireEvent.keyDown(search(), { key: 'ArrowDown' });
+    expect(activeLabel()).toBe('Mexico');
+    fireEvent.click(trigger()); // close
+    fireEvent.click(trigger()); // reopen
+    expect(activeLabel()).toBe('United States');
+  });
+
+  it('resets the active option when the options change', () => {
+    const { rerender } = render(
+      <Combobox aria-label="Country" options={OPTIONS} value={null} onChange={() => {}} />,
+    );
+    fireEvent.click(trigger());
+    fireEvent.keyDown(search(), { key: 'ArrowDown' });
+    fireEvent.keyDown(search(), { key: 'ArrowDown' });
+    expect(activeLabel()).toBe('Mexico');
+    rerender(
+      <Combobox
+        aria-label="Country"
+        options={[
+          { value: 'fr', label: 'France' },
+          { value: 'de', label: 'Germany' },
+        ]}
+        value={null}
+        onChange={() => {}}
+      />,
+    );
+    expect(activeLabel()).toBe('France');
+  });
+
+  it('does not reset the active option when the parent re-renders with equal options', () => {
+    const make = () => OPTIONS.map((o) => ({ ...o }));
+    const { rerender } = render(
+      <Combobox aria-label="Country" options={make()} value={null} onChange={() => {}} />,
+    );
+    fireEvent.click(trigger());
+    fireEvent.keyDown(search(), { key: 'ArrowDown' });
+    rerender(<Combobox aria-label="Country" options={make()} value={null} onChange={() => {}} />);
+    expect(activeLabel()).toBe('Canada');
+  });
+
+  it('skips disabled options with ArrowDown / ArrowUp', () => {
+    const opts: ComboboxOption[] = [
+      { value: 'a', label: 'Alpha' },
+      { value: 'b', label: 'Bravo', disabled: true },
+      { value: 'c', label: 'Charlie' },
+    ];
+    render(<Combobox aria-label="Country" options={opts} value={null} onChange={() => {}} />);
+    fireEvent.click(trigger());
+    expect(activeLabel()).toBe('Alpha');
+    fireEvent.keyDown(search(), { key: 'ArrowDown' });
+    expect(activeLabel()).toBe('Charlie');
+    fireEvent.keyDown(search(), { key: 'ArrowUp' });
+    expect(activeLabel()).toBe('Alpha');
+    fireEvent.keyDown(search(), { key: 'ArrowUp' }); // wraps past the end, skipping nothing disabled
+    expect(activeLabel()).toBe('Charlie');
+  });
+
+  it('starts on the first enabled option when the first is disabled', () => {
+    const opts: ComboboxOption[] = [
+      { value: 'a', label: 'Alpha', disabled: true },
+      { value: 'b', label: 'Bravo' },
+    ];
+    render(<Combobox aria-label="Country" options={opts} value={null} onChange={() => {}} />);
+    fireEvent.click(trigger());
+    expect(activeLabel()).toBe('Bravo');
+  });
+
+  it('does not loop when every option is disabled', () => {
+    const opts: ComboboxOption[] = [{ value: 'a', label: 'Alpha', disabled: true }];
+    render(<Combobox aria-label="Country" options={opts} value={null} onChange={() => {}} />);
+    fireEvent.click(trigger());
+    fireEvent.keyDown(search(), { key: 'ArrowDown' });
+    fireEvent.keyDown(search(), { key: 'Enter' });
+    expect(screen.getByRole('listbox')).not.toBeNull();
+  });
+});

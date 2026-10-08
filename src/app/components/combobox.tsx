@@ -7,7 +7,7 @@
  * @useInstead Select a short list without search
  * @useInstead Menu firing actions from a trigger
  * @keyboard Enter/Space Opens the list from the trigger and moves focus to the search field.
- * @keyboard ArrowDown/ArrowUp Moves the active option and wraps at the ends.
+ * @keyboard ArrowDown/ArrowUp Moves the active option, skipping disabled ones, and wraps at the ends.
  * @keyboard Character Filters the options to those matching the typed text.
  * @keyboard Enter Commits the active option and closes the list; with `multiple`, toggles it and keeps the list open.
  * @keyboard Escape Closes the list.
@@ -102,6 +102,25 @@ export interface ComboboxMultipleProps extends ComboboxBaseProps {
  */
 export type ComboboxAnyProps = ComboboxProps | ComboboxMultipleProps;
 
+/** Index of the first selectable option, or 0 when none is (nothing to land on). */
+function firstEnabledIndex(list: readonly ComboboxOption[]): number {
+  const i = list.findIndex((o) => !o.disabled);
+  return i === -1 ? 0 : i;
+}
+
+/**
+ * Next selectable index from `from` in `dir`, wrapping at the ends and skipping
+ * disabled options. Returns `from` when every option is disabled.
+ */
+function nextEnabledIndex(list: readonly ComboboxOption[], from: number, dir: 1 | -1): number {
+  const n = list.length;
+  for (let step = 1; step <= n; step++) {
+    const i = (((from + dir * step) % n) + n) % n;
+    if (!list[i].disabled) return i;
+  }
+  return from;
+}
+
 /** @public */
 export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, ComboboxAnyProps>(
   function Combobox(
@@ -150,8 +169,20 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       return options.filter((o) => o.label.toLowerCase().includes(q));
     }, [options, query]);
 
-    // Reset the active row when the query changes (handled in the search field's
-    // onChange — no effect needed, keeps activeIndex in range as results narrow).
+    // Reset the active row to the first selectable one whenever the list is
+    // opened or its contents change. Keyed on the option values (not the array
+    // identity) so a parent re-render with equal options doesn't yank the cursor.
+    // Adjusted during render, the React-endorsed alternative to a setState effect.
+    const listKey = `${open}|${filtered.map((o) => `${o.value}:${o.disabled ? 1 : 0}`).join('\u0000')}`;
+    const [prevListKey, setPrevListKey] = React.useState(listKey);
+    if (prevListKey !== listKey) {
+      setPrevListKey(listKey);
+      setActiveIndex(firstEnabledIndex(filtered));
+    }
+
+    // Keyboard moves bring the active option into view inside the max-h list.
+    // Mouse hover also sets activeIndex but must not scroll, so only a key sets this.
+    const scrollActiveIntoView = React.useRef(false);
 
     function commit(option: ComboboxOption) {
       if (option.disabled) return;
@@ -206,12 +237,13 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
 
     function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
       if (filtered.length === 0) return;
-      if (e.key === 'ArrowDown') {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
-        setActiveIndex((i) => (i + 1) % filtered.length);
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setActiveIndex((i) => (i - 1 + filtered.length) % filtered.length);
+        const next = nextEnabledIndex(filtered, activeIndex, e.key === 'ArrowDown' ? 1 : -1);
+        if (next !== activeIndex) {
+          scrollActiveIntoView.current = true;
+          setActiveIndex(next);
+        }
       } else if (e.key === 'Enter') {
         e.preventDefault();
         const option = filtered[activeIndex];
@@ -219,9 +251,18 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       }
     }
 
-    const activeOptionId = filtered[activeIndex]
-      ? `${baseId}-opt-${filtered[activeIndex].value}`
-      : undefined;
+    // Ids come from the index: an option value may hold spaces or characters
+    // that are invalid in an id / aria-activedescendant reference.
+    const optionId = (i: number) => `${baseId}-opt-${i}`;
+    const activeOptionId = filtered[activeIndex] ? optionId(activeIndex) : undefined;
+
+    React.useEffect(() => {
+      if (!scrollActiveIntoView.current) return;
+      scrollActiveIntoView.current = false;
+      if (open && activeOptionId) {
+        document.getElementById(activeOptionId)?.scrollIntoView({ block: 'nearest' });
+      }
+    }, [open, activeOptionId]);
 
     const popover = (
       <Popover
@@ -306,7 +347,6 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             placeholder={searchPlaceholder}
             onChange={(e) => {
               setQuery(e.target.value);
-              setActiveIndex(0);
             }}
             onKeyDown={onInputKeyDown}
             className={cn(
@@ -329,10 +369,11 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
               const isActive = i === activeIndex;
               return (
                 <li key={option.value} role="none">
-                  <button
+                  <button // audit-ok: never focused; the search field keeps focus and shows the active row via data-active ring
                     type="button"
-                    id={`${baseId}-opt-${option.value}`}
+                    id={optionId(i)}
                     role="option"
+                    tabIndex={-1}
                     aria-selected={isSelected}
                     data-active={isActive ? 'true' : undefined}
                     disabled={option.disabled}

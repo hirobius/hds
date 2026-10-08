@@ -214,6 +214,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
     errorMessage,
     disabled,
     loading = false,
+    readOnly,
     className,
     inputClassName,
     onChange,
@@ -237,11 +238,14 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
 
   const hasError = Boolean(error) || effectiveDemoState === 'error';
   const isLoading = loading || effectiveDemoState === 'loading';
-  const isDisabled = Boolean(disabled) || isLoading || effectiveDemoState === 'disabled';
+  // Loading keeps the field enabled: `disabled` would drop focus and the caret
+  // on every keystroke of a search-as-you-type field. It is read-only + busy instead.
+  const isDisabled = Boolean(disabled) || effectiveDemoState === 'disabled';
 
-  const helperTextId = helperText ? `${id}-hint` : undefined;
   const errorTextId =
     hasError && (errorMessage || effectiveDemoState === 'error') ? `${id}-error` : undefined;
+  // The helper only renders while no error is shown, so only reference it then.
+  const helperTextId = helperText && !errorTextId ? `${id}-hint` : undefined;
   const describedBy = [helperTextId, errorTextId].filter(Boolean).join(' ') || undefined;
 
   const [uncontrolledValue, setUncontrolledValue] = React.useState(() => {
@@ -333,6 +337,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
         id={id}
         type={type}
         disabled={isDisabled}
+        readOnly={isLoading || readOnly}
         aria-disabled={isDisabled || undefined}
         aria-busy={isLoading || undefined}
         aria-describedby={describedBy}
@@ -416,7 +421,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
         field
       )}
 
-      {helperText && !errorTextId && (
+      {helperTextId && (
         <span id={helperTextId} className="hds-type-caption text-muted-foreground">
           {helperText}
         </span>

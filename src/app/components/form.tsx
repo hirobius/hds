@@ -97,9 +97,11 @@ export function useFieldWiring({
   const controlId = htmlFor ?? childId ?? generatedId;
   const descriptionId = `${controlId}-description`;
   const errorId = `${controlId}-error`;
+  // FormFieldShell hides the description while an error shows, so don't point at it then.
   const describedBy =
-    [description ? descriptionId : null, error ? errorId : null].filter(Boolean).join(' ') ||
-    undefined;
+    [description && !error ? descriptionId : null, error ? errorId : null]
+      .filter(Boolean)
+      .join(' ') || undefined;
   return { controlId, descriptionId, errorId, describedBy };
 }
 

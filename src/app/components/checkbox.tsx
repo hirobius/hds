@@ -136,7 +136,17 @@ function setRef(ref: React.ForwardedRef<HTMLInputElement>, node: HTMLInputElemen
 
 export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxProps>(
   function Checkbox(
-    { label, checked, onChange, indeterminate = false, onFocus, onBlur, disabled, ...rest },
+    {
+      label,
+      checked,
+      onChange,
+      indeterminate = false,
+      onFocus,
+      onKeyDown,
+      onBlur,
+      disabled,
+      ...rest
+    },
     ref,
   ) {
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -186,8 +196,12 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
           aria-checked={indeterminate ? 'mixed' : checked}
           onChange={(e) => onChange(e.target.checked)}
           onFocus={(e) => {
-            handlers.onFocus();
+            handlers.onFocus(e.currentTarget);
             onFocus?.(e);
+          }}
+          onKeyDown={(e) => {
+            handlers.onKeyDown(e.currentTarget);
+            onKeyDown?.(e);
           }}
           onBlur={(e) => {
             handlers.onBlur();
