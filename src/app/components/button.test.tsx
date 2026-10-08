@@ -218,7 +218,9 @@ describe('Button asChild disabled contract (hds#— bugfix)', () => {
     const { Button } = await load();
     const { container } = render(
       <Button asChild disabled>
-        <a href="#x">Link</a>
+        <a href="#x" className="hds-focus">
+          Link
+        </a>
       </Button>,
     );
     const a = container.querySelector('a')!;
@@ -232,7 +234,9 @@ describe('Button asChild disabled contract (hds#— bugfix)', () => {
     const { Button } = await load();
     const { container } = render(
       <Button asChild>
-        <a href="#x">Link</a>
+        <a href="#x" className="hds-focus">
+          Link
+        </a>
       </Button>,
     );
     const a = container.querySelector('a')!;
