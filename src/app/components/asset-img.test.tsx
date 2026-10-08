@@ -51,3 +51,17 @@ describe('AssetImg a11y', () => {
     }
   });
 });
+
+describe('AssetImg failed-state reset (hds#— bugfix)', () => {
+  it('recovers from a load error when src changes to a working image', () => {
+    const { container, rerender } = render(<AssetImg src="/a.png" alt="x" />);
+    const img = container.querySelector('img')!;
+    expect(img).not.toBeNull();
+    fireEvent.error(img);
+    expect(container.querySelector('img')).toBeNull(); // on error → fallback, no img
+    rerender(<AssetImg src="/b.png" alt="x" />);
+    const img2 = container.querySelector('img');
+    expect(img2).not.toBeNull(); // src changed → failed reset → img back
+    expect(img2!.getAttribute('src')).toBe('/b.png');
+  });
+});

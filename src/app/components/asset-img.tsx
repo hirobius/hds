@@ -82,6 +82,15 @@ export function AssetImg({
   loading = 'lazy',
 }: AssetImgProps) {
   const [failed, setFailed] = useState(false);
+  // Reset the fallback when the source changes — otherwise a later, valid `src`
+  // (e.g. a user updating their photo) stays stuck on the error placeholder.
+  // Adjust-during-render (React's "you might not need an effect") rather than a
+  // useEffect, so the reset is applied before paint and without a cascading render.
+  const [prevSrc, setPrevSrc] = useState(src);
+  if (src !== prevSrc) {
+    setPrevSrc(src);
+    setFailed(false);
+  }
   const resolvedStyle = style && typeof style === 'object' ? style : {};
 
   // ── Tooltip state (declared unconditionally — hooks rule) ────────────────
