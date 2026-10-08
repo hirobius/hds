@@ -8,6 +8,8 @@ React + TypeScript component library on a governed design-token pipeline. Live S
 pnpm add @hirobius/design-system
 ```
 
+Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. From 0.22.0, `npx @hirobius/design-system@latest upgrade` does it for you.
+
 [![Buttons under the Brand and Theme dials: base and accent-lilac, light and dark](docs/images/storybook-brand-theme-dials.png)](https://hirobius-design-system.vercel.app)
 
 <!-- auto:start:front-door-counts -->

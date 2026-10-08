@@ -19,6 +19,11 @@ describe('capStatus', () => {
     expect(HISTORY_KEYS).not.toContain('blocked');
   });
 
+  it('leaves the release object scripts/upgrade/compile.mjs writes untouched', () => {
+    const release = { version: '0.21.0', breaking: 2, upgrade: 'pnpm add x@0.21.0' };
+    expect(capStatus({ release, resolvedThisSession: range(12) }).release).toEqual(release);
+  });
+
   it('leaves short arrays and top-level scalar fields untouched', () => {
     const input = {
       updatedAt: '2026-01-01T00:00:00.000Z',

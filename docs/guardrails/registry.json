@@ -896,9 +896,21 @@
     },
     {
       "id": "upgrade-schema",
-      "description": "Upgrade-ledger schema drift (hds#447): `node scripts/upgrade/schema.mjs --check` fails when upgrade/schema.json is not byte-equal to the JSON Schema generated from the zod source in scripts/upgrade/schema.mjs, the shape the ledger, its compiler and the upgrade command share. Runs in pretest; scripts/__tests__/upgrade-schema.test.mjs proves it fails on a hand edit.",
+      "description": "Upgrade-ledger schema drift (hds#447): `node scripts/upgrade/schema.mjs --check` fails when upgrade/schema.json is not byte-equal to the JSON Schema generated from the zod source in scripts/upgrade/schema.mjs, the shape the ledger, its compiler and the upgrade command share. Runs in pretest; scripts/__tests__/upgrade-schema.test.mjs proves it fails on a hand edit, and scripts/__tests__/upgrade-compile.test.mjs that this entry exists (validate-guardrail-registry does not scan scripts/upgrade/).",
       "severity": "error",
       "gateScript": "scripts/upgrade/schema.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "scope": "full-tree",
+      "supportsJson": true
+    },
+    {
+      "id": "upgrade-compile",
+      "description": "Release-compiler drift (hds#451): `node scripts/upgrade/compile.mjs --check` fails when UPGRADING.md or upgrade/index.json is not byte-equal to what scripts/upgrade/compile.mjs compiles from the committed ledgers (upgrade/releases/<v>.json), or when status.json has no `release` object or one that is not the newest ledger's, naming the file and the fix (`node scripts/upgrade/compile.mjs`). Reads committed files only: no network, no build, never writes. Runs in pretest; scripts/__tests__/upgrade-compile.test.mjs proves it fails on a one-value hand edit to each of the three files, and that this entry exists (validate-guardrail-registry does not scan scripts/upgrade/). The same script records each release at `pnpm changeset:version` (--release).",
+      "severity": "error",
+      "gateScript": "scripts/upgrade/compile.mjs",
       "fixturePath": null,
       "owner": "Adrian",
       "source": "agent",

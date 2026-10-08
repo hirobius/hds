@@ -2,7 +2,7 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { diffPackContents, REQUIRED, FORBIDDEN, packedPaths } from '../check-pack-contents.mjs';
@@ -114,4 +114,74 @@ describe('real npm pack --dry-run', () => {
     },
     120_000,
   );
+});
+
+// hds#451: the upgrade record ships, so a consumer's node_modules holds what
+// the upgrade command and a person upgrading by hand read. Its inputs do not.
+describe('the upgrade record in the tarball', () => {
+  const ledgers = readdirSync(join(ROOT, 'upgrade/releases'))
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => `upgrade/releases/${f}`);
+  const record = [
+    'UPGRADING.md',
+    'MIGRATIONS.md',
+    'CHANGELOG.md',
+    'upgrade/schema.json',
+    'upgrade/index.json',
+    ...ledgers,
+  ];
+
+  it('requires UPGRADING.md, MIGRATIONS.md, CHANGELOG.md, the schema, the index and every ledger', () => {
+    expect(ledgers).toContain('upgrade/releases/0.21.0.json');
+    expect(REQUIRED).toEqual(expect.arrayContaining(record));
+  });
+
+  it('names each one that is missing', () => {
+    for (const file of record) {
+      const r = diffPackContents(
+        good.filter((p) => p !== file),
+        { required: REQUIRED, forbidden: FORBIDDEN },
+      );
+      expect(r.missing, file).toEqual([file]);
+    }
+  });
+
+  it('flags a pending note, a frozen source and anything else under upgrade/, but not the record', () => {
+    const r = diffPackContents(
+      [
+        ...good,
+        'upgrade/pending/fix-copy.json',
+        'upgrade/sources/0.21.0/release.json',
+        'upgrade/published.json',
+        'upgrade/README.md',
+      ],
+      { required: REQUIRED, forbidden: FORBIDDEN },
+    );
+    expect(r.forbidden).toEqual([
+      'upgrade/pending/fix-copy.json',
+      'upgrade/sources/0.21.0/release.json',
+      'upgrade/published.json',
+      'upgrade/README.md',
+    ]);
+  });
+
+  it('is listed path by path in package.json files, never upgrade/ whole', () => {
+    const { files } = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
+    expect(files).toEqual(
+      expect.arrayContaining([
+        'UPGRADING.md',
+        'MIGRATIONS.md',
+        'CHANGELOG.md',
+        'upgrade/schema.json',
+        'upgrade/index.json',
+        'upgrade/releases/',
+      ]),
+    );
+    const upgradeEntries = files.filter((f) => f === 'upgrade' || f.startsWith('upgrade/'));
+    expect(upgradeEntries.sort()).toEqual([
+      'upgrade/index.json',
+      'upgrade/releases/',
+      'upgrade/schema.json',
+    ]);
+  });
 });

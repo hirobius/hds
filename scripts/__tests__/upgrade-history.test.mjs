@@ -196,7 +196,7 @@ describe('the committed history (docs/api/releases, upgrade/releases)', () => {
 // historyProblems() reads only committed snapshots, so a release that shipped
 // with neither snapshot nor ledger (0.21.0 did) is invisible to it. The list of
 // what npm published is what it is checked against: upgrade/published.json,
-// updated by hand when a release publishes until hds#451 does it.
+// which compile.mjs --release updates on each Version PR (hds#451).
 describe('every published release (upgrade/published.json)', () => {
   const { versions } = JSON.parse(readFileSync(join(REPO, 'upgrade/published.json'), 'utf8'));
   const has = (rel) => existsSync(join(REPO, rel));
