@@ -421,22 +421,24 @@ export function insertionPoint(source, tag, attr) {
   return attr ? { at: attr.start, sep } : { at: tag.nameEnd, sep };
 }
 
-function* walk(dir) {
+/** `skip`: absolute directories not to enter (the upgrade command's nested importers). */
+function* walk(dir, skip = new Set()) {
   for (const entry of readdirSync(dir)) {
     if (SKIP_DIRS.has(entry)) continue;
     const full = join(dir, entry);
     const st = statSync(full);
-    if (st.isDirectory()) yield* walk(full);
-    else if (EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
+    if (st.isDirectory()) {
+      if (!skip.has(full)) yield* walk(full, skip);
+    } else if (EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
   }
 }
 
-/** Scan a directory with one rule. Writes only when `write` is true. */
-export function runFold({ root, write = false, rule }) {
+/** Scan a directory with one rule. Writes only when `write` is true; `skip` lists directories not to enter. */
+export function runFold({ root, write = false, rule, skip = [] }) {
   const files = [];
   const manual = [];
   let sites = 0;
-  for (const file of walk(root)) {
+  for (const file of walk(root, new Set(skip.map((d) => resolve(d))))) {
     const src = readFileSync(file, 'utf8');
     if (!src.includes(ROOT_PKG)) continue;
     const r = foldComponent(src, rule);

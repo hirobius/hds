@@ -312,29 +312,32 @@ export function transformSource(source, names) {
   return { source: out, changed: out !== source, sites, moved, edits };
 }
 
-function* walk(dir) {
+/** `skip`: absolute directories not to enter (the upgrade command's nested importers). */
+function* walk(dir, skip = new Set()) {
   for (const entry of readdirSync(dir)) {
     if (SKIP_DIRS.has(entry)) continue;
     const full = join(dir, entry);
     const st = statSync(full);
-    if (st.isDirectory()) yield* walk(full);
-    else if (EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
+    if (st.isDirectory()) {
+      if (!skip.has(full)) yield* walk(full, skip);
+    } else if (EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
   }
 }
 
-/** Scan a directory. Writes only when `write` is true. */
+/** Scan a directory. Writes only when `write` is true; `skip` lists directories not to enter. */
 export function runCodemod({
   root,
   write = false,
   names = loadPatternNames(),
   removed = loadRemovedNames(),
   replacements = loadReplacements(),
+  skip = [],
 }) {
   const files = [];
   const manual = [];
   const moved = new Set();
   let sites = 0;
-  for (const file of walk(root)) {
+  for (const file of walk(root, new Set(skip.map((d) => resolve(d))))) {
     const src = readFileSync(file, 'utf8');
     if (!src.includes(ROOT_PKG)) continue;
     for (const stmt of findUnrewritable(src, names))

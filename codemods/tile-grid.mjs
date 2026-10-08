@@ -273,9 +273,9 @@ export function transformSource(source) {
   return foldComponent(source, RULE);
 }
 
-/** Scan a directory. Writes only when `write` is true. */
-export function runCodemod({ root, write = false }) {
-  return runFold({ root, write, rule: RULE });
+/** Scan a directory. Writes only when `write` is true; `skip` lists directories not to enter. */
+export function runCodemod({ root, write = false, skip = [] }) {
+  return runFold({ root, write, rule: RULE, skip });
 }
 
 if (isEntry(import.meta.url)) {
