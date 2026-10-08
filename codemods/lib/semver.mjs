@@ -17,7 +17,8 @@ const SIMPLE = /^(\^|~|>=|=)?\s*v?(\d+)(?:\.(\d+|x|\*))?(?:\.(\d+|x|\*))?(-[0-9A
 /**
  * The range a package.json declares, moved to `target` with its operator kept:
  * `^0.16.0` → `^0.21.0`, `~0.16.2` → `~0.21.0`, `0.16.0` → `0.21.0`,
- * `>=0.16.0` → `>=0.21.0`; an `npm:` alias keeps its prefix. Null for a range
+ * `>=0.16.0` → `>=0.21.0`; an x-range or partial version keeps its wildcard
+ * (`0.16.x` → `0.21.x`, `0.x` stays); an `npm:` alias keeps its prefix. Null for a range
  * it cannot move safely (`workspace:*`, `latest`, a compound range, a URL).
  * @param {string} range
  * @param {string} target
@@ -31,7 +32,21 @@ export function bumpRange(range, target) {
   }
   const m = SIMPLE.exec(range.trim());
   if (!m) return null;
-  return `${m[1] ?? ''}${target}`;
+  const [, op = '', maj, min, pat, pre] = m;
+  const wild = (part) => part === undefined || part === 'x' || part === '*';
+  if (op === '' && (wild(min) || wild(pat))) {
+    // An x-range or a partial version (`0.16.x`, `0.x`, `0.16`) stays a
+    // wildcard of the same shape, so the consumer keeps getting patches.
+    if (pre) return null;
+    const [tMaj, tMin] = target.split('.');
+    const parts = [tMaj];
+    if (min !== undefined) parts.push(wild(min) ? min : tMin);
+    // Here a patch part is a wildcard, or follows one (`0.x.x`): keep it.
+    if (pat !== undefined) parts.push(pat);
+    return parts.join('.');
+  }
+  if (op === '=' && (wild(min) || wild(pat))) return null;
+  return `${op}${target}`;
 }
 
 /**

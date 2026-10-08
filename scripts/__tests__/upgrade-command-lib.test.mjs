@@ -5,11 +5,12 @@
  * upgrade-command.test.mjs.
  */
 import { describe, expect, it } from 'vitest';
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, symlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { REPO, makeProject, PKG } from './helpers/upgrade-fixtures.mjs';
 import { collectFiles, matchDetect } from '../../codemods/lib/scan.mjs';
 import { bumpRange } from '../../codemods/lib/semver.mjs';
+import { findImporters } from '../../codemods/lib/project.mjs';
 import { comingNextSteps, listOf, loadRecord } from '../../codemods/lib/record.mjs';
 import { CODEMODS, runCodemod } from '../../codemods/registry.mjs';
 import { listOf as compileListOf } from '../upgrade/compile.mjs';
@@ -99,11 +100,38 @@ describe('bumpRange', () => {
     );
   });
 
+  it('keeps an x-range or a partial version a wildcard, never an exact pin', () => {
+    expect(bumpRange('0.16.x', '0.21.0')).toBe('0.21.x');
+    expect(bumpRange('0.16.*', '0.21.0')).toBe('0.21.*');
+    expect(bumpRange('0.16', '0.21.0')).toBe('0.21');
+    expect(bumpRange('0.x', '0.21.0')).toBe('0.x');
+    expect(bumpRange('0', '0.21.0')).toBe('0');
+    expect(bumpRange('~0.16.x', '0.21.0')).toBe('~0.21.0');
+    expect(bumpRange('=0.16.x', '0.21.0')).toBeNull();
+  });
+
   it('leaves a range it cannot read alone', () => {
     expect(bumpRange('workspace:*', '0.21.0')).toBeNull();
     expect(bumpRange('latest', '0.21.0')).toBeNull();
     expect(bumpRange('>=0.16 <1', '0.21.0')).toBeNull();
     expect(bumpRange('github:hirobius/hds', '0.21.0')).toBeNull();
+  });
+});
+
+describe('findImporters: pnpm-workspace.yaml', () => {
+  const app = { name: 'web', dependencies: { [PKG]: '^0.20.0' } };
+  it.each([
+    ['a flow list', 'packages: ["apps/*"]\n'],
+    ['a flow list of quoted items', "packages: ['apps/*', 'tools/*']\n"],
+    ['an item with a comment', 'packages:\n  - apps/*   # the apps\n'],
+    ['a quoted item with a comment', "packages:\n  - 'apps/*' # the apps\n"],
+  ])('%s', (_name, yaml) => {
+    const root = makeProject({
+      'package.json': { name: 'mono', private: true },
+      'pnpm-workspace.yaml': yaml,
+      'apps/web/package.json': app,
+    });
+    expect(findImporters(root).map((i) => i.dir)).toEqual(['apps/web']);
   });
 });
 
@@ -176,6 +204,18 @@ describe('codemod registry', () => {
     expect(res.status).toBe(1);
     expect(res.output).toContain('rewrite needed');
   });
+
+  it.each(Object.keys(CODEMODS))(
+    '%s walks past a dangling symlink and a symlink loop',
+    async (name) => {
+      const dir = tree();
+      symlinkSync(join(dir, 'src/missing.tsx'), join(dir, 'src/z.tsx'));
+      symlinkSync(dir, join(dir, 'src/loop'));
+      await expect(runCodemod(name, { root: dir, write: false })).resolves.toMatchObject({
+        files: expect.any(Array),
+      });
+    },
+  );
 
   it('refuses a codemod it does not know', async () => {
     await expect(runCodemod('hds-nope', { root: makeProject({}) })).rejects.toThrow(/hds-nope/);

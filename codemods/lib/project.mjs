@@ -8,7 +8,8 @@
  * The installed version comes from, in order: the lockfile, the importer's
  * node_modules copy, `--from`. When the lockfile already says the target (the
  * dependency was bumped by hand), the old version is read from the lockfile at
- * git HEAD, then at the merge-base with the default branch.
+ * git HEAD, then at the merge-base with the default branch, then along the
+ * lockfile's own first-parent history.
  */
 import { spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
@@ -36,19 +37,40 @@ export function declaredRange(pkg) {
   return null;
 }
 
-/** `packages:` of pnpm-workspace.yaml: the list items, unquoted. */
+/** One YAML scalar: its trailing ` # comment` dropped, then unquoted. */
+function yamlScalar(raw) {
+  const text = raw.trim();
+  const quoted = /^(['"])(.*?)\1/.exec(text);
+  if (quoted) return quoted[2];
+  return text.replace(/\s+#.*$/, '').trim();
+}
+
+/** `packages:` of pnpm-workspace.yaml, as a block list or a flow list (`[a, b]`), unquoted. */
 function pnpmWorkspaceGlobs(text) {
   const globs = [];
   let inPackages = false;
   for (const line of text.split(/\r?\n/)) {
-    if (/^packages\s*:/.test(line)) {
+    const head = /^packages\s*:\s*(.*)$/.exec(line);
+    if (head) {
+      const rest = head[1].replace(/^#.*$/, '').trim();
+      const flow = /^\[(.*)\]/.exec(rest);
+      if (flow) {
+        for (const item of flow[1].split(',')) {
+          const glob = yamlScalar(item);
+          if (glob) globs.push(glob);
+        }
+        return globs;
+      }
       inPackages = true;
       continue;
     }
     if (!inPackages) continue;
-    if (/^\S/.test(line)) break;
+    if (/^[^\s#-]/.test(line)) break;
     const item = /^\s*-\s*(.+?)\s*$/.exec(line);
-    if (item) globs.push(item[1].replace(/^(['"])(.*)\1$/, '$2'));
+    if (item) {
+      const glob = yamlScalar(item[1]);
+      if (glob) globs.push(glob);
+    }
   }
   return globs;
 }
@@ -186,12 +208,25 @@ export function nodeModulesVersion(root, importer) {
 
 // ── git ──────────────────────────────────────────────────────────────────────
 
+const GIT_MAX_BUFFER = 512 * 1024 * 1024;
+/** How many commits that touched the lockfile to read back, newest first. */
+const LOG_DEPTH = 200;
+
 /** git with GIT_* stripped (a hook's GIT_DIR must not point it elsewhere) and cwd = root. */
 function git(root, args) {
   const env = { ...process.env };
   for (const key of Object.keys(env)) if (key.startsWith('GIT_')) delete env[key];
   try {
-    const res = spawnSync('git', args, { cwd: root, env, encoding: 'utf8', timeout: 30_000 });
+    // A real lockfile is often several MiB: the default 1 MiB maxBuffer would
+    // kill `git show` and lose the old version without a word.
+    const res = spawnSync('git', args, {
+      cwd: root,
+      env,
+      encoding: 'utf8',
+      timeout: 60_000,
+      maxBuffer: GIT_MAX_BUFFER,
+    });
+    if (res.error) return null;
     return res.status === 0 ? res.stdout : null;
   } catch {
     return null;
@@ -224,6 +259,24 @@ export function historyRevisions(root) {
   return revs;
 }
 
+/**
+ * The commits that changed the lockfile, newest first along HEAD's first
+ * parents: where the old version is when the bump is already committed on the
+ * default branch, so HEAD and the merge-base both say the target.
+ */
+function lockfileCommits(root, lockfile) {
+  const out = git(root, [
+    'log',
+    '--first-parent',
+    `--max-count=${LOG_DEPTH}`,
+    '--format=%H',
+    'HEAD',
+    '--',
+    lockfile,
+  ]);
+  return out ? out.split('\n').filter(Boolean) : [];
+}
+
 /** An importer's HDS version in the lockfile as it was at `rev`, or null. */
 export function versionAtRevision(root, rev, lockfile, importer) {
   const text = git(root, ['show', `${rev}:./${lockfile}`]);
@@ -253,8 +306,11 @@ export function versionAtRevision(root, rev, lockfile, importer) {
  */
 export function installedVersions({ root, lockfile, lock, importers, target, from }) {
   let revisions;
+  let touched;
   const history = () =>
     revisions === undefined ? (revisions = historyRevisions(root)) : revisions;
+  const commits = () =>
+    touched === undefined ? (touched = lockfileCommits(root, lockfile)) : touched;
   return importers.map((importer) => {
     const locked = lock?.importers?.[importer.dir];
     let found = null;
@@ -273,8 +329,12 @@ export function installedVersions({ root, lockfile, lock, importers, target, fro
         const old = versionAtRevision(root, rev, lockfile, importer);
         if (old && compareVersions(old, target) < 0) return { from: old, source };
       }
-      return found;
+      for (const rev of commits()) {
+        const old = versionAtRevision(root, rev, lockfile, importer);
+        if (old && compareVersions(old, target) < 0) return { from: old, source: 'git-log' };
+      }
     }
+    // No history below the target (or none readable): never a silent from = target.
     if (isVersion(from)) return { from, source: 'flag' };
     return { ...found, noHistory: true };
   });

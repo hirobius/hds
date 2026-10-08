@@ -501,7 +501,15 @@ export const UpgradeReport = z
             dir: z.string().min(1).describe('. for the root, else the workspace directory.'),
             from: version().nullable().describe('The installed version, or null when unknown.'),
             source: z
-              .enum(['lockfile', 'node_modules', 'flag', 'git-head', 'git-merge-base', 'unknown'])
+              .enum([
+                'lockfile',
+                'node_modules',
+                'flag',
+                'git-head',
+                'git-merge-base',
+                'git-log',
+                'unknown',
+              ])
               .describe('Where the installed version was read.'),
             range: z.string().describe('The range package.json declared.'),
             newRange: z

@@ -701,6 +701,7 @@
                   "flag",
                   "git-head",
                   "git-merge-base",
+                  "git-log",
                   "unknown"
                 ],
                 "description": "Where the installed version was read."

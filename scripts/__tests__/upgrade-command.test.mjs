@@ -7,7 +7,7 @@
  * after later releases add ledgers.
  */
 import { describe, expect, it } from 'vitest';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   PKG,
@@ -377,7 +377,88 @@ describe('already bumped by hand', () => {
   it('says so when there is no history, and treats it as already on the target', () => {
     const { code, report } = json(bumped());
     expect(report.importers[0]).toMatchObject({ from: TO, source: 'lockfile' });
+    const note = report.doByHand.find((i) => i.id === 'tool/no-history');
+    expect(note.plain).toContain('the lockfile');
+    expect(note.plain).toContain(`--from ${TO}`);
+    expect(code).toBe(1);
+    // --from <target> confirms a clean project is done.
+    const confirmed = run(bumped(), '--check', '--from', TO);
+    expect(confirmed.code).toBe(0); // --from <target>: the person says it is done
+    const clean = makeProject({
+      'package.json': pkgJson('app-pnpm', { [PKG]: `^${TO}` }),
+      'pnpm-lock.yaml': pnpmLock({ '.': TO }),
+    });
+    expect(run(clean, '--check').code).toBe(1);
+    expect(run(clean, '--check', '--from', TO).code).toBe(0);
+  });
+
+  it('names node_modules, not the lockfile, when that is where the version came from', () => {
+    const root = makeProject({
+      'package.json': pkgJson('app', { [PKG]: `^${TO}` }),
+      [`node_modules/${PKG}/package.json`]: { name: PKG, version: TO },
+    });
+    const note = json(root, '--check').report.doByHand.find((i) => i.id === 'tool/no-history');
+    expect(note.plain).toContain('node_modules');
+    expect(note.plain).not.toContain('lockfile');
+  });
+
+  it('recovers it from the lockfile history when the bump is committed on the default branch', () => {
+    const root = bumped();
+    writeFiles(root, {
+      'package.json': pkgJson('app-pnpm', { [PKG]: '^0.16.0' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.16.0' }),
+    });
+    git(root, 'init', '-q');
+    git(root, 'add', '-A');
+    git(root, 'commit', '-qm', 'on 0.16.0');
+    writeFiles(root, {
+      'package.json': pkgJson('app-pnpm', { [PKG]: `^${TO}` }),
+      'pnpm-lock.yaml': pnpmLock({ '.': TO }),
+    });
+    git(root, 'commit', '-qam', `to ${TO}`);
+    writeFiles(root, { 'notes.txt': 'later\n' });
+    git(root, 'add', '-A');
+    git(root, 'commit', '-qm', 'later');
+    const { code, report } = json(root);
+    expect(report.importers[0]).toMatchObject({ from: '0.16.0', source: 'git-log' });
+    expect(ids(report.doByHand)).toContain('0.21.0/removed/StatusDot');
+    expect(code).toBe(1);
+    expect(UpgradeReport.safeParse(report).success).toBe(true);
+  });
+
+  it('adds the no-history note when every committed lockfile is already at the target', () => {
+    const root = bumped();
+    git(root, 'init', '-q');
+    git(root, 'add', '-A');
+    git(root, 'commit', '-qm', `on ${TO}`);
+    const { report } = json(root, '--check');
+    expect(report.importers[0]).toMatchObject({ from: TO, source: 'lockfile' });
     expect(ids(report.doByHand)).toContain('tool/no-history');
+  });
+
+  it('reads a lockfile over 1 MiB from git history', () => {
+    const big = (version) =>
+      pnpmLock({ '.': version }) +
+      Array.from(
+        { length: 20_000 },
+        (_, n) => `  'pad-${n}@1.0.0':\n    resolution: {integrity: sha512-${'x'.repeat(60)}}\n\n`,
+      ).join('');
+    expect(big('0.16.0').length).toBeGreaterThan(1024 * 1024);
+    const root = bumped();
+    writeFiles(root, {
+      'package.json': pkgJson('app-pnpm', { [PKG]: '^0.16.0' }),
+      'pnpm-lock.yaml': big('0.16.0'),
+    });
+    git(root, 'init', '-q');
+    git(root, 'add', '-A');
+    git(root, 'commit', '-qm', 'on 0.16.0');
+    writeFiles(root, {
+      'package.json': pkgJson('app-pnpm', { [PKG]: `^${TO}` }),
+      'pnpm-lock.yaml': big(TO),
+    });
+    const { code, report } = json(root, '--check');
+    expect(report.importers[0]).toMatchObject({ from: '0.16.0', source: 'git-head' });
+    expect(ids(report.doByHand)).toContain('0.21.0/removed/StatusDot');
     expect(code).toBe(1);
   });
 });
@@ -492,6 +573,134 @@ describe('install and typecheck', () => {
     expect(item).toBeDefined();
     expect(item.plain).toContain('TS2305');
     expect(res.code).toBe(1);
+  });
+});
+
+describe('robustness', () => {
+  it('walks past a dangling symlink: the codemods run and the range moves', () => {
+    const root = makeProject({
+      'package.json': pkgJson('app', { [PKG]: '^0.16.0' }),
+      'package-lock.json': npmLock('0.16.0'),
+      'src/a.tsx': `import { CodeBlock, HdsCheckbox } from '${PKG}';\nexport const a = <><CodeBlock code="x" /><HdsCheckbox /></>;\n`,
+    });
+    symlinkSync(join(root, 'src/missing.tsx'), join(root, 'src/z.tsx'));
+    const { code, report } = json(root);
+    expect(code).toBe(0);
+    expect(readFileSync(join(root, 'src/a.tsx'), 'utf8')).toContain('Checkbox as HdsCheckbox');
+    expect(JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).dependencies[PKG]).toBe(
+      `^${TO}`,
+    );
+    expect(ids(report.fixedForYou)).toContain('range');
+  });
+
+  it.each([
+    ['4-space indent', (t) => t.replace(/^( +)/gm, '$1$1')],
+    ['tab indent', (t) => t.replace(/^( +)/gm, (m) => '\t'.repeat(m.length / 2))],
+    ['CRLF line endings', (t) => t.replace(/\n/g, '\r\n')],
+    ['no final newline', (t) => t.replace(/\n$/, '')],
+  ])('keeps the package.json format: %s', (_name, format) => {
+    const original = format(`${JSON.stringify(pkgJson('app', { [PKG]: '^0.20.0' }), null, 2)}\n`);
+    const root = makeProject({
+      'package.json': original,
+      'package-lock.json': npmLock('0.20.0'),
+    });
+    expect(run(root).code).not.toBe(2);
+    const text = readFileSync(join(root, 'package.json'), 'utf8');
+    expect(text).toBe(original.replace('^0.20.0', `^${TO}`));
+  });
+
+  it('--report into a missing directory: exit 2 before anything is written', () => {
+    const root = APP_PNPM();
+    const before = snapshotTree(root);
+    const res = run(root, '--report', join(root, 'no/such/dir/r.json'));
+    expect(res.code).toBe(2);
+    expect(res.stderr).toContain('--report');
+    expect(snapshotTree(root)).toEqual(before);
+  });
+
+  it('runs tsc through node, so a space in the project path is fine', () => {
+    const root = join(makeProject({}), 'sp ace & co');
+    writeFiles(root, {
+      'package.json': pkgJson('app', { [PKG]: `^${TO}` }),
+      'package-lock.json': npmLock(TO),
+      'tsconfig.json': '{}\n',
+      'node_modules/typescript/package.json': { name: 'typescript', version: '5.0.0' },
+      'node_modules/typescript/bin/tsc':
+        "#!/usr/bin/env node\nconsole.error('TS9999 fake tsc ran with ' + process.argv.slice(2).join(' '));\nprocess.exit(1);\n",
+    });
+    const res = runCli([
+      'upgrade',
+      '--root',
+      root,
+      '--to',
+      TO,
+      '--from',
+      TO,
+      '--no-install',
+      '--json',
+    ]);
+    const item = JSON.parse(res.stdout).doByHand.find((i) => i.id === 'tool/typecheck');
+    expect(item?.plain).toContain('TS9999 fake tsc ran with --noEmit');
+  });
+});
+
+describe('a breaking change the code cannot show was handled', () => {
+  // A record of its own (the next release's shape): a breaking value change with
+  // no `done` detector, whose fix leaves the matched import in place.
+  const pkgDir = () =>
+    makeProject({
+      'package.json': { name: PKG, version: '9.1.0' },
+      'upgrade/index.json': {
+        package: PKG,
+        latest: '9.1.0',
+        floor: '9.0.0',
+        versions: [
+          { version: '9.1.0', date: '2026-10-08', bump: 'minor', breaking: 1, summary: 'x' },
+        ],
+        deprecated: [],
+      },
+      'upgrade/releases/9.1.0.json': {
+        version: '9.1.0',
+        previous: '9.0.0',
+        date: '2026-10-08',
+        bump: 'minor',
+        summary: 'x',
+        steps: [
+          {
+            id: '9.1.0/value-changed/tokens-json',
+            kind: 'value-changed',
+            impact: 'breaking',
+            plain: 'The raw tokens JSON changed shape, so read the new paths.',
+            source: 'x',
+            detect: { imports: [{ from: PKG, names: ['tokens'] }] },
+          },
+        ],
+      },
+    });
+
+  it('is listed to check and does not keep --check at exit 1', async () => {
+    const { upgrade } = await import('../../codemods/upgrade.mjs');
+    const root = makeProject({
+      'package.json': pkgJson('app', { [PKG]: '^9.1.0' }),
+      'package-lock.json': npmLock('9.1.0'),
+      'src/a.ts': `import { tokens } from '${PKG}';\nexport const t = tokens.semantic.motion.fast.$value.timingFunction;\n`,
+    });
+    const report = await upgrade(
+      {
+        root,
+        from: '9.0.0',
+        to: null,
+        mode: 'check',
+        json: true,
+        report: null,
+        install: false,
+        typecheck: false,
+      },
+      { pkgDir: pkgDir() },
+    );
+    const item = report.doByHand.find((i) => i.id === '9.1.0/value-changed/tokens-json');
+    expect(item).toMatchObject({ blocking: false, files: ['src/a.ts'] });
+    expect(report.exitCode).toBe(0);
   });
 });
 

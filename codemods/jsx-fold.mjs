@@ -22,7 +22,7 @@
  * removed props type, and a namespace or dynamic import that reads the name are
  * listed too. Running a fold twice changes nothing.
  */
-import { readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findUnrewritable, maskSource } from './unrewritable.mjs';
@@ -423,13 +423,20 @@ export function insertionPoint(source, tag, attr) {
 
 /** `skip`: absolute directories not to enter (the upgrade command's nested importers). */
 function* walk(dir, skip = new Set()) {
-  for (const entry of readdirSync(dir)) {
-    if (SKIP_DIRS.has(entry)) continue;
-    const full = join(dir, entry);
-    const st = statSync(full);
-    if (st.isDirectory()) {
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return; // an unreadable directory has nothing to rewrite
+  }
+  // Symlinks are skipped, never followed: a dangling one cannot be read and a
+  // looping one never ends.
+  for (const entry of entries) {
+    if (SKIP_DIRS.has(entry.name)) continue;
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
       if (!skip.has(full)) yield* walk(full, skip);
-    } else if (EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
+    } else if (entry.isFile() && EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
   }
 }
 
@@ -439,7 +446,12 @@ export function runFold({ root, write = false, rule, skip = [] }) {
   const manual = [];
   let sites = 0;
   for (const file of walk(root, new Set(skip.map((d) => resolve(d))))) {
-    const src = readFileSync(file, 'utf8');
+    let src;
+    try {
+      src = readFileSync(file, 'utf8');
+    } catch {
+      continue; // unreadable: nothing to rewrite
+    }
     if (!src.includes(ROOT_PKG)) continue;
     const r = foldComponent(src, rule);
     for (const stmt of r.manual) manual.push({ file: relative(root, file), stmt });

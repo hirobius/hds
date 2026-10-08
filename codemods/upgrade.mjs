@@ -34,7 +34,15 @@
  * --report <file> writes that JSON to a file as well. Node builtins only.
  */
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  readFileSync,
+  realpathSync,
+  renameSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { HDS_PACKAGE } from './lib/installed-version.mjs';
@@ -64,7 +72,7 @@ export const USAGE = `usage: npx ${HDS_PACKAGE}@latest upgrade [flags]
   --no-typecheck     do not run the typecheck script (or tsc --noEmit)
   --help             print this
 
-Exit 0: done. 1: work left. 2: refused or error (nothing was changed).`;
+Exit 0: done. 1: work left. 2: refused (nothing was changed) or an error.`;
 
 const LISTS = ['fixedForYou', 'looksDifferent', 'comingNext', 'doByHand'];
 const HEADINGS = {
@@ -76,14 +84,21 @@ const HEADINGS = {
 const SEVERITY = ['none', 'additive', 'look', 'behavior', 'breaking'];
 const REMOVING = new Set(['removed', 'moved', 'renamed', 'folded']);
 
+/** Kinds whose fix leaves what `detect` matches in place: a value or a behavior to check. */
+const CHECK_ONLY = new Set(['value-changed', 'behavior']);
+
 /**
- * Whether a Do by hand step blocks until the code changes: it breaks, takes
- * something away, is a manual step, or says how to tell it is done. Any other
- * (a behavior change to check) is listed but never blocks, since nothing in
- * the code can show it was handled.
+ * Whether a Do by hand step blocks until the code changes: it takes something
+ * away, is a manual step, says how to tell it is done, or breaks in a way the
+ * edit removes. A value or behavior change with no `done` detector is listed
+ * to check and never blocks, even when breaking: the code that handles it
+ * still matches its detect, so nothing could ever check it off.
  */
 const blocks = (step) =>
-  step.impact === 'breaking' || REMOVING.has(step.kind) || step.kind === 'manual' || !!step.done;
+  REMOVING.has(step.kind) ||
+  step.kind === 'manual' ||
+  !!step.done ||
+  (step.impact === 'breaking' && !CHECK_ONLY.has(step.kind));
 const DEP_FIELDS = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies'];
 
 /**
@@ -142,15 +157,27 @@ export function parseArgs(argv, invokedAs = '') {
 
 // ── package.json edits ───────────────────────────────────────────────────────
 
-/** Rewrite a package.json through `mutate`, keeping its indent and final newline. */
+/**
+ * Rewrite a package.json through `mutate`, keeping its indent, line endings
+ * and final newline. Written to a temp file and renamed over it, so a crash
+ * never leaves half a package.json.
+ */
 function editPackageJson(file, mutate) {
   const text = readFileSync(file, 'utf8');
   const pkg = JSON.parse(text);
   mutate(pkg);
   const indent = /^[ \t]+(?=")/m.exec(text)?.[0] ?? '  ';
-  const next = `${JSON.stringify(pkg, null, indent)}${text.endsWith('\n') ? '\n' : ''}`;
+  const eol = text.includes('\r\n') ? '\r\n' : '\n';
+  const body = JSON.stringify(pkg, null, indent).replace(/\n/g, eol);
+  const next = `${body}${/\r?\n$/.test(text) ? eol : ''}`;
   if (next === text) return false;
-  writeFileSync(file, next);
+  const tmp = `${file}.${process.pid}.tmp`;
+  try {
+    writeFileSync(tmp, next);
+    renameSync(tmp, file);
+  } finally {
+    rmSync(tmp, { force: true });
+  }
   return true;
 }
 
@@ -223,16 +250,42 @@ const refuse = (report, message) => {
 
 const under = (dir, rel) => (dir === '.' ? rel : `${dir}/${rel}`);
 
-/** Run a command, capturing its output; null status when it could not start. */
+/** Enough for any install log: spawnSync kills a child that prints past it. */
+const TOOL_MAX_BUFFER = 512 * 1024 * 1024;
+
+/** Run a command, capturing its output; null status when it could not start. Never a shell. */
 function runTool(cmd, args, cwd) {
   const res = spawnSync(cmd, args, {
     cwd,
     encoding: 'utf8',
-    shell: process.platform === 'win32',
     timeout: 15 * 60_000,
+    maxBuffer: TOOL_MAX_BUFFER,
   });
   return {
     status: res.error ? null : res.status,
+    missing: res.error?.code === 'ENOENT',
+    output: `${res.stdout ?? ''}${res.stderr ?? ''}${res.error && res.error.code !== 'ENOENT' ? res.error.message : ''}`,
+  };
+}
+
+/**
+ * Run the package manager. On Windows it is a .cmd shim, which Node only
+ * starts through cmd.exe, so the command line is built here from fixed words
+ * (the manager's name and `install` / `run typecheck`): no path or user input
+ * reaches the shell, and cwd is passed as an option.
+ */
+function runManager(pm, args, cwd) {
+  if (process.platform !== 'win32') return runTool(pm, args, cwd);
+  const res = spawnSync([pm, ...args].join(' '), {
+    cwd,
+    encoding: 'utf8',
+    shell: true,
+    timeout: 15 * 60_000,
+    maxBuffer: TOOL_MAX_BUFFER,
+  });
+  return {
+    status: res.error ? null : res.status,
+    missing: res.status === 9009 || !!res.error,
     output: `${res.stdout ?? ''}${res.stderr ?? ''}`,
   };
 }
@@ -247,13 +300,11 @@ function firstError(output) {
   return line.length > 200 ? `${line.slice(0, 197)}...` : line;
 }
 
-/** The nearest node_modules/.bin/tsc from `dir` up to `root`, or null. */
+/** The nearest node_modules/typescript/bin/tsc (a JS file node runs) from `dir` up to `root`, or null. */
 function findTsc(dir, root) {
   for (let d = dir; ; d = dirname(d)) {
-    for (const name of ['tsc', 'tsc.cmd']) {
-      const bin = join(d, 'node_modules', '.bin', name);
-      if (existsSync(bin)) return bin;
-    }
+    const bin = join(d, 'node_modules', 'typescript', 'bin', 'tsc');
+    if (existsSync(bin)) return bin;
     if (d === root || dirname(d) === d) return null;
   }
 }
@@ -359,9 +410,10 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
       .flatMap((l) => l.steps);
 
     if (versions[i].noHistory) {
+      const where = versions[i].source === 'node_modules' ? 'node_modules' : 'the lockfile';
       addItem(report, 'doByHand', {
         id: 'tool/no-history',
-        plain: `${HDS_PACKAGE} already says ${target} in package.json and the lockfile, and there is no git history to tell which version it was upgraded from, so pass --from <old version> to list what is left.`,
+        plain: `${HDS_PACKAGE} is already ${target} in ${where}, and no git history says which version it was upgraded from. Pass --from <old version> to list what is left, or --from ${target} to confirm the upgrade is done.`,
         importer: dir,
         files: [pkgRel],
       });
@@ -374,11 +426,23 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
       ),
     ];
     for (const name of codemods) {
-      const res = await runCodemod(name, {
-        root: importer.abs,
-        write: apply,
-        skip: importer.nested,
-      });
+      let res;
+      try {
+        res = await runCodemod(name, {
+          root: importer.abs,
+          write: apply,
+          skip: importer.nested,
+        });
+      } catch (error) {
+        addItem(report, 'doByHand', {
+          id: `${name}/failed`,
+          plain: `${name} stopped partway (${error.message.split('\n')[0]}), so fix that, then run this command again; files it already rewrote stay rewritten.`,
+          importer: dir,
+          files: [],
+          impact: 'breaking',
+        });
+        continue;
+      }
       if (apply) for (const f of res.files) changed.add(under(dir, f));
       for (const m of res.manual) {
         if (m.removed) continue; // the ledger's removed step says it, with the fix
@@ -519,11 +583,11 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
     const stale = importers.some((imp) => lock?.importers?.[imp.dir] !== target);
     if (changed.size > 0 || stale) {
       const pm = manager ?? 'npm';
-      const res = runTool(pm, ['install'], root);
+      const res = runManager(pm, ['install'], root);
       if (res.status !== 0) {
         addItem(report, 'doByHand', {
           id: 'tool/install',
-          plain: `Run \`${pm} install\`: it failed here (${res.status === null ? `${pm} not found` : firstError(res.output)}).`,
+          plain: `Run \`${pm} install\`: it failed here (${res.missing ? `${pm} not found` : firstError(res.output)}).`,
           files: [],
         });
       }
@@ -532,14 +596,14 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
   if (apply && options.typecheck) {
     for (const importer of importers) {
       const pm = manager ?? 'npm';
-      let cmd = null;
-      if (importer.pkg?.scripts?.typecheck) cmd = [pm, ['run', 'typecheck']];
-      else if (existsSync(join(importer.abs, 'tsconfig.json'))) {
+      let res = null;
+      if (importer.pkg?.scripts?.typecheck) {
+        res = runManager(pm, ['run', 'typecheck'], importer.abs);
+      } else if (existsSync(join(importer.abs, 'tsconfig.json'))) {
         const tsc = findTsc(importer.abs, root);
-        if (tsc) cmd = [tsc, ['--noEmit']];
+        if (tsc) res = runTool(process.execPath, [tsc, '--noEmit'], importer.abs);
       }
-      if (!cmd) continue;
-      const res = runTool(cmd[0], cmd[1], importer.abs);
+      if (!res) continue;
       if (res.status !== 0) {
         addItem(report, 'doByHand', {
           id: 'tool/typecheck',
@@ -582,6 +646,7 @@ export function formatReport(report) {
         flag: '--from',
         'git-head': 'lockfile at git HEAD',
         'git-merge-base': 'lockfile at the merge-base',
+        'git-log': 'lockfile in git history',
       }[imp.source] ?? imp.source;
     out.push(`  ${imp.dir}  ${imp.from} -> ${report.target}  (installed version from ${where})`);
   }
@@ -625,9 +690,12 @@ export function formatReport(report) {
         : `Done: on ${report.target}, nothing left to do by hand${toCheck}.`,
     );
   } else if (preview) {
-    out.push(
-      `Work left: ${report.fixedForYou.length} to fix (run without --check or --dry-run), ${left} to do by hand.`,
-    );
+    const fix = report.fixedForYou.length;
+    const parts = [
+      fix > 0 ? `${fix} to fix (run without --check or --dry-run)` : null,
+      left > 0 ? `${left} to do by hand` : null,
+    ].filter(Boolean);
+    out.push(`Work left: ${parts.join(', ')}.`);
   } else {
     out.push(
       `${left} ${left === 1 ? 'item' : 'items'} left to do by hand; run this command again to check them off.`,
@@ -649,15 +717,45 @@ export async function main(argv, invokedAs = '') {
     return 2;
   }
   const { options } = parsed;
+  // Check --report's directory before anything is written, so a bad path
+  // never fails after the upgrade has already changed files.
+  if (options.report) {
+    const dir = dirname(options.report);
+    let ok = false;
+    try {
+      ok = statSync(dir).isDirectory();
+    } catch {
+      ok = false;
+    }
+    if (!ok) {
+      console.error(
+        `Cannot write --report ${options.report}: ${dir} is not a directory; pass a path in an existing directory.`,
+      );
+      return 2;
+    }
+  }
   let report;
   try {
     report = await upgrade(options);
   } catch (error) {
-    console.error(`upgrade failed: ${error.stack ?? error.message}`);
+    const changed =
+      options.mode === 'apply'
+        ? ' Some files may already be changed: check `git status` before running it again.'
+        : ' Nothing was written.';
+    console.error(`upgrade failed: ${error.stack ?? error.message}${changed}`);
     return 2;
   }
   const json = `${JSON.stringify(report, null, 2)}\n`;
-  if (options.report) writeFileSync(options.report, json);
+  if (options.report) {
+    try {
+      writeFileSync(options.report, json);
+    } catch (error) {
+      console.error(
+        `Cannot write --report ${options.report}: ${error.message}; pass a path in an existing directory you can write to.`,
+      );
+      return 2;
+    }
+  }
   if (options.json) process.stdout.write(json);
   if (report.refused) console.error(report.refused);
   else if (!options.json) console.log(formatReport(report));
