@@ -745,7 +745,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
@@ -793,7 +793,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
@@ -841,7 +841,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
@@ -889,7 +889,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual."
               },
               "plain": {
                 "type": "string",

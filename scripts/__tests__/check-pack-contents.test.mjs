@@ -44,6 +44,32 @@ describe('diffPackContents', () => {
   });
 });
 
+describe('the upgrade command in the tarball (hds#452)', () => {
+  const UPGRADE_FILES = [
+    'codemods/upgrade.mjs',
+    'codemods/registry.mjs',
+    'codemods/lib/atomic-write.mjs',
+    'codemods/lib/installed-version.mjs',
+    'codemods/lib/project.mjs',
+    'codemods/lib/record.mjs',
+    'codemods/lib/scan.mjs',
+    'codemods/lib/semver.mjs',
+  ];
+
+  it('requires every file the upgrade command loads', () => {
+    expect(REQUIRED).toEqual(expect.arrayContaining(UPGRADE_FILES));
+  });
+
+  it('requires every .mjs under codemods/lib/, so a new helper cannot ship missing', () => {
+    const lib = readdirSync(join(ROOT, 'codemods/lib'))
+      .filter((f) => f.endsWith('.mjs'))
+      .map((f) => `codemods/lib/${f}`);
+    expect(REQUIRED).toEqual(expect.arrayContaining(lib));
+    const files = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).files;
+    expect(files).toEqual(expect.arrayContaining([...lib, ...UPGRADE_FILES]));
+  });
+});
+
 describe('agent tooling in the tarball', () => {
   it('requires AGENTS.md, the hds-mcp server with its data, and the ESLint plugin entry', () => {
     expect(REQUIRED).toEqual(

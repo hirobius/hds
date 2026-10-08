@@ -30,7 +30,8 @@
  *                 end (codemods/unrewritable.mjs), needs a manual look
  *   --dry-run     write nothing; print each changed line before (-) and after (+), exit 0
  */
-import { readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, realpathSync } from 'node:fs';
+import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { relative, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findUnrewritable as findHidden, maskSource } from './unrewritable.mjs';
@@ -175,7 +176,7 @@ export function runCodemod({ root, write = false, renames = RENAMES, skip = [] }
     files.push({ file: relative(root, file), sites: r.sites, renamed: r.renamed, edits: r.edits });
     r.renamed.forEach((n) => renamed.add(n));
     sites += r.sites;
-    if (write) writeFileSync(file, r.source);
+    if (write) writeFileAtomic(file, r.source);
   }
   return { files, sites, manual, names: [...renamed].sort() };
 }

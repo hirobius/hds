@@ -45,7 +45,6 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
-  renameSync,
   rmSync,
   statSync,
   writeFileSync,
@@ -54,6 +53,7 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isEntry } from './jsx-fold.mjs';
+import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { HDS_PACKAGE } from './lib/installed-version.mjs';
 import {
   detectManager,
@@ -64,7 +64,7 @@ import {
   readRootLockfile,
 } from './lib/project.mjs';
 import { comingNextSteps, listOf, loadRecord } from './lib/record.mjs';
-import { collectFiles, matchDetect } from './lib/scan.mjs';
+import { MAX_BYTES, collectFiles, fileMentions, matchDetect } from './lib/scan.mjs';
 import { bumpRange, compareVersions, isVersion } from './lib/semver.mjs';
 import { hasCodemod, runCodemod } from './registry.mjs';
 
@@ -190,13 +190,7 @@ function editPackageJson(file, mutate) {
   const body = JSON.stringify(pkg, null, indent).replace(/\n/g, eol);
   const next = `${body}${/\r?\n$/.test(text) ? eol : ''}`;
   if (next === text) return false;
-  const tmp = `${file}.${process.pid}.tmp`;
-  try {
-    writeFileSync(tmp, next);
-    renameSync(tmp, file);
-  } finally {
-    rmSync(tmp, { force: true });
-  }
+  writeFileAtomic(file, next);
   return true;
 }
 
@@ -388,7 +382,19 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
   } catch (error) {
     return refuse(report, `${rootPkgFile} is not valid JSON (${error.message}).`);
   }
-  const importers = findImporters(root);
+  const unreadable = [];
+  const importers = findImporters(root, unreadable);
+  if (unreadable.length > 0) {
+    return refuse(
+      report,
+      unreadable
+        .map(
+          ({ file, reason }) =>
+            `${file} is not valid JSON (${reason}), so this cannot tell whether it uses ${HDS_PACKAGE}: fix it, then run this command again.`,
+        )
+        .join('\n'),
+    );
+  }
   if (importers.length === 0) {
     return refuse(
       report,
@@ -455,8 +461,20 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
     const pkgFile = join(importer.abs, 'package.json');
     const pkgRel = under(dir, 'package.json');
     const scan = () => collectFiles(importer.abs, { skip: importer.nested });
-    const before = scan();
+    const oversized = [];
+    const before = collectFiles(importer.abs, { skip: importer.nested, oversized });
     const rel = (files) => files.map((f) => under(dir, f));
+    // Too big to read, so no detector saw it: never done while one names HDS.
+    const unread = oversized.filter((f) => fileMentions(f.abs, HDS_PACKAGE));
+    if (unread.length > 0) {
+      addItem(report, 'doByHand', {
+        id: 'tool/not-read',
+        plain: `These files name ${HDS_PACKAGE} but were not read (over ${Math.round(MAX_BYTES / 1e6)} MB), so check them by hand against the steps above, or split them.`,
+        importer: dir,
+        files: rel(unread.map((f) => f.rel)),
+        impact: 'breaking',
+      });
+    }
     // A step from a release at or before `from` that takes a name away, or asks
     // for a hand edit, still applies while the code matches it: a hand bump
     // (or an earlier partial upgrade) can skip it, and the code then breaks.
@@ -691,17 +709,30 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
   }
   // Still short of the target (no install, --no-install, a preview, or an
   // install that did not move it): never done until it is installed.
-  const after = installed ? readRootLockfile(root, lockfile, importers) : lock;
+  // An install can write the first lockfile, so look for it again.
+  const lockAfter = installed ? (detectManager(root, rootPkg).lockfile ?? lockfile) : lockfile;
+  const after = installed ? readRootLockfile(root, lockAfter, importers) : lock;
   for (const importer of importers) {
     const locked = after?.importers?.[importer.dir];
     const now = isVersion(locked) ? locked : nodeModulesVersion(root, importer);
-    if (!now || compareVersions(now, target) === 0) continue;
-    const what = isVersion(locked) ? `${lockfile} still resolves` : 'node_modules still holds';
+    if (!now) {
+      // No lockfile entry and no node_modules copy says what is installed:
+      // the version came from --from, so nothing shows the target is in yet.
+      addItem(report, 'doByHand', {
+        id: 'tool/install',
+        plain: `Run \`${pm} install\` to finish: nothing installed says ${target} yet (${lockAfter ? `${lockAfter} has no readable entry for it` : 'no lockfile'}, and no copy in node_modules).`,
+        importer: importer.dir,
+        files: lockAfter ? [lockAfter] : [],
+      });
+      continue;
+    }
+    if (compareVersions(now, target) === 0) continue;
+    const what = isVersion(locked) ? `${lockAfter} still resolves` : 'node_modules still holds';
     addItem(report, 'doByHand', {
       id: 'tool/install',
       plain: `Run \`${pm} install\` to finish: ${what} ${now}, not ${target}.`,
       importer: importer.dir,
-      files: isVersion(locked) ? [lockfile] : [],
+      files: isVersion(locked) ? [lockAfter] : [],
     });
   }
   if (apply && options.typecheck) {
@@ -858,7 +889,7 @@ export async function main(argv, invokedAs = '') {
   const json = `${JSON.stringify(report, null, 2)}\n`;
   if (options.report) {
     try {
-      writeFileSync(options.report, json);
+      writeFileAtomic(options.report, json);
     } catch (error) {
       console.error(
         `Cannot write --report ${options.report}: ${error.message}; pass a path in an existing directory you can write to.`,

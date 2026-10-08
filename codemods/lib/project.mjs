@@ -137,9 +137,13 @@ function workspaceGlobs(root, rootPkg) {
 
 /**
  * Every importer under `root` that declares HDS, root first, then by directory.
+ * A workspace package whose package.json cannot be read is never skipped in
+ * silence: its path and the reason go on `unreadable`, for the caller to refuse.
+ * @param {string} root
+ * @param {{ file: string, reason: string }[]} [unreadable]
  * @returns {{ dir: string, abs: string, pkg: any, range: string, nested: string[] }[]}
  */
-export function findImporters(root) {
+export function findImporters(root, unreadable = []) {
   const rootPkg = readJsonFile(join(root, 'package.json'));
   const globs = workspaceGlobs(root, rootPkg);
   const include = new Set();
@@ -160,7 +164,16 @@ export function findImporters(root) {
   const out = [];
   for (const dir of dirs) {
     const abs = absOf(dir);
-    const pkg = dir === '.' ? rootPkg : readJsonFile(join(abs, 'package.json'));
+    let pkg = rootPkg;
+    if (dir !== '.') {
+      const file = join(abs, 'package.json');
+      try {
+        pkg = JSON.parse(readFileSync(file, 'utf8'));
+      } catch (error) {
+        unreadable.push({ file, reason: error.message });
+        continue;
+      }
+    }
     const range = declaredRange(pkg);
     if (range === null) continue;
     // Workspace packages inside this one are importers of their own: never scan them twice.

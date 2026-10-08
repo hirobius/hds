@@ -5,7 +5,14 @@
  * upgrade-command.test.mjs.
  */
 import { describe, expect, it } from 'vitest';
-import { readdirSync, readFileSync, symlinkSync } from 'node:fs';
+import {
+  chmodSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  symlinkSync,
+  writeFileSync,
+} from 'node:fs';
 import { join } from 'node:path';
 import { REPO, makeProject, PKG } from './helpers/upgrade-fixtures.mjs';
 import { collectFiles, matchDetect } from '../../codemods/lib/scan.mjs';
@@ -13,6 +20,7 @@ import { bumpRange } from '../../codemods/lib/semver.mjs';
 import { findImporters } from '../../codemods/lib/project.mjs';
 import { comingNextSteps, listOf, loadRecord } from '../../codemods/lib/record.mjs';
 import { CODEMODS, runCodemod } from '../../codemods/registry.mjs';
+import { writeFileAtomic } from '../../codemods/lib/atomic-write.mjs';
 import { listOf as compileListOf } from '../upgrade/compile.mjs';
 
 const files = (tree) => collectFiles(makeProject(tree));
@@ -219,5 +227,37 @@ describe('codemod registry', () => {
 
   it('refuses a codemod it does not know', async () => {
     await expect(runCodemod('hds-nope', { root: makeProject({}) })).rejects.toThrow(/hds-nope/);
+  });
+});
+
+describe('writeFileAtomic', () => {
+  it('replaces the file through a temp file and a rename, keeping its mode', () => {
+    const dir = makeProject({ 'a.sh': 'old\n' });
+    const file = join(dir, 'a.sh');
+    chmodSync(file, 0o755);
+    writeFileAtomic(file, 'new\n');
+    expect(readFileSync(file, 'utf8')).toBe('new\n');
+    expect(statSync(file).mode & 0o777).toBe(0o755);
+    expect(readdirSync(dir)).toEqual(['a.sh']);
+  });
+
+  it('writes a new file, and leaves no temp file when the write fails', () => {
+    const dir = makeProject({});
+    writeFileAtomic(join(dir, 'r.json'), '{}\n');
+    expect(readFileSync(join(dir, 'r.json'), 'utf8')).toBe('{}\n');
+    writeFileSync(join(dir, 'blocker'), '');
+    expect(() => writeFileAtomic(join(dir, 'blocker', 'x.json'), '{}')).toThrow();
+    expect(readdirSync(dir).sort()).toEqual(['blocker', 'r.json']);
+  });
+
+  it('is how the codemods the upgrade command runs, and its --report, write files', () => {
+    for (const name of ['hds-prefix', 'jsx-fold', 'patterns-subpath']) {
+      const source = readFileSync(join(REPO, 'codemods', `${name}.mjs`), 'utf8');
+      expect(source, name).not.toMatch(/\bwriteFileSync\b/);
+      expect(source, name).toContain('writeFileAtomic(file, r.source)');
+    }
+    const upgrade = readFileSync(join(REPO, 'codemods/upgrade.mjs'), 'utf8');
+    expect(upgrade).toContain('writeFileAtomic(options.report, json)');
+    expect(upgrade).not.toMatch(/writeFileSync\((?:options\.report|tmp|file)\b/);
   });
 });

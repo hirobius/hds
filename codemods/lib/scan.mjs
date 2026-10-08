@@ -13,7 +13,7 @@
  *
  * Plain Markdown is not read: a README that mentions a name is not a use.
  */
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { closeSync, openSync, readdirSync, readFileSync, readSync, statSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { HDS_PACKAGE as HDS } from './installed-version.mjs';
 
@@ -46,10 +46,13 @@ const extOf = (name) => {
 /**
  * Every file under `root` a detector reads, with its text.
  * @param {string} root
- * @param {{ skip?: string[] }} [options] absolute directories not to enter (nested importers)
+ * @param {{ skip?: string[], oversized?: { rel: string, abs: string }[] }} [options]
+ *   skip: absolute directories not to enter (nested importers); oversized:
+ *   collects the files of a kind a detector reads that are over MAX_BYTES,
+ *   so the caller can say they were not read instead of passing them over.
  * @returns {{ rel: string, ext: string, kind: 'code'|'style'|'markup', text: string }[]}
  */
-export function collectFiles(root, { skip = [] } = {}) {
+export function collectFiles(root, { skip = [], oversized = null } = {}) {
   const skipped = new Set(skip.map((dir) => resolve(dir)));
   const out = [];
   const walk = (dir) => {
@@ -76,9 +79,13 @@ export function collectFiles(root, { skip = [] } = {}) {
             : null;
       if (!kind) continue;
       try {
-        if (statSync(full).size > MAX_BYTES) continue;
+        const rel = relative(root, full).split(sep).join('/');
+        if (statSync(full).size > MAX_BYTES) {
+          oversized?.push({ rel, abs: full });
+          continue;
+        }
         out.push({
-          rel: relative(root, full).split(sep).join('/'),
+          rel,
           ext,
           kind,
           text: readFileSync(full, 'utf8'),
@@ -90,6 +97,33 @@ export function collectFiles(root, { skip = [] } = {}) {
   };
   walk(resolve(root));
   return out;
+}
+
+/**
+ * Whether a file holds `needle`, read in chunks so a file of any size costs
+ * one buffer (for the files collectFiles leaves out as too big). An
+ * unreadable file counts as holding it: the caller cannot rule it out.
+ */
+export function fileMentions(file, needle) {
+  const CHUNK = 1 << 20;
+  const buf = Buffer.alloc(CHUNK);
+  const target = Buffer.from(needle);
+  let fd;
+  try {
+    fd = openSync(file, 'r');
+    let carry = Buffer.alloc(0);
+    for (;;) {
+      const n = readSync(fd, buf, 0, CHUNK, null);
+      if (n === 0) return false;
+      const chunk = Buffer.concat([carry, buf.subarray(0, n)]);
+      if (chunk.includes(target)) return true;
+      carry = chunk.subarray(Math.max(0, chunk.length - (target.length - 1)));
+    }
+  } catch {
+    return true;
+  } finally {
+    if (fd !== undefined) closeSync(fd);
+  }
 }
 
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');

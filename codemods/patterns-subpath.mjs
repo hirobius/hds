@@ -41,7 +41,8 @@
  * ("removed in 0.20.0, use Button iconOnly"). NotFoundPattern and TileGrid
  * (hds#395) have codemods of their own: hds-not-found-pattern and hds-tile-grid.
  */
-import { readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, realpathSync } from 'node:fs';
+import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findUnrewritable as findHidden, maskSource } from './unrewritable.mjs';
@@ -361,7 +362,7 @@ export function runCodemod({
     files.push({ file: relative(root, file), sites: r.sites, moved: r.moved, edits: r.edits });
     r.moved.forEach((n) => moved.add(n));
     sites += r.sites;
-    if (write) writeFileSync(file, r.source);
+    if (write) writeFileAtomic(file, r.source);
   }
   return { files, sites, manual, names: [...moved].sort() };
 }

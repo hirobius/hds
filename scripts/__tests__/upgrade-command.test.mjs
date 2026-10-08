@@ -964,6 +964,109 @@ describe('a breaking change the code cannot show was handled', () => {
   });
 });
 
+describe('review round 3 (hds#452)', () => {
+  it("reads the steps from the running package, never the consumer's node_modules copy", () => {
+    const stale = `node_modules/${PKG}`;
+    const root = makeProject({
+      'package.json': pkgJson('app', { [PKG]: '^0.16.0' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.16.0' }),
+      'src/a.tsx': `import { HdsCheckbox, StatusDot } from '${PKG}';\nexport const a = <><HdsCheckbox /><StatusDot /></>;\n`,
+      [`${stale}/package.json`]: { name: PKG, version: '0.16.0' },
+      [`${stale}/upgrade/index.json`]: {
+        package: PKG,
+        latest: '0.17.0',
+        floor: '0.16.0',
+        versions: [
+          { version: '0.17.0', date: '2026-01-01', bump: 'minor', breaking: 0, summary: 'stale' },
+        ],
+        deprecated: [],
+      },
+      [`${stale}/upgrade/releases/0.17.0.json`]: {
+        version: '0.17.0',
+        previous: '0.16.0',
+        date: '2026-01-01',
+        bump: 'minor',
+        summary: 'stale',
+        steps: [
+          {
+            id: '0.17.0/manual/STALE-SENTINEL',
+            kind: 'manual',
+            impact: 'breaking',
+            plain: 'STALE-SENTINEL from the consumer copy.',
+            source: 'x',
+            detect: { imports: [{ from: PKG, names: ['StatusDot'] }] },
+          },
+        ],
+      },
+    });
+    // --to pinned: the running package's ledgers reach it.
+    const pinned = json(root, '--check');
+    expect(pinned.code).toBe(1);
+    expect(pinned.report.target).toBe(TO);
+    expect(leftByHand(pinned.report)).toContain('0.21.0/removed/StatusDot');
+    expect(JSON.stringify(pinned.report)).not.toContain('STALE-SENTINEL');
+    // No --to: the target is the running package's own version.
+    const own = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8')).version;
+    const res = runCli(['upgrade', '--root', root, '--check', '--json', ...QUIET]);
+    const report = JSON.parse(res.stdout);
+    expect(report.target).toBe(own);
+    expect(report.tool).toBe(own);
+    expect(res.stdout).not.toContain('STALE-SENTINEL');
+  });
+
+  it('refuses, naming the file, when a workspace package.json is not valid JSON', () => {
+    const root = makeProject({
+      'package.json': { name: 'mono', private: true, workspaces: ['apps/*'] },
+      'apps/ok/package.json': pkgJson('ok', { [PKG]: `^${TO}` }),
+      'apps/bad/package.json': `{\n  "name": "bad",\n  "dependencies": { "${PKG}": "^0.16.0", },\n}\n`,
+      'apps/bad/src/a.tsx': `import { StatusDot } from '${PKG}';\nexport const a = <StatusDot />;\n`,
+    });
+    const before = snapshotTree(root);
+    const res = runCli(['upgrade', '--root', root, '--to', TO, '--from', TO, ...QUIET]);
+    expect(res.code).toBe(2);
+    expect(res.stderr).toContain(join('apps', 'bad', 'package.json'));
+    expect(res.stdout).not.toMatch(/^Done/m);
+    expect(snapshotTree(root)).toEqual(before);
+  });
+
+  it.each([
+    ['no lockfile and no node_modules', {}],
+    ['an unreadable lockfile', { 'pnpm-lock.yaml': 'this: is: not: a lockfile\n  - [' }],
+  ])('never says done when nothing installed says the target: %s', (_name, files) => {
+    const root = makeProject({ 'package.json': pkgJson('app', { [PKG]: '^0.16.0' }), ...files });
+    const res = run(root, '--from', '0.16.0');
+    expect(res.code).toBe(1);
+    expect(res.stdout).not.toMatch(/^Done/m);
+    expect(res.stdout).toMatch(/Run `\w+ install` to finish: nothing installed says 0\.21\.0 yet/);
+    // The range still moves; the item stays until something is installed.
+    expect(JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).dependencies[PKG]).toBe(
+      `^${TO}`,
+    );
+    expect(run(root, '--from', TO, '--check').code).toBe(1);
+  });
+
+  it('never says done while a code file too big to read still names the package', () => {
+    const big = [
+      `import { StatusDot } from '${PKG}';`,
+      'export const a = <StatusDot />;',
+      `// ${'x'.repeat(1_100_000)}`,
+      '',
+    ].join('\n');
+    const root = makeProject({
+      'package.json': pkgJson('app', { [PKG]: `^${TO}` }),
+      'pnpm-lock.yaml': pnpmLock({ '.': TO }),
+      'src/big.tsx': big,
+      'src/huge-unrelated.js': `// ${'y'.repeat(1_100_000)}\n`,
+    });
+    const { code, report } = json(root, '--from', '0.16.0');
+    expect(code).toBe(1);
+    const item = report.doByHand.find((i) => i.id === 'tool/not-read');
+    expect(item).toMatchObject({ blocking: true, files: ['src/big.tsx'] });
+    expect(item.plain).toContain('over 1 MB');
+    expect(UpgradeReport.safeParse(report).success).toBe(true);
+  });
+});
+
 describe('the bins', () => {
   const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
 
@@ -976,6 +1079,17 @@ describe('the bins', () => {
   it('codemods/upgrade.mjs holds no hard-coded version string', () => {
     const source = readFileSync(UPGRADE, 'utf8');
     expect(source.match(/\b\d+\.\d+\.\d+\b/g)).toBeNull();
+  });
+
+  it('smoke:consumer runs the packed design-system bin with upgrade --dry-run and checks it', () => {
+    const smoke = readFileSync(join(REPO, 'scripts/smoke-consumer.mjs'), 'utf8');
+    const block = smoke.slice(smoke.indexOf('// ── 3g.'), smoke.indexOf('// ── 4.'));
+    expect(block.length).toBeGreaterThan(0);
+    expect(block).toContain("spawnSync(join(binDir, 'design-system'), upgradeArgs");
+    expect(block).toMatch(/upgradeArgs = \['upgrade',[^\]]*'--dry-run'/);
+    expect(block).toContain('res.status !== 1');
+    expect(block).toContain("['Fixed for you', 'Looks different', 'Coming next', 'Do by hand']");
+    expect(block).toContain('ok = false');
   });
 
   it('--help exits 0 and names every flag', () => {

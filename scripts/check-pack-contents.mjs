@@ -77,6 +77,7 @@ export const REQUIRED = [
   // drives and the helpers it imports.
   'codemods/upgrade.mjs',
   'codemods/registry.mjs',
+  'codemods/lib/atomic-write.mjs',
   'codemods/lib/installed-version.mjs',
   'codemods/lib/project.mjs',
   'codemods/lib/record.mjs',

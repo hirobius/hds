@@ -22,7 +22,8 @@
  * removed props type, and a namespace or dynamic import that reads the name are
  * listed too. Running a fold twice changes nothing.
  */
-import { readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, realpathSync } from 'node:fs';
+import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findUnrewritable, maskSource } from './unrewritable.mjs';
@@ -458,7 +459,7 @@ export function runFold({ root, write = false, rule, skip = [] }) {
     if (!r.changed) continue;
     files.push({ file: relative(root, file), sites: r.sites, edits: r.edits });
     sites += r.sites;
-    if (write) writeFileSync(file, r.source);
+    if (write) writeFileAtomic(file, r.source);
   }
   return { files, sites, manual };
 }
