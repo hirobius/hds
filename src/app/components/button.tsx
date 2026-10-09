@@ -295,7 +295,11 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         {...toggleProps}
         {...props}
       >
-        {loading ? <Loader2 className="animate-spin" aria-hidden="true" /> : iconLeft}
+        {loading ? (
+          <Loader2 className="animate-spin motion-reduce:animate-none" aria-hidden="true" />
+        ) : (
+          iconLeft
+        )}
         {!iconOnly && content}
         {!loading && !iconOnly && iconRight}
       </button>

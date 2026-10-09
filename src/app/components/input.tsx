@@ -371,7 +371,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
             padCfg.inset,
           )}
         >
-          <Loader2 className={cn('animate-spin', padCfg.iconClass)} />
+          <Loader2 className={cn('animate-spin motion-reduce:animate-none', padCfg.iconClass)} />
         </span>
       )}
 

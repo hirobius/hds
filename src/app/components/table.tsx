@@ -74,7 +74,10 @@ const tableSortButtonVariants = /* @__PURE__ */ cva(
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row-divider border tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableDataCellVariants = /* @__PURE__ */ cva(
-  'flex items-start px-[var(--semantic-space-surface-padding)]',
+  // items-center (not items-start) so mixed cell content lines up on a shared
+  // vertical center — a badge/status slot no longer floats above its text
+  // siblings in the same row. Matches the header cell's items-center.
+  'flex items-center px-[var(--semantic-space-surface-padding)]',
   {
     variants: {
       align: {
@@ -221,7 +224,9 @@ export function Table({
   return (
     <div className="min-w-0 max-w-full">
       {caption || description ? (
-        <div>
+        // inline-ok: token-driven gap so the caption/description block doesn't
+        // touch the table's header band below it.
+        <div style={{ marginBottom: hds.semantic.space.scale.sm }}>
           {caption ? (
             <div className="flex items-center justify-between">
               <div
