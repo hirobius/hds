@@ -60,10 +60,22 @@ import { Copy, Search, Star } from '@hirobius/design-system/icons';
 import { MetricTile, MetricTiles } from '@hirobius/design-system/patterns';
 import type { PreviewedComponent } from '../lib/previewed-components';
 
+// Demo layout uses the HDS space scale, never raw px.
+const SM = 'var(--semantic-space-scale-sm)';
+const XS = 'var(--semantic-space-scale-xs)';
+const demoRow = { display: 'flex', gap: SM, flexWrap: 'wrap', alignItems: 'center' } as const;
+const demoStack = { display: 'grid', gap: SM } as const;
+const demoColumn = { ...demoStack, width: 'min(100%, 360px)' } as const;
+const demoTile = {
+  padding: SM,
+  border: '1px solid var(--semantic-color-border-default)',
+  borderRadius: 'var(--semantic-radius-action)',
+} as const;
+
 function ButtonDemo() {
   const [pressed, setPressed] = useState(false);
   return (
-    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: SM, flexWrap: 'wrap', alignItems: 'center' }}>
       <Button variant="primary">Primary</Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="primary" disabled>
@@ -78,7 +90,7 @@ function ButtonDemo() {
 
 function InputDemo() {
   return (
-    <div style={{ display: 'grid', gap: 12, width: 'min(100%, 320px)' }}>
+    <div style={{ display: 'grid', gap: SM, width: 'min(100%, 320px)' }}>
       <Input label="Project name" placeholder="Portfolio redesign" />
       <Input label="Start date" type="date" defaultValue="2026-10-01" />
       <Input size="sm" placeholder="Small" aria-label="Small input" />
@@ -107,7 +119,7 @@ function SelectDemo() {
 function CheckboxDemo() {
   const [checked, setChecked] = useState(true);
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <div style={demoStack}>
       <Checkbox label="Receive project update emails" checked={checked} onChange={setChecked} />
       <Checkbox label="Disabled option" checked={false} onChange={() => {}} disabled />
     </div>
@@ -199,17 +211,17 @@ function MetricTilesDemo() {
   );
 }
 
-const row = { display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' } as const;
-const column = { display: 'grid', gap: 12, width: 'min(100%, 360px)' } as const;
-
 function AlertDemo() {
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <div style={demoStack}>
       <Alert tone="info" title="Heads up">
         Tokens regenerate on every build.
       </Alert>
       <Alert tone="success" title="Published">
         Version 0.22.0 is live on npm.
+      </Alert>
+      <Alert tone="warning" title="Needs review">
+        One deprecated prop is still in use.
       </Alert>
       <Alert tone="danger" title="Build failed">
         Two components have no Figma node.
@@ -220,7 +232,7 @@ function AlertDemo() {
 
 function AvatarDemo() {
   return (
-    <div style={row}>
+    <div style={demoRow}>
       <Avatar alt="Ada Lovelace" initials="AL" size="sm" />
       <Avatar alt="Grace Hopper" initials="GH" size="md" />
       <Avatar alt="Alan Kay" initials="AK" size="lg" />
@@ -230,7 +242,7 @@ function AvatarDemo() {
 
 function BadgeDemo() {
   return (
-    <div style={row}>
+    <div style={demoRow}>
       <Badge tone="neutral">Draft</Badge>
       <Badge tone="info">Review</Badge>
       <Badge tone="success">Active</Badge>
@@ -309,13 +321,7 @@ function ComboboxDemo() {
 function ContainerDemo() {
   return (
     <Container maxWidth="content" padding="0">
-      <div
-        style={{
-          padding: 16,
-          border: '1px dashed var(--semantic-color-border-default)',
-          borderRadius: 8,
-        }}
-      >
+      <div style={{ ...demoTile, borderStyle: 'dashed' }}>
         Content is centred and capped at the reading width.
       </div>
     </Container>
@@ -332,7 +338,7 @@ function DisclosureDemo() {
 
 function DividerDemo() {
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <div style={demoStack}>
       <span>Above</span>
       <Divider />
       <span>Between</span>
@@ -353,7 +359,7 @@ function EmptyStateDemo() {
 
 function FieldDemo() {
   return (
-    <div style={column}>
+    <div style={demoColumn}>
       <Field label="Version" value="0.22.0" mono />
       <Field label="Status" value="Published" tone="success" />
     </div>
@@ -364,14 +370,7 @@ function GridDemo() {
   return (
     <Grid columns={3} gap="normal">
       {['One', 'Two', 'Three', 'Four', 'Five', 'Six'].map((label) => (
-        <div
-          key={label}
-          style={{
-            padding: 12,
-            border: '1px solid var(--semantic-color-border-default)',
-            borderRadius: 8,
-          }}
-        >
+        <div key={label} style={demoTile}>
           {label}
         </div>
       ))}
@@ -381,7 +380,7 @@ function GridDemo() {
 
 function IconDemo() {
   return (
-    <div style={row}>
+    <div style={demoRow}>
       <Icon icon={Star} size="small" />
       <Icon icon={Search} size="medium" />
       <Icon icon={Copy} size="large" />
@@ -423,7 +422,7 @@ function PopoverDemo() {
 
 function ProgressDemo() {
   return (
-    <div style={column}>
+    <div style={demoColumn}>
       <Progress label="Upload" value={64} />
       <Progress label="Sync" value={100} tone="success" />
       <Progress label="Loading" variant="circular" />
@@ -434,13 +433,19 @@ function ProgressDemo() {
 function RadioDemo() {
   const [plan, setPlan] = useState('team');
   return (
-    <div role="radiogroup" aria-label="Plan" style={{ display: 'grid', gap: 12 }}>
-      {['solo', 'team', 'enterprise'].map((option) => (
+    <div role="radiogroup" aria-label="Plan" style={demoStack}>
+      {[
+        { value: 'solo', label: 'Solo' },
+        { value: 'team', label: 'Team' },
+        { value: 'enterprise', label: 'Enterprise' },
+      ].map((option) => (
         <Radio
-          key={option}
-          label={option[0].toUpperCase() + option.slice(1)}
-          checked={plan === option}
-          onChange={() => setPlan(option)}
+          key={option.value}
+          name="plan"
+          value={option.value}
+          label={option.label}
+          checked={plan === option.value}
+          onChange={() => setPlan(option.value)}
         />
       ))}
     </div>
@@ -465,9 +470,9 @@ function SegmentedControlDemo() {
 
 function SkeletonDemo() {
   return (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center', width: 'min(100%, 360px)' }}>
+    <div style={{ ...demoRow, flexWrap: 'nowrap', width: 'min(100%, 360px)' }}>
       <Skeleton variant="circular" width={40} height={40} />
-      <div style={{ display: 'grid', gap: 8, flex: 1 }}>
+      <div style={{ display: 'grid', gap: XS, flex: 1 }}>
         <Skeleton variant="text" width="60%" />
         <Skeleton variant="text" />
       </div>
@@ -478,7 +483,7 @@ function SkeletonDemo() {
 function SliderDemo() {
   const [value, setValue] = useState(40);
   return (
-    <div style={column}>
+    <div style={demoColumn}>
       <Slider label="Volume" min={0} max={100} value={value} onChange={setValue} />
     </div>
   );
@@ -486,7 +491,7 @@ function SliderDemo() {
 
 function SpinnerDemo() {
   return (
-    <div style={row}>
+    <div style={demoRow}>
       <Spinner size="sm" label="Loading" />
       <Spinner size="md" label="Loading" />
       <Spinner size="lg" label="Loading" />
@@ -529,7 +534,7 @@ function TabsDemo() {
 function TagDemo() {
   const [active, setActive] = useState('tokens');
   return (
-    <div style={row}>
+    <div style={demoRow}>
       {['tokens', 'components', 'patterns'].map((tag) => (
         <Tag key={tag} active={active === tag} onClick={() => setActive(tag)}>
           {tag}
@@ -541,7 +546,7 @@ function TagDemo() {
 
 function TextDemo() {
   return (
-    <div style={{ display: 'grid', gap: 8 }}>
+    <div style={{ display: 'grid', gap: XS }}>
       <Text variant="display">Display</Text>
       <Text variant="title">Title</Text>
       <Text variant="body">Body for flowing prose and paragraph copy.</Text>
@@ -554,7 +559,7 @@ function TextDemo() {
 
 function TextareaDemo() {
   return (
-    <div style={column}>
+    <div style={demoColumn}>
       <Textarea label="Notes" helperText="Markdown is supported." placeholder="Add a note…" />
     </div>
   );
@@ -579,7 +584,7 @@ function TooltipDemo() {
 function VisuallyHiddenDemo() {
   return (
     <Button variant="secondary">
-      <Icon icon={Search} size="small" aria-hidden />
+      <Icon icon={Search} size="small" />
       <VisuallyHidden>Search components</VisuallyHidden>
     </Button>
   );
@@ -635,9 +640,9 @@ export function DemoFrame({ children }: { children: ReactNode }) {
       data-hds
       className="hds-demo-frame not-prose"
       style={{
-        padding: 24,
+        padding: 'var(--semantic-space-scale-md)',
         border: '1px solid var(--semantic-color-border-default)',
-        borderRadius: 8,
+        borderRadius: 'var(--semantic-radius-action)',
         background: 'var(--semantic-color-surface-page)',
         color: 'var(--semantic-color-content-primary)',
       }}

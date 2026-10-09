@@ -116,10 +116,15 @@ export function pageDescription(name, spec) {
       .replace(/`/g, '')
       .replace(/\s*\n\s*/g, ' ')
       .trim();
-  let text = clean(spec?.description).replace(new RegExp(`^${name}\\s+[^\\w\\s]+\\s+`), '');
+  let text = clean(spec?.description).replace(
+    new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+[^\\w\\s]+\\s+`),
+    '',
+  );
   if (!text || INTERNAL_NOTE.test(text)) text = clean(spec?.usage?.when);
   if (!text) return `${name} component.`;
-  const [first] = text.split(/(?<!\be\.g\.|\bi\.e\.)(?<=[.!?])\s+(?=[A-Za-z])/);
+  const [first] = text.split(
+    /(?<!\b[eE]\.g\.|\b[iI]\.e\.|\betc\.|\bvs\.)(?<=[.!?])\s+(?=[A-Za-z])/,
+  );
   return first.charAt(0).toUpperCase() + first.slice(1);
 }
 
