@@ -901,6 +901,49 @@ export async function hdsApply(figma, plan) {
   //    a new one is replaced before the new alias is set.
   const valueChanges = [];
   plan.variables.forEach((pv) => pv.values.forEach((change) => valueChanges.push({ pv, change })));
+
+  //    Fonts first: every font a style has or gets, and every family a value
+  //    change gives a variable a style's fontFamily binds (directly or through
+  //    aliases), since Figma refuses that value until the font is loaded.
+  const pendingText = plan.textStyles.filter((ps) => ps.action !== 'unchanged' || ps.stampKey);
+  const fonts = {};
+  const addFont = (font) => {
+    if (font) fonts[font.family + '|' + font.style] = font;
+  };
+  pendingText
+    .filter((ps) => ps.action !== 'unchanged')
+    .forEach((ps) => {
+      addFont(ps.currentFont);
+      addFont({ family: ps.set.fontFamily, style: ps.set.fontStyle });
+    });
+  const reaches = (startId, targetId) => {
+    const seen = new Set();
+    const queue = [startId];
+    while (queue.length) {
+      const current = queue.shift();
+      if (current === targetId) return true;
+      if (seen.has(current)) continue;
+      seen.add(current);
+      const v = variables.get(current);
+      if (!v) continue;
+      Object.keys(v.valuesByMode).forEach((mode) => {
+        const entry = v.valuesByMode[mode];
+        if (entry && entry.type === 'VARIABLE_ALIAS') queue.push(entry.id);
+      });
+    }
+    return false;
+  };
+  valueChanges.forEach(({ pv, change }) => {
+    const v = byPath[pv.path];
+    if (!v || v.resolvedType !== 'STRING' || typeof change.to.value !== 'string') return;
+    textStyles.forEach((style) => {
+      const binding = (style.boundVariables || {}).fontFamily;
+      if (binding && reaches(binding.id, v.id)) {
+        addFont({ family: change.to.value, style: style.fontName.style });
+      }
+    });
+  });
+  for (const key of Object.keys(fonts)) await figma.loadFontAsync(fonts[key]);
   const setValue = ({ pv, change }) => {
     const v = byPath[pv.path];
     const collection = collectionByKey[pv.collection];
@@ -915,17 +958,7 @@ export async function hdsApply(figma, plan) {
   valueChanges.filter((c) => c.change.to.alias === undefined).forEach(setValue);
   valueChanges.filter((c) => c.change.to.alias !== undefined).forEach(setValue);
 
-  // 6. Text styles: load every font a style has or gets before touching it.
-  const pendingText = plan.textStyles.filter((ps) => ps.action !== 'unchanged' || ps.stampKey);
-  const fonts = {};
-  pendingText
-    .filter((ps) => ps.action !== 'unchanged')
-    .forEach((ps) => {
-      [ps.currentFont, { family: ps.set.fontFamily, style: ps.set.fontStyle }].forEach((font) => {
-        if (font) fonts[font.family + '|' + font.style] = font;
-      });
-    });
-  for (const key of Object.keys(fonts)) await figma.loadFontAsync(fonts[key]);
+  // 6. Text styles (fonts were loaded before step 5).
   for (const ps of pendingText) {
     const isNew = ps.action === 'create';
     const style = isNew ? figma.createTextStyle() : need(textStyles, ps.id, 'Text style');
