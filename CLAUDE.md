@@ -1,5 +1,16 @@
 # CLAUDE.md
 
+## Focus contract — read first
+
+**`docs/ai/NORTH_STAR.md`** is the HDS North Star: what this design system is
+_for_, who it serves (Adrian first; downstream consumers are a named stretch
+goal), and its non-goals. Anchor roadmap and scope calls there. In one line: HDS
+is a token-first React product foundation — one opinionated, re-themeable system
+to ship Adrian's apps fast, and portfolio-grade proof of design-system
+engineering. Not a public OSS library (yet); not native ServiceNow UI.
+
+---
+
 ## 0. HARD RULES (no exceptions, apply to all agents including Claude)
 
 - **NEVER read, write, create, or delete `.env*` files.** Keys are set by the human only. If a task needs a new key, document it in a comment in the script and stop — do not touch `.env.local`.
