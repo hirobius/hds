@@ -1,5 +1,5 @@
 /**
- * Core components that have a live demo in components/component-demos.tsx.
+ * Core components and patterns that have a live demo in components/component-demos.tsx.
  * The demo registry is typed against this list, so a name cannot be listed
  * here without a demo (or vice versa). Components not listed render a "no live
  * preview yet" note on their generated page instead of a broken demo.
@@ -13,6 +13,51 @@ export const PREVIEWED_COMPONENTS = [
   'Menu',
   'Table',
   'MetricTiles',
+  'Alert',
+  'Avatar',
+  'Badge',
+  'Box',
+  'Breadcrumb',
+  'Card',
+  'Combobox',
+  'Container',
+  'Disclosure',
+  'Divider',
+  'EmptyState',
+  'Field',
+  'Grid',
+  'Icon',
+  'InlineLink',
+  'Kbd',
+  'Pagination',
+  'Popover',
+  'Progress',
+  'Radio',
+  'SegmentedControl',
+  'Skeleton',
+  'Slider',
+  'Spinner',
+  'Stack',
+  'Surface',
+  'Tabs',
+  'Tag',
+  'Text',
+  'Textarea',
+  'Toggle',
+  'Tooltip',
+  'VisuallyHidden',
+  // Patterns (@hirobius/design-system/patterns)
+  'Page',
+  'PageHeader',
+  'StatusTile',
+  'Form',
+  'FormActions',
+  'DataTableSection',
+  'DestructiveSection',
+  'ErrorPattern',
+  'CodeBlock',
+  'AssetImg',
+  'Reveal',
 ] as const;
 
 export type PreviewedComponent = (typeof PREVIEWED_COMPONENTS)[number];

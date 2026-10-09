@@ -58,15 +58,15 @@ function propsSection(name, api) {
   ].join('\n');
 }
 
-function usageSection(name, spec, isLinkable) {
+function usageSection(name, spec, isLinkable, entry, section) {
   const u = spec?.usage;
-  const lines = [`\`\`\`tsx\nimport { ${name} } from '@hirobius/design-system';\n\`\`\``];
+  const lines = [`\`\`\`tsx\nimport { ${name} } from '${entry}';\n\`\`\``];
   if (u?.when) lines.push(`**Use when:** ${prose(u.when)}`);
   if (u?.whenNot) lines.push(`**Not when:** ${prose(u.whenNot)}`);
   if (Array.isArray(u?.useInstead) && u.useInstead.length) {
     const items = u.useInstead.map((i) => {
       const ref = isLinkable(i.component)
-        ? `[${i.component}](/docs/components/${componentSlug(i.component)})`
+        ? `[${i.component}](/docs/${section}/${componentSlug(i.component)})`
         : `\`${i.component}\``;
       return `- ${ref}: ${prose(i.reason)}`;
     });
@@ -100,11 +100,48 @@ function accessibilitySection(spec) {
   return parts.length ? parts.join('\n\n') : null;
 }
 
+/** Code notes that reach the manifest from JSDoc but say nothing to a reader. */
+const INTERNAL_NOTE = /^tagged\b|\btagged here\b|\broot \+ parts\b|^\S+ root\./i;
+
 /**
- * @param {{ manifest: any, api: any, core: string[], providers?: string[] }} input
+ * The page's one-line summary: the first sentence of the spec description,
+ * minus a leading "Name —" prefix, capitalised. A JSDoc note written for
+ * maintainers (Figma tagging, "root + parts") falls back to usage.when.
+ * @param {string} name
+ * @param {any} spec
+ */
+export function pageDescription(name, spec) {
+  const clean = (text) =>
+    String(text ?? '')
+      .replace(/`/g, '')
+      .replace(/\s*\n\s*/g, ' ')
+      .trim();
+  let text = clean(spec?.description).replace(
+    new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+[^\\w\\s]+\\s+`),
+    '',
+  );
+  if (!text || INTERNAL_NOTE.test(text)) text = clean(spec?.usage?.when);
+  if (!text) return `${name} component.`;
+  const [first] = text.split(
+    /(?<!\b[eE]\.g\.|\b[iI]\.e\.|\betc\.|\bvs\.)(?<=[.!?])\s+(?=[A-Za-z])/,
+  );
+  return first.charAt(0).toUpperCase() + first.slice(1);
+}
+
+/**
+ * @param {{ manifest: any, api: any, core: string[], providers?: string[], section?: string, entry?: string }} input
+ *   section: the docs folder the pages live in (links between pages stay inside it);
+ *   entry: the import specifier the Usage snippet shows.
  * @returns {Map<string, string>} slug -> MDX source
  */
-export function buildComponentPages({ manifest, api, core, providers = [] }) {
+export function buildComponentPages({
+  manifest,
+  api,
+  core,
+  providers = [],
+  section = 'components',
+  entry = '@hirobius/design-system',
+}) {
   const specs = manifest?.componentSpecs ?? {};
   const names = core.filter((n) => !providers.includes(n));
   const pageSet = new Set(names);
@@ -113,11 +150,7 @@ export function buildComponentPages({ manifest, api, core, providers = [] }) {
 
   for (const name of names) {
     const spec = specs[name] ?? {};
-    const description = String(spec.description ?? `${name} component.`)
-      .replace(new RegExp(`^${name}\\s+[-—–]\\s+`), '')
-      .replace(/`/g, '')
-      .replace(/\s*\n\s*/g, ' ')
-      .trim();
+    const description = pageDescription(name, spec);
     const related = [
       ...new Set((spec.usage?.useInstead ?? []).map((i) => i.component).filter(isLinkable)),
     ];
@@ -136,14 +169,14 @@ export function buildComponentPages({ manifest, api, core, providers = [] }) {
     const sections = [
       fm,
       `## Live Preview\n\n{/* preview: ${name} */}`,
-      `## Usage\n\n${usageSection(name, spec, isLinkable)}`,
+      `## Usage\n\n${usageSection(name, spec, isLinkable, entry, section)}`,
       `## Props & API\n\n${propsSection(name, api)}`,
       ...(a11y ? [`## Accessibility\n\n${a11y}`] : []),
       '## Tokens Used\n\n{/* generated: tokens */}',
       ...(related.length
         ? [
             `## Related Components\n\n${related
-              .map((r) => `- [${r}](/docs/components/${componentSlug(r)})`)
+              .map((r) => `- [${r}](/docs/${section}/${componentSlug(r)})`)
               .join('\n')}`,
           ]
         : []),
@@ -151,6 +184,19 @@ export function buildComponentPages({ manifest, api, core, providers = [] }) {
     pages.set(componentSlug(name), `${sections.join('\n\n')}\n`);
   }
   return pages;
+}
+
+/**
+ * One pattern page per module the `/patterns` entry re-exports: the module's
+ * PascalCase name is its primary component (`metric-tiles` -> MetricTiles), so
+ * a new pattern module gets a page with no list to keep in sync.
+ * @param {string} patternsSource  contents of src/patterns.ts
+ * @returns {string[]}
+ */
+export function patternComponents(patternsSource) {
+  return [...String(patternsSource).matchAll(/export \* from '\.\/app\/components\/([^']+)'/g)].map(
+    ([, mod]) => mod.replace(/(^|-)([a-z])/g, (_, __, c) => c.toUpperCase()),
+  );
 }
 
 /** The shared providers guide check-docs requires once components/ exists. */

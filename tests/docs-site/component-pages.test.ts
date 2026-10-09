@@ -18,7 +18,12 @@ import {
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 // @ts-expect-error — plain .mjs module, no types
-import { buildComponentPages, componentSlug } from '../../scripts/lib/docs-component-pages.mjs';
+import {
+  buildComponentPages,
+  componentSlug,
+  pageDescription,
+  patternComponents,
+} from '../../scripts/lib/docs-component-pages.mjs';
 // @ts-expect-error — plain .mjs module, no types
 import { CORE_COMPONENTS } from '../../scripts/lib/core-components.mjs';
 import { PREVIEWED_COMPONENTS } from '../../docs-site/lib/previewed-components';
@@ -174,5 +179,87 @@ describe('drift: every core component has a generated page', () => {
       expect(PREVIEWED_COMPONENTS).toContain(n);
     }
     expect(PREVIEWED_COMPONENTS).toContain('MetricTiles');
+  });
+});
+
+describe('pageDescription: a reader-facing summary, not a code note', () => {
+  const when = 'Group related content on a raised surface.';
+
+  it('keeps only the first sentence and capitalises it', () => {
+    expect(
+      pageDescription('Grid', {
+        description: 'responsive grid primitive. Enforces semantic gap. - layout=fixed',
+      }),
+    ).toBe('Responsive grid primitive.');
+    expect(
+      pageDescription('Box', { description: 'layout primitive. sx is a subset of MUI.' }),
+    ).toBe('Layout primitive.');
+  });
+
+  it('strips a leading component-name prefix, whatever the separator', () => {
+    expect(
+      pageDescription('InlineLink', { description: 'InlineLink \u201d inline link primitive.' }),
+    ).toBe('Inline link primitive.');
+    expect(pageDescription('Seg', { description: 'Seg " segmented input. More detail.' })).toBe(
+      'Segmented input.',
+    );
+  });
+
+  it('falls back to usage.when for internal notes (Figma tagging, root + parts)', () => {
+    for (const description of [
+      'Tagged per-export, not on the file block: this module exports eight components.',
+      'Menu root + parts. Controlled via open.',
+      'Tooltip root. Bakes in the Radix Provider.',
+      'The tab set itself. Tagged here rather than in the file block.',
+    ]) {
+      expect(pageDescription('X', { description, usage: { when } })).toBe(when);
+    }
+  });
+
+  it('does not split on e.g. before inline code', () => {
+    expect(pageDescription('Kbd', { description: 'Renders a key, e.g. <Kbd>K</Kbd>.' })).toBe(
+      'Renders a key, e.g. <Kbd>K</Kbd>.',
+    );
+  });
+
+  it('uses a default when there is nothing to say', () => {
+    expect(pageDescription('Widget', {})).toBe('Widget component.');
+  });
+});
+
+describe('pattern pages: one per module the /patterns entry re-exports', () => {
+  const patternsSource = readFileSync(join(ROOT, 'src/patterns.ts'), 'utf8');
+
+  it('names each module by its PascalCase primary component', () => {
+    expect(
+      patternComponents(
+        "export * from './app/components/metric-tiles';\nexport * from './app/components/form';",
+      ),
+    ).toEqual(['MetricTiles', 'Form']);
+  });
+
+  it('every pattern has a spec, a page under /docs/patterns and a live preview', () => {
+    const manifest = JSON.parse(readFileSync(join(ROOT, 'public/hds-manifest.json'), 'utf8'));
+    const names = patternComponents(patternsSource) as string[];
+    expect(names.length).toBeGreaterThan(0);
+    const pages = buildComponentPages({
+      manifest,
+      api: {},
+      core: names,
+      section: 'patterns',
+      entry: '@hirobius/design-system/patterns',
+    }) as Map<string, string>;
+    for (const n of names) {
+      expect(manifest.componentSpecs[n], n).toBeDefined();
+      expect(PREVIEWED_COMPONENTS, n).toContain(n);
+      const mdx = pages.get(componentSlug(n));
+      expect(mdx).toContain(`import { ${n} } from '@hirobius/design-system/patterns';`);
+    }
+  });
+
+  it('every core component page has a live preview', () => {
+    for (const n of (CORE_COMPONENTS as string[]).filter((c) => !PROVIDERS.includes(c))) {
+      expect(PREVIEWED_COMPONENTS, n).toContain(n);
+    }
   });
 });
