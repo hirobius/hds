@@ -1,0 +1,1 @@
+Impeccable polish: unified Alert + Callout on the tinted-fill tone language (Adrian: keep fill, update spec). Callout 3px stripe -> bg-feedback-bg-\* fill (rounded), accent -> bg-muted; Alert unchanged. DESIGN.source builder description corrected (fill, not left-border); DESIGN.md + llms regenerated. Verified in preview bench light+dark. typecheck/lint/freshness/brand green.
