@@ -76,3 +76,4 @@ eval/consistency/runs/
 
 # Vendored skills — pinned by sha256 in skills-lock.json; formatting would break the hash
 .claude/skills/
+.claude/references/
