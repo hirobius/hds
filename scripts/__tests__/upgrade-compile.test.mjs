@@ -10,7 +10,7 @@
  * Each case runs on a throwaway repo. The expected text is written out by
  * hand from the fixture ledgers, not recomputed the way the compiler does.
  */
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -40,6 +40,10 @@ import {
 const PKG = '@hirobius/design-system';
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CLI = join(REPO, 'scripts/upgrade/compile.mjs');
+// Most tests here spawn node (and some git) several times. Alone each takes about a
+// second; under the full parallel suite, as in pre-push, the 5 s default timed out.
+vi.setConfig({ testTimeout: 30_000 });
+
 const run = (args) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8' });
 const read = (root, rel) => readFileSync(join(root, rel), 'utf8');
 
