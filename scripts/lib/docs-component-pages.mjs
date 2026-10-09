@@ -174,9 +174,10 @@ export function pageDescription(name, spec) {
 }
 
 /**
- * @param {{ manifest: any, api: any, core: string[], providers?: string[], section?: string, entry?: string }} input
+ * @param {{ manifest: any, api: any, core: string[], providers?: string[], section?: string, entry?: string, sourceBase?: string }} input
  *   section: the docs folder the pages live in (links between pages stay inside it);
- *   entry: the import specifier the Usage snippet shows.
+ *   entry: the import specifier the Usage snippet shows;
+ *   sourceBase: blob URL a component's filePath is appended to for its Source link.
  * @returns {Map<string, string>} slug -> MDX source
  */
 export function buildComponentPages({
@@ -188,6 +189,7 @@ export function buildComponentPages({
   utilityPage = 'utilities',
   section = 'components',
   entry = '@hirobius/design-system',
+  sourceBase = '',
 }) {
   const specs = manifest?.componentSpecs ?? {};
   const shared = core.filter((n) => utilities.includes(n));
@@ -210,6 +212,11 @@ export function buildComponentPages({
       'status: "stable"',
       ...(/^\d+\.\d+\.\d+$/.test(spec.since ?? '') ? [`since: ${JSON.stringify(spec.since)}`] : []),
       ...(related.length ? ['related:', ...related.map((r) => `  - ${JSON.stringify(r)}`)] : []),
+      // The status row under the subtitle: design and code, one click each.
+      ...(spec.figmaUrl ? [`figma: ${JSON.stringify(spec.figmaUrl)}`] : []),
+      ...(sourceBase && spec.filePath
+        ? [`source: ${JSON.stringify(`${sourceBase}/${spec.filePath}`)}`]
+        : []),
       '---',
     ].join('\n');
 
