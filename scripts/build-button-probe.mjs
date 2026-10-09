@@ -26,6 +26,7 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
+import { PERF_BUDGET_HINT } from './lib/perf-budget-hint.mjs';
 import {
   ALLOWED_PACKAGES,
   bundleButtonOnly,
@@ -109,5 +110,6 @@ if (esbuildProbe.disallowed.length > 0) {
       '  `X.Part = …` or `X.displayName = …` write, or an un-annotated Object.assign.\n' +
       '  dist/probe/button-only.esbuild.meta.json lists every input that got in.',
   );
+  console.error(`\n${PERF_BUDGET_HINT}`);
   process.exit(1);
 }

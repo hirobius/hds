@@ -1,0 +1,1 @@
+Perf-budget failures (`pnpm size-limit`, `check:size`, the Button probe) now point at the `performance-optimization` skill and say never raise a budget: `size-limit` is `scripts/run-size-limit.mjs`, a wrapper that prints `scripts/lib/perf-budget-hint.mjs` on failure. No budget changed; nothing ships.

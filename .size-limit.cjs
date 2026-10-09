@@ -14,6 +14,11 @@
  * if any entry exceeds its budget — this is intentional. To update a budget,
  * measure a new baseline and justify the change in the PR.
  *
+ * A failing budget is a performance-optimization task first (skill:
+ * .claude/skills/performance-optimization/SKILL.md; `pnpm size-limit` prints the
+ * pointer via scripts/run-size-limit.mjs). Raising a limit is a last resort that
+ * needs Adrian's approval, never a way to get a branch green.
+ *
  * Baseline (gzip, library build, 2026-07-07, ADR-018 teardown cleanup):
  *   hirobius-ui.js (main barrel)     : 157.29 kB -> budget 185 kB
  *   manifest.js (hds-manifest.json)  :  40.34 kB -> budget  47 kB
