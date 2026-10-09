@@ -6,8 +6,10 @@
 _for_, who it serves (Adrian first; downstream consumers are a named stretch
 goal), and its non-goals. Anchor roadmap and scope calls there. In one line: HDS
 is a token-first React product foundation — one opinionated, re-themeable system
-to ship Adrian's apps fast, and portfolio-grade proof of design-system
-engineering. Not a public OSS library (yet); not native ServiceNow UI.
+to ship Adrian's apps fast, and a serious piece of design-system engineering.
+Not a public OSS library (yet); not native ServiceNow UI. The React components
+are React-bound; the token layer is portable (the bridge to site-engine's Astro
+sites or a ServiceNow theme — export tokens, not components).
 
 ---
 
