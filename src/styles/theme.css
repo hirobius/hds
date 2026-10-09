@@ -46,6 +46,11 @@
 @import 'tailwindcss';
 @config "../../tailwind.config.ts";
 
+/* hds#449: each release snapshot records every class its published stylesheets
+   carried (css.bundles.*.classes). Scanned, they would compile those utilities
+   back into the build, removed ones included, so Tailwind never reads them. */
+@source not "../../docs/api/releases";
+
 /* Published utility surface kept after hds#391. Tailwind only emits the
    utilities it finds in scanned files, and these 16 lived only in the deleted
    docs-tooling, animated-label and editorial files. Consumers that use

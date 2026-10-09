@@ -65,6 +65,9 @@ export const REQUIRED = [
   'dist/fonts/satoshi-500.woff2',
   'dist/fonts/satoshi-700.woff2',
   'dist/fonts/ibm-plex-mono-400.woff2',
+  // The CSS contract (hds#449): what the release snapshot and the CSS upgrade
+  // gate read, shipped so `snapshot.mjs --from-npm` reads the very bytes.
+  'dist/css-contract.json',
   // The upgrade record (hds#451): what a person upgrading by hand reads, and
   // what the upgrade command (hds#452) reads from the version it runs.
   'UPGRADING.md',

@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The package now ships dist/css-contract.json, a list of every CSS variable, class and font face it promises, which the upgrade command reads to warn you when one you use changes."
+}

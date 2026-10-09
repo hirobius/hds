@@ -146,10 +146,19 @@ const isTestOrDoc = (rel: string) =>
   /\.(test|spec)\.[cm]?[jt]sx?$/.test(rel) ||
   /\.mdx?$/.test(rel);
 
+/**
+ * Paths src/styles/theme.css keeps from Tailwind with `@source not`: the
+ * release snapshots (hds#449) record every class each published stylesheet
+ * carried, `!` utilities of old releases included, and Tailwind never reads them.
+ */
+const NOT_SCANNED = /^docs\/api\/releases\//;
+
 function testAndDocFiles(): string[] {
   return execFileSync('git', ['ls-files', '-z'], { cwd: ROOT, encoding: 'utf8' })
     .split('\0')
-    .filter((rel) => rel && isTestOrDoc(rel) && existsSync(join(ROOT, rel)));
+    .filter(
+      (rel) => rel && isTestOrDoc(rel) && !NOT_SCANNED.test(rel) && existsSync(join(ROOT, rel)),
+    );
 }
 
 /**
@@ -166,6 +175,12 @@ const leading = (cls: string) => cls.replace(/^(.*:)?/, `$1${BANG}`);
 const trailing = (cls: string) => `${cls}${BANG}`;
 
 describe('no important modifier in component class strings', () => {
+  it('relies on theme.css keeping the release snapshots from Tailwind', () => {
+    expect(readFileSync(join(ROOT, 'src/styles/theme.css'), 'utf8')).toContain(
+      '@source not "../../docs/api/releases";',
+    );
+  });
+
   it('finds no important-modified utility in src/app/components/*.tsx', () => {
     const violations = readdirSync(join(ROOT, COMPONENTS_DIR))
       .filter((name) => name.endsWith('.tsx'))

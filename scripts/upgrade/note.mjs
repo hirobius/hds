@@ -18,6 +18,12 @@
  * makes the guess additive only when this is the one pending changeset and no
  * other note lists it, never from another changeset's additions.
  *
+ * With a build (dist/css-contract.json, hds#449), the CSS facts too: a
+ * removed step for a removed variable or public class, a value-changed step
+ * (impact look) per variable whose value changed, a look step per removed
+ * @font-face, each detecting the variable or class in consumer code. Run
+ * pnpm build:lib first, so it reads the CSS of this tree.
+ *
  * Every plain line it writes is a TODO the gate refuses, because only a person
  * can say what a consumer should do. With impact none and nothing to tell,
  * delete the plain line instead.
@@ -30,6 +36,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readCssContract } from '../lib/css-contract.mjs';
 import { formatJson } from './format.mjs';
 import { BUMP_RANK, breakingBump, factImpact, uncoveredFacts } from './ledger.mjs';
 import { PENDING_DIR, newFacts, noteSteps, readUpgradeState } from './pending.mjs';
@@ -81,6 +88,27 @@ function draftFor(fact) {
         id: `removed/${fact.name}`,
         impact,
         detect: { regex: [`\\b${escapeRegExp(fact.name)}\\b`] },
+      };
+    // hds#449: CSS facts, found by name wherever a consumer reads or sets it.
+    case 'css-var-removed':
+      return {
+        id: `removed/${fact.name}`,
+        impact,
+        detect: { cssVars: [fact.name], cssVarWrites: [fact.name] },
+      };
+    case 'css-var-changed':
+      return {
+        id: `value-changed/${fact.name}`,
+        impact,
+        detect: { cssVars: [fact.name], cssVarWrites: [fact.name] },
+      };
+    case 'class-removed':
+      return { id: `removed/${fact.name}`, impact, detect: { classes: [fact.name] } };
+    case 'font-face-removed':
+      return {
+        id: `look/font-face-${`${fact.family}-${fact.weight}-${fact.style}`.replace(/\s+/g, '-')}`,
+        impact,
+        detect: { regex: [escapeRegExp(fact.family)] },
       };
     default:
       throw new Error(`no step for a ${fact.kind} fact`);
@@ -158,7 +186,8 @@ function pickName(state, name) {
  *   changeset: { bump: string } | null, needBump: string }}
  */
 export function writeNote(root, { name } = {}) {
-  const state = readUpgradeState(root);
+  // The CSS facts come from the last build (hds#449): run pnpm build:lib first.
+  const state = readUpgradeState(root, { css: readCssContract(root) });
   const target = pickName(state, name);
   const file = `${PENDING_DIR}/${target}.json`;
   const existing = state.notes.find((n) => n.name === target);

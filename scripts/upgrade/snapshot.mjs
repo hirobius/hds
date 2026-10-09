@@ -22,8 +22,26 @@
  *   - exportsKeys: every package.json#exports key, stylesheets included;
  *   - dependencies, peerDependencies (with their optional flag), engines,
  *     bin (name -> path) and the package.json `files` list.
- * CSS facts (variables, classes) come later (hds#449). Snapshots of releases
- * are committed at docs/api/releases/<version>.json.
+ *   - css (hds#449): the CSS contract of the stylesheets the package ships
+ *     (scripts/build-css-contract.mjs): every custom property with its value
+ *     per context, the class names, the @font-face entries and the @layer
+ *     names, per stylesheet. A package that ships dist/css-contract.json is
+ *     read from it; an older tarball's contract is built from its stylesheets
+ *     with the same code, so `--from-npm <v> --check` reproduces either.
+ * Snapshots of releases are committed at docs/api/releases/<version>.json.
+ *
+ * The source path has no css section. The stylesheets are what Tailwind
+ * writes when the library builds (vite.config.lib.ts, then build-styles-css
+ * and the other build-*-css steps), and nothing short of that build gives
+ * the same minified bytes: a second CSS pipeline run without vite would
+ * drift from the published tarball, and every pull request would then carry
+ * value facts nobody made. So the CSS facts are read from a built tree:
+ * scripts/check-upgrade-css.mjs runs after build:lib in smoke:consumer (CI,
+ * the Version PR and `pnpm release`), and `pnpm changeset:version` builds
+ * before compile.mjs --release records the release, which then takes its css
+ * section from dist/css-contract.json. diff.mjs reports CSS facts only when
+ * both snapshots have one, so the source-path gate (check-upgrade-ledger,
+ * pretest, no build) sees exactly the facts it did before.
  *
  * From source (hds#448): pretest never builds, so the upgrade gate
  * (scripts/check-upgrade-ledger.mjs) reads the working tree instead. Each
@@ -68,6 +86,7 @@ import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { collectModuleSymbols } from '../lib/check-public-api.mjs';
 import { TOOLING_EXPORTS, readJsExportEntries } from '../lib/package-entries.mjs';
+import { buildCssContract, readCssContract } from '../lib/css-contract.mjs';
 import { formatJson, sortedObject } from './format.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
@@ -121,6 +140,17 @@ const exportsOf = (pkg) =>
 const readPackageJson = (dir) => JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
 
 /**
+ * The css section of a built package: its dist/css-contract.json, else the
+ * contract built from its stylesheets; none when it ships no stylesheet.
+ */
+function cssSection(dir) {
+  return readCssContract(dir) ?? buildCssContract(dir);
+}
+
+/** `snapshot` with its css section last, when there is one. */
+const withCss = (snapshot, css) => (css ? { ...snapshot, css } : snapshot);
+
+/**
  * The snapshot of an unpacked package directory (a published tarball's
  * `package/`, or the repo after build:lib).
  * @param {string} dir
@@ -141,7 +171,7 @@ export function snapshotPackage(dir) {
     }
     entries[key] = entryNames(dir, file);
   }
-  return packageFacts(pkg, exportsMap, entries);
+  return withCss(packageFacts(pkg, exportsMap, entries), cssSection(dir));
 }
 
 /**
@@ -163,10 +193,13 @@ function shippedTypesFile(root, key, value) {
  * read without building: each built exports entry from the source file its
  * `types` declarations are emitted from, and each tooling entry from the types
  * file it ships as written. Same shape, entries and module ids as
- * snapshotPackage gives for the tarball built from this tree.
+ * snapshotPackage gives for the tarball built from this tree, less its css
+ * section (see the header): pass `css` (a contract, such as the
+ * dist/css-contract.json build:lib wrote) to add one.
  * @param {string} root the directory holding package.json and src/
+ * @param {{ css?: object | null }} [options]
  */
-export function snapshotFromSource(root) {
+export function snapshotFromSource(root, { css = null } = {}) {
   const pkg = readPackageJson(root);
   const exportsMap = exportsOf(pkg);
   const built = new Map(readJsExportEntries(root).map(({ key, file }) => [key, file]));
@@ -177,7 +210,7 @@ export function snapshotFromSource(root) {
     if (!file) throw new Error(`exports["${key}"] has no source snapshot.mjs can read`);
     entries[key] = entryNames(root, file);
   }
-  return packageFacts(pkg, exportsMap, entries);
+  return withCss(packageFacts(pkg, exportsMap, entries), css);
 }
 
 /** `npm pack <spec>` into `destination`; returns the tarball path. */
