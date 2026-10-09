@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-08T13:23:48.417Z",
+  "generated": "2026-10-09T05:30:51.055Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -28,7 +28,7 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#111111",
+    "primaryColor": "#66b239",
     "primaryColorToken": "semantic.accent.rest",
     "font": "Satoshi variable 100–900, self-hosted",
     "spacingBase": "4px",
@@ -9335,6 +9335,83 @@
         "value": "#022c22"
       },
       {
+        "path": "primitive.color.apple.50",
+        "cssVar": "--primitive-color-apple-50",
+        "type": "color",
+        "description": "Apple-green accent tint — faintest step.",
+        "value": "#f2faeb"
+      },
+      {
+        "path": "primitive.color.apple.100",
+        "cssVar": "--primitive-color-apple-100",
+        "type": "color",
+        "description": "Apple-green accent — very light tint.",
+        "value": "#e2f3cf"
+      },
+      {
+        "path": "primitive.color.apple.200",
+        "cssVar": "--primitive-color-apple-200",
+        "type": "color",
+        "description": "Apple-green accent — light tint.",
+        "value": "#c7e7a4"
+      },
+      {
+        "path": "primitive.color.apple.300",
+        "cssVar": "--primitive-color-apple-300",
+        "type": "color",
+        "description": "Apple-green accent — soft mid-light step.",
+        "value": "#a6d873"
+      },
+      {
+        "path": "primitive.color.apple.400",
+        "cssVar": "--primitive-color-apple-400",
+        "type": "color",
+        "description": "Apple-green accent — bright step; dark-mode rest accent.",
+        "value": "#85c84c"
+      },
+      {
+        "path": "primitive.color.apple.500",
+        "cssVar": "--primitive-color-apple-500",
+        "type": "color",
+        "description": "Apple-green accent rest — bright, rich apple green; AA for dark (neutral.900) text as a fill.",
+        "value": "#66b239"
+      },
+      {
+        "path": "primitive.color.apple.600",
+        "cssVar": "--primitive-color-apple-600",
+        "type": "color",
+        "description": "Apple-green accent — hover / border step.",
+        "value": "#54922d"
+      },
+      {
+        "path": "primitive.color.apple.700",
+        "cssVar": "--primitive-color-apple-700",
+        "type": "color",
+        "description": "Apple-green accent — pressed and accent-intent text (AA for text on page and card surfaces).",
+        "value": "#416f20"
+      },
+      {
+        "path": "primitive.color.apple.800",
+        "cssVar": "--primitive-color-apple-800",
+        "type": "color",
+        "description": "Apple-green accent — deep step.",
+        "value": "#34571b"
+      },
+      {
+        "path": "primitive.color.apple.900",
+        "cssVar": "--primitive-color-apple-900",
+        "type": "color",
+        "description": "Apple-green accent — darkest usable step.",
+        "value": "#2b4518"
+      },
+      {
+        "path": "primitive.color.apple.950",
+        "cssVar": "--primitive-color-apple-950",
+        "type": "color",
+        "description": "Apple-green accent — near-black green substrate.",
+        "value": "#16250c"
+      },
+      {
         "path": "primitive.color.violet.50",
         "cssVar": "--primitive-color-violet-50",
         "type": "color",
@@ -10303,12 +10380,12 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent-colored background (neutral/monochrome; inverts to a light neutral on dark surfaces).",
-        "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
+        "description": "Accent-colored background — bright apple green (stays green on dark surfaces; pair with content.onAccent dark text).",
+        "alias": "{primitive.color.apple.500}",
+        "resolvedValue": "#66b239",
         "dark": {
-          "alias": "{primitive.color.neutral.100}",
-          "resolvedValue": "#f5f5f5"
+          "alias": "{primitive.color.apple.400}",
+          "resolvedValue": "#85c84c"
         }
       },
       {
@@ -10316,11 +10393,11 @@
         "cssVar": "--semantic-color-surface-accentSubtle",
         "type": "color",
         "description": "Faint accent tint for hover states or highlights",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "alias": "{primitive.color.apple.50}",
+        "resolvedValue": "#f2faeb",
         "dark": {
-          "alias": "{primitive.color.neutral.900}",
-          "resolvedValue": "#111111"
+          "alias": "{primitive.color.apple.900}",
+          "resolvedValue": "#2b4518"
         }
       },
       {
@@ -10431,21 +10508,21 @@
         "path": "semantic.color.content.accent",
         "cssVar": "--semantic-color-content-accent",
         "type": "color",
-        "description": "Accent-intent text/icon color (monochrome). Pair with underline/weight for link affordance.",
-        "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
+        "description": "Accent-intent text/icon color — a dark apple green legible on page and card surfaces. Pair with underline/weight for link affordance.",
+        "alias": "{primitive.color.apple.700}",
+        "resolvedValue": "#416f20",
         "dark": {
-          "alias": "{primitive.color.neutral.100}",
-          "resolvedValue": "#f5f5f5"
+          "alias": "{primitive.color.apple.400}",
+          "resolvedValue": "#85c84c"
         }
       },
       {
         "path": "semantic.color.content.onAccent",
         "cssVar": "--semantic-color-content-onAccent",
         "type": "color",
-        "description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where accent fills are light.",
-        "alias": "{primitive.color.neutral.white}",
-        "resolvedValue": "#ffffff",
+        "description": "Text/icon color on accent fills — a dark neutral, since the brand accent fill is a bright apple green in both light and dark mode.",
+        "alias": "{primitive.color.neutral.900}",
+        "resolvedValue": "#111111",
         "dark": {
           "alias": "{primitive.color.neutral.900}",
           "resolvedValue": "#111111"
@@ -10548,12 +10625,12 @@
         "path": "semantic.color.border.accent",
         "cssVar": "--semantic-color-border-accent",
         "type": "color",
-        "description": "Accent border (neutral/monochrome; inverts on dark surfaces).",
-        "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
+        "description": "Accent border — apple green, dark enough to read as a boundary on page and card surfaces.",
+        "alias": "{primitive.color.apple.600}",
+        "resolvedValue": "#54922d",
         "dark": {
-          "alias": "{primitive.color.neutral.100}",
-          "resolvedValue": "#f5f5f5"
+          "alias": "{primitive.color.apple.400}",
+          "resolvedValue": "#85c84c"
         }
       },
       {
@@ -11151,12 +11228,12 @@
         "path": "semantic.accent.rest",
         "cssVar": "--semantic-accent-rest",
         "type": "color",
-        "description": "Default accent fill for interactive elements at rest. Neutral (monochrome) accent — inverts to a light neutral on dark surfaces.",
-        "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
+        "description": "Default accent fill for interactive elements at rest — bright apple green. Pair with content.onAccent (a dark neutral).",
+        "alias": "{primitive.color.apple.500}",
+        "resolvedValue": "#66b239",
         "dark": {
-          "alias": "{primitive.color.neutral.100}",
-          "resolvedValue": "#f5f5f5"
+          "alias": "{primitive.color.apple.400}",
+          "resolvedValue": "#85c84c"
         }
       },
       {
@@ -11164,11 +11241,11 @@
         "cssVar": "--semantic-accent-hover",
         "type": "color",
         "description": "Accent fill on pointer hover.",
-        "alias": "{primitive.color.neutral.800}",
-        "resolvedValue": "#262626",
+        "alias": "{primitive.color.apple.600}",
+        "resolvedValue": "#54922d",
         "dark": {
-          "alias": "{primitive.color.neutral.200}",
-          "resolvedValue": "#e5e5e5"
+          "alias": "{primitive.color.apple.500}",
+          "resolvedValue": "#66b239"
         }
       },
       {
@@ -11176,11 +11253,11 @@
         "cssVar": "--semantic-accent-pressed",
         "type": "color",
         "description": "Accent fill during active press.",
-        "alias": "{primitive.color.neutral.950}",
-        "resolvedValue": "#0a0a0a",
+        "alias": "{primitive.color.apple.700}",
+        "resolvedValue": "#416f20",
         "dark": {
-          "alias": "{primitive.color.neutral.300}",
-          "resolvedValue": "#d4d4d4"
+          "alias": "{primitive.color.apple.600}",
+          "resolvedValue": "#54922d"
         }
       },
       {
@@ -11211,12 +11288,12 @@
         "path": "semantic.accent.content",
         "cssVar": "--semantic-accent-content",
         "type": "color",
-        "description": "Text and icon color on neutral surfaces with accent intent. Monochrome — pair with underline/weight for link affordance.",
-        "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
+        "description": "Accent-intent text/icon color on neutral surfaces (a dark apple green) — pair with underline/weight for link affordance.",
+        "alias": "{primitive.color.apple.700}",
+        "resolvedValue": "#416f20",
         "dark": {
-          "alias": "{primitive.color.neutral.100}",
-          "resolvedValue": "#f5f5f5"
+          "alias": "{primitive.color.apple.400}",
+          "resolvedValue": "#85c84c"
         }
       },
       {
@@ -11224,11 +11301,11 @@
         "cssVar": "--semantic-accent-contentHover",
         "type": "color",
         "description": "Accent content color on pointer hover.",
-        "alias": "{primitive.color.neutral.700}",
-        "resolvedValue": "#404040",
+        "alias": "{primitive.color.apple.800}",
+        "resolvedValue": "#34571b",
         "dark": {
-          "alias": "{primitive.color.neutral.300}",
-          "resolvedValue": "#d4d4d4"
+          "alias": "{primitive.color.apple.300}",
+          "resolvedValue": "#a6d873"
         }
       },
       {
@@ -11236,11 +11313,11 @@
         "cssVar": "--semantic-accent-subtle",
         "type": "color",
         "description": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "alias": "{primitive.color.apple.50}",
+        "resolvedValue": "#f2faeb",
         "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "alias": "{primitive.color.apple.900}",
+          "resolvedValue": "#2b4518"
         }
       },
       {
@@ -11476,7 +11553,7 @@
         "type": "color",
         "description": "Nav item background fill when active or selected.",
         "alias": "{semantic.accent.subtle}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f2faeb"
       },
       {
         "path": "component.nav.borderActive",
@@ -11484,7 +11561,7 @@
         "type": "color",
         "description": "Nav item border color when active or selected.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#66b239"
       },
       {
         "path": "component.nav.text",
@@ -11532,7 +11609,7 @@
         "type": "color",
         "description": "Base tag surface color.",
         "alias": "{semantic.accent.subtle}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f2faeb"
       },
       {
         "path": "component.tag.text",
@@ -11620,7 +11697,7 @@
         "type": "color",
         "description": "Text color when the tag is active.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#ffffff"
+        "resolvedValue": "#111111"
       },
       {
         "path": "component.tag.activeBackground",
@@ -11628,7 +11705,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#66b239"
       },
       {
         "path": "component.tag.activeBorder",
@@ -11636,7 +11713,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#66b239"
       },
       {
         "path": "component.tag.activeHover",
@@ -11644,7 +11721,7 @@
         "type": "color",
         "description": "Active tag hover fill color.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "#262626"
+        "resolvedValue": "#54922d"
       },
       {
         "path": "component.badge.fontSize",
@@ -11728,7 +11805,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#66b239"
       },
       {
         "path": "component.button.bgHover",
@@ -11736,7 +11813,7 @@
         "type": "color",
         "description": "Primary button hover fill.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "#262626"
+        "resolvedValue": "#54922d"
       },
       {
         "path": "component.button.text",
@@ -11744,7 +11821,7 @@
         "type": "color",
         "description": "Primary button text color.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#ffffff"
+        "resolvedValue": "#111111"
       },
       {
         "path": "component.button.radius",
@@ -11920,7 +11997,7 @@
         "type": "color",
         "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#ffffff",
+        "resolvedValue": "#111111",
         "dark": {
           "alias": "{semantic.color.content.disabled}",
           "resolvedValue": "#d4d4d4"
@@ -11932,7 +12009,7 @@
         "type": "color",
         "description": "Disabled primary button fill.",
         "alias": "{semantic.color.surface.accentSubtle}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f2faeb"
       },
       {
         "path": "component.button.secondary.bg.rest",
@@ -12162,7 +12239,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#66b239"
       },
       {
         "path": "role.primary-foreground",
@@ -12170,7 +12247,7 @@
         "type": "color",
         "description": "Text/icons on primary surface. shadcn role: primary-foreground.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#ffffff"
+        "resolvedValue": "#111111"
       },
       {
         "path": "role.secondary",
@@ -12210,7 +12287,7 @@
         "type": "color",
         "description": "Hover/active tinted bg. shadcn role: accent.",
         "alias": "{semantic.color.surface.accentSubtle}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f2faeb"
       },
       {
         "path": "role.accent-foreground",
@@ -12218,7 +12295,7 @@
         "type": "color",
         "description": "Text on accent surface. shadcn role: accent-foreground.",
         "alias": "{semantic.color.content.accent}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#416f20"
       },
       {
         "path": "role.destructive",
@@ -12258,7 +12335,7 @@
         "type": "color",
         "description": "Focus ring color. shadcn role: ring.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#54922d"
       },
       {
         "path": "role.radius",
