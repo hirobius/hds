@@ -208,10 +208,12 @@ checksum fails. The guard now hashes each function with all whitespace removed.
 
 ## 2026-10-09 · session `claude/figma-snapshot-diff` (reprint-proof guard + first snapshot-diff)
 
-| #   | Time (UTC) | Tool        | Kind  | Purpose                                                      | Result                                                                                                           |
-| --- | ---------- | ----------- | ----- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| 1   | 05:18      | `use_figma` | read  | Library: `snapshot-diff.js` (whitespace-only guard)          | Refused by the guard; nothing read                                                                               |
-| 2   | 05:20      | `use_figma` | none  | Diagnostic: 3 small functions behind the header              | Printed unchanged                                                                                                |
-| 3   | 05:21      | `use_figma` | none  | Diagnostic: full script, report functions whose text differs | 6 functions reprinted: trailing commas dropped, spaces added inside braces, optional parens dropped, re-indented |
-| 4   | 05:23      | `use_figma` | read  | Library: `snapshot-diff.js`, guard ignores whitespace `(),;` | OK. base `8f24178f`, live `4a821c78`, 0 changed, 0 removed: the 02:53 partial push wrote nothing                 |
-| 5   | 05:26      | `use_figma` | write | Library: `delta.js` (Plex Mono, updated 2)                   | TBD                                                                                                              |
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                      | Result                                                                                                                                                           |
+| --- | ---------- | ----------- | ----- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 05:18      | `use_figma` | read  | Library: `snapshot-diff.js` (whitespace-only guard)          | Refused by the guard; nothing read                                                                                                                               |
+| 2   | 05:20      | `use_figma` | none  | Diagnostic: 3 small functions behind the header              | Printed unchanged                                                                                                                                                |
+| 3   | 05:21      | `use_figma` | none  | Diagnostic: full script, report functions whose text differs | 6 functions reprinted: trailing commas dropped, spaces added inside braces, optional parens dropped, re-indented                                                 |
+| 4   | 05:23      | `use_figma` | read  | Library: `snapshot-diff.js`, guard ignores whitespace `(),;` | OK. base `8f24178f`, live `4a821c78`, 0 changed, 0 removed: the 02:53 partial push wrote nothing                                                                 |
+| 5   | 05:26      | `use_figma` | write | Library: `delta.js` (Plex Mono, updated 2)                   | OK. updated 2 (mono variable description + value, typography/mono font); receipt post `d12b0361`, 1 page; `--from-receipt` rebuilt the snapshot; drift 0, plan 0 |
+
+**Session total: 5 calls (2 reads, 2 diagnostics, 1 write).** No rate-limit errors. Nothing deleted or published; Adrian publishes.

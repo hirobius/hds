@@ -1,15 +1,15 @@
 {
-  "checksum": "8f24178f",
+  "checksum": "d12b0361",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-07T19:19:44.761Z",
+    "takenAt": "2026-10-09T05:27:14.988Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "61bd3dbf",
-      "pushedAt": "2026-10-07T19:19:44.750Z",
+      "modelHash": "59d56b82",
+      "pushedAt": "2026-10-09T05:27:14.960Z",
       "scope": null
     },
     "collections": [
@@ -2332,7 +2332,7 @@
             "name": "typography/family/mono",
             "path": "primitive.typography.family.mono",
             "resolvedType": "STRING",
-            "description": "Monospace face: Geist Mono. Falls back to Courier New, monospace.",
+            "description": "Monospace face: IBM Plex Mono. Falls back to Courier New, monospace.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2340,7 +2340,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Geist Mono"
+                "value": "IBM Plex Mono"
               }
             }
           },
@@ -8656,7 +8656,7 @@
         "name": "typography/mono",
         "path": "semantic.typography.mono",
         "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
-        "fontFamily": "Geist Mono",
+        "fontFamily": "IBM Plex Mono",
         "fontStyle": "Regular",
         "fontSize": 13,
         "lineHeight": {
