@@ -3,1444 +3,411 @@
   "files": {
     "mcp/catalog.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 11,
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 45
-    },
-    "mcp/guide.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "mcp/hds-mcp.mjs": {
-      "anti-slop/require-readable-spacing": 6
+      "anti-slop/no-runtime-typeof": 2
     },
     "mcp/server.mjs": {
-      "anti-slop/no-runtime-typeof": 6,
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/__tests__/activity-log.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/add-dts-extensions.test.mjs": {
-      "anti-slop/require-readable-spacing": 2
+      "anti-slop/no-runtime-typeof": 6
     },
     "scripts/__tests__/axe-gate.test.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/__tests__/brand-truth.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/build-design-md.test.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/__tests__/build-figma-model.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/build-figma-variables.test.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/__tests__/build-fonts-css.test.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/__tests__/build-handoff.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/build-readme-counts.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/build-token-index.test.mjs": {
-      "anti-slop/require-readable-spacing": 11
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/build-tokens.test.mjs": {
-      "anti-slop/no-shape-in-symbol-names": 12,
-      "anti-slop/require-readable-spacing": 64
+      "anti-slop/no-shape-in-symbol-names": 12
     },
     "scripts/__tests__/button-probe-esbuild.test.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/__tests__/cap-status-json.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/case-study-draft.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/check-anti-slop.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/check-code-connect.test.mjs": {
-      "anti-slop/require-readable-spacing": 32
-    },
-    "scripts/__tests__/check-component-docs.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/check-contract-coverage.test.mjs": {
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/__tests__/check-deprecations.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/check-exemptions.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/check-figma-mapping.test.mjs": {
-      "anti-slop/require-readable-spacing": 19
-    },
-    "scripts/__tests__/check-figma-retired-keys.test.mjs": {
-      "anti-slop/require-readable-spacing": 21
-    },
-    "scripts/__tests__/check-layout-discipline.test.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/__tests__/check-layout-gap-vocabulary.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/__tests__/check-pack-contents.test.mjs": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/__tests__/check-pr-body.test.mjs": {
-      "anti-slop/require-readable-spacing": 7
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/check-public-api.test.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/__tests__/check-pure-annotations.test.mjs": {
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/__tests__/check-record-freshness.cli.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/check-record-freshness.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/__tests__/check-secrets.ci.test.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/__tests__/check-spacing-vocabulary.test.mjs": {
-      "anti-slop/require-readable-spacing": 16
-    },
-    "scripts/__tests__/check-sync-map.check-mode.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/check-tailwind-spacing-scale.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/check-template-source-of-truth.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/check-tests-with-code.test.mjs": {
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/__tests__/check-token-renames.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/__tests__/check-type-ramp.test.mjs": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/__tests__/check-upgrade-ledger.test.mjs": {
-      "anti-slop/require-readable-spacing": 11
-    },
-    "scripts/__tests__/check-validator-wiring.manual-channel.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/check-validator-wiring.reachability.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/codemod-spacing-vocabulary.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/__tests__/component-api-contract.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/component-code-model.test.mjs": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "scripts/__tests__/component-discovery.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/__tests__/consumer-usage.test.mjs": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/__tests__/contributing-gates.test.mjs": {
-      "anti-slop/require-readable-spacing": 15
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/core-set-sources.test.mjs": {
-      "anti-slop/no-array-filter-map": 2,
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/__tests__/core-set.test.mjs": {
-      "anti-slop/require-readable-spacing": 23
-    },
-    "scripts/__tests__/dark-alias-reemit.test.mjs": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/__tests__/density-dial.test.mjs": {
-      "anti-slop/require-readable-spacing": 17
+      "anti-slop/no-array-filter-map": 2
     },
     "scripts/__tests__/design-links.test.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 2,
-      "anti-slop/no-reflect-get": 1,
-      "anti-slop/require-readable-spacing": 43
-    },
-    "scripts/__tests__/dispatch-pod.test.mjs": {
-      "anti-slop/require-readable-spacing": 16
-    },
-    "scripts/__tests__/docs-tooling-boundary.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/eslint-plugin-subpath.test.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/__tests__/eval-consistency-live.test.mjs": {
-      "anti-slop/require-readable-spacing": 52
-    },
-    "scripts/__tests__/eval-consistency.test.mjs": {
-      "anti-slop/require-readable-spacing": 48
+      "anti-slop/no-reflect-get": 1
     },
     "scripts/__tests__/figma-agent-sync.test.mjs": {
       "anti-slop/no-reflect-get": 1,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 101
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/figma-brand-modes.repo.test.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 32
-    },
-    "scripts/__tests__/figma-brand-modes.test.mjs": {
-      "anti-slop/require-readable-spacing": 16
-    },
-    "scripts/__tests__/figma-cli.test.mjs": {
-      "anti-slop/require-readable-spacing": 36
-    },
-    "scripts/__tests__/figma-disposition.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/figma-drift.test.mjs": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "scripts/__tests__/figma-inventory.test.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/__tests__/figma-link.test.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/__tests__/figma-links.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/__tests__/figma-model-brands.test.mjs": {
-      "anti-slop/require-readable-spacing": 17
-    },
-    "scripts/__tests__/figma-model.test.mjs": {
-      "anti-slop/require-readable-spacing": 11
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/__tests__/figma-model.tokens.test.mjs": {
       "anti-slop/no-array-filter-map": 3,
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 22
-    },
-    "scripts/__tests__/figma-native-import.test.mjs": {
-      "anti-slop/require-readable-spacing": 11
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/__tests__/figma-one-library-rule.test.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 38
-    },
-    "scripts/__tests__/figma-push.test.mjs": {
-      "anti-slop/require-readable-spacing": 36
-    },
-    "scripts/__tests__/figma-reachable-runtime.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/figma-receipt.test.mjs": {
-      "anti-slop/no-reflect-get": 1,
-      "anti-slop/require-readable-spacing": 54
+      "anti-slop/no-reflect-get": 1
     },
     "scripts/__tests__/figma-runtime.test.mjs": {
-      "anti-slop/no-reflect-get": 1,
-      "anti-slop/require-readable-spacing": 49
+      "anti-slop/no-reflect-get": 1
     },
     "scripts/__tests__/figma-snapshot-delta.test.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 39
-    },
-    "scripts/__tests__/figma-sync.test.mjs": {
-      "anti-slop/require-readable-spacing": 40
-    },
-    "scripts/__tests__/figma-token.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/__tests__/front-door.test.mjs": {
       "anti-slop/no-array-filter-map": 4,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 43
-    },
-    "scripts/__tests__/gate-scope-spec-files.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/generate-agents-md.test.mjs": {
-      "anti-slop/require-readable-spacing": 11
-    },
-    "scripts/__tests__/generate-code-connect.test.mjs": {
-      "anti-slop/require-readable-spacing": 15
-    },
-    "scripts/__tests__/generate-component-api.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/generate-consumer-skill.test.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 24
-    },
-    "scripts/__tests__/generate-llms-full.test.mjs": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/__tests__/generate-manifest.figma-link.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/grid-tile-grid-parity.test.mjs": {
-      "anti-slop/no-array-filter-map": 1,
-      "anti-slop/require-readable-spacing": 24
+      "anti-slop/no-array-filter-map": 1
     },
     "scripts/__tests__/hds-mcp.test.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 25
-    },
-    "scripts/__tests__/hds-prefix-codemod.test.mjs": {
-      "anti-slop/require-readable-spacing": 21
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/helpers/fake-figma.mjs": {
       "anti-slop/no-array-filter-map": 1,
       "anti-slop/no-reflect-get": 1,
-      "anti-slop/no-runtime-typeof": 5,
-      "anti-slop/require-readable-spacing": 85
-    },
-    "scripts/__tests__/helpers/fake-github.mjs": {
-      "anti-slop/require-readable-spacing": 18
+      "anti-slop/no-runtime-typeof": 5
     },
     "scripts/__tests__/helpers/sync-plugin.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 12
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/helpers/upgrade-fixtures.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 18
-    },
-    "scripts/__tests__/helpers/upgrade-repo.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/hook-output.test.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/__tests__/installed-version.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/jsdoc-contract.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/__tests__/knowledge-classify.test.mjs": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/__tests__/layout-contract.test.mjs": {
-      "anti-slop/require-readable-spacing": 11
-    },
-    "scripts/__tests__/manifest-deprecation.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/manifest-generator-order.test.mjs": {
-      "anti-slop/require-readable-spacing": 11
-    },
-    "scripts/__tests__/manifest-projection.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/manifest-props.test.mjs": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "scripts/__tests__/not-found-pattern-codemod.test.mjs": {
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/__tests__/ops-b5-codemods.test.mjs": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/__tests__/package-entries.test.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/__tests__/patterns-subpath-codemod.test.mjs": {
-      "anti-slop/require-readable-spacing": 23
-    },
-    "scripts/__tests__/patterns-subpath-removed.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/__tests__/patterns-subpath-replaced.test.mjs": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/__tests__/pretest-focus-gate.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/props-exports.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/rendered-geometry.test.mjs": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/__tests__/rsc-directive.test.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/__tests__/run-canon-fixtures.mjs": {
-      "anti-slop/require-readable-spacing": 28
-    },
-    "scripts/__tests__/run-lint-staged.test.mjs": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/__tests__/scaffold-component.test.mjs": {
-      "anti-slop/require-readable-spacing": 4
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/scan-roots.repo.test.mjs": {
-      "anti-slop/no-array-filter-map": 1,
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/__tests__/scan-roots.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/script-reachability.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
+      "anti-slop/no-array-filter-map": 1
     },
     "scripts/__tests__/spacing-computed-lock.test.mjs": {
       "anti-slop/no-array-filter-map": 3,
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 44
-    },
-    "scripts/__tests__/spacing-runtime-overrides.test.mjs": {
-      "anti-slop/require-readable-spacing": 11
-    },
-    "scripts/__tests__/spacing-token-descriptions.test.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/__tests__/status-fold.test.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/__tests__/status-touch.test.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/__tests__/story-link.test.mjs": {
-      "anti-slop/require-readable-spacing": 32
-    },
-    "scripts/__tests__/storybook-front-door.test.mjs": {
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/__tests__/strip-git-env.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/sync-map.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/__tests__/tenant-schema-refs.test.mjs": {
       "anti-slop/no-array-filter-map": 2,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 11
-    },
-    "scripts/__tests__/tile-grid-codemod.test.mjs": {
-      "anti-slop/require-readable-spacing": 12
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/token-dialect.test.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 13
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/__tests__/token-modes.test.mjs": {
-      "anti-slop/no-array-filter-map": 1,
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/token-references.test.mjs": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/__tests__/token-usage-map.test.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/__tests__/unrewritable.test.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/__tests__/upgrade-backfill.test.mjs": {
-      "anti-slop/require-readable-spacing": 21
-    },
-    "scripts/__tests__/upgrade-build-ledger.test.mjs": {
-      "anti-slop/require-readable-spacing": 31
-    },
-    "scripts/__tests__/upgrade-command-lib.test.mjs": {
-      "anti-slop/require-readable-spacing": 11
-    },
-    "scripts/__tests__/upgrade-command.test.mjs": {
-      "anti-slop/require-readable-spacing": 66
+      "anti-slop/no-array-filter-map": 1
     },
     "scripts/__tests__/upgrade-compile.test.mjs": {
-      "anti-slop/no-conditional-empty-object-spread": 3,
-      "anti-slop/require-readable-spacing": 65
-    },
-    "scripts/__tests__/upgrade-consumers.test.mjs": {
-      "anti-slop/require-readable-spacing": 33
-    },
-    "scripts/__tests__/upgrade-deprecations.test.mjs": {
-      "anti-slop/require-readable-spacing": 21
-    },
-    "scripts/__tests__/upgrade-diff.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/upgrade-history.test.mjs": {
-      "anti-slop/require-readable-spacing": 16
-    },
-    "scripts/__tests__/upgrade-ledger-0.20.test.mjs": {
-      "anti-slop/require-readable-spacing": 23
-    },
-    "scripts/__tests__/upgrade-ledger-0.21.test.mjs": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/__tests__/upgrade-ledger.test.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/__tests__/upgrade-note.test.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/__tests__/upgrade-pending-notes.test.mjs": {
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/__tests__/upgrade-schema.test.mjs": {
-      "anti-slop/require-readable-spacing": 15
+      "anti-slop/no-conditional-empty-object-spread": 3
     },
     "scripts/__tests__/upgrade-snapshot.test.mjs": {
       "anti-slop/no-array-filter-map": 2,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 24
-    },
-    "scripts/__tests__/verify-tokens.test.mjs": {
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/__tests__/which-one-when.test.mjs": {
-      "anti-slop/require-readable-spacing": 2
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/__tests__/write-generated.test.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/activity-log.mjs": {
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/add-dts-extensions.mjs": {
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/audit-batch-deliverables.mjs": {
-      "anti-slop/require-readable-spacing": 42
-    },
-    "scripts/audit-bundle.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/audit-component-integrity.mjs": {
-      "anti-slop/require-readable-spacing": 60
-    },
-    "scripts/audit-deps.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/audit-exceptions.mjs": {
-      "anti-slop/require-readable-spacing": 22
-    },
-    "scripts/audit-gate-purity.mjs": {
-      "anti-slop/require-readable-spacing": 41
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/audit-gates-supportjson.mjs": {
       "anti-slop/no-array-filter-map": 1,
       "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/no-shape-in-symbol-names": 1,
-      "anti-slop/require-readable-spacing": 16
-    },
-    "scripts/audit-guardrails.js": {
-      "anti-slop/require-readable-spacing": 25
-    },
-    "scripts/audit-sbom.mjs": {
-      "anti-slop/require-readable-spacing": 7
+      "anti-slop/no-shape-in-symbol-names": 1
     },
     "scripts/audit-tokens.mjs": {
       "anti-slop/no-array-filter-map": 1,
-      "anti-slop/no-runtime-typeof": 7,
-      "anti-slop/require-readable-spacing": 122
-    },
-    "scripts/build-button-probe.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/build-codemod-pattern-names.mjs": {
-      "anti-slop/require-readable-spacing": 2
+      "anti-slop/no-runtime-typeof": 7
     },
     "scripts/build-design-md.mjs": {
-      "anti-slop/no-runtime-typeof": 4,
-      "anti-slop/require-readable-spacing": 30
-    },
-    "scripts/build-figma-model.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/build-figma-native-import.mjs": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/build-figma-variables.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/build-fonts-css.mjs": {
-      "anti-slop/require-readable-spacing": 18
+      "anti-slop/no-runtime-typeof": 4
     },
     "scripts/build-handoff.mjs": {
-      "anti-slop/no-runtime-typeof": 21,
-      "anti-slop/require-readable-spacing": 65
-    },
-    "scripts/build-hds-tokens.mjs": {
-      "anti-slop/require-readable-spacing": 16
+      "anti-slop/no-runtime-typeof": 21
     },
     "scripts/build-readme-counts.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 13
-    },
-    "scripts/build-static-css.mjs": {
-      "anti-slop/require-readable-spacing": 16
-    },
-    "scripts/build-styles-css.mjs": {
-      "anti-slop/require-readable-spacing": 25
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/build-token-index.mjs": {
-      "anti-slop/no-runtime-typeof": 6,
-      "anti-slop/require-readable-spacing": 39
+      "anti-slop/no-runtime-typeof": 6
     },
     "scripts/build-token-quick-reference.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 22
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/build-tokens.mjs": {
       "anti-slop/no-array-filter-map": 1,
       "anti-slop/no-conditional-empty-object-spread": 1,
-      "anti-slop/no-runtime-typeof": 23,
-      "anti-slop/require-readable-spacing": 164
-    },
-    "scripts/build-vars-css.mjs": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "scripts/cap-status-json.mjs": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "scripts/case-study-draft.mjs": {
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/check-anti-slop.mjs": {
-      "anti-slop/require-readable-spacing": 28
-    },
-    "scripts/check-attributions.mjs": {
-      "anti-slop/require-readable-spacing": 9
+      "anti-slop/no-runtime-typeof": 23
     },
     "scripts/check-binding-drift.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 25
-    },
-    "scripts/check-brand.mjs": {
-      "anti-slop/require-readable-spacing": 9
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/check-code-connect.mjs": {
       "anti-slop/no-array-filter-map": 2,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 61
-    },
-    "scripts/check-contract-coverage.mjs": {
-      "anti-slop/require-readable-spacing": 4
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/check-contrast.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 27
-    },
-    "scripts/check-css-integrity.mjs": {
-      "anti-slop/require-readable-spacing": 16
-    },
-    "scripts/check-dark-alias-flip.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/check-deprecations.mjs": {
-      "anti-slop/require-readable-spacing": 29
-    },
-    "scripts/check-dimensions.mjs": {
-      "anti-slop/require-readable-spacing": 13
-    },
-    "scripts/check-docs.mjs": {
-      "anti-slop/require-readable-spacing": 62
-    },
-    "scripts/check-docs.selftest.mjs": {
-      "anti-slop/require-readable-spacing": 21
-    },
-    "scripts/check-exemptions.mjs": {
-      "anti-slop/require-readable-spacing": 13
-    },
-    "scripts/check-figma-coverage.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/check-figma-drift.mjs": {
-      "anti-slop/require-readable-spacing": 8
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/check-figma-mapping.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 45
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/check-figma-retired-keys.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 23
-    },
-    "scripts/check-focus-states.mjs": {
-      "anti-slop/require-readable-spacing": 11
-    },
-    "scripts/check-hardcoded-breakpoints.mjs": {
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/check-hardcoded-colors.mjs": {
-      "anti-slop/require-readable-spacing": 32
-    },
-    "scripts/check-hardcoded-spacing.mjs": {
-      "anti-slop/require-readable-spacing": 15
-    },
-    "scripts/check-layout-contract.mjs": {
-      "anti-slop/require-readable-spacing": 63
-    },
-    "scripts/check-layout-discipline.mjs": {
-      "anti-slop/require-readable-spacing": 24
-    },
-    "scripts/check-layout-gap-vocabulary.mjs": {
-      "anti-slop/require-readable-spacing": 66
-    },
-    "scripts/check-licenses.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/check-link-integrity.mjs": {
-      "anti-slop/require-readable-spacing": 67
-    },
-    "scripts/check-manifest-drift.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/check-manifest-schema-semver.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/check-motion.mjs": {
-      "anti-slop/require-readable-spacing": 16
-    },
-    "scripts/check-no-style-prop.mjs": {
-      "anti-slop/require-readable-spacing": 16
-    },
-    "scripts/check-pack-contents.mjs": {
-      "anti-slop/require-readable-spacing": 15
-    },
-    "scripts/check-prop-vocabulary.mjs": {
-      "anti-slop/require-readable-spacing": 31
-    },
-    "scripts/check-published-types.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/check-pure-annotations.mjs": {
-      "anti-slop/require-readable-spacing": 47
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/check-record-freshness.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 47
-    },
-    "scripts/check-reduced-motion.mjs": {
-      "anti-slop/require-readable-spacing": 13
-    },
-    "scripts/check-ref-forwarding.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/check-registry.mjs": {
-      "anti-slop/require-readable-spacing": 13
-    },
-    "scripts/check-rendered-geometry.mjs": {
-      "anti-slop/require-readable-spacing": 35
-    },
-    "scripts/check-rsc-directives.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/check-secrets.mjs": {
-      "anti-slop/require-readable-spacing": 16
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/check-security-baseline.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 17
-    },
-    "scripts/check-source-canon.mjs": {
-      "anti-slop/require-readable-spacing": 65
-    },
-    "scripts/check-spacing-vocabulary.mjs": {
-      "anti-slop/require-readable-spacing": 46
-    },
-    "scripts/check-status-claims.mjs": {
-      "anti-slop/require-readable-spacing": 21
-    },
-    "scripts/check-story-coverage.mjs": {
-      "anti-slop/require-readable-spacing": 11
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/check-storybook-axe.mjs": {
-      "anti-slop/no-array-filter-map": 1,
-      "anti-slop/require-readable-spacing": 57
-    },
-    "scripts/check-style-discipline.mjs": {
-      "anti-slop/require-readable-spacing": 65
-    },
-    "scripts/check-sync-map.mjs": {
-      "anti-slop/require-readable-spacing": 53
-    },
-    "scripts/check-tailwind-spacing-scale.mjs": {
-      "anti-slop/require-readable-spacing": 16
+      "anti-slop/no-array-filter-map": 1
     },
     "scripts/check-tailwind-token-coverage.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/check-template-source-of-truth.mjs": {
-      "anti-slop/require-readable-spacing": 24
-    },
-    "scripts/check-tenant-tokens.mjs": {
-      "anti-slop/require-readable-spacing": 13
-    },
-    "scripts/check-tests-with-code.mjs": {
-      "anti-slop/require-readable-spacing": 24
-    },
-    "scripts/check-tier-bypass.mjs": {
-      "anti-slop/require-readable-spacing": 14
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/check-token-descriptions.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 24
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/check-token-paths-ratchet.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 70
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/check-token-rebake-needed.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 36
-    },
-    "scripts/check-token-renames.mjs": {
-      "anti-slop/require-readable-spacing": 11
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/check-token-structure.mjs": {
-      "anti-slop/no-runtime-typeof": 6,
-      "anti-slop/require-readable-spacing": 25
+      "anti-slop/no-runtime-typeof": 6
     },
     "scripts/check-type-ramp.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 1,
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 35
-    },
-    "scripts/check-typography-discipline.mjs": {
-      "anti-slop/require-readable-spacing": 47
-    },
-    "scripts/check-unresponsive-grids.mjs": {
-      "anti-slop/require-readable-spacing": 13
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/check-upgrade-ledger.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 63
-    },
-    "scripts/check-validator-wiring.mjs": {
-      "anti-slop/require-readable-spacing": 70
-    },
-    "scripts/codemod-spacing-vocabulary.mjs": {
-      "anti-slop/require-readable-spacing": 14
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/component-discovery.mjs": {
-      "anti-slop/no-shape-in-symbol-names": 2,
-      "anti-slop/require-readable-spacing": 26
-    },
-    "scripts/copy-agent-context.mjs": {
-      "anti-slop/require-readable-spacing": 2
+      "anti-slop/no-shape-in-symbol-names": 2
     },
     "scripts/correlation.mjs": {
-      "anti-slop/no-runtime-typeof": 11,
-      "anti-slop/require-readable-spacing": 23
-    },
-    "scripts/count-consumer-usage.mjs": {
-      "anti-slop/require-readable-spacing": 35
-    },
-    "scripts/deploy-storybook.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/dispatch-pod.mjs": {
-      "anti-slop/require-readable-spacing": 24
+      "anti-slop/no-runtime-typeof": 11
     },
     "scripts/enrich-manifest.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/eslint-plugin-hds/__tests__/no-raw-px-spacing.test.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/eslint-plugin-hds/__tests__/sx-token-first.test.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/eslint-plugin-hds/__tests__/test-helpers.mjs": {
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/eslint-plugin-hds/index.d.mts": {
-      "anti-slop/no-unsafe-dictionary-type": 1,
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/eslint-plugin-hds/index.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/eslint-plugin-hds/rules/no-raw-controls.mjs": {
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-unsafe-dictionary-type": 1
     },
     "scripts/eslint-plugin-hds/rules/no-raw-hex.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/eslint-plugin-hds/rules/no-raw-px-spacing.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/eslint-plugin-hds/rules/prefer-hds-layout-primitive.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/eslint-plugin-hds/rules/sx-token-first.mjs": {
-      "anti-slop/require-readable-spacing": 3
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/eslint-plugin-hds/rules/utils.mjs": {
-      "anti-slop/no-runtime-typeof": 4,
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/eval-consistency.mjs": {
-      "anti-slop/require-readable-spacing": 31
+      "anti-slop/no-runtime-typeof": 4
     },
     "scripts/figma-disposition.mjs": {
-      "anti-slop/no-conditional-empty-object-spread": 1,
-      "anti-slop/require-readable-spacing": 24
-    },
-    "scripts/figma-inventory.mjs": {
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/figma-links.mjs": {
-      "anti-slop/require-readable-spacing": 32
-    },
-    "scripts/figma-push.mjs": {
-      "anti-slop/require-readable-spacing": 33
-    },
-    "scripts/figma-snapshot.mjs": {
-      "anti-slop/require-readable-spacing": 10
+      "anti-slop/no-conditional-empty-object-spread": 1
     },
     "scripts/figma-sync.ts": {
       "anti-slop/no-runtime-typeof": 1
     },
-    "scripts/generate-agents-md.mjs": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/generate-changelog.mjs": {
-      "anti-slop/require-readable-spacing": 23
-    },
-    "scripts/generate-closure-plan.mjs": {
-      "anti-slop/require-readable-spacing": 41
-    },
-    "scripts/generate-code-connect.mjs": {
-      "anti-slop/require-readable-spacing": 21
-    },
     "scripts/generate-component-api.mjs": {
       "anti-slop/no-array-filter-map": 1,
       "anti-slop/no-conditional-empty-object-spread": 9,
-      "anti-slop/no-runtime-typeof": 4,
-      "anti-slop/require-readable-spacing": 100
-    },
-    "scripts/generate-component-changelogs.mjs": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "scripts/generate-component-page.mjs": {
-      "anti-slop/require-readable-spacing": 84
-    },
-    "scripts/generate-consumer-skill.mjs": {
-      "anti-slop/require-readable-spacing": 23
-    },
-    "scripts/generate-docs-components.mjs": {
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/generate-layout-contract.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/generate-llms-txt.mjs": {
-      "anti-slop/require-readable-spacing": 33
-    },
-    "scripts/generate-manifest-projection.mjs": {
-      "anti-slop/require-readable-spacing": 16
+      "anti-slop/no-runtime-typeof": 4
     },
     "scripts/generate-manifest.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 4,
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 36
-    },
-    "scripts/generate-security-posture.mjs": {
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/generate-visual-catalog.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/guardrail-sweep.mjs": {
-      "anti-slop/require-readable-spacing": 15
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/harvest-design-md.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 1,
-      "anti-slop/no-runtime-typeof": 12,
-      "anti-slop/require-readable-spacing": 80
+      "anti-slop/no-runtime-typeof": 12
     },
     "scripts/hds-jsx-compiler.mjs": {
-      "anti-slop/no-runtime-typeof": 4,
-      "anti-slop/require-readable-spacing": 121
-    },
-    "scripts/hds-lint.js": {
-      "anti-slop/require-readable-spacing": 53
-    },
-    "scripts/hook-run.mjs": {
-      "anti-slop/require-readable-spacing": 14
+      "anti-slop/no-runtime-typeof": 4
     },
     "scripts/hooks/check-pr-body.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 22
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/lib/axe-gate.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 14
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/brand-truth.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/lib/button-probe-esbuild.mjs": {
-      "anti-slop/require-readable-spacing": 27
-    },
-    "scripts/lib/check-component-docs.mjs": {
-      "anti-slop/require-readable-spacing": 53
-    },
-    "scripts/lib/check-public-api.mjs": {
-      "anti-slop/require-readable-spacing": 47
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/code-connect-runtime.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 42
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/lib/code-connect-template.mjs": {
-      "anti-slop/no-runtime-typeof": 8,
-      "anti-slop/require-readable-spacing": 72
-    },
-    "scripts/lib/component-code-model.mjs": {
-      "anti-slop/require-readable-spacing": 40
+      "anti-slop/no-runtime-typeof": 8
     },
     "scripts/lib/component-page.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/lib/consistency/axe-run.mjs": {
-      "anti-slop/require-readable-spacing": 6
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/consistency/browser.mjs": {
-      "anti-slop/no-array-filter-map": 1,
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/lib/consistency/build.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/lib/consistency/evaluate.mjs": {
-      "anti-slop/require-readable-spacing": 18
-    },
-    "scripts/lib/consistency/jaccard.mjs": {
-      "anti-slop/require-readable-spacing": 11
+      "anti-slop/no-array-filter-map": 1
     },
     "scripts/lib/consistency/ledger.mjs": {
-      "anti-slop/no-runtime-typeof": 11,
-      "anti-slop/require-readable-spacing": 42
+      "anti-slop/no-runtime-typeof": 11
     },
     "scripts/lib/consistency/live-plan.mjs": {
-      "anti-slop/no-conditional-empty-object-spread": 2,
-      "anti-slop/require-readable-spacing": 22
-    },
-    "scripts/lib/consistency/live.mjs": {
-      "anti-slop/require-readable-spacing": 17
-    },
-    "scripts/lib/consistency/pack.mjs": {
-      "anti-slop/require-readable-spacing": 21
-    },
-    "scripts/lib/consistency/pixeldiff.mjs": {
-      "anti-slop/require-readable-spacing": 13
-    },
-    "scripts/lib/consistency/render.mjs": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "scripts/lib/consistency/stage.mjs": {
-      "anti-slop/require-readable-spacing": 9
+      "anti-slop/no-conditional-empty-object-spread": 2
     },
     "scripts/lib/consistency/status-sync.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/lib/consistency/violations.mjs": {
-      "anti-slop/require-readable-spacing": 38
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/core-set.mjs": {
-      "anti-slop/no-conditional-empty-object-spread": 1,
-      "anti-slop/require-readable-spacing": 13
-    },
-    "scripts/lib/dark-alias-reemit.mjs": {
-      "anti-slop/require-readable-spacing": 9
+      "anti-slop/no-conditional-empty-object-spread": 1
     },
     "scripts/lib/design-links.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 2,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 72
-    },
-    "scripts/lib/docs-component-pages.mjs": {
-      "anti-slop/require-readable-spacing": 23
-    },
-    "scripts/lib/figma-agent-runtime.mjs": {
-      "anti-slop/require-readable-spacing": 34
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/figma-agent-sync.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 50
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/figma-brand-modes.mjs": {
-      "anti-slop/no-runtime-typeof": 4,
-      "anti-slop/require-readable-spacing": 22
+      "anti-slop/no-runtime-typeof": 4
     },
     "scripts/lib/figma-drift.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 35
-    },
-    "scripts/lib/figma-inputs.mjs": {
-      "anti-slop/require-readable-spacing": 4
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/lib/figma-inventory.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 28
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/lib/figma-link.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/figma-links-runtime.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 27
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/lib/figma-model-invariants.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 47
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/lib/figma-model.mjs": {
       "anti-slop/no-array-filter-map": 1,
       "anti-slop/no-conditional-empty-object-spread": 1,
-      "anti-slop/no-runtime-typeof": 9,
-      "anti-slop/require-readable-spacing": 136
+      "anti-slop/no-runtime-typeof": 9
     },
     "scripts/lib/figma-native-import.mjs": {
-      "anti-slop/no-array-filter-map": 1,
-      "anti-slop/require-readable-spacing": 20
+      "anti-slop/no-array-filter-map": 1
     },
     "scripts/lib/figma-receipt.mjs": {
-      "anti-slop/no-runtime-typeof": 6,
-      "anti-slop/require-readable-spacing": 26
+      "anti-slop/no-runtime-typeof": 6
     },
     "scripts/lib/figma-runtime.mjs": {
-      "anti-slop/no-runtime-typeof": 11,
-      "anti-slop/require-readable-spacing": 184
+      "anti-slop/no-runtime-typeof": 11
     },
     "scripts/lib/figma-scripts.mjs": {
-      "anti-slop/no-runtime-typeof": 4,
-      "anti-slop/require-readable-spacing": 59
+      "anti-slop/no-runtime-typeof": 4
     },
     "scripts/lib/figma-snapshot-delta.mjs": {
-      "anti-slop/no-shape-in-symbol-names": 3,
-      "anti-slop/require-readable-spacing": 20
+      "anti-slop/no-shape-in-symbol-names": 3
     },
     "scripts/lib/figma-snapshot.mjs": {
       "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/no-shape-in-symbol-names": 2,
-      "anti-slop/require-readable-spacing": 6
+      "anti-slop/no-shape-in-symbol-names": 2
     },
     "scripts/lib/figma-sync-runtime.mjs": {
-      "anti-slop/no-runtime-typeof": 12,
-      "anti-slop/require-readable-spacing": 81
+      "anti-slop/no-runtime-typeof": 12
     },
     "scripts/lib/figma-token.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 4
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/lib/gate-output.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 1,
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/lib/gate-scope.mjs": {
-      "anti-slop/require-readable-spacing": 19
-    },
-    "scripts/lib/guardrail-sweep.mjs": {
-      "anti-slop/require-readable-spacing": 9
-    },
-    "scripts/lib/guide-markdown.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/lib/hook-output.mjs": {
-      "anti-slop/require-readable-spacing": 19
-    },
-    "scripts/lib/jsdoc-contract.mjs": {
-      "anti-slop/require-readable-spacing": 16
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/lib/knowledge-classify.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 18
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/lib/layout-contract.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 39
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/lib/layout-probe.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 43
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/lib/manifest-props.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 17
-    },
-    "scripts/lib/mojibake.mjs": {
-      "anti-slop/require-readable-spacing": 2
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/lib/package-entries.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/lib/precommit-canonical.mjs": {
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/lib/props-exports.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 42
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/rendered-geometry.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 62
-    },
-    "scripts/lib/rsc-directive.mjs": {
-      "anti-slop/require-readable-spacing": 18
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/scan-roots.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/lib/script-reachability.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/lib/stable-artifact.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/lib/story-link.mjs": {
-      "anti-slop/require-readable-spacing": 42
-    },
-    "scripts/lib/storybook-host.mjs": {
-      "anti-slop/require-readable-spacing": 10
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/storybook-static-runner.mjs": {
-      "anti-slop/no-array-filter-map": 1,
-      "anti-slop/require-readable-spacing": 18
-    },
-    "scripts/lib/sync-map.mjs": {
-      "anti-slop/require-readable-spacing": 8
+      "anti-slop/no-array-filter-map": 1
     },
     "scripts/lib/token-dialect.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 2,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 11
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/token-modes.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/lib/token-references.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 20
-    },
-    "scripts/lib/which-one-when.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/lib/write-generated.mjs": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "scripts/measure-reference.mjs": {
-      "anti-slop/require-readable-spacing": 30
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/poc/style-dictionary-poc/sd.config.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/print-health-commit.mjs": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "scripts/promote-to-core.mjs": {
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/promote.mjs": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "scripts/run-gates.mjs": {
-      "anti-slop/require-readable-spacing": 62
-    },
-    "scripts/run-lint-staged.mjs": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/run-validator-tests.mjs": {
-      "anti-slop/require-readable-spacing": 12
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/sales-pipeline.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 22
-    },
-    "scripts/sales-proposal.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/scaffold-component.mjs": {
-      "anti-slop/require-readable-spacing": 19
-    },
-    "scripts/scaffold-tenant.mjs": {
-      "anti-slop/require-readable-spacing": 16
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/self-heal.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 19
-    },
-    "scripts/setup-hooks.mjs": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/smoke-consumer.mjs": {
-      "anti-slop/require-readable-spacing": 40
+      "anti-slop/no-runtime-typeof": 3
     },
     "scripts/snapshot-token-paths.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 3
-    },
-    "scripts/status-fold.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/status-touch.mjs": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "scripts/strip-dts-side-effects.mjs": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "scripts/sync-icons.mjs": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "scripts/test-phase1.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/ui-lint.mjs": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "scripts/update-precommit-hash.mjs": {
-      "anti-slop/require-readable-spacing": 11
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/upgrade/build-ledger.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 1,
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 51
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/upgrade/compile.mjs": {
       "anti-slop/no-conditional-empty-object-spread": 2,
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 164
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/upgrade/consumers.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 101
-    },
-    "scripts/upgrade/diff.mjs": {
-      "anti-slop/require-readable-spacing": 21
-    },
-    "scripts/upgrade/history.mjs": {
-      "anti-slop/require-readable-spacing": 14
-    },
-    "scripts/upgrade/ledger.mjs": {
-      "anti-slop/require-readable-spacing": 24
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/upgrade/note.mjs": {
-      "anti-slop/no-conditional-empty-object-spread": 5,
-      "anti-slop/require-readable-spacing": 34
+      "anti-slop/no-conditional-empty-object-spread": 5
     },
     "scripts/upgrade/pending.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 38
+      "anti-slop/no-runtime-typeof": 2
     },
     "scripts/upgrade/ranges.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 12
-    },
-    "scripts/upgrade/schema.mjs": {
-      "anti-slop/require-readable-spacing": 36
+      "anti-slop/no-runtime-typeof": 1
     },
     "scripts/upgrade/snapshot.mjs": {
-      "anti-slop/no-runtime-typeof": 6,
-      "anti-slop/require-readable-spacing": 44
-    },
-    "scripts/validate-fixture-proof-of-firing.mjs": {
-      "anti-slop/require-readable-spacing": 52
-    },
-    "scripts/validate-guardrail-registry.mjs": {
-      "anti-slop/require-readable-spacing": 18
+      "anti-slop/no-runtime-typeof": 6
     },
     "scripts/validate-manifest.mjs": {
-      "anti-slop/no-runtime-typeof": 27,
-      "anti-slop/require-readable-spacing": 31
+      "anti-slop/no-runtime-typeof": 27
     },
     "scripts/verify-tokens.mjs": {
       "anti-slop/no-array-filter-map": 1,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 26
-    },
-    "scripts/visual-ingest.mjs": {
-      "anti-slop/require-readable-spacing": 15
-    },
-    "src/app/components/__tests__/no-css-var-in-motion-animate.test.ts": {
-      "anti-slop/require-readable-spacing": 8
+      "anti-slop/no-runtime-typeof": 1
     },
     "src/app/components/alert-dialog.test.tsx": {
       "anti-slop/no-chained-type-assertions": 1,
       "anti-slop/no-unsafe-dictionary-type": 1,
-      "anti-slop/require-readable-spacing": 4,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
-    "src/app/components/alert-dialog.tsx": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "src/app/components/alert.figma.ts": {
-      "anti-slop/require-readable-spacing": 3
-    },
     "src/app/components/asset-img.test.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 5
     },
     "src/app/components/asset-img.tsx": {
       "anti-slop/no-chained-type-assertions": 3,
       "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 9
     },
-    "src/app/components/avatar-group.test.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/app/components/avatar-group.tsx": {
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 4
     },
-    "src/app/components/avatar.figma.ts": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/app/components/avatar.tsx": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "src/app/components/badge.figma.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/app/components/badge.test.tsx": {
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
-    "src/app/components/badge.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/app/components/box-sx.test.ts": {
-      "anti-slop/require-readable-spacing": 9,
       "anti-slop/require-safety-comment-for-type-assertion": 5
     },
     "src/app/components/box-sx.ts": {
@@ -1448,28 +415,18 @@
       "anti-slop/no-runtime-typeof": 7,
       "anti-slop/no-unknown-parameters": 1,
       "anti-slop/no-unsafe-dictionary-type": 1,
-      "anti-slop/require-readable-spacing": 45,
       "anti-slop/require-safety-comment-for-type-assertion": 4
     },
     "src/app/components/box.test.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/breadcrumb.test.tsx": {
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/breadcrumb.tsx": {
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
-    "src/app/components/button.figma.ts": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "src/app/components/button.test.tsx": {
-      "anti-slop/require-readable-spacing": 15
-    },
     "src/app/components/button.tsx": {
-      "anti-slop/require-readable-spacing": 7,
       "anti-slop/require-safety-comment-for-type-assertion": 4
     },
     "src/app/components/card.test.tsx": {
@@ -1477,165 +434,89 @@
     },
     "src/app/components/card.tsx": {
       "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 7,
       "anti-slop/require-safety-comment-for-type-assertion": 3
-    },
-    "src/app/components/checkbox.figma.ts": {
-      "anti-slop/require-readable-spacing": 2
     },
     "src/app/components/checkbox.test.tsx": {
       "anti-slop/require-safety-comment-for-type-assertion": 3
     },
     "src/app/components/checkbox.tsx": {
       "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 3,
       "anti-slop/require-safety-comment-for-type-assertion": 1
-    },
-    "src/app/components/code-block.tsx": {
-      "anti-slop/require-readable-spacing": 37
-    },
-    "src/app/components/combobox.test.tsx": {
-      "anti-slop/require-readable-spacing": 6
     },
     "src/app/components/combobox.tsx": {
       "anti-slop/no-chained-type-assertions": 1,
       "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 22,
       "anti-slop/require-safety-comment-for-type-assertion": 4
     },
     "src/app/components/data-table-section.test.tsx": {
-      "anti-slop/require-readable-spacing": 4,
       "anti-slop/require-safety-comment-for-type-assertion": 1
-    },
-    "src/app/components/data-table-section.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/components/destructive-section.test.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/app/components/destructive-section.tsx": {
-      "anti-slop/require-readable-spacing": 1
     },
     "src/app/components/dialog.test.tsx": {
       "anti-slop/no-chained-type-assertions": 1,
       "anti-slop/no-unsafe-dictionary-type": 1,
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
-    "src/app/components/dialog.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
     "src/app/components/disclosure.tsx": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/app/components/divider.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/components/field.tsx": {
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-runtime-typeof": 1
     },
     "src/app/components/form-actions.test.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 3
     },
-    "src/app/components/form-actions.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/app/components/form.test.tsx": {
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 4
     },
     "src/app/components/form.tsx": {
-      "anti-slop/require-readable-spacing": 4,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/grid.test.tsx": {
       "anti-slop/no-known-value-widening": 1,
-      "anti-slop/require-readable-spacing": 15,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "src/app/components/grid.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/hds-tooltip.test.tsx": {
       "anti-slop/no-chained-type-assertions": 1,
       "anti-slop/no-unsafe-dictionary-type": 1,
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 3
     },
     "src/app/components/icon.tsx": {
       "anti-slop/no-known-value-widening": 1,
       "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/inline-code.test.tsx": {
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "src/app/components/inline-code.tsx": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/components/inline-link.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/components/input.figma.ts": {
-      "anti-slop/require-readable-spacing": 4
+      "anti-slop/no-runtime-typeof": 1
     },
     "src/app/components/input.test.tsx": {
-      "anti-slop/require-readable-spacing": 6,
       "anti-slop/require-safety-comment-for-type-assertion": 11
     },
     "src/app/components/input.tsx": {
       "anti-slop/no-runtime-typeof": 6,
-      "anti-slop/require-readable-spacing": 19,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/menu.test.tsx": {
       "anti-slop/no-chained-type-assertions": 1,
       "anti-slop/no-unsafe-dictionary-type": 1,
-      "anti-slop/require-readable-spacing": 4,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
-    "src/app/components/menu.tsx": {
-      "anti-slop/require-readable-spacing": 6
-    },
     "src/app/components/metadata-list.test.tsx": {
-      "anti-slop/require-readable-spacing": 5,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/metric-tiles.test.tsx": {
-      "anti-slop/require-readable-spacing": 9,
       "anti-slop/require-safety-comment-for-type-assertion": 3
     },
-    "src/app/components/metric-tiles.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
     "src/app/components/page-header.test.tsx": {
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
-    "src/app/components/page-header.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/components/page.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
     "src/app/components/pagination.markup.test.tsx": {
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/pagination.test.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 2
-    },
-    "src/app/components/pagination.tsx": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/app/components/pin.test.tsx": {
-      "anti-slop/require-readable-spacing": 1
     },
     "src/app/components/pin.tsx": {
       "anti-slop/require-safety-comment-for-type-assertion": 1
@@ -1643,146 +524,74 @@
     "src/app/components/popover.test.tsx": {
       "anti-slop/no-chained-type-assertions": 1,
       "anti-slop/no-unsafe-dictionary-type": 1,
-      "anti-slop/require-readable-spacing": 4,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
-    "src/app/components/popover.tsx": {
-      "anti-slop/require-readable-spacing": 4
-    },
     "src/app/components/progress.test.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "src/app/components/progress.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 1
-    },
-    "src/app/components/radio.figma.ts": {
-      "anti-slop/require-readable-spacing": 2
     },
     "src/app/components/radio.test.tsx": {
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "src/app/components/radio.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 1
-    },
-    "src/app/components/reveal.test.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/components/segmented-control.test.tsx": {
-      "anti-slop/require-readable-spacing": 1
     },
     "src/app/components/segmented-control.tsx": {
-      "anti-slop/require-readable-spacing": 7,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
-    "src/app/components/select.test.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/app/components/sidebar.test.tsx": {
-      "anti-slop/require-readable-spacing": 4,
       "anti-slop/require-safety-comment-for-type-assertion": 4
-    },
-    "src/app/components/sidebar.tsx": {
-      "anti-slop/require-readable-spacing": 1
     },
     "src/app/components/skeleton.test.tsx": {
       "anti-slop/require-safety-comment-for-type-assertion": 3
     },
-    "src/app/components/skeleton.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/app/components/stack.test.tsx": {
       "anti-slop/no-chained-type-assertions": 1,
       "anti-slop/no-known-value-widening": 1,
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 7
     },
     "src/app/components/stack.tsx": {
-      "anti-slop/require-readable-spacing": 5,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/switcher.test.tsx": {
-      "anti-slop/require-readable-spacing": 4,
       "anti-slop/require-safety-comment-for-type-assertion": 5
     },
-    "src/app/components/table.test.tsx": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/app/components/table.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/components/tag.figma.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/components/timestamp.test.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/app/components/timestamp.tsx": {
-      "anti-slop/no-known-value-widening": 1,
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/app/components/toast.test.tsx": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "src/app/components/toast.tsx": {
-      "anti-slop/require-readable-spacing": 4
+      "anti-slop/no-known-value-widening": 1
     },
     "src/app/components/toggle.test.tsx": {
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "src/app/components/toggle.tsx": {
-      "anti-slop/require-readable-spacing": 7,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/components/tooltip.test.tsx": {
       "anti-slop/no-runtime-typeof": 1,
       "anti-slop/no-unsafe-dictionary-type": 3,
-      "anti-slop/require-readable-spacing": 9,
       "anti-slop/require-safety-comment-for-type-assertion": 4
     },
-    "src/app/context/LanguageContext.tsx": {
-      "anti-slop/require-readable-spacing": 4
-    },
-    "src/app/context/RouterContext.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/app/context/TenantContext.tsx": {
-      "anti-slop/require-readable-spacing": 4
-    },
     "src/app/context/ThemeContext.tsx": {
-      "anti-slop/require-readable-spacing": 15,
       "anti-slop/require-safety-comment-for-type-assertion": 2
-    },
-    "src/app/context/TokenDisplayContext.tsx": {
-      "anti-slop/require-readable-spacing": 3
     },
     "src/app/context/__tests__/context.test.tsx": {
       "anti-slop/no-known-value-widening": 1,
       "anti-slop/no-unsafe-dictionary-type": 1,
-      "anti-slop/require-readable-spacing": 15,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "src/app/context/__tests__/portal-hydration.test.tsx": {
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/app/context/__tests__/portal-scope.test.tsx": {
-      "anti-slop/require-readable-spacing": 6,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "src/app/context/hds-portal.tsx": {
-      "anti-slop/require-readable-spacing": 6,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "src/app/context/hds-theme.tsx": {
       "anti-slop/no-known-value-widening": 2,
-      "anti-slop/require-readable-spacing": 3,
       "anti-slop/require-safety-comment-for-type-assertion": 2
-    },
-    "src/app/context/index.ts": {
-      "anti-slop/require-readable-spacing": 6
     },
     "src/app/data/manifest-types.ts": {
       "anti-slop/no-unsafe-dictionary-type": 2
@@ -1791,136 +600,30 @@
       "anti-slop/no-known-value-widening": 1
     },
     "src/app/design-system/tokens.ts": {
-      "anti-slop/require-readable-spacing": 3,
       "anti-slop/require-safety-comment-for-type-assertion": 36
     },
     "src/app/hooks/useHdsMotion.test.ts": {
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
-    "src/app/hooks/useHdsMotion.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/hooks/useInteractionState.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/app/hooks/useReducedMotion.test.ts": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/app/hooks/useReducedMotion.ts": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/app/utils/colorUtils.ts": {
-      "anti-slop/require-readable-spacing": 8
-    },
-    "src/brand/overlay.test.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/brand/overlay.ts": {
-      "anti-slop/no-known-value-widening": 2,
-      "anti-slop/require-readable-spacing": 7
+      "anti-slop/no-known-value-widening": 2
     },
     "src/form/form-adapter.test.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 2
-    },
-    "src/form/index.ts": {
-      "anti-slop/require-readable-spacing": 2
     },
     "src/form/use-hds-form.ts": {
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
-    "src/icons.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/index.ts": {
-      "anti-slop/require-readable-spacing": 50
-    },
-    "src/lib/deprecation.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/lib/env.test.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/lib/env.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/lib/manifest-entry.ts": {
       "anti-slop/no-chained-type-assertions": 1,
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "src/mui/index.ts": {
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 1
-    },
-    "src/patterns.ts": {
-      "anti-slop/require-readable-spacing": 11
-    },
-    "src/scroll/index.ts": {
-      "anti-slop/require-readable-spacing": 2
     },
     "src/scroll/scroll.test.tsx": {
       "anti-slop/no-module-mocking": 1,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 5
-    },
-    "src/scroll/smooth-scroll.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/scroll/use-scroll-progress.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/alert-dialog.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/alert.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/asset-img.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/avatar-group.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/avatar.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/badge.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/blockquote.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/box.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/breadcrumb.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/button.stories.tsx": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/stories/callout.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/card.stories.tsx": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/stories/checkbox.stories.tsx": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "src/stories/code-block.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/combobox.stories.tsx": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "src/stories/container.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/data-table-section.stories.tsx": {
-      "anti-slop/require-readable-spacing": 2
+      "anti-slop/no-runtime-typeof": 1
     },
     "src/stories/design-parameters.ts": {
       "anti-slop/no-chained-type-assertions": 1,
@@ -1928,270 +631,51 @@
       "anti-slop/no-unknown-parameters": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
-    "src/stories/destructive-section.stories.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/stories/dialog.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/disclosure.stories.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/stories/divider.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/empty-state.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/error-pattern.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/field.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/form-actions.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/form.stories.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/stories/grid.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/hds-tooltip.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/icon.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/inline-code.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/inline-link.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/input.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/kbd.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/lib/open-listbox.ts": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "src/stories/lib/usage-description.ts": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "src/stories/menu.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/metadata-list.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/metric-tile.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/metric-tiles.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/page-header.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/page.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/pagination.stories.tsx": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "src/stories/patterns-client-detail.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/patterns-layout.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/patterns-scroll.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/pin.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/popover.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/progress.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/radio.stories.tsx": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "src/stories/reveal.stories.tsx": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/stories/segmented-control.stories.tsx": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "src/stories/select.stories.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/stories/sidebar.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/skeleton.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/slider.stories.tsx": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "src/stories/spinner.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/stack.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/stat.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/static-primitives.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "src/stories/status-list-item.stories.test.tsx": {
       "anti-slop/no-chained-type-assertions": 1,
-      "anti-slop/require-readable-spacing": 1,
       "anti-slop/require-safety-comment-for-type-assertion": 2
-    },
-    "src/stories/status-list-item.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
     },
     "src/stories/status-tile.stories.test.tsx": {
       "anti-slop/no-unknown-parameters": 2,
       "anti-slop/no-unknown-returns": 1,
       "anti-slop/no-unsafe-dictionary-type": 2,
-      "anti-slop/require-readable-spacing": 4,
       "anti-slop/require-safety-comment-for-type-assertion": 4
-    },
-    "src/stories/status-tile.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
     },
     "src/stories/story-render.spec.tsx": {
       "anti-slop/no-runtime-typeof": 1,
       "anti-slop/no-unsafe-dictionary-type": 2,
-      "anti-slop/require-readable-spacing": 6,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "src/stories/story-ssr.spec.tsx": {
       "anti-slop/no-runtime-typeof": 1,
       "anti-slop/no-unsafe-dictionary-type": 2,
-      "anti-slop/require-readable-spacing": 10,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
-    "src/stories/surface.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/switcher.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/table.stories.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/stories/tabs.stories.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "src/stories/tag.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/text.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/textarea.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/stories/timestamp.stories.tsx": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "src/stories/toast.stories.tsx": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "src/stories/toggle.stories.tsx": {
-      "anti-slop/require-readable-spacing": 5
-    },
     "src/stories/type-specimen.stories.tsx": {
-      "anti-slop/require-readable-spacing": 18,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
-    "src/stories/visually-hidden.stories.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "src/styles/__tests__/interactive-surface-tokens.test.ts": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "src/styles/__tests__/pressed-overlay-token.test.ts": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "src/styles/__tests__/scrim-and-color-scheme.test.ts": {
-      "anti-slop/require-readable-spacing": 7
-    },
     "tests/bugfix-522.test.tsx": {
-      "anti-slop/require-readable-spacing": 21,
       "anti-slop/require-safety-comment-for-type-assertion": 11
     },
-    "tests/button-size-budget.test.ts": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "tests/check-source-canon.test.ts": {
-      "anti-slop/require-readable-spacing": 3
-    },
     "tests/codemod-commands-doc.test.ts": {
-      "anti-slop/no-known-value-widening": 1,
-      "anti-slop/require-readable-spacing": 5
-    },
-    "tests/color-math.property.test.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "tests/colorUtils.test.ts": {
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-known-value-widening": 1
     },
     "tests/consuming-docs.test.ts": {
       "anti-slop/no-array-filter-map": 2,
-      "anti-slop/require-readable-spacing": 21,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
-    "tests/container-radius.test.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
     "tests/docs-site/component-pages.test.ts": {
-      "anti-slop/require-readable-spacing": 11,
       "anti-slop/require-safety-comment-for-type-assertion": 4
     },
-    "tests/docs-site/content-pages.test.ts": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "tests/docs-site/token-tables.test.ts": {
-      "anti-slop/require-readable-spacing": 1
-    },
     "tests/front-door.test.ts": {
-      "anti-slop/require-readable-spacing": 15,
       "anti-slop/require-safety-comment-for-type-assertion": 3
     },
     "tests/icons-subpath.test.tsx": {
       "anti-slop/no-chained-type-assertions": 1,
       "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 10,
       "anti-slop/require-safety-comment-for-type-assertion": 4
     },
-    "tests/no-important-modifier.test.ts": {
-      "anti-slop/require-readable-spacing": 11
-    },
-    "tests/no-shipped-import-meta-env.test.ts": {
-      "anti-slop/require-readable-spacing": 10
-    },
-    "tests/overlay-router-contracts.test.ts": {
-      "anti-slop/require-readable-spacing": 3
-    },
-    "tests/pre-push-runs-pnpm-test.test.ts": {
-      "anti-slop/require-readable-spacing": 2
-    },
     "tests/primitive-contracts/alert.contract.test.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 4
     },
     "tests/primitive-contracts/badge.contract.test.tsx": {
@@ -2199,15 +683,10 @@
     },
     "tests/primitive-contracts/button.contract.test.tsx": {
       "anti-slop/no-shape-in-symbol-names": 24,
-      "anti-slop/require-readable-spacing": 6,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "tests/primitive-contracts/card.contract.test.tsx": {
-      "anti-slop/require-readable-spacing": 8,
       "anti-slop/require-safety-comment-for-type-assertion": 9
-    },
-    "tests/primitive-contracts/combobox.contract.test.tsx": {
-      "anti-slop/require-readable-spacing": 2
     },
     "tests/primitive-contracts/divider.contract.test.tsx": {
       "anti-slop/require-safety-comment-for-type-assertion": 3
@@ -2219,169 +698,90 @@
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
     "tests/primitive-contracts/keyboard.contract.test.tsx": {
-      "anti-slop/require-readable-spacing": 10,
       "anti-slop/require-safety-comment-for-type-assertion": 8
-    },
-    "tests/primitive-contracts/overlay-fixtures.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "tests/primitive-contracts/screen-reader.contract.test.tsx": {
-      "anti-slop/require-readable-spacing": 2
-    },
-    "tests/primitive-contracts/segmented-control.contract.test.tsx": {
-      "anti-slop/require-readable-spacing": 9
     },
     "tests/primitive-contracts/surface.contract.test.tsx": {
       "anti-slop/require-safety-comment-for-type-assertion": 8
     },
     "tests/primitive-contracts/tenant-contrast.contract.test.ts": {
       "anti-slop/no-object-parameters": 1,
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 5
+      "anti-slop/no-runtime-typeof": 1
     },
     "tests/primitive-contracts/text.contract.test.tsx": {
-      "anti-slop/require-readable-spacing": 2,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "tests/prune-wave-4b-survivors.test.tsx": {
-      "anti-slop/require-readable-spacing": 14,
       "anti-slop/require-safety-comment-for-type-assertion": 12
     },
     "tests/public-export-names.test.ts": {
-      "anti-slop/no-known-value-widening": 1,
-      "anti-slop/require-readable-spacing": 12
+      "anti-slop/no-known-value-widening": 1
     },
     "tests/removed-0.20-release-notes.test.ts": {
       "anti-slop/no-array-filter-map": 5,
-      "anti-slop/require-readable-spacing": 19,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "tests/removed-names-docs-data.test.ts": {
       "anti-slop/no-runtime-typeof": 2,
       "anti-slop/no-unknown-parameters": 1,
-      "anti-slop/require-readable-spacing": 7,
       "anti-slop/require-safety-comment-for-type-assertion": 3
     },
     "tests/removed-names-living-docs.test.ts": {
       "anti-slop/no-array-filter-map": 1,
-      "anti-slop/require-readable-spacing": 5,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
     "tests/removed-names-wave-4b-recipes.test.ts": {
-      "anti-slop/require-readable-spacing": 3,
       "anti-slop/require-safety-comment-for-type-assertion": 1
-    },
-    "tests/root-barrel-sections.test.ts": {
-      "anti-slop/require-readable-spacing": 7
     },
     "tests/runtime-dependencies.test.ts": {
       "anti-slop/no-unsafe-dictionary-type": 1,
-      "anti-slop/require-readable-spacing": 12,
       "anti-slop/require-safety-comment-for-type-assertion": 2
     },
-    "tests/screen-patterns-docs.test.ts": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "tests/screen-patterns-exports.test.ts": {
-      "anti-slop/require-readable-spacing": 6
-    },
     "tests/screen-patterns-layout.test.tsx": {
-      "anti-slop/require-readable-spacing": 6,
       "anti-slop/require-safety-comment-for-type-assertion": 5
     },
     "tests/setup/jsdom-polyfills.ts": {
       "anti-slop/no-chained-type-assertions": 2,
       "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 10,
       "anti-slop/require-safety-comment-for-type-assertion": 5
     },
-    "tests/storybook-globals-sync.test.tsx": {
-      "anti-slop/require-readable-spacing": 1
-    },
-    "tests/types/alert.test-d.ts": {
-      "anti-slop/require-readable-spacing": 5
-    },
-    "tests/types/badge.test-d.ts": {
-      "anti-slop/require-readable-spacing": 6
-    },
-    "tests/types/button.test-d.ts": {
-      "anti-slop/require-readable-spacing": 12
-    },
-    "tests/types/card.test-d.ts": {
-      "anti-slop/require-readable-spacing": 12
-    },
-    "tests/types/input.test-d.ts": {
-      "anti-slop/require-readable-spacing": 18
-    },
-    "tests/types/prune-b3a.test-d.ts": {
-      "anti-slop/require-readable-spacing": 7
-    },
-    "tests/types/prune-b3c.test-d.ts": {
-      "anti-slop/require-readable-spacing": 13
-    },
     "tests/types/prune-b3d.test-d.ts": {
-      "anti-slop/require-readable-spacing": 11,
       "anti-slop/require-safety-comment-for-type-assertion": 1
     },
-    "tests/types/prune-wave-4b.test-d.ts": {
-      "anti-slop/require-readable-spacing": 14
-    },
     "validators/10f-7-xpath-query-endpoint.mjs": {
-      "anti-slop/no-runtime-typeof": 10,
-      "anti-slop/require-readable-spacing": 18
+      "anti-slop/no-runtime-typeof": 10
     },
     "validators/a11y-validator.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 6
+      "anti-slop/no-runtime-typeof": 2
     },
     "validators/binding-completeness.mjs": {
-      "anti-slop/no-runtime-typeof": 9,
-      "anti-slop/require-readable-spacing": 26
+      "anti-slop/no-runtime-typeof": 9
     },
     "validators/canon-rules.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 17
-    },
-    "validators/compiler.mjs": {
-      "anti-slop/require-readable-spacing": 1
+      "anti-slop/no-runtime-typeof": 2
     },
     "validators/contrast.mjs": {
-      "anti-slop/no-runtime-typeof": 11,
-      "anti-slop/require-readable-spacing": 41
+      "anti-slop/no-runtime-typeof": 11
     },
     "validators/correlation.mjs": {
-      "anti-slop/no-runtime-typeof": 5,
-      "anti-slop/require-readable-spacing": 5
-    },
-    "validators/index.mjs": {
-      "anti-slop/require-readable-spacing": 2
+      "anti-slop/no-runtime-typeof": 5
     },
     "validators/lint.mjs": {
-      "anti-slop/no-runtime-typeof": 7,
-      "anti-slop/require-readable-spacing": 11
+      "anti-slop/no-runtime-typeof": 7
     },
     "validators/manifest-validator.mjs": {
-      "anti-slop/no-runtime-typeof": 2,
-      "anti-slop/require-readable-spacing": 16
+      "anti-slop/no-runtime-typeof": 2
     },
     "validators/motion-perf.mjs": {
-      "anti-slop/no-runtime-typeof": 1,
-      "anti-slop/require-readable-spacing": 13
-    },
-    "validators/parse-jsx.mjs": {
-      "anti-slop/require-readable-spacing": 2
+      "anti-slop/no-runtime-typeof": 1
     },
     "validators/runtime-error-channel.mjs": {
-      "anti-slop/no-runtime-typeof": 5,
-      "anti-slop/require-readable-spacing": 5
+      "anti-slop/no-runtime-typeof": 5
     },
     "validators/swiss-canon.mjs": {
-      "anti-slop/no-runtime-typeof": 6,
-      "anti-slop/require-readable-spacing": 37
+      "anti-slop/no-runtime-typeof": 6
     },
     "validators/token-validator.mjs": {
-      "anti-slop/no-runtime-typeof": 3,
-      "anti-slop/require-readable-spacing": 13
+      "anti-slop/no-runtime-typeof": 3
     }
   }
 }
