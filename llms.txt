@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-09T13:36:08.250Z
+Generated: 2026-10-09T13:43:23.079Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## Agents Using The Package: Start Here
@@ -189,7 +189,7 @@ InlineLink: [core] Link to a route or external URL from inside body copy. Use in
 Input: [core] Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots. Use instead: Textarea, Select, Combobox
 Kbd: [core] Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
 Menu: [core] Offer a list of actions from a trigger, closed until opened. Use instead: Select
-MetricTile: Show a row of key numbers, one tile each.
+MetricTile: Show one key number with its label, inside a MetricTiles row.
 MetricTiles: Show a row of key numbers, one tile each.
 Page: Wrap a screen in the standard width and padding.
 PageHeader: Open a screen with its title, plus optional breadcrumb, status and actions.

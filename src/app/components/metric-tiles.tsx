@@ -43,6 +43,7 @@ export interface MetricTileProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the
  * eyebrow / h2 / caption scale) and adds the surface and the fixed height, so a
  * tile needs no enclosing `Card`.
+ * @usage Show one key number with its label, inside a MetricTiles row.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-114
  */
 export const MetricTile = /* @__PURE__ */ React.forwardRef<HTMLDivElement, MetricTileProps>(

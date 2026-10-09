@@ -8351,7 +8351,7 @@
         "patterns-metrictiles--tones"
       ],
       "usage": {
-        "when": "Show a row of key numbers, one tile each."
+        "when": "Show one key number with its label, inside a MetricTiles row."
       }
     },
     "MetricTiles": {
