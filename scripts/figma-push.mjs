@@ -21,6 +21,9 @@
  *   figma/push/use-figma/delta.js    with --delta only: the zero-click agent sync
  *                                 (hds#418), one use_figma call that applies the
  *                                 change since figma/snapshot.json to the library
+ *   figma/push/use-figma/delta-1-of-N.js ... delta-N-of-N.js
+ *                                 instead of delta.js when the change is too big for
+ *                                 one call: N ordered parts, one use_figma call each
  *
  * A push matches by token path (then TOKEN_MIGRATION.md renames, codeSyntax,
  * name), updates before it creates, renames a collection's initial mode, and
@@ -48,7 +51,7 @@
  *                              VERCEL_GIT_COMMIT_SHA, else git.
  */
 
-import { mkdirSync, rmSync, writeFileSync, existsSync, readFileSync } from 'fs';
+import { mkdirSync, readdirSync, rmSync, writeFileSync, existsSync, readFileSync } from 'fs';
 import { join, dirname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { execFileSync } from 'child_process';
@@ -186,11 +189,12 @@ export function writeSyncBundle({ root, out, commit }) {
  * when the builder refuses or anything before it fails; writes the carriers
  * but no delta.js when there is nothing to sync.
  *
- * @param {{ root: string, outDir: string, commit: string }} options
+ * @param {{ root: string, outDir: string, commit: string, limits?: object }} options
+ *   limits: buildUseFigmaDeltaScript's maxChars, partChars and split, which tests lower.
  */
-export function writeDeltaScript({ root, outDir, commit }) {
+export function writeDeltaScript({ root, outDir, commit, limits = {} }) {
   const path = join(outDir, 'use-figma', 'delta.js');
-  rmSync(path, { force: true });
+  removeDeltaScripts(outDir);
   const { model, renames } = loadFigmaInputs(root);
   const snapshotPath = join(root, 'figma', 'snapshot.json');
   const snapshotFile = existsSync(snapshotPath)
@@ -201,10 +205,30 @@ export function writeDeltaScript({ root, outDir, commit }) {
     snapshotFile,
     links: readLinks(root),
     commit,
+    ...limits,
   });
   writePushArtifacts({ root, outDir });
   if (built.text) writeFileSync(path, built.text);
-  return { ...built, path, shown: relative(root, path).replaceAll('\\', '/') };
+  const shownDir = relative(root, join(outDir, 'use-figma')).replaceAll('\\', '/');
+  (built.parts || []).forEach((part) =>
+    writeFileSync(join(outDir, 'use-figma', part.file), part.text),
+  );
+  return {
+    ...built,
+    path,
+    shown: relative(root, path).replaceAll('\\', '/'),
+    shownParts: (built.parts || []).map((part) => `${shownDir}/${part.file}`),
+  };
+}
+
+/** Removes delta.js and every delta-i-of-N.js: no refusal or failure leaves an earlier one to be run. */
+function removeDeltaScripts(outDir) {
+  const dir = join(outDir, 'use-figma');
+  rmSync(join(dir, 'delta.js'), { force: true });
+  if (!existsSync(dir)) return;
+  readdirSync(dir)
+    .filter((name) => /^delta-\d+-of-\d+\.js$/.test(name))
+    .forEach((name) => rmSync(join(dir, name), { force: true }));
 }
 
 /**
@@ -212,23 +236,25 @@ export function writeDeltaScript({ root, outDir, commit }) {
  * refused. It removes any earlier delta.js first, so a refusal or failure
  * leaves none. `resolveCommit` names the commit delta.js is built from.
  *
- * @param {{ root?: string, prune?: boolean, resolveCommit?: () => string }} [options]
+ * @param {{ root?: string, prune?: boolean, resolveCommit?: () => string, limits?: object }} [options]
  * @returns {string}
  */
 export function runDeltaCommand({
   root = ROOT,
   prune = false,
   resolveCommit = resolveBundleCommit,
+  limits = {},
 } = {}) {
   const outDir = join(root, 'figma', 'push');
   // First, before any step that can fail: no refusal leaves an earlier delta.js behind.
-  rmSync(join(outDir, 'use-figma', 'delta.js'), { force: true });
+  removeDeltaScripts(outDir);
   if (prune) throw new Error(DELTA_PRUNE_REFUSAL);
-  return formatDeltaRun(writeDeltaScript({ root, outDir, commit: resolveCommit() }));
+  return formatDeltaRun(writeDeltaScript({ root, outDir, commit: resolveCommit(), limits }));
 }
 
 /** What `pnpm figma:push --delta` prints for writeDeltaScript's result. */
 export function formatDeltaRun(result) {
+  if (result.parts) return formatDeltaParts(result);
   if (!result.text) return `figma:push --delta — ${result.nothing}`;
   return [
     `figma:push --delta — ${result.shown} (${result.chars.toLocaleString('en-US')} of ${DELTA_MAX_CHARS.toLocaleString('en-US')} chars): ${result.line}`,
@@ -239,6 +265,29 @@ export function formatDeltaRun(result) {
     `  Next: log the call in figma/MCP-LEDGER.md, then pass delta.js unmodified to one use_figma call on the library ${result.library}.`,
     '  Save what it returns and run pnpm figma:snapshot --from-receipt <file> (when it returns only the head, first run',
     '  use-figma/receipt.js once per page). On a refusal: stop, never retry. Runbook: figma/README.md "Agent sync (zero clicks)".',
+  ].join('\n');
+}
+
+/** What `pnpm figma:push --delta` prints when the change needs N parts: the exact files, in order, and how to run them. */
+function formatDeltaParts(result) {
+  const n = result.parts.length;
+  const max = DELTA_MAX_CHARS.toLocaleString('en-US');
+  return [
+    `figma:push --delta — ${n} PARTS, too big for one delta.js (largest ${result.chars.toLocaleString('en-US')} of ${max} chars): ${result.line}`,
+    `  against figma/snapshot.json ${result.base}; model ${result.modelHash}; commit ${result.commit.slice(0, 7)}; run ${result.run}`,
+    ...result.changes.map((change) => `    ${change}`),
+    ...result.warnings.map((warning) => `    ⚠ ${warning}`),
+    '',
+    `  Run these ${n} files, in this order, each unmodified in its own use_figma call on the library ${result.library}:`,
+    ...result.parts.map(
+      (part, i) =>
+        `    ${i + 1}. ${result.shownParts ? result.shownParts[i] : part.file} (${part.chars.toLocaleString('en-US')} chars)`,
+    ),
+    '  After each part: save what it returns to its own file (when it returns only the head, first run',
+    '  use-figma/receipt.js once per page and save those too), then run the next part. Log each call in',
+    '  figma/MCP-LEDGER.md. A part refuses to run out of order and re-running one changes nothing.',
+    `  When part ${n} is done: pnpm figma:snapshot --from-receipt <every saved file, in part order>.`,
+    '  On any refusal: stop, never retry. Runbook: figma/README.md "Agent sync (zero clicks)", "More than one part".',
   ].join('\n');
 }
 

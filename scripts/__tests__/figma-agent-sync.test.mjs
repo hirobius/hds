@@ -727,20 +727,16 @@ describe('pnpm figma:push --delta refuses to build what Sync must do', () => {
     }
   });
 
-  it('a delta.js over 45,000 chars', async () => {
-    const long = (path) => `${path} `.repeat(60);
+  it('one variable too big for any part (a delta.js over 45,000 chars cannot be cut further)', async () => {
     await expect(
       pending({
         edit: (model) => {
-          model.collections
-            .flatMap((c) => c.variables)
-            .slice(0, 30)
-            .forEach((v) => (v.description = long(v.path)));
+          variableOf(model, 'primitive.space.2').description = 'x '.repeat(4000);
           return model;
         },
       }),
     ).rejects.toThrow(
-      /delta\.js would be [\d,]+ characters, over its 45,000 limit.*Route it to Sync/s,
+      /variable primitive\.space\.2 alone makes a [\d,]+-character part, over the 45,000 limit.*Route it to Sync/s,
     );
   });
 
