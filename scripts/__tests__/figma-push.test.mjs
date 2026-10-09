@@ -497,6 +497,32 @@ describe('figma:push when a value a text style binds changes (hds#300)', () => {
   });
 });
 
+describe('figma:push when a font family variable changes', () => {
+  // 2026-10-09: the Plex Mono delta.js stopped in setValueForMode, because
+  // Figma will not give a variable a text style's fontFamily binds a new
+  // family until that font is loaded, and the push loaded fonts only later,
+  // for the styles themselves.
+  const renamedFamily = (() => {
+    const tokens = JSON.parse(readFileSync(FIXTURE_TOKENS_PATH, 'utf8'));
+    tokens.primitive.typography.family.mono.$value = ['Geist Mono', 'monospace'];
+    return buildFigmaModel(tokens);
+  })();
+  const fonts = [...FIXTURE_FONTS, { family: 'Geist Mono', style: 'Medium' }];
+
+  it('loads the new family before writing the variable, and converges', async () => {
+    const figma = newFile({ fonts });
+    await push(figma);
+
+    await push(figma, {}, renamedFamily);
+
+    const styles = (await hdsReadState(figma)).textStyles.filter(
+      (s) => s.fontFamily === 'Geist Mono',
+    );
+    expect(styles.length).toBeGreaterThan(0);
+    expect((await push(figma, {}, renamedFamily)).line).toBe('updated 0 · created 0 · deleted 0');
+  });
+});
+
 describe('figma:push with the real hirobius.tokens.json', () => {
   it('pushes every variable and style, converges, and reads back with no drift', async () => {
     const real = buildFigmaModel(

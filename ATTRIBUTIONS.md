@@ -42,6 +42,16 @@ Use this file to track:
 - Source: [Unsplash](https://unsplash.com)
 - License link: [Unsplash license](https://unsplash.com/license)
 
+### Addy Osmani agent-skills
+
+- Registry ID: library-osmani-agent-skills
+- Type: Vendored agent skills (`.claude/skills/`, pinned in `skills-lock.json`)
+- Usage: 25 engineering skills plus shared checklists, committed unmodified
+- License: MIT
+- Source: [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)
+- Pinned commit: `1401c8b8030e023baeebb31781a6653fe8e93026`
+- License link: [MIT license](https://github.com/addyosmani/agent-skills/blob/main/LICENSE)
+
 ## Design-System And Documentation References
 
 These are not copied implementations. They are reference points used for structure, conventions, or quality baseline.
