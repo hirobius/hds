@@ -29,6 +29,7 @@ import { writeManifest as writeComponentApiManifest } from './generate-component
 import { buildTokenQuickReference } from './build-token-quick-reference.mjs';
 import { buildWhichOneWhen } from './lib/which-one-when.mjs';
 import { coreByCategory, renderCoreSetLines } from './lib/core-set.mjs';
+import { readVoice, voiceMarkdown } from './lib/voice.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -208,6 +209,10 @@ Primary sources: \`public/hds-manifest.json\`, \`src/app/data/component-api.json
 - Read \`AGENTS.md\` (package root, \`node_modules/@hirobius/design-system/AGENTS.md\`) first: which component to use for each screen need, the imports, and the rules.
 - MCP server \`hds\` ships in the package: run \`npx hds-mcp\` (stdio). Tools: \`list_core\`, \`search_components\`, \`get_component\`, \`search_tokens\`; each answer is under 2 KB.
 - Lint before you finish: \`import hds from '@hirobius/design-system/eslint-plugin'\` and spread \`hds.configs.recommended\` into \`eslint.config.mjs\`.
+
+## Voice
+
+${voiceMarkdown(readVoice(ROOT))}
 
 ## Pick By Need
 

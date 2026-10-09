@@ -1,0 +1,1 @@
+Docs Voice page (hds#506): content/docs/voice.mdx is the one source for how docs speak; AGENTS.md and llms.txt print it (generated, drift-checked), check-docs fails any page using a word from its avoid list. Renamed from "North Star" so it doesn't collide with docs/ai/NORTH_STAR.md (the internal focus contract, on claude/hirobius-design-skills-jr28dm).
