@@ -43,17 +43,29 @@ export function hdsChecksum(text) {
 }
 
 /**
+ * What hdsVerifyRuntime hashes for one function: its source with all whitespace
+ * removed. The use_figma runtime re-indents continuation lines of a
+ * multi-line function (hds#565), so no whitespace-sensitive checksum is
+ * stable; this is the one definition, used by the verifier in Figma and by
+ * the emitter that bakes the checksum.
+ */
+export function hdsRuntimeFingerprint(source) {
+  return String(source).replace(/\s+/g, '');
+}
+
+/**
  * Refuses a use_figma script whose runtime code changed on the way into Figma
  * (an agent retypes the whole script into the `code` parameter). `functions`
  * is every top-level runtime function and `checksum` is hdsChecksum of their
- * source text joined by newlines, as `pnpm figma:push` generated it. Carriage
- * returns are ignored, so a CRLF transport still passes. `prune` says whether
+ * source text with all whitespace removed (hdsRuntimeFingerprint), joined by
+ * newlines, as `pnpm figma:push` generated it. Whitespace is ignored, so a
+ * CRLF transport or the runtime's re-indenting still passes. `prune` says whether
  * the script deletes: where Figma hides function source, the refusal names
  * the plugin that does the same job, the promote plugin for a prune (the Sync
  * plugin never deletes) and the Sync plugin otherwise (hds#415).
  */
 export function hdsVerifyRuntime(functions, checksum, prune) {
-  const texts = functions.map((fn) => String(fn).replace(/\r/g, ''));
+  const texts = functions.map((fn) => String(fn));
   if (texts.some((text) => /\{\s*\[native code\]\s*\}\s*$/.test(text))) {
     const plugin = prune
       ? 'the promote plugin "HDS tokens promote (baked)" (figma/push/promote/manifest.json)'
@@ -62,7 +74,7 @@ export function hdsVerifyRuntime(functions, checksum, prune) {
       `This Figma runtime does not expose function source, so the script cannot read its own code to check it. Nothing was read or written. Use ${plugin}, which Figma loads from disk.`,
     );
   }
-  if (hdsChecksum(texts.join('\n')) !== checksum) {
+  if (hdsChecksum(texts.map(hdsRuntimeFingerprint).join('\n')) !== checksum) {
     throw new Error(
       "The script's runtime code does not match its checksum: it changed after `pnpm figma:push` generated it (a copy or transcription error). Nothing was read or written. Regenerate with `pnpm figma:push` and run the script unmodified.",
     );

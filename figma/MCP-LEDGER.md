@@ -190,3 +190,18 @@ with a read-only `snapshot.js`, then push the rest with `delta.js` built on main
 pretty-printed script; `delta.js` (one statement per line) passed the same guard at
 02:53, so the use_figma runtime likely reformats multi-line function source. Filed as
 hds#565. The library still needs Adrian's Sync to finish the Plex Mono push.
+
+## 2026-10-09 · session `claude/snapshot-js-565` (hds#565 live check)
+
+Live check of the `snapshot.js` fix in 2ce3f37, then two diagnostics to see what the
+use_figma runtime does to function source. Finding: with the script header present, the
+runtime re-indents continuation lines of multi-line functions, so any whitespace-sensitive
+checksum fails. The guard now hashes each function with all whitespace removed.
+
+| #   | Time (UTC) | Tool        | Kind       | Purpose                               | Result                                                                                                                                   |
+| --- | ---------- | ----------- | ---------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | ~04:55     | `use_figma` | read       | Library: `snapshot.js` from 2ce3f37   | Refused by the guard: checksum mismatch. Nothing read.                                                                                   |
+| 2   | ~04:55     | `use_figma` | diagnostic | Functions only, no header             | Every `String(fn)` matched the local text.                                                                                               |
+| 3   | ~04:55     | `use_figma` | diagnostic | Script header plus the same functions | Multi-line functions came back re-indented (longer); joined checksum `5aaf8eda` vs expected `8fc82214`. Single-line functions unchanged. |
+
+**Session total: 3 calls (1 refused read, 2 diagnostics).** No writes.
