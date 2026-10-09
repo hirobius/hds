@@ -2,7 +2,7 @@
  * Divider — semantic separator between content regions.
  * @category Layout
  * @tier primitive
- * @usage Separate two regions of content with a thin semantic rule.
+ * @usage Separate two blocks of content with a thin line.
  * @whenNot Spacing alone would do, or the separation needs a container.
  * @useInstead Stack gap-based spacing between siblings
  * @useInstead Surface a bounded region with its own background
