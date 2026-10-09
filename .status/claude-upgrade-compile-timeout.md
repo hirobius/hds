@@ -1,0 +1,1 @@
+- 2026-10-09: `upgrade-compile.test.mjs` tests get a 30 s timeout; under the full pre-push suite one passed vitest's 5 s default.
