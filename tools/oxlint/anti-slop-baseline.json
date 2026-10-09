@@ -1,0 +1,787 @@
+{
+  "version": 1,
+  "files": {
+    "mcp/catalog.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 11,
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "mcp/server.mjs": {
+      "anti-slop/no-runtime-typeof": 6
+    },
+    "scripts/__tests__/axe-gate.test.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/build-tokens.test.mjs": {
+      "anti-slop/no-shape-in-symbol-names": 12
+    },
+    "scripts/__tests__/button-probe-esbuild.test.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/check-public-api.test.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/core-set-sources.test.mjs": {
+      "anti-slop/no-array-filter-map": 2
+    },
+    "scripts/__tests__/design-links.test.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 2,
+      "anti-slop/no-reflect-get": 1
+    },
+    "scripts/__tests__/figma-agent-sync.test.mjs": {
+      "anti-slop/no-reflect-get": 1,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/figma-brand-modes.repo.test.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/__tests__/figma-model.tokens.test.mjs": {
+      "anti-slop/no-array-filter-map": 3,
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/__tests__/figma-one-library-rule.test.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/figma-receipt.test.mjs": {
+      "anti-slop/no-reflect-get": 1
+    },
+    "scripts/__tests__/figma-runtime.test.mjs": {
+      "anti-slop/no-reflect-get": 1
+    },
+    "scripts/__tests__/figma-snapshot-delta.test.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/__tests__/front-door.test.mjs": {
+      "anti-slop/no-array-filter-map": 4,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/generate-consumer-skill.test.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/grid-tile-grid-parity.test.mjs": {
+      "anti-slop/no-array-filter-map": 1
+    },
+    "scripts/__tests__/hds-mcp.test.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/helpers/fake-figma.mjs": {
+      "anti-slop/no-array-filter-map": 1,
+      "anti-slop/no-reflect-get": 1,
+      "anti-slop/no-runtime-typeof": 5
+    },
+    "scripts/__tests__/helpers/sync-plugin.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/helpers/upgrade-fixtures.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/scan-roots.repo.test.mjs": {
+      "anti-slop/no-array-filter-map": 1
+    },
+    "scripts/__tests__/spacing-computed-lock.test.mjs": {
+      "anti-slop/no-array-filter-map": 3,
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/__tests__/tenant-schema-refs.test.mjs": {
+      "anti-slop/no-array-filter-map": 2,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/token-dialect.test.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/__tests__/token-modes.test.mjs": {
+      "anti-slop/no-array-filter-map": 1
+    },
+    "scripts/__tests__/upgrade-compile.test.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 3
+    },
+    "scripts/__tests__/upgrade-snapshot.test.mjs": {
+      "anti-slop/no-array-filter-map": 2,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/__tests__/write-generated.test.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/audit-gates-supportjson.mjs": {
+      "anti-slop/no-array-filter-map": 1,
+      "anti-slop/no-runtime-typeof": 2,
+      "anti-slop/no-shape-in-symbol-names": 1
+    },
+    "scripts/audit-tokens.mjs": {
+      "anti-slop/no-array-filter-map": 1,
+      "anti-slop/no-runtime-typeof": 7
+    },
+    "scripts/build-design-md.mjs": {
+      "anti-slop/no-runtime-typeof": 4
+    },
+    "scripts/build-handoff.mjs": {
+      "anti-slop/no-runtime-typeof": 21
+    },
+    "scripts/build-readme-counts.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/build-token-index.mjs": {
+      "anti-slop/no-runtime-typeof": 6
+    },
+    "scripts/build-token-quick-reference.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/build-tokens.mjs": {
+      "anti-slop/no-array-filter-map": 1,
+      "anti-slop/no-conditional-empty-object-spread": 1,
+      "anti-slop/no-runtime-typeof": 23
+    },
+    "scripts/check-binding-drift.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/check-code-connect.mjs": {
+      "anti-slop/no-array-filter-map": 2,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/check-contrast.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/check-figma-mapping.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/check-figma-retired-keys.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/check-record-freshness.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/check-security-baseline.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/check-storybook-axe.mjs": {
+      "anti-slop/no-array-filter-map": 1
+    },
+    "scripts/check-tailwind-token-coverage.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/check-token-descriptions.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/check-token-paths-ratchet.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/check-token-rebake-needed.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/check-token-structure.mjs": {
+      "anti-slop/no-runtime-typeof": 6
+    },
+    "scripts/check-type-ramp.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 1,
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/check-upgrade-ledger.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/component-discovery.mjs": {
+      "anti-slop/no-shape-in-symbol-names": 2
+    },
+    "scripts/correlation.mjs": {
+      "anti-slop/no-runtime-typeof": 11
+    },
+    "scripts/enrich-manifest.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/eslint-plugin-hds/index.d.mts": {
+      "anti-slop/no-unsafe-dictionary-type": 1
+    },
+    "scripts/eslint-plugin-hds/rules/no-raw-hex.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/eslint-plugin-hds/rules/utils.mjs": {
+      "anti-slop/no-runtime-typeof": 4
+    },
+    "scripts/figma-disposition.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 1
+    },
+    "scripts/figma-sync.ts": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/generate-component-api.mjs": {
+      "anti-slop/no-array-filter-map": 1,
+      "anti-slop/no-conditional-empty-object-spread": 9,
+      "anti-slop/no-runtime-typeof": 4
+    },
+    "scripts/generate-manifest.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 4,
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/harvest-design-md.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 1,
+      "anti-slop/no-runtime-typeof": 12
+    },
+    "scripts/hds-jsx-compiler.mjs": {
+      "anti-slop/no-runtime-typeof": 4
+    },
+    "scripts/hooks/check-pr-body.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/lib/axe-gate.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/brand-truth.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/code-connect-runtime.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/lib/code-connect-template.mjs": {
+      "anti-slop/no-runtime-typeof": 8
+    },
+    "scripts/lib/component-page.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/consistency/browser.mjs": {
+      "anti-slop/no-array-filter-map": 1
+    },
+    "scripts/lib/consistency/ledger.mjs": {
+      "anti-slop/no-runtime-typeof": 11
+    },
+    "scripts/lib/consistency/live-plan.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 2
+    },
+    "scripts/lib/consistency/status-sync.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/core-set.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 1
+    },
+    "scripts/lib/design-links.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 2,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/figma-agent-sync.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/figma-brand-modes.mjs": {
+      "anti-slop/no-runtime-typeof": 4
+    },
+    "scripts/lib/figma-drift.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/lib/figma-inventory.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/lib/figma-link.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/figma-links-runtime.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/lib/figma-model-invariants.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/lib/figma-model.mjs": {
+      "anti-slop/no-array-filter-map": 1,
+      "anti-slop/no-conditional-empty-object-spread": 1,
+      "anti-slop/no-runtime-typeof": 9
+    },
+    "scripts/lib/figma-native-import.mjs": {
+      "anti-slop/no-array-filter-map": 1
+    },
+    "scripts/lib/figma-receipt.mjs": {
+      "anti-slop/no-runtime-typeof": 6
+    },
+    "scripts/lib/figma-runtime.mjs": {
+      "anti-slop/no-runtime-typeof": 11
+    },
+    "scripts/lib/figma-scripts.mjs": {
+      "anti-slop/no-runtime-typeof": 4
+    },
+    "scripts/lib/figma-snapshot-delta.mjs": {
+      "anti-slop/no-shape-in-symbol-names": 3
+    },
+    "scripts/lib/figma-snapshot.mjs": {
+      "anti-slop/no-runtime-typeof": 2,
+      "anti-slop/no-shape-in-symbol-names": 2
+    },
+    "scripts/lib/figma-sync-runtime.mjs": {
+      "anti-slop/no-runtime-typeof": 12
+    },
+    "scripts/lib/figma-token.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/lib/gate-output.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 1,
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/lib/knowledge-classify.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/lib/layout-contract.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/lib/layout-probe.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/lib/manifest-props.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/lib/package-entries.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/lib/props-exports.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/rendered-geometry.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/scan-roots.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/storybook-static-runner.mjs": {
+      "anti-slop/no-array-filter-map": 1
+    },
+    "scripts/lib/token-dialect.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 2,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/token-modes.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/lib/token-references.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/poc/style-dictionary-poc/sd.config.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/sales-pipeline.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/self-heal.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    },
+    "scripts/snapshot-token-paths.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/upgrade/build-ledger.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 1,
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/upgrade/compile.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 2,
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/upgrade/consumers.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/upgrade/note.mjs": {
+      "anti-slop/no-conditional-empty-object-spread": 5
+    },
+    "scripts/upgrade/pending.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "scripts/upgrade/ranges.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "scripts/upgrade/snapshot.mjs": {
+      "anti-slop/no-runtime-typeof": 6
+    },
+    "scripts/validate-manifest.mjs": {
+      "anti-slop/no-runtime-typeof": 27
+    },
+    "scripts/verify-tokens.mjs": {
+      "anti-slop/no-array-filter-map": 1,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "src/app/components/alert-dialog.test.tsx": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/no-unsafe-dictionary-type": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/asset-img.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 5
+    },
+    "src/app/components/asset-img.tsx": {
+      "anti-slop/no-chained-type-assertions": 3,
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 9
+    },
+    "src/app/components/avatar-group.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "src/app/components/badge.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/box-sx.test.ts": {
+      "anti-slop/require-safety-comment-for-type-assertion": 5
+    },
+    "src/app/components/box-sx.ts": {
+      "anti-slop/no-known-value-widening": 3,
+      "anti-slop/no-runtime-typeof": 7,
+      "anti-slop/no-unknown-parameters": 1,
+      "anti-slop/no-unsafe-dictionary-type": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "src/app/components/box.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/breadcrumb.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/breadcrumb.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/button.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "src/app/components/card.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/card.tsx": {
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 3
+    },
+    "src/app/components/checkbox.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 3
+    },
+    "src/app/components/checkbox.tsx": {
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/combobox.tsx": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "src/app/components/data-table-section.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/dialog.test.tsx": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/no-unsafe-dictionary-type": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/disclosure.tsx": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "src/app/components/form-actions.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 3
+    },
+    "src/app/components/form.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "src/app/components/form.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/grid.test.tsx": {
+      "anti-slop/no-known-value-widening": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/grid.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/hds-tooltip.test.tsx": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/no-unsafe-dictionary-type": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 3
+    },
+    "src/app/components/icon.tsx": {
+      "anti-slop/no-known-value-widening": 1,
+      "anti-slop/no-runtime-typeof": 2,
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/inline-code.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/inline-code.tsx": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "src/app/components/input.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 11
+    },
+    "src/app/components/input.tsx": {
+      "anti-slop/no-runtime-typeof": 6,
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/menu.test.tsx": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/no-unsafe-dictionary-type": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/metadata-list.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/metric-tiles.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 3
+    },
+    "src/app/components/page-header.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/pagination.markup.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/pagination.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/pin.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/popover.test.tsx": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/no-unsafe-dictionary-type": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/progress.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/progress.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/radio.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/radio.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/segmented-control.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/sidebar.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "src/app/components/skeleton.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 3
+    },
+    "src/app/components/stack.test.tsx": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/no-known-value-widening": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 7
+    },
+    "src/app/components/stack.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/switcher.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 5
+    },
+    "src/app/components/timestamp.tsx": {
+      "anti-slop/no-known-value-widening": 1
+    },
+    "src/app/components/toggle.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/components/toggle.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/components/tooltip.test.tsx": {
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/no-unsafe-dictionary-type": 3,
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "src/app/context/ThemeContext.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/context/__tests__/context.test.tsx": {
+      "anti-slop/no-known-value-widening": 1,
+      "anti-slop/no-unsafe-dictionary-type": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/context/__tests__/portal-hydration.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/app/context/__tests__/portal-scope.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/context/hds-portal.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/context/hds-theme.tsx": {
+      "anti-slop/no-known-value-widening": 2,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/app/data/manifest-types.ts": {
+      "anti-slop/no-unsafe-dictionary-type": 2
+    },
+    "src/app/design-system/generated-token-descriptions.ts": {
+      "anti-slop/no-known-value-widening": 1
+    },
+    "src/app/design-system/tokens.ts": {
+      "anti-slop/require-safety-comment-for-type-assertion": 36
+    },
+    "src/app/hooks/useHdsMotion.test.ts": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/brand/overlay.ts": {
+      "anti-slop/no-known-value-widening": 2
+    },
+    "src/form/form-adapter.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/form/use-hds-form.ts": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/lib/manifest-entry.ts": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/mui/index.ts": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/scroll/scroll.test.tsx": {
+      "anti-slop/no-module-mocking": 1,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "src/stories/design-parameters.ts": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/no-unknown-parameters": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/stories/status-list-item.stories.test.tsx": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "src/stories/status-tile.stories.test.tsx": {
+      "anti-slop/no-unknown-parameters": 2,
+      "anti-slop/no-unknown-returns": 1,
+      "anti-slop/no-unsafe-dictionary-type": 2,
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "src/stories/story-render.spec.tsx": {
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/no-unsafe-dictionary-type": 2,
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/stories/story-ssr.spec.tsx": {
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/no-unsafe-dictionary-type": 2,
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "src/stories/type-specimen.stories.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "tests/bugfix-522.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 11
+    },
+    "tests/codemod-commands-doc.test.ts": {
+      "anti-slop/no-known-value-widening": 1
+    },
+    "tests/consuming-docs.test.ts": {
+      "anti-slop/no-array-filter-map": 2,
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "tests/docs-site/component-pages.test.ts": {
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "tests/front-door.test.ts": {
+      "anti-slop/require-safety-comment-for-type-assertion": 3
+    },
+    "tests/icons-subpath.test.tsx": {
+      "anti-slop/no-chained-type-assertions": 1,
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "tests/primitive-contracts/alert.contract.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 4
+    },
+    "tests/primitive-contracts/badge.contract.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 7
+    },
+    "tests/primitive-contracts/button.contract.test.tsx": {
+      "anti-slop/no-shape-in-symbol-names": 24,
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "tests/primitive-contracts/card.contract.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 9
+    },
+    "tests/primitive-contracts/divider.contract.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 3
+    },
+    "tests/primitive-contracts/icon.contract.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "tests/primitive-contracts/input.contract.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "tests/primitive-contracts/keyboard.contract.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 8
+    },
+    "tests/primitive-contracts/surface.contract.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 8
+    },
+    "tests/primitive-contracts/tenant-contrast.contract.test.ts": {
+      "anti-slop/no-object-parameters": 1,
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "tests/primitive-contracts/text.contract.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "tests/prune-wave-4b-survivors.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 12
+    },
+    "tests/public-export-names.test.ts": {
+      "anti-slop/no-known-value-widening": 1
+    },
+    "tests/removed-0.20-release-notes.test.ts": {
+      "anti-slop/no-array-filter-map": 5,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "tests/removed-names-docs-data.test.ts": {
+      "anti-slop/no-runtime-typeof": 2,
+      "anti-slop/no-unknown-parameters": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 3
+    },
+    "tests/removed-names-living-docs.test.ts": {
+      "anti-slop/no-array-filter-map": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "tests/removed-names-wave-4b-recipes.test.ts": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "tests/runtime-dependencies.test.ts": {
+      "anti-slop/no-unsafe-dictionary-type": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 2
+    },
+    "tests/screen-patterns-layout.test.tsx": {
+      "anti-slop/require-safety-comment-for-type-assertion": 5
+    },
+    "tests/setup/jsdom-polyfills.ts": {
+      "anti-slop/no-chained-type-assertions": 2,
+      "anti-slop/no-runtime-typeof": 1,
+      "anti-slop/require-safety-comment-for-type-assertion": 5
+    },
+    "tests/types/prune-b3d.test-d.ts": {
+      "anti-slop/require-safety-comment-for-type-assertion": 1
+    },
+    "validators/10f-7-xpath-query-endpoint.mjs": {
+      "anti-slop/no-runtime-typeof": 10
+    },
+    "validators/a11y-validator.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "validators/binding-completeness.mjs": {
+      "anti-slop/no-runtime-typeof": 9
+    },
+    "validators/canon-rules.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "validators/contrast.mjs": {
+      "anti-slop/no-runtime-typeof": 11
+    },
+    "validators/correlation.mjs": {
+      "anti-slop/no-runtime-typeof": 5
+    },
+    "validators/lint.mjs": {
+      "anti-slop/no-runtime-typeof": 7
+    },
+    "validators/manifest-validator.mjs": {
+      "anti-slop/no-runtime-typeof": 2
+    },
+    "validators/motion-perf.mjs": {
+      "anti-slop/no-runtime-typeof": 1
+    },
+    "validators/runtime-error-channel.mjs": {
+      "anti-slop/no-runtime-typeof": 5
+    },
+    "validators/swiss-canon.mjs": {
+      "anti-slop/no-runtime-typeof": 6
+    },
+    "validators/token-validator.mjs": {
+      "anti-slop/no-runtime-typeof": 3
+    }
+  }
+}
