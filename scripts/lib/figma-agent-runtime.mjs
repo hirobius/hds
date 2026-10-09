@@ -304,3 +304,272 @@ export async function hdsAgentRun(figma, data, checksum) {
     line: data.line,
   };
 }
+
+/**
+ * The checksum of what a part writes: the records of `model` (hdsAgentSlice
+ * of the library and `data`) that `data.slice` patches or creates, plus its
+ * styles. Anchors (records the slice only names) are left out. A part carries
+ * the digest the builder got from the committed snapshot and runs only when
+ * the library gives the same one. Unlike a plan, it does not depend on what an
+ * earlier part's write did to the library as a side effect (a new mode copies
+ * a value into every variable of its collection).
+ */
+export function hdsAgentDigest(model, data) {
+  const own = [];
+  model.collections.forEach((c, i) => {
+    const entry = data.slice[i];
+    const { variables, ...head } = c;
+    if (!entry[1] || Object.keys(entry[2]).length) own.push(head);
+    variables.forEach((v, j) => {
+      const next = entry[3][j];
+      if (!next[1] || Object.keys(next[2]).length) own.push(v);
+    });
+  });
+  return hdsChecksum(JSON.stringify([own, model.textStyles, model.effectStyles]));
+}
+
+/**
+ * One part of a multi-part delta.js (delta-1-of-N.js ... delta-N-of-N.js),
+ * for a change too big for one use_figma script. Every guard of hdsAgentRun
+ * holds in every part: the library file key, PLAN_CHECKSUM, no deletion, no
+ * escaped style description, the font preflight, the re-plan to 0, the
+ * receipt. What differs:
+ *   - order: the progress marker `deltaRun` on figma.root (run id, part, the
+ *     checksum of the state that part left, its takenAt) lets part i run only
+ *     right after part i - 1 of the same run, and part 1 only on the committed
+ *     snapshot. The library must still be exactly the state the marker names.
+ *   - idempotence: a part that already ran (marker at or past it) writes
+ *     nothing; it checks the library still holds its result and returns its
+ *     receipt again (the last part run) or just says where to continue.
+ *   - lastPush is stamped by the last part only, so a half-applied run never
+ *     claims the library holds the model.
+ *   - receipt: each part writes the ordinary receipt of its own change, a
+ *     delta against the state before it (head.base), plus head.part
+ *     [i, n, run]. `pnpm figma:snapshot --from-receipt` chains them.
+ */
+export async function hdsAgentPartRun(figma, data, checksum) {
+  const sync =
+    ' Ask Adrian to run Sync in the library (Plugins > Development > HDS tokens sync > Sync).';
+  const stop = (why, next) => {
+    throw new Error('Refused: ' + why + ' Nothing was written.' + next);
+  };
+  if (figma.fileKey !== data.files.library || data.files.retired.indexOf(figma.fileKey) !== -1) {
+    stop('this is not the HDS library (' + data.files.library + ').', '');
+  }
+  if (hdsChecksum(JSON.stringify(data)) !== checksum) {
+    stop(
+      'PLAN does not match PLAN_CHECKSUM: the part changed after pnpm figma:push --delta wrote it.',
+      ' Regenerate it and pass it unmodified.',
+    );
+  }
+  const p = data.part;
+  const tag = 'part ' + p.i + ' of ' + p.n;
+  const get = (key) => hdsGetKey(figma.root, key) || '';
+  let mark = null;
+  try {
+    mark = JSON.parse(get('deltaRun') || 'null');
+  } catch (_error) {
+    mark = null;
+  }
+  const same = mark !== null && mark.run === p.run;
+  const done = same && mark.part >= p.i;
+  const fresh = !same && p.i === 1;
+  if (!done && !fresh && !(same && mark.part === p.i - 1)) {
+    stop(
+      tag +
+        ' cannot run now (' +
+        (same ? 'part ' + mark.part + ' ran last' : 'part 1 has not run') +
+        '). Run the parts in order from part 1.',
+      '',
+    );
+  }
+  const pin = fresh
+    ? { checksum: data.base.checksum, takenAt: data.base.takenAt }
+    : done && mark.part > p.i
+      ? null
+      : { checksum: mark.post, takenAt: mark.takenAt };
+  const base = await hdsAgentReadState(figma, data.base.file);
+  if (pin) {
+    base.takenAt = pin.takenAt;
+    const live = hdsChecksum(JSON.stringify(base));
+    if (live !== pin.checksum) {
+      stop(
+        'the library (' +
+          live +
+          ') is not ' +
+          (fresh ? 'the committed figma/snapshot.json' : 'what part ' + mark.part + ' left') +
+          ' (' +
+          pin.checksum +
+          '): something changed it since.',
+        sync + ' Then collect its receipt.',
+      );
+    }
+  }
+  const promote =
+    ' A deliberate deletion or prune uses the promote plugin (pnpm figma:push --prune).';
+  const held = hdsAgentHeld(base);
+  if (fresh && held.join() !== data.held.join()) {
+    stop(
+      'the library holds ' +
+        held.reduce((n, count, i) => n + count - data.held[i], 0) +
+        ' item(s) the model does not have, and delta.js never deletes.',
+      promote,
+    );
+  }
+  const model = hdsAgentSlice(base, data);
+  const plan = hdsPlan(model, base, data.options);
+  const gone = plan.removals;
+  if (
+    gone.variables.length + gone.textStyles.length + gone.effectStyles.length + gone.modes.length ||
+    plan.collections.some((c) => c.modes.remove.length)
+  ) {
+    stop('the plan deletes, and delta.js never deletes.', promote);
+  }
+  const todo = (q) =>
+    q.collections
+      .concat(q.variables, q.textStyles, q.effectStyles)
+      .filter((item) => item.action !== 'unchanged').length;
+  const back = async (pages) => {
+    const next =
+      p.i < p.n
+        ? 'run part ' + (p.i + 1) + ' of ' + p.n
+        : 'pnpm figma:snapshot --from-receipt with every saved result, in order';
+    if (pages > 1) {
+      return {
+        file: figma.fileKey,
+        part: p.i,
+        of: p.n,
+        head: get('syncReceipt'),
+        line: data.line,
+        next:
+          'Run receipt.js with PAGE 0 to ' +
+          (pages - 1) +
+          ', save every result, then ' +
+          next +
+          '.',
+      };
+    }
+    const collections = await figma.variables.getLocalVariableCollectionsAsync();
+    return {
+      file: figma.fileKey,
+      page: 0,
+      part: p.i,
+      of: p.n,
+      head: get('syncReceipt'),
+      text: get('syncSnapshot.0'),
+      live: {
+        lastPush: get('lastPush'),
+        collections: collections.length,
+        modes: collections.reduce((n, c) => n + c.modes.length, 0),
+        variables: (await figma.variables.getLocalVariablesAsync()).length,
+        textStyles: (await figma.getLocalTextStylesAsync()).length,
+        effectStyles: (await figma.getLocalEffectStylesAsync()).length,
+      },
+      line: data.line,
+      next: 'Save this result, then ' + next + '.',
+    };
+  };
+  if (done) {
+    if (todo(plan)) {
+      stop(
+        tag +
+          ' ran, but the library no longer holds its result (' +
+          todo(plan) +
+          ' item(s) differ).',
+        sync,
+      );
+    }
+    return {
+      file: figma.fileKey,
+      part: p.i,
+      of: p.n,
+      replay: true,
+      next:
+        'Nothing changed: ' +
+        tag +
+        ' already ran, and parts up to ' +
+        mark.part +
+        ' are done. Continue with part ' +
+        (mark.part + 1) +
+        (mark.part === p.i ? " (to read this part's receipt again, run receipt.js)." : '.'),
+    };
+  }
+  if (hdsAgentDigest(model, data) !== data.planSum)
+    stop(
+      'the plan made in the library is not the one pnpm figma:push --delta made for ' + tag + '.',
+      sync,
+    );
+  const styled = hdsAgentStyleText(plan);
+  if (styled.length)
+    stop(
+      'the plan writes a style description holding one of " \' < > & (' + styled.join(', ') + ').',
+      sync,
+    );
+  const problems = plan.conflicts.concat(await hdsFontPreflight(figma, plan));
+  if (problems.length) stop(problems.join(' | '), sync);
+  try {
+    await hdsApply(figma, plan);
+  } catch (error) {
+    throw new Error(
+      error.message + ' Some changes may already be applied.' + sync + ' It finishes the push.',
+    );
+  }
+  const left = todo(hdsPlan(model, await hdsAgentReadState(figma, data.base.file), data.options));
+  if (left) {
+    throw new Error(
+      'The push ran but the library still differs from the model in ' +
+        left +
+        ' item(s); no lastPush, receipt or marker was written.' +
+        sync,
+    );
+  }
+  if (p.i === p.n) {
+    hdsSetKey(
+      figma.root,
+      'lastPush',
+      JSON.stringify({
+        modelHash: data.modelHash,
+        pushedAt: new Date().toISOString(),
+        scope: null,
+      }),
+    );
+  }
+  const post = await hdsAgentReadState(figma, data.base.file);
+  const body = JSON.stringify(snapshotDelta(base, post));
+  const pages = [];
+  for (let at = 0, end = 0; at < body.length; at = end) {
+    end = at + data.pageChars;
+    if (end < body.length && end - 1 > at && /[\uD800-\uDBFF]/.test(body[end - 1])) end -= 1;
+    pages.push(body.slice(at, end));
+  }
+  const snap = { snapshot: post, checksum: hdsChecksum(JSON.stringify(post)) };
+  const head = hdsSyncReceipt(data, data, snap, 'delta.js ' + checksum, pin);
+  head.format = 'json';
+  head.pages = pages.length;
+  head.sum = hdsChecksum(body);
+  head.part = [p.i, p.n, p.run];
+  try {
+    hdsSyncWriteReceipt(figma, head, pages, data);
+    hdsSetKey(
+      figma.root,
+      'deltaRun',
+      JSON.stringify({
+        run: p.run,
+        part: p.i,
+        of: p.n,
+        post: snap.checksum,
+        takenAt: post.takenAt,
+      }),
+    );
+  } catch (error) {
+    throw new Error(
+      'Pushed ' +
+        tag +
+        ', but its receipt or marker was not written: ' +
+        error.message +
+        sync +
+        ' It changes nothing and writes the receipt.',
+    );
+  }
+  return await back(pages.length);
+}

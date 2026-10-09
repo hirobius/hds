@@ -433,6 +433,51 @@ export const Index = z
   .strict()
   .describe('upgrade/index.json: the releases the upgrade command knows, and its floor.');
 
+const CssBundle = z
+  .object({
+    classes: z
+      .array(z.string().min(1))
+      .describe('Every class name a selector names, unescaped as written in className, sorted.'),
+    fontFaces: z
+      .array(
+        z
+          .object({
+            family: z.string(),
+            weight: z.string(),
+            style: z.string(),
+            src: z
+              .array(z.string())
+              .describe('Each url() basename, data:<type> for an inlined face, or local(<name>).'),
+          })
+          .strict(),
+      )
+      .describe('Each @font-face, sorted.'),
+    layers: z.array(z.string().min(1)).describe('The @layer names, in declaration order.'),
+    variables: z
+      .record(z.string().regex(/^--/), z.record(z.string(), z.string()))
+      .describe(
+        'Each custom property declared in a context rule: context (the selector, after its enclosing at-rules, as minified) -> the value that wins there.',
+      ),
+  })
+  .strict();
+
+export const CssContract = z
+  .object({
+    format: z.literal(1),
+    bundles: z
+      .record(z.string().regex(/\.css$/), CssBundle)
+      .describe('Each stylesheet package.json#exports names, by its exports key.'),
+    publicClasses: z
+      .array(z.string().min(1))
+      .describe(
+        'Classes the manifest declares public beyond the hds-* prefix (public/hds-manifest.json publicClasses).',
+      ),
+  })
+  .strict()
+  .describe(
+    'dist/css-contract.json (scripts/build-css-contract.mjs, hds#449): the CSS surface of the stylesheets a release ships.',
+  );
+
 export const Snapshot = z
   .object({
     format: z.literal(1),
@@ -452,6 +497,9 @@ export const Snapshot = z
     engines: z.record(z.string(), z.string()),
     bin: z.record(z.string(), z.string()),
     files: z.array(z.string()).describe('package.json#files.'),
+    css: CssContract.optional().describe(
+      'The CSS contract of its stylesheets; absent for a snapshot read from source, which has no built CSS.',
+    ),
   })
   .strict()
   .describe(
@@ -546,6 +594,7 @@ export function buildJsonSchema() {
   registry.add(Release, { id: 'release' });
   registry.add(Index, { id: 'index' });
   registry.add(Snapshot, { id: 'snapshot' });
+  registry.add(CssContract, { id: 'cssContract' });
   registry.add(PendingStep, { id: 'pendingStep' });
   registry.add(PendingNote, { id: 'pendingNote' });
   registry.add(UpgradeReport, { id: 'upgradeReport' });
@@ -555,7 +604,7 @@ export function buildJsonSchema() {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
     title: '@hirobius/design-system upgrade ledger',
     description:
-      "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json), $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json) and $defs.upgradeReport what the upgrade command prints with --json.",
+      "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json), $defs.cssContract dist/css-contract.json, $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json) and $defs.upgradeReport what the upgrade command prints with --json.",
     $ref: '#/$defs/release',
     $defs: defs,
   };

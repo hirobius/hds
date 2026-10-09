@@ -160,3 +160,60 @@ Nothing was written to Figma. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not
 touched.
 
 Calls logged for 2026-10-07: 38 of 200 (16, 7, 13 and 2).
+
+## 2026-10-09 · session `claude/figma-plex-mono-push` (agent sync: IBM Plex Mono)
+
+Pushing the mono font change from #535 to the HDS library `2VgBbVpKiDnu0aftJEVyBQ`
+via `delta.js` (main e62d2b3; plan `updated 2 · created 0 · deleted 0`; snapshot
+`8f24178f`, model `59d56b82`), per `figma/README.md` "Agent sync (zero clicks)".
+Writes only what the delta names; never deletes, never publishes.
+
+| #   | Time (UTC) | Tool                                   | Kind  | Purpose                                     | Result                                                                                                                                                                                                                                                                                                                               |
+| --- | ---------- | -------------------------------------- | ----- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | 02:50      | `ReadMcpResource` (figma-use SKILL.md) | read  | Mandatory skill load before any `use_figma` | OK                                                                                                                                                                                                                                                                                                                                   |
+| 2   | 02:53      | `use_figma`                            | write | Library: `delta.js` unmodified              | Error in `setValueForMode`: unloaded font "IBM Plex Mono Regular". Guards passed (checksums, base `8f24178f`, plan). Partly applied: the mono variable's description may be written; value, style, `lastPush` and receipt not. Not retried. Cause: the push loaded fonts after values (fixed in this PR); Adrian finishes with Sync. |
+
+**Session total: 2 calls, 1 of them `use_figma` (write, failed partway).** No rate-limit errors.
+Nothing was deleted or published.
+
+## 2026-10-09 · session `claude/figma-plex-mono-finish` (finish the Plex Mono push)
+
+The 02:53 `delta.js` stopped partway (font bug, fixed in #560), so the library no
+longer matches `figma/snapshot.json` and a new `delta.js` would refuse. Re-base
+with a read-only `snapshot.js`, then push the rest with `delta.js` built on main.
+
+| #   | Time (UTC) | Tool        | Kind | Purpose                           | Result                                                                                     |
+| --- | ---------- | ----------- | ---- | --------------------------------- | ------------------------------------------------------------------------------------------ |
+| 1   | 04:05      | `use_figma` | read | Library: `snapshot.js` unmodified | Refused by its own guard: runtime checksum mismatch. Nothing read or written. Not retried. |
+
+**Session total: 1 call (read, refused).** Step 2 not run. `snapshot.js` is the only
+pretty-printed script; `delta.js` (one statement per line) passed the same guard at
+02:53, so the use_figma runtime likely reformats multi-line function source. Filed as
+hds#565. The library still needs Adrian's Sync to finish the Plex Mono push.
+
+## 2026-10-09 · session `claude/snapshot-js-565` (hds#565 live check)
+
+Live check of the `snapshot.js` fix in 2ce3f37, then two diagnostics to see what the
+use_figma runtime does to function source. Finding: with the script header present, the
+runtime re-indents continuation lines of multi-line functions, so any whitespace-sensitive
+checksum fails. The guard now hashes each function with all whitespace removed.
+
+| #   | Time (UTC) | Tool        | Kind       | Purpose                               | Result                                                                                                                                   |
+| --- | ---------- | ----------- | ---------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | ~04:55     | `use_figma` | read       | Library: `snapshot.js` from 2ce3f37   | Refused by the guard: checksum mismatch. Nothing read.                                                                                   |
+| 2   | ~04:55     | `use_figma` | diagnostic | Functions only, no header             | Every `String(fn)` matched the local text.                                                                                               |
+| 3   | ~04:55     | `use_figma` | diagnostic | Script header plus the same functions | Multi-line functions came back re-indented (longer); joined checksum `5aaf8eda` vs expected `8fc82214`. Single-line functions unchanged. |
+
+**Session total: 3 calls (1 refused read, 2 diagnostics).** No writes.
+
+## 2026-10-09 · session `claude/figma-snapshot-diff` (reprint-proof guard + first snapshot-diff)
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                      | Result                                                                                                                                                           |
+| --- | ---------- | ----------- | ----- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 05:18      | `use_figma` | read  | Library: `snapshot-diff.js` (whitespace-only guard)          | Refused by the guard; nothing read                                                                                                                               |
+| 2   | 05:20      | `use_figma` | none  | Diagnostic: 3 small functions behind the header              | Printed unchanged                                                                                                                                                |
+| 3   | 05:21      | `use_figma` | none  | Diagnostic: full script, report functions whose text differs | 6 functions reprinted: trailing commas dropped, spaces added inside braces, optional parens dropped, re-indented                                                 |
+| 4   | 05:23      | `use_figma` | read  | Library: `snapshot-diff.js`, guard ignores whitespace `(),;` | OK. base `8f24178f`, live `4a821c78`, 0 changed, 0 removed: the 02:53 partial push wrote nothing                                                                 |
+| 5   | 05:26      | `use_figma` | write | Library: `delta.js` (Plex Mono, updated 2)                   | OK. updated 2 (mono variable description + value, typography/mono font); receipt post `d12b0361`, 1 page; `--from-receipt` rebuilt the snapshot; drift 0, plan 0 |
+
+**Session total: 5 calls (2 reads, 2 diagnostics, 1 write).** No rate-limit errors. Nothing deleted or published; Adrian publishes.

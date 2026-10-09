@@ -10,7 +10,7 @@
  * Each case runs on a throwaway repo. The expected text is written out by
  * hand from the fixture ledgers, not recomputed the way the compiler does.
  */
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -40,6 +40,10 @@ import {
 const PKG = '@hirobius/design-system';
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CLI = join(REPO, 'scripts/upgrade/compile.mjs');
+// Most tests here spawn node (and some git) several times. Alone each takes about a
+// second; under the full parallel suite, as in pre-push, the 5 s default timed out.
+vi.setConfig({ testTimeout: 30_000 });
+
 const run = (args) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8' });
 const read = (root, rel) => readFileSync(join(root, rel), 'utf8');
 
@@ -1196,6 +1200,47 @@ describe('compile.mjs --release, right after changeset version', () => {
     expect(JSON.parse(read(root, 'upgrade/published.json')).versions).toEqual(['0.20.0', '0.21.0']);
   });
 
+  // hds#449: `pnpm changeset:version` builds before it records, so the
+  // release snapshot carries the css section the tarball will ship.
+  it('takes the snapshot css section from dist/css-contract.json, as the published tarball will', () => {
+    const root = versionedRepo();
+    const contract = {
+      format: 1,
+      bundles: {
+        './styles.css': { classes: ['hds-focus'], fontFaces: [], layers: [], variables: {} },
+      },
+      publicClasses: [],
+    };
+    write(root, 'dist/css-contract.json', `${JSON.stringify(contract)}\n`);
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status, res.stderr).toBe(0);
+    expect(JSON.parse(read(root, 'docs/api/releases/0.21.0.json'))).toEqual({
+      ...snapshotFromSource(root),
+      css: contract,
+    });
+  });
+
+  it('refuses a note listing a CSS fact when dist/css-contract.json is missing, naming pnpm build:lib', () => {
+    const root = versionedRepo();
+    note(root, 'docs', {
+      impact: 'breaking',
+      plain: 'The hds-focus class is gone, so use focus-visible styles.',
+      steps: [
+        {
+          id: 'removed/hds-focus',
+          kind: 'removed',
+          impact: 'breaking',
+          plain: 'The hds-focus class is gone, so use focus-visible styles.',
+          facts: ['class-removed:hds-focus'],
+        },
+      ],
+    });
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status).not.toBe(0);
+    expect(res.stderr).toContain('class-removed:hds-focus');
+    expect(res.stderr).toContain('pnpm build:lib');
+  });
+
   // changesets writes each entry as `- <first 7 of the commit that added the
   // changeset>: <first line>`, so that commit tells apart two changesets that
   // share a first line; the text tells apart two added by one commit.
@@ -1556,10 +1601,13 @@ describe('compile.mjs names the fix when its inputs are broken', () => {
 describe('wiring', () => {
   const pkg = JSON.parse(read(REPO, 'package.json'));
 
-  it('records each release inside pnpm changeset:version, right after changeset version', () => {
+  // hds#449: build:lib between the two writes dist/css-contract.json, which
+  // gives the recorded snapshot the css section the tarball ships.
+  it('records each release inside pnpm changeset:version, right after changeset version and the build', () => {
     const steps = pkg.scripts['changeset:version'].split('&&').map((step) => step.trim());
-    expect(steps.slice(0, 2)).toEqual([
+    expect(steps.slice(0, 3)).toEqual([
       'changeset version',
+      'pnpm build:lib',
       'node scripts/upgrade/compile.mjs --release',
     ]);
   });

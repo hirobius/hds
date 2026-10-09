@@ -341,7 +341,7 @@ export function ledgerFromSources({ release, data = {}, notes = {}, previous, ne
     ],
   });
 
-  const missed = uncoveredFacts(facts, ledger.steps);
+  const missed = uncoveredFacts(facts, ledger.steps, { version });
   if (missed.length > 0) {
     throw new Error(
       `${version}: facts with no step: ${missed.map((fact) => fact.id).join(', ')}; add a step that lists each in upgrade/sources/${version}/release.json`,

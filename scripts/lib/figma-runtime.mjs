@@ -43,17 +43,31 @@ export function hdsChecksum(text) {
 }
 
 /**
+ * What hdsVerifyRuntime hashes for one function: its source without whitespace,
+ * commas, parentheses or semicolons. The use_figma runtime reprints the code
+ * before it runs (hds#565, measured 2026-10-09): it re-indents, adds spaces
+ * inside braces, drops trailing commas and drops optional parentheses. None of
+ * those change a name, a literal or an operator, which is what a copy error
+ * breaks. This is the one definition, used by the verifier in Figma and by the
+ * emitter that bakes the checksum.
+ */
+export function hdsRuntimeFingerprint(source) {
+  return String(source).replace(/[\s(),;]+/g, '');
+}
+
+/**
  * Refuses a use_figma script whose runtime code changed on the way into Figma
  * (an agent retypes the whole script into the `code` parameter). `functions`
  * is every top-level runtime function and `checksum` is hdsChecksum of their
- * source text joined by newlines, as `pnpm figma:push` generated it. Carriage
- * returns are ignored, so a CRLF transport still passes. `prune` says whether
+ * source text with all whitespace removed (hdsRuntimeFingerprint), joined by
+ * newlines, as `pnpm figma:push` generated it. Whitespace is ignored, so a
+ * CRLF transport or the runtime's re-indenting still passes. `prune` says whether
  * the script deletes: where Figma hides function source, the refusal names
  * the plugin that does the same job, the promote plugin for a prune (the Sync
  * plugin never deletes) and the Sync plugin otherwise (hds#415).
  */
 export function hdsVerifyRuntime(functions, checksum, prune) {
-  const texts = functions.map((fn) => String(fn).replace(/\r/g, ''));
+  const texts = functions.map((fn) => String(fn));
   if (texts.some((text) => /\{\s*\[native code\]\s*\}\s*$/.test(text))) {
     const plugin = prune
       ? 'the promote plugin "HDS tokens promote (baked)" (figma/push/promote/manifest.json)'
@@ -62,7 +76,7 @@ export function hdsVerifyRuntime(functions, checksum, prune) {
       `This Figma runtime does not expose function source, so the script cannot read its own code to check it. Nothing was read or written. Use ${plugin}, which Figma loads from disk.`,
     );
   }
-  if (hdsChecksum(texts.join('\n')) !== checksum) {
+  if (hdsChecksum(texts.map(hdsRuntimeFingerprint).join('\n')) !== checksum) {
     throw new Error(
       "The script's runtime code does not match its checksum: it changed after `pnpm figma:push` generated it (a copy or transcription error). Nothing was read or written. Regenerate with `pnpm figma:push` and run the script unmodified.",
     );
@@ -901,6 +915,49 @@ export async function hdsApply(figma, plan) {
   //    a new one is replaced before the new alias is set.
   const valueChanges = [];
   plan.variables.forEach((pv) => pv.values.forEach((change) => valueChanges.push({ pv, change })));
+
+  //    Fonts first: every font a style has or gets, and every family a value
+  //    change gives a variable a style's fontFamily binds (directly or through
+  //    aliases), since Figma refuses that value until the font is loaded.
+  const pendingText = plan.textStyles.filter((ps) => ps.action !== 'unchanged' || ps.stampKey);
+  const fonts = {};
+  const addFont = (font) => {
+    if (font) fonts[font.family + '|' + font.style] = font;
+  };
+  pendingText
+    .filter((ps) => ps.action !== 'unchanged')
+    .forEach((ps) => {
+      addFont(ps.currentFont);
+      addFont({ family: ps.set.fontFamily, style: ps.set.fontStyle });
+    });
+  const reaches = (startId, targetId) => {
+    const seen = new Set();
+    const queue = [startId];
+    while (queue.length) {
+      const current = queue.shift();
+      if (current === targetId) return true;
+      if (seen.has(current)) continue;
+      seen.add(current);
+      const v = variables.get(current);
+      if (!v) continue;
+      Object.keys(v.valuesByMode).forEach((mode) => {
+        const entry = v.valuesByMode[mode];
+        if (entry && entry.type === 'VARIABLE_ALIAS') queue.push(entry.id);
+      });
+    }
+    return false;
+  };
+  valueChanges.forEach(({ pv, change }) => {
+    const v = byPath[pv.path];
+    if (!v || v.resolvedType !== 'STRING' || typeof change.to.value !== 'string') return;
+    textStyles.forEach((style) => {
+      const binding = (style.boundVariables || {}).fontFamily;
+      if (binding && reaches(binding.id, v.id)) {
+        addFont({ family: change.to.value, style: style.fontName.style });
+      }
+    });
+  });
+  for (const key of Object.keys(fonts)) await figma.loadFontAsync(fonts[key]);
   const setValue = ({ pv, change }) => {
     const v = byPath[pv.path];
     const collection = collectionByKey[pv.collection];
@@ -915,17 +972,7 @@ export async function hdsApply(figma, plan) {
   valueChanges.filter((c) => c.change.to.alias === undefined).forEach(setValue);
   valueChanges.filter((c) => c.change.to.alias !== undefined).forEach(setValue);
 
-  // 6. Text styles: load every font a style has or gets before touching it.
-  const pendingText = plan.textStyles.filter((ps) => ps.action !== 'unchanged' || ps.stampKey);
-  const fonts = {};
-  pendingText
-    .filter((ps) => ps.action !== 'unchanged')
-    .forEach((ps) => {
-      [ps.currentFont, { family: ps.set.fontFamily, style: ps.set.fontStyle }].forEach((font) => {
-        if (font) fonts[font.family + '|' + font.style] = font;
-      });
-    });
-  for (const key of Object.keys(fonts)) await figma.loadFontAsync(fonts[key]);
+  // 6. Text styles (fonts were loaded before step 5).
   for (const ps of pendingText) {
     const isNew = ps.action === 'create';
     const style = isNew ? figma.createTextStyle() : need(textStyles, ps.id, 'Text style');

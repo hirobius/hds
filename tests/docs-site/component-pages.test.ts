@@ -18,13 +18,20 @@ import {
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 // @ts-expect-error — plain .mjs module, no types
-import { buildComponentPages, componentSlug } from '../../scripts/lib/docs-component-pages.mjs';
+import {
+  buildComponentPages,
+  componentSlug,
+  pageDescription,
+  patternComponents,
+  readerText,
+} from '../../scripts/lib/docs-component-pages.mjs';
 // @ts-expect-error — plain .mjs module, no types
 import { CORE_COMPONENTS } from '../../scripts/lib/core-components.mjs';
 import { PREVIEWED_COMPONENTS } from '../../docs-site/lib/previewed-components';
 
 const ROOT = join(__dirname, '..', '..');
 const PROVIDERS = ['HdsRouterProvider', 'HdsThemeProvider', 'ToastProvider'];
+const UTILITIES = ['Box', 'Container', 'VisuallyHidden'];
 
 const fixtureManifest = {
   componentSpecs: {
@@ -93,16 +100,16 @@ describe('buildComponentPages (fixture)', () => {
   });
 
   it('renders the usage contract and keyboard table', () => {
-    expect(page).toContain('**Use when:** Show a \\{widget\\} for \\<b> | pipes.');
-    expect(page).toContain('**Not when:** Show a gadget.');
+    expect(page).toContain('- Show a \\{widget\\} for \\<b> | pipes.');
+    expect(page).toContain('- Not for show a gadget.');
     // Gadget is not a core component here, so there is no page to link to.
-    expect(page).toContain('- `Gadget`: gadgets');
+    expect(page).toContain('- For gadgets, use `Gadget`.');
     expect(page).toContain('| `Enter/Space` | Activates the widget. |');
     expect(page).toContain('Needs a name');
   });
 
   it('escapes MDX-significant characters in prose', () => {
-    expect(page).toContain('**Use when:** Show a \\{widget\\} for \\<b> | pipes.');
+    expect(page).toContain('- Show a \\{widget\\} for \\<b> | pipes.');
   });
 
   it('marks a missing props source instead of inventing props', () => {
@@ -128,19 +135,27 @@ describe('drift: every core component has a generated page', () => {
     api = JSON.parse(readFileSync(join(ROOT, 'src/app/data/component-api.json'), 'utf8'));
   });
 
-  it('covers CORE_COMPONENTS minus the three providers', () => {
+  it('covers CORE_COMPONENTS: one page each, utilities on one shared page', () => {
     const pages = buildComponentPages({
       manifest,
       api,
       core: CORE_COMPONENTS,
       providers: PROVIDERS,
+      utilities: UTILITIES,
     });
-    const expected = (CORE_COMPONENTS as string[])
-      .filter((n) => !PROVIDERS.includes(n))
-      .map(componentSlug)
-      .sort();
+    const expected = [
+      ...(CORE_COMPONENTS as string[])
+        .filter((n) => !PROVIDERS.includes(n) && !UTILITIES.includes(n))
+        .map(componentSlug),
+      'utilities',
+    ].sort();
     expect([...pages.keys()].sort()).toEqual(expected);
-    expect(expected).toHaveLength(40);
+    expect(expected).toHaveLength(38);
+    const utilities = (pages as Map<string, string>).get('utilities')!;
+    for (const n of UTILITIES) {
+      expect(utilities).toContain(`## ${n}`);
+      expect(utilities).toContain(`{/* preview: ${n} */}`);
+    }
   });
 
   it('generated output passes scripts/check-docs.mjs (membership, markers, frontmatter)', () => {
@@ -149,6 +164,7 @@ describe('drift: every core component has a generated page', () => {
       api,
       core: CORE_COMPONENTS,
       providers: PROVIDERS,
+      utilities: UTILITIES,
     });
     const root = mkdtempSync(join(tmpdir(), 'hds-docs-'));
     mkdirSync(join(root, 'content/docs/components'), { recursive: true });
@@ -160,7 +176,7 @@ describe('drift: every core component has a generated page', () => {
     for (const [slug, mdx] of pages as Map<string, string>) {
       writeFileSync(join(root, 'content/docs/components', `${slug}.mdx`), mdx);
     }
-    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(40);
+    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(38);
     expect(() =>
       execFileSync('node', ['scripts/check-docs.mjs', '--root', root], {
         cwd: ROOT,
@@ -174,5 +190,163 @@ describe('drift: every core component has a generated page', () => {
       expect(PREVIEWED_COMPONENTS).toContain(n);
     }
     expect(PREVIEWED_COMPONENTS).toContain('MetricTiles');
+  });
+});
+
+describe('pageDescription: a reader-facing summary, not a code note', () => {
+  const when = 'Group related content on a raised surface.';
+
+  it('keeps only the first sentence and capitalises it', () => {
+    expect(
+      pageDescription('Grid', {
+        description: 'responsive grid primitive. Enforces semantic gap. - layout=fixed',
+      }),
+    ).toBe('Responsive grid primitive.');
+    expect(
+      pageDescription('Box', { description: 'layout primitive. sx is a subset of MUI.' }),
+    ).toBe('Layout primitive.');
+  });
+
+  it('strips a leading component-name prefix, whatever the separator', () => {
+    expect(
+      pageDescription('InlineLink', { description: 'InlineLink \u201d inline link primitive.' }),
+    ).toBe('Inline link primitive.');
+    expect(pageDescription('Seg', { description: 'Seg " segmented input. More detail.' })).toBe(
+      'Segmented input.',
+    );
+  });
+
+  it('falls back to usage.when for internal notes (Figma tagging, root + parts)', () => {
+    for (const description of [
+      'Tagged per-export, not on the file block: this module exports eight components.',
+      'Menu root + parts. Controlled via open.',
+      'Tooltip root. Bakes in the Radix Provider.',
+      'The tab set itself. Tagged here rather than in the file block.',
+    ]) {
+      expect(pageDescription('X', { description, usage: { when } })).toBe(when);
+    }
+  });
+
+  it('does not split on e.g., and drops JSX tags a subtitle would print raw', () => {
+    expect(pageDescription('Kbd', { description: 'Renders a key, e.g. <Kbd>K</Kbd>.' })).toBe(
+      'Renders a key, e.g. K.',
+    );
+  });
+
+  it('drops implementation asides', () => {
+    expect(
+      pageDescription('VisuallyHidden', {
+        description: 'Renders its children off-screen (Tailwind sr-only) for screen readers.',
+      }),
+    ).toBe('Renders its children off-screen for screen readers.');
+  });
+
+  it('uses a default when there is nothing to say', () => {
+    expect(pageDescription('Widget', {})).toBe('Widget component.');
+  });
+});
+
+describe('pattern pages: one per module the /patterns entry re-exports', () => {
+  const patternsSource = readFileSync(join(ROOT, 'src/patterns.ts'), 'utf8');
+
+  it('names each module by its PascalCase primary component', () => {
+    expect(
+      patternComponents(
+        "export * from './app/components/metric-tiles';\nexport * from './app/components/form';",
+      ),
+    ).toEqual(['MetricTiles', 'Form']);
+  });
+
+  it('every pattern has a spec, a page under /docs/patterns and a live preview', () => {
+    const manifest = JSON.parse(readFileSync(join(ROOT, 'public/hds-manifest.json'), 'utf8'));
+    const names = patternComponents(patternsSource) as string[];
+    expect(names.length).toBeGreaterThan(0);
+    const pages = buildComponentPages({
+      manifest,
+      api: {},
+      core: names,
+      section: 'patterns',
+      entry: '@hirobius/design-system/patterns',
+    }) as Map<string, string>;
+    for (const n of names) {
+      expect(manifest.componentSpecs[n], n).toBeDefined();
+      expect(PREVIEWED_COMPONENTS, n).toContain(n);
+      const mdx = pages.get(componentSlug(n));
+      expect(mdx).toContain(`import { ${n} } from '@hirobius/design-system/patterns';`);
+    }
+  });
+
+  it('every core component page has a live preview', () => {
+    for (const n of (CORE_COMPONENTS as string[]).filter((c) => !PROVIDERS.includes(c))) {
+      expect(PREVIEWED_COMPONENTS, n).toContain(n);
+    }
+  });
+});
+
+describe('readerText: no maintainer references on public pages', () => {
+  it.each([
+    [
+      'Dropdown built on Radix Select (ADR-001 Radix convention).',
+      'Dropdown built on Radix Select.',
+    ],
+    ['Five roles plus mono (hds#483).', 'Five roles plus mono.'],
+    ['Keeps its own focus tracking, per ADR-015.', 'Keeps its own focus tracking.'],
+    ['Gate is check-type-ramp (scripts/check-type-ramp.mjs).', 'Gate is check-type-ramp.'],
+    ['Plain text stays.', 'Plain text stays.'],
+  ])('%s', (input, out) => {
+    expect(readerText(input)).toBe(out);
+  });
+});
+
+describe('page trimming', () => {
+  const spec = { description: 'A thing.', usage: { when: 'A thing.' } };
+  const page = (api: unknown, s: Record<string, unknown> = spec) =>
+    (
+      buildComponentPages({
+        manifest: { componentSpecs: { Thing: s } },
+        api,
+        core: ['Thing'],
+      }) as Map<string, string>
+    ).get('thing')!;
+
+  it('leaves out deprecated props and an all-empty Default column', () => {
+    const p = page({
+      components: {
+        Thing: {
+          props: [
+            { name: 'size', type: 'string', required: false, description: 'Size.' },
+            { name: 'old', type: 'boolean', required: false, description: '@deprecated Use size.' },
+          ],
+        },
+      },
+    });
+    expect(p).toContain('| Prop | Type | Description |');
+    expect(p).toContain('`size`');
+    expect(p).not.toContain('`old`');
+  });
+
+  it('has no Design tokens section when the manifest maps no tokens', () => {
+    expect(page({})).not.toContain('<summary>Design tokens</summary>');
+    expect(page({}, { ...spec, tokenMapping: { Fill: 'semantic.color.surface.page' } })).toContain(
+      '<summary>Design tokens</summary>',
+    );
+  });
+
+  it('does not repeat the subtitle in Best practices', () => {
+    expect(page({})).not.toContain('## Best practices');
+  });
+
+  it('puts the example first, code and reference folded (Geist order)', () => {
+    const p = page({
+      components: {
+        Thing: { props: [{ name: 'a', type: 'string', required: false, description: 'A.' }] },
+      },
+    });
+    const body = p.slice(p.indexOf('---', 3) + 3).trim();
+    expect(body.startsWith('{/* preview: Thing */}')).toBe(true);
+    expect(p).toContain('<summary>Show code</summary>');
+    expect(p).toContain('<summary>API · 1 prop</summary>');
+    expect(p).not.toContain('## Live Preview');
+    expect(p).not.toContain('## Related Components');
   });
 });

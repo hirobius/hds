@@ -13,7 +13,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readSources } from '../upgrade/build-ledger.mjs';
-import { diffSnapshots } from '../upgrade/diff.mjs';
+import { diffSnapshots, isCssFactId } from '../upgrade/diff.mjs';
 import { stepIsBreaking, uncoveredFacts } from '../upgrade/ledger.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
@@ -93,7 +93,14 @@ describe('the 0.21.0 ledger', () => {
       read('docs/api/releases/0.20.0.json'),
       read(`docs/api/releases/${VERSION}.json`),
     );
-    expect(facts.map((fact) => fact.id).sort()).toEqual([
+    // The CSS facts (hds#449) are recorded but need no step: the ledger was
+    // frozen before they existed (LAST_RELEASE_WITHOUT_CSS_STEPS).
+    expect(
+      facts
+        .map((fact) => fact.id)
+        .filter((id) => !isCssFactId(id))
+        .sort(),
+    ).toEqual([
       'added:./eslint-plugin:default',
       'added:.:TextVariant',
       'bin-added:hds-mcp',
@@ -102,7 +109,11 @@ describe('the 0.21.0 ledger', () => {
       'removed:.:StatusDot',
       'removed:.:StatusDotProps',
     ]);
-    expect(uncoveredFacts(facts, ledger.steps)).toEqual([]);
+    expect(uncoveredFacts(facts, ledger.steps, { version: VERSION })).toEqual([]);
+    // The eyebrow variable its removed step names is a css-var-removed fact.
+    expect(facts.map((fact) => fact.id)).toContain(
+      'css-var-removed:--semantic-typography-eyebrow-text-transform',
+    );
     const byFact = (id) => ledger.steps.filter((step) => step.facts?.includes(id)).map((s) => s.id);
     expect(byFact('removed:.:StatusDot')).toEqual([`${VERSION}/removed/StatusDot`]);
     expect(byFact('exports-key-added:./fonts.css')).toEqual([`${VERSION}/manual/fonts-css`]);

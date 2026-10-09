@@ -19,7 +19,8 @@
  *   - whether upgrade/ALLOW_1_0 exists, and whether package.json names a
  *     prerelease (prereleaseReason), which is never recorded.
  *
- * Nothing here touches the network or builds anything.
+ * Nothing here touches the network or builds anything: the CSS facts need a
+ * contract the caller read from a build (readUpgradeState's `css`).
  */
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -208,23 +209,28 @@ export function prereleaseReason(root, version) {
 /**
  * The upgrade state of the tree at `root`. Throws when package.json or an
  * exports entry's source cannot be read.
+ *
+ * `css` is the CSS contract of the built tree (dist/css-contract.json, hds#449):
+ * with it, the facts include the CSS facts against the release snapshot's css
+ * section (scripts/check-upgrade-css.mjs, `pnpm upgrade:note`); without it,
+ * as in pretest, there are none.
  * @param {string} root
+ * @param {{ css?: object | null }} [options]
  */
-export function readUpgradeState(root) {
+export function readUpgradeState(root, { css = null } = {}) {
   const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
   const version = pkg.version;
   const previousVersion = previousRelease(root, version);
-  const facts = previousVersion
-    ? diffSnapshots(
-        JSON.parse(readFileSync(join(root, RELEASES_SNAPSHOTS, `${previousVersion}.json`), 'utf8')),
-        snapshotFromSource(root),
-      )
-    : [];
+  const previous = previousVersion
+    ? JSON.parse(readFileSync(join(root, RELEASES_SNAPSHOTS, `${previousVersion}.json`), 'utf8'))
+    : null;
+  const facts = previous ? diffSnapshots(previous, snapshotFromSource(root, { css })) : [];
   return {
     root,
     version,
     prerelease: prereleaseReason(root, version) !== null,
     previousVersion,
+    previousCss: previous?.css ?? null,
     facts,
     ledger: readLedger(root, version),
     changesets: readChangesets(root),

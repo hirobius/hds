@@ -7,7 +7,8 @@
  * disobeyed; this checker cannot. It enforces, mechanically:
  *
  *   1. Component membership — every page under components/ names a member
- *      of CORE_COMPONENTS (scripts/lib/core-components.mjs). Removed and
+ *      of CORE_COMPONENTS (scripts/lib/core-components.mjs), and every page
+ *      under patterns/ a module src/patterns.ts re-exports. Removed and
  *      deprecated names (StatusDot, AppShell, …) are not in that list, so
  *      they can never become live pages; they belong only in
  *      guides/deprecation.mdx. (content-model Rule 4)
@@ -25,8 +26,12 @@
  *   5. Internal links resolve — /docs/** routes and relative links must
  *      point at real pages.
  *   6. Build markers — component pages carry a preview marker and a
- *      props marker (or the explicit props-TODO marker); component and
- *      foundation pages carry the generated-tokens marker. (Rules 1–3)
+ *      props marker (or the explicit props-TODO marker); foundation pages,
+ *      and component pages the manifest maps tokens to, carry the
+ *      generated-tokens marker. The shared utilities page carries a preview
+ *      and props marker for each utility component. (Rules 1–3)
+ *   7. Voice — no page uses a phrase the Voice page
+ *      (content/docs/voice.mdx) lists under "Words we don't use".
  *
  * Generation still beats validation where the build generates for real
  * (token tables, llms.txt); this checker guards the seams.
@@ -50,6 +55,29 @@ const { CORE_COMPONENTS } = await import(
   pathToFileURL(join(scriptDir, 'lib', 'core-components.mjs')).href
 );
 const core = new Set(CORE_COMPONENTS);
+// Pattern pages (content/docs/patterns/) document the modules the /patterns
+// entry re-exports, read from the repo's own src/patterns.ts.
+const { patternComponents } = await import(
+  pathToFileURL(join(scriptDir, 'lib', 'docs-component-pages.mjs')).href
+);
+const patterns = new Set(
+  patternComponents(readFileSync(join(scriptDir, '..', 'src', 'patterns.ts'), 'utf8')),
+);
+const documented = new Set([...core, ...patterns]);
+// Small helpers (Box, Container, VisuallyHidden) share one components/utilities page.
+const utilities = new Set(rules.utilityComponents ?? []);
+// A component page lists tokens only when the manifest maps some to it.
+const specs =
+  JSON.parse(readFileSync(join(scriptDir, '..', 'public', 'hds-manifest.json'), 'utf8'))
+    .componentSpecs ?? {};
+// The Voice page's "Words we don't use" list (content/docs/voice.mdx).
+const { readVoice, avoidedPhrases, VOICE_FILE } = await import(
+  pathToFileURL(join(scriptDir, 'lib', 'voice.mjs')).href
+);
+const avoid = existsSync(join(scriptDir, '..', VOICE_FILE))
+  ? readVoice(join(scriptDir, '..')).avoid
+  : [];
+const mapsTokens = (name) => Object.keys(specs[name]?.tokenMapping ?? {}).length > 0;
 const providers = new Set(rules.providerComponents);
 
 const errors = [];
@@ -187,12 +215,12 @@ function checkFrontmatter(file, fm) {
   if (data.since !== undefined && !/^\d+\.\d+\.\d+$/.test(String(data.since))) {
     err(file, 1, 'frontmatter', `since "${data.since}" is not a semver (x.y.z)`);
   }
-  if (data.component !== undefined && !core.has(String(data.component))) {
+  if (data.component !== undefined && !documented.has(String(data.component))) {
     err(
       file,
       1,
       'membership',
-      `frontmatter component "${data.component}" is not in CORE_COMPONENTS — removed/deprecated names live only in ${rules.deprecationGuide}`,
+      `frontmatter component "${data.component}" is not in CORE_COMPONENTS or the /patterns entry — removed/deprecated names live only in ${rules.deprecationGuide}`,
     );
   }
   if (Array.isArray(data.related)) {
@@ -202,12 +230,12 @@ function checkFrontmatter(file, fm) {
         if (!routes.has(name.replace(/\/$/, ''))) {
           err(file, 1, 'links', `related route "${name}" does not resolve to a docs page`);
         }
-      } else if (!core.has(name)) {
+      } else if (!documented.has(name)) {
         err(
           file,
           1,
           'membership',
-          `related "${name}" is not a core component name or a /docs route (stale name?)`,
+          `related "${name}" is not a core component, a pattern or a /docs route (stale name?)`,
         );
       }
     }
@@ -273,6 +301,16 @@ const seenComponentPages = new Set();
 for (const file of files) {
   const r = rel(file);
   const source = readFileSync(file, 'utf8');
+  if (!r.endsWith(VOICE_FILE)) {
+    for (const w of avoidedPhrases(source, avoid)) {
+      err(
+        r,
+        null,
+        'voice',
+        `uses "${w}", which the Voice page (${VOICE_FILE}) lists under Words we don't use`,
+      );
+    }
+  }
   const fm = parseFrontmatter(source, r);
   if (fm) checkFrontmatter(r, fm);
 
@@ -284,7 +322,35 @@ for (const file of files) {
   checkLinks(r, proseSource);
 
   const inDir = (d) => r.startsWith(`${rules.contentRoot}/${d}/`);
-  if (inDir('components')) {
+  if (inDir('patterns')) {
+    const name = slugToName(
+      r
+        .split('/')
+        .pop()
+        .replace(/\.mdx?$/, ''),
+    );
+    if (!patterns.has(name)) {
+      err(
+        r,
+        1,
+        'membership',
+        `pattern page maps to "${name}", which src/patterns.ts does not export`,
+      );
+    } else if (!source.includes(`{/* preview: ${name} */}`)) {
+      err(r, null, 'markers', `missing live preview marker {/* preview: ${name} */}`);
+    }
+  }
+  if (inDir('components') && r.endsWith(`/${rules.utilityPage}.mdx`)) {
+    for (const name of utilities) {
+      seenComponentPages.add(name);
+      if (!source.includes(`{/* preview: ${name} */}`)) {
+        err(r, null, 'markers', `utilities page is missing the preview marker for ${name}`);
+      }
+      if (!source.includes(`{/* props: ${name} */}`)) {
+        err(r, null, 'markers', `utilities page is missing the props marker for ${name}`);
+      }
+    }
+  } else if (inDir('components')) {
     const slug = r
       .split('/')
       .pop()
@@ -325,12 +391,12 @@ for (const file of files) {
         `missing props marker {/* props: ${name} */} or the explicit ${rules.markers.propsTodoPrefix} … */} (content-model Rule 2 — never invent props)`,
       );
     }
-    if (!source.includes(rules.markers.tokens)) {
+    if (mapsTokens(name) && !source.includes(rules.markers.tokens)) {
       err(
         r,
         null,
         'markers',
-        `missing generated tokens marker ${rules.markers.tokens} (content-model Rule 1)`,
+        `missing generated tokens marker ${rules.markers.tokens} (content-model Rule 1; the manifest maps tokens to ${name})`,
       );
     }
   }

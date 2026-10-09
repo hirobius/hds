@@ -21,13 +21,24 @@
  * it checks and does in Figma.
  *
  * It refuses to build, naming the route. To Sync: a plan that moves
- * variables between collections, has conflicts, writes a text or effect
+ * variables between collections, has conflicts, or writes a text or effect
  * style description holding " ' < > & (use_figma's read of one is not
- * measured), or makes a delta.js over 45,000 characters (use_figma takes
- * 50,000). To the promote plugin, because delta.js and Sync never delete:
+ * measured). To the promote plugin, because delta.js and Sync never delete:
  * --prune, and any variable, mode or style the library holds that the model
  * does not (an extra, such as a token deleted from hirobius.tokens.json).
  * delta.js counts the extras again in the library.
+ *
+ * Size. use_figma takes 50,000 characters and returns about 20 KB; the runtime
+ * alone is about 38,000 of them (41,000 in a part). A plan whose delta.js fits DELTA_MAX_CHARS
+ * (45,000) is one delta.js, exactly as before. A bigger one is cut into
+ * ordered parts, delta-1-of-N.js ... delta-N-of-N.js, each a complete script
+ * under DELTA_MAX_CHARS with every guard of delta.js (hdsAgentPartRun in
+ * figma-agent-runtime.mjs): collections first, then variables in alias order
+ * (a target before the variables that alias it), then text and effect styles,
+ * so no part depends on a later one. A part runs only after the one before it
+ * (a progress marker in the file), a part that already ran changes nothing,
+ * and each part's receipt is a delta against the state before it, which
+ * `pnpm figma:snapshot --from-receipt` chains. ADR-033, amendment 2026-10-09.
  */
 
 import {
@@ -38,11 +49,11 @@ import {
   hdsSummarize,
   hdsSummaryLine,
 } from './figma-runtime.mjs';
-import { parse } from 'acorn';
 import {
   agentRuntimeSource,
   buildPushPayload,
   deltaRuntimeSource,
+  emitVerifiedRuntime,
   reachableRuntime,
   runtimeSource,
   syncConfigFromLinks,
@@ -50,14 +61,22 @@ import {
   useFigmaLibraryGuard,
 } from './figma-scripts.mjs';
 import {
+  hdsAgentDigest,
   hdsAgentHeld,
   hdsAgentSlice,
   hdsAgentStyleText,
   hdsAgentVariable,
 } from './figma-agent-runtime.mjs';
 
-/** The most characters delta.js may have: use_figma takes 50,000, and an agent retypes it. */
+/** The most characters delta.js (or one part of it) may have: use_figma takes 50,000, and an agent retypes it. */
 export const DELTA_MAX_CHARS = 45000;
+/**
+ * What the splitter fills a part to. The runtime a part carries is about
+ * 41,000 characters (a lone delta.js needs 38,000), so each part has room for
+ * only 3,000 to 4,000 characters of change: the 500 under DELTA_MAX_CHARS is
+ * headroom, and parts are measured as the real scripts, not estimated.
+ */
+export const DELTA_PART_CHARS = 44500;
 /** Receipt pages (C2): delta.js returns the receipt inline when it fits one page. */
 export const DELTA_PAGE_CHARS = 15000;
 const RECEIPT_MAX_PAGES = 64;
@@ -76,11 +95,8 @@ const refuse = (why) => {
   throw new Error(`delta.js refused: ${why}`);
 };
 
-/** A script's syntax tree without source positions: equal trees run the same code. */
-const syntaxOf = (code) =>
-  JSON.stringify(parse(code, { ecmaVersion: 2020, sourceType: 'script' }), (key, value) =>
-    key === 'start' || key === 'end' ? undefined : value,
-  );
+/** compactRuntime's result per entry function: the syntax-tree check is slow, and a split asks for it once per part. */
+const compacted = new Map();
 
 /**
  * The runtime delta.js reaches, compacted (use_figma takes 50,000
@@ -89,32 +105,19 @@ const syntaxOf = (code) =>
  * hdsVerifyRuntime statement over exactly that text. Throws if compacting
  * changed what the code means (a template literal spanning lines).
  */
-function compactRuntime() {
+function compactRuntime(entry = 'hdsAgentRun') {
+  if (compacted.has(entry)) return compacted.get(entry);
   const source = [
     runtimeSource(),
     deltaRuntimeSource(),
     syncRuntimeSource(),
     agentRuntimeSource(),
   ].join('\n\n');
-  const functions = reachableRuntime(['hdsAgentRun'], source);
-  const texts = functions.map((fn) =>
-    fn.text
-      .replace(/\r/g, '')
-      .replace(/^[ \t]+/gm, '')
-      .replace(/\n{2,}/g, '\n')
-      .replace(/([([{,])\n/g, '$1')
-      .replace(/\n(?=[)\]}.?:])/g, ''),
-  );
-  if (syntaxOf(texts.join('\n')) !== syntaxOf(functions.map((fn) => fn.text).join('\n'))) {
-    throw new Error(
-      'delta.js: compacting the runtime changed its syntax tree, so a dropped space or line break meant something there (a template literal spanning lines). Keep that text on one line.',
-    );
-  }
-  return [
-    texts.join('\n'),
-    // delta.js never prunes, so a refusal names the Sync plugin.
-    `hdsVerifyRuntime([${functions.map((fn) => fn.name).join(', ')}], '${hdsChecksum(texts.join('\n'))}', false);`,
-  ].join('\n');
+  const functions = reachableRuntime([entry], source);
+  // delta.js never prunes, so a refusal names the Sync plugin.
+  const text = emitVerifiedRuntime(functions);
+  compacted.set(entry, text);
+  return text;
 }
 
 /** The part of a plan a push writes: what the slice's plan must reproduce exactly. */
@@ -160,15 +163,19 @@ function usedRenames(paths, renames) {
  * `snapshot`) touches, as hdsAgentSlice reads it: changed records as patches
  * over the snapshot's, new ones whole, and every variable they alias.
  */
-function sliceOf(push, snapshot, plan) {
+function sliceOf(push, snapshot, plan, select = null) {
+  const pick = (kind, id) => !select || select[kind].has(id);
   const stateById = new Map();
   snapshot.collections.forEach((c) => {
     stateById.set(c.id, c);
     c.variables.forEach((v) => stateById.set(v.id, v));
   });
-  const textStyles = plan.textStyles.filter(changed).map((s) => s.set);
-  const effectStyles = plan.effectStyles.filter(changed).map((s) => s.set);
-  const want = new Set(plan.variables.filter(changed).map((v) => v.path));
+  const picked = (kind) => plan[kind].filter((s) => changed(s) && pick(kind, s.path));
+  const textStyles = picked('textStyles').map((s) => s.set);
+  const effectStyles = picked('effectStyles').map((s) => s.set);
+  const want = new Set(
+    plan.variables.filter((v) => changed(v) && pick('variables', v.path)).map((v) => v.path),
+  );
   textStyles.forEach((s) => Object.values(s.boundVariables).forEach((path) => want.add(path)));
   const recordOf = new Map(push.collections.flatMap((c) => c.variables.map((v) => [v.path, v])));
   for (const path of want) {
@@ -178,8 +185,12 @@ function sliceOf(push, snapshot, plan) {
       (entry) => 'alias' in entry && want.add(entry.alias),
     );
   }
-  const collectionWrites = new Set(plan.collections.filter(changed).map((c) => c.key));
+  const collectionWrites = new Set(
+    plan.collections.filter((c) => changed(c) && pick('collections', c.key)).map((c) => c.key),
+  );
   const planned = new Map(plan.collections.map((c) => [c.key, c]));
+  // In a part: records an earlier part already wrote start from the library as that part left it, with no patch.
+  const earlier = (kind, id, item) => select && changed(item) && !select[kind].has(id);
   const kept = push.collections.filter(
     (c) => collectionWrites.has(c.key) || c.variables.some((v) => want.has(v.path)),
   );
@@ -189,6 +200,8 @@ function sliceOf(push, snapshot, plan) {
       (v) => want.has(v.path) && plan.index[v.path] && pathOf.set(plan.index[v.path], v.path),
     ),
   );
+  const items = new Map(plan.variables.map((v) => [v.path, v]));
+  const item = (v) => items.get(v.path);
   const slice = kept.map((c) => {
     const id = planned.get(c.key).id || null;
     const sc = id && stateById.get(id);
@@ -205,19 +218,22 @@ function sliceOf(push, snapshot, plan) {
       .map((v) => {
         const vid = plan.index[v.path] || null;
         const start = vid ? hdsAgentVariable(stateById.get(vid), v.path, pathOf) : { path: v.path };
-        return [v.path, vid, patchOf(start, v)];
+        return [v.path, vid, vid && earlier('variables', v.path, item(v)) ? {} : patchOf(start, v)];
       });
-    return [c.key, id, patchOf(from, c), variables];
+    return [
+      c.key,
+      id,
+      id && earlier('collections', c.key, planned.get(c.key)) ? {} : patchOf(from, c),
+      variables,
+    ];
   });
   const storedPaths = [...pathOf.keys()]
     .map((id) => stateById.get(id).path)
     .concat(
-      plan.textStyles
-        .filter(changed)
-        .map((s) => s.id && snapshot.textStyles.find((x) => x.id === s.id).path),
-      plan.effectStyles
-        .filter(changed)
-        .map((s) => s.id && snapshot.effectStyles.find((x) => x.id === s.id).path),
+      picked('textStyles').map((s) => s.id && snapshot.textStyles.find((x) => x.id === s.id).path),
+      picked('effectStyles').map(
+        (s) => s.id && snapshot.effectStyles.find((x) => x.id === s.id).path,
+      ),
     )
     .filter(Boolean);
   return { slice, textStyles, effectStyles, kept, storedPaths };
@@ -228,12 +244,24 @@ function sliceOf(push, snapshot, plan) {
  * refusal (an Error whose message names the cause and the route to Sync).
  *
  * @param {object} model  The Figma model.
- * @param {{ renames?: object, snapshotFile: {checksum: string, snapshot: object}|null, links: object, commit: string, prune?: boolean, pageChars?: number }} options
- * @returns {{ text: string|null, chars: number, line: string, changes: string[], warnings: string[], base: string, modelHash: string, commit: string, library: string, nothing?: string }}
+ * @param {{ renames?: object, snapshotFile: {checksum: string, snapshot: object}|null, links: object, commit: string, prune?: boolean, pageChars?: number, maxChars?: number, partChars?: number, split?: boolean }} options
+ *   maxChars and partChars are the limits, and split cuts the plan into parts even when one
+ *   script would fit: all three exist for tests that need a small plan in many parts.
+ * @returns {{ text: string|null, parts?: {file: string, text: string, chars: number}[], run?: string, planHash?: string, chars: number, line: string, changes: string[], warnings: string[], base: string, modelHash: string, commit: string, library: string, nothing?: string }}
  */
 export function buildUseFigmaDeltaScript(
   model,
-  { renames = {}, snapshotFile, links, commit, prune = false, pageChars = DELTA_PAGE_CHARS },
+  {
+    renames = {},
+    snapshotFile,
+    links,
+    commit,
+    prune = false,
+    pageChars = DELTA_PAGE_CHARS,
+    maxChars = DELTA_MAX_CHARS,
+    partChars = DELTA_PART_CHARS,
+    split = false,
+  },
 ) {
   if (prune) throw new Error(DELTA_PRUNE_REFUSAL);
   const sync = syncConfigFromLinks(links);
@@ -308,21 +336,25 @@ export function buildUseFigmaDeltaScript(
   }
 
   const { slice, textStyles, effectStyles, kept, storedPaths } = sliceOf(push, snapshot, plan);
-  const data = canonical({
+  // What the library must hold (hdsAgentHeld): the snapshot less the extras.
+  const held = hdsAgentHeld(snapshot).map(
+    (count, i) =>
+      count - [extras.variables, extras.modes, extras.textStyles, extras.effectStyles][i].length,
+  );
+  const common = {
     files: { library: sync.libraryFileKey, retired: sync.retiredFileKeys },
     base: { checksum: snapshotFile.checksum, takenAt: snapshot.takenAt, file: snapshot.file },
     modelHash: payload.modelHash,
     commit,
     line: report.line,
+  };
+  const data = canonical({
+    ...common,
     slice,
     textStyles,
     effectStyles,
     options: { prune: false, scope: null, renames: usedRenames(storedPaths, renames) },
-    // What the library must hold (hdsAgentHeld): the snapshot less the extras.
-    held: hdsAgentHeld(snapshot).map(
-      (count, i) =>
-        count - [extras.variables, extras.modes, extras.textStyles, extras.effectStyles][i].length,
-    ),
+    held,
     pageChars,
     maxPages: RECEIPT_MAX_PAGES,
   });
@@ -359,10 +391,157 @@ export function buildUseFigmaDeltaScript(
     'return await hdsAgentRun(figma, PLAN, PLAN_CHECKSUM);',
     '',
   ].join('\n');
-  if (text.length > DELTA_MAX_CHARS) {
-    refuse(
-      `delta.js would be ${text.length.toLocaleString('en-US')} characters, over its ${DELTA_MAX_CHARS.toLocaleString('en-US')} limit (use_figma takes 50,000).${ROUTE_TO_SYNC}`,
+  if (!split && text.length <= maxChars) return { ...report, text, chars: text.length };
+
+  const parts = splitIntoParts({
+    push,
+    snapshot,
+    plan,
+    writes,
+    sync,
+    common,
+    held,
+    options: data.options,
+    renames,
+    pageChars,
+    partChars: Math.min(partChars, maxChars),
+    maxChars,
+  });
+  return {
+    ...report,
+    text: null,
+    chars: Math.max(...parts.files.map((file) => file.chars)),
+    parts: parts.files,
+    run: parts.run,
+    planHash: parts.planHash,
+  };
+}
+
+/**
+ * The units a plan splits along, in the order their parts run: changed
+ * collections, then variables with every alias target before the variables
+ * that alias it (so a part never needs a later one), then text styles, then
+ * effect styles (which bind variables, so they come last).
+ */
+function unitsOf(push, plan) {
+  const units = plan.collections.filter(changed).map((c) => ({ kind: 'collections', id: c.key }));
+  const recordOf = new Map(push.collections.flatMap((c) => c.variables.map((v) => [v.path, v])));
+  const todo = new Set(plan.variables.filter(changed).map((v) => v.path));
+  const seen = new Set();
+  const visit = (path) => {
+    if (seen.has(path)) return;
+    seen.add(path);
+    Object.values(recordOf.get(path).valuesByMode).forEach(
+      (entry) => 'alias' in entry && todo.has(entry.alias) && visit(entry.alias),
     );
+    units.push({ kind: 'variables', id: path });
+  };
+  [...todo].forEach(visit);
+  plan.textStyles.filter(changed).forEach((s) => units.push({ kind: 'textStyles', id: s.path }));
+  plan.effectStyles
+    .filter(changed)
+    .forEach((s) => units.push({ kind: 'effectStyles', id: s.path }));
+  return units;
+}
+
+const emptySelection = () => ({
+  collections: new Set(),
+  variables: new Set(),
+  textStyles: new Set(),
+  effectStyles: new Set(),
+});
+
+/**
+ * The plan cut into parts under `partChars` (and never over `maxChars`):
+ * { files: [{ file, text, chars }], run, planHash }. Parts are packed
+ * greedily in unit order, measured as the real scripts, so every part is as
+ * full as it can be; a part holds, besides its own changes, the anchors they
+ * need (variables they alias, created by an earlier part or already there).
+ */
+function splitIntoParts({
+  push,
+  snapshot,
+  plan,
+  writes,
+  sync,
+  common,
+  held,
+  options,
+  renames,
+  pageChars,
+  partChars,
+  maxChars,
+}) {
+  const planHash = hdsChecksum(JSON.stringify(writes));
+  const run = hdsChecksum(
+    JSON.stringify([planHash, common.base.checksum, common.modelHash, common.commit]),
+  );
+  const units = unitsOf(push, plan);
+  const render = (select, i, n, id, hash) => {
+    const sliced = sliceOf(push, snapshot, plan, select);
+    const data = canonical({
+      ...common,
+      part: { run: id, plan: hash, i, n },
+      slice: sliced.slice,
+      textStyles: sliced.textStyles,
+      effectStyles: sliced.effectStyles,
+      options: { ...options, renames: usedRenames(sliced.storedPaths, renames) },
+      held,
+      pageChars,
+      maxPages: RECEIPT_MAX_PAGES,
+    });
+    data.planSum = hdsAgentDigest(hdsAgentSlice(snapshot, data), data);
+    return [
+      useFigmaLibraryGuard(sync, 'delta.js writes to the library only.'),
+      `// HDS figma:push --delta, part ${i} of ${n}, run ${id}: run the parts in order, each unmodified (figma/README.md "Agent sync").`,
+      `const PLAN = ${JSON.stringify(data)};`,
+      `const PLAN_CHECKSUM = '${hdsChecksum(JSON.stringify(data))}';`,
+      '',
+      compactRuntime('hdsAgentPartRun'),
+      'return await hdsAgentPartRun(figma, PLAN, PLAN_CHECKSUM);',
+      '',
+    ].join('\n');
+  };
+  const sized = (select) => render(select, 99, 99, '00000000', '00000000').length;
+  const add = (select, unit) => {
+    const next = {
+      collections: new Set(select.collections),
+      variables: new Set(select.variables),
+      textStyles: new Set(select.textStyles),
+      effectStyles: new Set(select.effectStyles),
+    };
+    next[unit.kind].add(unit.id);
+    return next;
+  };
+  const kindName = { collections: 'collection', variables: 'variable' };
+  // Pack to `budget`; a part that comes out over `maxChars` (more digits than the placeholders) is repacked tighter.
+  for (let budget = partChars; budget > partChars - 4000; budget -= 250) {
+    const selections = [];
+    let current = null;
+    for (const unit of units) {
+      const grown = add(current || emptySelection(), unit);
+      if (current && sized(grown) <= budget) {
+        current = grown;
+        continue;
+      }
+      if (current) selections.push(current);
+      current = add(emptySelection(), unit);
+      const length = sized(current);
+      if (length > maxChars) {
+        refuse(
+          `${kindName[unit.kind] || 'style'} ${unit.id} alone makes a ${length.toLocaleString('en-US')}-character part, over the ${maxChars.toLocaleString('en-US')} limit (use_figma takes 50,000).${ROUTE_TO_SYNC}`,
+        );
+      }
+    }
+    selections.push(current);
+    const n = selections.length;
+    const files = selections.map((select, k) => {
+      const text = render(select, k + 1, n, run, planHash);
+      return { file: `delta-${k + 1}-of-${n}.js`, text, chars: text.length };
+    });
+    if (files.every((file) => file.chars <= maxChars)) return { files, run, planHash };
   }
-  return { ...report, text, chars: text.length };
+  return refuse(
+    `the plan could not be cut into parts under ${maxChars.toLocaleString('en-US')} characters.${ROUTE_TO_SYNC}`,
+  );
 }

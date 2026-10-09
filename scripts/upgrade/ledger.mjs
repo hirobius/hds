@@ -9,15 +9,33 @@
  * the history check (./history.mjs) use them; the release compiler (hds#451)
  * builds on the same helpers.
  */
-import { FACT_KINDS } from './diff.mjs';
+import { FACT_KINDS, isCssFactId } from './diff.mjs';
 import { narrows } from './ranges.mjs';
 import { Release, STEP_KINDS, compareVersions } from './schema.mjs';
 
 /** Facts that add something: a ledger may list them, but none needs a step. */
 const ADDITIVE_FACTS = new Set(['added', 'exports-key-added', 'dependency-added', 'bin-added']);
 
+/**
+ * Facts recorded for information only: a Tailwind utility the stylesheets no
+ * longer carry (hds#449). A consumer should not rely on HDS shipping a plain
+ * utility, so it needs no step; a ledger may still list one.
+ */
+const INFO_FACTS = new Set(['utility-removed']);
+
 /** The fact kinds a ledger must account for. */
-export const FACTS_NEEDING_A_STEP = FACT_KINDS.filter((kind) => !ADDITIVE_FACTS.has(kind));
+export const FACTS_NEEDING_A_STEP = FACT_KINDS.filter(
+  (kind) => !ADDITIVE_FACTS.has(kind) && !INFO_FACTS.has(kind),
+);
+
+/**
+ * The last release whose ledger was written before CSS facts existed
+ * (hds#449). Its snapshots carry a css section (backfilled from the
+ * tarballs), but the ledgers from 0.17.0 through it are frozen with their
+ * sources (./build-ledger.mjs), so the CSS facts of those releases are
+ * recorded and not required to have a step. Every later release's are.
+ */
+export const LAST_RELEASE_WITHOUT_CSS_STEPS = '0.22.0';
 
 /** Facts that take something away a consumer may use (hds#445 decision 3). */
 const BREAKING_FACTS = new Set([
@@ -26,21 +44,30 @@ const BREAKING_FACTS = new Set([
   'exports-key-removed',
   'dependency-removed',
   'bin-removed',
+  // hds#449: a custom property or public class a consumer reads stops existing.
+  'css-var-removed',
+  'class-removed',
 ]);
+
+/** CSS facts that change how a page looks while every name still resolves. */
+const LOOK_FACTS = new Set(['css-var-changed', 'font-face-removed']);
 
 /**
  * What a fact does to a consumer that does nothing: breaking when it removes
  * or moves something public, drops a dependency, narrows a peer (or makes one
  * required, or adds or drops a required one, which npm and pnpm install for
  * the consumer) or raises engines; additive when it only adds or widens.
- * scripts/check-upgrade-ledger.mjs bumps by it; `pnpm upgrade:note` guesses a
- * step's impact from it.
+ * A CSS value change or a removed font face is look; a removed utility is
+ * none. scripts/check-upgrade-ledger.mjs and scripts/check-upgrade-css.mjs
+ * bump by it; `pnpm upgrade:note` guesses a step's impact from it.
  * @param {{ kind: string, from?: any, to?: any }} fact
- * @returns {'none' | 'additive' | 'breaking'}
+ * @returns {'none' | 'additive' | 'look' | 'breaking'}
  */
 export function factImpact(fact) {
   if (ADDITIVE_FACTS.has(fact.kind)) return 'additive';
   if (BREAKING_FACTS.has(fact.kind)) return 'breaking';
+  if (LOOK_FACTS.has(fact.kind)) return 'look';
+  if (INFO_FACTS.has(fact.kind)) return 'none';
   const { from, to } = fact;
   if (fact.kind === 'peer-changed') {
     if (!from) return to.optional ? 'additive' : 'breaking';
@@ -127,13 +154,30 @@ export function changelogSource(changelog, version, needle) {
 }
 
 /**
- * The facts that need a step and that no step lists in `facts`.
+ * True when `fact` needs a step in the ledger of `version`: not an addition or
+ * a removed utility, and not a CSS fact of a release at or before
+ * LAST_RELEASE_WITHOUT_CSS_STEPS. Without a version (the pending notes of the
+ * next release) every CSS fact counts.
+ * @param {{ id: string, kind: string }} fact
+ * @param {string} [version]
+ */
+export function needsStep(fact, version) {
+  if (ADDITIVE_FACTS.has(fact.kind) || INFO_FACTS.has(fact.kind)) return false;
+  if (version && isCssFactId(fact.id)) {
+    return compareVersions(version, LAST_RELEASE_WITHOUT_CSS_STEPS) > 0;
+  }
+  return true;
+}
+
+/**
+ * The facts that need a step (needsStep) and that no step lists in `facts`.
  * @param {{ id: string, kind: string }[]} facts
  * @param {{ facts?: string[] }[]} steps
+ * @param {{ version?: string }} [options] the release the steps are the ledger of
  */
-export function uncoveredFacts(facts, steps) {
+export function uncoveredFacts(facts, steps, { version } = {}) {
   const covered = new Set(steps.flatMap((step) => step.facts ?? []));
-  return facts.filter((fact) => !ADDITIVE_FACTS.has(fact.kind) && !covered.has(fact.id));
+  return facts.filter((fact) => needsStep(fact, version) && !covered.has(fact.id));
 }
 
 function compareSteps(a, b) {

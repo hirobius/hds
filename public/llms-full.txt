@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-09T05:31:56.358Z
+Generated: 2026-10-09T13:50:33.036Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## Agents Using The Package: Start Here
@@ -8,6 +8,16 @@ Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, 
 - Read `AGENTS.md` (package root, `node_modules/@hirobius/design-system/AGENTS.md`) first: which component to use for each screen need, the imports, and the rules.
 - MCP server `hds` ships in the package: run `npx hds-mcp` (stdio). Tools: `list_core`, `search_components`, `get_component`, `search_tokens`; each answer is under 2 KB.
 - Lint before you finish: `import hds from '@hirobius/design-system/eslint-plugin'` and spread `hds.configs.recommended` into `eslint.config.mjs`.
+
+## Voice
+
+How these docs speak. Every page, and every agent writing for HDS, follows it. Source: `content/docs/voice.mdx` (published at `/docs/voice`).
+
+- Use plain words a reader already knows. Name a thing by what it does, not by how it is built.
+- Keep sentences short, one idea each.
+- Tell the reader what to do. Leave out brand adjectives.
+- Keep maintainer references off public pages: issue and ADR numbers, script names, internal counts.
+- Don't use: "systems-first".
 
 ## Pick By Need
 

@@ -193,6 +193,7 @@ may skip:
 - **Design-touching / new module → `/codebase-design`**; periodic design-debt
   sweep → `/improve-codebase-architecture`.
 - **Board / issue-lifecycle work → `/triage`.**
+- **A perf-budget failure (`pnpm size-limit` / `check:size`, Button probe) → `performance-optimization`** (Osmani; Pocock still owns build/test/review). The failure output now names it. Never raise a budget to get green.
 - **Charting a multi-decision lane → `/wayfinder`.**
 - **Design-touching UI → `/design-review`.**
 
@@ -201,6 +202,20 @@ is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
 `blocked` · `needs-adrian` (+ the Ralph labels in `AGENTS.md`). Dependencies:
 **sub-issues** for epic→child, **"Depends on #N"** in the body for cross-task
 prerequisites.
+
+### Addy Osmani's agent-skills (2026-10-09)
+
+`.claude/skills/` also vendors 25 skills from
+[addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) (MIT, pin
+`1401c8b`, hirobius/ops#552), locked in `skills-lock.json`. **Pocock's skills above
+stay the mandatory routing**; where an Osmani skill overlaps one (`test-driven-development`,
+`code-review-and-quality`, `debugging-and-error-recovery`, `spec-driven-development`, ...), run
+the Pocock one. No Osmani name clashed with an existing skill, so **nothing was renamed**.
+Reach for Osmani where Pocock has nothing: `security-and-hardening`,
+`performance-optimization`, `api-and-interface-design`, `observability-and-instrumentation`,
+`shipping-and-launch`, `ci-cd-and-automation`, `deprecation-and-migration`. Upstream's
+slash commands and reviewer personas are not vendored (no `.claude/commands` or
+`.claude/agents` here). Detail: `.claude/skills/_vendor/osmani-agent-skills/ROUTING.md`.
 
 ## Agent skills
 

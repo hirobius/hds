@@ -16,6 +16,12 @@
  *                                        rebuild the snapshot a Sync wrote into
  *                                        the library from receipt.js's results, verify
  *                                        it, then ingest it the same way (hds#417)
+ *  pnpm figma:snapshot --from-diff <file>
+ *                                        re-base figma/snapshot.json after the library
+ *                                        changed outside the repo: rebuild the live
+ *                                        snapshot from the committed one plus what
+ *                                        use_figma returned for snapshot-diff.js,
+ *                                        verify its checksum, then ingest it the same way
  *
  * After a Sync, an agent collects the snapshot with figma/push/use-figma/receipt.js
  * (figma/README.md "Agent: collect a sync"). Otherwise take it with the Sync
@@ -29,6 +35,7 @@ import { join, dirname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { parseSnapshotFile, serializeSnapshotFile } from './lib/figma-snapshot.mjs';
 import { rebuildFromReceipt } from './lib/figma-receipt.mjs';
+import { rebuildFromDiff } from './lib/figma-diff-rebuild.mjs';
 import { syncConfigFromLinks } from './lib/figma-scripts.mjs';
 import { readLinks, writePushArtifacts } from './figma-push.mjs';
 
@@ -76,6 +83,35 @@ export function ingestReceipt({ root, files }) {
 }
 
 /**
+ * Rebuilds the live snapshot from the committed figma/snapshot.json plus the
+ * saved result of snapshot-diff.js (scripts/lib/figma-diff-rebuild.mjs checks
+ * file, base, and the live checksum), then ingests it exactly as --ingest
+ * does. Writes nothing when any check fails.
+ *
+ * @param {{ root: string, from: string }} options
+ */
+export function ingestDiff({ root, from }) {
+  let diff;
+  try {
+    diff = JSON.parse(readFileSync(from, 'utf8'));
+  } catch {
+    throw new Error(
+      `${from} is not JSON: save what use_figma returned for snapshot-diff.js, unedited, then run this again.`,
+    );
+  }
+  const snapshotPath = join(root, 'figma', 'snapshot.json');
+  if (!existsSync(snapshotPath)) {
+    throw new Error(
+      'There is no committed figma/snapshot.json to re-base. Take a full snapshot (pnpm figma:snapshot) and ingest it instead.',
+    );
+  }
+  const base = parseSnapshotFile(readFileSync(snapshotPath, 'utf8'));
+  const { libraryFileKey } = syncConfigFromLinks(readLinks(root));
+  const rebuilt = rebuildFromDiff({ diff, base, libraryFileKey });
+  return { ...ingestSnapshot({ root, text: serializeSnapshotFile(rebuilt) }), diff };
+}
+
+/**
  * What `pnpm figma:snapshot` prints with no arguments: after a Sync, the agent
  * collects the snapshot from the receipt (figma/README.md "Agent: collect a
  * sync"); Download JSON and the other carriers are the fallback.
@@ -94,6 +130,8 @@ export function snapshotSteps(rel) {
     `    Promote plugin: import ${rel}/promote/manifest.json, run "Take snapshot", click Download JSON.`,
     `    use_figma: run ${rel}/use-figma/snapshot.js unmodified and save the returned JSON to a file.`,
     '    Then: pnpm figma:snapshot --ingest <file>   (verifies the checksum, writes figma/snapshot.json)',
+    `    The library changed outside the repo: ${rel}/use-figma/snapshot-diff.js (one use_figma call, a few KB back),`,
+    '    then pnpm figma:snapshot --from-diff <file> (figma/README.md "re-base after an out-of-band change").',
     '  Commit figma/snapshot.json only when pnpm check:figma-drift exits 0 AND pnpm figma:push --plan',
     '  prints "updated 0 · created 0 · deleted 0".',
   ];
@@ -103,8 +141,23 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   const at = args.indexOf('--ingest');
   const fromReceipt = args.indexOf('--from-receipt');
+  const fromDiff = args.indexOf('--from-diff');
   try {
-    if (fromReceipt !== -1) {
+    if (fromDiff !== -1) {
+      const file = args[fromDiff + 1];
+      if (!file || file.startsWith('--')) {
+        throw new Error(
+          '--from-diff needs the file saved from figma/push/use-figma/snapshot-diff.js.',
+        );
+      }
+      const { snapshot, outPath, checksum, diff } = ingestDiff({ root: ROOT, from: resolve(file) });
+      console.log(
+        [
+          `✓ ${relative(ROOT, outPath).replaceAll('\\', '/')} re-based from snapshot-diff (live ${checksum}; ${diff.changed.collections.length + diff.changed.variables.length + diff.changed.textStyles.length + diff.changed.effectStyles.length} changed, ${diff.removed.length} removed record(s)) at ${snapshot.takenAt}`,
+          '  Commit it, then pnpm figma:push --delta for any change the model still has to make.',
+        ].join('\n'),
+      );
+    } else if (fromReceipt !== -1) {
       const files = args.slice(fromReceipt + 1).filter((arg) => !arg.startsWith('--'));
       if (!files.length) {
         throw new Error(
