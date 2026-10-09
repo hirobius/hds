@@ -18,6 +18,9 @@
  *   figma/push/use-figma/snapshot.js
  *   figma/push/use-figma/receipt.js  reads a Sync's receipt from the library, for
  *                                 pnpm figma:snapshot --from-receipt (hds#417)
+ *   figma/push/use-figma/snapshot-diff.js  reads the library and returns only what differs
+ *                                 from the committed figma/snapshot.json (a few KB, not
+ *                                 the whole 165 KB), for pnpm figma:snapshot --from-diff
  *   figma/push/use-figma/delta.js    with --delta only: the zero-click agent sync
  *                                 (hds#418), one use_figma call that applies the
  *                                 change since figma/snapshot.json to the library
@@ -63,6 +66,7 @@ import {
   buildSyncPlugin,
   buildUseFigmaPushScript,
   buildUseFigmaReceiptScript,
+  buildUseFigmaSnapshotDiffScript,
   buildUseFigmaSnapshotScript,
   modelHash,
   syncPluginBuild,
@@ -121,6 +125,16 @@ export function writePushArtifacts({ root, outDir, prune = false }) {
   }
   outputs.push([join('use-figma', 'snapshot.js'), buildUseFigmaSnapshotScript(links)]);
   outputs.push([join('use-figma', 'receipt.js'), buildUseFigmaReceiptScript(links)]);
+  const committedSnapshot = join(root, 'figma', 'snapshot.json');
+  if (existsSync(committedSnapshot)) {
+    outputs.push([
+      join('use-figma', 'snapshot-diff.js'),
+      buildUseFigmaSnapshotDiffScript(
+        links,
+        parseSnapshotFile(readFileSync(committedSnapshot, 'utf8')),
+      ),
+    ]);
+  }
 
   rmSync(outDir, { recursive: true, force: true });
   const files = outputs.map(([path, text]) => {
