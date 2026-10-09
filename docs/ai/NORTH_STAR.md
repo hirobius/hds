@@ -8,8 +8,8 @@ _Set 2026-10-09 (Adrian + Claude). Revisit when the answers below stop being tru
 ## Identity (one line)
 
 **HDS is a token-first React product foundation: one opinionated, re-themeable
-system that lets Adrian ship any dashboard or app fast — and stands as
-portfolio-grade proof of design-system _engineering_, not just styling.**
+system that lets Adrian ship any dashboard or app fast — and a serious piece of
+design-system _engineering_, not just styling.**
 
 ## Who it serves, in priority order
 
@@ -44,8 +44,11 @@ portfolio-grade proof of design-system _engineering_, not just styling.**
   HDS components into native SN surfaces — that fights the platform and teaches
   neither skill well. (See ServiceNow stance.)
 - **Not a do-everything, opinion-free kit.** A system flexible enough for
-  "anything" has no spine. HDS's strength is a committed monochromatic,
-  high-contrast identity. Flex via the token knob, not by diluting the opinion.
+  "anything" has no spine. HDS's strength is a committed, distinctive visual
+  identity — today a high-contrast, near-monochrome base, with a branded accent
+  system planned (a primary accent + a supporting one). The opinion is a chosen
+  identity, not a specific palette; flex it through the token knob, not by
+  diluting it into a neutral do-anything kit.
 - **Not a per-project component fork.** New visual needs are met by tokens /
   tenants, or a schema-fitting new component — never by copying a component and
   editing it for one app.
@@ -58,6 +61,17 @@ token layer (`hirobius.tokens.json` → CSS vars; `data-brand` / `data-theme` /
 whole answer to "flexible enough for whatever I build" without becoming mush:
 the structure is fixed and governed; the surface is a knob.
 
+**The token layer travels further than the components.** The React components are
+React-bound, but `hirobius.tokens.json` (→ CSS vars, exportable to SCSS or other
+theme systems) is portable. That is the bridge to non-React surfaces that should
+still look Hirobius — the **Astro client sites in site-engine**, or a ServiceNow
+theme — without forcing React components where they don't belong. _Export tokens,
+not components._ site-engine stays its own Astro render target; sharing the
+Hirobius look there means consuming the token layer, not the component library.
+(Not built yet — the natural first step the day a client site should match the
+Hirobius visual language; until then it's a named, reachable path, not a
+commitment.)
+
 ## ServiceNow stance
 
 - **Supported path — React SPA on ServiceNow data.** Standalone React apps that
@@ -67,9 +81,10 @@ the structure is fixed and governed; the surface is a knob.
 - **Not supported — HDS components inside native SN UI.** Learn SN's own
   framework as a separate skill track.
 - **Optional future bridge — token export.** If visual consistency inside native
-  SN is ever wanted, export the token layer (CSS vars → SCSS / SN theme vars).
-  The tokens are portable even where the React components are not. Optional,
-  later, only if a concrete need appears.
+  SN is ever wanted, export the token layer (CSS vars → SCSS / SN theme vars) —
+  the same "export tokens, not components" bridge described under the flexibility
+  model (it serves site-engine too). The tokens are portable even where the React
+  components are not. Optional, later, only if a concrete need appears.
 
 ## What this means day to day
 
