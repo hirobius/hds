@@ -10,7 +10,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { parse } from 'acorn';
-import { hdsVerifyRuntime } from '../lib/figma-runtime.mjs';
+import { hdsVerifyRuntime, hdsRuntimeFingerprint } from '../lib/figma-runtime.mjs';
 import {
   PUSH_CHUNKS,
   buildUseFigmaPushScript,
@@ -116,6 +116,20 @@ describe('use_figma scripts that verify their runtime', () => {
       });
     }
 
+    /** hds#565 live result 2: the runtime also reprints code (spaces inside braces,
+     * no trailing commas, no parens around an arrow body assignment). */
+    const reprint = (src) =>
+      reindent(src)
+        .replace(/,\s*([)\]}])/g, '$1')
+        .replace(/\{(\S)/g, '{ $1')
+        .replace(/=>\s*\(([^()]*=[^()]*\([^()]*\))\)/g, '=> $1')
+        .replace(/\?\s*'/g, " ? '");
+    it(`${label} passes hdsVerifyRuntime when the runtime reprints the code`, () => {
+      const { sources, names, checksum } = carried(code);
+      const fns = names.map((n) => ({ toString: () => reprint(sources[n]) }));
+      expect(() => hdsVerifyRuntime(fns, checksum, false)).not.toThrow();
+    });
+
     it(`${label} still fails when one identifier in the code changes`, () => {
       const { sources, names, checksum } = carried(code);
       const fns = names.map((n) => ({
@@ -129,5 +143,18 @@ describe('use_figma scripts that verify their runtime', () => {
     expect(
       compactFunctionText('function hdsRound(n) {\n  const r = f(\n    n,\n  );\n\n  return r;\n}'),
     ).toBe('function hdsRound(n) {const r = f(n,);\nreturn r;}');
+  });
+
+  it('matches the text the live runtime printed for hdsNormalizeValue (2026-10-09)', () => {
+    const local =
+      "function hdsNormalizeValue(raw) {if (typeof raw === 'number') return hdsRound(raw);\nif (raw && typeof raw === 'object' && typeof raw.r === 'number') {return {r: hdsRound(raw.r),g: hdsRound(raw.g),b: hdsRound(raw.b),a: hdsRound(typeof raw.a === 'number' ? raw.a : 1),};}\nreturn raw;}";
+    const live =
+      "function hdsNormalizeValue(raw) {if (typeof raw === 'number') return hdsRound(raw);\n    if (raw && typeof raw === 'object' && typeof raw.r === 'number') {return { r: hdsRound(raw.r), g: hdsRound(raw.g), b: hdsRound(raw.b), a: hdsRound(typeof raw.a === 'number' ? raw.a : 1) };}\n    return raw;}";
+    expect(hdsRuntimeFingerprint(live)).toBe(hdsRuntimeFingerprint(local));
+    const localAgent =
+      'async function hdsAgentReadState(figma, file) {const state = await hdsReadState(figma);\nstate.collections.forEach((c) =>\nc.variables.forEach((v) => (v.description = hdsAgentDecode(v.description))),);\nstate.file = Object.assign({}, file);\nreturn state;}';
+    const liveAgent =
+      'async function hdsAgentReadState(figma, file) {const state = await hdsReadState(figma);\n    state.collections.forEach((c) =>\n    c.variables.forEach((v) => v.description = hdsAgentDecode(v.description)));\n    state.file = Object.assign({}, file);\n    return state;}';
+    expect(hdsRuntimeFingerprint(liveAgent)).toBe(hdsRuntimeFingerprint(localAgent));
   });
 });

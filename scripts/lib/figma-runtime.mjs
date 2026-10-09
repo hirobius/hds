@@ -43,14 +43,16 @@ export function hdsChecksum(text) {
 }
 
 /**
- * What hdsVerifyRuntime hashes for one function: its source with all whitespace
- * removed. The use_figma runtime re-indents continuation lines of a
- * multi-line function (hds#565), so no whitespace-sensitive checksum is
- * stable; this is the one definition, used by the verifier in Figma and by
- * the emitter that bakes the checksum.
+ * What hdsVerifyRuntime hashes for one function: its source without whitespace,
+ * commas, parentheses or semicolons. The use_figma runtime reprints the code
+ * before it runs (hds#565, measured 2026-10-09): it re-indents, adds spaces
+ * inside braces, drops trailing commas and drops optional parentheses. None of
+ * those change a name, a literal or an operator, which is what a copy error
+ * breaks. This is the one definition, used by the verifier in Figma and by the
+ * emitter that bakes the checksum.
  */
 export function hdsRuntimeFingerprint(source) {
-  return String(source).replace(/\s+/g, '');
+  return String(source).replace(/[\s(),;]+/g, '');
 }
 
 /**
