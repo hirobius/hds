@@ -160,18 +160,47 @@ export function reachableRuntime(entries, source = runtimeSource()) {
 }
 
 /**
- * The runtime a carrier reaches, plus the statement that checks it. No
- * use_figma carrier prunes, so a refusal names the Sync plugin.
+ * The one emitter for every use_figma carrier's runtime (hds#565). The
+ * use_figma runtime does not hand a function back as written: String(fn)
+ * comes back with its indentation and blank lines stripped, so a checksum over
+ * the pretty-printed source never matches. This emits each function already
+ * in that stripped form (no indentation, no blank lines, no line break after
+ * ( [ { , or before ) ] } . ? : which Prettier-style wrapping adds), hashes
+ * exactly that text, and appends the hdsVerifyRuntime statement. Compacting
+ * is idempotent, so the runtime's own normalization leaves it unchanged.
+ * Throws if compacting changed what the code means (a template literal
+ * spanning lines). No use_figma carrier prunes, so a refusal names the Sync
+ * plugin.
+ *
+ * @param {{ name: string, text: string }[]} functions  from reachableRuntime
+ * @returns {string}
  */
-function verifiedRuntime(entries) {
-  const functions = reachableRuntime(entries);
-  const names = functions.map((fn) => fn.name);
-  const texts = functions.map((fn) => fn.text.replace(/\r/g, ''));
+export function emitVerifiedRuntime(functions) {
+  const texts = functions.map((fn) => compactFunctionText(fn.text));
+  if (syntaxOf(texts.join('\n')) !== syntaxOf(functions.map((fn) => fn.text).join('\n'))) {
+    throw new Error(
+      'use_figma runtime: compacting the runtime changed its syntax tree, so a dropped space or line break meant something there (a template literal spanning lines). Keep that text on one line.',
+    );
+  }
   return [
-    functions.map((fn) => fn.text).join('\n\n'),
-    '',
-    `hdsVerifyRuntime([${names.join(', ')}], '${hdsChecksum(texts.join('\n'))}', false);`,
+    texts.join('\n'),
+    `hdsVerifyRuntime([${functions.map((fn) => fn.name).join(', ')}], '${hdsChecksum(texts.join('\n'))}', false);`,
   ].join('\n');
+}
+
+/** One function's source as the use_figma runtime reports it (see emitVerifiedRuntime). */
+export function compactFunctionText(text) {
+  return text
+    .replace(/\r/g, '')
+    .replace(/^[ \t]+/gm, '')
+    .replace(/\n{2,}/g, '\n')
+    .replace(/([([{,])\n/g, '$1')
+    .replace(/\n(?=[)\]}.?:])/g, '');
+}
+
+/** The runtime a carrier reaches, plus the statement that checks it. */
+function verifiedRuntime(entries) {
+  return emitVerifiedRuntime(reachableRuntime(entries));
 }
 
 /**

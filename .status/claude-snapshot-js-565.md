@@ -1,0 +1,1 @@
+Fixed hds#565: snapshot.js and the 01-05 push chunks now emit their runtime through the shared emitVerifiedRuntime compact form delta.js uses, so hdsVerifyRuntime survives the use_figma runtime's whitespace normalization. delta.js bytes unchanged.
