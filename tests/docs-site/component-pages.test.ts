@@ -40,7 +40,7 @@ const fixtureManifest = {
       since: '0.3.0',
       usage: {
         when: 'Show a {widget} for <b> | pipes.',
-        whenNot: 'Show a gadget.',
+        whenNot: 'Show a {gadget} for <b> | pipes.',
         useInstead: [{ component: 'Gadget', reason: 'gadgets' }],
       },
       keyboard: [{ keys: 'Enter/Space', effect: 'Activates the widget.' }],
@@ -100,8 +100,8 @@ describe('buildComponentPages (fixture)', () => {
   });
 
   it('renders the usage contract and keyboard table', () => {
-    expect(page).toContain('- Show a \\{widget\\} for \\<b> | pipes.');
-    expect(page).toContain('- Not for show a gadget.');
+    expect(page).toContain('description: "Show a {widget} for <b> | pipes."');
+    expect(page).toContain('- Not for show a \\{gadget\\} for \\<b> | pipes.');
     // Gadget is not a core component here, so there is no page to link to.
     expect(page).toContain('- For gadgets, use `Gadget`.');
     expect(page).toContain('| `Enter/Space` | Activates the widget. |');
@@ -109,7 +109,7 @@ describe('buildComponentPages (fixture)', () => {
   });
 
   it('escapes MDX-significant characters in prose', () => {
-    expect(page).toContain('- Show a \\{widget\\} for \\<b> | pipes.');
+    expect(page).toContain('\\{gadget\\} for \\<b> | pipes.');
   });
 
   it('marks a missing props source instead of inventing props', () => {
@@ -216,6 +216,15 @@ describe('pageDescription: a reader-facing summary, not a code note', () => {
     );
   });
 
+  it('leads with usage.when, the reader-facing line, over the code note', () => {
+    expect(
+      pageDescription('Stack', {
+        description: 'Stack — one-dimensional layout primitive.',
+        usage: { when: 'Space a row or column of content. Use token gaps.' },
+      }),
+    ).toBe('Space a row or column of content.');
+  });
+
   it('falls back to usage.when for internal notes (Figma tagging, root + parts)', () => {
     for (const description of [
       'Tagged per-export, not on the file block: this module exports eight components.',
@@ -308,6 +317,19 @@ describe('page trimming', () => {
         core: ['Thing'],
       }) as Map<string, string>
     ).get('thing')!;
+
+  it('does not repeat the description as the first best practice', () => {
+    const md = page(
+      {},
+      {
+        description: 'Code note.',
+        usage: { when: 'Do a thing. Then more.', whenNot: 'Other things.' },
+      },
+    );
+    expect(md).toContain('description: "Do a thing."');
+    expect(md).not.toContain('- Do a thing.');
+    expect(md).toContain('- Not for other things.');
+  });
 
   it('leaves out deprecated props and an all-empty Default column', () => {
     const p = page({

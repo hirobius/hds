@@ -2,7 +2,7 @@
  * Stack — one-dimensional layout primitive.
  * @category Layout
  * @tier primitive
- * @usage Space a row or column of content with token gaps and simple flex alignment.
+ * @usage Space items in a row or column with even gaps.
  * @whenNot Multi-column layout, or giving content a background or padding.
  * @useInstead Grid multi-column layout
  * @useInstead Surface content that needs a background or padding

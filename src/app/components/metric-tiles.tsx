@@ -1,6 +1,7 @@
 /**
  * MetricTiles - the default row of headline numbers on a screen.
  * @category Display
+ * @usage Show a row of key numbers, one tile each.
  * @tier pattern
  */
 
