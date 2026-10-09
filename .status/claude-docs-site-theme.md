@@ -1,0 +1,1 @@
+Docs site loads the package's own fonts.css (Satoshi 400/500/700 + IBM Plex Mono 400) instead of @fontsource Plex only, so headings and body render in Satoshi (hds#506); @fontsource/ibm-plex-mono dropped from docs-site.
