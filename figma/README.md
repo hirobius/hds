@@ -356,6 +356,28 @@ It returns the receipt as `receipt.js` reads page 0, when the receipt fits one
 page (15,000 characters). Otherwise it returns only the head, and `receipt.js`
 collects the pages.
 
+#### More than one part
+
+When the script would pass 45,000 characters, `--delta` writes
+`delta-1-of-N.js` to `delta-N-of-N.js` instead of `delta.js` and prints N and
+the files in order. Each part is a complete script with the same guards, and
+`prune` is false in all of them. A part is about 41,000 characters of runtime, so
+it holds only 3,000–4,000 of change: the 57,000-character type-ramp change is 11
+parts, one `use_figma` call each (plan the 200 a day). To run them:
+
+1. Run part 1, save its result to its own file, then part 2, and so on, strictly in
+   order. A part refuses to run before the one preceding it (the marker `deltaRun`
+   on `figma.root` names the run and the last part done), or if the library is
+   not exactly what that part left. Re-running a part, or restarting from part 1,
+   changes nothing and says where to continue.
+2. If a part returns only a head, run `receipt.js` once per page before the next
+   part (it overwrites the receipt) and save those results too.
+3. Only the last part writes `lastPush`. After it, run
+   `pnpm figma:snapshot --from-receipt <every saved file>`: the receipts chain
+   (part 1 on the committed snapshot, each next on the one before), in any file order.
+4. If a part fails after its write started, stop and ask Adrian to run Sync, which
+   finishes the push from wherever it is; then collect its receipt as for any Sync.
+
 **use_figma reads differently from a plugin** (measured on 2026-10-01 on the
 staging copy that became the library on 2026-10-07). A variable's
 `description` comes back HTML-escaped (`"` as `&quot;`, `'` as `&#39;`, and
@@ -370,7 +392,8 @@ Steps:
 
 1. On main, run `pnpm figma:push --delta`. It prints the plan, the size of
    `delta.js` (at most 45,000 characters; use_figma takes 50,000) and the next
-   step. If it says there is nothing to sync, stop.
+   step. If it says there is nothing to sync, stop. If it says `N PARTS`, the
+   change is too big for one script: follow "More than one part" below.
 2. Log the call in [`MCP-LEDGER.md`](MCP-LEDGER.md).
 3. Make one `use_figma` call on the library with `delta.js`, unmodified, as the
    `code`. Save what it returns to a file, for example `/tmp/delta-result.json`.
@@ -395,7 +418,7 @@ anything was written:
 | a plan with conflicts                                                                                                           | `--delta`                | a person fixes them in Figma, then Sync                                                   |
 | `--prune`, or a variable, mode or style the library holds that the model does not (a token deleted from `hirobius.tokens.json`) | `--delta`                | the promote plugin (`pnpm figma:push --prune`): `delta.js` and Sync never delete          |
 | a plan that writes a text or effect style description holding `" ' < > &`                                                       | `--delta`, then in Figma | Sync (use_figma's read of a style description is not measured yet)                        |
-| a `delta.js` over 45,000 characters                                                                                             | `--delta`                | Sync                                                                                      |
+| one record that alone makes a part over 45,000 characters (a description of several thousand characters)                        | `--delta`                | Sync                                                                                      |
 | no committed `figma/snapshot.json`                                                                                              | `--delta`                | Sync, then collect its receipt                                                            |
 | any file but the library                                                                                                        | in Figma                 | run it on the library                                                                     |
 | `PLAN` or the runtime changed on the way in                                                                                     | in Figma                 | Sync                                                                                      |

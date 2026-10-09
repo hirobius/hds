@@ -17,6 +17,13 @@
  *   6. it is not stale: each read's live lastPush and collection, mode,
  *      variable and style counts match the rebuilt snapshot, so nothing
  *      wrote to the library between the Sync and the read.
+ *
+ * A multi-part delta.js (delta-1-of-N.js ... delta-N-of-N.js) leaves one
+ * receipt per part, each a delta against the state before its part and each
+ * head carrying `part: [i, N, run]`. Reads whose heads all name the same run
+ * are chained: part 1 on the committed snapshot, part i on what part i - 1
+ * rebuilt, every link checked by the six steps above; the last part's
+ * snapshot is the result.
  */
 
 import { gunzipSync } from 'zlib';
@@ -86,6 +93,54 @@ function parseHead(text) {
  * @returns {{ checksum: string, snapshot: object, head: object }}
  */
 export function rebuildFromReceipt({ reads, base, sync }) {
+  const parts = partsOf(reads);
+  if (!parts) return rebuildOne({ reads, base, sync });
+  let link = base;
+  let result = null;
+  for (let i = 1; i <= parts.n; i++) {
+    // A part that needed several pages also returned its head alone: that result carries no page.
+    const group = reads.filter(
+      (read) => typeof read.text === 'string' && JSON.parse(read.head).part[0] === i,
+    );
+    if (!group.length) {
+      throw new Error(
+        `Part ${i} of ${parts.n} (run ${parts.run}) has no receipt page among the files: run delta-${i}-of-${parts.n}.js before part ${i + 1}, save its result (and every receipt.js page it asks for), and pass the files of every part.`,
+      );
+    }
+    try {
+      result = rebuildOne({ reads: group, base: link, sync });
+    } catch (error) {
+      throw new Error(`Part ${i} of ${parts.n}: ${error.message}`);
+    }
+    link = { checksum: result.checksum, snapshot: result.snapshot };
+  }
+  return { ...result, head: { ...result.head, parts: parts.n } };
+}
+
+/** { run, n } when every read's head names the same part of the same multi-part run, else null. */
+function partsOf(reads) {
+  let found = null;
+  for (const read of reads) {
+    let part = null;
+    try {
+      part = JSON.parse(read.head).part;
+    } catch {
+      return null;
+    }
+    const ok =
+      Array.isArray(part) &&
+      Number.isInteger(part[0]) &&
+      Number.isInteger(part[1]) &&
+      part[0] >= 1 &&
+      part[0] <= part[1] &&
+      typeof part[2] === 'string';
+    if (!ok || (found && (found.run !== part[2] || found.n !== part[1]))) return null;
+    found = { run: part[2], n: part[1] };
+  }
+  return found;
+}
+
+function rebuildOne({ reads, base, sync }) {
   if (!reads.length) {
     throw new Error(`--from-receipt needs the files saved from receipt.js: ${COLLECT}.`);
   }

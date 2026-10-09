@@ -1,6 +1,6 @@
 # ADR-033: Zero-Click Agent Sync Through One Pinned use_figma Call
 
-**Status:** Proposed (2026-10-01); amended 2026-10-07: `delta.js` targets the one library, not staging (see [Amendment (2026-10-07)](#amendment-2026-10-07-deltajs-targets-the-library)). Works inside ADR-026 (agents write to staging, never to the library, until its 2026-10-07 amendment made the staging copy the one library) and next to ADR-032 (the Sync plugin and its receipt). hds#418, child C3 of epic hds#397.
+**Status:** Proposed (2026-10-01); amended 2026-10-07: `delta.js` targets the one library, not staging (see [Amendment (2026-10-07)](#amendment-2026-10-07-deltajs-targets-the-library)); amended 2026-10-09: a change of any size runs as ordered parts (see [Amendment (2026-10-09)](#amendment-2026-10-09-a-change-of-any-size-is-delta-1-of-njs-to-delta-n-of-njs)). Works inside ADR-026 (agents write to staging, never to the library, until its 2026-10-07 amendment made the staging copy the one library) and next to ADR-032 (the Sync plugin and its receipt). hds#418, child C3 of epic hds#397.
 
 ## Context
 
@@ -103,3 +103,17 @@ the library; every guard stays, in the same order.
   like `takenAt`.
 - **Size.** The longer messages and the retired keys add 46 characters to `delta.js`
   (measured on 2026-10-07 for the same plan before and after).
+
+## Amendment (2026-10-09): a change of any size is delta-1-of-N.js to delta-N-of-N.js
+
+A type-ramp change that built to 57,346 characters was refused and went to Sync. Now `pnpm figma:push --delta`
+cuts a plan over 45,000 characters into ordered parts (`hdsAgentPartRun`). Collections come first, then
+variables with every alias target before the variables that alias it, then text and effect styles, so no part
+needs a later one. Each part is a complete script with every guard above (library key, `PLAN_CHECKSUM`, `hdsVerifyRuntime`,
+prune false, no deletion, font preflight, re-plan to 0) and carries the run id, its index and N. The runtime alone is about
+41,000 characters in a part, so a part holds 3,000–4,000 of change (the 57k case is 11 parts).
+
+- **Order.** The marker `deltaRun` on `figma.root` names the run and the checksum of the state the last part left; part 1 pins the committed snapshot, part i pins that marker.
+  A part that ran already writes nothing (idempotent). Only the last part writes `lastPush`.
+- **Receipts.** Each part writes the ordinary receipt of its own change, a delta against the state before it, with `head.part = [i, N, run]`. `--from-receipt` chains them from the committed snapshot and checks every link.
+- **A plan that fits one script is unchanged**, byte for byte (golden in `figma-agent-sync-parts.test.mjs`).
