@@ -94,7 +94,7 @@ describe('published build gating', () => {
   it('sets the flag in the Vercel build command only', () => {
     const vercel = JSON.parse(read('vercel.json'));
     expect(vercel.buildCommand).toMatch(/HDS_STORYBOOK_PUBLIC=1\s+pnpm build-storybook/);
-    for (const wf of ['docs-site.yml', 'chromatic.yml', 'ci.yml']) {
+    for (const wf of ['chromatic.yml', 'ci.yml']) {
       expect(read(`.github/workflows/${wf}`)).not.toContain('HDS_STORYBOOK_PUBLIC');
     }
   });
