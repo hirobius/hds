@@ -1,1 +1,2 @@
 Figma sync: snapshot-diff.js + `pnpm figma:snapshot --from-diff` let an agent re-base figma/snapshot.json after an out-of-band library change in one small use_figma call (the full snapshot no longer fits a result).
+Runtime guard now ignores whitespace, commas, parentheses and semicolons: the use_figma runtime reprints code (measured live 2026-10-09).
