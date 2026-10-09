@@ -29,6 +29,8 @@ if (!existsSync(apiPath)) {
 const manifest = JSON.parse(readFileSync(path.join(ROOT, 'public/hds-manifest.json'), 'utf8'));
 const api = JSON.parse(readFileSync(apiPath, 'utf8'));
 const providers = rules.providerComponents;
+const links = JSON.parse(readFileSync(path.join(ROOT, 'figma/links.json'), 'utf8'));
+const sourceBase = `${links.repository}/blob/${links.branch}`;
 
 const outDir = path.join(ROOT, rules.contentRoot, 'components');
 rmSync(outDir, { recursive: true, force: true });
@@ -40,6 +42,7 @@ const pages = buildComponentPages({
   providers,
   utilities: rules.utilityComponents,
   utilityPage: rules.utilityPage,
+  sourceBase,
 });
 for (const [slug, mdx] of pages) writeFileSync(path.join(outDir, `${slug}.mdx`), mdx);
 
@@ -53,6 +56,7 @@ const patternPages = buildComponentPages({
   core: patternNames,
   section: 'patterns',
   entry: '@hirobius/design-system/patterns',
+  sourceBase,
 });
 for (const [slug, mdx] of patternPages) writeFileSync(path.join(patternsDir, `${slug}.mdx`), mdx);
 
