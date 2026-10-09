@@ -50,7 +50,8 @@ of a release snapshot.
    peers with their optional flag, engines, exports keys, bins and files.
 2. **Diff.** `node scripts/upgrade/diff.mjs <previous> <version>` lists the
    facts between two snapshots: exports removed, moved or added, exports keys,
-   dependencies, peers, engines and bins.
+   dependencies, peers, engines and bins, and the CSS facts
+   ([CSS facts](#css-facts)).
 3. **Steps.** Every fact except an addition needs a step that lists it in
    `facts`. Changes the diff cannot see (how something looks or behaves, a
    deprecation, a rename) come from the CHANGELOG and cite its line.
@@ -106,18 +107,57 @@ a changeset has no note, or something breaking ships under less than a minor
 below 1.0. It also fails what `pnpm changeset:version` would refuse or
 misfile: a note step that lists a fact the diff no longer has (a reverted
 removal), and a note with no changeset of its name (hds#541). `pnpm changeset:version` compiles the notes into the release's
-ledger ([At release time](#at-release-time)). CSS facts, such as removed classes and changed variable
-values, come with hds#449; until then a step of kind `removed` written by hand
-covers one, and the gate counts it as breaking.
+ledger ([At release time](#at-release-time)).
+
+### CSS facts
+
+`pnpm build:lib` ends by writing `dist/css-contract.json`
+(`scripts/build-css-contract.mjs`, hds#449, read with postcss): for each
+stylesheet the package exports, every custom property with its value per
+context (`:root`, `[data-theme=dark]`, `[data-density=compact]`, each
+`[data-brand=<slug>]`, each `@media`), the class names, the `@font-face`
+entries and the `@layer` names, plus the manifest's `publicClasses`
+(`hds-focus` and the `static.css` set). It ships, and a release snapshot's
+`css` section is that contract: `--from-npm` reads it from the tarball, or,
+for a release that shipped before it, builds it from the tarball's
+stylesheets with the same code. The snapshots from 0.16.0 to 0.22.0 were
+backfilled that way.
+
+The diff then adds CSS facts: `css-var-removed`, `css-var-changed` (per
+context), `class-removed` (an `hds-*` or public class), `font-face-removed`,
+and `utility-removed` (a plain Tailwind utility, for information only: it
+needs no step). The source snapshot has no `css` section, because the
+stylesheets exist only after a build, so `check-upgrade-ledger` (pretest)
+sees no CSS fact and leaves a note step listing one to
+`scripts/check-upgrade-css.mjs`. That gate runs last in `pnpm smoke:consumer`,
+after its build, and fails a CSS fact with no step, a removed variable or
+public class covered by a step that is not breaking or riding less than a
+minor below 1.0, a step listing a CSS fact the build no longer has, and a
+variable removed in an earlier release coming back with another value. `pnpm
+upgrade:note` reads the last build too, and pre-fills a `removed` step for a
+removal and a `value-changed` step (impact look) per changed variable, each
+detecting the variable (`cssVars`, `cssVarWrites`) or class (`classes`).
+`pnpm changeset:version` builds before `compile.mjs --release`, so the
+release snapshot it records carries the `css` section its tarball will ship.
+
+The ledgers up to 0.22.0 were frozen before CSS facts existed, so their CSS
+facts (the 0.17.0 type ramp, such as `--primitive-typography-size-xs` going
+from 13px to 12px, and the 23 `hds-*` classes 0.20.0 removed) are recorded in
+the snapshots and listed by `diff.mjs`, but no step is required for them
+(`LAST_RELEASE_WITHOUT_CSS_STEPS` in `scripts/upgrade/ledger.mjs`). Every
+later release needs one.
 
 ## At release time
 
 `pnpm changeset:version` (which the release workflow runs to open the Version
-PR) runs `changeset version`, then `node scripts/upgrade/compile.mjs
---release`, which records the release it just cut:
+PR) runs `changeset version`, then `pnpm build:lib` (for
+`dist/css-contract.json`), then `node scripts/upgrade/compile.mjs --release`,
+which records the release it just cut:
 
 1. It builds the ledger in memory from the notes in `upgrade/pending/` and
-   the snapshot of the tree, read from source with no build. A fact no note
+   the snapshot of the tree, read from source, with the `css` section of
+   `dist/css-contract.json` (a note step listing a CSS fact stops it when
+   that file is missing). A fact no note
    step lists, or a step listing a fact the diff lacks, stops it with nothing
    written. A `look`, `behavior` or `breaking` note with no steps becomes one
    step from its plain line (`<kind>/<changeset>`; kind `manual` when it is

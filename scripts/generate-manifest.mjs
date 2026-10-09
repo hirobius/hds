@@ -17,6 +17,7 @@ import { discoverHdsComponents } from './component-discovery.mjs';
 import { compactContract, mergeSlots } from './lib/jsdoc-contract.mjs';
 import { figmaLinkCoverage, resolveFigmaLink } from './lib/figma-link.mjs';
 import { applyCoreFlag } from './lib/core-set.mjs';
+import { publicClasses } from './lib/public-classes.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -333,6 +334,10 @@ manifest.inventory.uncategorized = activeDiscoveredComponents
   .sort((a, b) => a.name.localeCompare(b.name) || a.filePath.localeCompare(b.filePath));
 
 manifest.inventory.namespaceViolations = namespaceViolations;
+
+// hds#449: the classes consumers may write themselves (hds-focus, the
+// static.css set); removing one is a breaking CSS fact (scripts/check-upgrade-css.mjs).
+manifest.publicClasses = publicClasses(ROOT);
 
 writeJson(MANIFEST_PATH, manifest);
 

@@ -929,6 +929,17 @@
       "firingChannel": "pnpm-meta",
       "scope": "full-tree",
       "supportsJson": true
+    },
+    {
+      "id": "check-upgrade-css",
+      "description": "CSS upgrade gate (hds#449): reads the built stylesheets' contract (dist/css-contract.json, written last by build:lib from scripts/build-css-contract.mjs, with postcss) against the css section of the newest docs/api/releases/<v>.json at or below package.json's version, and fails when a custom property, an hds-* or manifest publicClasses class, or an @font-face left a stylesheet, or a variable's value changed in a context (:root, dark, compact, a [data-brand], an @media), with no step in upgrade/pending/*.json listing the fact; when a removal is covered only by a non-breaking step or rides a changeset smaller than minor below 1.0; when a note step lists a CSS fact the build no longer has; when a variable removed in an earlier release comes back with another value; and when the contract is missing or stale, or the release snapshot has no css section. A Tailwind utility that left is reported for information. Every message names pnpm upgrade:note, which pre-fills a removed or value-changed step. Runs last in smoke:consumer, after its build (CI, the Version PR, pnpm release with --skip-build); never builds.",
+      "severity": "error",
+      "gateScript": "scripts/check-upgrade-css.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
     }
   ]
 }

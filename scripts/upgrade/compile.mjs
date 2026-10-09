@@ -51,7 +51,7 @@ import { emitResult, hasJsonFlag } from '../lib/gate-output.mjs';
 import { ledgerFromSources } from './build-ledger.mjs';
 import { formatJson } from './format.mjs';
 import { floor, releaseVersions } from './history.mjs';
-import { diffSnapshots } from './diff.mjs';
+import { diffSnapshots, isCssFactId } from './diff.mjs';
 import { changelogSource, uncoveredFacts } from './ledger.mjs';
 import { IMPACTS, Index, Release, compareVersions } from './schema.mjs';
 
@@ -59,6 +59,7 @@ const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 // Not imported from ./snapshot.mjs: that loads TypeScript, which --check never needs.
 const PACKAGE = '@hirobius/design-system';
 const FIX = 'node scripts/upgrade/compile.mjs';
+const CSS_CONTRACT = 'dist/css-contract.json';
 
 /** The one command (hds#452): npx runs the bin named after the package. */
 export const ONE_COMMAND = `npx ${PACKAGE}@latest upgrade`;
@@ -760,7 +761,10 @@ const today = () => new Date().toISOString().slice(0, 10);
  * nothing written. Then it writes:
  *
  *   - docs/api/releases/<version>.json, the snapshot of this tree (what the
- *     Version PR will publish), read from source with no build;
+ *     Version PR will publish), read from source, with the css section of
+ *     dist/css-contract.json (hds#449: `pnpm changeset:version` runs
+ *     build:lib first; a note step listing a CSS fact stops it when the file
+ *     is missing);
  *   - upgrade/sources/<version>/notes/<changeset>.json, each pending note
  *     byte for byte, and release.json citing each one's CHANGELOG entry
  *     (found by the commit that added its changeset, else by its first
@@ -788,6 +792,7 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
   const { prereleaseReason, readChangesets, readPendingNotes, readReleaseSummary } =
     await import('./pending.mjs');
   const { snapshotFromSource } = await import('./snapshot.mjs');
+  const { readCssContract } = await import('../lib/css-contract.mjs');
 
   const pkg = readJson(join(repo, 'package.json'));
   const { version } = pkg;
@@ -820,7 +825,11 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
     throw new Error(`${written.problem}: fix it, then rerun pnpm changeset:version`);
   }
   const notes = Object.fromEntries(pendingNotes.map((n) => [n.name, n.note]));
-  const next = snapshotFromSource(repo);
+  // hds#449: the css section comes from the contract build:lib wrote, which
+  // `pnpm changeset:version` builds just before this runs, so the snapshot
+  // matches the tarball the Version PR publishes (`snapshot.mjs --from-npm`).
+  const css = readCssContract(repo);
+  const next = snapshotFromSource(repo, { css });
   const previousSnapshot = readJson(join(snapshotsDir, `${previous}.json`));
   const facts = diffSnapshots(previousSnapshot, next);
   // ledgerFromSources refuses these too, but by step id: name the note.
@@ -831,6 +840,14 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
       return ids.length ? [`${n.file}: step ${step.id} lists ${ids.join(', ')}`] : [];
     }),
   );
+  const cssIds = pendingNotes.flatMap((n) =>
+    (n.note.steps ?? []).flatMap((step) => (step.facts ?? []).filter(isCssFactId)),
+  );
+  if (!css && cssIds.length > 0) {
+    throw new Error(
+      `${cssIds.join(', ')} ${cssIds.length === 1 ? 'is a CSS fact' : 'are CSS facts'}, read from the built stylesheets, and ${CSS_CONTRACT} is missing: run pnpm build:lib, then rerun this (pnpm changeset:version builds first).`,
+    );
+  }
   if (stale.length > 0) {
     throw new Error(
       `${stale.join('\n')}\nthe ${previous} -> ${version} diff has no such fact (the change was reverted, or an earlier release shipped it). Take it out of the note's facts (pnpm upgrade:note then adds a step for any fact still uncovered), then rerun pnpm changeset:version.`,

@@ -189,7 +189,12 @@ describe('leftovers of the removed components', () => {
       .filter((f) => /\.(ts|tsx)$/.test(f) && !/\.test\.tsx?$/.test(f))
       .map((f) => read(`src/${f}`))
       .join('\n');
+    // A class the manifest lists in publicClasses (hds#449: hds-focus, the
+    // static.css set) is for consumers to write, so no HDS source has to name it.
+    const promised = new Set<string>(JSON.parse(read('public/hds-manifest.json')).publicClasses);
+    expect(promised.has('hds-focus')).toBe(true);
     const named = (cls: string) =>
+      promised.has(cls) ||
       sources.includes(cls) ||
       [...cls.matchAll(/-/g)].some((m) => sources.includes(`${cls.slice(0, m.index + 1)}\${`));
     const classes = new Set(

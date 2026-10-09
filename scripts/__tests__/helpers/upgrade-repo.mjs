@@ -8,6 +8,7 @@
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { CONTRACT_FILE, buildCssContract, formatContract } from '../../lib/css-contract.mjs';
 import { formatJson } from '../../upgrade/format.mjs';
 import { snapshotFromSource } from '../../upgrade/snapshot.mjs';
 
@@ -89,3 +90,35 @@ export function note(root, name, body) {
 
 export const readNote = (root, name) =>
   JSON.parse(readFileSync(join(root, `upgrade/pending/${name}.json`), 'utf8'));
+
+/**
+ * The stylesheet of cssRepo()'s 0.20.0 release (hds#449): theme variables in
+ * the contexts the real bundles use, a tenant override, two public classes
+ * and a utility.
+ */
+export const RELEASED_CSS = [
+  ':root{--hds-space:4px;--primitive-typography-size-xs:13px}',
+  '[data-theme=dark]{--hds-space:5px}',
+  '[data-brand=pilot],[data-tenant=pilot]{--hds-space:6px}',
+  '.hds-focus:focus-visible{outline:2px solid}',
+  '.hds-card{padding:var(--hds-space)}',
+  '.flex{display:flex}',
+].join('');
+
+/** Builds the tree's stylesheet as build:lib would: dist/styles.css and its dist/css-contract.json. */
+export function buildCss(root, css) {
+  write(root, 'dist/styles.css', css);
+  write(root, CONTRACT_FILE, formatContract(buildCssContract(root)));
+}
+
+/** releasedRepo() whose 0.20.0 snapshot carries the css section of RELEASED_CSS, built. */
+export function cssRepo(css = RELEASED_CSS) {
+  const root = releasedRepo();
+  buildCss(root, css);
+  write(
+    root,
+    'docs/api/releases/0.20.0.json',
+    formatJson({ ...snapshotFromSource(root), css: buildCssContract(root) }),
+  );
+  return root;
+}

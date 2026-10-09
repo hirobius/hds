@@ -1115,6 +1115,9 @@ export function buildManifest(allTokens, raw) {
       component: allTokens.filter((t) => t.path[0] === 'component').map(formatToken),
       role: allTokens.filter((t) => t.path[0] === 'role').map(formatToken),
     },
+    // hds#449: generate-manifest writes publicClasses (scripts/lib/public-classes.mjs);
+    // forwarded verbatim, last, where that generator appends it.
+    publicClasses: SYSTEM_MANIFEST.publicClasses ?? [],
   };
 }
 

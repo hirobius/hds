@@ -71,7 +71,7 @@ export function historyProblems({ snapshotsDir = SNAPSHOTS_DIR, ledgersDir = LED
       );
     }
     const facts = diffSnapshots(readJson(snapshotsDir, previous), readJson(snapshotsDir, version));
-    for (const fact of uncoveredFacts(facts, ledger.steps)) {
+    for (const fact of uncoveredFacts(facts, ledger.steps, { version })) {
       problems.push(
         `${version}: ${fact.id} (${previous} -> ${version}) has no step in upgrade/releases/${version}.json`,
       );

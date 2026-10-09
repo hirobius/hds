@@ -288,6 +288,18 @@ describe('checkUpgradeLedger: notes the release could not record', () => {
     expect(messages(result)).toContain('pnpm upgrade:note');
   });
 
+  // hds#449: the source tree has no built CSS, so a CSS fact is checked by
+  // scripts/check-upgrade-css.mjs against dist/, not here.
+  it('leaves a step listing a CSS fact to check-upgrade-css, and still counts it as breaking', () => {
+    const root = releasedRepo();
+    changeset(root, 'drop-focus', 'patch');
+    note(root, 'drop-focus', stepFor('removed/hds-focus', 'breaking', ['class-removed:hds-focus']));
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['bump-too-small']);
+    changeset(root, 'drop-focus', 'minor');
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+
   it('fails a note with no changeset of the same name, naming both', () => {
     const root = releasedRepo();
     note(root, 'orphan', { impact: 'none' });

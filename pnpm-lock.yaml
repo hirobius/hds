@@ -219,6 +219,9 @@ importers:
       pngjs:
         specifier: ^7.0.0
         version: 7.0.0
+      postcss:
+        specifier: 8.5.10
+        version: 8.5.10
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
