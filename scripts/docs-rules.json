@@ -1,5 +1,14 @@
 {
-  "allowedFrontmatterKeys": ["title", "description", "component", "status", "since", "related"],
+  "allowedFrontmatterKeys": [
+    "title",
+    "description",
+    "component",
+    "status",
+    "since",
+    "related",
+    "figma",
+    "source"
+  ],
   "contentRoot": "content/docs",
   "deprecationGuide": "guides/deprecation.mdx",
   "markers": {

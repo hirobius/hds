@@ -2,6 +2,10 @@ import { notFound } from 'next/navigation';
 import { DocsPage, DocsBody, DocsTitle, DocsDescription } from 'fumadocs-ui/page';
 import { source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
+import { PageLinks } from '@/components/page-links';
+
+/** Frontmatter is loose (source.config.ts), so read the link fields defensively. */
+const str = (v: unknown) => (typeof v === 'string' ? v : undefined);
 
 /** Fewer headings than this and the "On this page" rail is noise. */
 const MIN_TOC_ITEMS = 5;
@@ -24,6 +28,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
+      <PageLinks figma={str(page.data.figma)} source={str(page.data.source)} />
       <DocsBody>
         <MDXContent components={getMDXComponents()} />
       </DocsBody>

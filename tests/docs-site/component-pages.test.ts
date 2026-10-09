@@ -307,6 +307,33 @@ describe('readerText: no maintainer references on public pages', () => {
   });
 });
 
+describe('page links: Figma and source in frontmatter', () => {
+  const build = (spec: Record<string, unknown>) =>
+    (
+      buildComponentPages({
+        manifest: { componentSpecs: { Thing: spec } },
+        api: {},
+        core: ['Thing'],
+        sourceBase: 'https://github.com/o/r/blob/main',
+      }) as Map<string, string>
+    ).get('thing')!;
+
+  it('links the Figma node and the source file', () => {
+    const md = build({
+      figmaUrl: 'https://www.figma.com/design/KEY/File?node-id=1-2',
+      filePath: 'src/app/components/thing.tsx',
+    });
+    expect(md).toContain('figma: "https://www.figma.com/design/KEY/File?node-id=1-2"');
+    expect(md).toContain('source: "https://github.com/o/r/blob/main/src/app/components/thing.tsx"');
+  });
+
+  it('leaves out a link it does not have', () => {
+    const md = build({});
+    expect(md).not.toContain('figma:');
+    expect(md).not.toContain('source:');
+  });
+});
+
 describe('page trimming', () => {
   const spec = { description: 'A thing.', usage: { when: 'A thing.' } };
   const page = (api: unknown, s: Record<string, unknown> = spec) =>
