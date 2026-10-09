@@ -22,6 +22,7 @@ import {
   buildComponentPages,
   componentSlug,
   pageDescription,
+  patternComponents,
 } from '../../scripts/lib/docs-component-pages.mjs';
 // @ts-expect-error — plain .mjs module, no types
 import { CORE_COMPONENTS } from '../../scripts/lib/core-components.mjs';
@@ -223,5 +224,42 @@ describe('pageDescription: a reader-facing summary, not a code note', () => {
 
   it('uses a default when there is nothing to say', () => {
     expect(pageDescription('Widget', {})).toBe('Widget component.');
+  });
+});
+
+describe('pattern pages: one per module the /patterns entry re-exports', () => {
+  const patternsSource = readFileSync(join(ROOT, 'src/patterns.ts'), 'utf8');
+
+  it('names each module by its PascalCase primary component', () => {
+    expect(
+      patternComponents(
+        "export * from './app/components/metric-tiles';\nexport * from './app/components/form';",
+      ),
+    ).toEqual(['MetricTiles', 'Form']);
+  });
+
+  it('every pattern has a spec, a page under /docs/patterns and a live preview', () => {
+    const manifest = JSON.parse(readFileSync(join(ROOT, 'public/hds-manifest.json'), 'utf8'));
+    const names = patternComponents(patternsSource) as string[];
+    expect(names.length).toBeGreaterThan(0);
+    const pages = buildComponentPages({
+      manifest,
+      api: {},
+      core: names,
+      section: 'patterns',
+      entry: '@hirobius/design-system/patterns',
+    }) as Map<string, string>;
+    for (const n of names) {
+      expect(manifest.componentSpecs[n], n).toBeDefined();
+      expect(PREVIEWED_COMPONENTS, n).toContain(n);
+      const mdx = pages.get(componentSlug(n));
+      expect(mdx).toContain(`import { ${n} } from '@hirobius/design-system/patterns';`);
+    }
+  });
+
+  it('every core component page has a live preview', () => {
+    for (const n of (CORE_COMPONENTS as string[]).filter((c) => !PROVIDERS.includes(c))) {
+      expect(PREVIEWED_COMPONENTS, n).toContain(n);
+    }
   });
 });

@@ -23,7 +23,10 @@ const element = (name: string, attributes: unknown[]): MdxNode => ({
 interface Ctx {
   /** MDX file slug (color.mdx -> "color"). */
   page: string;
-  /** True for content/docs/components/*.mdx, whose tokens marker means "this component's tokens". */
+  /**
+   * True for content/docs/components/*.mdx and patterns/*.mdx, whose tokens
+   * marker means "this component's tokens".
+   */
   component: boolean;
 }
 
@@ -50,7 +53,7 @@ function replaceMarkers(node: MdxNode, ctx: Ctx): void {
 /**
  * Swaps the content-model build markers for components:
  *   {/* generated: tokens *\/}  ->  <TokenTable page="color" />  (foundations)
- *                                   <ComponentTokens slug="button" />  (components/)
+ *                                   <ComponentTokens slug="button" />  (components/, patterns/)
  *   {/* preview: Button *\/}    ->  <ComponentPreview name="Button" />
  * The page slug is the MDX file's basename, so the markers stay comments in the
  * source and the content is built from data when the page renders.
@@ -60,7 +63,7 @@ export function remarkTokenTables() {
     const path = file.path ?? '';
     replaceMarkers(tree, {
       page: basename(path, '.mdx'),
-      component: basename(dirname(path)) === 'components',
+      component: ['components', 'patterns'].includes(basename(dirname(path))),
     });
   };
 }
