@@ -322,6 +322,48 @@ Budget: one `use_figma` read per page (1 for a delta, 2 for a full snapshot),
 plus the figma-use skill load if it is not loaded yet, of the 200 a day on Pro.
 On a rate-limit error, stop: never retry (ADR-026 §4).
 
+### Agent: re-base after an out-of-band change (snapshot-diff)
+
+When the library changed outside the repo (a hand edit, or a `delta.js` push
+that wrote part of its change and then failed) and no Sync receipt covers it,
+`figma/snapshot.json` is stale. `snapshot.js` would return the whole library
+(about 165 KB), and a `use_figma` result holds about 20 KB. `snapshot-diff.js`
+carries a fingerprint of the committed snapshot (its checksum and one 8-digit
+hash per record, about 22 KB of script) and returns only the records that
+differ, the ids that are gone and the top-level fields that changed.
+
+1. Log the call in [`MCP-LEDGER.md`](MCP-LEDGER.md).
+2. `pnpm figma:push`, then pass `figma/push/use-figma/snapshot-diff.js`
+   unmodified to one `use_figma` call on the library (`2VgBbVpKiDnu0aftJEVyBQ`).
+   It reads only, and its first statement refuses any other file.
+3. Save the JSON it returns to a file, for example `/tmp/snapshot-diff.json`.
+4. `pnpm figma:snapshot --from-diff /tmp/snapshot-diff.json`. It rebuilds the
+   live snapshot from the committed one plus the diff (variables, text styles
+   and effect styles sorted by name as `hdsReadState` reads them, collections in
+   the returned order), checks its checksum against the `live` checksum the
+   script computed in Figma, and writes `figma/snapshot.json` through the same
+   ingest as `--ingest`.
+5. Commit `figma/snapshot.json` (same gate as a collected sync: plain
+   `pnpm check:figma-drift` and `pnpm figma:push --plan` as described above).
+6. Then `pnpm figma:push --delta` for any change the model still has to make.
+
+`takenAt` is the one field that differs on every read, so it is not
+fingerprinted. The script returns its own read's `takenAt` and `live` is the
+checksum of the snapshot stamped with it; the rebuild stamps the same value, so
+the two agree exactly when the content does. An unchanged library still
+re-bases `takenAt`. Like `delta.js`, the script reads descriptions decoded and
+`file` as the committed snapshot has it (`use_figma` escapes descriptions and
+names the root "Document").
+
+`--from-diff` writes nothing when the `live` checksum does not match the
+rebuild, when the diff's `base` is not the committed `figma/snapshot.json`
+(run `pnpm figma:push` again so the script carries the committed one), when it
+was taken in another file, or when it is not a diff. When the change is larger
+than 15,000 characters the script returns `tooLarge` with the sizes and
+`--from-diff` stops with the route: collect the snapshot with the Sync plugin
+(Sync, then the receipt or Download JSON) and `--ingest` it. Version 1 does not
+page. Budget: one `use_figma` read, of the 200 a day on Pro.
+
 ### Agent sync (zero clicks)
 
 After a PR that changes `hirobius.tokens.json` or the Figma model merges, an
