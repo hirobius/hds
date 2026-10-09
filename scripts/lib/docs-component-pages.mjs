@@ -100,6 +100,29 @@ function accessibilitySection(spec) {
   return parts.length ? parts.join('\n\n') : null;
 }
 
+/** Code notes that reach the manifest from JSDoc but say nothing to a reader. */
+const INTERNAL_NOTE = /^tagged\b|\btagged here\b|\broot \+ parts\b|^\S+ root\./i;
+
+/**
+ * The page's one-line summary: the first sentence of the spec description,
+ * minus a leading "Name —" prefix, capitalised. A JSDoc note written for
+ * maintainers (Figma tagging, "root + parts") falls back to usage.when.
+ * @param {string} name
+ * @param {any} spec
+ */
+export function pageDescription(name, spec) {
+  const clean = (text) =>
+    String(text ?? '')
+      .replace(/`/g, '')
+      .replace(/\s*\n\s*/g, ' ')
+      .trim();
+  let text = clean(spec?.description).replace(new RegExp(`^${name}\\s+[^\\w\\s]+\\s+`), '');
+  if (!text || INTERNAL_NOTE.test(text)) text = clean(spec?.usage?.when);
+  if (!text) return `${name} component.`;
+  const [first] = text.split(/(?<!\be\.g\.|\bi\.e\.)(?<=[.!?])\s+(?=[A-Za-z])/);
+  return first.charAt(0).toUpperCase() + first.slice(1);
+}
+
 /**
  * @param {{ manifest: any, api: any, core: string[], providers?: string[] }} input
  * @returns {Map<string, string>} slug -> MDX source
@@ -113,11 +136,7 @@ export function buildComponentPages({ manifest, api, core, providers = [] }) {
 
   for (const name of names) {
     const spec = specs[name] ?? {};
-    const description = String(spec.description ?? `${name} component.`)
-      .replace(new RegExp(`^${name}\\s+[-—–]\\s+`), '')
-      .replace(/`/g, '')
-      .replace(/\s*\n\s*/g, ' ')
-      .trim();
+    const description = pageDescription(name, spec);
     const related = [
       ...new Set((spec.usage?.useInstead ?? []).map((i) => i.component).filter(isLinkable)),
     ];

@@ -1,0 +1,1 @@
+Fumadocs component pages (hds#506): live previews for all 40 core components (was 8); page descriptions now come from pageDescription() (first sentence, name prefix stripped, internal JSDoc notes fall back to usage.when), so Card/Dialog/Tabs/Menu/Popover/Tooltip no longer show code notes; agentRules:false stops next dev writing AGENTS.md/CLAUDE.md into docs-site/.
