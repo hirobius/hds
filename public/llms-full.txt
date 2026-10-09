@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-09T05:14:26.522Z
+Generated: 2026-10-09T13:36:08.250Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## Agents Using The Package: Start Here
@@ -159,42 +159,54 @@ One line per component that declares when to use it (`@usage` / `@useInstead` in
 
 Alert: [core] Show a persistent inline message with a severity, next to the content it concerns. Use instead: ToastProvider, Badge
 AlertDialog: Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons. Use instead: Dialog, ToastProvider
+AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
 Avatar: [core] Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
 Badge: [core] Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
-Button: [core] Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
+Button: [core] Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
 Card: [core] Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option. Use instead: Surface, Card.Metric
 CardMetric: Show one headline figure (a KPI, a count, a total) with its label inside a Card. Use instead: MetricTiles
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
+CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
 Container: [core] Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
+DataTableSection: Put a heading and toolbar above a Table.
+DestructiveSection: Put a dangerous action, such as delete, in its own section with a warning and a confirm step.
 Dialog: [core] Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider, AlertDialog
 Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. Use instead: Tabs
-Divider: [core] Separate two regions of content with a thin semantic rule. Use instead: Stack, Surface
+Divider: [core] Separate two blocks of content with a thin line. Use instead: Stack, Surface
 EmptyState: [core] Say that a list, grid or section has no data yet, with a title and an optional description. Use instead: Skeleton, Alert
+ErrorPattern: Show an error with a short message and a Back button, in place or as a full page.
 Field: [core] Show a labelled read-only value, such as a name and its value in a detail view. Use instead: Input, Card.Metric
-Grid: [core] Lay out content in responsive columns with token-governed gaps, or align nested content with subgrid. Use instead: Stack, Box
+Form: Wrap form fields so they stack with even spacing.
+FormActions: Lay out a form's buttons in a fixed order: danger on the left, then secondary, then primary on the right.
+Grid: [core] Lay out content in columns that adapt to the screen width, or line up nested content with subgrid. Use instead: Stack, Box
 HdsRouterProvider: [core] Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors.
 HdsThemeProvider: [core] Wrap an app or region once to set theme, density and other root attributes for everything inside it. Use instead: Surface
-Icon: [core] Draw a Lucide glyph at a size and colour from the design tokens. Use instead: Button, Avatar
+Icon: [core] Show a Lucide icon at a set size and color. Use instead: Button, Avatar
 InlineLink: [core] Link to a route or external URL from inside body copy. Use instead: Button, Text
 Input: [core] Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots. Use instead: Textarea, Select, Combobox
 Kbd: [core] Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
 Menu: [core] Offer a list of actions from a trigger, closed until opened. Use instead: Select
+MetricTile: Show a row of key numbers, one tile each.
+MetricTiles: Show a row of key numbers, one tile each.
+Page: Wrap a screen in the standard width and padding.
+PageHeader: Open a screen with its title, plus optional breadcrumb, status and actions.
 Pagination: [core] Move between pages of a long result set, with truncated page numbers. Use instead: Breadcrumb
 Popover: [core] Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open. Use instead: Tooltip, Menu, Dialog
 Progress: [core] Show how far a task has got, as a bar or ring that is determinate or indeterminate. Use instead: Spinner, Skeleton
 Radio: [core] Choose exactly one option from a small set that should stay visible together. Use instead: Checkbox, Select, SegmentedControl
+Reveal: Fade content in as it scrolls into view.
 SegmentedControl: [core] Switch between two to five mutually exclusive views or modes in a compact row. Use instead: Radio, Tabs, Select
 Select: [core] Choose one value from a short list of options in a form field. Use instead: Menu, Combobox
 Skeleton: [core] Reserve the shape of content that is still loading, so the layout does not jump. Use instead: Progress, Spinner
 Slider: [core] Pick a number within a known range by dragging, when the exact value matters less than the position. Use instead: Input
 Spinner: [core] Show that something is loading when the wait is short or has no measurable end. Use instead: Progress, Skeleton
-Stack: [core] Space a row or column of content with token gaps and simple flex alignment. Use instead: Grid, Surface
+Stack: [core] Space items in a row or column with even gaps. Use instead: Grid, Surface
 Stat: Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line. Use instead: MetricTiles, Card.Metric, StatusTile
 StatusTile: Show a titled status block with optional notes and a trailing badge or affordance. Use instead: MetricTiles, Card.Metric, StatusListItem
-Surface: [core] Wrap content in a padded, background-bearing inset surface with no header or footer anatomy. Use instead: Card, Stack
+Surface: [core] Give a block of content a background and padding, with no header or footer. Use instead: Card, Stack
 Table: [core] Show rows of structured data in aligned columns, with optional sorting. Use instead: Field, Stack
 Tabs: [core] Switch between panels of related content in the same place, one visible at a time. Use instead: SegmentedControl, Disclosure
 Tag: [core] Show an interactive filter or category chip that people can toggle. Use instead: Badge
