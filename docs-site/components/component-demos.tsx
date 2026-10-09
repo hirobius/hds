@@ -618,6 +618,8 @@ function PageDemo() {
 function PageHeaderDemo() {
   return (
     <PageHeader
+      // The docs page owns the one h1; a demo heading sits below it.
+      level={2}
       breadcrumb={<Breadcrumb items={[{ label: 'Clients', href: '#' }, { label: 'Acme Co' }]} />}
       title="Acme Co"
       status={<Badge tone="success">Active</Badge>}

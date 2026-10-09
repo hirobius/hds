@@ -5,19 +5,16 @@ status: 'stable'
 since: '0.1.0'
 ---
 
-Typography in Hirobius establishes clear structural hierarchy and readability through dedicated font families for headings, body copy, and technical code.
-
 ## Principle
 
-Three typefaces fulfill distinct and exclusive roles across the visual surface:
+Two typefaces, each with one job:
 
-- **Display & Headings**: Satoshi Bold is used exclusively for section headings and titles, giving structure and authority to layouts.
-- **Body & UI**: Satoshi Medium handles body prose, labels, captions, and interactive controls across application surfaces.
-- **Monospace**: IBM Plex Mono is reserved for code snippets, token references, inline technical callouts, and metric readouts.
+- **Satoshi** sets everything people read: Bold (700) for display and titles, Regular (400) for body, Medium (500) for controls and captions.
+- **IBM Plex Mono** sets code, token names and ids.
 
 ## The ramp
 
-Five roles plus mono (hds#483). Each is one composite under `semantic.typography`, set through `<Text variant="…">`, `hds.typeStyles.<role>` or the `.hds-type-<role>` class.
+Five roles plus mono. Set one with `<Text variant="…">`, `hds.typeStyles.<role>` or the `.hds-type-<role>` class.
 
 | Role      | Size / line-height | Weight | Use                                           |
 | --------- | ------------------ | ------ | --------------------------------------------- |
@@ -28,20 +25,15 @@ Five roles plus mono (hds#483). Each is one composite under `semantic.typography
 | `caption` | 12 / 1.5           | 500    | Metadata, help text and labels, sentence case |
 | `mono`    | 13 / 1.5           | 400    | Code and ids                                  |
 
-`h1`, `h2`, `h3`, `heading1` to `heading3` and the `title` alias of old are now `title`; `technical` is `mono`; `eyebrow`, `badge` and `micro` are `caption`; `small` is `ui`. The old names still resolve, are deprecated, and go in 1.0.0. `scripts/check-type-ramp.mjs` fails a commit that uses a size, weight or line height outside the roles.
+## Best practices
 
-## Token Reference
-
-{/* generated: tokens */}
-
-## Usage Guidance
-
-- Do use the `Text` component and semantic typography tokens to maintain consistent hierarchy.
-- Do follow the defined type ramp for section headings, body prose, and UI labels.
-- Do reserve monospace typography for code, token names, and technical identifiers.
-
-## Don'ts
-
+- Use the `Text` component and semantic typography tokens to maintain consistent hierarchy.
+- Follow the defined type ramp for section headings, body prose, and UI labels.
+- Reserve monospace typography for code, token names, and technical identifiers.
 - Don't use display type styles for body prose or UI labels.
 - Don't apply custom font sizes or line-height overrides outside the token ramp.
 - Don't mix font weights arbitrarily across UI controls.
+
+## Tokens
+
+{/* generated: tokens */}

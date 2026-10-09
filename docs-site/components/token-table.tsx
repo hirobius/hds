@@ -12,7 +12,11 @@ function Value({ value, swatch }: { value: string; swatch: boolean }) {
   );
 }
 
-/** The shared table: token, light value, dark value, description. */
+/**
+ * The shared table: token, light value, dark value, description. A column that
+ * would say nothing (no token differs in dark, no token has a description) is
+ * left out rather than filled with "Same as light" or blanks.
+ */
 export function TokenRows({
   rows,
   descriptionLabel = 'Description',
@@ -20,15 +24,17 @@ export function TokenRows({
   rows: TokenRow[];
   descriptionLabel?: string;
 }) {
+  const hasDark = rows.some((r) => r.darkValue !== null && r.darkValue !== r.value);
+  const hasDescription = rows.some((r) => r.description);
   return (
     <div className="hds-token-table-scroll">
       <table className="hds-token-table">
         <thead>
           <tr>
             <th scope="col">Token</th>
-            <th scope="col">Light</th>
-            <th scope="col">Dark</th>
-            <th scope="col">{descriptionLabel}</th>
+            <th scope="col">{hasDark ? 'Light' : 'Value'}</th>
+            {hasDark ? <th scope="col">Dark</th> : null}
+            {hasDescription ? <th scope="col">{descriptionLabel}</th> : null}
           </tr>
         </thead>
         <tbody>
@@ -40,15 +46,17 @@ export function TokenRows({
               <td>
                 <Value value={row.value} swatch={row.swatch} />
               </td>
-              <td>
-                {/* A token with no Dark mode is the same in both themes. */}
-                {row.darkValue === null ? (
-                  <span className="hds-token-same">Same as light</span>
-                ) : (
-                  <Value value={row.darkValue} swatch={row.swatch} />
-                )}
-              </td>
-              <td>{row.description}</td>
+              {hasDark ? (
+                <td>
+                  {/* A token with no Dark mode is the same in both themes. */}
+                  {row.darkValue === null ? (
+                    <span className="hds-token-same">Same</span>
+                  ) : (
+                    <Value value={row.darkValue} swatch={row.swatch} />
+                  )}
+                </td>
+              ) : null}
+              {hasDescription ? <td>{row.description}</td> : null}
             </tr>
           ))}
         </tbody>
@@ -63,13 +71,17 @@ export function TokenRows({
  */
 export function TokenTable({ page }: { page: string }) {
   const sections = buildTokenSections(loadTokens(), page);
+  // Each group folds: the page reads as principle + best practices, with the
+  // full reference one click away (and still in the page for search).
   return (
     <div className="hds-token-tables">
       {sections.map((section) => (
-        <section key={section.title}>
-          <h3>{section.title}</h3>
+        <details key={section.title} className="hds-fold">
+          <summary>
+            {section.title} · {section.rows.length} {section.rows.length === 1 ? 'token' : 'tokens'}
+          </summary>
           <TokenRows rows={section.rows} />
-        </section>
+        </details>
       ))}
     </div>
   );

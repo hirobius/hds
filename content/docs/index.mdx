@@ -4,7 +4,21 @@ description: 'Foundations, components and patterns for building Hirobius product
 status: 'stable'
 ---
 
-Everything here is generated from the system itself: token tables from `hirobius.tokens.json`, props from the component API, usage and keyboard contracts from the manifest, and live previews from the real `@hirobius/design-system` package.
+Every page here is generated from the system itself: token tables from `hirobius.tokens.json`, props from the component API, and live examples from the published `@hirobius/design-system` package.
+
+## Install
+
+```bash
+pnpm add @hirobius/design-system
+```
+
+```tsx
+import { Button } from '@hirobius/design-system';
+import '@hirobius/design-system/tokens.css'; // design tokens as CSS variables
+import '@hirobius/design-system/fonts.css'; // Satoshi and IBM Plex Mono
+
+export const Save = () => <Button variant="primary">Save</Button>;
+```
 
 ## Start here
 
@@ -12,13 +26,3 @@ Everything here is generated from the system itself: token tables from `hirobius
 - [Spacing](/docs/foundations/spacing): the space scale.
 - [Typography](/docs/foundations/typography): the type ramp.
 - [Motion](/docs/foundations/motion): durations and easing.
-
-## Components
-
-<ComponentIndex />
-
-## Patterns
-
-Screen-level compositions from `@hirobius/design-system/patterns`.
-
-<ComponentIndex section="patterns" />

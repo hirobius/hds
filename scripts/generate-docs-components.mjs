@@ -33,7 +33,14 @@ const providers = rules.providerComponents;
 const outDir = path.join(ROOT, rules.contentRoot, 'components');
 rmSync(outDir, { recursive: true, force: true });
 mkdirSync(outDir, { recursive: true });
-const pages = buildComponentPages({ manifest, api, core: CORE_COMPONENTS, providers });
+const pages = buildComponentPages({
+  manifest,
+  api,
+  core: CORE_COMPONENTS,
+  providers,
+  utilities: rules.utilityComponents,
+  utilityPage: rules.utilityPage,
+});
 for (const [slug, mdx] of pages) writeFileSync(path.join(outDir, `${slug}.mdx`), mdx);
 
 const patternsDir = path.join(ROOT, rules.contentRoot, 'patterns');

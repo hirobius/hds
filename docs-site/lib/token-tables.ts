@@ -95,16 +95,26 @@ function darkRaw(node: Node): Json | undefined {
   return figma.modes.Dark;
 }
 
+/** Maintainer shorthand a reader can't use: "Role 1 of 6.", "(hds#483)". */
+const readerText = (text: string) =>
+  text
+    .replace(/\s*(?:The mono companion, )?[Rr]ole \d of \d\.?/g, '')
+    .replace(/\s*\((?:hds|ops)#\d+\)/g, '')
+    .trim();
+
+/** A composite's font stack shows only the family it asks for, not the fallbacks. */
+const shortFamily = (value: string) => value.replace(/(fontFamily: )([^,;]+)[^;]*/, '$1$2');
+
 function rowFor(tokens: Json, path: string, node: Node): TokenRow {
   const raw = node.$value;
-  const value = resolveTokenValue(tokens, raw);
+  const value = shortFamily(resolveTokenValue(tokens, raw));
   const dark = darkRaw(node);
   return {
     token: path,
     cssVar: isNode(raw) && !('unit' in raw) ? null : cssVarFor(path),
     value,
-    darkValue: dark === undefined ? null : resolveTokenValue(tokens, dark),
-    description: typeof node.$description === 'string' ? node.$description : '',
+    darkValue: dark === undefined ? null : shortFamily(resolveTokenValue(tokens, dark)),
+    description: typeof node.$description === 'string' ? readerText(node.$description) : '',
     swatch: path.startsWith('semantic.color.') && /^(#|rgb|hsl|oklch)/i.test(value),
   };
 }
@@ -126,7 +136,8 @@ export function tokenRow(tokens: Json, path: string): TokenRow | null {
 
 function collect(tokens: Json, node: Node, path: string, out: TokenRow[]): void {
   for (const [key, child] of Object.entries(node)) {
-    if (key.startsWith('$') || !isNode(child)) continue;
+    // Deprecated tokens still resolve for old code but are not documented.
+    if (key.startsWith('$') || !isNode(child) || child.$deprecated) continue;
     const childPath = `${path}.${key}`;
     if ('$value' in child) out.push(rowFor(tokens, childPath, child));
     else collect(tokens, child, childPath, out);
@@ -151,7 +162,7 @@ export function buildTokenSections(tokens: Json, page: string): TokenSection[] {
   const sections: TokenSection[] = [];
   const loose: Node = {};
   for (const [key, child] of Object.entries(group)) {
-    if (key.startsWith('$') || !isNode(child)) continue;
+    if (key.startsWith('$') || !isNode(child) || child.$deprecated) continue;
     if ('$value' in child) {
       loose[key] = child;
       continue;

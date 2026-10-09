@@ -26,8 +26,10 @@
  *   5. Internal links resolve — /docs/** routes and relative links must
  *      point at real pages.
  *   6. Build markers — component pages carry a preview marker and a
- *      props marker (or the explicit props-TODO marker); component and
- *      foundation pages carry the generated-tokens marker. (Rules 1–3)
+ *      props marker (or the explicit props-TODO marker); foundation pages,
+ *      and component pages the manifest maps tokens to, carry the
+ *      generated-tokens marker. The shared utilities page carries a preview
+ *      and props marker for each utility component. (Rules 1–3)
  *
  * Generation still beats validation where the build generates for real
  * (token tables, llms.txt); this checker guards the seams.
@@ -60,6 +62,13 @@ const patterns = new Set(
   patternComponents(readFileSync(join(scriptDir, '..', 'src', 'patterns.ts'), 'utf8')),
 );
 const documented = new Set([...core, ...patterns]);
+// Small helpers (Box, Container, VisuallyHidden) share one components/utilities page.
+const utilities = new Set(rules.utilityComponents ?? []);
+// A component page lists tokens only when the manifest maps some to it.
+const specs =
+  JSON.parse(readFileSync(join(scriptDir, '..', 'public', 'hds-manifest.json'), 'utf8'))
+    .componentSpecs ?? {};
+const mapsTokens = (name) => Object.keys(specs[name]?.tokenMapping ?? {}).length > 0;
 const providers = new Set(rules.providerComponents);
 
 const errors = [];
@@ -312,7 +321,17 @@ for (const file of files) {
       err(r, null, 'markers', `missing live preview marker {/* preview: ${name} */}`);
     }
   }
-  if (inDir('components')) {
+  if (inDir('components') && r.endsWith(`/${rules.utilityPage}.mdx`)) {
+    for (const name of utilities) {
+      seenComponentPages.add(name);
+      if (!source.includes(`{/* preview: ${name} */}`)) {
+        err(r, null, 'markers', `utilities page is missing the preview marker for ${name}`);
+      }
+      if (!source.includes(`{/* props: ${name} */}`)) {
+        err(r, null, 'markers', `utilities page is missing the props marker for ${name}`);
+      }
+    }
+  } else if (inDir('components')) {
     const slug = r
       .split('/')
       .pop()
@@ -353,12 +372,12 @@ for (const file of files) {
         `missing props marker {/* props: ${name} */} or the explicit ${rules.markers.propsTodoPrefix} … */} (content-model Rule 2 — never invent props)`,
       );
     }
-    if (!source.includes(rules.markers.tokens)) {
+    if (mapsTokens(name) && !source.includes(rules.markers.tokens)) {
       err(
         r,
         null,
         'markers',
-        `missing generated tokens marker ${rules.markers.tokens} (content-model Rule 1)`,
+        `missing generated tokens marker ${rules.markers.tokens} (content-model Rule 1; the manifest maps tokens to ${name})`,
       );
     }
   }
