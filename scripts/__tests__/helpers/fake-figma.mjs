@@ -129,6 +129,23 @@ export function createFakeFigma({
     }
   };
 
+  function aliasChainReaches(startId, targetId) {
+    const seen = new Set();
+    const queue = [startId];
+    while (queue.length) {
+      const current = queue.shift();
+      if (current === targetId) return true;
+      if (seen.has(current)) continue;
+      seen.add(current);
+      const v = variables.get(current);
+      if (!v) continue;
+      Object.values(v.valuesByMode).forEach((entry) => {
+        if (entry && entry.type === 'VARIABLE_ALIAS') queue.push(entry.id);
+      });
+    }
+    return false;
+  }
+
   function storeValue(variable, value) {
     if (value && value.type === 'VARIABLE_ALIAS') {
       const target = variables.get(value.id);
@@ -220,6 +237,16 @@ export function createFakeFigma({
       setValueForMode(modeId, value) {
         if (!collection.modes.some((m) => m.modeId === modeId)) {
           throw new Error(`Mode ${modeId} is not in collection ${collection.name}`);
+        }
+        if (resolvedType === 'STRING' && typeof value === 'string') {
+          // Figma refuses a new family on a variable a text style's fontFamily
+          // binds (directly or through aliases) until that font is loaded.
+          for (const style of textStyles.values()) {
+            const binding = style.boundVariables.fontFamily;
+            if (binding && aliasChainReaches(binding.id, variableId)) {
+              requireLoaded({ family: value, style: style.fontName.style }, 'variable');
+            }
+          }
         }
         log(`variable.value:${currentName}`);
         values.set(modeId, storeValue(variable, value));

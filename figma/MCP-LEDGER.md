@@ -160,3 +160,18 @@ Nothing was written to Figma. The library `c8MaVgwxOlxm4wr8wnH0Z4` was not
 touched.
 
 Calls logged for 2026-10-07: 38 of 200 (16, 7, 13 and 2).
+
+## 2026-10-09 · session `claude/figma-plex-mono-push` (agent sync: IBM Plex Mono)
+
+Pushing the mono font change from #535 to the HDS library `2VgBbVpKiDnu0aftJEVyBQ`
+via `delta.js` (main e62d2b3; plan `updated 2 · created 0 · deleted 0`; snapshot
+`8f24178f`, model `59d56b82`), per `figma/README.md` "Agent sync (zero clicks)".
+Writes only what the delta names; never deletes, never publishes.
+
+| #   | Time (UTC) | Tool                                   | Kind  | Purpose                                     | Result                                                                                                                                                                                                                                                                                                                               |
+| --- | ---------- | -------------------------------------- | ----- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | 02:50      | `ReadMcpResource` (figma-use SKILL.md) | read  | Mandatory skill load before any `use_figma` | OK                                                                                                                                                                                                                                                                                                                                   |
+| 2   | 02:53      | `use_figma`                            | write | Library: `delta.js` unmodified              | Error in `setValueForMode`: unloaded font "IBM Plex Mono Regular". Guards passed (checksums, base `8f24178f`, plan). Partly applied: the mono variable's description may be written; value, style, `lastPush` and receipt not. Not retried. Cause: the push loaded fonts after values (fixed in this PR); Adrian finishes with Sync. |
+
+**Session total: 2 calls, 1 of them `use_figma` (write, failed partway).** No rate-limit errors.
+Nothing was deleted or published.
