@@ -1,17 +1,17 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * north-star.mjs — reads the one North Star brief, content/docs/north-star.mdx.
+ * voice.mjs — reads the one Voice page, content/docs/voice.mdx.
  *
  * That page is the source; everything else is derived from it so nothing can
- * drift: the docs site renders it at /docs/north-star, AGENTS.md and llms.txt
+ * drift: the docs site renders it at /docs/voice, AGENTS.md and llms.txt
  * carry its Voice section (generated), and check-docs fails any docs page that
  * uses a phrase from its "Words we don't use" list.
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const NORTH_STAR_FILE = 'content/docs/north-star.mdx';
-export const NORTH_STAR_URL = '/docs/north-star';
+export const VOICE_FILE = 'content/docs/voice.mdx';
+export const VOICE_URL = '/docs/voice';
 
 /** The `- ` bullets under one `## ` heading, in order. */
 function bullets(source, heading) {
@@ -25,10 +25,10 @@ function bullets(source, heading) {
 }
 
 /**
- * @param {string} source  contents of content/docs/north-star.mdx
+ * @param {string} source  contents of content/docs/voice.mdx
  * @returns {{ description: string, voice: string[], avoid: string[] }}
  */
-export function parseNorthStar(source) {
+export function parseVoice(source) {
   const description = /^description:\s*['"](.*)['"]\s*$/m.exec(source)?.[1] ?? '';
   return {
     description,
@@ -38,14 +38,14 @@ export function parseNorthStar(source) {
 }
 
 /** @param {string} root repo root */
-export function readNorthStar(root) {
-  return parseNorthStar(readFileSync(join(root, NORTH_STAR_FILE), 'utf8'));
+export function readVoice(root) {
+  return parseVoice(readFileSync(join(root, VOICE_FILE), 'utf8'));
 }
 
 /** The Voice block AGENTS.md and llms.txt both print (same text in both). */
 export function voiceMarkdown(ns) {
   return [
-    `${ns.description} Source: \`${NORTH_STAR_FILE}\` (published at \`${NORTH_STAR_URL}\`).`,
+    `${ns.description} Source: \`${VOICE_FILE}\` (published at \`${VOICE_URL}\`).`,
     '',
     ...ns.voice.map((v) => `- ${v}`),
     ...(ns.avoid.length ? [`- Don't use: ${ns.avoid.map((w) => `"${w}"`).join(', ')}.`] : []),

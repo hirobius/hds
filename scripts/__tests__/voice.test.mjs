@@ -1,6 +1,6 @@
 /**
- * North Star: one source (content/docs/north-star.mdx), derived everywhere.
- * Seams: parseNorthStar / voiceMarkdown / avoidedPhrases, and check-docs run
+ * Voice: one source (content/docs/voice.mdx), derived everywhere.
+ * Seams: parseVoice / voiceMarkdown / avoidedPhrases, and check-docs run
  * against a throwaway content root.
  */
 import { describe, expect, it } from 'vitest';
@@ -8,17 +8,12 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import {
-  avoidedPhrases,
-  parseNorthStar,
-  readNorthStar,
-  voiceMarkdown,
-} from '../lib/north-star.mjs';
+import { avoidedPhrases, parseVoice, readVoice, voiceMarkdown } from '../lib/voice.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..');
 
 const SOURCE = `---
-title: 'North Star'
+title: 'Voice'
 description: 'How the docs speak.'
 status: 'experimental'
 ---
@@ -34,9 +29,9 @@ status: 'experimental'
 - "seamless"
 `;
 
-describe('parseNorthStar', () => {
+describe('parseVoice', () => {
   it('reads the description, the Voice bullets and the avoid list', () => {
-    expect(parseNorthStar(SOURCE)).toEqual({
+    expect(parseVoice(SOURCE)).toEqual({
       description: 'How the docs speak.',
       voice: ['Short sentences.', 'Plain words.'],
       avoid: ['systems-first', 'seamless'],
@@ -44,7 +39,7 @@ describe('parseNorthStar', () => {
   });
 
   it('reads the real brief', () => {
-    const ns = readNorthStar(ROOT);
+    const ns = readVoice(ROOT);
     expect(ns.description).not.toBe('');
     expect(ns.voice.length).toBeGreaterThan(0);
   });
@@ -52,8 +47,8 @@ describe('parseNorthStar', () => {
 
 describe('voiceMarkdown', () => {
   it('names the source and lists voice rules and words to avoid', () => {
-    const md = voiceMarkdown(parseNorthStar(SOURCE));
-    expect(md).toContain('content/docs/north-star.mdx');
+    const md = voiceMarkdown(parseVoice(SOURCE));
+    expect(md).toContain('content/docs/voice.mdx');
     expect(md).toContain('- Short sentences.');
     expect(md).toContain(`- Don't use: "systems-first", "seamless".`);
   });
@@ -71,14 +66,14 @@ describe('avoidedPhrases', () => {
 
 describe('the generated files carry the brief', () => {
   it('AGENTS.md and llms.txt both print the same Voice block', () => {
-    const block = voiceMarkdown(readNorthStar(ROOT));
+    const block = voiceMarkdown(readVoice(ROOT));
     expect(readFileSync(join(ROOT, 'AGENTS.md'), 'utf8')).toContain(block);
     expect(readFileSync(join(ROOT, 'llms.txt'), 'utf8')).toContain(block);
   });
 });
 
 describe('check-docs voice rule', () => {
-  it('fails a page that uses a word the North Star rules out', () => {
+  it('fails a page that uses a word the Voice page rules out', () => {
     const root = mkdtempSync(join(tmpdir(), 'hds-ns-'));
     mkdirSync(join(root, 'content/docs'), { recursive: true });
     writeFileSync(

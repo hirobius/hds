@@ -29,7 +29,7 @@ import { writeManifest as writeComponentApiManifest } from './generate-component
 import { buildTokenQuickReference } from './build-token-quick-reference.mjs';
 import { buildWhichOneWhen } from './lib/which-one-when.mjs';
 import { coreByCategory, renderCoreSetLines } from './lib/core-set.mjs';
-import { readNorthStar, voiceMarkdown } from './lib/north-star.mjs';
+import { readVoice, voiceMarkdown } from './lib/voice.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -212,7 +212,7 @@ Primary sources: \`public/hds-manifest.json\`, \`src/app/data/component-api.json
 
 ## Voice
 
-${voiceMarkdown(readNorthStar(ROOT))}
+${voiceMarkdown(readVoice(ROOT))}
 
 ## Pick By Need
 

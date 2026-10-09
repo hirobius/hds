@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-09T04:50:35.553Z
+Generated: 2026-10-09T05:14:26.522Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## Agents Using The Package: Start Here
@@ -11,7 +11,7 @@ Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, 
 
 ## Voice
 
-Who these docs are for and how they speak. Every page, and every agent writing for HDS, follows it. Source: `content/docs/north-star.mdx` (published at `/docs/north-star`).
+How these docs speak. Every page, and every agent writing for HDS, follows it. Source: `content/docs/voice.mdx` (published at `/docs/voice`).
 
 - Use plain words a reader already knows. Name a thing by what it does, not by how it is built.
 - Keep sentences short, one idea each.
