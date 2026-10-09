@@ -83,7 +83,7 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Code font: the HDS mono token is IBM Plex Mono; layout.tsx self-hosts it via @fontsource. */
+/* Code font: the HDS mono token is IBM Plex Mono, loaded from the package's fonts.css. */
 :root,
 .dark {
   --font-mono: var(--primitive-typography-family-mono);
