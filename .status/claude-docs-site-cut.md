@@ -1,2 +1,3 @@
 Docs site cut + fixes (hds#506): one Utilities page for Box/Container/VisuallyHidden (check-docs accepts it via docs-rules utilityComponents); Tokens Used only when the manifest maps tokens; deprecated props, all-empty Default/Dark/Description columns, deprecated typography tokens, maintainer jargon and repeated Use-when lines removed; home page is intro + install + foundations; no TOC under 5 headings, no prev/next, no heading copy buttons; props tables scroll on phones, token names don't wrap, PageHeader demo is h2, favicon.
 Round 2: Geist page order (example first, Show code fold), one Best practices list, API/Accessibility/Design tokens folded, foundation token groups folded.
+Round 3: foundation intro paragraphs cut (repeated the subtitle).
