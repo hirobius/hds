@@ -7,7 +7,8 @@
  * disobeyed; this checker cannot. It enforces, mechanically:
  *
  *   1. Component membership — every page under components/ names a member
- *      of CORE_COMPONENTS (scripts/lib/core-components.mjs). Removed and
+ *      of CORE_COMPONENTS (scripts/lib/core-components.mjs), and every page
+ *      under patterns/ a module src/patterns.ts re-exports. Removed and
  *      deprecated names (StatusDot, AppShell, …) are not in that list, so
  *      they can never become live pages; they belong only in
  *      guides/deprecation.mdx. (content-model Rule 4)
@@ -50,6 +51,15 @@ const { CORE_COMPONENTS } = await import(
   pathToFileURL(join(scriptDir, 'lib', 'core-components.mjs')).href
 );
 const core = new Set(CORE_COMPONENTS);
+// Pattern pages (content/docs/patterns/) document the modules the /patterns
+// entry re-exports, read from the repo's own src/patterns.ts.
+const { patternComponents } = await import(
+  pathToFileURL(join(scriptDir, 'lib', 'docs-component-pages.mjs')).href
+);
+const patterns = new Set(
+  patternComponents(readFileSync(join(scriptDir, '..', 'src', 'patterns.ts'), 'utf8')),
+);
+const documented = new Set([...core, ...patterns]);
 const providers = new Set(rules.providerComponents);
 
 const errors = [];
@@ -187,12 +197,12 @@ function checkFrontmatter(file, fm) {
   if (data.since !== undefined && !/^\d+\.\d+\.\d+$/.test(String(data.since))) {
     err(file, 1, 'frontmatter', `since "${data.since}" is not a semver (x.y.z)`);
   }
-  if (data.component !== undefined && !core.has(String(data.component))) {
+  if (data.component !== undefined && !documented.has(String(data.component))) {
     err(
       file,
       1,
       'membership',
-      `frontmatter component "${data.component}" is not in CORE_COMPONENTS — removed/deprecated names live only in ${rules.deprecationGuide}`,
+      `frontmatter component "${data.component}" is not in CORE_COMPONENTS or the /patterns entry — removed/deprecated names live only in ${rules.deprecationGuide}`,
     );
   }
   if (Array.isArray(data.related)) {
@@ -202,12 +212,12 @@ function checkFrontmatter(file, fm) {
         if (!routes.has(name.replace(/\/$/, ''))) {
           err(file, 1, 'links', `related route "${name}" does not resolve to a docs page`);
         }
-      } else if (!core.has(name)) {
+      } else if (!documented.has(name)) {
         err(
           file,
           1,
           'membership',
-          `related "${name}" is not a core component name or a /docs route (stale name?)`,
+          `related "${name}" is not a core component, a pattern or a /docs route (stale name?)`,
         );
       }
     }
@@ -284,6 +294,24 @@ for (const file of files) {
   checkLinks(r, proseSource);
 
   const inDir = (d) => r.startsWith(`${rules.contentRoot}/${d}/`);
+  if (inDir('patterns')) {
+    const name = slugToName(
+      r
+        .split('/')
+        .pop()
+        .replace(/\.mdx?$/, ''),
+    );
+    if (!patterns.has(name)) {
+      err(
+        r,
+        1,
+        'membership',
+        `pattern page maps to "${name}", which src/patterns.ts does not export`,
+      );
+    } else if (!source.includes(`{/* preview: ${name} */}`)) {
+      err(r, null, 'markers', `missing live preview marker {/* preview: ${name} */}`);
+    }
+  }
   if (inDir('components')) {
     const slug = r
       .split('/')

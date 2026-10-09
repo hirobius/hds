@@ -13,7 +13,11 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CORE_COMPONENTS } from './lib/core-components.mjs';
-import { buildComponentPages, buildProvidersGuide } from './lib/docs-component-pages.mjs';
+import {
+  buildComponentPages,
+  buildProvidersGuide,
+  patternComponents,
+} from './lib/docs-component-pages.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const rules = JSON.parse(readFileSync(path.join(ROOT, 'scripts/docs-rules.json'), 'utf8'));
@@ -32,8 +36,23 @@ mkdirSync(outDir, { recursive: true });
 const pages = buildComponentPages({ manifest, api, core: CORE_COMPONENTS, providers });
 for (const [slug, mdx] of pages) writeFileSync(path.join(outDir, `${slug}.mdx`), mdx);
 
+const patternsDir = path.join(ROOT, rules.contentRoot, 'patterns');
+rmSync(patternsDir, { recursive: true, force: true });
+mkdirSync(patternsDir, { recursive: true });
+const patternNames = patternComponents(readFileSync(path.join(ROOT, 'src/patterns.ts'), 'utf8'));
+const patternPages = buildComponentPages({
+  manifest,
+  api,
+  core: patternNames,
+  section: 'patterns',
+  entry: '@hirobius/design-system/patterns',
+});
+for (const [slug, mdx] of patternPages) writeFileSync(path.join(patternsDir, `${slug}.mdx`), mdx);
+
 const guideFile = path.join(ROOT, rules.contentRoot, rules.providerGuide);
 mkdirSync(path.dirname(guideFile), { recursive: true });
 writeFileSync(guideFile, buildProvidersGuide({ manifest, providers }));
 
-console.log(`generate-docs-components: ${pages.size} component pages + providers guide`);
+console.log(
+  `generate-docs-components: ${pages.size} component pages, ${patternPages.size} pattern pages + providers guide`,
+);
