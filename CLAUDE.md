@@ -180,6 +180,7 @@ may skip:
 - **Design-touching / new module → `/codebase-design`**; periodic design-debt
   sweep → `/improve-codebase-architecture`.
 - **Board / issue-lifecycle work → `/triage`.**
+- **A perf-budget failure (`pnpm size-limit` / `check:size`, Button probe) → `performance-optimization`** (Osmani; Pocock still owns build/test/review). The failure output now names it. Never raise a budget to get green.
 - **Charting a multi-decision lane → `/wayfinder`.**
 - **Design-touching UI → `/design-review`.**
 
