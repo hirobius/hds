@@ -48,7 +48,8 @@ Use this file to track:
 - Type: Vendored agent skills (`.claude/skills/`, pinned in `skills-lock.json`)
 - Usage: 25 engineering skills plus shared checklists, committed unmodified
 - License: MIT
-- Source: [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) at `1401c8b8030e023baeebb31781a6653fe8e93026`
+- Source: [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)
+- Pinned commit: `1401c8b8030e023baeebb31781a6653fe8e93026`
 - License link: [MIT license](https://github.com/addyosmani/agent-skills/blob/main/LICENSE)
 
 ## Design-System And Documentation References
