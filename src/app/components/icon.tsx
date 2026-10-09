@@ -3,7 +3,7 @@
  * @category Display
  * @tier primitive
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2
- * @usage Draw a Lucide glyph at a size and colour from the design tokens.
+ * @usage Show a Lucide icon at a set size and color.
  * @whenNot A control someone can activate, or a picture that carries content.
  * @useInstead Button a clickable control, with iconOnly for an icon-only one
  * @useInstead Avatar a picture of a person or entity

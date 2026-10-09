@@ -43,6 +43,7 @@ export type FormProps = React.FormHTMLAttributes<HTMLFormElement>;
 
 /**
  * Styled `<form>` with consistent vertical field rhythm.
+ * @usage Wrap form fields so they stack with even spacing.
  *
  * Tagged per-export: FormField and FormFieldShell share this module and have no
  * Figma node, so a file-level @figma would claim this one for all three.

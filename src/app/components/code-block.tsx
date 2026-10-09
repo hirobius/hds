@@ -1,6 +1,7 @@
 /**
  * CodeBlock - code display with copy button and optional collapsible toggle.
  * @category Display
+ * @usage Show a code sample with a copy button, optionally collapsed.
  * @tier primitive
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154
  */

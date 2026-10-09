@@ -2,7 +2,7 @@
  * Grid — responsive grid composition primitive.
  * @category Layout
  * @tier primitive
- * @usage Lay out content in responsive columns with token-governed gaps, or align nested content with subgrid.
+ * @usage Lay out content in columns that adapt to the screen width, or line up nested content with subgrid.
  * @whenNot A single row or column, or styling a surface.
  * @useInstead Stack a single row or column
  * @useInstead Box one-off layout that no named primitive covers

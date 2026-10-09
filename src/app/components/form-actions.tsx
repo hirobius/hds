@@ -1,6 +1,7 @@
 /**
  * FormActions - the footer row of a form: primary right-most, secondary to its left.
  * @category Actions
+ * @usage Lay out a form's buttons in a fixed order: danger on the left, then secondary, then primary on the right.
  * @tier pattern
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-87
  */

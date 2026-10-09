@@ -1,26 +1,24 @@
 ---
 title: 'Spacing'
-description: 'Systematic 4px base-unit scale governing layout rhythm, padding, and component gaps.'
+description: 'One spacing scale on a 4px grid, for padding, gaps and page layout.'
 status: 'stable'
 since: '0.1.0'
 ---
 
 ## Principle
 
-The spacing architecture operates as a structural material across all layouts:
-
-- **4px Base Unit**: Every spacing step snaps to the primitive scale based on a 4px grid; half-steps and arbitrary pixel values are avoided.
-- **Whitespace as Structure**: Generous, intentional spacing separates content sections without relying on heavy borders or decorative lines.
-- **Density Adaptation**: Spacing tokens respond systematically to density modes (such as compact mode) to maintain proportional visual rhythm.
+- **4px grid.** Every step on the scale is a multiple of 4px. Skip half steps and one-off values.
+- **Space, not lines.** Separate sections with whitespace before reaching for borders.
+- **Density.** Compact mode tightens the whole scale at once, so layouts keep their proportions.
 
 ## Best practices
 
-- Use spacing tokens alongside layout components such as `Stack`, `Grid`, and `Box` to structure pages.
-- Maintain consistent internal padding across containers and card surfaces.
-- Choose spacing tokens based on structural hierarchy and content relationship.
-- Don't hardcode arbitrary pixel values or half-step increments in margins or padding.
-- Don't compress layout whitespace to fit excess content onto a single screen.
-- Don't mix inconsistent gap values within a single stack or grid section.
+- Lay out pages with `Stack`, `Grid` and `Box` and the spacing tokens.
+- Give containers and cards the same inner padding.
+- Pick a larger step for a bigger break between groups, a smaller one inside a group.
+- Don't write pixel values or half steps in margins or padding.
+- Don't squeeze whitespace to fit more on one screen.
+- Don't mix gap sizes inside one stack or grid.
 
 ## Tokens
 

@@ -1,6 +1,7 @@
 /**
  * Reveal — reveal-on-scroll primitive via CSS scroll-driven animation.
  * @category Motion
+ * @usage Fade content in as it scrolls into view.
  * @tier primitive
  * @ai-intent Fades/slides/scales content in as it enters the viewport, driven
  * purely by scroll position (`animation-timeline: view()`) — no JS, no deps, no

@@ -1,6 +1,7 @@
 /**
  * ErrorPattern - governed recovery surface for routed application errors.
  * @category Feedback
+ * @usage Show an error with a short message and a Back button, in place or as a full page.
  * @tier template
  */
 import { motion } from 'motion/react';

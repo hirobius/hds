@@ -1,6 +1,7 @@
 /**
  * Page — standard page shell.
  * @category Layout
+ * @usage Wrap a screen in the standard width and padding.
  * @tier primitive
  *
  * Wraps page content in Container (width constraint) and applies the

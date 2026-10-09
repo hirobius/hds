@@ -1,6 +1,7 @@
 /**
  * PageHeader - the one header every screen opens with.
  * @category Layout
+ * @usage Open a screen with its title, plus optional breadcrumb, status and actions.
  * @tier pattern
  */
 

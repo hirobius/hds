@@ -3,6 +3,7 @@
  * AssetImg - responsive asset frame with fallback placeholder handling.
  * Contexts: default, lightbox, and detail.
  * @category Display
+ * @usage Show an image that scales to its frame, with a placeholder if it fails to load.
  * @tier primitive
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67
  */

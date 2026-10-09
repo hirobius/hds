@@ -1,6 +1,7 @@
 /**
  * DestructiveSection - the one place a screen puts an irreversible action.
  * @category Actions
+ * @usage Put a dangerous action, such as delete, in its own section with a warning and a confirm step.
  * @tier pattern
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3
  */

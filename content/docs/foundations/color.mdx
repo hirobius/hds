@@ -1,26 +1,24 @@
 ---
 title: 'Color'
-description: 'System colors including tenant accent, monochromatic neutrals, and functional feedback tokens.'
+description: 'Color tokens for surfaces, text, borders, the brand accent and status messages, in light and dark.'
 status: 'stable'
 since: '0.1.0'
 ---
 
 ## Principle
 
-The color architecture relies on a strict separation between semantic roles and primitive values:
-
-- **One Accent System**: A single brand accent drives primary calls to action, active states, and selected focus indicators across all tenant configurations.
-- **Monochromatic Neutrals**: True monochromatic greys provide structural clarity across backgrounds, surfaces, borders, and text without warm or cool tinting.
-- **Functional Feedback**: Feedback colors (error, success, warning, info) communicate status and system events exclusively, and are never used as decorative accents.
+- **One accent.** A single brand color marks the main action, the active item and focus.
+- **Plain grays.** Backgrounds, surfaces, borders and text use neutral grays with no warm or cool tint.
+- **Status colors mean status.** Error, success, warning and info show what happened. They are not decoration.
 
 ## Best practices
 
-- Use semantic color tokens for surfaces, content, and borders to ensure dark mode and tenant compatibility.
-- Rely on the single accent token for primary interactive actions and selected focus states.
-- Restrict feedback colors to functional status indicators and alert banners.
-- Don't hardcode hex, RGB, or HSL values in component styles or prose.
-- Don't use feedback colors as decorative accents or background fills.
-- Don't tint neutral greys with custom hues or warm/cool overlays.
+- Use the semantic tokens for surfaces, text and borders, so dark mode and brand themes work for free.
+- Use the accent for the main action and for selected or focused states.
+- Use status colors only for status: alerts, validation, badges.
+- Don't write hex, RGB or HSL values in component styles.
+- Don't use status colors as decoration or background fills.
+- Don't tint the grays.
 
 ## Tokens
 

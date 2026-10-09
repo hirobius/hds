@@ -1,26 +1,24 @@
 ---
 title: 'Motion'
-description: 'Purposeful animation duration tiers and easing tokens for micro-interactions and spatial transitions.'
+description: 'Three durations and their easing curves, for small feedback, entrances and longer moves.'
 status: 'stable'
 since: '0.1.0'
 ---
 
 ## Principle
 
-Animation serves functional and interaction affordances across UI states:
-
-- **Productive Motion**: Fast, direct transitions (150ms) designed for micro-interactions, hover states, and focus changes.
-- **Expressive Motion**: Physics-aware movement (250ms) reserved for significant UI entrances and teaching moments.
-- **Spatial Motion**: Controlled movement (400ms) for elements traveling larger distances across the viewport.
+- **Fast (150ms)** for hover, focus and press.
+- **Medium (250ms)** for things that appear: dialogs, menus, toasts.
+- **Slow (400ms)** for things that move across the screen.
 
 ## Best practices
 
-- Use productive motion tokens for interactive feedback on hover, focus, and press states.
-- Respect reduced-motion user preferences and accessibility settings.
-- Keep transition durations short to keep application flows feeling responsive.
-- Don't apply playful or bouncy springs to routine interactive controls.
-- Don't use expressive or spatial motion for simple state toggles or micro-interactions.
-- Don't hardcode CSS transition durations or cubic-bezier curves outside system tokens.
+- Use the fast tokens for hover, focus and press feedback.
+- Turn motion off when the user asks for reduced motion.
+- Keep transitions short so the app feels quick.
+- Don't add bouncy springs to everyday controls.
+- Don't use medium or slow motion for simple toggles.
+- Don't write durations or easing curves by hand. Use the tokens.
 
 ## Tokens
 

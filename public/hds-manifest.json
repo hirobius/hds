@@ -622,7 +622,10 @@
         "primitives-code-block--default",
         "primitives-code-block--inline",
         "primitives-code-block--json-highlighting"
-      ]
+      ],
+      "usage": {
+        "when": "Show a code sample with a copy button, optionally collapsed."
+      }
     },
     "Container": {
       "category": "Layout",
@@ -951,7 +954,7 @@
         "primitives-divider--with-spacing"
       ],
       "usage": {
-        "when": "Separate two regions of content with a thin semantic rule.",
+        "when": "Separate two blocks of content with a thin line.",
         "whenNot": "Spacing alone would do, or the separation needs a container.",
         "useInstead": [
           {
@@ -1059,7 +1062,10 @@
         "feedback-error-pattern--not-found",
         "feedback-error-pattern--server-error",
         "feedback-error-pattern--unauthorized"
-      ]
+      ],
+      "usage": {
+        "when": "Show an error with a short message and a Back button, in place or as a full page."
+      }
     },
     "Grid": {
       "category": "Layout",
@@ -1234,7 +1240,7 @@
         "primitives-grid--two-column"
       ],
       "usage": {
-        "when": "Lay out content in responsive columns with token-governed gaps, or align nested content with subgrid.",
+        "when": "Lay out content in columns that adapt to the screen width, or line up nested content with subgrid.",
         "whenNot": "A single row or column, or styling a surface.",
         "useInstead": [
           {
@@ -1406,7 +1412,7 @@
         "primitives-icon--size-gallery"
       ],
       "usage": {
-        "when": "Draw a Lucide glyph at a size and colour from the design tokens.",
+        "when": "Show a Lucide icon at a set size and color.",
         "whenNot": "A control someone can activate, or a picture that carries content.",
         "useInstead": [
           {
@@ -1513,6 +1519,7 @@
       },
       "consumers": [
         "src/app/components/button.tsx",
+        "src/app/components/inline-link.test.tsx",
         "src/app/components/text.tsx",
         "src/stories/inline-link.stories.tsx",
         "src/stories/lib/usage-description.test.ts"
@@ -2208,7 +2215,7 @@
         "primitives-stack--tight-gap"
       ],
       "usage": {
-        "when": "Space a row or column of content with token gaps and simple flex alignment.",
+        "when": "Space items in a row or column with even gaps.",
         "whenNot": "Multi-column layout, or giving content a background or padding.",
         "useInstead": [
           {
@@ -2621,7 +2628,7 @@
         "primitives-surface--with-shadow"
       ],
       "usage": {
-        "when": "Wrap content in a padded, background-bearing inset surface with no header or footer anatomy.",
+        "when": "Give a block of content a background and padding, with no header or footer.",
         "whenNot": "Page layout, section spacing, width constraints, or content that needs slots.",
         "useInstead": [
           {
@@ -2654,6 +2661,7 @@
         "src/app/components/destructive-section.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/field.tsx",
+        "src/app/components/focus-visible.test.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/components/metric-tiles.tsx",
@@ -3518,7 +3526,7 @@
         "primitives-button--tone-matrix"
       ],
       "usage": {
-        "when": "Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed.",
+        "when": "Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed.",
         "whenNot": "Navigating to another page, where a link is the correct element.",
         "useInstead": [
           {
@@ -3876,7 +3884,10 @@
         "patterns-layout--detail-page",
         "patterns-layout--empty-state-screen",
         "patterns-layout--form-screen"
-      ]
+      ],
+      "usage": {
+        "when": "Wrap a screen in the standard width and padding."
+      }
     },
     "Stat": {
       "category": "Display",
@@ -4472,7 +4483,10 @@
         "primitives-asset-img--lightbox-context",
         "primitives-asset-img--placeholder-fallback",
         "primitives-asset-img--with-title"
-      ]
+      ],
+      "usage": {
+        "when": "Show an image that scales to its frame, with a placeholder if it fails to load."
+      }
     },
     "Tabs": {
       "category": "Navigation",
@@ -4494,6 +4508,7 @@
         "src/app/components/breadcrumb.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/segmented-control.tsx",
+        "src/app/components/tabs.test.tsx",
         "src/stories/combobox.stories.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/tabs.stories.tsx"
@@ -4577,7 +4592,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -4587,6 +4602,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/tabs.test.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/tabs.stories.tsx"
       ],
@@ -4629,7 +4645,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -4639,6 +4655,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/tabs.test.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/tabs.stories.tsx"
       ],
@@ -4678,7 +4695,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -4688,6 +4705,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/tabs.test.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/tabs.stories.tsx"
       ],
@@ -4734,6 +4752,7 @@
       },
       "consumers": [
         "src/app/components/checkbox.tsx",
+        "src/app/components/focus-visible.test.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/toggle.tsx",
@@ -5037,6 +5056,7 @@
       },
       "consumers": [
         "src/app/components/checkbox.tsx",
+        "src/app/components/focus-visible.test.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/toggle.test.tsx",
         "src/app/hooks/useInteractionState.test.ts",
@@ -5780,7 +5800,7 @@
         },
         {
           "keys": "ArrowDown/ArrowUp",
-          "effect": "Moves the active option and wraps at the ends."
+          "effect": "Moves the active option, skipping disabled ones, and wraps at the ends."
         },
         {
           "keys": "Character",
@@ -5845,7 +5865,10 @@
         "patterns-form--default",
         "patterns-form--with-description",
         "patterns-form--with-error"
-      ]
+      ],
+      "usage": {
+        "when": "Wrap form fields so they stack with even spacing."
+      }
     },
     "FormField": {
       "category": "Inputs",
@@ -6877,6 +6900,9 @@
         "primitives-reveal--animations",
         "primitives-reveal--scale-reveal-scene"
       ],
+      "usage": {
+        "when": "Fade content in as it scrolls into view."
+      },
       "aiRules": "Content is fully visible by DEFAULT; the effect applies only where `animation-timeline` is supported AND the user has not requested reduced motion (both fall back to visible, never stuck hidden). Pick `animation` from the fixed set — do not hand-roll keyframes. For momentum/inertia scrolling wrap the app in `SmoothScroll`; for a scroll-progress value in JS use `useScrollProgress` — both from `@hirobius/design-system/scroll`. See ADR-021."
     },
     "Textarea": {
@@ -6899,6 +6925,7 @@
         "src/app/components/form-control.ts",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/textarea.test.tsx",
         "src/stories/patterns-client-detail.stories.tsx",
         "src/stories/textarea.stories.tsx"
       ],
@@ -8140,6 +8167,7 @@
       },
       "consumers": [
         "src/app/components/checkbox.test.tsx",
+        "src/app/components/focus-visible.test.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/toggle.tsx",
         "src/stories/checkbox.stories.tsx"
@@ -8250,7 +8278,10 @@
         "patterns-formactions--sticky",
         "patterns-formactions--with-destructive",
         "patterns-formactions--with-secondary"
-      ]
+      ],
+      "usage": {
+        "when": "Lay out a form's buttons in a fixed order: danger on the left, then secondary, then primary on the right."
+      }
     },
     "MetricTile": {
       "category": "Display",
@@ -8318,7 +8349,10 @@
         "patterns-metrictiles--sub-line-optional",
         "patterns-metrictiles--three-tiles",
         "patterns-metrictiles--tones"
-      ]
+      ],
+      "usage": {
+        "when": "Show one key number with its label, inside a MetricTiles row."
+      }
     },
     "MetricTiles": {
       "category": "Display",
@@ -8370,7 +8404,10 @@
         "patterns-metrictiles--sub-line-optional",
         "patterns-metrictiles--three-tiles",
         "patterns-metrictiles--tones"
-      ]
+      ],
+      "usage": {
+        "when": "Show a row of key numbers, one tile each."
+      }
     },
     "PageHeader": {
       "category": "Layout",
@@ -8437,7 +8474,10 @@
         "patterns-pageheader--nested-level",
         "patterns-pageheader--title-only",
         "patterns-pageheader--with-actions"
-      ]
+      ],
+      "usage": {
+        "when": "Open a screen with its title, plus optional breadcrumb, status and actions."
+      }
     },
     "DataTableSection": {
       "category": "Display",
@@ -8509,7 +8549,10 @@
         "patterns-datatablesection--empty",
         "patterns-datatablesection--phone-390",
         "patterns-datatablesection--without-row-actions"
-      ]
+      ],
+      "usage": {
+        "when": "Put a heading and toolbar above a Table."
+      }
     },
     "DestructiveSection": {
       "category": "Actions",
@@ -8578,7 +8621,10 @@
         "patterns-destructivesection--default",
         "patterns-destructivesection--phone",
         "patterns-destructivesection--separate-button-label"
-      ]
+      ],
+      "usage": {
+        "when": "Put a dangerous action, such as delete, in its own section with a warning and a confirm step."
+      }
     },
     "HdsRouterProvider": {
       "category": "Theming",
