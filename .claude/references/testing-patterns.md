@@ -46,9 +46,9 @@ describe('TaskService.createTask', () => {
 
 ```typescript
 // Equality
-expect(result).toBe(expected); // Strict equality (===)
-expect(result).toEqual(expected); // Deep equality (objects/arrays)
-expect(result).toStrictEqual(expected); // Deep equality + type matching
+expect(result).toBe(expected);           // Strict equality (===)
+expect(result).toEqual(expected);        // Deep equality (objects/arrays)
+expect(result).toStrictEqual(expected);  // Deep equality + type matching
 
 // Truthiness
 expect(result).toBeTruthy();
@@ -60,7 +60,7 @@ expect(result).toBeUndefined();
 // Numbers
 expect(result).toBeGreaterThan(5);
 expect(result).toBeLessThanOrEqual(10);
-expect(result).toBeCloseTo(0.3, 5); // Floating point
+expect(result).toBeCloseTo(0.3, 5);      // Floating point
 
 // Strings
 expect(result).toMatch(/pattern/);
@@ -186,7 +186,10 @@ describe('POST /api/tasks', () => {
   });
 
   it('returns 401 without authentication', async () => {
-    await request(app).post('/api/tasks').send({ title: 'Test' }).expect(401);
+    await request(app)
+      .post('/api/tasks')
+      .send({ title: 'Test' })
+      .expect(401);
   });
 });
 ```
@@ -220,13 +223,13 @@ test('user can create and complete a task', async ({ page }) => {
 
 ## Test Anti-Patterns
 
-| Anti-Pattern                   | Problem                        | Better Approach            |
-| ------------------------------ | ------------------------------ | -------------------------- |
-| Testing implementation details | Breaks on refactor             | Test inputs/outputs        |
-| Snapshot everything            | No one reviews snapshot diffs  | Assert specific values     |
-| Shared mutable state           | Tests pollute each other       | Setup/teardown per test    |
-| Testing third-party code       | Wastes time, not your bug      | Mock the boundary          |
-| Skipping tests to pass CI      | Hides real bugs                | Fix or delete the test     |
-| Using `test.skip` permanently  | Dead code                      | Remove or fix it           |
-| Overly broad assertions        | Doesn't catch regressions      | Be specific                |
-| No async error handling        | Swallowed errors, false passes | Always `await` async tests |
+| Anti-Pattern | Problem | Better Approach |
+|---|---|---|
+| Testing implementation details | Breaks on refactor | Test inputs/outputs |
+| Snapshot everything | No one reviews snapshot diffs | Assert specific values |
+| Shared mutable state | Tests pollute each other | Setup/teardown per test |
+| Testing third-party code | Wastes time, not your bug | Mock the boundary |
+| Skipping tests to pass CI | Hides real bugs | Fix or delete the test |
+| Using `test.skip` permanently | Dead code | Remove or fix it |
+| Overly broad assertions | Doesn't catch regressions | Be specific |
+| No async error handling | Swallowed errors, false passes | Always `await` async tests |

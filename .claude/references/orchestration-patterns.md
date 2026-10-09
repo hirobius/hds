@@ -19,7 +19,6 @@ user → code-reviewer → report → user
 **Use when:** the work is one perspective on one artifact and you can describe it in one sentence.
 
 **Examples:**
-
 - "Review this PR" → `code-reviewer`
 - "Find security issues in `auth.ts`" → `security-auditor`
 - "What tests are missing for the checkout flow?" → `test-engineer`
@@ -57,7 +56,6 @@ Multiple personas operate on the same input concurrently, each producing an inde
 ```
 
 **Use when:**
-
 - The sub-tasks are genuinely independent (no shared mutable state, no ordering dependency)
 - Each sub-agent benefits from its own context window
 - The merge step is small enough to stay in the main context
@@ -68,9 +66,8 @@ Multiple personas operate on the same input concurrently, each producing an inde
 **Cost:** N parallel sub-agent contexts + one merge turn. Higher than direct invocation, but faster wall-clock and produces better reports because each sub-agent stays focused on its single perspective.
 
 **Validation checklist before adopting this pattern:**
-
 - [ ] Can I run all sub-agents at the same time without ordering issues?
-- [ ] Does each persona produce a different _kind_ of finding, not just the same finding from a different angle?
+- [ ] Does each persona produce a different *kind* of finding, not just the same finding from a different angle?
 - [ ] Will the merge step fit in the main agent's remaining context?
 - [ ] Is the user's wait time long enough that parallelism is actually noticeable?
 
@@ -105,7 +102,6 @@ main agent → research sub-agent (reads 50 files) → digest → main agent con
 ```
 
 **Use when:**
-
 - The main session needs to stay focused on a downstream task
 - The investigation result is much smaller than the input it consumes
 - The decision quality benefits from the main agent having room to think after
@@ -130,13 +126,13 @@ Plugin subagents go in `agents/` at the plugin root. This repo is a plugin (`.cl
 
 Claude Code has two parallelism primitives. Pattern 3 (parallel fan-out with merge) maps to **subagents**. If you need teammates that talk to each other, use **Agent Teams** instead.
 
-|              | Subagents                                        | Agent Teams                                                      |
-| ------------ | ------------------------------------------------ | ---------------------------------------------------------------- |
-| Coordination | Main agent fans out, sub-agents only report back | Teammates message each other, share a task list                  |
-| Context      | Own context window per subagent                  | Own context window per teammate                                  |
-| When to use  | Independent tasks producing reports              | Collaborative work needing discussion                            |
-| Status       | Stable                                           | Experimental — requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
-| Cost         | Lower                                            | Higher — each teammate is a separate Claude instance             |
+| | Subagents | Agent Teams |
+|--|-----------|-------------|
+| Coordination | Main agent fans out, sub-agents only report back | Teammates message each other, share a task list |
+| Context | Own context window per subagent | Own context window per teammate |
+| When to use | Independent tasks producing reports | Collaborative work needing discussion |
+| Status | Stable | Experimental — requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
+| Cost | Lower | Higher — each teammate is a separate Claude instance |
 
 **The personas in this repo work in both modes.** When spawned as subagents (e.g. by `/ship`), they report findings to the main session. When spawned as teammates (`Spawn a teammate using the security-auditor agent type…`), they can challenge each other's findings directly. The persona definition is the same; only the spawning context changes.
 
@@ -155,11 +151,11 @@ This means you can adopt the patterns in this catalog without worrying about con
 
 Before defining a custom subagent, check whether one of these covers the role:
 
-| Built-in          | Purpose                                                                              |
-| ----------------- | ------------------------------------------------------------------------------------ |
-| `Explore`         | Read-only codebase search and analysis. Use this for Pattern 5 (research isolation). |
-| `Plan`            | Read-only research during plan mode.                                                 |
-| `general-purpose` | Multi-step tasks needing both exploration and modification.                          |
+| Built-in | Purpose |
+|----------|---------|
+| `Explore` | Read-only codebase search and analysis. Use this for Pattern 5 (research isolation). |
+| `Plan` | Read-only research during plan mode. |
+| `general-purpose` | Multi-step tasks needing both exploration and modification. |
 
 Don't redefine these. Layer your specialist personas (code-reviewer, security-auditor, test-engineer) on top of them.
 
@@ -181,7 +177,7 @@ This example shows when to reach for **Agent Teams** instead of `/ship`'s subage
 
 ### The scenario
 
-> _Checkout occasionally hangs for ~30 seconds before completing. It happens roughly once every 50 sessions. No errors in logs. Started after last week's release._
+> *Checkout occasionally hangs for ~30 seconds before completing. It happens roughly once every 50 sessions. No errors in logs. Started after last week's release.*
 
 Plausible root causes (mutually exclusive, all fit the symptoms):
 
@@ -192,15 +188,15 @@ Plausible root causes (mutually exclusive, all fit the symptoms):
 
 A single agent will pick the first plausible theory and stop investigating. A `/ship`-style subagent fan-out would have each persona report independently — but their reports never meet, so nothing rules out the wrong theories.
 
-This is exactly the case the Agent Teams docs describe: _"With multiple independent investigators actively trying to disprove each other, the theory that survives is much more likely to be the actual root cause."_
+This is exactly the case the Agent Teams docs describe: *"With multiple independent investigators actively trying to disprove each other, the theory that survives is much more likely to be the actual root cause."*
 
-### Why this is _not_ a `/ship` job
+### Why this is *not* a `/ship` job
 
-|                | `/ship` (subagents)                    | Agent Teams                                      |
-| -------------- | -------------------------------------- | ------------------------------------------------ |
-| Sub-agents see | The same diff, different lenses        | A shared task list, each other's messages        |
-| Output         | Three independent reports → one merge  | Adversarial debate → consensus root cause        |
-| Right when     | You want a verdict on a known artifact | You want to _find_ the artifact among hypotheses |
+| | `/ship` (subagents) | Agent Teams |
+|--|--------------------|-------------|
+| Sub-agents see | The same diff, different lenses | A shared task list, each other's messages |
+| Output | Three independent reports → one merge | Adversarial debate → consensus root cause |
+| Right when | You want a verdict on a known artifact | You want to *find* the artifact among hypotheses |
 
 `/ship` is a verdict; Agent Teams is an investigation.
 
@@ -266,13 +262,13 @@ Always cleanup through the lead, not a teammate (per the docs: teammates lack fu
 
 ### Cost expectation
 
-Three Sonnet teammates running for ~10–15 minutes of investigation costs noticeably more than the same three personas spawned as subagents by `/ship`. The justification is _quality of conclusion_ — for production debugging where the wrong fix is expensive, the extra tokens are a bargain. For a routine PR review, stick with `/ship`.
+Three Sonnet teammates running for ~10–15 minutes of investigation costs noticeably more than the same three personas spawned as subagents by `/ship`. The justification is *quality of conclusion* — for production debugging where the wrong fix is expensive, the extra tokens are a bargain. For a routine PR review, stick with `/ship`.
 
 ### Anti-pattern in this scenario
 
 Do **not** rebuild this as a `/debug` slash command that fans out subagents. Subagents can't message each other — you'd lose the adversarial debate that makes the pattern work. If a workflow keeps coming up, document the trigger prompt above as a snippet rather than wrapping it in a slash command that misuses subagents.
 
-### When _not_ to use Agent Teams
+### When *not* to use Agent Teams
 
 - Production-bound verdict on a known diff → use `/ship` (subagents).
 - One specialist perspective on one artifact → direct persona invocation.
@@ -294,7 +290,6 @@ A persona whose job is to decide which other persona to call.
 ```
 
 **Why it fails:**
-
 - Pure routing layer with no domain value
 - Adds two paraphrasing hops → information loss + roughly 2× token cost
 - The user already knew they wanted a review; they could have called `/review` directly
@@ -309,13 +304,12 @@ A persona whose job is to decide which other persona to call.
 A `code-reviewer` that internally invokes `security-auditor` when it sees auth code.
 
 **Why it fails:**
-
 - Personas were designed to produce a single perspective; chaining them defeats that
 - The summary the calling persona passes loses context the called persona needs
 - Failure modes multiply (which persona's output format wins? whose rules apply?)
 - Hides cost from the user
 
-**What to do instead:** have the calling persona _recommend_ a follow-up audit in its report. The user or a slash command runs the second pass.
+**What to do instead:** have the calling persona *recommend* a follow-up audit in its report. The user or a slash command runs the second pass.
 
 ---
 
@@ -324,7 +318,6 @@ A `code-reviewer` that internally invokes `security-auditor` when it sees auth c
 An agent that calls `/spec`, then `/plan`, then `/build`, etc. on the user's behalf.
 
 **Why it fails:**
-
 - Loses the human checkpoints that catch wrong-direction work
 - Each hand-off summarizes context — accumulated drift over a long pipeline
 - Doubles token cost: orchestrator turn + sub-agent turn for every step
@@ -339,7 +332,6 @@ An agent that calls `/spec`, then `/plan`, then `/build`, etc. on the user's beh
 `/ship` calls a `pre-ship-coordinator` that calls a `quality-coordinator` that calls `code-reviewer`.
 
 **Why it fails:**
-
 - Each layer adds latency and tokens with no decision value
 - Debugging becomes a multi-level investigation
 - The leaf personas lose context to multiple summarization steps
