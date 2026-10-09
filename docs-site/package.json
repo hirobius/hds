@@ -10,7 +10,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@fontsource/ibm-plex-mono": "^5.2.5",
     "@hirobius/design-system": "link:..",
     "fumadocs-core": "16.16.2",
     "fumadocs-mdx": "15.4.6",

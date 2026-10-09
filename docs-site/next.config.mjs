@@ -6,6 +6,9 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  // next dev otherwise writes AGENTS.md + CLAUDE.md into docs-site/ on every run;
+  // the repo's own agent docs live at the root.
+  agentRules: false,
   output: 'export',
   images: {
     unoptimized: true,
