@@ -2,10 +2,15 @@
   "allowedFrontmatterKeys": ["title", "description", "component", "status", "since", "related"],
   "contentRoot": "content/docs",
   "deprecationGuide": "guides/deprecation.mdx",
-  "markers": { "propsTodoPrefix": "{/* props: TODO", "tokens": "{/* generated: tokens */}" },
+  "markers": {
+    "propsTodoPrefix": "{/* props: TODO",
+    "tokens": "{/* generated: tokens */}"
+  },
   "providerComponents": ["HdsRouterProvider", "HdsThemeProvider", "ToastProvider"],
   "providerGuide": "guides/providers.mdx",
   "requiredFrontmatterKeys": ["title", "description", "status"],
   "slugExceptions": {},
-  "statusEnum": ["stable", "deprecated", "experimental"]
+  "statusEnum": ["stable", "deprecated", "experimental"],
+  "utilityPage": "utilities",
+  "utilityComponents": ["Box", "Container", "VisuallyHidden"]
 }
