@@ -164,7 +164,7 @@ let warnedIconOnlyWithoutName = false;
 
 /**
  * Triggers an action when activated.
- * @usage Trigger an action (submit, save, open a dialog) with a text label and optional icons; for an icon-only control pass iconOnly with iconLeft and label; for an on/off toggle pass pressed.
+ * @usage Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed.
  * @whenNot Navigating to another page, where a link is the correct element.
  * @useInstead InlineLink navigation to another page
  */
