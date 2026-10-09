@@ -49,11 +49,11 @@ import {
   hdsSummarize,
   hdsSummaryLine,
 } from './figma-runtime.mjs';
-import { parse } from 'acorn';
 import {
   agentRuntimeSource,
   buildPushPayload,
   deltaRuntimeSource,
+  emitVerifiedRuntime,
   reachableRuntime,
   runtimeSource,
   syncConfigFromLinks,
@@ -95,12 +95,6 @@ const refuse = (why) => {
   throw new Error(`delta.js refused: ${why}`);
 };
 
-/** A script's syntax tree without source positions: equal trees run the same code. */
-const syntaxOf = (code) =>
-  JSON.stringify(parse(code, { ecmaVersion: 2020, sourceType: 'script' }), (key, value) =>
-    key === 'start' || key === 'end' ? undefined : value,
-  );
-
 /** compactRuntime's result per entry function: the syntax-tree check is slow, and a split asks for it once per part. */
 const compacted = new Map();
 
@@ -120,24 +114,8 @@ function compactRuntime(entry = 'hdsAgentRun') {
     agentRuntimeSource(),
   ].join('\n\n');
   const functions = reachableRuntime([entry], source);
-  const texts = functions.map((fn) =>
-    fn.text
-      .replace(/\r/g, '')
-      .replace(/^[ \t]+/gm, '')
-      .replace(/\n{2,}/g, '\n')
-      .replace(/([([{,])\n/g, '$1')
-      .replace(/\n(?=[)\]}.?:])/g, ''),
-  );
-  if (syntaxOf(texts.join('\n')) !== syntaxOf(functions.map((fn) => fn.text).join('\n'))) {
-    throw new Error(
-      'delta.js: compacting the runtime changed its syntax tree, so a dropped space or line break meant something there (a template literal spanning lines). Keep that text on one line.',
-    );
-  }
-  const text = [
-    texts.join('\n'),
-    // delta.js never prunes, so a refusal names the Sync plugin.
-    `hdsVerifyRuntime([${functions.map((fn) => fn.name).join(', ')}], '${hdsChecksum(texts.join('\n'))}', false);`,
-  ].join('\n');
+  // delta.js never prunes, so a refusal names the Sync plugin.
+  const text = emitVerifiedRuntime(functions);
   compacted.set(entry, text);
   return text;
 }

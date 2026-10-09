@@ -1,0 +1,2 @@
+Fixed hds#565: snapshot.js and the 01-05 push chunks now emit their runtime through the shared emitVerifiedRuntime compact form delta.js uses, so hdsVerifyRuntime survives the use_figma runtime's whitespace normalization. delta.js bytes unchanged.
+Follow-up: the live runtime re-indents multi-line function source, so hdsVerifyRuntime now hashes each function with all whitespace removed (hdsRuntimeFingerprint, shared with the emitter). This changes delta.js, the Sync plugin and the promote plugin bytes; delta golden re-captured.
