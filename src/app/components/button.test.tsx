@@ -214,7 +214,7 @@ describe('Button pressed (hds#393)', () => {
 });
 
 describe('Button asChild disabled contract (hds#— bugfix)', () => {
-  it('disables a slotted link: aria-disabled, out of tab order, non-interactive + dimmed', async () => {
+  it('disables a slotted link: aria-disabled, out of tab order, non-interactive + disabled-token text', async () => {
     const { Button } = await load();
     const { container } = render(
       <Button asChild disabled>
@@ -227,7 +227,7 @@ describe('Button asChild disabled contract (hds#— bugfix)', () => {
     expect(a.getAttribute('aria-disabled')).toBe('true');
     expect(a.getAttribute('tabindex')).toBe('-1');
     expect(a.classList.contains('pointer-events-none')).toBe(true);
-    expect(a.classList.contains('opacity-50')).toBe(true);
+    expect(a.classList.contains('text-[var(--semantic-color-content-disabled)]')).toBe(true);
   });
 
   it('leaves an enabled slotted link fully interactive', async () => {

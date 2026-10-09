@@ -192,3 +192,6 @@ eval/consistency/runs/
 # rebuilt from component-api.json + the manifest on every `pnpm docs:prepare`.
 content/docs/components/
 content/docs/guides/providers.mdx
+
+# impeccable skill local critique snapshots (not part of the package)
+.impeccable/
