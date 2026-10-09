@@ -82,6 +82,49 @@ describe('use_figma scripts that verify their runtime', () => {
     });
   }
 
+  /** hds#565 live result: the runtime re-indents continuation lines, 2 spaces per brace depth. */
+  const reindent = (src) => {
+    let depth = 0;
+    return src
+      .split('\n')
+      .map((line) => {
+        const t = line.trim();
+        if (/^[})\]]/.test(t)) depth = Math.max(0, depth - 1);
+        const out = '  '.repeat(depth) + t;
+        const opens = (t.match(/[{([]/g) || []).length;
+        const closes = (t.match(/[})\]]/g) || []).length;
+        depth = Math.max(0, depth + opens - closes + (/^[})\]]/.test(t) ? 1 : 0));
+        return out;
+      })
+      .join('\n');
+  };
+  const padded = (src) =>
+    src
+      .split('\n')
+      .map((line, i) => ' '.repeat((i * 7) % 5) + '\t'.repeat(i % 2) + line)
+      .join('\n');
+
+  for (const [label, code] of Object.entries(generated)) {
+    for (const [how, change] of [
+      ['re-indented by brace depth', reindent],
+      ['with arbitrary leading spaces', padded],
+    ]) {
+      it(`${label} passes hdsVerifyRuntime ${how}`, () => {
+        const { sources, names, checksum } = carried(code);
+        const fns = names.map((n) => ({ toString: () => change(sources[n]) }));
+        expect(() => hdsVerifyRuntime(fns, checksum, false)).not.toThrow();
+      });
+    }
+
+    it(`${label} still fails when one identifier in the code changes`, () => {
+      const { sources, names, checksum } = carried(code);
+      const fns = names.map((n) => ({
+        toString: () => (n === 'hdsRound' ? sources[n].replace('rounded', 'roundee') : sources[n]),
+      }));
+      expect(() => hdsVerifyRuntime(fns, checksum, false)).toThrow(/does not match its checksum/);
+    });
+  }
+
   it('compacts the way delta.js always has (one statement per line, no indentation)', () => {
     expect(
       compactFunctionText('function hdsRound(n) {\n  const r = f(\n    n,\n  );\n\n  return r;\n}'),

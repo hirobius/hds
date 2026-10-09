@@ -31,7 +31,7 @@
 
 import { readFileSync } from 'fs';
 import { parse } from 'acorn';
-import { hdsChecksum } from './figma-runtime.mjs';
+import { hdsChecksum, hdsRuntimeFingerprint } from './figma-runtime.mjs';
 
 /**
  * Push order: a collection's aliases point at collections in its own chunk or
@@ -184,7 +184,7 @@ export function emitVerifiedRuntime(functions) {
   }
   return [
     texts.join('\n'),
-    `hdsVerifyRuntime([${functions.map((fn) => fn.name).join(', ')}], '${hdsChecksum(texts.join('\n'))}', false);`,
+    `hdsVerifyRuntime([${functions.map((fn) => fn.name).join(', ')}], '${hdsChecksum(texts.map(hdsRuntimeFingerprint).join('\n'))}', false);`,
   ].join('\n');
 }
 

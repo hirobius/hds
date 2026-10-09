@@ -514,7 +514,7 @@ describe('delta.js refuses, writing nothing', () => {
 
   it('a tampered runtime function', async () => {
     const s = await pending();
-    const tampered = s.built.text.replace("return 'hirobius';", "return 'hirobius' ;");
+    const tampered = s.built.text.replace("return 'hirobius';", "return 'hirobiuz';");
     expect(tampered).not.toBe(s.built.text);
     await refuses(s, /runtime code does not match its checksum/, tampered);
   });

@@ -26,6 +26,7 @@ describe('reachableRuntime', () => {
     expect(names(['hdsRunSnapshot'])).toEqual([
       'hdsNamespace',
       'hdsChecksum',
+      'hdsRuntimeFingerprint',
       'hdsVerifyRuntime',
       'hdsRound',
       'hdsByName',
@@ -77,6 +78,10 @@ describe('reachableRuntime', () => {
     // because hdsVerifyRuntime calls it to recompute the checksum. A carrier
     // that shipped the guard without it would throw ReferenceError before
     // reading anything.
-    expect(names(['noSuchFunction'])).toEqual(['hdsChecksum', 'hdsVerifyRuntime']);
+    expect(names(['noSuchFunction'])).toEqual([
+      'hdsChecksum',
+      'hdsRuntimeFingerprint',
+      'hdsVerifyRuntime',
+    ]);
   });
 });
