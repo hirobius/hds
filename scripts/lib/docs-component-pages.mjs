@@ -18,9 +18,22 @@
 /** `SegmentedControl` -> `segmented-control` (the inverse of check-docs' slugToName). */
 export const componentSlug = (name) => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 
+/**
+ * Maintainer references a reader can't follow: issue numbers, ADR numbers and
+ * script names, with the parentheses or "per …" clause that carries them.
+ */
+export function readerText(text) {
+  return String(text ?? '')
+    .replace(/\s*\((?:[^()]*?\b(?:hds|ops)#\d+|[^()]*?\bADR-\d+|[^()]*?\.mjs)[^()]*\)/g, '')
+    .replace(/\s*[,;]?\s*(?:per|see)\s+(?:ADR-\d+|(?:hds|ops)#\d+)[^.;]*/gi, '')
+    .replace(/\s*\b(?:hds|ops)#\d+\b/g, '')
+    .replace(/\s+([.,;])/g, '$1')
+    .trim();
+}
+
 /** One line, MDX-safe. Inline-code spans pass through; braces/angles outside them are escaped. */
 function prose(text) {
-  const oneLine = String(text ?? '')
+  const oneLine = readerText(text)
     .replace(/\s*\n\s*/g, ' ')
     .trim();
   return oneLine
@@ -43,25 +56,32 @@ function propsSection(name, api) {
   if (!Array.isArray(props) || props.length === 0) {
     return '{/* props: TODO — source missing */}';
   }
-  const rows = props.map((p) => {
+  // Deprecated props still work for old code but are documented in the
+  // upgrade guide, not offered to new code here.
+  const live = props.filter((p) => !/^@?deprecated\b/i.test(String(p.description ?? '').trim()));
+  const hasDefault = live.some((p) => p.default !== undefined && p.default !== null);
+  const rows = live.map((p) => {
     const label = p.required ? `${code(p.name)} (required)` : code(p.name);
     const def = p.default === undefined || p.default === null ? '—' : code(p.default);
     const desc = p.description ? cell(p.description) : '—';
-    return `| ${label} | ${code(p.type)} | ${def} | ${desc} |`;
+    return hasDefault
+      ? `| ${label} | ${code(p.type)} | ${def} | ${desc} |`
+      : `| ${label} | ${code(p.type)} | ${desc} |`;
   });
   return [
     `{/* props: ${name} */}`,
     '',
-    '| Prop | Type | Default | Description |',
-    '| --- | --- | --- | --- |',
+    hasDefault ? '| Prop | Type | Default | Description |' : '| Prop | Type | Description |',
+    hasDefault ? '| --- | --- | --- | --- |' : '| --- | --- | --- |',
     ...rows,
   ].join('\n');
 }
 
-function usageSection(name, spec, isLinkable, entry, section) {
+function usageSection(name, spec, isLinkable, entry, section, description) {
   const u = spec?.usage;
   const lines = [`\`\`\`tsx\nimport { ${name} } from '${entry}';\n\`\`\``];
-  if (u?.when) lines.push(`**Use when:** ${prose(u.when)}`);
+  // The page subtitle falls back to usage.when; don't print it twice.
+  if (u?.when && readerText(u.when) !== description) lines.push(`**Use when:** ${prose(u.when)}`);
   if (u?.whenNot) lines.push(`**Not when:** ${prose(u.whenNot)}`);
   if (Array.isArray(u?.useInstead) && u.useInstead.length) {
     const items = u.useInstead.map((i) => {
@@ -116,10 +136,10 @@ export function pageDescription(name, spec) {
       .replace(/`/g, '')
       .replace(/\s*\n\s*/g, ' ')
       .trim();
-  let text = clean(spec?.description).replace(
-    new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+[^\\w\\s]+\\s+`),
-    '',
-  );
+  let text = clean(readerText(spec?.description))
+    .replace(/<\/?[A-Za-z][^>]*>/g, '')
+    .replace(/\s*\([^()]*\b(?:Tailwind|Radix|cva|sr-only)\b[^()]*\)/g, '')
+    .replace(new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+[^\\w\\s]+\\s+`), '');
   if (!text || INTERNAL_NOTE.test(text)) text = clean(spec?.usage?.when);
   if (!text) return `${name} component.`;
   const [first] = text.split(
@@ -139,11 +159,14 @@ export function buildComponentPages({
   api,
   core,
   providers = [],
+  utilities = [],
+  utilityPage = 'utilities',
   section = 'components',
   entry = '@hirobius/design-system',
 }) {
   const specs = manifest?.componentSpecs ?? {};
-  const names = core.filter((n) => !providers.includes(n));
+  const shared = core.filter((n) => utilities.includes(n));
+  const names = core.filter((n) => !providers.includes(n) && !utilities.includes(n));
   const pageSet = new Set(names);
   const isLinkable = (n) => pageSet.has(n);
   const pages = new Map();
@@ -169,10 +192,12 @@ export function buildComponentPages({
     const sections = [
       fm,
       `## Live Preview\n\n{/* preview: ${name} */}`,
-      `## Usage\n\n${usageSection(name, spec, isLinkable, entry, section)}`,
+      `## Usage\n\n${usageSection(name, spec, isLinkable, entry, section, description)}`,
       `## Props & API\n\n${propsSection(name, api)}`,
       ...(a11y ? [`## Accessibility\n\n${a11y}`] : []),
-      '## Tokens Used\n\n{/* generated: tokens */}',
+      ...(spec.tokenMapping && Object.keys(spec.tokenMapping).length
+        ? ['## Tokens Used\n\n{/* generated: tokens */}']
+        : []),
       ...(related.length
         ? [
             `## Related Components\n\n${related
@@ -182,6 +207,27 @@ export function buildComponentPages({
         : []),
     ];
     pages.set(componentSlug(name), `${sections.join('\n\n')}\n`);
+  }
+  if (shared.length) {
+    const body = shared.map((name) => {
+      const spec = specs[name] ?? {};
+      const description = pageDescription(name, spec);
+      return [
+        `## ${name}`,
+        prose(description),
+        `{/* preview: ${name} */}`,
+        usageSection(name, spec, isLinkable, entry, section, description),
+        `### Props\n\n${propsSection(name, api)}`,
+      ].join('\n\n');
+    });
+    const fm = [
+      '---',
+      'title: "Utilities"',
+      `description: ${JSON.stringify(`Small helpers for layout and accessibility: ${shared.join(', ')}.`)}`,
+      'status: "stable"',
+      '---',
+    ].join('\n');
+    pages.set(utilityPage, `${[fm, ...body].join('\n\n')}\n`);
   }
   return pages;
 }

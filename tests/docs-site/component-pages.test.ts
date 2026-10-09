@@ -23,6 +23,7 @@ import {
   componentSlug,
   pageDescription,
   patternComponents,
+  readerText,
 } from '../../scripts/lib/docs-component-pages.mjs';
 // @ts-expect-error — plain .mjs module, no types
 import { CORE_COMPONENTS } from '../../scripts/lib/core-components.mjs';
@@ -30,6 +31,7 @@ import { PREVIEWED_COMPONENTS } from '../../docs-site/lib/previewed-components';
 
 const ROOT = join(__dirname, '..', '..');
 const PROVIDERS = ['HdsRouterProvider', 'HdsThemeProvider', 'ToastProvider'];
+const UTILITIES = ['Box', 'Container', 'VisuallyHidden'];
 
 const fixtureManifest = {
   componentSpecs: {
@@ -133,19 +135,27 @@ describe('drift: every core component has a generated page', () => {
     api = JSON.parse(readFileSync(join(ROOT, 'src/app/data/component-api.json'), 'utf8'));
   });
 
-  it('covers CORE_COMPONENTS minus the three providers', () => {
+  it('covers CORE_COMPONENTS: one page each, utilities on one shared page', () => {
     const pages = buildComponentPages({
       manifest,
       api,
       core: CORE_COMPONENTS,
       providers: PROVIDERS,
+      utilities: UTILITIES,
     });
-    const expected = (CORE_COMPONENTS as string[])
-      .filter((n) => !PROVIDERS.includes(n))
-      .map(componentSlug)
-      .sort();
+    const expected = [
+      ...(CORE_COMPONENTS as string[])
+        .filter((n) => !PROVIDERS.includes(n) && !UTILITIES.includes(n))
+        .map(componentSlug),
+      'utilities',
+    ].sort();
     expect([...pages.keys()].sort()).toEqual(expected);
-    expect(expected).toHaveLength(40);
+    expect(expected).toHaveLength(38);
+    const utilities = (pages as Map<string, string>).get('utilities')!;
+    for (const n of UTILITIES) {
+      expect(utilities).toContain(`## ${n}`);
+      expect(utilities).toContain(`{/* preview: ${n} */}`);
+    }
   });
 
   it('generated output passes scripts/check-docs.mjs (membership, markers, frontmatter)', () => {
@@ -154,6 +164,7 @@ describe('drift: every core component has a generated page', () => {
       api,
       core: CORE_COMPONENTS,
       providers: PROVIDERS,
+      utilities: UTILITIES,
     });
     const root = mkdtempSync(join(tmpdir(), 'hds-docs-'));
     mkdirSync(join(root, 'content/docs/components'), { recursive: true });
@@ -165,7 +176,7 @@ describe('drift: every core component has a generated page', () => {
     for (const [slug, mdx] of pages as Map<string, string>) {
       writeFileSync(join(root, 'content/docs/components', `${slug}.mdx`), mdx);
     }
-    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(40);
+    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(38);
     expect(() =>
       execFileSync('node', ['scripts/check-docs.mjs', '--root', root], {
         cwd: ROOT,
@@ -216,10 +227,18 @@ describe('pageDescription: a reader-facing summary, not a code note', () => {
     }
   });
 
-  it('does not split on e.g. before inline code', () => {
+  it('does not split on e.g., and drops JSX tags a subtitle would print raw', () => {
     expect(pageDescription('Kbd', { description: 'Renders a key, e.g. <Kbd>K</Kbd>.' })).toBe(
-      'Renders a key, e.g. <Kbd>K</Kbd>.',
+      'Renders a key, e.g. K.',
     );
+  });
+
+  it('drops implementation asides', () => {
+    expect(
+      pageDescription('VisuallyHidden', {
+        description: 'Renders its children off-screen (Tailwind sr-only) for screen readers.',
+      }),
+    ).toBe('Renders its children off-screen for screen readers.');
   });
 
   it('uses a default when there is nothing to say', () => {
@@ -261,5 +280,59 @@ describe('pattern pages: one per module the /patterns entry re-exports', () => {
     for (const n of (CORE_COMPONENTS as string[]).filter((c) => !PROVIDERS.includes(c))) {
       expect(PREVIEWED_COMPONENTS, n).toContain(n);
     }
+  });
+});
+
+describe('readerText: no maintainer references on public pages', () => {
+  it.each([
+    [
+      'Dropdown built on Radix Select (ADR-001 Radix convention).',
+      'Dropdown built on Radix Select.',
+    ],
+    ['Five roles plus mono (hds#483).', 'Five roles plus mono.'],
+    ['Keeps its own focus tracking, per ADR-015.', 'Keeps its own focus tracking.'],
+    ['Gate is check-type-ramp (scripts/check-type-ramp.mjs).', 'Gate is check-type-ramp.'],
+    ['Plain text stays.', 'Plain text stays.'],
+  ])('%s', (input, out) => {
+    expect(readerText(input)).toBe(out);
+  });
+});
+
+describe('page trimming', () => {
+  const spec = { description: 'A thing.', usage: { when: 'A thing.' } };
+  const page = (api: unknown, s: Record<string, unknown> = spec) =>
+    (
+      buildComponentPages({
+        manifest: { componentSpecs: { Thing: s } },
+        api,
+        core: ['Thing'],
+      }) as Map<string, string>
+    ).get('thing')!;
+
+  it('leaves out deprecated props and an all-empty Default column', () => {
+    const p = page({
+      components: {
+        Thing: {
+          props: [
+            { name: 'size', type: 'string', required: false, description: 'Size.' },
+            { name: 'old', type: 'boolean', required: false, description: '@deprecated Use size.' },
+          ],
+        },
+      },
+    });
+    expect(p).toContain('| Prop | Type | Description |');
+    expect(p).toContain('`size`');
+    expect(p).not.toContain('`old`');
+  });
+
+  it('has no Tokens Used section when the manifest maps no tokens', () => {
+    expect(page({})).not.toContain('## Tokens Used');
+    expect(page({}, { ...spec, tokenMapping: { Fill: 'semantic.color.surface.page' } })).toContain(
+      '## Tokens Used',
+    );
+  });
+
+  it('does not repeat the subtitle as "Use when"', () => {
+    expect(page({})).not.toContain('**Use when:**');
   });
 });

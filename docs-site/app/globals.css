@@ -118,8 +118,7 @@ pre {
 
 .hds-token-table th {
   font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: 500;
   color: var(--semantic-color-content-secondary);
 }
 
@@ -127,8 +126,9 @@ pre {
   font-size: 0.8em;
 }
 
+/* A token name is one unit: never break it mid-word; the table scrolls instead. */
 .hds-token-table td:first-child code {
-  overflow-wrap: anywhere;
+  white-space: nowrap;
 }
 
 /* Keep short values (hex, px) on one line; composites still wrap at spaces. */
@@ -155,4 +155,12 @@ pre {
   height: 1.25rem;
   border-radius: 0.25rem;
   border: 1px solid var(--semantic-color-border-default);
+}
+
+/* Generated props and keyboard tables scroll inside their own frame on a phone
+   instead of pushing the page sideways. */
+.prose table:not(.hds-token-table) {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
 }
