@@ -71,13 +71,17 @@ export function TokenRows({
  */
 export function TokenTable({ page }: { page: string }) {
   const sections = buildTokenSections(loadTokens(), page);
+  // Each group folds: the page reads as principle + best practices, with the
+  // full reference one click away (and still in the page for search).
   return (
     <div className="hds-token-tables">
       {sections.map((section) => (
-        <section key={section.title}>
-          <h3>{section.title}</h3>
+        <details key={section.title} className="hds-fold">
+          <summary>
+            {section.title} · {section.rows.length} {section.rows.length === 1 ? 'token' : 'tokens'}
+          </summary>
           <TokenRows rows={section.rows} />
-        </section>
+        </details>
       ))}
     </div>
   );

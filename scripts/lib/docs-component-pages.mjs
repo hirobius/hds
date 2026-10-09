@@ -51,14 +51,34 @@ const code = (text) =>
     .replace(/\s*\n\s*/g, ' ')
     .replace(/\|/g, '\\|')}\``;
 
+/**
+ * The props a page documents. Deprecated props still work for old code but are
+ * documented in the upgrade guide, not offered to new code here.
+ */
+function liveProps(name, api) {
+  const props = api?.components?.[name]?.props;
+  if (!Array.isArray(props)) return [];
+  return props.filter((p) => !/^@?deprecated\b/i.test(String(p.description ?? '').trim()));
+}
+
+/**
+ * A collapsed section (`<details>`): one click away, still in the page for
+ * search and for agents reading the Markdown. Markdown inside needs the blank
+ * lines around it.
+ */
+const fold = (summary, body, variant = '') =>
+  `<details className="hds-fold${variant ? ` hds-fold--${variant}` : ''}">\n<summary>${summary}</summary>\n\n${body}\n\n</details>`;
+
+/** The import a reader copies, folded under the example as "Show code". */
+const showCode = (name, entry) =>
+  fold('Show code', `\`\`\`tsx\nimport { ${name} } from '${entry}';\n\`\`\``, 'code');
+
 function propsSection(name, api) {
   const props = api?.components?.[name]?.props;
   if (!Array.isArray(props) || props.length === 0) {
     return '{/* props: TODO — source missing */}';
   }
-  // Deprecated props still work for old code but are documented in the
-  // upgrade guide, not offered to new code here.
-  const live = props.filter((p) => !/^@?deprecated\b/i.test(String(p.description ?? '').trim()));
+  const live = liveProps(name, api);
   const hasDefault = live.some((p) => p.default !== undefined && p.default !== null);
   const rows = live.map((p) => {
     const label = p.required ? `${code(p.name)} (required)` : code(p.name);
@@ -77,22 +97,27 @@ function propsSection(name, api) {
   ].join('\n');
 }
 
-function usageSection(name, spec, isLinkable, entry, section, description) {
+/**
+ * One short "Best practices" list from the usage contract: when to reach for
+ * it, when not, and what to use instead. A `when` that the subtitle already
+ * says is left out.
+ */
+function bestPractices(spec, isLinkable, section, description) {
   const u = spec?.usage;
-  const lines = [`\`\`\`tsx\nimport { ${name} } from '${entry}';\n\`\`\``];
-  // The page subtitle falls back to usage.when; don't print it twice.
-  if (u?.when && readerText(u.when) !== description) lines.push(`**Use when:** ${prose(u.when)}`);
-  if (u?.whenNot) lines.push(`**Not when:** ${prose(u.whenNot)}`);
-  if (Array.isArray(u?.useInstead) && u.useInstead.length) {
-    const items = u.useInstead.map((i) => {
-      const ref = isLinkable(i.component)
-        ? `[${i.component}](/docs/${section}/${componentSlug(i.component)})`
-        : `\`${i.component}\``;
-      return `- ${ref}: ${prose(i.reason)}`;
-    });
-    lines.push(`**Use instead:**\n\n${items.join('\n')}`);
+  const items = [];
+  if (u?.when && readerText(u.when) !== description) items.push(prose(u.when));
+  if (u?.whenNot) {
+    const not = prose(u.whenNot);
+    // "Not for navigating…", keeping a leading acronym or code span as written.
+    items.push(`Not for ${/^[A-Z][a-z]/.test(not) ? not[0].toLowerCase() + not.slice(1) : not}`);
   }
-  return lines.join('\n\n');
+  for (const i of Array.isArray(u?.useInstead) ? u.useInstead : []) {
+    const ref = isLinkable(i.component)
+      ? `[${i.component}](/docs/${section}/${componentSlug(i.component)})`
+      : `\`${i.component}\``;
+    items.push(`For ${prose(i.reason)}, use ${ref}.`);
+  }
+  return items.length ? items.map((t) => `- ${t}`).join('\n') : null;
 }
 
 function accessibilitySection(spec) {
@@ -100,7 +125,7 @@ function accessibilitySection(spec) {
   if (Array.isArray(spec?.keyboard) && spec.keyboard.length) {
     parts.push(
       [
-        '### Keyboard',
+        '**Keyboard**',
         '',
         '| Keys | Effect |',
         '| --- | --- |',
@@ -111,7 +136,7 @@ function accessibilitySection(spec) {
   if (Array.isArray(spec?.a11yRules) && spec.a11yRules.length) {
     parts.push(
       [
-        '### Requirements',
+        '**Requirements**',
         '',
         ...spec.a11yRules.map((r) => `- ${prose(r.rule)}${r.required ? '' : ' (recommended)'}`),
       ].join('\n'),
@@ -189,21 +214,21 @@ export function buildComponentPages({
     ].join('\n');
 
     const a11y = accessibilitySection(spec);
+    const practices = bestPractices(spec, isLinkable, section, description);
+    const propCount = liveProps(name, api).length;
     const sections = [
       fm,
-      `## Live Preview\n\n{/* preview: ${name} */}`,
-      `## Usage\n\n${usageSection(name, spec, isLinkable, entry, section, description)}`,
-      `## Props & API\n\n${propsSection(name, api)}`,
-      ...(a11y ? [`## Accessibility\n\n${a11y}`] : []),
+      // Geist order: the example sits right under the subtitle, its code one click away.
+      `{/* preview: ${name} */}`,
+      showCode(name, entry),
+      ...(practices ? [`## Best practices\n\n${practices}`] : []),
+      fold(
+        propCount ? `API · ${propCount} ${propCount === 1 ? 'prop' : 'props'}` : 'API',
+        propsSection(name, api),
+      ),
+      ...(a11y ? [fold('Accessibility', a11y)] : []),
       ...(spec.tokenMapping && Object.keys(spec.tokenMapping).length
-        ? ['## Tokens Used\n\n{/* generated: tokens */}']
-        : []),
-      ...(related.length
-        ? [
-            `## Related Components\n\n${related
-              .map((r) => `- [${r}](/docs/${section}/${componentSlug(r)})`)
-              .join('\n')}`,
-          ]
+        ? [fold('Design tokens', '{/* generated: tokens */}')]
         : []),
     ];
     pages.set(componentSlug(name), `${sections.join('\n\n')}\n`);
@@ -212,12 +237,15 @@ export function buildComponentPages({
     const body = shared.map((name) => {
       const spec = specs[name] ?? {};
       const description = pageDescription(name, spec);
+      const practices = bestPractices(spec, isLinkable, section, description);
+      const propCount = liveProps(name, api).length;
       return [
         `## ${name}`,
         prose(description),
         `{/* preview: ${name} */}`,
-        usageSection(name, spec, isLinkable, entry, section, description),
-        `### Props\n\n${propsSection(name, api)}`,
+        showCode(name, entry),
+        ...(practices ? [practices] : []),
+        fold(`API · ${propCount} ${propCount === 1 ? 'prop' : 'props'}`, propsSection(name, api)),
       ].join('\n\n');
     });
     const fm = [

@@ -100,16 +100,16 @@ describe('buildComponentPages (fixture)', () => {
   });
 
   it('renders the usage contract and keyboard table', () => {
-    expect(page).toContain('**Use when:** Show a \\{widget\\} for \\<b> | pipes.');
-    expect(page).toContain('**Not when:** Show a gadget.');
+    expect(page).toContain('- Show a \\{widget\\} for \\<b> | pipes.');
+    expect(page).toContain('- Not for show a gadget.');
     // Gadget is not a core component here, so there is no page to link to.
-    expect(page).toContain('- `Gadget`: gadgets');
+    expect(page).toContain('- For gadgets, use `Gadget`.');
     expect(page).toContain('| `Enter/Space` | Activates the widget. |');
     expect(page).toContain('Needs a name');
   });
 
   it('escapes MDX-significant characters in prose', () => {
-    expect(page).toContain('**Use when:** Show a \\{widget\\} for \\<b> | pipes.');
+    expect(page).toContain('- Show a \\{widget\\} for \\<b> | pipes.');
   });
 
   it('marks a missing props source instead of inventing props', () => {
@@ -325,14 +325,28 @@ describe('page trimming', () => {
     expect(p).not.toContain('`old`');
   });
 
-  it('has no Tokens Used section when the manifest maps no tokens', () => {
-    expect(page({})).not.toContain('## Tokens Used');
+  it('has no Design tokens section when the manifest maps no tokens', () => {
+    expect(page({})).not.toContain('<summary>Design tokens</summary>');
     expect(page({}, { ...spec, tokenMapping: { Fill: 'semantic.color.surface.page' } })).toContain(
-      '## Tokens Used',
+      '<summary>Design tokens</summary>',
     );
   });
 
-  it('does not repeat the subtitle as "Use when"', () => {
-    expect(page({})).not.toContain('**Use when:**');
+  it('does not repeat the subtitle in Best practices', () => {
+    expect(page({})).not.toContain('## Best practices');
+  });
+
+  it('puts the example first, code and reference folded (Geist order)', () => {
+    const p = page({
+      components: {
+        Thing: { props: [{ name: 'a', type: 'string', required: false, description: 'A.' }] },
+      },
+    });
+    const body = p.slice(p.indexOf('---', 3) + 3).trim();
+    expect(body.startsWith('{/* preview: Thing */}')).toBe(true);
+    expect(p).toContain('<summary>Show code</summary>');
+    expect(p).toContain('<summary>API · 1 prop</summary>');
+    expect(p).not.toContain('## Live Preview');
+    expect(p).not.toContain('## Related Components');
   });
 });

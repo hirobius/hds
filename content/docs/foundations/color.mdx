@@ -15,18 +15,15 @@ The color architecture relies on a strict separation between semantic roles and 
 - **Monochromatic Neutrals**: True monochromatic greys provide structural clarity across backgrounds, surfaces, borders, and text without warm or cool tinting.
 - **Functional Feedback**: Feedback colors (error, success, warning, info) communicate status and system events exclusively, and are never used as decorative accents.
 
-## Token Reference
+## Best practices
 
-{/* generated: tokens */}
-
-## Usage Guidance
-
-- Do use semantic color tokens for surfaces, content, and borders to ensure dark mode and tenant compatibility.
-- Do rely on the single accent token for primary interactive actions and selected focus states.
-- Do restrict feedback colors to functional status indicators and alert banners.
-
-## Don'ts
-
+- Use semantic color tokens for surfaces, content, and borders to ensure dark mode and tenant compatibility.
+- Rely on the single accent token for primary interactive actions and selected focus states.
+- Restrict feedback colors to functional status indicators and alert banners.
 - Don't hardcode hex, RGB, or HSL values in component styles or prose.
 - Don't use feedback colors as decorative accents or background fills.
 - Don't tint neutral greys with custom hues or warm/cool overlays.
+
+## Tokens
+
+{/* generated: tokens */}
