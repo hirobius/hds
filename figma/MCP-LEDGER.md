@@ -175,3 +175,18 @@ Writes only what the delta names; never deletes, never publishes.
 
 **Session total: 2 calls, 1 of them `use_figma` (write, failed partway).** No rate-limit errors.
 Nothing was deleted or published.
+
+## 2026-10-09 · session `claude/figma-plex-mono-finish` (finish the Plex Mono push)
+
+The 02:53 `delta.js` stopped partway (font bug, fixed in #560), so the library no
+longer matches `figma/snapshot.json` and a new `delta.js` would refuse. Re-base
+with a read-only `snapshot.js`, then push the rest with `delta.js` built on main.
+
+| #   | Time (UTC) | Tool        | Kind | Purpose                           | Result                                                                                     |
+| --- | ---------- | ----------- | ---- | --------------------------------- | ------------------------------------------------------------------------------------------ |
+| 1   | 04:05      | `use_figma` | read | Library: `snapshot.js` unmodified | Refused by its own guard: runtime checksum mismatch. Nothing read or written. Not retried. |
+
+**Session total: 1 call (read, refused).** Step 2 not run. `snapshot.js` is the only
+pretty-printed script; `delta.js` (one statement per line) passed the same guard at
+02:53, so the use_figma runtime likely reformats multi-line function source. Filed as
+hds#565. The library still needs Adrian's Sync to finish the Plex Mono push.
