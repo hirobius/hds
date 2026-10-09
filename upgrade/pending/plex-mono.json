@@ -9,7 +9,12 @@
       "plain": "Code text now draws in IBM Plex Mono instead of Geist Mono, so if you preload or self-host geist-mono-400.woff2, point it at ibm-plex-mono-400.woff2 from fonts.css instead.",
       "detect": {
         "regex": ["Geist Mono", "geist-mono"]
-      }
+      },
+      "facts": [
+        "css-var-changed:--hds-font-family-mono::root",
+        "css-var-changed:--primitive-typography-family-mono::root",
+        "font-face-removed:Geist Mono/400/normal"
+      ]
     }
   ]
 }
