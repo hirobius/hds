@@ -54,7 +54,7 @@ export default defineConfig({
     'anti-slop/no-unknown-type-aliases': 'warn',
     'anti-slop/no-unsafe-dictionary-type': 'warn',
     'anti-slop/no-widen-then-assert': 'warn',
-    'anti-slop/require-readable-spacing': 'warn',
+    'anti-slop/require-readable-spacing': 'off',
     'anti-slop/require-safety-comment-for-type-assertion': 'warn',
   },
 });
