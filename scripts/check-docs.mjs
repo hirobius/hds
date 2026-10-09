@@ -30,6 +30,8 @@
  *      and component pages the manifest maps tokens to, carry the
  *      generated-tokens marker. The shared utilities page carries a preview
  *      and props marker for each utility component. (Rules 1–3)
+ *   7. Voice — no page uses a phrase the North Star
+ *      (content/docs/north-star.mdx) lists under "Words we don't use".
  *
  * Generation still beats validation where the build generates for real
  * (token tables, llms.txt); this checker guards the seams.
@@ -68,6 +70,13 @@ const utilities = new Set(rules.utilityComponents ?? []);
 const specs =
   JSON.parse(readFileSync(join(scriptDir, '..', 'public', 'hds-manifest.json'), 'utf8'))
     .componentSpecs ?? {};
+// The North Star's "Words we don't use" list (content/docs/north-star.mdx).
+const { readNorthStar, avoidedPhrases, NORTH_STAR_FILE } = await import(
+  pathToFileURL(join(scriptDir, 'lib', 'north-star.mjs')).href
+);
+const avoid = existsSync(join(scriptDir, '..', NORTH_STAR_FILE))
+  ? readNorthStar(join(scriptDir, '..')).avoid
+  : [];
 const mapsTokens = (name) => Object.keys(specs[name]?.tokenMapping ?? {}).length > 0;
 const providers = new Set(rules.providerComponents);
 
@@ -292,6 +301,16 @@ const seenComponentPages = new Set();
 for (const file of files) {
   const r = rel(file);
   const source = readFileSync(file, 'utf8');
+  if (!r.endsWith(NORTH_STAR_FILE)) {
+    for (const w of avoidedPhrases(source, avoid)) {
+      err(
+        r,
+        null,
+        'voice',
+        `uses "${w}", which the North Star (${NORTH_STAR_FILE}) lists under Words we don't use`,
+      );
+    }
+  }
   const fm = parseFrontmatter(source, r);
   if (fm) checkFrontmatter(r, fm);
 

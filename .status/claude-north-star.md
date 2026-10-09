@@ -1,0 +1,1 @@
+North Star brief (hds#506 docs voice): content/docs/north-star.mdx is the one source; AGENTS.md and llms.txt print its Voice section (generated, drift-checked), check-docs fails any page using a word from its avoid list. Waiting on the North Star thread's draft to replace the seed text.
