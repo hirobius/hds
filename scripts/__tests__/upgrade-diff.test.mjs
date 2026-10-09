@@ -154,6 +154,145 @@ describe('diffSnapshots', () => {
   });
 });
 
+/** A css section (scripts/build-css-contract.mjs) with the given bundles. */
+const bundle = (overrides = {}) => ({
+  classes: [],
+  fontFaces: [],
+  layers: [],
+  variables: {},
+  ...overrides,
+});
+const css = (bundles, publicClasses = []) => ({ format: 1, bundles, publicClasses });
+
+describe('diffSnapshots: CSS facts (hds#449)', () => {
+  const satoshi = { family: 'Satoshi', weight: '400', style: 'normal', src: ['satoshi-400.woff2'] };
+  const prev = snapshot({
+    css: css(
+      {
+        './tokens.css': bundle({
+          classes: ['dark', 'flex', 'hds-focus', 'hds-gone', 'legacy-card', 'max-w-2xl'],
+          fontFaces: [satoshi],
+          variables: {
+            '--gone': { ':root': '1px' },
+            '--size-xs': { ':root': '13px', '[data-density=compact]': '12px' },
+            '--same': { ':root': 'red' },
+            '--tw-ring-shadow': { ':root': '0 0 #0000' },
+          },
+        }),
+        './variables.css': bundle({ variables: { '--gone': { ':root': '1px' } } }),
+      },
+      ['legacy-card'],
+    ),
+  });
+  const next = snapshot({
+    css: css({
+      './tokens.css': bundle({
+        classes: ['dark', 'hds-focus'],
+        variables: {
+          '--size-xs': { ':root': '12px', '[data-theme=dark]': '11px' },
+          '--same': { ':root': 'red' },
+          '--fresh': { ':root': '0' },
+        },
+      }),
+      './variables.css': bundle(),
+    }),
+  });
+
+  it('lists removed variables, changed values per context, removed public classes, removed utilities and removed font faces', () => {
+    expect(diffSnapshots(prev, next)).toEqual([
+      {
+        id: 'css-var-removed:--gone',
+        kind: 'css-var-removed',
+        name: '--gone',
+        bundles: ['./tokens.css', './variables.css'],
+      },
+      {
+        id: 'css-var-changed:--size-xs::root',
+        kind: 'css-var-changed',
+        name: '--size-xs',
+        context: ':root',
+        from: '13px',
+        to: '12px',
+        bundles: ['./tokens.css'],
+      },
+      {
+        id: 'css-var-changed:--size-xs:[data-density=compact]',
+        kind: 'css-var-changed',
+        name: '--size-xs',
+        context: '[data-density=compact]',
+        from: '12px',
+        to: null,
+        bundles: ['./tokens.css'],
+      },
+      {
+        id: 'css-var-changed:--size-xs:[data-theme=dark]',
+        kind: 'css-var-changed',
+        name: '--size-xs',
+        context: '[data-theme=dark]',
+        from: null,
+        to: '11px',
+        bundles: ['./tokens.css'],
+      },
+      // hds-* by prefix, legacy-card because the older manifest called it public.
+      {
+        id: 'class-removed:hds-gone',
+        kind: 'class-removed',
+        name: 'hds-gone',
+        bundles: ['./tokens.css'],
+      },
+      {
+        id: 'class-removed:legacy-card',
+        kind: 'class-removed',
+        name: 'legacy-card',
+        bundles: ['./tokens.css'],
+      },
+      {
+        id: 'utility-removed:flex',
+        kind: 'utility-removed',
+        name: 'flex',
+        bundles: ['./tokens.css'],
+      },
+      {
+        id: 'utility-removed:max-w-2xl',
+        kind: 'utility-removed',
+        name: 'max-w-2xl',
+        bundles: ['./tokens.css'],
+      },
+      {
+        id: 'font-face-removed:Satoshi/400/normal',
+        kind: 'font-face-removed',
+        family: 'Satoshi',
+        weight: '400',
+        style: 'normal',
+        bundles: ['./tokens.css'],
+      },
+    ]);
+  });
+
+  it('ignores Tailwind --tw-* plumbing, additions, and a stylesheet whose exports key left', () => {
+    const ids = diffSnapshots(prev, next).map((f) => f.id);
+    expect(ids.filter((id) => id.includes('--tw-') || id.includes('--fresh'))).toEqual([]);
+    const gone = snapshot({ css: css({ './tokens.css': prev.css.bundles['./tokens.css'] }) });
+    expect(diffSnapshots(gone, snapshot({ css: css({}) }))).toEqual([]);
+  });
+
+  it('has no CSS facts unless both snapshots carry a css section', () => {
+    expect(diffSnapshots(prev, snapshot())).toEqual([]);
+    expect(diffSnapshots(snapshot(), next)).toEqual([]);
+  });
+
+  it('gives CSS facts stable ids', () => {
+    expect(factId({ kind: 'css-var-removed', name: '--x' })).toBe('css-var-removed:--x');
+    expect(factId({ kind: 'css-var-changed', name: '--x', context: ':root' })).toBe(
+      'css-var-changed:--x::root',
+    );
+    expect(factId({ kind: 'class-removed', name: 'hds-focus' })).toBe('class-removed:hds-focus');
+    expect(
+      factId({ kind: 'font-face-removed', family: 'Mono', weight: '400', style: 'italic' }),
+    ).toBe('font-face-removed:Mono/400/italic');
+  });
+});
+
 describe('diff.mjs CLI', () => {
   let dir;
   afterEach(() => rmSync(dir, { recursive: true, force: true }));

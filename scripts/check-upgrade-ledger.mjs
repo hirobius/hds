@@ -58,6 +58,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { emitResult, hasJsonFlag } from './lib/gate-output.mjs';
+import { isCssFactId } from './upgrade/diff.mjs';
 import {
   BUMP_RANK,
   breakingBump,
@@ -135,12 +136,15 @@ function factViolations(state) {
   );
   // A step listing a fact the diff lacks stops the release compiler
   // (build-ledger.mjs ledgerFromSources), so the gate refuses it first.
+  // A CSS fact (hds#449) exists only in a built tree: the source snapshot has
+  // no css section, so scripts/check-upgrade-css.mjs (smoke:consumer, after
+  // build:lib) checks those ids against dist/ instead.
   const known = new Set(facts.map((fact) => fact.id));
   const unknown = [];
   for (const note of state.notes) {
     for (const step of noteSteps(note)) {
       const ids = (Array.isArray(step.facts) ? step.facts : []).filter(
-        (id) => typeof id === 'string' && !known.has(id),
+        (id) => typeof id === 'string' && !known.has(id) && !isCssFactId(id),
       );
       if (ids.length === 0) continue;
       unknown.push(

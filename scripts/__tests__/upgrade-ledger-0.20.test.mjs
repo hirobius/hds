@@ -18,7 +18,7 @@ import { RENAMES as LIVE_RENAMES } from '../../codemods/hds-prefix.mjs';
 import { buildLedger } from '../upgrade/build-ledger.mjs';
 import { diffSnapshots } from '../upgrade/diff.mjs';
 import { formatJson } from '../upgrade/format.mjs';
-import { FACTS_NEEDING_A_STEP } from '../upgrade/ledger.mjs';
+import { FACTS_NEEDING_A_STEP, needsStep } from '../upgrade/ledger.mjs';
 import { checkReleaseDir } from '../upgrade/schema.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
@@ -112,7 +112,9 @@ describe('0.20.0 ledger coverage (hds#447 set equality)', () => {
 
   it('lists every snapshot-diff fact that needs a step in some step, and no fact the diff lacks', () => {
     const listed = LEDGER.steps.flatMap((step) => step.facts ?? []);
-    const needed = FACTS.filter((f) => FACTS_NEEDING_A_STEP.includes(f.kind)).map((f) => f.id);
+    const needed = FACTS.filter(
+      (f) => FACTS_NEEDING_A_STEP.includes(f.kind) && needsStep(f, '0.20.0'),
+    ).map((f) => f.id);
     expect(needed.filter((id) => !listed.includes(id))).toEqual([]);
     const known = new Set(FACTS.map((f) => f.id));
     expect(listed.filter((id) => !known.has(id))).toEqual([]);

@@ -12269,5 +12269,39 @@
         "resolvedValue": "8px"
       }
     ]
-  }
+  },
+  "publicClasses": [
+    "hds-alert",
+    "hds-alert--danger",
+    "hds-alert--info",
+    "hds-alert--success",
+    "hds-alert--warning",
+    "hds-alert--with-title",
+    "hds-alert__body",
+    "hds-alert__icon",
+    "hds-alert__title",
+    "hds-badge",
+    "hds-badge--danger",
+    "hds-badge--in-progress",
+    "hds-badge--info",
+    "hds-badge--neutral",
+    "hds-badge--success",
+    "hds-badge--warning",
+    "hds-card",
+    "hds-card--accent",
+    "hds-card--bordered",
+    "hds-card--danger",
+    "hds-card--info",
+    "hds-card--no-padding",
+    "hds-card--success",
+    "hds-card--warning",
+    "hds-divider",
+    "hds-divider--horizontal",
+    "hds-divider--strong",
+    "hds-divider--vertical",
+    "hds-focus",
+    "hds-tag",
+    "hds-tag--active",
+    "hds-tag__pill"
+  ]
 }

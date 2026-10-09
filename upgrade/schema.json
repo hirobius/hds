@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "@hirobius/design-system upgrade ledger",
-  "description": "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json), $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json) and $defs.upgradeReport what the upgrade command prints with --json.",
+  "description": "Generated from scripts/upgrade/schema.mjs; do not edit. The root validates a release ledger (upgrade/releases/<version>.json); $defs.index validates upgrade/index.json, $defs.snapshot a release snapshot (docs/api/releases/<version>.json), $defs.cssContract dist/css-contract.json, $defs.pendingNote a changeset's upgrade note (upgrade/pending/<changeset>.json) and $defs.upgradeReport what the upgrade command prints with --json.",
   "$ref": "#/$defs/release",
   "$defs": {
     "auto": {
@@ -26,6 +26,115 @@
       ],
       "additionalProperties": false,
       "description": "The codemod that applies this step for the consumer."
+    },
+    "cssContract": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "number",
+          "const": 1
+        },
+        "bundles": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "\\.css$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "classes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "Every class name a selector names, unescaped as written in className, sorted."
+              },
+              "fontFaces": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "family": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "type": "string"
+                    },
+                    "style": {
+                      "type": "string"
+                    },
+                    "src": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Each url() basename, data:<type> for an inlined face, or local(<name>)."
+                    }
+                  },
+                  "required": [
+                    "family",
+                    "weight",
+                    "style",
+                    "src"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Each @font-face, sorted."
+              },
+              "layers": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "The @layer names, in declaration order."
+              },
+              "variables": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "pattern": "^--"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "description": "Each custom property declared in a context rule: context (the selector, after its enclosing at-rules, as minified) -> the value that wins there."
+              }
+            },
+            "required": [
+              "classes",
+              "fontFaces",
+              "layers",
+              "variables"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Each stylesheet package.json#exports names, by its exports key."
+        },
+        "publicClasses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Classes the manifest declares public beyond the hds-* prefix (public/hds-manifest.json publicClasses)."
+        }
+      },
+      "required": [
+        "format",
+        "bundles",
+        "publicClasses"
+      ],
+      "additionalProperties": false,
+      "description": "dist/css-contract.json (scripts/build-css-contract.mjs, hds#449): the CSS surface of the stylesheets a release ships."
     },
     "detect": {
       "type": "object",
@@ -500,6 +609,10 @@
             "type": "string"
           },
           "description": "package.json#files."
+        },
+        "css": {
+          "description": "The CSS contract of its stylesheets; absent for a snapshot read from source, which has no built CSS.",
+          "$ref": "#/$defs/cssContract"
         }
       },
       "required": [

@@ -8,13 +8,17 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkUpgradeCss } from '../check-upgrade-css.mjs';
 import { checkUpgradeLedger } from '../check-upgrade-ledger.mjs';
 import { writeNote } from '../upgrade/note.mjs';
 import { TODO_PLAIN } from '../upgrade/schema.mjs';
 import {
   PACKAGE,
+  RELEASED_CSS,
+  buildCss,
   changeset,
   cleanUpRepos,
+  cssRepo,
   editPkg,
   note,
   readNote,
@@ -83,6 +87,56 @@ describe('writeNote', () => {
     expect(rules(root)).toEqual(['note-invalid']);
 
     fillIn(root, 'drop');
+    expect(rules(root)).toEqual([]);
+  });
+
+  // hds#449: with a build, the CSS facts too, each detected by name in consumer code.
+  it('pre-fills a removed step per CSS removal and a value-changed step per changed variable, from the build', () => {
+    const root = cssRepo();
+    buildCss(
+      root,
+      RELEASED_CSS.replace('size-xs:13px', 'size-xs:12px')
+        .replace(/--hds-space:\dpx;?/g, '')
+        .replace('.hds-focus:focus-visible{outline:2px solid}', '')
+        .replace('.flex{display:flex}', ''),
+    );
+    changeset(root, 'css', 'minor');
+    writeNote(root, { name: 'css' });
+    expect(readNote(root, 'css')).toEqual({
+      impact: 'breaking',
+      plain: TODO_PLAIN,
+      steps: [
+        {
+          id: 'removed/--hds-space',
+          kind: 'removed',
+          impact: 'breaking',
+          plain: TODO_PLAIN,
+          detect: { cssVars: ['--hds-space'], cssVarWrites: ['--hds-space'] },
+          facts: ['css-var-removed:--hds-space'],
+        },
+        {
+          id: 'value-changed/--primitive-typography-size-xs',
+          kind: 'value-changed',
+          impact: 'look',
+          plain: TODO_PLAIN,
+          detect: {
+            cssVars: ['--primitive-typography-size-xs'],
+            cssVarWrites: ['--primitive-typography-size-xs'],
+          },
+          facts: ['css-var-changed:--primitive-typography-size-xs::root'],
+        },
+        {
+          id: 'removed/hds-focus',
+          kind: 'removed',
+          impact: 'breaking',
+          plain: TODO_PLAIN,
+          detect: { classes: ['hds-focus'] },
+          facts: ['class-removed:hds-focus'],
+        },
+      ],
+    });
+    fillIn(root, 'css');
+    expect(checkUpgradeCss(root).violations).toEqual([]);
     expect(rules(root)).toEqual([]);
   });
 
