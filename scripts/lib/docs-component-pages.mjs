@@ -105,7 +105,7 @@ function propsSection(name, api) {
 function bestPractices(spec, isLinkable, section, description) {
   const u = spec?.usage;
   const items = [];
-  if (u?.when && readerText(u.when) !== description) items.push(prose(u.when));
+  if (u?.when && !readerText(u.when).startsWith(description)) items.push(prose(u.when));
   if (u?.whenNot) {
     const not = prose(u.whenNot);
     // "Not for navigating…", keeping a leading acronym or code span as written.
@@ -161,11 +161,15 @@ export function pageDescription(name, spec) {
       .replace(/`/g, '')
       .replace(/\s*\n\s*/g, ' ')
       .trim();
-  let text = clean(readerText(spec?.description))
-    .replace(/<\/?[A-Za-z][^>]*>/g, '')
-    .replace(/\s*\([^()]*\b(?:Tailwind|Radix|cva|sr-only)\b[^()]*\)/g, '')
-    .replace(new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+[^\\w\\s]+\\s+`), '');
-  if (!text || INTERNAL_NOTE.test(text)) text = clean(spec?.usage?.when);
+  // usage.when is written for readers; the JSDoc description is a code note.
+  let text = clean(spec?.usage?.when);
+  if (!text) {
+    text = clean(readerText(spec?.description))
+      .replace(/<\/?[A-Za-z][^>]*>/g, '')
+      .replace(/\s*\([^()]*\b(?:Tailwind|Radix|cva|sr-only)\b[^()]*\)/g, '')
+      .replace(new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+[^\\w\\s]+\\s+`), '');
+    if (INTERNAL_NOTE.test(text)) text = '';
+  }
   if (!text) return `${name} component.`;
   const [first] = text.split(
     /(?<!\b[eE]\.g\.|\b[iI]\.e\.|\betc\.|\bvs\.)(?<=[.!?])\s+(?=[A-Za-z])/,
@@ -277,7 +281,7 @@ export function patternComponents(patternsSource) {
 export function buildProvidersGuide({ manifest, providers }) {
   const specs = manifest?.componentSpecs ?? {};
   const items = providers.map((n) => {
-    const d = String(specs[n]?.description ?? '')
+    const d = String(specs[n]?.usage?.when ?? specs[n]?.description ?? '')
       .replace(new RegExp(`^${n}\\s+[-—–]\\s+`), '')
       .replace(/\s*\n\s*/g, ' ');
     return `### ${n}\n\n${prose(d || 'Provider.')}\n`;
@@ -285,7 +289,7 @@ export function buildProvidersGuide({ manifest, providers }) {
   return [
     '---',
     'title: "Providers"',
-    'description: "Context providers an app mounts once: theme, router and toasts."',
+    'description: "Wrappers an app adds once, near the root: theme, router and toasts."',
     'status: "stable"',
     '---',
     '',

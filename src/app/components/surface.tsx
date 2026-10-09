@@ -17,7 +17,7 @@
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27
  * @doc-exempt: foundational inset primitive documented by usage throughout the system rather than a dedicated component doc page
  * @ai-intent Creates the only approved padded background-bearing wrapper in HDS so agents can express card, panel, and inset content without inventing ad hoc container chrome.
- * @usage Wrap content in a padded, background-bearing inset surface with no header or footer anatomy.
+ * @usage Give a block of content a background and padding, with no header or footer.
  * @whenNot Page layout, section spacing, width constraints, or content that needs slots.
  * @useInstead Card content that needs header, body or footer slots
  * @useInstead Stack spacing between siblings
