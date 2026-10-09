@@ -57,7 +57,22 @@ import {
   VisuallyHidden,
 } from '@hirobius/design-system';
 import { Copy, Search, Star } from '@hirobius/design-system/icons';
-import { MetricTile, MetricTiles } from '@hirobius/design-system/patterns';
+import {
+  AssetImg,
+  CodeBlock,
+  DataTableSection,
+  DestructiveSection,
+  ErrorPattern,
+  Form,
+  FormActions,
+  FormField,
+  MetricTile,
+  MetricTiles,
+  Page,
+  PageHeader,
+  Reveal,
+  StatusTile,
+} from '@hirobius/design-system/patterns';
 import type { PreviewedComponent } from '../lib/previewed-components';
 
 // Demo layout uses the HDS space scale, never raw px.
@@ -590,6 +605,173 @@ function VisuallyHiddenDemo() {
   );
 }
 
+function PageDemo() {
+  return (
+    <Page maxWidth="content" paddingY="compact">
+      <div style={demoTile}>
+        Page content sits in the reading width with the standard vertical rhythm.
+      </div>
+    </Page>
+  );
+}
+
+function PageHeaderDemo() {
+  return (
+    <PageHeader
+      breadcrumb={<Breadcrumb items={[{ label: 'Clients', href: '#' }, { label: 'Acme Co' }]} />}
+      title="Acme Co"
+      status={<Badge tone="success">Active</Badge>}
+      actions={
+        <>
+          <Button variant="secondary">Edit</Button>
+          <Button variant="primary">New project</Button>
+        </>
+      }
+    />
+  );
+}
+
+function StatusTileDemo() {
+  return (
+    <Grid columns={2} gap="normal">
+      <StatusTile
+        title="Figma sync"
+        notes={['Last run 2 hours ago']}
+        trailing={<Badge tone="success">Synced</Badge>}
+      />
+      <StatusTile
+        title="Bundle size"
+        notes={['34 kB of 40 kB budget']}
+        trailing={<Badge tone="warning">Near limit</Badge>}
+      />
+    </Grid>
+  );
+}
+
+function FormDemo() {
+  return (
+    <Form onSubmit={(e) => e.preventDefault()} style={{ width: 'min(100%, 360px)' }}>
+      <FormField label="Full name" required>
+        <Input placeholder="Ada Lovelace" />
+      </FormField>
+      <FormField label="Email" description="We only use it for release notes.">
+        <Input type="email" placeholder="ada@example.com" />
+      </FormField>
+      <Button type="submit" variant="primary">
+        Save
+      </Button>
+    </Form>
+  );
+}
+
+function FormActionsDemo() {
+  return (
+    <FormActions
+      destructive={
+        <Button variant="secondary" tone="danger">
+          Delete
+        </Button>
+      }
+      secondary={<Button variant="secondary">Cancel</Button>}
+      primary={<Button variant="primary">Save changes</Button>}
+    />
+  );
+}
+
+function DataTableSectionDemo() {
+  return (
+    <DataTableSection
+      title="Projects"
+      toolbar={<Button variant="primary">New project</Button>}
+      columns={[
+        { key: 'name', label: 'Project' },
+        { key: 'status', label: 'Status' },
+      ]}
+      rows={[
+        {
+          key: 'portfolio',
+          cells: [
+            'Portfolio redesign',
+            <Badge key="s" tone="success">
+              Active
+            </Badge>,
+          ],
+          actions: (
+            <Button variant="secondary" size="sm">
+              Open
+            </Button>
+          ),
+        },
+        {
+          key: 'tokens',
+          cells: [
+            'Token audit',
+            <Badge key="s" tone="warning">
+              Review
+            </Badge>,
+          ],
+          actions: (
+            <Button variant="secondary" size="sm">
+              Open
+            </Button>
+          ),
+        },
+      ]}
+    />
+  );
+}
+
+function DestructiveSectionDemo() {
+  return (
+    <DestructiveSection
+      title="Delete project"
+      description="Removes the project and its history for everyone on the team."
+      actionLabel="Delete project"
+      confirmLabel="Delete"
+      confirmBody="This cannot be undone."
+      onConfirm={() => {}}
+    />
+  );
+}
+
+function ErrorPatternDemo() {
+  return <ErrorPattern displayText="404" message="That page moved or never existed." />;
+}
+
+function CodeBlockDemo() {
+  return (
+    <CodeBlock
+      filename="app.tsx"
+      language="tsx"
+      code={
+        'import { Button } from \'@hirobius/design-system\';\n\nexport const Save = () => <Button variant="primary">Save</Button>;'
+      }
+    />
+  );
+}
+
+const SAMPLE_IMAGE =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#e5e5e5"/><circle cx="320" cy="180" r="72" fill="#111"/></svg>',
+  );
+
+function AssetImgDemo() {
+  return (
+    <div style={{ width: 'min(100%, 360px)' }}>
+      <AssetImg src={SAMPLE_IMAGE} alt="Sample artwork" naturalWidth={640} naturalHeight={360} />
+    </div>
+  );
+}
+
+function RevealDemo() {
+  return (
+    <Reveal animation="fade-up">
+      <div style={demoTile}>Fades up as it scrolls into view.</div>
+    </Reveal>
+  );
+}
+
 export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Button: ButtonDemo,
   Input: InputDemo,
@@ -632,6 +814,17 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Toggle: ToggleDemo,
   Tooltip: TooltipDemo,
   VisuallyHidden: VisuallyHiddenDemo,
+  Page: PageDemo,
+  PageHeader: PageHeaderDemo,
+  StatusTile: StatusTileDemo,
+  Form: FormDemo,
+  FormActions: FormActionsDemo,
+  DataTableSection: DataTableSectionDemo,
+  DestructiveSection: DestructiveSectionDemo,
+  ErrorPattern: ErrorPatternDemo,
+  CodeBlock: CodeBlockDemo,
+  AssetImg: AssetImgDemo,
+  Reveal: RevealDemo,
 };
 
 export function DemoFrame({ children }: { children: ReactNode }) {
