@@ -1,11 +1,11 @@
 # Hirobius Design System
 
-[![CI](https://github.com/hirobius/hds/actions/workflows/ci.yml/badge.svg)](https://github.com/hirobius/hds/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/@hirobius/design-system)](https://www.npmjs.com/package/@hirobius/design-system) [![Storybook](https://img.shields.io/badge/Storybook-live-ff4785)](https://hirobius-design-system.vercel.app)
+[![CI](https://github.com/hirobius/hds/actions/workflows/ci.yml/badge.svg)](https://github.com/hirobius/hds/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/@hirobius/design-system)](https://www.npmjs.com/package/@hirobius/design-system) [![Docs](https://img.shields.io/badge/Docs-live-000000)](https://hirobius-hds-components.vercel.app)
 
 **A governed, token-first React design system.** Components plus the system
 around them: a DTCG token pipeline (CSS variables + TypeScript constants),
 quality gates in git hooks and CI, one-way Figma sync, and WCAG-checked contrast
-and focus. Live Storybook: **<https://hirobius-design-system.vercel.app>**
+and focus. Live docs: **<https://hirobius-hds-components.vercel.app>**
 
 ```bash
 pnpm add @hirobius/design-system
@@ -13,7 +13,7 @@ pnpm add @hirobius/design-system
 
 Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. From 0.22.0, `npx @hirobius/design-system@latest upgrade` does it for you.
 
-[![Buttons under the Brand and Theme dials: base and accent-lilac, light and dark](docs/images/storybook-brand-theme-dials.png)](https://hirobius-design-system.vercel.app)
+[![Buttons under the Brand and Theme dials: base and accent-lilac, light and dark](docs/images/storybook-brand-theme-dials.png)](https://hirobius-hds-components.vercel.app)
 
 <!-- auto:start:front-door-counts -->
 

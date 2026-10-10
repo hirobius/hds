@@ -270,6 +270,7 @@
     "docs:api": "node scripts/generate-component-api.mjs",
     "docs:changelogs": "node scripts/generate-component-changelogs.mjs",
     "docs:build": "pnpm docs:prepare && pnpm --dir docs-site build",
+    "docs:publish": "pnpm docs:build && node scripts/copy-agent-context.mjs --out docs-site/out --with-public && node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json",
     "docs:components": "node scripts/generate-docs-components.mjs",
     "docs:component": "node scripts/generate-component-page.mjs",
     "docs:dev": "pnpm docs:prepare && pnpm --dir docs-site dev",
