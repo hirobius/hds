@@ -573,7 +573,7 @@ export function buildPromotePlugin(model, options = {}) {
 }
 
 // ── Sync plugin (hds#411, ADR-032) ───────────────────────────────────────────
-/** Where the Storybook deploy serves the sync bundle, under its storybookUrl. */
+/** Where the public site serves the sync bundle, under docsUrl (else storybookUrl). */
 export const SYNC_BUNDLE_PATH = 'figma/sync-bundle.json';
 export const SYNC_BUNDLE_SCHEMA_VERSION = 1;
 const SYNC_FETCH_TIMEOUT_MS = 45000;
@@ -653,7 +653,7 @@ export function stagingFrom(links = {}, fix = '') {
  * give the plugin no safe target: a missing library key or name, a missing
  * retiredFiles list, a retired file that has the library's key or name, a
  * staging workbench that is the library or a retired file (stagingFrom), or a
- * Storybook URL that is not https.
+ * bundle host (docsUrl, else storybookUrl) that is not https.
  */
 export function syncConfigFromLinks(links = {}) {
   const fix = ' Set it in figma/links.json (ADR-026, ADR-032), then run pnpm figma:push again.';
@@ -689,21 +689,25 @@ export function syncConfigFromLinks(links = {}) {
     }
   });
   stagingFrom(links, ` Nothing was built.${fix}`);
+  // The public docs site hosts the bundle; storybookUrl is the fallback while
+  // links.json names no docsUrl.
+  const hostField = links.docsUrl ? 'docsUrl' : 'storybookUrl';
+  const host = links[hostField];
   let origin = null;
   try {
-    origin = new URL(links.storybookUrl).origin;
+    origin = new URL(host).origin;
   } catch {
     origin = null;
   }
   if (!origin || !origin.startsWith('https://')) {
     throw new Error(
-      `figma/links.json has no https storybookUrl, so the Sync plugin has no host to fetch its bundle from. Nothing was built.${fix}`,
+      `figma/links.json has no https ${hostField}, so the Sync plugin has no host to fetch its bundle from. Nothing was built.${fix}`,
     );
   }
   return {
     schemaVersion: SYNC_BUNDLE_SCHEMA_VERSION,
     origin,
-    bundleUrl: `${links.storybookUrl.replace(/\/+$/, '')}/${SYNC_BUNDLE_PATH}`,
+    bundleUrl: `${host.replace(/\/+$/, '')}/${SYNC_BUNDLE_PATH}`,
     libraryFileKey: links.libraryFileKey,
     libraryFileName: links.libraryFileName,
     retiredFileKeys: links.retiredFiles.map((file) => file.fileKey),
