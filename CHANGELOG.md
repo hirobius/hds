@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.23.1
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Nothing in this release asks anything of you.
+
+### Patch Changes
+
+- d907e73: CONSUMING.md points agents at the docs site (https://hirobius-hds-components.vercel.app/llms.txt), which now serves the llms files, the manifest, DESIGN.md and component-api.json.
+
 ## 0.23.0
 
 ### Upgrade
