@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "pnpm manifest:generate && node scripts/audit-tokens.mjs --full && HDS_STORYBOOK_PUBLIC=1 pnpm build-storybook && node scripts/copy-agent-context.mjs && node scripts/figma-push.mjs --bundle storybook-static/figma/sync-bundle.json",
+  "ignoreCommand": "node scripts/vercel-ignore-build.mjs",
   "outputDirectory": "storybook-static",
   "cleanUrls": true,
   "trailingSlash": false

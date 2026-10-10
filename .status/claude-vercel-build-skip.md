@@ -1,0 +1,1 @@
+Vercel Ignored Build Step on Storybook and the docs site (`scripts/vercel-ignore-build.mjs`): previews skip unless the commit says `[preview]`; production skips when only notes, agent files, changesets or tests changed. Cuts Build CPU minutes.
