@@ -55,18 +55,18 @@ export const tokenRefs = {
         "700": "var(--primitive-color-green-700)",
         "950": "var(--primitive-color-green-950)"
       },
-      apple: {
-        "50": "var(--primitive-color-apple-50)",
-        "100": "var(--primitive-color-apple-100)",
-        "200": "var(--primitive-color-apple-200)",
-        "300": "var(--primitive-color-apple-300)",
-        "400": "var(--primitive-color-apple-400)",
-        "500": "var(--primitive-color-apple-500)",
-        "600": "var(--primitive-color-apple-600)",
-        "700": "var(--primitive-color-apple-700)",
-        "800": "var(--primitive-color-apple-800)",
-        "900": "var(--primitive-color-apple-900)",
-        "950": "var(--primitive-color-apple-950)"
+      graphite: {
+        "50": "var(--primitive-color-graphite-50)",
+        "100": "var(--primitive-color-graphite-100)",
+        "200": "var(--primitive-color-graphite-200)",
+        "300": "var(--primitive-color-graphite-300)",
+        "400": "var(--primitive-color-graphite-400)",
+        "500": "var(--primitive-color-graphite-500)",
+        "600": "var(--primitive-color-graphite-600)",
+        "700": "var(--primitive-color-graphite-700)",
+        "800": "var(--primitive-color-graphite-800)",
+        "900": "var(--primitive-color-graphite-900)",
+        "950": "var(--primitive-color-graphite-950)"
       },
       violet: {
         "50": "var(--primitive-color-violet-50)",

@@ -13,7 +13,7 @@ Hirobius is a clean, systems-first visual language that bridges digital precisio
 <!-- auto:start:colors -->
 **One accent — one neutral system.**
 
-- **Accent** (`#66B239`): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent** (`#433A3F`): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
 - **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.
 - **Feedback — Success** (`#047857`): positive confirmations, completed states. `semantic.color.feedback.success`.
