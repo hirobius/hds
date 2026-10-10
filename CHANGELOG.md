@@ -1,5 +1,79 @@
 # Changelog
 
+## 0.23.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Accent-intent text and icons (such as links) now render in a dark apple green instead of a dark neutral.
+- Looks different: Hovered accent text now shifts to a darker apple green instead of a darker neutral.
+- Looks different: The accent fill on hover is now a deeper apple green instead of a dark neutral.
+- Looks different: The accent fill while pressed is now a darker apple green instead of a near-black neutral.
+- And 10 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0230).
+
+### Minor Changes
+
+- 8edd926: The code font is now IBM Plex Mono 400 (OFL-1.1), replacing Geist Mono. The `primitive.typography.family.mono` token value changes (names unchanged), `fonts.css` ships `ibm-plex-mono-400.woff2` instead of `geist-mono-400.woff2`, and the 13px mono role is unchanged. Figma needs the IBM Plex Mono font installed before `figma:push`.
+
+### Patch Changes
+
+- 66cb4e2: fix(a11y): Tier-2 accessibility fixes across the primitives.
+  - **Radio / Checkbox / Toggle** show a keyboard focus ring only on `:focus-visible` (not on mouse click), and focus is no longer masked by hover (focus now outranks hover in `useInteractionState`).
+  - **Input / Textarea / FormField** no longer point `aria-describedby` at a description that isn't rendered (error replaces helper); `Input`'s `loading` uses `readOnly` + `aria-busy` instead of `disabled`, so a search-as-you-type field keeps focus.
+  - **Select** renders a real `<label htmlFor>` wired to the trigger, so clicking the label focuses it.
+  - **Combobox** keyboard: options are not tab stops, Arrow keys skip disabled options and scroll the active one into view, option ids are index-based (no break on special chars), and the active index resets on open / option change.
+  - **Tabs** focus ring is `ring-inset` so it isn't clipped by the scroll container.
+  - **InlineLink** only treats a single-leading-slash path as an internal router link (not `//host`); `mailto:`/`tel:`/`#hash` are plain same-tab links; external links keep `target=_blank` + a visually-hidden "(opens in new tab)"; the internal branch gains `hds-focus`.
+
+- c88ab39: fix(feedback): unify Alert + Callout on one tinted-fill tone language.
+
+  The two feedback components carried tone in opposite ways — Alert by a tinted fill (`bg-feedback-bg-*`), Callout by a 3px colored left stripe — reading as two systems, and the stripe was the lone >1px colored side-rule anti-pattern left in the set. DESIGN.md also still claimed Alert carries tone "by left-border color, not by tinted fills", which the shipped Alert already contradicted.
+  - **Callout** now uses the same tinted feedback fill as Alert (rounded, no stripe); `accent` (not a feedback state) takes a neutral `bg-muted` fill. It stays distinct from Alert by role — no icon, no status role, optional `italic` — not by mechanism.
+  - **Alert** unchanged (already fill-based).
+  - **DESIGN.md** (via build-design-md.mjs) corrected: tone is carried by a tinted feedback fill, not a left-border stripe.
+
+  Visual change to Callout; no API change.
+
+- c88ab39: feat(brand): set the default accent to a bright apple green.
+
+  The base brand accent moves from a neutral (monochrome) to a bright apple green. A
+  new `primitive.color.apple` scale backs it, kept distinct from the emerald `green`
+  feedback/success scale so an accent and a success state never read as the same hue.
+  - `semantic.accent.{rest,hover,pressed,content,contentHover,subtle}`, `semantic.color.surface.accent`/`accentSubtle`, `semantic.color.content.accent`, and `semantic.color.border.accent` now resolve through `primitive.color.apple.*`.
+  - `semantic.color.content.onAccent` flips to a dark neutral (`neutral.900`) in both modes, since a bright accent fill needs dark text to clear AA — `content.onAccent / surface.accent` is 7.2:1 light / 9.3:1 dark.
+  - Per-tenant accents are unchanged: `accent-lilac` and `concrete-creations` set their own accent (and their own white `onAccent`); `brutalist-demo` inherits the new green base.
+
+  Visual-only; no API changes. The accent remains a single per-tenant knob — consumers who set their own accent overlay are unaffected.
+
+- c88ab39: docs(card): reconcile DESIGN.md with the shipped borderless-default Card.
+
+  The Card Anatomy / elevation tables said a resting card carries a 1px border, contradicting the 12d-3 outline rule (and DESIGN.md's own "don't default to outlined cards" guidance) that made the default `Card` variant borderless, with a resting border opt-in via `bordered` / a feedback `tone` / `accent`. Updated the elevation-role table, the component table, and the (mandatory) Card Anatomy Border row to document the borderless default + opt-in border, and corrected the stale card.tsx module docstring that claimed depth comes from a resting border. No component behavior change.
+
+- 0a6b830: fix(components): five Tier-1 component bugs from the audit.
+  - **Select** no longer crashes the page when `options` is empty (async list mid-load) or when `value` matches no option; the trigger label degrades to the field name.
+  - **Combobox** can now be closed by clicking its trigger again (the trigger was a `Popover.Anchor`, so Radix dismissed on pointerdown and the onClick reopened).
+  - **Button `asChild`** now enforces the disabled/loading contract on a slotted element (e.g. an `<a>`): non-interactive (`pointer-events-none`, `tabIndex=-1`) and dimmed, since native `disabled:` utilities can't apply to it.
+  - **AssetImg** and **Avatar** recover when `src` changes to a working image after a prior load error, instead of staying stuck on the fallback.
+
+- b43d6bc: The package now ships `dist/css-contract.json` (hds#449): for each stylesheet it exports, every CSS custom property with its value per context (`:root`, dark, compact, each `[data-brand]`, each `@media`), the class names, the `@font-face` entries and the `@layer` names, plus `publicClasses` (the classes you may write yourself: `hds-focus` and the `static.css` set, also listed in `public/hds-manifest.json`). The upgrade ledger reads it, so from the next release a removed CSS variable or `hds-*` class needs a breaking upgrade step, and a changed token value a look step that `npx @hirobius/design-system upgrade` reports where your code uses it. Nothing changes in the stylesheets themselves.
+- c88ab39: fix(disabled): unify the disabled state onto per-component tokens, off the global opacity multiplier.
+
+  DESIGN.md forbids a global disabled-state rule (opacity multiplier); disabled presentation must be governed per-component through its dedicated disabled tokens. Button, Combobox, Input, Textarea, Tabs and Tag were dimming with `disabled:opacity-50`/`opacity-70` — now they use `content.disabled` text (and a neutral `bg-muted` surface where a fill is needed), matching Checkbox/Radio/Toggle/SegmentedControl.
+  - **Button** — disabled is now `bg-muted` + `content-disabled` text for every variant AND tone (a disabled danger/success/… button now reads as disabled instead of fully coloured). Note: the pre-existing `component-button-primary-bgDisabled`/`textDisabled` tokens resolve to `accentSubtle` + `content-onAccent`, which render near-white-on-near-white under the neutral accent, so the component uses the neutral `bg-muted` pair instead (token fix tracked separately).
+  - **Input / Textarea** — drop the redundant `disabled:opacity-70`; keep `bg-muted`, switch disabled text to `content-disabled`.
+  - **Combobox / Tabs / Tag** — `disabled:opacity-50` → `content-disabled` text.
+
+  Visual-only; no API changes.
+
+- 2d2a874: Plain-language `@usage` lines for Button, Grid, Surface, Divider, Icon, Stack and every pattern. Docs pages now open with that line instead of the code note.
+- 8016b7a: AGENTS.md and llms.txt carry a Voice section generated from the Voice page (`content/docs/voice.mdx`, published at `/docs/voice`): how HDS docs and agents writing for HDS should speak, and the words not to use.
+- c88ab39: fix(polish): Table cell alignment + caption spacing, and reduced-motion guards (docs-site rubric findings).
+  - **Table**: data cells now `items-center` (was `items-start`), so a badge/status slot lines up on a shared vertical center with its text siblings instead of floating above them; the caption/description block gains a token gap so it no longer touches the table's header band.
+  - **Reduced motion**: the Button and Input loading spinners (`animate-spin`) and the Progress bar's width transition now carry a `motion-reduce:` guard, matching Spinner/Progress's existing policy, so they stop animating under `prefers-reduced-motion`.
+
 ## 0.22.0
 
 ### Upgrade

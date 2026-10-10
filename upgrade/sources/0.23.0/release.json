@@ -1,0 +1,54 @@
+{
+  "$comment": "Frozen inputs of the 0.23.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.23.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.23.0",
+  "previous": "0.22.0",
+  "date": "2026-10-10",
+  "summary": "14 that look different.",
+  "backfilled": false,
+  "notes": {
+    "a11y-tier2": {
+      "needle": "66cb4e2: fix(a11y): Tier-2 accessibility",
+      "source": "CHANGELOG.md:23"
+    },
+    "alert-callout-fill": {
+      "needle": "c88ab39: fix(feedback): unify Alert + Callout",
+      "source": "CHANGELOG.md:31"
+    },
+    "brand-accent-apple-green": {
+      "needle": "c88ab39: feat(brand): set the default accent",
+      "source": "CHANGELOG.md:40"
+    },
+    "card-borderless-spec": {
+      "needle": "c88ab39: docs(card): reconcile DESIGN.md",
+      "source": "CHANGELOG.md:51"
+    },
+    "component-bugfixes-cluster": {
+      "needle": "0a6b830: fix(components): five Tier-1 component",
+      "source": "CHANGELOG.md:55"
+    },
+    "css-contract": {
+      "needle": "b43d6bc: The package now ships `dist/css-contract.json`",
+      "source": "CHANGELOG.md:61"
+    },
+    "disabled-token-unify": {
+      "needle": "c88ab39: fix(disabled): unify the disabled",
+      "source": "CHANGELOG.md:62"
+    },
+    "docs-voice": {
+      "needle": "8016b7a: AGENTS.md and llms.txt carry a Voice",
+      "source": "CHANGELOG.md:72"
+    },
+    "docs-voice-pass": {
+      "needle": "2d2a874: Plain-language `@usage` lines for",
+      "source": "CHANGELOG.md:71"
+    },
+    "plex-mono": {
+      "needle": "8edd926: The code font is now IBM Plex Mono",
+      "source": "CHANGELOG.md:19"
+    },
+    "table-align-reduced-motion": {
+      "needle": "c88ab39: fix(polish): Table cell alignment",
+      "source": "CHANGELOG.md:73"
+    }
+  }
+}

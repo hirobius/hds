@@ -3,12 +3,12 @@
   "phase": "active",
   "headline": "0.20.0 is published (npm latest, provenance; main entry about 34 kB gzip). Now building the universal upgrade path (epic hds#445): one machine-readable record per release (upgrade/releases/<v>.json), one command for every consumer (npx @hirobius/design-system@latest upgrade), a generated upgrade page and an automatic notice per consumer. Landed: the release ledger schema, 0.19.1/0.20.0 snapshots and the 0.20.0 ledger (#447), and consumer discovery with redaction for private repos (#453). The core ships as 0.20.x patches; no 1.0 cut.",
   "release": {
-    "version": "0.22.0",
-    "date": "2026-10-08",
+    "version": "0.23.0",
+    "date": "2026-10-10",
     "bump": "minor",
-    "summary": "3 changes to make by hand (1 breaking), 1 that looks different and 2 deprecations.",
-    "breaking": 1,
-    "doByHand": 3,
+    "summary": "14 that look different.",
+    "breaking": 0,
+    "doByHand": 0,
     "floor": "0.16.0",
     "upgrade": "npx @hirobius/design-system@latest upgrade"
   },

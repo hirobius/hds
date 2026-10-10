@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.22.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.23.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,27 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.23.0
+
+Released 2026-10-10 (minor). 14 that look different.
+
+### Looks different
+
+- Accent-intent text and icons (such as links) now render in a dark apple green instead of a dark neutral.
+- Hovered accent text now shifts to a darker apple green instead of a darker neutral.
+- The accent fill on hover is now a deeper apple green instead of a dark neutral.
+- The accent fill while pressed is now a darker apple green instead of a near-black neutral.
+- Interactive accent fills at rest (primary buttons, selected controls) now render in a bright apple green instead of a dark neutral, paired with dark on-accent text.
+- The low-emphasis accent tint (hover and selection backgrounds) is now a faint apple green instead of a neutral tint.
+- Accent borders now render in apple green instead of a dark neutral.
+- Accent-intent text and icons on page and card surfaces now render in a dark apple green instead of a neutral.
+- Text and icons on accent fills are now a dark neutral instead of white, because the accent fill is a bright apple green that needs dark text for contrast.
+- Accent background surfaces now render in a bright apple green instead of a dark neutral.
+- Faint accent background surfaces are now a pale apple green instead of a neutral tint.
+- Callout now renders as a tinted feedback fill (rounded, no left stripe) matching Alert, with the accent tone using a neutral muted fill.
+- Code text now draws in IBM Plex Mono instead of Geist Mono, so if you preload or self-host geist-mono-400.woff2, point it at ibm-plex-mono-400.woff2 from fonts.css instead.
+- Table data cells vertically center their content (badge/status slots no longer float above text) and the caption gains spacing above the table; loading spinners and the progress bar stop animating under prefers-reduced-motion.
 
 ## 0.22.0
 

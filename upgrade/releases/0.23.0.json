@@ -1,0 +1,259 @@
+{
+  "version": "0.23.0",
+  "date": "2026-10-10",
+  "bump": "minor",
+  "summary": "14 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.23.0/value-changed/--semantic-accent-content",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Accent-intent text and icons (such as links) now render in a dark apple green instead of a dark neutral.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-content"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-content"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-content::root",
+        "css-var-changed:--semantic-accent-content:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-content:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-accent-contentHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Hovered accent text now shifts to a darker apple green instead of a darker neutral.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-contentHover"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-contentHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-contentHover::root",
+        "css-var-changed:--semantic-accent-contentHover:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-contentHover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-accent-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The accent fill on hover is now a deeper apple green instead of a dark neutral.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-hover"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-hover::root",
+        "css-var-changed:--semantic-accent-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-hover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-accent-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The accent fill while pressed is now a darker apple green instead of a near-black neutral.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-pressed"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-pressed::root",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-accent-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Interactive accent fills at rest (primary buttons, selected controls) now render in a bright apple green instead of a dark neutral, paired with dark on-accent text.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-rest"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-rest"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-accent-rest:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-accent-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The low-emphasis accent tint (hover and selection backgrounds) is now a faint apple green instead of a neutral tint.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-subtle"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-subtle"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-subtle::root",
+        "css-var-changed:--semantic-accent-subtle:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-subtle:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-color-border-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Accent borders now render in apple green instead of a dark neutral.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-accent::root",
+        "css-var-changed:--semantic-color-border-accent:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-accent:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-color-content-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Accent-intent text and icons on page and card surfaces now render in a dark apple green instead of a neutral.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-accent::root",
+        "css-var-changed:--semantic-color-content-accent:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-content-accent:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-color-content-onAccent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Text and icons on accent fills are now a dark neutral instead of white, because the accent fill is a bright apple green that needs dark text for contrast.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-onAccent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-onAccent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-onAccent::root"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-color-surface-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Accent background surfaces now render in a bright apple green instead of a dark neutral.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accent::root",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/value-changed/--semantic-color-surface-accentSubtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Faint accent background surfaces are now a pale apple green instead of a neutral tint.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-accentSubtle"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-accentSubtle"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accentSubtle::root",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:40"
+    },
+    {
+      "id": "0.23.0/look/alert-callout-fill",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Callout now renders as a tinted feedback fill (rounded, no left stripe) matching Alert, with the accent tone using a neutral muted fill.",
+      "source": "CHANGELOG.md:31"
+    },
+    {
+      "id": "0.23.0/look/mono-font-ibm-plex",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Code text now draws in IBM Plex Mono instead of Geist Mono, so if you preload or self-host geist-mono-400.woff2, point it at ibm-plex-mono-400.woff2 from fonts.css instead.",
+      "detect": {
+        "regex": [
+          "Geist Mono",
+          "geist-mono"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-font-family-mono::root",
+        "css-var-changed:--primitive-typography-family-mono::root",
+        "font-face-removed:Geist Mono/400/normal"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.23.0/look/table-align-reduced-motion",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Table data cells vertically center their content (badge/status slots no longer float above text) and the caption gains spacing above the table; loading spinners and the progress bar stop animating under prefers-reduced-motion.",
+      "source": "CHANGELOG.md:73"
+    }
+  ]
+}
