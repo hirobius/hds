@@ -193,3 +193,6 @@ eval/consistency/runs/
 content/docs/components/
 content/docs/patterns/
 content/docs/guides/providers.mdx
+
+# impeccable skill local critique snapshots (not part of the package)
+.impeccable/

@@ -39,9 +39,11 @@
  * Existing callers that pass raw children continue to work; new callers
  * should prefer compound parts + `padding="none"`.
  *
- * Depth comes from semantic.color.border.default (role.border) at rest;
- * elevation tokens are not bound by default — pass `className="shadow-..."`
- * for a hover/floating treatment on interactive cards.
+ * The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes
+ * from whitespace/dividers, not an edge. A resting 1px border is opt-in via
+ * `bordered` (border.default), a feedback `tone`, or `accent` (border.accent).
+ * Elevation tokens are not bound by default — pass `className="shadow-..."` for
+ * a hover/floating treatment on interactive cards.
  */
 
 import * as React from 'react';

@@ -20,8 +20,9 @@ import { FORM_CONTROL_WIDTH } from './form-control';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-disabled has no named Tailwind-theme utility; var()-based so still token-driven (matches button/segmented disabled)
 const textareaVariants = /* @__PURE__ */ cva(
-  'flex w-full rounded-md border bg-background px-3 py-2 hds-type-ui text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:opacity-70',
+  'flex w-full rounded-md border bg-background px-3 py-2 hds-type-ui text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
   {
     variants: {
       resize: {

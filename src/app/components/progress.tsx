@@ -167,7 +167,7 @@ export const Progress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Progres
       >
         <div
           className={cn(
-            'h-full rounded-full transition-[width] duration-300 ease-out',
+            'h-full rounded-full transition-[width] duration-300 ease-out motion-reduce:transition-none',
             PROGRESS_TONES[tone].bar,
             isIndeterminate && 'animate-pulse motion-reduce:animate-none',
           )}

@@ -378,7 +378,7 @@ export function buildComponents(raw, manifest) {
       radius: `\`${cardRad}\` (\`rounded-lg\`, role radius + 4px)`,
       states: 'default · hover (optional parallax) · pressed (when interactive)',
       notes:
-        'Cards default to `elevation.flat` (1px border `border.subtle`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows.',
+        'Cards default to `elevation.flat` (borderless by default; an opt-in 1px border via `bordered`/`tone`/`accent`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows.',
     },
     {
       name: 'Badges',
@@ -394,7 +394,7 @@ export function buildComponents(raw, manifest) {
       radius: `\`${actionRad}\` (via \`hds.borderRadius.4\`)`,
       states: 'info · success · warning · error',
       notes:
-        'Inline banner pattern with icon + message + optional action. Tone is carried by left-border color, not by tinted fills.',
+        'Inline banner pattern with icon + message + optional action. Tone is carried by a tinted feedback fill (`bg-feedback-bg-*`, matching Badge), NOT a left-border stripe. Callout shares this fill language and differs only by role (no icon, no status role, optional italic).',
     },
     {
       name: 'Disclosures',
