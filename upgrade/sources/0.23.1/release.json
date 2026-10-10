@@ -1,0 +1,14 @@
+{
+  "$comment": "Frozen inputs of the 0.23.1 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.23.1 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.23.1",
+  "previous": "0.23.0",
+  "date": "2026-10-10",
+  "summary": "Nothing in this release asks anything of a consumer.",
+  "backfilled": false,
+  "notes": {
+    "docs-site-front-door": {
+      "needle": "d907e73: CONSUMING.md points agents at the",
+      "source": "CHANGELOG.md:15"
+    }
+  }
+}
