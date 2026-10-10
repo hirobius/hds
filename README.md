@@ -18,7 +18,7 @@ Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. Fro
 <!-- auto:start:front-door-counts -->
 
 - **53** public component modules, exported from `src/index.ts`
-- **389** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **400** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 - **341** Storybook stories in **71** story files
 
 <!-- auto:end:front-door-counts -->

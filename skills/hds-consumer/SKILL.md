@@ -80,7 +80,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Alert` — Alert - compact feedback surface with contextual severity.
 - `Badge` — Compact metadata/status chip.
-- `Callout` — Tone-driven side-rule callout for status, quotes, hypotheses.
+- `Callout` — Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback fill language as Alert, without Alert's icon or status role.
 - `Progress` — Linear bar or circular ring.
 - `Skeleton` — Decorative loading placeholder.
 - `Spinner` — Indeterminate spinner.
