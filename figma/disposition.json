@@ -10,15 +10,15 @@
   "overrides": {
     "PageHeader": {
       "class": "library",
-      "reason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
+      "reason": "Drawn in the library on 2026-10-10: Breadcrumb, Badge and Button instances around a title, so Figma carries the screen header."
     },
     "MetricTiles": {
       "class": "library",
-      "reason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
+      "reason": "Drawn in the library on 2026-10-10: a row of MetricTile instances (2, 3 or 4), so Figma carries the headline-numbers row."
     },
     "ErrorPattern": {
       "class": "library",
-      "reason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
+      "reason": "Drawn in the library on 2026-10-10: headline, message and a Back Button on a raised surface, so Figma carries the error state."
     }
   },
   "summary": {
@@ -346,7 +346,7 @@
       "tier": "template",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
       "overriddenFrom": "internal",
-      "overrideReason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
+      "overrideReason": "Drawn in the library on 2026-10-10: headline, message and a Back Button on a raised surface, so Figma carries the error state."
     },
     {
       "name": "Field",
@@ -548,7 +548,7 @@
       "tier": "pattern",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
       "overriddenFrom": "slot",
-      "overrideReason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
+      "overrideReason": "Drawn in the library on 2026-10-10: a row of MetricTile instances (2, 3 or 4), so Figma carries the headline-numbers row."
     },
     {
       "name": "Page",
@@ -566,7 +566,7 @@
       "tier": "pattern",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
       "overriddenFrom": "library",
-      "overrideReason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
+      "overrideReason": "Drawn in the library on 2026-10-10: Breadcrumb, Badge and Button instances around a title, so Figma carries the screen header."
     },
     {
       "name": "Pagination",
