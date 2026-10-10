@@ -11,6 +11,10 @@ Not a public OSS library (yet); not native ServiceNow UI. The React components
 are React-bound; the token layer is portable (the bridge to site-engine's Astro
 sites or a ServiceNow theme — export tokens, not components).
 
+**Drift check:** if an ask doesn't serve the North Star (or the fleet one, ops
+`docs/ai/NORTH_STAR.md`: serve Adrian's career), say so in one sentence —
+_"North-star drift: park or proceed?"_ — then do what Adrian decides.
+
 ---
 
 ## 0. HARD RULES (no exceptions, apply to all agents including Claude)
