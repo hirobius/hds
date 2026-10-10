@@ -89,6 +89,7 @@ function countTiles(children: React.ReactNode): number {
  * headline numbers on a screen; use `Stat` only for an inline number inside prose
  * or a dense list, `Card.Metric` only inside an existing `Card`, and `StatusTile`
  * for state with notes (never a number).
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89
  * @screenPattern
  */
 export const MetricTiles = /* @__PURE__ */ React.forwardRef<HTMLDivElement, MetricTilesProps>(

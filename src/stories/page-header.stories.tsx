@@ -7,12 +7,14 @@ import { PageHeader } from '../app/components/page-header';
 import { Badge } from '../app/components/badge';
 import { Breadcrumb } from '../app/components/breadcrumb';
 import { Button } from '../app/components/button';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Patterns/PageHeader',
   component: PageHeader,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('PageHeader'),
     layout: 'padded',
     docs: {
       description: {

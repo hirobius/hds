@@ -33,6 +33,7 @@ const recoveryWrapStyle = {
 };
 
 /**
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839
  * @public
  */
 export function ErrorPattern({

@@ -8,19 +8,19 @@
       "rendered-defects": 26
     },
     "byClass": {
-      "library": 56,
-      "slot": 19,
-      "layout": 9,
-      "internal": 13
+      "library": 59,
+      "slot": 18,
+      "layout": 8,
+      "internal": 12
     },
     "orphanStories": 2,
     "storyCoverage": {
-      "expected": 84,
-      "covered": 84
+      "expected": 85,
+      "covered": 85
     },
     "figmaCoverage": {
-      "expected": 56,
-      "covered": 56
+      "expected": 59,
+      "covered": 59
     }
   },
   "rows": [
@@ -1114,7 +1114,7 @@
     },
     {
       "name": "ErrorPattern",
-      "class": "internal",
+      "class": "library",
       "filePath": "src/app/components/error-pattern.tsx",
       "storyFiles": ["src/stories/error-pattern.stories.tsx"],
       "storyIds": [
@@ -1124,10 +1124,10 @@
         "feedback-error-pattern--unauthorized"
       ],
       "storyCount": 4,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectStory": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectStory": true,
       "defects": 0,
       "gaps": [],
       "synced": true
@@ -1542,7 +1542,7 @@
     },
     {
       "name": "MetricTiles",
-      "class": "slot",
+      "class": "library",
       "filePath": "src/app/components/metric-tiles.tsx",
       "storyFiles": ["src/stories/metric-tile.stories.tsx", "src/stories/metric-tiles.stories.tsx"],
       "storyIds": [
@@ -1554,9 +1554,9 @@
         "patterns-metrictiles--tones"
       ],
       "storyCount": 6,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
+      "figmaVia": "manifest",
+      "expectFigma": true,
       "expectStory": true,
       "defects": 0,
       "gaps": [],
@@ -1588,7 +1588,7 @@
     },
     {
       "name": "PageHeader",
-      "class": "layout",
+      "class": "library",
       "filePath": "src/app/components/page-header.tsx",
       "storyFiles": [
         "src/stories/page-header.stories.tsx",
@@ -1606,9 +1606,9 @@
         "patterns-pageheader--with-actions"
       ],
       "storyCount": 9,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
+      "figmaVia": "manifest",
+      "expectFigma": true,
       "expectStory": true,
       "defects": 0,
       "gaps": [],
