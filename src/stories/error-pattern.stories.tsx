@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { ErrorPattern } from '../app/components/error-pattern';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Feedback/Error Pattern',
   component: ErrorPattern,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('ErrorPattern'),
     layout: 'fullscreen',
     docs: {
       description: {

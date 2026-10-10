@@ -977,7 +977,7 @@
       "hidden": false,
       "filePath": "src/app/components/error-pattern.tsx",
       "description": "ErrorPattern - governed recovery surface for routed application errors.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
       "figmaId": null,
       "preview": {
         "exportName": "ErrorPattern",
@@ -1054,7 +1054,7 @@
       ],
       "tier": "template",
       "docExempt": false,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
       "storyFiles": [
         "src/stories/error-pattern.stories.tsx"
       ],
@@ -8363,9 +8363,9 @@
       "docExempt": false,
       "filePath": "src/app/components/metric-tiles.tsx",
       "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. The default for any row of headline numbers on a screen; use `Stat` only for an inline number inside prose or a dense list, `Card.Metric` only inside an existing `Card`, and `StatusTile` for state with notes (never a number).",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
       "tier": "pattern",
       "preview": {
         "exportName": "MetricTiles",
@@ -8418,9 +8418,9 @@
       "docExempt": false,
       "filePath": "src/app/components/page-header.tsx",
       "description": "Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `display` and `h1` type are reserved for marketing and landing surfaces.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
       "tier": "pattern",
       "preview": {
         "exportName": "PageHeader",

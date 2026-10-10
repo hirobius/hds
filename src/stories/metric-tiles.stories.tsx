@@ -4,12 +4,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { MetricTile, MetricTiles } from '../app/components/metric-tiles';
+import { designParameters } from './design-parameters';
 
 const meta = {
   title: 'Patterns/MetricTiles',
   component: MetricTiles,
   tags: ['autodocs'],
   parameters: {
+    ...designParameters('MetricTiles'),
     layout: 'padded',
     docs: {
       description: {
