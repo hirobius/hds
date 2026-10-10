@@ -14,7 +14,7 @@ const read = (rel: string) => readFileSync(join(ROOT, rel), 'utf8');
 const readme = read('README.md');
 const accessibility = () => readme.split(/^## /m).find((s) => s.startsWith('Accessibility')) ?? '';
 const head = readme.split('\n').slice(0, 20).join('\n');
-const links = JSON.parse(read('figma/links.json')) as { storybookUrl: string };
+const links = JSON.parse(read('figma/links.json')) as { docsUrl: string };
 
 const SCREENSHOT = 'docs/images/storybook-brand-theme-dials.png';
 
@@ -29,19 +29,19 @@ function focusClaim(line: string) {
 }
 
 describe('README front door (first 20 lines)', () => {
-  it('links the live Storybook from figma/links.json', () => {
-    expect(links.storybookUrl).toMatch(/^https:\/\//);
-    expect(head).toContain(links.storybookUrl);
+  it('links the live docs site from figma/links.json', () => {
+    expect(links.docsUrl).toMatch(/^https:\/\//);
+    expect(head).toContain(links.docsUrl);
   });
 
-  it('shows CI, npm and Storybook badges', () => {
+  it('shows CI, npm and Docs badges', () => {
     expect(head).toMatch(
       /!\[[^\]]*CI[^\]]*\]\(https:\/\/github\.com\/hirobius\/hds\/actions\/workflows\/ci\.yml\/badge\.svg/,
     );
     expect(head).toMatch(
       /!\[[^\]]*npm[^\]]*\]\(https:\/\/img\.shields\.io\/npm\/v\/@hirobius\/design-system/,
     );
-    expect(head).toMatch(/!\[[^\]]*Storybook[^\]]*\]\(https:\/\/img\.shields\.io\/badge\//);
+    expect(head).toMatch(/!\[[^\]]*Docs[^\]]*\]\(https:\/\/img\.shields\.io\/badge\//);
   });
 
   it('has the install line', () => {

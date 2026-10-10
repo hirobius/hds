@@ -103,7 +103,7 @@ them without network access. Under `node_modules/@hirobius/design-system/`:
 - `DESIGN.md` - the lean visual spec
 - `src/app/data/component-api.json` - full prop reference
 
-The same files are served at <https://hirobius-design-system.vercel.app/llms.txt>
+The same files are served at <https://hirobius-hds-components.vercel.app/llms.txt>
 (and `/llms-full.txt`, `/llms/components.txt`, `/DESIGN.md`, `/component-api.json`).
 
 ## 3. Receiving updates
