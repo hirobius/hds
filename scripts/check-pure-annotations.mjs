@@ -302,13 +302,22 @@ function main() {
   }
   const root = at > -1 ? path.resolve(process.argv[at + 1]) : ROOT;
 
-  const files = scannedFiles(root);
+  // Fixture mode (proof-of-firing harness): scan ONLY the single FIXTURE_FILE,
+  // bypassing the src/ walk, so the gate can prove it fires against an isolated
+  // fixture. `findBareCalls` is per-file, so one file is enough.
+  const isFixtureMode =
+    process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+  const fixtureFile = process.env.FIXTURE_FILE;
+  const fixtureRoot = isFixtureMode && fixtureFile ? path.dirname(path.resolve(fixtureFile)) : root;
+
+  const files =
+    isFixtureMode && fixtureFile ? [path.basename(path.resolve(fixtureFile))] : scannedFiles(root);
   const findings = [];
   let fixedFiles = 0;
   let fixedCalls = 0;
 
   for (const file of files) {
-    const full = path.join(root, file);
+    const full = path.join(fixtureRoot, file);
     const source = readFileSync(full, 'utf8');
     if (fix) {
       const result = annotateSource(source, file);

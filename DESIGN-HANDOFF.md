@@ -14,7 +14,7 @@
 
 | Attribute         | Value                                                        |
 | ----------------- | ------------------------------------------------------------ |
-| Brand accent      | `#111111` (`semantic.accent.rest`)                           |
+| Brand accent      | `#66B239` (`semantic.accent.rest`)                           |
 | Font              | Satoshi (self-hosted) + IBM Plex Mono (monospace)            |
 | Neutral scale     | True monochromatic — equal RGB channels, no warm/cool tint   |
 | Spacing base      | 4px                                                          |
@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 433 tokens, aliases, and TS refs in one shot.
+Checks all 444 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -81,71 +81,82 @@ Checks all 433 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:start:primitives-color -->
 
-| Token                                               | Value                       | Notes                                                                   |
-| --------------------------------------------------- | --------------------------- | ----------------------------------------------------------------------- |
-| `primitive.color.neutral.50`                        | `#fafafa`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.100`                       | `#f5f5f5`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.200`                       | `#e5e5e5`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.300`                       | `#d4d4d4`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.400`                       | `#a3a3a3`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.500`                       | `#737373`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.600`                       | `#525252`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.700`                       | `#404040`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.800`                       | `#262626`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.850`                       | `#1a1a1a`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.900`                       | `#111111`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.950`                       | `#0a0a0a`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.white`                     | `#ffffff`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.neutral.black`                     | `#000000`                   | Specific value within the neutral range at a defined lightness step.    |
-| `primitive.color.blue.50`                           | `oklch(0.96 0.03 266.54)`   | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.100`                          | `oklch(0.92 0.04 266.54)`   | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.200`                          | `oklch(0.88 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.300`                          | `oklch(0.70 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.400`                          | `oklch(0.65 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.450`                          | `oklch(0.56 0.29 266.60)`   | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.500`                          | `#1E2EFD`                   | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.600`                          | `oklch(0.45 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.700`                          | `oklch(0.44 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.800`                          | `oklch(0.30 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.blue.900`                          | `oklch(0.22 0.05 266.54)`   | Specific value within the blue range at a defined lightness step.       |
-| `primitive.color.red.50`                            | `#fef2f2`                   | Specific value within the red range at a defined lightness step.        |
-| `primitive.color.red.400`                           | `#f87171`                   | Specific value within the red range at a defined lightness step.        |
-| `primitive.color.red.700`                           | `#b91c1c`                   | Specific value within the red range at a defined lightness step.        |
-| `primitive.color.red.950`                           | `#450a0a`                   | Specific value within the red range at a defined lightness step.        |
-| `primitive.color.green.50`                          | `#ecfdf5`                   | Specific value within the green range at a defined lightness step.      |
-| `primitive.color.green.400`                         | `#34d399`                   | Specific value within the green range at a defined lightness step.      |
-| `primitive.color.green.700`                         | `#047857`                   | Specific value within the green range at a defined lightness step.      |
-| `primitive.color.green.950`                         | `#022c22`                   | Specific value within the green range at a defined lightness step.      |
-| `primitive.color.violet.50`                         | `#f5f3ff`                   | Specific value within the violet range at a defined lightness step.     |
-| `primitive.color.violet.400`                        | `#a78bfa`                   | Specific value within the violet range at a defined lightness step.     |
-| `primitive.color.violet.700`                        | `#6d28d9`                   | Specific value within the violet range at a defined lightness step.     |
-| `primitive.color.violet.950`                        | `#2e1065`                   | Specific value within the violet range at a defined lightness step.     |
-| `primitive.color.lilac.50`                          | `#f7f4fe`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.100`                         | `#efe9fd`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.200`                         | `#ddd0fb`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.300`                         | `#c3aef6`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.400`                         | `#a585ee`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.450`                         | `#9a6fe8`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.500`                         | `#6f3fd4`                   | Lilac accent rest — AA for white text on page and card surfaces.        |
-| `primitive.color.lilac.600`                         | `#5f33c0`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.700`                         | `#4f2aa3`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.800`                         | `#3a1f78`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.lilac.900`                         | `#2a1659`                   | Specific value within the lilac range at a defined lightness step.      |
-| `primitive.color.amber.50`                          | `#fffbeb`                   | Specific value within the amber range at a defined lightness step.      |
-| `primitive.color.amber.400`                         | `#fbbf24`                   | Specific value within the amber range at a defined lightness step.      |
-| `primitive.color.amber.800`                         | `#92400e`                   | Specific value within the amber range at a defined lightness step.      |
-| `primitive.color.amber.950`                         | `#451a03`                   | Specific value within the amber range at a defined lightness step.      |
-| `primitive.color.stone.100`                         | `#F5EFE7`                   | Stone 100 — near-white warm tint; accent-subtle surface.                |
-| `primitive.color.stone.400`                         | `#D0B492`                   | Stone 400 — light warm tone; dark-mode pressed accent.                  |
-| `primitive.color.stone.450`                         | `#BC9D7E`                   | Stone 450 — medium warm tone; dark-mode hover accent.                   |
-| `primitive.color.stone.500`                         | `#A8896A`                   | Stone 500 — mid warm tone; dark-mode rest accent.                       |
-| `primitive.color.stone.600`                         | `#8B6F47`                   | Stone 600 — primary warm stone; light-mode rest accent and CTA surface. |
-| `primitive.color.stone.700`                         | `#75593A`                   | Stone 700 — darker warm stone; light-mode hover accent.                 |
-| `primitive.color.stone.800`                         | `#5C432A`                   | Stone 800 — deep warm stone; light-mode pressed accent.                 |
-| `primitive.color.stone.950`                         | `#3A2E1F`                   | Stone 950 — near-black warm tone; dark-mode subtle accent surface.      |
-| `primitive.color.projectBrand.microsoftGameDev.100` | `#E5E5FC`                   | Light support tone for the Microsoft Game Dev project brand.            |
-| `primitive.color.projectBrand.microsoftGameDev.500` | `#6d31fb`                   | Primary accent tone for the Microsoft Game Dev project brand.           |
-| `primitive.color.projectBrand.microsoftGameDev.900` | `oklch(0.22 0.16 304)`      | Dark support tone for the Microsoft Game Dev project brand.             |
+| Token                                               | Value                       | Notes                                                                                         |
+| --------------------------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------- |
+| `primitive.color.neutral.50`                        | `#fafafa`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.100`                       | `#f5f5f5`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.200`                       | `#e5e5e5`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.300`                       | `#d4d4d4`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.400`                       | `#a3a3a3`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.500`                       | `#737373`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.600`                       | `#525252`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.700`                       | `#404040`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.800`                       | `#262626`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.850`                       | `#1a1a1a`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.900`                       | `#111111`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.950`                       | `#0a0a0a`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.white`                     | `#ffffff`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.neutral.black`                     | `#000000`                   | Specific value within the neutral range at a defined lightness step.                          |
+| `primitive.color.blue.50`                           | `oklch(0.96 0.03 266.54)`   | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.100`                          | `oklch(0.92 0.04 266.54)`   | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.200`                          | `oklch(0.88 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.300`                          | `oklch(0.70 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.400`                          | `oklch(0.65 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.450`                          | `oklch(0.56 0.29 266.60)`   | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.500`                          | `#1E2EFD`                   | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.600`                          | `oklch(0.45 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.700`                          | `oklch(0.44 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.800`                          | `oklch(0.30 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.blue.900`                          | `oklch(0.22 0.05 266.54)`   | Specific value within the blue range at a defined lightness step.                             |
+| `primitive.color.red.50`                            | `#fef2f2`                   | Specific value within the red range at a defined lightness step.                              |
+| `primitive.color.red.400`                           | `#f87171`                   | Specific value within the red range at a defined lightness step.                              |
+| `primitive.color.red.700`                           | `#b91c1c`                   | Specific value within the red range at a defined lightness step.                              |
+| `primitive.color.red.950`                           | `#450a0a`                   | Specific value within the red range at a defined lightness step.                              |
+| `primitive.color.green.50`                          | `#ecfdf5`                   | Specific value within the green range at a defined lightness step.                            |
+| `primitive.color.green.400`                         | `#34d399`                   | Specific value within the green range at a defined lightness step.                            |
+| `primitive.color.green.700`                         | `#047857`                   | Specific value within the green range at a defined lightness step.                            |
+| `primitive.color.green.950`                         | `#022c22`                   | Specific value within the green range at a defined lightness step.                            |
+| `primitive.color.apple.50`                          | `#f2faeb`                   | Apple-green accent tint — faintest step.                                                      |
+| `primitive.color.apple.100`                         | `#e2f3cf`                   | Apple-green accent — very light tint.                                                         |
+| `primitive.color.apple.200`                         | `#c7e7a4`                   | Apple-green accent — light tint.                                                              |
+| `primitive.color.apple.300`                         | `#a6d873`                   | Apple-green accent — soft mid-light step.                                                     |
+| `primitive.color.apple.400`                         | `#85c84c`                   | Apple-green accent — bright step; dark-mode rest accent.                                      |
+| `primitive.color.apple.500`                         | `#66b239`                   | Apple-green accent rest — bright, rich apple green; AA for dark (neutral.900) text as a fill. |
+| `primitive.color.apple.600`                         | `#54922d`                   | Apple-green accent — hover / border step.                                                     |
+| `primitive.color.apple.700`                         | `#416f20`                   | Apple-green accent — pressed and accent-intent text (AA for text on page and card surfaces).  |
+| `primitive.color.apple.800`                         | `#34571b`                   | Apple-green accent — deep step.                                                               |
+| `primitive.color.apple.900`                         | `#2b4518`                   | Apple-green accent — darkest usable step.                                                     |
+| `primitive.color.apple.950`                         | `#16250c`                   | Apple-green accent — near-black green substrate.                                              |
+| `primitive.color.violet.50`                         | `#f5f3ff`                   | Specific value within the violet range at a defined lightness step.                           |
+| `primitive.color.violet.400`                        | `#a78bfa`                   | Specific value within the violet range at a defined lightness step.                           |
+| `primitive.color.violet.700`                        | `#6d28d9`                   | Specific value within the violet range at a defined lightness step.                           |
+| `primitive.color.violet.950`                        | `#2e1065`                   | Specific value within the violet range at a defined lightness step.                           |
+| `primitive.color.lilac.50`                          | `#f7f4fe`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.lilac.100`                         | `#efe9fd`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.lilac.200`                         | `#ddd0fb`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.lilac.300`                         | `#c3aef6`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.lilac.400`                         | `#a585ee`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.lilac.450`                         | `#9a6fe8`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.lilac.500`                         | `#6f3fd4`                   | Lilac accent rest — AA for white text on page and card surfaces.                              |
+| `primitive.color.lilac.600`                         | `#5f33c0`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.lilac.700`                         | `#4f2aa3`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.lilac.800`                         | `#3a1f78`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.lilac.900`                         | `#2a1659`                   | Specific value within the lilac range at a defined lightness step.                            |
+| `primitive.color.amber.50`                          | `#fffbeb`                   | Specific value within the amber range at a defined lightness step.                            |
+| `primitive.color.amber.400`                         | `#fbbf24`                   | Specific value within the amber range at a defined lightness step.                            |
+| `primitive.color.amber.800`                         | `#92400e`                   | Specific value within the amber range at a defined lightness step.                            |
+| `primitive.color.amber.950`                         | `#451a03`                   | Specific value within the amber range at a defined lightness step.                            |
+| `primitive.color.stone.100`                         | `#F5EFE7`                   | Stone 100 — near-white warm tint; accent-subtle surface.                                      |
+| `primitive.color.stone.400`                         | `#D0B492`                   | Stone 400 — light warm tone; dark-mode pressed accent.                                        |
+| `primitive.color.stone.450`                         | `#BC9D7E`                   | Stone 450 — medium warm tone; dark-mode hover accent.                                         |
+| `primitive.color.stone.500`                         | `#A8896A`                   | Stone 500 — mid warm tone; dark-mode rest accent.                                             |
+| `primitive.color.stone.600`                         | `#8B6F47`                   | Stone 600 — primary warm stone; light-mode rest accent and CTA surface.                       |
+| `primitive.color.stone.700`                         | `#75593A`                   | Stone 700 — darker warm stone; light-mode hover accent.                                       |
+| `primitive.color.stone.800`                         | `#5C432A`                   | Stone 800 — deep warm stone; light-mode pressed accent.                                       |
+| `primitive.color.stone.950`                         | `#3A2E1F`                   | Stone 950 — near-black warm tone; dark-mode subtle accent surface.                            |
+| `primitive.color.projectBrand.microsoftGameDev.100` | `#E5E5FC`                   | Light support tone for the Microsoft Game Dev project brand.                                  |
+| `primitive.color.projectBrand.microsoftGameDev.500` | `#6d31fb`                   | Primary accent tone for the Microsoft Game Dev project brand.                                 |
+| `primitive.color.projectBrand.microsoftGameDev.900` | `oklch(0.22 0.16 304)`      | Dark support tone for the Microsoft Game Dev project brand.                                   |
 
 <!-- auto:end:primitives-color -->
 
@@ -153,16 +164,16 @@ Checks all 433 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:start:semantic-accent -->
 
-| Token                          | Light                           | Dark                            | Role                                                                              |
-| ------------------------------ | ------------------------------- | ------------------------------- | --------------------------------------------------------------------------------- |
-| `semantic.accent.rest`         | `{primitive.color.neutral.900}` | `{primitive.color.neutral.100}` | Default accent fill for interactive elements at rest. Neutral (monochrome) accent |
-| `semantic.accent.hover`        | `{primitive.color.neutral.800}` | `{primitive.color.neutral.200}` | Accent fill on pointer hover.                                                     |
-| `semantic.accent.pressed`      | `{primitive.color.neutral.950}` | `{primitive.color.neutral.300}` | Accent fill during active press.                                                  |
-| `semantic.accent.inactive`     | `{primitive.color.neutral.400}` | `{primitive.color.neutral.600}` | Accent fill for inactive or unselected accent elements.                           |
-| `semantic.accent.disabled`     | `{primitive.color.neutral.300}` | `{primitive.color.neutral.700}` | Accent fill for disabled accent elements.                                         |
-| `semantic.accent.content`      | `{primitive.color.neutral.900}` | `{primitive.color.neutral.100}` | Text and icon color on neutral surfaces with accent intent. Monochrome            |
-| `semantic.accent.contentHover` | `{primitive.color.neutral.700}` | `{primitive.color.neutral.300}` | Accent content color on pointer hover.                                            |
-| `semantic.accent.subtle`       | `{primitive.color.neutral.100}` | `{primitive.color.neutral.800}` | Low-emphasis accent tint for hover backgrounds and selection highlights.          |
+| Token                          | Light                           | Dark                            | Role                                                                     |
+| ------------------------------ | ------------------------------- | ------------------------------- | ------------------------------------------------------------------------ |
+| `semantic.accent.rest`         | `{primitive.color.apple.500}`   | `{primitive.color.apple.400}`   | Default accent fill for interactive elements at rest                     |
+| `semantic.accent.hover`        | `{primitive.color.apple.600}`   | `{primitive.color.apple.500}`   | Accent fill on pointer hover.                                            |
+| `semantic.accent.pressed`      | `{primitive.color.apple.700}`   | `{primitive.color.apple.600}`   | Accent fill during active press.                                         |
+| `semantic.accent.inactive`     | `{primitive.color.neutral.400}` | `{primitive.color.neutral.600}` | Accent fill for inactive or unselected accent elements.                  |
+| `semantic.accent.disabled`     | `{primitive.color.neutral.300}` | `{primitive.color.neutral.700}` | Accent fill for disabled accent elements.                                |
+| `semantic.accent.content`      | `{primitive.color.apple.700}`   | `{primitive.color.apple.400}`   | Accent-intent text/icon color on neutral surfaces (a dark apple green)   |
+| `semantic.accent.contentHover` | `{primitive.color.apple.800}`   | `{primitive.color.apple.300}`   | Accent content color on pointer hover.                                   |
+| `semantic.accent.subtle`       | `{primitive.color.apple.50}`    | `{primitive.color.apple.900}`   | Low-emphasis accent tint for hover backgrounds and selection highlights. |
 
 <!-- auto:end:semantic-accent -->
 
@@ -172,48 +183,48 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 
 <!-- auto:start:semantic-color -->
 
-| Token                                   | Light                           | Dark                            | Notes                                                                                                                              |
-| --------------------------------------- | ------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.color.surface.page`           | {primitive.color.neutral.white} | {primitive.color.neutral.black} | Main page background                                                                                                               |
-| `semantic.color.surface.raised`         | {primitive.color.neutral.50}    | {primitive.color.neutral.950}   | Subtle elevated surface (cards, sections)                                                                                          |
-| `semantic.color.surface.overlay`        | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Deeper surface layer                                                                                                               |
-| `semantic.color.surface.scrim`          | {primitive.color.neutral.900}   | {primitive.color.neutral.black} | Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.                                |
-| `semantic.color.surface.inverse`        | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Inverted background for contrast sections                                                                                          |
-| `semantic.color.surface.accent`         | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   | Accent-colored background (neutral/monochrome; inverts to a light neutral on dark surfaces).                                       |
-| `semantic.color.surface.accentSubtle`   | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   | Faint accent tint for hover states or highlights                                                                                   |
-| `semantic.color.surface.hover`          | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   | Background for a hovered interactive surface (menu items, chips, tertiary buttons).                                                |
-| `semantic.color.surface.pressed`        | {primitive.color.neutral.50}    | {primitive.color.neutral.950}   | Background for an actively pressed interactive surface.                                                                            |
-| `semantic.color.surface.selected`       | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   | Background for a persistently selected item (active tab, checked row).                                                             |
-| `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   | Muted background for low-emphasis content blocks.                                                                                  |
-| `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.850}   | Recessed background for inset wells (inputs, code blocks, nested panels).                                                          |
-| `semantic.color.content.primary`        | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   |                                                                                                                                    |
-| `semantic.color.content.secondary`      | {primitive.color.neutral.600}   | {primitive.color.neutral.400}   |                                                                                                                                    |
-| `semantic.color.content.disabled`       | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                                                                    |
-| `semantic.color.content.inverse`        | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   |                                                                                                                                    |
-| `semantic.color.content.accent`         | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   | Accent-intent text/icon color (monochrome). Pair with underline/weight for link affordance.                                        |
-| `semantic.color.content.onAccent`       | {primitive.color.neutral.white} | {primitive.color.neutral.900}   | Text/icon color on accent fills. Flips to a dark neutral in dark mode, where accent fills are light.                               |
-| `semantic.color.content.success`        | {primitive.color.green.700}     | {primitive.color.green.400}     | Success-toned text/icon color, independent of feedback banners.                                                                    |
-| `semantic.color.content.warning`        | {primitive.color.amber.800}     | {primitive.color.amber.400}     | Warning-toned text/icon color, independent of feedback banners.                                                                    |
-| `semantic.color.content.danger`         | {primitive.color.red.700}       | {primitive.color.red.400}       | Danger-toned text/icon color, independent of feedback banners.                                                                     |
-| `semantic.color.border.default`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   |                                                                                                                                    |
-| `semantic.color.border.interactive`     | {primitive.color.neutral.500}   | {primitive.color.neutral.500}   | Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor. |
-| `semantic.color.border.subdued`         | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   |                                                                                                                                    |
-| `semantic.color.border.subtle`          | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Lowest-contrast border for resting hairline edges on flat surfaces.                                                                |
-| `semantic.color.border.strong`          | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                                                                    |
-| `semantic.color.border.accent`          | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   | Accent border (neutral/monochrome; inverts on dark surfaces).                                                                      |
-| `semantic.color.border.success`         | {primitive.color.green.400}     | {primitive.color.green.400}     | Success-toned border for status outlines and success-state inputs.                                                                 |
-| `semantic.color.border.warning`         | {primitive.color.amber.400}     | {primitive.color.amber.400}     | Warning-toned border for status outlines and warning-state inputs.                                                                 |
-| `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                                                                                    |
-| `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                                                                                    |
-| `semantic.color.feedback.warning`       | {primitive.color.amber.800}     | {primitive.color.amber.400}     |                                                                                                                                    |
-| `semantic.color.feedback.info`          | {primitive.color.blue.500}      | {primitive.color.blue.300}      |                                                                                                                                    |
-| `semantic.color.feedback.inProgress`    | {primitive.color.violet.700}    | {primitive.color.violet.400}    |                                                                                                                                    |
-| `semantic.color.feedback.bg.error`      | {primitive.color.red.50}        | {primitive.color.red.950}       |                                                                                                                                    |
-| `semantic.color.feedback.bg.success`    | {primitive.color.green.50}      | {primitive.color.green.950}     |                                                                                                                                    |
-| `semantic.color.feedback.bg.warning`    | {primitive.color.amber.50}      | {primitive.color.amber.950}     |                                                                                                                                    |
-| `semantic.color.feedback.bg.info`       | {primitive.color.blue.50}       | {primitive.color.blue.900}      |                                                                                                                                    |
-| `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50}     | {primitive.color.violet.950}    |                                                                                                                                    |
-| `semantic.color.state.pressed.overlay`  | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5). |
+| Token                                   | Light                           | Dark                            | Notes                                                                                                                                 |
+| --------------------------------------- | ------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.color.surface.page`           | {primitive.color.neutral.white} | {primitive.color.neutral.black} | Main page background                                                                                                                  |
+| `semantic.color.surface.raised`         | {primitive.color.neutral.50}    | {primitive.color.neutral.950}   | Subtle elevated surface (cards, sections)                                                                                             |
+| `semantic.color.surface.overlay`        | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Deeper surface layer                                                                                                                  |
+| `semantic.color.surface.scrim`          | {primitive.color.neutral.900}   | {primitive.color.neutral.black} | Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.                                   |
+| `semantic.color.surface.inverse`        | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Inverted background for contrast sections                                                                                             |
+| `semantic.color.surface.accent`         | {primitive.color.apple.500}     | {primitive.color.apple.400}     | Accent-colored background — bright apple green (stays green on dark surfaces; pair with content.onAccent dark text).                  |
+| `semantic.color.surface.accentSubtle`   | {primitive.color.apple.50}      | {primitive.color.apple.900}     | Faint accent tint for hover states or highlights                                                                                      |
+| `semantic.color.surface.hover`          | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   | Background for a hovered interactive surface (menu items, chips, tertiary buttons).                                                   |
+| `semantic.color.surface.pressed`        | {primitive.color.neutral.50}    | {primitive.color.neutral.950}   | Background for an actively pressed interactive surface.                                                                               |
+| `semantic.color.surface.selected`       | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   | Background for a persistently selected item (active tab, checked row).                                                                |
+| `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   | Muted background for low-emphasis content blocks.                                                                                     |
+| `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.850}   | Recessed background for inset wells (inputs, code blocks, nested panels).                                                             |
+| `semantic.color.content.primary`        | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   |                                                                                                                                       |
+| `semantic.color.content.secondary`      | {primitive.color.neutral.600}   | {primitive.color.neutral.400}   |                                                                                                                                       |
+| `semantic.color.content.disabled`       | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                                                                       |
+| `semantic.color.content.inverse`        | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   |                                                                                                                                       |
+| `semantic.color.content.accent`         | {primitive.color.apple.700}     | {primitive.color.apple.400}     | Accent-intent text/icon color — a dark apple green legible on page and card surfaces. Pair with underline/weight for link affordance. |
+| `semantic.color.content.onAccent`       | {primitive.color.neutral.900}   | {primitive.color.neutral.900}   | Text/icon color on accent fills — a dark neutral, since the brand accent fill is a bright apple green in both light and dark mode.    |
+| `semantic.color.content.success`        | {primitive.color.green.700}     | {primitive.color.green.400}     | Success-toned text/icon color, independent of feedback banners.                                                                       |
+| `semantic.color.content.warning`        | {primitive.color.amber.800}     | {primitive.color.amber.400}     | Warning-toned text/icon color, independent of feedback banners.                                                                       |
+| `semantic.color.content.danger`         | {primitive.color.red.700}       | {primitive.color.red.400}       | Danger-toned text/icon color, independent of feedback banners.                                                                        |
+| `semantic.color.border.default`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   |                                                                                                                                       |
+| `semantic.color.border.interactive`     | {primitive.color.neutral.500}   | {primitive.color.neutral.500}   | Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.    |
+| `semantic.color.border.subdued`         | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   |                                                                                                                                       |
+| `semantic.color.border.subtle`          | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Lowest-contrast border for resting hairline edges on flat surfaces.                                                                   |
+| `semantic.color.border.strong`          | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                                                                       |
+| `semantic.color.border.accent`          | {primitive.color.apple.600}     | {primitive.color.apple.400}     | Accent border — apple green, dark enough to read as a boundary on page and card surfaces.                                             |
+| `semantic.color.border.success`         | {primitive.color.green.400}     | {primitive.color.green.400}     | Success-toned border for status outlines and success-state inputs.                                                                    |
+| `semantic.color.border.warning`         | {primitive.color.amber.400}     | {primitive.color.amber.400}     | Warning-toned border for status outlines and warning-state inputs.                                                                    |
+| `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                                                                                       |
+| `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                                                                                       |
+| `semantic.color.feedback.warning`       | {primitive.color.amber.800}     | {primitive.color.amber.400}     |                                                                                                                                       |
+| `semantic.color.feedback.info`          | {primitive.color.blue.500}      | {primitive.color.blue.300}      |                                                                                                                                       |
+| `semantic.color.feedback.inProgress`    | {primitive.color.violet.700}    | {primitive.color.violet.400}    |                                                                                                                                       |
+| `semantic.color.feedback.bg.error`      | {primitive.color.red.50}        | {primitive.color.red.950}       |                                                                                                                                       |
+| `semantic.color.feedback.bg.success`    | {primitive.color.green.50}      | {primitive.color.green.950}     |                                                                                                                                       |
+| `semantic.color.feedback.bg.warning`    | {primitive.color.amber.50}      | {primitive.color.amber.950}     |                                                                                                                                       |
+| `semantic.color.feedback.bg.info`       | {primitive.color.blue.50}       | {primitive.color.blue.900}      |                                                                                                                                       |
+| `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50}     | {primitive.color.violet.950}    |                                                                                                                                       |
+| `semantic.color.state.pressed.overlay`  | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).    |
 
 <!-- auto:end:semantic-color -->
 
@@ -552,7 +563,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 
 <!-- auto:start:agent-constraints -->
 
-- **One accent color:** `#111111` (`semantic.accent.rest`) only — no other hues
+- **One accent color:** `#66B239` (`semantic.accent.rest`) only — no other hues
 - **Body / UI typeface:** Satoshi — use Satoshi Bold (700) for headings and IBM Plex Mono for code; no other faces
 - **Action radius:** `8px` for interactive controls; `12px` containers (`rounded-lg`, one step above the action radius)
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale

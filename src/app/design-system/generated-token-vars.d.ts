@@ -44,6 +44,17 @@ declare module 'react' {
     '--primitive-color-green-400'?: string | undefined;
     '--primitive-color-green-700'?: string | undefined;
     '--primitive-color-green-950'?: string | undefined;
+    '--primitive-color-apple-50'?: string | undefined;
+    '--primitive-color-apple-100'?: string | undefined;
+    '--primitive-color-apple-200'?: string | undefined;
+    '--primitive-color-apple-300'?: string | undefined;
+    '--primitive-color-apple-400'?: string | undefined;
+    '--primitive-color-apple-500'?: string | undefined;
+    '--primitive-color-apple-600'?: string | undefined;
+    '--primitive-color-apple-700'?: string | undefined;
+    '--primitive-color-apple-800'?: string | undefined;
+    '--primitive-color-apple-900'?: string | undefined;
+    '--primitive-color-apple-950'?: string | undefined;
     '--primitive-color-violet-50'?: string | undefined;
     '--primitive-color-violet-400'?: string | undefined;
     '--primitive-color-violet-700'?: string | undefined;

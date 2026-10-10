@@ -22,7 +22,7 @@ A machine- and human-readable specification of the Hirobius Design System for AI
 
 ## Overview
 
-Hirobius is a clean, systems-first visual language that bridges digital precision and physical fabrication through a high-contrast monochromatic palette and a single accent that each tenant sets — neutral by default (#208). Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
+Hirobius is a clean, systems-first visual language that bridges digital precision and physical fabrication through a high-contrast monochromatic neutral palette and a single accent that each tenant sets — a bright apple green by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
 
 ## Colors
 
@@ -62,14 +62,14 @@ Depth is communicated through 4 elevation roles bundled by `semantic.elevation.*
 
 ### Elevation roles
 
-| Surface                                | Role token                    | Background        | Shadow            | Border              |
-| -------------------------------------- | ----------------------------- | ----------------- | ----------------- | ------------------- |
-| Card / panel resting                   | `semantic.elevation.flat`     | `surface.page`    | none              | `border.subtle` 1px |
-| Card / panel lifted (interactive only) | `semantic.elevation.raised`   | `surface.raised`  | `shadow.subtle`   | none                |
-| Popover / dropdown / tooltip           | `semantic.elevation.floating` | `surface.raised`  | `shadow.floating` | none                |
-| Dialog / sheet / modal                 | `semantic.elevation.overlay`  | `surface.overlay` | `shadow.overlay`  | none                |
+| Surface                                | Role token                    | Background        | Shadow            | Border                                                   |
+| -------------------------------------- | ----------------------------- | ----------------- | ----------------- | -------------------------------------------------------- |
+| Card / panel resting                   | `semantic.elevation.flat`     | `surface.page`    | none              | none by default; opt-in 1px (`bordered`/`tone`/`accent`) |
+| Card / panel lifted (interactive only) | `semantic.elevation.raised`   | `surface.raised`  | `shadow.subtle`   | none                                                     |
+| Popover / dropdown / tooltip           | `semantic.elevation.floating` | `surface.raised`  | `shadow.floating` | none                                                     |
+| Dialog / sheet / modal                 | `semantic.elevation.overlay`  | `surface.overlay` | `shadow.overlay`  | none                                                     |
 
-Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
+Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked. The default `Card` variant is **borderless** (12d-3 outline rule: repeated outlined cards crowd a layout, so the edge is not the default) — a resting 1px border is **opt-in** via `bordered`, a feedback `tone`, or the `accent` variant (`border.default` / feedback color / `border.accent` respectively). Rely on whitespace, dividers, and rails for grouping; reach for `bordered` only for a genuinely discrete standalone object.
 
 Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
 
@@ -87,16 +87,16 @@ Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the n
 
 Every HDS card surface must conform to this anatomy exactly. No creative interpretation is permitted on any of these properties.
 
-| Property                 | Required value                                                                                           | Forbidden                                                                                   |
-| ------------------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Background               | `var(--semantic-color-surface-raised)`                                                                   | Any gradient, tinted fill, or custom color                                                  |
-| Border                   | `1px solid var(--semantic-color-border-default)`                                                         | `box-shadow` as an elevation substitute                                                     |
-| Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
-| Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                          | Raw pixel values or ad hoc insets                                                           |
-| Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised` | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
-| Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                        | Any other type style for the primary card heading                                           |
-| Subtitle / meta          | `hds.typeStyles.caption` + `var(--semantic-color-content-secondary)`                                     | Primary content color or body size for secondary text                                       |
-| Hover (interactive only) | `transform: scale(1.02)`                                                                                 | Background fill change, border color shift, or opacity fade on hover                        |
+| Property                 | Required value                                                                                                                                                                            | Forbidden                                                                                   |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Background               | `var(--semantic-color-surface-raised)`                                                                                                                                                    | Any gradient, tinted fill, or custom color                                                  |
+| Border                   | Default variant: **borderless**. Opt-in (`bordered`/`tone`/`accent`): 1px solid the matching token (`border.default` / feedback color / `border.accent`). Never border + shadow together. | `box-shadow` as an elevation substitute; a border on the default variant (use `bordered`)   |
+| Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                                                                                                 | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
+| Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                                                                                                           | Raw pixel values or ad hoc insets                                                           |
+| Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`                                                                                  | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
+| Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                                                                                                         | Any other type style for the primary card heading                                           |
+| Subtitle / meta          | `hds.typeStyles.caption` + `var(--semantic-color-content-secondary)`                                                                                                                      | Primary content color or body size for secondary text                                       |
+| Hover (interactive only) | `transform: scale(1.02)`                                                                                                                                                                  | Background fill change, border color shift, or opacity fade on hover                        |
 
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
 
@@ -140,7 +140,7 @@ Three more needs are props on an existing component, not components of their own
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob (#208) and defaults to neutral — read the token, never assume a hue.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob (#208) and defaults to a bright apple green — read the token, never assume a hue.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.

@@ -1,0 +1,1 @@
+Impeccable polish (docs-site rubric findings): Table data cells → items-center (badge/status no longer floats above text) + caption gap above the header band; reduced-motion guards (motion-reduce:) on Button/Input loading spinners + Progress width transition, matching Spinner/Progress policy. typecheck + lint + check-reduced-motion + 239 component tests green.

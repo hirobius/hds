@@ -108,7 +108,7 @@ Triggers an action when activated.
   - variant: "primary" | "secondary" | "tertiary" | null
 
 ### Callout
-Tone-driven side-rule callout for status, quotes, hypotheses.
+Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback fill language as Alert, without Alert's icon or status role.
   - italic: boolean = false
   - tone: 'accent' | 'info' | 'success' | 'warning' | 'danger' = info
 

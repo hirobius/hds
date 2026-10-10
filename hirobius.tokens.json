@@ -149,6 +149,53 @@
         },
         "$description": "Discrete values within the green range at defined lightness steps."
       },
+      "apple": {
+        "50": {
+          "$value": "#f2faeb",
+          "$description": "Apple-green accent tint — faintest step."
+        },
+        "100": {
+          "$value": "#e2f3cf",
+          "$description": "Apple-green accent — very light tint."
+        },
+        "200": {
+          "$value": "#c7e7a4",
+          "$description": "Apple-green accent — light tint."
+        },
+        "300": {
+          "$value": "#a6d873",
+          "$description": "Apple-green accent — soft mid-light step."
+        },
+        "400": {
+          "$value": "#85c84c",
+          "$description": "Apple-green accent — bright step; dark-mode rest accent."
+        },
+        "500": {
+          "$value": "#66b239",
+          "$description": "Apple-green accent rest — bright, rich apple green; AA for dark (neutral.900) text as a fill."
+        },
+        "600": {
+          "$value": "#54922d",
+          "$description": "Apple-green accent — hover / border step."
+        },
+        "700": {
+          "$value": "#416f20",
+          "$description": "Apple-green accent — pressed and accent-intent text (AA for text on page and card surfaces)."
+        },
+        "800": {
+          "$value": "#34571b",
+          "$description": "Apple-green accent — deep step."
+        },
+        "900": {
+          "$value": "#2b4518",
+          "$description": "Apple-green accent — darkest usable step."
+        },
+        "950": {
+          "$value": "#16250c",
+          "$description": "Apple-green accent — near-black green substrate."
+        },
+        "$description": "Discrete values within the apple-green (brand accent) range at defined lightness steps. Distinct from the emerald `green` feedback/success scale."
+      },
       "violet": {
         "50": {
           "$value": "#f5f3ff",
@@ -1098,25 +1145,25 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.neutral.900}",
-          "$description": "Accent-colored background (neutral/monochrome; inverts to a light neutral on dark surfaces).",
+          "$value": "{primitive.color.apple.500}",
+          "$description": "Accent-colored background — bright apple green (stays green on dark surfaces; pair with content.onAccent dark text).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.900}",
-                "Dark": "{primitive.color.neutral.100}"
+                "Light": "{primitive.color.apple.500}",
+                "Dark": "{primitive.color.apple.400}"
               }
             }
           }
         },
         "accentSubtle": {
-          "$value": "{primitive.color.neutral.100}",
+          "$value": "{primitive.color.apple.50}",
           "$description": "Faint accent tint for hover states or highlights",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.100}",
-                "Dark": "{primitive.color.neutral.900}"
+                "Light": "{primitive.color.apple.50}",
+                "Dark": "{primitive.color.apple.900}"
               }
             }
           }
@@ -1228,24 +1275,24 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.neutral.900}",
-          "$description": "Accent-intent text/icon color (monochrome). Pair with underline/weight for link affordance.",
+          "$value": "{primitive.color.apple.700}",
+          "$description": "Accent-intent text/icon color — a dark apple green legible on page and card surfaces. Pair with underline/weight for link affordance.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.900}",
-                "Dark": "{primitive.color.neutral.100}"
+                "Light": "{primitive.color.apple.700}",
+                "Dark": "{primitive.color.apple.400}"
               }
             }
           }
         },
         "onAccent": {
-          "$value": "{primitive.color.neutral.white}",
-          "$description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where accent fills are light.",
+          "$value": "{primitive.color.neutral.900}",
+          "$description": "Text/icon color on accent fills — a dark neutral, since the brand accent fill is a bright apple green in both light and dark mode.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.white}",
+                "Light": "{primitive.color.neutral.900}",
                 "Dark": "{primitive.color.neutral.900}"
               }
             }
@@ -1347,13 +1394,13 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.neutral.900}",
-          "$description": "Accent border (neutral/monochrome; inverts on dark surfaces).",
+          "$value": "{primitive.color.apple.600}",
+          "$description": "Accent border — apple green, dark enough to read as a boundary on page and card surfaces.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.900}",
-                "Dark": "{primitive.color.neutral.100}"
+                "Light": "{primitive.color.apple.600}",
+                "Dark": "{primitive.color.apple.400}"
               }
             }
           }
@@ -1865,37 +1912,37 @@
     "accent": {
       "$type": "color",
       "rest": {
-        "$value": "{primitive.color.neutral.900}",
-        "$description": "Default accent fill for interactive elements at rest. Neutral (monochrome) accent — inverts to a light neutral on dark surfaces.",
+        "$value": "{primitive.color.apple.500}",
+        "$description": "Default accent fill for interactive elements at rest — bright apple green. Pair with content.onAccent (a dark neutral).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.neutral.900}",
-              "Dark": "{primitive.color.neutral.100}"
+              "Light": "{primitive.color.apple.500}",
+              "Dark": "{primitive.color.apple.400}"
             }
           }
         }
       },
       "hover": {
-        "$value": "{primitive.color.neutral.800}",
+        "$value": "{primitive.color.apple.600}",
         "$description": "Accent fill on pointer hover.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.neutral.800}",
-              "Dark": "{primitive.color.neutral.200}"
+              "Light": "{primitive.color.apple.600}",
+              "Dark": "{primitive.color.apple.500}"
             }
           }
         }
       },
       "pressed": {
-        "$value": "{primitive.color.neutral.950}",
+        "$value": "{primitive.color.apple.700}",
         "$description": "Accent fill during active press.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.neutral.950}",
-              "Dark": "{primitive.color.neutral.300}"
+              "Light": "{primitive.color.apple.700}",
+              "Dark": "{primitive.color.apple.600}"
             }
           }
         }
@@ -1925,37 +1972,37 @@
         }
       },
       "content": {
-        "$value": "{primitive.color.neutral.900}",
-        "$description": "Text and icon color on neutral surfaces with accent intent. Monochrome — pair with underline/weight for link affordance.",
+        "$value": "{primitive.color.apple.700}",
+        "$description": "Accent-intent text/icon color on neutral surfaces (a dark apple green) — pair with underline/weight for link affordance.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.neutral.900}",
-              "Dark": "{primitive.color.neutral.100}"
+              "Light": "{primitive.color.apple.700}",
+              "Dark": "{primitive.color.apple.400}"
             }
           }
         }
       },
       "contentHover": {
-        "$value": "{primitive.color.neutral.700}",
+        "$value": "{primitive.color.apple.800}",
         "$description": "Accent content color on pointer hover.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.neutral.700}",
-              "Dark": "{primitive.color.neutral.300}"
+              "Light": "{primitive.color.apple.800}",
+              "Dark": "{primitive.color.apple.300}"
             }
           }
         }
       },
       "subtle": {
-        "$value": "{primitive.color.neutral.100}",
+        "$value": "{primitive.color.apple.50}",
         "$description": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.neutral.100}",
-              "Dark": "{primitive.color.neutral.800}"
+              "Light": "{primitive.color.apple.50}",
+              "Dark": "{primitive.color.apple.900}"
             }
           }
         }

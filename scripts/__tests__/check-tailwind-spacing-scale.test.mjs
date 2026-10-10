@@ -61,3 +61,31 @@ describe('check-tailwind-spacing-scale: canary', () => {
     expect(run('--strict', '--only', 'passing.example.tsx').status).toBe(0);
   });
 });
+
+describe('check-tailwind-spacing-scale: fixture mode (proof-of-firing)', () => {
+  // The proof-of-firing harness runs `node <gate> --fixture-mode` with
+  // FIXTURE_FILE pointing at one fixture, and expects exit 1 on the violating
+  // file and exit 0 on the passing one. Before this, the gate ignored
+  // --fixture-mode, scanned src/app/components, and was WARN-only (exit 0) — so
+  // it could never fire against its own fixture (proof-of-firing was blind).
+  const runFixture = (fixtureFile) =>
+    spawnSync(process.execPath, ['scripts/check-tailwind-spacing-scale.mjs', '--fixture-mode'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        HDS_FIXTURE_MODE: '1',
+        FIXTURE_FILE: path.join(ROOT, 'fixtures', 'check-tailwind-spacing-scale', fixtureFile),
+      },
+    });
+
+  it('exits 1 on the violating fixture (gate fires)', () => {
+    const r = runFixture('violating.example.tsx');
+    expect(r.status).toBe(1);
+    expect(r.stdout).toContain('violating.example.tsx');
+  });
+
+  it('exits 0 on the passing fixture (no false positive)', () => {
+    expect(runFixture('passing.example.tsx').status).toBe(0);
+  });
+});

@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Callout now renders as a tinted feedback fill (rounded, no left stripe) matching Alert, with the accent tone using a neutral muted fill."
+}

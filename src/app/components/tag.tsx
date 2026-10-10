@@ -32,7 +32,7 @@ const tagButtonVariants = /* @__PURE__ */ cva(
   // regulatory floor, not a design-scale choice; no semantic size scale exists
   // yet for dimensional primitives (see hds#186 follow-up).
   // tier-ok: regulatory a11y constant, not a design decision. hds#186
-  'group inline-flex min-w-[var(--primitive-size-interactive-min)] cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-inherit transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
+  'group inline-flex min-w-[var(--primitive-size-interactive-min)] cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-inherit transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-tag-* sizing/radius tokens have no Tailwind-theme utility; var()-based so still token-driven

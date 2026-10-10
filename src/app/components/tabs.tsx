@@ -63,7 +63,7 @@ export function TabsTrigger({
         'border-b-2 border-transparent text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
         'data-[state=active]:border-foreground data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
-        'disabled:pointer-events-none disabled:opacity-50',
+        'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
         className,
       )}
       {...props}

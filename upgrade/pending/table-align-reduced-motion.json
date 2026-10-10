@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Table data cells vertically center their content (badge/status slots no longer float above text) and the caption gains spacing above the table; loading spinners and the progress bar stop animating under prefers-reduced-motion."
+}

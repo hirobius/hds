@@ -2,7 +2,10 @@
 
 [![CI](https://github.com/hirobius/hds/actions/workflows/ci.yml/badge.svg)](https://github.com/hirobius/hds/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/@hirobius/design-system)](https://www.npmjs.com/package/@hirobius/design-system) [![Storybook](https://img.shields.io/badge/Storybook-live-ff4785)](https://hirobius-design-system.vercel.app)
 
-React + TypeScript component library on a governed design-token pipeline. Live Storybook: **<https://hirobius-design-system.vercel.app>**
+**A governed, token-first React design system.** Components plus the system
+around them: a DTCG token pipeline (CSS variables + TypeScript constants),
+quality gates in git hooks and CI, one-way Figma sync, and WCAG-checked contrast
+and focus. Live Storybook: **<https://hirobius-design-system.vercel.app>**
 
 ```bash
 pnpm add @hirobius/design-system
@@ -15,13 +18,18 @@ Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. Fro
 <!-- auto:start:front-door-counts -->
 
 - **53** public component modules, exported from `src/index.ts`
-- **389** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **400** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 - **341** Storybook stories in **71** story files
 
 <!-- auto:end:front-door-counts -->
 
-- Theming through four root attributes and CSS variables (theme, density, brand, font) that need no JavaScript
-- Deterministic gates in git hooks and CI: typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, bundle budgets, a consumer smoke build, and a Storybook build
+What the system includes:
+
+- **Token pipeline.** DTCG tokens in `hirobius.tokens.json` compile to CSS variables and TypeScript constants through a validated alias chain, with AA-contrast gates in light and dark.
+- **Gates with proof-of-firing.** Typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, bundle budgets, a consumer smoke build, and a Storybook build — run in git hooks and CI. Many gates carry a passing and a violating fixture that demonstrate the gate catches what it describes.
+- **Upgrade path.** A release ledger and one consumer command: `npx @hirobius/design-system@latest upgrade`.
+- **One-way Figma sync.** Code is the source of truth; tokens project into Figma, and `pnpm check:figma-drift` compares a committed snapshot against the model.
+- **Theming without JavaScript.** Four root attributes — theme, density, brand, font — re-skin HDS descendants through CSS variables.
 
 The counts are generated from source by `pnpm readme:counts`, which `pnpm tokens` also runs. `scripts/__tests__/front-door.test.mjs` fails if this README claims more than the source has.
 
@@ -217,7 +225,7 @@ Screen-reader output is checked by `tests/primitive-contracts/screen-reader.cont
 
 ## Visual direction: Editorial Enterprise
 
-The governing direction is "Editorial Enterprise" — enterprise rigor with editorial pacing. It favors sharp hierarchy, open whitespace, monochrome neutrals, and a single electric-blue accent. In practice:
+The governing direction is "Editorial Enterprise" — enterprise rigor with editorial pacing. It favors sharp hierarchy, open whitespace, monochrome neutrals, and a single tenant-set accent. In practice:
 
 - documentation reads like a designed publication, not a component dump
 - cards are used sparingly; whitespace, rails, dividers, and bands carry structure first

@@ -15,24 +15,24 @@ import { cn } from '../../lib/utils';
 type CalloutTone = 'accent' | 'info' | 'success' | 'warning' | 'danger';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
-// Tone drives the left-rule color and the bg. accent/info/success/warning use the
-// raised bg for grouping; danger inverts to surface-page so the red rule stands
-// out against the surrounding raised card surface. The feedback rule colors use
-// the named border utilities (border-feedback-*) from tailwind.config; accent +
-// the surface backgrounds have no named utility, so they stay var()-based.
-// outline-ok: the left border is a signal-bearing rule, not a container outline.
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven padding + accent/surface vars have no Tailwind-theme utility
+// Tone drives a tinted FILL, the one feedback-banner language shared with Alert
+// (bg-feedback-bg-*), not a left stripe — a >1px colored side-rule was the lone
+// anti-pattern left in the set, and two feedback components carrying tone in
+// opposite ways (Alert fill vs Callout stripe) read as two systems. Callout stays
+// distinct by role, not by mechanism: no icon, no aria role, and an `italic`
+// option (quote/pull-quote), vs Alert's icon + status role. `accent` is not a
+// feedback state, so it takes a neutral muted fill rather than a tinted one.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven padding/radius; var()-based, no Tailwind-theme utility
 const calloutVariants = /* @__PURE__ */ cva(
-  'border-l-[3px] p-[var(--semantic-space-surface-padding)]',
+  'rounded-[var(--primitive-radius-4)] p-[var(--semantic-space-surface-padding)]',
   {
     variants: {
       tone: {
-        accent:
-          'border-l-[color:var(--semantic-color-content-accent)] bg-[color:var(--semantic-color-surface-raised)]',
-        info: 'border-l-feedback-info bg-[color:var(--semantic-color-surface-raised)]',
-        success: 'border-l-feedback-success bg-[color:var(--semantic-color-surface-raised)]',
-        warning: 'border-l-feedback-warning bg-[color:var(--semantic-color-surface-raised)]',
-        danger: 'border-l-feedback-danger bg-[color:var(--semantic-color-surface-page)]',
+        accent: 'bg-muted',
+        info: 'bg-feedback-bg-info',
+        success: 'bg-feedback-bg-success',
+        warning: 'bg-feedback-bg-warning',
+        danger: 'bg-feedback-bg-danger',
       },
       italic: {
         true: 'italic',
@@ -54,7 +54,8 @@ export interface CalloutProps
 }
 
 /**
- * Tone-driven side-rule callout for status, quotes, hypotheses.
+ * Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback
+ * fill language as Alert, without Alert's icon or status role.
  */
 export const Callout = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CalloutProps>(
   function Callout({ tone = 'info', italic = false, className, children, ...rest }, ref) {

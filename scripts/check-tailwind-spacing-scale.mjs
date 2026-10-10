@@ -68,8 +68,18 @@ function main() {
   const arg = (n) => (argv.includes(`--${n}`) ? argv[argv.indexOf(`--${n}`) + 1] : undefined);
   const dir = path.resolve(ROOT, arg('dir') ?? 'src/app/components');
   const only = arg('only');
+
+  // Fixture mode (proof-of-firing harness): scan ONLY the single FIXTURE_FILE and
+  // behave strictly — a finding is exit 1. Without this the gate is WARN-only and
+  // scans src/app/components, so the fixture is never seen and the gate can never
+  // prove it fires. The normal WARN-mode behavior on the real tree is unchanged.
+  const isFixtureMode = argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+  const fixtureFile = process.env.FIXTURE_FILE;
+
+  const filesToScan = isFixtureMode && fixtureFile ? [path.resolve(fixtureFile)] : walk(dir);
+
   const findings = [];
-  for (const f of walk(dir)) {
+  for (const f of filesToScan) {
     if (only && path.basename(f) !== only) continue;
     for (const x of scanSource(fs.readFileSync(f, 'utf8'))) {
       findings.push({ file: path.relative(ROOT, f), ...x });
@@ -87,7 +97,7 @@ function main() {
       `\n${findings.length} raw Tailwind spacing class(es) in ${files.size} file(s): ${byKind('off-scale')} off-scale, ${byKind('raw-numeric')} raw-numeric. Use gap-[var(--semantic-space-scale-md)] style tokens (xs..xl).`,
     );
   }
-  const strict = argv.includes('--strict');
+  const strict = argv.includes('--strict') || isFixtureMode;
   if (!argv.includes('--json')) console.log(strict ? 'STRICT' : 'warn mode');
   process.exit(strict && findings.length ? 1 : 0);
 }

@@ -1,0 +1,4 @@
+{
+  "__stub": true,
+  "todo": "TODO: replace with real-passing-example — reads the npm pack manifest of dist/ — needs pnpm build:lib + pack, not an isolated file"
+}
