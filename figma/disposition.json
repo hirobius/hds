@@ -6,17 +6,30 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-07",
-  "overrides": {},
+  "generatedAt": "2026-10-10",
+  "overrides": {
+    "PageHeader": {
+      "class": "library",
+      "reason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
+    },
+    "MetricTiles": {
+      "class": "library",
+      "reason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
+    },
+    "ErrorPattern": {
+      "class": "library",
+      "reason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
+    }
+  },
   "summary": {
     "total": 97,
     "byClass": {
-      "library": 56,
-      "slot": 19,
-      "layout": 9,
-      "internal": 13
+      "library": 59,
+      "slot": 18,
+      "layout": 8,
+      "internal": 12
     },
-    "libraryLinked": 56,
+    "libraryLinked": 59,
     "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
@@ -327,11 +340,13 @@
     },
     {
       "name": "ErrorPattern",
-      "class": "internal",
+      "class": "library",
       "parent": null,
       "category": "Feedback",
       "tier": "template",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
+      "overriddenFrom": "internal",
+      "overrideReason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
     },
     {
       "name": "Field",
@@ -527,11 +542,13 @@
     },
     {
       "name": "MetricTiles",
-      "class": "slot",
+      "class": "library",
       "parent": "MetricTile",
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
+      "overriddenFrom": "slot",
+      "overrideReason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
     },
     {
       "name": "Page",
@@ -543,11 +560,13 @@
     },
     {
       "name": "PageHeader",
-      "class": "layout",
+      "class": "library",
       "parent": null,
       "category": "Layout",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
+      "overriddenFrom": "library",
+      "overrideReason": "Drawn in the library as its own component on 2026-10-10 (figma-patterns session); a screen pattern composed of Breadcrumb, Badge, Button and MetricTile instances, so Figma carries it."
     },
     {
       "name": "Pagination",

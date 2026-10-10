@@ -35,6 +35,7 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
  * Screen header: breadcrumb slot, the title at the one canonical page-title size
  * (`heading2`), a status slot and an actions slot. Every screen has exactly one.
  * `display` and `h1` type are reserved for marketing and landing surfaces.
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3
  * @screenPattern
  */
 export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHeaderProps>(
