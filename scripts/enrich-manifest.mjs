@@ -1,7 +1,7 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 import fs from 'node:fs';
 import path from 'node:path';
-import { buildStoryIndex, findStoryFiles } from './lib/story-link.mjs';
+import { docsPagePath, loadDocsRouting } from './lib/docs-routing.mjs';
 import { deriveRequiredProps, refreshSpecProps } from './lib/manifest-props.mjs';
 
 const repoRoot = process.cwd();
@@ -270,29 +270,18 @@ for (const [name, spec] of Object.entries(componentSpecs)) {
   }
 }
 
-// Join each component to the stories that exercise it. The manifest is the
-// declared source of truth for inventory and Figma links and could not answer
-// "where is Button's story", though the link was derivable from source all
-// along -- so nothing could gate it and an agent looking for an editing target
-// had to grep. Ids are derived rather than read from storybook-static, so this
-// needs no build; scripts/__tests__/story-link.test.mjs asserts the derivation
-// against the real index.json whenever one is present.
-const storyFiles = findStoryFiles(repoRoot);
-const { byFilePath: storiesByFilePath } = buildStoryIndex(
-  storyFiles.map((p) => ({ path: p, source: fs.readFileSync(path.join(repoRoot, p), 'utf8') })),
-  new Set(
-    Object.values(componentSpecs)
-      .map((spec) => spec.filePath)
-      .filter(Boolean),
-  ),
-);
-
-for (const [, spec] of Object.entries(componentSpecs)) {
-  const link = spec.filePath ? storiesByFilePath.get(spec.filePath) : undefined;
-  // Always written, including as empty arrays: a component with no story is a
-  // fact worth recording, and an absent field reads as "not yet computed".
-  spec.storyFiles = link?.storyFiles ?? [];
-  spec.storyIds = link?.storyIds ?? [];
+// Join each component to the docs-site page that documents it (hds#506). The
+// docs site replaced Storybook as the place a component is shown, so the
+// manifest answers "where is Button documented" with a site-relative path
+// (`/docs/components/button`) instead of story ids. Always written, null when
+// the component has no page: an absent field reads as "not yet computed". The
+// public origin is figma/links.json docsUrl, so a moved site never touches the
+// manifest. Routing rules: docsPageFor() in scripts/lib/docs-component-pages.mjs.
+const docsRouting = loadDocsRouting(repoRoot);
+for (const [name, spec] of Object.entries(componentSpecs)) {
+  delete spec.storyFiles;
+  delete spec.storyIds;
+  spec.docsPage = docsPagePath(name, docsRouting);
 }
 
 manifest.componentSpecs = componentSpecs;

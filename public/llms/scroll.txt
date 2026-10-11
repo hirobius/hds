@@ -19,4 +19,4 @@ Negative rules:
 - No GSAP/ScrollTrigger or bespoke Lenis wiring inside `@hirobius/design-system` — those stay app-level/downstream, composed from `Reveal`/`Pin`/`useScrollProgress`/`SmoothScroll`.
 - Every scroll effect must degrade to fully visible/static content — never gate content visibility behind `animation-timeline` support or a scroll listener with no fallback.
 
-Reference: `src/app/components/reveal.tsx`, `src/app/components/pin.tsx`, `src/scroll/` (`use-scroll-progress.ts`, `smooth-scroll.tsx`), ADR-021, and `src/stories/patterns-scroll.stories.tsx` for golden-path examples.
+Reference: `src/app/components/reveal.tsx`, `src/app/components/pin.tsx`, `src/scroll/` (`use-scroll-progress.ts`, `smooth-scroll.tsx`), ADR-021, and the Reveal pattern page on the docs site (`/docs/patterns/reveal`) for golden-path examples.

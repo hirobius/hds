@@ -185,7 +185,7 @@ Cards default to `flat`. They lift to `raised` only on interactive hover or when
 
 ## Component Contract Tags (JSDoc)
 
-Say when to use a component in its JSDoc, on the block directly above the exported component (or the file-level block for a single-component file). `pnpm manifest:generate` parses these tags (`scripts/lib/jsdoc-contract.mjs`) into `usage`, `slots`, `keyboard` and `aiRules` on the spec in `public/hds-manifest.json`, into `src/app/data/component-api.json`, into the "Which one when" section of `public/llms.txt`, and into the "When to use" block of the generated component page and the Storybook Docs description.
+Say when to use a component in its JSDoc, on the block directly above the exported component (or the file-level block for a single-component file). `pnpm manifest:generate` parses these tags (`scripts/lib/jsdoc-contract.mjs`) into `usage`, `slots`, `keyboard` and `aiRules` on the spec in `public/hds-manifest.json`, into `src/app/data/component-api.json`, into the "Which one when" section of `public/llms.txt`, and into the "When to use" block of the generated component page and the generated docs-site page.
 
 | Tag                                | Body                                                                                                                                                                         | Repeatable |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |

@@ -49,7 +49,7 @@
  *   node scripts/figma-push.mjs --bundle <out>
  *                              write only the sync bundle the Sync plugin fetches
  *                              (the Vercel build writes it to
- *                              storybook-static/figma/sync-bundle.json). Needs no
+ *                              docs-site/out/figma/sync-bundle.json). Needs no
  *                              secret and no network; the commit comes from
  *                              VERCEL_GIT_COMMIT_SHA, else git.
  */
@@ -329,7 +329,7 @@ export function formatRun({ model, prune, files, pluginBuild }, outDir) {
     '',
     `  Sync plugin (build ${pluginBuild}; code.js ${sizeOf('plugin/code.js').toLocaleString('en-US')} B, no model inside):`,
     `    ${rel}/plugin/  →  overwrite manifest.json, code.js and ui.html in the folder Figma imported "HDS tokens sync" from.`,
-    '    In the library: Plugins → Development → HDS tokens sync → Sync. It fetches the model the Storybook deploy publishes,',
+    '    In the library: Plugins → Development → HDS tokens sync → Sync. It fetches the model the docs site publishes,',
     '    so these files change only when the plugin build above does. It never prunes.',
     '',
     '  Promote plugin, model baked in (deliberate prunes only, run by Adrian):',
@@ -357,7 +357,7 @@ function runBundle(args) {
   const out = args[at + 1];
   if (!out || out.startsWith('--')) {
     throw new Error(
-      '--bundle needs an output path, e.g. --bundle storybook-static/figma/sync-bundle.json.',
+      '--bundle needs an output path, e.g. --bundle docs-site/out/figma/sync-bundle.json.',
     );
   }
   if (args.includes('--prune')) {
@@ -384,7 +384,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     } catch (error) {
       console.error(`✗ figma:push --bundle — ${error.message}`);
       console.error(
-        '  The Figma Sync plugin fetches this file from the deployed Storybook, so the build stops here instead of deploying without it. Fix the cause above, then redeploy.',
+        '  The Figma Sync plugin fetches this file from the deployed docs site, so the build stops here instead of deploying without it. Fix the cause above, then redeploy.',
       );
       process.exit(1);
     }

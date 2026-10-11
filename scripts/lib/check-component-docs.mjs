@@ -3,22 +3,25 @@
 /**
  * check-component-docs.mjs
  *
- * Documentation coverage gate for shared React components.
- * Every top-level component in src/app/components/*.tsx must be shown by at
- * least one Storybook story unless it is explicitly exempted as an internal
- * utility.
+ * Documentation coverage gate for the documented surface: every core component
+ * and pattern must have a page on the docs site (docs-site/, hds#506) with a
+ * live demo, i.e. a DEMOS entry in docs-site/components/component-demos.tsx
+ * whose name is listed in docs-site/lib/previewed-components.ts.
  *
  * "A component that isn't documented doesn't exist in the DS."
  *
- * WHERE DOCUMENTATION LIVES. Until ADR-018 it was a bespoke 48-page docs site,
- * and this gate looked for <HdsComponentDoc> / <CategoryComponentDocs> JSX in
- * 11 named page files. ADR-018 cut that site — "the 64 stories become the sole
- * component showcase" — and deleted all 11, but nothing re-pointed the gate. It
- * went on parsing paths that no longer existed, found no signals, and reported
- * 0 of 104 components documented on every run since. That is not a coverage
- * finding; with every input deleted it is the only number the gate could
- * produce. It is now pointed at src/stories, which is where the showcase
- * actually is.
+ * WHERE DOCUMENTATION LIVES. A bespoke 48-page docs site until ADR-018, then
+ * Storybook stories (this gate scanned src/stories), now the Fumadocs docs site:
+ * one generated page per core component and pattern, each with a live demo.
+ * Pages come from the component data (scripts/lib/docs-component-pages.mjs), so
+ * what a component needs from a person is its demo. The providers have no demo:
+ * they are documented on the providers guide, which is generated for them.
+ *
+ * What is in scope is the documented surface, not every discovered component:
+ * the core set (mcp/core-set.mjs) and the modules src/patterns.ts re-exports
+ * (scripts/lib/docs-routing.mjs). Compound parts (CardHeader) are documented on
+ * their parent's page. A component outside both lists is not on the docs site
+ * by decision, so it is not reported as undocumented.
  *
  * Usage: pnpm check:docs
  *
@@ -28,25 +31,19 @@
  * 2. Or add its filename to INTERNAL_COMPONENTS below for legacy exemptions.
  */
 
-import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { pathToFileURL } from 'url';
 import ts from 'typescript';
 import { discoverHdsComponents } from '../component-discovery.mjs';
+import { loadDocsRouting } from './docs-routing.mjs';
 
 const ROOT = process.cwd();
 const MANIFEST_PATH = join(ROOT, 'public', 'hds-manifest.json');
 const COMPONENT_API_PATH = join(ROOT, 'src', 'app', 'data', 'component-api.json');
 
-// Kept in step with .storybook/main.ts's `stories` glob. If that glob moves,
-// this gate stops seeing the showcase and silently reports everything
-// undocumented — which is exactly the failure ADR-018 left behind.
-const STORIES_DIR = join(ROOT, 'src/stories');
-
-// Only imports resolving into the shared component directory can document a
-// component. A story also imports Storybook types, React, and local helpers
-// like designParameters; none of those are components.
-const COMPONENT_IMPORT = /^\.\.\/app\/components\//;
+const DEMOS_FILE = join(ROOT, 'docs-site/components/component-demos.tsx');
+const PREVIEWED_FILE = join(ROOT, 'docs-site/lib/previewed-components.ts');
 
 const INVENTORY_ONLY_CATEGORIES = new Set(['Utilities', 'Lab', 'Branding']);
 
@@ -59,107 +56,83 @@ function readText(path) {
 }
 
 /**
- * Every component name a single story file documents.
+ * The names a source file lists in an array literal assigned to `exportName`,
+ * read from the syntax tree (`as const` and `satisfies` look through).
  *
- * Three signals, unioned. `component:` in the story meta is the primary one —
- * it is what Storybook itself uses to bind autodocs and the props table. But a
- * story sets exactly one, and compound components ship as several discovered
- * components. Named imports from the shared component directory are the second.
- *
- * The third exists because the first two miss whatever a compound component
- * hides behind its namespace. card.stories.tsx imports only `Card` and renders
- * <Card.Header>; card.tsx assigns `Card.Header = CardHeader`. CardHeader is on
- * screen in Storybook but its name appears nowhere in the story, so counting
- * identifiers alone calls five rendered components undocumented. `resolveMember`
- * maps a member access back to the component it resolves to.
- *
- * Type-only imports are excluded: importing CardProps documents nothing.
- *
- * Pure over a source string so the reading is testable without a filesystem;
- * the one lookup that needs the filesystem is injected.
- *
- * @param {string} text - story file source
- * @param {string} [fileName] - only affects TypeScript's error positions
- * @param {(local: string, member: string) => string | null} [resolveMember]
- *   given `Card` and `Header`, returns `CardHeader` if that compound member
- *   exists; null otherwise. Defaults to resolving nothing.
- * @returns {Set<string>} component names this story documents
+ * @param {string} text
+ * @param {string} exportName
+ * @returns {Set<string>}
  */
-export function collectStoryComponentNames(
-  text,
-  fileName = 'story.stories.tsx',
-  resolveMember = () => null,
-) {
+export function collectArrayNames(text, exportName) {
   const names = new Set();
   if (!text) return names;
-
   const sourceFile = ts.createSourceFile(
-    fileName,
+    'x.ts',
+    text,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  );
+  const unwrap = (node) => {
+    let current = node;
+    while (
+      current &&
+      (ts.isAsExpression(current) ||
+        ts.isSatisfiesExpression(current) ||
+        ts.isParenthesizedExpression(current))
+    ) {
+      current = current.expression;
+    }
+    return current;
+  };
+  for (const statement of sourceFile.statements) {
+    if (!ts.isVariableStatement(statement)) continue;
+    for (const declaration of statement.declarationList.declarations) {
+      if (!ts.isIdentifier(declaration.name) || declaration.name.text !== exportName) continue;
+      const value = unwrap(declaration.initializer);
+      if (!value || !ts.isArrayLiteralExpression(value)) continue;
+      for (const element of value.elements) {
+        if (ts.isStringLiteralLike(element)) names.add(element.text);
+      }
+    }
+  }
+  return names;
+}
+
+/**
+ * The keys of the object literal assigned to `exportName` (the DEMOS registry).
+ *
+ * @param {string} text
+ * @param {string} exportName
+ * @returns {Set<string>}
+ */
+export function collectObjectKeys(text, exportName) {
+  const keys = new Set();
+  if (!text) return keys;
+  const sourceFile = ts.createSourceFile(
+    'x.tsx',
     text,
     ts.ScriptTarget.Latest,
     true,
     ts.ScriptKind.TSX,
   );
-
-  function visit(node) {
-    // import { Card, CardHeader } from '../app/components/card'
-    if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
-      const specifier = node.moduleSpecifier.text;
-      const clause = node.importClause;
-
-      if (clause && !clause.isTypeOnly && COMPONENT_IMPORT.test(specifier)) {
-        if (clause.name) names.add(clause.name.text);
-
-        if (clause.namedBindings && ts.isNamedImports(clause.namedBindings)) {
-          for (const element of clause.namedBindings.elements) {
-            if (element.isTypeOnly) continue;
-            names.add(element.name.text);
-          }
+  for (const statement of sourceFile.statements) {
+    if (!ts.isVariableStatement(statement)) continue;
+    for (const declaration of statement.declarationList.declarations) {
+      if (!ts.isIdentifier(declaration.name) || declaration.name.text !== exportName) continue;
+      const value = declaration.initializer;
+      if (!value || !ts.isObjectLiteralExpression(value)) continue;
+      for (const prop of value.properties) {
+        if (
+          (ts.isPropertyAssignment(prop) || ts.isShorthandPropertyAssignment(prop)) &&
+          (ts.isIdentifier(prop.name) || ts.isStringLiteralLike(prop.name))
+        ) {
+          keys.add(prop.name.text);
         }
       }
     }
-
-    // const meta = { title: '...', component: Badge }
-    if (ts.isPropertyAssignment(node)) {
-      const key = ts.isIdentifier(node.name)
-        ? node.name.text
-        : ts.isStringLiteral(node.name)
-          ? node.name.text
-          : null;
-
-      if (key === 'component') {
-        let value = node.initializer;
-        while (value && (ts.isAsExpression(value) || ts.isSatisfiesExpression(value))) {
-          value = value.expression;
-        }
-        if (value && ts.isIdentifier(value)) names.add(value.text);
-      }
-    }
-
-    // <Card.Header /> in JSX, or Card.Header referenced as a value.
-    let namespace = null;
-    let member = null;
-
-    if (ts.isJsxSelfClosingElement(node) || ts.isJsxOpeningElement(node)) {
-      if (ts.isPropertyAccessExpression(node.tagName)) {
-        namespace = ts.isIdentifier(node.tagName.expression) ? node.tagName.expression.text : null;
-        member = node.tagName.name.text;
-      }
-    } else if (ts.isPropertyAccessExpression(node) && ts.isIdentifier(node.expression)) {
-      namespace = node.expression.text;
-      member = node.name.text;
-    }
-
-    if (namespace && member) {
-      const resolved = resolveMember(namespace, member);
-      if (resolved) names.add(resolved);
-    }
-
-    ts.forEachChild(node, visit);
   }
-
-  visit(sourceFile);
-  return names;
+  return keys;
 }
 
 /**
@@ -262,90 +235,28 @@ export function collectCompoundMembers(text) {
 }
 
 /**
- * Builds the `resolveMember` callback for one story, by reading the component
- * modules that story imports from and recording what each attaches to its
- * exports. Memoised per module — 112 stories importing ~30 shared modules
- * would otherwise re-parse each one many times over.
+ * The components the docs site documents: a DEMOS entry (the live demo) whose
+ * name is listed in PREVIEWED_COMPONENTS (the page marks it previewable), plus
+ * the providers, which the providers guide covers. Both registries are read
+ * from source, so a name in one and not the other is not documented.
  *
- * @param {string} storyText - story file source
- * @returns {(local: string, member: string) => string | null}
- */
-const compoundMemberCache = new Map();
-
-function memberResolverFor(storyText) {
-  if (!storyText) return () => null;
-
-  // local import name → the component module it came from
-  const moduleByLocal = new Map();
-  const sourceFile = ts.createSourceFile(
-    'story.tsx',
-    storyText,
-    ts.ScriptTarget.Latest,
-    true,
-    ts.ScriptKind.TSX,
-  );
-
-  for (const statement of sourceFile.statements) {
-    if (!ts.isImportDeclaration(statement)) continue;
-    if (!ts.isStringLiteral(statement.moduleSpecifier)) continue;
-    const specifier = statement.moduleSpecifier.text;
-    if (!COMPONENT_IMPORT.test(specifier)) continue;
-
-    const clause = statement.importClause;
-    if (!clause || clause.isTypeOnly) continue;
-
-    // '../app/components/card' resolves relative to src/stories.
-    const modulePath = join(STORIES_DIR, `${specifier}.tsx`);
-    if (clause.name) moduleByLocal.set(clause.name.text, modulePath);
-    if (clause.namedBindings && ts.isNamedImports(clause.namedBindings)) {
-      for (const element of clause.namedBindings.elements) {
-        if (element.isTypeOnly) continue;
-        // `import { Card as C }` — the assignment in the module is on the
-        // exported name, so record that, not the story's alias.
-        moduleByLocal.set(element.name.text, modulePath);
-      }
-    }
-  }
-
-  return (local, member) => {
-    const modulePath = moduleByLocal.get(local);
-    if (!modulePath) return null;
-
-    if (!compoundMemberCache.has(modulePath)) {
-      compoundMemberCache.set(modulePath, collectCompoundMembers(readText(modulePath)));
-    }
-    return compoundMemberCache.get(modulePath).get(local)?.get(member) ?? null;
-  };
-}
-
-/**
- * Every component name documented by any story under src/stories.
- *
+ * @param {{ previewedText: string, demosText: string, providers?: string[] }} sources
  * @returns {Set<string>}
  */
-function collectDocumentedComponentNames() {
-  const documented = new Set();
-  if (!existsSync(STORIES_DIR)) return documented;
-
-  const stack = [STORIES_DIR];
-  while (stack.length > 0) {
-    const dir = stack.pop();
-    for (const entry of readdirSync(dir)) {
-      const full = join(dir, entry);
-      if (statSync(full).isDirectory()) {
-        stack.push(full);
-        continue;
-      }
-      if (!/\.stories\.tsx?$/.test(entry)) continue;
-      const text = readText(full);
-      const resolveMember = memberResolverFor(text);
-      for (const name of collectStoryComponentNames(text, full, resolveMember)) {
-        documented.add(name);
-      }
-    }
-  }
-
+export function documentedFromSources({ previewedText, demosText, providers = [] }) {
+  const previewed = collectArrayNames(previewedText, 'PREVIEWED_COMPONENTS');
+  const demos = collectObjectKeys(demosText, 'DEMOS');
+  const documented = new Set([...previewed].filter((name) => demos.has(name)));
+  for (const name of providers) documented.add(name);
   return documented;
+}
+
+function collectDocumentedComponentNames({ providers = [] } = {}) {
+  return documentedFromSources({
+    previewedText: readText(PREVIEWED_FILE),
+    demosText: readText(DEMOS_FILE),
+    providers,
+  });
 }
 
 function fidelityGrade(percent, missingCount) {
@@ -357,14 +268,17 @@ function fidelityGrade(percent, missingCount) {
 }
 
 export function runComponentDocsCheck() {
+  const routing = loadDocsRouting(ROOT);
+  const documentedSurface = new Set([...routing.core, ...routing.patterns]);
+  const documentedNames = collectDocumentedComponentNames(routing);
   const manifest = readJson(MANIFEST_PATH);
   const componentApi = readJson(COMPONENT_API_PATH);
   const discoveredComponents = discoverHdsComponents()
     .components.filter((component) => !component.ignored)
     .filter((component) => component.tier === 'primitive' || component.tier === 'pattern')
     .filter((component) => !manifest.componentSpecs?.[component.name]?.hidden)
-    .filter((component) => !component.docExempt);
-  const documentedNames = collectDocumentedComponentNames();
+    .filter((component) => !component.docExempt)
+    .filter((component) => documentedSurface.has(component.name));
 
   const undocumented = [];
   const missingSpecimens = [];
@@ -392,10 +306,9 @@ export function runComponentDocsCheck() {
     );
     const hasDocumentedProp = (apiEntry.props ?? []).length === 0 || documentedProps.length > 0;
     // A component that uses tokens needs somewhere a reader can see them
-    // resolved. On the old docs site that was a hand-authored token table; in
-    // Storybook it is the rendered story plus the autodocs table the addon
-    // generates. Either way the requirement is satisfied by the same thing:
-    // a documentation surface exists for this component.
+    // resolved. On the docs site that is its page: the live demo plus the
+    // generated design tokens section. The requirement is satisfied by the
+    // same thing: a documentation page exists for this component.
     const requiresTokenTable = usesTokens && !INVENTORY_ONLY_CATEGORIES.has(category ?? '');
     const hasTokenTable = !requiresTokenTable || hasStory;
     const missing = [];
@@ -475,11 +388,13 @@ export function main() {
   console.error(
     `\nComponent docs check failed: ${result.undocumented.length} component(s) undocumented.\n`,
   );
-  console.error(`  ${result.covered}/${result.total} components appear in a Storybook story.\n`);
+  console.error(
+    `  ${result.covered}/${result.total} core components and patterns have a live demo on the docs site.\n`,
+  );
   console.error('  Each shared component needs one of these before it is considered done:\n');
-  console.error('    1. A story in src/stories/<name>.stories.tsx that either sets');
-  console.error('       `component: <Name>` in its meta or imports <Name> from');
-  console.error("       '../app/components/<file>'.\n");
+  console.error('    1. A live demo: a <Name>Demo in docs-site/components/component-demos.tsx,');
+  console.error('       registered in DEMOS, with <Name> listed in');
+  console.error('       docs-site/lib/previewed-components.ts (pnpm hds:new does both).\n');
   console.error('    2. An explicit file-level exemption comment on the component:');
   console.error('       @doc-exempt: <reason>\n');
   console.error('  Legacy exemptions may still be added to INTERNAL_COMPONENTS in');
