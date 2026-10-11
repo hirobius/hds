@@ -16,12 +16,15 @@ name: Chromatic
 # build stays well under the Free plan's monthly snapshot limit.
 # The `if:` guard keeps the job green-skipped until the variable is set, so PRs
 # never go red for a missing token before setup is done.
+# Two jobs: `chromatic` (Storybook) and `chromatic-docs` (the docs site's live
+# demos, via @chromatic-com/playwright; tests/visual/docs-demos.spec.ts). Both
+# report to the same Chromatic project and share the CHROMATIC_ENABLED switch.
 on:
   # Un-shelved 2026-09-14 (#200). The job's `if:` guard below keeps it
   # green-skipped until CHROMATIC_ENABLED is set, so restoring these triggers
   # cannot turn PRs red before the one-time setup above is done.
   pull_request:
-    paths: ['src/**', '.storybook/**', 'package.json']
+    paths: ['src/**', '.storybook/**', 'docs-site/**', 'tests/visual/**', 'package.json']
   push:
     branches: [main]
   workflow_dispatch: {}
@@ -54,3 +57,26 @@ jobs:
           exitZeroOnChanges: true
           autoAcceptChanges: ${{ github.ref == 'refs/heads/main' }}
           onlyChanged: true
+
+  chromatic-docs:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.CHROMATIC_ENABLED == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build docs site
+        run: pnpm docs:publish
+      - run: pnpm exec playwright install --with-deps chromium
+      - uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          playwright: true
+          exitZeroOnChanges: true
+          autoAcceptChanges: ${{ github.ref == 'refs/heads/main' }}
