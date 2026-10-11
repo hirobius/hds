@@ -133,7 +133,7 @@ describe('use_figma scripts that verify their runtime', () => {
     it(`${label} still fails when one identifier in the code changes`, () => {
       const { sources, names, checksum } = carried(code);
       const fns = names.map((n) => ({
-        toString: () => (n === 'hdsRound' ? sources[n].replace('rounded', 'roundee') : sources[n]),
+        toString: () => (n === 'hdsRound' ? sources[n].replace('1e6', '1e5') : sources[n]),
       }));
       expect(() => hdsVerifyRuntime(fns, checksum, false)).toThrow(/does not match its checksum/);
     });

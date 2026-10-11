@@ -262,6 +262,16 @@ Fix the Breadcrumb separator in the library (renders as a dark filled box instea
 
 **Session total: 5 calls.** Nothing deleted, nothing published; Adrian publishes.
 
+## 2026-10-11 · session `claude/figma-delta-pack`
+
+Fix A: check that `use_figma` accepts the minified runtime before shipping it. Budget 1 call.
+
+| #   | Time (UTC) | Tool        | Kind | Purpose                                                                                     | Result                                                                                                  |
+| --- | ---------- | ----------- | ---- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| 1   | 19:10      | `use_figma` | read | HDS Staging C85ZXnwtVc4AteeIOZfXRC: 10 minified runtime functions + `hdsVerifyRuntime` only | OK. Verified; the runtime reprints with spaces and semicolons and keeps quotes. Nothing read or written |
+
+**Session total: 1 call.**
+
 ## 2026-10-11 · session `claude/figma-snapshot-pjs`
 
 Agent delta sync of run 392d8056 (Plus Jakarta Sans font family, apple-green accent ramp, text-style updates) to the library, then the snapshot. Budget 20 calls.

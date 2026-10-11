@@ -406,9 +406,10 @@ collects the pages.
 When the script would pass 45,000 characters, `--delta` writes
 `delta-1-of-N.js` to `delta-N-of-N.js` instead of `delta.js` and prints N and
 the files in order. Each part is a complete script with the same guards, and
-`prune` is false in all of them. A part is about 41,000 characters of runtime, so
-it holds only 3,000–4,000 of change: the 57,000-character type-ramp change is 11
-parts, one `use_figma` call each (plan the 200 a day). To run them:
+`prune` is false in all of them. A part is about 31,000 characters of runtime
+(minified since 2026-10-11; it was 41,000), so it holds about 13,000 of change:
+the type-ramp change is 2 parts, and the Plus Jakarta Sans sync that took 17
+parts now takes 2, one `use_figma` call each. To run them:
 
 1. Run part 1, save its result to its own file, then part 2, and so on, strictly in
    order. A part refuses to run before the one preceding it (the marker `deltaRun`
@@ -491,10 +492,14 @@ Measured on 2026-10-01 on main as of `5aa171f`, against `figma/snapshot.json`
 The 19-variable Primitives `space/*` rename (hds#206 item 2) builds to 42,827
 characters, makes 60 writes and returns 9,411 inline.
 
-The runtime is copied into `delta.js` without indentation, blank lines or the
-line breaks that only wrap an expression, which takes it from about 44,300 to
-38,000 characters. The build checks that the copy parses to the same syntax tree
-as the source, and `hdsVerifyRuntime` checks the copy as it runs.
+The runtime is copied into `delta.js` minified by esbuild, one function per
+line: no spare whitespace and short local names, while top-level function names,
+property names and string literals stay as written. That takes it from about
+44,300 to 30,000 characters. The build refuses a function that does not come out
+as one declaration of the same name, on one line, calling the same runtime
+functions, and `hdsVerifyRuntime` checks the copy as it runs. A live probe on HDS
+Staging (2026-10-11) showed `use_figma` reprints minified code with spaces and
+semicolons but keeps its quotes, and the check passes.
 
 ### Promote plugin and use_figma scripts
 
