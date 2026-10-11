@@ -1,0 +1,108 @@
+{
+  "version": "0.23.1",
+  "date": "2026-10-11",
+  "bump": "patch",
+  "summary": "6 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.23.1/value-changed/--hds-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The scoped HDS font variable now names Plus Jakarta Sans first instead of Satoshi.",
+      "detect": {
+        "cssVars": [
+          "--hds-font-family"
+        ],
+        "cssVarWrites": [
+          "--hds-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-font-family::root"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.23.1/value-changed/--primitive-typography-family-display",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Display and title text now renders in Plus Jakarta Sans instead of Satoshi.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-family-display"
+        ],
+        "cssVarWrites": [
+          "--primitive-typography-family-display"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-typography-family-display::root"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.23.1/value-changed/--primitive-typography-family-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Body, UI and caption text now renders in Plus Jakarta Sans instead of Satoshi.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-family-primary"
+        ],
+        "cssVarWrites": [
+          "--primitive-typography-family-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-typography-family-primary::root"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.23.1/look/font-face-Satoshi-400-normal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "fonts.css no longer declares Satoshi 400; it declares Plus Jakarta Sans 400 instead, so drop any font-family: Satoshi of your own.",
+      "detect": {
+        "regex": [
+          "Satoshi"
+        ]
+      },
+      "facts": [
+        "font-face-removed:Satoshi/400/normal"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.23.1/look/font-face-Satoshi-500-normal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "fonts.css no longer declares Satoshi 500; it declares Plus Jakarta Sans 500 instead, so drop any font-family: Satoshi of your own.",
+      "detect": {
+        "regex": [
+          "Satoshi"
+        ]
+      },
+      "facts": [
+        "font-face-removed:Satoshi/500/normal"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.23.1/look/font-face-Satoshi-700-normal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "fonts.css no longer declares Satoshi 700; it declares Plus Jakarta Sans 700 instead, so drop any font-family: Satoshi of your own.",
+      "detect": {
+        "regex": [
+          "Satoshi"
+        ]
+      },
+      "facts": [
+        "font-face-removed:Satoshi/700/normal"
+      ],
+      "source": "CHANGELOG.md:20"
+    }
+  ]
+}
