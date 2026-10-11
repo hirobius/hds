@@ -40,7 +40,7 @@ through a validated alias chain, into every consumable form:
 - **TypeScript constants** — the same values, typed, for JS consumers.
 - **A Tailwind config** projected from the tokens, so utility classes resolve to
   the same variables.
-- **The Figma model** (see §5) and the **docs** — `DESIGN.md`,
+- **The Figma model** (see §6) and the **docs** — `DESIGN.md`,
   `DESIGN-HANDOFF.md`, the machine-readable `public/hds-manifest.json`,
   `llms.txt`, and the consumer agent skill — all regenerated from the same run.
 
@@ -69,9 +69,9 @@ can't silently grow stale. What the gates actually prevent, by example:
   the token source itself_, so the gate can never drift from the thing it is
   checking (the failure mode that originally motivated it).
 - **`check-figma-drift`** fails when a hand edit in Figma diverges from the code
-  model, keeping code the single source of truth (§5).
+  model, keeping code the single source of truth (§6).
 - **`check-upgrade-ledger`** stops a consumer-facing change from merging unless
-  it ships an upgrade note (§4), so the migration path can never fall behind the
+  it ships an upgrade note (§5), so the migration path can never fall behind the
   code.
 
 ### Proof-of-firing: who tests the tests
@@ -98,12 +98,49 @@ The registry rules are documented in
 - **A consumer smoke build** installs the packed library the way a real consumer
   would and verifies subpath resolution, `publint`, and a consumer-side
   typecheck — so "it builds here" also means "it works when installed."
-- **Agent-consistency eval** (`eval/consistency/`) has three agents build the
-  same screen from the public docs alone and measures how alike the results are
-  (builds, violations, axe, component overlap, pixel diff) — a test of whether
-  the system is legible enough to be used _correctly_ without tribal knowledge.
+- **The docs themselves** are tested by the agent-consistency eval — see §4.
 
-## 4. Shipping and the consumer upgrade path
+## 4. The docs are tested too: agent-consistency eval
+
+Most design systems test their components. HDS also tests whether its
+_documentation_ works: whether someone with no tribal knowledge — here, an AI
+agent — can read the public docs and use the system correctly.
+
+**How it works.** Three agents, each in a fresh context with no shell or web
+access, get only the inputs a real consumer would have (the screen spec, the
+package's `AGENTS.md`, its type definitions) and build the same screen. The
+harness never calls a model itself; it scores the generated apps
+(`pnpm eval:consistency`) against fixed thresholds:
+
+| Measure                                                 | Threshold |
+| ------------------------------------------------------- | --------- |
+| Builds and type-checks on the first try                 | 3 of 3    |
+| Raw hex, px, Tailwind, raw HTML controls, or custom CSS | 0         |
+| axe serious/critical violations, light and dark         | 0         |
+| Component-set overlap (Jaccard), every pair             | ≥ 0.85    |
+| Pixel difference at 1280px, every pair                  | ≤ 1.5%    |
+
+If three independent readers of the docs build the same screen the same way,
+the docs are unambiguous. If they diverge, the divergence points at exactly
+where the docs are unclear.
+
+**Where it stands — honestly.** The baseline run passed builds, violations and
+accessibility, but **missed the overlap and pixel thresholds**, and the
+thresholds are deliberately not softened to make it pass. The divergence was
+diagnosed cause by cause: the largest was discoverability — one agent never
+found the import path for the higher-level page patterns and rebuilt them by
+hand from primitives — followed by several components that each plausibly fit
+the same need. Each cause got a targeted fix in the agent-facing docs: an
+explicit imports list in `AGENTS.md`, import paths in every MCP answer, and a
+"pick by need" guide that names the right component _and_ the wrong one agents
+reached for.
+
+Method and frozen run conditions: [`eval/consistency/`](../eval/consistency/README.md)
+· results over time: [`ledger.json`](../eval/consistency/ledger.json) · the
+cause-by-cause analysis:
+[`DIAGNOSIS-2026-10-05.md`](../eval/consistency/DIAGNOSIS-2026-10-05.md).
+
+## 5. Shipping and the consumer upgrade path
 
 Releases are cut with [Changesets](https://github.com/changesets/changesets): a
 PR that changes the published package adds a changeset, and on a push to `main`
@@ -119,7 +156,7 @@ them, and a single command runs the migration for the consumer:
 npx @hirobius/design-system@latest upgrade
 ```
 
-## 5. Design ↔ code sync (Figma)
+## 6. Design ↔ code sync (Figma)
 
 Code is the source of truth, and sync runs **one way**. `pnpm figma:model`
 projects `hirobius.tokens.json` into a Figma model (primitives, semantic
@@ -130,7 +167,7 @@ source of truth. The push into Figma is run by hand — no workflow writes to
 Figma. The full rationale and plan limits are in
 [ADR-025](adr/025-figma-sync-pro-architecture.md).
 
-## 6. Theming without JavaScript
+## 7. Theming without JavaScript
 
 The visual system re-skins through four root attributes — `data-theme`,
 `data-density`, `data-brand`, and a font variable — read as CSS variables, so a
