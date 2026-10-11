@@ -196,3 +196,4 @@ content/docs/guides/providers.mdx
 
 # impeccable skill local critique snapshots (not part of the package)
 .impeccable/
+.vercel-redirect/
