@@ -74,6 +74,10 @@ jobs:
       - name: Build docs site
         run: pnpm docs:publish
       - run: pnpm exec playwright install --with-deps chromium
+      # Chromatic's Playwright mode uploads the archives the tests write to
+      # test-results/chromatic-archives, so the tests run first.
+      - name: Capture docs demos
+        run: pnpm test:visual-docs
       - uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
