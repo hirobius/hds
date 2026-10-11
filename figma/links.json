@@ -1,5 +1,5 @@
 {
-  "$comment": "Where pnpm figma:links points design <-> code links (docs/DESIGN_LINKS.md, Figma dev resources, component documentation links). Component Figma nodes come from each component's @figma JSDoc tag, never from here. storybookUrl: the deployed Storybook root; while null, story links point at the story file on GitHub. It also hosts the Sync plugin bundle until the plugin is rebuilt against docsUrl. docsUrl: the public docs site, the front door; it serves the same agent files and sync bundle.",
+  "$comment": "Where pnpm figma:links points design <-> code links (docs/DESIGN_LINKS.md, Figma dev resources, component documentation links). Component Figma nodes come from each component's @figma JSDoc tag, never from here. storybookUrl: the deployed Storybook root; while null, story links point at the story file on GitHub. It hosts the bundle for plugin builds from before docsUrl. docsUrl: the public docs site, the front door; it serves the agent files and the sync bundle the Sync plugin fetches.",
   "repository": "https://github.com/hirobius/hds",
   "branch": "main",
   "storybookUrl": "https://hirobius-design-system.vercel.app",
