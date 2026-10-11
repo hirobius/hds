@@ -14,13 +14,10 @@
  * The demos import the published package; here it resolves to the source, so
  * the gate tests this commit's components rather than a stale dist.
  */
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import { renderToStaticMarkup } from 'react-dom/server';
-
-vi.mock('@hirobius/design-system', () => import('../../src/index'));
-vi.mock('@hirobius/design-system/patterns', () => import('../../src/patterns'));
 
 const { DEMOS } = await import('../../docs-site/components/component-demos');
 

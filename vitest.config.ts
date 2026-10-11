@@ -30,9 +30,23 @@ export default defineConfig({
     react(),
   ],
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+    // The docs-site demos import the package by name; tests resolve it to src,
+    // since dist/ is not built in CI.
+    alias: [
+      {
+        find: /^@hirobius\/design-system$/,
+        replacement: path.resolve(__dirname, './src/index.ts'),
+      },
+      {
+        find: /^@hirobius\/design-system\/icons$/,
+        replacement: path.resolve(__dirname, './src/icons.ts'),
+      },
+      {
+        find: /^@hirobius\/design-system\/patterns$/,
+        replacement: path.resolve(__dirname, './src/patterns.ts'),
+      },
+      { find: '@', replacement: path.resolve(__dirname, './src') },
+    ],
   },
   test: {
     environment: 'jsdom',
