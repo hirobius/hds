@@ -150,14 +150,13 @@ token, so Density carries only tenant Compact values today.
 Each component's Figma node has one source: the `@figma` tag in its JSDoc,
 which `pnpm manifest:generate` copies to `componentSpecs[<Name>].figmaUrl` in
 `public/hds-manifest.json`. Everything else reads that field
-(`scripts/lib/design-links.mjs`). `docs/DESIGN_LINKS.md` and Storybook links need nothing in
+(`scripts/lib/design-links.mjs`). `docs/DESIGN_LINKS.md` needs nothing in
 Figma. The two Figma-side links exist only after a person runs their step:
 
 | Where                                              | How                                                                                               | Needs                                                                                                                                                                                                         |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `docs/DESIGN_LINKS.md`                             | `pnpm figma:links` rewrites the marked section                                                    | Nothing                                                                                                                                                                                                       |
-| Storybook `parameters.design`                      | The story meta spreads `designParameters('<Name>')` (`src/stories/design-parameters.ts`)          | `@storybook/addon-designs` to show it as the Design tab                                                                                                                                                       |
-| Figma dev resources "HDS source" and "HDS story"   | `FIGMA_ACCESS_TOKEN=<token> pnpm figma:links --dev-resources --dry-run`, then without `--dry-run` | A personal access token with `file_dev_resources:read` and `file_dev_resources:write`. **Unverified on a Professional plan**: Figma documents no plan limit for these endpoints, and no run has confirmed one |
+| Figma dev resources "HDS source" and "HDS docs"    | `FIGMA_ACCESS_TOKEN=<token> pnpm figma:links --dev-resources --dry-run`, then without `--dry-run` | A personal access token with `file_dev_resources:read` and `file_dev_resources:write`. **Unverified on a Professional plan**: Figma documents no plan limit for these endpoints, and no run has confirmed one |
 | Figma component description and documentation link | `figma/links/use-figma/descriptions-<file>.dry-run.js` through use_figma, then the `.js`          | Figma MCP write access to that file. It uses the Plugin API, the same path as `figma:push`                                                                                                                    |
 
 To link a component:
@@ -166,12 +165,15 @@ To link a component:
    selection). It must carry a `node-id`.
 2. Add `@figma <that URL>` to the component's JSDoc.
 3. Run `pnpm manifest:generate && pnpm figma:links`.
-4. If its story meta does not spread `designParameters('<Name>')` yet, add it.
+
+A component's documentation link (the Figma documentation link and the "HDS docs"
+dev resource) is its docs-site page: `docsUrl` in `figma/links.json` plus the
+manifest's `docsPage` (`/docs/components/<slug>`, `/docs/patterns/<slug>`, or
+`/docs/guides/providers`). A component outside the core set and the patterns has no
+page, so its documentation link is the source file.
 
 `pnpm test` fails, and `pnpm figma:links --check` exits 1, when `docs/DESIGN_LINKS.md`
-section is stale, a linked component has no story or its story skips
-`designParameters`, a story hardcodes a Figma URL, or a `figmaUrl` is not a node
-URL.
+section is stale or a `figmaUrl` is not a node URL.
 
 Story links open the story file on GitHub until `storybookUrl` is set in
 `figma/links.json`; then they open the Storybook docs page. The dev resources
@@ -233,7 +235,7 @@ date, and the old files refuse the renamed copy by its name.
 The **Sync plugin** (`figma/push/plugin/`, id `hds-tokens-sync-dev`) carries no
 model. Its window fetches the sync bundle the docs site publishes at
 https://hirobius-hds-components.vercel.app/figma/sync-bundle.json (`docsUrl` in
-`figma/links.json`, else `storybookUrl`; `pnpm docs:publish`, the docs site's Vercel
+`figma/links.json`, else `storybookUrl` when a links.json still names one; `pnpm docs:publish`, the docs site's Vercel
 build, runs `node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json`;
 the bundle is generated, never committed). Plugin builds from before 2026-10-10 still
 fetch from the Storybook deploy, which keeps serving the bundle until it is switched off. Its

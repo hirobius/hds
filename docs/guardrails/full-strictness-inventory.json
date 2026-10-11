@@ -8,7 +8,7 @@
       "durationMs": 54,
       "supportsJson": false,
       "violations": null,
-      "outputTail": "\n✓ WCAG contrast check passed — all text pairs meet AA, all non-text pairs meet 3:1.\n\n  Pair                              Light   Dark    AA (L/D)    AAA (L/D)\n  ───────────────────────────────────────────────────────────────────────\n  content.primary / surface.page    18.9:1  19.3:1  ✓/✓         ✓/✓\n  content.primary / surface.raised  18.1:1  18.2:1  ✓/✓         ✓/✓\n  content.primary / surface.overlay 17.3:1  16.0:1  ✓/✓         ✓/✓\n  content.secondary / surface.page  7.8:1   8.3:1   ✓/✓         ✓/✓\n  content.secondary / surface.raised7.5:1   7.8:1   ✓/✓         ✓/✓\n  content.secondary / surface.overlay7.2:1   6.9:1   ✓/✓         ✓/✗\n  content.onAccent / surface.accent 18.9:1  17.3:1  ✓/✓         ✓/✓\n  feedback.success / surface.page   5.5:1   10.9:1  ✓/✓         ✗/✓\n  feedback.success / surface.raised 5.3:1   10.3:1  ✓/✓         ✗/✓\n  feedback.warning / surface.page   7.1:1   12.6:1  ✓/✓         ✓/✓\n  feedback.warning / surface.raised 6.8:1   11.9:1  ✓/✓         ✗/✓\n  feedback.error / surface.page     6.5:1   7.6:1   ✓/✓         ✗/✓\n  feedback.error / surface.raised   6.2:1   7.2:1   ✓/✓         ✗/✓\n  feedback.inProgress / surface.page7.1:1   7.7:1   ✓/✓         ✓/✓\n  feedback.inProgress / surface.raised6.8:1   7.3:1   ✓/✓         ✗/✓\n  content.success / surface.page    5.5:1   10.9:1  ✓/✓         ✗/✓\n  content.success / surface.raised  5.3:1   10.3:1  ✓/✓         ✗/✓\n  content.warning / surface.page    7.1:1   12.6:1  ✓/✓         ✓/✓\n  content.warning / surface.raised  6.8:1   11.9:1  ✓/✓         ✗/✓\n  content.danger / surface.page     6.5:1   7.6:1   ✓/✓         ✗/✓\n  content.danger / surface.raised   6.2:1   7.2:1   ✓/✓         ✗/✓\n\n  Pair (UI boundary)                Light   Dark    3:1 (L/D)\n  ───────────────────────────────────────────────────────────\n  border.interactive / surface.page 4.7:1   4.4:1   ✓/✓\n\n"
+      "outputTail": "\n\u2713 WCAG contrast check passed \u2014 all text pairs meet AA, all non-text pairs meet 3:1.\n\n  Pair                              Light   Dark    AA (L/D)    AAA (L/D)\n  \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n  content.primary / surface.page    18.9:1  19.3:1  \u2713/\u2713         \u2713/\u2713\n  content.primary / surface.raised  18.1:1  18.2:1  \u2713/\u2713         \u2713/\u2713\n  content.primary / surface.overlay 17.3:1  16.0:1  \u2713/\u2713         \u2713/\u2713\n  content.secondary / surface.page  7.8:1   8.3:1   \u2713/\u2713         \u2713/\u2713\n  content.secondary / surface.raised7.5:1   7.8:1   \u2713/\u2713         \u2713/\u2713\n  content.secondary / surface.overlay7.2:1   6.9:1   \u2713/\u2713         \u2713/\u2717\n  content.onAccent / surface.accent 18.9:1  17.3:1  \u2713/\u2713         \u2713/\u2713\n  feedback.success / surface.page   5.5:1   10.9:1  \u2713/\u2713         \u2717/\u2713\n  feedback.success / surface.raised 5.3:1   10.3:1  \u2713/\u2713         \u2717/\u2713\n  feedback.warning / surface.page   7.1:1   12.6:1  \u2713/\u2713         \u2713/\u2713\n  feedback.warning / surface.raised 6.8:1   11.9:1  \u2713/\u2713         \u2717/\u2713\n  feedback.error / surface.page     6.5:1   7.6:1   \u2713/\u2713         \u2717/\u2713\n  feedback.error / surface.raised   6.2:1   7.2:1   \u2713/\u2713         \u2717/\u2713\n  feedback.inProgress / surface.page7.1:1   7.7:1   \u2713/\u2713         \u2713/\u2713\n  feedback.inProgress / surface.raised6.8:1   7.3:1   \u2713/\u2713         \u2717/\u2713\n  content.success / surface.page    5.5:1   10.9:1  \u2713/\u2713         \u2717/\u2713\n  content.success / surface.raised  5.3:1   10.3:1  \u2713/\u2713         \u2717/\u2713\n  content.warning / surface.page    7.1:1   12.6:1  \u2713/\u2713         \u2713/\u2713\n  content.warning / surface.raised  6.8:1   11.9:1  \u2713/\u2713         \u2717/\u2713\n  content.danger / surface.page     6.5:1   7.6:1   \u2713/\u2713         \u2717/\u2713\n  content.danger / surface.raised   6.2:1   7.2:1   \u2713/\u2713         \u2717/\u2713\n\n  Pair (UI boundary)                Light   Dark    3:1 (L/D)\n  \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n  border.interactive / surface.page 4.7:1   4.4:1   \u2713/\u2713\n\n"
     },
     {
       "id": "check-sync-map",
@@ -16,20 +16,12 @@
       "durationMs": 963,
       "supportsJson": false,
       "violations": null,
-      "outputTail": "\ncheck-sync-map — 139 components\n  in sync        69/139   stories 121/121   figma 47/88\n  no Figma node 41   rendered defects 47\n  (pnpm sync-map for the gaps, --table for every component)\n  4 story file(s) resolve to no component in the manifest\n\n✓ the join holds — no component lost a story or a Figma link\n"
-    },
-    {
-      "id": "check-story-coverage",
-      "exitCode": 0,
-      "durationMs": 708,
-      "supportsJson": false,
-      "violations": null,
-      "outputTail": "\ncheck-story-coverage — 121 consumer-facing components\n  internal   8/18   (exempt)\n  layout     15/15\n  library    88/88\n  slot       18/18\n\n✓ every consumer-facing component has at least one story\n"
+      "outputTail": "\ncheck-sync-map \u2014 139 components\n  in sync        69/139   stories 121/121   figma 47/88\n  no Figma node 41   rendered defects 47\n  (pnpm sync-map for the gaps, --table for every component)\n  4 story file(s) resolve to no component in the manifest\n\n\u2713 the join holds \u2014 no component lost a story or a Figma link\n"
     }
   ],
   "totalsByExitCode": {
-    "0": 3
+    "0": 2
   },
   "gatesWithJson": 0,
-  "gatesWithoutJson": 3
+  "gatesWithoutJson": 2
 }

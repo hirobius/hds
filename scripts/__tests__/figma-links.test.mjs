@@ -1,12 +1,13 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 // @vitest-environment node
 /**
- * `pnpm figma:links` end to end on disk, and the repository gate: the README
- * section, Storybook's `parameters.design` and the Figma carriers all come
- * from `componentSpecs[].figmaUrl` in public/hds-manifest.json.
+ * `pnpm figma:links` end to end on disk, and the repository gate: the design
+ * links doc and the Figma carriers all come from `componentSpecs[].figmaUrl`
+ * in public/hds-manifest.json, and the docs links from `docsPage` + docsUrl.
  *
  * Seams: writeDesignLinks / checkDesignLinks against a temporary mini-root, then
- * checkDesignLinks and src/stories/design-parameters.ts against this repo.
+ * checkDesignLinks against this repo. The Storybook `parameters.design` tests
+ * at the end guard src/stories/design-parameters.ts, which goes with Storybook.
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, existsSync } from 'fs';
@@ -44,7 +45,7 @@ function miniRoot() {
     JSON.stringify({
       repository: 'https://github.com/hirobius/hds',
       branch: 'main',
-      storybookUrl: null,
+      docsUrl: 'https://docs.example.org',
     }),
   );
   write(
@@ -54,19 +55,12 @@ function miniRoot() {
         Alert: {
           figmaUrl: NODE_URL,
           filePath: 'src/app/components/alert.tsx',
+          docsPage: '/docs/components/alert',
           description: 'Alert.',
         },
         Badge: { figmaUrl: null, filePath: 'src/app/components/badge.tsx' },
       },
     }),
-  );
-  write(
-    'src/stories/alert.stories.tsx',
-    `import { designParameters } from './design-parameters';
-const meta = { title: 'Primitives/alert', component: Alert, tags: ['autodocs'], parameters: { ...designParameters('Alert') } };
-export default meta;
-export const Info = {};
-`,
   );
   write('README.md', '# HDS\n\n## Architecture\n\nText.\n\n## Visual direction: X\n\nMore.\n');
   return root;
@@ -89,7 +83,7 @@ describe('pnpm figma:links', () => {
     const readme = readFileSync(join(root, DESIGN_LINKS_DOC), 'utf8');
     expect(readFileSync(join(root, 'README.md'), 'utf8')).not.toContain('Design ↔ Code links');
     expect(readme).toContain('## Design ↔ Code links');
-    expect(readme).toContain('](../src/stories/alert.stories.tsx)');
+    expect(readme).toContain('](https://docs.example.org/docs/components/alert)');
     expect(readme).toContain('**1 of 2** components link a Figma node.');
     expect(await format(readme, { parser: 'markdown' })).toBe(readme);
 
@@ -102,8 +96,8 @@ describe('pnpm figma:links', () => {
           node_id: '33:34',
         },
         {
-          name: 'HDS story',
-          url: 'https://github.com/hirobius/hds/blob/main/src/stories/alert.stories.tsx',
+          name: 'HDS docs',
+          url: 'https://docs.example.org/docs/components/alert',
           file_key: 'FileKey123',
           node_id: '33:34',
         },
@@ -124,22 +118,23 @@ describe('pnpm figma:links', () => {
     expect(readFileSync(join(root, DESIGN_LINKS_DOC), 'utf8')).toBe(readme);
   });
 
-  it('reports problems and still refuses to call the README current', async () => {
+  it('reports a node URL that is not a Figma node, and still refuses to call the README current', async () => {
     const root = miniRoot();
-    writeFileSync(
-      join(root, 'src', 'stories', 'alert.stories.tsx'),
-      "const meta = { title: 'Primitives/alert', component: Alert };\nexport default meta;\n",
-    );
+    const manifestPath = join(root, 'public', 'hds-manifest.json');
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+    manifest.componentSpecs.Alert.figmaUrl = 'https://www.figma.com/design/FileKey123/HDS';
+    writeFileSync(manifestPath, JSON.stringify(manifest));
     const check = await checkDesignLinks(root);
     expect(check.problems).toEqual([
-      "src/stories/alert.stories.tsx: spread designParameters('Alert') into the meta parameters, so Storybook's Design tab shows the Figma node from the manifest.",
+      'Alert: figmaUrl is not a Figma node URL (…/design/<file>/<name>?node-id=<x>-<y>): https://www.figma.com/design/FileKey123/HDS',
     ]);
+    expect(check.readmeUpToDate).toBe(false);
   });
 
   it('reads a missing input as a loud error that names the file, not a default', () => {
     const root = miniRoot();
     rmSync(join(root, 'figma', 'links.json'));
-    expect(() => computeDesignLinks(root)).toThrow(/figma\/links\.json is missing.*Storybook URL/);
+    expect(() => computeDesignLinks(root)).toThrow(/figma\/links\.json is missing.*docs site URL/);
     const other = miniRoot();
     rmSync(join(other, 'public', 'hds-manifest.json'));
     expect(() => computeDesignLinks(other)).toThrow(
@@ -164,6 +159,21 @@ describe('this repository', () => {
     expect(alert).toMatchObject({ fileKey: '2VgBbVpKiDnu0aftJEVyBQ', nodeId: '33:34' });
   });
 
+  it('links every core component and pattern that has a Figma node to its docs page', () => {
+    const manifest = JSON.parse(readFileSync(join(REPO, 'public', 'hds-manifest.json'), 'utf8'));
+    const docsUrl = JSON.parse(readFileSync(join(REPO, 'figma', 'links.json'), 'utf8')).docsUrl;
+    const { links } = computeDesignLinks(REPO);
+    const button = links.find((link) => link.name === 'Button');
+    expect(button.docs).toEqual({
+      path: '/docs/components/button',
+      url: `${docsUrl.replace(/\/+$/, '')}/docs/components/button`,
+    });
+    for (const link of links) {
+      expect(link.docs?.path ?? null, link.name).toBe(manifest.componentSpecs[link.name].docsPage);
+    }
+  });
+
+  // ── Storybook: guards design-parameters.ts and the Design tab; deleted with Storybook. ──
   it('gives Storybook the manifest figmaUrl for every linked component, and nothing for the rest', () => {
     const { links } = computeDesignLinks(REPO);
     for (const link of links) {

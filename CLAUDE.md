@@ -59,7 +59,7 @@ This charter outranks the process rules below (not the HARD RULES above).
 ## 1. AGENT EXECUTION PROTOCOL (MANDATORY)
 
 1. **PRE-FILTER:** Before writing any code, analyze if the user's request affects UI, Layout, CSS, or Components.
-2. **AUTO-VALIDATE:** If UI/Layout is affected, you MUST autonomously run `pnpm typecheck` and `pnpm test` after writing your code changes, but BEFORE you generate your final response to the user. (The old `pnpm test:layout` Playwright suite was retired in #161 — Storybook is the visual verification surface.)
+2. **AUTO-VALIDATE:** If UI/Layout is affected, you MUST autonomously run `pnpm typecheck` and `pnpm test` after writing your code changes, but BEFORE you generate your final response to the user. (The old `pnpm test:layout` Playwright suite was retired in #161 — the docs site (`docs-site/`, `docsUrl` in `figma/links.json`) is the visual verification surface: `check-docs-axe` gates its accessibility and the Chromatic docs job its visual regression.)
 3. **SELF-HEAL:** If your automated tests fail, do not ask the user for help. Read the terminal output, identify your CSS/layout math error, fix the code, and re-run the tests until they pass.
 4. **FINALIZATION:** Only report back to the user when the tests are 100% green. Do not claim a task is complete if the tests are failing.
 

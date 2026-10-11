@@ -1,8 +1,8 @@
 /**
  * The join's value is that it tells you where to edit, so the assertions that
  * matter are the ones about NOT manufacturing work: a layout primitive is not
- * missing a Figma node it was never supposed to have, and an internal component
- * is not missing a story nobody wants. A gate that invents 32 false gaps is one
+ * missing a Figma node it was never supposed to have, and a component outside
+ * the core set is not missing a docs page it was never going to get. A gate that invents 32 false gaps is one
  * nobody reads.
  */
 import { describe, expect, it } from 'vitest';
@@ -10,8 +10,7 @@ import { GAPS, buildSyncMap, summarizeSyncMap } from '../lib/sync-map.mjs';
 
 const spec = (over = {}) => ({
   filePath: 'src/app/components/thing.tsx',
-  storyFiles: ['src/stories/thing.stories.tsx'],
-  storyIds: ['primitives-thing--default'],
+  docsPage: '/docs/components/thing',
   figmaUrl: 'https://figma.com/design/x?node-id=1-2',
   ...over,
 });
@@ -19,6 +18,7 @@ const spec = (over = {}) => ({
 const base = {
   sourceFiles: new Set(['src/app/components/thing.tsx']),
   disposition: { Thing: 'library' },
+  expectDocs: new Set(['Thing']),
 };
 
 describe('buildSyncMap', () => {
@@ -47,13 +47,19 @@ describe('buildSyncMap', () => {
     expect(rows[0].gaps).not.toContain(GAPS.NO_FIGMA);
   });
 
-  it('does not expect a story from an internal component', () => {
+  it('does not expect a docs page from a component outside the core set and the patterns', () => {
     const { rows } = buildSyncMap({
       ...base,
+      expectDocs: new Set(),
       disposition: { Thing: 'internal' },
-      specs: { Thing: spec({ figmaUrl: null, storyIds: [], storyFiles: [] }) },
+      specs: { Thing: spec({ figmaUrl: null, docsPage: null }) },
     });
-    expect(rows[0]).toMatchObject({ expectStory: false, synced: true });
+    expect(rows[0]).toMatchObject({ expectDocs: false, docsPage: null, synced: true });
+  });
+
+  it('flags a core component whose manifest entry lost its docs page', () => {
+    const { rows } = buildSyncMap({ ...base, specs: { Thing: spec({ docsPage: null }) } });
+    expect(rows[0].gaps).toEqual([GAPS.NO_DOCS]);
   });
 
   it('flags a library component with no Figma node', () => {
@@ -89,11 +95,11 @@ describe('buildSyncMap', () => {
     expect(rows[0].gaps).not.toContain(GAPS.NO_SOURCE);
   });
 
-  it('attributes rendered defects to the component through its story ids', () => {
+  it('attributes rendered defects to the component by name', () => {
     const { rows } = buildSyncMap({
       ...base,
       specs: { Thing: spec() },
-      defectsByStory: { 'primitives-thing--default': 3, 'other--story': 9 },
+      defectsByComponent: { Thing: 3, Other: 9 },
     });
     expect(rows[0]).toMatchObject({ defects: 3, gaps: [GAPS.HAS_DEFECTS] });
   });
@@ -110,15 +116,6 @@ describe('buildSyncMap', () => {
     });
     expect(rows.map((r) => r.name)).toEqual(['Broken', 'Also', 'Fine']);
   });
-
-  it('keeps an unresolved story file rather than dropping it', () => {
-    const { orphanStories } = buildSyncMap({
-      ...base,
-      specs: {},
-      orphanStories: [{ storyFile: 'b.stories.tsx' }, { storyFile: 'a.stories.tsx' }],
-    });
-    expect(orphanStories.map((o) => o.storyFile)).toEqual(['a.stories.tsx', 'b.stories.tsx']);
-  });
 });
 
 describe('summarizeSyncMap', () => {
@@ -126,15 +123,16 @@ describe('summarizeSyncMap', () => {
     const map = buildSyncMap({
       sourceFiles: new Set(['src/app/components/thing.tsx']),
       disposition: { Lib: 'library', Layout: 'layout', Internal: 'internal' },
+      expectDocs: new Set(['Lib', 'Layout']),
       specs: {
         Lib: spec(),
         Layout: spec({ figmaUrl: null }),
-        Internal: spec({ figmaUrl: null, storyIds: [], storyFiles: [] }),
+        Internal: spec({ figmaUrl: null, docsPage: null }),
       },
     });
     const summary = summarizeSyncMap(map);
     expect(summary.figmaCoverage).toEqual({ expected: 1, covered: 1 });
-    expect(summary.storyCoverage).toEqual({ expected: 2, covered: 2 });
+    expect(summary.docsCoverage).toEqual({ expected: 2, covered: 2 });
     expect(summary.synced).toBe(3);
   });
 });

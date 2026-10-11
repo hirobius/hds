@@ -4,7 +4,7 @@ import { resolveStorySubject } from '../lib/story-link.mjs';
 
 /**
  * hds#349 added a Badge import above the subject in these two files and both
- * components silently lost their stories (check-story-coverage went red on
+ * components silently lost their stories (a story-coverage gate, since retired, went red on
  * main), because resolveStorySubject credited a story file to the FIRST
  * relative import that resolved to a known component. Since hds#369 the meta's
  * `component:` field decides and import order is only the fallback; this pin

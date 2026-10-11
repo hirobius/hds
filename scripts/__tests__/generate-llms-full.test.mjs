@@ -92,8 +92,8 @@ describe('llms-full.txt and slices', () => {
 describe('manifest agent URLs', () => {
   it('points at the current host and the shipped entrypoint', () => {
     const m = JSON.parse(read('public/hds-manifest.json'));
-    expect(m.llmsTxt).toBe('https://hirobius-design-system.vercel.app/llms.txt');
-    expect(m.docs).toBe('https://hirobius-design-system.vercel.app/');
+    expect(m.llmsTxt).toBe('https://hirobius-hds-components.vercel.app/llms.txt');
+    expect(m.docs).toBe('https://hirobius-hds-components.vercel.app/');
     expect(m.agentEntrypoint).toBe('llms.txt');
     expect(Array.isArray(m.componentInventory)).toBe(true);
     expect(m.componentInventory.length).toBeGreaterThan(0);

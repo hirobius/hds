@@ -206,8 +206,8 @@ export function renderPage({
           ? 'No stories, by design — this is an <strong>internal</strong> component under the ratified disposition (hds#235), not part of the consumer-facing surface. ' +
             (spec.filePath?.endsWith('.mjs')
               ? 'It is a Compiler primitive defined in a build script rather than a React module, so there is nothing to mount.'
-              : 'Every consumer-facing component does have one — <code>check-story-coverage</code> fails when one does not.')
-          : 'No stories. This component is consumer-facing, so that is a gap <code>check-story-coverage</code> should have caught.'
+              : 'Consumer-facing components are documented on the docs site.')
+          : 'No stories. This component is consumer-facing; its examples live on the docs site.'
       }</p>`;
 
   const propRows = props.length

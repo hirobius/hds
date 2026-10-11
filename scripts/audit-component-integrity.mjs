@@ -346,7 +346,9 @@ async function runDocsCheck() {
   console.error(
     `\n✗ audit-component-integrity [docs] — ${result.undocumented.length} component(s) undocumented.\n`,
   );
-  console.error(`  ${result.covered}/${result.total} components have HDS doc page entries.\n`);
+  console.error(
+    `  ${result.covered}/${result.total} core components and patterns have a live demo on the docs site.\n`,
+  );
   for (const file of result.undocumented) {
     console.error(`    - ${file}`);
   }
