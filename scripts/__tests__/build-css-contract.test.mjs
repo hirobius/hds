@@ -56,7 +56,7 @@ function packageDir(files, { publicClasses } = {}) {
 
 const TOKENS = [
   '@layer theme,base,utilities;',
-  '@layer theme{:root,:host{--font-sans:Satoshi,sans-serif}}',
+  '@layer theme{:root,:host{--font-sans:Plus Jakarta Sans,sans-serif}}',
   ':root{--size-xs:13px;--brand:  #fff ;--size-xs:12px}',
   '[data-theme=dark]{--brand:#000}',
   '[data-theme=dark],.dark{--surface:#111}',
@@ -68,7 +68,7 @@ const TOKENS = [
   '@keyframes spin{from{opacity:0}to{opacity:1}}',
   '@property --tw-x{syntax:"*";inherits:false}',
   'a[href$=".pdf"]{color:red}',
-  '@font-face{font-family:"Satoshi";font-weight:400;src:url(data:font/woff2;base64,AAAA) format("woff2")}',
+  '@font-face{font-family:"Plus Jakarta Sans";font-weight:400;src:url(data:font/woff2;base64,AAAA) format("woff2")}',
 ].join('');
 
 describe('selectorClasses', () => {
@@ -106,7 +106,7 @@ describe('cssBundleContract', () => {
     expect(contract.variables['--surface']).toEqual({ '[data-theme=dark],.dark': '#111' });
     expect(contract.variables['--space-2']).toEqual({ '[data-density=compact]': '4px' });
     expect(contract.variables['--font-sans']).toEqual({
-      '@layer theme :root,:host': 'Satoshi,sans-serif',
+      '@layer theme :root,:host': 'Plus Jakarta Sans,sans-serif',
     });
   });
 
@@ -127,7 +127,7 @@ describe('cssBundleContract', () => {
 
   it('records @font-face entries and @layer names in declaration order', () => {
     expect(contract.fontFaces).toEqual([
-      { family: 'Satoshi', weight: '400', style: 'normal', src: ['data:font/woff2'] },
+      { family: 'Plus Jakarta Sans', weight: '400', style: 'normal', src: ['data:font/woff2'] },
     ]);
     expect(contract.layers).toEqual(['theme', 'base', 'utilities']);
   });

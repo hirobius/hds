@@ -132,7 +132,7 @@ describe('buildFigmaModel — values', () => {
     });
     const family = variable(model, 'primitive.typography.family.primary');
     expect(family.resolvedType).toBe('STRING');
-    expect(family.valuesByMode.Default).toEqual({ value: 'Satoshi' });
+    expect(family.valuesByMode.Default).toEqual({ value: 'Plus Jakarta Sans' });
   });
 
   it('keeps aliases into another collection as aliases', () => {
@@ -192,10 +192,10 @@ describe('buildFigmaModel — not in Figma', () => {
 describe('buildFigmaModel — ch widths', () => {
   it('converts ch to px with the measured "0" advance at the body text size', () => {
     const model = buildFigmaModel(fixture);
-    // 50ch × 0.683em (Satoshi 400 "0" advance) × 17px (body font size) = 580.55px
+    // 50ch × 0.732em (Plus Jakarta Sans 400 "0" advance) × 17px (body font size) = 622.2px
     expect(variable(model, 'primitive.size.width.50ch')).toMatchObject({
       unit: 'px',
-      valuesByMode: { Default: { value: 580.55 } },
+      valuesByMode: { Default: { value: 622.2 } },
     });
     expect(variable(model, 'semantic.layout.prose.maxWidth')).toMatchObject({
       unit: 'px',
@@ -207,7 +207,7 @@ describe('buildFigmaModel — ch widths', () => {
     const changed = structuredClone(fixture);
     changed.semantic.typography.body.$value.fontFamily = '{primitive.typography.family.mono}';
     expect(() => buildFigmaModel(changed)).toThrow(
-      /ch.*measured for Satoshi 400.*IBM Plex Mono 400.*re-measure/,
+      /ch.*measured for Plus Jakarta Sans 400.*IBM Plex Mono 400.*re-measure/,
     );
   });
 });
@@ -324,7 +324,7 @@ describe('buildFigmaModel — typography', () => {
       name: 'typography/h1',
       path: 'semantic.typography.h1',
       description: 'Page title.',
-      fontFamily: 'Satoshi',
+      fontFamily: 'Plus Jakarta Sans',
       fontStyle: 'Bold',
       fontWeight: 700,
       fontSize: 48,

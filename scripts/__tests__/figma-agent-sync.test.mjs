@@ -61,7 +61,7 @@ import { createFakeFigma, seededFakeFigma, textStyleFonts } from './helpers/fake
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
 
 const LINKS = Object.freeze({
-  storybookUrl: 'https://hirobius-design-system.vercel.app',
+  docsUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
@@ -514,7 +514,7 @@ describe('delta.js refuses, writing nothing', () => {
 
   it('a tampered runtime function', async () => {
     const s = await pending();
-    const tampered = s.built.text.replace("return 'hirobius';", "return 'hirobiuz';");
+    const tampered = s.built.text.replace('return"hirobius"', 'return"hirobiuz"');
     expect(tampered).not.toBe(s.built.text);
     await refuses(s, /runtime code does not match its checksum/, tampered);
   });
@@ -651,7 +651,7 @@ describe('delta.js refuses, writing nothing', () => {
         return model;
       },
     });
-    await refuses(s, /needs the font "Satoshi Black".*Nothing was written.*Sync/s);
+    await refuses(s, /needs the font "Plus Jakarta Sans Black".*Nothing was written.*Sync/s);
   });
 });
 
@@ -731,7 +731,7 @@ describe('pnpm figma:push --delta refuses to build what Sync must do', () => {
     await expect(
       pending({
         edit: (model) => {
-          variableOf(model, 'primitive.space.2').description = 'x '.repeat(4000);
+          variableOf(model, 'primitive.space.2').description = 'x '.repeat(8000);
           return model;
         },
       }),

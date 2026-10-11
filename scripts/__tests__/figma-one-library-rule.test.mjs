@@ -450,7 +450,7 @@ describe('what Figma gives the Sync plugin matches figma/snapshot.json', () => {
   it('the Sync steps say when the new plugin files start to work', () => {
     const steps = section(SYNC_STEPS);
     expect(steps).toMatch(/merged/i);
-    expect(steps).toMatch(/Storybook deploy/i);
+    expect(steps).toMatch(/docs site serves its bundle/i);
     expect(steps).toMatch(/out of date/i);
   });
 });

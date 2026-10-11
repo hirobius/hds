@@ -1,6 +1,6 @@
 name: Chromatic
 
-# Visual-regression snapshots + hosted publish of the Storybook primitive tier.
+# Visual-regression snapshots of the docs site's live demos (Chromatic, via Playwright).
 #
 # SETUP (one-time, manual — Adrian, not automatable):
 #   1. Create a project at chromatic.com linked to this repo.
@@ -11,46 +11,44 @@ name: Chromatic
 #      to switch the job on.
 #
 # Runs on PRs that touch UI (visual diff) and on pushes to main (baseline
-# update + the published library at the project's chromatic.com URL).
-# TurboSnap (`onlyChanged`) snapshots only stories affected by the diff, so a
-# build stays well under the Free plan's monthly snapshot limit.
-# The `if:` guard keeps the job green-skipped until the variable is set, so PRs
-# never go red for a missing token before setup is done.
+# update). The `if:` guard keeps the job green-skipped until the variable is
+# set, so PRs never go red for a missing token before setup is done.
+# One job: `chromatic-docs` (the docs site's live demos, via
+# @chromatic-com/playwright; tests/visual/docs-demos.spec.ts).
 on:
   # Un-shelved 2026-09-14 (#200). The job's `if:` guard below keeps it
   # green-skipped until CHROMATIC_ENABLED is set, so restoring these triggers
   # cannot turn PRs red before the one-time setup above is done.
   pull_request:
-    paths: ['src/**', '.storybook/**', 'package.json']
+    paths: ['src/**', 'docs-site/**', 'tests/visual/**', 'package.json']
   push:
     branches: [main]
   workflow_dispatch: {}
 
 jobs:
-  chromatic:
+  chromatic-docs:
     runs-on: ubuntu-latest
-    # Skip (green) until the token + CHROMATIC_ENABLED variable are configured.
     if: ${{ github.event_name == 'workflow_dispatch' || vars.CHROMATIC_ENABLED == 'true' }}
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Chromatic needs full git history for baselines
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # Storybook stories import gitignored generated artifacts
-      # (src/app/data/component-api.json, token-audit-report.json). Regenerate
-      # them before the build, mirroring ci.yml's "Generate data artifacts" step
-      # so Chromatic builds the same Storybook the lean gate does.
-      - name: Generate data artifacts
-        run: node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full
+      - name: Build docs site
+        run: pnpm docs:publish
+      - run: pnpm exec playwright install --with-deps chromium
+      # Chromatic's Playwright mode uploads the archives the tests write to
+      # test-results/chromatic-archives, so the tests run first.
+      - name: Capture docs demos
+        run: pnpm test:visual-docs
       - uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          buildScriptName: build-storybook
+          playwright: true
           exitZeroOnChanges: true
           autoAcceptChanges: ${{ github.ref == 'refs/heads/main' }}
-          onlyChanged: true

@@ -1,5 +1,5 @@
 {
-  "checksum": "f8c46a94",
+  "checksum": "788be244",
   "snapshot": {
     "schemaVersion": 1,
     "takenAt": "2026-10-07T05:17:26.810Z",
@@ -282,7 +282,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Satoshi"
+                "value": "Plus Jakarta Sans"
               }
             }
           },
@@ -1310,7 +1310,7 @@
         "name": "typography/body",
         "path": "semantic.typography.body",
         "description": "",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Regular",
         "fontSize": 17,
         "lineHeight": {
@@ -1360,7 +1360,7 @@
         "name": "typography/h1",
         "path": "semantic.typography.h1",
         "description": "Page title.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 48,
         "lineHeight": {

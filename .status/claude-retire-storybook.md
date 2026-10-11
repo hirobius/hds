@@ -1,0 +1,1 @@
+Retire Storybook, phase 1 (hds#506): the docs site is the front door (README badge and links, CONSUMING) and serves the agent files and Figma sync bundle too; the Storybook site stays up until the Sync plugin is rebuilt against docsUrl.

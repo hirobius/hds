@@ -4,9 +4,10 @@
  * scripts/scaffold-component.mjs
  *
  * One-command component ingestion recipe. From a single name it emits a fully
- * wired component: the `.tsx` (cva skeleton + token bindings), a Storybook
- * story, a smoke test, a manifest entry and the component-api.json extraction,
- * plus a Swiss-canon fixture. Makes "ingest a new component" a single
+ * wired component: the `.tsx` (cva skeleton + token bindings), a live demo on
+ * the docs site (a DEMOS entry in docs-site/components/component-demos.tsx and
+ * its name in docs-site/lib/previewed-components.ts), a smoke test, a manifest
+ * entry and the component-api.json extraction, plus a Swiss-canon fixture. Makes "ingest a new component" a single
  * standardized step (ADR-020 §5).
  *
  * No Figma Code Connect file is emitted. The commented `figma.connect()` stub
@@ -38,7 +39,8 @@ import { fileURLToPath } from 'url';
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TEMPLATE_PATH = path.join(ROOT, 'templates/component-template.tsx');
 const COMPONENT_DIR = path.join(ROOT, 'src/app/components');
-const STORY_DIR = path.join(ROOT, 'src/stories');
+const DEMOS_PATH = path.join(ROOT, 'docs-site/components/component-demos.tsx');
+const PREVIEWED_PATH = path.join(ROOT, 'docs-site/lib/previewed-components.ts');
 const MANIFEST_PATH = path.join(ROOT, 'public/hds-manifest.json');
 const FIXTURE_ROOT = path.join(ROOT, 'fixtures/swiss-canon');
 
@@ -116,42 +118,60 @@ function buildComponentSource(name) {
   return template.replace(/__NAME__/g, name).replace(/__CAMEL__/g, camelCase(name));
 }
 
-function buildStorySource(name) {
-  const kebab = kebabCase(name);
-  return `/**
- * ${name} stories — scaffolded skeleton. Flesh out with real states.
- * @see src/app/components/${kebab}.tsx
- */
-import type { Meta, StoryObj } from '@storybook/react';
-import { ${name} } from '../app/components/${kebab}';
-
-const meta = {
-  title: 'Primitives/${kebab}',
-  component: ${name},
-  tags: ['autodocs'],
-  parameters: { layout: 'padded' },
-  argTypes: {
-    variant: { control: { type: 'select' }, options: ['primary', 'secondary', 'tertiary'] },
-  },
-} satisfies Meta<typeof ${name}>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  args: { variant: 'primary', children: '${name}' },
-};
-
-export const AllVariants: Story = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '480px' }}>
+/** The live demo the docs page renders, as a function for component-demos.tsx. */
+function buildDemoSource(name) {
+  return `function ${name}Demo() {
+  return (
+    <div style={demoStack}>
       <${name} variant="primary">Primary</${name}>
       <${name} variant="secondary">Secondary</${name}>
       <${name} variant="tertiary">Tertiary</${name}>
     </div>
-  ),
-};
+  );
+}
+
 `;
+}
+
+/**
+ * Registers the demo: the import, the function, the DEMOS entry and the name in
+ * PREVIEWED_COMPONENTS (the registry is typed against that list, so a demo and
+ * its name travel together). Pure text in, text out; throws on a file that no
+ * longer has the anchors, so a reshuffled docs-site fails loudly instead of
+ * half-registering.
+ */
+export function addDemoToSources(name, { demos, previewed }) {
+  const anchor = (text, needle, file) => {
+    const at = text.indexOf(needle);
+    if (at === -1) throw new Error(`${file}: expected to find \`${needle}\``);
+    return at;
+  };
+  if (new RegExp(`\\b${name}Demo\\b`).test(demos) || previewed.includes(`'${name}',`)) {
+    throw new Error(`${name} already has a docs demo`);
+  }
+  const insertAt = (text, at, chunk) => text.slice(0, at) + chunk + text.slice(at);
+
+  let nextDemos = demos;
+  nextDemos = insertAt(
+    nextDemos,
+    anchor(nextDemos, "} from '@hirobius/design-system';", 'component-demos.tsx'),
+    `  ${name},\n`,
+  );
+  nextDemos = insertAt(
+    nextDemos,
+    anchor(nextDemos, 'export const DEMOS:', 'component-demos.tsx'),
+    buildDemoSource(name),
+  );
+  const demosAt = anchor(nextDemos, 'export const DEMOS:', 'component-demos.tsx');
+  const close = anchor(nextDemos.slice(demosAt), '\n};', 'component-demos.tsx') + demosAt;
+  nextDemos = insertAt(nextDemos, close + 1, `  ${name}: ${name}Demo,\n`);
+
+  const nextPreviewed = insertAt(
+    previewed,
+    anchor(previewed, '  // Patterns (', 'previewed-components.ts'),
+    `  '${name}',\n`,
+  );
+  return { demos: nextDemos, previewed: nextPreviewed };
 }
 
 function buildTestSource(name) {
@@ -181,7 +201,6 @@ function plan(name) {
   const kebab = kebabCase(name);
   return {
     componentPath: path.join(COMPONENT_DIR, `${kebab}.tsx`),
-    storyPath: path.join(STORY_DIR, `${kebab}.stories.tsx`),
     testPath: path.join(COMPONENT_DIR, `${kebab}.test.tsx`),
     fixtureDir: path.join(FIXTURE_ROOT, `${kebab}-clean`),
     fixtureInputPath: path.join(FIXTURE_ROOT, `${kebab}-clean`, 'input.jsx'),
@@ -220,7 +239,7 @@ function main() {
     );
     process.exit(1);
   }
-  for (const p of [paths.componentPath, paths.storyPath, paths.testPath]) {
+  for (const p of [paths.componentPath, paths.testPath]) {
     if (fs.existsSync(p)) {
       console.error(`Error: ${rel(p)} already exists.`);
       process.exit(1);
@@ -228,6 +247,24 @@ function main() {
   }
 
   const spec = buildSpecStub(name);
+  for (const p of [DEMOS_PATH, PREVIEWED_PATH]) {
+    if (!fs.existsSync(p)) {
+      console.error(`Error: ${rel(p)} is missing — the docs demo cannot be registered.`);
+      process.exit(1);
+    }
+  }
+  // Computed before anything is written, so a docs-site that lost an anchor
+  // fails here and leaves no half-scaffolded component behind.
+  let docsSources;
+  try {
+    docsSources = addDemoToSources(name, {
+      demos: fs.readFileSync(DEMOS_PATH, 'utf8'),
+      previewed: fs.readFileSync(PREVIEWED_PATH, 'utf8'),
+    });
+  } catch (error) {
+    console.error('Error:', error.message);
+    process.exit(1);
+  }
 
   if (dryRun) {
     console.log(
@@ -235,7 +272,8 @@ function main() {
       rel(paths.componentPath),
       `(${componentSource.length} bytes)`,
     );
-    console.log('[dry-run] would write story:      ', rel(paths.storyPath));
+    console.log('[dry-run] would add docs demo:    ', rel(DEMOS_PATH), `(${name}Demo)`);
+    console.log('[dry-run] would add previewed name:', rel(PREVIEWED_PATH), `('${name}')`);
     console.log('[dry-run] would write test:       ', rel(paths.testPath));
     console.log(
       '[dry-run] would add manifest entry:',
@@ -253,8 +291,10 @@ function main() {
 
   fs.writeFileSync(paths.componentPath, componentSource);
   console.log('wrote', rel(paths.componentPath));
-  fs.writeFileSync(paths.storyPath, buildStorySource(name));
-  console.log('wrote', rel(paths.storyPath));
+  fs.writeFileSync(DEMOS_PATH, docsSources.demos);
+  console.log('registered demo in', rel(DEMOS_PATH));
+  fs.writeFileSync(PREVIEWED_PATH, docsSources.previewed);
+  console.log('registered name in', rel(PREVIEWED_PATH));
   fs.writeFileSync(paths.testPath, buildTestSource(name));
   console.log('wrote', rel(paths.testPath));
 
@@ -282,7 +322,21 @@ function main() {
     'to src/index.ts',
   );
   console.log('  2. Flesh out variant logic in', rel(paths.componentPath));
-  console.log('  3. pnpm typecheck && pnpm test && pnpm api:update');
+  console.log(
+    '  3. Flesh out the demo (' + name + 'Demo) in',
+    rel(DEMOS_PATH),
+    '- it imports the package export from step 1, so the docs site does not build before it',
+  );
+  console.log(
+    '  4. For a docs page: list it in mcp/core-set.mjs (a ratified core component) or re-export',
+    'it from src/patterns.ts (a pattern), then pnpm manifest:generate && pnpm docs:components',
+  );
+  console.log('  5. pnpm typecheck && pnpm test && pnpm api:update');
 }
 
-main();
+// Importable for its test; runs only as a CLI.
+if (
+  process.argv[1] &&
+  fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))
+)
+  main();

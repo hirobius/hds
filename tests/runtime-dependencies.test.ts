@@ -10,7 +10,7 @@
  * nobody, and only a review found them (hds#429). knip reports the same thing,
  * but `pretest` runs it with `--no-exit-code`, so nothing failed.
  *
- * Stories, tests and Code Connect templates are exempt: none of them ship, so a
+ * Tests and Code Connect templates are exempt: none of them ship, so a
  * package used only there belongs in `devDependencies`.
  *
  * The fix for a failure is to drop the package, not to exempt it here:
@@ -42,10 +42,9 @@ const stripComments = (text: string) =>
 
 /** Files built as an app or a template, not as the published library. */
 const isExempt = (path: string) =>
-  /\.(test|spec|stories)\.[jt]sx?$/.test(path) ||
+  /\.(test|spec)\.[jt]sx?$/.test(path) ||
   /\.figma\.tsx?$/.test(path) ||
-  path.includes('/__tests__/') ||
-  path.startsWith('src/stories/');
+  path.includes('/__tests__/');
 
 function shippedSourceFiles(dir: string, acc: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {

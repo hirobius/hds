@@ -515,25 +515,25 @@
         "$type": "fontFamily",
         "primary": {
           "$value": [
-            "Satoshi",
+            "Plus Jakarta Sans",
             "system-ui",
             "-apple-system",
             "BlinkMacSystemFont",
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Self-hosted Satoshi (ITF) body typeface; falls back to system-ui sans-serif stack."
+          "$description": "Self-hosted Plus Jakarta Sans (OFL) body typeface; falls back to system-ui sans-serif stack."
         },
         "display": {
           "$value": [
-            "Satoshi",
+            "Plus Jakarta Sans",
             "system-ui",
             "-apple-system",
             "BlinkMacSystemFont",
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display face: Satoshi Bold (ITF), bound to the display and title composites."
+          "$description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites."
         },
         "mono": {
           "$value": ["IBM Plex Mono", "Courier New", "monospace"],

@@ -28,7 +28,7 @@ const committed = parseSnapshotFile(readFileSync(join(REPO, 'figma', 'snapshot.j
 const LINKS = {
   libraryFileKey: committed.snapshot.file.key,
   libraryFileName: committed.snapshot.file.name,
-  storybookUrl: 'https://example.test',
+  docsUrl: 'https://example.test',
   retiredFiles: [],
 };
 

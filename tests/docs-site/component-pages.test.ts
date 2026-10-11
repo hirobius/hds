@@ -21,6 +21,7 @@ import { join } from 'node:path';
 import {
   buildComponentPages,
   componentSlug,
+  docsPageFor,
   pageDescription,
   patternComponents,
   readerText,
@@ -397,5 +398,47 @@ describe('page trimming', () => {
     expect(p).toContain('<summary>API · 1 prop</summary>');
     expect(p).not.toContain('## Live Preview');
     expect(p).not.toContain('## Related Components');
+  });
+});
+
+describe('docsPageFor: where each component is documented', () => {
+  const routing = {
+    core: ['Button', 'SegmentedControl', 'Box', 'ToastProvider'],
+    patterns: ['MetricTiles'],
+    providers: ['ToastProvider'],
+    utilities: ['Box'],
+    utilityPage: 'utilities',
+    providerGuide: 'guides/providers.mdx',
+  };
+
+  it.each([
+    ['Button', '/docs/components/button'],
+    ['SegmentedControl', '/docs/components/segmented-control'],
+    ['Box', '/docs/components/utilities'],
+    ['ToastProvider', '/docs/guides/providers'],
+    ['MetricTiles', '/docs/patterns/metric-tiles'],
+  ])('%s -> %s', (name, path) => {
+    expect(docsPageFor(name, routing)?.path).toBe(path);
+  });
+
+  it('has no page for a component outside the core set and the patterns', () => {
+    expect(docsPageFor('Blockquote', routing)).toBeNull();
+  });
+
+  it('agrees with the manifest on every component: docsPage is set exactly where a page is generated', () => {
+    const manifest = JSON.parse(readFileSync(join(ROOT, 'public/hds-manifest.json'), 'utf8'));
+    const real = {
+      core: CORE_COMPONENTS as string[],
+      patterns: patternComponents(readFileSync(join(ROOT, 'src/patterns.ts'), 'utf8')) as string[],
+      providers: PROVIDERS,
+      utilities: UTILITIES,
+    };
+    const specs = manifest.componentSpecs as Record<string, { docsPage?: string | null }>;
+    for (const [name, spec] of Object.entries(specs)) {
+      expect(spec.docsPage ?? null, name).toBe(docsPageFor(name, real)?.path ?? null);
+      expect(spec, name).not.toHaveProperty('storyIds');
+      expect(spec, name).not.toHaveProperty('storyFiles');
+    }
+    expect(specs.Button.docsPage).toBe('/docs/components/button');
   });
 });

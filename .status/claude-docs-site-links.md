@@ -1,0 +1,8 @@
+Storybook retirement, step 2 of 3 (hds#506): everything that pointed at or required a story now points at or requires the docs site.
+
+- Manifest `storyFiles`/`storyIds` replaced by `docsPage` (site-relative path, from `docsPageFor()` in scripts/lib/docs-component-pages.mjs via scripts/lib/docs-routing.mjs). The manifest `docs`/`llmsTxt` URLs now name the docs site.
+- Component documentation links (docs/DESIGN_LINKS.md, Figma dev resources "HDS docs", Figma documentation links) = `docsUrl` + `docsPage`; `designParameters(...)` is no longer required in story files. figma/links.json `storybookUrl` is null.
+- `check-story-coverage` retired (script, pre-commit, registry); coverage is `check:docs` (every core component and pattern has a DEMOS entry listed in PREVIEWED_COMPONENTS) plus tests/docs-site/component-pages.test.ts.
+- `check-sync-map` joins source, manifest, docs page and Figma (docs coverage floor replaces story coverage and orphan stories).
+- `pnpm hds:new` registers a docs demo instead of writing a story.
+- Left for step 3: stories, .storybook, Storybook deps, Chromatic Storybook job, check-storybook-axe, check-rendered-geometry and check-layout-contract (with baselines), generate-component-page and lib/component-page (story-driven reference site), story-link.mjs and its tests, storybook-front-door test, check-status-claims play() count, build-readme-counts story counts, src/stories/design-parameters.ts and the Storybook tests in figma-links.test.mjs, root vercel.json (PR #586), the storybookUrl fallback in figma-scripts, and the baked Storybook wording in figma-sync-runtime (changing it changes the Sync plugin build id).

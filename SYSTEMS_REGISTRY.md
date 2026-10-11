@@ -116,8 +116,8 @@ The lean gate set (ADR-018 §5) fires at these points:
 | In-session | Claude Code hook — edit `theme.css`              | `pnpm check:css`                                                                                                      | CSS bridge drift immediately during editing                                                          |
 | Commit     | `git commit` → `.husky/pre-commit`               | `pnpm check:secrets`, lint-staged Prettier, `pnpm typecheck`, `pnpm lint`, `verify-tokens.mjs` + `check-contrast.mjs` | Secrets, formatting, type errors, lint warnings, token validity, contrast                            |
 | Push       | `git push` → `.husky/pre-push`                   | `vitest run` + `pnpm smoke:consumer`                                                                                  | Unit and contract test failures; a package that does not build, resolve, or typecheck for a consumer |
-| PR / main  | GitHub Actions `.github/workflows/ci.yml`        | Lean gate set + `pnpm check:size` + `pnpm build-storybook`                                                            | Everything above, plus bundle budgets and a broken Storybook build                                   |
-| PR / main  | GitHub Actions `.github/workflows/chromatic.yml` | Chromatic                                                                                                             | Visual changes in Storybook stories                                                                  |
+| PR / main  | GitHub Actions `.github/workflows/ci.yml`        | Lean gate set + `pnpm check:size` + docs-site build and axe gate                                                      | Everything above, plus bundle budgets and docs-site accessibility                                    |
+| PR / main  | GitHub Actions `.github/workflows/chromatic.yml` | Chromatic                                                                                                             | Visual changes in the docs-site demos                                                                |
 
 No automatic Figma sync runs: pushing and importing are hand-run (`pnpm figma:push`, `pnpm figma:native-import`), and the old `sync-figma-variables.yml` workflow is archived. CI only reads — `ci.yml` runs `check:figma-drift` against the committed `figma/snapshot.json`. See ADR-025.
 
@@ -193,7 +193,7 @@ This does not remove automated checks or git hooks. It only removes extra root-c
 | `figma-snapshot.mjs`            | `pnpm figma:snapshot --ingest`: writes `figma/snapshot.json`      |
 | `check-figma-drift.mjs`         | `pnpm check:figma-drift`: model vs committed snapshot             |
 | `build-figma-native-import.mjs` | `pnpm figma:native-import`: DTCG files for Variables ▸ Import     |
-| `figma-links.mjs`               | `pnpm figma:links`: figmaUrl → design links doc, Storybook, Figma |
+| `figma-links.mjs`               | `pnpm figma:links`: figmaUrl → design links doc, docs site, Figma |
 | `build-figma-variables.mjs`     | legacy plugin/REST exports projected from the Figma model         |
 | `build-readme-counts.mjs`       | regenerates the README count bullets from source (`pnpm tokens`)  |
 | `batch-scan.mjs`                | scanning utility for broader inspection workflows                 |

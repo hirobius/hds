@@ -4,7 +4,7 @@
  * check-sync-map — one table answering "what is in sync, and where do I edit".
  *
  * Four records describe a component and none referenced the others: the source
- * file, the manifest entry, the Storybook story, and the Figma node. So the
+ * file, the manifest entry, the docs-site page, and the Figma node. So the
  * only way to answer "is Table in sync" was to read four files and hold the
  * join in your head, which is why a defect list gets reported from memory.
  *
@@ -15,8 +15,9 @@
  *   node scripts/check-sync-map.mjs --write      # (re)write docs/sync-map.json
  *   node scripts/check-sync-map.mjs --check      # fail if docs/sync-map.json is stale
  *
- * Exit 1 when a component regresses below the recorded coverage, or when a
- * story file resolves to no component. Existing gaps are reported, not failed:
+ * Exit 1 when a component regresses below the recorded coverage, or when the
+ * manifest's recorded docsPage disagrees with the docs routing. Existing gaps
+ * are reported, not failed:
  * a backlog gap (in 2026-09 41 library components had no Figma node; since
  * 2026-10-07 all 56 do) would otherwise make the gate a permanent red nobody
  * reads.
@@ -33,13 +34,12 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDisposition, mappedByOverride } from './figma-disposition.mjs';
-import { buildStoryIndex, findStoryFiles } from './lib/story-link.mjs';
+import { docsPagePath, loadDocsRouting } from './lib/docs-routing.mjs';
 import { GAPS, buildSyncMap, summarizeSyncMap } from './lib/sync-map.mjs';
 import { formatGenerated } from './lib/write-generated.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MANIFEST = path.join(ROOT, 'public/hds-manifest.json');
-const GEOMETRY_BASELINE = path.join(ROOT, 'docs/guardrails/rendered-geometry-baseline.json');
 const COVERAGE = path.join(ROOT, 'docs/guardrails/sync-coverage.json');
 const OUT_JSON = path.join(ROOT, 'docs/sync-map.json');
 
@@ -59,17 +59,6 @@ const ONE = valueOf('--component');
 
 function readJson(file, fallback = null) {
   return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : fallback;
-}
-
-/** Defect counts per story id, from the rendered-geometry baseline. */
-function defectsByStory() {
-  const baseline = readJson(GEOMETRY_BASELINE, { accepted: [] });
-  const counts = {};
-  for (const fingerprint of baseline.accepted ?? []) {
-    const storyId = fingerprint.split(' :: ')[0];
-    counts[storyId] = (counts[storyId] ?? 0) + 1;
-  }
-  return counts;
 }
 
 const manifest = readJson(MANIFEST);
@@ -93,42 +82,29 @@ const sourceFiles = new Set(
     .filter((file) => file && existsSync(path.join(ROOT, file))),
 );
 
-const storyFilePaths = findStoryFiles(ROOT);
-const { byFilePath: freshStories, unresolved } = buildStoryIndex(
-  storyFilePaths.map((p) => ({ path: p, source: readFileSync(path.join(ROOT, p), 'utf8') })),
-  new Set(
-    Object.values(specs)
-      .map((s) => s.filePath)
-      .filter(Boolean),
-  ),
-);
-
-// The manifest RECORDS the join; source IS the join. Reading only the recorded
-// value would let a stale manifest pass a gate whose whole job is to prove the
-// records agree -- the shape of defect this work exists to remove. So re-derive
-// from source and report any spec whose recorded ids have drifted.
+// The manifest RECORDS the join; the docs routing IS the join. Reading only the
+// recorded value would let a stale manifest pass a gate whose whole job is to
+// prove the records agree. So re-derive each docsPage from the routing and
+// report any spec whose recorded value has drifted.
+const routing = loadDocsRouting(ROOT);
 const manifestDrift = [];
 for (const [name, spec] of Object.entries(specs)) {
-  const recorded = (spec.storyIds ?? []).join(',');
-  const derived = (spec.filePath ? (freshStories.get(spec.filePath)?.storyIds ?? []) : []).join(
-    ',',
-  );
-  if (recorded !== derived) {
-    manifestDrift.push({
-      name,
-      recorded: spec.storyIds ?? [],
-      derived: spec.filePath ? (freshStories.get(spec.filePath)?.storyIds ?? []) : [],
-    });
-  }
+  const recorded = spec.docsPage ?? null;
+  const derived = docsPagePath(name, routing);
+  if (recorded !== derived) manifestDrift.push({ name, recorded, derived });
 }
+const expectDocs = new Set(
+  Object.keys(specs).filter(
+    (name) => routing.core.includes(name) || routing.patterns.includes(name),
+  ),
+);
 
 const map = buildSyncMap({
   specs,
   disposition,
   figmaMapped: mappedByOverride(),
   sourceFiles,
-  defectsByStory: defectsByStory(),
-  orphanStories: unresolved,
+  expectDocs,
 });
 const summary = summarizeSyncMap(map);
 
@@ -137,7 +113,7 @@ if (AS_JSON) {
   process.exit(0);
 }
 
-// Prettier collapses short primitive arrays (storyFiles: [...], gaps: [...])
+// Prettier collapses short primitive arrays (gaps: [...])
 // onto one line, which plain JSON.stringify does not — format through the
 // same helper other generators use (scripts/lib/write-generated.mjs) so
 // --write produces the byte-identical bytes lint-staged's Prettier pass
@@ -148,7 +124,7 @@ const canonicalSyncMap = await formatGenerated(
   `${JSON.stringify(
     {
       $comment:
-        'Generated by scripts/check-sync-map.mjs --write. One row per component, joining source, manifest, Storybook and Figma. Do not hand-edit.',
+        'Generated by scripts/check-sync-map.mjs --write. One row per component, joining source, manifest, docs page and Figma. Do not hand-edit.',
       generated: manifest.generated ?? null,
       summary,
       ...map,
@@ -205,9 +181,8 @@ if (CHECK) {
 const GAP_LABEL = {
   [GAPS.NO_SOURCE]: 'no source file',
   [GAPS.NOT_IN_MANIFEST]: 'not in manifest',
-  [GAPS.NO_STORY]: 'no story',
+  [GAPS.NO_DOCS]: 'no docs page',
   [GAPS.NO_FIGMA]: 'no Figma node',
-  [GAPS.HAS_DEFECTS]: 'rendered defects',
 };
 
 if (ONE) {
@@ -218,15 +193,11 @@ if (ONE) {
   }
   console.log(`\n${row.name}  [${row.class}]${row.synced ? '  ✓ in sync' : ''}`);
   console.log(`  source  ${row.filePath ?? '—'}`);
-  console.log(
-    `  stories ${row.storyFiles.join(', ') || '—'}  (${row.storyCount} stor${row.storyCount === 1 ? 'y' : 'ies'})`,
-  );
+  console.log(`  docs    ${row.docsPage ?? (row.expectDocs ? '— MISSING' : '— none by design')}`);
   console.log(
     `  figma   ${row.figmaUrl ?? (row.figmaVia ? `via ${row.figmaVia}` : row.expectFigma ? '— MISSING' : '— not expected')}`,
   );
-  console.log(`  defects ${row.defects}`);
   if (row.gaps.length) console.log(`  gaps    ${row.gaps.map((g) => GAP_LABEL[g]).join(', ')}`);
-  if (row.storyIds.length) console.log(`  ids     ${row.storyIds.join('\n          ')}`);
   process.exit(0);
 }
 
@@ -234,7 +205,7 @@ const shown = GAPS_ONLY ? map.rows.filter((r) => !r.synced) : map.rows;
 console.log(`\ncheck-sync-map — ${summary.components} components`);
 console.log(
   `  in sync        ${summary.synced}/${summary.components}` +
-    `   stories ${summary.storyCoverage.covered}/${summary.storyCoverage.expected}` +
+    `   docs ${summary.docsCoverage.covered}/${summary.docsCoverage.expected}` +
     `   figma ${summary.figmaCoverage.covered}/${summary.figmaCoverage.expected}`,
 );
 console.log(
@@ -246,7 +217,7 @@ console.log(
 
 if (SHOW_TABLE) {
   console.log(
-    `\n${'component'.padEnd(24)}${'class'.padEnd(10)}${'stories'.padEnd(9)}${'figma'.padEnd(18)}gaps`,
+    `\n${'component'.padEnd(24)}${'class'.padEnd(10)}${'docs'.padEnd(9)}${'figma'.padEnd(18)}gaps`,
   );
   console.log('─'.repeat(96));
   for (const row of shown) {
@@ -254,25 +225,13 @@ if (SHOW_TABLE) {
     console.log(
       row.name.padEnd(24) +
         row.class.padEnd(10) +
-        String(row.storyCount || '—').padEnd(9) +
+        (row.docsPage ? 'yes' : '—').padEnd(9) +
         figma.padEnd(18) +
         (row.gaps.map((g) => GAP_LABEL[g]).join(', ') || '✓'),
     );
   }
-
-  if (map.orphanStories.length) {
-    console.log(
-      `\n${map.orphanStories.length} story file(s) resolve to no component in the manifest:`,
-    );
-    for (const o of map.orphanStories) console.log(`    ${o.storyFile} — ${o.reason}`);
-  }
 } else {
   console.log('  (pnpm sync-map for the gaps, --table for every component)');
-  if (map.orphanStories.length) {
-    console.log(
-      `  ${map.orphanStories.length} story file(s) resolve to no component in the manifest`,
-    );
-  }
 }
 
 const recorded = readJson(COVERAGE);
@@ -284,9 +243,8 @@ if (UPDATE) {
       {
         $comment:
           'Coverage floor for check-sync-map. Coverage may rise; a drop fails the gate. Regenerate with: node scripts/check-sync-map.mjs --update-coverage',
-        storyCoverage: summary.storyCoverage,
+        docsCoverage: summary.docsCoverage,
         figmaCoverage: summary.figmaCoverage,
-        orphanStories: map.orphanStories.map((o) => o.storyFile).sort(),
       },
       null,
       2,
@@ -304,10 +262,10 @@ if (!recorded) {
 }
 
 const problems = [];
-if (summary.storyCoverage.covered < recorded.storyCoverage.covered) {
+if (summary.docsCoverage.covered < recorded.docsCoverage.covered) {
   problems.push(
-    `story coverage fell from ${recorded.storyCoverage.covered} to ${summary.storyCoverage.covered}` +
-      ` (of ${summary.storyCoverage.expected} components that should have one)`,
+    `docs page coverage fell from ${recorded.docsCoverage.covered} to ${summary.docsCoverage.covered}` +
+      ` (of ${summary.docsCoverage.expected} core components and patterns)`,
   );
 }
 if (summary.figmaCoverage.covered < recorded.figmaCoverage.covered) {
@@ -316,15 +274,10 @@ if (summary.figmaCoverage.covered < recorded.figmaCoverage.covered) {
       ` (of ${summary.figmaCoverage.expected} library components)`,
   );
 }
-const knownOrphans = new Set(recorded.orphanStories ?? []);
-const newOrphans = map.orphanStories.filter((o) => !knownOrphans.has(o.storyFile));
-for (const o of newOrphans) {
-  problems.push(`${o.storyFile} resolves to no component in the manifest — ${o.reason}`);
-}
 for (const drift of manifestDrift) {
   problems.push(
-    `${drift.name}: the manifest records ${drift.recorded.length} story id(s), source has ` +
-      `${drift.derived.length} — run pnpm manifest:generate`,
+    `${drift.name}: the manifest records docsPage ${drift.recorded ?? 'null'}, the docs routing ` +
+      `says ${drift.derived ?? 'null'} — run pnpm manifest:generate`,
   );
 }
 
@@ -338,12 +291,12 @@ if (problems.length) {
   }
   if (problems.length > manifestDrift.length) {
     console.error(
-      '\n  A component that loses its story, or a story that points at nothing,\n' +
-        '  is how the records drift apart again. Fix it, or accept it deliberately:\n' +
+      '\n  A component that loses its docs page or its Figma node is how the records\n' +
+        '  drift apart again. Fix it, or accept it deliberately:\n' +
         '    node scripts/check-sync-map.mjs --update-coverage',
     );
   }
   process.exit(1);
 }
 
-console.log('\n✓ the join holds — no component lost a story or a Figma link');
+console.log('\n✓ the join holds — no component lost a docs page or a Figma link');

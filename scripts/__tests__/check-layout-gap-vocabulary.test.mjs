@@ -170,9 +170,8 @@ describe('isExempt', () => {
     expect(isExempt('src/app/components/card.spec.tsx')).toBe(true);
   });
 
-  it('scans components, stories and everything else under src/', () => {
+  it('scans components and everything else under src/', () => {
     expect(isExempt('src/app/components/grid.tsx')).toBe(false);
-    expect(isExempt('src/stories/grid.stories.tsx')).toBe(false);
     expect(isExempt('src/app/components/box.tsx')).toBe(false);
   });
 });

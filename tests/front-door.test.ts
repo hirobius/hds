@@ -14,9 +14,9 @@ const read = (rel: string) => readFileSync(join(ROOT, rel), 'utf8');
 const readme = read('README.md');
 const accessibility = () => readme.split(/^## /m).find((s) => s.startsWith('Accessibility')) ?? '';
 const head = readme.split('\n').slice(0, 20).join('\n');
-const links = JSON.parse(read('figma/links.json')) as { storybookUrl: string };
+const links = JSON.parse(read('figma/links.json')) as { docsUrl: string };
 
-const SCREENSHOT = 'docs/images/storybook-brand-theme-dials.png';
+const SCREENSHOT = 'docs/images/brand-theme-dials.png';
 
 /**
  * What a README focus line claims: violations reported, or a clean pass. Any
@@ -29,19 +29,19 @@ function focusClaim(line: string) {
 }
 
 describe('README front door (first 20 lines)', () => {
-  it('links the live Storybook from figma/links.json', () => {
-    expect(links.storybookUrl).toMatch(/^https:\/\//);
-    expect(head).toContain(links.storybookUrl);
+  it('links the live docs site from figma/links.json', () => {
+    expect(links.docsUrl).toMatch(/^https:\/\//);
+    expect(head).toContain(links.docsUrl);
   });
 
-  it('shows CI, npm and Storybook badges', () => {
+  it('shows CI, npm and Docs badges', () => {
     expect(head).toMatch(
       /!\[[^\]]*CI[^\]]*\]\(https:\/\/github\.com\/hirobius\/hds\/actions\/workflows\/ci\.yml\/badge\.svg/,
     );
     expect(head).toMatch(
       /!\[[^\]]*npm[^\]]*\]\(https:\/\/img\.shields\.io\/npm\/v\/@hirobius\/design-system/,
     );
-    expect(head).toMatch(/!\[[^\]]*Storybook[^\]]*\]\(https:\/\/img\.shields\.io\/badge\//);
+    expect(head).toMatch(/!\[[^\]]*Docs[^\]]*\]\(https:\/\/img\.shields\.io\/badge\//);
   });
 
   it('has the install line', () => {
@@ -67,7 +67,7 @@ describe('README honesty', () => {
   it('states only the accessibility checks that exist', () => {
     const section = accessibility();
     expect(section).not.toBe('');
-    for (const claim of ['check-contrast', 'jsx-a11y', 'check-focus-states', 'addon-a11y']) {
+    for (const claim of ['check-contrast', 'jsx-a11y', 'check-focus-states', 'check-docs-axe']) {
       expect(section).toContain(claim);
     }
     expect(section).not.toMatch(/screen reader|VoiceOver|NVDA|fully accessible|WCAG 2\.\d AAA/i);
@@ -109,17 +109,15 @@ describe('README honesty', () => {
     expect(pkg.scripts.pretest).toContain('scripts/check-focus-states.mjs');
   });
 
-  it('names the Storybook axe gate CI runs, and its allowlist as it is', () => {
-    const storybook =
+  it('names the docs-site axe gate CI runs, and its allowlist as it is', () => {
+    const docs =
       accessibility()
         .split('\n')
-        .find((l) => l.includes('addon-a11y')) ?? '';
-    expect(storybook).toContain('check-storybook-axe.mjs');
-    expect(storybook).not.toMatch(/does not gate/i);
-    expect(read('.github/workflows/ci.yml')).toContain('node scripts/check-storybook-axe.mjs');
-    const allowlist = JSON.parse(read('scripts/axe-allowlist.json')) as unknown[];
-    if (/empty allowlist/i.test(storybook)) expect(allowlist).toEqual([]);
-    if (/allowlist has one entry/i.test(storybook)) expect(allowlist).toHaveLength(1);
+        .find((l) => l.includes('check-docs-axe.mjs')) ?? '';
+    expect(docs).toContain('scripts/docs-axe-allowlist.json');
+    expect(read('.github/workflows/ci.yml')).toContain('node scripts/check-docs-axe.mjs');
+    const allowlist = JSON.parse(read('scripts/docs-axe-allowlist.json')) as unknown[];
+    if (/allowlist[^.]*is empty/i.test(docs)) expect(allowlist).toEqual([]);
   });
 
   it('points only at files that exist', () => {

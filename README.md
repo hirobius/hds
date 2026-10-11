@@ -1,11 +1,11 @@
 # Hirobius Design System
 
-[![CI](https://github.com/hirobius/hds/actions/workflows/ci.yml/badge.svg)](https://github.com/hirobius/hds/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/@hirobius/design-system)](https://www.npmjs.com/package/@hirobius/design-system) [![Storybook](https://img.shields.io/badge/Storybook-live-ff4785)](https://hirobius-design-system.vercel.app)
+[![CI](https://github.com/hirobius/hds/actions/workflows/ci.yml/badge.svg)](https://github.com/hirobius/hds/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/@hirobius/design-system)](https://www.npmjs.com/package/@hirobius/design-system) [![Docs](https://img.shields.io/badge/Docs-live-000000)](https://hirobius-hds-components.vercel.app)
 
 **A governed, token-first React design system.** Components plus the system
 around them: a DTCG token pipeline (CSS variables + TypeScript constants),
 quality gates in git hooks and CI, one-way Figma sync, and WCAG-checked contrast
-and focus. Live Storybook: **<https://hirobius-design-system.vercel.app>**
+and focus. Live docs: **<https://hirobius-hds-components.vercel.app>**
 
 ```bash
 pnpm add @hirobius/design-system
@@ -13,21 +13,19 @@ pnpm add @hirobius/design-system
 
 Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. From 0.22.0, `npx @hirobius/design-system@latest upgrade` does it for you.
 
-[![Buttons under the Brand and Theme dials: base and accent-lilac, light and dark](docs/images/storybook-brand-theme-dials.png)](https://hirobius-design-system.vercel.app)
+[![Buttons under the Brand and Theme dials: base and accent-lilac, light and dark](docs/images/brand-theme-dials.png)](https://hirobius-hds-components.vercel.app)
 
 <!-- auto:start:front-door-counts -->
 
 - **53** public component modules, exported from `src/index.ts`
 - **400** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
-- **341** Storybook stories in **71** story files
-- **80** guardrail gates, **287** test files, and **9** CI workflows enforcing the above in git hooks and CI
 
 <!-- auto:end:front-door-counts -->
 
 What the system includes:
 
 - **Token pipeline.** DTCG tokens in `hirobius.tokens.json` compile to CSS variables and TypeScript constants through a validated alias chain, with AA-contrast gates in light and dark.
-- **Gates with proof-of-firing.** Typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, bundle budgets, a consumer smoke build, and a Storybook build — run in git hooks and CI. Many gates carry a passing and a violating fixture that demonstrate the gate catches what it describes.
+- **Gates with proof-of-firing.** Typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, bundle budgets, a consumer smoke build, and a docs-site build with an axe gate — run in git hooks and CI. Many gates carry a passing and a violating fixture that demonstrate the gate catches what it describes.
 - **Upgrade path.** A release ledger and one consumer command: `npx @hirobius/design-system@latest upgrade`.
 - **One-way Figma sync.** Code is the source of truth; tokens project into Figma, and `pnpm check:figma-drift` compares a committed snapshot against the model.
 - **Theming without JavaScript.** Four root attributes — theme, density, brand, font — re-skin HDS descendants through CSS variables.
@@ -131,12 +129,12 @@ HDS theming is driven by root attributes + CSS variables, so it works with **zer
 JavaScript** — set them on any element (React, Astro, plain HTML) and every HDS
 descendant re-skins:
 
-| Dial    | Attribute / var                                | Values          | Default                 |
-| ------- | ---------------------------------------------- | --------------- | ----------------------- |
-| theme   | `data-theme`                                   | `dark`          | light (unset)           |
-| density | `data-density`                                 | `compact`       | comfortable (unset)     |
-| brand   | `data-brand` (+ `data-tenant` alias)           | overlay slug    | base (unset)            |
-| font    | `--hds-font-family` / `--hds-font-family-mono` | any font-family | Satoshi / IBM Plex Mono |
+| Dial    | Attribute / var                                | Values          | Default                           |
+| ------- | ---------------------------------------------- | --------------- | --------------------------------- |
+| theme   | `data-theme`                                   | `dark`          | light (unset)                     |
+| density | `data-density`                                 | `compact`       | comfortable (unset)               |
+| brand   | `data-brand` (+ `data-tenant` alias)           | overlay slug    | base (unset)                      |
+| font    | `--hds-font-family` / `--hds-font-family-mono` | any font-family | Plus Jakarta Sans / IBM Plex Mono |
 
 ```html
 <!-- zero-JS: static markup (e.g. an Astro layout) -->
@@ -181,7 +179,7 @@ What each Figma plan allows, and the Pro-plan architecture this follows, are in 
 pnpm install
 # Generated data files are gitignored; create them once (the same step CI runs):
 node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full
-pnpm storybook   # component workbench on http://localhost:6006
+pnpm docs:dev   # docs site (component pages with live demos)
 ```
 
 Core verification commands:
@@ -192,7 +190,7 @@ pnpm lint
 pnpm test              # pretest gates + unit + contract tests, exactly as the pre-push hook and CI run them
 pnpm tokens:verify
 pnpm check:size
-pnpm build-storybook
+pnpm docs:publish      # docs-site build, then: node scripts/check-docs-axe.mjs
 ```
 
 ## Architecture
@@ -222,7 +220,7 @@ What CI and the hooks check today, and nothing more:
 - **Contrast:** `scripts/check-contrast.mjs` enforces WCAG AA contrast on the core token pairs, in light and dark. It runs in CI and the pre-commit hook.
 - **Lint:** `jsx-a11y` rules run inside ESLint with zero warnings allowed.
 - **Focus:** `scripts/check-focus-states.mjs` (`pnpm check:focus`) audits focus styles on interactive components. It runs in `pretest` under `pnpm test`, so in the pre-push hook and in CI, and passes with 0 violations.
-- **Storybook:** the `addon-a11y` panel shows axe results for each story while you review it. The gate is `scripts/check-storybook-axe.mjs`: CI scans every built story in light and dark, including the open Select and Combobox, and fails on serious or critical violations outside its allowlist (`scripts/axe-allowlist.json`). The allowlist has one entry: `aria-hidden-focus` on the open Select story, where Radix Select hides the page around its listbox while focus stays trapped inside it (hds#407).
+- **Docs site:** `scripts/check-docs-axe.mjs` (`pnpm check:docs-axe`, after `pnpm docs:publish`) scans the live demo of every `/docs/components/*` and `/docs/patterns/*` page of the built docs site in light and dark with the same axe rules, scoped to the demo frame so the Fumadocs chrome does not count. CI runs it and fails on serious or critical violations outside `scripts/docs-axe-allowlist.json`, which is empty.
 
 Screen-reader output is checked by `tests/primitive-contracts/screen-reader.contract.test.tsx`, which runs in `pnpm test` and walks Dialog, Menu, Select, Combobox, Table and Alert with a virtual screen-reader (`@guidepup/virtual-screen-reader`) under jsdom, asserting the role, name and state phrases it reads and the alert's live-region announcement; it reads the jsdom accessibility tree, not what a desktop or mobile screen-reader says.
 
@@ -241,8 +239,8 @@ The gates are deterministic and need no browser or live site:
 
 - **pre-commit** (`.husky/pre-commit`): secrets scan, Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
 - **pre-push** (`.husky/pre-push`): `pnpm test` (the pretest gates, then Vitest unit and contract tests), then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
-- **CI** (`.github/workflows/ci.yml`): typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and a Storybook build.
-- **Visual review:** Storybook is the visual verification surface, reviewed by hand. The earlier browser test suite drove a docs site that no longer exists and was removed (ADR-018).
+- **CI** (`.github/workflows/ci.yml`): typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and the docs-site build with its axe gate.
+- **Visual review:** the docs site (`docs-site/`) is the visual verification surface: every core component and pattern has a page with a live demo, `check-docs-axe` gates its accessibility.
 
 ### Agent consistency
 
@@ -288,4 +286,4 @@ public/
 
 ## License
 
-The HDS code is MIT ([LICENSE](LICENSE)). The package CSS also embeds the Satoshi and IBM Plex Mono fonts, which keep their own licenses and are not covered by MIT. See [NOTICE.md](NOTICE.md).
+The HDS code is MIT ([LICENSE](LICENSE)). The package CSS also embeds the Plus Jakarta Sans and IBM Plex Mono fonts, which keep their own licenses and are not covered by MIT. See [NOTICE.md](NOTICE.md).

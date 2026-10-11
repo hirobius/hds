@@ -150,14 +150,13 @@ token, so Density carries only tenant Compact values today.
 Each component's Figma node has one source: the `@figma` tag in its JSDoc,
 which `pnpm manifest:generate` copies to `componentSpecs[<Name>].figmaUrl` in
 `public/hds-manifest.json`. Everything else reads that field
-(`scripts/lib/design-links.mjs`). `docs/DESIGN_LINKS.md` and Storybook links need nothing in
+(`scripts/lib/design-links.mjs`). `docs/DESIGN_LINKS.md` needs nothing in
 Figma. The two Figma-side links exist only after a person runs their step:
 
 | Where                                              | How                                                                                               | Needs                                                                                                                                                                                                         |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `docs/DESIGN_LINKS.md`                             | `pnpm figma:links` rewrites the marked section                                                    | Nothing                                                                                                                                                                                                       |
-| Storybook `parameters.design`                      | The story meta spreads `designParameters('<Name>')` (`src/stories/design-parameters.ts`)          | `@storybook/addon-designs` to show it as the Design tab                                                                                                                                                       |
-| Figma dev resources "HDS source" and "HDS story"   | `FIGMA_ACCESS_TOKEN=<token> pnpm figma:links --dev-resources --dry-run`, then without `--dry-run` | A personal access token with `file_dev_resources:read` and `file_dev_resources:write`. **Unverified on a Professional plan**: Figma documents no plan limit for these endpoints, and no run has confirmed one |
+| Figma dev resources "HDS source" and "HDS docs"    | `FIGMA_ACCESS_TOKEN=<token> pnpm figma:links --dev-resources --dry-run`, then without `--dry-run` | A personal access token with `file_dev_resources:read` and `file_dev_resources:write`. **Unverified on a Professional plan**: Figma documents no plan limit for these endpoints, and no run has confirmed one |
 | Figma component description and documentation link | `figma/links/use-figma/descriptions-<file>.dry-run.js` through use_figma, then the `.js`          | Figma MCP write access to that file. It uses the Plugin API, the same path as `figma:push`                                                                                                                    |
 
 To link a component:
@@ -166,15 +165,17 @@ To link a component:
    selection). It must carry a `node-id`.
 2. Add `@figma <that URL>` to the component's JSDoc.
 3. Run `pnpm manifest:generate && pnpm figma:links`.
-4. If its story meta does not spread `designParameters('<Name>')` yet, add it.
+
+A component's documentation link (the Figma documentation link and the "HDS docs"
+dev resource) is its docs-site page: `docsUrl` in `figma/links.json` plus the
+manifest's `docsPage` (`/docs/components/<slug>`, `/docs/patterns/<slug>`, or
+`/docs/guides/providers`). A component outside the core set and the patterns has no
+page, so its documentation link is the source file.
 
 `pnpm test` fails, and `pnpm figma:links --check` exits 1, when `docs/DESIGN_LINKS.md`
-section is stale, a linked component has no story or its story skips
-`designParameters`, a story hardcodes a Figma URL, or a `figmaUrl` is not a node
-URL.
+section is stale or a `figmaUrl` is not a node URL.
 
-Story links open the story file on GitHub until `storybookUrl` is set in
-`figma/links.json`; then they open the Storybook docs page. The dev resources
+The dev resources
 push never deletes: a URL already on the node counts as present under any name,
 and an "HDS" resource whose URL changed is updated in place.
 
@@ -223,7 +224,7 @@ Mark's link check tell the two files apart (ADR-032, amendment of 2026-10-07).
 The order: rename the old library "HDS Tokens & Components (old)", rename the
 copy "HDS Tokens & Components", load the new plugin files (step 1), then Sync
 (step 2). The new files work only once the switch is merged to `main` and the
-Storybook deploy serves its bundle; before that they say the plugin is out of
+docs site serves its bundle; before that they say the plugin is out of
 date, and the old files refuse the renamed copy by its name.
 
 1. Once per plugin build: an agent runs `pnpm figma:push` and sends you `figma/push/plugin/`. Overwrite `manifest.json`, `code.js` and `ui.html` in the folder Figma imported "HDS tokens sync" from.
@@ -231,10 +232,12 @@ date, and the old files refuse the renamed copy by its name.
 3. Tell an agent the Sync is done. It collects the snapshot the Sync wrote into the file ([Agent: collect a sync](#agent-collect-a-sync)), so there is nothing to download. **Download JSON** stays as the fallback when the plugin says the receipt was not written.
 
 The **Sync plugin** (`figma/push/plugin/`, id `hds-tokens-sync-dev`) carries no
-model. Its window fetches the sync bundle the Storybook deploy publishes at
-https://hirobius-design-system.vercel.app/figma/sync-bundle.json (`vercel.json`
-runs `node scripts/figma-push.mjs --bundle storybook-static/figma/sync-bundle.json`
-after the Storybook build; the bundle is generated, never committed). Its
+model. Its window fetches the sync bundle the docs site publishes at
+https://hirobius-hds-components.vercel.app/figma/sync-bundle.json (`docsUrl` in
+`figma/links.json`; `pnpm docs:publish`, the docs site's Vercel
+build, runs `node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json`;
+the bundle is generated, never committed). Plugin builds from before 2026-10-10
+fetched it from the retired Storybook deploy; rebuild them with `pnpm figma:push`. Its
 `code.js` is about 52 KB, and its files change only when the plugin build
 changes, not when tokens do. Commands:
 
@@ -403,9 +406,10 @@ collects the pages.
 When the script would pass 45,000 characters, `--delta` writes
 `delta-1-of-N.js` to `delta-N-of-N.js` instead of `delta.js` and prints N and
 the files in order. Each part is a complete script with the same guards, and
-`prune` is false in all of them. A part is about 41,000 characters of runtime, so
-it holds only 3,000–4,000 of change: the 57,000-character type-ramp change is 11
-parts, one `use_figma` call each (plan the 200 a day). To run them:
+`prune` is false in all of them. A part is about 31,000 characters of runtime
+(minified since 2026-10-11; it was 41,000), so it holds about 13,000 of change:
+the type-ramp change is 2 parts, and the Plus Jakarta Sans sync that took 17
+parts now takes 2, one `use_figma` call each. To run them:
 
 1. Run part 1, save its result to its own file, then part 2, and so on, strictly in
    order. A part refuses to run before the one preceding it (the marker `deltaRun`
@@ -488,10 +492,14 @@ Measured on 2026-10-01 on main as of `5aa171f`, against `figma/snapshot.json`
 The 19-variable Primitives `space/*` rename (hds#206 item 2) builds to 42,827
 characters, makes 60 writes and returns 9,411 inline.
 
-The runtime is copied into `delta.js` without indentation, blank lines or the
-line breaks that only wrap an expression, which takes it from about 44,300 to
-38,000 characters. The build checks that the copy parses to the same syntax tree
-as the source, and `hdsVerifyRuntime` checks the copy as it runs.
+The runtime is copied into `delta.js` minified by esbuild, one function per
+line: no spare whitespace and short local names, while top-level function names,
+property names and string literals stay as written. That takes it from about
+44,300 to 30,000 characters. The build refuses a function that does not come out
+as one declaration of the same name, on one line, calling the same runtime
+functions, and `hdsVerifyRuntime` checks the copy as it runs. A live probe on HDS
+Staging (2026-10-11) showed `use_figma` reprints minified code with spaces and
+semicolons but keeps its quotes, and the check passes.
 
 ### Promote plugin and use_figma scripts
 

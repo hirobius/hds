@@ -284,6 +284,39 @@ export function patternComponents(patternsSource) {
   );
 }
 
+/**
+ * Where a component's documentation lives on the docs site, or null when it has
+ * no page (a component outside the core set and the patterns). One answer for
+ * everything that links to docs: the design links doc, Figma dev resources and
+ * documentation links, the manifest's `docsPage`, the scaffold.
+ *
+ * Utilities share one page; providers share the providers guide; a pattern
+ * lives under /docs/patterns. Mirrors where generate-docs-components writes.
+ *
+ * @param {string} name
+ * @param {{ core: string[], patterns?: string[], providers?: string[], utilities?: string[], utilityPage?: string, providerGuide?: string }} routing
+ * @returns {{ section: 'components'|'patterns'|'guides', slug: string, path: string } | null}
+ */
+export function docsPageFor(
+  name,
+  {
+    core,
+    patterns = [],
+    providers = [],
+    utilities = [],
+    utilityPage = 'utilities',
+    providerGuide = 'guides/providers.mdx',
+  },
+) {
+  const page = (section, slug) => ({ section, slug, path: `/docs/${section}/${slug}` });
+  if (providers.includes(name))
+    return page('guides', providerGuide.replace(/^guides\//, '').replace(/\.mdx$/, ''));
+  if (utilities.includes(name)) return page('components', utilityPage);
+  if (core.includes(name)) return page('components', componentSlug(name));
+  if (patterns.includes(name)) return page('patterns', componentSlug(name));
+  return null;
+}
+
 /** The shared providers guide check-docs requires once components/ exists. */
 export function buildProvidersGuide({ manifest, providers }) {
   const specs = manifest?.componentSpecs ?? {};

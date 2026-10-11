@@ -25,11 +25,11 @@ describe('diffPackContents', () => {
   });
 
   it('flags src/index.ts and .env.local', () => {
-    const r = diffPackContents([...good, 'src/index.ts', '.env.local', 'storybook-static/a.js'], {
+    const r = diffPackContents([...good, 'src/index.ts', '.env.local'], {
       required: REQUIRED,
       forbidden: FORBIDDEN,
     });
-    expect(r.forbidden).toEqual(['src/index.ts', '.env.local', 'storybook-static/a.js']);
+    expect(r.forbidden).toEqual(['src/index.ts', '.env.local']);
   });
 
   it('does not flag dist/types/src/ or the shipped component-api.json', () => {

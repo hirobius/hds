@@ -13,8 +13,8 @@ set -e
 # Playwright), no self-heal, no 56-gate check:full chain. Ends the push-time
 # --no-verify workaround.
 #
-# The heavier lean gates that need a full toolchain — Storybook build and
-# size-limit — run in CI (chromatic.yml / quality.yml), not at push time.
+# The heavier lean gates that need a full toolchain — size-limit and the
+# docs-site axe gate — run in CI (chromatic.yml / quality.yml), not at push time.
 
 # Runs FIRST: it is cheap, and when it is going to fail the slow gates below
 # should not burn minutes first. Fix: `pnpm status:touch`.

@@ -282,7 +282,7 @@ Negative rules:
 
 ${scrollNegativeRules.map((rule) => `- ${rule}`).join('\n')}
 
-Reference: \`src/app/components/reveal.tsx\`, \`src/app/components/pin.tsx\`, \`src/scroll/\` (\`use-scroll-progress.ts\`, \`smooth-scroll.tsx\`), ADR-021, and \`src/stories/patterns-scroll.stories.tsx\` for golden-path examples.
+Reference: \`src/app/components/reveal.tsx\`, \`src/app/components/pin.tsx\`, \`src/scroll/\` (\`use-scroll-progress.ts\`, \`smooth-scroll.tsx\`), ADR-021, and the Reveal pattern page on the docs site (\`/docs/patterns/reveal\`) for golden-path examples.
 
 ## HDS Card Anatomy (mandatory — every property is non-negotiable)
 
@@ -322,7 +322,7 @@ ${SLICE_INDEX}
 
 - \`public/llms-full.txt\` - this file + the full \`DESIGN.md\` + a compact props digest for every component.
 
-Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\`, \`src/stories/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
+Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 
 ## Context Loading Rules (Credit Efficiency)
 

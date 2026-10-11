@@ -34,19 +34,14 @@ echo "Token pipeline validity (verify-tokens + check-contrast)…"
 node scripts/verify-tokens.mjs
 node scripts/check-contrast.mjs
 
-# Joins source, manifest, Storybook and Figma into one table and fails when they
+# Joins source, manifest, docs page and Figma into one table and fails when they
 # drift apart. Qualifies for this lean set: 0.6s, no network, no browser, no
-# build -- story ids are derived from source rather than read from
-# storybook-static, so it runs anywhere.
-echo "Record join (source ↔ manifest ↔ Storybook ↔ Figma)…"
+# build -- docs pages are routed from the core set, so it runs anywhere.
+# (Every core component and pattern having a docs page with a live demo is
+# tests/docs-site/component-pages.test.ts, run by pnpm test.)
+echo "Record join (source ↔ manifest ↔ docs page ↔ Figma)…"
 node scripts/check-sync-map.mjs
 node scripts/check-sync-map.mjs --check
-
-# A consumer-facing component with no story is invisible on the reference site
-# and never swept for rendered defects, so it reads as clean when nothing has
-# looked at it. Reads the manifest only: no network, no browser, no build.
-echo "Story coverage (every consumer-facing component is visible)…"
-node scripts/check-story-coverage.mjs
 
 # A core component with no usage.when leaves an agent guessing which one to
 # reach for. Reads the manifest only: no network, no browser, no build.
