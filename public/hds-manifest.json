@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-11T06:18:15.595Z",
+  "generated": "2026-10-11T19:39:00.481Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -1196,6 +1196,7 @@
         "src/app/components/avatar.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/button.test.tsx",
+        "src/app/components/button.tsx",
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/combobox.tsx",
@@ -10987,20 +10988,16 @@
         "cssVar": "--component-button-primary-textDisabled",
         "type": "color",
         "description": "Disabled primary button text color.",
-        "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#111111",
-        "dark": {
-          "alias": "{semantic.color.content.disabled}",
-          "resolvedValue": "#d4d4d4"
-        }
+        "alias": "{semantic.color.content.disabled}",
+        "resolvedValue": "#d4d4d4"
       },
       {
         "path": "component.button.primary.bgDisabled",
         "cssVar": "--component-button-primary-bgDisabled",
         "type": "color",
         "description": "Disabled primary button fill.",
-        "alias": "{semantic.color.surface.accentSubtle}",
-        "resolvedValue": "#f2faeb"
+        "alias": "{semantic.color.surface.muted}",
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.button.secondary.bg.rest",
