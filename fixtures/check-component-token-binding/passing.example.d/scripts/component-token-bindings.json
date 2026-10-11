@@ -1,0 +1,15 @@
+{
+  "scan": ["src/app/components"],
+  "groups": {
+    "widget": {
+      "source": "src/app/components/widget.tsx",
+      "cva": "widgetVariants",
+      "rules": [
+        {
+          "match": "iconSize",
+          "state": "[&_svg]"
+        }
+      ]
+    }
+  }
+}

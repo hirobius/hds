@@ -1,0 +1,157 @@
+{
+  "$comment": "Source of truth for check-component-token-binding.mjs: which component source consumes each component.* token group. Leaves are inferred from their names (height, paddingX, iconSize, bg, bgHover, ...; table PROP_BY_NAME in scripts/lib/component-token-binding.mjs); rules[] override the cva context, property or state. A rule's match is a dotted leaf path where * captures one segment as $1. state lists the Tailwind variant prefixes to look through, most specific first ('' is the resting state). Allowlist a deliberate literal with an inline `binding-ok: <group>.<leaf> <reason>` comment in the source.",
+  "scan": ["src/app/components"],
+  "groups": {
+    "button": {
+      "source": "src/app/components/button.tsx",
+      "cva": "buttonVariants",
+      "rules": [
+        { "match": "bg", "ctx": { "variant": "primary" } },
+        { "match": "bgHover", "ctx": { "variant": "primary" } },
+        { "match": "text", "ctx": { "variant": "primary" } },
+        { "match": "radius" },
+        { "match": "paddingX", "ctx": { "size": "md" } },
+        { "match": "paddingY", "ctx": { "size": "md" } },
+        { "match": "size.*.paddingX", "ctx": { "size": "$1" } },
+        { "match": "size.*.paddingY", "ctx": { "size": "$1" } },
+        { "match": "size.*.fontSize", "ctx": { "size": "$1" } },
+        { "match": "size.*.iconSize", "ctx": { "size": "$1" }, "state": "[&_svg]" },
+        { "match": "size.*.height", "ctx": { "size": "$1" } },
+        { "match": "size.*.itemSpacing", "ctx": { "size": "$1" } },
+        {
+          "match": "primary.textDisabled",
+          "ctx": { "variant": "primary" },
+          "prop": "color",
+          "state": ["disabled", ""]
+        },
+        {
+          "match": "primary.bgDisabled",
+          "ctx": { "variant": "primary" },
+          "prop": "fill",
+          "state": ["disabled", ""]
+        },
+        { "match": "secondary.*.*", "ctx": { "variant": "secondary" } },
+        { "match": "secondary.text", "ctx": { "variant": "secondary" } }
+      ]
+    },
+    "tag": {
+      "source": "src/app/components/tag.tsx",
+      "cva": "tagPillVariants",
+      "css": {
+        "file": "src/styles/static.css",
+        "leaves": {
+          "radius": ".hds-tag__pill | border-radius",
+          "fontSize": ".hds-tag__pill | font-size",
+          "fontWeight": ".hds-tag__pill | font-weight",
+          "minHeight": ".hds-tag__pill | min-height",
+          "minWidth": ".hds-tag__pill | min-width",
+          "paddingY": ".hds-tag__pill | padding | 0",
+          "paddingX": ".hds-tag__pill | padding | 1",
+          "border": ".hds-tag__pill | border-color",
+          "background": ".hds-tag__pill | background-color",
+          "text": ".hds-tag__pill | color",
+          "activeBorder": ".hds-tag--active .hds-tag__pill | border-color",
+          "activeBackground": ".hds-tag--active .hds-tag__pill | background-color",
+          "activeText": ".hds-tag--active .hds-tag__pill | color",
+          "activeHover": ".hds-tag--active:hover .hds-tag__pill | background-color"
+        }
+      },
+      "rules": [
+        { "match": "background", "ctx": { "selected": "false" } },
+        { "match": "text", "ctx": { "selected": "false" } },
+        { "match": "border", "ctx": { "selected": "false" } },
+        { "match": "activeText", "ctx": { "selected": "true" } },
+        { "match": "activeBackground", "ctx": { "selected": "true" } },
+        { "match": "activeBorder", "ctx": { "selected": "true" } },
+        {
+          "match": "activeHover",
+          "ctx": { "selected": "true" },
+          "prop": "fill",
+          "state": "group-hover"
+        }
+      ]
+    },
+    "badge": {
+      "source": "src/app/components/badge.tsx",
+      "cva": "badgeVariants",
+      "css": {
+        "file": "src/styles/static.css",
+        "leaves": {
+          "fontSize": ".hds-badge | font-size",
+          "fontWeight": ".hds-badge | font-weight",
+          "height": ".hds-badge | height",
+          "minWidth": ".hds-badge | min-width",
+          "paddingY": ".hds-badge | padding | 0",
+          "paddingX": ".hds-badge | padding | 1",
+          "radius": ".hds-badge | border-radius",
+          "bg": ".hds-badge | background-color",
+          "text": ".hds-badge | color"
+        }
+      },
+      "rules": [
+        { "match": "bg", "ctx": { "tone": "neutral" } },
+        { "match": "text", "ctx": { "tone": "neutral" } }
+      ]
+    },
+    "input": {
+      "source": "src/app/components/input.tsx",
+      "cva": "inputVariants",
+      "rules": [
+        { "match": "borderError", "ctx": { "invalid": "true" } },
+        { "match": "border", "ctx": { "invalid": "false" } },
+        {
+          "match": "paddingX",
+          "ctx": { "size": "md" },
+          "classesFrom": {
+            "const": "ADORNMENT_BY_SIZE",
+            "trail": ["md"],
+            "keys": ["restPadL", "restPadR"]
+          }
+        },
+        { "match": "paddingY", "ctx": { "size": "md" } }
+      ]
+    },
+    "card": {
+      "source": "src/app/components/card.tsx",
+      "cva": "cardVariants",
+      "css": {
+        "file": "src/styles/static.css",
+        "leaves": {
+          "bg": ".hds-card | background-color",
+          "radius": ".hds-card | border-radius",
+          "padding": ".hds-card | padding",
+          "gap": ".hds-card | gap",
+          "border": ".hds-card--bordered | border-color"
+        }
+      },
+      "rules": [
+        {
+          "match": "border",
+          "ctx": { "variant": "default", "tone": "neutral", "bordered": "true" }
+        },
+        {
+          "match": "padding",
+          "declared": {
+            "token": "semantic.space.surface.padding",
+            "evidence": "padding = 'component'",
+            "note": "Card pads through resolvePaddingValue(); its default padding='component' is var(--semantic-space-surface-padding)."
+          }
+        },
+        {
+          "match": "gap",
+          "declared": {
+            "token": "semantic.space.scale.sm",
+            "evidence": "gap = 'tight'",
+            "note": "Card gaps through resolveSpacingValue(); its default gap='tight' is LAYOUT_GAP_NAMES.tight = SPACE_SCALE.sm."
+          }
+        }
+      ]
+    },
+    "nav": {
+      "orphan": "TopNav, NavItem and SideNav were removed in 0.20.0 (hds#394); the tokens were never retired. component.nav.paddingY is borrowed by Disclosure's nav variant."
+    },
+    "lightbox": {
+      "orphan": "Lightbox was removed in 0.20.0 (hds#394). The blur is exported only as hds.effect.blur.lightboxBackdrop; Dialog overlays use backdrop-blur-sm."
+    }
+  }
+}
