@@ -1,0 +1,22 @@
+{
+  "$comment": "Frozen inputs of the 0.23.2 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.23.2 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.23.2",
+  "previous": "0.23.1",
+  "date": "2026-10-11",
+  "summary": "2 that look different.",
+  "backfilled": false,
+  "notes": {
+    "button-disabled-icon": {
+      "needle": "b2ebd7d: A disabled primary Button now reads",
+      "source": "CHANGELOG.md:17"
+    },
+    "delete-storybook": {
+      "needle": "4626131: Storybook is gone from the repo",
+      "source": "CHANGELOG.md:18"
+    },
+    "docs-site-links": {
+      "needle": "9f1acfc: The manifest (`public/hds-manifest.json`)",
+      "source": "CHANGELOG.md:19"
+    }
+  }
+}

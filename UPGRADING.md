@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.23.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.23.2. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,15 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.23.2
+
+Released 2026-10-11 (patch). 2 that look different.
+
+### Looks different
+
+- The disabled primary Button fill is now the muted surface instead of the accent-subtle surface.
+- The disabled primary Button text is now the disabled content colour instead of the on-accent colour.
 
 ## 0.23.1
 
