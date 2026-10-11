@@ -6,7 +6,7 @@
   "measurements": [
     {
       "component": "Canary",
-      "storyId": "canary--bad",
+      "probeId": "canary--bad",
       "title": "Canary/Bad",
       "measurement": {
         "target": "div.canary",

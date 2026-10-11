@@ -88,7 +88,7 @@ export const REPLACEMENTS = [
   ['var(--semantic-space-component-padding)', 'var(--semantic-space-surface-padding)'],
   ['var(--semantic-space-layout-gutter)', 'var(--semantic-space-region-gutter)'],
   // JS/TS dotted token-bridge paths (`hds.semantic.space.…` and bare
-  // `semantic.space.…` string labels, e.g. in Storybook demo args). A bare
+  // `semantic.space.…` string labels, e.g. in demo args). A bare
   // match also fixes the `hds.`-prefixed form as a side effect, since it's
   // a literal substring of it — no separate rule needed for that case.
   ['semantic.space.component.gap', 'semantic.space.scale.xs'],

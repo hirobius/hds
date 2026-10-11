@@ -16,7 +16,7 @@ const accessibility = () => readme.split(/^## /m).find((s) => s.startsWith('Acce
 const head = readme.split('\n').slice(0, 20).join('\n');
 const links = JSON.parse(read('figma/links.json')) as { docsUrl: string };
 
-const SCREENSHOT = 'docs/images/storybook-brand-theme-dials.png';
+const SCREENSHOT = 'docs/images/brand-theme-dials.png';
 
 /**
  * What a README focus line claims: violations reported, or a clean pass. Any
@@ -67,7 +67,7 @@ describe('README honesty', () => {
   it('states only the accessibility checks that exist', () => {
     const section = accessibility();
     expect(section).not.toBe('');
-    for (const claim of ['check-contrast', 'jsx-a11y', 'check-focus-states', 'addon-a11y']) {
+    for (const claim of ['check-contrast', 'jsx-a11y', 'check-focus-states', 'check-docs-axe']) {
       expect(section).toContain(claim);
     }
     expect(section).not.toMatch(/screen reader|VoiceOver|NVDA|fully accessible|WCAG 2\.\d AAA/i);
@@ -107,19 +107,6 @@ describe('README honesty', () => {
     expect(focus).toContain('pretest');
     const pkg = JSON.parse(read('package.json')) as { scripts: Record<string, string> };
     expect(pkg.scripts.pretest).toContain('scripts/check-focus-states.mjs');
-  });
-
-  it('names the Storybook axe gate CI runs, and its allowlist as it is', () => {
-    const storybook =
-      accessibility()
-        .split('\n')
-        .find((l) => l.includes('addon-a11y')) ?? '';
-    expect(storybook).toContain('check-storybook-axe.mjs');
-    expect(storybook).not.toMatch(/does not gate/i);
-    expect(read('.github/workflows/ci.yml')).toContain('node scripts/check-storybook-axe.mjs');
-    const allowlist = JSON.parse(read('scripts/axe-allowlist.json')) as unknown[];
-    if (/empty allowlist/i.test(storybook)) expect(allowlist).toEqual([]);
-    if (/allowlist has one entry/i.test(storybook)) expect(allowlist).toHaveLength(1);
   });
 
   it('names the docs-site axe gate CI runs, and its allowlist as it is', () => {

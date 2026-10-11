@@ -1,7 +1,7 @@
 /**
  * copy-agent-context: the files agents fetch from the public site (llms, the
  * manifest, DESIGN.md, CONSUMING.md, component-api.json) land at the site root
- * of whichever host serves them, Storybook or the docs site.
+ * of the docs site.
  */
 import { describe, it, expect } from 'vitest';
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -29,16 +29,9 @@ function fixtureRoot() {
 }
 
 describe('copyAgentContext', () => {
-  it('copies the repo files only, for Storybook (which already serves public/)', () => {
+  it('copies the repo files and the public agent files', () => {
     const root = fixtureRoot();
-    copyAgentContext(root, 'storybook-static');
-    expect(existsSync(path.join(root, 'storybook-static/DESIGN.md'))).toBe(true);
-    expect(existsSync(path.join(root, 'storybook-static/llms.txt'))).toBe(false);
-  });
-
-  it('also copies the public agent files for a host that does not serve public/', () => {
-    const root = fixtureRoot();
-    copyAgentContext(root, 'docs-site/out', { withPublic: true });
+    copyAgentContext(root, 'docs-site/out');
     for (const f of [
       'DESIGN.md',
       'component-api.json',
@@ -54,7 +47,7 @@ describe('copyAgentContext', () => {
   it('fails naming a missing public file', () => {
     const root = fixtureRoot();
     rmSync(path.join(root, 'public', 'llms.txt'));
-    expect(() => copyAgentContext(root, 'out', { withPublic: true })).toThrow(/public\/llms\.txt/);
+    expect(() => copyAgentContext(root, 'out')).toThrow(/public\/llms\.txt/);
   });
 });
 

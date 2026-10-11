@@ -9,8 +9,7 @@ import { readFileSync } from 'fs';
 import react from '@vitejs/plugin-react';
 
 // Mirror the app/lib `virtual:hds-manifest` plugin so any module that imports the
-// manifest that way resolves it under vitest (CommandPalette did until 0.20.0) — including the
-// story-render smoke gate that renders every story.
+// manifest that way resolves it under vitest (CommandPalette did until 0.20.0).
 const hdsManifestModuleId = 'virtual:hds-manifest';
 const resolvedHdsManifestModuleId = `\0${hdsManifestModuleId}`;
 
@@ -31,9 +30,23 @@ export default defineConfig({
     react(),
   ],
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+    // The docs-site demos import the package by name; tests resolve it to src,
+    // since dist/ is not built in CI.
+    alias: [
+      {
+        find: /^@hirobius\/design-system$/,
+        replacement: path.resolve(__dirname, './src/index.ts'),
+      },
+      {
+        find: /^@hirobius\/design-system\/icons$/,
+        replacement: path.resolve(__dirname, './src/icons.ts'),
+      },
+      {
+        find: /^@hirobius\/design-system\/patterns$/,
+        replacement: path.resolve(__dirname, './src/patterns.ts'),
+      },
+      { find: '@', replacement: path.resolve(__dirname, './src') },
+    ],
   },
   test: {
     environment: 'jsdom',

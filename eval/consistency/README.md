@@ -158,7 +158,7 @@ sessions). It:
    `reports/consistency/fixtures/<path>/` instead, so a fixture run cannot
    overwrite a recorded run's images);
 5. axe-scans each app in light and dark (WCAG 2.0 to 2.2 A and AA rules, the same
-   engine and rule sets as `scripts/check-storybook-axe.mjs`);
+   engine and rule sets as `scripts/check-docs-axe.mjs`);
 6. pixel-diffs every pair of light PNGs, and every pair of dark PNGs for the
    ledger detail;
 7. judges all five thresholds, appends a `source: "harness"` entry to

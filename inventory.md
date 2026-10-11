@@ -6,7 +6,6 @@
 > - **npm v0.20.0 Parity & Core Set:** Ground truth for core components is `scripts/lib/core-components.mjs` (43 names: 40 core UI components + 3 providers). The 3 provider components (`HdsRouterProvider`, `HdsThemeProvider`, `ToastProvider`) are grouped into a single shared "Providers & Setup" guide (`content/docs/guides/providers.mdx`). `StatusDot` was deprecated at 0.20.0 and is documented exclusively in `guides/deprecation.mdx`.
 > - **Pattern Modules:** The 27 pattern modules encompass composite UI surfaces, layouts, and sub-systems exported from `@hirobius/design-system/patterns`, `@hirobius/design-system/form`, `@hirobius/design-system/scroll`, and `@hirobius/design-system/brand`.
 > - **Removed Components:** 32 components were removed outright in v0.20.0 with no survivor (e.g., `AppShell`, `Calendar`, `Carousel`, `SideNav`, `TopNav`, `ContextMenu`, `HoverCard`, `ButtonGroup`, date pickers) and 13 folded into survivors (e.g., `IconButton` -> `Button`, `SelectableCard` -> `Card`, `TileGrid` -> `Grid`). Removed components MUST NOT be documented as live components (only referenced in `guides/deprecation.mdx`).
-> - **Storybook Parity Gaps:** Storybook has 71 story files in `src/stories/`. Some stories cover internal/static primitives (`static-primitives.stories.tsx`, `type-specimen.stories.tsx`, `design-parameters.ts`) or obsolete layout patterns (`patterns-client-detail.stories.tsx`, `patterns-layout.stories.tsx`, `patterns-scroll.stories.tsx`). These are flagged below as parity gaps to reconcile before Storybook retirement.
 > - **Generated Token Rule:** Token tables and swatch maps in foundations (Color, Typography, Spacing, Motion) are **generated at build time**. MDX sources must use generated markers (`{/* generated: tokens */}`) rather than hardcoded hex or pixel values.
 > - **No Invented Props Rule:** All prop tables are transcribed from `src/app/data/component-api.json` or component TypeScript interfaces. Where specs are missing, `{/* props: TODO — source missing */}` is left.
 
@@ -117,48 +116,48 @@ content/docs/
 
 Ground truth = `scripts/lib/core-components.mjs` (40 core UI components + 3 providers mapped to `guides/providers.mdx`).
 
-| Component Name       | Current Docs-App Route          | Proposed MDX Path                               | Source Type          | Storybook Story                 |
-| :------------------- | :------------------------------ | :---------------------------------------------- | :------------------- | :------------------------------ |
-| **Alert**            | `/hds/components/feedback`      | `content/docs/components/alert.mdx`             | Docs-App + Storybook | `alert.stories.tsx`             |
-| **Avatar**           | `/hds/components/display`       | `content/docs/components/avatar.mdx`            | Docs-App + Storybook | `avatar.stories.tsx`            |
-| **Badge**            | `/hds/components/feedback`      | `content/docs/components/badge.mdx`             | Docs-App + Storybook | `badge.stories.tsx`             |
-| **Box**              | `/hds/components/layout`        | `content/docs/components/box.mdx`               | Docs-App + Storybook | `box.stories.tsx`               |
-| **Breadcrumb**       | `/hds/components/navigation`    | `content/docs/components/breadcrumb.mdx`        | Docs-App + Storybook | `breadcrumb.stories.tsx`        |
-| **Button**           | `/hds/components/actions`       | `content/docs/components/button.mdx`            | Docs-App + Storybook | `button.stories.tsx`            |
-| **Card**             | `/hds/components/display`       | `content/docs/components/card.mdx`              | Docs-App + Storybook | `card.stories.tsx`              |
-| **Checkbox**         | `/hds/components/inputs`        | `content/docs/components/checkbox.mdx`          | Docs-App + Storybook | `checkbox.stories.tsx`          |
-| **Combobox**         | `/hds/components/inputs`        | `content/docs/components/combobox.mdx`          | Docs-App + Storybook | `combobox.stories.tsx`          |
-| **Container**        | `/hds/components/layout`        | `content/docs/components/container.mdx`         | Docs-App + Storybook | `container.stories.tsx`         |
-| **Dialog**           | `/hds/components/overlays`      | `content/docs/components/dialog.mdx`            | Docs-App + Storybook | `dialog.stories.tsx`            |
-| **Disclosure**       | `/hds/components/layout`        | `content/docs/components/disclosure.mdx`        | Docs-App + Storybook | `disclosure.stories.tsx`        |
-| **Divider**          | `/hds/components/layout`        | `content/docs/components/divider.mdx`           | Docs-App + Storybook | `divider.stories.tsx`           |
-| **EmptyState**       | `/hds/components/display`       | `content/docs/components/empty-state.mdx`       | Docs-App + Storybook | `empty-state.stories.tsx`       |
-| **Field**            | `/hds/components/display`       | `content/docs/components/field.mdx`             | Docs-App + Storybook | `field.stories.tsx`             |
-| **Grid**             | `/hds/components/layout`        | `content/docs/components/grid.mdx`              | Docs-App + Storybook | `grid.stories.tsx`              |
-| **Icon**             | `/hds/components/display`       | `content/docs/components/icon.mdx`              | Docs-App + Storybook | `icon.stories.tsx`              |
-| **InlineLink**       | `/hds/components/navigation`    | `content/docs/components/inline-link.mdx`       | Docs-App + Storybook | `inline-link.stories.tsx`       |
-| **Input**            | `/hds/components/inputs`        | `content/docs/components/input.mdx`             | Docs-App + Storybook | `input.stories.tsx`             |
-| **Kbd**              | `/hds/components/display`       | `content/docs/components/kbd.mdx`               | Docs-App + Storybook | `kbd.stories.tsx`               |
-| **Menu**             | `/hds/components/overlays`      | `content/docs/components/menu.mdx`              | Docs-App + Storybook | `menu.stories.tsx`              |
-| **Pagination**       | `/hds/components/navigation`    | `content/docs/components/pagination.mdx`        | Docs-App + Storybook | `pagination.stories.tsx`        |
-| **Popover**          | `/hds/components/overlays`      | `content/docs/components/popover.mdx`           | Docs-App + Storybook | `popover.stories.tsx`           |
-| **Progress**         | `/hds/components/feedback`      | `content/docs/components/progress.mdx`          | Docs-App + Storybook | `progress.stories.tsx`          |
-| **Radio**            | `/hds/components/inputs`        | `content/docs/components/radio.mdx`             | Docs-App + Storybook | `radio.stories.tsx`             |
-| **SegmentedControl** | `/hds/components/inputs`        | `content/docs/components/segmented-control.mdx` | Docs-App + Storybook | `segmented-control.stories.tsx` |
-| **Select**           | `/hds/components/inputs`        | `content/docs/components/select.mdx`            | Docs-App + Storybook | `select.stories.tsx`            |
-| **Skeleton**         | `/hds/components/feedback`      | `content/docs/components/skeleton.mdx`          | Docs-App + Storybook | `skeleton.stories.tsx`          |
-| **Slider**           | `/hds/components/inputs`        | `content/docs/components/slider.mdx`            | Docs-App + Storybook | `slider.stories.tsx`            |
-| **Spinner**          | `/hds/components/feedback`      | `content/docs/components/spinner.mdx`           | Docs-App + Storybook | `spinner.stories.tsx`           |
-| **Stack**            | `/hds/components/layout`        | `content/docs/components/stack.mdx`             | Docs-App + Storybook | `stack.stories.tsx`             |
-| **Surface**          | `/hds/components/layout`        | `content/docs/components/surface.mdx`           | Docs-App + Storybook | `surface.stories.tsx`           |
-| **Table**            | `/hds/components/display`       | `content/docs/components/table.mdx`             | Docs-App + Storybook | `table.stories.tsx`             |
-| **Tabs**             | `/hds/components/navigation`    | `content/docs/components/tabs.mdx`              | Docs-App + Storybook | `tabs.stories.tsx`              |
-| **Tag**              | `/hds/components/inputs`        | `content/docs/components/tag.mdx`               | Docs-App + Storybook | `tag.stories.tsx`               |
-| **Text**             | `/hds/typography`               | `content/docs/components/text.mdx`              | Docs-App + Storybook | `text.stories.tsx`              |
-| **Textarea**         | `/hds/components/inputs`        | `content/docs/components/textarea.mdx`          | Docs-App + Storybook | `textarea.stories.tsx`          |
-| **Toggle**           | `/hds/components/inputs`        | `content/docs/components/toggle.mdx`            | Docs-App + Storybook | `toggle.stories.tsx`            |
-| **Tooltip**          | `/hds/components/overlays`      | `content/docs/components/tooltip.mdx`           | Docs-App + Storybook | `hds-tooltip.stories.tsx`       |
-| **VisuallyHidden**   | `/hds/components/doc-utilities` | `content/docs/components/visually-hidden.mdx`   | Docs-App + Storybook | `visually-hidden.stories.tsx`   |
+| Component Name       | Current Docs-App Route          | Proposed MDX Path                               | Source Type |
+| :------------------- | :------------------------------ | :---------------------------------------------- | ----------- |
+| **Alert**            | `/hds/components/feedback`      | `content/docs/components/alert.mdx`             | Docs-App    |
+| **Avatar**           | `/hds/components/display`       | `content/docs/components/avatar.mdx`            | Docs-App    |
+| **Badge**            | `/hds/components/feedback`      | `content/docs/components/badge.mdx`             | Docs-App    |
+| **Box**              | `/hds/components/layout`        | `content/docs/components/box.mdx`               | Docs-App    |
+| **Breadcrumb**       | `/hds/components/navigation`    | `content/docs/components/breadcrumb.mdx`        | Docs-App    |
+| **Button**           | `/hds/components/actions`       | `content/docs/components/button.mdx`            | Docs-App    |
+| **Card**             | `/hds/components/display`       | `content/docs/components/card.mdx`              | Docs-App    |
+| **Checkbox**         | `/hds/components/inputs`        | `content/docs/components/checkbox.mdx`          | Docs-App    |
+| **Combobox**         | `/hds/components/inputs`        | `content/docs/components/combobox.mdx`          | Docs-App    |
+| **Container**        | `/hds/components/layout`        | `content/docs/components/container.mdx`         | Docs-App    |
+| **Dialog**           | `/hds/components/overlays`      | `content/docs/components/dialog.mdx`            | Docs-App    |
+| **Disclosure**       | `/hds/components/layout`        | `content/docs/components/disclosure.mdx`        | Docs-App    |
+| **Divider**          | `/hds/components/layout`        | `content/docs/components/divider.mdx`           | Docs-App    |
+| **EmptyState**       | `/hds/components/display`       | `content/docs/components/empty-state.mdx`       | Docs-App    |
+| **Field**            | `/hds/components/display`       | `content/docs/components/field.mdx`             | Docs-App    |
+| **Grid**             | `/hds/components/layout`        | `content/docs/components/grid.mdx`              | Docs-App    |
+| **Icon**             | `/hds/components/display`       | `content/docs/components/icon.mdx`              | Docs-App    |
+| **InlineLink**       | `/hds/components/navigation`    | `content/docs/components/inline-link.mdx`       | Docs-App    |
+| **Input**            | `/hds/components/inputs`        | `content/docs/components/input.mdx`             | Docs-App    |
+| **Kbd**              | `/hds/components/display`       | `content/docs/components/kbd.mdx`               | Docs-App    |
+| **Menu**             | `/hds/components/overlays`      | `content/docs/components/menu.mdx`              | Docs-App    |
+| **Pagination**       | `/hds/components/navigation`    | `content/docs/components/pagination.mdx`        | Docs-App    |
+| **Popover**          | `/hds/components/overlays`      | `content/docs/components/popover.mdx`           | Docs-App    |
+| **Progress**         | `/hds/components/feedback`      | `content/docs/components/progress.mdx`          | Docs-App    |
+| **Radio**            | `/hds/components/inputs`        | `content/docs/components/radio.mdx`             | Docs-App    |
+| **SegmentedControl** | `/hds/components/inputs`        | `content/docs/components/segmented-control.mdx` | Docs-App    |
+| **Select**           | `/hds/components/inputs`        | `content/docs/components/select.mdx`            | Docs-App    |
+| **Skeleton**         | `/hds/components/feedback`      | `content/docs/components/skeleton.mdx`          | Docs-App    |
+| **Slider**           | `/hds/components/inputs`        | `content/docs/components/slider.mdx`            | Docs-App    |
+| **Spinner**          | `/hds/components/feedback`      | `content/docs/components/spinner.mdx`           | Docs-App    |
+| **Stack**            | `/hds/components/layout`        | `content/docs/components/stack.mdx`             | Docs-App    |
+| **Surface**          | `/hds/components/layout`        | `content/docs/components/surface.mdx`           | Docs-App    |
+| **Table**            | `/hds/components/display`       | `content/docs/components/table.mdx`             | Docs-App    |
+| **Tabs**             | `/hds/components/navigation`    | `content/docs/components/tabs.mdx`              | Docs-App    |
+| **Tag**              | `/hds/components/inputs`        | `content/docs/components/tag.mdx`               | Docs-App    |
+| **Text**             | `/hds/typography`               | `content/docs/components/text.mdx`              | Docs-App    |
+| **Textarea**         | `/hds/components/inputs`        | `content/docs/components/textarea.mdx`          | Docs-App    |
+| **Toggle**           | `/hds/components/inputs`        | `content/docs/components/toggle.mdx`            | Docs-App    |
+| **Tooltip**          | `/hds/components/overlays`      | `content/docs/components/tooltip.mdx`           | Docs-App    |
+| **VisuallyHidden**   | `/hds/components/doc-utilities` | `content/docs/components/visually-hidden.mdx`   | Docs-App    |
 
 ---
 
@@ -166,35 +165,35 @@ Ground truth = `scripts/lib/core-components.mjs` (40 core UI components + 3 prov
 
 Composite surfaces, layout section templates, and domain adapters.
 
-| Pattern Name           | Current Docs-App Route     | Proposed MDX Path                               | Source Type          | Storybook Story                   |
-| :--------------------- | :------------------------- | :---------------------------------------------- | :------------------- | :-------------------------------- |
-| **AlertDialog**        | `/hds/components/overlays` | `content/docs/patterns/alert-dialog.mdx`        | Docs-App + Storybook | `alert-dialog.stories.tsx`        |
-| **AssetImg**           | `/hds/components/display`  | `content/docs/patterns/asset-img.mdx`           | Docs-App + Storybook | `asset-img.stories.tsx`           |
-| **AvatarGroup**        | `/hds/components/display`  | `content/docs/patterns/avatar-group.mdx`        | Docs-App + Storybook | `avatar-group.stories.tsx`        |
-| **Blockquote**         | `/hds/typography`          | `content/docs/patterns/blockquote.mdx`          | Docs-App + Storybook | `blockquote.stories.tsx`          |
-| **Callout**            | `/hds/components/feedback` | `content/docs/patterns/callout.mdx`             | Docs-App + Storybook | `callout.stories.tsx`             |
-| **CodeBlock**          | `/hds/components/display`  | `content/docs/patterns/code-block.mdx`          | Docs-App + Storybook | `code-block.stories.tsx`          |
-| **DataTableSection**   | `/hds/components/display`  | `content/docs/patterns/data-table-section.mdx`  | Docs-App + Storybook | `data-table-section.stories.tsx`  |
-| **DestructiveSection** | `/hds/components/actions`  | `content/docs/patterns/destructive-section.mdx` | Docs-App + Storybook | `destructive-section.stories.tsx` |
-| **ErrorPattern**       | `/hds/components/feedback` | `content/docs/patterns/error-pattern.mdx`       | Docs-App + Storybook | `error-pattern.stories.tsx`       |
-| **Form**               | `/hds/components/inputs`   | `content/docs/patterns/form.mdx`                | Docs-App + Storybook | `form.stories.tsx`                |
-| **FormActions**        | `/hds/components/actions`  | `content/docs/patterns/form-actions.mdx`        | Docs-App + Storybook | `form-actions.stories.tsx`        |
-| **HdsForm Adapter**    | `/hds/components/inputs`   | `content/docs/patterns/hds-form.mdx`            | TS Source            | N/A (Adapter)                     |
-| **InlineCode**         | `/hds/components/display`  | `content/docs/patterns/inline-code.mdx`         | Docs-App + Storybook | `inline-code.stories.tsx`         |
-| **MetadataList**       | `/hds/components/display`  | `content/docs/patterns/metadata-list.mdx`       | Docs-App + Storybook | `metadata-list.stories.tsx`       |
-| **MetricTiles**        | `/hds/components/display`  | `content/docs/patterns/metric-tiles.mdx`        | Docs-App + Storybook | `metric-tiles.stories.tsx`        |
-| **Page**               | `/hds/components/layout`   | `content/docs/patterns/page.mdx`                | Docs-App + Storybook | `page.stories.tsx`                |
-| **PageHeader**         | `/hds/components/layout`   | `content/docs/patterns/page-header.mdx`         | Docs-App + Storybook | `page-header.stories.tsx`         |
-| **Pin**                | `/hds/components/layout`   | `content/docs/patterns/pin.mdx`                 | Docs-App + Storybook | `pin.stories.tsx`                 |
-| **Reveal**             | `/hds/motion`              | `content/docs/patterns/reveal.mdx`              | Docs-App + Storybook | `reveal.stories.tsx`              |
-| **Scroll Motion**      | `/hds/motion`              | `content/docs/patterns/scroll.mdx`              | Docs-App + Storybook | `patterns-scroll.stories.tsx`     |
-| **Sidebar**            | `/hds/components/layout`   | `content/docs/patterns/sidebar.mdx`             | Docs-App + Storybook | `sidebar.stories.tsx`             |
-| **Stat**               | `/hds/components/display`  | `content/docs/patterns/stat.mdx`                | Docs-App + Storybook | `stat.stories.tsx`                |
-| **StatusListItem**     | `/hds/components/display`  | `content/docs/patterns/status-list-item.mdx`    | Docs-App + Storybook | `status-list-item.stories.tsx`    |
-| **StatusTile**         | `/hds/components/display`  | `content/docs/patterns/status-tile.mdx`         | Docs-App + Storybook | `status-tile.stories.tsx`         |
-| **Switcher**           | `/hds/components/layout`   | `content/docs/patterns/switcher.mdx`            | Docs-App + Storybook | `switcher.stories.tsx`            |
-| **Timestamp**          | `/hds/components/display`  | `content/docs/patterns/timestamp.mdx`           | Docs-App + Storybook | `timestamp.stories.tsx`           |
-| **Toast Surface**      | `/hds/components/feedback` | `content/docs/patterns/toast.mdx`               | Docs-App + Storybook | `toast.stories.tsx`               |
+| Pattern Name           | Current Docs-App Route     | Proposed MDX Path                               | Source Type |
+| :--------------------- | :------------------------- | :---------------------------------------------- | ----------- | ------------- |
+| **AlertDialog**        | `/hds/components/overlays` | `content/docs/patterns/alert-dialog.mdx`        | Docs-App    |
+| **AssetImg**           | `/hds/components/display`  | `content/docs/patterns/asset-img.mdx`           | Docs-App    |
+| **AvatarGroup**        | `/hds/components/display`  | `content/docs/patterns/avatar-group.mdx`        | Docs-App    |
+| **Blockquote**         | `/hds/typography`          | `content/docs/patterns/blockquote.mdx`          | Docs-App    |
+| **Callout**            | `/hds/components/feedback` | `content/docs/patterns/callout.mdx`             | Docs-App    |
+| **CodeBlock**          | `/hds/components/display`  | `content/docs/patterns/code-block.mdx`          | Docs-App    |
+| **DataTableSection**   | `/hds/components/display`  | `content/docs/patterns/data-table-section.mdx`  | Docs-App    |
+| **DestructiveSection** | `/hds/components/actions`  | `content/docs/patterns/destructive-section.mdx` | Docs-App    |
+| **ErrorPattern**       | `/hds/components/feedback` | `content/docs/patterns/error-pattern.mdx`       | Docs-App    |
+| **Form**               | `/hds/components/inputs`   | `content/docs/patterns/form.mdx`                | Docs-App    |
+| **FormActions**        | `/hds/components/actions`  | `content/docs/patterns/form-actions.mdx`        | Docs-App    |
+| **HdsForm Adapter**    | `/hds/components/inputs`   | `content/docs/patterns/hds-form.mdx`            | TS Source   | N/A (Adapter) |
+| **InlineCode**         | `/hds/components/display`  | `content/docs/patterns/inline-code.mdx`         | Docs-App    |
+| **MetadataList**       | `/hds/components/display`  | `content/docs/patterns/metadata-list.mdx`       | Docs-App    |
+| **MetricTiles**        | `/hds/components/display`  | `content/docs/patterns/metric-tiles.mdx`        | Docs-App    |
+| **Page**               | `/hds/components/layout`   | `content/docs/patterns/page.mdx`                | Docs-App    |
+| **PageHeader**         | `/hds/components/layout`   | `content/docs/patterns/page-header.mdx`         | Docs-App    |
+| **Pin**                | `/hds/components/layout`   | `content/docs/patterns/pin.mdx`                 | Docs-App    |
+| **Reveal**             | `/hds/motion`              | `content/docs/patterns/reveal.mdx`              | Docs-App    |
+| **Scroll Motion**      | `/hds/motion`              | `content/docs/patterns/scroll.mdx`              | Docs-App    |
+| **Sidebar**            | `/hds/components/layout`   | `content/docs/patterns/sidebar.mdx`             | Docs-App    |
+| **Stat**               | `/hds/components/display`  | `content/docs/patterns/stat.mdx`                | Docs-App    |
+| **StatusListItem**     | `/hds/components/display`  | `content/docs/patterns/status-list-item.mdx`    | Docs-App    |
+| **StatusTile**         | `/hds/components/display`  | `content/docs/patterns/status-tile.mdx`         | Docs-App    |
+| **Switcher**           | `/hds/components/layout`   | `content/docs/patterns/switcher.mdx`            | Docs-App    |
+| **Timestamp**          | `/hds/components/display`  | `content/docs/patterns/timestamp.mdx`           | Docs-App    |
+| **Toast Surface**      | `/hds/components/feedback` | `content/docs/patterns/toast.mdx`               | Docs-App    |
 
 ---
 
@@ -251,10 +250,7 @@ These 32 components were removed in v0.20.0 with no survivor and MUST NOT have l
 
 ## 7. Parity Gaps & Reconciliation Notes
 
-1. **Storybook-Only / Non-Component Stories:**
-   - `static-primitives.stories.tsx`, `type-specimen.stories.tsx`, `design-parameters.ts` — internal design specimens. Folded into Foundation docs.
-   - `patterns-client-detail.stories.tsx`, `patterns-layout.stories.tsx`, `patterns-scroll.stories.tsx` — portfolio-specific mock pages. Excluded from core component docs.
-2. **Deprecated Component Routing:**
+1. **Deprecated Component Routing:**
    - `StatusDot` was removed in v0.21.0 (use `<Badge dot>`) and is covered in `guides/deprecation.mdx`, with no component page.
-3. **Docs App Route Coverage:**
+2. **Docs App Route Coverage:**
    - Current custom docs app routes under `/hds/` mapped 1:1 to Fumadocs `content/docs/` hierarchy.

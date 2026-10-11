@@ -89,8 +89,8 @@ with real a11y gaps. Replace them with Radix — one move fixes the a11y holes
 
 ### P5 🔴 Governance
 
-- Storybook coverage ~37% of components — raise it; lift unit-test thresholds.
-- The manifest + existing gates can enforce a per-component story/test baseline.
+- Docs-site demo coverage — every core component and pattern has a page with a live demo; lift unit-test thresholds.
+- The manifest + existing gates can enforce a per-component docs-page/test baseline.
 
 ---
 

@@ -22,9 +22,7 @@
  *   docs/generated/component-api-full.json full corpus INCLUDING observedTokens
  *                                           (raw/tokenPath/sourceSnippet/sourceLine).
  *                                           Gitignored generated output, read only
- *                                           in Node by scripts/generate-component-page.mjs
- *                                           for the styling-reference token table on
- *                                           each generated doc page — never bundled.
+ *                                           in Node — never bundled.
  *
  * The manifest is consumed by HDS doc pages to render generated prop tables
  * and by llms.txt generation to provide machine-readable API context.

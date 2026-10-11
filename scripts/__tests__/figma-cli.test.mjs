@@ -53,7 +53,7 @@ afterEach(() => {
 });
 /** The figma/links.json fields the Sync plugin bakes in (test keys, the real names and host). */
 const LINKS = {
-  storybookUrl: 'https://hirobius-design-system.vercel.app',
+  docsUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
@@ -322,7 +322,7 @@ describe('pnpm figma:push --bundle', () => {
     writeFileSync(join(root, 'figma', 'snapshot.json'), committed);
     const outDir = join(root, 'figma', 'push');
     const { pluginBuild } = writePushArtifacts({ root, outDir });
-    const out = join(root, 'storybook-static', 'figma', 'sync-bundle.json');
+    const out = join(root, 'out', 'figma', 'sync-bundle.json');
 
     const { bytes } = writeSyncBundle({ root, out, commit: 'abcdef1234567' });
 

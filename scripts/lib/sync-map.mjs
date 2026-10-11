@@ -22,16 +22,9 @@ export const GAPS = Object.freeze({
   NOT_IN_MANIFEST: 'not-in-manifest',
   NO_DOCS: 'no-docs-page',
   NO_FIGMA: 'no-figma-node',
-  HAS_DEFECTS: 'rendered-defects',
 });
 
-const GAP_ORDER = [
-  GAPS.NO_SOURCE,
-  GAPS.NOT_IN_MANIFEST,
-  GAPS.NO_DOCS,
-  GAPS.NO_FIGMA,
-  GAPS.HAS_DEFECTS,
-];
+const GAP_ORDER = [GAPS.NO_SOURCE, GAPS.NOT_IN_MANIFEST, GAPS.NO_DOCS, GAPS.NO_FIGMA];
 
 /**
  * Build the join.
@@ -43,8 +36,6 @@ const GAP_ORDER = [
  * @param sourceFiles  Set of component source paths that exist on disk
  * @param expectDocs   Set of names that must have a docs-site page (the core
  *                     components and the patterns)
- * @param defectsByComponent {name -> rendered finding count}, measured on the
- *                     component's Storybook stories (retired with Storybook)
  */
 export function buildSyncMap({
   specs,
@@ -52,7 +43,6 @@ export function buildSyncMap({
   figmaMapped = new Set(),
   sourceFiles = new Set(),
   expectDocs = new Set(),
-  defectsByComponent = {},
 }) {
   const rows = Object.entries(specs)
     .map(([name, spec]) => {
@@ -67,13 +57,10 @@ export function buildSyncMap({
       // component outside them has none by design, not by gap.
       const expectDocsPage = expectDocs.has(name);
 
-      const defects = defectsByComponent[name] ?? 0;
-
       const gaps = [];
       if (!spec.filePath || !sourceFiles.has(spec.filePath)) gaps.push(GAPS.NO_SOURCE);
       if (expectDocsPage && !docsPage) gaps.push(GAPS.NO_DOCS);
       if (expectFigma && !hasFigma) gaps.push(GAPS.NO_FIGMA);
-      if (defects > 0) gaps.push(GAPS.HAS_DEFECTS);
 
       return {
         name,
@@ -84,7 +71,6 @@ export function buildSyncMap({
         figmaVia: spec.figmaUrl ? 'manifest' : figmaMapped.has(name) ? 'mapping-override' : null,
         expectFigma,
         expectDocs: expectDocsPage,
-        defects,
         gaps,
         synced: gaps.length === 0,
       };

@@ -56,7 +56,7 @@ function walk(dir) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) {
       if (e.name !== '__tests__' && e.name !== 'node_modules') files.push(...walk(p));
-    } else if (/\.tsx?$/.test(e.name) && !/\.(test|spec|stories|figma)\.tsx?$/.test(e.name)) {
+    } else if (/\.tsx?$/.test(e.name) && !/\.(test|spec|figma)\.tsx?$/.test(e.name)) {
       files.push(p);
     }
   }

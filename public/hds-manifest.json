@@ -402,10 +402,7 @@
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
-        "src/app/components/toast.tsx",
-        "src/stories/alert-dialog.stories.tsx",
-        "src/stories/alert.stories.tsx",
-        "src/stories/static-primitives.stories.tsx"
+        "src/app/components/toast.tsx"
       ],
       "tokenMapping": {
         "Success accent": "semantic.color.feedback.success",
@@ -544,9 +541,7 @@
         "exportName": "CodeBlock",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/stories/code-block.stories.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
         "Border stroke": "semantic.color.border.default",
@@ -627,11 +622,7 @@
         "src/app/components/page.tsx",
         "src/app/components/switcher.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/index.ts",
-        "src/stories/box.stories.tsx",
-        "src/stories/container.stories.tsx",
-        "src/stories/page.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
+        "src/index.ts"
       ],
       "tokenMapping": {},
       "props": {
@@ -707,8 +698,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/tabs.tsx",
-        "src/stories/disclosure.stories.tsx"
+        "src/app/components/tabs.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
@@ -832,9 +822,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/metadata-list.tsx",
-        "src/stories/divider.stories.tsx",
-        "src/stories/static-primitives.stories.tsx"
+        "src/app/components/metadata-list.tsx"
       ],
       "tokenMapping": {
         "Default stroke": "semantic.color.border.default",
@@ -941,8 +929,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/index.ts",
-        "src/stories/error-pattern.stories.tsx"
+        "src/index.ts"
       ],
       "tokenMapping": {
         "Headline typography": "semantic.typography.display",
@@ -1043,13 +1030,7 @@
         "src/app/components/stack.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
-        "src/index.ts",
-        "src/stories/box.stories.tsx",
-        "src/stories/grid.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/segmented-control.stories.tsx",
-        "src/stories/status-tile.stories.tsx",
-        "src/stories/surface.stories.tsx"
+        "src/index.ts"
       ],
       "tokenMapping": {},
       "props": {
@@ -1228,10 +1209,7 @@
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
-        "src/app/components/toast.tsx",
-        "src/stories/data-table-section.stories.tsx",
-        "src/stories/icon.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx"
+        "src/app/components/toast.tsx"
       ],
       "tokenMapping": {
         "Small icon size": "primitive.typography.size.base",
@@ -1373,9 +1351,7 @@
       },
       "consumers": [
         "src/app/components/inline-code.test.tsx",
-        "src/app/components/metadata-list.tsx",
-        "src/stories/inline-code.stories.tsx",
-        "src/stories/metadata-list.stories.tsx"
+        "src/app/components/metadata-list.tsx"
       ],
       "tokenMapping": {
         "Font family": "primitive.typography.family.mono",
@@ -1440,9 +1416,7 @@
       "consumers": [
         "src/app/components/button.tsx",
         "src/app/components/inline-link.test.tsx",
-        "src/app/components/text.tsx",
-        "src/stories/inline-link.stories.tsx",
-        "src/stories/lib/usage-description.test.ts"
+        "src/app/components/text.tsx"
       ],
       "tokenMapping": {
         "Link text": "semantic.color.content.accent",
@@ -1529,11 +1503,7 @@
         "src/app/components/slider.tsx",
         "src/app/components/textarea.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/index.ts",
-        "src/stories/combobox.stories.tsx",
-        "src/stories/input.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/textarea.stories.tsx"
+        "src/index.ts"
       ],
       "tokenMapping": {
         "Surface fill": "role.background",
@@ -1804,8 +1774,7 @@
         "src/app/components/radio.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/tabs.tsx",
-        "src/app/hooks/useInteractionState.ts",
-        "src/stories/segmented-control.stories.tsx"
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
         "Frame surface fill": "semantic.color.surface.page",
@@ -1965,14 +1934,7 @@
         "src/app/components/switcher.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
-        "src/index.ts",
-        "src/stories/box.stories.tsx",
-        "src/stories/code-block.stories.tsx",
-        "src/stories/grid.stories.tsx",
-        "src/stories/page.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/stack.stories.tsx"
+        "src/index.ts"
       ],
       "tokenMapping": {
         "Default gap": "primitive.space.3",
@@ -2129,10 +2091,7 @@
       "consumers": [
         "src/app/components/data-table-section.tsx",
         "src/app/components/table.test.tsx",
-        "src/app/data/manifest-types.ts",
-        "src/stories/data-table-section.stories.tsx",
-        "src/stories/segmented-control.stories.tsx",
-        "src/stories/table.stories.tsx"
+        "src/app/data/manifest-types.ts"
       ],
       "tokenMapping": {},
       "props": {
@@ -2261,9 +2220,7 @@
         "src/app/components/switcher.tsx",
         "src/app/components/text.tsx",
         "src/app/components/visually-hidden.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
-        "src/stories/static-primitives.stories.tsx",
-        "src/stories/tag.stories.tsx"
+        "src/app/design-system/generated-token-descriptions.ts"
       ],
       "tokenMapping": {
         "Surface fill": "component.tag.background",
@@ -2401,13 +2358,7 @@
         "src/app/components/table.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/context/hds-theme.tsx",
-        "src/stories/card.stories.tsx",
-        "src/stories/container.stories.tsx",
-        "src/stories/grid.stories.tsx",
-        "src/stories/page.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/surface.stories.tsx"
+        "src/app/context/hds-theme.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -2522,11 +2473,7 @@
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/index.ts",
-        "src/stories/card.stories.tsx",
-        "src/stories/grid.stories.tsx",
-        "src/stories/metric-tiles.stories.tsx",
-        "src/stories/static-primitives.stories.tsx"
+        "src/index.ts"
       ],
       "tokenMapping": {
         "Surface fill": "role.card",
@@ -2778,17 +2725,7 @@
         "src/app/components/table.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/brand/overlay.ts",
-        "src/stories/container.stories.tsx",
-        "src/stories/disclosure.stories.tsx",
-        "src/stories/grid.stories.tsx",
-        "src/stories/inline-code.stories.tsx",
-        "src/stories/input.stories.tsx",
-        "src/stories/page.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/skeleton.stories.tsx",
-        "src/stories/surface.stories.tsx",
-        "src/stories/text.stories.tsx"
+        "src/brand/overlay.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -2838,11 +2775,6 @@
         "src/app/components/toast.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/stories/alert-dialog.stories.tsx",
-        "src/stories/alert.stories.tsx",
-        "src/stories/combobox.stories.tsx",
-        "src/stories/dialog.stories.tsx",
-        "src/stories/table.stories.tsx",
         "src/styles/__tests__/scrim-and-color-scheme.test.ts"
       ],
       "tokenMapping": {},
@@ -3108,24 +3040,6 @@
         "src/form/index.ts",
         "src/index.ts",
         "src/mui/index.ts",
-        "src/stories/alert-dialog.stories.tsx",
-        "src/stories/button.stories.tsx",
-        "src/stories/code-block.stories.tsx",
-        "src/stories/combobox.stories.tsx",
-        "src/stories/data-table-section.stories.tsx",
-        "src/stories/dialog.stories.tsx",
-        "src/stories/form-actions.stories.tsx",
-        "src/stories/form.stories.tsx",
-        "src/stories/hds-tooltip.stories.tsx",
-        "src/stories/inline-code.stories.tsx",
-        "src/stories/lib/usage-description.test.ts",
-        "src/stories/menu.stories.tsx",
-        "src/stories/page-header.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/popover.stories.tsx",
-        "src/stories/table.stories.tsx",
-        "src/stories/toast.stories.tsx",
         "src/styles/__tests__/pressed-overlay-token.test.ts"
       ],
       "tokenMapping": {},
@@ -3350,9 +3264,7 @@
         "exportName": "Callout",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/stories/callout.stories.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -3417,10 +3329,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/data-table-section.tsx",
-        "src/stories/data-table-section.stories.tsx",
-        "src/stories/empty-state.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
+        "src/app/components/data-table-section.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -3484,9 +3393,7 @@
         "src/app/components/input.tsx",
         "src/app/components/table.tsx",
         "src/app/components/textarea.tsx",
-        "src/form/hds-form.tsx",
-        "src/stories/field.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
+        "src/form/hds-form.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -3590,12 +3497,7 @@
         "src/app/components/surface.tsx",
         "src/app/components/toast.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/brand/overlay.ts",
-        "src/stories/error-pattern.stories.tsx",
-        "src/stories/page.stories.tsx",
-        "src/stories/pagination.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/table.stories.tsx"
+        "src/brand/overlay.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -3658,9 +3560,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/metric-tiles.tsx",
-        "src/stories/metric-tiles.stories.tsx",
-        "src/stories/stat.stories.tsx"
+        "src/app/components/metric-tiles.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -3751,9 +3651,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/status-tile.tsx",
-        "src/stories/status-list-item.stories.test.tsx",
-        "src/stories/status-list-item.stories.tsx"
+        "src/app/components/status-tile.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -3826,11 +3724,7 @@
         "src/app/components/metric-tiles.tsx",
         "src/app/components/stat.tsx",
         "src/index.ts",
-        "src/patterns.ts",
-        "src/stories/metric-tiles.stories.tsx",
-        "src/stories/status-list-item.stories.tsx",
-        "src/stories/status-tile.stories.test.tsx",
-        "src/stories/status-tile.stories.tsx"
+        "src/patterns.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -3990,20 +3884,7 @@
         "src/app/components/page-header.tsx",
         "src/app/components/tag.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/mui/index.ts",
-        "src/stories/badge.stories.tsx",
-        "src/stories/code-block.stories.tsx",
-        "src/stories/combobox.stories.tsx",
-        "src/stories/data-table-section.stories.tsx",
-        "src/stories/page-header.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/static-primitives.stories.tsx",
-        "src/stories/status-list-item.stories.test.tsx",
-        "src/stories/status-list-item.stories.tsx",
-        "src/stories/status-tile.stories.test.tsx",
-        "src/stories/status-tile.stories.tsx",
-        "src/stories/table.stories.tsx"
+        "src/mui/index.ts"
       ],
       "tokenMapping": {},
       "docsPage": "/docs/components/badge",
@@ -4043,8 +3924,7 @@
         "src/app/components/asset-img.test.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/tooltip.test.tsx",
-        "src/app/components/tooltip.tsx",
-        "src/stories/asset-img.stories.tsx"
+        "src/app/components/tooltip.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4211,10 +4091,7 @@
         "src/app/components/breadcrumb.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/segmented-control.tsx",
-        "src/app/components/tabs.test.tsx",
-        "src/stories/combobox.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx",
-        "src/stories/tabs.stories.tsx"
+        "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4297,9 +4174,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/tabs.test.tsx",
-        "src/stories/patterns-client-detail.stories.tsx",
-        "src/stories/tabs.stories.tsx"
+        "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4342,9 +4217,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/tabs.test.tsx",
-        "src/stories/patterns-client-detail.stories.tsx",
-        "src/stories/tabs.stories.tsx"
+        "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4384,9 +4257,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/tabs.test.tsx",
-        "src/stories/patterns-client-detail.stories.tsx",
-        "src/stories/tabs.stories.tsx"
+        "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4428,9 +4299,7 @@
         "src/app/components/segmented-control.tsx",
         "src/app/components/toggle.tsx",
         "src/app/hooks/useInteractionState.test.ts",
-        "src/app/hooks/useInteractionState.ts",
-        "src/stories/menu.stories.tsx",
-        "src/stories/radio.stories.tsx"
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -4513,12 +4382,7 @@
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/stories/checkbox.stories.tsx",
-        "src/stories/combobox.stories.tsx",
-        "src/stories/lib/open-listbox.test.tsx",
-        "src/stories/lib/open-listbox.ts",
-        "src/stories/select.stories.tsx"
+        "src/app/context/__tests__/portal-scope.test.tsx"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -4634,8 +4498,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/form-control.ts",
-        "src/stories/slider.stories.tsx"
+        "src/app/components/form-control.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -4707,8 +4570,7 @@
         "src/app/components/radio.tsx",
         "src/app/components/toggle.test.tsx",
         "src/app/hooks/useInteractionState.test.ts",
-        "src/app/hooks/useInteractionState.ts",
-        "src/stories/toggle.stories.tsx"
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -4782,9 +4644,7 @@
         "src/app/components/avatar-group.tsx",
         "src/app/components/avatar.test.tsx",
         "src/app/components/icon.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
-        "src/stories/avatar-group.stories.tsx",
-        "src/stories/avatar.stories.tsx"
+        "src/app/design-system/generated-token-descriptions.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [
@@ -4859,10 +4719,7 @@
         "src/app/components/progress.test.tsx",
         "src/app/components/skeleton.tsx",
         "src/app/components/spinner.tsx",
-        "src/index.ts",
-        "src/stories/card.stories.tsx",
-        "src/stories/progress.stories.tsx",
-        "src/stories/table.stories.tsx"
+        "src/index.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4952,10 +4809,7 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/progress.tsx",
         "src/app/components/skeleton.test.tsx",
-        "src/app/components/spinner.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/patterns-scroll.stories.tsx",
-        "src/stories/skeleton.stories.tsx"
+        "src/app/components/spinner.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5021,8 +4875,7 @@
       "consumers": [
         "src/app/components/progress.tsx",
         "src/app/components/skeleton.tsx",
-        "src/app/components/spinner.test.tsx",
-        "src/stories/spinner.stories.tsx"
+        "src/app/components/spinner.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5085,10 +4938,7 @@
         "src/app/components/breadcrumb.test.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
-        "src/app/components/table.tsx",
-        "src/stories/breadcrumb.stories.tsx",
-        "src/stories/page-header.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx"
+        "src/app/components/table.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5144,8 +4994,7 @@
       "consumers": [
         "src/app/components/breadcrumb.tsx",
         "src/app/components/pagination.markup.test.tsx",
-        "src/app/components/pagination.test.tsx",
-        "src/stories/pagination.stories.tsx"
+        "src/app/components/pagination.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5208,8 +5057,7 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/alert.tsx",
         "src/app/components/dialog.tsx",
-        "src/app/components/toast.test.tsx",
-        "src/stories/toast.stories.tsx"
+        "src/app/components/toast.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5273,11 +5121,7 @@
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
-        "src/index.ts",
-        "src/stories/combobox.stories.tsx",
-        "src/stories/lib/open-listbox.test.tsx",
-        "src/stories/lib/open-listbox.ts",
-        "src/stories/popover.stories.tsx"
+        "src/index.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5403,10 +5247,7 @@
         "src/app/components/form.test.tsx",
         "src/form/hds-form.tsx",
         "src/form/index.ts",
-        "src/form/use-hds-form.ts",
-        "src/stories/form-actions.stories.tsx",
-        "src/stories/form.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
+        "src/form/use-hds-form.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5444,9 +5285,7 @@
         "src/app/components/form.test.tsx",
         "src/app/components/select.tsx",
         "src/form/form-adapter.test.tsx",
-        "src/form/hds-form.tsx",
-        "src/stories/form.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
+        "src/form/hds-form.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5652,8 +5491,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/avatar-group.test.tsx",
-        "src/stories/avatar-group.stories.tsx"
+        "src/app/components/avatar-group.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5701,8 +5539,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/blockquote.test.tsx",
-        "src/stories/blockquote.stories.tsx"
+        "src/app/components/blockquote.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5748,8 +5585,7 @@
       },
       "consumers": [
         "src/app/components/kbd.test.tsx",
-        "src/app/components/text.tsx",
-        "src/stories/kbd.stories.tsx"
+        "src/app/components/text.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5801,8 +5637,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/timestamp.test.tsx",
-        "src/stories/timestamp.stories.tsx"
+        "src/app/components/timestamp.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5855,8 +5690,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/visually-hidden.test.tsx",
-        "src/stories/visually-hidden.stories.tsx"
+        "src/app/components/visually-hidden.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5903,8 +5737,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/metadata-list.test.tsx",
-        "src/stories/metadata-list.stories.tsx"
+        "src/app/components/metadata-list.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5964,8 +5797,6 @@
         "src/app/components/dialog.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/stories/alert-dialog.stories.tsx",
-        "src/stories/destructive-section.stories.tsx",
         "src/styles/__tests__/scrim-and-color-scheme.test.ts"
       ],
       "tokenMapping": {},
@@ -6038,10 +5869,7 @@
         "src/app/components/stack.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/toggle.tsx",
-        "src/index.ts",
-        "src/stories/box.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/story-ssr.spec.tsx"
+        "src/index.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6107,11 +5935,7 @@
       "consumers": [
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/sidebar.test.tsx",
-        "src/stories/grid.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx",
-        "src/stories/pin.stories.tsx",
-        "src/stories/sidebar.stories.tsx"
+        "src/app/components/sidebar.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6187,8 +6011,7 @@
       "consumers": [
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/switcher.test.tsx",
-        "src/stories/switcher.stories.tsx"
+        "src/app/components/switcher.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6255,10 +6078,7 @@
       },
       "consumers": [
         "src/app/components/form-actions.tsx",
-        "src/app/components/pin.test.tsx",
-        "src/stories/patterns-scroll.stories.tsx",
-        "src/stories/pin.stories.tsx",
-        "src/stories/reveal.stories.tsx"
+        "src/app/components/pin.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6311,9 +6131,7 @@
       },
       "consumers": [
         "src/app/components/pin.tsx",
-        "src/app/components/reveal.test.tsx",
-        "src/stories/patterns-scroll.stories.tsx",
-        "src/stories/reveal.stories.tsx"
+        "src/app/components/reveal.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6377,9 +6195,7 @@
         "src/app/components/form-control.ts",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
-        "src/app/components/textarea.test.tsx",
-        "src/stories/patterns-client-detail.stories.tsx",
-        "src/stories/textarea.stories.tsx"
+        "src/app/components/textarea.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7097,8 +6913,7 @@
         "src/app/components/hds-tooltip.test.tsx",
         "src/app/components/popover.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/stories/hds-tooltip.stories.tsx"
+        "src/app/context/__tests__/portal-scope.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7190,8 +7005,7 @@
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/stories/menu.stories.tsx"
+        "src/app/context/__tests__/portal-scope.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7307,9 +7121,7 @@
         "src/app/components/popover.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
-        "src/stories/combobox.stories.tsx",
-        "src/stories/popover.stories.tsx"
+        "src/app/design-system/generated-token-descriptions.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7397,8 +7209,7 @@
         "src/app/components/checkbox.test.tsx",
         "src/app/components/focus-visible.test.tsx",
         "src/app/components/radio.tsx",
-        "src/app/components/toggle.tsx",
-        "src/stories/checkbox.stories.tsx"
+        "src/app/components/toggle.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7458,9 +7269,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/form-actions.test.tsx",
-        "src/stories/form-actions.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx"
+        "src/app/components/form-actions.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7511,10 +7320,7 @@
       },
       "consumers": [
         "src/app/components/metric-tiles.test.tsx",
-        "src/app/components/stat.tsx",
-        "src/stories/metric-tile.stories.tsx",
-        "src/stories/metric-tiles.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx"
+        "src/app/components/stat.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7573,10 +7379,7 @@
         "src/app/components/card.tsx",
         "src/app/components/metric-tiles.test.tsx",
         "src/app/components/stat.tsx",
-        "src/app/components/status-tile.tsx",
-        "src/stories/metric-tile.stories.tsx",
-        "src/stories/metric-tiles.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx"
+        "src/app/components/status-tile.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7614,9 +7417,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/page-header.test.tsx",
-        "src/stories/page-header.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx"
+        "src/app/components/page-header.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7670,9 +7471,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/data-table-section.test.tsx",
-        "src/stories/data-table-section.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx"
+        "src/app/components/data-table-section.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7736,9 +7535,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/destructive-section.test.tsx",
-        "src/stories/destructive-section.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx"
+        "src/app/components/destructive-section.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],

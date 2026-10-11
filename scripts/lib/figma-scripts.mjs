@@ -6,7 +6,7 @@
  * `export` and comments):
  *   - the Sync plugin (manifest.json + code.js + ui.html, hds#411, ADR-032): a
  *     local development plugin that carries no model. Its window fetches the
- *     sync bundle (buildSyncBundle) the Storybook deploy publishes, and its code
+ *     sync bundle (buildSyncBundle) the docs site publishes, and its code
  *     (plus scripts/lib/figma-sync-runtime.mjs) checks it, checks the file,
  *     pushes, snapshots and stamps a receipt. Import it once in Figma desktop;
  *     its files change only when its code does, never with the tokens.
@@ -573,7 +573,7 @@ export function buildPromotePlugin(model, options = {}) {
 }
 
 // ── Sync plugin (hds#411, ADR-032) ───────────────────────────────────────────
-/** Where the public site serves the sync bundle, under docsUrl (else storybookUrl). */
+/** Where the public site serves the sync bundle, under docsUrl. */
 export const SYNC_BUNDLE_PATH = 'figma/sync-bundle.json';
 export const SYNC_BUNDLE_SCHEMA_VERSION = 1;
 const SYNC_FETCH_TIMEOUT_MS = 45000;
@@ -653,7 +653,7 @@ export function stagingFrom(links = {}, fix = '') {
  * give the plugin no safe target: a missing library key or name, a missing
  * retiredFiles list, a retired file that has the library's key or name, a
  * staging workbench that is the library or a retired file (stagingFrom), or a
- * bundle host (docsUrl, else storybookUrl) that is not https.
+ * bundle host (docsUrl) that is not https.
  */
 export function syncConfigFromLinks(links = {}) {
   const fix = ' Set it in figma/links.json (ADR-026, ADR-032), then run pnpm figma:push again.';
@@ -689,10 +689,9 @@ export function syncConfigFromLinks(links = {}) {
     }
   });
   stagingFrom(links, ` Nothing was built.${fix}`);
-  // The public docs site hosts the bundle; storybookUrl is the fallback while
-  // links.json names no docsUrl.
-  const hostField = links.docsUrl ? 'docsUrl' : 'storybookUrl';
-  const host = links[hostField];
+  // The public docs site hosts the bundle.
+  const hostField = 'docsUrl';
+  const host = links.docsUrl;
   let origin = null;
   try {
     origin = new URL(host).origin;
@@ -843,7 +842,7 @@ const SYNC_UI = `<!doctype html>
 /**
  * The Sync plugin (figma/push/plugin/): same id as the plugin Figma already
  * imported, so overwriting its three files is enough. It carries no model and
- * may reach one origin, the Storybook deploy; where it may write is baked in
+ * may reach one origin, the docs site; where it may write is baked in
  * from figma/links.json (syncConfigFromLinks), never read from the bundle.
  *
  * @param {object} links  figma/links.json
@@ -868,7 +867,7 @@ export function buildSyncPlugin(links) {
       enablePrivatePluginApi: true,
       networkAccess: {
         allowedDomains: [origin],
-        reasoning: `Fetches the HDS token sync bundle (data only, never code) that the Storybook deploy publishes at ${sync.bundleUrl}.`,
+        reasoning: `Fetches the HDS token sync bundle (data only, never code) that the docs site publishes at ${sync.bundleUrl}.`,
       },
       menu: [
         { name: 'Sync', command: 'sync' },
@@ -904,7 +903,7 @@ export function buildSyncPlugin(links) {
 }
 
 /**
- * The sync bundle the Storybook deploy serves (SYNC_BUNDLE_PATH): data only.
+ * The sync bundle the docs site serves (SYNC_BUNDLE_PATH): data only.
  * `payload` is a full push that never prunes, `checksum` its hdsChecksum,
  * `pluginBuild` the Sync plugin build main expects (with `pluginFiles`, each
  * file's checksum, so a refusal can name the code.js to expect), and `base`

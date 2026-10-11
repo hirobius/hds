@@ -27,7 +27,7 @@
     },
     {
       "id": "audit-component-integrity",
-      "description": "Merged gate (13z-6): (1) --tokens: token compliance audit for HDS components (hardcoded hex/rgba/opacity/radius/spacing/transition values); (2) --completeness: asserts every shipped component has a rich manifest entry for LLM use; (3) --docs: documentation coverage gate (every core component and pattern has a live demo on the docs site: a DEMOS entry in docs-site/components/component-demos.tsx listed in PREVIEWED_COMPONENTS; re-pointed from Storybook stories by the Storybook retirement, hds#506); (4) --api: public API surface guard comparing every package.json#exports JS entry against docs/api/api-baseline.json. Default: runs all 4. pretest runs --completeness and --api (hds#390); changeset:version runs --api --update-baseline after the bump, so the Version Packages PR records the released surface at the new version. Merged from: audit-components + check-component-completeness + check-component-docs + check-public-api.",
+      "description": "Merged gate (13z-6): (1) --tokens: token compliance audit for HDS components (hardcoded hex/rgba/opacity/radius/spacing/transition values); (2) --completeness: asserts every shipped component has a rich manifest entry for LLM use; (3) --docs: documentation coverage gate (every core component and pattern has a live demo on the docs site: a DEMOS entry in docs-site/components/component-demos.tsx listed in PREVIEWED_COMPONENTS; hds#506); (4) --api: public API surface guard comparing every package.json#exports JS entry against docs/api/api-baseline.json. Default: runs all 4. pretest runs --completeness and --api (hds#390); changeset:version runs --api --update-baseline after the bump, so the Version Packages PR records the released surface at the new version. Merged from: audit-components + check-component-completeness + check-component-docs + check-public-api.",
       "severity": "warn",
       "gateScript": "scripts/audit-component-integrity.mjs",
       "fixturePath": "fixtures/audit-component-integrity",
@@ -289,7 +289,7 @@
     },
     {
       "id": "check-figma-retired-keys",
-      "description": "Rejects every link from code to a Figma file that is not the HDS library (ADR-026, amended 2026-10-07): a retired file (figma/links.json retiredFiles: the old library, retired 2026-10-07 when its duplicate became the one HDS library) or HDS Staging (stagingFileKey, the draft workbench of amendment A4: a shipped component links its library node, never its staging draft). Scans src (@figma tags, Code Connect templates), public (the manifest figmaUrl Storybook's Design tab reads), docs data (sync-map, DESIGN_LINKS.md, the shipped docs/CONSUMING.md), figma data (disposition, inventory, Code Connect registry), mcp/ and content/docs, and the files the package ships from the repo root (README.md, llms.txt, DESIGN.md, AGENTS.md, CONSUMING.md). ERROR on any finding, naming file, line and kind (retired or staging) with the fix for each; figma/links.json and prose (ADRs, figma/*.md, where the drawing recipe names the workbench) are not scanned, and a missing scan root, shipped root file or retiredFiles list, or a staging key that is the library's, fails loudly. FIXTURE_DIR runs it on fixtures/check-figma-retired-keys. Also runs in pnpm test through scripts/__tests__/check-figma-retired-keys.test.mjs, whose real-tree case gates the repo.",
+      "description": "Rejects every link from code to a Figma file that is not the HDS library (ADR-026, amended 2026-10-07): a retired file (figma/links.json retiredFiles: the old library, retired 2026-10-07 when its duplicate became the one HDS library) or HDS Staging (stagingFileKey, the draft workbench of amendment A4: a shipped component links its library node, never its staging draft). Scans src (@figma tags, Code Connect templates), public (the manifest figmaUrl), docs data (sync-map, DESIGN_LINKS.md, the shipped docs/CONSUMING.md), figma data (disposition, inventory, Code Connect registry), mcp/ and content/docs, and the files the package ships from the repo root (README.md, llms.txt, DESIGN.md, AGENTS.md, CONSUMING.md). ERROR on any finding, naming file, line and kind (retired or staging) with the fix for each; figma/links.json and prose (ADRs, figma/*.md, where the drawing recipe names the workbench) are not scanned, and a missing scan root, shipped root file or retiredFiles list, or a staging key that is the library's, fails loudly. FIXTURE_DIR runs it on fixtures/check-figma-retired-keys. Also runs in pnpm test through scripts/__tests__/check-figma-retired-keys.test.mjs, whose real-tree case gates the repo.",
       "severity": "error",
       "gateScript": "scripts/check-figma-retired-keys.mjs",
       "fixturePath": "fixtures/check-figma-retired-keys",
@@ -484,17 +484,6 @@
       "glob": "src/**/*.{ts,tsx}"
     },
     {
-      "id": "check-rendered-geometry",
-      "description": "Renders every Storybook story in Chromium and reports layout defects no textual gate can see: content overflowing its frame, boxes clipping their own text, elements pushed past the viewport, controls with no rendered box or below the WCAG 2.2 AA 24px target, a decorative indicator (ring/dot/track/thumb) collapsed to 0px, links whose only affordance is colour, misaligned table-row baselines, a control boundary below the WCAG 1.4.11 3:1 non-text floor, and text below the WCAG 1.4.3 AA floor -- all measured against the actually-painted, composited color, not a declared token pair. Every context freezes CSS animations/transitions before a story's first paint, so a story whose geometry is a function of animation time gets one repeatable measurement (#282). Existing debt is accepted explicitly in docs/guardrails/rendered-geometry-baseline.json so new findings fail while known ones do not. Closes the blind spot #245 exposed, where 55 structurally broken dark-mode aliases passed every token gate, and the blind spot #234/#240 exposed, where a 1.26:1 control border and a 1.00:1 segmented-control label passed every textual gate. Needs a real browser + a built Storybook, so it is out of scope for the static fixture-dir harness (docs/guardrails/FIXTURE_DIR_HARNESS.md's needs-runtime exception, same as check-code-connect/check-route-smoke).",
-      "severity": "warn",
-      "gateScript": "scripts/check-rendered-geometry.mjs",
-      "fixturePath": null,
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "on-demand",
-      "firingChannels": ["on-demand"]
-    },
-    {
       "id": "check-spacing-vocabulary",
       "description": "hds#206 -- flags raw integer literals on sx spacing shorthand props (p/m/gap/px/py/mx/my/pt/pr/pb/pl/mt/mr/mb/ml/rowGap/columnGap), the exact px-ambiguous numeric-scale form Adrian's 2026-09-26 decision bans in favor of semantic.space.scale.{xs,sm,md,lg,xl}, which Box sx takes by name. Parses with the TypeScript API, so it also sees responsive maps, &-selector blocks, any spacing of the attribute, both branches of a conditional and the operands of &&, || and ?? (on a spacing value or on the sx object itself), and a same-file object passed by name, member or spread, resolved by lexical scope (the nearest enclosing declaration of the name wins; a parameter of that name shadows an outer object). Known limit: an object imported from another file, returned from a function or built at runtime is not followed, nor a conditional initializer (const s = x ? { p: 15 } : {}; sx={s}: only an object-literal initializer is read), nor an sx array (sx={[...]}), which Box's SxObject type rejects, so typecheck fails first. Error severity, run by .husky/pre-commit, and its vitest suite runs it over src/ in pnpm test: it shipped as warn and was promoted once src/ had zero findings.",
       "severity": "error",
@@ -542,7 +531,7 @@
     },
     {
       "id": "check-status-claims",
-      "description": "Re-derives asserted integers in root status.json that already have a derivable source (e.g. stories carrying a Storybook play() field) and compares them against a generated witness at docs/guardrails/status-claims.json, so a hand-typed number cannot silently go stale the way status.json's '56 stories have play() functions' claim did (hds#285) -- that count came from a naive `grep play:` matching `display:` in inline styles; the true count was 0. `--write` regenerates the witness after a claim is corrected; `--check` fails on drift.",
+      "description": "Keeps the agent-consistency figures in root status.json and the README in step with the latest eval/consistency/ledger.json entry, so a hand-typed number cannot silently go stale (hds#285, hds#343). `--check` fails on drift.",
       "severity": "warn",
       "gateScript": "scripts/check-status-claims.mjs",
       "owner": "Adrian",
@@ -572,7 +561,7 @@
     },
     {
       "id": "check-layout-contract",
-      "description": "The v1 layout contract (2026-10-07) as a deterministic Playwright gate. Renders each component's default story from storybook-static in Chromium inside a 480px probe container taller than the child and measures fill/hug width against docs/guardrails/layout-contract.json, height stretch, outer margins, nested padding, form-control max width and sibling widths, horizontal overflow at 390px, and gaps off the xs..xl scale. WARN mode (exit 0); --strict exits 1. Needs `pnpm build-storybook` first. Baseline: docs/audits/layout-contract-baseline.md.",
+      "description": "The v1 layout contract (2026-10-07) as a deterministic Playwright gate. Probes a component in Chromium (--html canary) or evaluates saved measurements (--measurements) inside a 480px probe container taller than the child and measures fill/hug width against docs/guardrails/layout-contract.json, height stretch, outer margins, nested padding, form-control max width and sibling widths, horizontal overflow at 390px, and gaps off the xs..xl scale. WARN mode (exit 0); --strict exits 1. Needs `pnpm build-storybook` first. Baseline: docs/audits/layout-contract-baseline.md.",
       "severity": "warn",
       "gateScript": "scripts/check-layout-contract.mjs",
       "fixturePath": "fixtures/check-layout-contract",
@@ -591,15 +580,6 @@
       "firingChannel": "on-demand"
     },
     {
-      "id": "check-storybook-axe",
-      "description": "Scans every built story (storybook-static) in light and dark with axe-core (wcag2a, wcag2aa, wcag21aa, wcag22aa) and fails on serious or critical violations that are not in scripts/axe-allowlist.json. An allowlist entry that matches nothing also fails, so the list cannot rot. Needs `pnpm build-storybook` first (hds#310).",
-      "severity": "error",
-      "gateScript": "scripts/check-storybook-axe.mjs",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "ci-pr"
-    },
-    {
       "id": "check-docs-axe",
       "description": "Scans the live demo (.hds-demo-frame) of every built /docs/components/* and /docs/patterns/* page of the docs site (docs-site/out) in light and dark with axe-core (wcag2a, wcag2aa, wcag21aa, wcag22aa), so Fumadocs chrome does not count, and fails on serious or critical violations not in scripts/docs-axe-allowlist.json, on a page whose demo is missing (rule no-demo), and on a stale allowlist entry. Needs `pnpm docs:publish` first. Fixtures: fixtures/check-docs-axe/{passing,violating}.example.d, each a tiny built site passed with --dir; CI runs both to prove the gate fires.",
       "severity": "error",
@@ -611,7 +591,7 @@
     },
     {
       "id": "check-pack-contents",
-      "description": "Runs npm pack --dry-run and fails when the tarball lacks the agent context (llms.txt, llms-full.txt and slices, DESIGN.md, CONSUMING.md, component-api.json, AGENTS.md), the hds-mcp server and the patterns name list it reads, the ESLint plugin entry, the manifest, tokens or dist entry, or contains .env*, repo src/ (other than component-api.json), repo scripts/ (other than the ESLint plugin) or storybook-static/. Consumers' agents read node_modules, so a file missing from the pack is a file they never see (#341).",
+      "description": "Runs npm pack --dry-run and fails when the tarball lacks the agent context (llms.txt, llms-full.txt and slices, DESIGN.md, CONSUMING.md, component-api.json, AGENTS.md), the hds-mcp server and the patterns name list it reads, the ESLint plugin entry, the manifest, tokens or dist entry, or contains .env*, repo src/ (other than component-api.json), repo scripts/ (other than the ESLint plugin). Consumers' agents read node_modules, so a file missing from the pack is a file they never see (#341).",
       "severity": "error",
       "gateScript": "scripts/check-pack-contents.mjs",
       "fixturePath": null,

@@ -15,7 +15,7 @@
  * them because a silent no-op still renders. Only reading `dist/` revealed it.
  * This test is the cheap standing guard so the class cannot come back.
  *
- * Stories, tests and Storybook config are exempt: they are built by Vite as an
+ * Tests are exempt: they are built by Vite as an
  * APP, where `import.meta.env` is correct and means what it says.
  */
 
@@ -43,9 +43,7 @@ const stripComments = (text: string) =>
 
 /** Files Vite builds as an app, not as the published library. */
 const isExempt = (path: string) =>
-  /\.(test|spec|stories)\.[jt]sx?$/.test(path) ||
-  path.includes(`${'src'}/stories/`) ||
-  path.endsWith('vite-env.d.ts');
+  /\.(test|spec)\.[jt]sx?$/.test(path) || path.endsWith('vite-env.d.ts');
 
 function shippedSourceFiles(dir: string, acc: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {

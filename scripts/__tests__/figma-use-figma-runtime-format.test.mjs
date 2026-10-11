@@ -22,7 +22,7 @@ import { fixtureModel } from './helpers/figma-fixture.mjs';
 const links = {
   libraryFileKey: 'LIBKEY',
   libraryFileName: 'Lib',
-  storybookUrl: 'https://example.test',
+  docsUrl: 'https://example.test',
   retiredFiles: [{ fileKey: 'OLDKEY', fileName: 'Old' }],
 };
 

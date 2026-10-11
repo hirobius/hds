@@ -8,9 +8,8 @@
  * - Production: skipped when every changed file since the last deploy is a note,
  *   agent file or test (SKIP below). Anything else, or an unknown diff, builds.
  *
- * Used by both projects: the docs site (docs-site/vercel.json), which publishes
- * DESIGN.md and CONSUMING.md (scripts/copy-agent-context.mjs), so those always
- * build; and the retired Storybook address (vercel.json), now a redirect to it.
+ * Used by the docs site (docs-site/vercel.json), which publishes DESIGN.md and
+ * CONSUMING.md (scripts/copy-agent-context.mjs), so those always build.
  */
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';

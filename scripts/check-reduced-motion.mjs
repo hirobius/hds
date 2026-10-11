@@ -21,7 +21,7 @@
  *     useHdsMotion.ts) wraps useReducedMotion() and zeroes `duration` while
  *     the OS preference is set — one fix point instead of many. This layer
  *     enforces the pattern going forward: any src/app/components/**\/*.tsx
- *     file (excluding .stories.tsx / .test.tsx) that imports from
+ *     file (excluding .test.tsx) that imports from
  *     'motion/react' may not read `hds.motion.<category>` directly — it must
  *     go through useHdsMotion('<category>') instead. theme-toggle.tsx's own
  *     <MotionConfig> wrapper never reads `hds.motion.*`, so it doesn't trip
@@ -148,11 +148,7 @@ function walkComponentFiles(dir, results = []) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
       walkComponentFiles(full, results);
-    } else if (
-      entry.name.endsWith('.tsx') &&
-      !entry.name.endsWith('.stories.tsx') &&
-      !entry.name.endsWith('.test.tsx')
-    ) {
+    } else if (entry.name.endsWith('.tsx') && !entry.name.endsWith('.test.tsx')) {
       results.push(full);
     }
   }

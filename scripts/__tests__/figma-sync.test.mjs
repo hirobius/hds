@@ -2,8 +2,8 @@
 // @vitest-environment node
 /**
  * The Sync plugin (figma/push/plugin/, hds#411): a development plugin that
- * carries no model. Its window fetches the sync bundle from the Storybook
- * deploy; its code checks the bundle, checks which file it is in, pushes,
+ * carries no model. Its window fetches the sync bundle from the docs
+ * site; its code checks the bundle, checks which file it is in, pushes,
  * re-plans to zero, snapshots, and stamps a receipt into the file.
  *
  * Seams: the generated plugin files run as Figma runs them, in two isolated
@@ -31,7 +31,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const model = fixtureModel();
 
 const LINKS = Object.freeze({
-  storybookUrl: 'https://hirobius-design-system.vercel.app',
+  docsUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],

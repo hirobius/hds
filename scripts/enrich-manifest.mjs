@@ -271,16 +271,14 @@ for (const [name, spec] of Object.entries(componentSpecs)) {
 }
 
 // Join each component to the docs-site page that documents it (hds#506). The
-// docs site replaced Storybook as the place a component is shown, so the
-// manifest answers "where is Button documented" with a site-relative path
-// (`/docs/components/button`) instead of story ids. Always written, null when
+// docs site is the place a component is shown, so the manifest answers
+// "where is Button documented" with a site-relative path
+// (`/docs/components/button`). Always written, null when
 // the component has no page: an absent field reads as "not yet computed". The
 // public origin is figma/links.json docsUrl, so a moved site never touches the
 // manifest. Routing rules: docsPageFor() in scripts/lib/docs-component-pages.mjs.
 const docsRouting = loadDocsRouting(repoRoot);
 for (const [name, spec] of Object.entries(componentSpecs)) {
-  delete spec.storyFiles;
-  delete spec.storyIds;
   spec.docsPage = docsPagePath(name, docsRouting);
 }
 

@@ -26,7 +26,7 @@ export type HdsCheckboxDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'd
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `state` mirrors useInteractionState's InteractionVisualState — the shared
 // hover/press/focus/disabled machine (ADR-015) that also drives the frozen
-// demo state used by Storybook/docs screenshots. Kept as a JS-driven cva axis
+// demo state used by docs screenshots. Kept as a JS-driven cva axis
 // (not Tailwind pseudo-classes) so freezing an arbitrary visual state for
 // docs still works — see docs/architecture/variant-contract.md "State matrix"
 // for the general rule and why this component is the documented exception.

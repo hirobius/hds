@@ -1,6 +1,6 @@
 /**
- * The Sync plugin fetches its bundle from the public docs site (docsUrl) once
- * figma/links.json names one; storybookUrl is the fallback while it doesn't.
+ * The Sync plugin fetches its bundle from the public docs site (docsUrl) and
+ * refuses to build when figma/links.json names none.
  */
 import { describe, it, expect } from 'vitest';
 import { syncConfigFromLinks } from '../lib/figma-scripts.mjs';
@@ -9,7 +9,6 @@ const base = {
   libraryFileKey: 'LIB',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [],
-  storybookUrl: 'https://storybook.example.app',
 };
 
 describe('syncConfigFromLinks bundle host', () => {
@@ -19,10 +18,8 @@ describe('syncConfigFromLinks bundle host', () => {
     expect(c.bundleUrl).toBe('https://docs.example.app/figma/sync-bundle.json');
   });
 
-  it('falls back to storybookUrl', () => {
-    expect(syncConfigFromLinks(base).bundleUrl).toBe(
-      'https://storybook.example.app/figma/sync-bundle.json',
-    );
+  it('refuses a links.json with no docsUrl', () => {
+    expect(() => syncConfigFromLinks(base)).toThrow(/https docsUrl/);
   });
 
   it('refuses a docsUrl that is not https', () => {

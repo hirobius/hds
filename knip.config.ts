@@ -13,9 +13,6 @@ const config: KnipConfig = {
     // Vitest + Playwright test files — entries so knip picks up
     // test-only imports (e.g. helpers/* in tests/*.spec.ts).
     'tests/**/*.{test,spec}.{ts,tsx}!',
-    // Storybook stories — entries to a separate harness; knip can't trace
-    // them via routes.tsx but they are real consumers of HDS components.
-    'src/stories/**/*.stories.{ts,tsx}!',
   ],
   project: [
     'src/**/*.{ts,tsx}!',
@@ -48,9 +45,6 @@ const config: KnipConfig = {
     // tests/primitive-contracts/*.contract.test.tsx). @testing-library/dom is
     // resolved transitively at runtime, not imported in source, so knip can't see it.
     '@testing-library/dom',
-    // Storybook stories import this; Storybook itself is not yet wired into
-    // the build, so the dep is phantom for now.
-    '@storybook/react',
   ],
   ignoreBinaries: [
     // `npx tsx` is invoked from the test:figma script (Figma Make sync) and

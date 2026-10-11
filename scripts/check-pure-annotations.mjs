@@ -30,7 +30,7 @@
  * Calls and writes inside function, arrow, method, accessor, constructor and
  * instance-field bodies run later and are ignored. A static class field or
  * static block runs when the class is evaluated — module load, for a top-level
- * class — so it is flagged like any other bare call. Tests, stories and `.d.ts`
+ * class — so it is flagged like any other bare call. Tests and `.d.ts`
  * files are out of scope.
  *
  *   node scripts/check-pure-annotations.mjs            # exits 1 on any offender
@@ -70,7 +70,7 @@ const CAPITALISED = /^[A-Z]/;
 
 /**
  * Whether a repo-relative path is in the gate's scope: TypeScript source under
- * src/ that ships, so not tests, stories, `__tests__` helpers or declarations.
+ * src/ that ships, so not tests, `__tests__` helpers or declarations.
  *
  * @param {string} relPath
  * @returns {boolean}
@@ -79,7 +79,7 @@ export function isScannedFile(relPath) {
   const p = relPath.replace(/\\/g, '/');
   if (!p.startsWith('src/')) return false;
   if (!/\.tsx?$/.test(p) || p.endsWith('.d.ts')) return false;
-  if (/\.(test|spec|stories)\.tsx?$/.test(p)) return false;
+  if (/\.(test|spec)\.tsx?$/.test(p)) return false;
   if (p.split('/').includes('__tests__')) return false;
   return true;
 }

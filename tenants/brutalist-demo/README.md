@@ -1,6 +1,6 @@
 # Brutalist Demo — Tenant Overlay
 
-Storybook/Chromatic-only exemplar for the per-tenant shape + density overlay
+Demo-only exemplar for the per-tenant shape + density overlay
 axis (ADR-022, `#128`, epic `#124`). Not a real client — no deployment, no
 legal entity, no primary domain.
 
@@ -21,7 +21,7 @@ tenant, not just color.
 
 ## Status
 
-**`scaffold`** — Storybook-only. Do not deploy this tenant to a production
+**`scaffold`** — demo-only. Do not deploy this tenant to a production
 domain.
 
 ## Reference
@@ -30,4 +30,3 @@ domain.
   density-aware overrides)
 - Shape/density decision: `docs/adr/022-per-tenant-shape-density-axis.md`
 - Four-dials contract: `docs/adr/023-four-theming-dials-contract.md`
-- Wired into `.storybook/preview.tsx`'s `BRANDS` list (`#126` modes matrix).

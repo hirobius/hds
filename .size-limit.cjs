@@ -62,7 +62,7 @@
  * componentPreviewRegistry.tsx) only ever read `props`/`description`/`filePath`.
  * `scripts/generate-component-api.mjs` now writes the full corpus (observedTokens
  * incl. sourceLine) to docs/generated/component-api-full.json instead — gitignored,
- * read only in Node by scripts/generate-component-page.mjs for the docs site's
+ * a Node-only corpus for the docs site's
  * styling-reference token table, never bundled. Measured: main entry
  * 183.18 kB gzipped, BELOW the pre-#278 205 kB budget and even below the
  * 184.23 kB origin/main figure #278 regressed from. New budget 200 kB — modest

@@ -1,15 +1,12 @@
 #!/usr/bin/env node
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * copy-agent-context — put DESIGN.md, CONSUMING.md and component-api.json at a
- * public site's root. Storybook already serves public/ (.storybook/main.ts), so
- * it needs only those; the docs site does not, so `--with-public` also copies
- * the llms files and the manifest from public/. Runs after `pnpm build-storybook`
- * (vercel.json) and `pnpm docs:build` (docs-site/vercel.json).
- * Fails naming the file when a source is missing.
+ * copy-agent-context — put DESIGN.md, CONSUMING.md, component-api.json and the
+ * agent files from public/ (llms, the manifest) at the docs site's root. Runs
+ * as part of `pnpm docs:publish` (after `pnpm docs:build`). Fails naming the
+ * file when a source is missing.
  *
- *   node scripts/copy-agent-context.mjs                                  -> storybook-static/
- *   node scripts/copy-agent-context.mjs --out docs-site/out --with-public -> docs site
+ *   node scripts/copy-agent-context.mjs --out docs-site/out
  */
 import { copyFileSync, cpSync, existsSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
@@ -34,18 +31,13 @@ export const PUBLIC_COPIES = [
   'component-changelogs.json',
 ];
 
-export function copyAgentContext(
-  root = ROOT,
-  outDir = 'storybook-static',
-  { withPublic = false } = {},
-) {
-  const publicSources = withPublic ? PUBLIC_COPIES.map((name) => `public/${name}`) : [];
-  for (const src of [...COPIES.map(([s]) => s), ...publicSources]) {
+export function copyAgentContext(root, outDir) {
+  for (const src of [...COPIES.map(([s]) => s), ...PUBLIC_COPIES.map((name) => `public/${name}`)]) {
     if (!existsSync(path.join(root, src))) {
       throw new Error(`copy-agent-context: source file missing: ${src}`);
     }
   }
-  for (const name of withPublic ? PUBLIC_COPIES : []) {
+  for (const name of PUBLIC_COPIES) {
     const dest = path.join(root, outDir, name);
     mkdirSync(path.dirname(dest), { recursive: true });
     cpSync(path.join(root, 'public', name), dest, { recursive: true });
@@ -54,15 +46,16 @@ export function copyAgentContext(
     mkdirSync(path.dirname(path.join(root, outDir, dest)), { recursive: true });
     copyFileSync(path.join(root, src), path.join(root, outDir, dest));
   }
-  return [...COPIES.map(([, d]) => d), ...(withPublic ? PUBLIC_COPIES : [])];
+  return [...COPIES.map(([, d]) => d), ...PUBLIC_COPIES];
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   try {
     const args = process.argv.slice(2);
     const at = args.indexOf('--out');
-    const outDir = at >= 0 ? args[at + 1] : 'storybook-static';
-    const out = copyAgentContext(ROOT, outDir, { withPublic: args.includes('--with-public') });
+    if (at < 0 || !args[at + 1]) throw new Error('copy-agent-context: pass --out <dir>');
+    const outDir = args[at + 1];
+    const out = copyAgentContext(ROOT, outDir);
     console.log(`✓ copy-agent-context — ${out.join(', ')} -> ${outDir}/`);
   } catch (err) {
     console.error(`✗ ${err.message}`);

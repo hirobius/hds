@@ -335,7 +335,6 @@ describe('isScannedFile', () => {
     ['src/lib/utils.ts', true],
     ['src/app/components/button.test.tsx', false],
     ['src/app/components/button.spec.ts', false],
-    ['src/stories/button.stories.tsx', false],
     ['src/app/context/__tests__/portal-scope.test.tsx', false],
     ['src/app/context/__tests__/helper.tsx', false],
     ['src/types/global.d.ts', false],
@@ -362,7 +361,6 @@ describe('check-pure-annotations CLI', { timeout: 30_000 }, () => {
   describe('against a fixture root with offenders', () => {
     const dir = mkdtempSync(path.join(tmpdir(), 'pure-annotations-'));
     mkdirSync(path.join(dir, 'src/app/components'), { recursive: true });
-    mkdirSync(path.join(dir, 'src/stories'), { recursive: true });
     const bad = path.join(dir, 'src/app/components/bad.tsx');
     writeFileSync(
       bad,
@@ -372,11 +370,7 @@ describe('check-pure-annotations CLI', { timeout: 30_000 }, () => {
       path.join(dir, 'src/app/components/good.tsx'),
       'export const Good = /* @__PURE__ */ React.forwardRef(() => null);\n',
     );
-    // Stories and tests are out of scope even when they hold bare calls.
-    writeFileSync(
-      path.join(dir, 'src/stories/bad.stories.tsx'),
-      'export const S = React.forwardRef(() => null);\n',
-    );
+    // Tests are out of scope even when they hold bare calls.
     writeFileSync(
       path.join(dir, 'src/app/components/bad.test.tsx'),
       'const T = React.forwardRef(() => null);\n',
@@ -391,7 +385,6 @@ describe('check-pure-annotations CLI', { timeout: 30_000 }, () => {
       expect(out.stderr).toContain('React.forwardRef');
       expect(out.stderr).toContain('cva');
       expect(out.stderr).not.toContain('good.tsx');
-      expect(out.stderr).not.toContain('stories');
       expect(out.stderr).not.toContain('bad.test.tsx');
       expect(out.stderr).toContain('--fix');
     });
