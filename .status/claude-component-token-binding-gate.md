@@ -1,1 +1,2 @@
 Added check-component-token-binding, a gate that compares each component.\* token with the value its component source actually uses (Light and Dark, plus the static.css mirrors) and ratchets known drift in a baseline. It runs in report mode through pretest; today it finds 15 bound, 30 literal-match, 23 mismatched and 11 unused leaves.
+After #596 merged, the baseline was tightened: main now reads 20 bound, 28 literal-match, 20 mismatch, 11 unused.
