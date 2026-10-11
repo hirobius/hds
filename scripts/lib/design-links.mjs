@@ -6,23 +6,22 @@
  * which `pnpm manifest:generate` fills from the component's `@figma` JSDoc tag.
  * Everything here is a projection of it:
  *   - the design links doc (docs/DESIGN_LINKS.md) (renderReadmeSection);
- *   - Storybook `parameters.design`, through src/stories/design-parameters.ts
- *     (collectDesignLinks reports a story that does not use it, or that
- *     hardcodes a Figma URL);
  *   - Figma dev resources on each node, through the REST API
  *     (planDevResources, syncDevResources: needs a token, run by a person;
  *     UNVERIFIED whether the endpoints accept a Professional plan token);
  *   - Figma component descriptions and documentation links, through a
  *     use_figma script (buildDescriptionsScript: the REST API cannot write them,
  *     so it goes through the Plugin API, like figma:push; run by a person).
- * Only the design links doc and the Storybook parameter take effect without a
- * person running a step in Figma. Nothing here reads a token or talks to Figma
+ * Component documentation links point at the docs site page for the component
+ * (docsUrl in figma/links.json + the page path from scripts/lib/docs-routing.mjs),
+ * and fall back to the source file for a component with no page. Only the design
+ * links doc takes effect without a person running a step in Figma. Nothing here reads a token or talks to Figma
  * unless syncDevResources is called.
  */
 
 import { readFileSync } from 'fs';
 import { parse } from 'acorn';
-import ts from 'typescript';
+import { docsPageUrl } from './docs-routing.mjs';
 import { hdsChecksum } from './figma-runtime.mjs';
 import { runtimeFunctions } from './figma-scripts.mjs';
 
@@ -32,8 +31,10 @@ export const DESIGN_LINKS_END = '<!-- design-links:end -->';
 const START_PREFIX = '<!-- design-links:start';
 const README_ANCHOR = '\n## Visual direction';
 
-const DEV_RESOURCE_NAMES = { source: 'HDS source', story: 'HDS story' };
-const FIGMA_URL_IN_TEXT = /https?:\/\/(www\.)?figma\.com\//;
+const DEV_RESOURCE_NAMES = { source: 'HDS source', docs: 'HDS docs' };
+// The docs dev resource was "HDS story" while Storybook was the front door. A
+// node that still carries one gets it renamed and re-pointed, not a second link.
+const LEGACY_DEV_RESOURCE_NAMES = { 'HDS docs': 'HDS story' };
 
 // ── Figma node URLs ──────────────────────────────────────────────────────────
 /**
@@ -60,137 +61,22 @@ export function parseFigmaNodeUrl(url) {
   return { fileKey: path[1], nodeId };
 }
 
-// ── Stories ──────────────────────────────────────────────────────────────────
-/** Storybook's id sanitizer (@storybook/csf `sanitize`). */
-const sanitize = (text) =>
-  text
-    .toLowerCase()
-    .replace(/[ ’–—―′¿'`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
-
-/** Storybook's story name for an export (lodash startCase, as @storybook/csf uses). */
-const storyNameFromExport = (key) =>
-  key
-    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
-    .replace(/([A-Za-z])(\d)/g, '$1 $2')
-    .replace(/[_-]+/g, ' ')
-    .trim();
-
-/** The Storybook docs page id for a meta title (autodocs). */
-export const storyDocsId = (title) => `${sanitize(title)}--docs`;
-
-const unwrap = (node) => {
-  let current = node;
-  while (
-    current &&
-    (ts.isSatisfiesExpression(current) ||
-      ts.isAsExpression(current) ||
-      ts.isParenthesizedExpression(current))
-  ) {
-    current = current.expression;
-  }
-  return current;
-};
-
-/**
- * What a CSF story file declares about itself, read from its syntax tree.
- *
- * @param {string} source  A *.stories.tsx file.
- * @returns {{ title: string|null, component: string|null, tags: string[], firstStory: string|null, designParameters: string[], figmaUrlLiterals: number } | null}
- *   null when the file default-exports no object meta.
- */
-export function readStoryMeta(source) {
-  const file = ts.createSourceFile(
-    'story.tsx',
-    source,
-    ts.ScriptTarget.Latest,
-    true,
-    ts.ScriptKind.TSX,
-  );
-  const consts = new Map();
-  const exported = [];
-  let meta = null;
-  for (const statement of file.statements) {
-    if (ts.isVariableStatement(statement)) {
-      const isExported = statement.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword);
-      for (const declaration of statement.declarationList.declarations) {
-        if (!ts.isIdentifier(declaration.name) || !declaration.initializer) continue;
-        consts.set(declaration.name.text, unwrap(declaration.initializer));
-        if (isExported) exported.push(declaration.name.text);
-      }
-    } else if (ts.isExportAssignment(statement) && !statement.isExportEquals) {
-      meta = unwrap(statement.expression);
-      if (meta && ts.isIdentifier(meta)) {
-        const name = meta.text;
-        meta = consts.get(name);
-        if (exported.includes(name)) exported.splice(exported.indexOf(name), 1); // the meta is not a story
-      }
-    }
-  }
-  if (!meta || !ts.isObjectLiteralExpression(meta)) return null;
-
-  const property = (name) =>
-    meta.properties.find(
-      (p) =>
-        ts.isPropertyAssignment(p) &&
-        (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name)) &&
-        p.name.text === name,
-    )?.initializer;
-  const title = property('title');
-  const component = property('component');
-  const tags = property('tags');
-
-  const designParameters = [];
-  let figmaUrlLiterals = 0;
-  const visit = (node) => {
-    if (
-      ts.isCallExpression(node) &&
-      ts.isIdentifier(node.expression) &&
-      node.expression.text === 'designParameters' &&
-      node.arguments[0] &&
-      ts.isStringLiteralLike(node.arguments[0])
-    ) {
-      designParameters.push(node.arguments[0].text);
-    }
-    if (ts.isStringLiteralLike(node) && FIGMA_URL_IN_TEXT.test(node.text)) figmaUrlLiterals++;
-    ts.forEachChild(node, visit);
-  };
-  visit(file);
-
-  return {
-    title: title && ts.isStringLiteralLike(title) ? title.text : null,
-    component: component && ts.isIdentifier(component) ? component.text : null,
-    tags:
-      tags && ts.isArrayLiteralExpression(tags)
-        ? tags.elements.filter(ts.isStringLiteralLike).map((t) => t.text)
-        : [],
-    firstStory: exported[0] ?? null,
-    designParameters,
-    figmaUrlLiterals,
-  };
-}
-
 // ── Links ────────────────────────────────────────────────────────────────────
 /**
- * Every component whose figmaUrl is a Figma node, with its story and source,
- * plus every way the single source is broken or bypassed.
+ * Every component whose figmaUrl is a Figma node, with its docs page and source,
+ * plus every way the single source is broken.
  *
- * @param {{ manifest: object, stories: Array<{ path: string, source: string }>, config: { repository: string, branch: string, storybookUrl: string|null }, packageName: string }} input
+ * @param {{ manifest: object, config: { repository: string, branch: string, docsUrl?: string|null }, packageName: string }} input
+ *   A component's docs page is its manifest `docsPage` (a site-relative path);
+ *   `config.docsUrl` makes it a URL. Without a docsUrl the link has no URL, and
+ *   the documentation link falls back to the source file.
  * @returns {{ links: object[], problems: string[], total: number }}
  */
-export function collectDesignLinks({ manifest, stories, config, packageName }) {
+export function collectDesignLinks({ manifest, config, packageName }) {
   const specs = manifest.componentSpecs ?? {};
   const names = Object.keys(specs).sort();
-  const metas = stories
-    .map((story) => ({ ...story, meta: readStoryMeta(story.source) }))
-    .filter((story) => story.meta)
-    .sort((a, b) => a.path.localeCompare(b.path));
   const repository = config.repository.replace(/\/+$/, '');
   const blob = (path) => `${repository}/blob/${config.branch}/${path}`;
-  const storybook = config.storybookUrl ? config.storybookUrl.replace(/\/+$/, '') : null;
 
   const links = [];
   const problems = [];
@@ -210,28 +96,7 @@ export function collectDesignLinks({ manifest, stories, config, packageName }) {
       );
       continue;
     }
-    const story = metas.find((s) => s.meta.component === name);
-    if (!story) {
-      problems.push(`${name}: has a Figma node but no story file whose meta component is ${name}.`);
-    } else if (!story.meta.designParameters.includes(name)) {
-      problems.push(
-        `${story.path}: spread designParameters('${name}') into the meta parameters, so Storybook's Design tab shows the Figma node from the manifest.`,
-      );
-    }
-    let storyLink = null;
-    if (story) {
-      const autodocs = story.meta.tags.includes('autodocs') || !story.meta.firstStory;
-      const id = autodocs
-        ? storyDocsId(story.meta.title ?? '')
-        : `${sanitize(story.meta.title ?? '')}--${sanitize(storyNameFromExport(story.meta.firstStory))}`;
-      storyLink = {
-        path: story.path,
-        id,
-        url: storybook
-          ? `${storybook}/?path=/${autodocs ? 'docs' : 'story'}/${id}`
-          : blob(story.path),
-      };
-    }
+    const url = docsPageUrl(config.docsUrl, spec.docsPage);
     links.push({
       name,
       figmaUrl: spec.figmaUrl,
@@ -240,23 +105,8 @@ export function collectDesignLinks({ manifest, stories, config, packageName }) {
       importLine: `import { ${name} } from '${packageName}';`,
       description: spec.description ?? '',
       source: { path: spec.filePath, url: blob(spec.filePath) },
-      story: storyLink,
+      docs: spec.docsPage && url ? { path: spec.docsPage, url } : null,
     });
-  }
-
-  for (const story of metas) {
-    if (story.meta.figmaUrlLiterals > 0) {
-      problems.push(
-        `${story.path}: hardcodes a Figma URL. Set the @figma JSDoc tag on the component and use designParameters() instead.`,
-      );
-    }
-    for (const name of story.meta.designParameters) {
-      if (!(name in specs)) {
-        problems.push(
-          `${story.path}: designParameters('${name}') names no component in public/hds-manifest.json.`,
-        );
-      }
-    }
   }
   return { links, problems: problems.sort(), total: names.length };
 }
@@ -277,18 +127,18 @@ export function renderReadmeSection({ links, total }, { base = '' } = {}) {
     '',
     '## Design ↔ Code links',
     '',
-    'Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current and Storybook reads the same field (`parameters.design`). The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](' +
+    'Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current. The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](' +
       base +
       'figma/README.md).',
     '',
     `**${links.length} of ${total}** components link a Figma node.`,
   ];
   if (links.length > 0) {
-    lines.push('', '| Component | Figma node | Story | Source |', '| --- | --- | --- | --- |');
+    lines.push('', '| Component | Figma node | Docs | Source |', '| --- | --- | --- | --- |');
     for (const link of links) {
-      const story = link.story ? `[${fileName(link.story.path)}](${base}${link.story.path})` : '—';
+      const docs = link.docs ? `[${link.docs.path}](${link.docs.url})` : '—';
       lines.push(
-        `| \`${link.name}\` | [${link.nodeId}](${link.figmaUrl}) | ${story} | [${fileName(link.source.path)}](${base}${link.source.path}) |`,
+        `| \`${link.name}\` | [${link.nodeId}](${link.figmaUrl}) | ${docs} | [${fileName(link.source.path)}](${base}${link.source.path}) |`,
       );
     }
   }
@@ -314,7 +164,7 @@ export function upsertReadmeSection(readme, section) {
 // ── Figma dev resources (REST) ───────────────────────────────────────────────
 /**
  * What to create and update so each linked node carries an "HDS source" and an
- * "HDS story" dev resource. A URL already on the node counts as present, under
+ * "HDS docs" dev resource (the docs-site page; none for a component without one). A URL already on the node counts as present, under
  * any name (Figma refuses a second resource with the same URL). Nothing is
  * ever deleted.
  *
@@ -326,14 +176,16 @@ export function planDevResources(links, existing) {
   for (const link of links) {
     const onNode = existing.filter((r) => r.file_key === link.fileKey && r.node_id === link.nodeId);
     const desired = [{ name: DEV_RESOURCE_NAMES.source, url: link.source.url }];
-    if (link.story) desired.push({ name: DEV_RESOURCE_NAMES.story, url: link.story.url });
+    if (link.docs) desired.push({ name: DEV_RESOURCE_NAMES.docs, url: link.docs.url });
     for (const want of desired) {
       const same = onNode.find((r) => r.url === want.url);
       if (same) {
         plan.unchanged.push({ component: link.name, name: want.name, id: same.id, url: want.url });
         continue;
       }
-      const named = onNode.find((r) => r.name === want.name);
+      const named =
+        onNode.find((r) => r.name === want.name) ??
+        onNode.find((r) => r.name === LEGACY_DEV_RESOURCE_NAMES[want.name]);
       if (named) {
         plan.update.push({ component: link.name, id: named.id, name: want.name, url: want.url });
       } else {
@@ -455,7 +307,7 @@ function descriptionsFunctions() {
 /**
  * A use_figma script that adds an HDS block (import line, JSDoc description,
  * source path) to each linked component's description, keeping any other text,
- * and sets its documentation link (the story) unless someone else set one. For
+ * and sets its documentation link (the docs page, else the source file) unless someone else set one. For
  * the components of one Figma file: its first statement refuses any other
  * file, because node ids survive a duplicate (ADR-026, amended 2026-10-07).
  * Idempotent; a dry run writes nothing.
@@ -475,7 +327,7 @@ export function buildDescriptionsScript(links, fileKey, { dryRun = false } = {})
         importLine: link.importLine,
         summary: link.description,
         sourcePath: link.source.path,
-        documentationLink: (link.story ?? link.source).url,
+        documentationLink: (link.docs ?? link.source).url,
       })),
   };
   const functions = descriptionsFunctions();

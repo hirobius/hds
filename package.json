@@ -245,7 +245,6 @@
     "check:size": "pnpm build:lib && node scripts/build-button-probe.mjs && pnpm size-limit",
     "check:spacing": "node scripts/check-hardcoded-spacing.mjs",
     "check:spacing-vocabulary": "node scripts/check-spacing-vocabulary.mjs",
-    "check:story-coverage": "node scripts/check-story-coverage.mjs",
     "check:layout-contract": "node scripts/check-layout-contract.mjs",
     "check:spacing-scale": "node scripts/check-tailwind-spacing-scale.mjs",
     "check:docs-axe": "node scripts/check-docs-axe.mjs",

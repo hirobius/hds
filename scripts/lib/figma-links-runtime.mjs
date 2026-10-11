@@ -153,7 +153,7 @@ export async function hdsApplyDescriptions(figma, payload, checksum) {
           item.component +
             ': keeps its documentation link ' +
             links.join(', ') +
-            ', which pnpm figma:links did not set (Figma holds one link). Remove it in Figma to get the story link.',
+            ', which pnpm figma:links did not set (Figma holds one link). Remove it in Figma to get the docs link.',
         );
       }
     }

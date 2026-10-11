@@ -24,6 +24,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { buildUtilityMap, collectTokens, renderIndex, renderPage } from './lib/component-page.mjs';
 import { buildDisposition, mappedByOverride } from './figma-disposition.mjs';
+import { buildStoryIndex, findStoryFiles } from './lib/story-link.mjs';
 import {
   hasStorybookBuild,
   launchChromium,
@@ -103,6 +104,27 @@ const dispositionClass = {};
 for (const entry of buildDisposition().components) dispositionClass[entry.name] = entry.class;
 
 const specs = manifest.componentSpecs ?? {};
+// This generator renders examples from Storybook, so it derives each
+// component's stories itself: the manifest no longer carries them (it points
+// at the docs site instead). Deleted with Storybook.
+{
+  const { byFilePath } = buildStoryIndex(
+    findStoryFiles(ROOT).map((p) => ({
+      path: p,
+      source: readFileSync(path.join(ROOT, p), 'utf8'),
+    })),
+    new Set(
+      Object.values(specs)
+        .map((spec) => spec.filePath)
+        .filter(Boolean),
+    ),
+  );
+  for (const spec of Object.values(specs)) {
+    const link = spec.filePath ? byFilePath.get(spec.filePath) : undefined;
+    spec.storyFiles = link?.storyFiles ?? [];
+    spec.storyIds = link?.storyIds ?? [];
+  }
+}
 let names = Object.keys(specs);
 if (ONLY) {
   const match = names.find((n) => n.toLowerCase() === ONLY.toLowerCase());

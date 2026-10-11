@@ -5,8 +5,8 @@
   "generated": "2026-10-11T06:18:15.595Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
-  "docs": "https://hirobius-design-system.vercel.app/",
-  "llmsTxt": "https://hirobius-design-system.vercel.app/llms.txt",
+  "docs": "https://hirobius-hds-components.vercel.app/",
+  "llmsTxt": "https://hirobius-hds-components.vercel.app/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
@@ -514,17 +514,7 @@
           ]
         }
       },
-      "storyFiles": [
-        "src/stories/alert.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-alert--all-variants",
-        "primitives-alert--error",
-        "primitives-alert--info",
-        "primitives-alert--success",
-        "primitives-alert--warning",
-        "primitives-alert--with-title"
-      ],
+      "docsPage": "/docs/components/alert",
       "usage": {
         "when": "Show a persistent inline message with a severity, next to the content it concerns.",
         "whenNot": "A brief confirmation that should disappear on its own, or a status label.",
@@ -614,16 +604,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/CodeBlock.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154",
-      "storyFiles": [
-        "src/stories/code-block.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-code-block--collapsible",
-        "primitives-code-block--css-highlighting",
-        "primitives-code-block--default",
-        "primitives-code-block--inline",
-        "primitives-code-block--json-highlighting"
-      ],
+      "docsPage": "/docs/patterns/code-block",
       "usage": {
         "when": "Show a code sample with a copy button, optionally collapsed."
       }
@@ -690,13 +671,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/Container.tsx",
       "figmaLink": null,
-      "storyFiles": [
-        "src/stories/container.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-container--content-width",
-        "primitives-container--max-width"
-      ],
+      "docsPage": "/docs/components/utilities",
       "usage": {
         "when": "Constrain a page region to the content or maximum width and centre it.",
         "whenNot": "Spacing between siblings, columns, or a surface with padding.",
@@ -830,15 +805,7 @@
       ],
       "sourcePath": "src/app/components/Disclosure.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453",
-      "storyFiles": [
-        "src/stories/disclosure.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-disclosure--controlled",
-        "primitives-disclosure--multiple-items",
-        "primitives-disclosure--open-by-default",
-        "primitives-disclosure--panel"
-      ],
+      "docsPage": "/docs/components/disclosure",
       "usage": {
         "when": "Hide optional explanatory content behind a heading that people can expand.",
         "whenNot": "Content people must see, or switching between panels.",
@@ -943,17 +910,7 @@
           ]
         }
       },
-      "storyFiles": [
-        "src/stories/divider.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-divider--between-sections",
-        "primitives-divider--horizontal",
-        "primitives-divider--horizontal-strong",
-        "primitives-divider--legacy-strong-prop",
-        "primitives-divider--vertical",
-        "primitives-divider--with-spacing"
-      ],
+      "docsPage": "/docs/components/divider",
       "usage": {
         "when": "Separate two blocks of content with a thin line.",
         "whenNot": "Spacing alone would do, or the separation needs a container.",
@@ -1055,15 +1012,7 @@
       "tier": "template",
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
-      "storyFiles": [
-        "src/stories/error-pattern.stories.tsx"
-      ],
-      "storyIds": [
-        "feedback-error-pattern--default",
-        "feedback-error-pattern--not-found",
-        "feedback-error-pattern--server-error",
-        "feedback-error-pattern--unauthorized"
-      ],
+      "docsPage": "/docs/patterns/error-pattern",
       "usage": {
         "when": "Show an error with a short message and a Back button, in place or as a full page."
       }
@@ -1230,16 +1179,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/Grid.tsx",
       "figmaLink": null,
-      "storyFiles": [
-        "src/stories/grid.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-grid--aside-layout",
-        "primitives-grid--auto-fill",
-        "primitives-grid--auto-fit",
-        "primitives-grid--three-column",
-        "primitives-grid--two-column"
-      ],
+      "docsPage": "/docs/components/grid",
       "usage": {
         "when": "Lay out content in columns that adapt to the screen width, or line up nested content with subgrid.",
         "whenNot": "A single row or column, or styling a surface.",
@@ -1401,17 +1341,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/Icon.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2",
-      "storyFiles": [
-        "src/stories/icon.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-icon--default",
-        "primitives-icon--large",
-        "primitives-icon--medium",
-        "primitives-icon--semantic-color",
-        "primitives-icon--semantic-colors",
-        "primitives-icon--size-gallery"
-      ],
+      "docsPage": "/docs/components/icon",
       "usage": {
         "when": "Show a Lucide icon at a set size and color.",
         "whenNot": "A control someone can activate, or a picture that carries content.",
@@ -1492,18 +1422,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/InlineCode.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
-      "storyFiles": [
-        "src/stories/inline-code.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-inline-code--comfortable",
-        "primitives-inline-code--compact",
-        "primitives-inline-code--compact-deprecated-alias",
-        "primitives-inline-code--copyable",
-        "primitives-inline-code--copyable-in-prose",
-        "primitives-inline-code--default",
-        "primitives-inline-code--in-prose"
-      ]
+      "docsPage": null
     },
     "InlineLink": {
       "category": "Navigation",
@@ -1570,15 +1489,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/InlineLink.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
-      "storyFiles": [
-        "src/stories/inline-link.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-inline-link--default",
-        "primitives-inline-link--external-no-icon",
-        "primitives-inline-link--in-body-copy",
-        "primitives-inline-link--internal-route"
-      ],
+      "docsPage": "/docs/components/inline-link",
       "usage": {
         "when": "Link to a route or external URL from inside body copy.",
         "whenNot": "An action that changes something, or a control that needs button styling.",
@@ -1855,20 +1766,7 @@
       "tier": "primitive",
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20",
-      "storyFiles": [
-        "src/stories/input.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-input--date-and-time",
-        "primitives-input--default",
-        "primitives-input--disabled",
-        "primitives-input--loading",
-        "primitives-input--mono",
-        "primitives-input--prefix-and-suffix",
-        "primitives-input--size-variants",
-        "primitives-input--with-error",
-        "primitives-input--with-helper"
-      ],
+      "docsPage": "/docs/components/input",
       "usage": {
         "when": "Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots.",
         "whenNot": "Multi-line text, or choosing from a fixed list of options.",
@@ -2013,15 +1911,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/SegmentedControl.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
-      "storyFiles": [
-        "src/stories/segmented-control.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-segmented-control--compact",
-        "primitives-segmented-control--full-width",
-        "primitives-segmented-control--primary",
-        "primitives-segmented-control--secondary"
-      ],
+      "docsPage": "/docs/components/segmented-control",
       "usage": {
         "when": "Switch between two to five mutually exclusive views or modes in a compact row.",
         "whenNot": "A form choice that submits with the form, or more than five options.",
@@ -2205,16 +2095,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/Stack.tsx",
       "figmaLink": null,
-      "storyFiles": [
-        "src/stories/stack.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-stack--column",
-        "primitives-stack--row",
-        "primitives-stack--space-between",
-        "primitives-stack--spacious-gap",
-        "primitives-stack--tight-gap"
-      ],
+      "docsPage": "/docs/components/stack",
       "usage": {
         "when": "Space items in a row or column with even gaps.",
         "whenNot": "Multi-column layout, or giving content a background or padding.",
@@ -2336,19 +2217,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/Table.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300",
-      "storyFiles": [
-        "src/stories/table.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-table--default",
-        "primitives-table--density-comfortable",
-        "primitives-table--density-compact",
-        "primitives-table--flush",
-        "primitives-table--follows-density-dial",
-        "primitives-table--sortable",
-        "primitives-table--with-badge-slots",
-        "primitives-table--with-caption"
-      ],
+      "docsPage": "/docs/components/table",
       "usage": {
         "when": "Show rows of structured data in aligned columns, with optional sorting.",
         "whenNot": "A single record, a short list of links, or content that reflows as cards.",
@@ -2489,17 +2358,7 @@
       "docExempt": false,
       "sourcePath": "src/app/components/Tag.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
-      "storyFiles": [
-        "src/stories/tag.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-tag--active",
-        "primitives-tag--default",
-        "primitives-tag--disabled",
-        "primitives-tag--filter-row",
-        "primitives-tag--interactive",
-        "primitives-tag--state-matrix"
-      ],
+      "docsPage": "/docs/components/tag",
       "usage": {
         "when": "Show an interactive filter or category chip that people can toggle.",
         "whenNot": "A read-only status or count label.",
@@ -2618,16 +2477,7 @@
       "states": [
         "default"
       ],
-      "storyFiles": [
-        "src/stories/surface.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-surface--card-grid",
-        "primitives-surface--default",
-        "primitives-surface--forced-dark",
-        "primitives-surface--item-padding",
-        "primitives-surface--with-shadow"
-      ],
+      "docsPage": "/docs/components/surface",
       "usage": {
         "when": "Give a block of content a background and padding, with no header or footer.",
         "whenNot": "Page layout, section spacing, width constraints, or content that needs slots.",
@@ -2859,23 +2709,7 @@
           ]
         }
       },
-      "storyFiles": [
-        "src/stories/card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-card--bordered",
-        "primitives-card--default",
-        "primitives-card--elevated",
-        "primitives-card--feedback-tones",
-        "primitives-card--full-anatomy",
-        "primitives-card--header-only",
-        "primitives-card--metric-slot",
-        "primitives-card--padding-variants",
-        "primitives-card--progress-slot",
-        "primitives-card--selectable",
-        "primitives-card--tone-matrix",
-        "primitives-card--variant-accent"
-      ],
+      "docsPage": "/docs/components/card",
       "usage": {
         "when": "Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.",
         "whenNot": "A bare padded background with no slot anatomy, or a single headline figure.",
@@ -2963,20 +2797,7 @@
       "docExempt": true,
       "sourcePath": "src/app/components/Text.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2022-31",
-      "storyFiles": [
-        "src/stories/text.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-text--body",
-        "primitives-text--caption",
-        "primitives-text--display",
-        "primitives-text--full-ramp",
-        "primitives-text--heading-1",
-        "primitives-text--heading-2",
-        "primitives-text--heading-3",
-        "primitives-text--technical",
-        "primitives-text--ui"
-      ],
+      "docsPage": "/docs/components/text",
       "usage": {
         "when": "Set any text on the type ramp, with the element chosen by `as`.",
         "whenNot": "Navigation links, or a keyboard hint.",
@@ -3200,16 +3021,7 @@
           "type": "boolean"
         }
       },
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ],
+      "docsPage": "/docs/components/dialog",
       "usage": {
         "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
         "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
@@ -3509,23 +3321,7 @@
           ]
         }
       },
-      "storyFiles": [
-        "src/stories/button.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-button--all-variants-row",
-        "primitives-button--disabled",
-        "primitives-button--icon-only",
-        "primitives-button--large",
-        "primitives-button--loading",
-        "primitives-button--medium",
-        "primitives-button--pressed",
-        "primitives-button--primary",
-        "primitives-button--secondary",
-        "primitives-button--small",
-        "primitives-button--tertiary",
-        "primitives-button--tone-matrix"
-      ],
+      "docsPage": "/docs/components/button",
       "usage": {
         "when": "Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed.",
         "whenNot": "Navigating to another page, where a link is the correct element.",
@@ -3602,18 +3398,7 @@
           "required": false
         }
       ],
-      "storyFiles": [
-        "src/stories/callout.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-callout--accent",
-        "primitives-callout--all-tones",
-        "primitives-callout--danger",
-        "primitives-callout--default",
-        "primitives-callout--italic",
-        "primitives-callout--success",
-        "primitives-callout--warning"
-      ]
+      "docsPage": null
     },
     "EmptyState": {
       "category": "Display",
@@ -3659,15 +3444,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/empty-state.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-empty-state--default",
-        "primitives-empty-state--in-grid",
-        "primitives-empty-state--title-only",
-        "primitives-empty-state--with-description"
-      ],
+      "docsPage": "/docs/components/empty-state",
       "usage": {
         "when": "Say that a list, grid or section has no data yet, with a title and an optional description.",
         "whenNot": "Content that is still loading, or a full-page error.",
@@ -3772,20 +3549,7 @@
           "required": false
         }
       ],
-      "storyFiles": [
-        "src/stories/field.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-field--all-tones",
-        "primitives-field--danger",
-        "primitives-field--default",
-        "primitives-field--info",
-        "primitives-field--metadata-grid",
-        "primitives-field--mono",
-        "primitives-field--success",
-        "primitives-field--warning",
-        "primitives-field--with-children"
-      ],
+      "docsPage": "/docs/components/field",
       "usage": {
         "when": "Show a labelled read-only value, such as a name and its value in a detail view.",
         "whenNot": "Editable input, or a single headline figure.",
@@ -3872,20 +3636,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/page.stories.tsx",
-        "src/stories/patterns-layout.stories.tsx"
-      ],
-      "storyIds": [
-        "layout-page--compact-padding",
-        "layout-page--content-width",
-        "layout-page--default",
-        "layout-page--no-padding",
-        "patterns-layout--dashboard-grid",
-        "patterns-layout--detail-page",
-        "patterns-layout--empty-state-screen",
-        "patterns-layout--form-screen"
-      ],
+      "docsPage": "/docs/patterns/page",
       "usage": {
         "when": "Wrap a screen in the standard width and padding."
       }
@@ -3963,17 +3714,7 @@
           "required": false
         }
       ],
-      "storyFiles": [
-        "src/stories/stat.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-stat--all-tones",
-        "primitives-stat--danger",
-        "primitives-stat--default",
-        "primitives-stat--success",
-        "primitives-stat--warning",
-        "primitives-stat--with-sub"
-      ],
+      "docsPage": null,
       "usage": {
         "when": "Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line.",
         "whenNot": "A row of headline numbers on a screen, a figure inside a Card, or a status with a trailing badge.",
@@ -4063,17 +3804,7 @@
           "required": true
         }
       ],
-      "storyFiles": [
-        "src/stories/status-list-item.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-status-list-item--danger",
-        "primitives-status-list-item--default",
-        "primitives-status-list-item--info",
-        "primitives-status-list-item--success",
-        "primitives-status-list-item--warning",
-        "primitives-status-list-item--with-trailing"
-      ]
+      "docsPage": null
     },
     "StatusTile": {
       "category": "Display",
@@ -4134,16 +3865,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/status-tile.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-status-tile--danger",
-        "primitives-status-tile--default",
-        "primitives-status-tile--in-grid",
-        "primitives-status-tile--warning",
-        "primitives-status-tile--with-trailing-badge"
-      ],
+      "docsPage": "/docs/patterns/status-tile",
       "usage": {
         "when": "Show a titled status block with optional notes and a trailing badge or affordance.",
         "whenNot": "A headline number (never a value), or a row inside a list.",
@@ -4284,18 +4006,7 @@
         "src/stories/table.stories.tsx"
       ],
       "tokenMapping": {},
-      "storyFiles": [
-        "src/stories/badge.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-badge--all-tones",
-        "primitives-badge--danger",
-        "primitives-badge--dot",
-        "primitives-badge--info",
-        "primitives-badge--neutral",
-        "primitives-badge--success",
-        "primitives-badge--warning"
-      ],
+      "docsPage": "/docs/components/badge",
       "usage": {
         "when": "Label a status, state or count with a compact neutral or semantic chip, or a dot.",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
@@ -4475,16 +4186,7 @@
           "required": false
         }
       ],
-      "storyFiles": [
-        "src/stories/asset-img.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-asset-img--default",
-        "primitives-asset-img--detail-context",
-        "primitives-asset-img--lightbox-context",
-        "primitives-asset-img--placeholder-fallback",
-        "primitives-asset-img--with-title"
-      ],
+      "docsPage": "/docs/patterns/asset-img",
       "usage": {
         "when": "Show an image that scales to its frame, with a placeholder if it fails to load."
       }
@@ -4561,15 +4263,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/tabs.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-tabs--controlled",
-        "primitives-tabs--default",
-        "primitives-tabs--many-tabs",
-        "primitives-tabs--with-disabled-tab"
-      ],
+      "docsPage": "/docs/components/tabs",
       "usage": {
         "when": "Switch between panels of related content in the same place, one visible at a time.",
         "whenNot": "A compact mode switch with no panels, or content that must all be visible.",
@@ -4629,15 +4323,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/tabs.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-tabs--controlled",
-        "primitives-tabs--default",
-        "primitives-tabs--many-tabs",
-        "primitives-tabs--with-disabled-tab"
-      ]
+      "docsPage": null
     },
     "TabsList": {
       "category": "Navigation",
@@ -4679,15 +4365,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/tabs.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-tabs--controlled",
-        "primitives-tabs--default",
-        "primitives-tabs--many-tabs",
-        "primitives-tabs--with-disabled-tab"
-      ]
+      "docsPage": null
     },
     "TabsTrigger": {
       "category": "Navigation",
@@ -4728,15 +4406,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/tabs.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-tabs--controlled",
-        "primitives-tabs--default",
-        "primitives-tabs--many-tabs",
-        "primitives-tabs--with-disabled-tab"
-      ]
+      "docsPage": null
     },
     "Radio": {
       "category": "Inputs",
@@ -4797,16 +4467,7 @@
       "tier": "primitive",
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17",
-      "storyFiles": [
-        "src/stories/radio.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-radio--default",
-        "primitives-radio--disabled",
-        "primitives-radio--disabled-selected",
-        "primitives-radio--group",
-        "primitives-radio--selected"
-      ],
+      "docsPage": "/docs/components/radio",
       "usage": {
         "when": "Choose exactly one option from a small set that should stay visible together.",
         "whenNot": "Independent yes/no options, or a long list of options.",
@@ -4912,14 +4573,7 @@
       "tier": "primitive",
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49",
-      "storyFiles": [
-        "src/stories/select.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-select--default",
-        "primitives-select--no-label",
-        "primitives-select--open"
-      ],
+      "docsPage": "/docs/components/select",
       "usage": {
         "when": "Choose one value from a short list of options in a form field.",
         "whenNot": "Firing actions, or choosing from a list long enough to need search.",
@@ -5021,15 +4675,7 @@
       "tier": "primitive",
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265",
-      "storyFiles": [
-        "src/stories/slider.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-slider--decimal",
-        "primitives-slider--default",
-        "primitives-slider--stepped",
-        "primitives-slider--typography-controls"
-      ],
+      "docsPage": "/docs/components/slider",
       "usage": {
         "when": "Pick a number within a known range by dragging, when the exact value matters less than the position.",
         "whenNot": "A precise number the person must type or read exactly.",
@@ -5098,16 +4744,7 @@
       "tier": "primitive",
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19",
-      "storyFiles": [
-        "src/stories/toggle.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-toggle--default",
-        "primitives-toggle--disabled",
-        "primitives-toggle--disabled-on",
-        "primitives-toggle--on",
-        "primitives-toggle--settings-group"
-      ],
+      "docsPage": "/docs/components/toggle",
       "usage": {
         "when": "Switch one setting on or off, with the effect applying immediately.",
         "whenNot": "A choice that only takes effect after submitting a form, or picking from several options.",
@@ -5182,17 +4819,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/avatar.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-avatar--all-sizes",
-        "primitives-avatar--default",
-        "primitives-avatar--explicit-initials",
-        "primitives-avatar--large",
-        "primitives-avatar--small",
-        "primitives-avatar--with-image"
-      ],
+      "docsPage": "/docs/components/avatar",
       "usage": {
         "when": "Show a person or entity as an image with an initials fallback.",
         "whenNot": "A generic pictogram, or a status marker.",
@@ -5288,16 +4915,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/progress.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-progress--all-sizes",
-        "primitives-progress--circular",
-        "primitives-progress--complete",
-        "primitives-progress--default",
-        "primitives-progress--indeterminate"
-      ],
+      "docsPage": "/docs/components/progress",
       "usage": {
         "when": "Show how far a task has got, as a bar or ring that is determinate or indeterminate.",
         "whenNot": "A wait of unknown length with no bar, or content that is still loading.",
@@ -5367,16 +4985,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/skeleton.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-skeleton--all-variants",
-        "primitives-skeleton--card-placeholder",
-        "primitives-skeleton--circular",
-        "primitives-skeleton--default",
-        "primitives-skeleton--text"
-      ],
+      "docsPage": "/docs/components/skeleton",
       "usage": {
         "when": "Reserve the shape of content that is still loading, so the layout does not jump.",
         "whenNot": "A task with measurable progress, or a wait with no layout to reserve.",
@@ -5439,17 +5048,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/spinner.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-spinner--all-sizes",
-        "primitives-spinner--color-inheritance",
-        "primitives-spinner--custom-label",
-        "primitives-spinner--default",
-        "primitives-spinner--large",
-        "primitives-spinner--small"
-      ],
+      "docsPage": "/docs/components/spinner",
       "usage": {
         "when": "Show that something is loading when the wait is short or has no measurable end.",
         "whenNot": "A task with measurable progress, or a region whose layout is known.",
@@ -5509,16 +5108,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/breadcrumb.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-breadcrumb--custom-label",
-        "primitives-breadcrumb--deep-trail",
-        "primitives-breadcrumb--default",
-        "primitives-breadcrumb--shallow-trail",
-        "primitives-breadcrumb--single-crumb"
-      ],
+      "docsPage": "/docs/components/breadcrumb",
       "usage": {
         "when": "Show where the current page sits in a hierarchy and link back up it.",
         "whenNot": "Switching between sibling views, or stepping through pages of results.",
@@ -5585,16 +5175,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/pagination.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-pagination--default",
-        "primitives-pagination--few-pages",
-        "primitives-pagination--last-page",
-        "primitives-pagination--middle-page",
-        "primitives-pagination--wide-siblings"
-      ],
+      "docsPage": "/docs/components/pagination",
       "usage": {
         "when": "Move between pages of a long result set, with truncated page numbers.",
         "whenNot": "A hierarchy trail, or a short list that fits on one page.",
@@ -5653,16 +5234,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/toast.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-toast--danger",
-        "primitives-toast--default",
-        "primitives-toast--info",
-        "primitives-toast--success",
-        "primitives-toast--warning"
-      ],
+      "docsPage": "/docs/guides/providers",
       "usage": {
         "when": "Confirm an action with a brief message that appears and dismisses itself, through useToast.",
         "whenNot": "A message people must act on or that must stay next to its content.",
@@ -5767,19 +5339,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/combobox.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-combobox--default",
-        "primitives-combobox--disabled-trigger",
-        "primitives-combobox--few-options",
-        "primitives-combobox--multiple",
-        "primitives-combobox--open",
-        "primitives-combobox--open-multiple",
-        "primitives-combobox--pre-selected",
-        "primitives-combobox--with-disabled-option"
-      ],
+      "docsPage": "/docs/components/combobox",
       "usage": {
         "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
         "whenNot": "A short list that needs no search, or an action list.",
@@ -5858,15 +5418,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/form.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-form--controlled",
-        "patterns-form--default",
-        "patterns-form--with-description",
-        "patterns-form--with-error"
-      ],
+      "docsPage": "/docs/patterns/form",
       "usage": {
         "when": "Wrap form fields so they stack with even spacing."
       }
@@ -5933,15 +5485,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/form.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-form--controlled",
-        "patterns-form--default",
-        "patterns-form--with-description",
-        "patterns-form--with-error"
-      ]
+      "docsPage": null
     },
     "FormFieldShell": {
       "category": "Inputs",
@@ -5998,15 +5542,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/form.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-form--controlled",
-        "patterns-form--default",
-        "patterns-form--with-description",
-        "patterns-form--with-error"
-      ]
+      "docsPage": null
     },
     "HdsThemeProvider": {
       "category": "Theming",
@@ -6086,8 +5622,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": [],
+      "docsPage": "/docs/guides/providers",
       "usage": {
         "when": "Wrap an app or region once to set theme, density and other root attributes for everything inside it.",
         "whenNot": "Styling a single component, or per-component overrides.",
@@ -6147,14 +5682,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/avatar-group.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-avatar-group--default",
-        "primitives-avatar-group--sizes",
-        "primitives-avatar-group--with-overflow"
-      ]
+      "docsPage": null
     },
     "Blockquote": {
       "category": "Typography",
@@ -6200,14 +5728,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/blockquote.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-blockquote--default",
-        "primitives-blockquote--sizes",
-        "primitives-blockquote--with-attribution"
-      ]
+      "docsPage": null
     },
     "Kbd": {
       "category": "Display",
@@ -6250,14 +5771,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/kbd.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-kbd--combination",
-        "primitives-kbd--default",
-        "primitives-kbd--sizes"
-      ],
+      "docsPage": "/docs/components/kbd",
       "usage": {
         "when": "Show a keyboard key or shortcut hint inline, as a native kbd element.",
         "whenNot": "Code samples, or a control that runs the shortcut.",
@@ -6322,13 +5836,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/timestamp.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-timestamp--default",
-        "primitives-timestamp--formats"
-      ]
+      "docsPage": null
     },
     "VisuallyHidden": {
       "category": "Utility",
@@ -6365,12 +5873,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/visually-hidden.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-visually-hidden--default"
-      ],
+      "docsPage": "/docs/components/utilities",
       "usage": {
         "when": "Give assistive technology a label or description that sighted people do not need to see.",
         "whenNot": "Text everyone should read, or hiding an element from assistive technology too.",
@@ -6437,14 +5940,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/metadata-list.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-metadata-list--default",
-        "patterns-metadata-list--divided",
-        "patterns-metadata-list--horizontal"
-      ]
+      "docsPage": null
     },
     "AlertDialog": {
       "category": "Overlays",
@@ -6499,13 +5995,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/alert-dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-alert-dialog--dark-scope",
-        "primitives-alert-dialog--default"
-      ],
+      "docsPage": null,
       "usage": {
         "when": "Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.",
         "whenNot": "A modal that collects input or shows content, or a confirmation after the action is done.",
@@ -6576,17 +6066,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/box.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-box--ampersand-selectors",
-        "primitives-box--ampersand-with-responsive",
-        "primitives-box--polymorphic-as",
-        "primitives-box--responsive-values",
-        "primitives-box--spacing-shorthands",
-        "primitives-box--token-colors"
-      ],
+      "docsPage": "/docs/components/utilities",
       "usage": {
         "when": "Build one-off layout that no named layout primitive covers, using token keys through `sx`.",
         "whenNot": "Ordinary vertical or horizontal spacing, columns, or page-width constraint.",
@@ -6685,14 +6165,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/sidebar.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-sidebar--narrow-container-stacks",
-        "primitives-sidebar--rail-end",
-        "primitives-sidebar--rail-start"
-      ],
+      "docsPage": null,
       "aiRules": "Reach for this named layout intent before Box/sx. Sidebar expects EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid."
     },
     "Switcher": {
@@ -6761,14 +6234,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/switcher.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-switcher--default",
-        "primitives-switcher--limit-forces-stacked",
-        "primitives-switcher--narrow-container-stacks"
-      ],
+      "docsPage": null,
       "aiRules": "Reach for this named layout intent before Box/sx. gap MUST use a semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Stack with `direction=\"row\"` and `wrap=\"wrap\"`."
     },
     "Pin": {
@@ -6824,12 +6290,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/pin.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-pin--sidebar"
-      ],
+      "docsPage": null,
       "aiRules": "`top` is a CSS length offset (a dimension, not a spacing step). Give the pinned element a TALLER scrolling parent so it has room to travel. For the scroll-scrubbed animation inside a pinned scene, use CSS `animation-timeline` (see Reveal) or `useScrollProgress` from `@hirobius/design-system/scroll`. See ADR-021."
     },
     "Reveal": {
@@ -6890,17 +6351,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/patterns-scroll.stories.tsx",
-        "src/stories/reveal.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-scroll--pinned-scale-reveal",
-        "patterns-scroll--reveal-sequence",
-        "patterns-scroll--simple-parallax",
-        "primitives-reveal--animations",
-        "primitives-reveal--scale-reveal-scene"
-      ],
+      "docsPage": "/docs/patterns/reveal",
       "usage": {
         "when": "Fade content in as it scrolls into view."
       },
@@ -6973,16 +6424,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/textarea.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-textarea--all-states",
-        "primitives-textarea--default",
-        "primitives-textarea--disabled",
-        "primitives-textarea--error",
-        "primitives-textarea--with-helper"
-      ],
+      "docsPage": "/docs/components/textarea",
       "usage": {
         "when": "Collect multi-line free text such as a message, note or description.",
         "whenNot": "A single line of text, or choosing from a list.",
@@ -7024,23 +6466,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-card--bordered",
-        "primitives-card--default",
-        "primitives-card--elevated",
-        "primitives-card--feedback-tones",
-        "primitives-card--full-anatomy",
-        "primitives-card--header-only",
-        "primitives-card--metric-slot",
-        "primitives-card--padding-variants",
-        "primitives-card--progress-slot",
-        "primitives-card--selectable",
-        "primitives-card--tone-matrix",
-        "primitives-card--variant-accent"
-      ]
+      "docsPage": null
     },
     "CardDescription": {
       "category": "Display",
@@ -7071,23 +6497,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-card--bordered",
-        "primitives-card--default",
-        "primitives-card--elevated",
-        "primitives-card--feedback-tones",
-        "primitives-card--full-anatomy",
-        "primitives-card--header-only",
-        "primitives-card--metric-slot",
-        "primitives-card--padding-variants",
-        "primitives-card--progress-slot",
-        "primitives-card--selectable",
-        "primitives-card--tone-matrix",
-        "primitives-card--variant-accent"
-      ]
+      "docsPage": null
     },
     "CardFooter": {
       "category": "Display",
@@ -7118,23 +6528,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-card--bordered",
-        "primitives-card--default",
-        "primitives-card--elevated",
-        "primitives-card--feedback-tones",
-        "primitives-card--full-anatomy",
-        "primitives-card--header-only",
-        "primitives-card--metric-slot",
-        "primitives-card--padding-variants",
-        "primitives-card--progress-slot",
-        "primitives-card--selectable",
-        "primitives-card--tone-matrix",
-        "primitives-card--variant-accent"
-      ]
+      "docsPage": null
     },
     "CardHeader": {
       "category": "Display",
@@ -7170,23 +6564,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-card--bordered",
-        "primitives-card--default",
-        "primitives-card--elevated",
-        "primitives-card--feedback-tones",
-        "primitives-card--full-anatomy",
-        "primitives-card--header-only",
-        "primitives-card--metric-slot",
-        "primitives-card--padding-variants",
-        "primitives-card--progress-slot",
-        "primitives-card--selectable",
-        "primitives-card--tone-matrix",
-        "primitives-card--variant-accent"
-      ]
+      "docsPage": null
     },
     "CardMetric": {
       "category": "Display",
@@ -7239,23 +6617,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-card--bordered",
-        "primitives-card--default",
-        "primitives-card--elevated",
-        "primitives-card--feedback-tones",
-        "primitives-card--full-anatomy",
-        "primitives-card--header-only",
-        "primitives-card--metric-slot",
-        "primitives-card--padding-variants",
-        "primitives-card--progress-slot",
-        "primitives-card--selectable",
-        "primitives-card--tone-matrix",
-        "primitives-card--variant-accent"
-      ],
+      "docsPage": null,
       "usage": {
         "when": "Show one headline figure (a KPI, a count, a total) with its label inside a Card.",
         "whenNot": "A metric outside a Card, or several figures that share one label.",
@@ -7319,23 +6681,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-card--bordered",
-        "primitives-card--default",
-        "primitives-card--elevated",
-        "primitives-card--feedback-tones",
-        "primitives-card--full-anatomy",
-        "primitives-card--header-only",
-        "primitives-card--metric-slot",
-        "primitives-card--padding-variants",
-        "primitives-card--progress-slot",
-        "primitives-card--selectable",
-        "primitives-card--tone-matrix",
-        "primitives-card--variant-accent"
-      ]
+      "docsPage": null
     },
     "CardTitle": {
       "category": "Display",
@@ -7366,23 +6712,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/card.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-card--bordered",
-        "primitives-card--default",
-        "primitives-card--elevated",
-        "primitives-card--feedback-tones",
-        "primitives-card--full-anatomy",
-        "primitives-card--header-only",
-        "primitives-card--metric-slot",
-        "primitives-card--padding-variants",
-        "primitives-card--progress-slot",
-        "primitives-card--selectable",
-        "primitives-card--tone-matrix",
-        "primitives-card--variant-accent"
-      ]
+      "docsPage": null
     },
     "DialogClose": {
       "category": "Overlays",
@@ -7418,16 +6748,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ]
+      "docsPage": null
     },
     "DialogContent": {
       "category": "Overlays",
@@ -7499,16 +6820,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ]
+      "docsPage": null
     },
     "DialogDescription": {
       "category": "Overlays",
@@ -7544,16 +6856,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ]
+      "docsPage": null
     },
     "DialogFooter": {
       "category": "Overlays",
@@ -7584,16 +6887,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ]
+      "docsPage": null
     },
     "DialogHeader": {
       "category": "Overlays",
@@ -7624,16 +6918,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ]
+      "docsPage": null
     },
     "DialogOverlay": {
       "category": "Overlays",
@@ -7673,16 +6958,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ]
+      "docsPage": null
     },
     "DialogPortal": {
       "category": "Overlays",
@@ -7726,16 +7002,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ]
+      "docsPage": null
     },
     "DialogTitle": {
       "category": "Overlays",
@@ -7771,16 +7038,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ]
+      "docsPage": null
     },
     "DialogTrigger": {
       "category": "Overlays",
@@ -7816,16 +7074,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/dialog.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-dialog--dark-scope",
-        "primitives-dialog--default",
-        "primitives-dialog--destructive",
-        "primitives-dialog--information",
-        "primitives-dialog--no-close-affordance"
-      ]
+      "docsPage": null
     },
     "Tooltip": {
       "category": "Overlays",
@@ -7887,13 +7136,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/hds-tooltip.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-hds-tooltip--default",
-        "primitives-hds-tooltip--placement"
-      ],
+      "docsPage": "/docs/components/tooltip",
       "usage": {
         "when": "Name an icon-only control, or add a short hint that appears on hover and keyboard focus.",
         "whenNot": "Anything interactive, text people need to finish a task, or a hint touch users must see (touch has no hover).",
@@ -7985,15 +7228,6 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/menu.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-menu--default",
-        "primitives-menu--with-checkbox-items",
-        "primitives-menu--with-radio-group",
-        "primitives-menu--with-submenu"
-      ],
       "slots": [
         {
           "name": "trigger",
@@ -8006,6 +7240,7 @@
           "source": "jsdoc"
         }
       ],
+      "docsPage": "/docs/components/menu",
       "usage": {
         "when": "Offer a list of actions from a trigger, closed until opened.",
         "whenNot": "Choosing one value for a form field, or a set of options that must stay visible.",
@@ -8107,15 +7342,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/popover.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-popover--aligned-start",
-        "primitives-popover--default",
-        "primitives-popover--info-tip",
-        "primitives-popover--with-dismiss"
-      ],
+      "docsPage": "/docs/components/popover",
       "usage": {
         "when": "Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.",
         "whenNot": "A short label on hover or focus, a list of actions, or a decision that must block the page.",
@@ -8197,17 +7424,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/checkbox.stories.tsx"
-      ],
-      "storyIds": [
-        "primitives-checkbox--checked",
-        "primitives-checkbox--default",
-        "primitives-checkbox--disabled",
-        "primitives-checkbox--disabled-checked",
-        "primitives-checkbox--group",
-        "primitives-checkbox--indeterminate"
-      ],
+      "docsPage": "/docs/components/checkbox",
       "usage": {
         "when": "Let people tick one or more independent options, or a parent choice that is partly selected.",
         "whenNot": "An immediate on/off setting, or a choice of exactly one option from a set.",
@@ -8271,15 +7488,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/form-actions.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-formactions--primary-only",
-        "patterns-formactions--sticky",
-        "patterns-formactions--with-destructive",
-        "patterns-formactions--with-secondary"
-      ],
+      "docsPage": "/docs/patterns/form-actions",
       "usage": {
         "when": "Lay out a form's buttons in a fixed order: danger on the left, then secondary, then primary on the right."
       }
@@ -8339,18 +7548,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/metric-tile.stories.tsx",
-        "src/stories/metric-tiles.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-metrictile--danger",
-        "patterns-metrictile--default",
-        "patterns-metrictiles--four-tiles",
-        "patterns-metrictiles--sub-line-optional",
-        "patterns-metrictiles--three-tiles",
-        "patterns-metrictiles--tones"
-      ],
+      "docsPage": null,
       "usage": {
         "when": "Show one key number with its label, inside a MetricTiles row."
       }
@@ -8394,18 +7592,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/metric-tile.stories.tsx",
-        "src/stories/metric-tiles.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-metrictile--danger",
-        "patterns-metrictile--default",
-        "patterns-metrictiles--four-tiles",
-        "patterns-metrictiles--sub-line-optional",
-        "patterns-metrictiles--three-tiles",
-        "patterns-metrictiles--tones"
-      ],
+      "docsPage": "/docs/patterns/metric-tiles",
       "usage": {
         "when": "Show a row of key numbers, one tile each."
       }
@@ -8461,21 +7648,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/page-header.stories.tsx",
-        "src/stories/patterns-client-detail.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-client-detail-screen--compact",
-        "patterns-client-detail-screen--dark",
-        "patterns-client-detail-screen--light",
-        "patterns-client-detail-screen--phone-390",
-        "patterns-pageheader--default",
-        "patterns-pageheader--long-title-wraps",
-        "patterns-pageheader--nested-level",
-        "patterns-pageheader--title-only",
-        "patterns-pageheader--with-actions"
-      ],
+      "docsPage": "/docs/patterns/page-header",
       "usage": {
         "when": "Open a screen with its title, plus optional breadcrumb, status and actions."
       }
@@ -8541,16 +7714,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/data-table-section.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-datatablesection--dark",
-        "patterns-datatablesection--default",
-        "patterns-datatablesection--empty",
-        "patterns-datatablesection--phone-390",
-        "patterns-datatablesection--without-row-actions"
-      ],
+      "docsPage": "/docs/patterns/data-table-section",
       "usage": {
         "when": "Put a heading and toolbar above a Table."
       }
@@ -8614,15 +7778,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [
-        "src/stories/destructive-section.stories.tsx"
-      ],
-      "storyIds": [
-        "patterns-destructivesection--dark",
-        "patterns-destructivesection--default",
-        "patterns-destructivesection--phone",
-        "patterns-destructivesection--separate-button-label"
-      ],
+      "docsPage": "/docs/patterns/destructive-section",
       "usage": {
         "when": "Put a dangerous action, such as delete, in its own section with a warning and a confirm step."
       }
@@ -8664,8 +7820,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": [],
+      "docsPage": "/docs/guides/providers",
       "usage": {
         "when": "Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors."
       },
@@ -8684,8 +7839,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": []
+      "docsPage": null
     },
     "HdsFrame": {
       "category": "Compiler",
@@ -8700,8 +7854,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": []
+      "docsPage": null
     },
     "HdsHeading": {
       "category": "Compiler",
@@ -8716,8 +7869,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": []
+      "docsPage": null
     },
     "HdsLabel": {
       "category": "Compiler",
@@ -8732,8 +7884,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": []
+      "docsPage": null
     },
     "HdsCaption": {
       "category": "Compiler",
@@ -8748,8 +7899,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": []
+      "docsPage": null
     },
     "HdsCheckbox": {
       "category": "Compiler",
@@ -8764,8 +7914,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": []
+      "docsPage": null
     },
     "HdsChip": {
       "category": "Compiler",
@@ -8780,8 +7929,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": []
+      "docsPage": null
     },
     "HdsAvatar": {
       "category": "Compiler",
@@ -8796,8 +7944,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "storyFiles": [],
-      "storyIds": []
+      "docsPage": null
     }
   },
   "utilities": {

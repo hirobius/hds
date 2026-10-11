@@ -1044,8 +1044,8 @@ export function buildManifest(allTokens, raw) {
     generated: new Date().toISOString(),
     source: 'hirobius.tokens.json',
     format: 'W3C DTCG 2025.10',
-    docs: 'https://hirobius-design-system.vercel.app/',
-    llmsTxt: 'https://hirobius-design-system.vercel.app/llms.txt',
+    docs: 'https://hirobius-hds-components.vercel.app/',
+    llmsTxt: 'https://hirobius-hds-components.vercel.app/llms.txt',
     systemSpecs: SYSTEM_MANIFEST.systemSpecs ?? {
       engine: 'React + TypeScript',
       icons: 'Phosphor (Bold)',
