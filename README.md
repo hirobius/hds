@@ -34,6 +34,8 @@ What the system includes:
 
 The counts are generated from source by `pnpm readme:counts`, which `pnpm tokens` also runs. `scripts/__tests__/front-door.test.mjs` fails if this README claims more than the source has.
 
+**How it's built:** [How HDS is engineered](docs/ENGINEERING.md) walks the token pipeline, the quality gates (and how they're proven to fire), testing, release and upgrade, and Figma sync.
+
 Agents: install the consumer skill with `npx skills add hirobius/hds --skill hds-consumer` (see `docs/CONSUMING.md`, "Agent skill").
 
 ## In use
@@ -277,6 +279,7 @@ public/
 ## Primary docs
 
 - [`docs/CONSUMING.md`](docs/CONSUMING.md) — installing & using the published package
+- [`docs/ENGINEERING.md`](docs/ENGINEERING.md) — how the system is built (pipeline, gates, release, Figma sync)
 - `CLAUDE.md` — agent operating contract
 - `DESIGN.md` — lean visual spec
 - `DESIGN-HANDOFF.md` — verbose visual mirror
