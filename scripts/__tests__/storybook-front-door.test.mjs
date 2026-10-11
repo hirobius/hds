@@ -91,12 +91,19 @@ describe('published build gating', () => {
     expect(main).not.toMatch(/configType\s*===\s*'PRODUCTION'/);
   });
 
-  it('sets the flag in the Vercel build command only', () => {
-    const vercel = JSON.parse(read('vercel.json'));
-    expect(vercel.buildCommand).toMatch(/HDS_STORYBOOK_PUBLIC=1\s+pnpm build-storybook/);
+  it('never sets the flag in CI', () => {
     for (const wf of ['chromatic.yml', 'ci.yml']) {
       expect(read(`.github/workflows/${wf}`)).not.toContain('HDS_STORYBOOK_PUBLIC');
     }
+  });
+
+  it('the old Storybook address redirects everything to the docs site', () => {
+    const vercel = JSON.parse(read('vercel.json'));
+    const { docsUrl } = JSON.parse(read('figma/links.json'));
+    expect(vercel.buildCommand).not.toMatch(/storybook/);
+    expect(vercel.redirects).toEqual([
+      { source: '/(.*)', destination: `${docsUrl}/docs`, permanent: true },
+    ]);
   });
 
   it('has no nested story files the flat production listing would miss', () => {
