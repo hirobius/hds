@@ -14,7 +14,7 @@
  *   - ES2020 syntax
  *
  * Trust. The plugin carries no model. Its window fetches the sync bundle the
- * Storybook deploy publishes, and this code treats it as data: JSON.parse,
+ * docs site publishes, and this code treats it as data: JSON.parse,
  * never evaluated. Where the plugin may write is never read from the bundle:
  * the library's key and name and the retired files' keys and names (`sync`)
  * are baked into code.js from figma/links.json when `pnpm figma:push` builds
@@ -217,7 +217,7 @@ export function hdsSyncReadBundle(fetched, sync, pluginBuild) {
   const retry =
     ' Open ' +
     url +
-    ' in a browser: when it shows JSON, run Sync again. If it does not, check the latest Vercel deployment of the Storybook site, whose build writes this file.';
+    ' in a browser: when it shows JSON, run Sync again. If it does not, check the latest Vercel deployment of the docs site, whose build writes this file.';
   if (!fetched || fetched.url !== url) {
     throw new Error(
       'The plugin window answered for another address than ' + url + '.' + nothing + retry,

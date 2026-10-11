@@ -9,8 +9,7 @@ import { readFileSync } from 'fs';
 import react from '@vitejs/plugin-react';
 
 // Mirror the app/lib `virtual:hds-manifest` plugin so any module that imports the
-// manifest that way resolves it under vitest (CommandPalette did until 0.20.0) — including the
-// story-render smoke gate that renders every story.
+// manifest that way resolves it under vitest (CommandPalette did until 0.20.0).
 const hdsManifestModuleId = 'virtual:hds-manifest';
 const resolvedHdsManifestModuleId = `\0${hdsManifestModuleId}`;
 

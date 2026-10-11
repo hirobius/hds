@@ -95,15 +95,6 @@ describe('buildSyncMap', () => {
     expect(rows[0].gaps).not.toContain(GAPS.NO_SOURCE);
   });
 
-  it('attributes rendered defects to the component by name', () => {
-    const { rows } = buildSyncMap({
-      ...base,
-      specs: { Thing: spec() },
-      defectsByComponent: { Thing: 3, Other: 9 },
-    });
-    expect(rows[0]).toMatchObject({ defects: 3, gaps: [GAPS.HAS_DEFECTS] });
-  });
-
   it('sorts the worst gap first and breaks ties by name', () => {
     const { rows } = buildSyncMap({
       ...base,

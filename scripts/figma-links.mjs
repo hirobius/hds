@@ -20,7 +20,7 @@
  *   pnpm figma:links                                  write docs/DESIGN_LINKS.md and carriers
  *   pnpm figma:links --check                          exit 1 when stale or broken; writes nothing
  *   FIGMA_ACCESS_TOKEN=… pnpm figma:links --dev-resources [--dry-run]
- *                                                     add "HDS source" / "HDS story" dev resources
+ *                                                     add "HDS source" / "HDS docs" dev resources
  *                                                     to every linked node (never deletes)
  *
  * FIGMA_ACCESS_TOKEN: a Figma personal access token with the

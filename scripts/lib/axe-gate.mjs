@@ -1,4 +1,4 @@
-/** @internal — axe classification helpers and the axe-core source loader shared by scripts/check-storybook-axe.mjs (hds#310) and the consistency harness (hds#344). */
+/** @internal — axe classification helpers and the axe-core source loader shared by scripts/check-docs-axe.mjs (hds#310) and the consistency harness (hds#344). */
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -43,8 +43,8 @@ export function validateAllowlist(entries) {
 /**
  * scans: [{ storyId, theme, violations: [{ id, impact, nodes }], error, skipped }]
  * allowlist: [{ storyId, ruleId, reason, addedOn }] (an entry covers both themes)
- * A scan with `skipped` set (a story that pins its own theme via story-level
- * globals, so the other theme cannot be applied) is reported but never fails.
+ * A scan with `skipped` set (a page that pins its own theme, so the other
+ * theme cannot be applied) is reported but never fails.
  */
 export function evaluateScan(scans, allowlist) {
   const blocking = [];

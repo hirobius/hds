@@ -10,7 +10,7 @@
  *      code.
  *   2. README claims — the generated count bullets never claim more than the
  *      source has, and every command and status line matches the repo. Counts
- *      are checked one way (claim <= source) so a PR that adds tokens, stories,
+ *      are checked one way (claim <= source) so a PR that adds tokens
  *      or components never turns main red through merge order.
  *   3. Figma claims in the core docs — no Figma command, script, automatic sync,
  *      or Code Connect readiness is described unless the repo has it; the legacy
@@ -161,7 +161,7 @@ describe('README claims', () => {
     expect(pkg.scripts.tokens).toContain('node scripts/build-readme-counts.mjs');
   });
 
-  it('never claims more components, tokens, stories, or story files than the source has', () => {
+  it('never claims more components or tokens than the source has', () => {
     // A failure here means the source shrank: run `pnpm readme:counts`.
     const overclaims = findOverclaims(readClaims(read('README.md')), collectCounts(ROOT));
     expect(overclaims).toEqual([]);

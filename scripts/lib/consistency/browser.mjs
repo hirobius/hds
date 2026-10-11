@@ -4,7 +4,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
-// Same freeze as scripts/check-storybook-axe.mjs: with reduced motion, this makes
+// Same freeze as scripts/check-docs-axe.mjs: with reduced motion, this makes
 // a capture or a scan independent of where an animation happens to be.
 export const FREEZE_CSS =
   '*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}';

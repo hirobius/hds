@@ -7,7 +7,6 @@
  * <!-- auto:start:front-door-counts --> and <!-- auto:end:front-door-counts -->:
  *   - public component modules: `export * from './app/components/…'` lines in src/index.ts
  *   - DTCG tokens: leaf nodes carrying `$value` in hirobius.tokens.json
- *   - Storybook stories: named `export const <Capitalized>` lines in src/**\/*.stories.tsx
  *
  * It also regenerates the "What belongs in the system" block between
  * <!-- auto:start:core-set --> and <!-- auto:end:core-set --> (hds#374): the
@@ -17,13 +16,13 @@
  *
  * `pnpm tokens` runs it, so token PRs refresh the README with the handoff docs.
  * scripts/__tests__/front-door.test.mjs checks the README one way (claim <= source):
- * a PR that adds tokens or stories never fails on a README written before it,
+ * a PR that adds tokens never fails on a README written before it,
  * and a README that claims more than the source has always fails.
  *
  * Run: pnpm readme:counts
  */
 
-import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CORE_SET_BLOCK, collectCoreSet, renderCoreSetBlock } from './lib/core-set.mjs';
@@ -35,8 +34,6 @@ export const COUNTS_BLOCK = 'front-door-counts';
 const PHRASES = {
   components: 'public component modules',
   tokens: 'DTCG tokens',
-  stories: 'Storybook stories',
-  storyFiles: 'story files',
 };
 
 // ── Counting rules ────────────────────────────────────────────────────────────
@@ -62,34 +59,20 @@ export function countTokens(tokenTree) {
   return count;
 }
 
-/** Named CSF story exports in one story file. */
-export function countStoryExports(storySource) {
-  return storySource.split('\n').filter((line) => /^export const [A-Z]/.test(line)).length;
-}
-
 /** Reads the repo at `root` and returns every count the README states. */
 export function collectCounts(root) {
-  const storyFiles = readdirSync(join(root, 'src'), { recursive: true })
-    .map(String)
-    .filter((p) => p.endsWith('.stories.tsx'));
   return {
     components: countBarrelComponentModules(readFileSync(join(root, 'src', 'index.ts'), 'utf8')),
     tokens: countTokens(readTokenSource(join(root, 'hirobius.tokens.json'))),
-    stories: storyFiles.reduce(
-      (sum, rel) => sum + countStoryExports(readFileSync(join(root, 'src', rel), 'utf8')),
-      0,
-    ),
-    storyFiles: storyFiles.length,
   };
 }
 
 // ── README block ──────────────────────────────────────────────────────────────
 /** The markdown bullets that go inside the generated block. */
-export function buildCountsSection({ components, tokens, stories, storyFiles }) {
+export function buildCountsSection({ components, tokens }) {
   return [
     `- **${components}** ${PHRASES.components}, exported from \`src/index.ts\``,
     `- **${tokens}** ${PHRASES.tokens} in \`hirobius.tokens.json\`, compiled to CSS variables and TypeScript constants`,
-    `- **${stories}** ${PHRASES.stories} in **${storyFiles}** ${PHRASES.storyFiles}`,
   ].join('\n');
 }
 

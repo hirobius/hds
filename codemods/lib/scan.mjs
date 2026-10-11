@@ -28,7 +28,6 @@ export const SKIP_DIRS = new Set([
   '.turbo',
   '.svelte-kit',
   'coverage',
-  'storybook-static',
 ]);
 
 const CODE = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts', '.mdx']);

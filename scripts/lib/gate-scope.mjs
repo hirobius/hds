@@ -203,8 +203,8 @@ export function exemptionContext(lines, index) {
   const block = [lines[index] ?? ''];
   for (let i = index - 1; i >= 0; i--) {
     const trimmed = (lines[i] ?? '').trim();
-    // `{/* ... */}` is how a comment is written inside JSX — box.stories.tsx
-    // marks two tier-ok exemptions that way — so the leading brace is optional.
+    // `{/* ... */}` is how a comment is written inside JSX — an
+    // exemption can be marked that way — so the leading brace is optional.
     if (!/^\{?(\/\/|\/\*|\*|-->)/.test(trimmed) && !/\*\/\}?$/.test(trimmed)) break;
     block.unshift(lines[i]);
   }

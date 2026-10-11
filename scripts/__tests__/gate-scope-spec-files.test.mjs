@@ -22,7 +22,7 @@ describe('isSpecFile', () => {
     for (const path of [
       'box-sx.test.ts',
       'src/app/components/top-nav.test.tsx',
-      'src/stories/story-render.spec.tsx',
+      'src/app/components/card.spec.tsx',
       'scripts/__tests__/figma-links.test.mjs',
       'a.spec.js',
       'b.test.cjs',
@@ -38,7 +38,7 @@ describe('isSpecFile', () => {
       'src/app/components/card.tsx',
       'inspector.ts',
       'respec.tsx',
-      'src/stories/badge.stories.tsx',
+      'src/app/components/badge.tsx',
     ]) {
       expect(isSpecFile(path), path).toBe(false);
     }
@@ -91,8 +91,8 @@ describe('exemptionContext', () => {
   });
 
   it('handles a JSX block comment, braces and all', () => {
-    // box.stories.tsx marks two tier-ok exemptions as `{/* ... */}`. Missing
-    // this form turned two suppressed lines back into violations — caught only
+    // Exemptions are sometimes marked as `{/* ... */}`. Missing
+    // this form turned suppressed lines back into violations — caught only
     // by diffing the gate's output before and after the change.
     const lines = ['{/* tier-ok: story caption, not a live styling call */}', 'p: 2 → var(--x)'];
     expect(ctx(lines, 1)).toContain('tier-ok');

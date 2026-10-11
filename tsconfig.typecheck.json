@@ -19,7 +19,6 @@
     "**/*.test.tsx",
     "**/*.spec.ts",
     "**/*.spec.tsx",
-    "**/*.stories.tsx",
     "**/__fixtures__/**",
     "**/*.figma.ts"
   ]

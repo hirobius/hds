@@ -59,7 +59,6 @@ const SKIP_DIRS = new Set([
   '.next',
   '.vercel',
   'coverage',
-  'storybook-static',
 ]);
 
 export function loadPatternNames() {

@@ -175,8 +175,7 @@ page, so its documentation link is the source file.
 `pnpm test` fails, and `pnpm figma:links --check` exits 1, when `docs/DESIGN_LINKS.md`
 section is stale or a `figmaUrl` is not a node URL.
 
-Story links open the story file on GitHub until `storybookUrl` is set in
-`figma/links.json`; then they open the Storybook docs page. The dev resources
+The dev resources
 push never deletes: a URL already on the node counts as present under any name,
 and an "HDS" resource whose URL changed is updated in place.
 
@@ -225,7 +224,7 @@ Mark's link check tell the two files apart (ADR-032, amendment of 2026-10-07).
 The order: rename the old library "HDS Tokens & Components (old)", rename the
 copy "HDS Tokens & Components", load the new plugin files (step 1), then Sync
 (step 2). The new files work only once the switch is merged to `main` and the
-Storybook deploy serves its bundle; before that they say the plugin is out of
+docs site serves its bundle; before that they say the plugin is out of
 date, and the old files refuse the renamed copy by its name.
 
 1. Once per plugin build: an agent runs `pnpm figma:push` and sends you `figma/push/plugin/`. Overwrite `manifest.json`, `code.js` and `ui.html` in the folder Figma imported "HDS tokens sync" from.
@@ -235,10 +234,10 @@ date, and the old files refuse the renamed copy by its name.
 The **Sync plugin** (`figma/push/plugin/`, id `hds-tokens-sync-dev`) carries no
 model. Its window fetches the sync bundle the docs site publishes at
 https://hirobius-hds-components.vercel.app/figma/sync-bundle.json (`docsUrl` in
-`figma/links.json`, else `storybookUrl` when a links.json still names one; `pnpm docs:publish`, the docs site's Vercel
+`figma/links.json`; `pnpm docs:publish`, the docs site's Vercel
 build, runs `node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json`;
-the bundle is generated, never committed). Plugin builds from before 2026-10-10 still
-fetch from the Storybook deploy, which keeps serving the bundle until it is switched off. Its
+the bundle is generated, never committed). Plugin builds from before 2026-10-10
+fetched it from the retired Storybook deploy; rebuild them with `pnpm figma:push`. Its
 `code.js` is about 52 KB, and its files change only when the plugin build
 changes, not when tokens do. Commands:
 

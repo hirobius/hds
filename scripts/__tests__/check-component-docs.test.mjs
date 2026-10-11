@@ -4,12 +4,11 @@
  *
  * The gate answers one question — "is this component documented?" — and the
  * answer depends entirely on where documentation lives. It used to live in a
- * bespoke 48-page docs site; ADR-018 cut that site and made Storybook the sole
- * component showcase, and the gate was never re-pointed, so it kept scanning 11
- * file paths that no longer exist and reported 0/104 documented: not a coverage
- * finding, an arithmetic certainty. It now reads the docs site's own registries
- * (DEMOS and PREVIEWED_COMPONENTS), so Storybook is not needed for a component
- * to count as documented. A gate that cannot go green measures nothing.
+ * bespoke 48-page docs site; ADR-018 cut that site and the gate was never
+ * re-pointed, so it kept scanning 11 file paths that no longer exist and
+ * reported 0/104 documented: not a coverage finding, an arithmetic certainty. It now reads the docs site's own registries
+ * (DEMOS and PREVIEWED_COMPONENTS), so nothing but the docs site is needed for a
+ * component to count as documented. A gate that cannot go green measures nothing.
  *
  * These unit tests pin the registry reading to source strings so it is provable
  * without a filesystem, and the integration test at the bottom runs the real

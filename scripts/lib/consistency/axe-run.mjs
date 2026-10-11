@@ -6,7 +6,7 @@ import { openApp, serve } from './browser.mjs';
 
 /**
  * axe-core over a built app in light and dark at 1280 wide, the same engine,
- * rule sets and injection as scripts/check-storybook-axe.mjs. Returns scan rows
+ * rule sets and injection as scripts/check-docs-axe.mjs. Returns scan rows
  * for evaluateScan; a scan that could not run becomes an error row, which
  * counts against the axe threshold.
  * @param {import('playwright').Browser} browser

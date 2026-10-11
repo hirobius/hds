@@ -41,7 +41,7 @@ import { FIXTURE_TOKENS_PATH, fixtureModel, newFixtureFile } from './helpers/fig
 import { runSyncPlugin, serve } from './helpers/sync-plugin.mjs';
 
 const LINKS = Object.freeze({
-  storybookUrl: 'https://hirobius-design-system.vercel.app',
+  docsUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],

@@ -40,7 +40,6 @@ const SKIP_DIRS = new Set([
   '.next',
   '.vercel',
   'coverage',
-  'storybook-static',
 ]);
 const ID = String.raw`[A-Za-z_$][\w$]*`;
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
