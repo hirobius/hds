@@ -2475,20 +2475,12 @@
       "primary": {
         "textDisabled": {
           "$type": "color",
-          "$value": "{semantic.color.content.onAccent}",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Light": "{semantic.color.content.onAccent}",
-                "Dark": "{semantic.color.content.disabled}"
-              }
-            }
-          },
+          "$value": "{semantic.color.content.disabled}",
           "$description": "Disabled primary button text color."
         },
         "bgDisabled": {
           "$type": "color",
-          "$value": "{semantic.color.surface.accentSubtle}",
+          "$value": "{semantic.color.surface.muted}",
           "$description": "Disabled primary button fill."
         }
       },

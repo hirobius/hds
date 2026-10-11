@@ -1,0 +1,32 @@
+{
+  "impact": "look",
+  "plain": "A disabled primary Button is now a neutral muted fill with disabled-grey text, and the small Button icon is 12px instead of 14px.",
+  "steps": [
+    {
+      "id": "value-changed/--component-button-primary-bgDisabled",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The disabled primary Button fill is now the muted surface instead of the accent-subtle surface.",
+      "detect": {
+        "cssVars": ["--component-button-primary-bgDisabled"],
+        "cssVarWrites": ["--component-button-primary-bgDisabled"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-primary-bgDisabled::root",
+        "css-var-changed:--component-button-primary-bgDisabled:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-primary-bgDisabled:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-button-primary-textDisabled",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The disabled primary Button text is now the disabled content colour instead of the on-accent colour.",
+      "detect": {
+        "cssVars": ["--component-button-primary-textDisabled"],
+        "cssVarWrites": ["--component-button-primary-textDisabled"]
+      },
+      "facts": ["css-var-changed:--component-button-primary-textDisabled::root"]
+    }
+  ]
+}
