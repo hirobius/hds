@@ -20,7 +20,15 @@ import {
   findOverclaims,
 } from '../build-readme-counts.mjs';
 
-const COUNTS = { components: 108, tokens: 361, stories: 442, storyFiles: 112 };
+const COUNTS = {
+  components: 108,
+  tokens: 361,
+  stories: 442,
+  storyFiles: 112,
+  gates: 64,
+  testFiles: 290,
+  workflows: 11,
+};
 
 const readmeWith = (section) =>
   [
@@ -88,6 +96,9 @@ describe('buildCountsSection', () => {
     expect(section).toContain('**108** public component modules');
     expect(section).toContain('**361** DTCG tokens');
     expect(section).toContain('**442** Storybook stories in **112** story files');
+    expect(section).toContain(
+      '**64** guardrail gates, **290** test files, and **11** CI workflows',
+    );
     expect(section).not.toMatch(/chromatic/i);
     expect(readClaims(readmeWith(section))).toEqual(COUNTS);
   });
@@ -100,7 +111,7 @@ describe('replaceCountsBlock', () => {
     expect(after).toContain(
       `<!-- auto:start:${COUNTS_BLOCK} -->\n\n- **108** public component modules`,
     );
-    expect(after).toMatch(new RegExp(`story files\\n\\n<!-- auto:end:${COUNTS_BLOCK} -->`));
+    expect(after).toMatch(new RegExp(`git hooks and CI\\n\\n<!-- auto:end:${COUNTS_BLOCK} -->`));
     expect(after).toContain('- Theming through four root attributes');
     expect(after).not.toContain('**1** public component modules');
   });
@@ -121,7 +132,15 @@ describe('replaceCountsBlock', () => {
 describe('findOverclaims', () => {
   it('accepts a README written before the source grew (merge-order safe)', () => {
     const claims = readClaims(readmeWith(buildCountsSection(COUNTS)));
-    const grown = { components: 110, tokens: 365, stories: 450, storyFiles: 114 };
+    const grown = {
+      components: 110,
+      tokens: 365,
+      stories: 450,
+      storyFiles: 114,
+      gates: 66,
+      testFiles: 295,
+      workflows: 12,
+    };
     expect(findOverclaims(claims, grown)).toEqual([]);
   });
 
@@ -135,6 +154,14 @@ describe('findOverclaims', () => {
   it('reports a missing or zero claim', () => {
     const claims = readClaims('# HDS\n\n- **0** DTCG tokens\n');
     const keys = findOverclaims(claims, COUNTS).map((o) => o.key);
-    expect(keys).toEqual(['components', 'tokens', 'stories', 'storyFiles']);
+    expect(keys).toEqual([
+      'components',
+      'tokens',
+      'stories',
+      'storyFiles',
+      'gates',
+      'testFiles',
+      'workflows',
+    ]);
   });
 });

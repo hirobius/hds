@@ -37,7 +37,13 @@ const PHRASES = {
   tokens: 'DTCG tokens',
   stories: 'Storybook stories',
   storyFiles: 'story files',
+  gates: 'guardrail gates',
+  testFiles: 'test files',
+  workflows: 'CI workflows',
 };
+
+/** Directories that hold the repo's test files (no node_modules under these). */
+const TEST_DIRS = ['src', 'scripts', 'tests'];
 
 // ── Counting rules ────────────────────────────────────────────────────────────
 /** Component modules re-exported by the public barrel (not the .tsx file count). */
@@ -67,6 +73,38 @@ export function countStoryExports(storySource) {
   return storySource.split('\n').filter((line) => /^export const [A-Z]/.test(line)).length;
 }
 
+/** Registered guardrail gates in docs/guardrails/registry.json. */
+export function countGates(root) {
+  const registry = JSON.parse(
+    readFileSync(join(root, 'docs', 'guardrails', 'registry.json'), 'utf8'),
+  );
+  return Array.isArray(registry.gates) ? registry.gates.length : 0;
+}
+
+/** Test files (basename contains `.test.`) under src/, scripts/ and tests/. */
+export function countTestFiles(root) {
+  let count = 0;
+  for (const dir of TEST_DIRS) {
+    let entries;
+    try {
+      entries = readdirSync(join(root, dir), { recursive: true });
+    } catch {
+      continue; // dir may not exist in a given checkout
+    }
+    count += entries.map(String).filter((p) => /[^/\\]*\.test\.[^/\\]*$/.test(p)).length;
+  }
+  return count;
+}
+
+/** CI workflow files in .github/workflows/. */
+export function countWorkflows(root) {
+  try {
+    return readdirSync(join(root, '.github', 'workflows')).filter((f) => /\.ya?ml$/.test(f)).length;
+  } catch {
+    return 0;
+  }
+}
+
 /** Reads the repo at `root` and returns every count the README states. */
 export function collectCounts(root) {
   const storyFiles = readdirSync(join(root, 'src'), { recursive: true })
@@ -80,16 +118,28 @@ export function collectCounts(root) {
       0,
     ),
     storyFiles: storyFiles.length,
+    gates: countGates(root),
+    testFiles: countTestFiles(root),
+    workflows: countWorkflows(root),
   };
 }
 
 // ── README block ──────────────────────────────────────────────────────────────
 /** The markdown bullets that go inside the generated block. */
-export function buildCountsSection({ components, tokens, stories, storyFiles }) {
+export function buildCountsSection({
+  components,
+  tokens,
+  stories,
+  storyFiles,
+  gates,
+  testFiles,
+  workflows,
+}) {
   return [
     `- **${components}** ${PHRASES.components}, exported from \`src/index.ts\``,
     `- **${tokens}** ${PHRASES.tokens} in \`hirobius.tokens.json\`, compiled to CSS variables and TypeScript constants`,
     `- **${stories}** ${PHRASES.stories} in **${storyFiles}** ${PHRASES.storyFiles}`,
+    `- **${gates}** ${PHRASES.gates}, **${testFiles}** ${PHRASES.testFiles}, and **${workflows}** ${PHRASES.workflows} enforcing the above in git hooks and CI`,
   ].join('\n');
 }
 
