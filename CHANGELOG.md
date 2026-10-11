@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.23.2
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: The disabled primary Button fill is now the muted surface instead of the accent-subtle surface.
+- Looks different: The disabled primary Button text is now the disabled content colour instead of the on-accent colour.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0232).
+
+### Patch Changes
+
+- b2ebd7d: A disabled primary Button now reads as a neutral muted button in light and dark: `component.button.primary.bgDisabled` points at `semantic.color.surface.muted` and `textDisabled` at `semantic.color.content.disabled` (they were `accentSubtle` and `onAccent`, which assumed a coloured accent), and Button binds those tokens. The small Button's icon is 12px, as its `component.button.size.sm.iconSize` token says (it was 14px); medium and large are unchanged at 16px and 20px.
+- 4626131: Storybook is gone from the repo (retirement, step 3): the `storybook` package keyword, the story files, the Storybook config and the Storybook-only scripts are removed. The docs site is the visual verification surface. Nothing for a consumer to change.
+- 9f1acfc: The manifest (`public/hds-manifest.json`) points each core component and pattern at its docs-site page with `docsPage` (for example `/docs/components/button`), replacing `storyFiles` and `storyIds`. `AGENTS.md` and the llms files now point agents at the docs site instead of the Storybook stories.
+
 ## 0.23.1
 
 ### Upgrade
