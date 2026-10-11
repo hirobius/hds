@@ -69,6 +69,8 @@ The pin fails closed only when a committed style description already holds one o
 
 It copies them without indentation (about 5,500 characters), blank lines, or the line breaks Prettier adds to wrap an expression: after `(` `[` `{` `,` and before `)` `]` `}` `.` `?` `:` (about 700 more). That leaves about 38,000 characters. `pnpm figma:push --delta` throws unless the copy parses to the same syntax tree as the source, so a dropped space or line break can never change what the code does. `hdsVerifyRuntime` checks the text exactly as copied.
 
+**Amendment 2026-10-11 (Fix A).** The copy is now minified by esbuild (the one vite ships), one function per line, with short local names. Top-level names, property names and string literals are unchanged. That leaves about 30,000 characters (31,000 in a part). The syntax-tree check is replaced: the build throws unless each function comes out as one declaration of the same name, on one line, calling the same runtime functions. The test suite runs every carrier against the fake Figma, as before. A live probe on HDS Staging showed `use_figma` reprints minified code but keeps its quotes, and `hdsVerifyRuntime` passes.
+
 ## Rationale
 
 - **Smallest faithful data.** A patch slice of today's plan (10 descriptions, 4 creates) is 4,902 characters. For the earlier 10-description, 2-create plan the slice was 4,200, where the whole touched records would have been 9,000, and the plan plus a model for the re-plan about 15,000. Planning in staging also means the re-plan runs the same `hdsPlan` on the same slice.
@@ -111,7 +113,8 @@ cuts a plan over 45,000 characters into ordered parts (`hdsAgentPartRun`). Colle
 variables with every alias target before the variables that alias it, then text and effect styles, so no part
 needs a later one. Each part is a complete script with every guard above (library key, `PLAN_CHECKSUM`, `hdsVerifyRuntime`,
 prune false, no deletion, font preflight, re-plan to 0) and carries the run id, its index and N. The runtime alone is about
-41,000 characters in a part, so a part holds 3,000–4,000 of change (the 57k case is 11 parts).
+41,000 characters in a part, so a part holds 3,000–4,000 of change (the 57k case is 11 parts). Since the
+2026-10-11 amendment it is about 31,000, so a part holds about 13,000: the Plus Jakarta Sans sync went from 17 parts to 2.
 
 - **Order.** The marker `deltaRun` on `figma.root` names the run and the checksum of the state the last part left; part 1 pins the committed snapshot, part i pins that marker.
   A part that ran already writes nothing (idempotent). Only the last part writes `lastPush`.

@@ -31,6 +31,7 @@
 
 import { readFileSync } from 'fs';
 import { parse } from 'acorn';
+import { resolveEsbuild } from './button-probe-esbuild.mjs';
 import { hdsChecksum, hdsRuntimeFingerprint } from './figma-runtime.mjs';
 import { hdsDiffFingerprint } from './figma-snapshot-diff.mjs';
 
@@ -168,31 +169,58 @@ export function reachableRuntime(entries, source = runtimeSource()) {
 /**
  * The one emitter for every use_figma carrier's runtime (hds#565). The
  * use_figma runtime does not hand a function back as written: String(fn)
- * comes back with its indentation and blank lines stripped, so a checksum over
- * the pretty-printed source never matches. This emits each function already
- * in that stripped form (no indentation, no blank lines, no line break after
- * ( [ { , or before ) ] } . ? : which Prettier-style wrapping adds), hashes
- * exactly that text, and appends the hdsVerifyRuntime statement. Compacting
- * is idempotent, so the runtime's own normalization leaves it unchanged.
- * Throws if compacting changed what the code means (a template literal
- * spanning lines). No use_figma carrier prunes, so a refusal names the Sync
- * plugin.
+ * comes back reprinted (re-indented, spaces inside braces, no trailing commas
+ * or optional parentheses), so the checksum is taken over
+ * hdsRuntimeFingerprint, which none of that changes. Each function is emitted
+ * minified on one line (minifyFunctionText): an agent retypes every carrier,
+ * and a delta part's runtime drops from about 41,000 characters to about
+ * 31,000, so a part holds several times more change (Fix A, 2026-10-11).
+ * Appends the hdsVerifyRuntime statement. No use_figma carrier prunes, so a
+ * refusal names the Sync plugin.
  *
  * @param {{ name: string, text: string }[]} functions  from reachableRuntime
  * @returns {string}
  */
 export function emitVerifiedRuntime(functions) {
-  const texts = functions.map((fn) => compactFunctionText(fn.text));
-  if (syntaxOf(texts.join('\n')) !== syntaxOf(functions.map((fn) => fn.text).join('\n'))) {
-    throw new Error(
-      'use_figma runtime: compacting the runtime changed its syntax tree, so a dropped space or line break meant something there (a template literal spanning lines). Keep that text on one line.',
-    );
-  }
+  const names = functions.map((fn) => fn.name);
+  const texts = functions.map((fn) => minifyFunctionText(fn, names));
   return [
     texts.join('\n'),
-    `hdsVerifyRuntime([${functions.map((fn) => fn.name).join(', ')}], '${hdsChecksum(texts.map(hdsRuntimeFingerprint).join('\n'))}', false);`,
+    `hdsVerifyRuntime([${names.join(', ')}], '${hdsChecksum(texts.map(hdsRuntimeFingerprint).join('\n'))}', false);`,
   ].join('\n');
 }
+
+/**
+ * One runtime function minified by esbuild: no whitespace it does not need,
+ * and short local names. Top-level names, property names and string literals
+ * are kept, so the carrier's calls and hdsVerifyRuntime still find each
+ * function by name. Throws when the result is not one function declaration of
+ * the same name on one line (a template literal spanning lines), or when it
+ * lost a call to another runtime function.
+ *
+ * @param {{ name: string, text: string }} fn
+ * @param {string[]} names  every function the carrier ships
+ */
+function minifyFunctionText(fn, names = [fn.name]) {
+  const text = resolveEsbuild()
+    .transformSync(fn.text, {
+      loader: 'js',
+      minifyWhitespace: true,
+      minifyIdentifiers: true,
+    })
+    .code.trim();
+  const body = parse(text, { ecmaVersion: 2020, sourceType: 'script' }).body;
+  const declared = body.length === 1 && body[0].type === 'FunctionDeclaration' && body[0].id.name;
+  const calls = (code) => names.filter((name) => new RegExp(`\\b${name}\\b`).test(code));
+  if (declared !== fn.name || text.includes('\n') || !same(calls(text), calls(fn.text))) {
+    throw new Error(
+      `use_figma runtime: minifying ${fn.name} did not give one declaration of ${fn.name} on one line with the same calls. Keep its text literals on one line.`,
+    );
+  }
+  return text.replace(/;$/, '');
+}
+
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 /** One function's source as the use_figma runtime reports it (see emitVerifiedRuntime). */
 export function compactFunctionText(text) {

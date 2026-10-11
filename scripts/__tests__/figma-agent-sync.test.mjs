@@ -514,7 +514,7 @@ describe('delta.js refuses, writing nothing', () => {
 
   it('a tampered runtime function', async () => {
     const s = await pending();
-    const tampered = s.built.text.replace("return 'hirobius';", "return 'hirobiuz';");
+    const tampered = s.built.text.replace('return"hirobius"', 'return"hirobiuz"');
     expect(tampered).not.toBe(s.built.text);
     await refuses(s, /runtime code does not match its checksum/, tampered);
   });
@@ -731,7 +731,7 @@ describe('pnpm figma:push --delta refuses to build what Sync must do', () => {
     await expect(
       pending({
         edit: (model) => {
-          variableOf(model, 'primitive.space.2').description = 'x '.repeat(4000);
+          variableOf(model, 'primitive.space.2').description = 'x '.repeat(8000);
           return model;
         },
       }),

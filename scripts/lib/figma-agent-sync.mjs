@@ -28,8 +28,8 @@
  * does not (an extra, such as a token deleted from hirobius.tokens.json).
  * delta.js counts the extras again in the library.
  *
- * Size. use_figma takes 50,000 characters and returns about 20 KB; the runtime
- * alone is about 38,000 of them (41,000 in a part). A plan whose delta.js fits DELTA_MAX_CHARS
+ * Size. use_figma takes 50,000 characters and returns about 20 KB; the runtime,
+ * minified (emitVerifiedRuntime), is about 30,000 of them (31,000 in a part). A plan whose delta.js fits DELTA_MAX_CHARS
  * (45,000) is one delta.js, exactly as before. A bigger one is cut into
  * ordered parts, delta-1-of-N.js ... delta-N-of-N.js, each a complete script
  * under DELTA_MAX_CHARS with every guard of delta.js (hdsAgentPartRun in
@@ -72,8 +72,8 @@ import {
 export const DELTA_MAX_CHARS = 45000;
 /**
  * What the splitter fills a part to. The runtime a part carries is about
- * 41,000 characters (a lone delta.js needs 38,000), so each part has room for
- * only 3,000 to 4,000 characters of change: the 500 under DELTA_MAX_CHARS is
+ * 31,000 characters minified (a lone delta.js needs 30,000), so each part has
+ * room for about 13,000 characters of change: the 500 under DELTA_MAX_CHARS is
  * headroom, and parts are measured as the real scripts, not estimated.
  */
 export const DELTA_PART_CHARS = 44500;
