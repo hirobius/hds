@@ -1,15 +1,15 @@
 {
-  "checksum": "d12b0361",
+  "checksum": "07e15ce7",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-09T05:27:14.988Z",
+    "takenAt": "2026-10-11T17:50:27.165Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "59d56b82",
-      "pushedAt": "2026-10-09T05:27:14.960Z",
+      "modelHash": "12560b68",
+      "pushedAt": "2026-10-11T17:50:27.140Z",
       "scope": null
     },
     "collections": [
@@ -191,6 +191,248 @@
                   "r": 0.270588,
                   "g": 0.101961,
                   "b": 0.011765,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2125:3",
+            "name": "color/apple/100",
+            "path": "primitive.color.apple.100",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent — very light tint.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-100)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.886275,
+                  "g": 0.952941,
+                  "b": 0.811765,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2125:4",
+            "name": "color/apple/200",
+            "path": "primitive.color.apple.200",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent — light tint.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-200)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.780392,
+                  "g": 0.905882,
+                  "b": 0.643137,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2125:5",
+            "name": "color/apple/300",
+            "path": "primitive.color.apple.300",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent — soft mid-light step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-300)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.65098,
+                  "g": 0.847059,
+                  "b": 0.45098,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2125:6",
+            "name": "color/apple/400",
+            "path": "primitive.color.apple.400",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent — bright step; dark-mode rest accent.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-400)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.521569,
+                  "g": 0.784314,
+                  "b": 0.298039,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2125:2",
+            "name": "color/apple/50",
+            "path": "primitive.color.apple.50",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent tint — faintest step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-50)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.94902,
+                  "g": 0.980392,
+                  "b": 0.921569,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2126:2",
+            "name": "color/apple/500",
+            "path": "primitive.color.apple.500",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent rest — bright, rich apple green; AA for dark (neutral.900) text as a fill.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-500)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.4,
+                  "g": 0.698039,
+                  "b": 0.223529,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2126:3",
+            "name": "color/apple/600",
+            "path": "primitive.color.apple.600",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent — hover / border step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-600)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.329412,
+                  "g": 0.572549,
+                  "b": 0.176471,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2126:4",
+            "name": "color/apple/700",
+            "path": "primitive.color.apple.700",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent — pressed and accent-intent text (AA for text on page and card surfaces).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-700)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.254902,
+                  "g": 0.435294,
+                  "b": 0.12549,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2126:5",
+            "name": "color/apple/800",
+            "path": "primitive.color.apple.800",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent — deep step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-800)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.203922,
+                  "g": 0.341176,
+                  "b": 0.105882,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2126:6",
+            "name": "color/apple/900",
+            "path": "primitive.color.apple.900",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent — darkest usable step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-900)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.168627,
+                  "g": 0.270588,
+                  "b": 0.094118,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2127:2",
+            "name": "color/apple/950",
+            "path": "primitive.color.apple.950",
+            "resolvedType": "COLOR",
+            "description": "Apple-green accent — near-black green substrate.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-apple-950)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.086275,
+                  "g": 0.145098,
+                  "b": 0.047059,
                   "a": 1
                 }
               }
@@ -1949,7 +2191,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 546.400024
+                "value": 585.599976
               }
             }
           },
@@ -2315,7 +2557,7 @@
             "name": "typography/family/display",
             "path": "primitive.typography.family.display",
             "resolvedType": "STRING",
-            "description": "Display face: Satoshi Bold (ITF), bound to the display and title composites.",
+            "description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2323,7 +2565,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Satoshi"
+                "value": "Plus Jakarta Sans"
               }
             }
           },
@@ -2349,7 +2591,7 @@
             "name": "typography/family/primary",
             "path": "primitive.typography.family.primary",
             "resolvedType": "STRING",
-            "description": "Self-hosted Satoshi (ITF) body typeface; falls back to system-ui sans-serif stack.",
+            "description": "Self-hosted Plus Jakarta Sans (OFL) body typeface; falls back to system-ui sans-serif stack.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2357,7 +2599,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Satoshi"
+                "value": "Plus Jakarta Sans"
               }
             }
           },
@@ -2617,7 +2859,7 @@
             "name": "accent/content",
             "path": "semantic.accent.content",
             "resolvedType": "COLOR",
-            "description": "Text and icon color on neutral surfaces with accent intent. Monochrome — pair with underline/weight for link affordance.",
+            "description": "Accent-intent text/icon color on neutral surfaces (a dark apple green) — pair with underline/weight for link affordance.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -2629,12 +2871,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2126:4",
+                "to": "Hirobius/Primitives: color/apple/700"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2125:6",
+                "to": "Hirobius/Primitives: color/apple/400"
               }
             }
           },
@@ -2655,12 +2897,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:9",
-                "to": "Hirobius/Primitives: color/neutral/700"
+                "alias": "VariableID:2126:5",
+                "to": "Hirobius/Primitives: color/apple/800"
               },
               "Dark": {
-                "alias": "VariableID:3:5",
-                "to": "Hirobius/Primitives: color/neutral/300"
+                "alias": "VariableID:2125:5",
+                "to": "Hirobius/Primitives: color/apple/300"
               }
             }
           },
@@ -2705,12 +2947,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:10",
-                "to": "Hirobius/Primitives: color/neutral/800"
+                "alias": "VariableID:2126:3",
+                "to": "Hirobius/Primitives: color/apple/600"
               },
               "Dark": {
-                "alias": "VariableID:3:4",
-                "to": "Hirobius/Primitives: color/neutral/200"
+                "alias": "VariableID:2126:2",
+                "to": "Hirobius/Primitives: color/apple/500"
               }
             }
           },
@@ -2755,12 +2997,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:13",
-                "to": "Hirobius/Primitives: color/neutral/950"
+                "alias": "VariableID:2126:4",
+                "to": "Hirobius/Primitives: color/apple/700"
               },
               "Dark": {
-                "alias": "VariableID:3:5",
-                "to": "Hirobius/Primitives: color/neutral/300"
+                "alias": "VariableID:2126:3",
+                "to": "Hirobius/Primitives: color/apple/600"
               }
             }
           },
@@ -2769,7 +3011,7 @@
             "name": "accent/rest",
             "path": "semantic.accent.rest",
             "resolvedType": "COLOR",
-            "description": "Default accent fill for interactive elements at rest. Neutral (monochrome) accent — inverts to a light neutral on dark surfaces.",
+            "description": "Default accent fill for interactive elements at rest — bright apple green. Pair with content.onAccent (a dark neutral).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -2780,12 +3022,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2126:2",
+                "to": "Hirobius/Primitives: color/apple/500"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2125:6",
+                "to": "Hirobius/Primitives: color/apple/400"
               }
             }
           },
@@ -2805,12 +3047,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2125:2",
+                "to": "Hirobius/Primitives: color/apple/50"
               },
               "Dark": {
-                "alias": "VariableID:3:10",
-                "to": "Hirobius/Primitives: color/neutral/800"
+                "alias": "VariableID:2126:6",
+                "to": "Hirobius/Primitives: color/apple/900"
               }
             }
           },
@@ -2918,7 +3160,7 @@
             "name": "color/border/accent",
             "path": "semantic.color.border.accent",
             "resolvedType": "COLOR",
-            "description": "Accent border (neutral/monochrome; inverts on dark surfaces).",
+            "description": "Accent border — apple green, dark enough to read as a boundary on page and card surfaces.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -2928,12 +3170,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2126:3",
+                "to": "Hirobius/Primitives: color/apple/600"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2125:6",
+                "to": "Hirobius/Primitives: color/apple/400"
               }
             }
           },
@@ -3110,7 +3352,7 @@
             "name": "color/content/accent",
             "path": "semantic.color.content.accent",
             "resolvedType": "COLOR",
-            "description": "Accent-intent text/icon color (monochrome). Pair with underline/weight for link affordance.",
+            "description": "Accent-intent text/icon color — a dark apple green legible on page and card surfaces. Pair with underline/weight for link affordance.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -3122,12 +3364,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2126:4",
+                "to": "Hirobius/Primitives: color/apple/700"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2125:6",
+                "to": "Hirobius/Primitives: color/apple/400"
               }
             }
           },
@@ -3214,7 +3456,7 @@
             "name": "color/content/onAccent",
             "path": "semantic.color.content.onAccent",
             "resolvedType": "COLOR",
-            "description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where accent fills are light.",
+            "description": "Text/icon color on accent fills — a dark neutral, since the brand accent fill is a bright apple green in both light and dark mode.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -3226,8 +3468,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:14",
-                "to": "Hirobius/Primitives: color/neutral/white"
+                "alias": "VariableID:3:12",
+                "to": "Hirobius/Primitives: color/neutral/900"
               },
               "Dark": {
                 "alias": "VariableID:3:12",
@@ -3619,7 +3861,7 @@
             "name": "color/surface/accent",
             "path": "semantic.color.surface.accent",
             "resolvedType": "COLOR",
-            "description": "Accent-colored background (neutral/monochrome; inverts to a light neutral on dark surfaces).",
+            "description": "Accent-colored background — bright apple green (stays green on dark surfaces; pair with content.onAccent dark text).",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -3630,12 +3872,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2126:2",
+                "to": "Hirobius/Primitives: color/apple/500"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2125:6",
+                "to": "Hirobius/Primitives: color/apple/400"
               }
             }
           },
@@ -3655,12 +3897,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2125:2",
+                "to": "Hirobius/Primitives: color/apple/50"
               },
               "Dark": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2126:6",
+                "to": "Hirobius/Primitives: color/apple/900"
               }
             }
           },
@@ -8481,7 +8723,7 @@
         "name": "typography/body",
         "path": "semantic.typography.body",
         "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Regular",
         "fontSize": 16,
         "lineHeight": {
@@ -8506,7 +8748,7 @@
         "name": "typography/caption",
         "path": "semantic.typography.caption",
         "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Medium",
         "fontSize": 12,
         "lineHeight": {
@@ -8531,7 +8773,7 @@
         "name": "typography/display",
         "path": "semantic.typography.display",
         "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 48,
         "lineHeight": {
@@ -8556,7 +8798,7 @@
         "name": "typography/eyebrow",
         "path": "semantic.typography.eyebrow",
         "description": "deprecated: use semantic.typography.caption",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Medium",
         "fontSize": 12,
         "lineHeight": {
@@ -8581,7 +8823,7 @@
         "name": "typography/h1",
         "path": "semantic.typography.h1",
         "description": "deprecated: use semantic.typography.title",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 24,
         "lineHeight": {
@@ -8606,7 +8848,7 @@
         "name": "typography/h2",
         "path": "semantic.typography.h2",
         "description": "deprecated: use semantic.typography.title",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 24,
         "lineHeight": {
@@ -8631,7 +8873,7 @@
         "name": "typography/h3",
         "path": "semantic.typography.h3",
         "description": "deprecated: use semantic.typography.title",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 24,
         "lineHeight": {
@@ -8681,7 +8923,7 @@
         "name": "typography/title",
         "path": "semantic.typography.title",
         "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 24,
         "lineHeight": {
@@ -8706,7 +8948,7 @@
         "name": "typography/ui",
         "path": "semantic.typography.ui",
         "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Medium",
         "fontSize": 14,
         "lineHeight": {
