@@ -261,3 +261,30 @@ Fix the Breadcrumb separator in the library (renders as a dark filled box instea
 | 5   | 00:00      | `get_screenshot` | read  | Library: Breadcrumb set 86:159 after (logged just after the call)                                                                                                                                                 | OK. Grey chevrons between crumbs in all three variants                                                                                                                                                                                                                      |
 
 **Session total: 5 calls.** Nothing deleted, nothing published; Adrian publishes.
+
+## 2026-10-11 · session `claude/figma-snapshot-pjs`
+
+Agent delta sync of run 392d8056 (Plus Jakarta Sans font family, apple-green accent ramp, text-style updates) to the library, then the snapshot. Budget 20 calls.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                        | Result                                                                                                          |
+| --- | ---------- | ----------- | ----- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 1   | 17:12      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-1-of-17.js` unmodified  | OK. d12b0361 → cbcb648b                                                                                         |
+| 2   | 17:15      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-2-of-17.js` unmodified  | OK. cbcb648b → af9b0843                                                                                         |
+| 3   | 17:17      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-3-of-17.js` unmodified  | OK. af9b0843 → 19e058dc                                                                                         |
+| 4   | 17:19      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-4-of-17.js` unmodified  | OK. 19e058dc → 238faa43                                                                                         |
+| 5   | 17:22      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-5-of-17.js` unmodified  | OK. 238faa43 → 58c16739                                                                                         |
+| 6   | 17:25      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-6-of-17.js` unmodified  | OK. 58c16739 → 44e90aa4                                                                                         |
+| 7   | 17:28      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-7-of-17.js` unmodified  | OK. 44e90aa4 → 966db6ba                                                                                         |
+| 8   | 17:30      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-8-of-17.js` unmodified  | OK. 966db6ba → 2fe3d957                                                                                         |
+| 9   | 17:32      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-9-of-17.js` unmodified  | OK. 2fe3d957 → 471edf00                                                                                         |
+| 10  | 17:34      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-10-of-17.js` unmodified | OK. 471edf00 → dcce73ea                                                                                         |
+| 11  | 17:37      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-11-of-17.js` unmodified | OK. dcce73ea → d78b14b6                                                                                         |
+| 12  | 17:39      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-12-of-17.js` unmodified | OK. d78b14b6 → 53cecf91                                                                                         |
+| 13  | 17:41      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-13-of-17.js` unmodified | OK. 53cecf91 → c11d0a0a                                                                                         |
+| 14  | 17:43      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-14-of-17.js` unmodified | OK. c11d0a0a → 22a73c23                                                                                         |
+| 15  | 17:45      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-15-of-17.js` unmodified | OK. 22a73c23 → 33f8726d                                                                                         |
+| 16  | 17:48      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-16-of-17.js` unmodified | OK. 33f8726d → d798d205                                                                                         |
+| 17  | 17:50      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-17-of-17.js` unmodified | OK. d798d205 → 07e15ce7; lastPush written                                                                       |
+| 18  | 17:52      | `use_figma` | read  | Library: `snapshot-diff.js` unmodified                         | tooLarge (17,131 chars, limit 15,000). Snapshot rebuilt instead from the 17 part receipts with `--from-receipt` |
+
+**Session total: 18 calls.** Nothing deleted, nothing published; Adrian publishes.
