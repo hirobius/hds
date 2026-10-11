@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-09T05:30:51.055Z",
+  "generated": "2026-10-11T06:18:15.595Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -30,7 +30,7 @@
   "brand": {
     "primaryColor": "#66b239",
     "primaryColorToken": "semantic.accent.rest",
-    "font": "Satoshi variable 100–900, self-hosted",
+    "font": "Plus Jakarta Sans variable 100–900, self-hosted",
     "spacingBase": "4px",
     "buttonBorderRadius": "0px",
     "cardBorderRadius": "8px",
@@ -9836,15 +9836,15 @@
         "path": "primitive.typography.family.primary",
         "cssVar": "--primitive-typography-family-primary",
         "type": "fontFamily",
-        "description": "Self-hosted Satoshi (ITF) body typeface; falls back to system-ui sans-serif stack.",
-        "value": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+        "description": "Self-hosted Plus Jakarta Sans (OFL) body typeface; falls back to system-ui sans-serif stack.",
+        "value": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
         "path": "primitive.typography.family.display",
         "cssVar": "--primitive-typography-family-display",
         "type": "fontFamily",
-        "description": "Display face: Satoshi Bold (ITF), bound to the display and title composites.",
-        "value": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+        "description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites.",
+        "value": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
         "path": "primitive.typography.family.mono",
@@ -11112,7 +11112,7 @@
         "type": "typography",
         "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
         "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "48px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -11125,7 +11125,7 @@
         "type": "typography",
         "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
         "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -11138,7 +11138,7 @@
         "type": "typography",
         "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
         "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "16px",
           "fontWeight": "400",
           "letterSpacing": "0em",
@@ -11152,7 +11152,7 @@
         "type": "typography",
         "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
         "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "14px",
           "fontWeight": "500",
           "letterSpacing": "0em",
@@ -11166,7 +11166,7 @@
         "type": "typography",
         "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
         "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "12px",
           "fontWeight": "500",
           "letterSpacing": "0em",
@@ -11193,7 +11193,7 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.title",
         "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -11206,7 +11206,7 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.title",
         "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -11219,7 +11219,7 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.title",
         "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -11232,7 +11232,7 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.caption",
         "composite": {
-          "fontFamily": "Satoshi, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "12px",
           "fontWeight": "500",
           "letterSpacing": "0em",

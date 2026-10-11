@@ -28,7 +28,7 @@ Deprecated aliases still resolve, to the role they now point at, and go in 1.0.0
 
 Use `ui` for standard UI text, `caption` for helper text and metadata, and `mono` only for code, token names, keyboard shortcuts, git hashes, hex codes and ids, never for status tags, categories, dates or user names. Casing is never changed inline; labels are sentence case.
 
-Satoshi ships a 500 and a 700 face only (no 600, which is why `title` is 700), so `body` (400) renders on the 500 face until a Satoshi Regular (400) face is added.
+Plus Jakarta Sans ships a 500 and a 700 face only (no 600, which is why `title` is 700), so `body` (400) renders on the 500 face until a Plus Jakarta Sans Regular (400) face is added.
 
 ## Spacing — 24px Component Padding Standard
 

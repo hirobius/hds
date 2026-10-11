@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 
-// HDS brand fonts (Satoshi 400/500/700 + IBM Plex Mono 400), the same opt-in
+// HDS brand fonts (Plus Jakarta Sans 400/500/700 + IBM Plex Mono 400), the same opt-in
 // file consumers import, so the docs dogfood the package.
 import '@hirobius/design-system/fonts.css';
 import '@hirobius/design-system/tokens.css';

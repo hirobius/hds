@@ -72,7 +72,7 @@
     "typography": {
       "family": {
         "$type": "fontFamily",
-        "primary": { "$value": ["Satoshi", "system-ui", "sans-serif"] },
+        "primary": { "$value": ["Plus Jakarta Sans", "system-ui", "sans-serif"] },
         "mono": { "$value": ["Geist Mono", "monospace"] }
       },
       "weight": {

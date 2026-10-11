@@ -18,7 +18,7 @@
     "url": "git+https://github.com/hirobius/hds.git"
   },
   "author": "Adrian Milsap",
-  "license": "SEE LICENSE IN NOTICE.md",
+  "license": "MIT AND OFL-1.1",
   "private": false,
   "version": "0.23.0",
   "engines": {
