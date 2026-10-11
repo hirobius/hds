@@ -35,13 +35,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDisposition, mappedByOverride } from './figma-disposition.mjs';
 import { docsPagePath, loadDocsRouting } from './lib/docs-routing.mjs';
-import { buildStoryIndex, findStoryFiles } from './lib/story-link.mjs';
 import { GAPS, buildSyncMap, summarizeSyncMap } from './lib/sync-map.mjs';
 import { formatGenerated } from './lib/write-generated.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MANIFEST = path.join(ROOT, 'public/hds-manifest.json');
-const GEOMETRY_BASELINE = path.join(ROOT, 'docs/guardrails/rendered-geometry-baseline.json');
 const COVERAGE = path.join(ROOT, 'docs/guardrails/sync-coverage.json');
 const OUT_JSON = path.join(ROOT, 'docs/sync-map.json');
 
@@ -61,17 +59,6 @@ const ONE = valueOf('--component');
 
 function readJson(file, fallback = null) {
   return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : fallback;
-}
-
-/** Defect counts per story id, from the rendered-geometry baseline. */
-function defectsByStoryId() {
-  const baseline = readJson(GEOMETRY_BASELINE, { accepted: [] });
-  const counts = {};
-  for (const fingerprint of baseline.accepted ?? []) {
-    const storyId = fingerprint.split(' :: ')[0];
-    counts[storyId] = (counts[storyId] ?? 0) + 1;
-  }
-  return counts;
 }
 
 const manifest = readJson(MANIFEST);
@@ -112,31 +99,12 @@ const expectDocs = new Set(
   ),
 );
 
-// Rendered defects are still measured on Storybook stories (the geometry sweep
-// is a Storybook gate), so they are attributed to a component through the story
-// file that exercises it. Both go when Storybook does.
-const { byFilePath: stories } = buildStoryIndex(
-  findStoryFiles(ROOT).map((p) => ({ path: p, source: readFileSync(path.join(ROOT, p), 'utf8') })),
-  new Set(
-    Object.values(specs)
-      .map((s) => s.filePath)
-      .filter(Boolean),
-  ),
-);
-const storyDefects = defectsByStoryId();
-const defectsByComponent = {};
-for (const [name, spec] of Object.entries(specs)) {
-  const ids = spec.filePath ? (stories.get(spec.filePath)?.storyIds ?? []) : [];
-  defectsByComponent[name] = ids.reduce((sum, id) => sum + (storyDefects[id] ?? 0), 0);
-}
-
 const map = buildSyncMap({
   specs,
   disposition,
   figmaMapped: mappedByOverride(),
   sourceFiles,
   expectDocs,
-  defectsByComponent,
 });
 const summary = summarizeSyncMap(map);
 
@@ -215,7 +183,6 @@ const GAP_LABEL = {
   [GAPS.NOT_IN_MANIFEST]: 'not in manifest',
   [GAPS.NO_DOCS]: 'no docs page',
   [GAPS.NO_FIGMA]: 'no Figma node',
-  [GAPS.HAS_DEFECTS]: 'rendered defects',
 };
 
 if (ONE) {
@@ -230,7 +197,6 @@ if (ONE) {
   console.log(
     `  figma   ${row.figmaUrl ?? (row.figmaVia ? `via ${row.figmaVia}` : row.expectFigma ? '— MISSING' : '— not expected')}`,
   );
-  console.log(`  defects ${row.defects}`);
   if (row.gaps.length) console.log(`  gaps    ${row.gaps.map((g) => GAP_LABEL[g]).join(', ')}`);
   process.exit(0);
 }

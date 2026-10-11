@@ -162,7 +162,7 @@ export function buildContract(names) {
       height: 'hug',
       pads: PADS.includes(name),
       kind,
-      // Parts, providers and overlays are measured through their parent's story.
+      // Parts, providers and overlays are measured through their parent's render.
       probe: !(kind === 'part' || kind === 'provider' || kind === 'overlay'),
     };
     if (FORM_CONTROLS.includes(name)) entry.maxWidth = FORM_MAX_WIDTH;

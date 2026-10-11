@@ -1,0 +1,1 @@
+Retire Storybook, phase 3 (hds#506): `src/stories/`, `.storybook/`, root `vercel.json`, the Storybook axe/deploy/geometry/component-page scripts, their tests, registry entries, devDependencies and CI steps are deleted; `figma/links.json` drops `storybookUrl` (docsUrl required). The docs site (`check-docs-axe`, `chromatic-docs`) is the only visual verification surface.

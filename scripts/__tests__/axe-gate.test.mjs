@@ -107,7 +107,7 @@ describe('axe gate: allowlist', () => {
   });
 });
 
-describe('axe gate: stories that pin a theme', () => {
+describe('axe gate: pages that pin a theme', () => {
   it('reports a skipped pass without failing the gate or counting it as an error', () => {
     const r = evaluateScan(
       [
@@ -116,7 +116,7 @@ describe('axe gate: stories that pin a theme', () => {
           theme: 'light',
           violations: [],
           error: null,
-          skipped: 'story pins theme dark via globals',
+          skipped: 'page pins theme dark',
         },
         {
           storyId: 'patterns-destructivesection--dark',
@@ -133,19 +133,19 @@ describe('axe gate: stories that pin a theme', () => {
       {
         storyId: 'patterns-destructivesection--dark',
         theme: 'light',
-        reason: 'story pins theme dark via globals',
+        reason: 'page pins theme dark',
       },
     ]);
   });
 
-  it('still fails when the mismatch is not a pinned story', () => {
+  it('still fails when the mismatch is not a pinned page', () => {
     const r = evaluateScan(
       [
         {
           storyId: 'a--b',
           theme: 'light',
           violations: [],
-          error: 'theme not applied: wanted light, story rendered with dark',
+          error: 'theme not applied: wanted light, page rendered with dark',
         },
       ],
       [],
@@ -177,7 +177,7 @@ describe('axe gate: one axe-core source loader', () => {
   });
 
   it('is imported, not re-implemented, by both scripts that scan with axe', () => {
-    for (const script of ['check-storybook-axe.mjs', 'consistency/axe-run.mjs']) {
+    for (const script of ['check-docs-axe.mjs', 'consistency/axe-run.mjs']) {
       const text = readFileSync(
         path.join(ROOT, 'scripts', script.includes('/') ? 'lib' : '', script),
         'utf8',

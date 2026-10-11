@@ -100,7 +100,7 @@ docs/perf/bundle-report.html
 # untracked.
 src/app/data/component-api.json
 # Full component-api corpus (observedTokens incl. sourceLine) — docs-only,
-# read in Node by scripts/generate-component-page.mjs; never bundled (hds#279).
+# Node-only; never bundled (hds#279).
 docs/generated/component-api-full.json
 src/app/data/roadmap.json
 src/app/data/used-icons.json
@@ -137,9 +137,6 @@ docs/research/findings/
 *.tmp
 *-report.json
 
-# Storybook build output
-storybook-static/
-
 # Ralph loop runtime artifacts (audit log, transcripts, lock, CI verdict)
 ralph/runs.jsonl
 ralph/logs/
@@ -149,12 +146,6 @@ verdict.json
 # Preview bench build output (pnpm preview:build regenerates it)
 preview/dist/
 preview/publish/
-
-# Generated component reference pages — rebuild with `pnpm docs:component <Name>`.
-# Not committed: the story screenshots are regenerated binaries that would churn
-# on every run, and a checked-in page is one more generated artifact that can go
-# stale while asserting it is current.
-docs/components/
 
 # tsconfig.dts.json declares `outDir: dist/types`, so a correct `pnpm build:types`
 # run never touches src/. But `tsc` run without that project file (or without its
@@ -178,7 +169,7 @@ docs/components/
 # Real client/person detection rules for scripts/lib/knowledge-classify.mjs (private data;
 # only knowledge-clients.example.json is tracked). Basename match, any depth.
 knowledge-clients.local.json
-# Generated gate reports (check-storybook-axe)
+# Generated gate reports
 reports/
 
 # Agent-built consistency runs (eval/consistency/README.md); force-add only a run that backs a ledger entry

@@ -7,57 +7,28 @@
  */
 
 /**
- * Measures the component a story rendered. The target is found by walking down
- * from #storybook-root through wrappers that have exactly one element child and
+ * Measures the component rendered into #probe-root. The target is found by walking down
+ * from #probe-root through wrappers that have exactly one element child and
  * no text of their own (providers, decorators), so it is the first element that
  * branches or holds content. The target's parent becomes the probe container:
  * a block, `probeW` wide and `probeH` tall, taller than any child.
  */
 export function probeLayout({ probeW, probeH, wideW }) {
-  const root = document.querySelector('#storybook-root');
-  if (!root) return { error: 'no #storybook-root' };
+  const root = document.querySelector('#probe-root');
+  if (!root) return { error: 'no #probe-root' };
   const SKIP = new Set(['SCRIPT', 'STYLE', 'LINK', 'NOSCRIPT', 'TEMPLATE']);
   const kidsOf = (el) =>
     [...el.children].filter((c) => !SKIP.has(c.tagName) && getComputedStyle(c).display !== 'none');
   const hasText = (el) =>
     [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim() !== '');
-  // Prefer the story's own component: find its React fiber (identity survives
-  // minification) and take the first host element it renders. Fall back to
-  // walking down through single-child wrappers.
-  let target = null;
-  const story = window.__STORYBOOK_PREVIEW__?.currentRender?.story;
-  const Comp = story?.component;
-  const fiberOf = (el) => {
-    const k = Object.keys(el).find((x) => x.startsWith('__reactFiber$'));
-    return k ? el[k] : null;
-  };
-  const isComp = (f) =>
-    Comp &&
-    (f.type === Comp ||
-      f.elementType === Comp ||
-      (Comp.render && f.type?.render === Comp.render) ||
-      (Comp.type && f.type === Comp.type));
-  if (Comp) {
-    for (const el of root.querySelectorAll('*')) {
-      for (let f = fiberOf(el); f; f = f.return) {
-        if (!isComp(f)) continue;
-        let h = f.child;
-        while (h && h.tag !== 5) h = h.child;
-        if (h?.stateNode instanceof Element && root.contains(h.stateNode)) target = h.stateNode;
-        break;
-      }
-      if (target) break;
-    }
+  // Walk down through single-child wrappers (providers, decorators).
+  let target = root;
+  for (;;) {
+    const kids = kidsOf(target);
+    if (kids.length === 1 && !hasText(target)) target = kids[0];
+    else break;
   }
-  if (!target) {
-    target = root;
-    for (;;) {
-      const kids = kidsOf(target);
-      if (kids.length === 1 && !hasText(target)) target = kids[0];
-      else break;
-    }
-  }
-  if (target === root) return { error: 'story rendered no element' };
+  if (target === root) return { error: 'probe rendered no element' };
   const parent = target.parentElement;
   const describe = (el) => {
     const cls = (typeof el.className === 'string' ? el.className : '')
@@ -92,7 +63,7 @@ export function probeLayout({ probeW, probeH, wideW }) {
 
   const saved = parent.style.cssText;
   parent.style.cssText += `;display:block;box-sizing:border-box;width:${probeW}px;height:${probeH}px;padding:0;margin:0;border:0;position:relative;overflow:visible;min-height:0;max-height:none;min-width:0;max-width:none`;
-  // Stories pin presentation sizes inline (`style={{ maxWidth: 360 }}`); the contract
+  // Demo pages pin presentation sizes inline (`style={{ maxWidth: 360 }}`); the contract
   // judges the component's own sizing, so lift those for the measurement.
   const savedTarget = target.style.cssText;
   for (const p of ['width', 'maxWidth', 'minWidth', 'height', 'maxHeight', 'minHeight'])
@@ -217,7 +188,7 @@ export function probeLayout({ probeW, probeH, wideW }) {
 export function probeOverflow() {
   const doc = document.documentElement;
   let worst = Math.max(0, doc.scrollWidth - doc.clientWidth);
-  const root = document.querySelector('#storybook-root');
+  const root = document.querySelector('#probe-root');
   for (const el of root ? root.querySelectorAll('*') : []) {
     if (el.closest('svg') || el.closest('[aria-hidden="true"]')) continue;
     let clipped = false;

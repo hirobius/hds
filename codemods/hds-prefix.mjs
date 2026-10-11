@@ -46,7 +46,6 @@ const SKIP_DIRS = new Set([
   '.next',
   '.vercel',
   'coverage',
-  'storybook-static',
 ]);
 
 /** The aliases 0.19.1 exported from the root, and the bare name each pointed at. */

@@ -6,7 +6,7 @@
  * Runs `npm pack --dry-run --json` and compares the file list against a
  * required set (agent context, AGENTS.md, the hds-mcp server, the ESLint plugin,
  * manifest, tokens, entry point, the upgrade record) and a forbidden set (env
- * files, repo `src/`, repo `scripts/` other than the plugin, built Storybook,
+ * files, repo `src/`, repo `scripts/` other than the plugin,
  * and everything under `upgrade/` but the record: pending notes, frozen
  * sources). Forbidden entries match as a path prefix at the tarball root, not
  * as a substring: `dist/types/src/` is correct and must not be flagged.
@@ -97,7 +97,6 @@ export const REQUIRED = [
 export const FORBIDDEN = [
   { prefix: '.env' },
   { prefix: 'src/', allow: ['src/app/data/component-api.json'] },
-  { prefix: 'storybook-static/' },
   {
     prefix: 'scripts/',
     allow: [`${PLUGIN_DIR}/index.mjs`, `${PLUGIN_DIR}/index.d.mts`, `${PLUGIN_DIR}/package.json`],

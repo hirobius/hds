@@ -2,9 +2,8 @@
 /**
  * docs-routing — which docs-site page documents which component.
  *
- * The docs site (docs-site/, hds#506) replaces Storybook as the place a
- * component is shown and documented, so everything that used to point at a
- * story points here: the manifest's `docsPage`, docs/DESIGN_LINKS.md, Figma dev
+ * The docs site (docs-site/, hds#506) is the place a component is
+ * shown and documented, so everything that points at a component's page points here: the manifest's `docsPage`, docs/DESIGN_LINKS.md, Figma dev
  * resources and documentation links. The page rules are docsPageFor() in
  * docs-component-pages.mjs; this module feeds it the repo's own lists (the core
  * set, scripts/docs-rules.json and the modules src/patterns.ts re-exports).

@@ -28,7 +28,6 @@ const PILLAR_TERMS = {
     ['component library', 3],
     ['shadcn', 3],
     ['radix', 2],
-    ['storybook', 2],
     ['figma plugin', 4],
     ['figma variables', 3],
     ['code connect', 3],

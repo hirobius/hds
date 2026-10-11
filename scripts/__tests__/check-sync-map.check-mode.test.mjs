@@ -8,7 +8,7 @@
  * drift).
  *
  * Runs the real CLI as a subprocess against the real repo tree (this gate
- * reads docs/hds-manifest.json, Storybook stories and Figma disposition —
+ * reads docs/hds-manifest.json, the docs routing and Figma disposition —
  * too much surface to fixture-mode cheaply) and restores the original file
  * in a finally block so a failing assertion never leaves docs/sync-map.json
  * corrupted on disk.

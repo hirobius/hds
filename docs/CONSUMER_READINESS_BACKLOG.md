@@ -9,7 +9,7 @@
 
 ## TL;DR — everything autonomously completable is done
 
-All P0/P1/P2 build work, the RHF+Zod form adapter, the full Storybook backfill,
+All P0/P1/P2 build work, the RHF+Zod form adapter, the full story backfill (since retired with Storybook),
 and the entire docs-nav refactor (ADR-017) are merged to `main`. The **only**
 open items are **browser-gated** (need a Playwright/Chromium machine this sandbox lacks).
 They are listed at the bottom with exact next steps.

@@ -15,7 +15,7 @@
  * CSS transition applied via inline `style`, not through `animate`.
  *
  * Scope mirrors check-deprecations.mjs: top-level .tsx files in
- * src/app/components/ (not `lab/`, not stories/tests).
+ * src/app/components/ (not `lab/`, not tests).
  */
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
@@ -55,7 +55,6 @@ const files = readdirSync(COMPONENTS_DIR).filter((entry) => {
     (entry.endsWith('.tsx') || entry.endsWith('.ts')) &&
     !entry.endsWith('.test.tsx') &&
     !entry.endsWith('.test.ts') &&
-    !entry.endsWith('.stories.tsx') &&
     statSync(full).isFile()
   );
 });

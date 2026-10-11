@@ -6,11 +6,10 @@
  * in public/hds-manifest.json, and the docs links from `docsPage` + docsUrl.
  *
  * Seams: writeDesignLinks / checkDesignLinks against a temporary mini-root, then
- * checkDesignLinks against this repo. The Storybook `parameters.design` tests
- * at the end guard src/stories/design-parameters.ts, which goes with Storybook.
+ * checkDesignLinks against this repo.
  */
 import { describe, it, expect, afterEach } from 'vitest';
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, existsSync } from 'fs';
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -21,7 +20,6 @@ import {
   computeDesignLinks,
   writeDesignLinks,
 } from '../figma-links.mjs';
-import { designParameters, figmaDesignParameter } from '../../src/stories/design-parameters.ts';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const NODE_URL = 'https://www.figma.com/design/FileKey123/HDS?node-id=33-34';
@@ -171,58 +169,5 @@ describe('this repository', () => {
     for (const link of links) {
       expect(link.docs?.path ?? null, link.name).toBe(manifest.componentSpecs[link.name].docsPage);
     }
-  });
-
-  // ── Storybook: guards design-parameters.ts and the Design tab; deleted with Storybook. ──
-  it('gives Storybook the manifest figmaUrl for every linked component, and nothing for the rest', () => {
-    const { links } = computeDesignLinks(REPO);
-    for (const link of links) {
-      expect(designParameters(link.name), link.name).toEqual({
-        design: { type: 'figma', url: link.figmaUrl },
-      });
-    }
-    const manifest = JSON.parse(readFileSync(join(REPO, 'public', 'hds-manifest.json'), 'utf8'));
-    const unlinked = Object.keys(manifest.componentSpecs).find(
-      (name) => manifest.componentSpecs[name].figmaUrl == null,
-    );
-    expect(designParameters(unlinked)).toEqual({});
-    expect(designParameters('NoSuchComponent')).toEqual({});
-  });
-
-  it('turns a figma.com URL (with or without www) into parameters.design, and anything else into nothing', () => {
-    const url = 'https://figma.com/design/FileKey123/HDS?node-id=1-2';
-    expect(figmaDesignParameter(url)).toEqual({ design: { type: 'figma', url } });
-    expect(figmaDesignParameter(NODE_URL)).toEqual({ design: { type: 'figma', url: NODE_URL } });
-    expect(figmaDesignParameter('TODO:hds-master:Alert')).toEqual({});
-    expect(figmaDesignParameter('https://figma.com.example.org/design/x')).toEqual({});
-    expect(figmaDesignParameter(null)).toEqual({});
-  });
-
-  it.each([
-    ['alert', 'Alert'],
-    ['avatar', 'Avatar'],
-    ['badge', 'Badge'],
-    ['button', 'Button'],
-    ['checkbox', 'Checkbox'],
-    ['input', 'Input'],
-    ['radio', 'Radio'],
-    ['tag', 'Tag'],
-  ])('pre-wires the %s story (a Figma-built component) to designParameters', (file, name) => {
-    const path = join(REPO, 'src', 'stories', `${file}.stories.tsx`);
-    expect(existsSync(path)).toBe(true);
-    expect(readFileSync(path, 'utf8')).toContain(`...designParameters('${name}')`);
-  });
-
-  it('has an addon behind the Design tab, so parameters.design is not inert', () => {
-    // The design links doc and design-parameters.ts both promise Storybook shows
-    // the node. Storybook only renders `parameters.design` when addon-designs
-    // is registered, so the claim and the addon have to travel together.
-    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-    expect(pkg.devDependencies['@storybook/addon-designs']).toBeDefined();
-    const main = readFileSync(join(REPO, '.storybook', 'main.ts'), 'utf8');
-    const start = main.indexOf('addons: [');
-    expect(start, '.storybook/main.ts has no addons array').toBeGreaterThan(-1);
-    const addons = main.slice(start, main.indexOf('\n  ]', start));
-    expect(addons).toContain('@storybook/addon-designs');
   });
 });

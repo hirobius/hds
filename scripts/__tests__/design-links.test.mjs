@@ -235,7 +235,7 @@ describe('planDevResources', () => {
       {
         id: 'r9',
         name: 'HDS story',
-        url: 'https://storybook.example.org/?path=/docs/alert',
+        url: 'https://old-front-door.example.org/?path=/docs/alert',
         ...node,
       },
     ];

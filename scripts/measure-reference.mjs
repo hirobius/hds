@@ -6,11 +6,11 @@
  * actually turns on: box height, border-radius, padding, border weight/colour,
  * font size/weight, and the WCAG contrast of the border against its backdrop.
  *
- * Point it at a reference system to compare against HDS, or at a local
- * Storybook story to measure our own:
+ * Point it at a reference system to compare against HDS, or at a docs-site
+ * demo page to measure our own:
  *
  *   node scripts/measure-reference.mjs https://linear.app
- *   node scripts/measure-reference.mjs http://localhost:6006/iframe.html?id=primitives-button--primary
+ *   node scripts/measure-reference.mjs https://hirobius-hds-components.vercel.app/docs/components/button
  *
  * Chromium resolution order: PLAYWRIGHT_CHROMIUM_PATH, then Playwright's own
  * download, then the image-provided build under /opt/pw-browsers. Set

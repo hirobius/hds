@@ -10,6 +10,3 @@ src/app/data/foundations/typography.json:semantic.typography.small
 src/app/data/hds-registry.json:component.button.border
 src/app/data/hds-registry.json:semantic.typography.small
 src/app/design-system/token-usage-map.json:semantic.space.layout.gap
-src/stories/inline-code.stories.tsx:semantic.color.brand.primary
-src/stories/input.stories.tsx:semantic.color.brand.primary
-src/stories/table.stories.tsx:semantic.color.bg.default

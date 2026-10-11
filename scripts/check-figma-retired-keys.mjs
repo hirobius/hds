@@ -13,7 +13,7 @@
  *
  * ERROR on such a key anywhere in:
  *   src/**                 @figma JSDoc tags, Code Connect templates, data
- *   public/** (json|txt|md) the manifest (Storybook's Design tab reads its figmaUrl), llms
+ *   public/** (json|txt|md) the manifest (the docs site's Design links read its figmaUrl), llms
  *   docs/** (json), docs/DESIGN_LINKS.md, docs/CONSUMING.md
  *                          generated data: sync-map, design links; the shipped guide
  *   figma/*.json|txt       disposition, inventory, Code Connect registry
