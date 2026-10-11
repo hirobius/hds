@@ -4,7 +4,7 @@
  * of whichever host serves them, Storybook or the docs site.
  */
 import { describe, it, expect } from 'vitest';
-import { existsSync, mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { copyAgentContext, COPIES, PUBLIC_COPIES } from '../copy-agent-context.mjs';
@@ -55,5 +55,17 @@ describe('copyAgentContext', () => {
     const root = fixtureRoot();
     rmSync(path.join(root, 'public', 'llms.txt'));
     expect(() => copyAgentContext(root, 'out', { withPublic: true })).toThrow(/public\/llms\.txt/);
+  });
+});
+
+describe('docs:publish', () => {
+  // public/hds-manifest-agent.json is generated, not committed: a clean
+  // Vercel checkout has it only if docs:publish makes it before copying.
+  it('generates every uncommitted public file before copying', () => {
+    const cmd = JSON.parse(readFileSync('package.json', 'utf8')).scripts['docs:publish'];
+    expect(cmd.indexOf('generate-manifest-projection.mjs')).toBeGreaterThan(-1);
+    expect(cmd.indexOf('generate-manifest-projection.mjs')).toBeLessThan(
+      cmd.indexOf('copy-agent-context.mjs'),
+    );
   });
 });
