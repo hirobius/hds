@@ -1,0 +1,1 @@
+Docs-site quality gates (step 1 of retiring Storybook): scripts/check-docs-axe.mjs scans every /docs/components and /docs/patterns demo in light and dark (ci-pr, fixture pair under fixtures/check-docs-axe, allowlist empty), and tests/visual/docs-demos.spec.ts feeds the docs demos to Chromatic through @chromatic-com/playwright (new chromatic-docs job); Storybook gates untouched.

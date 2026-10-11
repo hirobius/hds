@@ -122,6 +122,17 @@ describe('README honesty', () => {
     if (/allowlist has one entry/i.test(storybook)) expect(allowlist).toHaveLength(1);
   });
 
+  it('names the docs-site axe gate CI runs, and its allowlist as it is', () => {
+    const docs =
+      accessibility()
+        .split('\n')
+        .find((l) => l.includes('check-docs-axe.mjs')) ?? '';
+    expect(docs).toContain('scripts/docs-axe-allowlist.json');
+    expect(read('.github/workflows/ci.yml')).toContain('node scripts/check-docs-axe.mjs');
+    const allowlist = JSON.parse(read('scripts/docs-axe-allowlist.json')) as unknown[];
+    if (/allowlist[^.]*is empty/i.test(docs)) expect(allowlist).toEqual([]);
+  });
+
   it('points only at files that exist', () => {
     const paths = [...accessibility().matchAll(/`([\w.-]+(?:\/[\w.-]+)+\.\w+)`/g)].map((m) => m[1]);
     expect(paths.length).toBeGreaterThan(0);
