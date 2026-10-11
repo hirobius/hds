@@ -165,17 +165,17 @@ function alignTable(rows) {
 /** Markdown placed between the generated-block markers (starts and ends with a blank line). */
 export function renderInUseBlock(s) {
   const shots = [
-    '[![Ops library page](docs/images/ops-library.png)](docs/images/ops-library.png)',
+    '[![Library page of the product app](docs/images/ops-library.png)](docs/images/ops-library.png)',
     '',
-    '[![Ops fleet audit page](docs/images/ops-fleet-audit.png)](docs/images/ops-fleet-audit.png)',
+    '[![Audit page of the product app](docs/images/ops-fleet-audit.png)](docs/images/ops-fleet-audit.png)',
     '',
     '',
   ];
-  const measured = `**${s.files}** of its source files import from \`@hirobius/design-system\`, using **${s.components}** distinct components. The two screenshots below are Ops pages rendered from its \`main\` (measured at commit \`${s.commit.slice(0, 7)}\`).`;
+  const measured = `**${s.files}** of its source files import from \`@hirobius/design-system\`, using **${s.components}** distinct components. The two screenshots below are pages of that app, rendered from its \`main\` branch.`;
   if (!s.consumersConfirmed) {
     return [
       '',
-      `The Ops dashboard (\`hirobius/ops\`) is the only verified component-level consumer: ${measured}`,
+      `One internal operations dashboard is the only verified component-level consumer: ${measured}`,
       '',
       'Other consumers: the split into product apps and token-level sites is not yet confirmed, so it is not stated here.',
       '',
@@ -188,7 +188,7 @@ export function renderInUseBlock(s) {
       : `one of ${s.consumers.productApps} product apps that use components`;
   return [
     '',
-    `The Ops dashboard (\`hirobius/ops\`) is ${role}: ${measured}`,
+    `An internal operations dashboard is ${role}: ${measured}`,
     '',
     ...alignTable([
       ['Consumer kind', 'Count', 'How it uses HDS'],

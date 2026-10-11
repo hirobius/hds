@@ -25,7 +25,7 @@ Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. Fro
 What the system includes:
 
 - **Token pipeline.** DTCG tokens in `hirobius.tokens.json` compile to CSS variables and TypeScript constants through a validated alias chain, with AA-contrast gates in light and dark.
-- **Gates with proof-of-firing.** Typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, bundle budgets, a consumer smoke build, and a docs-site build with an axe gate — run in git hooks and CI. Many gates carry a passing and a violating fixture that demonstrate the gate catches what it describes.
+- **Gates with proof-of-firing.** Typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, and a consumer smoke build run in git hooks and CI; bundle budgets and a docs-site accessibility (axe) gate run in CI. Many gates carry a passing and a violating fixture that demonstrate the gate catches what it describes.
 - **Upgrade path.** A release ledger and one consumer command: `npx @hirobius/design-system@latest upgrade`.
 - **One-way Figma sync.** Code is the source of truth; tokens project into Figma, and `pnpm check:figma-drift` compares a committed snapshot against the model.
 - **Theming without JavaScript.** Four root attributes — theme, density, brand, font — re-skin HDS descendants through CSS variables.
@@ -40,16 +40,16 @@ Agents: install the consumer skill with `npx skills add hirobius/hds --skill hds
 
 <!-- auto:start:consumer-usage -->
 
-The Ops dashboard (`hirobius/ops`) is the only product app that uses components: **33** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are Ops pages rendered from its `main` (measured at commit `76ef65e`).
+An internal operations dashboard is the only product app that uses components: **33** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are pages of that app, rendered from its `main` branch.
 
 | Consumer kind     | Count | How it uses HDS                           |
 | ----------------- | ----- | ----------------------------------------- |
 | Product apps      | 1     | Components and tokens                     |
 | Token-level sites | 4     | Tokens and CSS only, no component imports |
 
-[![Ops library page](docs/images/ops-library.png)](docs/images/ops-library.png)
+[![Library page of the product app](docs/images/ops-library.png)](docs/images/ops-library.png)
 
-[![Ops fleet audit page](docs/images/ops-fleet-audit.png)](docs/images/ops-fleet-audit.png)
+[![Audit page of the product app](docs/images/ops-fleet-audit.png)](docs/images/ops-fleet-audit.png)
 
 <!-- auto:end:consumer-usage -->
 
@@ -237,7 +237,7 @@ The governing direction is "Editorial Enterprise" — enterprise rigor with edit
 
 The gates are deterministic and need no browser or live site:
 
-- **pre-commit** (`.husky/pre-commit`): secrets scan, Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
+- **pre-commit** (`.husky/pre-commit`): secrets scan (when `gitleaks` is installed locally; not yet in CI), Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
 - **pre-push** (`.husky/pre-push`): `pnpm test` (the pretest gates, then Vitest unit and contract tests), then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
 - **CI** (`.github/workflows/ci.yml`): typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and the docs-site build with its axe gate.
 - **Visual review:** the docs site (`docs-site/`) is the visual verification surface: every core component and pattern has a page with a live demo, `check-docs-axe` gates its accessibility.
@@ -265,13 +265,20 @@ Releases are cut with [Changesets](https://github.com/changesets/changesets). A 
 ```text
 src/
   app/
-    components/
-    layouts/
-    pages/
-  styles/
-scripts/
-docs/
-public/
+    components/     the components
+    context/        theme provider
+    design-system/  generated token constants
+  styles/           tokens.css, theme.css, generated CSS
+  brand/ form/ mui/ scroll/   subpath entry points
+hirobius.tokens.json  the single token source
+scripts/            generators and gates
+codemods/           the upgrade command and its codemods
+mcp/                the MCP server shipped in the package
+docs-site/          the documentation site
+content/            docs-site pages
+eval/               agent-consistency eval
+docs/               ADRs, ENGINEERING.md, guardrail registry
+public/             manifest, llms.txt
 ```
 
 ## Primary docs

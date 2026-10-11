@@ -33,8 +33,10 @@ flowchart LR
 
 Every color, space, radius, type and motion value lives once, in
 `hirobius.tokens.json`, in the [W3C DTCG](https://www.w3.org/community/design-tokens/)
-format. Nothing downstream is hand-authored. `pnpm tokens` compiles that source,
-through a validated alias chain, into every consumable form:
+format, and the files generated from it are never hand-edited. (A small set of
+layout and utility values — section spacing, `clamp()` layout helpers — still
+lives in `src/styles/theme.css`, outside the token file.) `pnpm tokens` compiles
+that source, through a validated alias chain, into every consumable form:
 
 - **CSS custom properties** (`src/styles/tokens.css`) — the runtime contract.
 - **TypeScript constants** — the same values, typed, for JS consumers.
@@ -56,32 +58,41 @@ Governance rules for the token layer are in
 ## 2. Quality gates — correctness is enforced, not reviewed
 
 HDS does not rely on a reviewer remembering the rules. Each invariant is a small,
-single-purpose script that runs automatically in git hooks and CI and fails the
-commit, push, or PR when the invariant is broken. Every gate is registered in
-[`docs/guardrails/registry.json`](guardrails/registry.json) with the channel it
-fires on (pre-commit, pre-push, CI, or on-demand), so the set is auditable and
-can't silently grow stale. What the gates actually prevent, by example:
+single-purpose script, and every one is registered in
+[`docs/guardrails/registry.json`](guardrails/registry.json) with where it fires,
+so the set is auditable. The gates that guard the shipped contract run
+automatically, in three tiers:
+
+- **Every commit** (`.husky/pre-commit`) — a deliberately lean set that keeps
+  commits fast: types, zero-warning lint, token validity and contrast, the type
+  ramp, and the generated sync map.
+- **Every push and every PR** — `pnpm test` runs its `pretest` chain of gates
+  (manifest, deprecations, focus states, docs, the upgrade ledger) before the
+  unit and contract tests, then a consumer smoke build.
+- **CI only** — Figma drift, bundle budgets, and accessibility on the docs site.
+
+The rest of the registry is **on demand**: audits you run when you need them
+(`pnpm check:full` runs the full set), kept out of the hooks on purpose. What the
+automatic gates prevent, by example:
 
 - **`check-contrast`** blocks any token change that drops a text/background pair
   below WCAG AA — checked in both light and dark, on every commit.
-- **`check-brand`** catches documentation that still claims a brand or accent
-  value the tokens no longer use. Crucially, it reads the current accent _from
-  the token source itself_, so the gate can never drift from the thing it is
-  checking (the failure mode that originally motivated it).
-- **`check-figma-drift`** fails when a hand edit in Figma diverges from the code
-  model, keeping code the single source of truth (§6).
-- **`check-upgrade-ledger`** stops a consumer-facing change from merging unless
-  it ships an upgrade note (§5), so the migration path can never fall behind the
-  code.
+- **`check-type-ramp`** rejects font sizes and weights that fall off the type
+  ramp, on every commit, so type can't quietly fork into one-off values.
+- **`check-upgrade-ledger`** fails the push and CI when a consumer-facing change
+  has no upgrade note (§5), so the migration path can't fall behind the code.
+- **`check-figma-drift`** fails CI when a hand edit in Figma diverges from the
+  code model, keeping code the single source of truth (§6).
 
 ### Proof-of-firing: who tests the tests
 
 A gate that has quietly stopped working is worse than no gate — it reports green
-while the invariant rots. HDS defends against this directly: a gate ships with
-**both a passing fixture and a violating fixture**, and a meta-gate
+while the invariant rots. HDS's answer is that most gates (not yet all) ship with
+**both a passing fixture and a violating fixture**, and a meta-check
 (`validate-fixture-proof-of-firing`) walks the registry and asserts that each
-gate not only has the pair but actually _rejects_ the violating one. The gates
-are proven to fire, not assumed to.
+pair exists and that the gate actually _rejects_ the violating one. Today that
+meta-check runs by hand rather than in CI; wiring it in, and giving every gate a
+fixture pair, is open work.
 
 The registry rules are documented in
 [`SYSTEMS_REGISTRY.md`](../SYSTEMS_REGISTRY.md).
@@ -108,8 +119,10 @@ agent — can read the public docs and use the system correctly.
 
 **How it works.** Three agents, each in a fresh context with no shell or web
 access, get only the inputs a real consumer would have (the screen spec, the
-package's `AGENTS.md`, its type definitions) and build the same screen. The
-harness never calls a model itself; it scores the generated apps
+package's `AGENTS.md`, its type definitions) and build the same screen. That
+isolation is a run protocol (frozen in `eval/consistency/CONDITIONS.md`), not
+something the harness enforces. The harness never calls a model itself; it
+scores the generated apps
 (`pnpm eval:consistency`) against fixed thresholds:
 
 | Measure                                                 | Threshold |

@@ -3,7 +3,7 @@
  *
  * `--hds-font-family` / `--hds-font-family-mono` are the documented font dial
  * (ADR-023, README "the four dials"). The type roles were declared once on
- * `:root` as `var(--primitive-typography-family-*)`, so they resolved there and
+ * `:root`, pointing at the primitive family variables, so they resolved there and
  * descendants inherited the already-resolved stack: setting the dial anywhere
  * changed nothing.
  *
