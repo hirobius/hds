@@ -71,7 +71,7 @@ export const STYLES = `
     --bg:#fff; --surface:#fafafa; --line:#e5e5e5;
     --ink:#111; --ink-2:#555; --ink-3:#888; --ok:#157f3d; --warn:#9a6b00;
     --mono:ui-monospace,"IBM Plex Mono",SFMono-Regular,Menlo,monospace;
-    --sans:"Satoshi",ui-sans-serif,system-ui,-apple-system,sans-serif;
+    --sans:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
   }
   @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
     --bg:#0d0d0d; --surface:#161616; --line:#2a2a2a;

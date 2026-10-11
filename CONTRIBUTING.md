@@ -64,6 +64,9 @@ tooling, or restore the cache are omitted because they are not gates.
 | ci         | Storybook build                                                                      | `pnpm build-storybook`                                                                                                                                                                     |
 | ci         | Install Chromium                                                                     | `pnpm exec playwright install --with-deps chromium`                                                                                                                                        |
 | ci         | Storybook axe gate (light + dark, serious/critical)                                  | `node scripts/check-storybook-axe.mjs`                                                                                                                                                     |
+| ci         | Docs site build (static export for the docs axe gate)                                | `pnpm docs:publish`                                                                                                                                                                        |
+| ci         | Docs axe gate (live demos, light + dark, serious/critical)                           | `node scripts/check-docs-axe.mjs`                                                                                                                                                          |
+| ci         | Docs axe gate fires (fixtures)                                                       | `node scripts/check-docs-axe.mjs --dir fixtures/check-docs-axe/passing.example.d && (node scripts/check-docs-axe.mjs --dir fixtures/check-docs-axe/violating.example.d \|\| [ $? -eq 1 ])` |
 
 Never use `--no-verify`. When a gate fails, fix the cause.
 

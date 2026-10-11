@@ -218,7 +218,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 580.55
+              "value": 622.2
             }
           }
         },
@@ -252,7 +252,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": "Satoshi"
+              "value": "Plus Jakarta Sans"
             }
           }
         },
@@ -1237,7 +1237,7 @@
       "name": "typography/h1",
       "path": "semantic.typography.h1",
       "description": "Page title.",
-      "fontFamily": "Satoshi",
+      "fontFamily": "Plus Jakarta Sans",
       "fontStyle": "Bold",
       "fontWeight": 700,
       "fontSize": 48,
@@ -1262,7 +1262,7 @@
       "name": "typography/body",
       "path": "semantic.typography.body",
       "description": "",
-      "fontFamily": "Satoshi",
+      "fontFamily": "Plus Jakarta Sans",
       "fontStyle": "Regular",
       "fontWeight": 400,
       "fontSize": 17,

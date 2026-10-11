@@ -119,7 +119,7 @@ const preview: Preview = {
     // react-router hooks (useNavigate/useLocation) does not throw outside a
     // Router in Chromatic. (Token, which first needed it, was removed in
     // 0.20.0, hds#389.)
-    // `data-hds` scopes the HDS base styles (Satoshi type baseline, resets,
+    // `data-hds` scopes the HDS base styles (Plus Jakarta Sans type baseline, resets,
     // theme-change transition) — they live under `:where([data-hds])`, so
     // without it every story falls back to the system sans and skips the base
     // baseline. The real docs site carries `data-hds` on <html>; mirror that

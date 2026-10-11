@@ -406,17 +406,18 @@ describe('pnpm figma:push --bundle', () => {
     expect(pruning.stderr).toMatch(/never prunes/);
   });
 
-  it('runs in the Vercel build after Storybook, chained with && so its failure fails the deploy', () => {
-    const { buildCommand, outputDirectory } = JSON.parse(
-      readFileSync(join(REPO, 'vercel.json'), 'utf8'),
-    );
-    expect(outputDirectory).toBe('storybook-static');
-    const steps = buildCommand.split(' && ');
+  it('runs in the docs site build after the site, chained with && so its failure fails the deploy', () => {
+    const publish = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8')).scripts[
+      'docs:publish'
+    ];
+    const steps = publish.split(' && ');
     expect(steps.at(-1)).toBe(
-      'node scripts/figma-push.mjs --bundle storybook-static/figma/sync-bundle.json',
+      'node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json',
     );
-    expect(steps.findIndex((s) => s.includes('build-storybook'))).toBeLessThan(steps.length - 1);
-    expect(buildCommand).not.toMatch(/\|\||;|&\s*$/);
+    expect(steps.findIndex((s) => s.includes('docs:build'))).toBeLessThan(steps.length - 1);
+    expect(publish).not.toMatch(/\|\||;|&\s*$/);
+    const docsVercel = JSON.parse(readFileSync(join(REPO, 'docs-site/vercel.json'), 'utf8'));
+    expect(docsVercel.buildCommand).toContain('pnpm docs:publish');
   });
 });
 

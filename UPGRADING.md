@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.23.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.23.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,19 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.23.1
+
+Released 2026-10-11 (patch). 6 that look different.
+
+### Looks different
+
+- The scoped HDS font variable now names Plus Jakarta Sans first instead of Satoshi.
+- Display and title text now renders in Plus Jakarta Sans instead of Satoshi.
+- Body, UI and caption text now renders in Plus Jakarta Sans instead of Satoshi.
+- fonts.css no longer declares Satoshi 400; it declares Plus Jakarta Sans 400 instead, so drop any font-family: Satoshi of your own.
+- fonts.css no longer declares Satoshi 500; it declares Plus Jakarta Sans 500 instead, so drop any font-family: Satoshi of your own.
+- fonts.css no longer declares Satoshi 700; it declares Plus Jakarta Sans 700 instead, so drop any font-family: Satoshi of your own.
 
 ## 0.23.0
 

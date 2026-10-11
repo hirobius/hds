@@ -692,7 +692,9 @@ export function buildManifest(allTokens, raw) {
   // a non-existent path, which silently fell back to the literal "Atkinson Hyperlegible
   // Next" while real tokens carried Clash Grotesk).
   const fontFamRaw = raw.primitive?.typography?.family?.primary?.$value;
-  const fontName = Array.isArray(fontFamRaw) ? fontFamRaw[0] : String(fontFamRaw ?? 'Satoshi');
+  const fontName = Array.isArray(fontFamRaw)
+    ? fontFamRaw[0]
+    : String(fontFamRaw ?? 'Plus Jakarta Sans');
   const componentSpecs = {
     ...(SYSTEM_MANIFEST.componentSpecs ?? {}),
     Button: {

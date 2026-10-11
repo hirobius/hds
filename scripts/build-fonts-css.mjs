@@ -33,14 +33,14 @@ const PUBLIC = join(ROOT, 'public');
 
 // Keep in sync with the @font-face URLs in src/styles/fonts.css (checked below).
 export const FONTS = [
-  'fonts/satoshi/satoshi-400.woff2',
-  'fonts/satoshi/satoshi-500.woff2',
-  'fonts/satoshi/satoshi-700.woff2',
+  'fonts/plus-jakarta-sans/plus-jakarta-sans-400.woff2',
+  'fonts/plus-jakarta-sans/plus-jakarta-sans-500.woff2',
+  'fonts/plus-jakarta-sans/plus-jakarta-sans-700.woff2',
   'fonts/ibm-plex-mono/ibm-plex-mono-400.woff2',
 ];
 
 const banner =
-  '/* @hirobius/design-system/fonts.css — OPTIONAL brand fonts: Satoshi 400/500/700\n' +
+  '/* @hirobius/design-system/fonts.css — OPTIONAL brand fonts: Plus Jakarta Sans 400/500/700\n' +
   ' * and IBM Plex Mono 400. tokens.css and styles.css do not include them. Import this\n' +
   ' * once at the app root for the HDS faces, or skip it and load your own; the\n' +
   ' * font-family variables in tokens.css fall back to the family stack either way.\n' +
@@ -85,6 +85,12 @@ function main() {
     const file = join(PUBLIC, font);
     if (!existsSync(file)) fail(`font file missing: ${file}`);
     copyFileSync(file, join(DIST, 'fonts', basename(font)));
+  }
+  // OFL 1.1 requires the license to travel with the font files.
+  for (const family of new Set(FONTS.map((f) => basename(dirname(f))))) {
+    const license = join(PUBLIC, 'fonts', family, 'LICENSE.txt');
+    if (!existsSync(license)) fail(`font license missing: ${license}`);
+    copyFileSync(license, join(DIST, 'fonts', `${family}-LICENSE.txt`));
   }
   try {
     writeFileSync(join(DIST, 'fonts.css'), buildFontsCss(readFileSync(SRC_CSS, 'utf8')));

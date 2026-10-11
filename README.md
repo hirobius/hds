@@ -128,12 +128,12 @@ HDS theming is driven by root attributes + CSS variables, so it works with **zer
 JavaScript** — set them on any element (React, Astro, plain HTML) and every HDS
 descendant re-skins:
 
-| Dial    | Attribute / var                                | Values          | Default                 |
-| ------- | ---------------------------------------------- | --------------- | ----------------------- |
-| theme   | `data-theme`                                   | `dark`          | light (unset)           |
-| density | `data-density`                                 | `compact`       | comfortable (unset)     |
-| brand   | `data-brand` (+ `data-tenant` alias)           | overlay slug    | base (unset)            |
-| font    | `--hds-font-family` / `--hds-font-family-mono` | any font-family | Satoshi / IBM Plex Mono |
+| Dial    | Attribute / var                                | Values          | Default                           |
+| ------- | ---------------------------------------------- | --------------- | --------------------------------- |
+| theme   | `data-theme`                                   | `dark`          | light (unset)                     |
+| density | `data-density`                                 | `compact`       | comfortable (unset)               |
+| brand   | `data-brand` (+ `data-tenant` alias)           | overlay slug    | base (unset)                      |
+| font    | `--hds-font-family` / `--hds-font-family-mono` | any font-family | Plus Jakarta Sans / IBM Plex Mono |
 
 ```html
 <!-- zero-JS: static markup (e.g. an Astro layout) -->
@@ -220,6 +220,7 @@ What CI and the hooks check today, and nothing more:
 - **Lint:** `jsx-a11y` rules run inside ESLint with zero warnings allowed.
 - **Focus:** `scripts/check-focus-states.mjs` (`pnpm check:focus`) audits focus styles on interactive components. It runs in `pretest` under `pnpm test`, so in the pre-push hook and in CI, and passes with 0 violations.
 - **Storybook:** the `addon-a11y` panel shows axe results for each story while you review it. The gate is `scripts/check-storybook-axe.mjs`: CI scans every built story in light and dark, including the open Select and Combobox, and fails on serious or critical violations outside its allowlist (`scripts/axe-allowlist.json`). The allowlist has one entry: `aria-hidden-focus` on the open Select story, where Radix Select hides the page around its listbox while focus stays trapped inside it (hds#407).
+- **Docs site:** `scripts/check-docs-axe.mjs` (`pnpm check:docs-axe`, after `pnpm docs:publish`) scans the live demo of every `/docs/components/*` and `/docs/patterns/*` page of the built docs site in light and dark with the same axe rules, scoped to the demo frame so the Fumadocs chrome does not count. CI runs it and fails on serious or critical violations outside `scripts/docs-axe-allowlist.json`, which is empty.
 
 Screen-reader output is checked by `tests/primitive-contracts/screen-reader.contract.test.tsx`, which runs in `pnpm test` and walks Dialog, Menu, Select, Combobox, Table and Alert with a virtual screen-reader (`@guidepup/virtual-screen-reader`) under jsdom, asserting the role, name and state phrases it reads and the alert's live-region announcement; it reads the jsdom accessibility tree, not what a desktop or mobile screen-reader says.
 
@@ -284,4 +285,4 @@ public/
 
 ## License
 
-The HDS code is MIT ([LICENSE](LICENSE)). The package CSS also embeds the Satoshi and IBM Plex Mono fonts, which keep their own licenses and are not covered by MIT. See [NOTICE.md](NOTICE.md).
+The HDS code is MIT ([LICENSE](LICENSE)). The package CSS also embeds the Plus Jakarta Sans and IBM Plex Mono fonts, which keep their own licenses and are not covered by MIT. See [NOTICE.md](NOTICE.md).

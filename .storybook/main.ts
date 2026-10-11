@@ -41,8 +41,8 @@ const config: StorybookConfig = {
       '../src/stories/**/*.mdx',
     ].flat(),
   // Serves public/ at the Storybook root so fonts.css's absolute
-  // `/fonts/satoshi/*.woff2` URLs resolve. Without this every story
-  // renders in a fallback face, not Satoshi.
+  // `/fonts/plus-jakarta-sans/*.woff2` URLs resolve. Without this every story
+  // renders in a fallback face, not Plus Jakarta Sans.
   staticDirs: ['../public', '../.storybook/static'],
   addons: [
     '@storybook/addon-essentials',

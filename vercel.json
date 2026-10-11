@@ -1,8 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm manifest:generate && node scripts/audit-tokens.mjs --full && HDS_STORYBOOK_PUBLIC=1 pnpm build-storybook && node scripts/copy-agent-context.mjs && node scripts/figma-push.mjs --bundle storybook-static/figma/sync-bundle.json",
+  "framework": null,
+  "installCommand": "true",
+  "buildCommand": "mkdir -p .vercel-redirect && touch .vercel-redirect/index.html",
   "ignoreCommand": "node scripts/vercel-ignore-build.mjs",
-  "outputDirectory": "storybook-static",
-  "cleanUrls": true,
-  "trailingSlash": false
+  "outputDirectory": ".vercel-redirect",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://hirobius-hds-components.vercel.app/docs",
+      "permanent": true
+    }
+  ]
 }

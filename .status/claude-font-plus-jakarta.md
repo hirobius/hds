@@ -1,0 +1,1 @@
+Brand typeface switched from Satoshi to Plus Jakarta Sans (OFL; Satoshi's EULA forbids redistribution, hds#574). Latin-subset woff2 400/500/700, OFL text ships in dist/fonts; package license MIT AND OFL-1.1.

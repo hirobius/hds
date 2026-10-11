@@ -36,7 +36,7 @@ const TOKENS = {
       blue: { 500: { $value: '#1E2EFD' }, 600: { $value: '#1726CA' } },
       neutral: { 900: { $value: '#111111' }, 800: { $value: '#262626' } },
     },
-    typography: { family: { primary: { $value: ['Satoshi', 'sans-serif'] } } },
+    typography: { family: { primary: { $value: ['Plus Jakarta Sans', 'sans-serif'] } } },
   },
   semantic: {
     accent: { rest: { $value: '{primitive.color.neutral.900}' } },
