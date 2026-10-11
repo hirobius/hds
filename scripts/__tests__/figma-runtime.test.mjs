@@ -251,7 +251,8 @@ describe('use_figma scripts', () => {
   describe('verify their own runtime code before they read or write', () => {
     // A line an agent could alter while passing the script through use_figma:
     // with `true`, a push without prune would delete every extra variable.
-    const pruneGuard = 'if (prune) plan.removals.variables.push(item);';
+    // The runtime ships minified (Fix A), so the guard's local names are short.
+    const pruneGuard = /if\((\w+)\)(\w+)\.removals\.variables\.push\((\w+)\)/;
 
     it('a changed line of runtime code makes a push script fail before writing', async () => {
       const figma = inLibrary();
@@ -261,22 +262,19 @@ describe('use_figma scripts', () => {
       );
       figma.variables.createVariable('legacy/unused', semantic, 'FLOAT');
       const script = pushScript({ scope: ['semantic'] });
-      expect(script).toContain(pruneGuard);
+      expect(script).toMatch(pruneGuard);
       const start = figma.writes.length;
 
       await expect(
-        runUseFigma(
-          script.replace(pruneGuard, 'if (true) plan.removals.variables.push(item);'),
-          figma,
-        ),
+        runUseFigma(script.replace(pruneGuard, 'if(true)$2.removals.variables.push($3)'), figma),
       ).rejects.toThrow(/code does not match its checksum.*Nothing was read or written/);
       expect(figma.writes.slice(start)).toEqual([]);
     });
 
     it('a changed snapshot script fails before reading', async () => {
       const script = snapshotScript().replace(
-        'takenAt: new Date().toISOString(),',
-        "takenAt: '2020-01-01T00:00:00.000Z',",
+        'takenAt:new Date().toISOString(),',
+        'takenAt:"2020-01-01T00:00:00.000Z",',
       );
       await expect(runUseFigma(script, inLibrary())).rejects.toThrow(
         /code does not match its checksum/,
