@@ -455,8 +455,8 @@
   --component-button-size-lg-iconSize: var(--primitive-size-20);
   --component-button-size-lg-height: var(--primitive-size-48);
   --component-button-size-lg-itemSpacing: var(--primitive-space-2);
-  --component-button-primary-textDisabled: var(--semantic-color-content-onAccent);
-  --component-button-primary-bgDisabled: var(--semantic-color-surface-accentSubtle);
+  --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
+  --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
   --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
   --component-button-secondary-bg-hover: var(--semantic-color-surface-raised);
   --component-button-secondary-bg-pressed: var(--semantic-color-surface-overlay);
@@ -556,7 +556,6 @@
   --semantic-accent-contentHover: var(--primitive-color-graphite-200);
   --semantic-accent-subtle: var(--primitive-color-graphite-800);
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
-  --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
   --semantic-elevation-raised-surface: var(--semantic-color-surface-raised);
@@ -578,7 +577,8 @@
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
   --component-button-text: var(--semantic-color-content-onAccent);
-  --component-button-primary-bgDisabled: var(--semantic-color-surface-accentSubtle);
+  --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
+  --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
   --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
   --component-button-secondary-bg-hover: var(--semantic-color-surface-raised);
   --component-button-secondary-bg-pressed: var(--semantic-color-surface-overlay);

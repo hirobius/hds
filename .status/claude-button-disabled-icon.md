@@ -1,0 +1,1 @@
+A disabled primary Button now uses its own muted-surface and disabled-text component tokens (the old accent pair was near-invisible under the neutral accent), and the small Button icon is 12px to match its token. A test pins the disabled tokens and every size's icon class to the token values (hds#559, hds#539).
