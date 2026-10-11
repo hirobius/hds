@@ -1,5 +1,5 @@
 {
-  "$comment": "Prose only. The scale arrays that used to live here (typeScale, fontSizes, fontWeights, lineHeights, letterSpacings) were a hand-maintained THIRD copy of the type scale with no importers, and they had drifted: the display entry's weightToken said weight.medium while its own usage string said \"Satoshi bold 700\", and semantic.typography.display points at weight.bold. Six of the tokens they named no longer exist. Removed in hds#283 with the --hds-font-size-* block, for the same reason. The live scale is hirobius.tokens.json, rendered by src/stories/type-specimen.stories.tsx, which reads it at runtime and therefore cannot say something the tokens do not. Keep prose here; never re-add numbers.",
+  "$comment": "Prose only. The scale arrays that used to live here (typeScale, fontSizes, fontWeights, lineHeights, letterSpacings) were a hand-maintained THIRD copy of the type scale with no importers, and they had drifted: the display entry's weightToken said weight.medium while its own usage string said \"Plus Jakarta Sans bold 700\", and semantic.typography.display points at weight.bold. Six of the tokens they named no longer exist. Removed in hds#283 with the --hds-font-size-* block, for the same reason. The live scale is hirobius.tokens.json, rendered by src/stories/type-specimen.stories.tsx, which reads it at runtime and therefore cannot say something the tokens do not. Keep prose here; never re-add numbers.",
   "page": "Typography",
   "path": "/hds/foundations/typography",
   "definition": {
@@ -10,7 +10,7 @@
   "rules": [
     {
       "id": "one-typeface",
-      "rule": "Use Satoshi for body and UI text. Satoshi Bold (700) is used for display, h1, h2, h3 headings.",
+      "rule": "Use Plus Jakarta Sans for body and UI text. Plus Jakarta Sans Bold (700) is used for display, h1, h2, h3 headings.",
       "enforceable": false,
       "valid": "fontFamily: hds.fontFamily",
       "invalid": "fontFamily: 'Georgia, serif'"

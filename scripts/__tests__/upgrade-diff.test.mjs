@@ -165,7 +165,12 @@ const bundle = (overrides = {}) => ({
 const css = (bundles, publicClasses = []) => ({ format: 1, bundles, publicClasses });
 
 describe('diffSnapshots: CSS facts (hds#449)', () => {
-  const satoshi = { family: 'Satoshi', weight: '400', style: 'normal', src: ['satoshi-400.woff2'] };
+  const satoshi = {
+    family: 'Plus Jakarta Sans',
+    weight: '400',
+    style: 'normal',
+    src: ['plus-jakarta-sans-400.woff2'],
+  };
   const prev = snapshot({
     css: css(
       {
@@ -259,9 +264,9 @@ describe('diffSnapshots: CSS facts (hds#449)', () => {
         bundles: ['./tokens.css'],
       },
       {
-        id: 'font-face-removed:Satoshi/400/normal',
+        id: 'font-face-removed:Plus Jakarta Sans/400/normal',
         kind: 'font-face-removed',
-        family: 'Satoshi',
+        family: 'Plus Jakarta Sans',
         weight: '400',
         style: 'normal',
         bundles: ['./tokens.css'],

@@ -233,22 +233,22 @@ function isRelativeTypography(graph, token) {
  */
 export const CH_BASIS = Object.freeze({
   style: 'semantic.typography.body',
-  family: 'Satoshi',
+  family: 'Plus Jakarta Sans',
   weight: 400,
-  zeroAdvanceEm: 0.683,
+  zeroAdvanceEm: 0.732,
   measuredFrom:
-    'public/fonts/satoshi/satoshi-400.woff2: advance of "0" at 1000px in Chromium (683; the same method gives 693 for the 500 face, matching its hmtx), measured 2026-10-07',
+    'public/fonts/plus-jakarta-sans/plus-jakarta-sans-400.woff2: hmtx advance of "0" / unitsPerEm = 732/1000 (500 face: 724, 700 face: 708), measured 2026-10-11',
 });
 
 /**
- * The weight of the Satoshi face a requested weight renders on. The 400, 500
+ * The weight of the Plus Jakarta Sans face a requested weight renders on. The 400, 500
  * and 700 faces ship (src/styles/fonts.css); CSS font matching puts a weight
  * with no face of its own on the nearest shipped one.
  */
-const SATOSHI_FACE_WEIGHTS = [400, 500, 700];
+const BRAND_FACE_WEIGHTS = [400, 500, 700];
 function renderedWeight(family, weight) {
-  if (family !== 'Satoshi' || typeof weight !== 'number') return weight;
-  if (SATOSHI_FACE_WEIGHTS.includes(weight)) return weight;
+  if (family !== 'Plus Jakarta Sans' || typeof weight !== 'number') return weight;
+  if (BRAND_FACE_WEIGHTS.includes(weight)) return weight;
   if (weight < 400) return 400;
   return weight <= 500 ? 500 : 700;
 }

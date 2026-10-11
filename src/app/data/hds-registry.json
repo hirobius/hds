@@ -254,32 +254,32 @@
       {
         "name": "display",
         "token": "semantic.typography.display",
-        "description": "Display headline (Swiss canon). Satoshi Bold (700). 72px."
+        "description": "Display headline (Swiss canon). Plus Jakarta Sans Bold (700). 72px."
       },
       {
         "name": "h1",
         "token": "semantic.typography.h1",
-        "description": "Page title (Swiss canon). Satoshi Bold (700). 48px."
+        "description": "Page title (Swiss canon). Plus Jakarta Sans Bold (700). 48px."
       },
       {
         "name": "h2",
         "token": "semantic.typography.h2",
-        "description": "Section heading (Swiss canon). Satoshi Bold (700). 30px."
+        "description": "Section heading (Swiss canon). Plus Jakarta Sans Bold (700). 30px."
       },
       {
         "name": "h3",
         "token": "semantic.typography.h3",
-        "description": "Sub-section heading (Swiss canon). Satoshi Bold (700). 20px."
+        "description": "Sub-section heading (Swiss canon). Plus Jakarta Sans Bold (700). 20px."
       },
       {
         "name": "body",
         "token": "semantic.typography.body",
-        "description": "Body prose. Satoshi regular 400. 17px / leading-relaxed / measure capped at 60ch."
+        "description": "Body prose. Plus Jakarta Sans regular 400. 17px / leading-relaxed / measure capped at 60ch."
       },
       {
         "name": "small",
         "token": "semantic.typography.small",
-        "description": "Supporting body text. Satoshi regular 400. 15px / leading-relaxed."
+        "description": "Supporting body text. Plus Jakarta Sans regular 400. 15px / leading-relaxed."
       },
       {
         "name": "caption",
@@ -302,7 +302,7 @@
         "rationale": "Token JSON stores static desktop-max primitive refs; clamp overrides live in CSS"
       },
       {
-        "rule": "Three typefaces: Satoshi (body / UI), Satoshi (display + h1, h2, h3 headings only), IBM Plex Mono (code / technical metadata).",
+        "rule": "Three typefaces: Plus Jakarta Sans (body / UI), Plus Jakarta Sans (display + h1, h2, h3 headings only), IBM Plex Mono (code / technical metadata).",
         "rationale": "Self-hosted only; Clash gives editorial weight on display and a clean grotesk on body, IBM Plex Mono carries token paths and technical readouts."
       }
     ]

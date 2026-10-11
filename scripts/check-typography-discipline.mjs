@@ -26,7 +26,7 @@
  *
  * 3. typography-overrides (from audit-typography-overrides.mjs):
  *    Enforces single-weight + casing-via-eyebrow policy:
- *    - Satoshi 500 / Satoshi 700 (Bold) / IBM Plex Mono 400 are the only weights.
+ *    - Plus Jakarta Sans 500 / Plus Jakarta Sans 700 (Bold) / IBM Plex Mono 400 are the only weights.
  *    - textTransform overrides must use hds.typeStyles.eyebrow composite.
  *    Escape hatch: add "// eyebrow-ok: <reason>" or "audit-ok: typography" comments.
  *
