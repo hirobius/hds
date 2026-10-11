@@ -70,16 +70,16 @@ All three:
 ### Brand fonts (optional)
 
 ```ts
-import '@hirobius/design-system/fonts.css'; // Satoshi 400/500/700 + IBM Plex Mono 400
+import '@hirobius/design-system/fonts.css'; // Plus Jakarta Sans 400/500/700 + IBM Plex Mono 400
 ```
 
 `fonts.css` declares the four `@font-face` blocks with `font-display: swap`. Its
-URLs are relative (`./fonts/satoshi-400.woff2`), and the woff2 files ship in the
+URLs are relative (`./fonts/plus-jakarta-sans-400.woff2`), and the woff2 files ship in the
 package, so Vite, Next and webpack resolve and hash them; there is nothing to
 copy. Import it alongside one of the stylesheets above to keep the HDS fonts.
 Skip it to bring your own: `tokens.css` and `styles.css` keep the
 `--hds-font-family*` variables, so text falls back to the family stack
-(`"Satoshi", system-ui, …`) and uses your font if you declare that family
+(`"Plus Jakarta Sans", system-ui, …`) and uses your font if you declare that family
 yourself.
 
 HDS's own base styles (type baseline, resets) are scoped to the `[data-hds]`
@@ -229,7 +229,7 @@ export function Example() {
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@hirobius/design-system`               | The 43-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns` |
 | `@hirobius/design-system/styles.css`    | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                                                                                                                                 |
-| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Satoshi 400/500/700 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                                       |
+| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Plus Jakarta Sans 400/500/700 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                             |
 | `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                                                                                                                             |
 | `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                                                                                                                            |
 | `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                                                                                                                                         |
@@ -503,7 +503,7 @@ npx skills add hirobius/hds --skill hds-consumer
 | `npm ERR! 404` on install                          | Check the package name spelling; if pinning a version, confirm it's published on npm (`npm view @hirobius/design-system version`). Public npm needs no auth (see §1–2). |
 | `ERR_REQUIRE_ESM` / `require() of ES Module`       | Consumer is CommonJS — switch to an ESM bundler (§9).                                                                                                                   |
 | Components render unstyled / wrong font            | Import `@hirobius/design-system/styles.css` (or `tokens.css`) at the app root (§3) **and** add `data-hds` to your root or section (§4).                                 |
-| Text uses the host font, not Satoshi               | Missing `data-hds` on an ancestor (§4).                                                                                                                                 |
+| Text uses the host font, not Plus Jakarta Sans     | Missing `data-hds` on an ancestor (§4).                                                                                                                                 |
 | In-app links do a full page reload                 | Expected with no router. Inject your router via `<HdsRouterProvider>` for SPA nav (§5).                                                                                 |
 | Host app's spacing/layout shifted after adding HDS | Tailwind preflight ships global this release (§6); scope HDS to a section and isolate where possible.                                                                   |
 | Brand overlay has no effect on an Astro page       | Inject the overlay on an ancestor of the themed markup (usually `<html>`), and ensure `variables.css` is imported once (§12).                                           |

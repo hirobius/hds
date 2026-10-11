@@ -651,7 +651,7 @@ describe('delta.js refuses, writing nothing', () => {
         return model;
       },
     });
-    await refuses(s, /needs the font "Satoshi Black".*Nothing was written.*Sync/s);
+    await refuses(s, /needs the font "Plus Jakarta Sans Black".*Nothing was written.*Sync/s);
   });
 });
 

@@ -65,7 +65,11 @@ const PNPM_BUILTINS = new Set(['install', 'exec', 'add', 'dlx']);
  * npm cannot express it in an SPDX `license` field.
  */
 const FONT_LICENSES = {
-  satoshi: { family: 'Satoshi', license: 'ITF Free Font License', spdx: null },
+  'plus-jakarta-sans': {
+    family: 'Plus Jakarta Sans',
+    license: 'SIL Open Font License 1.1',
+    spdx: 'OFL-1.1',
+  },
   'ibm-plex-mono': {
     family: 'IBM Plex Mono',
     license: 'SIL Open Font License 1.1',

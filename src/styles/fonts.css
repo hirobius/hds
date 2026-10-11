@@ -1,38 +1,38 @@
 /* Hirobius Design System — font-face declarations.
  *
  * Faces (type ramp, Adrian 2026-10-07, hds#483):
- *   - Satoshi 400 — body
- *   - Satoshi 500 — ui, caption
- *   - Satoshi 700 — display, title
+ *   - Plus Jakarta Sans 400 — body
+ *   - Plus Jakarta Sans 500 — ui, caption
+ *   - Plus Jakarta Sans 700 — display, title
  *   - IBM Plex Mono 400 — mono
  *
  * Audit gate: scripts/audit-typography-overrides.mjs fails on inline
  * fontWeight / textTransform outside the sketches lab and a small allowlist.
  */
 
-/* Satoshi — Indian Type Foundry, ITF Free Font License via Fontshare. */
-/* Satoshi Regular — body (400), hds#483 type ramp. */
+/* Plus Jakarta Sans — Tokotype, SIL Open Font License 1.1 (LICENSE.txt alongside). */
+/* Plus Jakarta Sans Regular — body (400), hds#483 type ramp. */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/satoshi/satoshi-400.woff2') format('woff2');
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-400.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
-/* Satoshi Medium — ui and caption (500). */
+/* Plus Jakarta Sans Medium — ui and caption (500). */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/satoshi/satoshi-500.woff2') format('woff2');
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-500.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
-/* Satoshi Bold — display/heading weight (700), replaces Clash Display (#48). */
+/* Plus Jakarta Sans Bold — display/heading weight (700), replaces Clash Display (#48). */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/satoshi/satoshi-700.woff2') format('woff2');
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-700.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

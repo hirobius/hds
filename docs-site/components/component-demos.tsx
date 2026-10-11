@@ -346,7 +346,7 @@ function ContainerDemo() {
 function DisclosureDemo() {
   return (
     <Disclosure label="What ships in fonts.css?">
-      Satoshi 400, 500 and 700, plus IBM Plex Mono 400.
+      Plus Jakarta Sans 400, 500 and 700, plus IBM Plex Mono 400.
     </Disclosure>
   );
 }

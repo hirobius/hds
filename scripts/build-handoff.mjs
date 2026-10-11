@@ -432,10 +432,10 @@ export function buildAgentConstraints(raw) {
   // nowhere in the token file. No fallback now; brandAccent throws.
   const accent = brandAccent(raw).toUpperCase();
   const fontRaw = raw.primitive?.typography?.family?.primary?.$value;
-  const font = (Array.isArray(fontRaw) ? fontRaw[0] : fontRaw) ?? 'Satoshi';
+  const font = (Array.isArray(fontRaw) ? fontRaw[0] : fontRaw) ?? 'Plus Jakarta Sans';
   return [
     `- **One accent color:** \`${accent}\` (\`semantic.accent.rest\`) only — no other hues`,
-    `- **Body / UI typeface:** ${font} — use Satoshi Bold (700) for headings and IBM Plex Mono for code; no other faces`,
+    `- **Body / UI typeface:** ${font} — use Plus Jakarta Sans Bold (700) for headings and IBM Plex Mono for code; no other faces`,
     `- **Action radius:** \`${resolveRef(raw.semantic?.radius?.action?.$value ?? '{primitive.radius.4}', raw)}\` for interactive controls; \`${containerRadius(raw)}\` containers (\`rounded-lg\`, one step above the action radius)`,
     '- **4px spacing grid:** All spacing snaps to `primitive.space.*` scale',
     '- **True monochromatic neutrals:** No warm/cool tint in neutral scale',

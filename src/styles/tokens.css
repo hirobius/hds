@@ -113,8 +113,8 @@
   --primitive-radius-8: 8px;
   --primitive-radius-12: 12px;
   --primitive-radius-full: 9999px;
-  --primitive-typography-family-primary: Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --primitive-typography-family-display: Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --primitive-typography-family-primary: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --primitive-typography-family-display: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --primitive-typography-family-mono: "IBM Plex Mono", "Courier New", monospace;
   --primitive-typography-size-xs: 12px;
   --primitive-typography-size-sm: 14px;
