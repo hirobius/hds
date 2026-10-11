@@ -194,7 +194,7 @@
           "$value": "#19161a",
           "$description": "Graphite accent — near-black warm substrate."
         },
-        "$description": "Discrete values within the graphite (warm-charcoal brand accent) range at defined lightness steps. A full-monochrome accent — feedback hues (green/red/amber) keep their own scales."
+        "$description": "Graphite, the warm-charcoal brand accent scale. Feedback colors keep their own scales."
       },
       "violet": {
         "50": {
@@ -1146,7 +1146,7 @@
         },
         "accent": {
           "$value": "{primitive.color.graphite.700}",
-          "$description": "Accent-colored background — warm graphite. Inverts per theme (dark fill in light mode, light warm-grey in dark mode) so it never vanishes; pair with content.onAccent.",
+          "$description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1288,7 +1288,7 @@
         },
         "onAccent": {
           "$value": "{primitive.color.neutral.50}",
-          "$description": "Text/icon color on accent fills — near-white on the dark graphite fill in light mode, dark graphite on the light warm-grey fill in dark mode.",
+          "$description": "Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {

@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-10T04:52:18.998Z",
+  "generated": "2026-10-11T19:15:45.011Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -10427,7 +10427,7 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent-colored background — warm graphite. Inverts per theme (dark fill in light mode, light warm-grey in dark mode) so it never vanishes; pair with content.onAccent.",
+        "description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
         "alias": "{primitive.color.graphite.700}",
         "resolvedValue": "#433a3f",
         "dark": {
@@ -10567,7 +10567,7 @@
         "path": "semantic.color.content.onAccent",
         "cssVar": "--semantic-color-content-onAccent",
         "type": "color",
-        "description": "Text/icon color on accent fills — near-white on the dark graphite fill in light mode, dark graphite on the light warm-grey fill in dark mode.",
+        "description": "Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.",
         "alias": "{primitive.color.neutral.50}",
         "resolvedValue": "#fafafa",
         "dark": {
