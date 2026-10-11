@@ -173,12 +173,18 @@ describe('README "In use" names no private repository (hds#545)', () => {
   it('keeps the counts, the consumer table and the screenshots', () => {
     expect(out).toMatch(/\*\*35\*\* of its source files/);
     expect(out).toMatch(/\| Product apps\s+\| 1 /);
-    expect(out).toMatch(/docs\/images\/ops-library\.png/);
+    expect(out).toMatch(/docs\/images\/product-app-library\.png/);
   });
 
   it('the committed README follows suit', () => {
     const readme = readFileSync(join(REPO, 'README.md'), 'utf8');
+    const { commit } = JSON.parse(
+      readFileSync(join(REPO, 'docs', 'data', 'consumer-usage.json'), 'utf8'),
+    );
     expect(readme).not.toMatch(/hirobius\/ops/);
+    expect(readme).not.toMatch(/\bOps's\b|ops checkout|images\/ops-/);
+    expect(readme).not.toContain(commit);
+    expect(readme).not.toContain(commit.slice(0, 7));
   });
 });
 

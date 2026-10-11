@@ -165,9 +165,9 @@ function alignTable(rows) {
 /** Markdown placed between the generated-block markers (starts and ends with a blank line). */
 export function renderInUseBlock(s) {
   const shots = [
-    '[![Library page of the product app](docs/images/ops-library.png)](docs/images/ops-library.png)',
+    '[![Library page of the product app](docs/images/product-app-library.png)](docs/images/product-app-library.png)',
     '',
-    '[![Audit page of the product app](docs/images/ops-fleet-audit.png)](docs/images/ops-fleet-audit.png)',
+    '[![Audit page of the product app](docs/images/product-app-audit.png)](docs/images/product-app-audit.png)',
     '',
     '',
   ];
