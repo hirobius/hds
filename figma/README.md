@@ -231,10 +231,12 @@ date, and the old files refuse the renamed copy by its name.
 3. Tell an agent the Sync is done. It collects the snapshot the Sync wrote into the file ([Agent: collect a sync](#agent-collect-a-sync)), so there is nothing to download. **Download JSON** stays as the fallback when the plugin says the receipt was not written.
 
 The **Sync plugin** (`figma/push/plugin/`, id `hds-tokens-sync-dev`) carries no
-model. Its window fetches the sync bundle the Storybook deploy publishes at
-https://hirobius-design-system.vercel.app/figma/sync-bundle.json (`vercel.json`
-runs `node scripts/figma-push.mjs --bundle storybook-static/figma/sync-bundle.json`
-after the Storybook build; the bundle is generated, never committed). Its
+model. Its window fetches the sync bundle the docs site publishes at
+https://hirobius-hds-components.vercel.app/figma/sync-bundle.json (`docsUrl` in
+`figma/links.json`, else `storybookUrl`; `pnpm docs:publish`, the docs site's Vercel
+build, runs `node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json`;
+the bundle is generated, never committed). Plugin builds from before 2026-10-10 still
+fetch from the Storybook deploy, which keeps serving the bundle until it is switched off. Its
 `code.js` is about 52 KB, and its files change only when the plugin build
 changes, not when tokens do. Commands:
 

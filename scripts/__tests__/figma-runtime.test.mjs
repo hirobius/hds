@@ -366,9 +366,9 @@ describe('Sync plugin manifest (figma/push/plugin, hds#411)', () => {
     expect(manifest.enablePrivatePluginApi).toBe(true);
   });
 
-  it('may reach exactly one origin: the Storybook deploy that serves the bundle', () => {
+  it('may reach exactly one origin: the docs site that serves the bundle', () => {
     expect(manifest.networkAccess.allowedDomains).toEqual([
-      'https://hirobius-design-system.vercel.app',
+      'https://hirobius-hds-components.vercel.app',
     ]);
     expect(manifest.networkAccess.reasoning).toMatch(/data only/);
     expect(Object.keys(manifest.networkAccess).sort()).toEqual(['allowedDomains', 'reasoning']);
