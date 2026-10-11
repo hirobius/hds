@@ -196,6 +196,53 @@
         },
         "$description": "Graphite, the warm-charcoal brand accent scale. Feedback colors keep their own scales."
       },
+      "mauve": {
+        "50": {
+          "$value": "#fff0f6",
+          "$description": "Mauve tint, faintest step."
+        },
+        "100": {
+          "$value": "#f4e2ea",
+          "$description": "Mauve step 100, lightness-matched to graphite 100."
+        },
+        "200": {
+          "$value": "#e1cad4",
+          "$description": "Mauve step 200, lightness-matched to graphite 200."
+        },
+        "300": {
+          "$value": "#c0a4b1",
+          "$description": "Mauve step 300, lightness-matched to graphite 300."
+        },
+        "400": {
+          "$value": "#9d7b8a",
+          "$description": "Mauve step 400, lightness-matched to graphite 400."
+        },
+        "500": {
+          "$value": "#734b5e",
+          "$description": "Mauve anchor (#734B5E). Reserved; not mapped to any semantic token yet."
+        },
+        "600": {
+          "$value": "#674254",
+          "$description": "Mauve step 600, lightness-matched to graphite 600."
+        },
+        "700": {
+          "$value": "#523141",
+          "$description": "Mauve step 700, lightness-matched to graphite 700."
+        },
+        "800": {
+          "$value": "#432634",
+          "$description": "Mauve step 800, lightness-matched to graphite 800."
+        },
+        "900": {
+          "$value": "#361d29",
+          "$description": "Mauve step 900, lightness-matched to graphite 900."
+        },
+        "950": {
+          "$value": "#240f1a",
+          "$description": "Mauve, near-black substrate."
+        },
+        "$description": "Mauve, a reserved secondary scale lightness-matched to graphite. Defined for exploration; no semantic token uses it yet."
+      },
       "violet": {
         "50": {
           "$value": "#f5f3ff",

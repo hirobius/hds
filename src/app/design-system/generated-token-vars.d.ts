@@ -55,6 +55,17 @@ declare module 'react' {
     '--primitive-color-graphite-800'?: string | undefined;
     '--primitive-color-graphite-900'?: string | undefined;
     '--primitive-color-graphite-950'?: string | undefined;
+    '--primitive-color-mauve-50'?: string | undefined;
+    '--primitive-color-mauve-100'?: string | undefined;
+    '--primitive-color-mauve-200'?: string | undefined;
+    '--primitive-color-mauve-300'?: string | undefined;
+    '--primitive-color-mauve-400'?: string | undefined;
+    '--primitive-color-mauve-500'?: string | undefined;
+    '--primitive-color-mauve-600'?: string | undefined;
+    '--primitive-color-mauve-700'?: string | undefined;
+    '--primitive-color-mauve-800'?: string | undefined;
+    '--primitive-color-mauve-900'?: string | undefined;
+    '--primitive-color-mauve-950'?: string | undefined;
     '--primitive-color-violet-50'?: string | undefined;
     '--primitive-color-violet-400'?: string | undefined;
     '--primitive-color-violet-700'?: string | undefined;

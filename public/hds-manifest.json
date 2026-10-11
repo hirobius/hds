@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-11T20:01:22.704Z",
+  "generated": "2026-10-11T20:56:58.002Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -8401,6 +8401,83 @@
         "type": "color",
         "description": "Graphite accent — near-black warm substrate.",
         "value": "#19161a"
+      },
+      {
+        "path": "primitive.color.mauve.50",
+        "cssVar": "--primitive-color-mauve-50",
+        "type": "color",
+        "description": "Mauve tint, faintest step.",
+        "value": "#fff0f6"
+      },
+      {
+        "path": "primitive.color.mauve.100",
+        "cssVar": "--primitive-color-mauve-100",
+        "type": "color",
+        "description": "Mauve step 100, lightness-matched to graphite 100.",
+        "value": "#f4e2ea"
+      },
+      {
+        "path": "primitive.color.mauve.200",
+        "cssVar": "--primitive-color-mauve-200",
+        "type": "color",
+        "description": "Mauve step 200, lightness-matched to graphite 200.",
+        "value": "#e1cad4"
+      },
+      {
+        "path": "primitive.color.mauve.300",
+        "cssVar": "--primitive-color-mauve-300",
+        "type": "color",
+        "description": "Mauve step 300, lightness-matched to graphite 300.",
+        "value": "#c0a4b1"
+      },
+      {
+        "path": "primitive.color.mauve.400",
+        "cssVar": "--primitive-color-mauve-400",
+        "type": "color",
+        "description": "Mauve step 400, lightness-matched to graphite 400.",
+        "value": "#9d7b8a"
+      },
+      {
+        "path": "primitive.color.mauve.500",
+        "cssVar": "--primitive-color-mauve-500",
+        "type": "color",
+        "description": "Mauve anchor (#734B5E). Reserved; not mapped to any semantic token yet.",
+        "value": "#734b5e"
+      },
+      {
+        "path": "primitive.color.mauve.600",
+        "cssVar": "--primitive-color-mauve-600",
+        "type": "color",
+        "description": "Mauve step 600, lightness-matched to graphite 600.",
+        "value": "#674254"
+      },
+      {
+        "path": "primitive.color.mauve.700",
+        "cssVar": "--primitive-color-mauve-700",
+        "type": "color",
+        "description": "Mauve step 700, lightness-matched to graphite 700.",
+        "value": "#523141"
+      },
+      {
+        "path": "primitive.color.mauve.800",
+        "cssVar": "--primitive-color-mauve-800",
+        "type": "color",
+        "description": "Mauve step 800, lightness-matched to graphite 800.",
+        "value": "#432634"
+      },
+      {
+        "path": "primitive.color.mauve.900",
+        "cssVar": "--primitive-color-mauve-900",
+        "type": "color",
+        "description": "Mauve step 900, lightness-matched to graphite 900.",
+        "value": "#361d29"
+      },
+      {
+        "path": "primitive.color.mauve.950",
+        "cssVar": "--primitive-color-mauve-950",
+        "type": "color",
+        "description": "Mauve, near-black substrate.",
+        "value": "#240f1a"
       },
       {
         "path": "primitive.color.violet.50",

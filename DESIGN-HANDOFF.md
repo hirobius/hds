@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 444 tokens, aliases, and TS refs in one shot.
+Checks all 455 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -127,6 +127,17 @@ Checks all 444 tokens, aliases, and TS refs in one shot.
 | `primitive.color.graphite.800`                      | `#352e32`                   | Graphite accent — deep step; light-mode hover.                                       |
 | `primitive.color.graphite.900`                      | `#2a2428`                   | Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text. |
 | `primitive.color.graphite.950`                      | `#19161a`                   | Graphite accent — near-black warm substrate.                                         |
+| `primitive.color.mauve.50`                          | `#fff0f6`                   | Mauve tint, faintest step.                                                           |
+| `primitive.color.mauve.100`                         | `#f4e2ea`                   | Mauve step 100, lightness-matched to graphite 100.                                   |
+| `primitive.color.mauve.200`                         | `#e1cad4`                   | Mauve step 200, lightness-matched to graphite 200.                                   |
+| `primitive.color.mauve.300`                         | `#c0a4b1`                   | Mauve step 300, lightness-matched to graphite 300.                                   |
+| `primitive.color.mauve.400`                         | `#9d7b8a`                   | Mauve step 400, lightness-matched to graphite 400.                                   |
+| `primitive.color.mauve.500`                         | `#734b5e`                   | Mauve anchor (#734B5E). Reserved; not mapped to any semantic token yet.              |
+| `primitive.color.mauve.600`                         | `#674254`                   | Mauve step 600, lightness-matched to graphite 600.                                   |
+| `primitive.color.mauve.700`                         | `#523141`                   | Mauve step 700, lightness-matched to graphite 700.                                   |
+| `primitive.color.mauve.800`                         | `#432634`                   | Mauve step 800, lightness-matched to graphite 800.                                   |
+| `primitive.color.mauve.900`                         | `#361d29`                   | Mauve step 900, lightness-matched to graphite 900.                                   |
+| `primitive.color.mauve.950`                         | `#240f1a`                   | Mauve, near-black substrate.                                                         |
 | `primitive.color.violet.50`                         | `#f5f3ff`                   | Specific value within the violet range at a defined lightness step.                  |
 | `primitive.color.violet.400`                        | `#a78bfa`                   | Specific value within the violet range at a defined lightness step.                  |
 | `primitive.color.violet.700`                        | `#6d28d9`                   | Specific value within the violet range at a defined lightness step.                  |

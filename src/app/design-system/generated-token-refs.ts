@@ -68,6 +68,19 @@ export const tokenRefs = {
         "900": "var(--primitive-color-graphite-900)",
         "950": "var(--primitive-color-graphite-950)"
       },
+      mauve: {
+        "50": "var(--primitive-color-mauve-50)",
+        "100": "var(--primitive-color-mauve-100)",
+        "200": "var(--primitive-color-mauve-200)",
+        "300": "var(--primitive-color-mauve-300)",
+        "400": "var(--primitive-color-mauve-400)",
+        "500": "var(--primitive-color-mauve-500)",
+        "600": "var(--primitive-color-mauve-600)",
+        "700": "var(--primitive-color-mauve-700)",
+        "800": "var(--primitive-color-mauve-800)",
+        "900": "var(--primitive-color-mauve-900)",
+        "950": "var(--primitive-color-mauve-950)"
+      },
       violet: {
         "50": "var(--primitive-color-violet-50)",
         "400": "var(--primitive-color-violet-400)",
