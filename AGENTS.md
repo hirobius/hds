@@ -102,10 +102,92 @@ export default [...hds.configs.recommended];
 
 <!-- hds:repo-notes — everything below is hand-written, for agents working in the hds repo itself; consumers can stop here. -->
 
-## Working in the hds repo
+<!-- hds:front-door:start — generated from docs/state-surfaces.json by scripts/generate-agents-md.mjs (pnpm agents:generate); do not hand-edit until the end marker. -->
 
-Notes for agents working on this repository, not with the package. Read `CLAUDE.md` for
-the full engineering protocol; this section is the home for autonomous-loop rules.
+## Front door: working in the hds repo
+
+@hirobius/design-system is a token-first React product foundation: one opinionated, re-themeable system, published as an npm package, with the token layer portable to other front ends.
+
+### Read order
+
+1. `CLAUDE.md`, then `docs/ai/NORTH_STAR.md`, then `public/llms.txt`. These are the always-on files: rules, read order and pointers, no state.
+2. `docs/ENGINEERING.md`: how the system is built (sources of truth, gates, release, design and code sync).
+3. For the task at hand: `public/hds-manifest.json` and `src/app/data/component-api.json` (inventory and props), `DESIGN.md` (visual spec), `docs/guardrails/registry.json` (every gate and where it fires).
+
+### Where live state is
+
+Nothing in the repo records the release, the open work or what is blocked: ops derives them. Read ops `/ops/standing` (every verdict from live data) and `GET https://<ops host>/api/projects?status=hirobius/hds` (this repo's derived state; the ops host is not recorded in this repo, ask for it). `status.json` holds only the hand-written focus and phase. Open work is GitHub Issues in this repo.
+
+### Documents and what keeps them true
+
+Built from `docs/state-surfaces.json`, which `scripts/check-state-surfaces.mjs` gates. Re-read an editorial document, bump its `reviewedAt` there, then run `pnpm agents:generate`.
+
+### Generated
+
+A script builds it; its `--check` fails when it is stale. Do not hand-edit.
+
+- `README.md` (auto:front-door-counts): Front-door counts. Built by `scripts/build-readme-counts.mjs`.
+- `README.md` (auto:consumer-usage): Who uses HDS (consumer usage). Built by `scripts/count-consumer-usage.mjs`.
+- `README.md` (auto:core-set): The core set of components. Built by `scripts/build-readme-counts.mjs`.
+- `AGENTS.md` (consumer guide): Consumer agent instructions shipped in the package. Built by `scripts/generate-agents-md.mjs`.
+- `AGENTS.md` (front door): Front door for agents working in this repo: read order, where live state is, and this index. Built by `scripts/generate-agents-md.mjs`.
+- `llms.txt`: llms.txt index, package-root mirror. Built by `scripts/generate-llms-txt.mjs`.
+- `public/llms.txt`: llms.txt index (absolute links, no timestamp). Built by `scripts/generate-llms-txt.mjs`.
+- `public/llms-full.txt`: llms-full.txt: the system map body, DESIGN.md and the props digest. Built by `scripts/generate-llms-txt.mjs`.
+- `public/llms`: Per-topic llms slices: components, layout, scroll, tokens. Built by `scripts/generate-llms-txt.mjs`.
+- `public/hds-manifest.json`: Machine-readable inventory of components, categories and phase status. Built by `scripts/generate-manifest.mjs`.
+- `docs/sync-map.json`: One row per component joining source, manifest, docs page and Figma. Built by `scripts/check-sync-map.mjs`.
+- `DESIGN.md`: The visual spec for agents, built from DESIGN.source.md and the tokens. Built by `scripts/build-design-md.mjs`.
+- `DESIGN-HANDOFF.md` (token tables): Token reference tables mirrored from hirobius.tokens.json. Built by `scripts/build-handoff.mjs`.
+- `CHANGELOG.md`: Release notes, one entry per version. Built by `changesets (pnpm changeset:version)`.
+- `UPGRADING.md`: What each release asks of a consumer, compiled from upgrade/releases. Built by `scripts/upgrade/compile.mjs`.
+- `upgrade/index.json`: Every release with its breaking count, the floor and what is deprecated. Built by `scripts/upgrade/compile.mjs`.
+- `figma/snapshot.json`: The Figma library as last recorded by the Sync plugin. Built by `scripts/figma-snapshot.mjs`.
+- `figma/inventory.json`: Every page, component set and variant count in the Figma library. Built by `scripts/figma-inventory.mjs`.
+- `figma/disposition.json`: What becomes of each Figma component. Built by `scripts/figma-disposition.mjs`.
+- `figma/code-connect.json`: Code Connect templates registry. Built by `scripts/generate-code-connect.mjs`.
+- `docs/DESIGN_LINKS.md`: Where each component lives in Figma, the docs site and source. Built by `scripts/figma-links.mjs`.
+
+### Checked
+
+Hand-kept, but a gate compares it with the code.
+
+- `status.json` (updatedAt): updatedAt, which a commit to src/, scripts/ or docs/adr/ must not outpace. Checked by `scripts/check-record-freshness.mjs`.
+- `status.json` (consistency): The agent-consistency figures, compared with the latest ledger entry. Checked by `scripts/check-status-claims.mjs`.
+- `.status`: Per-branch one-line notes standing in for a status.json bump until pnpm status:fold. Checked by `scripts/check-record-freshness.mjs`.
+- `README.md` (Open explorations): Open explorations, including the agent-consistency line. Checked by `scripts/check-status-claims.mjs`.
+- `docs/guardrails/registry.json`: Every gate, where it fires and its proof-of-firing fixtures. Checked by `scripts/validate-guardrail-registry.mjs`.
+- `eval/consistency/ledger.json`: Append-only record of agent-consistency eval runs. Checked by `scripts/check-status-claims.mjs`.
+
+### Editorial
+
+Written by a person; the registry carries who, and when it was last re-read.
+
+- `status.json` (focus, phase, note): Where the repo is heading: focus, phase and note (v2 shape; ops derives release, next and blocked live). Adrian, reviewed 2026-10-12, re-read within 45 days.
+- `README.md` (prose): What HDS is, how to install it and use it (prose). Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `DESIGN.source.md`: Narrative rules of the visual spec (the editable source of DESIGN.md). Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `DESIGN-HANDOFF.md` (manual sections): Hand-written sections around the generated token tables. Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `MIGRATIONS.md`: How HDS deprecates and removes public API, and the removals shipped so far. Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `docs/ENGINEERING.md`: How HDS is engineered: sources of truth, enforcement, shipping, design and code sync. Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `CLAUDE.md`: Policy and routing for agents working in this repo. Adrian, reviewed 2026-10-12, re-read within 60 days.
+- `docs/ai/NORTH_STAR.md`: What HDS is for, who it serves and its non-goals. Adrian, reviewed 2026-10-12, re-read within 180 days.
+- `docs/agents`: Issue-tracker, triage-label and domain-doc config the engineering skills read. Adrian, reviewed 2026-10-12, re-read within 120 days.
+- `docs/ROADMAP.md`: Backlog and technical debt for the design-system repo. Adrian, reviewed 2026-10-12, re-read within 45 days.
+- `CONTRIBUTING.md`: Dev setup and contribution rules. Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `CONSUMING.md`: Short consumption guide shipped in the package. Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `docs/CONSUMING.md`: The canonical consumption guide. Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `.github/ISSUE_TEMPLATE`: Bug and feature request templates. Adrian, reviewed 2026-10-12, re-read within 120 days.
+- `.github/PULL_REQUEST_TEMPLATE.md`: Pull request template. Adrian, reviewed 2026-10-12, re-read within 120 days.
+- `figma/README.md`: Runbook for syncing code to the Figma library. Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `figma/MCP-LEDGER.md`: Budget log of every Figma MCP call an agent session makes. Adrian, reviewed 2026-10-12, re-read within 30 days.
+- `figma/links.json`: Figma file keys and docs URL the sync reads. Adrian, reviewed 2026-10-12, re-read within 120 days.
+- `figma/brand-modes.json`: Demo tenants that are modes of the Hirobius/Brand collection. Adrian, reviewed 2026-10-12, re-read within 120 days.
+- `figma/mapping-overrides.json`: Hand-made component to Figma mappings. Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `OPERATING_MAP.md`: Where each kind of information should go. Adrian, reviewed 2026-10-12, re-read within 90 days.
+- `DECISIONS.md`: Pointer to docs/adr, where decisions live. Adrian, reviewed 2026-10-12, re-read within 180 days.
+- `content-model.md`: Frontmatter schema and page templates for the docs MDX. Adrian, reviewed 2026-10-12, re-read within 120 days.
+
+<!-- hds:front-door:end -->
 
 ## Ralph quality bar
 

@@ -299,6 +299,7 @@ public/             manifest, llms.txt
 
 - [`docs/CONSUMING.md`](docs/CONSUMING.md) — installing & using the published package
 - [`docs/ENGINEERING.md`](docs/ENGINEERING.md) — how the system is built (pipeline, gates, release, Figma sync)
+- [`AGENTS.md`](AGENTS.md) — the front door for agents working in this repo ("Front door" section: read order, where live state is, every doc by kind); the part above it ships in the package
 - `CLAUDE.md` — agent operating contract
 - `DESIGN.md` — lean visual spec
 - `DESIGN-HANDOFF.md` — verbose visual mirror

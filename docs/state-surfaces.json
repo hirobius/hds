@@ -1,5 +1,5 @@
 {
-  "$comment": "State-surface registry (hds#612, spec hirobius/ops#576). Every file or section that describes project state, and what keeps it true: generated (a generator builds it; its --check runs elsewhere), checked (a named gate compares it with the code), editorial (hand-written; owner, reviewedAt and maxAgeDays; the gate says \"review due\" past maxAgeDays). Read by scripts/check-state-surfaces.mjs. After re-reading an editorial file, bump its reviewedAt. ignoreReferences lists path prefixes that docs name but a clean checkout lacks. alwaysOn lists the files every agent loads first (CLAUDE.md and what it marks read-first); the gate flags derived facts (versions, counts, issue lists, \"as of\" state) in them, and docs/guardrails/steering-budget.json caps their size.",
+  "$comment": "State-surface registry (hds#612, spec hirobius/ops#576). Every file or section that describes project state, and what keeps it true: generated (a generator builds it; its --check runs elsewhere), checked (a named gate compares it with the code), editorial (hand-written; owner, reviewedAt and maxAgeDays; the gate says \"review due\" past maxAgeDays). Read by scripts/check-state-surfaces.mjs. After re-reading an editorial file, bump its reviewedAt, then run pnpm agents:generate: the front door in AGENTS.md prints it. ignoreReferences lists path prefixes that docs name but a clean checkout lacks. alwaysOn lists the files every agent loads first (CLAUDE.md and what it marks read-first); the gate flags derived facts (versions, counts, issue lists, \"as of\" state) in them, and docs/guardrails/steering-budget.json caps their size.",
   "alwaysOn": ["CLAUDE.md", "docs/ai/NORTH_STAR.md", "public/llms.txt"],
   "ignoreReferences": [],
   "surfaces": [
@@ -75,6 +75,15 @@
       "describes": "Consumer agent instructions shipped in the package",
       "kind": "generated",
       "by": "scripts/generate-agents-md.mjs",
+      "section": "consumer guide",
+      "check": "node scripts/generate-agents-md.mjs --check"
+    },
+    {
+      "path": "AGENTS.md",
+      "describes": "Front door for agents working in this repo: read order, where live state is, and this index",
+      "kind": "generated",
+      "by": "scripts/generate-agents-md.mjs",
+      "section": "front door",
       "check": "node scripts/generate-agents-md.mjs --check"
     },
     {

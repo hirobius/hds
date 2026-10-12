@@ -76,10 +76,10 @@ The repo has a **closed-loop guardrail system** every agent must understand:
 - **`docs/guardrails/registry.json`** — every `scripts/check-*.mjs` and `scripts/audit-*.mjs` is registered with `firingChannel` declaring where it fires (pre-commit / pre-push / ci-pr / ci-scheduled / pnpm-meta / manual). Drift caught by `validate-guardrail-registry` + `check-validator-wiring`, both pre-commit gates.
 - **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt` unless a pushed commit adds a `.status/<branch>.md` note instead of editing status.json (no conflicts; `pnpm status:fold` folds on main), or when a commit changing what ships (`src/`, the files `package.json#files` ships from `codemods/`, `mcp/` and the ESLint plugin, `hirobius.tokens.json`, `tailwind.config.tokens.cjs`, or a consumer field of `package.json` such as `dependencies`) has no pending `.changeset/*.md` and no `skip-changeset` marker in its own message. Every changeset carries `upgrade/pending/<same name>.json`, and a breaking change needs a minor below 1.0 (`scripts/check-upgrade-ledger.mjs` in pretest; `pnpm upgrade:note` writes the note).
 
-Context Awareness: Always look for local `CLAUDE.md` files in subdirectories (like `/components` or `/sketches`) for specific overriding rules before editing.
+Context Awareness: look for local `CLAUDE.md` files in subdirectories (like `/components` or `/sketches`) for overriding rules before editing.
 
-Before touching code, read `public/llms.txt` first, then check `public/hds-manifest.json` and the relevant source files.
-For visual work, read `DESIGN.md` first and use `DESIGN-HANDOFF.md` as the verbose mirror.
+Before coding, read the `AGENTS.md` "Front door" (read order, live state, docs), then `public/llms.txt`, `public/hds-manifest.json`, source.
+For visual work, read `DESIGN.md` first; `DESIGN-HANDOFF.md` is the verbose mirror.
 
 For HDS work:
 
