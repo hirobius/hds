@@ -266,7 +266,7 @@
     "docs:api": "node scripts/generate-component-api.mjs",
     "docs:changelogs": "node scripts/generate-component-changelogs.mjs",
     "docs:build": "pnpm docs:prepare && pnpm --dir docs-site build",
-    "docs:publish": "pnpm docs:build && node scripts/generate-manifest-projection.mjs && node scripts/copy-agent-context.mjs --out docs-site/out && node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json",
+    "docs:publish": "pnpm docs:build && node scripts/generate-manifest-projection.mjs && node scripts/copy-agent-context.mjs --out docs-site/out && node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json --plugin-zip docs-site/out/figma/hds-tokens-sync.zip",
     "docs:components": "node scripts/generate-docs-components.mjs",
     "docs:dev": "pnpm docs:prepare && pnpm --dir docs-site dev",
     "docs:llms": "node scripts/generate-llms-txt.mjs",
