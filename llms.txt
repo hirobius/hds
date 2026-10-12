@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-11T06:38:18.383Z
+Generated: 2026-10-11T20:46:31.293Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## Agents Using The Package: Start Here
@@ -82,15 +82,6 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 - Docs pipeline: `public/hds-manifest.json` + `src/app/data/component-api.json` -> reflective docs pages
 - AI entrypoint: read `public/llms.txt` before editing code
 
-## Phase Snapshot
-
-- foundation. Foundations - 63% - Token architecture, CSS pipeline, accessibility, and primitive scales.
-  - Criteria: done: W3C DTCG three-tier token architecture; done: CSS variable pipeline + token verify; partial: Primitive scales complete (color, type, space); todo: Token audit clean
-- components. Components - 75% - Accessible React UI built from foundations and mapped toward Figma parity.
-  - Criteria: done: Component inventory with typed props; done: Action system architecture (buttons, links, groups); done: Prop tables and API doc coverage; todo: Figma parity mapping
-- infrastructure-operations. Architecture - 55% - System delivery, Figma sync, automation, quality gates, and operational hygiene.
-  - Criteria: done: System manifest + llms.txt AI context; done: Release gate + full audit gate; done: Documentation automation (AST pipeline, LLMS sync); partial: Payload sweep + orphan cleanup; partial: Motion system foundations; todo: Figma library generated from tokens; todo: Code Connect CI + reverse sync; partial: AST gatekeeper + token schema validation; partial: A11y CI + visual regression pipeline; partial: Operational feedback loop + AI retrospective
-
 ## Component Inventory (Source Of Truth)
 
 This file intentionally does not embed the full component list to avoid duplication and excess context.
@@ -107,7 +98,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 43 components of the ratified core set (hds#254, ADR-031): brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 43 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -265,7 +256,7 @@ Canonical primitives, cheapest-first (CSS before JS, JS before an opt-in depende
 2. `Pin` (`position: sticky`) for a pinned scroll scene — the dependency-free basis for the "tall section + sticky child" pattern (GSAP's `pin: true`, done with zero JS). Give the pinned element a TALLER scrolling parent (e.g. `height: 300vh`) so it has room to travel; `top` is a CSS length offset, not a spacing token.
 3. `useScrollProgress` (from `@hirobius/design-system/scroll`) only when the 0→1 scroll value is needed in React — cross-element choreography, canvas/WebGL, or a Motion (`motion/react`) `useTransform` binding that CSS `animation-timeline` cannot express. Thin, SSR-guarded wrapper over Motion `useScroll`; adds no new dependency.
 4. `SmoothScroll` (from `@hirobius/design-system/scroll`, `lenis` as an OPTIONAL peer dep) only for opt-in momentum ("inertia") scrolling, mounted once at the app/site root. Never imported from the main barrel — consumers who skip it pay nothing. Reduced-motion-first: Lenis is not instantiated when the user prefers reduced motion, unless `ignoreReducedMotion` is set for a deliberate art-directed exception.
-5. Do not adopt GSAP/ScrollTrigger, and do not wire Lenis directly outside `SmoothScroll`, inside the core library — the CSS + Motion stack above covers reveal/pin/scrub without new dependencies. Bespoke GSAP/Lenis/WebGL scenes stay app-level/downstream (marketing sites, the clients factory), composed from these primitives (ADR-021, #116).
+5. Do not adopt GSAP/ScrollTrigger, and do not wire Lenis directly outside `SmoothScroll`, inside the core library — the CSS + Motion stack above covers reveal/pin/scrub without new dependencies. Bespoke GSAP/Lenis/WebGL scenes stay app-level/downstream (marketing sites, the clients factory), composed from these primitives.
 
 Negative rules:
 
@@ -274,7 +265,7 @@ Negative rules:
 - No GSAP/ScrollTrigger or bespoke Lenis wiring inside `@hirobius/design-system` — those stay app-level/downstream, composed from `Reveal`/`Pin`/`useScrollProgress`/`SmoothScroll`.
 - Every scroll effect must degrade to fully visible/static content — never gate content visibility behind `animation-timeline` support or a scroll listener with no fallback.
 
-Reference: `src/app/components/reveal.tsx`, `src/app/components/pin.tsx`, `src/scroll/` (`use-scroll-progress.ts`, `smooth-scroll.tsx`), ADR-021, and the Reveal pattern page on the docs site (`/docs/patterns/reveal`) for golden-path examples.
+Reference: `src/app/components/reveal.tsx`, `src/app/components/pin.tsx`, `src/scroll/` (`use-scroll-progress.ts`, `smooth-scroll.tsx`), and the Reveal pattern page on the docs site (`/docs/patterns/reveal`) for golden-path examples.
 
 ## HDS Card Anatomy (mandatory — every property is non-negotiable)
 

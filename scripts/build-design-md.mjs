@@ -141,14 +141,24 @@ export function buildTypography(raw) {
   };
 
   const lines = [];
-  lines.push(`HDS ships three typefaces — each with a distinct and exclusive role:`);
-  lines.push('');
-  lines.push(
-    `- **Display / Heading font**: ${displayFam}. Bound exclusively to the \`display\` and \`title\` styles. Never used for body copy or UI labels.`,
-  );
-  lines.push(
-    `- **Body / UI font**: ${family}. All prose, labels, small text, captions, and UI copy.`,
-  );
+  // Derived from the tokens: when headings and body share a family, say so
+  // (this read "three typefaces" for a while after they had merged).
+  if (displayFam === family) {
+    lines.push(`HDS ships two typefaces:`);
+    lines.push('');
+    lines.push(
+      `- **Text font**: ${family}. Headings, prose, labels, captions, and UI copy; the type roles set size and weight.`,
+    );
+  } else {
+    lines.push(`HDS ships three typefaces — each with a distinct role:`);
+    lines.push('');
+    lines.push(
+      `- **Display / Heading font**: ${displayFam}. Bound to the \`display\` and \`title\` styles.`,
+    );
+    lines.push(
+      `- **Body / UI font**: ${family}. All prose, labels, small text, captions, and UI copy.`,
+    );
+  }
   lines.push(
     `- **Mono font**: ${mono}. Reserved for tokens, code, technical callouts, and metric readouts.`,
   );

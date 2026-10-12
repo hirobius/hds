@@ -1,0 +1,175 @@
+{
+  "impact": "look",
+  "plain": "Setting --hds-font-family or --hds-font-family-mono (or HdsThemeProvider's fontFamily props) now changes the rendered font at that scope; with no override nothing changes.",
+  "steps": [
+    {
+      "id": "value-changed/--primitive-typography-family-display",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--primitive-typography-family-display"],
+        "cssVarWrites": ["--primitive-typography-family-display"]
+      },
+      "facts": [
+        "css-var-changed:--primitive-typography-family-display::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--primitive-typography-family-mono",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the code-font dial (--hds-font-family-mono) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--primitive-typography-family-mono"],
+        "cssVarWrites": ["--primitive-typography-family-mono"]
+      },
+      "facts": [
+        "css-var-changed:--primitive-typography-family-mono::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--primitive-typography-family-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--primitive-typography-family-primary"],
+        "cssVarWrites": ["--primitive-typography-family-primary"]
+      },
+      "facts": [
+        "css-var-changed:--primitive-typography-family-primary::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-body-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-body-font-family"],
+        "cssVarWrites": ["--semantic-typography-body-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-body-font-family::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-caption-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-caption-font-family"],
+        "cssVarWrites": ["--semantic-typography-caption-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-caption-font-family::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-display-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-display-font-family"],
+        "cssVarWrites": ["--semantic-typography-display-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-display-font-family::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-eyebrow-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-eyebrow-font-family"],
+        "cssVarWrites": ["--semantic-typography-eyebrow-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-eyebrow-font-family::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-h1-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h1-font-family"],
+        "cssVarWrites": ["--semantic-typography-h1-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-h1-font-family::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-h2-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h2-font-family"],
+        "cssVarWrites": ["--semantic-typography-h2-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-h2-font-family::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-h3-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h3-font-family"],
+        "cssVarWrites": ["--semantic-typography-h3-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-h3-font-family::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-mono-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the code-font dial (--hds-font-family-mono) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-mono-font-family"],
+        "cssVarWrites": ["--semantic-typography-mono-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-mono-font-family::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-title-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-title-font-family"],
+        "cssVarWrites": ["--semantic-typography-title-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-title-font-family::where([data-hds],[data-hds] *)"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-typography-ui-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": ["--semantic-typography-ui-font-family"],
+        "cssVarWrites": ["--semantic-typography-ui-font-family"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-ui-font-family::where([data-hds],[data-hds] *)"
+      ]
+    }
+  ]
+}
