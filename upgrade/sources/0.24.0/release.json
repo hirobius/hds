@@ -1,0 +1,22 @@
+{
+  "$comment": "Frozen inputs of the 0.24.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.24.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.24.0",
+  "previous": "0.23.2",
+  "date": "2026-10-12",
+  "summary": "11 changes to make by hand (11 breaking) and 24 that look different.",
+  "backfilled": false,
+  "notes": {
+    "brand-accent-graphite": {
+      "needle": "72800bc: feat(brand): change the default",
+      "source": "CHANGELOG.md:19"
+    },
+    "font-dial-reaches-type-roles": {
+      "needle": "72800bc: fix(theming): the font dial now",
+      "source": "CHANGELOG.md:34"
+    },
+    "mauve-reserved-scale": {
+      "needle": "72800bc: feat(tokens): add a reserved mauve",
+      "source": "CHANGELOG.md:38"
+    }
+  }
+}
