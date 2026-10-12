@@ -1,0 +1,411 @@
+{
+  "$comment": "INVENTED data for design explorations (hds#628). Fictional businesses, people and towns; phone numbers are 555-01xx and addresses are example.com. Nothing here is a real lead, client or person.",
+  "screen": "ops-home",
+  "asOf": "2026-10-13T09:00:00Z",
+  "tiles": [
+    { "label": "Leads", "value": "412", "hint": "188 qualified", "href": "/ops/leads" },
+    { "label": "Clients", "value": "6", "hint": "2 active retainers", "href": "/ops/clients" },
+    { "label": "Projects", "value": "9", "hint": "3 running now", "href": "/ops/projects" },
+    { "label": "Tasks", "value": "14", "hint": "4 waiting on you", "href": "/ops/tasks" }
+  ],
+  "repos": [
+    "harborlane/ops",
+    "harborlane/site-factory",
+    "harborlane/design-kit",
+    "harborlane/portal-kit"
+  ],
+  "routes": ["github-issue", "idea", "client-note", "discard"],
+  "moreDrops": 17,
+  "suggest": { "state": "idle", "unsorted": 3 },
+  "capture": {
+    "state": "idle",
+    "draft": "Idea: let each unsorted drop show the one-line reason beside its suggested route, so confirming is a glance.",
+    "files": [
+      { "name": "sketch-inbox.png", "sizeKb": 780, "progress": 100, "status": "done" },
+      { "name": "call-recording-notes.m4a", "sizeKb": 5120, "progress": 100, "status": "done" }
+    ],
+    "error": null
+  },
+  "drops": [
+    {
+      "id": "drop_1042",
+      "text": "The standing page should lead with what is on fire and say nothing else when all is clear.",
+      "attachments": [],
+      "status": "new",
+      "route": null,
+      "suggestion": {
+        "route": "idea",
+        "target": null,
+        "reason": "A product opinion, not a task: park it with the other standing ideas.",
+        "source": "claude-routine"
+      },
+      "ageLabel": "4m",
+      "createdAt": "2026-10-13T08:56:00Z"
+    },
+    {
+      "id": "drop_1041",
+      "text": "Photo of the whiteboard from the Tuesday call, three pricing options circled.",
+      "attachments": [{ "name": "whiteboard-tuesday.jpg", "kind": "image", "sizeKb": 1840 }],
+      "status": "new",
+      "route": null,
+      "suggestion": {
+        "route": "client-note",
+        "target": "Brightwater Dental Studio",
+        "reason": "Pricing options discussed on a client call.",
+        "source": "claude-routine"
+      },
+      "ageLabel": "38m",
+      "createdAt": "2026-10-13T08:22:00Z"
+    },
+    {
+      "id": "drop_1040",
+      "text": "Preview for the Brindle junk removal site shows the old phone number in the footer.",
+      "attachments": [{ "name": "footer-bug.png", "kind": "image", "sizeKb": 412 }],
+      "status": "new",
+      "route": null,
+      "suggestion": {
+        "route": "github-issue",
+        "target": "harborlane/site-factory",
+        "reason": "A reproducible bug in a shared template.",
+        "source": "claude-routine"
+      },
+      "ageLabel": "2h",
+      "createdAt": "2026-10-13T07:00:00Z"
+    },
+    {
+      "id": "drop_1039",
+      "text": "Ask the partner to try the call outcome chips on a real phone before Friday.",
+      "attachments": [],
+      "status": "sorted",
+      "route": { "kind": "github-issue", "target": "harborlane/ops#614" },
+      "suggestion": null,
+      "ageLabel": "5h",
+      "createdAt": "2026-10-13T04:00:00Z"
+    },
+    {
+      "id": "drop_1038",
+      "text": "Competitor teardown: the quick-capture app with the big plus button.",
+      "attachments": [
+        { "name": "capture-app-notes.pdf", "kind": "file", "sizeKb": 920 },
+        { "name": "screenshot-1.png", "kind": "image", "sizeKb": 640 }
+      ],
+      "status": "sorted",
+      "route": { "kind": "idea", "target": null },
+      "suggestion": null,
+      "ageLabel": "1d",
+      "createdAt": "2026-10-12T09:00:00Z"
+    }
+  ],
+  "states": {
+    "empty": {
+      "tiles": [
+        { "label": "Leads", "value": "412", "hint": "188 qualified", "href": "/ops/leads" },
+        { "label": "Clients", "value": "6", "hint": "2 active retainers", "href": "/ops/clients" },
+        { "label": "Projects", "value": "9", "hint": "3 running now", "href": "/ops/projects" },
+        { "label": "Tasks", "value": "14", "hint": "4 waiting on you", "href": "/ops/tasks" }
+      ],
+      "repos": [
+        "harborlane/ops",
+        "harborlane/site-factory",
+        "harborlane/design-kit",
+        "harborlane/portal-kit"
+      ],
+      "routes": ["github-issue", "idea", "client-note", "discard"],
+      "moreDrops": 0,
+      "suggest": { "state": "idle", "unsorted": 0 },
+      "capture": { "state": "idle", "draft": "", "files": [], "error": null },
+      "drops": []
+    },
+    "loading": {
+      "note": "No data. Render the capture box (it works with no data) and a placeholder where recent drops will appear."
+    },
+    "error": {
+      "tiles": [
+        { "label": "Leads", "value": "412", "hint": "188 qualified", "href": "/ops/leads" },
+        { "label": "Clients", "value": "6", "hint": "2 active retainers", "href": "/ops/clients" },
+        { "label": "Projects", "value": "9", "hint": "3 running now", "href": "/ops/projects" },
+        { "label": "Tasks", "value": "14", "hint": "4 waiting on you", "href": "/ops/tasks" }
+      ],
+      "repos": [
+        "harborlane/ops",
+        "harborlane/site-factory",
+        "harborlane/design-kit",
+        "harborlane/portal-kit"
+      ],
+      "routes": ["github-issue", "idea", "client-note", "discard"],
+      "moreDrops": 17,
+      "suggest": { "state": "idle", "unsorted": 3 },
+      "capture": {
+        "state": "failed",
+        "draft": "Photos from the Brindle site visit, plus the estimate we talked about.",
+        "files": [
+          { "name": "estimate-final.pdf", "sizeKb": 31200, "progress": 100, "status": "failed" },
+          { "name": "site-visit-1.jpg", "sizeKb": 2310, "progress": 100, "status": "done" }
+        ],
+        "error": "Upload failed for estimate-final.pdf: the file is 30 MB and the limit is 25 MB. Your note is kept. Remove the file or shrink it, then save again."
+      },
+      "drops": [
+        {
+          "id": "drop_1042",
+          "text": "The standing page should lead with what is on fire and say nothing else when all is clear.",
+          "attachments": [],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "idea",
+            "target": null,
+            "reason": "A product opinion, not a task: park it with the other standing ideas.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "4m",
+          "createdAt": "2026-10-13T08:56:00Z"
+        },
+        {
+          "id": "drop_1041",
+          "text": "Photo of the whiteboard from the Tuesday call, three pricing options circled.",
+          "attachments": [{ "name": "whiteboard-tuesday.jpg", "kind": "image", "sizeKb": 1840 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "client-note",
+            "target": "Brightwater Dental Studio",
+            "reason": "Pricing options discussed on a client call.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "38m",
+          "createdAt": "2026-10-13T08:22:00Z"
+        },
+        {
+          "id": "drop_1040",
+          "text": "Preview for the Brindle junk removal site shows the old phone number in the footer.",
+          "attachments": [{ "name": "footer-bug.png", "kind": "image", "sizeKb": 412 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "github-issue",
+            "target": "harborlane/site-factory",
+            "reason": "A reproducible bug in a shared template.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "2h",
+          "createdAt": "2026-10-13T07:00:00Z"
+        }
+      ]
+    },
+    "longContent": {
+      "tiles": [
+        { "label": "Leads", "value": "412", "hint": "188 qualified", "href": "/ops/leads" },
+        { "label": "Clients", "value": "6", "hint": "2 active retainers", "href": "/ops/clients" },
+        { "label": "Projects", "value": "9", "hint": "3 running now", "href": "/ops/projects" },
+        { "label": "Tasks", "value": "14", "hint": "4 waiting on you", "href": "/ops/tasks" }
+      ],
+      "repos": [
+        "harborlane/ops",
+        "harborlane/site-factory",
+        "harborlane/design-kit",
+        "harborlane/portal-kit",
+        "harborlane/an-extremely-long-repository-name-that-keeps-going-past-the-edge-of-the-menu"
+      ],
+      "routes": ["github-issue", "idea", "client-note", "discard"],
+      "moreDrops": 17,
+      "suggest": { "state": "idle", "unsorted": 3 },
+      "capture": {
+        "state": "idle",
+        "draft": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens.",
+        "files": [
+          {
+            "name": "quarterly-retainer-reconciliation-notes-for-the-three-affected-clients-draft-1-final-v2.pdf",
+            "sizeKb": 400,
+            "progress": 100,
+            "status": "done"
+          },
+          {
+            "name": "quarterly-retainer-reconciliation-notes-for-the-three-affected-clients-draft-2-final-v3.pdf",
+            "sizeKb": 520,
+            "progress": 100,
+            "status": "done"
+          },
+          {
+            "name": "quarterly-retainer-reconciliation-notes-for-the-three-affected-clients-draft-3-final-v4.pdf",
+            "sizeKb": 640,
+            "progress": 100,
+            "status": "done"
+          },
+          {
+            "name": "quarterly-retainer-reconciliation-notes-for-the-three-affected-clients-draft-4-final-v5.pdf",
+            "sizeKb": 760,
+            "progress": 100,
+            "status": "done"
+          },
+          {
+            "name": "quarterly-retainer-reconciliation-notes-for-the-three-affected-clients-draft-5-final-v6.pdf",
+            "sizeKb": 880,
+            "progress": 100,
+            "status": "done"
+          },
+          {
+            "name": "quarterly-retainer-reconciliation-notes-for-the-three-affected-clients-draft-6-final-v7.pdf",
+            "sizeKb": 1000,
+            "progress": 100,
+            "status": "done"
+          },
+          {
+            "name": "quarterly-retainer-reconciliation-notes-for-the-three-affected-clients-draft-7-final-v8.pdf",
+            "sizeKb": 1120,
+            "progress": 100,
+            "status": "done"
+          },
+          {
+            "name": "quarterly-retainer-reconciliation-notes-for-the-three-affected-clients-draft-8-final-v9.pdf",
+            "sizeKb": 1240,
+            "progress": 100,
+            "status": "done"
+          }
+        ],
+        "error": null
+      },
+      "drops": [
+        {
+          "id": "drop_1042",
+          "text": "The standing page should lead with what is on fire and say nothing else when all is clear. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+          "attachments": [],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "idea",
+            "target": null,
+            "reason": "A product opinion, not a task: park it with the other standing ideas.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "4m",
+          "createdAt": "2026-10-13T08:56:00Z"
+        },
+        {
+          "id": "drop_1041",
+          "text": "Photo of the whiteboard from the Tuesday call, three pricing options circled.",
+          "attachments": [
+            {
+              "name": "attachment-with-a-long-descriptive-file-name-number-1.jpeg",
+              "kind": "image",
+              "sizeKb": 900
+            },
+            {
+              "name": "attachment-with-a-long-descriptive-file-name-number-2.jpeg",
+              "kind": "image",
+              "sizeKb": 900
+            },
+            {
+              "name": "attachment-with-a-long-descriptive-file-name-number-3.jpeg",
+              "kind": "image",
+              "sizeKb": 900
+            },
+            {
+              "name": "attachment-with-a-long-descriptive-file-name-number-4.jpeg",
+              "kind": "image",
+              "sizeKb": 900
+            },
+            {
+              "name": "attachment-with-a-long-descriptive-file-name-number-5.jpeg",
+              "kind": "image",
+              "sizeKb": 900
+            },
+            {
+              "name": "attachment-with-a-long-descriptive-file-name-number-6.jpeg",
+              "kind": "image",
+              "sizeKb": 900
+            }
+          ],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "client-note",
+            "target": "Brightwater Dental Studio",
+            "reason": "Pricing options discussed on a client call.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "38m",
+          "createdAt": "2026-10-13T08:22:00Z"
+        },
+        {
+          "id": "drop_1040",
+          "text": "Preview for the Brindle junk removal site shows the old phone number in the footer. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+          "attachments": [{ "name": "footer-bug.png", "kind": "image", "sizeKb": 412 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "github-issue",
+            "target": "harborlane/site-factory",
+            "reason": "A reproducible bug in a shared template.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "2h",
+          "createdAt": "2026-10-13T07:00:00Z"
+        },
+        {
+          "id": "drop_1039",
+          "text": "Ask the partner to try the call outcome chips on a real phone before Friday.",
+          "attachments": [],
+          "status": "sorted",
+          "route": { "kind": "github-issue", "target": "harborlane/ops#614" },
+          "suggestion": null,
+          "ageLabel": "5h",
+          "createdAt": "2026-10-13T04:00:00Z"
+        }
+      ]
+    },
+    "tokenFailure": {
+      "tiles": [
+        { "label": "Leads", "value": "412", "hint": "188 qualified", "href": "/ops/leads" },
+        { "label": "Clients", "value": "6", "hint": "2 active retainers", "href": "/ops/clients" },
+        { "label": "Projects", "value": "9", "hint": "3 running now", "href": "/ops/projects" },
+        { "label": "Tasks", "value": "14", "hint": "4 waiting on you", "href": "/ops/tasks" }
+      ],
+      "repos": [
+        "harborlane/ops",
+        "harborlane/site-factory",
+        "harborlane/design-kit",
+        "harborlane/portal-kit"
+      ],
+      "routes": ["github-issue", "idea", "client-note", "discard"],
+      "moreDrops": 17,
+      "suggest": {
+        "state": "unavailable",
+        "unsorted": 3,
+        "error": "Suggest routes needs DROPS_ROUTINE_ID and DROPS_ROUTINE_TOKEN. Set both in Vercel env vars (Production), then redeploy."
+      },
+      "capture": { "state": "idle", "draft": "", "files": [], "error": null },
+      "drops": [
+        {
+          "id": "drop_1042",
+          "text": "The standing page should lead with what is on fire and say nothing else when all is clear.",
+          "attachments": [],
+          "status": "new",
+          "route": null,
+          "suggestion": null,
+          "ageLabel": "4m",
+          "createdAt": "2026-10-13T08:56:00Z"
+        },
+        {
+          "id": "drop_1041",
+          "text": "Photo of the whiteboard from the Tuesday call, three pricing options circled.",
+          "attachments": [{ "name": "whiteboard-tuesday.jpg", "kind": "image", "sizeKb": 1840 }],
+          "status": "new",
+          "route": null,
+          "suggestion": null,
+          "ageLabel": "38m",
+          "createdAt": "2026-10-13T08:22:00Z"
+        },
+        {
+          "id": "drop_1040",
+          "text": "Preview for the Brindle junk removal site shows the old phone number in the footer.",
+          "attachments": [{ "name": "footer-bug.png", "kind": "image", "sizeKb": 412 }],
+          "status": "new",
+          "route": null,
+          "suggestion": null,
+          "ageLabel": "2h",
+          "createdAt": "2026-10-13T07:00:00Z"
+        }
+      ]
+    }
+  }
+}
