@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "In dark mode, cards and other raised surfaces are now a step lighter than the page (neutral.850 instead of neutral.950), and overlay and sunken surfaces a step lighter again; nothing to change unless you styled against the old dark values."
+}

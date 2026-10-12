@@ -1150,7 +1150,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.50}",
-                "Dark": "{primitive.color.neutral.950}"
+                "Dark": "{primitive.color.neutral.850}"
               }
             }
           }
@@ -1162,7 +1162,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.100}",
-                "Dark": "{primitive.color.neutral.850}"
+                "Dark": "{primitive.color.neutral.800}"
               }
             }
           }
@@ -1270,7 +1270,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.200}",
-                "Dark": "{primitive.color.neutral.850}"
+                "Dark": "{primitive.color.neutral.800}"
               }
             }
           }
@@ -2636,6 +2636,13 @@
       "gap": {
         "$type": "dimension",
         "$value": "{semantic.space.scale.sm}"
+      }
+    },
+    "inlineCode": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.surface.overlay}",
+        "$description": "Inline code chip background."
       }
     },
     "lightbox": {

@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T02:46:37.956Z",
+  "generated": "2026-10-12T05:30:56.351Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -2359,7 +2359,8 @@
         "src/app/components/table.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/context/hds-theme.tsx"
+        "src/app/context/hds-theme.tsx",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {},
       "props": {
@@ -2474,7 +2475,8 @@
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/index.ts"
+        "src/index.ts",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {
         "Surface fill": "role.card",
@@ -3725,7 +3727,8 @@
         "src/app/components/metric-tiles.tsx",
         "src/app/components/stat.tsx",
         "src/index.ts",
-        "src/patterns.ts"
+        "src/patterns.ts",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7321,7 +7324,8 @@
       },
       "consumers": [
         "src/app/components/metric-tiles.test.tsx",
-        "src/app/components/stat.tsx"
+        "src/app/components/stat.tsx",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -9405,8 +9409,8 @@
         "alias": "{primitive.color.neutral.50}",
         "resolvedValue": "#fafafa",
         "dark": {
-          "alias": "{primitive.color.neutral.950}",
-          "resolvedValue": "#0a0a0a"
+          "alias": "{primitive.color.neutral.850}",
+          "resolvedValue": "#1a1a1a"
         }
       },
       {
@@ -9417,8 +9421,8 @@
         "alias": "{primitive.color.neutral.100}",
         "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -9525,8 +9529,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -11227,6 +11231,14 @@
         "type": "dimension",
         "alias": "{semantic.space.scale.sm}",
         "resolvedValue": "16px"
+      },
+      {
+        "path": "component.inlineCode.bg",
+        "cssVar": "--component-inlineCode-bg",
+        "type": "color",
+        "description": "Inline code chip background.",
+        "alias": "{semantic.color.surface.overlay}",
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.lightbox.backdrop.blur",

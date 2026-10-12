@@ -310,6 +310,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.button.secondary.border.pressed": "Secondary button pressed border (the hover border still applies while pressed).",
   "component.button.secondary.border.disabled": "Secondary button disabled border (no disabled border class: the rest border stays).",
   "component.button.secondary.text": "Secondary button text color.",
+  "component.inlineCode.bg": "Inline code chip background.",
   "component.lightbox.backdrop.blur": "Backdrop blur applied behind fullscreen image lightboxes.",
   "role.background": "Page background. shadcn role: background.",
   "role.foreground": "Default text on background. shadcn role: foreground.",

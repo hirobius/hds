@@ -477,6 +477,7 @@
   --component-card-radius: var(--primitive-radius-12);
   --component-card-padding: var(--primitive-space-6);
   --component-card-gap: var(--semantic-space-scale-sm);
+  --component-inlineCode-bg: var(--semantic-color-surface-overlay);
   --component-lightbox-backdrop-blur: var(--primitive-blur-16);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
@@ -508,8 +509,8 @@
 [data-theme="dark"] {
   --primitive-shadow-color: 0 0% 0%;
   --semantic-color-surface-page: var(--primitive-color-neutral-black);
-  --semantic-color-surface-raised: var(--primitive-color-neutral-950);
-  --semantic-color-surface-overlay: var(--primitive-color-neutral-850);
+  --semantic-color-surface-raised: var(--primitive-color-neutral-850);
+  --semantic-color-surface-overlay: var(--primitive-color-neutral-800);
   --semantic-color-surface-scrim: var(--primitive-color-neutral-black);
   --semantic-color-surface-inverse: var(--primitive-color-neutral-white);
   --semantic-color-surface-accent: var(--primitive-color-graphite-200);
@@ -518,7 +519,7 @@
   --semantic-color-surface-pressed: var(--primitive-color-neutral-950);
   --semantic-color-surface-selected: var(--primitive-color-neutral-800);
   --semantic-color-surface-muted: var(--primitive-color-neutral-900);
-  --semantic-color-surface-sunken: var(--primitive-color-neutral-850);
+  --semantic-color-surface-sunken: var(--primitive-color-neutral-800);
   --semantic-color-content-primary: var(--primitive-color-neutral-100);
   --semantic-color-content-secondary: var(--primitive-color-neutral-400);
   --semantic-color-content-disabled: var(--primitive-color-neutral-600);
@@ -593,6 +594,7 @@
   --component-input-borderError: var(--semantic-color-feedback-error);
   --component-card-bg: var(--semantic-color-surface-raised);
   --component-card-border: var(--semantic-color-border-default);
+  --component-inlineCode-bg: var(--semantic-color-surface-overlay);
   --role-background: var(--semantic-color-surface-page);
   --role-foreground: var(--semantic-color-content-primary);
   --role-card: var(--semantic-color-surface-raised);

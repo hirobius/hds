@@ -454,6 +454,7 @@ declare module 'react' {
     '--component-card-radius'?: string | undefined;
     '--component-card-padding'?: string | undefined;
     '--component-card-gap'?: string | undefined;
+    '--component-inlineCode-bg'?: string | undefined;
     '--component-lightbox-backdrop-blur'?: string | undefined;
     '--role-background'?: string | undefined;
     '--role-foreground'?: string | undefined;

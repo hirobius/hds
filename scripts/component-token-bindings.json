@@ -111,6 +111,10 @@
         { "match": "paddingY", "ctx": { "size": "md" } }
       ]
     },
+    "inlineCode": {
+      "source": "src/app/components/inline-code.tsx",
+      "cva": "inlineCodeVariants"
+    },
     "card": {
       "source": "src/app/components/card.tsx",
       "cva": "cardVariants",

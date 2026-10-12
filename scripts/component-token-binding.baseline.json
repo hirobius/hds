@@ -63,7 +63,6 @@
     "tag.text": "LITERAL-MATCH"
   },
   "findings": [
-    "borrowed:src/app/components/disclosure.tsx->nav.paddingY",
-    "borrowed:src/app/components/inline-code.tsx->badge.bg"
+    "borrowed:src/app/components/disclosure.tsx->nav.paddingY"
   ]
 }
