@@ -5,6 +5,7 @@ import type { MDXComponents } from 'mdx/types';
 import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
+import { Mermaid } from './components/mermaid';
 import { TokenTable } from './components/token-table';
 
 type HeadingProps = HTMLAttributes<HTMLHeadingElement>;
@@ -20,6 +21,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ComponentTokens,
     ComponentPreview,
     ComponentIndex,
+    Mermaid,
     ...components,
   };
 }
