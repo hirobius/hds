@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.24.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.24.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,29 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.24.1
+
+Released 2026-10-12 (patch). 16 that look different.
+
+### Looks different
+
+- The legacy flat Button vertical padding token is now 8px (was 12px), the value the medium Button renders.
+- The secondary Button hover fill token is now the accent-subtle surface (was the raised surface), the fill it renders.
+- The secondary Button disabled border token is now the interactive border (was the subdued border), the colour it renders.
+- The secondary Button hover border token is now the accent border (was the interactive border), the colour it renders.
+- The secondary Button pressed border token is now the accent border (was the interactive border), the colour it renders.
+- The large Button label size token is now 14px (was 16px), the size it renders.
+- The medium Button vertical padding token is now 8px (was 12px), the value it renders.
+- The small Button height token is now 32px (was 28px), the height it renders.
+- The small Button icon-to-label gap token is now 8px (was 4px), the gap it renders.
+- The small Button horizontal padding token is now 12px (was 8px), the value it renders.
+- The Card gap token is now 16px (was 8px), the gap Card renders.
+- The Card radius token is now 12px (was 8px), the radius Card renders.
+- The Input background token is now the page surface (was the raised surface), the fill Input renders.
+- The Input horizontal padding token is now 12px (was 16px), the padding the medium Input renders.
+- The Tag background token is now the raised surface (was accent-subtle), the fill an unselected Tag renders.
+- The Tag text token is now the secondary content colour (was primary), the colour an unselected Tag renders.
 
 ## 0.24.0
 

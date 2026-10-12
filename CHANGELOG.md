@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.24.1
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: The legacy flat Button vertical padding token is now 8px (was 12px), the value the medium Button renders.
+- Looks different: The secondary Button hover fill token is now the accent-subtle surface (was the raised surface), the fill it renders.
+- Looks different: The secondary Button disabled border token is now the interactive border (was the subdued border), the colour it renders.
+- Looks different: The secondary Button hover border token is now the accent border (was the interactive border), the colour it renders.
+- And 12 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0241).
+
+### Patch Changes
+
+- 3085b8a: Sixteen `component.*` tokens now hold the value their component already renders, so Figma and the code agree (hds#595, "code wins"). Button: `paddingY` and `size.md.paddingY` are 8px (were 12px), `size.sm.paddingX` 12px (was 8px), `size.sm.height` 32px (was 28px), `size.sm.itemSpacing` 8px (was 4px), `size.lg.fontSize` 14px (was 16px), `secondary.bg.hover` is `surface.accentSubtle`, `secondary.border.hover` and `.pressed` are `border.accent`, and `secondary.border.disabled` is `border.interactive`. Card: `radius` 12px (was 8px), `gap` 16px (was 8px). Input: `bg` is `surface.page` and `paddingX` 12px (was 16px). Tag: `background` is `surface.raised` and `text` `content.secondary`. The React components already rendered these values, so nothing changes on screen; only the token values (and the CSS variables built from them) move.
+
 ## 0.24.0
 
 ### Upgrade
