@@ -3,9 +3,11 @@
 /**
  * scripts/scaffold-tenant.mjs
  *
- * Bootstraps a new HDS tenant directory from tenants/_template.
- * Emits tenants/<slug>/tokens.json + tenants/<slug>/metadata.json +
- * tenants/<slug>/README.md pre-filled with the supplied brand args.
+ * Bootstraps a new HDS direction directory from directions/_template
+ * (ADR-035: a direction is a shared art direction, never a client's brand;
+ * a client themes itself at the consumer through the brand bridge).
+ * Emits directions/<slug>/tokens.json + directions/<slug>/metadata.json +
+ * directions/<slug>/README.md pre-filled with the supplied args.
  *
  *   node scripts/scaffold-tenant.mjs --slug=acme-co --primary-color=#2563EB
  *   pnpm scaffold:tenant --slug=acme-co --primary-color=#2563EB
@@ -27,7 +29,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const TENANTS_DIR = path.join(ROOT, 'tenants');
+const TENANTS_DIR = path.join(ROOT, 'directions');
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -309,7 +311,7 @@ function main() {
 
   if (!dryRun && fs.existsSync(tenantDir)) {
     console.error(
-      `Error: tenants/${slug} already exists. Remove it first or choose a different slug.`,
+      `Error: directions/${slug} already exists. Remove it first or choose a different slug.`,
     );
     process.exit(1);
   }
@@ -324,20 +326,20 @@ function main() {
   const readmeContent = buildReadme(slug, displayName, primaryHex, tier);
 
   if (dryRun) {
-    console.log('[dry-run] would create directory:', `tenants/${slug}/`);
+    console.log('[dry-run] would create directory:', `directions/${slug}/`);
     console.log(
       '[dry-run] would write:',
-      `tenants/${slug}/tokens.json`,
+      `directions/${slug}/tokens.json`,
       `(${tokensContent.length} bytes)`,
     );
     console.log(
       '[dry-run] would write:',
-      `tenants/${slug}/metadata.json`,
+      `directions/${slug}/metadata.json`,
       `(${metadataContent.length} bytes)`,
     );
     console.log(
       '[dry-run] would write:',
-      `tenants/${slug}/README.md`,
+      `directions/${slug}/README.md`,
       `(${readmeContent.length} bytes)`,
     );
     console.log('[dry-run] primary-color:', primaryHex);
@@ -357,8 +359,14 @@ function main() {
   console.log('  metadata.json →', metadataPath);
   console.log('  README.md    →', readmePath);
   console.log('\nNext steps:');
-  console.log('  1. Edit tenants/' + slug + '/tokens.json  — refine hover/pressed/subtle shades');
-  console.log('  2. Edit tenants/' + slug + '/metadata.json — fill deployment + legal fields');
+  console.log(
+    '  1. Edit directions/' + slug + '/tokens.json  — refine hover/pressed/subtle shades',
+  );
+  console.log(
+    '  2. Edit directions/' +
+      slug +
+      '/metadata.json — keep deployment + legal empty (a direction is never a client)',
+  );
   console.log('  3. Run: pnpm tokens');
   console.log('  4. Verify: rg \'data-tenant="' + slug + '"\' src/styles/tenants.css');
   console.log('  5. Set <html data-tenant="' + slug + '"> in the tenant SSR entry point');

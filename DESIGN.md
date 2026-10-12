@@ -271,6 +271,7 @@ An expandable list row (one-line preview, actions beside the trigger) is `Disclo
 - Don't add decorative illustration, ornamental icons, or trend-driven filler that lacks functional or structural purpose.
 - Don't ship motion that ignores `prefers-reduced-motion`. Spring or expressive motion and a small press transform (such as a `whileTap` scale) are welcome where they add delight; under reduced motion, drop the transform and keep the color and state change.
 - Don't define a global disabled-state rule (opacity multiplier, saturation ramp, etc.); disabled presentation is governed per-component through its dedicated disabled tokens.
+- Do look at 21st.dev first when a component or pattern needs visual inspiration (Adrian, 2026-10-12, hds#632). Inspiration only: record the link and what you borrowed, then rebuild the idea from HDS tokens and primitives. Tokens, this file and the HDS rules still win, and no 21st.dev code or package enters the repo.
 
 ## Open Questions
 

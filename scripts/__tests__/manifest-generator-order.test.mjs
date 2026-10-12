@@ -37,7 +37,7 @@ const TREE = [
   // scripts/lib/css-contract.mjs reads the Tailwind preset with the upgrade command's helper.
   'codemods/lib/preset.mjs',
   'src',
-  'tenants',
+  'directions',
   'hirobius.tokens.json',
   'tsconfig.json',
   // build-tokens stamps the manifest with the package version (hds#463).

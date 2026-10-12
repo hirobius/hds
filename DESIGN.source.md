@@ -17,7 +17,7 @@ A machine- and human-readable specification of the Hirobius Design System for AI
 
 ## Overview
 
-Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast near-monochrome neutral palette tinted toward midnight (OKLCH hue 262) and a single accent that each tenant sets — a midnight graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
+Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast near-monochrome neutral palette tinted toward midnight (OKLCH hue 262) and a single accent that each direction or brand sets (ADR-035) — a midnight graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
 
 ## Colors
 
@@ -176,7 +176,7 @@ An expandable list row (one-line preview, actions beside the trigger) is `Disclo
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a near-monochrome, midnight-tinted neutral system. The accent is a per-tenant knob and defaults to a midnight graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a near-monochrome, midnight-tinted neutral system. The accent is a knob each direction or brand sets (ADR-035) and defaults to a midnight graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
 - Don't add other tints to the neutrals; the only one is the faint midnight lean (OKLCH hue 262, hds#755), and greys stay high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired.
 - Don't transform text to uppercase anywhere; sentence case, per the Casing rule above.
@@ -188,6 +188,7 @@ An expandable list row (one-line preview, actions beside the trigger) is `Disclo
 - Don't add decorative illustration, ornamental icons, or trend-driven filler that lacks functional or structural purpose.
 - Don't ship motion that ignores `prefers-reduced-motion`. Spring or expressive motion and a small press transform (such as a `whileTap` scale) are welcome where they add delight; under reduced motion, drop the transform and keep the color and state change.
 - Don't define a global disabled-state rule (opacity multiplier, saturation ramp, etc.); disabled presentation is governed per-component through its dedicated disabled tokens.
+- Do look at 21st.dev first when a component or pattern needs visual inspiration (Adrian, 2026-10-12, hds#632). Inspiration only: record the link and what you borrowed, then rebuild the idea from HDS tokens and primitives. Tokens, this file and the HDS rules still win, and no 21st.dev code or package enters the repo.
 
 ## Open Questions
 

@@ -3,7 +3,6 @@
   "slug": "brutalist-demo",
   "displayName": "Brutalist Demo",
   "tagline": "ADR-022 shape/density exemplar — sharp radius + tightened spacing. demo-only, not a real client.",
-  "demo": true,
   "tier": 1,
   "deployment": {
     "vercelProject": null,

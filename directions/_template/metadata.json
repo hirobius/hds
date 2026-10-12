@@ -22,8 +22,8 @@
   "createdAt": "2026-05-01",
   "status": "scaffold",
   "_notes": [
-    "This is the canonical starter for new tenants. Do NOT deploy from this directory.",
-    "When onboarding a new client: cp -r tenants/_template tenants/<slug> && update slug, displayName, tier, deployment, brand, legal.",
-    "Tier guide: 1 = brand presence (marketing site), 2 = e-commerce (Stripe Checkout, legal pages), 3 = product (custom auth/dashboards)."
+    "This is the canonical starter for new directions (ADR-035). Do NOT deploy from this directory.",
+    "Adding a direction: cp -r directions/_template directions/<slug> && set slug, displayName and brand; keep deployment and legal empty at tier 1, or the Figma gate refuses it.",
+    "A client's brand never starts here: it is applied in the client's own repository through @hirobius/design-system/brand (docs/CONSUMING.md section 12)."
   ]
 }

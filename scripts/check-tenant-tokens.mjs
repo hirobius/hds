@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 /**
- * check-tenant-tokens.mjs — Tenant overlay validator
+ * check-tenant-tokens.mjs — Direction overlay validator
  *
- * Validates every tenants/<slug>/tokens.json against HDS structural rules.
+ * Validates every directions/<slug>/tokens.json against HDS structural rules
+ * (ADR-035: directions/ holds the shared art directions; a client's brand
+ * never lives in this repo).
  * Runs as a standalone CLI tool and as a pre-commit gate.
  *
  * Rules enforced (per docs/architecture/tenant-token-overlay-format.md):
@@ -36,7 +38,7 @@ const FIXTURE_DIR = process.env.FIXTURE_DIR;
 const INPUT_ROOT = FIXTURE_DIR || ROOT;
 
 const EXPECTED_SCHEMA_REF = 'hirobius.tenant-tokens.schema.json';
-const TENANTS_DIR = join(INPUT_ROOT, 'tenants');
+const TENANTS_DIR = join(INPUT_ROOT, 'directions');
 
 const REQUIRED_METADATA_FIELDS = ['slug', 'displayName', 'tier', 'status'];
 const VALID_STATUSES = ['scaffold', 'active', 'archived'];
@@ -75,7 +77,7 @@ function run() {
   try {
     slugDirs = readdirSync(TENANTS_DIR, { withFileTypes: true });
   } catch {
-    console.log('No tenants/ directory — nothing to validate.');
+    console.log('No directions/ directory — nothing to validate.');
     process.exit(0);
   }
 
@@ -139,13 +141,13 @@ function run() {
   }
 
   if (allErrors.length > 0) {
-    console.error(`\n✗ Tenant validation failed (${tenantsChecked} tenant(s) checked):\n`);
+    console.error(`\n✗ Direction validation failed (${tenantsChecked} direction(s) checked):\n`);
     allErrors.forEach((e) => console.error(`  ${e}`));
     console.error('');
     process.exit(1);
   }
 
-  console.log(`✔ Tenant tokens valid (${tenantsChecked} tenant(s) checked)`);
+  console.log(`✔ Direction tokens valid (${tenantsChecked} direction(s) checked)`);
   process.exit(0);
 }
 

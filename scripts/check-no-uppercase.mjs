@@ -9,7 +9,7 @@
  * everywhere, eyebrows, labels, captions and table headers included.
  *
  * Fails on, in src/, docs-site/, preview/, starter-kit/, tools/, templates/,
- * tenants/, the top-level docs/*.html pages, hirobius.tokens.json and the
+ * directions/, the top-level docs/*.html pages, hirobius.tokens.json and the
  * Figma model/snapshot:
  *
  *   - the Tailwind `uppercase` class (also variant-prefixed, `md:uppercase`),
@@ -44,7 +44,15 @@ import { findUppercase } from '../bin/lib/visual-rules.mjs';
 
 const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
-const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'tools', 'templates', 'tenants'];
+const SCAN_DIRS = [
+  'src',
+  'docs-site',
+  'preview',
+  'starter-kit',
+  'tools',
+  'templates',
+  'directions',
+];
 const SCAN_FILES = ['hirobius.tokens.json', 'figma/model.json', 'figma/snapshot.json'];
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.css', '.html', '.json'];
 const SKIP_DIRS = [
