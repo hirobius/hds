@@ -516,7 +516,7 @@ React** — import the vars, set a few attributes, and let per-page markup read 
 tokens through Tailwind utilities or plain CSS. Interactive pieces hydrate as
 `client:*` islands only where you actually need them.
 
-This is the path the `hirobius/clients` factory uses: one HDS token spine, many
+This is the path a multi-brand static-site factory uses: one HDS token spine, many
 brand skins, no parallel token system.
 
 ### 12.1 Wire the token spine once (in your base layout)
@@ -659,7 +659,7 @@ promise, made concrete. It ships plain `.hds-badge` / `.hds-card` /
 `--semantic-*` / `--component-*` / `--role-*` custom properties the React
 `Badge`/`Card`/`Alert`/`Divider`/`Tag` components use — so a `.astro`/`.html`
 page with zero React still renders on-token, theme-aware UI. This is the path
-the `hirobius/clients` factory uses for non-interactive primitives on its
+a static-site factory uses for non-interactive primitives on its
 static Astro pages.
 
 Import it once alongside `variables.css` (both are host-safe — no reset, no

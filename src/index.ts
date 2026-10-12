@@ -30,7 +30,7 @@
 // Input, CircularProgress into Progress, SelectableCard into Card,
 // MultiSelector into Combobox, Cluster into Stack, Center into Container, and
 // Cover, Frame, Bleed and AspectRatio into Box.
-// And the two ops imports with a codemod of their own (hds#395 B5):
+// And the two product-app imports with a codemod of their own (hds#395 B5):
 // NotFoundPattern folds into ErrorPattern on `/patterns`
 // (`npx -p @hirobius/design-system@^0.20.0 hds-not-found-pattern`) and TileGrid
 // into Grid layout="auto-fill" (`npx -p @hirobius/design-system@^0.20.0 hds-tile-grid`).
@@ -99,7 +99,7 @@ export * from './app/components/switcher';
 // Scroll-motion primitives — CSS scroll-driven, zero JS/deps (#116).
 export * from './app/components/pin';
 
-// ── app-shell + layout primitives consumed by the ops dashboard ──
+// ── app-shell + layout primitives consumed by product apps ──
 export * from './app/components/empty-state';
 export * from './app/components/tabs';
 

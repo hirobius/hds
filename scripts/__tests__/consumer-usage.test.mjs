@@ -188,6 +188,17 @@ describe('README "In use" names no private repository (hds#545)', () => {
   });
 });
 
+describe('shipped type declarations name no private consumer (hds#545)', () => {
+  // The JSDoc in these entry points lands in dist/types, which ships in the tarball.
+  it.each(['src/index.ts', 'src/app/context/index.ts'])(
+    '%s does not name the ops dashboard',
+    (f) => {
+      const src = readFileSync(join(REPO, f), 'utf8');
+      expect(src).not.toMatch(/\bops\b/i);
+    },
+  );
+});
+
 describe('renderInUseBlock consumer split', () => {
   const base = { files: 35, components: 25, commit: 'a'.repeat(40) };
 
