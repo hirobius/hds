@@ -31,7 +31,12 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
 import { chromiumPath } from '../lib/browser-host.mjs';
-import { buildTenantCSS, validateTenantOverlay } from '../build-tokens.mjs';
+import {
+  buildTenantCSS,
+  pathToCSSVar,
+  validateTenantOverlay,
+  walkTokens,
+} from '../build-tokens.mjs';
 import { readTokenSource } from '../lib/token-source.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -73,6 +78,19 @@ describe.each(SLUGS)('%s: files', (slug) => {
     const tiers = Object.keys(overlay).filter((k) => !k.startsWith('$'));
     expect(tiers.length).toBeGreaterThan(0);
     for (const tier of tiers) expect(['semantic', 'component', 'role']).toContain(tier);
+  });
+
+  it('re-declares role and component aliases exactly as base declares them (a re-anchor, never a new value or a pinned theme)', () => {
+    const overlay = readJson(`${dir}/tokens.json`);
+    for (const { path, value, extensions } of walkTokens(overlay)) {
+      if (path[0] !== 'role' && path[0] !== 'component') continue;
+      const id = path.join('.');
+      const baseLeaf = path.reduce((n, k) => n?.[k], base);
+      expect(baseLeaf?.$value, id).toBe(value);
+      // A themed base alias re-declared in the tenant's light block would pin its light target in dark.
+      expect(baseLeaf.$extensions?.['com.figma.variables']?.modes, id).toBeUndefined();
+      expect(extensions?.['com.figma.variables']?.modes, id).toBeUndefined();
+    }
   });
 
   it('is compiled into the committed src/styles/tenants.css (run `pnpm tokens`)', () => {
@@ -273,7 +291,7 @@ describe.skipIf(!hasBrowser)('soft-demo: computed, light and dark, on <html> and
     },
   );
 
-  it.each(SCOPES)('surfaces get room: 32px comfortable, 20px compact ($scope)', async (scope) => {
+  it.each(SCOPES)('surfaces get room: 32px comfortable, 20px compact (%s)', async (scope) => {
     const comfortable = await measure({ brand: 'soft-demo', scope });
     const compact = await measure({ brand: 'soft-demo', scope, density: 'compact' });
     expect([comfortable.surfacePadding, comfortable.surfacePaddingAlias]).toEqual(['32px', '32px']);
@@ -394,6 +412,67 @@ describe.skipIf(!hasBrowser)(
         return getComputedStyle(el).backgroundColor;
       });
       expect(rest).toBe(rgb('stone.600'));
+    });
+  },
+);
+
+/**
+ * Every CSS variable a tenant changes: the leaves its overlay overrides, plus every base leaf
+ * whose alias chain passes through one of them (`--component-button-bgHover` ->
+ * `semantic.accent.hover`, `--role-card` -> `semantic.color.surface.raised`).
+ */
+function changedVars(overlay) {
+  const overridden = new Set([...walkTokens(overlay)].map(({ path }) => path.join('.')));
+  const aliasOf = new Map();
+  for (const { path, value } of walkTokens(base)) {
+    const m = typeof value === 'string' ? /^\{([^}]+)\}$/.exec(value) : null;
+    if (m) aliasOf.set(path.join('.'), m[1]);
+  }
+  const reaches = (id, seen = new Set()) => {
+    const next = aliasOf.get(id);
+    if (!next || seen.has(next)) return false;
+    if (overridden.has(next)) return true;
+    seen.add(next);
+    return reaches(next, seen);
+  };
+  return [...walkTokens(base)]
+    .filter(({ path }) => overridden.has(path.join('.')) || reaches(path.join('.')))
+    .map(({ path }) => pathToCSSVar(path));
+}
+
+/** The computed custom properties (var() substituted) on the element that carries the brand. */
+async function readVars({ brand, theme, scope }, names) {
+  const attrs = `data-brand="${brand}" data-theme="${theme}"`;
+  const body = scope === 'html' ? '<i id="p"></i>' : `<div id="p" ${attrs}></div>`;
+  await page.setContent(
+    `<html ${scope === 'html' ? attrs : ''}><head><style>${PAGE_CSS}</style></head><body>${body}</body></html>`,
+  );
+  return page.evaluate((list) => {
+    const cs = getComputedStyle(document.getElementById('p'));
+    return Object.fromEntries(list.map((n) => [n, cs.getPropertyValue(n).trim()]));
+  }, names);
+}
+
+// The explorations harness puts data-brand on the template's [data-theme] wrapper, below <html>
+// (eval/explorations/README.md). A var() resolves where it is declared, so an alias declared on
+// :root keeps the default there unless the tenant re-declares it: Button's primary hover, an
+// active Tag and the active nav item would stay graphite on a mauve page.
+describe.skipIf(!hasBrowser)(
+  'below <html>, the way the explorations harness applies a tenant',
+  () => {
+    describe.each(SLUGS)('%s', (slug) => {
+      const names = changedVars(readJson(`tenants/${slug}/tokens.json`));
+
+      it.each(THEMES)(
+        'every variable it changes, directly or through an alias, resolves as it does on <html> (%s)',
+        async (theme) => {
+          expect(names.length).toBeGreaterThan(0);
+          const onHtml = await readVars({ brand: slug, theme, scope: 'html' }, names);
+          const nested = await readVars({ brand: slug, theme, scope: 'nested' }, names);
+          expect(Object.values(onHtml).every(Boolean)).toBe(true);
+          expect(nested).toEqual(onHtml);
+        },
+      );
     });
   },
 );

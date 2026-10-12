@@ -17,27 +17,28 @@ far tokens alone go. The accent stays the default graphite on purpose
 
 ## What this overlay overrides
 
-| Token path                       | Default (HDS base)                         | Soft Demo                                                                | Why                                                                                                                                                                           |
-| -------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.radius.action`         | `8px` (`primitive.radius.8`)               | `20px`                                                                   | Half of the 40px default control, so Button, Input and Select `md` are a full pill and `sm` (32px) clamps to one. Containers follow at +4 (24px), nested chrome at -2 (18px). |
-| `role.radius`                    | `semantic.radius.action` on `:root`        | `semantic.radius.action`, re-anchored on the tenant element              | `--role-radius` resolves where it is declared; re-declaring it on the `[data-brand]` element makes `rounded-md/lg/sm` follow the override at any scope, not just on `<html>`. |
-| `semantic.color.surface.raised`  | `neutral.50` light, `neutral.850` dark     | `neutral.100` light, `neutral.850` dark (unchanged)                      | A visible grey fill, so cards, tracks and tags group by fill with no border. Dark is already a fill.                                                                          |
-| `role.card`                      | `semantic.color.surface.raised` on `:root` | same, re-anchored on the tenant element                                  | Same reason as `role.radius`: `bg-card` and `.hds-card` read it.                                                                                                              |
-| `semantic.space.surface.padding` | `24px` (`scale.md`), `20px` compact        | `32px` (`scale.lg`), `20px` compact (`scale.md` under the compact remap) | Roomier surfaces; density stays an independent toggle layered on top (R9).                                                                                                    |
+| Token path                                                                                                             | Default (HDS base)                         | Soft Demo                                                                | Why                                                                                                                                                                           |
+| ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.radius.action`                                                                                               | `8px` (`primitive.radius.8`)               | `20px`                                                                   | Half of the 40px default control, so Button, Input and Select `md` are a full pill and `sm` (32px) clamps to one. Containers follow at +4 (24px), nested chrome at -2 (18px). |
+| `role.radius`                                                                                                          | `semantic.radius.action` on `:root`        | `semantic.radius.action`, re-anchored on the tenant element              | `--role-radius` resolves where it is declared; re-declaring it on the `[data-brand]` element makes `rounded-md/lg/sm` follow the override at any scope, not just on `<html>`. |
+| `semantic.color.surface.raised`                                                                                        | `neutral.50` light, `neutral.850` dark     | `neutral.100` light, `neutral.850` dark (unchanged)                      | A visible grey fill, so cards, tracks and tags group by fill with no border. Dark is already a fill.                                                                          |
+| `role.card`                                                                                                            | `semantic.color.surface.raised` on `:root` | same, re-anchored on the tenant element                                  | Same reason as `role.radius`: `bg-card` and `.hds-card` read it.                                                                                                              |
+| `role.secondary`, `component.card.bg`, `component.tag.background`, `component.button.radius`, `component.input.radius` | the same aliases on `:root`                | the same aliases, re-anchored on the tenant element                      | Same reason as `role.radius`: every alias of an overridden token follows it below `<html>` too (a test checks none is missing).                                               |
+| `semantic.space.surface.padding`                                                                                       | `24px` (`scale.md`), `20px` compact        | `32px` (`scale.lg`), `20px` compact (`scale.md` under the compact remap) | Roomier surfaces; density stays an independent toggle layered on top (R9).                                                                                                    |
 
 ## hds#505 deltas, one by one
 
-| Delta                                   | Status            | Where                                                                                                                |
-| --------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Pill action radius                      | applied           | `semantic.radius.action` 20px: a full pill at the default control height                                             |
-| Container radius ~16-20px               | partial: 24px     | derived as action + 4, so a pill action puts containers at 24px (Gaps 2)                                             |
-| Borderless, grey-fill grouping          | applied           | `Card` is already borderless by default; the fill is now `neutral.100`. Inputs keep their border on purpose (Gaps 4) |
-| Dividers for lists                      | already default   | `Divider` and `semantic.color.border.default`, untouched                                                             |
-| Bigger type contrast                    | **gap**           | tenant typography overrides compile to nothing today (Gaps 1)                                                        |
-| 44px minimum controls, 56px primary CTA | **gap**           | no token drives control height (Gaps 3)                                                                              |
-| Pill stepper, FAB                       | **gap**           | no such components                                                                                                   |
-| Black-active segmented control          | already available | `SegmentedControl variant="primary"` fills the active segment with the accent (graphite)                             |
-| Stat tile with a grey fill              | applied           | `Card.Metric` / `StatusTile` read the card fill                                                                      |
+| Delta                                   | Status            | Where                                                                                                                                          |
+| --------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pill action radius                      | applied           | `semantic.radius.action` 20px: a full pill at the default control height                                                                       |
+| Container radius ~16-20px               | partial: 24px     | derived as action + 4, so a pill action puts containers at 24px (Gaps 2)                                                                       |
+| Borderless, grey-fill grouping          | applied           | `Card` is already borderless by default; the fill is now `neutral.100`. Inputs keep their border on purpose (Gaps 4)                           |
+| Dividers for lists                      | already default   | `Divider` and `semantic.color.border.default`, untouched                                                                                       |
+| Bigger type contrast                    | **gap**           | tenant typography overrides compile to nothing today (Gaps 1)                                                                                  |
+| 44px minimum controls, 56px primary CTA | **gap**           | no token drives control height (Gaps 3)                                                                                                        |
+| Pill stepper, FAB                       | **gap**           | no such components                                                                                                                             |
+| Black-active segmented control          | already available | `SegmentedControl variant="primary"` fills the active segment with the accent (graphite)                                                       |
+| Stat tile with a grey fill              | applied           | `Card` (`bg-card`) and `StatusTile` read the raised fill; `Stat`, `MetricTile` and `Card.Metric` are deprecated in favour of a composed `Card` |
 
 ## Gaps
 
@@ -65,17 +66,21 @@ hit them. None is built here; each is a proposal for the gap log.
    reaches 3:1 on the page, which the soft grey does not. Left bordered. Needs a decision
    and, if yes, a field-fill token.
 5. **No pill stepper or FAB (component).** Not built ahead.
-6. **Role aliases are declared on `:root` (bug).** `--role-radius`, `--role-card`,
-   `--role-primary` and the rest are `var(--semantic-...)` on `:root`, so an override of
-   the semantic token on a `[data-brand]` element below `<html>` does not reach them in
-   light mode. This overlay re-declares the two it needs under `role`. The generator
-   already re-anchors `$deprecated` aliases for the same reason (hds#206); it should do the
-   same for every `role.*` alias. `accent-lilac` has the same problem for Button's fill.
+6. **Alias tokens are declared on `:root` (bug).** `--role-radius`, `--role-card`,
+   `--component-card-bg` and the rest are `var(--semantic-...)` on `:root`, so an override
+   of the semantic token on a `[data-brand]` element below `<html>` (where the explorations
+   harness sets it) does not reach them in light mode. The dark block re-declares the colour
+   aliases but not the radius ones, so `--component-button-radius` misses it in dark too.
+   This overlay re-declares all seven aliases of what it overrides under `role` and
+   `component`. The generator already re-anchors `$deprecated` aliases for the same reason
+   (hds#206); it should do the same for every alias of an overridden token. `accent-lilac`
+   has the same problem for Button's fill.
 
 ## How to see it
 
 - Preview bench (`pnpm preview:build`, then `brand` -> soft): the readout shows button,
-  input and card radius and the card fill measured from the DOM.
+  input and card radius measured from the DOM, plus the `surface.raised` and `--role-card`
+  variables read on the stage.
 - `scripts/__tests__/explorations-demo-tenants.test.mjs` renders the real stylesheets in
   Chromium, default and both demo tenants side by side, and checks the values above.
 
