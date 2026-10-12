@@ -34,6 +34,14 @@ import { isDevelopment } from '../../lib/env';
  * variant behaves. Without `color-mix()` support the fallback is the opaque
  * token, the same fallback Tailwind emits for `bg-scrim/60`.
  *
+ * Secondary is the exception (hds#595): its pressed state is a solid fill bound to
+ * `component.button.secondary.bg.pressed` (`active:bg-…`), and `active:inset-shadow-transparent`
+ * swaps the wash colour out so nothing stacks on it. A tone restores the wash colour
+ * and its own `active:bg-…`, so a toned secondary presses exactly as before. A tone
+ * also sets `disabled:border-transparent`, replacing secondary's disabled border
+ * (`component.button.secondary.border.disabled`, lighter than the rest border).
+ * Primary hover binds `component.button.bgHover`.
+ *
  * Toggled on (`pressed`, hds#393) is a different state from that momentary
  * wash: `data-pressed="true"` fills with `role.accent` and its foreground,
  * the on-state a toggle needs, so it reads as on at rest, not only mid-click.
@@ -56,9 +64,10 @@ const buttonVariants = /* @__PURE__ */ cva(
   {
     variants: {
       variant: {
-        primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        primary:
+          'bg-primary text-primary-foreground hover:bg-[color:var(--component-button-bgHover)]',
         secondary:
-          'border border-input bg-background text-foreground hover:bg-accent hover:border-ring',
+          'border border-input bg-background text-foreground hover:bg-accent hover:border-ring active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent disabled:border-[color:var(--component-button-secondary-border-disabled)]',
         tertiary: 'text-foreground hover:bg-accent',
       },
       // Semantic action color. `neutral` (default) keeps the variant's own
@@ -82,12 +91,12 @@ const buttonVariants = /* @__PURE__ */ cva(
       tone: {
         neutral: '',
         danger:
-          'border-transparent bg-feedback-bg-danger text-feedback-danger hover:bg-feedback-bg-danger hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
+          'border-transparent bg-feedback-bg-danger text-feedback-danger hover:bg-feedback-bg-danger hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-danger active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
         success:
-          'border-transparent bg-feedback-bg-success text-feedback-success hover:bg-feedback-bg-success hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
+          'border-transparent bg-feedback-bg-success text-feedback-success hover:bg-feedback-bg-success hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-success active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
         warning:
-          'border-transparent bg-feedback-bg-warning text-feedback-warning hover:bg-feedback-bg-warning hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
-        info: 'border-transparent bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info hover:border-transparent hover:brightness-95 dark:hover:brightness-110',
+          'border-transparent bg-feedback-bg-warning text-feedback-warning hover:bg-feedback-bg-warning hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-warning active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
+        info: 'border-transparent bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-info active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
       },
       size: {
         sm: 'h-8 px-3 hds-type-caption [&_svg]:size-[var(--component-button-size-sm-iconSize)]',

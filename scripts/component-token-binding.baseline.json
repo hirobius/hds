@@ -1,19 +1,14 @@
 {
   "$comment": "Ratchet for check-component-token-binding.mjs: the known drift (LITERAL-MISMATCH and LITERAL-MATCH leaves, static.css mirrors, structural findings) as of the last update. New drift fails --enforce; fixing an entry only shrinks this file. Regenerate with `node scripts/check-component-token-binding.mjs --update-baseline` after a fix, never to hide a new mismatch.",
   "leaves": {
-    "badge.bg": "LITERAL-MISMATCH",
     "badge.fontSize": "LITERAL-MATCH",
     "badge.fontWeight": "LITERAL-MATCH",
-    "badge.text": "LITERAL-MISMATCH",
     "button.bg": "LITERAL-MATCH",
-    "button.bgHover": "LITERAL-MISMATCH",
     "button.paddingX": "LITERAL-MATCH",
     "button.paddingY": "LITERAL-MATCH",
     "button.radius": "LITERAL-MATCH",
     "button.secondary.bg.hover": "LITERAL-MATCH",
-    "button.secondary.bg.pressed": "LITERAL-MISMATCH",
     "button.secondary.bg.rest": "LITERAL-MATCH",
-    "button.secondary.border.disabled": "LITERAL-MATCH",
     "button.secondary.border.hover": "LITERAL-MATCH",
     "button.secondary.border.pressed": "LITERAL-MATCH",
     "button.secondary.border.rest": "LITERAL-MATCH",
@@ -51,8 +46,6 @@
     "tag.text": "LITERAL-MATCH"
   },
   "css": {
-    "badge.bg": "LITERAL-MISMATCH",
-    "badge.text": "LITERAL-MISMATCH",
     "card.bg": "LITERAL-MATCH",
     "card.border": "LITERAL-MATCH",
     "card.gap": "LITERAL-MATCH",
@@ -62,8 +55,5 @@
     "tag.border": "LITERAL-MATCH",
     "tag.text": "LITERAL-MATCH"
   },
-  "findings": [
-    "borrowed:src/app/components/disclosure.tsx->nav.paddingY",
-    "borrowed:src/app/components/inline-code.tsx->badge.bg"
-  ]
+  "findings": ["borrowed:src/app/components/disclosure.tsx->nav.paddingY"]
 }
