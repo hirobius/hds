@@ -345,7 +345,7 @@ describe('buildFigmaModel — typography', () => {
     expect(style('typography/caption')).toMatchObject({
       fontFamily: 'IBM Plex Mono',
       fontStyle: 'Medium',
-      textCase: 'UPPER',
+      textCase: 'TITLE',
     });
   });
 });

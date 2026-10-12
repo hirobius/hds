@@ -184,7 +184,7 @@ Released 2026-10-07 (minor). StatusDot is removed, fonts move to an opt-in fonts
 - Combobox now returns focus to its trigger after Escape or a pick.
 - Toggle's input now has role="switch", so tests that find it by role checkbox must look for switch.
 - Checkbox, Radio and Toggle now take one tab stop each instead of two, so keyboard tests that press Tab twice per control must press it once.
-- The CSS variable --semantic-typography-eyebrow-text-transform is gone, so set text-transform: uppercase yourself where a label must stay uppercase.
+- The CSS variable --semantic-typography-eyebrow-text-transform is gone, so drop any text-transform you added for those labels, because the system is sentence case.
 - Add import '@hirobius/design-system/fonts.css' next to your tokens.css or styles.css import, or text renders in the system font instead of Satoshi and Geist Mono.
 - The ESLint plugin now ships in the package, so import hds from '@hirobius/design-system/eslint-plugin' and drop the separate @hirobius/eslint-plugin-hds dependency.
 - A Badge with label but no dot now warns once in development, because label only names a dot badge, so put the text in children instead.

@@ -116,7 +116,6 @@ export const tokenDescriptions: Record<string, string> = {
   "primitive.typography.lineHeight.relaxed": "Swiss-canon relaxed rhythm (10t-5). Used by body/small/mono composites for long-form prose comfort.",
   "primitive.typography.lineHeight.display": "Display role leading (hds#485).",
   "primitive.typography.lineHeight.body": "Body role leading (hds#485).",
-  "primitive.typography.letterSpacing.caps": "All-caps tracking for eyebrow / kicker labels. Always pairs with text-transform: uppercase.",
   "primitive.duration.instant": "Fixed elapsed time interval in milliseconds.",
   "primitive.duration.short": "Fixed elapsed time interval in milliseconds.",
   "primitive.duration.medium": "Fixed elapsed time interval in milliseconds.",
