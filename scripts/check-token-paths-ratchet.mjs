@@ -113,7 +113,6 @@ const SKIP_DIRS = new Set([
 ]);
 const SKIP_PATH_FRAGMENTS = [
   '.claude/worktrees',
-  '.claude/HDS-V2-COMPLIANCE-AUDIT.md',
   'src/app/design-system/generated-token',
   'public/hds-manifest-agent.json',
   'tenants/',

@@ -4,8 +4,8 @@ Each release of `@hirobius/design-system` gets one machine-readable record of
 what it changed for a consumer: `upgrade/releases/<version>.json`, from 0.17.0
 on (see [The floor](#the-floor)). The upgrade
 command (`npx @hirobius/design-system@latest upgrade`, hds#452) reads it to run
-the codemods and report what is left, and UPGRADING.md, `upgrade/index.json`
-and the `release` object of `status.json` are compiled from it
+the codemods and report what is left, and UPGRADING.md and `upgrade/index.json`
+are compiled from it
 ([What it compiles to](#what-it-compiles-to)). All of it ships in the package
 except `upgrade/pending/`, `upgrade/sources/`, `upgrade/published.json` and
 this README.
@@ -176,8 +176,8 @@ which records the release it just cut:
    package ships it, the exact install until then), then at most five lines,
    so the GitHub Release leads with it.
 4. It adds the version to `upgrade/published.json` (the Version PR publishes
-   when it merges), deletes the merged notes and regenerates UPGRADING.md,
-   `upgrade/index.json` and `status.json` `release`. A rerun replaces the
+   when it merges), deletes the merged notes and regenerates UPGRADING.md
+   and `upgrade/index.json`. A rerun replaces the
    Upgrade block rather than adding a second one.
 
 For a prerelease (changesets pre mode, `.changeset/pre.json`, or any version
@@ -217,10 +217,9 @@ release.
   path, a prop) when it lists neither. A subject is a label, not a name to
   search code for (`Text-variants`): the upgrade command finds its uses by the
   `detect` of the ledger step that `step` names.
-- **`status.json` `release`**: the newest release for the fleet dashboard.
 
 `node scripts/upgrade/compile.mjs --check` runs in `pretest` and fails,
-naming the file and the fix, when any of the three differs from what it would
+naming the file and the fix, when either differs from what it would
 write. UPGRADING.md and `upgrade/index.json` are in `.prettierignore`.
 
 ## Recording a release by hand

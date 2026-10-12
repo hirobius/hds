@@ -299,11 +299,12 @@ public/             manifest, llms.txt
 
 - [`docs/CONSUMING.md`](docs/CONSUMING.md) — installing & using the published package
 - [`docs/ENGINEERING.md`](docs/ENGINEERING.md) — how the system is built (pipeline, gates, release, Figma sync)
+- [`docs/ai/FRONT-DOOR.md`](docs/ai/FRONT-DOOR.md) — the front door for agents working in this repo (read order, where live state is, the docs index); [`AGENTS.md`](AGENTS.md) is the guide for agents building with the package
 - `CLAUDE.md` — agent operating contract
 - `DESIGN.md` — lean visual spec
 - `DESIGN-HANDOFF.md` — verbose visual mirror
 - `TOKEN_GOVERNANCE.md` — token system rules
-- `SYSTEMS_REGISTRY.md` — systems & guardrail registry
+- `docs/guardrails/registry.json` — gate registry; `docs/state-surfaces.json` — every file that describes state
 
 ## License
 
