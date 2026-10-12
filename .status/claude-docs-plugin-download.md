@@ -1,0 +1,1 @@
+The docs site now serves the Sync plugin as a zip at /figma/hds-tokens-sync.zip (with /figma/hds-tokens-sync.json naming its pluginBuild and commit), written by `figma-push.mjs --plugin-zip` in the same docs:publish step as the sync bundle. Only the Sync plugin is zipped, never the promote plugin.
