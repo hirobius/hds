@@ -1,0 +1,1 @@
+Added check-figma-fallbacks: fails when the committed Figma snapshot records a colour binding whose raw fallback colour is not the variable value (fallbacks.js sweep, figma:snapshot --fallbacks); runs in pretest.

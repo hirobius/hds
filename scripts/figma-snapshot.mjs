@@ -23,6 +23,13 @@
  *                                        use_figma returned for snapshot-diff.js,
  *                                        verify its checksum, then ingest it the same way
  *
+ *  pnpm figma:snapshot --fallbacks <file>
+ *                                        verify what figma/push/use-figma/fallbacks.js returned
+ *                                        (paints and effects bound to a colour variable whose raw
+ *                                        fallback colour differs from it) and record it in
+ *                                        figma/snapshot.json as `bindingFallbacks`; the snapshot
+ *                                        itself and its checksum are not touched (hds, 2026-10-12)
+ *
  * After a Sync, an agent collects the snapshot with figma/push/use-figma/receipt.js
  * (figma/README.md "Agent: collect a sync"). Otherwise take it with the Sync
  * plugin (Sync, then Download JSON), with the promote plugin ("Take snapshot",
@@ -33,7 +40,11 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { parseSnapshotFile, serializeSnapshotFile } from './lib/figma-snapshot.mjs';
+import {
+  parseSnapshotFile,
+  serializeSnapshotFile,
+  verifyBindingFallbacks,
+} from './lib/figma-snapshot.mjs';
 import { rebuildFromReceipt } from './lib/figma-receipt.mjs';
 import { rebuildFromDiff } from './lib/figma-diff-rebuild.mjs';
 import { syncConfigFromLinks } from './lib/figma-scripts.mjs';
@@ -43,16 +54,65 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 /**
  * Verifies a snapshot file and writes it to <root>/figma/snapshot.json.
- * Writes nothing when verification fails.
+ * Writes nothing when verification fails. A snapshot that carries no
+ * `bindingFallbacks` (a receipt, a diff, snapshot.js: none of them sweeps the
+ * paints) keeps the committed file's record, which has its own `takenAt`.
  *
  * @param {{ root: string, from?: string, text?: string }} options  the file, or its text
  */
 export function ingestSnapshot({ root, from, text = readFileSync(from, 'utf8') }) {
-  const verified = parseSnapshotFile(text);
+  const parsed = parseSnapshotFile(text);
   const outPath = join(root, 'figma', 'snapshot.json');
+  const verified = parsed.bindingFallbacks
+    ? parsed
+    : { ...parsed, bindingFallbacks: committedFallbacks(outPath) };
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, serializeSnapshotFile(verified));
   return { ...verified, outPath };
+}
+
+/** The bound-colour fallback record in the committed snapshot file, or undefined (none, or the file does not verify). */
+function committedFallbacks(path) {
+  try {
+    return parseSnapshotFile(readFileSync(path, 'utf8')).bindingFallbacks;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Verifies what fallbacks.js returned (scripts/lib/figma-snapshot.mjs
+ * verifyBindingFallbacks: shape, checksum, not too large) and records it in
+ * <root>/figma/snapshot.json as `bindingFallbacks`, leaving the snapshot and
+ * its checksum as they were. Writes nothing when any check fails.
+ *
+ * @param {{ root: string, from: string }} options
+ */
+export function ingestFallbacks({ root, from }) {
+  let result;
+  try {
+    result = JSON.parse(readFileSync(from, 'utf8'));
+  } catch {
+    throw new Error(
+      `${from} is not JSON: save what use_figma returned for fallbacks.js, unedited, then run this again.`,
+    );
+  }
+  const record = verifyBindingFallbacks(result);
+  const { libraryFileKey } = syncConfigFromLinks(readLinks(root));
+  if (record.file !== libraryFileKey) {
+    throw new Error(
+      `The sweep was taken in ${record.file === null ? 'a file with no key' : `file ${record.file}`}, which is not the HDS library (${libraryFileKey}). Run fallbacks.js on the library.`,
+    );
+  }
+  const snapshotPath = join(root, 'figma', 'snapshot.json');
+  if (!existsSync(snapshotPath)) {
+    throw new Error(
+      'There is no committed figma/snapshot.json to record the sweep in. Take a snapshot (pnpm figma:snapshot) and ingest it first.',
+    );
+  }
+  const committed = parseSnapshotFile(readFileSync(snapshotPath, 'utf8'));
+  writeFileSync(snapshotPath, serializeSnapshotFile({ ...committed, bindingFallbacks: record }));
+  return { record, outPath: snapshotPath };
 }
 
 /**
@@ -134,6 +194,9 @@ export function snapshotSteps(rel) {
     '    then pnpm figma:snapshot --from-diff <file> (figma/README.md "re-base after an out-of-band change").',
     '  Commit figma/snapshot.json only when pnpm check:figma-drift exits 0 AND pnpm figma:push --plan',
     '  prints "updated 0 · created 0 · deleted 0".',
+    `  Bound-colour fallbacks (a paint or effect bound to a variable over a different raw colour): ${rel}/use-figma/fallbacks.js`,
+    '    (fallbacks-components.js walks components only) through use_figma, save the result, then',
+    '    pnpm figma:snapshot --fallbacks <file>. pnpm check:figma-fallbacks fails while any is recorded.',
   ];
 }
 
@@ -142,8 +205,24 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const at = args.indexOf('--ingest');
   const fromReceipt = args.indexOf('--from-receipt');
   const fromDiff = args.indexOf('--from-diff');
+  const fallbacks = args.indexOf('--fallbacks');
   try {
-    if (fromDiff !== -1) {
+    if (fallbacks !== -1) {
+      const file = args[fallbacks + 1];
+      if (!file || file.startsWith('--')) {
+        throw new Error('--fallbacks needs the file saved from figma/push/use-figma/fallbacks.js.');
+      }
+      const { record, outPath } = ingestFallbacks({ root: ROOT, from: resolve(file) });
+      const found = record.mismatches.length;
+      console.log(
+        [
+          `✓ ${relative(ROOT, outPath).replaceAll('\\', '/')} records the bound-colour sweep of ${record.takenAt}: ${record.bindings} bindings on ${record.nodes} nodes (${record.scope === 'all' ? `${record.pages} pages` : 'components only'}), ${found} mismatch(es)`,
+          found
+            ? "  pnpm check:figma-fallbacks fails until each is fixed in Figma (set the raw colour to the variable's value; keep the binding) and the sweep is taken again."
+            : '  pnpm check:figma-fallbacks passes.',
+        ].join('\n'),
+      );
+    } else if (fromDiff !== -1) {
       const file = args[fromDiff + 1];
       if (!file || file.startsWith('--')) {
         throw new Error(
