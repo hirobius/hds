@@ -134,6 +134,8 @@ Component (aliases only). There is one theme axis: Light and Dark live on Semant
 Role carries a single mode whose values follow it. Client tenants never enter the shared
 library.
 
+> Amended by ADR-035 (2026-10-12): the Brand collection holds directions (`directions/<slug>/`, tier 1, empty deployment and legal groups); the `demo` marker is retired. The paragraph below is the 2026-09 wording.
+
 **Decided (Adrian, 2026-09-17):** Brand is modes of one `Hirobius/Brand` collection in the
 shared library, one mode per **demo** tenant, listed in `figma/brand-modes.json`. A tenant
 enters that collection only with the `demo` marker in its metadata; client tenants stay out

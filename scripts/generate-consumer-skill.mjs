@@ -136,7 +136,7 @@ export function buildConsumerSkill({
     'No inline margins on children to fake sibling spacing; the parent layout primitive owns the gap.',
     'Use an allow-listed HDS component where one exists instead of hand-rolling it.',
     'Keep app-local tokens and styles under your own `--<prefix>-*` prefix, never inside DS-owned namespaces (`--primitive-*`, `--semantic-*`, `--component-*`, `--role-*`, `--hds-*`; `data-hds`, `data-theme`, `data-tenant`).',
-    'Re-theme through a tenant overlay activated with `data-tenant`, not by overriding DS tokens.',
+    'Re-theme through the brand bridge (`@hirobius/design-system/brand`) or by selecting a shipped direction with `data-tenant`; never by overriding DS tokens directly.',
     'Route gaps upstream: a missing component or token is an issue and PR against HDS, not a downstream patch.',
     'Mark the HDS scope with `data-hds` on `<html>`, `<body>` or a wrapper, and on portal containers for overlays that render into `document.body`.',
   ];

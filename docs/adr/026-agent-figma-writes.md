@@ -69,6 +69,8 @@ silently redirect them at the library.
 
 ### 3. The demo-tenant rule is untouched
 
+> Amended by ADR-035 (2026-10-12): the `demo` marker is retired. `figma/brand-modes.json` lists directions, and `scripts/lib/figma-brand-modes.mjs` refuses any slug that does not live under `directions/<slug>/` at tier 1 with empty deployment and legal groups. The paragraph below is the 2026-09 wording.
+
 `figma/brand-modes.json` still admits demo tenants only, still requires `"demo": true`, and
 `scripts/lib/figma-brand-modes.mjs` still refuses anything else. A client tenant never enters
 a shared file, staging included — staging is a duplicate of a shared library, not a private

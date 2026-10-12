@@ -437,7 +437,7 @@ ADR-035 names the three layers; `GLOSSARY.md` defines them.
 A missing primitive, a token you need, or a fundamental flaw becomes an **issue
 and PR against the DS** — not a permanent downstream fork. Every alias target
 must exist in the base `hirobius.tokens.json` (rule R5), so a new brand ramp is
-added upstream first, then the tenant overlay aliases it.
+added upstream first, then the brand overlay aliases it.
 
 > **Optional (no DS obligation):** keep a downstream **drift-guard test** that
 > pins the token paths your app consumes, so your CI fails when an upgrade moves
@@ -446,7 +446,7 @@ added upstream first, then the tenant overlay aliases it.
 **Reference implementation:** the first external consumer follows all four —
 it consumes tokens via
 `@hirobius/design-system/variables.css`, keeps every extension under `--lb-*`,
-mirrors its brand through a tenant overlay, and pins consumed paths with a
+mirrors its brand through its own overlay, and pins consumed paths with a
 CI-enforced drift guard.
 
 ## 11. Lint discipline — the consumer ESLint plugin

@@ -362,10 +362,10 @@ describe('HdsThemeProvider', () => {
   }
 
   it('writes the brand slug onto BOTH data-brand and the data-tenant alias (#62)', async () => {
-    const scope = await renderProvider({ brand: 'concrete-creations' });
-    expect(scope.getAttribute('data-brand')).toBe('concrete-creations');
+    const scope = await renderProvider({ brand: 'brutalist-demo' });
+    expect(scope.getAttribute('data-brand')).toBe('brutalist-demo');
     // data-tenant is mirrored for back-compat with today's compiled overlays.
-    expect(scope.getAttribute('data-tenant')).toBe('concrete-creations');
+    expect(scope.getAttribute('data-tenant')).toBe('brutalist-demo');
   });
 
   it('omits the brand attributes when no brand is given (base brand)', async () => {

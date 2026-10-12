@@ -9,10 +9,11 @@
  * catching it. This asserts that pairing directly, per tenant, per mode.
  */
 import { describe, it, expect } from 'vitest';
-import { existsSync, readFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { resolveAlias } from '../../scripts/build-tokens.mjs';
+import { listDirectionSlugs } from '../../scripts/lib/directions.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
@@ -58,9 +59,7 @@ const baseOnAccentNode = getByPath(baseRaw, 'semantic.color.content.onAccent');
 // that leaves the accent alone (brutalist-demo: shape and density only) has
 // nothing to pair and is skipped.
 const DIRECTIONS_DIR = resolve(ROOT, 'directions');
-const TENANTS = readdirSync(DIRECTIONS_DIR, { withFileTypes: true })
-  .filter((entry) => entry.isDirectory() && !entry.name.startsWith('_'))
-  .map((entry) => entry.name)
+const TENANTS = listDirectionSlugs(DIRECTIONS_DIR)
   .filter((slug) => {
     const file = resolve(DIRECTIONS_DIR, slug, 'tokens.json');
     if (!existsSync(file)) return false;

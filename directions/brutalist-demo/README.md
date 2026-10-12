@@ -1,4 +1,4 @@
-# Brutalist Demo — Tenant Overlay
+# Brutalist Demo — Direction Overlay
 
 Direction (ADR-035): the exemplar for the per-direction shape + density overlay
 axis (ADR-022, `#128`, epic `#124`). Not a real client — no deployment, no

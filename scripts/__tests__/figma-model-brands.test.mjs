@@ -25,7 +25,7 @@ const fixture = () =>
 
 const modes = (map) => ({ 'com.figma.variables': { modes: map } });
 
-/** Two demo tenants: one sharp and dense, one with its own accent and page color. */
+/** Two directions: one sharp and dense, one with its own accent and page color. */
 const SHARP = {
   slug: 'sharp-demo',
   overlay: {
@@ -60,7 +60,7 @@ const ACCENT = {
     },
   },
 };
-const brands = (...tenants) => ({ baseMode: 'Hirobius', tenants });
+const brands = (...directions) => ({ baseMode: 'Hirobius', directions });
 
 const collection = (model, key) => model.collections.find((c) => c.key === key);
 const variable = (model, path) =>
@@ -309,9 +309,9 @@ describe('buildFigmaModel — Brand collection', () => {
 
 describe('buildFigmaModel refuses brand overlays Figma cannot express', () => {
   const build =
-    (...tenants) =>
+    (...directions) =>
     () =>
-      buildFigmaModel(fixture(), { brands: brands(...tenants) });
+      buildFigmaModel(fixture(), { brands: brands(...directions) });
   const tenant = (overlay, slug = 'odd-demo') => ({ slug, overlay });
 
   it('a tenant theming a token that lives in a single-mode collection', () => {
@@ -385,10 +385,10 @@ describe('buildFigmaModel refuses brand overlays Figma cannot express', () => {
     expect(() => buildFigmaModel(raw)).toThrow(/semantic\.space\.component\.gap.*Compact/);
   });
 
-  it('two tenants with one slug, or a slug equal to the base mode name', () => {
+  it('two directions with one slug, or a slug equal to the base mode name', () => {
     expect(build(SHARP, SHARP)).toThrow(/sharp-demo.*twice/);
     expect(() =>
-      buildFigmaModel(fixture(), { brands: { baseMode: 'sharp-demo', tenants: [SHARP] } }),
+      buildFigmaModel(fixture(), { brands: { baseMode: 'sharp-demo', directions: [SHARP] } }),
     ).toThrow(/sharp-demo.*base mode/);
   });
 });
@@ -439,7 +439,7 @@ describe('validateFigmaModel — Brand and Density rules', () => {
     expect(violations[0]).toMatch(message);
   });
 
-  it('flags more demo tenants than a Professional plan has Brand modes for', () => {
+  it('flags more demo directions than a Professional plan has Brand modes for', () => {
     const many = Array.from({ length: 10 }, (_, i) => ({
       slug: `demo-${i}`,
       overlay: SHARP.overlay,

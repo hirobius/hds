@@ -139,7 +139,7 @@ An overlay may override:
 - **Primitive tier** (`primitive.*`) — **NO.** Primitives are the abstraction.
   An overlay that needs a brown accent does NOT redefine
   `primitive.color.blue.500` to brown — that breaks every other consumer of
-  blue. Instead, override `semantic.accent.rest` to point at a tenant-
+  blue. Instead, override `semantic.accent.rest` to point at a direction-
   specific value (or define a new primitive at the BASE tier and re-alias
   semantic to it).
 
@@ -303,7 +303,7 @@ in the client's own repository, where this schema still applies.
 | Field          | Required         | Purpose                                                                                                                               |
 | -------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `slug`         | yes              | Verbatim `data-brand` (and `data-tenant`) attribute value. Must match directory name.                                                 |
-| `displayName`  | yes              | UI-facing brand name; rendered in tenant-aware screens.                                                                               |
+| `displayName`  | yes              | UI-facing brand name; rendered in brand-aware screens.                                                                                |
 | `tagline`      | no               | Short brand line; used by previews, sales tooling.                                                                                    |
 | `demo`         | no               | Retired (ADR-035): the `directions/` folder is the statement. Accepted and ignored.                                                   |
 | `tier`         | yes              | 1 (brand presence), 2 (e-commerce), 3 (product). Drives infra defaults.                                                               |
@@ -332,7 +332,7 @@ ValidationRules:
   R2.leaf   : Every override MUST end in $value (no group-only declarations)
   R5.path   : Every override path MUST exist in hirobius.tokens.json
   R6.atomic : Composite types are replaced atomically (no sub-key merging)
-  R8.alias  : All {ref} values resolve to a base path or a tenant override
+  R8.alias  : All {ref} values resolve to a base path or an overlay override
 ```
 
 ---
@@ -366,7 +366,7 @@ from `@hirobius/design-system/brand` (`docs/CONSUMING.md` §12).
 
 ## Why semantic-only overrides
 
-A tenant who wants a brown accent has two paths conceptually:
+A direction that wants a brown accent has two paths conceptually:
 
 **Wrong:** override `primitive.color.blue.500` to brown. Breaks every
 component that uses blue for non-accent purposes (focus rings, info
@@ -387,7 +387,7 @@ the underlying palette.
 
 When the build pipeline lands (`12m-mt-build-pipeline`):
 
-1. `scripts/check-tenant-tokens.mjs` runs in `pnpm test` (pretest) and `pnpm tokens`.
+1. `scripts/check-tenant-tokens.mjs` runs in `pnpm test` (pretest).
 2. For each `directions/*/tokens.json`:
    - Parse as JSON; fail on syntax errors.
    - Walk the token tree; collect leaf paths.

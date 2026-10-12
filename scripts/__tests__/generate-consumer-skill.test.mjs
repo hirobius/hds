@@ -191,7 +191,7 @@ describe('buildConsumerSkill (in-memory)', () => {
 
   it('carries the do/dont rules from the docs', () => {
     const out = build();
-    for (const s of ['data-hds', '--<prefix>-*', 'tenant overlay', 'upstream']) {
+    for (const s of ['data-hds', '--<prefix>-*', 'brand bridge', 'upstream']) {
       expect(out).toContain(s);
     }
   });
