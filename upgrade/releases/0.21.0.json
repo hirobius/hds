@@ -9,7 +9,7 @@
       "id": "0.21.0/removed/--semantic-typography-eyebrow-text-transform",
       "kind": "removed",
       "impact": "look",
-      "plain": "The CSS variable --semantic-typography-eyebrow-text-transform is gone, so drop any text-transform you added for those labels, because the system is sentence case.",
+      "plain": "The CSS variable --semantic-typography-eyebrow-text-transform is gone, so set text-transform: uppercase yourself where a label must stay uppercase.",
       "detect": {
         "cssVars": [
           "--semantic-typography-eyebrow-text-transform"
