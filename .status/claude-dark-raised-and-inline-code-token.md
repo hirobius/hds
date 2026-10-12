@@ -1,0 +1,1 @@
+Dark raised surface neutral.950 to 850 (1.06:1 to 1.21:1 vs page; overlay and sunken to 800); dark state steps re-laddered (hover 700, muted 800, pressed black, border.subtle 700); new component.inlineCode.bg bound in InlineCode; component.button.primary.textDisabled Figma modes reverted (hds#607 moved it to Component); binding gate 36 BOUND of 92, 0 LITERAL-MISMATCH.

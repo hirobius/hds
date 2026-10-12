@@ -694,6 +694,9 @@ export const tokenRefs = {
       padding: "var(--component-card-padding)",
       gap: "var(--component-card-gap)"
     },
+    inlineCode: {
+      bg: "var(--component-inlineCode-bg)"
+    },
     lightbox: {
       backdrop: {
         blur: "var(--component-lightbox-backdrop-blur)"

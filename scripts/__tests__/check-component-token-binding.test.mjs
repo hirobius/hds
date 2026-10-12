@@ -402,13 +402,13 @@ describe('CLI modes', () => {
 // ── The repo itself (acceptance fixture: audit at origin/main 7895210) ───────
 
 describe('repo counts', () => {
-  it('counts after the state-token decisions (hds#595): 35 BOUND / 43 LITERAL-MATCH / 0 LITERAL-MISMATCH / 13 UNUSED (was 20/44/4/11)', () => {
+  it('counts after the state-token decisions (hds#595): 36 BOUND / 43 LITERAL-MATCH / 0 LITERAL-MISMATCH / 13 UNUSED of 92 (was 20/44/4/11; inlineCode.bg bound)', () => {
     const r = cli(['--json']);
     expect(r.status).toBe(0);
     const { summary } = JSON.parse(r.out);
-    expect(summary.total).toBe(91);
+    expect(summary.total).toBe(92);
     expect(summary.counts).toMatchObject({
-      BOUND: 35,
+      BOUND: 36,
       'LITERAL-MATCH': 43,
       'LITERAL-MISMATCH': 0,
       UNUSED: 13,

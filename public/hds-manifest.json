@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T05:28:15.520Z",
+  "generated": "2026-10-12T05:57:55.903Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -2360,7 +2360,8 @@
         "src/app/components/table.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/context/hds-theme.tsx"
+        "src/app/context/hds-theme.tsx",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {},
       "props": {
@@ -2475,7 +2476,8 @@
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/index.ts"
+        "src/index.ts",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {
         "Surface fill": "role.card",
@@ -3727,7 +3729,8 @@
         "src/app/components/metric-tiles.tsx",
         "src/app/components/stat.tsx",
         "src/index.ts",
-        "src/patterns.ts"
+        "src/patterns.ts",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7324,7 +7327,8 @@
       },
       "consumers": [
         "src/app/components/metric-tiles.test.tsx",
-        "src/app/components/stat.tsx"
+        "src/app/components/stat.tsx",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -9408,8 +9412,8 @@
         "alias": "{primitive.color.neutral.50}",
         "resolvedValue": "#fafafa",
         "dark": {
-          "alias": "{primitive.color.neutral.950}",
-          "resolvedValue": "#0a0a0a"
+          "alias": "{primitive.color.neutral.850}",
+          "resolvedValue": "#1a1a1a"
         }
       },
       {
@@ -9420,8 +9424,8 @@
         "alias": "{primitive.color.neutral.100}",
         "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -9480,8 +9484,8 @@
         "alias": "{primitive.color.neutral.100}",
         "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.900}",
-          "resolvedValue": "#111111"
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -9492,8 +9496,8 @@
         "alias": "{primitive.color.neutral.50}",
         "resolvedValue": "#fafafa",
         "dark": {
-          "alias": "{primitive.color.neutral.950}",
-          "resolvedValue": "#0a0a0a"
+          "alias": "{primitive.color.neutral.black}",
+          "resolvedValue": "#000000"
         }
       },
       {
@@ -9516,8 +9520,8 @@
         "alias": "{primitive.color.neutral.100}",
         "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.900}",
-          "resolvedValue": "#111111"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -9528,8 +9532,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -9678,8 +9682,8 @@
         "alias": "{primitive.color.neutral.100}",
         "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -11163,13 +11167,9 @@
         "path": "component.button.primary.textDisabled",
         "cssVar": "--component-button-primary-textDisabled",
         "type": "color",
-        "description": "Disabled primary button text color. Kept themed (both modes content.disabled) so the Figma variable stays in Hirobius/Semantic, where components already bind it.",
+        "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.disabled}",
-        "resolvedValue": "#d4d4d4",
-        "dark": {
-          "alias": "{semantic.color.content.disabled}",
-          "resolvedValue": "#d4d4d4"
-        }
+        "resolvedValue": "#d4d4d4"
       },
       {
         "path": "component.button.primary.bgDisabled",
@@ -11326,6 +11326,14 @@
         "type": "dimension",
         "alias": "{semantic.space.scale.sm}",
         "resolvedValue": "16px"
+      },
+      {
+        "path": "component.inlineCode.bg",
+        "cssVar": "--component-inlineCode-bg",
+        "type": "color",
+        "description": "Inline code chip background.",
+        "alias": "{semantic.color.surface.overlay}",
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.lightbox.backdrop.blur",
