@@ -149,52 +149,99 @@
         },
         "$description": "Discrete values within the green range at defined lightness steps."
       },
-      "apple": {
+      "graphite": {
         "50": {
-          "$value": "#f2faeb",
-          "$description": "Apple-green accent tint — faintest step."
+          "$value": "#f5f4f4",
+          "$description": "Graphite accent tint — faintest step."
         },
         "100": {
-          "$value": "#e2f3cf",
-          "$description": "Apple-green accent — very light tint."
+          "$value": "#e9e7e8",
+          "$description": "Graphite accent — very light warm tint."
         },
         "200": {
-          "$value": "#c7e7a4",
-          "$description": "Apple-green accent — light tint."
+          "$value": "#d4d0d2",
+          "$description": "Graphite accent — light warm-grey; dark-mode rest accent fill."
         },
         "300": {
-          "$value": "#a6d873",
-          "$description": "Apple-green accent — soft mid-light step."
+          "$value": "#b2abae",
+          "$description": "Graphite accent — soft mid-light step; dark-mode hover/link."
         },
         "400": {
-          "$value": "#85c84c",
-          "$description": "Apple-green accent — bright step; dark-mode rest accent."
+          "$value": "#8b8488",
+          "$description": "Graphite accent — mid warm-grey step."
         },
         "500": {
-          "$value": "#66b239",
-          "$description": "Apple-green accent rest — bright, rich apple green; AA for dark (neutral.900) text as a fill."
+          "$value": "#655e62",
+          "$description": "Graphite accent — mid step."
         },
         "600": {
-          "$value": "#54922d",
-          "$description": "Apple-green accent — hover / border step."
+          "$value": "#544d51",
+          "$description": "Graphite accent — mid-dark step."
         },
         "700": {
-          "$value": "#416f20",
-          "$description": "Apple-green accent — pressed and accent-intent text (AA for text on page and card surfaces)."
+          "$value": "#433a3f",
+          "$description": "Graphite accent rest — the warm charcoal brand accent; white text as a fill (AA)."
         },
         "800": {
-          "$value": "#34571b",
-          "$description": "Apple-green accent — deep step."
+          "$value": "#352e32",
+          "$description": "Graphite accent — deep step; light-mode hover."
         },
         "900": {
-          "$value": "#2b4518",
-          "$description": "Apple-green accent — darkest usable step."
+          "$value": "#2a2428",
+          "$description": "Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text."
         },
         "950": {
-          "$value": "#16250c",
-          "$description": "Apple-green accent — near-black green substrate."
+          "$value": "#19161a",
+          "$description": "Graphite accent — near-black warm substrate."
         },
-        "$description": "Discrete values within the apple-green (brand accent) range at defined lightness steps. Distinct from the emerald `green` feedback/success scale."
+        "$description": "Graphite, the warm-charcoal brand accent scale. Feedback colors keep their own scales."
+      },
+      "mauve": {
+        "50": {
+          "$value": "#fff0f6",
+          "$description": "Mauve tint, faintest step."
+        },
+        "100": {
+          "$value": "#f4e2ea",
+          "$description": "Mauve step 100, lightness-matched to graphite 100."
+        },
+        "200": {
+          "$value": "#e1cad4",
+          "$description": "Mauve step 200, lightness-matched to graphite 200."
+        },
+        "300": {
+          "$value": "#c0a4b1",
+          "$description": "Mauve step 300, lightness-matched to graphite 300."
+        },
+        "400": {
+          "$value": "#9d7b8a",
+          "$description": "Mauve step 400, lightness-matched to graphite 400."
+        },
+        "500": {
+          "$value": "#734b5e",
+          "$description": "Mauve anchor (#734B5E). Reserved; not mapped to any semantic token yet."
+        },
+        "600": {
+          "$value": "#674254",
+          "$description": "Mauve step 600, lightness-matched to graphite 600."
+        },
+        "700": {
+          "$value": "#523141",
+          "$description": "Mauve step 700, lightness-matched to graphite 700."
+        },
+        "800": {
+          "$value": "#432634",
+          "$description": "Mauve step 800, lightness-matched to graphite 800."
+        },
+        "900": {
+          "$value": "#361d29",
+          "$description": "Mauve step 900, lightness-matched to graphite 900."
+        },
+        "950": {
+          "$value": "#240f1a",
+          "$description": "Mauve, near-black substrate."
+        },
+        "$description": "Mauve, a reserved secondary scale lightness-matched to graphite. Defined for exploration; no semantic token uses it yet."
       },
       "violet": {
         "50": {
@@ -282,7 +329,6 @@
         "$description": "Discrete values within the amber range at defined lightness steps."
       },
       "stone": {
-        "$description": "Warm stone/brown palette for Concrete Creations brand accent ramp. PLACEHOLDER values pending final brand identity work.",
         "100": {
           "$value": "#F5EFE7",
           "$description": "Stone 100 — near-white warm tint; accent-subtle surface."
@@ -314,7 +360,8 @@
         "950": {
           "$value": "#3A2E1F",
           "$description": "Stone 950 — near-black warm tone; dark-mode subtle accent surface."
-        }
+        },
+        "$description": "Warm stone/brown palette for Concrete Creations brand accent ramp. PLACEHOLDER values pending final brand identity work."
       },
       "projectBrand": {
         "microsoftGameDev": {
@@ -515,25 +562,25 @@
         "$type": "fontFamily",
         "primary": {
           "$value": [
-            "Satoshi",
+            "Plus Jakarta Sans",
             "system-ui",
             "-apple-system",
             "BlinkMacSystemFont",
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Self-hosted Satoshi (ITF) body typeface; falls back to system-ui sans-serif stack."
+          "$description": "Self-hosted Plus Jakarta Sans (OFL) body typeface; falls back to system-ui sans-serif stack."
         },
         "display": {
           "$value": [
-            "Satoshi",
+            "Plus Jakarta Sans",
             "system-ui",
             "-apple-system",
             "BlinkMacSystemFont",
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display face: Satoshi Bold (ITF), bound to the display and title composites."
+          "$description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites."
         },
         "mono": {
           "$value": ["IBM Plex Mono", "Courier New", "monospace"],
@@ -935,6 +982,14 @@
           },
           "$description": "96px width step."
         },
+        "280": {
+          "$type": "dimension",
+          "$value": {
+            "value": 280,
+            "unit": "px"
+          },
+          "$description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room."
+        },
         "760": {
           "$type": "dimension",
           "$value": {
@@ -955,14 +1010,6 @@
             "value": 50,
             "unit": "ch"
           }
-        },
-        "280": {
-          "$type": "dimension",
-          "$value": {
-            "value": 280,
-            "unit": "px"
-          },
-          "$description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room."
         }
       }
     },
@@ -1145,25 +1192,25 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.apple.500}",
-          "$description": "Accent-colored background — bright apple green (stays green on dark surfaces; pair with content.onAccent dark text).",
+          "$value": "{primitive.color.graphite.700}",
+          "$description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.apple.500}",
-                "Dark": "{primitive.color.apple.400}"
+                "Light": "{primitive.color.graphite.700}",
+                "Dark": "{primitive.color.graphite.200}"
               }
             }
           }
         },
         "accentSubtle": {
-          "$value": "{primitive.color.apple.50}",
-          "$description": "Faint accent tint for hover states or highlights",
+          "$value": "{primitive.color.graphite.50}",
+          "$description": "Faint accent tint for hover states or highlights.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.apple.50}",
-                "Dark": "{primitive.color.apple.900}"
+                "Light": "{primitive.color.graphite.50}",
+                "Dark": "{primitive.color.graphite.800}"
               }
             }
           }
@@ -1275,25 +1322,25 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.apple.700}",
-          "$description": "Accent-intent text/icon color — a dark apple green legible on page and card surfaces. Pair with underline/weight for link affordance.",
+          "$value": "{primitive.color.graphite.700}",
+          "$description": "Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.apple.700}",
-                "Dark": "{primitive.color.apple.400}"
+                "Light": "{primitive.color.graphite.700}",
+                "Dark": "{primitive.color.graphite.300}"
               }
             }
           }
         },
         "onAccent": {
-          "$value": "{primitive.color.neutral.900}",
-          "$description": "Text/icon color on accent fills — a dark neutral, since the brand accent fill is a bright apple green in both light and dark mode.",
+          "$value": "{primitive.color.neutral.50}",
+          "$description": "Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.900}",
-                "Dark": "{primitive.color.neutral.900}"
+                "Light": "{primitive.color.neutral.50}",
+                "Dark": "{primitive.color.graphite.900}"
               }
             }
           }
@@ -1394,13 +1441,13 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.apple.600}",
-          "$description": "Accent border — apple green, dark enough to read as a boundary on page and card surfaces.",
+          "$value": "{primitive.color.graphite.700}",
+          "$description": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.apple.600}",
-                "Dark": "{primitive.color.apple.400}"
+                "Light": "{primitive.color.graphite.700}",
+                "Dark": "{primitive.color.graphite.300}"
               }
             }
           }
@@ -1912,37 +1959,37 @@
     "accent": {
       "$type": "color",
       "rest": {
-        "$value": "{primitive.color.apple.500}",
-        "$description": "Default accent fill for interactive elements at rest — bright apple green. Pair with content.onAccent (a dark neutral).",
+        "$value": "{primitive.color.graphite.700}",
+        "$description": "Default accent fill for interactive elements at rest — warm graphite. Inverts per theme; pair with content.onAccent.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.apple.500}",
-              "Dark": "{primitive.color.apple.400}"
+              "Light": "{primitive.color.graphite.700}",
+              "Dark": "{primitive.color.graphite.200}"
             }
           }
         }
       },
       "hover": {
-        "$value": "{primitive.color.apple.600}",
+        "$value": "{primitive.color.graphite.800}",
         "$description": "Accent fill on pointer hover.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.apple.600}",
-              "Dark": "{primitive.color.apple.500}"
+              "Light": "{primitive.color.graphite.800}",
+              "Dark": "{primitive.color.graphite.300}"
             }
           }
         }
       },
       "pressed": {
-        "$value": "{primitive.color.apple.700}",
+        "$value": "{primitive.color.graphite.900}",
         "$description": "Accent fill during active press.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.apple.700}",
-              "Dark": "{primitive.color.apple.600}"
+              "Light": "{primitive.color.graphite.900}",
+              "Dark": "{primitive.color.graphite.400}"
             }
           }
         }
@@ -1972,37 +2019,37 @@
         }
       },
       "content": {
-        "$value": "{primitive.color.apple.700}",
-        "$description": "Accent-intent text/icon color on neutral surfaces (a dark apple green) — pair with underline/weight for link affordance.",
+        "$value": "{primitive.color.graphite.700}",
+        "$description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.apple.700}",
-              "Dark": "{primitive.color.apple.400}"
+              "Light": "{primitive.color.graphite.700}",
+              "Dark": "{primitive.color.graphite.300}"
             }
           }
         }
       },
       "contentHover": {
-        "$value": "{primitive.color.apple.800}",
+        "$value": "{primitive.color.graphite.800}",
         "$description": "Accent content color on pointer hover.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.apple.800}",
-              "Dark": "{primitive.color.apple.300}"
+              "Light": "{primitive.color.graphite.800}",
+              "Dark": "{primitive.color.graphite.200}"
             }
           }
         }
       },
       "subtle": {
-        "$value": "{primitive.color.apple.50}",
+        "$value": "{primitive.color.graphite.50}",
         "$description": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.apple.50}",
-              "Dark": "{primitive.color.apple.900}"
+              "Light": "{primitive.color.graphite.50}",
+              "Dark": "{primitive.color.graphite.800}"
             }
           }
         }
@@ -2214,13 +2261,13 @@
     "tag": {
       "background": {
         "$type": "color",
-        "$value": "{semantic.accent.subtle}",
-        "$description": "Base tag surface color."
+        "$value": "{semantic.color.surface.raised}",
+        "$description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground)."
       },
       "text": {
         "$type": "color",
-        "$value": "{semantic.color.content.primary}",
-        "$description": "Default tag text color."
+        "$value": "{semantic.color.content.secondary}",
+        "$description": "Unselected tag text color (the active label uses activeText)."
       },
       "border": {
         "$type": "color",
@@ -2371,15 +2418,15 @@
       },
       "paddingY": {
         "$type": "dimension",
-        "$value": "{primitive.space.3}",
-        "$description": "Vertical button padding."
+        "$value": "{primitive.space.2}",
+        "$description": "Vertical button padding (8px, the md size; legacy flat alias of size.md.paddingY)."
       },
       "size": {
         "sm": {
           "paddingX": {
             "$type": "dimension",
-            "$value": "{primitive.space.2}",
-            "$description": "Small button horizontal padding (8px)."
+            "$value": "{primitive.space.3}",
+            "$description": "Small button horizontal padding (12px)."
           },
           "paddingY": {
             "$type": "dimension",
@@ -2398,13 +2445,13 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.space.7}",
-            "$description": "Small button height (28px)."
+            "$value": "{primitive.size.32}",
+            "$description": "Small button height (32px)."
           },
           "itemSpacing": {
             "$type": "dimension",
-            "$value": "{primitive.space.1}",
-            "$description": "Small button icon-to-label gap (4px)."
+            "$value": "{primitive.space.2}",
+            "$description": "Small button icon-to-label gap (8px)."
           }
         },
         "md": {
@@ -2415,8 +2462,8 @@
           },
           "paddingY": {
             "$type": "dimension",
-            "$value": "{primitive.space.3}",
-            "$description": "Medium button vertical padding (12px)."
+            "$value": "{primitive.space.2}",
+            "$description": "Medium button vertical padding (8px; the 40px height drives the box)."
           },
           "fontSize": {
             "$type": "dimension",
@@ -2452,8 +2499,8 @@
           },
           "fontSize": {
             "$type": "dimension",
-            "$value": "{primitive.typography.size.base}",
-            "$description": "Large button label size (16px, hds#283: was 17px)."
+            "$value": "{primitive.typography.size.sm}",
+            "$description": "Large button label size (14px, the same hds-type-ui role as md)."
           },
           "iconSize": {
             "$type": "dimension",
@@ -2475,20 +2522,12 @@
       "primary": {
         "textDisabled": {
           "$type": "color",
-          "$value": "{semantic.color.content.onAccent}",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Light": "{semantic.color.content.onAccent}",
-                "Dark": "{semantic.color.content.disabled}"
-              }
-            }
-          },
+          "$value": "{semantic.color.content.disabled}",
           "$description": "Disabled primary button text color."
         },
         "bgDisabled": {
           "$type": "color",
-          "$value": "{semantic.color.surface.accentSubtle}",
+          "$value": "{semantic.color.surface.muted}",
           "$description": "Disabled primary button fill."
         }
       },
@@ -2501,7 +2540,7 @@
           },
           "hover": {
             "$type": "color",
-            "$value": "{semantic.color.surface.raised}",
+            "$value": "{semantic.color.surface.accentSubtle}",
             "$description": "Secondary button hover fill."
           },
           "pressed": {
@@ -2518,18 +2557,18 @@
           },
           "hover": {
             "$type": "color",
-            "$value": "{semantic.color.border.interactive}",
+            "$value": "{semantic.color.border.accent}",
             "$description": "Secondary button hover border."
           },
           "pressed": {
             "$type": "color",
-            "$value": "{semantic.color.border.interactive}",
-            "$description": "Secondary button pressed border."
+            "$value": "{semantic.color.border.accent}",
+            "$description": "Secondary button pressed border (the hover border still applies while pressed)."
           },
           "disabled": {
             "$type": "color",
-            "$value": "{semantic.color.border.subdued}",
-            "$description": "Secondary button disabled border."
+            "$value": "{semantic.color.border.interactive}",
+            "$description": "Secondary button disabled border (no disabled border class: the rest border stays)."
           }
         },
         "text": {
@@ -2542,7 +2581,7 @@
     "input": {
       "bg": {
         "$type": "color",
-        "$value": "{semantic.color.surface.raised}"
+        "$value": "{semantic.color.surface.page}"
       },
       "text": {
         "$type": "color",
@@ -2562,7 +2601,7 @@
       },
       "paddingX": {
         "$type": "dimension",
-        "$value": "{primitive.space.4}"
+        "$value": "{primitive.space.3}"
       },
       "paddingY": {
         "$type": "dimension",
@@ -2580,7 +2619,7 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{primitive.radius.8}"
+        "$value": "{primitive.radius.12}"
       },
       "padding": {
         "$type": "dimension",
@@ -2588,7 +2627,7 @@
       },
       "gap": {
         "$type": "dimension",
-        "$value": "{primitive.space.2}"
+        "$value": "{semantic.space.scale.sm}"
       }
     },
     "lightbox": {

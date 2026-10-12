@@ -2,7 +2,7 @@
   "$schema": "../../hirobius.tenant-metadata.schema.json",
   "slug": "brutalist-demo",
   "displayName": "Brutalist Demo",
-  "tagline": "ADR-022 shape/density exemplar — sharp radius + tightened spacing. Storybook-only, not a real client.",
+  "tagline": "ADR-022 shape/density exemplar — sharp radius + tightened spacing. demo-only, not a real client.",
   "demo": true,
   "tier": 1,
   "deployment": {
@@ -23,8 +23,7 @@
   "createdAt": "2026-07-12",
   "status": "scaffold",
   "_notes": [
-    "Exemplar tenant proving the per-tenant shape+density overlay axis from ADR-022 (#128, epic #124). Not a real client — Storybook/Chromatic exemplar only, no deployment.",
-    "Overrides role.radius (0, density-invariant) and semantic.space.surface.padding (16px / scale.sm comfortable baseline, 8px / scale.xs under [data-density=\"compact\"] via the Compact figma-variables mode).",
-    "Wired into .storybook/preview.tsx's BRANDS list (#126 modes matrix) so every component already exercising MODES gets brutalist-demo coverage automatically."
+    "Exemplar tenant proving the per-tenant shape+density overlay axis from ADR-022 (#128, epic #124). Not a real client — demo exemplar only, no deployment.",
+    "Overrides role.radius (0, density-invariant) and semantic.space.surface.padding (16px / scale.sm comfortable baseline, 8px / scale.xs under [data-density=\"compact\"] via the Compact figma-variables mode)."
   ]
 }

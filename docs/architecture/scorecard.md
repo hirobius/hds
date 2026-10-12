@@ -8,21 +8,21 @@
 
 ## Composite — agency-platform readiness
 
-| Date | Composite | Note |
-|---|---|---|
-| 2026-05-01 (post self-grill) | **30%** | Strong foundation, weak operationalization, multi-tenant unbuilt |
-| 2026-05-01 (post Wave 3 dispatches) | **45%** | Bundle -80%, multi-tenant decided, 9 of 11 flags ON, validate-manifest + validate-orchestration hard-fail |
+| Date                                | Composite | Note                                                                                                      |
+| ----------------------------------- | --------- | --------------------------------------------------------------------------------------------------------- |
+| 2026-05-01 (post self-grill)        | **30%**   | Strong foundation, weak operationalization, multi-tenant unbuilt                                          |
+| 2026-05-01 (post Wave 3 dispatches) | **45%**   | Bundle -80%, multi-tenant decided, 9 of 11 flags ON, validate-manifest + validate-orchestration hard-fail |
 
 Weighting (sums to 100):
 
-| Surface | Weight |
-|---|---|
-| Foundation (tokens / components / docs) | 25% |
-| Production hardening (CI / perf / a11y / tests) | 20% |
-| LLM pipeline | 10% |
-| Figma plugin | 10% |
-| Multi-tenant agency platform | 25% |
-| Pilot client (Concrete Creations) | 10% |
+| Surface                                         | Weight |
+| ----------------------------------------------- | ------ |
+| Foundation (tokens / components / docs)         | 25%    |
+| Production hardening (CI / perf / a11y / tests) | 20%    |
+| LLM pipeline                                    | 10%    |
+| Figma plugin                                    | 10%    |
+| Multi-tenant agency platform                    | 25%    |
+| Pilot client (Concrete Creations)               | 10%    |
 
 ---
 
@@ -49,12 +49,12 @@ To 80%: build pipeline + runtime provider + rebake-in-pre-commit.
 - ✅ Slot-based binding for 13 GENERATIVE_SUBSET components
 - ✅ Lucide unified (Phosphor dropped)
 - ✅ Pod 3 dropped 870 LoC dead code; manifest scanner correctly excludes 10 demo helpers
-- ⏳ Storybook / Histoire / Ladle (`12n-api-storybook-setup`)
+- ✅ Component workbench: the docs site (`docs-site/`)
 - ⏳ API extractor (`12n-api-extractor-wired`)
 - ⏳ Manifest schema semver (`12n-api-manifest-schema-semver`)
 - ⏳ HDSLayout architectural split (5-module, plan ratified)
 
-To 75%: Storybook + API extractor + HDSLayout split.
+To 75%: API extractor + HDSLayout split.
 
 ### Doc site — **65%** (was 55%)
 
@@ -195,24 +195,25 @@ To revenue: all 4 units done + Stripe live mode flipped.
 - ✅ package.json#exports defined
 - ✅ Lucide unified (no more dual-icon-lib confusion)
 - ✅ Bundle vendor splits emerging
-- ⏳ Storybook (`12n-api-storybook-setup`)
+- ✅ Component workbench: the docs site (`docs-site/`)
 - ⏳ API extractor (`12n-api-extractor-wired`)
 - ⏳ Manifest schema semver (`12n-api-manifest-schema-semver`)
 - ⏳ React 19 migration plan (`12n-api-react-19-migration-path`)
 - ⏳ Changelog automation (`12n-api-changelog-automation`)
 - ⏳ Internal vs public JSDoc (`12n-api-internal-vs-public-jsdoc`)
 
-To 70%: Storybook + api-extractor + semver + changelog.
+To 70%: api-extractor + semver + changelog.
 
 ---
 
 ## Next milestone target: **55% composite** by end of next session
 
 Achievable via:
+
 - HDSLayout split (5 prereqs + main split) → +5% composite
 - Mobius selector consolidation + useFrame split → +3%
 - Multi-tenant build pipeline → +5%
-- Storybook + api-extractor → +3%
+- api-extractor → +3%
 - ESLint burndown to 0 → +1%
 - Snapshot rebake + theme listener + TOC scrollspy → +2%
 - Prompt regression goldens captured → +2%

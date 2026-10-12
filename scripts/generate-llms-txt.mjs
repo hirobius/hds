@@ -37,21 +37,12 @@ const ROOT = join(__dirname, '..');
 const manifestPath = join(ROOT, 'public', 'hds-manifest.json');
 const componentApiPath = join(ROOT, 'src', 'app', 'data', 'component-api.json');
 
-function phasePercent(criteria = []) {
-  if (!criteria.length) return 0;
-  const weightedCount = criteria.reduce((sum, item) => {
-    if (item.done) return sum + 1;
-    if (item.partial) return sum + 0.5;
-    return sum;
-  }, 0);
-  return Math.round((weightedCount / criteria.length) * 100);
-}
 const scrollRecipeSteps = [
   '`Reveal` (CSS `animation-timeline: view()`) for fade/slide/scale-in-on-enter — zero JS, zero deps. Pick `animation` from `fade | fade-up | fade-down | scale`. Content is visible by DEFAULT; the effect applies only where `animation-timeline` is supported and the user has not requested reduced motion — never gate visibility behind either.',
   '`Pin` (`position: sticky`) for a pinned scroll scene — the dependency-free basis for the "tall section + sticky child" pattern (GSAP\'s `pin: true`, done with zero JS). Give the pinned element a TALLER scrolling parent (e.g. `height: 300vh`) so it has room to travel; `top` is a CSS length offset, not a spacing token.',
   '`useScrollProgress` (from `@hirobius/design-system/scroll`) only when the 0→1 scroll value is needed in React — cross-element choreography, canvas/WebGL, or a Motion (`motion/react`) `useTransform` binding that CSS `animation-timeline` cannot express. Thin, SSR-guarded wrapper over Motion `useScroll`; adds no new dependency.',
   '`SmoothScroll` (from `@hirobius/design-system/scroll`, `lenis` as an OPTIONAL peer dep) only for opt-in momentum ("inertia") scrolling, mounted once at the app/site root. Never imported from the main barrel — consumers who skip it pay nothing. Reduced-motion-first: Lenis is not instantiated when the user prefers reduced motion, unless `ignoreReducedMotion` is set for a deliberate art-directed exception.',
-  'Do not adopt GSAP/ScrollTrigger, and do not wire Lenis directly outside `SmoothScroll`, inside the core library — the CSS + Motion stack above covers reveal/pin/scrub without new dependencies. Bespoke GSAP/Lenis/WebGL scenes stay app-level/downstream (marketing sites, the clients factory), composed from these primitives (ADR-021, #116).',
+  'Do not adopt GSAP/ScrollTrigger, and do not wire Lenis directly outside `SmoothScroll`, inside the core library — the CSS + Motion stack above covers reveal/pin/scrub without new dependencies. Bespoke GSAP/Lenis/WebGL scenes stay app-level/downstream (marketing sites, the clients factory), composed from these primitives.',
 ];
 
 const scrollNegativeRules = [
@@ -136,16 +127,6 @@ export function generateLlmsTxt({ write = true } = {}) {
   const tokensPath = join(ROOT, 'hirobius.tokens.json');
   const quickTokenReference = buildTokenQuickReference(tokensPath);
 
-  const phaseLines = manifest.phases
-    .map((phase) => {
-      const percent = phasePercent(phase.criteria);
-      const criteriaSummary = phase.criteria
-        .map((item) => `${item.done ? 'done' : item.partial ? 'partial' : 'todo'}: ${item.label}`)
-        .join('; ');
-      return `- ${phase.id}. ${phase.label} - ${percent}% - ${phase.description}\n  - Criteria: ${criteriaSummary}`;
-    })
-    .join('\n');
-
   const patternLines =
     Array.isArray(manifest.patternInventory) && manifest.patternInventory.length > 0
       ? manifest.patternInventory.map((name) => `- ${name}`).join('\n')
@@ -155,7 +136,7 @@ export function generateLlmsTxt({ write = true } = {}) {
   // hds#374: the ratified core set, from the manifest `core` flag.
   const coreLines = renderCoreSetLines(coreByCategory(manifest.componentSpecs ?? {}));
   const coreSetSection = coreLines.length
-    ? `## Core set\n\nThe ${coreLines.length} components of the ratified core set (hds#254, ADR-031): brand-neutral, composable, imported from the package root. Build a screen from these first. Each has \`core: true\` in \`public/hds-manifest.json\` and is marked \`[core]\` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from \`@hirobius/design-system/patterns\`.\n\n${coreLines.join('\n')}\n\n`
+    ? `## Core set\n\nThe ${coreLines.length} components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has \`core: true\` in \`public/hds-manifest.json\` and is marked \`[core]\` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from \`@hirobius/design-system/patterns\`.\n\n${coreLines.join('\n')}\n\n`
     : '';
 
   const whichOneWhenLines = buildWhichOneWhen(manifest.componentSpecs ?? {});
@@ -230,10 +211,6 @@ ${needsMarkdown(componentApi.components ?? {})}
 - Docs pipeline: \`public/hds-manifest.json\` + \`src/app/data/component-api.json\` -> reflective docs pages
 - AI entrypoint: read \`public/llms.txt\` before editing code
 
-## Phase Snapshot
-
-${phaseLines}
-
 ## Component Inventory (Source Of Truth)
 
 This file intentionally does not embed the full component list to avoid duplication and excess context.
@@ -282,7 +259,7 @@ Negative rules:
 
 ${scrollNegativeRules.map((rule) => `- ${rule}`).join('\n')}
 
-Reference: \`src/app/components/reveal.tsx\`, \`src/app/components/pin.tsx\`, \`src/scroll/\` (\`use-scroll-progress.ts\`, \`smooth-scroll.tsx\`), ADR-021, and \`src/stories/patterns-scroll.stories.tsx\` for golden-path examples.
+Reference: \`src/app/components/reveal.tsx\`, \`src/app/components/pin.tsx\`, \`src/scroll/\` (\`use-scroll-progress.ts\`, \`smooth-scroll.tsx\`), and the Reveal pattern page on the docs site (\`/docs/patterns/reveal\`) for golden-path examples.
 
 ## HDS Card Anatomy (mandatory — every property is non-negotiable)
 
@@ -322,7 +299,7 @@ ${SLICE_INDEX}
 
 - \`public/llms-full.txt\` - this file + the full \`DESIGN.md\` + a compact props digest for every component.
 
-Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\`, \`src/stories/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
+Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 
 ## Context Loading Rules (Credit Efficiency)
 

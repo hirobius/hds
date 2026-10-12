@@ -1,0 +1,661 @@
+{
+  "version": "0.24.0",
+  "date": "2026-10-12",
+  "bump": "minor",
+  "summary": "11 changes to make by hand (11 breaking) and 24 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-100",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-100 variable is gone; use --primitive-color-graphite-100 for the same accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-100"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-100"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-100"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-200",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-200 variable is gone; use --primitive-color-graphite-200 for the same accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-200"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-200"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-200"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-300",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-300 variable is gone; use --primitive-color-graphite-300 for the same accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-300"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-300"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-300"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-400",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-400 variable is gone; use --primitive-color-graphite-400 for the same accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-400"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-400"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-400"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-50",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-50 variable is gone; use --primitive-color-graphite-50 for the same lightest accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-50"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-50"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-50"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-500",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-500 variable is gone; use --primitive-color-graphite-500 (or a semantic accent token) instead.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-500"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-500"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-500"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-600",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-600 variable is gone; use --primitive-color-graphite-600 for the same accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-600"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-600"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-600"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-700",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-700 variable is gone; use --primitive-color-graphite-700 for the rest accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-700"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-700"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-700"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-800",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-800 variable is gone; use --primitive-color-graphite-800 for the same accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-800"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-800"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-800"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-900",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-900 variable is gone; use --primitive-color-graphite-900 for the same accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-900"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-900"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-900"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/removed/--primitive-color-apple-950",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --primitive-color-apple-950 variable is gone; use --primitive-color-graphite-950 for the darkest accent step.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-apple-950"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-apple-950"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-apple-950"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--primitive-typography-family-display",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-family-display"
+        ],
+        "cssVarWrites": [
+          "--primitive-typography-family-display"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-typography-family-display::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--primitive-typography-family-mono",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the code-font dial (--hds-font-family-mono) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-family-mono"
+        ],
+        "cssVarWrites": [
+          "--primitive-typography-family-mono"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-typography-family-mono::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--primitive-typography-family-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-family-primary"
+        ],
+        "cssVarWrites": [
+          "--primitive-typography-family-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-typography-family-primary::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-accent-content",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Accent-intent text and icons (such as links) now render in graphite instead of a dark apple green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-content"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-content"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-content::root",
+        "css-var-changed:--semantic-accent-content:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-content:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-accent-contentHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Hovered accent text now shifts within the graphite scale instead of toward a darker apple green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-contentHover"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-contentHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-contentHover::root",
+        "css-var-changed:--semantic-accent-contentHover:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-contentHover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-accent-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The accent fill on hover is now a deeper graphite (light mode) or lighter warm-grey (dark mode) instead of a green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-hover"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-hover::root",
+        "css-var-changed:--semantic-accent-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-hover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-accent-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The accent fill while pressed is now a darker graphite (light mode) or lighter warm-grey (dark mode) instead of a green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-pressed"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-pressed::root",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-accent-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Interactive accent fills at rest (primary buttons, selected controls) now render in warm graphite — a dark fill in light mode and a light warm-grey fill in dark mode — instead of a bright apple green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-rest"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-rest"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-accent-rest:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-accent-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The low-emphasis accent tint (hover and selection backgrounds) is now a faint graphite tint instead of a faint apple green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-subtle"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-subtle"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-subtle::root",
+        "css-var-changed:--semantic-accent-subtle:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-subtle:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-color-border-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Accent borders now render in graphite instead of apple green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-accent::root",
+        "css-var-changed:--semantic-color-border-accent:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-accent:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-color-content-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Accent-intent text and icons on page and card surfaces now render in graphite instead of a dark apple green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-accent::root",
+        "css-var-changed:--semantic-color-content-accent:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-content-accent:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-color-content-onAccent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Text and icons on accent fills are now near-white in light mode and dark graphite in dark mode (the fill inverts per theme), instead of a dark neutral in both modes.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-onAccent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-onAccent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-onAccent::root",
+        "css-var-changed:--semantic-color-content-onAccent:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-content-onAccent:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-color-surface-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Accent background surfaces now render in warm graphite that inverts per theme instead of a bright apple green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accent::root",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-color-surface-accentSubtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Faint accent background surfaces are now a pale graphite tint instead of a pale apple green.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-accentSubtle"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-accentSubtle"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accentSubtle::root",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-body-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-body-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-body-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-body-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-caption-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-caption-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-caption-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-caption-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-display-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-display-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-display-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-display-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-eyebrow-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-eyebrow-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-eyebrow-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-eyebrow-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-h1-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-h1-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-h1-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-h1-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-h2-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-h2-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-h2-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-h2-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-h3-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-h3-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-h3-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-h3-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-mono-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the code-font dial (--hds-font-family-mono) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-mono-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-mono-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-mono-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-title-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-title-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-title-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-title-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.24.0/value-changed/--semantic-typography-ui-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-ui-font-family"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-ui-font-family"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-ui-font-family::where([data-hds],[data-hds] *)"
+      ],
+      "source": "CHANGELOG.md:34"
+    }
+  ]
+}

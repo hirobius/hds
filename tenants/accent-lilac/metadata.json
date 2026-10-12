@@ -2,7 +2,7 @@
   "$schema": "../../hirobius.tenant-metadata.schema.json",
   "slug": "accent-lilac",
   "displayName": "Accent Lilac",
-  "tagline": "Lilac accent exemplar — proves a violet brand ramp against the HDS semantic spine. Storybook-only, not a real client.",
+  "tagline": "Lilac accent exemplar — proves a violet brand ramp against the HDS semantic spine. demo-only, not a real client.",
   "demo": true,
   "tier": 2,
   "deployment": {

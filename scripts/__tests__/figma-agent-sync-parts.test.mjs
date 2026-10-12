@@ -43,7 +43,7 @@ import { createFakeFigma, textStyleFonts } from './helpers/fake-figma.mjs';
 vi.setConfig({ testTimeout: 60000, hookTimeout: 60000 });
 
 const LINKS = Object.freeze({
-  storybookUrl: 'https://hirobius-design-system.vercel.app',
+  docsUrl: 'https://hirobius-design-system.vercel.app',
   libraryFileKey: 'LIBRARYKEY000000000000',
   libraryFileName: 'HDS Tokens & Components',
   retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
@@ -103,7 +103,7 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     vi.setSystemTime(new Date('2026-10-09T00:00:00.000Z'));
   });
 
-  it('builds the same delta.js, byte for byte (golden; re-captured for hds#565 when the runtime guard learned to ignore reprinting)', async () => {
+  it('builds the same delta.js, byte for byte (golden; re-captured for the minified runtime, Fix A)', async () => {
     const s = await pending({
       edit: (model) => {
         variableOf(model, 'primitive.space.2').description = 'Two steps: tight gap and more.';
@@ -113,8 +113,8 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     });
     const sha = createHash('sha256').update(s.built.text).digest('hex');
     expect({ chars: s.built.chars, sha }).toEqual({
-      chars: 41168,
-      sha: 'd17d41621f64f5be666ab061b0c0d79723e3b250705e3be0c8eb9ddc735a1b13',
+      chars: 31361,
+      sha: '57c2a9529a3b890311fcd8daf1cb5ba3173ca662f1ce760a2ac8619ca15081f0',
     });
   });
 });
@@ -249,7 +249,7 @@ const forged = (text, edit) => {
     );
 };
 
-describe('a type-ramp change too big for one delta.js (57,000 characters, refused until now)', () => {
+describe('a type-ramp change too big for one delta.js (48,000 characters; 57,000 before Fix A)', () => {
   let s;
   let single;
   beforeEach(async () => {
@@ -258,11 +258,12 @@ describe('a type-ramp change too big for one delta.js (57,000 characters, refuse
   });
 
   it('is more than one delta.js holds, and becomes ordered parts that each fit', () => {
-    expect(single.built.chars, 'the one-script size of the scenario').toBeGreaterThan(55000);
-    expect(single.built.chars).toBeLessThan(60000);
+    expect(single.built.chars, 'the one-script size of the scenario').toBeGreaterThan(45000);
+    expect(single.built.chars).toBeLessThan(50000);
     const { parts } = s.built;
     expect(s.built.text).toBeNull();
-    expect(parts.length).toBeGreaterThanOrEqual(3);
+    // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 now.
+    expect(parts.length).toBe(2);
     expect(parts.map((p) => p.file)).toEqual(
       parts.map((_, i) => `delta-${i + 1}-of-${parts.length}.js`),
     );

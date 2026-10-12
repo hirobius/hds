@@ -22,7 +22,7 @@ A machine- and human-readable specification of the Hirobius Design System for AI
 
 ## Overview
 
-Hirobius is a clean, systems-first visual language that bridges digital precision and physical fabrication through a high-contrast monochromatic neutral palette and a single accent that each tenant sets — a bright apple green by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
+Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast monochromatic neutral palette and a single accent that each tenant sets — a warm graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
 
 ## Colors
 
@@ -41,7 +41,7 @@ Hirobius is a clean, systems-first visual language that bridges digital precisio
 
 ## Layout contract (v1)
 
-Approved 2026-10-07. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`).
+Approved 2026-10-07 as the **target**; adoption is in progress, so some components below (Container, Sidebar, Switcher) still ship until they fold in. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`).
 
 1. **Sizing.** Every component declares `fill` or `hug` on each axis. Leaves hug. Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. One override prop, `width="hug|fill"`, on every component. Height always hugs; stretching is the parent's job (`align="stretch"`). No component sets `h-full`, `height: 100%` or `self-*` on its root.
 2. **Padding.** Only containers pad: Card, Surface, Alert, Callout, Dialog, Page. Compound parts (`Card.Header`, `Body`, `Footer`, `Metric`) have zero padding and the container's `gap` spaces them. Padding is `none | sm | md`, default `md`, density-aware. A padded container directly inside a padded container is an error unless the inner one is `padding="none"`.
@@ -140,7 +140,7 @@ Three more needs are props on an existing component, not components of their own
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob (#208) and defaults to a bright apple green — read the token, never assume a hue.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
@@ -154,7 +154,7 @@ Three more needs are props on an existing component, not components of their own
 
 ## Open Questions
 
-Unresolved rules that the live repo cannot yet answer confidently are tracked in [`OPEN_DS_QUESTIONS.md`](OPEN_DS_QUESTIONS.md). Do not invent rules here to fill those gaps.
+Unresolved rules that the live repo cannot yet answer confidently are tracked as GitHub issues. Do not invent rules here to fill those gaps.
 
 <!-- auto:start:build-meta -->
 <!-- auto:end:build-meta -->

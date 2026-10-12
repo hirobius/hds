@@ -1,0 +1,36 @@
+{
+  "primitive": {
+    "space": {
+      "2": {
+        "$value": {
+          "value": 8,
+          "unit": "px"
+        }
+      },
+      "3": {
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        }
+      }
+    },
+    "size": {
+      "12": {
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        }
+      }
+    }
+  },
+  "semantic": {},
+  "role": {},
+  "component": {
+    "widget": {
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "{primitive.size.12}"
+      }
+    }
+  }
+}

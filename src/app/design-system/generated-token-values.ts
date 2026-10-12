@@ -56,18 +56,31 @@ export const tokenValues = {
         "700": "#047857",
         "950": "#022c22"
       },
-      apple: {
-        "50": "#f2faeb",
-        "100": "#e2f3cf",
-        "200": "#c7e7a4",
-        "300": "#a6d873",
-        "400": "#85c84c",
-        "500": "#66b239",
-        "600": "#54922d",
-        "700": "#416f20",
-        "800": "#34571b",
-        "900": "#2b4518",
-        "950": "#16250c"
+      graphite: {
+        "50": "#f5f4f4",
+        "100": "#e9e7e8",
+        "200": "#d4d0d2",
+        "300": "#b2abae",
+        "400": "#8b8488",
+        "500": "#655e62",
+        "600": "#544d51",
+        "700": "#433a3f",
+        "800": "#352e32",
+        "900": "#2a2428",
+        "950": "#19161a"
+      },
+      mauve: {
+        "50": "#fff0f6",
+        "100": "#f4e2ea",
+        "200": "#e1cad4",
+        "300": "#c0a4b1",
+        "400": "#9d7b8a",
+        "500": "#734b5e",
+        "600": "#674254",
+        "700": "#523141",
+        "800": "#432634",
+        "900": "#361d29",
+        "950": "#240f1a"
       },
       violet: {
         "50": "#f5f3ff",
@@ -147,8 +160,8 @@ export const tokenValues = {
     },
     typography: {
       family: {
-        primary: ["Satoshi", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
-        display: ["Satoshi", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
+        primary: ["Plus Jakarta Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
+        display: ["Plus Jakarta Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
         mono: ["IBM Plex Mono", "Courier New", "monospace"] as const
       },
       size: {

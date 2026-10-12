@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Generated: 2026-10-09T14:36:17.779Z
+Generated: 2026-10-11T21:10:01.376Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## Agents Using The Package: Start Here
@@ -82,15 +82,6 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 - Docs pipeline: `public/hds-manifest.json` + `src/app/data/component-api.json` -> reflective docs pages
 - AI entrypoint: read `public/llms.txt` before editing code
 
-## Phase Snapshot
-
-- foundation. Foundations - 63% - Token architecture, CSS pipeline, accessibility, and primitive scales.
-  - Criteria: done: W3C DTCG three-tier token architecture; done: CSS variable pipeline + token verify; partial: Primitive scales complete (color, type, space); todo: Token audit clean
-- components. Components - 75% - Accessible React UI built from foundations and mapped toward Figma parity.
-  - Criteria: done: Component inventory with typed props; done: Action system architecture (buttons, links, groups); done: Prop tables and API doc coverage; todo: Figma parity mapping
-- infrastructure-operations. Architecture - 55% - System delivery, Figma sync, automation, quality gates, and operational hygiene.
-  - Criteria: done: System manifest + llms.txt AI context; done: Release gate + full audit gate; done: Documentation automation (AST pipeline, LLMS sync); partial: Payload sweep + orphan cleanup; partial: Motion system foundations; todo: Figma library generated from tokens; todo: Code Connect CI + reverse sync; partial: AST gatekeeper + token schema validation; partial: A11y CI + visual regression pipeline; partial: Operational feedback loop + AI retrospective
-
 ## Component Inventory (Source Of Truth)
 
 This file intentionally does not embed the full component list to avoid duplication and excess context.
@@ -107,7 +98,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 43 components of the ratified core set (hds#254, ADR-031): brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 43 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -265,7 +256,7 @@ Canonical primitives, cheapest-first (CSS before JS, JS before an opt-in depende
 2. `Pin` (`position: sticky`) for a pinned scroll scene — the dependency-free basis for the "tall section + sticky child" pattern (GSAP's `pin: true`, done with zero JS). Give the pinned element a TALLER scrolling parent (e.g. `height: 300vh`) so it has room to travel; `top` is a CSS length offset, not a spacing token.
 3. `useScrollProgress` (from `@hirobius/design-system/scroll`) only when the 0→1 scroll value is needed in React — cross-element choreography, canvas/WebGL, or a Motion (`motion/react`) `useTransform` binding that CSS `animation-timeline` cannot express. Thin, SSR-guarded wrapper over Motion `useScroll`; adds no new dependency.
 4. `SmoothScroll` (from `@hirobius/design-system/scroll`, `lenis` as an OPTIONAL peer dep) only for opt-in momentum ("inertia") scrolling, mounted once at the app/site root. Never imported from the main barrel — consumers who skip it pay nothing. Reduced-motion-first: Lenis is not instantiated when the user prefers reduced motion, unless `ignoreReducedMotion` is set for a deliberate art-directed exception.
-5. Do not adopt GSAP/ScrollTrigger, and do not wire Lenis directly outside `SmoothScroll`, inside the core library — the CSS + Motion stack above covers reveal/pin/scrub without new dependencies. Bespoke GSAP/Lenis/WebGL scenes stay app-level/downstream (marketing sites, the clients factory), composed from these primitives (ADR-021, #116).
+5. Do not adopt GSAP/ScrollTrigger, and do not wire Lenis directly outside `SmoothScroll`, inside the core library — the CSS + Motion stack above covers reveal/pin/scrub without new dependencies. Bespoke GSAP/Lenis/WebGL scenes stay app-level/downstream (marketing sites, the clients factory), composed from these primitives.
 
 Negative rules:
 
@@ -274,7 +265,7 @@ Negative rules:
 - No GSAP/ScrollTrigger or bespoke Lenis wiring inside `@hirobius/design-system` — those stay app-level/downstream, composed from `Reveal`/`Pin`/`useScrollProgress`/`SmoothScroll`.
 - Every scroll effect must degrade to fully visible/static content — never gate content visibility behind `animation-timeline` support or a scroll listener with no fallback.
 
-Reference: `src/app/components/reveal.tsx`, `src/app/components/pin.tsx`, `src/scroll/` (`use-scroll-progress.ts`, `smooth-scroll.tsx`), ADR-021, and `src/stories/patterns-scroll.stories.tsx` for golden-path examples.
+Reference: `src/app/components/reveal.tsx`, `src/app/components/pin.tsx`, `src/scroll/` (`use-scroll-progress.ts`, `smooth-scroll.tsx`), and the Reveal pattern page on the docs site (`/docs/patterns/reveal`) for golden-path examples.
 
 ## HDS Card Anatomy (mandatory — every property is non-negotiable)
 
@@ -317,7 +308,7 @@ Load only what the task needs. Same text as this file, split by topic:
 
 - `public/llms-full.txt` - this file + the full `DESIGN.md` + a compact props digest for every component.
 
-Paths in this file that begin with `docs/architecture/`, `src/app/components/`, `src/scroll/`, `src/stories/` or under `scripts/`, or that name `public/manifest.json`, `DESIGN-HANDOFF.md`, `TOKEN_GOVERNANCE.md` or `SYSTEMS_REGISTRY.md` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
+Paths in this file that begin with `docs/architecture/`, `src/app/components/`, `src/scroll/` or under `scripts/`, or that name `public/manifest.json`, `DESIGN-HANDOFF.md`, `TOKEN_GOVERNANCE.md` or `SYSTEMS_REGISTRY.md` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 
 ## Context Loading Rules (Credit Efficiency)
 
@@ -401,14 +392,14 @@ A machine- and human-readable specification of the Hirobius Design System for AI
 
 ## Overview
 
-Hirobius is a clean, systems-first visual language that bridges digital precision and physical fabrication through a high-contrast monochromatic neutral palette and a single accent that each tenant sets — a bright apple green by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
+Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast monochromatic neutral palette and a single accent that each tenant sets — a warm graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
 
 ## Colors
 
 <!-- auto:start:colors -->
 **One accent — one neutral system.**
 
-- **Accent** (`#66B239`): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent** (`#433A3F`): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
 - **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.
 - **Feedback — Success** (`#047857`): positive confirmations, completed states. `semantic.color.feedback.success`.
@@ -421,10 +412,9 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 ## Typography
 
 <!-- auto:start:typography -->
-HDS ships three typefaces — each with a distinct and exclusive role:
+HDS ships two typefaces:
 
-- **Display / Heading font**: Satoshi. Bound exclusively to the `display` and `title` styles. Never used for body copy or UI labels.
-- **Body / UI font**: Satoshi. All prose, labels, small text, captions, and UI copy.
+- **Text font**: Plus Jakarta Sans. Headings, prose, labels, captions, and UI copy; the type roles set size and weight.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
 Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · title) use `700` bold; body, UI, and caption use `400` regular / `500` medium.
@@ -460,7 +450,7 @@ Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps 
 
 ## Layout contract (v1)
 
-Approved 2026-10-07. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`).
+Approved 2026-10-07 as the **target**; adoption is in progress, so some components below (Container, Sidebar, Switcher) still ship until they fold in. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`).
 
 1. **Sizing.** Every component declares `fill` or `hug` on each axis. Leaves hug. Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. One override prop, `width="hug|fill"`, on every component. Height always hugs; stretching is the parent's job (`align="stretch"`). No component sets `h-full`, `height: 100%` or `self-*` on its root.
 2. **Padding.** Only containers pad: Card, Surface, Alert, Callout, Dialog, Page. Compound parts (`Card.Header`, `Body`, `Footer`, `Metric`) have zero padding and the container's `gap` spaces them. Padding is `none | sm | md`, default `md`, density-aware. A padded container directly inside a padded container is an error unless the inner one is `padding="none"`.
@@ -604,7 +594,7 @@ Three more needs are props on an existing component, not components of their own
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob (#208) and defaults to a bright apple green — read the token, never assume a hue.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
@@ -618,12 +608,12 @@ Three more needs are props on an existing component, not components of their own
 
 ## Open Questions
 
-Unresolved rules that the live repo cannot yet answer confidently are tracked in [`OPEN_DS_QUESTIONS.md`](OPEN_DS_QUESTIONS.md). Do not invent rules here to fill those gaps.
+Unresolved rules that the live repo cannot yet answer confidently are tracked as GitHub issues. Do not invent rules here to fill those gaps.
 
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (400 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (411 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 

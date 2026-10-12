@@ -1,0 +1,311 @@
+{
+  "version": "0.24.1",
+  "date": "2026-10-12",
+  "bump": "patch",
+  "summary": "16 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.24.1/value-changed/--component-button-paddingY",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The legacy flat Button vertical padding token is now 8px (was 12px), the value the medium Button renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-paddingY"
+        ],
+        "cssVarWrites": [
+          "--component-button-paddingY"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-paddingY::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-button-secondary-bg-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button hover fill token is now the accent-subtle surface (was the raised surface), the fill it renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-hover"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-hover::root",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-button-secondary-border-disabled",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button disabled border token is now the interactive border (was the subdued border), the colour it renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-border-disabled"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-border-disabled"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-disabled::root",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-button-secondary-border-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button hover border token is now the accent border (was the interactive border), the colour it renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-border-hover"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-border-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-hover::root",
+        "css-var-changed:--component-button-secondary-border-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-border-hover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-button-secondary-border-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button pressed border token is now the accent border (was the interactive border), the colour it renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-border-pressed"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-border-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-pressed::root",
+        "css-var-changed:--component-button-secondary-border-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-border-pressed:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-button-size-lg-fontSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The large Button label size token is now 14px (was 16px), the size it renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-lg-fontSize"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-lg-fontSize"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-lg-fontSize::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-button-size-md-paddingY",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The medium Button vertical padding token is now 8px (was 12px), the value it renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-md-paddingY"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-md-paddingY"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-md-paddingY::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-button-size-sm-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The small Button height token is now 32px (was 28px), the height it renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-sm-height"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-sm-height"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-sm-height::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-button-size-sm-itemSpacing",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The small Button icon-to-label gap token is now 8px (was 4px), the gap it renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-sm-itemSpacing"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-sm-itemSpacing"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-sm-itemSpacing::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-button-size-sm-paddingX",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The small Button horizontal padding token is now 12px (was 8px), the value it renders.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-sm-paddingX"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-sm-paddingX"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-sm-paddingX::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-card-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Card gap token is now 16px (was 8px), the gap Card renders.",
+      "detect": {
+        "cssVars": [
+          "--component-card-gap"
+        ],
+        "cssVarWrites": [
+          "--component-card-gap"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-card-gap::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-card-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Card radius token is now 12px (was 8px), the radius Card renders.",
+      "detect": {
+        "cssVars": [
+          "--component-card-radius"
+        ],
+        "cssVarWrites": [
+          "--component-card-radius"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-card-radius::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-input-bg",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Input background token is now the page surface (was the raised surface), the fill Input renders.",
+      "detect": {
+        "cssVars": [
+          "--component-input-bg"
+        ],
+        "cssVarWrites": [
+          "--component-input-bg"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-input-bg::root",
+        "css-var-changed:--component-input-bg:[data-theme=\"dark\"]",
+        "css-var-changed:--component-input-bg:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-input-paddingX",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Input horizontal padding token is now 12px (was 16px), the padding the medium Input renders.",
+      "detect": {
+        "cssVars": [
+          "--component-input-paddingX"
+        ],
+        "cssVarWrites": [
+          "--component-input-paddingX"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-input-paddingX::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-tag-background",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Tag background token is now the raised surface (was accent-subtle), the fill an unselected Tag renders.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-background"
+        ],
+        "cssVarWrites": [
+          "--component-tag-background"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-background::root",
+        "css-var-changed:--component-tag-background:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-background:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.24.1/value-changed/--component-tag-text",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Tag text token is now the secondary content colour (was primary), the colour an unselected Tag renders.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-text"
+        ],
+        "cssVarWrites": [
+          "--component-tag-text"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-text::root",
+        "css-var-changed:--component-tag-text:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-text:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    }
+  ]
+}

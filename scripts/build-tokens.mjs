@@ -692,7 +692,9 @@ export function buildManifest(allTokens, raw) {
   // a non-existent path, which silently fell back to the literal "Atkinson Hyperlegible
   // Next" while real tokens carried Clash Grotesk).
   const fontFamRaw = raw.primitive?.typography?.family?.primary?.$value;
-  const fontName = Array.isArray(fontFamRaw) ? fontFamRaw[0] : String(fontFamRaw ?? 'Satoshi');
+  const fontName = Array.isArray(fontFamRaw)
+    ? fontFamRaw[0]
+    : String(fontFamRaw ?? 'Plus Jakarta Sans');
   const componentSpecs = {
     ...(SYSTEM_MANIFEST.componentSpecs ?? {}),
     Button: {
@@ -1042,8 +1044,8 @@ export function buildManifest(allTokens, raw) {
     generated: new Date().toISOString(),
     source: 'hirobius.tokens.json',
     format: 'W3C DTCG 2025.10',
-    docs: 'https://hirobius-design-system.vercel.app/',
-    llmsTxt: 'https://hirobius-design-system.vercel.app/llms.txt',
+    docs: 'https://hirobius-hds-components.vercel.app/',
+    llmsTxt: 'https://hirobius-hds-components.vercel.app/llms.txt',
     systemSpecs: SYSTEM_MANIFEST.systemSpecs ?? {
       engine: 'React + TypeScript',
       icons: 'Phosphor (Bold)',
@@ -1380,8 +1382,8 @@ export function validateTenantOverlay(overlay, baseRaw, slug) {
  *
  * Why: tokens.css declares an alias on :root as `var(--canonical)`, and a
  * custom property is computed where it is declared. A tenant overlay that
- * overrides the canonical var on a descendant `[data-brand]` element (the
- * Storybook decorator does exactly that) would therefore never reach a
+ * overrides the canonical var on a descendant `[data-brand]` element (a
+ * docs or app brand switcher does exactly that) would therefore never reach a
  * consumer still reading the deprecated alias. buildTenantCSS redeclares
  * each such alias beside the override so renaming a token (hds#206) keeps
  * every computed value the same until the alias is removed.

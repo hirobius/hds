@@ -110,7 +110,7 @@ the full engineering protocol; this section is the home for autonomous-loop rule
 ## Ralph quality bar
 
 REPO_TYPE: library
-QUALITY BAR: Public npm package. Backward compatibility matters. Tests + Storybook stories required.
+QUALITY BAR: Public npm package. Backward compatibility matters. Tests required, and a live demo on the docs site (docs-site/components/component-demos.tsx) for a core component or pattern.
 
 Rules for any autonomous loop in this repo:
 

@@ -1,5 +1,107 @@
 # Changelog
 
+## 0.24.1
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: The legacy flat Button vertical padding token is now 8px (was 12px), the value the medium Button renders.
+- Looks different: The secondary Button hover fill token is now the accent-subtle surface (was the raised surface), the fill it renders.
+- Looks different: The secondary Button disabled border token is now the interactive border (was the subdued border), the colour it renders.
+- Looks different: The secondary Button hover border token is now the accent border (was the interactive border), the colour it renders.
+- And 12 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0241).
+
+### Patch Changes
+
+- 3085b8a: Sixteen `component.*` tokens now hold the value their component already renders, so Figma and the code agree (hds#595, "code wins"). Button: `paddingY` and `size.md.paddingY` are 8px (were 12px), `size.sm.paddingX` 12px (was 8px), `size.sm.height` 32px (was 28px), `size.sm.itemSpacing` 8px (was 4px), `size.lg.fontSize` 14px (was 16px), `secondary.bg.hover` is `surface.accentSubtle`, `secondary.border.hover` and `.pressed` are `border.accent`, and `secondary.border.disabled` is `border.interactive`. Card: `radius` 12px (was 8px), `gap` 16px (was 8px). Input: `bg` is `surface.page` and `paddingX` 12px (was 16px). Tag: `background` is `surface.raised` and `text` `content.secondary`. The React components already rendered these values, so nothing changes on screen; only the token values (and the CSS variables built from them) move.
+
+## 0.24.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The --primitive-color-apple-100 variable is gone; use --primitive-color-graphite-100 for the same accent step.
+- Do by hand: The --primitive-color-apple-200 variable is gone; use --primitive-color-graphite-200 for the same accent step.
+- Do by hand: The --primitive-color-apple-300 variable is gone; use --primitive-color-graphite-300 for the same accent step.
+- Do by hand: The --primitive-color-apple-400 variable is gone; use --primitive-color-graphite-400 for the same accent step.
+- And 31 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0240).
+
+### Minor Changes
+
+- 72800bc: feat(brand): change the default accent from apple green to graphite (warm charcoal).
+
+  The base brand accent moves from the bright apple green shipped in 0.23.0 to a warm
+  graphite — a full-monochrome accent that reads calmer and more considered. A new
+  `primitive.color.graphite` scale replaces `primitive.color.apple`; feedback hues
+  (`green`/`red`/`amber` for success/danger/warning) are untouched, so the system stays
+  monochrome without flattening its status colors.
+  - `semantic.accent.{rest,hover,pressed,content,contentHover,subtle}`, `semantic.color.surface.accent`/`accentSubtle`, `semantic.color.content.accent`, and `semantic.color.border.accent` now resolve through `primitive.color.graphite.*`.
+  - The accent **inverts per theme** so fills never vanish on a dark page: a dark graphite step in light mode (near-white on-accent text) and a light warm-grey step in dark mode (dark on-accent text). `semantic.color.content.onAccent` flips to `neutral.50` in light mode and `graphite.900` in dark mode — `content.onAccent / surface.accent` is 10.5:1 light / 10.0:1 dark.
+  - Per-tenant accents are unchanged: `accent-lilac` and `concrete-creations` set their own accent (and their own `onAccent`); `brutalist-demo` inherits the new graphite base.
+
+  The `--primitive-color-apple-*` CSS variables (introduced in 0.23.0) are removed in favor of `--primitive-color-graphite-*`; consumers who referenced a raw accent primitive should repoint to the graphite scale, though the semantic accent tokens are the intended surface and the per-tenant accent knob is unchanged — set your own accent overlay to override the base.
+
+### Patch Changes
+
+- 72800bc: fix(theming): the font dial now works.
+
+  Setting `--hds-font-family` / `--hds-font-family-mono` (or `<HdsThemeProvider fontFamily fontFamilyMono>`) used to change nothing: the type roles were resolved once on `:root`, so descendants inherited the default stack. They are now re-declared on each element of the `[data-hds]` subtree, so the dial applies at whatever scope you set it — headings, body, UI text, captions, code, and the JS style objects (`hds.fontFamily`, `hds.typeStyles`) all follow it. With no override, nothing changes: the default is still the brand typeface.
+
+- 72800bc: feat(tokens): add a reserved mauve primitive scale.
+
+  `primitive.color.mauve.{50…950}` (anchor `#734B5E` at 500) is added alongside graphite, lightness-matched to it step for step. Nothing maps to it yet: graphite stays the brand accent, and no semantic or component token reads mauve. It is available as `--primitive-color-mauve-*` for exploration.
+
+## 0.23.2
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: The disabled primary Button fill is now the muted surface instead of the accent-subtle surface.
+- Looks different: The disabled primary Button text is now the disabled content colour instead of the on-accent colour.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0232).
+
+### Patch Changes
+
+- b2ebd7d: A disabled primary Button now reads as a neutral muted button in light and dark: `component.button.primary.bgDisabled` points at `semantic.color.surface.muted` and `textDisabled` at `semantic.color.content.disabled` (they were `accentSubtle` and `onAccent`, which assumed a coloured accent), and Button binds those tokens. The small Button's icon is 12px, as its `component.button.size.sm.iconSize` token says (it was 14px); medium and large are unchanged at 16px and 20px.
+- 4626131: Storybook is gone from the repo (retirement, step 3): the `storybook` package keyword, the story files, the Storybook config and the Storybook-only scripts are removed. The docs site is the visual verification surface. Nothing for a consumer to change.
+- 9f1acfc: The manifest (`public/hds-manifest.json`) points each core component and pattern at its docs-site page with `docsPage` (for example `/docs/components/button`), replacing `storyFiles` and `storyIds`. `AGENTS.md` and the llms files now point agents at the docs site instead of the Storybook stories.
+
+## 0.23.1
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: The scoped HDS font variable now names Plus Jakarta Sans first instead of Satoshi.
+- Looks different: Display and title text now renders in Plus Jakarta Sans instead of Satoshi.
+- Looks different: Body, UI and caption text now renders in Plus Jakarta Sans instead of Satoshi.
+- Looks different: fonts.css no longer declares Satoshi 400; it declares Plus Jakarta Sans 400 instead, so drop any font-family: Satoshi of your own.
+- And 2 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0231).
+
+### Patch Changes
+
+- d907e73: CONSUMING.md points agents at the docs site (https://hirobius-hds-components.vercel.app/llms.txt), which now serves the llms files, the manifest, DESIGN.md and component-api.json.
+- 29af78f: feat(brand): the primary and display typeface is now Plus Jakarta Sans.
+
+  Satoshi's license (the Fontshare FF EULA) does not allow the font files to be redistributed, so HDS could not keep shipping them in the package or a public repo. Plus Jakarta Sans (Tokotype, SIL Open Font License 1.1) replaces it in the same three weights: 400 body, 500 UI and captions, 700 display and titles.
+  - `primitive.typography.family.primary` and `.display` now start with `"Plus Jakarta Sans"`, with the same system fallback stack.
+  - `@hirobius/design-system/fonts.css` now declares Plus Jakarta Sans 400/500/700, as Latin-subset woff2 files of about 15 KB each (Satoshi's were about 26 KB). The OFL license text ships beside the fonts in `dist/fonts/`.
+  - `package.json` `license` is now `MIT AND OFL-1.1`, since every bundled font is OFL.
+  - `ch`-based widths read a little wider in Figma, because the "0" advance is 0.732em instead of 0.683em.
+
+  Visual-only, with no API changes. If you import `fonts.css`, the new face loads with nothing else to do.
+
 ## 0.23.0
 
 ### Upgrade

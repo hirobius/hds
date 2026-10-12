@@ -261,3 +261,64 @@ Fix the Breadcrumb separator in the library (renders as a dark filled box instea
 | 5   | 00:00      | `get_screenshot` | read  | Library: Breadcrumb set 86:159 after (logged just after the call)                                                                                                                                                 | OK. Grey chevrons between crumbs in all three variants                                                                                                                                                                                                                      |
 
 **Session total: 5 calls.** Nothing deleted, nothing published; Adrian publishes.
+
+## 2026-10-11 · session `claude/figma-delta-pack`
+
+Fix A: check that `use_figma` accepts the minified runtime before shipping it. Budget 1 call.
+
+| #   | Time (UTC) | Tool        | Kind | Purpose                                                                                     | Result                                                                                                  |
+| --- | ---------- | ----------- | ---- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| 1   | 19:10      | `use_figma` | read | HDS Staging C85ZXnwtVc4AteeIOZfXRC: 10 minified runtime functions + `hdsVerifyRuntime` only | OK. Verified; the runtime reprints with spaces and semicolons and keeps quotes. Nothing read or written |
+
+**Session total: 1 call.**
+
+## 2026-10-11 · session `claude/figma-snapshot-pjs`
+
+Agent delta sync of run 392d8056 (Plus Jakarta Sans font family, apple-green accent ramp, text-style updates) to the library, then the snapshot. Budget 20 calls.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                        | Result                                                                                                          |
+| --- | ---------- | ----------- | ----- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 1   | 17:12      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-1-of-17.js` unmodified  | OK. d12b0361 → cbcb648b                                                                                         |
+| 2   | 17:15      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-2-of-17.js` unmodified  | OK. cbcb648b → af9b0843                                                                                         |
+| 3   | 17:17      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-3-of-17.js` unmodified  | OK. af9b0843 → 19e058dc                                                                                         |
+| 4   | 17:19      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-4-of-17.js` unmodified  | OK. 19e058dc → 238faa43                                                                                         |
+| 5   | 17:22      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-5-of-17.js` unmodified  | OK. 238faa43 → 58c16739                                                                                         |
+| 6   | 17:25      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-6-of-17.js` unmodified  | OK. 58c16739 → 44e90aa4                                                                                         |
+| 7   | 17:28      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-7-of-17.js` unmodified  | OK. 44e90aa4 → 966db6ba                                                                                         |
+| 8   | 17:30      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-8-of-17.js` unmodified  | OK. 966db6ba → 2fe3d957                                                                                         |
+| 9   | 17:32      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-9-of-17.js` unmodified  | OK. 2fe3d957 → 471edf00                                                                                         |
+| 10  | 17:34      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-10-of-17.js` unmodified | OK. 471edf00 → dcce73ea                                                                                         |
+| 11  | 17:37      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-11-of-17.js` unmodified | OK. dcce73ea → d78b14b6                                                                                         |
+| 12  | 17:39      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-12-of-17.js` unmodified | OK. d78b14b6 → 53cecf91                                                                                         |
+| 13  | 17:41      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-13-of-17.js` unmodified | OK. 53cecf91 → c11d0a0a                                                                                         |
+| 14  | 17:43      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-14-of-17.js` unmodified | OK. c11d0a0a → 22a73c23                                                                                         |
+| 15  | 17:45      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-15-of-17.js` unmodified | OK. 22a73c23 → 33f8726d                                                                                         |
+| 16  | 17:48      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-16-of-17.js` unmodified | OK. 33f8726d → d798d205                                                                                         |
+| 17  | 17:50      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-17-of-17.js` unmodified | OK. d798d205 → 07e15ce7; lastPush written                                                                       |
+| 18  | 17:52      | `use_figma` | read  | Library: `snapshot-diff.js` unmodified                         | tooLarge (17,131 chars, limit 15,000). Snapshot rebuilt instead from the 17 part receipts with `--from-receipt` |
+
+**Session total: 18 calls.** Nothing deleted, nothing published; Adrian publishes.
+
+## 2026-10-12 — graphite + mauve sync, agent prune (Adrian authorized deletes for this job only)
+
+Adrian, 2026-10-12, asked not to open Figma and chose "Let me delete": a one-off
+lift of the no-delete rule so the library matches code. Scope: the 11
+`color/apple/*` primitives and `Hirobius/Semantic: button/primary/textDisabled`
+(moved to `Hirobius/Component`). `delta.js` refuses both moves and extras, so the
+creates, rebinds and deletes were hand-written calls; the value updates went
+through `delta.js` unmodified. Nothing published.
+
+| #   | Time (UTC) | Tool           | Kind  | Target                                                                                                                          | Result                                                                              |
+| --- | ---------- | -------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 1   | 03:33      | `use_figma`    | read  | Library 2VgBbVpKiDnu0aftJEVyBQ: pages, live apple/textDisabled ids, alias and paint-style users                                 | OK. Live matched snapshot; 20 Semantic aliases to apple, 0 paint styles             |
+| 2   | 03:35      | `use_figma`    | write | Library: create 22 graphite/mauve primitives + Component `button/primary/textDisabled`; repoint 20 aliases apple.N → graphite.N | OK. 23 created (2146:2–24), 20 repointed                                            |
+| 3-6 | 03:36      | `use_figma` x4 | write | Library: rebind layers on Button, IconButton, ButtonGroup, ToggleButton pages to the new variables                              | OK. 3 Button labels (28:17, 28:32, 28:47) rebound; other pages had none             |
+| 7   | 03:37      | `use_figma`    | write | Library: DELETE 11 `color/apple/*` + Semantic `button/primary/textDisabled` (Adrian-authorized)                                 | OK. 12 deleted after an alias check found none left                                 |
+| 8   | 03:38      | `use_figma`    | read  | Library: `snapshot-diff.js` unmodified                                                                                          | OK. 33 changed, 12 removed; ingested with `--from-diff` (live 31698bc8)             |
+| 9   | 03:41      | `use_figma`    | write | Library: `delta.js` unmodified (28 updates, base 31698bc8)                                                                      | OK. 31698bc8 → b5159864; paths stamped; lastPush written; `--from-receipt` ingested |
+| 10  | 03:43      | `use_figma`    | read  | Library: screenshot of the Button set (28:138)                                                                                  | OK. Primary row renders graphite                                                    |
+
+**Session total: 13 calls.** `check:figma-drift` exits 0 and `figma:push --plan` prints
+"updated 0 · created 0 · deleted 0". Not scanned: layers on the other ~95 pages
+bound directly to an apple primitive (hidden from publishing, so unlikely); a
+deleted variable leaves such a layer with its last colour, unbound.

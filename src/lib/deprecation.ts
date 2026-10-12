@@ -20,7 +20,7 @@ export function warnOnce(code: string, message: string): void {
   console.warn(`[HDS deprecation] ${message} (${code})`);
 }
 
-/** Test/Storybook helper to reset the once-per-session guard. */
+/** Test helper to reset the once-per-session guard. */
 export function __resetDeprecationWarnings(): void {
   warned.clear();
 }

@@ -127,7 +127,6 @@ describe('exemptions', () => {
     expect(isExempt('src/styles/fonts.css')).toBe(true);
     expect(isExempt('src/app/components/card.test.tsx')).toBe(true);
     expect(isExempt('src/app/components/card.tsx')).toBe(false);
-    expect(isExempt('src/stories/card.stories.tsx')).toBe(false);
   });
 });
 

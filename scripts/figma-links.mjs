@@ -12,7 +12,7 @@
  *   figma/links/use-figma/descriptions-<file>[.dry-run].js
  *                                           component descriptions + documentation links
  *
- * Storybook reads the same field at run time (src/stories/design-parameters.ts).
+ * Component documentation links point at the docs site (docsUrl in figma/links.json).
  * figma/links/ is generated and gitignored. Nothing here talks to Figma except
  * --dev-resources, which a person runs with a token.
  *
@@ -20,7 +20,7 @@
  *   pnpm figma:links                                  write docs/DESIGN_LINKS.md and carriers
  *   pnpm figma:links --check                          exit 1 when stale or broken; writes nothing
  *   FIGMA_ACCESS_TOKEN=… pnpm figma:links --dev-resources [--dry-run]
- *                                                     add "HDS source" / "HDS story" dev resources
+ *                                                     add "HDS source" / "HDS docs" dev resources
  *                                                     to every linked node (never deletes)
  *
  * FIGMA_ACCESS_TOKEN: a Figma personal access token with the
@@ -29,7 +29,7 @@
  * for one run; never store it in the repo.
  */
 
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { format, resolveConfig } from 'prettier';
@@ -48,11 +48,11 @@ export const LINKS_CONFIG = 'figma/links.json';
 /** Home of the Design ↔ Code table; README.md carries only a pointer to it. */
 export const DESIGN_LINKS_DOC = 'docs/DESIGN_LINKS.md';
 const DESIGN_LINKS_DOC_HEAD =
-  '# Design links\n\nWhere each component lives in Figma, Storybook and source.\n\n';
+  '# Design links\n\nWhere each component lives in Figma, the docs site and source.\n\n';
 
 const MISSING_HELP = {
   [LINKS_CONFIG]:
-    'pnpm figma:links needs it for the repository URL, branch and Storybook URL (see figma/README.md).',
+    'pnpm figma:links needs it for the repository URL, branch and docs site URL (see figma/README.md).',
   'public/hds-manifest.json': 'Run pnpm manifest:generate.',
 };
 
@@ -64,25 +64,6 @@ const readJson = (root, path) => {
   return JSON.parse(readFileSync(file, 'utf8'));
 };
 
-function storyFiles(root) {
-  const found = [];
-  const walk = (dir) => {
-    if (!existsSync(dir)) return;
-    for (const entry of readdirSync(dir, { withFileTypes: true })) {
-      const path = join(dir, entry.name);
-      if (entry.isDirectory()) walk(path);
-      else if (entry.name.endsWith('.stories.tsx') || entry.name.endsWith('.stories.ts')) {
-        found.push({
-          path: relative(root, path).replaceAll('\\', '/'),
-          source: readFileSync(path, 'utf8'),
-        });
-      }
-    }
-  };
-  walk(join(root, 'src', 'stories'));
-  return found.sort((a, b) => a.path.localeCompare(b.path));
-}
-
 /**
  * @param {string} root  Repo root (or a mini-root with the same layout).
  * @returns {{ links: object[], problems: string[], total: number }}
@@ -91,7 +72,6 @@ export function computeDesignLinks(root) {
   const config = readJson(root, LINKS_CONFIG);
   return collectDesignLinks({
     manifest: readJson(root, 'public/hds-manifest.json'),
-    stories: storyFiles(root),
     config,
     packageName: readJson(root, 'package.json').name,
   });

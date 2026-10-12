@@ -1,15 +1,15 @@
 {
-  "checksum": "d12b0361",
+  "checksum": "b5159864",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-09T05:27:14.988Z",
+    "takenAt": "2026-10-12T03:41:48.262Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "59d56b82",
-      "pushedAt": "2026-10-09T05:27:14.960Z",
+      "modelHash": "e4ca1f03",
+      "pushedAt": "2026-10-12T03:41:48.188Z",
       "scope": null
     },
     "collections": [
@@ -439,6 +439,248 @@
             }
           },
           {
+            "id": "VariableID:2146:3",
+            "name": "color/graphite/100",
+            "path": "primitive.color.graphite.100",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent — very light warm tint.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-100)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.913725,
+                  "g": 0.905882,
+                  "b": 0.909804,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:4",
+            "name": "color/graphite/200",
+            "path": "primitive.color.graphite.200",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent — light warm-grey; dark-mode rest accent fill.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-200)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.831373,
+                  "g": 0.815686,
+                  "b": 0.823529,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:5",
+            "name": "color/graphite/300",
+            "path": "primitive.color.graphite.300",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent — soft mid-light step; dark-mode hover/link.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-300)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.698039,
+                  "g": 0.670588,
+                  "b": 0.682353,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:6",
+            "name": "color/graphite/400",
+            "path": "primitive.color.graphite.400",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent — mid warm-grey step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-400)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.545098,
+                  "g": 0.517647,
+                  "b": 0.533333,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:2",
+            "name": "color/graphite/50",
+            "path": "primitive.color.graphite.50",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent tint — faintest step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-50)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.960784,
+                  "g": 0.956863,
+                  "b": 0.956863,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:7",
+            "name": "color/graphite/500",
+            "path": "primitive.color.graphite.500",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent — mid step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-500)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.396078,
+                  "g": 0.368627,
+                  "b": 0.384314,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:8",
+            "name": "color/graphite/600",
+            "path": "primitive.color.graphite.600",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent — mid-dark step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-600)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.329412,
+                  "g": 0.301961,
+                  "b": 0.317647,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:9",
+            "name": "color/graphite/700",
+            "path": "primitive.color.graphite.700",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent rest — the warm charcoal brand accent; white text as a fill (AA).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-700)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.262745,
+                  "g": 0.227451,
+                  "b": 0.247059,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:10",
+            "name": "color/graphite/800",
+            "path": "primitive.color.graphite.800",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent — deep step; light-mode hover.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-800)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.207843,
+                  "g": 0.180392,
+                  "b": 0.196078,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:11",
+            "name": "color/graphite/900",
+            "path": "primitive.color.graphite.900",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-900)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.164706,
+                  "g": 0.141176,
+                  "b": 0.156863,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:12",
+            "name": "color/graphite/950",
+            "path": "primitive.color.graphite.950",
+            "resolvedType": "COLOR",
+            "description": "Graphite accent — near-black warm substrate.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-950)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.098039,
+                  "g": 0.086275,
+                  "b": 0.101961,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
             "id": "VariableID:3:32",
             "name": "color/green/400",
             "path": "primitive.color.green.400",
@@ -763,6 +1005,248 @@
                   "r": 0.164706,
                   "g": 0.086275,
                   "b": 0.34902,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:14",
+            "name": "color/mauve/100",
+            "path": "primitive.color.mauve.100",
+            "resolvedType": "COLOR",
+            "description": "Mauve step 100, lightness-matched to graphite 100.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-100)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.956863,
+                  "g": 0.886275,
+                  "b": 0.917647,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:15",
+            "name": "color/mauve/200",
+            "path": "primitive.color.mauve.200",
+            "resolvedType": "COLOR",
+            "description": "Mauve step 200, lightness-matched to graphite 200.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-200)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.882353,
+                  "g": 0.792157,
+                  "b": 0.831373,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:16",
+            "name": "color/mauve/300",
+            "path": "primitive.color.mauve.300",
+            "resolvedType": "COLOR",
+            "description": "Mauve step 300, lightness-matched to graphite 300.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-300)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.752941,
+                  "g": 0.643137,
+                  "b": 0.694118,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:17",
+            "name": "color/mauve/400",
+            "path": "primitive.color.mauve.400",
+            "resolvedType": "COLOR",
+            "description": "Mauve step 400, lightness-matched to graphite 400.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-400)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.615686,
+                  "g": 0.482353,
+                  "b": 0.541176,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:13",
+            "name": "color/mauve/50",
+            "path": "primitive.color.mauve.50",
+            "resolvedType": "COLOR",
+            "description": "Mauve tint, faintest step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-50)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 1,
+                  "g": 0.941176,
+                  "b": 0.964706,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:18",
+            "name": "color/mauve/500",
+            "path": "primitive.color.mauve.500",
+            "resolvedType": "COLOR",
+            "description": "Mauve anchor (#734B5E). Reserved; not mapped to any semantic token yet.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-500)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.45098,
+                  "g": 0.294118,
+                  "b": 0.368627,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:19",
+            "name": "color/mauve/600",
+            "path": "primitive.color.mauve.600",
+            "resolvedType": "COLOR",
+            "description": "Mauve step 600, lightness-matched to graphite 600.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-600)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.403922,
+                  "g": 0.258824,
+                  "b": 0.329412,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:20",
+            "name": "color/mauve/700",
+            "path": "primitive.color.mauve.700",
+            "resolvedType": "COLOR",
+            "description": "Mauve step 700, lightness-matched to graphite 700.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-700)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.321569,
+                  "g": 0.192157,
+                  "b": 0.254902,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:21",
+            "name": "color/mauve/800",
+            "path": "primitive.color.mauve.800",
+            "resolvedType": "COLOR",
+            "description": "Mauve step 800, lightness-matched to graphite 800.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-800)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.262745,
+                  "g": 0.14902,
+                  "b": 0.203922,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:22",
+            "name": "color/mauve/900",
+            "path": "primitive.color.mauve.900",
+            "resolvedType": "COLOR",
+            "description": "Mauve step 900, lightness-matched to graphite 900.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-900)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.211765,
+                  "g": 0.113725,
+                  "b": 0.160784,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:23",
+            "name": "color/mauve/950",
+            "path": "primitive.color.mauve.950",
+            "resolvedType": "COLOR",
+            "description": "Mauve, near-black substrate.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-mauve-950)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.141176,
+                  "g": 0.058824,
+                  "b": 0.101961,
                   "a": 1
                 }
               }
@@ -1949,7 +2433,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 546.400024
+                "value": 585.599976
               }
             }
           },
@@ -2315,7 +2799,7 @@
             "name": "typography/family/display",
             "path": "primitive.typography.family.display",
             "resolvedType": "STRING",
-            "description": "Display face: Satoshi Bold (ITF), bound to the display and title composites.",
+            "description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2323,7 +2807,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Satoshi"
+                "value": "Plus Jakarta Sans"
               }
             }
           },
@@ -2349,7 +2833,7 @@
             "name": "typography/family/primary",
             "path": "primitive.typography.family.primary",
             "resolvedType": "STRING",
-            "description": "Self-hosted Satoshi (ITF) body typeface; falls back to system-ui sans-serif stack.",
+            "description": "Self-hosted Plus Jakarta Sans (OFL) body typeface; falls back to system-ui sans-serif stack.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2357,7 +2841,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Satoshi"
+                "value": "Plus Jakarta Sans"
               }
             }
           },
@@ -2617,7 +3101,7 @@
             "name": "accent/content",
             "path": "semantic.accent.content",
             "resolvedType": "COLOR",
-            "description": "Text and icon color on neutral surfaces with accent intent. Monochrome — pair with underline/weight for link affordance.",
+            "description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -2629,12 +3113,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
               }
             }
           },
@@ -2655,12 +3139,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:9",
-                "to": "Hirobius/Primitives: color/neutral/700"
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
               },
               "Dark": {
-                "alias": "VariableID:3:5",
-                "to": "Hirobius/Primitives: color/neutral/300"
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
               }
             }
           },
@@ -2705,12 +3189,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:10",
-                "to": "Hirobius/Primitives: color/neutral/800"
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
               },
               "Dark": {
-                "alias": "VariableID:3:4",
-                "to": "Hirobius/Primitives: color/neutral/200"
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
               }
             }
           },
@@ -2755,12 +3239,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:13",
-                "to": "Hirobius/Primitives: color/neutral/950"
+                "alias": "VariableID:2146:11",
+                "to": "Hirobius/Primitives: color/graphite/900"
               },
               "Dark": {
-                "alias": "VariableID:3:5",
-                "to": "Hirobius/Primitives: color/neutral/300"
+                "alias": "VariableID:2146:6",
+                "to": "Hirobius/Primitives: color/graphite/400"
               }
             }
           },
@@ -2769,7 +3253,7 @@
             "name": "accent/rest",
             "path": "semantic.accent.rest",
             "resolvedType": "COLOR",
-            "description": "Default accent fill for interactive elements at rest. Neutral (monochrome) accent — inverts to a light neutral on dark surfaces.",
+            "description": "Default accent fill for interactive elements at rest — warm graphite. Inverts per theme; pair with content.onAccent.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -2780,12 +3264,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
               }
             }
           },
@@ -2805,12 +3289,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
               },
               "Dark": {
-                "alias": "VariableID:3:10",
-                "to": "Hirobius/Primitives: color/neutral/800"
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
               }
             }
           },
@@ -2888,37 +3372,11 @@
             }
           },
           {
-            "id": "VariableID:2018:745",
-            "name": "button/primary/textDisabled",
-            "path": "component.button.primary.textDisabled",
-            "resolvedType": "COLOR",
-            "description": "Disabled primary button text color. Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
-            "scopes": [
-              "SHAPE_FILL",
-              "TEXT_FILL",
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-button-primary-textDisabled)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:10:13",
-                "to": "Hirobius/Semantic: color/content/onAccent"
-              },
-              "Dark": {
-                "alias": "VariableID:10:10",
-                "to": "Hirobius/Semantic: color/content/disabled"
-              }
-            }
-          },
-          {
             "id": "VariableID:10:18",
             "name": "color/border/accent",
             "path": "semantic.color.border.accent",
             "resolvedType": "COLOR",
-            "description": "Accent border (neutral/monochrome; inverts on dark surfaces).",
+            "description": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -2928,12 +3386,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
               }
             }
           },
@@ -3110,7 +3568,7 @@
             "name": "color/content/accent",
             "path": "semantic.color.content.accent",
             "resolvedType": "COLOR",
-            "description": "Accent-intent text/icon color (monochrome). Pair with underline/weight for link affordance.",
+            "description": "Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -3122,12 +3580,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
               }
             }
           },
@@ -3214,7 +3672,7 @@
             "name": "color/content/onAccent",
             "path": "semantic.color.content.onAccent",
             "resolvedType": "COLOR",
-            "description": "Text/icon color on accent fills. Flips to a dark neutral in dark mode, where accent fills are light.",
+            "description": "Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -3226,12 +3684,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:14",
-                "to": "Hirobius/Primitives: color/neutral/white"
+                "alias": "VariableID:3:2",
+                "to": "Hirobius/Primitives: color/neutral/50"
               },
               "Dark": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2146:11",
+                "to": "Hirobius/Primitives: color/graphite/900"
               }
             }
           },
@@ -3619,7 +4077,7 @@
             "name": "color/surface/accent",
             "path": "semantic.color.surface.accent",
             "resolvedType": "COLOR",
-            "description": "Accent-colored background (neutral/monochrome; inverts to a light neutral on dark surfaces).",
+            "description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -3630,12 +4088,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
               },
               "Dark": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
               }
             }
           },
@@ -3644,7 +4102,7 @@
             "name": "color/surface/accentSubtle",
             "path": "semantic.color.surface.accentSubtle",
             "resolvedType": "COLOR",
-            "description": "Faint accent tint for hover states or highlights",
+            "description": "Faint accent tint for hover states or highlights.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -3655,12 +4113,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
               },
               "Dark": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
               }
             }
           },
@@ -6569,7 +7027,7 @@
             "name": "button/paddingY",
             "path": "component.button.paddingY",
             "resolvedType": "FLOAT",
-            "description": "Vertical button padding.",
+            "description": "Vertical button padding (8px, the md size; legacy flat alias of size.md.paddingY).",
             "scopes": [
               "GAP"
             ],
@@ -6579,8 +7037,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:7",
-                "to": "Hirobius/Primitives: space/3"
+                "alias": "VariableID:5:6",
+                "to": "Hirobius/Primitives: space/2"
               }
             }
           },
@@ -6600,8 +7058,30 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:7",
-                "to": "Hirobius/Semantic: color/surface/accentSubtle"
+                "alias": "VariableID:2018:731",
+                "to": "Hirobius/Semantic: color/surface/muted"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2146:24",
+            "name": "button/primary/textDisabled",
+            "path": "component.button.primary.textDisabled",
+            "resolvedType": "COLOR",
+            "description": "Disabled primary button text color.",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-primary-textDisabled)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:10",
+                "to": "Hirobius/Semantic: color/content/disabled"
               }
             }
           },
@@ -6641,8 +7121,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:3",
-                "to": "Hirobius/Semantic: color/surface/raised"
+                "alias": "VariableID:10:7",
+                "to": "Hirobius/Semantic: color/surface/accentSubtle"
               }
             }
           },
@@ -6693,7 +7173,7 @@
             "name": "button/secondary/border/disabled",
             "path": "component.button.secondary.border.disabled",
             "resolvedType": "COLOR",
-            "description": "Secondary button disabled border.",
+            "description": "Secondary button disabled border (no disabled border class: the rest border stays).",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -6703,8 +7183,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:15",
-                "to": "Hirobius/Semantic: color/border/subdued"
+                "alias": "VariableID:2018:736",
+                "to": "Hirobius/Semantic: color/border/interactive"
               }
             }
           },
@@ -6723,8 +7203,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2018:736",
-                "to": "Hirobius/Semantic: color/border/interactive"
+                "alias": "VariableID:10:18",
+                "to": "Hirobius/Semantic: color/border/accent"
               }
             }
           },
@@ -6733,7 +7213,7 @@
             "name": "button/secondary/border/pressed",
             "path": "component.button.secondary.border.pressed",
             "resolvedType": "COLOR",
-            "description": "Secondary button pressed border.",
+            "description": "Secondary button pressed border (the hover border still applies while pressed).",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -6743,8 +7223,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2018:736",
-                "to": "Hirobius/Semantic: color/border/interactive"
+                "alias": "VariableID:10:18",
+                "to": "Hirobius/Semantic: color/border/accent"
               }
             }
           },
@@ -6795,7 +7275,7 @@
             "name": "button/size/lg/fontSize",
             "path": "component.button.size.lg.fontSize",
             "resolvedType": "FLOAT",
-            "description": "Large button label size (16px, hds#283: was 17px).",
+            "description": "Large button label size (14px, the same hds-type-ui role as md).",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6805,8 +7285,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:37",
-                "to": "Hirobius/Primitives: typography/size/base"
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
               }
             }
           },
@@ -7015,7 +7495,7 @@
             "name": "button/size/md/paddingY",
             "path": "component.button.size.md.paddingY",
             "resolvedType": "FLOAT",
-            "description": "Medium button vertical padding (12px).",
+            "description": "Medium button vertical padding (8px; the 40px height drives the box).",
             "scopes": [
               "GAP"
             ],
@@ -7025,8 +7505,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:7",
-                "to": "Hirobius/Primitives: space/3"
+                "alias": "VariableID:5:6",
+                "to": "Hirobius/Primitives: space/2"
               }
             }
           },
@@ -7055,7 +7535,7 @@
             "name": "button/size/sm/height",
             "path": "component.button.size.sm.height",
             "resolvedType": "FLOAT",
-            "description": "Small button height (28px).",
+            "description": "Small button height (32px).",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -7065,8 +7545,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:11",
-                "to": "Hirobius/Primitives: space/7"
+                "alias": "VariableID:7:31",
+                "to": "Hirobius/Primitives: size/32"
               }
             }
           },
@@ -7095,7 +7575,7 @@
             "name": "button/size/sm/itemSpacing",
             "path": "component.button.size.sm.itemSpacing",
             "resolvedType": "FLOAT",
-            "description": "Small button icon-to-label gap (4px).",
+            "description": "Small button icon-to-label gap (8px).",
             "scopes": [
               "GAP"
             ],
@@ -7105,8 +7585,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:5",
-                "to": "Hirobius/Primitives: space/1"
+                "alias": "VariableID:5:6",
+                "to": "Hirobius/Primitives: space/2"
               }
             }
           },
@@ -7115,7 +7595,7 @@
             "name": "button/size/sm/paddingX",
             "path": "component.button.size.sm.paddingX",
             "resolvedType": "FLOAT",
-            "description": "Small button horizontal padding (8px).",
+            "description": "Small button horizontal padding (12px).",
             "scopes": [
               "GAP"
             ],
@@ -7125,8 +7605,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:6",
-                "to": "Hirobius/Primitives: space/2"
+                "alias": "VariableID:5:7",
+                "to": "Hirobius/Primitives: space/3"
               }
             }
           },
@@ -7228,8 +7708,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:6",
-                "to": "Hirobius/Primitives: space/2"
+                "alias": "VariableID:2061:879",
+                "to": "Hirobius/Semantic: space/scale/sm"
               }
             }
           },
@@ -7268,8 +7748,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:28",
-                "to": "Hirobius/Primitives: radius/8"
+                "alias": "VariableID:5:29",
+                "to": "Hirobius/Primitives: radius/12"
               }
             }
           },
@@ -7289,8 +7769,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:3",
-                "to": "Hirobius/Semantic: color/surface/raised"
+                "alias": "VariableID:10:2",
+                "to": "Hirobius/Semantic: color/surface/page"
               }
             }
           },
@@ -7349,8 +7829,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:8",
-                "to": "Hirobius/Primitives: space/4"
+                "alias": "VariableID:5:7",
+                "to": "Hirobius/Primitives: space/3"
               }
             }
           },
@@ -7691,7 +8171,7 @@
             "name": "tag/background",
             "path": "component.tag.background",
             "resolvedType": "COLOR",
-            "description": "Base tag surface color.",
+            "description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -7702,8 +8182,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:12:28",
-                "to": "Hirobius/Semantic: accent/subtle"
+                "alias": "VariableID:10:3",
+                "to": "Hirobius/Semantic: color/surface/raised"
               }
             }
           },
@@ -7872,7 +8352,7 @@
             "name": "tag/text",
             "path": "component.tag.text",
             "resolvedType": "COLOR",
-            "description": "Default tag text color.",
+            "description": "Unselected tag text color (the active label uses activeText).",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -7884,8 +8364,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:8",
-                "to": "Hirobius/Semantic: color/content/primary"
+                "alias": "VariableID:10:9",
+                "to": "Hirobius/Semantic: color/content/secondary"
               }
             }
           }
@@ -8481,7 +8961,7 @@
         "name": "typography/body",
         "path": "semantic.typography.body",
         "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Regular",
         "fontSize": 16,
         "lineHeight": {
@@ -8506,7 +8986,7 @@
         "name": "typography/caption",
         "path": "semantic.typography.caption",
         "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Medium",
         "fontSize": 12,
         "lineHeight": {
@@ -8531,7 +9011,7 @@
         "name": "typography/display",
         "path": "semantic.typography.display",
         "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 48,
         "lineHeight": {
@@ -8556,7 +9036,7 @@
         "name": "typography/eyebrow",
         "path": "semantic.typography.eyebrow",
         "description": "deprecated: use semantic.typography.caption",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Medium",
         "fontSize": 12,
         "lineHeight": {
@@ -8581,7 +9061,7 @@
         "name": "typography/h1",
         "path": "semantic.typography.h1",
         "description": "deprecated: use semantic.typography.title",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 24,
         "lineHeight": {
@@ -8606,7 +9086,7 @@
         "name": "typography/h2",
         "path": "semantic.typography.h2",
         "description": "deprecated: use semantic.typography.title",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 24,
         "lineHeight": {
@@ -8631,7 +9111,7 @@
         "name": "typography/h3",
         "path": "semantic.typography.h3",
         "description": "deprecated: use semantic.typography.title",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 24,
         "lineHeight": {
@@ -8681,7 +9161,7 @@
         "name": "typography/title",
         "path": "semantic.typography.title",
         "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Bold",
         "fontSize": 24,
         "lineHeight": {
@@ -8706,7 +9186,7 @@
         "name": "typography/ui",
         "path": "semantic.typography.ui",
         "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
-        "fontFamily": "Satoshi",
+        "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Medium",
         "fontSize": 14,
         "lineHeight": {

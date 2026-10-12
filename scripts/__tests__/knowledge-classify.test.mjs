@@ -44,7 +44,7 @@ describe('classify against the checked-in example rules', () => {
   });
 
   it('returns null client and still scores pillars when nothing matches', () => {
-    const r = classify({ text: 'design tokens and storybook' }, { clientRules: exampleRules });
+    const r = classify({ text: 'design tokens and radix' }, { clientRules: exampleRules });
     expect(r.client).toBeNull();
     expect(r.pillar).toBe('build');
   });

@@ -39,7 +39,7 @@ describe('applyReplacements', () => {
     expect(applyReplacements(text).text).toBe('gap: hds.semantic.space.scale.xs,');
   });
 
-  it('rewrites the bare dotted string-label form (e.g. Storybook demo args)', () => {
+  it('rewrites the bare dotted string-label form (e.g. demo args)', () => {
     const text = "tokenPath: 'semantic.space.component.gap',";
     expect(applyReplacements(text).text).toBe("tokenPath: 'semantic.space.scale.xs',");
   });

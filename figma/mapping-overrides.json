@@ -6,7 +6,7 @@
       "name": "CardProgress",
       "mapsTo": "Card.Progress",
       "source": "src/app/components/card.tsx",
-      "reason": "Compound member of Card. It IS a manifest entry, so an @figma tag would stick — but linking a component makes its story a gate (figma:links --check), and a compound part has no story of its own and should not need one. Overriding keeps the link honest without inventing a story file."
+      "reason": "Compound member of Card. It IS a manifest entry, so an @figma tag would stick — but a compound part has no docs page of its own and should not need one. Overriding keeps the link honest without inventing a page."
     },
     {
       "nodeId": "128:18",
@@ -20,7 +20,7 @@
       "name": "TabTrigger",
       "mapsTo": "TabsTrigger",
       "source": "src/app/components/tabs.tsx",
-      "reason": "Figma calls it TabTrigger, code calls it TabsTrigger — one letter apart, which is why no name match found it. It is a part of Tabs and has no story of its own, so it takes an override rather than a tag. Worth renaming one side to match; until then this records the pairing."
+      "reason": "Figma calls it TabTrigger, code calls it TabsTrigger — one letter apart, which is why no name match found it. It is a part of Tabs and has no docs page of its own, so it takes an override rather than a tag. Worth renaming one side to match; until then this records the pairing."
     },
     {
       "nodeId": "93:58",

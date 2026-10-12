@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { chromium } from 'playwright';
-import { chromiumPath } from '../lib/storybook-host.mjs';
+import { chromiumPath } from '../lib/browser-host.mjs';
 import { transformSource } from '../../codemods/tile-grid.mjs';
 import { Grid } from '../../src/app/components/grid.tsx';
 
