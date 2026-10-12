@@ -77,10 +77,10 @@ import '@hirobius/design-system/fonts.css'; // Plus Jakarta Sans 400/500/700 + I
 URLs are relative (`./fonts/plus-jakarta-sans-400.woff2`), and the woff2 files ship in the
 package, so Vite, Next and webpack resolve and hash them; there is nothing to
 copy. Import it alongside one of the stylesheets above to keep the HDS fonts.
-Skip it to bring your own: `tokens.css` and `styles.css` keep the
-`--hds-font-family*` variables, so text falls back to the family stack
-(`"Plus Jakarta Sans", system-ui, …`) and uses your font if you declare that family
-yourself.
+Skip it to bring your own: set `--hds-font-family` (and `--hds-font-family-mono`
+for code) to your font stack on any element — every HDS type role inside it
+follows. Without an override, text falls back to the brand stack
+(`"Plus Jakarta Sans", system-ui, …`).
 
 HDS's own base styles (type baseline, resets) are scoped to the `[data-hds]`
 subtree (§4) in **all** bundles, so they never touch host elements. The only
@@ -241,7 +241,7 @@ export function Example() {
 | `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                                                                                                                                   |
 | `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                                                                                                                            |
 | `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14)                                                                                                           |
-| `@hirobius/design-system/patterns`      | The 12 pattern modules (`Page`, `PageHeader`, `Form`, `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                                       |
+| `@hirobius/design-system/patterns`      | The 12 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                               |
 | `@hirobius/design-system/icons`         | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                                                                                                                                      |
 | `@hirobius/design-system/eslint-plugin` | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                                                                                                                             |
 
@@ -369,8 +369,8 @@ the form inside a hydrated island (e.g. `client:load`).
 
 - **ESM-only.** Use a modern bundler (Vite, Next, Rspack, etc.). `require()` /
   CommonJS resolution will not work.
-- **Types ship from source.** The package serves types directly from its `src/`
-  TypeScript (no emitted `.d.ts`), so the consuming `tsconfig.json` should use
+- **Types ship as `.d.ts`** in `dist/types/`, resolved through the package
+  `exports` map, so the consuming `tsconfig.json` should use
   `"moduleResolution": "bundler"` (or `"node16"`/`"nodenext"`).
 
 ## 10. Extending HDS — the consumption contract
