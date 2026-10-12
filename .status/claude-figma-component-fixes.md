@@ -1,0 +1,1 @@
+Figma library fixes 2026-10-12: Input, Badge, Popover, Tooltip, Toast, Callout, Spinner, Combobox, Slider, StatusTile, EmptyState, InlineLink, Button icon-only, doc frames; CardMetric, Stat, MetricTile moved to Deprecated (ledger in figma/MCP-LEDGER.md).
