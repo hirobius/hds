@@ -471,3 +471,13 @@ Budget 20 calls. Rows are written before the call is made.
 | 19  | --         | `use_figma`      | write | Remove my scratch frame 2168:15 (`zz-tooltip-zoom`) from the Tooltip page                                                                                                                                                                                                                                                 | OK. Removed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 Round 3 total: 19 MCP calls (6 `use_figma`, 13 `get_screenshot`... counted per row), under the 20 budget. Nothing deleted from the library, published, or created as a variable or style. Own scratch nodes removed: two earlier tooltip unions (2168:14, 2168:1051) and the zoom frame 2168:15; my three duplicate PageHeader props too. Left: Kbd inner shadow not visible at 1x. ErrorPattern had no dotted outlines to hide and its Back was already a Button instance. Tooltip old Bubble 110:1077 and Arrow 110:1078 are hidden, not deleted; component is now fixed layout 86x31.
+
+## 2026-10-12 · session `claude/figma-sync-hide`
+
+Sync after hds#624: deprecated tokens hidden from publishing (border.subdued, 7 spacing aliases, badge bg/text). Budget 1 call.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                            | Result                                    |
+| --- | ---------- | ----------- | ----- | ------------------------------------------------------------------ | ----------------------------------------- |
+| 1   | 17:42      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` unmodified (updated 10) | OK. 29bb1b0e → 4764179b; lastPush written |
+
+Session total: 1 call. Snapshot rebuilt from the receipt; drift 0. Nothing published.
