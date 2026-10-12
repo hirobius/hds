@@ -42,6 +42,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Secrets scan (hds#263): pinned gitleaks over the full history. The
+      # pre-commit check skips when the binary is missing; CI must not.
+      - name: Secrets scan (gitleaks, full history)
+        run: bash scripts/ci-secrets-scan.sh
+
       # Generated data files (src/app/data/*.json) are gitignored but imported
       # by source, so they must exist before typecheck/build. Regenerate here.
       - name: Generate data artifacts
