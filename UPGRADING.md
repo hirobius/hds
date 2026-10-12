@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.23.2. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.24.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,51 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.24.0
+
+Released 2026-10-12 (minor). 11 changes to make by hand (11 breaking) and 24 that look different.
+
+### Looks different
+
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the code-font dial (--hds-font-family-mono) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- Accent-intent text and icons (such as links) now render in graphite instead of a dark apple green.
+- Hovered accent text now shifts within the graphite scale instead of toward a darker apple green.
+- The accent fill on hover is now a deeper graphite (light mode) or lighter warm-grey (dark mode) instead of a green.
+- The accent fill while pressed is now a darker graphite (light mode) or lighter warm-grey (dark mode) instead of a green.
+- Interactive accent fills at rest (primary buttons, selected controls) now render in warm graphite — a dark fill in light mode and a light warm-grey fill in dark mode — instead of a bright apple green.
+- The low-emphasis accent tint (hover and selection backgrounds) is now a faint graphite tint instead of a faint apple green.
+- Accent borders now render in graphite instead of apple green.
+- Accent-intent text and icons on page and card surfaces now render in graphite instead of a dark apple green.
+- Text and icons on accent fills are now near-white in light mode and dark graphite in dark mode (the fill inverts per theme), instead of a dark neutral in both modes.
+- Accent background surfaces now render in warm graphite that inverts per theme instead of a bright apple green.
+- Faint accent background surfaces are now a pale graphite tint instead of a pale apple green.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the code-font dial (--hds-font-family-mono) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
+
+### Do by hand
+
+- The --primitive-color-apple-100 variable is gone; use --primitive-color-graphite-100 for the same accent step.
+- The --primitive-color-apple-200 variable is gone; use --primitive-color-graphite-200 for the same accent step.
+- The --primitive-color-apple-300 variable is gone; use --primitive-color-graphite-300 for the same accent step.
+- The --primitive-color-apple-400 variable is gone; use --primitive-color-graphite-400 for the same accent step.
+- The --primitive-color-apple-50 variable is gone; use --primitive-color-graphite-50 for the same lightest accent step.
+- The --primitive-color-apple-500 variable is gone; use --primitive-color-graphite-500 (or a semantic accent token) instead.
+- The --primitive-color-apple-600 variable is gone; use --primitive-color-graphite-600 for the same accent step.
+- The --primitive-color-apple-700 variable is gone; use --primitive-color-graphite-700 for the rest accent step.
+- The --primitive-color-apple-800 variable is gone; use --primitive-color-graphite-800 for the same accent step.
+- The --primitive-color-apple-900 variable is gone; use --primitive-color-graphite-900 for the same accent step.
+- The --primitive-color-apple-950 variable is gone; use --primitive-color-graphite-950 for the darkest accent step.
 
 ## 0.23.2
 
