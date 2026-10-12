@@ -723,13 +723,6 @@
             "value": 0,
             "unit": "em"
           }
-        },
-        "caps": {
-          "$value": {
-            "value": 0.06,
-            "unit": "em"
-          },
-          "$description": "All-caps tracking for eyebrow / kicker labels. Always pairs with text-transform: uppercase."
         }
       }
     },

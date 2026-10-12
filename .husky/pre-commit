@@ -76,6 +76,12 @@ node scripts/check-layout-gap-vocabulary.mjs
 echo "Type ramp (src/ uses the seven roles only)…"
 node scripts/check-type-ramp.mjs
 
+# The system never produces ALL CAPS (Adrian, 2026-10-12): no uppercase class,
+# text-transform, textCase UPPER or .toUpperCase() for display. Sentence case
+# everywhere. Source only: reads src/, docs-site/, tokens, no build, no network.
+echo "No ALL CAPS (nothing transforms text to uppercase)…"
+node scripts/check-no-uppercase.mjs
+
 # hds#568 (ops#568): ralph/{lib,next,run,loop,status}.sh and prompt.md are
 # vendored byte-identical from hirobius/ralph/kit. A local edit is caught here,
 # not only by ralph-gate in CI. --staged: no-op unless a kit file is staged.

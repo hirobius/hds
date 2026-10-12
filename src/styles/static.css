@@ -49,7 +49,6 @@
   justify-content: center;
   white-space: nowrap;
   line-height: 1;
-  text-transform: var(--semantic-typography-eyebrow-text-transform);
   font-size: var(--component-badge-fontSize);
   font-weight: var(--component-badge-fontWeight);
   height: var(--component-badge-height);

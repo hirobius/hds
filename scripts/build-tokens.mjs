@@ -208,9 +208,8 @@ export const TYPO_PROPS = [
   // measure constraint (Swiss canon caps body/small/mono at 60ch). Composites
   // that omit maxWidth emit no var line — the suffix is filtered downstream.
   ['max-width', 'maxWidth', 'dimension'],
-  // textTransform extends the DTCG schema for the eyebrow composite — bakes
-  // uppercase casing into the token so consumers can't apply text-transform
-  // ad-hoc. Optional; composites without textTransform emit no var line.
+  // textTransform extends the DTCG schema; optional, composites without it emit
+  // no var line. Never `uppercase`: the system is sentence case (check-no-uppercase).
   ['text-transform', 'textTransform', 'string'],
 ];
 
