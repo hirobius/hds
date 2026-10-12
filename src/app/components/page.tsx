@@ -5,7 +5,8 @@
  * @tier primitive
  *
  * Wraps page content in Container (width constraint) and applies the
- * canonical vertical padding so content breathes against the viewport edges
+ * canonical vertical padding and a responsive side gutter (16/24/32px) so
+ * content breathes against the viewport edges
  * on scroll. Use as the outermost element of any new page so vertical rhythm
  * is consistent across the system without per-page reinvention.
  *
@@ -67,7 +68,14 @@ export function Page({
       <div
         data-hds-component="Page"
         data-hds-metrics={`paddingY:${paddingY}`}
-        style={{ paddingTop: py.top, paddingBottom: py.bottom, ...style }}
+        style={{
+          paddingTop: py.top,
+          paddingBottom: py.bottom,
+          // Side gutter (layout contract rule 2: Page pads). Responsive: theme.css
+          // steps it 16px below 640px, 24px, then 32px.
+          paddingInline: 'var(--semantic-space-region-gutter)',
+          ...style,
+        }}
       >
         {children}
       </div>
