@@ -452,7 +452,11 @@ describe('figma-fallbacks.mjs can be copied into a use_figma script', () => {
 });
 
 // ── the record in figma/snapshot.json, and the check ─────────────────────────
-const committed = parseSnapshotFile(readFileSync(join(REPO, 'figma', 'snapshot.json'), 'utf8'));
+// The committed snapshot minus any recorded sweep: the fixtures below add their own
+// record, and the "predates the key" case needs none, whatever main has ingested.
+const { bindingFallbacks: _committedSweep, ...committed } = parseSnapshotFile(
+  readFileSync(join(REPO, 'figma', 'snapshot.json'), 'utf8'),
+);
 
 function tempRoot(snapshotFile = committed) {
   const root = mkdtempSync(join(tmpdir(), 'fallbacks-'));
@@ -575,7 +579,7 @@ describe('pnpm check:figma-fallbacks', () => {
     expect(runFallbackCheck({ root }).exitCode).toBe(1);
   });
 
-  it('passes on the committed snapshot, with the not-recorded warning until a sweep is ingested', () => {
+  it('passes on the committed snapshot', () => {
     const { exitCode } = runFallbackCheck({ root: REPO });
     expect(exitCode).toBe(0);
   });
