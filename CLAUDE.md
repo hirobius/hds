@@ -215,8 +215,7 @@ hirobius/ops repo: fleet state at /api/projects, consolidated tasks at
 /ops/tasks (this repo's GitHub Issues sync there), current cross-project
 state in docs/ai/HANDOFF.md (in ops). Conventions for every session here:
 (a) track new work as GitHub Issues in THIS repo — never a local TODO
-file; (b) before ending any session that changed project state, update
-root status.json (v2 shape: `focus` of 120 chars or fewer, `phase`, an optional
-`note`, `updatedAt`; ops derives release, next and blocked from `package.json`
-and issue labels, so never write them by hand) — the ops dashboard renders it; (c) read the ops HANDOFF before cross-project
+file; (b) state is derived, not written (ops ADR-010): ops reads release, next
+and blocked from `package.json` and issue labels; set `status.json` `focus` only
+when this repo's direction changes; (c) read the ops HANDOFF before cross-project
 decisions.
