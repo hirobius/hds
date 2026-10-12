@@ -67,7 +67,7 @@ To preserve accuracy, zero-debt architecture, and maintainability across automat
 ### Rule 4: Exclude 32 Removed Components & Deprecated Variants
 
 - Do not create component pages for the 32 components removed in v0.20.0 (e.g. `AppShell`, `Calendar`, `SideNav`, `TopNav`, `ContextMenu`, etc.) or `StatusDot` (removed in 0.21.0).
-- Deprecated and removed components are documented exclusively in `guides/deprecation.mdx`.
+- Deprecated and removed components are documented exclusively in the deprecation guide.
 - Ground truth for core components is `scripts/lib/core-components.mjs`.
 
 ---
@@ -260,7 +260,7 @@ guardrails**). A red check cannot merge — the rules are not advice.
 | Rule 1 — generated token tables | `colors` (no hex/rgb/hsl literals in prose) + `markers` (generated-tokens marker on component and foundation pages) |
 | Rule 2 — never invent props | `markers` (props marker, or the explicit props-TODO marker, on every component page) |
 | Rule 3 — live previews | `markers` (preview marker naming the page's component) |
-| Rule 4 — no removed/deprecated pages | `membership` (page identity and frontmatter `component` must be in `scripts/lib/core-components.mjs`) + `completeness` (every core component has a page; the three providers are accounted for by `guides/providers.mdx`) |
+| Rule 4 — no removed/deprecated pages | `membership` (page identity and frontmatter `component` must be in `scripts/lib/core-components.mjs`) + `completeness` (every core component has a page; the three providers are accounted for by the providers guide) |
 | Internal navigation | `links` (/docs routes and relative links resolve to real pages) |
 
 Generation still beats validation where the build generates for real

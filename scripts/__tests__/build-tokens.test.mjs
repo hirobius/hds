@@ -16,6 +16,7 @@ import {
   cubicBezierToCSS,
   fontFamilyToCSS,
   walkTokens,
+  indexDeprecatedAliases,
   valueToCSS,
   serialize,
   shadowToCSS,
@@ -1049,6 +1050,37 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
     );
     // Only $deprecated aliases are re-anchored; ordinary dependents are not.
     expect(css).not.toContain('--semantic-space-unrelated');
+  });
+
+  it('does not re-anchor a themed $deprecated alias, whose Dark value differs from its $value', () => {
+    // semantic.color.border.subdued is Light neutral.200 / Dark neutral.800 with
+    // $value neutral.200. Redeclaring it as var(--primitive-color-neutral-200)
+    // beside a tenant override would pin it to the Light value in dark mode.
+    const base = {
+      primitive: { color: { neutral: { 200: { $type: 'color', $value: '#e5e5e5' } } } },
+      semantic: {
+        color: {
+          border: {
+            subdued: {
+              $type: 'color',
+              $value: '{primitive.color.neutral.200}',
+              $deprecated: 'no twin yet',
+              $extensions: {
+                'com.figma.variables': {
+                  modes: {
+                    Light: '{primitive.color.neutral.200}',
+                    Dark: '{primitive.color.neutral.800}',
+                  },
+                },
+              },
+            },
+          },
+        },
+        space: { old: { $value: '{primitive.color.neutral.200}', $deprecated: 'plain alias' } },
+      },
+    };
+    const index = indexDeprecatedAliases(base);
+    expect(index.get('primitive.color.neutral.200')).toEqual(['--semantic-space-old']);
   });
 
   it('keeps the header comment closed until its own terminator, so the first tenant rule stays valid CSS', () => {

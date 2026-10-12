@@ -19,9 +19,9 @@ No Code Connect mapping is published, so Dev Mode still shows no snippets.
 [ADR-025](adr/025-figma-sync-pro-architecture.md) is the Pro-plan architecture this follows.
 History and remaining cleanup:
 
-- ✅ **Generative pipeline — cut (#50).** `pipeline/`, `scripts/generate-to-figma.mjs`,
-  `scripts/build-figma-masters.mjs`, `scripts/test-figma-masters-snapshot.mjs`,
-  and the no-longer-needed `telemetry/logger.mjs` stub are removed; `ui:masters`
+- ✅ **Generative pipeline — cut (#50).** `pipeline/`, the generate-to-figma and
+  build-figma-masters scripts, their snapshot test, and the no-longer-needed
+  telemetry logger stub are removed; `ui:masters`
   / `ui:gen` / `ui:fix` are gone from `package.json`. LLM-to-Figma generation is
   not coming back on this path — future Figma work goes through the official
   Figma MCP server + Code Connect (ADR-019).
@@ -31,7 +31,7 @@ History and remaining cleanup:
 - ✅ **Remove orchestration vestige from the bridge — obsolete.** The bridge is no
   longer on `main`, so there is nothing to strip.
 - ✅ **Reconcile env var names — obsolete.** The `sync-figma-variables.yml` side is
-  archived (`.github/workflows-archive/`) and called the Enterprise-only REST API;
+  archived (removed from `.github/workflows/`) and called the Enterprise-only REST API;
   ADR-025 replaces it. `scripts/figma-sync.ts` (`pnpm test:figma`) remains a
   one-file read that only checks connectivity.
 - ✅ **Refresh stale docs — done.** `docs/figma-plugin/{EXECUTION_PLAN,ROADMAP,STATE-2026-05-09}.md`

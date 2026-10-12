@@ -1,4 +1,4 @@
 {
   "impact": "look",
-  "plain": "DestructiveSection now sits on a tinted danger background with no outline, and its title is smaller and bolder; props and behaviour are the same. There is also a new titleSm text style (16px bold) you can use for small headings."
+  "plain": "DestructiveSection now sits on the tinted danger background with a smaller bold title and an outlined button, and a new titleSm text style (16px bold) is available for small headings."
 }

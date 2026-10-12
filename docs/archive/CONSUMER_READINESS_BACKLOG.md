@@ -1,3 +1,5 @@
+> **Archived 2026-10-12 (hds#612).** This is history, not current state: a 2026-06-30 snapshot; open work is in GitHub Issues. Paths and numbers below are not kept up to date.
+
 # HDS Consumer-Readiness Backlog (living)
 
 > Single source of truth for open consumer-readiness work. Updated as items land.

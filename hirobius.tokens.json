@@ -1408,6 +1408,8 @@
         },
         "subdued": {
           "$value": "{primitive.color.neutral.200}",
+          "$description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
+          "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.700 vs 800)",
           "$extensions": {
             "com.figma.variables": {
               "modes": {

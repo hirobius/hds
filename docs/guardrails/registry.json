@@ -539,6 +539,28 @@
       "firingChannel": "on-demand"
     },
     {
+      "id": "check-state-surfaces",
+      "description": "State-surface registry gate (hds#612, spec ops#576): docs/state-surfaces.json lists every file or section that describes project state as generated (a generator builds it; it names a `check` command that proves it fresh, which the gate verifies is a node script that exists and, when passed --check, handles --check, or says `freshness: unchecked`), checked (a named gate compares it with the code) or editorial (owner, reviewedAt, maxAgeDays). The gate fails on a registered path that does not exist (SURFACE_MISSING), a `by` script that does not exist, a generated surface with no verifiable check and no `unchecked` (REGISTRY_INVALID), a reviewedAt in the future, and a repo path named in non-generated markdown (registered files, markdown inside registered directories, README/CLAUDE/CONTRIBUTING/AGENTS; fenced code and HTML comments skipped; links resolve against their own file, root-absolute links against the repo root, `path §n` names the path; gitignored build output counts as present) that does not exist (DEAD_REFERENCE). An editorial surface older than its maxAgeDays is a warning (REVIEW_DUE, exit 0) and an error under --strict-review, for a scheduled run. The opt-in registry key registerAll flags markdown in a listed directory that no entry covers (UNREGISTERED_DOC). --run-checks also runs each declared `check` command. Reads --root/--registry, so it vendors to other repos with scripts/lib/gate-output.mjs. Runs in pretest. Fixtures: fixtures/check-state-surfaces/{passing,violating}.example.d, mini-roots passed through FIXTURE_DIR.",
+      "severity": "error",
+      "gateScript": "scripts/check-state-surfaces.mjs",
+      "fixturePath": "fixtures/check-state-surfaces",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-steering-budget",
+      "description": "Caps the always-on agent context (ported from ops#292; hds#612): the files in docs/guardrails/steering-budget.json (CLAUDE.md and what it marks read-first) are loaded by every agent every session, so their total size may not pass maxTotalBytes, set to the measured size plus 5% (the list includes the generated repo front door, docs/ai/FRONT-DOOR.md). Fix by moving history to an on-demand file, not by raising the cap. The same list is `alwaysOn` in docs/state-surfaces.json, where check-state-surfaces forbids derived facts. Runs in pretest. Fixtures: fixtures/check-steering-budget/{passing,violating}.example.d, mini-roots passed through FIXTURE_DIR.",
+      "severity": "error",
+      "gateScript": "scripts/check-steering-budget.mjs",
+      "fixturePath": "fixtures/check-steering-budget",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
       "id": "check-record-freshness",
       "description": "ADR-010 retired the auto-generated docs/SYSTEMS-LOG.md ledger and named the replacement: git history + CHANGELOG.md + ADRs, plus status.json for the fleet dashboard. Nothing enforced staying current, so it held only when someone remembered (hds#249). Fails when a pushed commit touches src/, scripts/ or docs/adr/ and status.json updatedAt predates it, unless a pushed commit adds a `.status/<branch>.md` note (conflict-free; `pnpm status:fold` folds notes into status.json on main). Commits already on origin/main are ignored. Names the offending commit and the fix. Separately fails when a pushed commit changes what ships (src/; the files package.json#files ships from codemods/, mcp/ and scripts/eslint-plugin-hds/, so not codemods/lib/, minus tests and fixtures; hirobius.tokens.json; tailwind.config.tokens.cjs; or a package.json field a consumer installs or resolves, such as dependencies, peers, engines, exports, bin or files, read from the field diff so scripts and devDependencies edits ask for nothing, hds#448) with no pending .changeset/*.md and no \"skip-changeset\" marker in its own message, so a shipped change cannot reach a release with CHANGELOG.md and its upgrade note left behind.",
       "severity": "error",
@@ -923,7 +945,7 @@
     },
     {
       "id": "upgrade-compile",
-      "description": "Release-compiler drift (hds#451): `node scripts/upgrade/compile.mjs --check` fails when UPGRADING.md or upgrade/index.json is not byte-equal to what scripts/upgrade/compile.mjs compiles from the committed ledgers (upgrade/releases/<v>.json), or when status.json has no `release` object or one that is not the newest ledger's, naming the file and the fix (`node scripts/upgrade/compile.mjs`). Reads committed files only: no network, no build, never writes. Runs in pretest; scripts/__tests__/upgrade-compile.test.mjs proves it fails on a one-value hand edit to each of the three files, and that this entry exists (validate-guardrail-registry does not scan scripts/upgrade/). The same script records each release at `pnpm changeset:version` (--release).",
+      "description": "Release-compiler drift (hds#451): `node scripts/upgrade/compile.mjs --check` fails when UPGRADING.md or upgrade/index.json is not byte-equal to what scripts/upgrade/compile.mjs compiles from the committed ledgers (upgrade/releases/<v>.json), naming the file and the fix (`node scripts/upgrade/compile.mjs`). Reads committed files only: no network, no build, never writes. Runs in pretest; scripts/__tests__/upgrade-compile.test.mjs proves it fails on a one-value hand edit to each of the two files, and that this entry exists (validate-guardrail-registry does not scan scripts/upgrade/). The same script records each release at `pnpm changeset:version` (--release).",
       "severity": "error",
       "gateScript": "scripts/upgrade/compile.mjs",
       "fixturePath": null,

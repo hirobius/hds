@@ -1,7 +1,7 @@
 /**
  * scripts/upgrade/compile.mjs (hds#451): the release compiler. From the
  * committed ledgers (upgrade/releases/<version>.json) it generates
- * UPGRADING.md, upgrade/index.json and the `release` object of status.json,
+ * UPGRADING.md and upgrade/index.json,
  * and `--check` keeps all three byte-equal to what it would write. At
  * `changeset version` time (`--release`) it also records the new release:
  * its snapshot, its frozen notes and ledger, and an Upgrade block at the top
@@ -234,11 +234,10 @@ describe('the one command waits for the release that ships it', () => {
   // the command: the text keeps the manual route until the newest release
   // reaches ONE_COMMAND_FROM.
   it('keeps the manual route while the newest release is before ONE_COMMAND_FROM', () => {
-    const { upgrading, release } = compileOutputs({ repo: historyRepo({ command: true }) });
+    const { upgrading } = compileOutputs({ repo: historyRepo({ command: true }) });
     expect(upgrading).toContain('From 0.22.0, `npx @hirobius/design-system@latest upgrade`');
     expect(upgrading).toContain('1. Install the exact version');
     expect(upgrading).toContain(`npx -p ${PKG}@0.12.1 hds-move`);
-    expect(release.upgrade).toBe(`pnpm add ${PKG}@0.12.1`);
   });
 
   it('leadsWithCommand: the bin and a release from ONE_COMMAND_FROM on', () => {
@@ -821,38 +820,15 @@ describe('upgrade/index.json', () => {
   });
 });
 
-describe('the release object of status.json', () => {
-  it('names the newest release, its counts, the floor and how to upgrade to it', () => {
-    const repo = historyRepo({ ledgers: [LEDGER_0_11, LEDGER_0_12] });
-    expect(compileOutputs({ repo }).release).toEqual({
-      version: '0.12.0',
-      date: '2026-10-02',
-      bump: 'minor',
-      summary: 'Tile is removed.',
-      breaking: 1,
-      doByHand: 1,
-      floor: '0.10.0',
-      upgrade: `pnpm add ${PKG}@0.12.0`,
-    });
-    const withCommand = historyRepo({ command: true });
-    expect(compileOutputs({ repo: withCommand, oneCommandFrom: SHIPS }).release).toMatchObject({
-      version: '0.12.1',
-      breaking: 0,
-      doByHand: 0,
-      upgrade: 'npx @hirobius/design-system@latest upgrade',
-    });
-  });
-});
-
 describe('compile.mjs writes the generated files, and --check keeps them byte-equal', () => {
-  it('writes UPGRADING.md, upgrade/index.json and status.json release, keeping every other status field', () => {
+  it('writes UPGRADING.md and upgrade/index.json, and never touches status.json (ops derives the release, hds#612)', () => {
     const repo = historyRepo();
     expect(run(['--repo', repo]).status).toBe(0);
     const outputs = compileOutputs({ repo });
     expect(read(repo, 'UPGRADING.md')).toBe(outputs.upgrading);
     expect(read(repo, 'upgrade/index.json')).toBe(outputs.index);
-    // After headline, every other field as it was; the file stays 2-space JSON.
-    expect(read(repo, 'status.json')).toBe(json({ ...STATUS, release: outputs.release }));
+    expect(read(repo, 'status.json')).toBe(json(STATUS));
+    expect(outputs).not.toHaveProperty('release');
     expect(run(['--check', '--repo', repo]).status).toBe(0);
   });
 
@@ -869,15 +845,14 @@ describe('compile.mjs writes the generated files, and --check keeps them byte-eq
     expect(read(repo, 'UPGRADING.md')).toBe(edited);
   });
 
-  it('--check fails on a stale upgrade/index.json or a status.json without its release, and ignores other status edits', () => {
+  it('--check fails on a stale upgrade/index.json and ignores status.json entirely', () => {
     const repo = historyRepo();
     run(['--repo', repo]);
-    const status = JSON.parse(read(repo, 'status.json'));
-    write(repo, 'status.json', json({ ...status, headline: 'Edited by hand.' }));
+    write(repo, 'status.json', json({ schemaVersion: 2, focus: 'Edited by hand.' }));
+    expect(run(['--check', '--repo', repo]).status).toBe(0);
+    write(repo, 'status.json', '{ not json');
     expect(run(['--check', '--repo', repo]).status).toBe(0);
 
-    const { release: _release, ...bare } = status;
-    write(repo, 'status.json', json(bare));
     write(repo, 'upgrade/index.json', '{}\n');
     const res = run(['--check', '--repo', repo, '--json']);
     expect(res.status).toBe(1);
@@ -885,7 +860,6 @@ describe('compile.mjs writes the generated files, and --check keeps them byte-eq
     expect(ok).toBe(false);
     expect(violations.map((v) => [v.file, v.rule])).toEqual([
       ['upgrade/index.json', 'compiled-stale'],
-      ['status.json', 'compiled-stale'],
     ]);
   });
 
@@ -906,21 +880,6 @@ describe('compile.mjs writes the generated files, and --check keeps them byte-eq
       'upgrade/index.json',
       'the breaking count of one release',
       (repo) => editJson(repo, 'upgrade/index.json', (index) => (index.versions[0].breaking = 0)),
-    ],
-    [
-      'status.json',
-      'release.breaking',
-      (repo) => editJson(repo, 'status.json', (status) => (status.release.breaking = 2)),
-    ],
-    [
-      'status.json',
-      'release.upgrade set to the one command the package does not have yet',
-      (repo) =>
-        editJson(
-          repo,
-          'status.json',
-          (status) => (status.release.upgrade = 'npx @hirobius/design-system@latest upgrade'),
-        ),
     ],
     [
       'UPGRADING.md',
@@ -1348,11 +1307,6 @@ describe('compile.mjs --release, right after changeset version', () => {
     expect(gate.violations).toEqual([]);
     expect(gate.summary.unrecorded).toBeNull();
     expect(run(['--check', '--repo', root]).status).toBe(0);
-    expect(JSON.parse(read(root, 'status.json')).release).toMatchObject({
-      version: '0.21.0',
-      breaking: 1,
-      doByHand: 1,
-    });
   });
 
   // hds#541: before compile.mjs recorded releases, a note with no changeset
@@ -1532,7 +1486,6 @@ describe('compile.mjs --release, right after changeset version', () => {
     expect(res.status, res.stderr).toBe(0);
     expect(JSON.parse(read(root, 'upgrade/sources/0.21.0/release.json')).summary).toBe(summary);
     expect(JSON.parse(read(root, 'upgrade/releases/0.21.0.json')).summary).toBe(summary);
-    expect(JSON.parse(read(root, 'status.json')).release.summary).toBe(summary);
     expect(existsSync(join(root, 'upgrade/pending/summary.txt'))).toBe(false);
   });
 
@@ -1565,17 +1518,6 @@ describe('compile.mjs names the fix when its inputs are broken', () => {
     expect(res.status).toBe(2);
     expect(res.stderr).toContain('upgrade/releases holds no ledger');
     expect(res.stderr).toContain('Recording a release by hand');
-  });
-
-  it('a status.json that is not JSON: fix it, then rerun compile.mjs', () => {
-    const repo = historyRepo();
-    for (const args of [['--check'], []]) {
-      write(repo, 'status.json', '{ "phase": ');
-      const res = run([...args, '--repo', repo]);
-      expect(res.status).toBe(2);
-      expect(res.stderr).toContain('status.json is not JSON');
-      expect(res.stderr).toContain('then run node scripts/upgrade/compile.mjs');
-    }
   });
 
   // --date only dates a release --release records, and a recorded date is
