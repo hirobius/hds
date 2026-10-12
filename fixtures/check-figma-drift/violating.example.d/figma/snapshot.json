@@ -1,5 +1,5 @@
 {
-  "checksum": "788be244",
+  "checksum": "79c91bd3",
   "snapshot": {
     "schemaVersion": 1,
     "takenAt": "2026-10-07T05:17:26.810Z",
@@ -1387,7 +1387,26 @@
         "name": "elevation/flat",
         "path": "semantic.elevation.flat",
         "description": "No shadow, hairline border.",
-        "effects": []
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "offset": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0,
+            "spread": 0,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": false
+          }
+        ]
       },
       {
         "id": "S:1:73",

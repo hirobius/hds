@@ -1,15 +1,15 @@
 {
-  "checksum": "0b661647",
+  "checksum": "29bb1b0e",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-12T06:41:12.723Z",
+    "takenAt": "2026-10-12T07:06:01.510Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "af8dc951",
-      "pushedAt": "2026-10-12T06:41:12.679Z",
+      "modelHash": "d6dfc15a",
+      "pushedAt": "2026-10-12T07:06:01.483Z",
       "scope": null
     },
     "collections": [
@@ -9492,7 +9492,26 @@
         "name": "elevation/flat",
         "path": "semantic.elevation.flat",
         "description": "Flat surface (no shadow, hairline border) for embedded panels.",
-        "effects": []
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "offset": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0,
+            "spread": 0,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": false
+          }
+        ]
       },
       {
         "id": "S:7cda3cf542a628a8f9711f774a7732f9e474a8d4,",
