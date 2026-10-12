@@ -1,37 +1,44 @@
-# Per-Tenant Token Overlay Format
+# Token Overlay Format (directions, and a client's brand in its own repo)
 
-| Field          | Value                                                                     |
-| -------------- | ------------------------------------------------------------------------- |
-| **Status**     | Accepted                                                                  |
-| **Date**       | 2026-05-01                                                                |
-| **Author**     | Adrian Milsap (orchestrated; opus-class)                                  |
-| **Unit**       | `12m-mt-token-overlay-format`                                             |
-| **Depends on** | `12m-mt-css-scope-architecture` (decision: `[data-tenant="X"]` selectors) |
+| Field          | Value                                                                                                                                                                               |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Status**     | Accepted                                                                                                                                                                            |
+| **Date**       | 2026-05-01                                                                                                                                                                          |
+| **Author**     | Adrian Milsap (orchestrated; opus-class)                                                                                                                                            |
+| **Unit**       | `12m-mt-token-overlay-format`                                                                                                                                                       |
+| **Depends on** | `12m-mt-css-scope-architecture` (decision: `[data-tenant="X"]` selectors)                                                                                                           |
+| **Amended by** | ADR-035 (2026-10-12): the folder is `directions/`; an overlay in this repo is a shared art direction, and a client's brand overlay keeps this format in the client's own repository |
 
 ---
 
 ## Purpose
 
-Define the **source format** for per-tenant token overrides — independent of
-the CSS cascade mechanism (which is already settled in
-`ADR-0001-multi-tenant-scope.md`). The build pipeline
-(`12m-mt-build-pipeline`) consumes overlays in this format and emits scoped
-CSS into `src/styles/tokens.css`.
+Define the **source format** for token overrides — independent of the CSS
+cascade mechanism (which is already settled in
+`ADR-0001-multi-tenant-scope.md`). The build pipeline consumes overlays in this
+format and emits scoped CSS into `src/styles/tenants.css`.
 
-A tenant overlay says, in essence: "I'm Concrete Creations. Use the HDS base,
-but override these specific semantic tokens to express my brand."
+An overlay says, in essence: "Use the HDS base, but override these specific
+semantic tokens." In this repo an overlay is a **direction** (a curated art
+direction under `directions/<slug>/`, ADR-035). A **client's brand** has the
+same shape, lives in the client's own repository, and is applied there with
+`@hirobius/design-system/brand` or a local build; it never enters this repo or
+the shared Figma library.
 
 ---
 
 ## Directory layout
 
 ```
-tenants/
-  _template/                       # the canonical starter — copy this for new tenants
+directions/
+  _template/                       # the canonical starter — copy this for a new direction
     tokens.json                    # DTCG-shape partial: ONLY the overridden paths
-    metadata.json                  # slug, displayName, brand metadata, deploy info
-    README.md                      # what this tenant overrides + why
-  concrete-creations/
+    metadata.json                  # slug, displayName, brand metadata (deployment and legal stay empty)
+    README.md                      # what this direction overrides + why
+  accent-lilac/
+    tokens.json
+    metadata.json
+  brutalist-demo/
     tokens.json
     metadata.json
     README.md
@@ -44,17 +51,17 @@ tenants/
 - Lowercase, kebab-case, ASCII only: `[a-z0-9-]+`.
 - Must NOT start with `_` (reserved — `_template/` is the only underscore
   directory permitted).
-- Becomes the `data-tenant="<slug>"` attribute value verbatim. No mapping.
+- Becomes the `data-brand="<slug>"` (and `data-tenant`) attribute value verbatim. No mapping.
 
 ---
 
 ## `tokens.json` — overlay format
 
 A **partial DTCG file** mirroring the structure of `hirobius.tokens.json`.
-Tenants only declare the leaf paths they override. Everything else inherits
+An overlay only declares the leaf paths it overrides. Everything else inherits
 from base.
 
-### Minimal example — Concrete Creations
+### Minimal example — a warm-stone direction
 
 ```json
 {
@@ -65,7 +72,7 @@ from base.
       "surface": {
         "accent": {
           "$value": "#8B6F47",
-          "$description": "Warm stone — Concrete Creations primary accent (placeholder)",
+          "$description": "Warm stone accent (placeholder)",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -96,23 +103,25 @@ from base.
 
 ### Compiled output
 
-The build pipeline emits the following block into `src/styles/tokens.css`
-(below the existing `:root` and `[data-theme="dark"]` blocks):
+The build pipeline emits the following block into `src/styles/tenants.css`
+(loaded after the `:root` and `[data-theme="dark"]` blocks):
 
 ```css
-[data-tenant='concrete-creations'] {
+[data-brand='warm-stone'],
+[data-tenant='warm-stone'] {
   --semantic-color-surface-accent: #8b6f47;
   --semantic-accent-rest: #8b6f47;
 }
-[data-tenant='concrete-creations'][data-theme='dark'] {
+[data-brand='warm-stone'][data-theme='dark'],
+[data-tenant='warm-stone'][data-theme='dark'] {
   --semantic-color-surface-accent: #6b5235;
   --semantic-accent-rest: #6b5235;
 }
 ```
 
-The override applies whenever `<html data-tenant="concrete-creations">`. With
-the dark theme also active, both selectors match and the second wins by
-specificity (0,2,0 > 0,1,0).
+The override applies whenever `<html data-brand="warm-stone">`. With the dark
+theme also active, both selectors match and the second wins by specificity
+(0,2,0 > 0,1,0).
 
 ---
 
@@ -120,7 +129,7 @@ specificity (0,2,0 > 0,1,0).
 
 ### R1 — Tier scope
 
-Tenants may override:
+An overlay may override:
 
 - **Semantic tier** (`semantic.*`) — yes, this is the intended override
   surface.
@@ -128,7 +137,7 @@ Tenants may override:
   component-specific deviation that the semantic tier can't capture.
 - **Role tier** (`role.*`) — yes, the shadcn-vocabulary role aliases.
 - **Primitive tier** (`primitive.*`) — **NO.** Primitives are the abstraction.
-  A tenant that needs a brown accent does NOT redefine
+  An overlay that needs a brown accent does NOT redefine
   `primitive.color.blue.500` to brown — that breaks every other consumer of
   blue. Instead, override `semantic.accent.rest` to point at a tenant-
   specific value (or define a new primitive at the BASE tier and re-alias
@@ -139,65 +148,65 @@ The validator enforces R1 fail-fast.
 **Shape/density override surface (ADR-022):** `semantic.radius.*`,
 `semantic.space.*`, `semantic.borderWidth.*`, and `role.radius` are
 explicitly part of the permitted semantic/role-tier override surface above —
-a tenant may pin its own corner-radius and spacing identity (e.g. sharp +
-dense) independent of every other tenant's shape. See R9 below for how a
+a direction may pin its own corner-radius and spacing identity (e.g. sharp +
+dense) independent of every other direction's shape. See R9 below for how a
 shape/space override varies by density.
 
 ### R2 — Path-leaf merge
 
-Overrides apply at the **leaf token level** (the path with `$value`). A
-tenant cannot redefine a category (e.g., add a brand-new `semantic.color.brand`
-group that didn't exist in base). The merge is path-precise: tenant leaf
-beats base leaf, all other base leaves are unchanged.
+Overrides apply at the **leaf token level** (the path with `$value`). An
+overlay cannot redefine a category (e.g., add a brand-new `semantic.color.brand`
+group that didn't exist in base). The merge is path-precise: the overlay leaf
+beats the base leaf, all other base leaves are unchanged.
 
 ### R3 — Conflict resolution
 
-If two paths in a single tenant `tokens.json` end up resolving to the same
+If two paths in a single `tokens.json` end up resolving to the same
 CSS variable (impossible in well-formed DTCG, but theoretical via duplicate
 JSON keys), JSON parse-order wins (last-key-wins). The validator warns on
 duplicate keys.
 
 ### R4 — Mode-aware overrides
 
-Tenant overrides MAY include `$extensions.com.figma.variables.modes.{Light,
+Overrides MAY include `$extensions.com.figma.variables.modes.{Light,
 Dark}`. If present, the build pipeline emits both the base
-`[data-tenant="X"]` selector (using the `$value` or the `Light` mode) AND
-the combined `[data-tenant="X"][data-theme="dark"]` selector (using the
+`[data-brand="X"]` selector (using the `$value` or the `Light` mode) AND
+the combined `[data-brand="X"][data-theme="dark"]` selector (using the
 `Dark` mode value).
 
 If only `$value` is present (no modes), the override applies in light AND
-dark — common for tenant overrides where the brand color is mode-invariant.
+dark — common where an accent is mode-invariant.
 
 ### R5 — Unknown paths
 
-A tenant `tokens.json` referencing a path that does NOT exist in base is a
-**hard error**. Tenants override; they don't extend. (If a tenant truly
+A `tokens.json` referencing a path that does NOT exist in base is a
+**hard error**. Overlays override; they don't extend. (If a direction truly
 needs a new token, the path goes into the BASE tokens first.)
 
 ### R6 — Composite overrides
 
 Composite tokens (typography, transition, motion, shadow, elevation) can be
-overridden. Tenants may override the entire composite `$value` object, or
+overridden. An overlay may override the entire composite `$value` object;
 individual sub-keys are NOT supported (the DTCG composite is atomic). To
-override only one slot of a typography composite, the tenant must redeclare
-the full composite.
+override only one slot of a typography composite, redeclare the full
+composite.
 
 ### R7 — Alias values are honored
 
-A tenant override may use an alias (`{primitive.color.neutral.white}`) just
-like base tokens. Alias resolution happens against the BASE token graph
-augmented by tenant overrides — i.e., if a tenant adds an override that
-itself aliases another semantic (also overridden by the tenant), the
-resolution chain stays internally consistent.
+An override may use an alias (`{primitive.color.neutral.white}`) just like
+base tokens. Alias resolution happens against the BASE token graph augmented
+by the overlay — i.e., if an overlay adds an override that itself aliases
+another semantic (also overridden by the overlay), the resolution chain stays
+internally consistent.
 
 ### R8 — No primitive aliases unless they exist in base
 
-A tenant alias to `{primitive.color.brand.500}` only resolves if that path
-already exists in base. Tenants cannot smuggle new primitives in via aliases.
+An alias to `{primitive.color.brand.500}` only resolves if that path already
+exists in base. An overlay cannot smuggle new primitives in via aliases.
 
 ### R9 — Density-aware overrides (ADR-022)
 
-A tenant override MAY include `$extensions.com.figma.variables.modes.Compact`
+An override MAY include `$extensions.com.figma.variables.modes.Compact`
 alongside (or instead of) the existing `Light`/`Dark` mode keys — the same
 mode-map mechanism R4 uses for theme, extended with a third named mode for
 density. When present, the build pipeline emits a combinatorial
@@ -258,44 +267,49 @@ Compact value is only emitted when it differs from the value used at rest.
 
 ---
 
-## `metadata.json` — tenant identity
+## `metadata.json` — identity
+
+A direction in this repo keeps `deployment` and `legal` empty at tier 1
+(ADR-035); `scripts/lib/figma-brand-modes.mjs` refuses anything else before
+it can become a Figma Brand mode. A client's brand overlay fills those groups
+in the client's own repository, where this schema still applies.
 
 ```json
 {
-  "slug": "concrete-creations",
-  "displayName": "Concrete Creations",
-  "tagline": "Handmade concrete and stone goods, made in WA.",
-  "tier": 2,
+  "slug": "warm-stone",
+  "displayName": "Warm Stone",
+  "tagline": "Warm stone accent over the neutral spine.",
+  "tier": 1,
   "deployment": {
-    "vercelProject": "concrete-creations",
-    "primaryDomain": "concretecreations.com",
-    "previewDomain": "preview.concretecreations.com"
+    "vercelProject": null,
+    "primaryDomain": null,
+    "previewDomain": null
   },
   "brand": {
     "primaryHex": "#8B6F47",
     "accentName": "warm-stone",
-    "logoPath": "/assets/concrete-creations-logo.svg"
+    "logoPath": null
   },
   "legal": {
-    "entity": "Concrete Creations LLC",
-    "jurisdiction": "WA, USA",
-    "stripeAccountKind": "platform-checkout"
+    "entity": null,
+    "jurisdiction": null,
+    "stripeAccountKind": null
   },
-  "createdAt": "2026-05-01",
+  "createdAt": "2026-10-12",
   "status": "scaffold"
 }
 ```
 
 | Field          | Required         | Purpose                                                                                                                               |
 | -------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `slug`         | yes              | Verbatim `data-tenant` attribute value. Must match directory name.                                                                    |
+| `slug`         | yes              | Verbatim `data-brand` (and `data-tenant`) attribute value. Must match directory name.                                                 |
 | `displayName`  | yes              | UI-facing brand name; rendered in tenant-aware screens.                                                                               |
 | `tagline`      | no               | Short brand line; used by previews, sales tooling.                                                                                    |
-| `demo`         | no               | `true` only for a non-client exemplar tenant; with a `figma/brand-modes.json` listing, it can become a Figma Brand mode.              |
+| `demo`         | no               | Retired (ADR-035): the `directions/` folder is the statement. Accepted and ignored.                                                   |
 | `tier`         | yes              | 1 (brand presence), 2 (e-commerce), 3 (product). Drives infra defaults.                                                               |
-| `deployment.*` | yes              | Where this tenant ships. Required for the future `pnpm deploy:tenant` script.                                                         |
+| `deployment.*` | yes              | Where a client's brand ships; every field `null` for a direction.                                                                     |
 | `brand.*`      | yes              | Quick-reference brand info. Source of truth is `tokens.json`; this is for tooling that wants brand metadata without parsing the DTCG. |
-| `legal.*`      | yes for tier ≥ 2 | Entity + jurisdiction. Drives legal-page generation, Stripe wiring, attribution requirements.                                         |
+| `legal.*`      | yes for tier ≥ 2 | Entity + jurisdiction for a client's brand; every field `null` for a direction.                                                       |
 | `status`       | yes              | One of: `scaffold`, `active`, `archived`. Drives validator strictness.                                                                |
 
 Each `metadata.json` sets `"$schema": "../../hirobius.tenant-metadata.schema.json"`
@@ -306,7 +320,7 @@ for editor validation; the schema encodes the table above.
 
 ## JSON schema (delta on base DTCG)
 
-A tenant `tokens.json` is a **proper subset** of the base DTCG schema with
+An overlay `tokens.json` is a **proper subset** of the base DTCG schema with
 these additional rules enforced by `scripts/check-tenant-tokens.mjs`
 (planned as part of `12m-mt-build-pipeline`):
 
@@ -323,29 +337,30 @@ ValidationRules:
 
 ---
 
-## Adding a new tenant
+## Adding a direction
 
 ```bash
-# 1. Copy the template
-cp -r tenants/_template tenants/<slug>
+# 1. Copy the template (or: pnpm scaffold:tenant --slug=<slug> ...)
+cp -r directions/_template directions/<slug>
 
-# 2. Edit metadata.json — fill slug, displayName, tier, deployment, brand
-$EDITOR tenants/<slug>/metadata.json
+# 2. Edit metadata.json — slug, displayName, brand; deployment and legal stay empty
+$EDITOR directions/<slug>/metadata.json
 
-# 3. Edit tokens.json — declare the brand overrides (semantic-tier or higher)
-$EDITOR tenants/<slug>/tokens.json
+# 3. Edit tokens.json — declare the overrides (semantic-tier or higher)
+$EDITOR directions/<slug>/tokens.json
 
-# 4. Build (planned: 12m-mt-build-pipeline)
+# 4. Build
 pnpm tokens
 
-# 5. Verify the tenant block landed in src/styles/tokens.css
-rg 'data-tenant="<slug>"' src/styles/tokens.css
+# 5. Verify the block landed in src/styles/tenants.css
+rg 'data-brand="<slug>"' src/styles/tenants.css
 
-# 6. (Tenant repo) Set <html data-tenant="<slug>"> at SSR root, deploy.
+# 6. A consumer selects it with <html data-brand="<slug>">.
 ```
 
-The full onboarding workflow (with scaffold script and `<30 min` budget) is
-unit `12m-mt-onboarding-workflow`.
+A client's brand follows the same steps in the client's own repository, or
+skips the file entirely and calls `brandOverlayStyle` / `brandOverlayCss`
+from `@hirobius/design-system/brand` (`docs/CONSUMING.md` §12).
 
 ---
 
@@ -372,8 +387,8 @@ the underlying palette.
 
 When the build pipeline lands (`12m-mt-build-pipeline`):
 
-1. `scripts/check-tenant-tokens.mjs` runs as a pre-commit gate.
-2. For each `tenants/*/tokens.json`:
+1. `scripts/check-tenant-tokens.mjs` runs in `pnpm test` (pretest) and `pnpm tokens`.
+2. For each `directions/*/tokens.json`:
    - Parse as JSON; fail on syntax errors.
    - Walk the token tree; collect leaf paths.
    - Reject if any leaf path is `primitive.*` (R1).
@@ -381,24 +396,23 @@ When the build pipeline lands (`12m-mt-build-pipeline`):
    - Resolve aliases (R7, R8) — fail on unresolvable refs.
    - Check `metadata.json` matches the schema above.
    - Check directory slug matches `metadata.slug`.
-3. On pass: `build-tokens.mjs` emits the tenant block into `tokens.css`.
+3. On pass: `build-tokens.mjs` emits the block into `tenants.css`.
 
 ---
 
 ## Future extensions (out of scope for this commit)
 
-- **Per-tenant typography licensing** (`12m-mt-typography-licensing`): tenant
-  may override `primitive.font.family.primary` IF the licensing layer
-  approves. Schema gets a `licensingApproved: true` flag at the metadata
+- **Per-direction typography licensing** (`12m-mt-typography-licensing`): a
+  direction may override `primitive.font.family.primary` IF the licensing
+  layer approves. Schema gets a `licensingApproved: true` flag at the metadata
   level. This is the only carve-out to R1 — and it requires explicit human
   sign-off in metadata.json.
 - **Per-tenant Figma masters** (`12m-mt-figma-master-per-tenant`): superseded
-  for demo tenants by the `Hirobius/Brand` and `Hirobius/Density` variable
-  collections. `pnpm figma:model` turns the overlays of the tenants listed in
-  `figma/brand-modes.json` and marked `"demo": true` in `metadata.json` into
-  one Brand mode each, after this validator passes them. Client tenants never
-  enter the shared library. See
-  `figma/README.md` (Brand and Density).
-- **Tenant-aware preview tool**: a route in the doc site
-  (`/preview/<slug>`) that sets `data-tenant` at runtime so designers can
-  see tenant theming without leaving the HDS doc app.
+  by the `Hirobius/Brand` and `Hirobius/Density` variable collections.
+  `pnpm figma:model` turns the overlays of the directions listed in
+  `figma/brand-modes.json` into one Brand mode each, after this validator
+  passes them. A client's brand never enters the shared library (ADR-035).
+  See `figma/README.md` (Brand and Density).
+- **Direction preview tool**: a route in the doc site (`/preview/<slug>`)
+  that sets `data-brand` at runtime so designers can see a direction without
+  leaving the HDS doc app.

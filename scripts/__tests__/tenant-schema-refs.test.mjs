@@ -1,7 +1,7 @@
 /**
- * Every tenants/<slug>/{metadata,tokens}.json names a JSON Schema in `$schema`.
+ * Every directions/<slug>/{metadata,tokens}.json names a JSON Schema in `$schema`.
  * Editors and validators resolve that path relative to the file, so it has to
- * point at a file that exists, and the tenant files have to satisfy it.
+ * point at a file that exists, and the direction files have to satisfy it.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -10,7 +10,7 @@ import { dirname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const TENANTS_DIR = join(REPO_ROOT, 'tenants');
+const TENANTS_DIR = join(REPO_ROOT, 'directions');
 const METADATA_SCHEMA = join(REPO_ROOT, 'hirobius.tenant-metadata.schema.json');
 
 function readJson(file) {
@@ -31,8 +31,8 @@ function label(file) {
   return relative(REPO_ROOT, file).replace(/\\/g, '/');
 }
 
-describe('tenant $schema references', () => {
-  it('finds tenant files to check', () => {
+describe('direction $schema references', () => {
+  it('finds direction files to check', () => {
     expect(metadataFiles.length).toBeGreaterThan(0);
     expect(tokenFiles.length).toBeGreaterThan(0);
   });
@@ -65,7 +65,7 @@ describe('hirobius.tenant-metadata.schema.json', () => {
     expect(schema.properties.tier.enum).toEqual([1, 2, 3]);
   });
 
-  it('every tenant metadata.json has the required fields and no undeclared top-level keys', () => {
+  it('every direction metadata.json has the required fields and no undeclared top-level keys', () => {
     const schema = readJson(METADATA_SCHEMA);
     const declared = new Set(Object.keys(schema.properties));
     const problems = [];

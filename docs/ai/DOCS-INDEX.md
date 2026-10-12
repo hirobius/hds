@@ -64,7 +64,7 @@ Written by a person; the registry carries when it was last re-read. `pnpm check:
 - `.github/PULL_REQUEST_TEMPLATE.md`: Pull request template. Reviewed 2026-10-12, re-read within 120 days.
 - `figma/README.md`: Runbook for syncing code to the Figma library. Reviewed 2026-10-12, re-read within 90 days.
 - `figma/links.json`: Figma file keys and docs URL the sync reads. Reviewed 2026-10-12, re-read within 120 days.
-- `figma/brand-modes.json`: Demo tenants that are modes of the Hirobius/Brand collection. Reviewed 2026-10-12, re-read within 120 days.
+- `figma/brand-modes.json`: Directions that are modes of the Hirobius/Brand collection (ADR-035). Reviewed 2026-10-12, re-read within 120 days.
 - `figma/mapping-overrides.json`: Hand-made component to Figma mappings. Reviewed 2026-10-12, re-read within 90 days.
 - `OPERATING_MAP.md`: Where each kind of information should go. Reviewed 2026-10-12, re-read within 90 days.
 - `DECISIONS.md`: Pointer to docs/adr, where decisions live. Reviewed 2026-10-12, re-read within 180 days.

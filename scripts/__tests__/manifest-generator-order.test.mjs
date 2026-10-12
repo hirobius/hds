@@ -35,7 +35,7 @@ const TREE = [
   'mcp',
   'scripts',
   'src',
-  'tenants',
+  'directions',
   'hirobius.tokens.json',
   'tsconfig.json',
   MANIFEST,

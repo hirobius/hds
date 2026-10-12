@@ -629,13 +629,12 @@ describe('pnpm figma:native-import', () => {
       join(root, 'figma', 'brand-modes.json'),
       JSON.stringify({ baseMode: 'Hirobius', tenants: ['sharp-demo'] }),
     );
-    mkdirSync(join(root, 'tenants', 'sharp-demo'), { recursive: true });
+    mkdirSync(join(root, 'directions', 'sharp-demo'), { recursive: true });
     writeFileSync(
-      join(root, 'tenants', 'sharp-demo', 'metadata.json'),
+      join(root, 'directions', 'sharp-demo', 'metadata.json'),
       JSON.stringify({
         slug: 'sharp-demo',
         displayName: 'Sharp Demo',
-        demo: true,
         tier: 1,
         deployment: { vercelProject: null, primaryDomain: null, previewDomain: null },
         legal: { entity: null, jurisdiction: null, stripeAccountKind: null },
@@ -643,7 +642,7 @@ describe('pnpm figma:native-import', () => {
       }),
     );
     writeFileSync(
-      join(root, 'tenants', 'sharp-demo', 'tokens.json'),
+      join(root, 'directions', 'sharp-demo', 'tokens.json'),
       JSON.stringify({
         role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
         semantic: {

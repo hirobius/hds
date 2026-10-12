@@ -9,7 +9,7 @@
  * everywhere, eyebrows, labels, captions and table headers included.
  *
  * Fails on, in src/, docs-site/, preview/, starter-kit/, tools/, templates/,
- * tenants/, the top-level docs/*.html pages, hirobius.tokens.json and the
+ * directions/, the top-level docs/*.html pages, hirobius.tokens.json and the
  * Figma model/snapshot:
  *
  *   - the Tailwind `uppercase` class (also variant-prefixed, `md:uppercase`),
@@ -49,7 +49,15 @@ const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 
-const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'tools', 'templates', 'tenants'];
+const SCAN_DIRS = [
+  'src',
+  'docs-site',
+  'preview',
+  'starter-kit',
+  'tools',
+  'templates',
+  'directions',
+];
 const SCAN_FILES = ['hirobius.tokens.json', 'figma/model.json', 'figma/snapshot.json'];
 const EXTENSIONS = new Set([
   '.ts',

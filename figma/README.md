@@ -94,36 +94,35 @@ the `figma-use` and `figma-generate-library` skills first.
 
 ## Brand and Density
 
-`figma/brand-modes.json` lists the tenants that become modes of the
-`Hirobius/Brand` collection. **Demo tenants only.** The library is shared, so a
-client tenant never goes in. `pnpm figma:model` (and every command that builds
-the model) refuses a listed tenant unless:
+`figma/brand-modes.json` lists the directions that become modes of the
+`Hirobius/Brand` collection. **Directions only** (ADR-035). The library is
+shared, so a client's brand never goes in. `pnpm figma:model` (and every
+command that builds the model) refuses a listed slug unless:
 
-- its `metadata.json` carries `"demo": true`, and is tier 1 with its deployment
-  and legal groups present and empty. A new client tenant is also tier 1 with
-  those groups empty, so the marker is what tells them apart. Neither
-  `pnpm scaffold:tenant` nor `tenants/_template` writes it, and adding it is a
-  person stating the tenant is not a client;
-- its `tokens.json` passes the tenant overlay validator (the one
+- it lives under `directions/<slug>/` and its `metadata.json` is tier 1 with
+  the deployment and legal groups present and empty. A client's brand has a
+  deployment or a legal entity, so one filed under `directions/` by mistake
+  still fails;
+- its `tokens.json` passes the overlay validator (the one
   `check-tenant-tokens` and `pnpm tokens` run);
-- the base mode plus the listed tenants fit a Professional plan's 10 modes per
-  collection.
+- the base mode plus the listed directions fit a Professional plan's 10 modes
+  per collection.
 
-Errors name the field, never its value. A tenant the file does not list is
+Errors name the field, never its value. A direction the file does not list is
 never read.
 
-| Collection         | Modes                                  | Holds                                                                                                                                                                                                            |
-| ------------------ | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Hirobius/Brand`   | `Hirobius`, then one per listed tenant | One variable per path a listed tenant overrides: `<path>/Light` and `<path>/Dark` when the path is themed, `<path>/Comfortable` and `<path>/Compact` when a tenant gives it a Compact value, otherwise `<path>`. |
-| `Hirobius/Density` | `Comfortable`, `Compact`               | One variable per compacted path, aliasing its two Brand variants. Left out when no listed tenant has a Compact value.                                                                                            |
+| Collection         | Modes                                     | Holds                                                                                                                                                                                                                  |
+| ------------------ | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Hirobius/Brand`   | `Hirobius`, then one per listed direction | One variable per path a listed direction overrides: `<path>/Light` and `<path>/Dark` when the path is themed, `<path>/Comfortable` and `<path>/Compact` when a direction gives it a Compact value, otherwise `<path>`. |
+| `Hirobius/Density` | `Comfortable`, `Compact`                  | One variable per compacted path, aliasing its two Brand variants. Left out when no listed tenant has a Compact value.                                                                                                  |
 
-In the `Hirobius` mode a Brand variable holds the base token's value. A tenant
-mode holds that tenant's override, or the base value where it has none. The
+In the `Hirobius` mode a Brand variable holds the base token's value. A direction
+mode holds that direction's override, or the base value where it has none. The
 token's own variable (for example `radius` in `Hirobius/Role`) keeps its name,
 id and bindings, and its value now aliases Brand or Density. A frame resolves
 theme, brand and density from three independent modes, the way `[data-theme]`,
 `[data-brand]` and `[data-density]` combine in `src/styles/tenants.css`: set
-`Hirobius/Semantic` to Dark, `Hirobius/Brand` to a demo tenant, and
+`Hirobius/Semantic` to Dark, `Hirobius/Brand` to a direction, and
 `Hirobius/Density` to Compact.
 
 Brand and Density variables have no scopes, so they stay out of every picker

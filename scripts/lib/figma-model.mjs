@@ -652,7 +652,7 @@ function effectStyleFor(graph, token) {
 
 // ── Brand and density axes ───────────────────────────────────────────────────
 /**
- * Demo tenant overlays (tenants/<slug>/tokens.json, chosen and validated by
+ * Direction overlays (directions/<slug>/tokens.json, chosen and validated by
  * scripts/lib/figma-brand-modes.mjs) become two more collections, mirroring the
  * CSS buildTenantCSS emits:
  *

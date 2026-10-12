@@ -41,7 +41,7 @@ describe('canonical overridable spacing tokens', () => {
 
 describe('runtime overrides sit on the new names and on scale steps', () => {
   it('brutalist-demo overrides surface.padding with scale.sm, scale.xs under compact', () => {
-    const overlay = JSON.parse(read('tenants/brutalist-demo/tokens.json'));
+    const overlay = JSON.parse(read('directions/brutalist-demo/tokens.json'));
     const leaf = overlay.semantic.space.surface.padding;
     expect(leaf.$value).toBe('{semantic.space.scale.sm}');
     expect(leaf.$extensions['com.figma.variables'].modes.Compact).toBe('{semantic.space.scale.xs}');
@@ -95,7 +95,6 @@ const SURFACE_PX = {
   base: [24, 20],
   'accent-lilac': [24, 20],
   'brutalist-demo': [16, 6],
-  'concrete-creations': [24, 20],
 };
 /** Today's region.gutter in px per viewport width, [comfortable, compact]. Same for every tenant. */
 const GUTTER_PX = { 1280: [32, 24], 640: [32, 24], 639: [16, 12], 400: [16, 12] };
@@ -114,9 +113,9 @@ const PROBE =
   'padding-bottom:var(--semantic-space-region-gutter);' +
   'padding-left:var(--semantic-space-layout-gutter)';
 
-describe('every tenant has a row in the computed-value table', () => {
-  it('matches the tenants/ directory', () => {
-    const tenants = readdirSync(join(ROOT, 'tenants'), { withFileTypes: true })
+describe('every direction has a row in the computed-value table', () => {
+  it('matches the directions/ directory', () => {
+    const tenants = readdirSync(join(ROOT, 'directions'), { withFileTypes: true })
       .filter((d) => d.isDirectory() && !d.name.startsWith('_'))
       .map((d) => d.name)
       .sort();

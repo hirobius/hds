@@ -101,8 +101,8 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
   `figma/model.json`; `pnpm figma:push` and `pnpm figma:native-import` apply it to a
   Figma file by hand; `pnpm figma:snapshot --ingest` records the file into the committed
   `figma/snapshot.json`; `pnpm check:figma-drift` compares the two. Runbook:
-  `figma/README.md`. Brand is modes of one `Hirobius/Brand` collection, demo tenants
-  only (`figma/brand-modes.json`) — a client tenant never enters the shared library. In the
+  `figma/README.md`. Brand is modes of one `Hirobius/Brand` collection, directions
+  only (`figma/brand-modes.json`, ADR-035) — a client's brand never enters the shared library. In the
   HDS library (`libraryFileKey` in `figma/links.json`, ADR-026 amended 2026-10-07) agents
   may restyle, fix, add, copy or redraw components (one `use_figma` script naming the node
   ids it touches, screenshots before and after), but never delete anything in the library

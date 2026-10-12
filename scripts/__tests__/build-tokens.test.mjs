@@ -937,7 +937,7 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
     tmpRoot = undefined;
   });
 
-  /** Writes tenants/<slug>/tokens.json under a fresh temp tenants dir; returns the dir. */
+  /** Writes directions/<slug>/tokens.json under a fresh temp directions dir; returns the dir. */
   function writeTenantFixture(slug, overlay) {
     tmpRoot = mkdtempSync(join(tmpdir(), 'hds-tenant-css-'));
     const tenantDir = join(tmpRoot, slug);
