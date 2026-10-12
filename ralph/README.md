@@ -37,11 +37,18 @@ error (bounded backoff, never silent).
 
 ## Add Ralph to another hirobius repo
 
-1. **Vendor this directory** into the repo (from a local clone of the
-   `hirobius/ralph` kit):
-   `cp -r ../ralph/ralph . && rm -rf ralph/logs ralph/runs.jsonl ralph/.lock`
-   Then edit the two per-repo files: `ralph/gate.sh` (the repo's own
-   typecheck/test/lint steps) and `ralph/config.env` (knobs).
+1. **Vendor the kit** from a local clone of `hirobius/ralph` (pin a commit):
+   copy `kit/{lib,next,run,loop,status}.sh` and `kit/prompt.md` into `ralph/`
+   byte-identical, then pin them:
+   `node scripts/check-ralph-kit-drift.mjs --update --kit-dir ../ralph/kit --ref hirobius/ralph@<sha>`
+   (writes `ralph/kit.lock.json`). Never hand-edit a kit file: the pre-commit gate
+   `check-ralph-kit-drift` (staged files only) and `ralph-gate` reject drift, so
+   fix the kit and re-pin instead. Then edit the per-repo files: `ralph/gate.sh`
+   (typecheck/test/lint steps), `ralph/config.env` (knobs), `ralph/check-tests.sh`
+   (tests-with-code hook) and `ralph/test.sh` (test-only runner for the red-first
+   check, ops#504: it borrows the main checkout's `node_modules` and runs just the
+   vitest files the first test commit touched; keep its globs equal to
+   `vitest.config.ts` `include`).
 2. **Add the two thin callers** as `.github/workflows/ralph.yml` and
    `.github/workflows/ralph-gate.yml` — copy them from `hirobius/ralph` and
    point the `uses:` lines at the pinned engine version:
