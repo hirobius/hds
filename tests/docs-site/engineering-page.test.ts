@@ -105,8 +105,9 @@ describe('content/docs/engineering.mdx', () => {
     expect(repoDocTags(page)).toEqual([DOC]);
     const body = page.replace(/^---[\s\S]*?---/, '');
     expect(body).not.toMatch(/^#{1,6} /m);
-    const firstH2 = doc.split('\n').find((l) => l.startsWith('## '))!;
-    expect(page).not.toContain(firstH2);
+    const h2s = doc.split('\n').filter((l) => l.startsWith('## '));
+    expect(h2s.length).toBeGreaterThan(5);
+    for (const h2 of h2s) expect(page).not.toContain(h2);
   });
 
   it('takes its title from the doc H1', () => {

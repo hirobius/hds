@@ -11,7 +11,7 @@ Every color, space, radius, type and motion value in HDS is defined once, in [`h
 
 ## One source, many outputs
 
-The token file uses the [W3C Design Tokens (DTCG)](https://www.w3.org/community/design-tokens/) format. `pnpm tokens` compiles it, through a validated alias chain, into each form a consumer reads:
+The token file uses the [W3C Design Tokens (DTCG)](https://www.w3.org/community/design-tokens/) format. One build compiles it, through a validated alias chain, into each form a consumer reads:
 
 | Output                                                                                                                             | What it is for                                                                                                                                             |
 | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -37,12 +37,12 @@ Components read semantic and component tokens, never primitives. That indirectio
 
 - In CSS, read the variables: `var(--semantic-color-content-primary)`.
 - In JavaScript, import the typed constants from `@hirobius/design-system/tokens`.
-- Don't write hex, RGB or pixel values in component styles. The repo's check scripts (`check-hardcoded-colors`, `check-hardcoded-spacing`) flag them.
+- Don't write hex, RGB or pixel values in component styles. The repo's checks flag them.
 
 ## Adding or changing a token
 
 1. Edit `hirobius.tokens.json`, keeping primitive → semantic → component: a raw value goes in a primitive, and semantic and component tokens alias it.
-2. Run `pnpm tokens:verify` to rebuild every output and check it.
+2. Rebuild the outputs with the token build, which also checks them.
 3. Commit the token file and the regenerated outputs together.
 
 Contrast is checked on every commit: a change that drops a text and background pair below WCAG AA, in light or dark, can't land. The full rules are in [TOKEN_GOVERNANCE.md](https://github.com/hirobius/hds/blob/main/TOKEN_GOVERNANCE.md).

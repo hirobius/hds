@@ -83,7 +83,7 @@ export function Mermaid({ chart }: { chart: string }) {
 
   if (!svg) {
     return (
-      <pre className="hds-mermaid-source">
+      <pre>
         <code>{chart}</code>
       </pre>
     );
@@ -93,6 +93,7 @@ export function Mermaid({ chart }: { chart: string }) {
       className="hds-mermaid"
       // Scrolls sideways on a narrow screen, so it must take keyboard focus.
       tabIndex={0}
+      role="group"
       aria-label="Diagram, scrolls sideways on narrow screens"
       dangerouslySetInnerHTML={{ __html: svg }}
     />
