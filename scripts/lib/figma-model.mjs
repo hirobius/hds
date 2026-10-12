@@ -552,6 +552,22 @@ const shadowEffect = ({ inset, color, x, y, radius, spread }) => ({
 });
 
 /**
+ * Figma refuses to publish an effect style with no effects, so a style that
+ * means "no shadow" (elevation.flat, a `none` shadow) gets one fully
+ * transparent drop shadow: publishable, and it draws nothing.
+ */
+const NO_SHADOW = Object.freeze([
+  shadowEffect({
+    inset: false,
+    color: { r: 0, g: 0, b: 0, a: 0 },
+    x: 0,
+    y: 0,
+    radius: 0,
+    spread: 0,
+  }),
+]);
+
+/**
  * Figma effects for a shadow token, plus the color token that tints them.
  * Effect styles have no modes, so a themed tint uses its Light value.
  */
@@ -583,7 +599,7 @@ function shadowEffects(graph, token) {
   // HDS shadows are pre-composed CSS strings (see build-tokens V1); a
   // structured DTCG shadow object is refused here rather than guessed at.
   if (typeof token.value !== 'string') fail('expected a CSS shadow string');
-  if (token.value.trim() === 'none') return { effects: [], tint };
+  if (token.value.trim() === 'none') return { effects: [...NO_SHADOW], tint };
   const effects = splitLayers(token.value).map((layer) => {
     const m = layer.match(SHADOW_LAYER);
     if (!m) fail(`cannot parse shadow layer "${layer}"`);
@@ -612,7 +628,7 @@ function effectStyleFor(graph, token) {
     return aliasPath(ref);
   };
   const shadowRef = token.value?.shadow;
-  let shadow = { effects: [], tint: null };
+  let shadow = { effects: [...NO_SHADOW], tint: null };
   if (shadowRef != null) {
     const target = isAlias(shadowRef) ? graph.byPath.get(aliasPath(shadowRef)) : null;
     if (target?.type !== 'shadow') {

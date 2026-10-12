@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T02:46:37.956Z",
+  "generated": "2026-10-12T05:57:55.903Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -1352,7 +1352,8 @@
       },
       "consumers": [
         "src/app/components/inline-code.test.tsx",
-        "src/app/components/metadata-list.tsx"
+        "src/app/components/metadata-list.tsx",
+        "src/app/components/state-tokens.test.tsx"
       ],
       "tokenMapping": {
         "Font family": "primitive.typography.family.mono",
@@ -2359,7 +2360,8 @@
         "src/app/components/table.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/context/hds-theme.tsx"
+        "src/app/context/hds-theme.tsx",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {},
       "props": {
@@ -2463,18 +2465,17 @@
         "src/app/components/card.test.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/empty-state.tsx",
-        "src/app/components/field.tsx",
         "src/app/components/focus-visible.test.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/metadata-list.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/components/stat.tsx",
-        "src/app/components/status-tile.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/index.ts"
+        "src/index.ts",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {
         "Surface fill": "role.card",
@@ -2665,10 +2666,6 @@
           {
             "component": "Surface",
             "reason": "a padded background without slot anatomy"
-          },
-          {
-            "component": "Card.Metric",
-            "reason": "a single headline figure"
           }
         ]
       },
@@ -3035,6 +3032,7 @@
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/state-tokens.test.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -3465,10 +3463,6 @@
           {
             "component": "Input",
             "reason": "an editable single-line value"
-          },
-          {
-            "component": "Card.Metric",
-            "reason": "a headline figure inside a Card"
           }
         ]
       },
@@ -3560,9 +3554,7 @@
         "exportName": "Stat",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/metric-tiles.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -3618,22 +3610,10 @@
       "docsPage": null,
       "usage": {
         "when": "Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line.",
-        "whenNot": "A row of headline numbers on a screen, a figure inside a Card, or a status with a trailing badge.",
-        "useInstead": [
-          {
-            "component": "MetricTiles",
-            "reason": "a row of headline numbers (one MetricTile per number)"
-          },
-          {
-            "component": "Card.Metric",
-            "reason": "a figure inside a Card (hds#254 folds Stat into the Card slot)"
-          },
-          {
-            "component": "StatusTile",
-            "reason": "a titled status with notes and a trailing badge"
-          }
-        ]
-      }
+        "whenNot": "A row of headline numbers on a screen, or a status with a trailing badge."
+      },
+      "deprecated": "No replacement planned: compose a Card with the type roles (caption label, display/title value).",
+      "removeIn": "1.0.0"
     },
     "StatusListItem": {
       "category": "Display",
@@ -3723,9 +3703,9 @@
       },
       "consumers": [
         "src/app/components/metric-tiles.tsx",
-        "src/app/components/stat.tsx",
         "src/index.ts",
-        "src/patterns.ts"
+        "src/patterns.ts",
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -3765,14 +3745,6 @@
         "when": "Show a titled status block with optional notes and a trailing badge or affordance.",
         "whenNot": "A headline number (never a value), or a row inside a list.",
         "useInstead": [
-          {
-            "component": "MetricTiles",
-            "reason": "a row of headline numbers"
-          },
-          {
-            "component": "Card.Metric",
-            "reason": "a headline figure inside a Card (hds#254 folds StatusTile into the Card slot)"
-          },
           {
             "component": "StatusListItem",
             "reason": "a status row inside a list"
@@ -3883,6 +3855,7 @@
         "src/app/components/badge.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/page-header.tsx",
+        "src/app/components/state-tokens.test.tsx",
         "src/app/components/tag.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/mui/index.ts"
@@ -6437,14 +6410,10 @@
       "docsPage": null,
       "usage": {
         "when": "Show one headline figure (a KPI, a count, a total) with its label inside a Card.",
-        "whenNot": "A metric outside a Card, or several figures that share one label.",
-        "useInstead": [
-          {
-            "component": "MetricTiles",
-            "reason": "a row of headline numbers with no enclosing Card"
-          }
-        ]
-      }
+        "whenNot": "A metric outside a Card, or several figures that share one label."
+      },
+      "deprecated": "No replacement planned: compose a Card with the type roles (caption label, display/title value).",
+      "removeIn": "1.0.0"
     },
     "CardProgress": {
       "category": "Display",
@@ -7321,7 +7290,7 @@
       },
       "consumers": [
         "src/app/components/metric-tiles.test.tsx",
-        "src/app/components/stat.tsx"
+        "src/styles/__tests__/dark-surfaces.test.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7358,7 +7327,9 @@
       "docsPage": null,
       "usage": {
         "when": "Show one key number with its label, inside a MetricTiles row."
-      }
+      },
+      "deprecated": "No replacement planned: compose a Card with the type roles (caption label, display/title value).",
+      "removeIn": "1.0.0"
     },
     "MetricTiles": {
       "category": "Display",
@@ -7367,7 +7338,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/metric-tiles.tsx",
-      "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. The default for any row of headline numbers on a screen; use `Stat` only for an inline number inside prose or a dense list, `Card.Metric` only inside an existing `Card`, and `StatusTile` for state with notes (never a number).",
+      "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. Use `StatusTile` for state with notes (never a number).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
@@ -7377,10 +7348,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/card.tsx",
-        "src/app/components/metric-tiles.test.tsx",
-        "src/app/components/stat.tsx",
-        "src/app/components/status-tile.tsx"
+        "src/app/components/metric-tiles.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7399,7 +7367,9 @@
       "docsPage": "/docs/patterns/metric-tiles",
       "usage": {
         "when": "Show a row of key numbers, one tile each."
-      }
+      },
+      "deprecated": "No replacement planned: compose a Card with the type roles (caption label, display/title value).",
+      "removeIn": "1.0.0"
     },
     "PageHeader": {
       "category": "Layout",
@@ -9405,8 +9375,8 @@
         "alias": "{primitive.color.neutral.50}",
         "resolvedValue": "#fafafa",
         "dark": {
-          "alias": "{primitive.color.neutral.950}",
-          "resolvedValue": "#0a0a0a"
+          "alias": "{primitive.color.neutral.850}",
+          "resolvedValue": "#1a1a1a"
         }
       },
       {
@@ -9417,8 +9387,8 @@
         "alias": "{primitive.color.neutral.100}",
         "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -9477,8 +9447,8 @@
         "alias": "{primitive.color.neutral.100}",
         "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.900}",
-          "resolvedValue": "#111111"
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -9489,8 +9459,8 @@
         "alias": "{primitive.color.neutral.50}",
         "resolvedValue": "#fafafa",
         "dark": {
-          "alias": "{primitive.color.neutral.950}",
-          "resolvedValue": "#0a0a0a"
+          "alias": "{primitive.color.neutral.black}",
+          "resolvedValue": "#000000"
         }
       },
       {
@@ -9513,8 +9483,8 @@
         "alias": "{primitive.color.neutral.100}",
         "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.900}",
-          "resolvedValue": "#111111"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -9525,8 +9495,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -9675,8 +9645,8 @@
         "alias": "{primitive.color.neutral.100}",
         "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -10829,6 +10799,102 @@
         }
       },
       {
+        "path": "component.badge.neutral.bg",
+        "cssVar": "--component-badge-neutral-bg",
+        "type": "color",
+        "description": "Neutral badge fill.",
+        "alias": "{semantic.color.surface.overlay}",
+        "resolvedValue": "#f5f5f5"
+      },
+      {
+        "path": "component.badge.neutral.text",
+        "cssVar": "--component-badge-neutral-text",
+        "type": "color",
+        "description": "Neutral badge text color.",
+        "alias": "{semantic.color.content.secondary}",
+        "resolvedValue": "#525252"
+      },
+      {
+        "path": "component.badge.info.bg",
+        "cssVar": "--component-badge-info-bg",
+        "type": "color",
+        "description": "Info badge fill.",
+        "alias": "{semantic.color.feedback.bg.info}",
+        "resolvedValue": "oklch(0.96 0.03 266.54)"
+      },
+      {
+        "path": "component.badge.info.text",
+        "cssVar": "--component-badge-info-text",
+        "type": "color",
+        "description": "Info badge text color.",
+        "alias": "{semantic.color.feedback.info}",
+        "resolvedValue": "#1E2EFD"
+      },
+      {
+        "path": "component.badge.success.bg",
+        "cssVar": "--component-badge-success-bg",
+        "type": "color",
+        "description": "Success badge fill.",
+        "alias": "{semantic.color.feedback.bg.success}",
+        "resolvedValue": "#ecfdf5"
+      },
+      {
+        "path": "component.badge.success.text",
+        "cssVar": "--component-badge-success-text",
+        "type": "color",
+        "description": "Success badge text color.",
+        "alias": "{semantic.color.feedback.success}",
+        "resolvedValue": "#047857"
+      },
+      {
+        "path": "component.badge.danger.bg",
+        "cssVar": "--component-badge-danger-bg",
+        "type": "color",
+        "description": "Danger badge fill.",
+        "alias": "{semantic.color.feedback.bg.error}",
+        "resolvedValue": "#fef2f2"
+      },
+      {
+        "path": "component.badge.danger.text",
+        "cssVar": "--component-badge-danger-text",
+        "type": "color",
+        "description": "Danger badge text color.",
+        "alias": "{semantic.color.feedback.error}",
+        "resolvedValue": "#b91c1c"
+      },
+      {
+        "path": "component.badge.warning.bg",
+        "cssVar": "--component-badge-warning-bg",
+        "type": "color",
+        "description": "Warning badge fill.",
+        "alias": "{semantic.color.feedback.bg.warning}",
+        "resolvedValue": "#fffbeb"
+      },
+      {
+        "path": "component.badge.warning.text",
+        "cssVar": "--component-badge-warning-text",
+        "type": "color",
+        "description": "Warning badge text color.",
+        "alias": "{semantic.color.feedback.warning}",
+        "resolvedValue": "#92400e"
+      },
+      {
+        "path": "component.badge.inProgress.bg",
+        "cssVar": "--component-badge-inProgress-bg",
+        "type": "color",
+        "description": "Inprogress badge fill.",
+        "alias": "{semantic.color.feedback.bg.inProgress}",
+        "resolvedValue": "#f5f3ff"
+      },
+      {
+        "path": "component.badge.inProgress.text",
+        "cssVar": "--component-badge-inProgress-text",
+        "type": "color",
+        "description": "Inprogress badge text color.",
+        "alias": "{semantic.color.feedback.inProgress}",
+        "resolvedValue": "#6d28d9"
+      },
+      {
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
@@ -11064,13 +11130,9 @@
         "path": "component.button.primary.textDisabled",
         "cssVar": "--component-button-primary-textDisabled",
         "type": "color",
-        "description": "Disabled primary button text color. Kept themed (both modes content.disabled) so the Figma variable stays in Hirobius/Semantic, where components already bind it.",
+        "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.disabled}",
-        "resolvedValue": "#d4d4d4",
-        "dark": {
-          "alias": "{semantic.color.content.disabled}",
-          "resolvedValue": "#d4d4d4"
-        }
+        "resolvedValue": "#d4d4d4"
       },
       {
         "path": "component.button.primary.bgDisabled",
@@ -11132,9 +11194,9 @@
         "path": "component.button.secondary.border.disabled",
         "cssVar": "--component-button-secondary-border-disabled",
         "type": "color",
-        "description": "Secondary button disabled border (no disabled border class: the rest border stays).",
-        "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#737373"
+        "description": "Secondary button disabled border (lighter than rest so a disabled button reads disabled).",
+        "alias": "{semantic.color.border.subdued}",
+        "resolvedValue": "#e5e5e5"
       },
       {
         "path": "component.button.secondary.text",
@@ -11227,6 +11289,14 @@
         "type": "dimension",
         "alias": "{semantic.space.scale.sm}",
         "resolvedValue": "16px"
+      },
+      {
+        "path": "component.inlineCode.bg",
+        "cssVar": "--component-inlineCode-bg",
+        "type": "color",
+        "description": "Inline code chip background.",
+        "alias": "{semantic.color.surface.overlay}",
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.lightbox.backdrop.blur",

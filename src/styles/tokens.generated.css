@@ -426,6 +426,18 @@
   --component-badge-fontWeight: var(--primitive-typography-weight-medium);
   --component-badge-text: var(--semantic-color-content-primary);
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
+  --component-badge-neutral-bg: var(--semantic-color-surface-overlay);
+  --component-badge-neutral-text: var(--semantic-color-content-secondary);
+  --component-badge-info-bg: var(--semantic-color-feedback-bg-info);
+  --component-badge-info-text: var(--semantic-color-feedback-info);
+  --component-badge-success-bg: var(--semantic-color-feedback-bg-success);
+  --component-badge-success-text: var(--semantic-color-feedback-success);
+  --component-badge-danger-bg: var(--semantic-color-feedback-bg-error);
+  --component-badge-danger-text: var(--semantic-color-feedback-error);
+  --component-badge-warning-bg: var(--semantic-color-feedback-bg-warning);
+  --component-badge-warning-text: var(--semantic-color-feedback-warning);
+  --component-badge-inProgress-bg: var(--semantic-color-feedback-bg-inProgress);
+  --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
   --component-badge-radius: var(--primitive-radius-4);
   --component-badge-height: var(--primitive-size-20);
   --component-badge-minWidth: var(--primitive-size-20);
@@ -463,7 +475,7 @@
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
   --component-button-secondary-border-pressed: var(--semantic-color-border-accent);
-  --component-button-secondary-border-disabled: var(--semantic-color-border-interactive);
+  --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
   --component-input-bg: var(--semantic-color-surface-page);
   --component-input-text: var(--semantic-color-content-primary);
@@ -477,6 +489,7 @@
   --component-card-radius: var(--primitive-radius-12);
   --component-card-padding: var(--primitive-space-6);
   --component-card-gap: var(--semantic-space-scale-sm);
+  --component-inlineCode-bg: var(--semantic-color-surface-overlay);
   --component-lightbox-backdrop-blur: var(--primitive-blur-16);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
@@ -508,17 +521,17 @@
 [data-theme="dark"] {
   --primitive-shadow-color: 0 0% 0%;
   --semantic-color-surface-page: var(--primitive-color-neutral-black);
-  --semantic-color-surface-raised: var(--primitive-color-neutral-950);
-  --semantic-color-surface-overlay: var(--primitive-color-neutral-850);
+  --semantic-color-surface-raised: var(--primitive-color-neutral-850);
+  --semantic-color-surface-overlay: var(--primitive-color-neutral-800);
   --semantic-color-surface-scrim: var(--primitive-color-neutral-black);
   --semantic-color-surface-inverse: var(--primitive-color-neutral-white);
   --semantic-color-surface-accent: var(--primitive-color-graphite-200);
   --semantic-color-surface-accentSubtle: var(--primitive-color-graphite-800);
-  --semantic-color-surface-hover: var(--primitive-color-neutral-900);
-  --semantic-color-surface-pressed: var(--primitive-color-neutral-950);
+  --semantic-color-surface-hover: var(--primitive-color-neutral-700);
+  --semantic-color-surface-pressed: var(--primitive-color-neutral-black);
   --semantic-color-surface-selected: var(--primitive-color-neutral-800);
-  --semantic-color-surface-muted: var(--primitive-color-neutral-900);
-  --semantic-color-surface-sunken: var(--primitive-color-neutral-850);
+  --semantic-color-surface-muted: var(--primitive-color-neutral-800);
+  --semantic-color-surface-sunken: var(--primitive-color-neutral-800);
   --semantic-color-content-primary: var(--primitive-color-neutral-100);
   --semantic-color-content-secondary: var(--primitive-color-neutral-400);
   --semantic-color-content-disabled: var(--primitive-color-neutral-600);
@@ -531,7 +544,7 @@
   --semantic-color-border-default: var(--primitive-color-neutral-700);
   --semantic-color-border-interactive: var(--primitive-color-neutral-500);
   --semantic-color-border-subdued: var(--primitive-color-neutral-800);
-  --semantic-color-border-subtle: var(--primitive-color-neutral-850);
+  --semantic-color-border-subtle: var(--primitive-color-neutral-700);
   --semantic-color-border-strong: var(--primitive-color-neutral-600);
   --semantic-color-border-accent: var(--primitive-color-graphite-300);
   --semantic-color-border-success: var(--primitive-color-green-400);
@@ -556,7 +569,6 @@
   --semantic-accent-contentHover: var(--primitive-color-graphite-200);
   --semantic-accent-subtle: var(--primitive-color-graphite-800);
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
-  --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
   --semantic-elevation-raised-surface: var(--semantic-color-surface-raised);
@@ -575,9 +587,22 @@
   --component-tag-activeBorder: var(--semantic-accent-rest);
   --component-tag-activeHover: var(--semantic-accent-hover);
   --component-badge-text: var(--semantic-color-content-primary);
+  --component-badge-neutral-bg: var(--semantic-color-surface-overlay);
+  --component-badge-neutral-text: var(--semantic-color-content-secondary);
+  --component-badge-info-bg: var(--semantic-color-feedback-bg-info);
+  --component-badge-info-text: var(--semantic-color-feedback-info);
+  --component-badge-success-bg: var(--semantic-color-feedback-bg-success);
+  --component-badge-success-text: var(--semantic-color-feedback-success);
+  --component-badge-danger-bg: var(--semantic-color-feedback-bg-error);
+  --component-badge-danger-text: var(--semantic-color-feedback-error);
+  --component-badge-warning-bg: var(--semantic-color-feedback-bg-warning);
+  --component-badge-warning-text: var(--semantic-color-feedback-warning);
+  --component-badge-inProgress-bg: var(--semantic-color-feedback-bg-inProgress);
+  --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
   --component-button-text: var(--semantic-color-content-onAccent);
+  --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
   --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
   --component-button-secondary-bg-hover: var(--semantic-color-surface-accentSubtle);
@@ -585,7 +610,7 @@
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
   --component-button-secondary-border-pressed: var(--semantic-color-border-accent);
-  --component-button-secondary-border-disabled: var(--semantic-color-border-interactive);
+  --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
   --component-input-bg: var(--semantic-color-surface-page);
   --component-input-text: var(--semantic-color-content-primary);
@@ -593,6 +618,7 @@
   --component-input-borderError: var(--semantic-color-feedback-error);
   --component-card-bg: var(--semantic-color-surface-raised);
   --component-card-border: var(--semantic-color-border-default);
+  --component-inlineCode-bg: var(--semantic-color-surface-overlay);
   --role-background: var(--semantic-color-surface-page);
   --role-foreground: var(--semantic-color-content-primary);
   --role-card: var(--semantic-color-surface-raised);

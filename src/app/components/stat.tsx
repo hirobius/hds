@@ -40,10 +40,9 @@ export interface StatProps
 /**
  * Headline metric — large value, caption label, optional sub-line.
  * @usage Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line.
- * @whenNot A row of headline numbers on a screen, a figure inside a Card, or a status with a trailing badge.
- * @useInstead MetricTiles a row of headline numbers (one MetricTile per number)
- * @useInstead Card.Metric a figure inside a Card (hds#254 folds Stat into the Card slot)
- * @useInstead StatusTile a titled status with notes and a trailing badge
+ * @whenNot A row of headline numbers on a screen, or a status with a trailing badge.
+ * @deprecated No replacement planned: compose a Card with the type roles (caption label, display/title value).
+ * @removeIn 1.0.0
  */
 export const Stat = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatProps>(function Stat(
   { label, value, sub, tone, className, ...props },

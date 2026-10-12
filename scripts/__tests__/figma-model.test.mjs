@@ -402,7 +402,20 @@ describe('buildFigmaModel — effect styles', () => {
       path: 'semantic.elevation.flat',
       description: 'No shadow, hairline border.',
       tint: null,
-      effects: [],
+      // Figma refuses to publish an effect style with no effects, so "no shadow"
+      // is one fully transparent drop shadow that draws nothing.
+      effects: [
+        {
+          type: 'DROP_SHADOW',
+          color: { r: 0, g: 0, b: 0, a: 0 },
+          offset: { x: 0, y: 0 },
+          radius: 0,
+          spread: 0,
+          visible: true,
+          blendMode: 'NORMAL',
+          showShadowBehindNode: false,
+        },
+      ],
       pairsWith: {
         surface: 'semantic.color.surface.page',
         border: 'semantic.color.border.default',

@@ -19,11 +19,11 @@ import { Icon } from './icon';
 // inline prose, compact tightens vertical rhythm for dense body copy and table
 // cells — the same distinction the old `compact` boolean drew, now on the
 // governed vocabulary. All values bind to the mono typography composite and
-// subgrid/badge tokens; no Tailwind-theme utility exists for these composite
+// subgrid/surface tokens; no Tailwind-theme utility exists for these composite
 // vars yet, so they're arbitrary-value classes bound to CSS custom properties.
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- mono typography composite + subgrid/badge tokens have no named Tailwind utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- mono typography composite + subgrid/surface tokens have no named Tailwind utility; var()-based so still token-driven
 const inlineCodeVariants = /* @__PURE__ */ cva(
-  'inline-flex max-w-[var(--semantic-typography-mono-max-width)] items-center whitespace-nowrap rounded-none border-0 bg-[var(--component-badge-bg)] px-[var(--semantic-space-subgrid-gap)] text-foreground [font-family:var(--semantic-typography-mono-font-family)] [font-size:var(--semantic-typography-mono-font-size)] [font-weight:var(--semantic-typography-mono-font-weight)] [letter-spacing:var(--semantic-typography-mono-letter-spacing)]',
+  'inline-flex max-w-[var(--semantic-typography-mono-max-width)] items-center whitespace-nowrap rounded-none border-0 bg-[color:var(--component-inlineCode-bg)] px-[var(--semantic-space-subgrid-gap)] text-foreground [font-family:var(--semantic-typography-mono-font-family)] [font-size:var(--semantic-typography-mono-font-size)] [font-weight:var(--semantic-typography-mono-font-weight)] [letter-spacing:var(--semantic-typography-mono-letter-spacing)]',
   {
     variants: {
       density: {

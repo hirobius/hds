@@ -62,7 +62,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `CardDescription` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardFooter` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardHeader` — Card — surface container with slot anatomy (12d-card-anatomy).
-- `CardMetric` — Card.Metric — one label, a large value and an optional sub-line inside a Card.
 - `CardProgress` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardTitle` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `EmptyState` — EmptyState — consistent no-data placeholder for lists, grids, and sections.
@@ -71,7 +70,6 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `InlineCode` — InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
 - `Kbd` — Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
 - `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
-- `Stat` — Headline metric — large value, caption label, optional sub-line.
 - `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
 - `Timestamp` — Presents a date/time with a machine-readable `dateTime` for accessibility.
@@ -162,8 +160,6 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 - `AssetImg` — AssetImg - responsive asset frame with fallback placeholder handling.
 - `CodeBlock` — CodeBlock - code display with copy button and optional collapsible toggle.
 - `DataTableSection` — Section heading and toolbar over a `Table`.
-- `MetricTile` — One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height.
-- `MetricTiles` — A row of `MetricTile`s.
 - `StatusTile` — Block-layout sibling of StatusListItem.
 
 ### Feedback

@@ -477,6 +477,30 @@ export const tokens = {
       fontWeight: "var(--component-badge-fontWeight)",
       text: "var(--component-badge-text)",
       bg: "var(--component-badge-bg)",
+      neutral: {
+        bg: "var(--component-badge-neutral-bg)",
+        text: "var(--component-badge-neutral-text)"
+      },
+      info: {
+        bg: "var(--component-badge-info-bg)",
+        text: "var(--component-badge-info-text)"
+      },
+      success: {
+        bg: "var(--component-badge-success-bg)",
+        text: "var(--component-badge-success-text)"
+      },
+      danger: {
+        bg: "var(--component-badge-danger-bg)",
+        text: "var(--component-badge-danger-text)"
+      },
+      warning: {
+        bg: "var(--component-badge-warning-bg)",
+        text: "var(--component-badge-warning-text)"
+      },
+      inProgress: {
+        bg: "var(--component-badge-inProgress-bg)",
+        text: "var(--component-badge-inProgress-text)"
+      },
       radius: "var(--component-badge-radius)",
       height: "var(--component-badge-height)",
       minWidth: "var(--component-badge-minWidth)",
@@ -550,6 +574,9 @@ export const tokens = {
       radius: "var(--component-card-radius)",
       padding: "var(--component-card-padding)",
       gap: "var(--component-card-gap)"
+    },
+    inlineCode: {
+      bg: "var(--component-inlineCode-bg)"
     },
     lightbox: {
       backdrop: {

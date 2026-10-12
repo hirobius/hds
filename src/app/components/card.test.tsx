@@ -163,3 +163,19 @@ describe('Card selectable (hds#393)', () => {
     expect(card.hasAttribute('aria-checked')).toBe(false);
   });
 });
+
+describe('Card.Metric deprecation', () => {
+  it('is marked deprecated in the manifest with no replacement', () => {
+    const manifest = JSON.parse(
+      readFileSync(resolve(process.cwd(), 'public/hds-manifest.json'), 'utf8'),
+    );
+    const spec = manifest.componentSpecs.CardMetric;
+    expect(spec.deprecated).toMatch(/No replacement planned/);
+    expect(spec.useInstead).toBeUndefined();
+  });
+
+  it('still renders (deprecated, not removed)', () => {
+    render(<CardMetric label="Retainer" value="$3,500" sub="Active" />);
+    expect(screen.getByText('$3,500')).toBeTruthy();
+  });
+});

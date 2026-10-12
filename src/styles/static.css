@@ -24,10 +24,8 @@
  *   - `--primitive-*` is referenced exactly once (Tag's WCAG hit-target size),
  *     annotated `tier-ok` — mirrors the same primitive-tier reference already
  *     present in tag.tsx (no semantic alias exists for it yet).
- *   - Two declarations reference a raw `rgb()` overlay (Badge's neutral tone
- *     tint) — annotated `css-ok`; it mirrors badge.tsx's own `bg-black/[0.04]`
- *     / `dark:bg-white/[0.04]` exactly, which has no semantic token either
- *     (documented as an intentional exemption at the source, badge.tsx:15).
+ *   - Badge tones bind `--component-badge-<tone>-{bg,text}` (hds#595); the
+ *     neutral fill is `surface.overlay`, so there is no raw `rgb()` overlay.
  *   - Two font-size/weight pairs (Badge, Tag) bind to the already-registered
  *     `--component-badge-*` / `--component-tag-*` typography tokens rather
  *     than mirroring the raw untokened Tailwind utilities the current React
@@ -59,57 +57,39 @@
   padding: var(--component-badge-paddingY) var(--component-badge-paddingX);
   border-radius: var(--component-badge-radius);
   /* neutral tone (default) */
-  background-color: rgb(
-    0 0 0 / 0.04
-  ); /* css-ok: mirrors badge.tsx's bg-black/[0.04] neutral-tone overlay — no semantic token exists for this tint (source-exempted, badge.tsx:15) */
-  color: var(--semantic-color-content-secondary);
-}
-
-[data-theme='dark'] .hds-badge,
-.dark .hds-badge {
-  background-color: rgb(
-    255 255 255 / 0.04
-  ); /* css-ok: mirrors badge.tsx's dark:bg-white/[0.04] neutral-tone overlay */
+  background-color: var(--component-badge-neutral-bg);
+  color: var(--component-badge-neutral-text);
 }
 
 .hds-badge--neutral {
   /* Explicit alias for the default — see .hds-badge above. */
-  background-color: rgb(
-    0 0 0 / 0.04
-  ); /* css-ok: same neutral-tone overlay as the .hds-badge base rule */
-  color: var(--semantic-color-content-secondary);
-}
-
-[data-theme='dark'] .hds-badge--neutral,
-.dark .hds-badge--neutral {
-  background-color: rgb(
-    255 255 255 / 0.04
-  ); /* css-ok: same dark-mode neutral-tone overlay as the .hds-badge base rule */
+  background-color: var(--component-badge-neutral-bg);
+  color: var(--component-badge-neutral-text);
 }
 
 .hds-badge--info {
-  background-color: var(--semantic-color-feedback-bg-info);
-  color: var(--semantic-color-feedback-info);
+  background-color: var(--component-badge-info-bg);
+  color: var(--component-badge-info-text);
 }
 
 .hds-badge--success {
-  background-color: var(--semantic-color-feedback-bg-success);
-  color: var(--semantic-color-feedback-success);
+  background-color: var(--component-badge-success-bg);
+  color: var(--component-badge-success-text);
 }
 
 .hds-badge--danger {
-  background-color: var(--semantic-color-feedback-bg-error);
-  color: var(--semantic-color-feedback-error);
+  background-color: var(--component-badge-danger-bg);
+  color: var(--component-badge-danger-text);
 }
 
 .hds-badge--warning {
-  background-color: var(--semantic-color-feedback-bg-warning);
-  color: var(--semantic-color-feedback-warning);
+  background-color: var(--component-badge-warning-bg);
+  color: var(--component-badge-warning-text);
 }
 
 .hds-badge--in-progress {
-  background-color: var(--semantic-color-feedback-bg-inProgress);
-  color: var(--semantic-color-feedback-inProgress);
+  background-color: var(--component-badge-inProgress-bg);
+  color: var(--component-badge-inProgress-text);
 }
 
 /* ── Card — src/app/components/card.tsx ─────────────────────────────────────

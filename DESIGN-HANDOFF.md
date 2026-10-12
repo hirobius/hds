@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 455 tokens, aliases, and TS refs in one shot.
+Checks all 468 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -197,17 +197,17 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | Token                                   | Light                           | Dark                            | Notes                                                                                                                              |
 | --------------------------------------- | ------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `semantic.color.surface.page`           | {primitive.color.neutral.white} | {primitive.color.neutral.black} | Main page background                                                                                                               |
-| `semantic.color.surface.raised`         | {primitive.color.neutral.50}    | {primitive.color.neutral.950}   | Subtle elevated surface (cards, sections)                                                                                          |
-| `semantic.color.surface.overlay`        | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Deeper surface layer                                                                                                               |
+| `semantic.color.surface.raised`         | {primitive.color.neutral.50}    | {primitive.color.neutral.850}   | Subtle elevated surface (cards, sections)                                                                                          |
+| `semantic.color.surface.overlay`        | {primitive.color.neutral.100}   | {primitive.color.neutral.800}   | Deeper surface layer                                                                                                               |
 | `semantic.color.surface.scrim`          | {primitive.color.neutral.900}   | {primitive.color.neutral.black} | Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.                                |
 | `semantic.color.surface.inverse`        | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Inverted background for contrast sections                                                                                          |
 | `semantic.color.surface.accent`         | {primitive.color.graphite.700}  | {primitive.color.graphite.200}  | Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.                          |
 | `semantic.color.surface.accentSubtle`   | {primitive.color.graphite.50}   | {primitive.color.graphite.800}  | Faint accent tint for hover states or highlights.                                                                                  |
-| `semantic.color.surface.hover`          | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   | Background for a hovered interactive surface (menu items, chips, tertiary buttons).                                                |
-| `semantic.color.surface.pressed`        | {primitive.color.neutral.50}    | {primitive.color.neutral.950}   | Background for an actively pressed interactive surface.                                                                            |
+| `semantic.color.surface.hover`          | {primitive.color.neutral.100}   | {primitive.color.neutral.700}   | Background for a hovered interactive surface (menu items, chips, tertiary buttons).                                                |
+| `semantic.color.surface.pressed`        | {primitive.color.neutral.50}    | {primitive.color.neutral.black} | Background for an actively pressed interactive surface.                                                                            |
 | `semantic.color.surface.selected`       | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   | Background for a persistently selected item (active tab, checked row).                                                             |
-| `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   | Muted background for low-emphasis content blocks.                                                                                  |
-| `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.850}   | Recessed background for inset wells (inputs, code blocks, nested panels).                                                          |
+| `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.800}   | Muted background for low-emphasis content blocks.                                                                                  |
+| `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   | Recessed background for inset wells (inputs, code blocks, nested panels).                                                          |
 | `semantic.color.content.primary`        | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   |                                                                                                                                    |
 | `semantic.color.content.secondary`      | {primitive.color.neutral.600}   | {primitive.color.neutral.400}   |                                                                                                                                    |
 | `semantic.color.content.disabled`       | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                                                                    |
@@ -220,7 +220,7 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.border.default`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   |                                                                                                                                    |
 | `semantic.color.border.interactive`     | {primitive.color.neutral.500}   | {primitive.color.neutral.500}   | Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor. |
 | `semantic.color.border.subdued`         | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   |                                                                                                                                    |
-| `semantic.color.border.subtle`          | {primitive.color.neutral.100}   | {primitive.color.neutral.850}   | Lowest-contrast border for resting hairline edges on flat surfaces.                                                                |
+| `semantic.color.border.subtle`          | {primitive.color.neutral.100}   | {primitive.color.neutral.700}   | Lowest-contrast border for resting hairline edges on flat surfaces.                                                                |
 | `semantic.color.border.strong`          | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                                                                    |
 | `semantic.color.border.accent`          | {primitive.color.graphite.700}  | {primitive.color.graphite.300}  | Accent border — graphite, dark enough to read as a boundary on page and card surfaces.                                             |
 | `semantic.color.border.success`         | {primitive.color.green.400}     | {primitive.color.green.400}     | Success-toned border for status outlines and success-state inputs.                                                                 |

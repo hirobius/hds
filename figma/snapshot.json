@@ -1,15 +1,15 @@
 {
-  "checksum": "b5159864",
+  "checksum": "29bb1b0e",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-12T03:41:48.262Z",
+    "takenAt": "2026-10-12T07:06:01.510Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "e4ca1f03",
-      "pushedAt": "2026-10-12T03:41:48.188Z",
+      "modelHash": "d6dfc15a",
+      "pushedAt": "2026-10-12T07:06:01.483Z",
       "scope": null
     },
     "collections": [
@@ -3510,8 +3510,8 @@
                 "to": "Hirobius/Primitives: color/neutral/100"
               },
               "Dark": {
-                "alias": "VariableID:3:11",
-                "to": "Hirobius/Primitives: color/neutral/850"
+                "alias": "VariableID:3:9",
+                "to": "Hirobius/Primitives: color/neutral/700"
               }
             }
           },
@@ -4142,8 +4142,8 @@
                 "to": "Hirobius/Primitives: color/neutral/100"
               },
               "Dark": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:3:9",
+                "to": "Hirobius/Primitives: color/neutral/700"
               }
             }
           },
@@ -4192,8 +4192,8 @@
                 "to": "Hirobius/Primitives: color/neutral/100"
               },
               "Dark": {
-                "alias": "VariableID:3:12",
-                "to": "Hirobius/Primitives: color/neutral/900"
+                "alias": "VariableID:3:10",
+                "to": "Hirobius/Primitives: color/neutral/800"
               }
             }
           },
@@ -4217,8 +4217,8 @@
                 "to": "Hirobius/Primitives: color/neutral/100"
               },
               "Dark": {
-                "alias": "VariableID:3:11",
-                "to": "Hirobius/Primitives: color/neutral/850"
+                "alias": "VariableID:3:10",
+                "to": "Hirobius/Primitives: color/neutral/800"
               }
             }
           },
@@ -4267,8 +4267,8 @@
                 "to": "Hirobius/Primitives: color/neutral/50"
               },
               "Dark": {
-                "alias": "VariableID:3:13",
-                "to": "Hirobius/Primitives: color/neutral/950"
+                "alias": "VariableID:3:15",
+                "to": "Hirobius/Primitives: color/neutral/black"
               }
             }
           },
@@ -4292,8 +4292,8 @@
                 "to": "Hirobius/Primitives: color/neutral/50"
               },
               "Dark": {
-                "alias": "VariableID:3:13",
-                "to": "Hirobius/Primitives: color/neutral/950"
+                "alias": "VariableID:3:11",
+                "to": "Hirobius/Primitives: color/neutral/850"
               }
             }
           },
@@ -4367,8 +4367,8 @@
                 "to": "Hirobius/Primitives: color/neutral/200"
               },
               "Dark": {
-                "alias": "VariableID:3:11",
-                "to": "Hirobius/Primitives: color/neutral/850"
+                "alias": "VariableID:3:10",
+                "to": "Hirobius/Primitives: color/neutral/800"
               }
             }
           },
@@ -6799,6 +6799,49 @@
         ],
         "variables": [
           {
+            "id": "VariableID:2150:8",
+            "name": "badge/danger/bg",
+            "path": "component.badge.danger.bg",
+            "resolvedType": "COLOR",
+            "description": "Danger badge fill.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-danger-bg)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:9",
+            "name": "badge/danger/text",
+            "path": "component.badge.danger.text",
+            "resolvedType": "COLOR",
+            "description": "Danger badge text color.",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-danger-text)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:19",
+                "to": "Hirobius/Semantic: color/feedback/error"
+              }
+            }
+          },
+          {
             "id": "VariableID:14:25",
             "name": "badge/fontSize",
             "path": "component.badge.fontSize",
@@ -6859,6 +6902,92 @@
             }
           },
           {
+            "id": "VariableID:2150:12",
+            "name": "badge/inProgress/bg",
+            "path": "component.badge.inProgress.bg",
+            "resolvedType": "COLOR",
+            "description": "Inprogress badge fill.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-inProgress-bg)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:28",
+                "to": "Hirobius/Semantic: color/feedback/bg/inProgress"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:13",
+            "name": "badge/inProgress/text",
+            "path": "component.badge.inProgress.text",
+            "resolvedType": "COLOR",
+            "description": "Inprogress badge text color.",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-inProgress-text)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:23",
+                "to": "Hirobius/Semantic: color/feedback/inProgress"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:4",
+            "name": "badge/info/bg",
+            "path": "component.badge.info.bg",
+            "resolvedType": "COLOR",
+            "description": "Info badge fill.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-info-bg)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:5",
+            "name": "badge/info/text",
+            "path": "component.badge.info.text",
+            "resolvedType": "COLOR",
+            "description": "Info badge text color.",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-info-text)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:22",
+                "to": "Hirobius/Semantic: color/feedback/info"
+              }
+            }
+          },
+          {
             "id": "VariableID:14:31",
             "name": "badge/minWidth",
             "path": "component.badge.minWidth",
@@ -6875,6 +7004,49 @@
               "Default": {
                 "alias": "VariableID:7:29",
                 "to": "Hirobius/Primitives: size/20"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:2",
+            "name": "badge/neutral/bg",
+            "path": "component.badge.neutral.bg",
+            "resolvedType": "COLOR",
+            "description": "Neutral badge fill.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-neutral-bg)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:4",
+                "to": "Hirobius/Semantic: color/surface/overlay"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:3",
+            "name": "badge/neutral/text",
+            "path": "component.badge.neutral.text",
+            "resolvedType": "COLOR",
+            "description": "Neutral badge text color.",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-neutral-text)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:9",
+                "to": "Hirobius/Semantic: color/content/secondary"
               }
             }
           },
@@ -6939,6 +7111,49 @@
             }
           },
           {
+            "id": "VariableID:2150:6",
+            "name": "badge/success/bg",
+            "path": "component.badge.success.bg",
+            "resolvedType": "COLOR",
+            "description": "Success badge fill.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-success-bg)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:7",
+            "name": "badge/success/text",
+            "path": "component.badge.success.text",
+            "resolvedType": "COLOR",
+            "description": "Success badge text color.",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-success-text)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:20",
+                "to": "Hirobius/Semantic: color/feedback/success"
+              }
+            }
+          },
+          {
             "id": "VariableID:14:27",
             "name": "badge/text",
             "path": "component.badge.text",
@@ -6957,6 +7172,49 @@
               "Default": {
                 "alias": "VariableID:10:8",
                 "to": "Hirobius/Semantic: color/content/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:10",
+            "name": "badge/warning/bg",
+            "path": "component.badge.warning.bg",
+            "resolvedType": "COLOR",
+            "description": "Warning badge fill.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-warning-bg)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:11",
+            "name": "badge/warning/text",
+            "path": "component.badge.warning.text",
+            "resolvedType": "COLOR",
+            "description": "Warning badge text color.",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-warning-text)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:21",
+                "to": "Hirobius/Semantic: color/feedback/warning"
               }
             }
           },
@@ -7173,7 +7431,7 @@
             "name": "button/secondary/border/disabled",
             "path": "component.button.secondary.border.disabled",
             "resolvedType": "COLOR",
-            "description": "Secondary button disabled border (no disabled border class: the rest border stays).",
+            "description": "Secondary button disabled border (lighter than rest so a disabled button reads disabled).",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -7183,8 +7441,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2018:736",
-                "to": "Hirobius/Semantic: color/border/interactive"
+                "alias": "VariableID:10:15",
+                "to": "Hirobius/Semantic: color/border/subdued"
               }
             }
           },
@@ -7750,6 +8008,27 @@
               "Default": {
                 "alias": "VariableID:5:29",
                 "to": "Hirobius/Primitives: radius/12"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2150:14",
+            "name": "inlineCode/bg",
+            "path": "component.inlineCode.bg",
+            "resolvedType": "COLOR",
+            "description": "Inline code chip background.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-inlineCode-bg)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:10:4",
+                "to": "Hirobius/Semantic: color/surface/overlay"
               }
             }
           },
@@ -9213,7 +9492,26 @@
         "name": "elevation/flat",
         "path": "semantic.elevation.flat",
         "description": "Flat surface (no shadow, hairline border) for embedded panels.",
-        "effects": []
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "offset": {
+              "x": 0,
+              "y": 0
+            },
+            "radius": 0,
+            "spread": 0,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": false
+          }
+        ]
       },
       {
         "id": "S:7cda3cf542a628a8f9711f774a7732f9e474a8d4,",
