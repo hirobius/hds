@@ -80,6 +80,6 @@ describe('InlineCode', () => {
     const { container } = render(<InlineCode>x</InlineCode>);
     const code = container.querySelector('code')!;
     expect(code.className).not.toContain('--component-badge-');
-    expect(code.className).toContain('bg-[color:var(--semantic-color-surface-overlay)]');
+    expect(code.className).toContain('bg-[color:var(--component-inlineCode-bg)]');
   });
 });

@@ -1150,7 +1150,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.50}",
-                "Dark": "{primitive.color.neutral.950}"
+                "Dark": "{primitive.color.neutral.850}"
               }
             }
           }
@@ -1162,7 +1162,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.100}",
-                "Dark": "{primitive.color.neutral.850}"
+                "Dark": "{primitive.color.neutral.800}"
               }
             }
           }
@@ -1222,7 +1222,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.100}",
-                "Dark": "{primitive.color.neutral.900}"
+                "Dark": "{primitive.color.neutral.700}"
               }
             }
           }
@@ -1234,7 +1234,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.50}",
-                "Dark": "{primitive.color.neutral.950}"
+                "Dark": "{primitive.color.neutral.black}"
               }
             }
           }
@@ -1258,7 +1258,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.100}",
-                "Dark": "{primitive.color.neutral.900}"
+                "Dark": "{primitive.color.neutral.800}"
               }
             }
           }
@@ -1270,7 +1270,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.200}",
-                "Dark": "{primitive.color.neutral.850}"
+                "Dark": "{primitive.color.neutral.800}"
               }
             }
           }
@@ -1424,7 +1424,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.100}",
-                "Dark": "{primitive.color.neutral.850}"
+                "Dark": "{primitive.color.neutral.700}"
               }
             }
           }
@@ -2597,15 +2597,7 @@
         "textDisabled": {
           "$type": "color",
           "$value": "{semantic.color.content.disabled}",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Light": "{semantic.color.content.disabled}",
-                "Dark": "{semantic.color.content.disabled}"
-              }
-            }
-          },
-          "$description": "Disabled primary button text color. Kept themed (both modes content.disabled) so the Figma variable stays in Hirobius/Semantic, where components already bind it."
+          "$description": "Disabled primary button text color."
         },
         "bgDisabled": {
           "$type": "color",
@@ -2710,6 +2702,13 @@
       "gap": {
         "$type": "dimension",
         "$value": "{semantic.space.scale.sm}"
+      }
+    },
+    "inlineCode": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.surface.overlay}",
+        "$description": "Inline code chip background."
       }
     },
     "lightbox": {
