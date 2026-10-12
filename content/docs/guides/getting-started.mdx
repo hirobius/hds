@@ -40,18 +40,9 @@ export const App = () => (
 );
 ```
 
-## Theme it with four dials
+## Theming
 
-Theme, density, brand and typeface are root attributes and CSS variables, so they work with no JavaScript, in React, Astro or plain HTML. Every HDS element inside picks them up.
-
-| Dial     | Set with                                      | Values               | Default                          |
-| -------- | --------------------------------------------- | -------------------- | -------------------------------- |
-| Theme    | `data-theme`                                  | `dark`               | light                            |
-| Density  | `data-density`                                | `compact`            | comfortable                      |
-| Brand    | `data-brand`                                  | a brand overlay slug | base                             |
-| Typeface | `--hds-font-family`, `--hds-font-family-mono` | any font family      | Plus Jakarta Sans, IBM Plex Mono |
-
-In React, [`HdsThemeProvider`](/docs/guides/providers) sets the same attributes with typed props. It is a convenience, not a requirement.
+Light and dark mode, density and brand are set with attributes on a root element, so they work without JavaScript. In React, [`HdsThemeProvider`](/docs/guides/providers) sets them for you.
 
 ## Where to go next
 
