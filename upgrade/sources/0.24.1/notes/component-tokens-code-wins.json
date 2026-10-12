@@ -1,6 +1,6 @@
 {
   "impact": "look",
-  "plain": "Fifteen component tokens now equal the value their component already renders, so a consumer reading these variables directly sees the new value; the HDS components themselves look the same.",
+  "plain": "Sixteen component tokens now equal the value their component already renders, so a consumer reading these variables directly sees the new value; the HDS components themselves look the same.",
   "steps": [
     {
       "id": "value-changed/--component-button-paddingY",
@@ -26,6 +26,21 @@
         "css-var-changed:--component-button-secondary-bg-hover::root",
         "css-var-changed:--component-button-secondary-bg-hover:[data-theme=\"dark\"]",
         "css-var-changed:--component-button-secondary-bg-hover:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-button-secondary-border-disabled",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button disabled border token is now the interactive border (was the subdued border), the colour it renders.",
+      "detect": {
+        "cssVars": ["--component-button-secondary-border-disabled"],
+        "cssVarWrites": ["--component-button-secondary-border-disabled"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-disabled::root",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=dark]"
       ]
     },
     {
