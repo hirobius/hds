@@ -83,7 +83,11 @@ export const DestructiveSection = /* @__PURE__ */ React.forwardRef<
           <div data-slot="action" className="shrink-0">
             <AlertDialog>
               <AlertDialog.Trigger asChild>
-                <Button variant="secondary" tone="danger">
+                <Button
+                  variant="secondary"
+                  tone="danger"
+                  className="border-feedback-danger hover:border-feedback-danger bg-background hover:bg-background"
+                >
                   {actionLabel ?? confirmLabel}
                 </Button>
               </AlertDialog.Trigger>
