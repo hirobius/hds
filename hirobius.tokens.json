@@ -2523,7 +2523,15 @@
         "textDisabled": {
           "$type": "color",
           "$value": "{semantic.color.content.disabled}",
-          "$description": "Disabled primary button text color."
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{semantic.color.content.disabled}",
+                "Dark": "{semantic.color.content.disabled}"
+              }
+            }
+          },
+          "$description": "Disabled primary button text color. Kept themed (both modes content.disabled) so the Figma variable stays in Hirobius/Semantic, where components already bind it."
         },
         "bgDisabled": {
           "$type": "color",

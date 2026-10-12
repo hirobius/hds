@@ -300,7 +300,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.button.size.lg.iconSize": "Large button icon slot size (20px).",
   "component.button.size.lg.height": "Large button height (48px).",
   "component.button.size.lg.itemSpacing": "Large button icon-to-label gap (8px).",
-  "component.button.primary.textDisabled": "Disabled primary button text color.",
+  "component.button.primary.textDisabled": "Disabled primary button text color. Kept themed (both modes content.disabled) so the Figma variable stays in Hirobius/Semantic, where components already bind it.",
   "component.button.primary.bgDisabled": "Disabled primary button fill.",
   "component.button.secondary.bg.rest": "Secondary button fill.",
   "component.button.secondary.bg.hover": "Secondary button hover fill.",
