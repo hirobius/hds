@@ -1,0 +1,16 @@
+{
+  "impact": "additive",
+  "plain": "Card has a new row slot (Card.Row, Card.RowTitle, Card.RowNote) that renders a StatusTile's content, and StatusTile is deprecated but still works.",
+  "steps": [
+    {
+      "id": "deprecated/StatusTile",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "StatusTile still works until 1.0.0; replace it with <Card padding=\"item\"><Card.Row trailing={trailing}><Card.RowTitle>{title}</Card.RowTitle> plus one <Card.RowNote> per note, and drop tone, which StatusTile never painted.",
+      "detect": {
+        "regex": ["<StatusTile\\b"]
+      },
+      "removeIn": "1.0.0"
+    }
+  ]
+}

@@ -188,7 +188,7 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `MetricTiles`        | The default for any row of headline numbers on a screen. One fixed tile size. | Nothing: start here.                                                         |
 | `Stat`               | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
 | `Card.Metric`        | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
-| `StatusTile`         | State with notes and a trailing badge, never a number.                        | `MetricTiles` when the tile is a number; `StatusTile` never carries a value. |
+| `Card.Row`           | State with notes and a trailing badge, never a number (was `StatusTile`).     | `MetricTiles` when the tile is a number; a status row never carries a value. |
 | `Card`               | A titled or interactive content object (header, body, footer, `selectable`).  | `Surface` when there is no title and nothing to press.                       |
 | `Surface`            | A plain padded background around content that has no header of its own.       | `Card` when the content is titled or interactive.                            |
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
