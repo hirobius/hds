@@ -1,0 +1,1 @@
+Docs site (hds#646): section roots /docs/{components,patterns,guides,foundations} render generated landings instead of 404; /docs/engineering renders docs/ENGINEERING.md; guides for getting-started, tokens, upgrade and deprecation (ledger tables generated from upgrade/).
