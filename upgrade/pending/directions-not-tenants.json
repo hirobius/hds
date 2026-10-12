@@ -1,0 +1,130 @@
+{
+  "impact": "look",
+  "plain": "The package no longer ships the concrete-creations brand block (ADR-035: a client's brand lives with the client), so a page with data-brand=\"concrete-creations\" renders the base accent until the app compiles its own block with brandOverlayCss or its own overlay build, as the storefront already does.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-accent-content",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-content, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "cssVars": ["--semantic-accent-content"],
+        "cssVarWrites": ["--semantic-accent-content"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-content:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-content:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-hover, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "cssVars": ["--semantic-accent-hover"],
+        "cssVarWrites": ["--semantic-accent-hover"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-hover:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-hover:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-pressed, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "cssVars": ["--semantic-accent-pressed"],
+        "cssVarWrites": ["--semantic-accent-pressed"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-rest, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "cssVars": ["--semantic-accent-rest"],
+        "cssVarWrites": ["--semantic-accent-rest"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-subtle, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "cssVars": ["--semantic-accent-subtle"],
+        "cssVarWrites": ["--semantic-accent-subtle"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-subtle:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-subtle:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-border-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-color-border-accent, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-accent"],
+        "cssVarWrites": ["--semantic-color-border-accent"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-border-accent:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-content-onAccent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-color-content-onAccent, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "cssVars": ["--semantic-color-content-onAccent"],
+        "cssVarWrites": ["--semantic-color-content-onAccent"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-onAccent:[data-brand=concrete-creations],[data-tenant=concrete-creations]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-color-surface-accent, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-accent"],
+        "cssVarWrites": ["--semantic-color-surface-accent"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-accentSubtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-color-surface-accentSubtle, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-accentSubtle"],
+        "cssVarWrites": ["--semantic-color-surface-accentSubtle"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ]
+    }
+  ]
+}
