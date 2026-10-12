@@ -60,7 +60,7 @@ const tokenRules = [
   'Token source of truth: read `hirobius.tokens.json` (W3C DTCG). Prefer `semantic.*` and `component.*` tokens over `primitive.*` for product UI.',
   'CSS variables: token path `semantic.color.surface.page` maps to `var(--semantic-color-surface-page)` (see generated token refs).',
   'Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.',
-  'Load `TOKEN_GOVERNANCE.md` and `SYSTEMS_REGISTRY.md` only on-demand (when explicitly requested or required by the task).',
+  'Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).',
   'Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.',
 ];
 
@@ -299,7 +299,7 @@ ${SLICE_INDEX}
 
 - \`public/llms-full.txt\` - the full bundle: this text + the full \`DESIGN.md\` + a compact props digest for every component.
 
-Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
+Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\` or \`TOKEN_GOVERNANCE.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 
 ## Context Loading Rules (Credit Efficiency)
 
@@ -315,7 +315,6 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 
 - \`DESIGN-HANDOFF.md\`
 - \`TOKEN_GOVERNANCE.md\`
-- \`SYSTEMS_REGISTRY.md\`
 
 ${patternSection}${iconSection}## Token Rules
 

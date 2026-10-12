@@ -1,0 +1,20 @@
+{
+  "$comment": "Fixture mini-root for check-state-surfaces.",
+  "surfaces": [
+    {
+      "path": "generated.json",
+      "describes": "A generated file",
+      "kind": "generated",
+      "by": "scripts/gen.mjs"
+    },
+    {
+      "path": "NOTES.md",
+      "describes": "Hand-written notes",
+      "kind": "editorial",
+      "owner": "Adrian",
+      "reviewedAt": "2099-01-01",
+      "maxAgeDays": 90
+    }
+  ],
+  "alwaysOn": ["NOTES.md"]
+}

@@ -38,7 +38,7 @@ This charter outranks the process rules below (not the HARD RULES above).
 - **Claude owns the driving:** architecture, code structure, tooling, test
   strategy, refactors, naming, file layout, and which skills or process steps a
   task actually needs. Decide and act; don't ask permission for "how".
-- **Jev is a gauge, not a driver.** Use Jev (`.claude/skills/jev/`) for fast
+- **Jev is a gauge, not a driver.** Use Jev (the `jev` skill, in the ops repo's `.claude/skills/`) for fast
   typed calls — sort, score, route, yes/no. Claude owns the final decision and
   all writing; below Jev's confidence floor, Claude decides. Sending private
   data to Jev stays Adrian's call.
@@ -71,7 +71,8 @@ Message Adrian only when work is done, blocked, or needs his decision. No progre
 
 The repo has a **closed-loop guardrail system** every agent must understand:
 
-- **`docs/guardrails/HARDENING_ROADMAP.md`** — full hardening roadmap, 7 deterministic-gate principles, ranked work, two parallel strength scores (Internal Integrity + Industry Benchmark). The single source of truth for "where are we, where are we going."
+- **`docs/guardrails/SCHEMA.md`** — the registry's field reference and what each `firingChannel` means. (The 2026 hardening roadmap is archived at `docs/archive/HARDENING_ROADMAP.md`: history, not a live plan; open work is in GitHub Issues.)
+- **`docs/state-surfaces.json`** — every file that describes project state, marked `generated`, `checked` or `editorial` (an editorial file carries an owner and a `reviewedAt` date). `scripts/check-state-surfaces.mjs` fails on a missing file, a doc that names a path that does not exist, or an editorial file past its review age ("review due"). Edit a generated file's source, never the file; after re-reading an editorial one, bump its `reviewedAt`.
 - **`docs/guardrails/registry.json`** — every `scripts/check-*.mjs` and `scripts/audit-*.mjs` is registered with `firingChannel` declaring where it fires (pre-commit / pre-push / ci-pr / ci-scheduled / pnpm-meta / manual). Drift caught by `validate-guardrail-registry` + `check-validator-wiring`, both pre-commit gates.
 - **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt` unless a pushed commit adds a `.status/<branch>.md` note instead of editing status.json (no conflicts; `pnpm status:fold` folds on main), or when a commit changing what ships (`src/`, the files `package.json#files` ships from `codemods/`, `mcp/` and the ESLint plugin, `hirobius.tokens.json`, `tailwind.config.tokens.cjs`, or a consumer field of `package.json` such as `dependencies`) has no pending `.changeset/*.md` and no `skip-changeset` marker in its own message. Every changeset carries `upgrade/pending/<same name>.json`, and a breaking change needs a minor below 1.0 (`scripts/check-upgrade-ledger.mjs` in pretest; `pnpm upgrade:note` writes the note).
 
@@ -209,7 +210,7 @@ prerequisites.
 
 ### Addy Osmani's agent-skills (2026-10-09)
 
-`.claude/skills/` also vendors 25 skills from
+`.claude/skills/` also vendors skills from
 [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) (MIT, pin
 `1401c8b`, hirobius/ops#552), locked in `skills-lock.json`. **Pocock's skills above
 stay the mandatory routing**; where an Osmani skill overlaps one (`test-driven-development`,
@@ -235,6 +236,7 @@ hirobius/ops repo: fleet state at /api/projects, consolidated tasks at
 state in docs/ai/HANDOFF.md (in ops). Conventions for every session here:
 (a) track new work as GitHub Issues in THIS repo — never a local TODO
 file; (b) before ending any session that changed project state, update
-root status.json (updatedAt, phase, headline, next, blocked) — the ops
-dashboard renders it; (c) read the ops HANDOFF before cross-project
+root status.json (v2 shape: `focus` of 120 chars or fewer, `phase`, an optional
+`note`, `updatedAt`; ops derives release, next and blocked from `package.json`
+and issue labels, so never write them by hand) — the ops dashboard renders it; (c) read the ops HANDOFF before cross-project
 decisions.

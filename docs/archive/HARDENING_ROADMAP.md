@@ -1,3 +1,5 @@
+> **Archived 2026-10-12 (hds#612).** This is history, not current state: a 2026-05-05 plan; open work is in GitHub Issues and the gate list is docs/guardrails/registry.json. Paths and numbers below are not kept up to date.
+
 # Guardrail hardening roadmap
 
 Captured 2026-05-05 after a deep grill on what "completely deterministic gates" would actually mean. Source-of-truth for the `13g-hardening` orchestration cluster. Every entry below either becomes an orchestration unit or is explicitly deferred.

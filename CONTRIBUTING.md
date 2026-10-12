@@ -16,14 +16,13 @@ pnpm dev          # Vite dev server
 
 ### Key documents
 
-| File                          | Purpose                                                  |
-| ----------------------------- | -------------------------------------------------------- |
-| `CLAUDE.md`                   | Agent operating instructions (read first)                |
-| `public/llms.txt`             | AI entry point — generated, do not edit directly         |
-| `DESIGN.md`                   | Lean visual spec — generated from `DESIGN.source.md`     |
-| `public/hds-manifest.json`    | Machine-readable component inventory — generated         |
-| `docs/ai/AGENT_GUIDELINES.md` | Sub-agent dispatch doctrine, token rules, commit hygiene |
-| `docs/ai/orchestration.json`  | Unit queue — 339+ build units, source of truth for work  |
+| File                       | Purpose                                                          |
+| -------------------------- | ---------------------------------------------------------------- |
+| `CLAUDE.md`                | Agent operating instructions (read first)                        |
+| `public/llms.txt`          | AI entry point — generated, do not edit directly                 |
+| `DESIGN.md`                | Lean visual spec — generated from `DESIGN.source.md`             |
+| `public/hds-manifest.json` | Machine-readable component inventory — generated                 |
+| `docs/state-surfaces.json` | Every file that describes state: generated, checked or editorial |
 
 ---
 
@@ -71,61 +70,20 @@ Never use `--no-verify`. When a gate fails, fix the cause.
 
 ---
 
-## Unit-Driven Workflow
+## Finding and recording work
 
-All work in this repo flows through **build units** defined in
-`docs/ai/orchestration.json`.
-
-### Finding eligible work
-
-A unit is ready to execute when all three conditions hold:
-
-```
-"status": "proposed"    (or "approved")
-"approval": "approved"
-"dependsOn": [...]      all IDs in the list are "status": "done"
-```
-
-Search the file for `"approval": "approved"` and filter by `dependsOn`
-satisfaction.
-
-### Unit ID convention
-
-```
-{phase}{cluster}-{slug}
-
-Examples:
-  12n-api-changelog-automation
-  12p-test-contract-tests-primitives
-  12i-quality-eslint-burndown
-```
-
-- `{phase}` is the numeric phase prefix (`12-hds-refinement` → `12`).
-- `{cluster}` is the cluster short-code (`n-api`, `p-test`, `i-quality`, …).
-- `{slug}` is a kebab-case description of the deliverable.
-
-### Marking a unit done
-
-**In the same commit** as the deliverable:
-
-1. Set `"status": "done"` on the unit.
-2. Append an entry to `"agentNotes"`:
-
-```json
-"agentNotes": [
-  "DONE 2026-05-01 (Window 1, Agent 1C): one-line description of what was done."
-]
-```
-
-Never mark a unit `done` in a separate commit, and never mark it `done`
-before the deliverable lands.
+Work is tracked as **GitHub Issues in this repo**, never in a local file. Pick an
+open issue whose `Blocked by` section lists only closed issues, and see
+`docs/agents/triage-labels.md` for the label vocabulary. Project state (what is
+next, what is blocked, what shipped) is read from issues, `package.json` and
+`CHANGELOG.md`; the one hand-written line is `focus` in `status.json`.
 
 ---
 
 ## Commit Format
 
 ```
-<scope>(<area>): <unit-id> <one-line summary>
+<type>(<scope>): <one-line summary> (#<issue>)
 
 <body explaining the why>
 
@@ -135,19 +93,19 @@ Co-Authored-By: <agent name> <noreply@example.com>
 **Examples:**
 
 ```
-docs(ops): 12n-api-contributing-and-coc CONTRIBUTING.md + CODE_OF_CONDUCT.md
-feat(hds): 12g-primitives-hds-button HdsButton v2 — compound variant system
-fix(tokens): 12i-quality-binding-drift remove stale elevation.sticky references
+docs(contributing): drop the retired unit workflow (#612)
+feat(hds): add Button loading state (#123)
+fix(tokens): remove stale elevation.sticky references (#456)
 ```
 
 Commits written by an agent end with one plain `Co-Authored-By` trailer, as above.
 
-**Hard rules (cross-ref `docs/ai/AGENT_GUIDELINES.md` §10):**
+**Hard rules (the full list is in `CLAUDE.md` section 0):**
 
-- **Never push to remote** without an explicit instruction from Adrian.
+- **Never push to `main`.** Remote Claude Code sessions push to their `claude/*` branch only.
 - **Never use `--no-verify`** to skip pre-commit gates.
 - **Never `--amend` to hide breakage.** If a commit broke something, make a
-  fix-up commit and document what went wrong in `agentNotes`.
+  fix-up commit and say what went wrong in its message.
 - **Never `git reset --hard main`** without explicit instruction.
 
 ---
@@ -163,18 +121,10 @@ before requesting review.
 
 ## AI-Augmented Workflows
 
-This repo uses autonomous sub-agent dispatch for bulk unit execution.
-`docs/ai/AGENT_GUIDELINES.md` is the source of truth for:
-
-- **Model selection** (haiku for mechanical edits, sonnet for most code and
-  all deletions, opus for architectural reasoning) — §1.
-- **Worktree isolation** and the required `git reset --hard fix/ui-pipeline`
-  first action — §2.
-- **No bulk `lint:fix`** — scope to one rule at a time with verification — §3.
-- **Validate before claiming** — every `agentNotes` claim must include a
-  grounding ref — §4.
-- **Token discipline** and bypass markers — §8.
-- **Auto-gen outputs** that must never be hand-edited — §9.
+Sub-agent dispatch rules (model selection, worktree isolation, no bulk
+`lint:fix`) live in `CLAUDE.md`, which is the source of truth. Generated
+outputs that must never be hand-edited are marked `generated` in
+`docs/state-surfaces.json`; edit the generator or its source instead.
 
 ---
 

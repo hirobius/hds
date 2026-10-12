@@ -95,7 +95,7 @@ meta-check runs by hand rather than in CI; wiring it in, and giving every gate a
 fixture pair, is open work.
 
 The registry rules are documented in
-[`SYSTEMS_REGISTRY.md`](../SYSTEMS_REGISTRY.md).
+[`docs/guardrails/SCHEMA.md`](guardrails/SCHEMA.md).
 
 ## 3. Testing
 
@@ -194,6 +194,6 @@ not a requirement. See [Theming in the README](../README.md#theming-the-four-dia
 - [`README.md`](../README.md) — install and use the published package.
 - [`docs/CONSUMING.md`](CONSUMING.md) — consumer guide.
 - [`TOKEN_GOVERNANCE.md`](../TOKEN_GOVERNANCE.md) — token-layer rules.
-- [`SYSTEMS_REGISTRY.md`](../SYSTEMS_REGISTRY.md) — the gate/guardrail registry.
+- [`docs/guardrails/registry.json`](guardrails/registry.json) — the gate/guardrail registry.
 - [`docs/adr/`](adr/) — architecture decision records.
 - `CLAUDE.md` — the operating contract for agents working in this repo.

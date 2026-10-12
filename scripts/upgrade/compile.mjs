@@ -17,7 +17,6 @@
  *     deprecation a later release took away says which (removalTail);
  *   - upgrade/index.json: every release with its breaking count, the floor
  *     (./history.mjs) and what is deprecated today, with its removeIn;
- *   - status.json `release`: the newest release, for the fleet dashboard.
  *
  * Generated text never promises a command the package lacks: with a
  * `design-system` bin (the one command, hds#452) and a newest release from
@@ -27,11 +26,11 @@
  * manual route between the bin merging and the release that ships it, while
  * npm's latest still lacks the command.
  *
- *   node scripts/upgrade/compile.mjs             # write the three from the ledgers
+ *   node scripts/upgrade/compile.mjs             # write the two from the ledgers
  *   node scripts/upgrade/compile.mjs --release   # record the release changeset version
- *                                                # just cut, then write the three
+ *                                                # just cut, then write the two
  *     --date YYYY-MM-DD   the release date (default: today, UTC)
- *   node scripts/upgrade/compile.mjs --check     # exit 1 if any of the three is stale
+ *   node scripts/upgrade/compile.mjs --check     # exit 1 if either is stale
  *   node scripts/upgrade/compile.mjs --json      # --check, as { violations, ok } (gate-output.mjs)
  *     --repo <dir>        work on another checkout (tests)
  *
@@ -39,9 +38,9 @@
  * workflow runs to open the Version PR (recordRelease below says what it
  * writes). `--check` runs in pretest; it reads only committed files, needs no
  * network and no build, and never writes. The writers own the layout:
- * UPGRADING.md and upgrade/index.json are in .prettierignore, and the status
- * object holds scalars only, which Prettier and `pnpm status:fold` leave as
- * written.
+ * UPGRADING.md and upgrade/index.json are in .prettierignore. status.json is
+ * not touched: ops derives the release from package.json and the ledgers
+ * (hds#612).
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -560,24 +559,6 @@ export function upgradeBlock(ledger, { command, bin }) {
 }
 
 /**
- * status.json `release`: the newest release for the fleet dashboard. Scalars
- * only, so Prettier and `pnpm status:fold` leave its layout alone.
- */
-function releaseStatus(history) {
-  const ledger = history.ledgers.at(-1);
-  return {
-    version: ledger.version,
-    date: ledger.date,
-    bump: ledger.bump,
-    summary: ledger.summary,
-    breaking: ledger.steps.filter((step) => step.impact === 'breaking').length,
-    doByHand: listsOf(ledger).doByHand.length,
-    floor: history.floor,
-    upgrade: upgradeCommand(history, ledger.version),
-  };
-}
-
-/**
  * What the generated files are compiled from (readHistory), for a repo.
  * @param {{ repo?: string, oneCommandFrom?: string }} [options]
  */
@@ -596,7 +577,6 @@ export function compileOutputs({ repo = REPO, oneCommandFrom } = {}) {
   return {
     upgrading: renderUpgrading(history),
     index: formatJson(buildIndex(history)),
-    release: releaseStatus(history),
   };
 }
 
@@ -931,37 +911,10 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
 export const OUTPUTS = {
   upgrading: 'UPGRADING.md',
   index: 'upgrade/index.json',
-  status: 'status.json',
 };
 
-/** status.json, parsed, or an error that names the fix. */
-function parseStatus(text) {
-  try {
-    return JSON.parse(text);
-  } catch (error) {
-    throw new Error(`${OUTPUTS.status} is not JSON (${error.message}); fix it, then run ${FIX}.`);
-  }
-}
-
-/** status.json with `release` set: in place when present, else after `headline`. */
-function withRelease(statusText, release) {
-  const status = parseStatus(statusText);
-  const out = {};
-  if (!Object.hasOwn(status, 'release') && !Object.hasOwn(status, 'headline')) {
-    return formatJson({ ...status, release });
-  }
-  for (const [key, value] of Object.entries(status)) {
-    if (key === 'release') out.release = release;
-    else {
-      out[key] = value;
-      if (key === 'headline' && !Object.hasOwn(status, 'release')) out.release = release;
-    }
-  }
-  return formatJson(out);
-}
-
 /**
- * Writes UPGRADING.md, upgrade/index.json and status.json `release` from the
+ * Writes UPGRADING.md and upgrade/index.json from the
  * committed ledgers.
  * @param {{ repo?: string }} [options]
  */
@@ -970,8 +923,6 @@ export function writeCompiled({ repo = REPO } = {}) {
   writeFileSync(join(repo, OUTPUTS.upgrading), outputs.upgrading);
   mkdirSync(dirname(join(repo, OUTPUTS.index)), { recursive: true });
   writeFileSync(join(repo, OUTPUTS.index), outputs.index);
-  const statusFile = join(repo, OUTPUTS.status);
-  writeFileSync(statusFile, withRelease(readFileSync(statusFile, 'utf8'), outputs.release));
   return outputs;
 }
 
@@ -1002,18 +953,6 @@ export function checkCompiled({ repo = REPO } = {}) {
         stale(OUTPUTS[key], 'is not what scripts/upgrade/compile.mjs builds from upgrade/releases'),
       );
     }
-  }
-  const status = text(OUTPUTS.status);
-  const release = status === null ? undefined : parseStatus(status).release;
-  if (JSON.stringify(release) !== JSON.stringify(outputs.release)) {
-    violations.push(
-      stale(
-        OUTPUTS.status,
-        release === undefined
-          ? 'has no release object'
-          : "has a release object that is not the newest ledger's",
-      ),
-    );
   }
   return { violations, ok: violations.length === 0 };
 }

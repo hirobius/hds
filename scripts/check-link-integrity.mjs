@@ -95,7 +95,6 @@ function runDocRefsCheck() {
   const DOC_FILES_BASE = [
     'README.md',
     'OPERATING_MAP.md',
-    'SYSTEMS_REGISTRY.md',
     'AGENT_CONTEXT_SYSTEM.md',
     'TOKEN_GOVERNANCE.md',
     'ATTRIBUTIONS.md',
