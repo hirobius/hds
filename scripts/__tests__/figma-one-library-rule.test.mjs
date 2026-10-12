@@ -419,7 +419,9 @@ describe('what Figma gives the Sync plugin matches figma/snapshot.json', () => {
     'ADR-026 amendment': () => amendment(),
     'ADR-032 amendment': () => adr032(),
     'ADR-033 amendment': () => adrAmendment('docs/adr/033-zero-click-agent-sync.md'),
-    '.status note': () => read('.status/claude-dsr-73-figma-library-writes.md'),
+    // .status notes are folded into status.json on main (pnpm status:fold), so
+    // the note this once read is gone; status.json is where its text lands.
+    'status.json': () => read('status.json'),
   };
   const claimsNoKey =
     /Figma gives (the|this) plugin no (file )?key|records `?(file\.key|"key"): null`?\)?,? so/i;

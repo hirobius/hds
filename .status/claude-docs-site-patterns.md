@@ -1,1 +1,0 @@
-Fumadocs pattern pages (hds#506): one generated page per module src/patterns.ts re-exports (12), each with a live preview, under /docs/patterns and on the docs index; check-docs accepts patterns/ pages and checks their preview marker.
