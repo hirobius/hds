@@ -285,7 +285,7 @@ describe('README "What belongs in the system"', () => {
 });
 
 describe('llms.txt "Core set"', () => {
-  const files = ['llms.txt', 'public/llms.txt'];
+  const files = ['public/llms-full.txt'];
   const texts = files.map((f) => readFileSync(path.join(ROOT, f), 'utf8'));
   const sectionOf = (text, heading) => text.split(`\n## ${heading}\n`)[1]?.split(/\n## /)[0] ?? '';
 
@@ -296,7 +296,7 @@ describe('llms.txt "Core set"', () => {
   });
 
   it('lists the core names, one per line', () => {
-    const names = [...sectionOf(texts[1], 'Core set').matchAll(/^- ([A-Za-z]+) \(/gm)].map(
+    const names = [...sectionOf(texts[0], 'Core set').matchAll(/^- ([A-Za-z]+) \(/gm)].map(
       (m) => m[1],
     );
     expect(names).toHaveLength(CORE.length);
@@ -304,7 +304,7 @@ describe('llms.txt "Core set"', () => {
   });
 
   it('marks exactly the core lines of "Which one when" with [core]', () => {
-    const lines = sectionOf(texts[1], 'Which one when')
+    const lines = sectionOf(texts[0], 'Which one when')
       .split('\n')
       .filter((l) => /^[A-Za-z.]+: /.test(l));
     const marked = lines
@@ -314,7 +314,9 @@ describe('llms.txt "Core set"', () => {
   });
 
   it('keeps the root and public copies identical', () => {
-    expect(texts[0]).toBe(texts[1]);
+    expect(readFileSync(path.join(ROOT, 'llms.txt'), 'utf8')).toBe(
+      readFileSync(path.join(ROOT, 'public/llms.txt'), 'utf8'),
+    );
   });
 });
 

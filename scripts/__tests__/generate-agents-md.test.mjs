@@ -115,13 +115,13 @@ describe('buildAgentsMd', () => {
 describe('AGENTS.md and llms.txt agree', () => {
   it('both carry the same pick-by-need list, rendered from mcp/guide.mjs', () => {
     const needs = needsMarkdown(readJson('src/app/data/component-api.json').components);
-    for (const file of ['AGENTS.md', 'llms.txt', 'public/llms.txt']) {
+    for (const file of ['AGENTS.md', 'public/llms-full.txt']) {
       expect(readFileSync(join(ROOT, file), 'utf8'), file).toContain(needs);
     }
   });
 
   it('llms.txt no longer offers a choice between the number components', () => {
-    const llms = readFileSync(join(ROOT, 'public/llms.txt'), 'utf8');
+    const llms = readFileSync(join(ROOT, 'public/llms-full.txt'), 'utf8');
     expect(llms).not.toMatch(/Pick between `MetricTiles`, `Stat`/);
   });
 });

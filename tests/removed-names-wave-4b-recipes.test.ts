@@ -78,7 +78,7 @@ describe('recipes after the hds#394 wave 4b removals', () => {
       'scripts/generate-llms-txt.mjs',
       'CONSUMING.md',
       'docs/CONSUMING.md',
-      'public/llms.txt',
+      'public/llms-full.txt',
     ]) {
       expect(read(file), file).toContain('iconOnly');
     }

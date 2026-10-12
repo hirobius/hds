@@ -138,7 +138,9 @@ describe('one source for the core set', () => {
 
   it('llms.txt and SKILL.md list exactly the ratified core', () => {
     const section = (text) => (text.split('\n## Core set\n')[1] ?? '').split(/\n## /)[0];
-    const llms = [...section(read('llms.txt')).matchAll(/^- ([A-Za-z]+) \(/gm)].map((m) => m[1]);
+    const llms = [...section(read('public/llms-full.txt')).matchAll(/^- ([A-Za-z]+) \(/gm)].map(
+      (m) => m[1],
+    );
     const skill = section(read('skills/hds-consumer/SKILL.md'))
       .split('\n')
       .filter((l) => l.startsWith('- **'))

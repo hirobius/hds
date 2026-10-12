@@ -68,7 +68,7 @@ describe('the generated files carry the brief', () => {
   it('AGENTS.md and llms.txt both print the same Voice block', () => {
     const block = voiceMarkdown(readVoice(ROOT));
     expect(readFileSync(join(ROOT, 'AGENTS.md'), 'utf8')).toContain(block);
-    expect(readFileSync(join(ROOT, 'llms.txt'), 'utf8')).toContain(block);
+    expect(readFileSync(join(ROOT, 'public/llms-full.txt'), 'utf8')).toContain(block);
   });
 });
 

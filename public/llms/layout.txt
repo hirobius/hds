@@ -1,6 +1,6 @@
 # Hirobius Design System - layout slice
 
-See `public/llms.txt` for the index. Generated from the same sections as llms.txt.
+See `public/llms.txt` for the index. Generated from the same sections as llms-full.txt.
 
 ## How To Lay Out A Screen
 
