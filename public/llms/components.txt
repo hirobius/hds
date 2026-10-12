@@ -202,7 +202,7 @@ Section heading and toolbar over a `Table`. Row actions are consumer nodes in a 
   - toolbar: ReactNode
 
 ### DestructiveSection
-Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's …
+Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an …
   - actionLabel: ReactNode
   - cancelLabel: string = Cancel
   - confirmBody: ReactNode
