@@ -23,6 +23,10 @@ paths = [
   '''(?i)(^.*\/node_modules\/.*$)''',
   '''(?i)(^.*\/dist\/.*$)''',
   '''(?i)(^.*\.claude\/worktrees\/.*$)''',
+  # The gate's own proof-of-firing fixtures hold a fake credential on purpose.
+  # Fixture mode copies the file to the temp dir before scanning, so this
+  # allowlist does not stop the violating fixture from firing (hds#263).
+  '''^fixtures\/check-secrets\/''',
 ]
 regexes = [
   # HDS design-system token paths (not secrets)
