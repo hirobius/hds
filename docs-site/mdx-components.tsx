@@ -7,6 +7,7 @@ import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
 import { Mermaid } from './components/mermaid';
 import { TokenTable } from './components/token-table';
+import { DeprecationLedger, ReleaseLedger, RemovalLedger } from './components/upgrade-ledger';
 
 type HeadingProps = HTMLAttributes<HTMLHeadingElement>;
 
@@ -22,6 +23,9 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ComponentPreview,
     ComponentIndex,
     Mermaid,
+    ReleaseLedger,
+    DeprecationLedger,
+    RemovalLedger,
     ...components,
   };
 }

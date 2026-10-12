@@ -1,5 +1,6 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import type { LedgerIndex, LedgerRelease } from './upgrade-ledger';
 
 /** Walk up from the working directory so this works whether Next runs from docs-site/ or the repo root. */
 export function findUp(relative: string, start = process.cwd()): string {
@@ -25,3 +26,12 @@ interface ManifestSpec {
 export const loadManifestSpecs = () =>
   (readJson('public/hds-manifest.json') as { componentSpecs: Record<string, ManifestSpec> })
     .componentSpecs;
+
+/** The upgrade ledger (upgrade/index.json + upgrade/releases/*.json), for the upgrade and deprecation guides. */
+export const loadUpgradeIndex = () => readJson('upgrade/index.json') as LedgerIndex;
+export function loadUpgradeReleases(): LedgerRelease[] {
+  const dir = dirname(findUp('upgrade/index.json'));
+  return readdirSync(join(dir, 'releases'))
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => readJson(`upgrade/releases/${f}`) as LedgerRelease);
+}

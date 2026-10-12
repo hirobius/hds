@@ -1,0 +1,46 @@
+---
+title: 'Upgrade'
+description: 'Move to a newer release with one command that runs the codemods, bumps the dependency and tells you what is left.'
+status: 'stable'
+related:
+  - '/docs/guides/deprecation'
+---
+
+Every release records what it changes for a consumer in a machine-readable ledger, and one command reads that ledger to do the upgrade for you. You don't read release notes to find out what broke. The command finds it in your code.
+
+## Run the upgrade
+
+```bash
+npx @hirobius/design-system@latest upgrade
+```
+
+From your project root, the command:
+
+1. Reads the version you have installed, from the lockfile.
+2. Applies each release's steps after that version, oldest first: it runs the codemods, bumps the dependency range, and adds back any dependency the package stopped installing that your code still imports.
+3. Installs and runs your typecheck.
+4. Prints four lists: **Fixed for you**, **Looks different** (only what your code uses), **Coming next** (deprecations and the release that removes them) and **Do by hand**.
+
+It refuses, and changes nothing, on a downgrade or a version the ledger has no record for. `--dry-run` runs the codemods on a copy of your code and lists exactly what a real run would change. `--json` prints the report as JSON for CI.
+
+Exit codes: `0` done with nothing left by hand, `1` work left, `2` refused or error.
+
+## What the ledger holds
+
+Each release has a record in [`upgrade/releases/`](https://github.com/hirobius/hds/blob/main/upgrade/releases), and it ships in the package. Each change in it says:
+
+- **kind**: removed, moved, renamed, folded, deprecated, value-changed, look or behavior, among others;
+- **impact**: what happens to an app that does nothing (none, additive, look, behavior or breaking);
+- a **plain** sentence you can act on;
+- the **codemod** that applies it, if one exists;
+- how to **detect** a use in your code, by import, JSX tag, CSS variable, class or pattern.
+
+A change to the published package can't merge without its ledger entry: the `check-upgrade-ledger` gate fails the push and CI. The format is documented in [upgrade/README.md](https://github.com/hirobius/hds/blob/main/upgrade/README.md).
+
+## Releases
+
+Breaking counts the changes that fail an app which does nothing.
+
+<ReleaseLedger />
+
+Deprecations still in force, and what each release removed, are on [Deprecation](/docs/guides/deprecation).

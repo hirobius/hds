@@ -8,7 +8,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = join(__dirname, '..', '..');
-const GUIDES = ['getting-started', 'tokens'];
+const GUIDES = ['getting-started', 'tokens', 'upgrade', 'deprecation'];
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as {
   name: string;
   exports: Record<string, unknown>;

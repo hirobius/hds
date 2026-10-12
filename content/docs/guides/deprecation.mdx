@@ -1,0 +1,27 @@
+---
+title: 'Deprecation'
+description: 'What is deprecated, what replaces it and when it goes, read from the upgrade ledger.'
+status: 'stable'
+related:
+  - '/docs/guides/upgrade'
+---
+
+A deprecated name still works, so nothing breaks when it is deprecated. It is removed in a named later release, and the [upgrade command](/docs/guides/upgrade) lists it under **Coming next** for as long as your code still uses it.
+
+## How a deprecation works
+
+1. **Tagged in code.** The name gets a `@deprecated` JSDoc tag with what to use instead, and a `@removeIn` version. The `check-deprecations` gate fails any `@deprecated` tag without a removal version, so nothing stays deprecated forever.
+2. **Recorded in the ledger.** The release that deprecates it adds a `deprecated` step with a plain-language note and, where the change can be automated, a codemod.
+3. **Removed on schedule.** When the package reaches the removal version, the same gate fails until the name is deleted. The upgrade command then runs the codemod or lists the change under **Do by hand**.
+
+Editors that read TypeScript types, such as VS Code, strike through a deprecated import, so you see it while you type.
+
+## Deprecated now
+
+<DeprecationLedger />
+
+## Removed, moved and renamed
+
+Names that are gone, by the release that took them away. Each line says what to use instead. Run the upgrade command to find and fix the uses in your code.
+
+<RemovalLedger />
