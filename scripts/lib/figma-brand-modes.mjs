@@ -63,7 +63,7 @@ const readJson = (path, label) => {
  * @param {string} root     Repo root (or a fixture mini-root).
  * @param {object} baseRaw  Parsed hirobius.tokens.json, for the overlay validator.
  * @param {{ validateOverlay?: (overlay: object, baseRaw: object, slug: string) => string[] }} [options]
- * @returns {{ baseMode: string, tenants: Array<{ slug: string, overlay: object }> } | null}
+ * @returns {{ baseMode: string, directions: Array<{ slug: string, overlay: object }> } | null}
  *   null when the root has no figma/brand-modes.json.
  */
 export function loadBrandModes(root, baseRaw, { validateOverlay = validateTenantOverlay } = {}) {
@@ -78,11 +78,12 @@ export function loadBrandModes(root, baseRaw, { validateOverlay = validateTenant
   if (typeof config.baseMode !== 'string' || config.baseMode.trim() === '') {
     refuse(['baseMode must name the base brand mode (for example "Hirobius").']);
   }
-  if (!Array.isArray(config.tenants)) refuse(['tenants must be an array of direction slugs.']);
+  if (!Array.isArray(config.directions))
+    refuse(['directions must be an array of direction slugs.']);
 
   const problems = [];
-  const tenants = [];
-  for (const slug of config.tenants) {
+  const directions = [];
+  for (const slug of config.directions) {
     if (typeof slug !== 'string' || !SLUG.test(slug)) {
       problems.push(`"${slug}" is not a direction slug ([a-z0-9-]+, no leading underscore).`);
       continue;
@@ -115,8 +116,8 @@ export function loadBrandModes(root, baseRaw, { validateOverlay = validateTenant
       problems.push(...errors.map((e) => `${e} (node scripts/check-tenant-tokens.mjs)`));
       continue;
     }
-    tenants.push({ slug, overlay });
+    directions.push({ slug, overlay });
   }
   if (problems.length > 0) refuse(problems);
-  return { baseMode: config.baseMode, tenants };
+  return { baseMode: config.baseMode, directions };
 }

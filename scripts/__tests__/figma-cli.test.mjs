@@ -622,12 +622,12 @@ describe('pnpm figma:native-import', () => {
     );
   });
 
-  it('adds a file per Brand and Density mode when the root lists demo tenants', () => {
+  it('adds a file per Brand and Density mode when the root lists directions', () => {
     const root = tempRoot();
     mkdirSync(join(root, 'figma'), { recursive: true });
     writeFileSync(
       join(root, 'figma', 'brand-modes.json'),
-      JSON.stringify({ baseMode: 'Hirobius', tenants: ['sharp-demo'] }),
+      JSON.stringify({ baseMode: 'Hirobius', directions: ['sharp-demo'] }),
     );
     mkdirSync(join(root, 'directions', 'sharp-demo'), { recursive: true });
     writeFileSync(

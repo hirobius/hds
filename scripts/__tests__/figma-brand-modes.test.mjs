@@ -46,11 +46,11 @@ afterEach(() => {
 });
 
 /** A mini-root with the fixture tokens, the given directions and (optionally) a brand-modes config. */
-function miniRoot({ config, tenants = {} }) {
+function miniRoot({ config, directions = {} }) {
   const root = mkdtempSync(join(tmpdir(), 'hds-brand-modes-'));
   dirs.push(root);
   copyFileSync(FIXTURE_TOKENS, join(root, 'hirobius.tokens.json'));
-  for (const [slug, { metadata, overlay }] of Object.entries(tenants)) {
+  for (const [slug, { metadata, overlay }] of Object.entries(directions)) {
     mkdirSync(join(root, 'directions', slug), { recursive: true });
     if (metadata)
       writeFileSync(join(root, 'directions', slug, 'metadata.json'), JSON.stringify(metadata));
@@ -133,8 +133,8 @@ describe('loadBrandModes', () => {
 
   it('returns the listed directions, in config order, and nothing else', () => {
     const { load } = miniRoot({
-      config: { baseMode: 'Hirobius', tenants: ['b-demo', 'a-demo'] },
-      tenants: {
+      config: { baseMode: 'Hirobius', directions: ['b-demo', 'a-demo'] },
+      directions: {
         'a-demo': { metadata: demoMetadata('a-demo'), overlay: radiusOverlay },
         'b-demo': { metadata: demoMetadata('b-demo'), overlay: radiusOverlay },
         'unlisted-tenant': {
@@ -145,7 +145,7 @@ describe('loadBrandModes', () => {
     });
     expect(load()).toEqual({
       baseMode: 'Hirobius',
-      tenants: [
+      directions: [
         { slug: 'b-demo', overlay: radiusOverlay },
         { slug: 'a-demo', overlay: radiusOverlay },
       ],
@@ -155,8 +155,8 @@ describe('loadBrandModes', () => {
   it('refuses a listed direction that looks like a client, before reading its overlay', () => {
     const calls = [];
     const { load } = miniRoot({
-      config: { baseMode: 'Hirobius', tenants: ['live-tenant'] },
-      tenants: {
+      config: { baseMode: 'Hirobius', directions: ['live-tenant'] },
+      directions: {
         'live-tenant': {
           metadata: demoMetadata('live-tenant', { deployment: { vercelProject: 'live' } }),
           overlay: radiusOverlay,
@@ -171,8 +171,8 @@ describe('loadBrandModes', () => {
 
   it('refuses a listed slug whose metadata is a client (a deployment, a legal entity), so a client filed under directions/ by mistake still fails', () => {
     const { load } = miniRoot({
-      config: { baseMode: 'Hirobius', tenants: ['new-client'] },
-      tenants: {
+      config: { baseMode: 'Hirobius', directions: ['new-client'] },
+      directions: {
         'new-client': { metadata: clientMetadata('new-client'), overlay: radiusOverlay },
       },
     });
@@ -181,8 +181,8 @@ describe('loadBrandModes', () => {
 
   it('runs the overlay validator and refuses an overlay it rejects', () => {
     const { load } = miniRoot({
-      config: { baseMode: 'Hirobius', tenants: ['bad-demo'] },
-      tenants: {
+      config: { baseMode: 'Hirobius', directions: ['bad-demo'] },
+      directions: {
         'bad-demo': {
           metadata: demoMetadata('bad-demo'),
           overlay: {
@@ -196,8 +196,8 @@ describe('loadBrandModes', () => {
 
   it('reports every problem at once: missing direction, bad slug, slug mismatch', () => {
     const { load } = miniRoot({
-      config: { baseMode: 'Hirobius', tenants: ['gone-demo', '_template', 'moved-demo'] },
-      tenants: {
+      config: { baseMode: 'Hirobius', directions: ['gone-demo', '_template', 'moved-demo'] },
+      directions: {
         'moved-demo': { metadata: demoMetadata('other-slug'), overlay: radiusOverlay },
       },
     });
@@ -212,8 +212,8 @@ describe('loadBrandModes', () => {
     expect(message).toMatch(/directions\/moved-demo\/metadata\.json.*slug/);
   });
 
-  it('refuses a config without a base mode or a tenant list', () => {
-    expect(() => miniRoot({ config: { tenants: [] } }).load()).toThrow(/baseMode/);
-    expect(() => miniRoot({ config: { baseMode: 'Hirobius' } }).load()).toThrow(/tenants/);
+  it('refuses a config without a base mode or a directions list', () => {
+    expect(() => miniRoot({ config: { directions: [] } }).load()).toThrow(/baseMode/);
+    expect(() => miniRoot({ config: { baseMode: 'Hirobius' } }).load()).toThrow(/directions/);
   });
 });

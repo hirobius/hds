@@ -114,7 +114,7 @@ never read.
 | Collection         | Modes                                     | Holds                                                                                                                                                                                                                  |
 | ------------------ | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Hirobius/Brand`   | `Hirobius`, then one per listed direction | One variable per path a listed direction overrides: `<path>/Light` and `<path>/Dark` when the path is themed, `<path>/Comfortable` and `<path>/Compact` when a direction gives it a Compact value, otherwise `<path>`. |
-| `Hirobius/Density` | `Comfortable`, `Compact`                  | One variable per compacted path, aliasing its two Brand variants. Left out when no listed tenant has a Compact value.                                                                                                  |
+| `Hirobius/Density` | `Comfortable`, `Compact`                  | One variable per compacted path, aliasing its two Brand variants. Left out when no listed direction has a Compact value.                                                                                               |
 
 In the `Hirobius` mode a Brand variable holds the base token's value. A direction
 mode holds that direction's override, or the base value where it has none. The
@@ -132,18 +132,18 @@ use_figma push carries all three in `02-semantic.js`.
 
 The model refuses, with the reason:
 
-- a tenant theming a token that lives in a single-mode collection (theme it in
+- a direction theming a token that lives in a single-mode collection (theme it in
   `hirobius.tokens.json` first, which moves it to Semantic);
 - one path varying by both theme and density (build-tokens writes no brand ×
   theme × density CSS);
 - a composite override (typography, shadow, elevation), because text and effect
   styles have no modes;
 - a Compact mode in `hirobius.tokens.json` itself, because build-tokens writes
-  density CSS for tenant overlays only.
+  density CSS for direction overlays only.
 
 An override of a token that is not in Figma (motion, for example) is skipped.
 The base density scale (`--hds-space-*` in `src/styles/theme.css`) is not a
-token, so Density carries only tenant Compact values today.
+token, so Density carries only directions' Compact values today.
 
 ## Design ↔ Code links
 

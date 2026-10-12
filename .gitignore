@@ -188,3 +188,6 @@ content/docs/guides/providers.mdx
 # impeccable skill local critique snapshots (not part of the package)
 .impeccable/
 .vercel-redirect/
+
+# design.md harvests (scripts/harvest-design-md.mjs): brand overlays a consumer takes home, never filed under directions/ (ADR-035)
+harvest/

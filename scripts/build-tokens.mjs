@@ -13,7 +13,8 @@
  * Pure functions are exported so they can be unit-tested with Vitest.
  */
 
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { listDirectionSlugs } from './lib/directions.mjs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { writeGenerated } from './lib/write-generated.mjs';
@@ -1423,38 +1424,31 @@ export function indexDeprecatedAliases(baseRaw) {
  * named mode. Theme and density combine with brand independently (no triple
  * brand×theme×density block), per ADR-022's chosen option.
  *
- * @param {string}   tenantsDir  - Absolute path to the directions/ directory
+ * @param {string}   directionsDir  - Absolute path to the directions/ directory
  * @param {object}   baseRaw     - Parsed hirobius.tokens.json
  * @param {object}   [options]
  * @param {boolean}  [options.strict=true]  - Skip emitting tenants with validation errors
  * @returns {{ css: string, tenants: string[], errors: string[] }}
  */
-export function buildTenantCSS(tenantsDir, baseRaw, { strict = true } = {}) {
+export function buildTenantCSS(directionsDir, baseRaw, { strict = true } = {}) {
   const allErrors = [];
   const processedSlugs = [];
   const blocks = [];
   const deprecatedAliases = indexDeprecatedAliases(baseRaw);
 
-  let slugDirs;
-  try {
-    slugDirs = readdirSync(tenantsDir, { withFileTypes: true });
-  } catch {
+  if (!existsSync(directionsDir)) {
     // directions/ directory doesn't exist — nothing to emit
     return { css: '', tenants: [], errors: [] };
   }
 
-  for (const entry of slugDirs) {
-    if (!entry.isDirectory()) continue;
-    const slug = entry.name;
-    // Skip reserved directories (e.g. _template)
-    if (slug.startsWith('_')) continue;
+  for (const slug of listDirectionSlugs(directionsDir)) {
     // Validate slug format: lowercase, kebab-case, ASCII
     if (!/^[a-z0-9-]+$/.test(slug)) {
       allErrors.push(`[${slug}] invalid slug format — must match [a-z0-9-]+`);
       continue;
     }
 
-    const overlayPath = join(tenantsDir, slug, 'tokens.json');
+    const overlayPath = join(directionsDir, slug, 'tokens.json');
     if (!existsSync(overlayPath)) continue;
 
     let overlay;
@@ -1852,8 +1846,8 @@ module.exports = config;
   await writeGenerated(join(ROOT, 'tailwind.config.tokens.cjs'), tailwindConfigCjs);
 
   // ── Per-direction CSS (ADR-0001: [data-tenant="slug"] selectors; ADR-035) ─
-  const tenantsDir = join(ROOT, 'directions');
-  const tenantResult = buildTenantCSS(tenantsDir, raw, { strict: false });
+  const directionsDir = join(ROOT, 'directions');
+  const tenantResult = buildTenantCSS(directionsDir, raw, { strict: false });
 
   if (tenantResult.errors.length > 0) {
     console.warn('\n⚠ Direction overlay validation warnings:');

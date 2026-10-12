@@ -3,24 +3,22 @@
 /**
  * scripts/scaffold-tenant.mjs
  *
- * Bootstraps a new HDS direction directory from directions/_template
- * (ADR-035: a direction is a shared art direction, never a client's brand;
- * a client themes itself at the consumer through the brand bridge).
- * Emits directions/<slug>/tokens.json + directions/<slug>/metadata.json +
- * directions/<slug>/README.md pre-filled with the supplied args.
+ * Bootstraps a new direction directory from directions/_template (ADR-035: a
+ * direction is a shared art direction any consumer can select; a client's
+ * brand never lives here, it is applied at the consumer through the brand
+ * bridge). Emits directions/<slug>/tokens.json, metadata.json and README.md
+ * pre-filled with the supplied args. The metadata keeps the deployment and
+ * legal groups empty at tier 1, which is exactly what the Figma Brand gate
+ * (scripts/lib/figma-brand-modes.mjs, directionProblems) accepts.
  *
- *   node scripts/scaffold-tenant.mjs --slug=acme-co --primary-color=#2563EB
- *   pnpm scaffold:tenant --slug=acme-co --primary-color=#2563EB
- *   pnpm scaffold:tenant --slug=acme-co --primary-color=#2563EB --dry-run
- *
- * After the scaffold completes, follow the next-steps printed to stdout
- * (or consult docs/operations/tenant-onboarding.md for the full runbook).
+ *   node scripts/scaffold-tenant.mjs --slug=warm-stone --primary-color=#8A5A2B
+ *   pnpm scaffold:tenant --slug=warm-stone --primary-color=#8A5A2B
+ *   pnpm scaffold:tenant --slug=warm-stone --primary-color=#8A5A2B --dry-run
  *
  * Options
- *   --slug=<kebab-case>        Required. Directory name + data-tenant attribute.
+ *   --slug=<kebab-case>        Required. Directory name and the data-brand value.
  *   --primary-color=<#hex>     Required. 6-digit hex for semantic.accent.rest.
- *   --display-name=<string>    Optional. Human brand name (defaults to title-case slug).
- *   --tier=<1|2|3>             Optional. 1=brand, 2=e-commerce, 3=product (default 1).
+ *   --display-name=<string>    Optional. Human direction name (defaults to title-case slug).
  *   --dry-run                  Print planned writes without touching disk.
  */
 
@@ -29,7 +27,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const TENANTS_DIR = path.join(ROOT, 'directions');
+const DIRECTIONS_DIR = path.join(ROOT, 'directions');
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -39,8 +37,7 @@ function usage() {
   console.error('Usage: pnpm scaffold:tenant --slug=<kebab-case> --primary-color=<#hex> [options]');
   console.error('  --slug           Required. Lowercase kebab-case (e.g. acme-co).');
   console.error('  --primary-color  Required. 6-digit hex (e.g. #2563EB).');
-  console.error('  --display-name   Optional. Human brand name.');
-  console.error('  --tier           Optional. 1=brand, 2=ecom, 3=product (default 1).');
+  console.error('  --display-name   Optional. Human direction name.');
   console.error('  --dry-run        Print planned writes without touching disk.');
 }
 
@@ -107,7 +104,7 @@ function toDisplayName(slug) {
     .join(' ');
 }
 
-/** Build the tokens.json overlay for the new tenant. */
+/** Build the tokens.json overlay for the new direction. */
 function buildTokens(slug, hex) {
   const hoverHex = darken(hex);
   const pressedHex = pressed(hex);
@@ -115,7 +112,7 @@ function buildTokens(slug, hex) {
 
   return {
     $schema: '../../hirobius.tokens.schema.json',
-    $description: `${slug} brand token overlay. Overrides semantic.accent.* with tenant primary color. Run \`pnpm tokens\` to compile. See docs/operations/tenant-onboarding.md for full workflow.`,
+    $description: `${slug} direction overlay (ADR-035). Overrides semantic.accent.* with the direction's accent. Run \`pnpm tokens\` to compile; see docs/architecture/tenant-token-overlay-format.md.`,
     semantic: {
       accent: {
         $type: 'color',
@@ -203,67 +200,55 @@ function buildTokens(slug, hex) {
   };
 }
 
-/** Build the metadata.json for the new tenant. */
-function buildMetadata(slug, displayName, tier, hex) {
+/** Build the direction's metadata.json: tier 1, deployment and legal present and empty, which is what directionProblems accepts. */
+function buildMetadata(slug, displayName, hex) {
   const today = new Date().toISOString().slice(0, 10);
   return {
     $schema: '../../hirobius.tenant-metadata.schema.json',
     slug,
     displayName,
-    tagline: `${displayName} — scaffolded by scaffold-tenant.mjs on ${today}. Update this tagline.`,
-    tier: Number(tier),
-    deployment: {
-      vercelProject: null,
-      primaryDomain: null,
-      previewDomain: null,
-    },
-    brand: {
-      primaryHex: hex,
-      accentName: 'brand-accent',
-      logoPath: null,
-    },
-    legal: {
-      entity: null,
-      jurisdiction: null,
-      stripeAccountKind: tier >= 2 ? 'platform-checkout' : null,
-    },
+    tagline: `${displayName} — a direction (ADR-035), not a client.`,
+    tier: 1,
+    deployment: { vercelProject: null, primaryDomain: null, previewDomain: null },
+    brand: { primaryHex: hex, accentName: 'brand-accent', logoPath: null },
+    legal: { entity: null, jurisdiction: null, stripeAccountKind: null },
     createdAt: today,
     status: 'scaffold',
     _notes: [
-      `Scaffolded with: pnpm scaffold:tenant --slug=${slug} --primary-color=${hex} --tier=${tier}`,
-      'Set vercelProject, primaryDomain once the Vercel project is created.',
-      'Fill legal.entity + jurisdiction before going live (required for tier >= 2).',
-      'Brand hexes in tokens.json are auto-derived from --primary-color; refine hover/pressed/subtle before production.',
+      `Scaffolded with: pnpm scaffold:tenant --slug=${slug} --primary-color=${hex}`,
+      'A direction is never a client: keep deployment and legal empty and tier at 1, or the Figma Brand gate refuses it (ADR-035).',
+      'Accent hexes in tokens.json are derived from --primary-color; refine hover/pressed/subtle before listing the direction in figma/brand-modes.json.',
     ],
   };
 }
 
-/** Build the per-tenant README.md. */
-function buildReadme(slug, displayName, hex, tier) {
-  return `# ${displayName} Tenant
+/** Build the direction's README.md. */
+function buildReadme(slug, displayName, hex) {
+  return `# ${displayName} — Direction Overlay
 
-Hirobius Design System tenant overlay for **${displayName}**.
+Direction (ADR-035): a shared art direction any consumer can select with
+\`<html data-brand="${slug}">\` (or \`TenantProvider\`). Not a client: a
+client's brand is applied at the consumer through
+\`@hirobius/design-system/brand\` and is never filed here.
 
 ## Quick reference
 
 | Key | Value |
 |---|---|
 | Slug | \`${slug}\` |
-| Tier | ${tier} (${tier === 1 ? 'brand presence' : tier === 2 ? 'e-commerce' : 'product'}) |
 | Primary hex | \`${hex}\` |
 | Token overlay | \`tokens.json\` |
-| Metadata | \`metadata.json\` |
+| Metadata | \`metadata.json\` (tier 1, deployment and legal empty) |
 
 ## Finishing setup
 
-1. Open \`metadata.json\` and fill \`deployment.vercelProject\`, \`deployment.primaryDomain\`,
-   and \`legal.*\` fields.
-2. Open \`tokens.json\` and refine hover / pressed / subtle shades
-   (auto-derived defaults are safe but rarely perfect).
-3. Run \`pnpm tokens\` from the repo root to compile the CSS overlay.
-4. Verify: \`rg 'data-tenant="${slug}"' src/styles/tokens.css\`
-5. Set \`<html data-tenant="${slug}">\` in the tenant's SSR entry point.
-6. Follow the full runbook at \`docs/operations/tenant-onboarding.md\`.
+1. Open \`tokens.json\` and refine the hover / pressed / subtle shades
+   (the derived defaults are safe but rarely perfect).
+2. Run \`pnpm tokens\` from the repo root to compile the overlay into
+   \`src/styles/tenants.css\`.
+3. Verify: \`rg '\\[data-brand="${slug}"\\]' src/styles/tenants.css\`
+4. To offer it in Figma, list the slug in \`figma/brand-modes.json\` (at most
+   nine directions; see \`figma/README.md\`).
 
 ## Token override scope
 
@@ -271,7 +256,7 @@ This overlay targets **semantic tier and above only**:
 - \`semantic.*\` — color roles, typography, motion, spacing
 - \`component.*\` — component-specific slots (add as needed)
 
-Do NOT override \`primitive.*\`. See
+Do not override \`primitive.*\`. See
 \`docs/architecture/tenant-token-overlay-format.md\` for the rationale.
 `;
 }
@@ -300,30 +285,25 @@ function main() {
 
   const slug = flags.slug;
   const primaryHex = flags['primary-color'].toUpperCase().replace(/^([^#])/, '#$1');
-  const tier = Number(flags.tier ?? 1);
-  if (![1, 2, 3].includes(tier)) {
-    console.error('Error: --tier must be 1, 2, or 3');
-    process.exit(1);
-  }
   const displayName = flags['display-name'] ?? toDisplayName(slug);
 
-  const tenantDir = path.join(TENANTS_DIR, slug);
+  const directionDir = path.join(DIRECTIONS_DIR, slug);
 
-  if (!dryRun && fs.existsSync(tenantDir)) {
+  if (!dryRun && fs.existsSync(directionDir)) {
     console.error(
       `Error: directions/${slug} already exists. Remove it first or choose a different slug.`,
     );
     process.exit(1);
   }
 
-  const tokensPath = path.join(tenantDir, 'tokens.json');
-  const metadataPath = path.join(tenantDir, 'metadata.json');
-  const readmePath = path.join(tenantDir, 'README.md');
+  const tokensPath = path.join(directionDir, 'tokens.json');
+  const metadataPath = path.join(directionDir, 'metadata.json');
+  const readmePath = path.join(directionDir, 'README.md');
 
   const tokensContent = JSON.stringify(buildTokens(slug, primaryHex), null, 2) + '\n';
   const metadataContent =
-    JSON.stringify(buildMetadata(slug, displayName, tier, primaryHex), null, 2) + '\n';
-  const readmeContent = buildReadme(slug, displayName, primaryHex, tier);
+    JSON.stringify(buildMetadata(slug, displayName, primaryHex), null, 2) + '\n';
+  const readmeContent = buildReadme(slug, displayName, primaryHex);
 
   if (dryRun) {
     console.log('[dry-run] would create directory:', `directions/${slug}/`);
@@ -349,12 +329,12 @@ function main() {
     return;
   }
 
-  fs.mkdirSync(tenantDir, { recursive: true });
+  fs.mkdirSync(directionDir, { recursive: true });
   fs.writeFileSync(tokensPath, tokensContent);
   fs.writeFileSync(metadataPath, metadataContent);
   fs.writeFileSync(readmePath, readmeContent);
 
-  console.log(`\nScaffolded tenant: ${slug}`);
+  console.log(`\nScaffolded direction: ${slug}`);
   console.log('  tokens.json  →', tokensPath);
   console.log('  metadata.json →', metadataPath);
   console.log('  README.md    →', readmePath);
@@ -362,16 +342,23 @@ function main() {
   console.log(
     '  1. Edit directions/' + slug + '/tokens.json  — refine hover/pressed/subtle shades',
   );
+  console.log('  2. Run: pnpm tokens');
+  console.log('  3. Verify: rg \'\\[data-brand="' + slug + '"\\]\' src/styles/tenants.css');
   console.log(
-    '  2. Edit directions/' +
+    '  4. Optional: list "' +
       slug +
-      '/metadata.json — keep deployment + legal empty (a direction is never a client)',
+      '" in figma/brand-modes.json to offer it as a Figma Brand mode',
   );
-  console.log('  3. Run: pnpm tokens');
-  console.log('  4. Verify: rg \'data-tenant="' + slug + '"\' src/styles/tokens.css');
-  console.log('  5. Set <html data-tenant="' + slug + '"> in the tenant SSR entry point');
-  console.log('  6. Deploy via Vercel project for this tenant');
-  console.log('\nFull runbook: docs/operations/tenant-onboarding.md');
+  console.log(
+    '\nKeep deployment and legal empty in metadata.json: a direction is never a client (ADR-035).',
+  );
 }
 
-main();
+export { buildTokens, buildMetadata, buildReadme, validateSlug, validateHex };
+
+if (
+  process.argv[1] &&
+  fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))
+) {
+  main();
+}

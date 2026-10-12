@@ -1,8 +1,8 @@
 {
   "$schema": "../../hirobius.tenant-metadata.schema.json",
   "slug": "_template",
-  "displayName": "Tenant Template",
-  "tagline": "Starter scaffold — copy this directory and rename to onboard a new tenant.",
+  "displayName": "Direction Template",
+  "tagline": "Starter scaffold — copy this directory and rename to add a direction (ADR-035).",
   "tier": 1,
   "deployment": {
     "vercelProject": null,

@@ -18,13 +18,12 @@
  * target and is unit-testable in isolation. Mirrors the zero-dependency idiom
  * of `box-sx.ts`.
  *
- * Downstream vendoring: a consumer that cannot take the package (the site
- * factory's `packages/template` ships no React) vendors this file and adds its
- * own dials on top. The `BrandPalette` fields and the variables written here
- * are the contract it holds itself to against each published release
- * (site-engine ADR-0005, its `hds-contract.test.ts`): keep both additive. A
- * removed field or a renamed variable breaks that consumer on its next
- * snapshot refresh.
+ * Downstream vendoring: a render target that cannot take the package (a static
+ * site factory that ships no React) vendors this file and adds its own dials
+ * on top. The `BrandPalette` fields and the variables written here are the
+ * contract such a consumer pins against each published release: keep both
+ * additive. A removed field or a renamed variable breaks that consumer on its
+ * next snapshot refresh.
  *
  * Interactive accent states (hover/pressed/subtle) are derived from the primary
  * with CSS `color-mix()` — no colour-math dependency, resolved by the browser.

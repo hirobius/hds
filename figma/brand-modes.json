@@ -1,5 +1,5 @@
 {
-  "$comment": "Modes of the Figma Brand collection (pnpm figma:model). DIRECTIONS ONLY (ADR-035): the Figma library is shared, so a client's brand never goes in. A listed slug must live under directions/<slug>/ with tier 1 and empty deployment and legal groups in its metadata.json, and its tokens.json must pass check-tenant-tokens; scripts/lib/figma-brand-modes.mjs refuses anything else. A Professional plan allows 10 modes per collection: the base mode plus 9 directions. Runbook: figma/README.md.",
+  "$comment": "Modes of the Figma Brand collection (pnpm figma:model). Directions only (ADR-035): the Figma library is shared, so a client's brand never goes in. A listed slug must live under directions/<slug>/ with tier 1 and empty deployment and legal groups in its metadata.json, and its tokens.json must pass check-tenant-tokens; scripts/lib/figma-brand-modes.mjs refuses anything else. A Professional plan allows 10 modes per collection: the base mode plus 9 directions. Runbook: figma/README.md.",
   "baseMode": "Hirobius",
-  "tenants": ["brutalist-demo"]
+  "directions": ["brutalist-demo"]
 }

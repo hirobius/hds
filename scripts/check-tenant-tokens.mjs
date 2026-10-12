@@ -5,7 +5,7 @@
  * Validates every directions/<slug>/tokens.json against HDS structural rules
  * (ADR-035: directions/ holds the shared art directions; a client's brand
  * never lives in this repo).
- * Runs as a standalone CLI tool and as a pre-commit gate.
+ * Runs as a standalone CLI tool and as a pretest gate (`pnpm test`).
  *
  * Rules enforced (per docs/architecture/tenant-token-overlay-format.md):
  *   SC — $schema must reference hirobius.tenant-tokens.schema.json
@@ -21,7 +21,8 @@
  * Exit 0 = all tenants pass. Exit 1 = one or more validation failures.
  */
 
-import { readFileSync, readdirSync, existsSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
+import { listDirectionSlugs } from './lib/directions.mjs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -38,7 +39,7 @@ const FIXTURE_DIR = process.env.FIXTURE_DIR;
 const INPUT_ROOT = FIXTURE_DIR || ROOT;
 
 const EXPECTED_SCHEMA_REF = 'hirobius.tenant-tokens.schema.json';
-const TENANTS_DIR = join(INPUT_ROOT, 'directions');
+const DIRECTIONS_DIR = join(INPUT_ROOT, 'directions');
 
 const REQUIRED_METADATA_FIELDS = ['slug', 'displayName', 'tier', 'status'];
 const VALID_STATUSES = ['scaffold', 'active', 'archived'];
@@ -73,10 +74,7 @@ function validateMetadata(meta, slug) {
 function run() {
   const baseRaw = readTokenSource(join(INPUT_ROOT, 'hirobius.tokens.json'));
 
-  let slugDirs;
-  try {
-    slugDirs = readdirSync(TENANTS_DIR, { withFileTypes: true });
-  } catch {
+  if (!existsSync(DIRECTIONS_DIR)) {
     console.log('No directions/ directory — nothing to validate.');
     process.exit(0);
   }
@@ -84,21 +82,17 @@ function run() {
   const allErrors = [];
   let tenantsChecked = 0;
 
-  for (const entry of slugDirs) {
-    if (!entry.isDirectory()) continue;
-    const slug = entry.name;
-    if (slug.startsWith('_')) continue; // skip _template etc.
-
+  for (const slug of listDirectionSlugs(DIRECTIONS_DIR)) {
     // Slug format
     if (!/^[a-z0-9-]+$/.test(slug)) {
       allErrors.push(`[${slug}] invalid slug format — must match [a-z0-9-]+`);
       continue;
     }
 
-    const tenantDir = join(TENANTS_DIR, slug);
+    const directionDir = join(DIRECTIONS_DIR, slug);
 
     // Validate tokens.json if present
-    const overlayPath = join(tenantDir, 'tokens.json');
+    const overlayPath = join(directionDir, 'tokens.json');
     if (existsSync(overlayPath)) {
       let overlay;
       try {
@@ -124,7 +118,7 @@ function run() {
     }
 
     // Validate metadata.json if present
-    const metaPath = join(tenantDir, 'metadata.json');
+    const metaPath = join(directionDir, 'metadata.json');
     if (existsSync(metaPath)) {
       let meta;
       try {

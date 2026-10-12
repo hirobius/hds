@@ -226,7 +226,7 @@ Screen-reader output is checked by `tests/primitive-contracts/screen-reader.cont
 
 ## Visual direction: Editorial Enterprise
 
-The governing direction is "Editorial Enterprise" — enterprise rigor with editorial pacing. It favors sharp hierarchy, open whitespace, monochrome neutrals, and a single tenant-set accent. In practice:
+The governing direction is "Editorial Enterprise" — enterprise rigor with editorial pacing. It favors sharp hierarchy, open whitespace, monochrome neutrals, and a single accent each direction or brand sets. In practice:
 
 - documentation reads like a designed publication, not a component dump
 - cards are used sparingly; whitespace, rails, dividers, and bands carry structure first

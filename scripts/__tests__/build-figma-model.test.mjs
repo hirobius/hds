@@ -38,7 +38,7 @@ describe('pnpm figma:model', () => {
     const outPath = join(dir, 'figma', 'model.json');
     const brands = {
       baseMode: 'Hirobius',
-      tenants: [
+      directions: [
         {
           slug: 'sharp-demo',
           overlay: { role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } } },
