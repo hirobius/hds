@@ -393,6 +393,20 @@
   transform: scale(1.14);
 }
 
+/* -- Slider touch target (WCAG 2.5.8) ---------------------------------------
+ * The input fills a 20px row, so the tappable strip is 20px. On a coarse pointer
+ * lift the input to the interactive-min height; the negative block margin
+ * (half the difference) keeps the row's layout height, so nothing moves and the
+ * track and thumb stay centred. Fine pointers (desktop) get no rule. */
+@media (pointer: coarse) {
+  .hds-slider-input {
+    height: var(--primitive-size-interactive-min);
+    margin-block: calc(
+      (var(--semantic-size-control-md) - var(--primitive-size-interactive-min)) / 2
+    );
+  }
+}
+
 /* --- Skeleton shimmer animation ---------------------------------------------- */
 @keyframes hds-skeleton-shimmer {
   0% {
