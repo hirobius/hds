@@ -448,6 +448,10 @@ const METRIC_TONE_VALUE_COLOR: Record<CardTone, string> = {
   danger: 'var(--semantic-color-feedback-error)',
 };
 
+/**
+ * @deprecated No replacement planned: compose a Card with the type roles (caption label, display/title value).
+ * @removeIn 1.0.0
+ */
 export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Uppercase eyebrow label (e.g. "Retainer", "Open tasks"). */
   label: React.ReactNode;
@@ -461,9 +465,10 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /**
  * Card.Metric — one label, a large value and an optional sub-line inside a Card.
+ * @deprecated No replacement planned: compose a Card with the type roles (caption label, display/title value).
+ * @removeIn 1.0.0
  * @usage Show one headline figure (a KPI, a count, a total) with its label inside a Card.
  * @whenNot A metric outside a Card, or several figures that share one label.
- * @useInstead MetricTiles a row of headline numbers with no enclosing Card
  */
 const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricProps>(
   function CardMetric({ className, label, value, sub, tone = 'neutral', style, ...props }, ref) {
@@ -514,7 +519,6 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
  * @usage Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.
  * @whenNot A bare padded background with no slot anatomy, or a single headline figure.
  * @useInstead Surface a padded background without slot anatomy
- * @useInstead Card.Metric a single headline figure
  */
 export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
   Header: CardHeader,

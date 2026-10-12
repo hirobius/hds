@@ -109,15 +109,22 @@ describe('readComponentTags — deprecation (hds#390)', () => {
 });
 
 describe('discoverHdsComponents — deprecations (hds#390)', () => {
-  it('finds no component deprecated once 0.21.0 removed StatusDot (hds#465)', () => {
+  it('finds only the metric displays deprecated, StatusDot (hds#465) being gone', () => {
     // Deprecated JSDoc on a type or prop (ActivityFeed's ActivityStatus) does
     // not deprecate a component, so the assertion scopes to components.
     // StatusDot was the last one: deprecated for Badge dot, removed in 0.21.0 (hds#465).
     const { components } = discoverHdsComponents();
     const deprecated = components
       .filter((c) => c.deprecation && c.filePath.startsWith('src/app/components/'))
-      .map((c) => [c.name, c.deprecation.removeIn]);
-    expect(deprecated).toEqual([]);
+      .map((c) => [c.name, c.deprecation.removeIn])
+      .sort();
+    // Card.Metric, Stat, MetricTile and MetricTiles: deprecated, not removed.
+    expect(deprecated).toEqual([
+      ['CardMetric', '1.0.0'],
+      ['MetricTile', '1.0.0'],
+      ['MetricTiles', '1.0.0'],
+      ['Stat', '1.0.0'],
+    ]);
     const names = components.map((c) => c.name);
     for (const gone of [
       'CinematicLink',

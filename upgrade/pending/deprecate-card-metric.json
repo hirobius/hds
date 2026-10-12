@@ -1,0 +1,56 @@
+{
+  "impact": "none",
+  "plain": "Card.Metric, Stat, MetricTile, MetricTiles and Blockquote's size prop are deprecated and still work; nothing is removed.",
+  "steps": [
+    {
+      "id": "deprecated/CardMetric",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).",
+      "detect": {
+        "regex": ["<CardMetric\\b", "\\bCard\\.Metric\\b"]
+      },
+      "removeIn": "1.0.0"
+    },
+    {
+      "id": "deprecated/Stat",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Stat is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).",
+      "detect": {
+        "regex": ["<Stat\\b"]
+      },
+      "removeIn": "1.0.0"
+    },
+    {
+      "id": "deprecated/MetricTile",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "MetricTile is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).",
+      "detect": {
+        "regex": ["<MetricTile\\b"]
+      },
+      "removeIn": "1.0.0"
+    },
+    {
+      "id": "deprecated/MetricTiles",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "MetricTiles is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).",
+      "detect": {
+        "regex": ["<MetricTiles\\b"]
+      },
+      "removeIn": "1.0.0"
+    },
+    {
+      "id": "deprecated/Blockquote.size",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed.",
+      "detect": {
+        "regex": ["<Blockquote\\b[^>]*\\ssize\\b"]
+      },
+      "removeIn": "1.0.0"
+    }
+  ]
+}
