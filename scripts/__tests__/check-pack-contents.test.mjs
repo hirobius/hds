@@ -113,6 +113,21 @@ describe('agent tooling in the tarball', () => {
   });
 });
 
+describe('the repo front door stays out of the tarball (hds#613)', () => {
+  it('flags docs/ai/FRONT-DOOR.md and docs/ai/DOCS-INDEX.md, but not the shipped docs/CONSUMING.md', () => {
+    const r = diffPackContents(
+      [...good, 'docs/ai/FRONT-DOOR.md', 'docs/ai/DOCS-INDEX.md', 'docs/CONSUMING.md'],
+      { required: REQUIRED, forbidden: FORBIDDEN },
+    );
+    expect(r.forbidden).toEqual(['docs/ai/FRONT-DOOR.md', 'docs/ai/DOCS-INDEX.md']);
+  });
+
+  it('package.json#files names neither of them', () => {
+    const files = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).files;
+    expect(files.filter((f) => f.startsWith('docs/'))).toEqual(['docs/CONSUMING.md']);
+  });
+});
+
 describe('real npm pack --dry-run', () => {
   it.skipIf(!existsSync(join(ROOT, 'dist', 'hirobius-ui.js')))(
     'lists every required file and no forbidden one',

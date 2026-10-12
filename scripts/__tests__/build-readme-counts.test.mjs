@@ -8,7 +8,12 @@
  * No filesystem reads or writes.
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
+import { spawnSync } from 'node:child_process';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   COUNTS_BLOCK,
   countBarrelComponentModules,
@@ -124,5 +129,65 @@ describe('findOverclaims', () => {
     const claims = readClaims('# HDS\n\n- **0** DTCG tokens\n');
     const keys = findOverclaims(claims, COUNTS).map((o) => o.key);
     expect(keys).toEqual(['components', 'tokens']);
+  });
+});
+
+// ── --check ───────────────────────────────────────────────────────────────────
+describe('build-readme-counts --check', () => {
+  const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const SCRIPT = join(ROOT, 'scripts/build-readme-counts.mjs');
+  const INPUTS = [
+    'README.md',
+    'src/index.ts',
+    'src/patterns.ts',
+    'hirobius.tokens.json',
+    'public/hds-manifest.json',
+  ];
+  const temps = [];
+  afterEach(() => {
+    while (temps.length) rmSync(temps.pop(), { recursive: true, force: true });
+  });
+  const copy = () => {
+    const root = mkdtempSync(join(tmpdir(), 'readme-counts-'));
+    temps.push(root);
+    for (const f of INPUTS) {
+      mkdirSync(dirname(join(root, f)), { recursive: true });
+      cpSync(join(ROOT, f), join(root, f));
+    }
+    return root;
+  };
+  const run = (root, ...args) =>
+    spawnSync(process.execPath, [SCRIPT, '--root', root, ...args], { encoding: 'utf8' });
+
+  it('passes when the README already holds what the generator would write', () => {
+    const res = run(copy(), '--check');
+    expect(res.stderr).toBe('');
+    expect(res.status).toBe(0);
+  });
+
+  it('fails when the counts are stale, names README.md and the fix, and writes nothing', () => {
+    const root = copy();
+    const readme = join(root, 'README.md');
+    const stale = readFileSync(readme, 'utf8').replace(
+      /\*\*\d+\*\* DTCG tokens/,
+      '**1** DTCG tokens',
+    );
+    writeFileSync(readme, stale);
+    const res = run(root, '--check');
+    expect(res.status).toBe(1);
+    expect(res.stderr).toContain('README.md');
+    expect(res.stderr).toContain('pnpm readme:counts');
+    expect(readFileSync(readme, 'utf8')).toBe(stale);
+  });
+
+  it('without --check, rewrites the stale README', () => {
+    const root = copy();
+    const readme = join(root, 'README.md');
+    writeFileSync(
+      readme,
+      readFileSync(readme, 'utf8').replace(/\*\*\d+\*\* DTCG tokens/, '**1** DTCG tokens'),
+    );
+    expect(run(root).status).toBe(0);
+    expect(run(root, '--check').status).toBe(0);
   });
 });

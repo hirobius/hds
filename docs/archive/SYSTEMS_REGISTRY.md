@@ -1,3 +1,5 @@
+> **Archived 2026-10-12 (hds#612).** This is history, not current state: overlaps docs/guardrails/registry.json, which is the live gate registry. Paths and numbers below are not kept up to date.
+
 # SYSTEMS_REGISTRY
 
 Last updated: 2026-09-16

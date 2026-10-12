@@ -20,4 +20,4 @@ Approving a `/to-tickets` breakdown is the only human step: every published tick
 - Body: an `## Acceptance criteria` checklist of `- [ ]` items (no checklist = parked on sight) and a `## Blocked by` section of `- #N` refs, or `- None (can start immediately)` when free. Ralph picks only tickets whose blockers are all closed.
 - `ralph-auto`: always add it. hds configures no supervised paths, so none can apply.
 
-Contract test: `scripts/__tests__/to-tickets-contract.test.mjs` in hirobius/ops runs the kit parser on the vendored template, so a skills bump that reshapes it fails CI.
+Contract test: `to-tickets-contract.test.mjs` in the hirobius/ops repo's `scripts/__tests__/` runs the kit parser on the vendored template, so a skills bump that reshapes it fails CI.
