@@ -227,7 +227,7 @@ copy "HDS Tokens & Components", load the new plugin files (step 1), then Sync
 docs site serves its bundle; before that they say the plugin is out of
 date, and the old files refuse the renamed copy by its name.
 
-1. Once per plugin build: an agent runs `pnpm figma:push` and sends you `figma/push/plugin/`. Overwrite `manifest.json`, `code.js` and `ui.html` in the folder Figma imported "HDS tokens sync" from.
+1. Once per plugin build: download the current plugin files from https://hirobius-hds-components.vercel.app/figma/hds-tokens-sync.zip (`docsUrl` in `figma/links.json`; the folder `hds-tokens-sync/` holds `manifest.json`, `code.js` and `ui.html`, built in the same docs build as the bundle, so its build matches; https://hirobius-hds-components.vercel.app/figma/hds-tokens-sync.json shows which `pluginBuild` and commit it is). Fallback: an agent runs `pnpm figma:push` and sends you `figma/push/plugin/`. Overwrite `manifest.json`, `code.js` and `ui.html` in the folder Figma imported "HDS tokens sync" from.
 2. In the library (https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ): Plugins > Development > HDS tokens sync > **Sync**. If it says it got no file key, copy the file's link (Share > Copy link). When the link holds `2VgBbVpKiDnu0aftJEVyBQ`, run **Mark this file as the HDS library** from the same menu, paste the file's own link, then Sync again. A link with any other key is not the library: do not Mark it.
 3. Tell an agent the Sync is done. It collects the snapshot the Sync wrote into the file ([Agent: collect a sync](#agent-collect-a-sync)), so there is nothing to download. **Download JSON** stays as the fallback when the plugin says the receipt was not written.
 
@@ -235,7 +235,7 @@ The **Sync plugin** (`figma/push/plugin/`, id `hds-tokens-sync-dev`) carries no
 model. Its window fetches the sync bundle the docs site publishes at
 https://hirobius-hds-components.vercel.app/figma/sync-bundle.json (`docsUrl` in
 `figma/links.json`; `pnpm docs:publish`, the docs site's Vercel
-build, runs `node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json`;
+build, runs `node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json --plugin-zip docs-site/out/figma/hds-tokens-sync.zip`, which also writes the zip and its `hds-tokens-sync.json` from the same commit;
 the bundle is generated, never committed). Plugin builds from before 2026-10-10
 fetched it from the retired Storybook deploy; rebuild them with `pnpm figma:push`. Its
 `code.js` is about 52 KB, and its files change only when the plugin build

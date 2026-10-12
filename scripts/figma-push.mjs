@@ -46,6 +46,10 @@
  *   pnpm figma:push --delta    also write use-figma/delta.js for the change since
  *                              figma/snapshot.json, or refuse and route it to Sync
  *                              (figma/README.md "Agent sync (zero clicks)")
+ *   node scripts/figma-push.mjs --plugin-zip <out.zip>
+ *                              write the Sync plugin as a zip (folder hds-tokens-sync/,
+ *                              the three plugin files) plus <out>.json naming its build;
+ *                              combines with --bundle so both come from one commit
  *   node scripts/figma-push.mjs --bundle <out>
  *                              write only the sync bundle the Sync plugin fetches
  *                              (the Vercel build writes it to
@@ -79,6 +83,7 @@ import {
   hdsSummaryLine,
 } from './lib/figma-runtime.mjs';
 import { parseSnapshotFile } from './lib/figma-snapshot.mjs';
+import { zipStore } from './lib/zip-store.mjs';
 import {
   DELTA_MAX_CHARS,
   DELTA_PRUNE_REFUSAL,
@@ -193,6 +198,37 @@ export function writeSyncBundle({ root, out, commit }) {
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, text);
   return { bundle, bytes: Buffer.byteLength(text) };
+}
+
+/** The folder, and the file stem, the Sync plugin zip is published under. */
+export const PLUGIN_ZIP_NAME = 'hds-tokens-sync';
+const PLUGIN_ZIP_FILES = ['code.js', 'manifest.json', 'ui.html'];
+
+/**
+ * Writes the Sync plugin as a zip to `out` (folder `hds-tokens-sync/` holding
+ * code.js, manifest.json and ui.html, the same bytes writePushArtifacts puts
+ * in figma/push/plugin/) and a json beside it (`out` with .zip -> .json) naming
+ * the build. Only the Sync plugin: the promote plugin can prune and is never
+ * published. Built from the same inputs as writeSyncBundle, so the zip's
+ * pluginBuild is the bundle's.
+ *
+ * @param {{ root: string, out: string, commit: string, builtAt?: string }} options
+ * @returns {{ pluginBuild: string, meta: object, bytes: number, metaPath: string }}
+ */
+export function writePluginZip({ root, out, commit, builtAt = new Date().toISOString() }) {
+  const pluginFiles = buildSyncPlugin(readLinks(root));
+  const entries = PLUGIN_ZIP_FILES.map((name) => ({
+    name: `${PLUGIN_ZIP_NAME}/${name}`,
+    data: pluginFiles[name],
+  }));
+  const pluginBuild = syncPluginBuild(pluginFiles);
+  const meta = { pluginBuild, commit, builtAt, files: entries.map((entry) => entry.name) };
+  const zip = zipStore(entries);
+  const metaPath = out.replace(/\.zip$/, '') + '.json';
+  mkdirSync(dirname(out), { recursive: true });
+  writeFileSync(out, zip);
+  writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
+  return { pluginBuild, meta, bytes: zip.length, metaPath };
 }
 
 /**
@@ -352,39 +388,53 @@ export function formatRun({ model, prune, files, pluginBuild }, outDir) {
   ].join('\n');
 }
 
-function runBundle(args) {
-  const at = args.indexOf('--bundle');
-  const out = args[at + 1];
-  if (!out || out.startsWith('--')) {
-    throw new Error(
-      '--bundle needs an output path, e.g. --bundle docs-site/out/figma/sync-bundle.json.',
-    );
+/** The value after `flag`, or a throw naming the flag and an example path. */
+function flagPath(args, flag, example) {
+  const value = args[args.indexOf(flag) + 1];
+  if (!value || value.startsWith('--')) {
+    throw new Error(`${flag} needs an output path, e.g. ${flag} ${example}.`);
   }
+  return resolve(process.cwd(), value);
+}
+
+/** `--bundle <out>` and/or `--plugin-zip <out>`: both from one commit, so the zip's pluginBuild is the bundle's. */
+function runPublish(args) {
   if (args.includes('--prune')) {
     throw new Error(
-      'the sync bundle never prunes, so --bundle refuses --prune. A deliberate prune uses the promote plugin (pnpm figma:push --prune).',
+      'the sync bundle and plugin zip never prune, so --bundle and --plugin-zip refuse --prune. A deliberate prune uses the promote plugin (pnpm figma:push --prune).',
     );
   }
-  const path = resolve(process.cwd(), out);
-  const { bundle, bytes } = writeSyncBundle({
-    root: ROOT,
-    out: path,
-    commit: resolveBundleCommit(),
-  });
-  console.log(
-    `figma:push --bundle — ${relative(process.cwd(), path).replaceAll('\\', '/')} (${bytes.toLocaleString('en-US')} B): commit ${bundle.commit.slice(0, 7)}, model ${bundle.modelHash}, Sync plugin build ${bundle.pluginBuild}, base ${bundle.base ? bundle.base.checksum : 'none'}`,
-  );
+  const bundleOut = args.includes('--bundle')
+    ? flagPath(args, '--bundle', 'docs-site/out/figma/sync-bundle.json')
+    : null;
+  const zipOut = args.includes('--plugin-zip')
+    ? flagPath(args, '--plugin-zip', 'docs-site/out/figma/hds-tokens-sync.zip')
+    : null;
+  const rel = (path) => relative(process.cwd(), path).replaceAll('\\', '/');
+  const commit = resolveBundleCommit();
+  if (bundleOut) {
+    const { bundle, bytes } = writeSyncBundle({ root: ROOT, out: bundleOut, commit });
+    console.log(
+      `figma:push --bundle — ${rel(bundleOut)} (${bytes.toLocaleString('en-US')} B): commit ${bundle.commit.slice(0, 7)}, model ${bundle.modelHash}, Sync plugin build ${bundle.pluginBuild}, base ${bundle.base ? bundle.base.checksum : 'none'}`,
+    );
+  }
+  if (zipOut) {
+    const { pluginBuild, bytes, metaPath } = writePluginZip({ root: ROOT, out: zipOut, commit });
+    console.log(
+      `figma:push --plugin-zip — ${rel(zipOut)} (${bytes.toLocaleString('en-US')} B) + ${rel(metaPath)}: commit ${commit.slice(0, 7)}, Sync plugin build ${pluginBuild}`,
+    );
+  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  if (args.includes('--bundle')) {
+  if (args.includes('--bundle') || args.includes('--plugin-zip')) {
     try {
-      runBundle(args);
+      runPublish(args);
     } catch (error) {
-      console.error(`✗ figma:push --bundle — ${error.message}`);
+      console.error(`✗ figma:push --bundle/--plugin-zip — ${error.message}`);
       console.error(
-        '  The Figma Sync plugin fetches this file from the deployed docs site, so the build stops here instead of deploying without it. Fix the cause above, then redeploy.',
+        '  The Figma Sync plugin and its download are served from the deployed docs site, so the build stops here instead of deploying without them. Fix the cause above, then redeploy.',
       );
       process.exit(1);
     }
