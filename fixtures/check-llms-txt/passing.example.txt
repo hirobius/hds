@@ -1,0 +1,11 @@
+# Example Design System
+
+> A one-line summary of the system.
+
+## Start here
+
+- [AGENTS.md](https://unpkg.com/@hirobius/design-system/AGENTS.md): which component to use for each need.
+
+## Optional
+
+- [CHANGELOG.md](https://unpkg.com/@hirobius/design-system/CHANGELOG.md): release history.

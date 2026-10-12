@@ -144,7 +144,7 @@ describe('gate wiring (hds#340)', () => {
 });
 
 describe('llms.txt "Which one when"', () => {
-  const llms = readFileSync(path.join(ROOT, 'public/llms.txt'), 'utf8');
+  const llms = readFileSync(path.join(ROOT, 'public/llms-full.txt'), 'utf8');
   const section = llms.split('## Which one when')[1]?.split(/\n## /)[0] ?? '';
   const names = section
     .split('\n')
@@ -190,7 +190,7 @@ describe('contract tags stay on the component they describe (hds#340 review)', (
   });
 
   it('no two "Which one when" lines share the same text', () => {
-    const llms = readFileSync(path.join(ROOT, 'public/llms.txt'), 'utf8');
+    const llms = readFileSync(path.join(ROOT, 'public/llms-full.txt'), 'utf8');
     const section = llms.split('## Which one when')[1]?.split(/\n## /)[0] ?? '';
     const bodies = section
       .split('\n')

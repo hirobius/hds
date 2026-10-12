@@ -1,6 +1,5 @@
 # Hirobius Design System
 
-Generated: 2026-10-11T21:10:01.376Z
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## Agents Using The Package: Start Here
@@ -299,14 +298,14 @@ Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the n
 
 ## Slices And Full Bundle
 
-Load only what the task needs. Same text as this file, split by topic:
+Load only what the task needs. Same text as this file (`public/llms-full.txt`), split by topic:
 
 - `public/llms/layout.txt` - screen layout recipe, card anatomy, elevation roles
 - `public/llms/tokens.txt` - token rules and the quick token reference
 - `public/llms/scroll.txt` - scroll-driven section recipe
 - `public/llms/components.txt` - component inventory pointer, API pointer, props digest
 
-- `public/llms-full.txt` - this file + the full `DESIGN.md` + a compact props digest for every component.
+- `public/llms-full.txt` - the full bundle: this text + the full `DESIGN.md` + a compact props digest for every component.
 
 Paths in this file that begin with `docs/architecture/`, `src/app/components/`, `src/scroll/` or under `scripts/`, or that name `public/manifest.json`, `DESIGN-HANDOFF.md`, `TOKEN_GOVERNANCE.md` or `SYSTEMS_REGISTRY.md` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 

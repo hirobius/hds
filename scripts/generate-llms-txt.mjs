@@ -10,13 +10,14 @@
  *   - hirobius.tokens.json (token source of truth; referenced, not inlined)
  *
  * Output:
- *   - public/llms.txt
- *   - llms.txt (repo-root mirror for local tooling)
- *   - public/llms-full.txt (llms.txt + full DESIGN.md + props digest)
+ *   - public/llms.txt (an llms.txt index: H1, > summary, absolute links; no body)
+ *   - llms.txt (repo-root mirror of the index)
+ *   - public/llms-full.txt (the body + full DESIGN.md + props digest)
  *   - public/llms/{layout,tokens,scroll,components}.txt (topic slices)
  *
- * Every section is written once (as a `## ` block of the llms.txt template) and
- * the slices pick blocks by heading, so llms.txt and the slices share text.
+ * Every section is written once (as a `## ` block of the body template) and
+ * the slices pick blocks by heading, so llms-full.txt and the slices share
+ * text. The index links to them through one base URL (scripts/lib/llms-index.mjs).
  */
 
 import { NEEDS_INTRO, needsMarkdown } from './lib/guide-markdown.mjs';
@@ -30,6 +31,7 @@ import { buildTokenQuickReference } from './build-token-quick-reference.mjs';
 import { buildWhichOneWhen } from './lib/which-one-when.mjs';
 import { coreByCategory, renderCoreSetLines } from './lib/core-set.mjs';
 import { readVoice, voiceMarkdown } from './lib/voice.mjs';
+import { buildLlmsIndex } from './lib/llms-index.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -175,14 +177,12 @@ Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> 
 `
     : '';
 
-  const generated = new Date().toISOString();
   const SLICE_INDEX = SLICES.map((sl) => `- \`public/llms/${sl.name}.txt\` - ${sl.blurb}`).join(
     '\n',
   );
 
-  const txt = `# Hirobius Design System
+  const body = `# Hirobius Design System
 
-Generated: ${generated}
 Primary sources: \`public/hds-manifest.json\`, \`src/app/data/component-api.json\`, \`hirobius.tokens.json\`
 
 ## Agents Using The Package: Start Here
@@ -293,11 +293,11 @@ Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the n
 
 ## Slices And Full Bundle
 
-Load only what the task needs. Same text as this file, split by topic:
+Load only what the task needs. Same text as this file (\`public/llms-full.txt\`), split by topic:
 
 ${SLICE_INDEX}
 
-- \`public/llms-full.txt\` - this file + the full \`DESIGN.md\` + a compact props digest for every component.
+- \`public/llms-full.txt\` - the full bundle: this text + the full \`DESIGN.md\` + a compact props digest for every component.
 
 Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 
@@ -339,7 +339,7 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 - \`DESIGN-HANDOFF.md\` - verbose visual language mirror (on-demand only)
 `;
 
-  const sections = parseSections(txt);
+  const sections = parseSections(body);
   const pick = (titles) =>
     titles
       .map((t) => {
@@ -353,7 +353,7 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
   const digestSection = `## Component Props Digest\n\nCompact: name, first line of description, then prop: type = default. Full detail in \`src/app/data/component-api.json\`.\n\n${digest}`;
 
   const designMd = readFileSync(join(ROOT, 'DESIGN.md'), 'utf8').trim();
-  const full = `${txt.trimEnd()}\n\n---\n\n# DESIGN.md (full)\n\n${designMd}\n\n---\n\n${digestSection}\n`;
+  const full = `${body.trimEnd()}\n\n---\n\n# DESIGN.md (full)\n\n${designMd}\n\n---\n\n${digestSection}\n`;
 
   const slices = {
     layout: pick(['How To Lay Out A Screen', 'HDS Card Anatomy', 'Elevation roles']),
@@ -363,10 +363,15 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
   };
 
   const sliceHeader = (name) =>
-    `# Hirobius Design System - ${name} slice\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms.txt.\n\n`;
+    `# Hirobius Design System - ${name} slice\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms-full.txt.\n\n`;
+  const index = buildLlmsIndex({
+    summary:
+      'Token-first React design system for product UIs, with machine-readable context for AI agents: which component to use for each screen need, the tokens, and the rules.',
+    slices: SLICES,
+  });
   const outputs = {
-    'public/llms.txt': txt,
-    'llms.txt': txt,
+    'public/llms.txt': index,
+    'llms.txt': index,
     'public/llms-full.txt': full,
   };
   for (const sl of SLICES) {
@@ -377,7 +382,7 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
   mkdirSync(join(ROOT, 'public', 'llms'), { recursive: true });
   for (const [rel, text] of Object.entries(outputs)) writeStableArtifact(join(ROOT, rel), text);
 
-  return txt;
+  return index;
 }
 
 export function main() {
