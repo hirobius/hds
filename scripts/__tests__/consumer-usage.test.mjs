@@ -152,6 +152,42 @@ describe('README "In use" section', () => {
   });
 });
 
+describe('README "In use" names no private repository (hds#545)', () => {
+  // README ships in every npm tarball, so it must not name the consumer repo or
+  // the commit it was measured at. The snapshot keeps both for reproducibility.
+  const sha = 'b'.repeat(40);
+  const out = renderInUseBlock({
+    files: 35,
+    components: 25,
+    commit: sha,
+    consumersConfirmed: true,
+    consumers: { productApps: 1, tokenLevelSites: 4 },
+  });
+
+  it('renders no repository name and no commit hash', () => {
+    expect(out).not.toMatch(/hirobius\/ops/);
+    expect(out).not.toContain(sha.slice(0, 7));
+    expect(out).not.toMatch(/measured at commit/);
+  });
+
+  it('keeps the counts, the consumer table and the screenshots', () => {
+    expect(out).toMatch(/\*\*35\*\* of its source files/);
+    expect(out).toMatch(/\| Product apps\s+\| 1 /);
+    expect(out).toMatch(/docs\/images\/product-app-library\.png/);
+  });
+
+  it('the committed README follows suit', () => {
+    const readme = readFileSync(join(REPO, 'README.md'), 'utf8');
+    const { commit } = JSON.parse(
+      readFileSync(join(REPO, 'docs', 'data', 'consumer-usage.json'), 'utf8'),
+    );
+    expect(readme).not.toMatch(/hirobius\/ops/);
+    expect(readme).not.toMatch(/\bOps's\b|ops checkout|images\/ops-/);
+    expect(readme).not.toContain(commit);
+    expect(readme).not.toContain(commit.slice(0, 7));
+  });
+});
+
 describe('renderInUseBlock consumer split', () => {
   const base = { files: 35, components: 25, commit: 'a'.repeat(40) };
 

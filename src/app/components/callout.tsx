@@ -24,7 +24,7 @@ type CalloutTone = 'accent' | 'info' | 'success' | 'warning' | 'danger';
 // feedback state, so it takes a neutral muted fill rather than a tinted one.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven padding/radius; var()-based, no Tailwind-theme utility
 const calloutVariants = /* @__PURE__ */ cva(
-  'rounded-[var(--primitive-radius-4)] p-[var(--semantic-space-surface-padding)]',
+  'rounded-[var(--primitive-radius-4)] p-[var(--semantic-space-surface-padding)]', // tier-ok: 4px primitive radius, matches Alert; no semantic surface-radius token at 4px
   {
     variants: {
       tone: {
