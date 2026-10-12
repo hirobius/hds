@@ -101,15 +101,6 @@
       "computedHash": "2a2640bef2b9ee1c66c655c11d1f430dbc9adc41d6e9691612a5de822723036b",
       "paths": ["LOGIC.md", "UI.md"]
     },
-    "request-refactor-plan": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/deprecated/request-refactor-plan/SKILL.md",
-      "pinnedCommit": "f958fa17c1b62c3f7be38fc09512669acf6b64fc",
-      "hashAlgorithm": "sha256",
-      "computedHash": "d59de4ba6cc1fe2dd267e8b9b5a1fd88e3e739e2130bc9dd78061d2a072830b8",
-      "hashNote": "Retired upstream: removed from mattpocock/skills HEAD in c66bdee (2026-08-05; superseded by to-spec + improve-codebase-architecture), so pinnedCommit is the last commit that still carries it. skills:bump cannot fetch it from upstream HEAD."
-    },
     "research": {
       "source": "mattpocock/skills",
       "sourceType": "github",
