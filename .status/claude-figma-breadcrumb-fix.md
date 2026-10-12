@@ -1,1 +1,0 @@
-Figma library: Breadcrumb separators (6 Icon/chevron-right instances in 86:159) drew a filled box from an instance frame fill; cleared it and bound the vector stroke to color/content/secondary. Ledger: figma/MCP-LEDGER.md.
