@@ -28,8 +28,8 @@ Three nouns, used the same way in HDS, site-engine, ops, Figma and folio. `GLOSS
 | Shape             | `role.radius`, one px value                                                         | `brand.radius` none / sm / md / lg / xl                                | `radius`, a closed enum mapped to `role.radius`                          |
 | Density           | `data-density` compact / comfortable (a preference)                                 | `brand.spacingDensity` compact / comfortable / airy (a direction dial) | `density`; a direction may pin a tier, the viewer toggle stays two-state |
 | Type family       | `--hds-font-family`; display dial proposed (hds#480)                                | `brand.fontPairing`, heading + body                                    | `fontPairing`                                                            |
-| Type scale        | ramp roles (hds#483, hds#520)                                                       | `brand.typeScale` standard / compact / display                         | `typeScale`, orthogonal to the role count                                |
-| Shadow            | elevation roles, no dial                                                            | `brand.shadow` flat / soft / hard                                      | `shadow`                                                                 |
+| Type scale        | ramp roles (hds#483, hds#520)                                                       | `brand.typeScale` standard / compact / display (planned there, #86)    | `typeScale`, orthogonal to the role count                                |
+| Shadow            | elevation roles, no lever                                                           | `brand.shadow` flat / soft / hard                                      | `shadow`                                                                 |
 | Motion            | `scroll-motion.css`, Reveal pattern                                                 | `brand.motion` none / subtle / rich                                    | `motion`                                                                 |
 
 ## What does not change
@@ -38,6 +38,13 @@ Three nouns, used the same way in HDS, site-engine, ops, Figma and folio. `GLOSS
 - `src/styles/tenants.css`, `hirobius.tenant-tokens.schema.json`, `hirobius.tenant-metadata.schema.json`, `check-tenant-tokens` and `TenantProvider` / `TenantSlug` keep their names. Renaming them is a deprecation cycle with a codemod, filed separately; this ADR changes meaning, not API.
 - The cascade mechanism (ADR-0001) and the brand-by-density combinations (ADR-022).
 - The overlay format rules R1 to R9.
+
+## Rationale
+
+- One word per layer, fleet-wide, because three repos were about to build the same thing three times under three names (hds#628's "Ceiling" builds, this repo's demo tenants, site-engine's skins), and a reviewer cannot tell a shared direction from a client's brand while both are "tenants".
+- A folder, not a flag, because a boolean a person sets is the weakest gate there is; a folder shows in every listing and every pull request, and the Figma gates read it for free.
+- The client leaves the package because a shared library that carries one client's brand is one `data-brand` away from leaking it into every consumer and into the shared Figma library; the storefront already compiles its own overlay from the published `variables.css`, so nothing is lost.
+- Runtime names stay because the meaning change is worth shipping today and the identifier rename is worth a codemod tomorrow, not a same-day break for ops and the storefront.
 
 ## Considered and rejected
 

@@ -24,8 +24,8 @@
  * buildManifest wrapper. Importing it reads no files.
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { listDirectionSlugs } from './lib/directions.mjs';import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { writeGenerated } from './lib/write-generated.mjs';
 import { collectDeprecations } from './lib/token-deprecations.mjs';
@@ -147,7 +147,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
   // ── Per-tenant CSS (ADR-0001: [data-tenant="slug"] selectors) ─────────────
   // ── Per-direction CSS (ADR-0001: [data-tenant="slug"] selectors; ADR-035) ─
-  const tenantsDir = join(ROOT, 'directions');  const tenantResult = buildTenantCSS(tenantsDir, raw, { strict: false });
+  const directionsDir = join(ROOT, 'directions');
+  const tenantResult = buildTenantCSS(directionsDir, raw, { strict: false });
 
   if (tenantResult.errors.length > 0) {
     console.warn('\n⚠ Direction overlay validation warnings:');

@@ -22,7 +22,7 @@
   "createdAt": "2026-07-12",
   "status": "scaffold",
   "_notes": [
-    "Exemplar tenant proving the per-tenant shape+density overlay axis from ADR-022 (#128, epic #124). Not a real client — demo exemplar only, no deployment.",
+    "Exemplar direction proving the per-direction shape+density overlay axis from ADR-022 (#128, epic #124). Not a real client — demo exemplar only, no deployment.",
     "Overrides role.radius (0, density-invariant) and semantic.space.surface.padding (16px / scale.sm comfortable baseline, 8px / scale.xs under [data-density=\"compact\"] via the Compact figma-variables mode)."
   ]
 }

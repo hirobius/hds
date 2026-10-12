@@ -107,7 +107,6 @@ function useMeasurements(hostRef: React.RefObject<HTMLElement>, knobs: Knobs) {
 const BRANDS = [
   { value: '', label: 'default' },
   { value: 'brutalist-demo', label: 'brutalist' },
-  { value: 'concrete-creations', label: 'concrete' },
   { value: 'accent-lilac', label: 'lilac' },
   { value: 'soft-demo', label: 'soft' },
   { value: 'accent-pair-demo', label: 'accent pair' },

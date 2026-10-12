@@ -3,7 +3,7 @@
   "slug": "accent-lilac",
   "displayName": "Accent Lilac",
   "tagline": "Lilac accent exemplar — proves a violet brand ramp against the HDS semantic spine. demo-only, not a real client.",
-  "tier": 2,
+  "tier": 1,
   "deployment": {
     "vercelProject": null,
     "primaryDomain": null,

@@ -36,7 +36,7 @@ const variableByPath = new Map(
 const tenantDirs = readdirSync(join(ROOT, 'directions'), { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && !entry.name.startsWith('_'))
   .map((entry) => entry.name);
-const unlisted = tenantDirs.filter((slug) => !config.tenants.includes(slug));
+const unlisted = tenantDirs.filter((slug) => !config.directions.includes(slug));
 
 /**
  * A tenant alias into a non-primitive (a scale step, hds#206) lands on the
@@ -73,24 +73,24 @@ const leavesOf = (overlay) => {
 
 describe(`${BRAND_MODES_FILE}`, () => {
   it('lists at least one direction, and nothing shaped like a client', () => {
-    expect(config.tenants.length).toBeGreaterThan(0);
-    for (const slug of config.tenants) {
+    expect(config.directions.length).toBeGreaterThan(0);
+    for (const slug of config.directions) {
       expect(directionProblems(readJson('directions', slug, 'metadata.json')), slug).toEqual([]);
     }
   });
 
   it('never lists the template, which build-tokens and the validator skip by its underscore', () => {
-    expect(config.tenants).not.toContain('_template');
+    expect(config.directions).not.toContain('_template');
   });
 
   it(`gives Hirobius/Brand the base mode plus one mode per listed tenant, at most ${PRO_MODE_LIMIT}`, () => {
-    expect(brand.modes).toEqual([config.baseMode, ...config.tenants]);
+    expect(brand.modes).toEqual([config.baseMode, ...config.directions]);
     expect(brand.modes.length).toBeLessThanOrEqual(PRO_MODE_LIMIT);
   });
 
   it('carries every listed tenant override as that tenant Brand mode value, and the token variable follows it', () => {
     let checked = 0;
-    for (const slug of config.tenants) {
+    for (const slug of config.directions) {
       for (const leaf of leavesOf(readJson('directions', slug, 'tokens.json'))) {
         if (!variableByPath.has(leaf.path)) continue; // declared not in Figma
         const variants = brand.variables.filter(

@@ -217,7 +217,18 @@ const layoutEmitted = Object.fromEntries(LAYOUT_PROBES.map((p) => [p.key, emitLa
 
 // ── The cells ─────────────────────────────────────────────────────────────────
 
-const TENANTS = ['base', 'accent-lilac', 'brutalist-demo', 'concrete-creations'];
+const TENANTS = ['base', 'accent-lilac', 'brutalist-demo'];
+/**
+ * The fixtures also recorded concrete-creations, the client overlay that left
+ * the package in ADR-035. They cannot be recaptured (they come from older
+ * commits), so its cells are dropped on read; the remaining cells stay locked.
+ */
+const lockedCells = (cells) => cells.filter((key) => TENANTS.includes(key.split('|')[0]));
+/** The recorded per-cell values, in cell order, minus the dropped slug's. */
+const lockedValues = (fixture, key) =>
+  fixture.computed[key]
+    .split(' ')
+    .filter((_, i) => TENANTS.includes(fixture.cells[i].split('|')[0]));
 const DENSITIES = ['comfortable', 'compact'];
 /**
  * Where the attributes sit. A var() resolves where it is declared, so the
@@ -415,7 +426,7 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
   it('probes the same values and cells the fixture recorded', () => {
     expect(existsSync(FIXTURE)).toBe(true);
     expect(Object.keys(fixture.emitted).sort()).toEqual(PROBES.map((p) => p.key).sort());
-    expect(fixture.cells).toEqual(CELLS.map(cellKey));
+    expect(lockedCells(fixture.cells)).toEqual(CELLS.map(cellKey));
   });
 
   it.each(PROBES.filter((p) => !ADDED.has(p.key)).map((p) => p.key))(
@@ -442,10 +453,10 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
     it.each(PROBES.filter((p) => !ADDED.has(p.key)).map((p) => p.key))(
       '%s computes what it computed on c506c3b',
       (key) => {
-        const want = fixture.computed[key]
-          .split(' ')
-          .map((v, i) => expected(fixture.emitted[key], fixture.cells[i], v));
-        const got = computed[key].split(' ');
+        const locked = lockedCells(fixture.cells);
+        const want = lockedValues(fixture, key).map((v, i) =>
+          expected(fixture.emitted[key], locked[i], v),
+        );        const got = computed[key].split(' ');
         const diffs = fixture.cells
           .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))
           .filter(Boolean);
@@ -485,7 +496,7 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a'
     expect(existsSync(LAYOUT_FIXTURE)).toBe(true);
     expect(fixture.capturedFrom).toBe('8e53a8a');
     expect(Object.keys(fixture.emitted).sort()).toEqual(LAYOUT_PROBES.map((p) => p.key).sort());
-    expect(fixture.cells).toEqual(CELLS.map(cellKey));
+    expect(lockedCells(fixture.cells)).toEqual(CELLS.map(cellKey));
   });
 
   it.each(LAYOUT_PROBES.map((p) => p.key))(
@@ -515,14 +526,12 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a'
       // Card padding="item" was a fixed 16px on 8e53a8a in every cell; it reads scale.sm
       // now (the bump above), which is 12px under compact density for apps.
       const itemPad = key === 'card padding item paddingTop';
-      const want = fixture.computed[key]
-        .split(' ')
-        .map((v, i) =>
-          itemPad && fixture.cells[i].split('|')[1] === 'compact'
-            ? '12px'
-            : expected(measuredDecl(key), fixture.cells[i], v),
-        );
-      const got = computed[key].split(' ');
+      const locked = lockedCells(fixture.cells);
+      const want = lockedValues(fixture, key).map((v, i) =>
+        itemPad && locked[i].split('|')[1] === 'compact'
+          ? '12px'
+          : expected(measuredDecl(key), locked[i], v),
+      );      const got = computed[key].split(' ');
       const diffs = fixture.cells
         .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))
         .filter(Boolean);

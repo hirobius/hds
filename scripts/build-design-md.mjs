@@ -81,11 +81,10 @@ export function buildColors(raw) {
   lines.push('**One accent — one neutral system.**');
   lines.push('');
   lines.push(
-    `- **Accent** (\`${accent}\`, graphite): CTAs, active states, selected focus rings, and the single brand accent. \`semantic.accent.rest\` — a per-tenant knob, not a fixed hue (#208).`,
+    `- **Accent** (\`${accent}\`, graphite): CTAs, active states, selected focus rings, and the single brand accent. \`semantic.accent.rest\` — a lever each direction or brand sets, not a fixed hue (ADR-035) (#208).`,
   );
   lines.push(
-    `- **Accent theme — Cobalt** (\`${cobalt}\`): opt-in swap of the accent tokens only. Set \`data-accent="cobalt"\` on \`<html>\` (source \`accents/cobalt/tokens.json\`); graphite stays the default. Still one accent per screen.`,
-  );
+    `- **Accent theme — Cobalt** (\`${cobalt}\`): opt-in swap of the accent tokens only. Set \`data-accent="cobalt"\` on \`<html>\` (source \`accents/cobalt/tokens.json\`); graphite stays the default. Still one accent per screen.`,  );
   lines.push(
     '- **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.',
   );
