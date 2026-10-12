@@ -1,5 +1,44 @@
 # Changelog
 
+## 0.24.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The --primitive-color-apple-100 variable is gone; use --primitive-color-graphite-100 for the same accent step.
+- Do by hand: The --primitive-color-apple-200 variable is gone; use --primitive-color-graphite-200 for the same accent step.
+- Do by hand: The --primitive-color-apple-300 variable is gone; use --primitive-color-graphite-300 for the same accent step.
+- Do by hand: The --primitive-color-apple-400 variable is gone; use --primitive-color-graphite-400 for the same accent step.
+- And 31 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0240).
+
+### Minor Changes
+
+- 72800bc: feat(brand): change the default accent from apple green to graphite (warm charcoal).
+
+  The base brand accent moves from the bright apple green shipped in 0.23.0 to a warm
+  graphite — a full-monochrome accent that reads calmer and more considered. A new
+  `primitive.color.graphite` scale replaces `primitive.color.apple`; feedback hues
+  (`green`/`red`/`amber` for success/danger/warning) are untouched, so the system stays
+  monochrome without flattening its status colors.
+  - `semantic.accent.{rest,hover,pressed,content,contentHover,subtle}`, `semantic.color.surface.accent`/`accentSubtle`, `semantic.color.content.accent`, and `semantic.color.border.accent` now resolve through `primitive.color.graphite.*`.
+  - The accent **inverts per theme** so fills never vanish on a dark page: a dark graphite step in light mode (near-white on-accent text) and a light warm-grey step in dark mode (dark on-accent text). `semantic.color.content.onAccent` flips to `neutral.50` in light mode and `graphite.900` in dark mode — `content.onAccent / surface.accent` is 10.5:1 light / 10.0:1 dark.
+  - Per-tenant accents are unchanged: `accent-lilac` and `concrete-creations` set their own accent (and their own `onAccent`); `brutalist-demo` inherits the new graphite base.
+
+  The `--primitive-color-apple-*` CSS variables (introduced in 0.23.0) are removed in favor of `--primitive-color-graphite-*`; consumers who referenced a raw accent primitive should repoint to the graphite scale, though the semantic accent tokens are the intended surface and the per-tenant accent knob is unchanged — set your own accent overlay to override the base.
+
+### Patch Changes
+
+- 72800bc: fix(theming): the font dial now works.
+
+  Setting `--hds-font-family` / `--hds-font-family-mono` (or `<HdsThemeProvider fontFamily fontFamilyMono>`) used to change nothing: the type roles were resolved once on `:root`, so descendants inherited the default stack. They are now re-declared on each element of the `[data-hds]` subtree, so the dial applies at whatever scope you set it — headings, body, UI text, captions, code, and the JS style objects (`hds.fontFamily`, `hds.typeStyles`) all follow it. With no override, nothing changes: the default is still the brand typeface.
+
+- 72800bc: feat(tokens): add a reserved mauve primitive scale.
+
+  `primitive.color.mauve.{50…950}` (anchor `#734B5E` at 500) is added alongside graphite, lightness-matched to it step for step. Nothing maps to it yet: graphite stays the brand accent, and no semantic or component token reads mauve. It is available as `--primitive-color-mauve-*` for exploration.
+
 ## 0.23.2
 
 ### Upgrade
