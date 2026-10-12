@@ -303,7 +303,7 @@ public/             manifest, llms.txt
 - `DESIGN.md` — lean visual spec
 - `DESIGN-HANDOFF.md` — verbose visual mirror
 - `TOKEN_GOVERNANCE.md` — token system rules
-- `SYSTEMS_REGISTRY.md` — systems & guardrail registry
+- `docs/guardrails/registry.json` — gate registry; `docs/state-surfaces.json` — every file that describes state
 
 ## License
 
