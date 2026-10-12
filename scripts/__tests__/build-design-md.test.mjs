@@ -59,3 +59,22 @@ describe('buildAgentConstraints', () => {
     expect(line).not.toContain('`4px`');
   });
 });
+
+describe('inspiration source (hds#632)', () => {
+  const root = resolve(__dirname, '../..');
+  const line = (file) =>
+    readFileSync(resolve(root, file), 'utf8')
+      .split('\n')
+      .find((l) => l.includes('21st.dev'));
+
+  it.each(['DESIGN.source.md', 'DESIGN.md'])(
+    '%s names 21st.dev as ideas only — HDS still wins',
+    (file) => {
+      const l = line(file);
+      expect(l).toBeDefined();
+      expect(l).toMatch(/inspiration/i);
+      expect(l).toMatch(/ideas, never code/i);
+      expect(l).toMatch(/tokens/i);
+    },
+  );
+});
