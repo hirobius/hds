@@ -101,6 +101,15 @@
       "computedHash": "2a2640bef2b9ee1c66c655c11d1f430dbc9adc41d6e9691612a5de822723036b",
       "paths": ["LOGIC.md", "UI.md"]
     },
+    "request-refactor-plan": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/deprecated/request-refactor-plan/SKILL.md",
+      "pinnedCommit": "f958fa17c1b62c3f7be38fc09512669acf6b64fc",
+      "hashAlgorithm": "sha256",
+      "computedHash": "d59de4ba6cc1fe2dd267e8b9b5a1fd88e3e739e2130bc9dd78061d2a072830b8",
+      "hashNote": "Retired upstream: removed from mattpocock/skills HEAD in c66bdee (2026-08-05; superseded by to-spec + improve-codebase-architecture), so pinnedCommit is the last commit that still carries it. skills:bump cannot fetch it from upstream HEAD."
+    },
     "research": {
       "source": "mattpocock/skills",
       "sourceType": "github",
@@ -173,6 +182,27 @@
       "hashAlgorithm": "sha256",
       "computedHash": "54a394b2da9768a551b1cc59a6818b1a6522d79b35aed6729973faa677253201",
       "paths": ["AGENT-BRIEF.md", "OUT-OF-SCOPE.md"]
+    },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/composition-patterns/SKILL.md",
+      "pinnedCommit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "hashAlgorithm": "sha256",
+      "computedHash": "40b7667494dfee29a2f69dea6e2edbeb879b5b2c7ca8e824bad5d10f1b87dc1e",
+      "paths": [
+        "AGENTS.md",
+        "rules/architecture-avoid-boolean-props.md",
+        "rules/architecture-compound-components.md",
+        "rules/patterns-children-over-render-props.md",
+        "rules/patterns-explicit-variants.md",
+        "rules/react19-no-forwardref.md",
+        "rules/state-context-interface.md",
+        "rules/state-decouple-implementation.md",
+        "rules/state-lift-state.md"
+      ],
+      "license": "MIT",
+      "hashNote": "Installed under the id/dir vercel-composition-patterns (its SKILL.md name:); upstream directory is skills/composition-patterns/. rules/_sections.md, _template.md, README.md and metadata.json are authoring scaffolding and not vendored."
     },
     "wayfinder": {
       "source": "mattpocock/skills",
