@@ -1,0 +1,1 @@
+Sixteen component tokens (Button sizes and secondary states, Card radius and gap, Input background and padding, Tag colours) now hold the value their component already renders, so Figma matches the shipped UI; the React components are unchanged. Four tokens that cannot be expressed as a token (opacity and shadow washes, Badge's single tone) are left for a design call (hds#595).

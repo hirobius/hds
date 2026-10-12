@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-11T21:00:30.237Z",
+  "generated": "2026-10-12T02:29:50.977Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -10676,17 +10676,17 @@
         "path": "component.tag.background",
         "cssVar": "--component-tag-background",
         "type": "color",
-        "description": "Base tag surface color.",
-        "alias": "{semantic.accent.subtle}",
-        "resolvedValue": "#f5f4f4"
+        "description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
+        "alias": "{semantic.color.surface.raised}",
+        "resolvedValue": "#fafafa"
       },
       {
         "path": "component.tag.text",
         "cssVar": "--component-tag-text",
         "type": "color",
-        "description": "Default tag text color.",
-        "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "description": "Unselected tag text color (the active label uses activeText).",
+        "alias": "{semantic.color.content.secondary}",
+        "resolvedValue": "#525252"
       },
       {
         "path": "component.tag.border",
@@ -10912,17 +10912,17 @@
         "path": "component.button.paddingY",
         "cssVar": "--component-button-paddingY",
         "type": "dimension",
-        "description": "Vertical button padding.",
-        "alias": "{primitive.space.3}",
-        "resolvedValue": "12px"
+        "description": "Vertical button padding (8px, the md size; legacy flat alias of size.md.paddingY).",
+        "alias": "{primitive.space.2}",
+        "resolvedValue": "8px"
       },
       {
         "path": "component.button.size.sm.paddingX",
         "cssVar": "--component-button-size-sm-paddingX",
         "type": "dimension",
-        "description": "Small button horizontal padding (8px).",
-        "alias": "{primitive.space.2}",
-        "resolvedValue": "8px"
+        "description": "Small button horizontal padding (12px).",
+        "alias": "{primitive.space.3}",
+        "resolvedValue": "12px"
       },
       {
         "path": "component.button.size.sm.paddingY",
@@ -10952,17 +10952,17 @@
         "path": "component.button.size.sm.height",
         "cssVar": "--component-button-size-sm-height",
         "type": "dimension",
-        "description": "Small button height (28px).",
-        "alias": "{primitive.space.7}",
-        "resolvedValue": "28px"
+        "description": "Small button height (32px).",
+        "alias": "{primitive.size.32}",
+        "resolvedValue": "32px"
       },
       {
         "path": "component.button.size.sm.itemSpacing",
         "cssVar": "--component-button-size-sm-itemSpacing",
         "type": "dimension",
-        "description": "Small button icon-to-label gap (4px).",
-        "alias": "{primitive.space.1}",
-        "resolvedValue": "4px"
+        "description": "Small button icon-to-label gap (8px).",
+        "alias": "{primitive.space.2}",
+        "resolvedValue": "8px"
       },
       {
         "path": "component.button.size.md.paddingX",
@@ -10976,9 +10976,9 @@
         "path": "component.button.size.md.paddingY",
         "cssVar": "--component-button-size-md-paddingY",
         "type": "dimension",
-        "description": "Medium button vertical padding (12px).",
-        "alias": "{primitive.space.3}",
-        "resolvedValue": "12px"
+        "description": "Medium button vertical padding (8px; the 40px height drives the box).",
+        "alias": "{primitive.space.2}",
+        "resolvedValue": "8px"
       },
       {
         "path": "component.button.size.md.fontSize",
@@ -11032,9 +11032,9 @@
         "path": "component.button.size.lg.fontSize",
         "cssVar": "--component-button-size-lg-fontSize",
         "type": "dimension",
-        "description": "Large button label size (16px, hds#283: was 17px).",
-        "alias": "{primitive.typography.size.base}",
-        "resolvedValue": "16px"
+        "description": "Large button label size (14px, the same hds-type-ui role as md).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.button.size.lg.iconSize",
@@ -11089,8 +11089,8 @@
         "cssVar": "--component-button-secondary-bg-hover",
         "type": "color",
         "description": "Secondary button hover fill.",
-        "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#fafafa"
+        "alias": "{semantic.color.surface.accentSubtle}",
+        "resolvedValue": "#f5f4f4"
       },
       {
         "path": "component.button.secondary.bg.pressed",
@@ -11113,24 +11113,24 @@
         "cssVar": "--component-button-secondary-border-hover",
         "type": "color",
         "description": "Secondary button hover border.",
-        "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#737373"
+        "alias": "{semantic.color.border.accent}",
+        "resolvedValue": "#433a3f"
       },
       {
         "path": "component.button.secondary.border.pressed",
         "cssVar": "--component-button-secondary-border-pressed",
         "type": "color",
-        "description": "Secondary button pressed border.",
-        "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#737373"
+        "description": "Secondary button pressed border (the hover border still applies while pressed).",
+        "alias": "{semantic.color.border.accent}",
+        "resolvedValue": "#433a3f"
       },
       {
         "path": "component.button.secondary.border.disabled",
         "cssVar": "--component-button-secondary-border-disabled",
         "type": "color",
-        "description": "Secondary button disabled border.",
-        "alias": "{semantic.color.border.subdued}",
-        "resolvedValue": "#e5e5e5"
+        "description": "Secondary button disabled border (no disabled border class: the rest border stays).",
+        "alias": "{semantic.color.border.interactive}",
+        "resolvedValue": "#737373"
       },
       {
         "path": "component.button.secondary.text",
@@ -11144,8 +11144,8 @@
         "path": "component.input.bg",
         "cssVar": "--component-input-bg",
         "type": "color",
-        "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#fafafa"
+        "alias": "{semantic.color.surface.page}",
+        "resolvedValue": "#ffffff"
       },
       {
         "path": "component.input.text",
@@ -11179,8 +11179,8 @@
         "path": "component.input.paddingX",
         "cssVar": "--component-input-paddingX",
         "type": "dimension",
-        "alias": "{primitive.space.4}",
-        "resolvedValue": "16px"
+        "alias": "{primitive.space.3}",
+        "resolvedValue": "12px"
       },
       {
         "path": "component.input.paddingY",
@@ -11207,8 +11207,8 @@
         "path": "component.card.radius",
         "cssVar": "--component-card-radius",
         "type": "dimension",
-        "alias": "{primitive.radius.8}",
-        "resolvedValue": "8px"
+        "alias": "{primitive.radius.12}",
+        "resolvedValue": "12px"
       },
       {
         "path": "component.card.padding",
@@ -11221,8 +11221,8 @@
         "path": "component.card.gap",
         "cssVar": "--component-card-gap",
         "type": "dimension",
-        "alias": "{primitive.space.2}",
-        "resolvedValue": "8px"
+        "alias": "{semantic.space.scale.sm}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.lightbox.backdrop.blur",
