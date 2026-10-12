@@ -116,7 +116,7 @@ export default [...hds.configs.recommended];
 
 ### Where live state is
 
-Nothing in the repo records the release, the open work or what is blocked: ops derives them. Read ops `/ops/standing` (every verdict from live data) and `GET https://<ops host>/api/projects?status=hirobius/hds` (this repo's derived state; the ops host is not recorded in this repo, ask for it). `status.json` holds only the hand-written focus and phase. Open work is GitHub Issues in this repo.
+Nothing in the repo records the release, the open work or what is blocked: ops derives them. Read the ops dashboard's `/ops/standing` (every verdict from live data) and its `GET /api/projects?status=hirobius/hds` (this repo's derived state). The host is not recorded here on purpose: AGENTS.md ships in the npm package. `status.json` holds only the hand-written focus and phase. Open work is GitHub Issues in this repo.
 
 ### Documents and what keeps them true
 
