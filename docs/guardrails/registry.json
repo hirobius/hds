@@ -277,6 +277,17 @@
       "supportsJson": true
     },
     {
+      "id": "check-figma-fallbacks",
+      "description": "Fails when the committed Figma snapshot (figma/snapshot.json, bindingFallbacks) records a paint or effect bound to a colour variable whose raw fallback colour differs from the variable's value in its collection's default mode. Figma renders the raw colour where the binding cannot resolve (a consumer file before the library is published), so a binding over the wrong raw colour looks right in the library and wrong elsewhere (the Kbd shadow bound to color/border/strong over pure black, 2026-10-12; a sweep found 21). Each finding names the node and the fix: set the raw colour to the variable's value and keep the binding. The record is taken by figma/push/use-figma/fallbacks.js and ingested with `pnpm figma:snapshot --fallbacks <file>`; a snapshot that predates the key warns once and passes. Exit 0 clean or not recorded, 1 a mismatch is recorded or the snapshot or its record fails its checksum. Runs in pretest, so pre-push and ci.yml reach it through `pnpm test`.",
+      "severity": "error",
+      "gateScript": "scripts/check-figma-fallbacks.mjs",
+      "fixturePath": "fixtures/check-figma-fallbacks",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
       "id": "check-figma-mapping",
       "description": "Enforces the component parity contract (docs/architecture/variant-contract.md#figma-mapping): manifest variantAxes, componentProperties and figmaPropertyMapping must bind to props the component really accepts (TypeScript checker), contract axes backed by cva must be declared with matching enum values, inverted booleans must be \"Show …\" toggles, and Code Connect templates must map the same contract axes. Title Case property names are advisory warnings.",
       "severity": "error",

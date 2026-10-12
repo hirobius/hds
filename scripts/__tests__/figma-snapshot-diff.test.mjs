@@ -76,7 +76,9 @@ async function rebaseAndCompare(figma) {
   const fresh = await freshRead(figma, diff);
   expect(result.checksum).toBe(hdsChecksum(JSON.stringify(fresh)));
   expect(result.checksum).toBe(diff.live);
-  expect(JSON.parse(onDisk(root))).toEqual({ checksum: diff.live, snapshot: fresh });
+  // --from-diff carries the committed bound-colour sweep forward unchanged.
+  const sweep = committed.bindingFallbacks ? { bindingFallbacks: committed.bindingFallbacks } : {};
+  expect(JSON.parse(onDisk(root))).toEqual({ checksum: diff.live, snapshot: fresh, ...sweep });
   expect(parseSnapshotFile(onDisk(root)).snapshot).toEqual(fresh);
   return { diff, fresh, root };
 }

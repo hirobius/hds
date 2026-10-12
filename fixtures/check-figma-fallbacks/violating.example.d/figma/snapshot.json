@@ -1,0 +1,56 @@
+{
+  "checksum": "472cb443",
+  "snapshot": {
+    "schemaVersion": 1,
+    "takenAt": "2026-10-12T00:00:00.000Z",
+    "file": {
+      "name": "Fixture library",
+      "key": "FIXTURElibrary"
+    },
+    "lastPush": null,
+    "collections": [],
+    "textStyles": [],
+    "effectStyles": []
+  },
+  "bindingFallbacks": {
+    "format": "binding-fallbacks",
+    "schemaVersion": 1,
+    "file": "FIXTURElibrary",
+    "takenAt": "2026-10-12T00:00:00.000Z",
+    "scope": "all",
+    "pages": 2,
+    "skippedPages": [
+      {
+        "id": "2157:826",
+        "name": "Deprecated"
+      },
+      {
+        "id": "2083:2",
+        "name": "Archive"
+      }
+    ],
+    "nodes": 12,
+    "bindings": 5,
+    "mismatches": [
+      {
+        "nodeId": "110:1077",
+        "nodeName": "Size=md",
+        "page": "Kbd",
+        "kind": "effect",
+        "variable": "color/border/strong",
+        "raw": "#00000040",
+        "expected": "#cbd5e1ff"
+      },
+      {
+        "nodeId": "82:243",
+        "nodeName": "Track",
+        "page": "Slider",
+        "kind": "fill",
+        "variable": "color/border/default",
+        "raw": "#000000",
+        "expected": "#e2e8f0"
+      }
+    ],
+    "checksum": "0295ccfe"
+  }
+}
