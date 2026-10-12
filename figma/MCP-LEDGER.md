@@ -500,3 +500,13 @@ Budget 12 calls. Rows are written before the call is made.
 | 10  | --         | `use_figma`      | read  | List pages with zero children (2121:28 was not found in #9)                                                                                                                                                                      |
 
 Results: #1 Form 85:94 was a COMPONENT (400x418, gap 20, 3 Field instances + Footer frame); Kbd shadows were bound to variable 2018:762. #4 new plain frame `Form — example` 2169:102 (400x550, gap bound to space/16 VariableID:5:15, 3 Field instance clones + FormActions Layout=inline instance), old Form 85:94 moved to Deprecated 2157:826 as `_Form (now an example frame)`. #5 Kbd 2026:3, 2026:5, 2026:7 inner shadow colour now bound to color/border/strong (VariableID:10:17), read back OK. #8 found 0 UPPER textCase nodes and 0 all-caps literals outside instances (159 instance-internal text nodes skipped), nothing changed. Screenshots #2, #3, #6, #7 returned URLs but the sandbox proxy blocks downloading them, so no pixel review; verification is by readback. Total 8 calls (budget raised to 16 for task 3). Nothing deleted, published, or created as a variable/style. #9 (Adrian authorized): deleted empty pages 88:246 `Stat` and 2075:88 `MetricTile` (0 children each, checked before removal); 2121:28 was not found (already gone). #10 the only remaining empty page is 20:6 `———`, a page-list divider, kept on purpose. 61 pages left. Total 10 calls. Nothing published.
+
+## 2026-10-12 · session `claude/kbd-outer-edge`
+
+Kbd edge changes from a 1px inset line to a 2px outer drop edge (Adrian's pick). Budget 2 calls. Rows are written before the call is made.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                                                                                                                                        |
+| --- | ---------- | ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | --         | `use_figma` | write | Every Kbd component on the Kbd page: replace the inner shadow with a drop shadow x 0, y 2, blur 0, spread 0, colour bound to color/border/strong (VariableID:10:17); read back |
+
+Results: #1 Kbd Size=md 2026:3, Size=sm 2026:5, Size=lg 2026:7 now carry one drop shadow (y 2, blur 0, spread 0) bound to color/border/strong (VariableID:10:17), inner shadow removed, read back OK; the set 2026:9 had no effect and was left alone. Total 1 call. Nothing deleted or published.
