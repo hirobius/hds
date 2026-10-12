@@ -1,6 +1,6 @@
 # Hirobius Design System - components slice
 
-See `public/llms.txt` for the index. Generated from the same sections as llms.txt.
+See `public/llms.txt` for the index. Generated from the same sections as llms-full.txt.
 
 ## Component Inventory (Source Of Truth)
 

@@ -68,18 +68,18 @@ describe('llms-full.txt and slices', () => {
   });
 
   it('shares text between llms.txt and its slices', () => {
-    expect(read('public/llms.txt')).toContain('## How To Build A Scroll-Driven Section');
+    expect(read('public/llms-full.txt')).toContain('## How To Build A Scroll-Driven Section');
     expect(read('public/llms/scroll.txt')).toContain('## How To Build A Scroll-Driven Section');
     expect(read('public/llms/layout.txt')).toContain('## Elevation roles');
     expect(read('public/llms/tokens.txt')).toContain('## Quick Token Reference');
     expect(read('public/llms/components.txt')).toContain('## Component Inventory');
   });
 
-  it('indexes the slices and the repo-only paths in llms.txt and llms-full.txt', () => {
+  it('indexes the slices in llms.txt and llms-full.txt, and the repo-only paths in llms-full.txt', () => {
     for (const f of ['public/llms.txt', 'public/llms-full.txt']) {
       expect(read(f)).toContain('llms/components.txt');
     }
-    expect(read('public/llms.txt')).toMatch(/only in the source repo/);
+    expect(read('public/llms-full.txt')).toMatch(/only in the source repo/);
   });
 
   it('never mentions the old personal domain', () => {

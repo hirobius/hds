@@ -91,7 +91,7 @@ describe('./icons subpath', () => {
     expect(collisions).toEqual(expect.arrayContaining(['Menu']));
     // The HDS Calendar was removed in 0.20.0 (hds#394), so the icon no longer collides.
     expect(collisions).not.toContain('Calendar');
-    for (const file of ['public/llms.txt', 'docs/CONSUMING.md']) {
+    for (const file of ['public/llms-full.txt', 'docs/CONSUMING.md']) {
       const text = read(file);
       for (const name of collisions) {
         expect(text, `${file} ${name}`).toContain(`${name} as ${name}Icon`);
@@ -102,7 +102,7 @@ describe('./icons subpath', () => {
   it('docs pin the same lucide-react version as package.json', () => {
     const pkg = JSON.parse(read('package.json'));
     const version = String(pkg.dependencies['lucide-react']).replace(/^[^\d]*/, '');
-    for (const file of ['public/llms.txt', 'CONSUMING.md', 'docs/CONSUMING.md']) {
+    for (const file of ['public/llms-full.txt', 'CONSUMING.md', 'docs/CONSUMING.md']) {
       expect(read(file), file).toContain(`lucide-react@${version}`);
     }
   });

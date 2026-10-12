@@ -23,7 +23,7 @@ function section(text: string, heading: string) {
 }
 
 describe('llms.txt screen recipe', () => {
-  const llms = read('public/llms.txt');
+  const llms = read('public/llms-full.txt');
 
   it('names all five screen patterns in "How To Lay Out A Screen"', () => {
     const recipe = section(llms, 'How To Lay Out A Screen');
