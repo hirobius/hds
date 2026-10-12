@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T05:57:55.903Z",
+  "generated": "2026-10-12T18:19:40.069Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -2463,7 +2463,6 @@
         "src/app/components/box-sx.ts",
         "src/app/components/card-progress.test.tsx",
         "src/app/components/card.test.tsx",
-        "src/app/components/destructive-section.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/focus-visible.test.tsx",
         "src/app/components/grid.tsx",
@@ -3263,7 +3262,10 @@
         "exportName": "Callout",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/destructive-section.test.tsx",
+        "src/app/components/destructive-section.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -4472,7 +4474,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/form-control.ts"
+        "src/app/components/form-control.ts",
+        "src/styles/__tests__/slider-touch-target.test.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -7496,7 +7499,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/destructive-section.tsx",
-      "description": "Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's confirm does. Place it last on the screen, below the form.",
+      "description": "Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's confirm does. Place it last on the screen, below the form.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3",
@@ -9005,13 +9008,6 @@
         "value": "0em"
       },
       {
-        "path": "primitive.typography.letterSpacing.caps",
-        "cssVar": "--primitive-typography-letterSpacing-caps",
-        "type": "dimension",
-        "description": "All-caps tracking for eyebrow / kicker labels. Always pairs with text-transform: uppercase.",
-        "value": "0.06em"
-      },
-      {
         "path": "primitive.duration.instant",
         "cssVar": "--primitive-duration-instant",
         "type": "duration",
@@ -9630,6 +9626,7 @@
         "path": "semantic.color.border.subdued",
         "cssVar": "--semantic-color-border-subdued",
         "type": "color",
+        "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
@@ -10122,6 +10119,19 @@
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
+        }
+      },
+      {
+        "path": "semantic.typography.titleSm",
+        "cssVar": "--semantic-typography-titleSm",
+        "type": "typography",
+        "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+        "composite": {
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "700",
+          "letterSpacing": "0em",
+          "lineHeight": "1.375"
         }
       },
       {

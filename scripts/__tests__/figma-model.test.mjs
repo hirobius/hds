@@ -85,6 +85,34 @@ describe('buildFigmaModel — collections and modes', () => {
     expect(shadow.valuesByMode.Dark).toEqual({ value: { r: 0, g: 0, b: 0, a: 1 } });
   });
 
+  it('hides a $deprecated token from publishing so designers stop picking it, but still exports it', () => {
+    // Deprecated aliases stay live in CSS until their breaking-release removal;
+    // Figma keeps the variable (bindings resolve) but drops it from the library picker.
+    const raw = {
+      primitive: { space: { 2: { $type: 'dimension', $value: { value: 8, unit: 'px' } } } },
+      semantic: {
+        space: {
+          scale: { xs: { $type: 'dimension', $value: '{primitive.space.2}' } },
+          component: {
+            gap: {
+              $type: 'dimension',
+              $value: '{primitive.space.2}',
+              $description: '8px. DEPRECATED alias (hds#206) — use semantic.space.scale.xs.',
+              $deprecated: 'hds#206 — use semantic.space.scale.xs',
+            },
+          },
+        },
+      },
+    };
+    const m = buildFigmaModel(raw);
+    expect(variable(m, 'semantic.space.component.gap')).toMatchObject({
+      collection: 'semantic',
+      hiddenFromPublishing: true,
+    });
+    expect(variable(m, 'semantic.space.scale.xs').hiddenFromPublishing).toBe(false);
+    expect(collection(m, 'semantic').hiddenFromPublishing).toBe(false);
+  });
+
   it('names variables by token path without the tier, with a CSS codeSyntax', () => {
     const page = variable(model, 'semantic.color.surface.page');
     expect(page.name).toBe('color/surface/page');
@@ -345,7 +373,7 @@ describe('buildFigmaModel — typography', () => {
     expect(style('typography/caption')).toMatchObject({
       fontFamily: 'IBM Plex Mono',
       fontStyle: 'Medium',
-      textCase: 'UPPER',
+      textCase: 'TITLE',
     });
   });
 });

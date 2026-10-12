@@ -3,13 +3,9 @@
 ## Focus contract — read first
 
 **`docs/ai/NORTH_STAR.md`** is the HDS North Star: what this design system is
-_for_, who it serves (Adrian first; downstream consumers are a named stretch
-goal), and its non-goals. Anchor roadmap and scope calls there. In one line: HDS
-is a token-first React product foundation — one opinionated, re-themeable system
-to ship Adrian's apps fast, and a serious piece of design-system engineering.
-Not a public OSS library (yet); not native ServiceNow UI. The React components
-are React-bound; the token layer is portable (the bridge to site-engine's Astro
-sites or a ServiceNow theme — export tokens, not components).
+_for_, who it serves (Adrian first), and its non-goals. Anchor roadmap and scope
+calls there. The token layer is portable (export tokens, not components); the
+React components are React-bound.
 
 **Drift check:** if an ask doesn't serve the North Star (or the fleet one, ops
 `docs/ai/NORTH_STAR.md`: serve Adrian's career), say so in one sentence —
@@ -38,7 +34,7 @@ This charter outranks the process rules below (not the HARD RULES above).
 - **Claude owns the driving:** architecture, code structure, tooling, test
   strategy, refactors, naming, file layout, and which skills or process steps a
   task actually needs. Decide and act; don't ask permission for "how".
-- **Jev is a gauge, not a driver.** Use Jev (`.claude/skills/jev/`) for fast
+- **Jev is a gauge, not a driver.** Use Jev (the `jev` skill, in the ops repo's `.claude/skills/`) for fast
   typed calls — sort, score, route, yes/no. Claude owns the final decision and
   all writing; below Jev's confidence floor, Claude decides. Sending private
   data to Jev stays Adrian's call.
@@ -71,22 +67,19 @@ Message Adrian only when work is done, blocked, or needs his decision. No progre
 
 The repo has a **closed-loop guardrail system** every agent must understand:
 
-- **`docs/guardrails/HARDENING_ROADMAP.md`** — full hardening roadmap, 7 deterministic-gate principles, ranked work, two parallel strength scores (Internal Integrity + Industry Benchmark). The single source of truth for "where are we, where are we going."
+- **`docs/guardrails/SCHEMA.md`** — the registry's field reference and what each `firingChannel` means. (The 2026 hardening roadmap is archived at `docs/archive/HARDENING_ROADMAP.md`: history, not a live plan; open work is in GitHub Issues.)
+- **`docs/state-surfaces.json`** — every file that describes project state: `generated` (names the `check` that proves it fresh, or says `"freshness": "unchecked"`), `checked`, or `editorial` (owner, `reviewedAt`, `maxAgeDays`). `scripts/check-state-surfaces.mjs` fails on a missing file, a doc that names a path that does not exist, or a generated file with no verifiable check; an editorial file past its review age only warns "review due" (`--strict-review` fails). Edit a generated file's source, never the file; after re-reading an editorial one, bump its `reviewedAt` (today or earlier). Index: `docs/ai/DOCS-INDEX.md`.
 - **`docs/guardrails/registry.json`** — every `scripts/check-*.mjs` and `scripts/audit-*.mjs` is registered with `firingChannel` declaring where it fires (pre-commit / pre-push / ci-pr / ci-scheduled / pnpm-meta / manual). Drift caught by `validate-guardrail-registry` + `check-validator-wiring`, both pre-commit gates.
-- **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt` unless a pushed commit adds a `.status/<branch>.md` note instead of editing status.json (no conflicts; `pnpm status:fold` folds on main), or when a commit changing what ships (`src/`, the files `package.json#files` ships from `codemods/`, `mcp/` and the ESLint plugin, `hirobius.tokens.json`, `tailwind.config.tokens.cjs`, or a consumer field of `package.json` such as `dependencies`) has no pending `.changeset/*.md` and no `skip-changeset` marker in its own message. Every changeset carries `upgrade/pending/<same name>.json`, and a breaking change needs a minor below 1.0 (`scripts/check-upgrade-ledger.mjs` in pretest; `pnpm upgrade:note` writes the note).
+- **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt` (add a `.status/<branch>.md` note instead of editing it; `pnpm status:fold` folds notes on main), or when a commit that changes what ships has no pending `.changeset/*.md` and no `skip-changeset` marker in its message. Every changeset carries `upgrade/pending/<same name>.json` (`pnpm upgrade:note`); a breaking change needs a minor below 1.0. The gate's registry entry has the exact file lists.
 
-Context Awareness: Always look for local `CLAUDE.md` files in subdirectories (like `/components` or `/sketches`) for specific overriding rules before editing.
+Context Awareness: look for local `CLAUDE.md` files in subdirectories (like `/components` or `/sketches`) for overriding rules before editing.
 
-Before touching code, read `public/llms.txt` first, then check `public/hds-manifest.json` and the relevant source files.
-For visual work, read `DESIGN.md` first and use `DESIGN-HANDOFF.md` as the verbose mirror.
+Before coding, read `docs/ai/FRONT-DOOR.md` (read order, where live state is), then `public/llms.txt`, `public/hds-manifest.json`, source.
+For visual work, read `DESIGN.md` first; `DESIGN-HANDOFF.md` is the verbose mirror.
 
 For HDS work:
 
-- Use `public/hds-manifest.json` as the machine-readable source of truth for inventory, categories, Figma links, and phase status.
-- Use `src/app/data/component-api.json` for prop tables and TypeScript interface parity.
-- Use `hirobius.tokens.json` for token paths and design-system values.
-- Use `DESIGN.md` for the lean visual spec and `DESIGN-HANDOFF.md` as the fuller token mirror.
-- Do not rely on prose summaries when the manifest or llms map already provides the structured answer.
+- Structured sources, not prose summaries: `public/hds-manifest.json` (inventory, categories, Figma links, phase status), `src/app/data/component-api.json` (props and TypeScript parity), `hirobius.tokens.json` (token paths and values), `DESIGN.md` (lean visual spec; `DESIGN-HANDOFF.md` is the fuller token mirror).
 - This is a self-driving HDS system: when asked for a new component or pattern, create the `.tsx` using existing tokens, run `pnpm manifest:generate`, verify the docs page is live and reflective, and never ask the user to update the manifest manually.
 - For roadmap, status, process, or overview UI, avoid repeated outlined cards as the default structure. Use open bands, dividers, rails, disclosures, and whitespace unless the content is a genuinely discrete repeated object.
 - Do not append badges to prose as decorative stickers. Put status and progress in a consistent metadata slot, rail, header zone, table column, or progress surface.
@@ -122,12 +115,11 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
   library node and deletes the draft (agents may delete there; Sync and `delta.js` never
   target it; steps in `figma/README.md`, "New components: draft in staging, ingest to the
   library"). Pro allows 200 MCP calls a day —
-  batch them, and never retry a rate-limit error. Code Connect
-  v2 templates are generated and gated locally, but publishing needs a Figma
-  Organization plan, so no mapping is live and Dev Mode shows no HDS snippets.
-  `docs/adr/019-figma-sync-via-mcp.md` still governs §1 (first-party tools, the official
-  Figma MCP server) and §3 (Code Connect); read its §2 as history. The legacy WebSocket
-  bridge/plugin is archived on `archive/figma-bridge` (ADR-018 §2).
+  batch them, and never retry a rate-limit error. Code Connect v2 templates are
+  generated and gated locally; publishing needs an Organization plan.
+  `docs/adr/019-figma-sync-via-mcp.md` governs §1 (first-party tools, the official
+  Figma MCP server) and §3 (Code Connect); its §2 is history. The legacy WebSocket
+  bridge is archived on `archive/figma-bridge`.
 
 ## 🧬 SUB-AGENT DISPATCH RULES
 
@@ -152,29 +144,21 @@ the answer is sonnet.
 
 ### Effort + isolation
 
-- Default to minimum-effort runs. Reserve high-effort for opus-class problems.
-- Use `isolation: "worktree"` for any pod where two agents could touch the same
-  file. Skip for strictly-isolated single-agent work.
+- Default to minimum effort; reserve high effort for opus-class problems.
+- Use `isolation: "worktree"` when two agents could touch the same file.
 
 ### NEVER bulk-lint:fix
 
-`pnpm lint:fix` over the full codebase has historically introduced syntax
-errors by merging unrelated code blocks (HDSLayout.tsx, BurnDownPage.tsx,
-PortfolioDraftPage.tsx). The work had to be stashed and discarded.
+`pnpm lint:fix` over the full codebase has merged unrelated code blocks into syntax
+errors (HDSLayout.tsx, BurnDownPage.tsx, PortfolioDraftPage.tsx); the work was discarded.
+Fix per rule, with verification:
 
-**Rule:** lint:fix is per-rule with verification.
-
-- Use `pnpm exec eslint src --fix --rule '{"<rule-name>": "error"}'` to scope.
-- Run `pnpm typecheck && pnpm exec vite build` after EACH rule pass.
-- STOP and report if either fails.
+- `pnpm exec eslint src --fix --rule '{"<rule-name>": "error"}'`, then
+  `pnpm typecheck && pnpm exec vite build` after EACH rule pass. If either fails, STOP and report.
 - If a single rule's auto-fix touches more than 50 files, STOP and ask Adrian.
-
-Safe-to-auto-fix rules: `@typescript-eslint/no-unused-vars`, `prefer-const`,
-`no-var`, `quotes`, `semi`, `eol-last`, `comma-dangle`.
-
-NEVER auto-fix: `react-hooks/exhaustive-deps` (introduces stale-closure bugs),
-anything that rewrites code blocks rather than tweaking declarations, anything
-touching more than one statement.
+- Safe to auto-fix: `@typescript-eslint/no-unused-vars`, `prefer-const`, `no-var`,
+  `quotes`, `semi`, `eol-last`, `comma-dangle`. NEVER auto-fix `react-hooks/exhaustive-deps`
+  (stale closures) or anything that rewrites code blocks or touches more than one statement.
 
 ## Skill protocol — engineering skills are MANDATORY, not optional (2026-07-11)
 
@@ -209,17 +193,14 @@ prerequisites.
 
 ### Addy Osmani's agent-skills (2026-10-09)
 
-`.claude/skills/` also vendors 25 skills from
+`.claude/skills/` also vendors skills from
 [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) (MIT, pin
 `1401c8b`, hirobius/ops#552), locked in `skills-lock.json`. **Pocock's skills above
-stay the mandatory routing**; where an Osmani skill overlaps one (`test-driven-development`,
-`code-review-and-quality`, `debugging-and-error-recovery`, `spec-driven-development`, ...), run
-the Pocock one. No Osmani name clashed with an existing skill, so **nothing was renamed**.
-Reach for Osmani where Pocock has nothing: `security-and-hardening`,
+stay the mandatory routing**; where an Osmani skill overlaps one, run the Pocock
+one. Reach for Osmani where Pocock has nothing: `security-and-hardening`,
 `performance-optimization`, `api-and-interface-design`, `observability-and-instrumentation`,
-`shipping-and-launch`, `ci-cd-and-automation`, `deprecation-and-migration`. Upstream's
-slash commands and reviewer personas are not vendored (no `.claude/commands` or
-`.claude/agents` here). Detail: `.claude/skills/_vendor/osmani-agent-skills/ROUTING.md`.
+`shipping-and-launch`, `ci-cd-and-automation`, `deprecation-and-migration`.
+Detail: `.claude/skills/_vendor/osmani-agent-skills/ROUTING.md`.
 
 ## Agent skills
 
@@ -234,7 +215,7 @@ hirobius/ops repo: fleet state at /api/projects, consolidated tasks at
 /ops/tasks (this repo's GitHub Issues sync there), current cross-project
 state in docs/ai/HANDOFF.md (in ops). Conventions for every session here:
 (a) track new work as GitHub Issues in THIS repo — never a local TODO
-file; (b) before ending any session that changed project state, update
-root status.json (updatedAt, phase, headline, next, blocked) — the ops
-dashboard renders it; (c) read the ops HANDOFF before cross-project
+file; (b) state is derived, not written (ops ADR-010): ops reads release, next
+and blocked from `package.json` and issue labels; set `status.json` `focus` only
+when this repo's direction changes; (c) read the ops HANDOFF before cross-project
 decisions.

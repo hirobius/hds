@@ -208,9 +208,8 @@ export const TYPO_PROPS = [
   // measure constraint (Swiss canon caps body/small/mono at 60ch). Composites
   // that omit maxWidth emit no var line — the suffix is filtered downstream.
   ['max-width', 'maxWidth', 'dimension'],
-  // textTransform extends the DTCG schema for the eyebrow composite — bakes
-  // uppercase casing into the token so consumers can't apply text-transform
-  // ad-hoc. Optional; composites without textTransform emit no var line.
+  // textTransform extends the DTCG schema; optional, composites without it emit
+  // no var line. Never `uppercase`: the system is sentence case (check-no-uppercase).
   ['text-transform', 'textTransform', 'string'],
 ];
 
@@ -1393,8 +1392,12 @@ export function validateTenantOverlay(overlay, baseRaw, slug) {
  */
 export function indexDeprecatedAliases(baseRaw) {
   const index = new Map();
-  for (const { path, value, deprecated } of walkTokens(baseRaw)) {
+  for (const { path, value, deprecated, extensions } of walkTokens(baseRaw)) {
     if (!deprecated || typeof value !== 'string') continue;
+    // A themed alias (its Dark differs from $value) cannot be re-anchored to one
+    // var without pinning its Light value in dark mode; it keeps the :root value.
+    const dark = readModes(extensions)?.Dark;
+    if (dark !== undefined && dark !== value) continue;
     const m = /^\{([^}]+)\}$/.exec(value);
     if (!m) continue;
     const list = index.get(m[1]) ?? [];

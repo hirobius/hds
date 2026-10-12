@@ -102,10 +102,7 @@ export default [...hds.configs.recommended];
 
 <!-- hds:repo-notes — everything below is hand-written, for agents working in the hds repo itself; consumers can stop here. -->
 
-## Working in the hds repo
-
-Notes for agents working on this repository, not with the package. Read `CLAUDE.md` for
-the full engineering protocol; this section is the home for autonomous-loop rules.
+Working in this repo: start at `docs/ai/FRONT-DOOR.md` (read order, where live state is, the docs index).
 
 ## Ralph quality bar
 

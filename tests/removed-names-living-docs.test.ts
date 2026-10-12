@@ -1,7 +1,7 @@
 // @vitest-environment node
 /**
- * The living backlogs (docs/ROADMAP.md, docs/CONSUMER_READINESS_BACKLOG.md)
- * describe the package as it is now. After the 0.20.0 removals (hds#389 R1) they
+ * The living backlog (docs/ROADMAP.md)
+ * describes the package as it is now. After the 0.20.0 removals (hds#389 R1) they
  * may name a removed export only to record that it went in 0.20.0, on the same
  * line (hds#389 R1a review: they still listed FoundationSwatch,
  * ComponentInstanceMatrix and the Hds* aliases as current exports).
@@ -13,7 +13,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ROOT = resolve(__dirname, '..');
-const LIVING = ['docs/ROADMAP.md', 'docs/CONSUMER_READINESS_BACKLOG.md'];
+const LIVING = ['docs/ROADMAP.md'];
 
 /** Names 0.20.0 removed outright (the /patterns names that moved still exist there). */
 const REMOVED = [

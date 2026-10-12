@@ -1,0 +1,1 @@
+Token consolidation: deprecated `semantic.color.border.subdued` (use border.default; Dark differs 700 vs 800), every `$deprecated` token now hidden from Figma publishing (border/subdued, hds#206 spacing aliases, badge/bg|text); no CSS value changes. Next: Adrian runs a Figma Sync (10 hiddenFromPublishing updates), then the removal release with a codemod.

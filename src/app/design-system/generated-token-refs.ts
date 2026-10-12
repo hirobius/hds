@@ -193,8 +193,7 @@ export const tokenRefs = {
       },
       letterSpacing: {
         tight: "var(--primitive-typography-letterSpacing-tight)",
-        normal: "var(--primitive-typography-letterSpacing-normal)",
-        caps: "var(--primitive-typography-letterSpacing-caps)"
+        normal: "var(--primitive-typography-letterSpacing-normal)"
       }
     },
     duration: {
@@ -424,6 +423,13 @@ export const tokenRefs = {
         fontWeight: "var(--semantic-typography-title-font-weight)",
         letterSpacing: "var(--semantic-typography-title-letter-spacing)",
         lineHeight: "var(--semantic-typography-title-line-height)"
+      },
+      titleSm: {
+        fontFamily: "var(--semantic-typography-titleSm-font-family)",
+        fontSize: "var(--semantic-typography-titleSm-font-size)",
+        fontWeight: "var(--semantic-typography-titleSm-font-weight)",
+        letterSpacing: "var(--semantic-typography-titleSm-letter-spacing)",
+        lineHeight: "var(--semantic-typography-titleSm-line-height)"
       },
       body: {
         fontFamily: "var(--semantic-typography-body-font-family)",

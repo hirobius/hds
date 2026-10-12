@@ -68,6 +68,8 @@ const MARKERS = [
   'layout-gap-ok',
   // check-type-ramp.mjs (hds#486) documents and honors this marker.
   'type-ramp-ok',
+  // check-no-uppercase.mjs documents and honors this marker (a reason is required).
+  'uppercase-ok',
   // Same gap for src/app/components/__tests__/no-css-var-in-motion-animate.test.ts,
   // which honors `motion-animate-var-ok` (hds#372).
   // scripts/__tests__/check-exemptions.test.mjs pins every sibling-gate marker.

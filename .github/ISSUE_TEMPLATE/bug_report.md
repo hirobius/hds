@@ -33,7 +33,7 @@ assignees: ''
 
 ## Validator output (if relevant)
 
-<!-- Paste output of the 6 pre-commit gates if the bug surfaced via a gate. -->
+<!-- Paste output of the failing gate (`pnpm check:fast`, or the one `.husky/pre-commit` named) if the bug surfaced via a gate. -->
 
 ```
 $ pnpm typecheck

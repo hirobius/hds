@@ -1,15 +1,15 @@
 {
-  "checksum": "29bb1b0e",
+  "checksum": "4764179b",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-12T07:06:01.510Z",
+    "takenAt": "2026-10-12T17:43:05.600Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "d6dfc15a",
-      "pushedAt": "2026-10-12T07:06:01.483Z",
+      "modelHash": "62db6261",
+      "pushedAt": "2026-10-12T17:43:05.563Z",
       "scope": null
     },
     "collections": [
@@ -3308,7 +3308,7 @@
               "FRAME_FILL",
               "SHAPE_FILL"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--component-badge-bg)"
             },
@@ -3472,11 +3472,11 @@
             "name": "color/border/subdued",
             "path": "semantic.color.border.subdued",
             "resolvedType": "COLOR",
-            "description": "",
+            "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
             "scopes": [
               "STROKE_COLOR"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-color-border-subdued)"
             },
@@ -5011,7 +5011,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-space-component-gap)"
             },
@@ -5059,7 +5059,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-space-component-padding)"
             },
@@ -5083,7 +5083,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-space-layout-gutter)"
             },
@@ -5107,7 +5107,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-space-layout-inset)"
             },
@@ -5131,7 +5131,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-space-layout-normal)"
             },
@@ -5155,7 +5155,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-space-layout-spacious)"
             },
@@ -5179,7 +5179,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-space-layout-tight)"
             },
@@ -7164,7 +7164,7 @@
               "TEXT_FILL",
               "STROKE_COLOR"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--component-badge-text)"
             },

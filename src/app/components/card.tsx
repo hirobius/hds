@@ -453,7 +453,7 @@ const METRIC_TONE_VALUE_COLOR: Record<CardTone, string> = {
  * @removeIn 1.0.0
  */
 export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Uppercase eyebrow label (e.g. "Retainer", "Open tasks"). */
+  /** Sentence-case eyebrow label (e.g. "Retainer", "Open tasks"). */
   label: React.ReactNode;
   /** Big value (e.g. "$3,500", "12", "67%"). Rendered at h2 weight. */
   value: React.ReactNode;

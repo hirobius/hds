@@ -38,6 +38,7 @@ function* walkTokens(node, path = [], inheritedType = null) {
       value: node.$value,
       extensions: node.$extensions,
       description: node.$description,
+      deprecated: node.$deprecated,
     };
     return;
   }
@@ -407,7 +408,9 @@ const TYPOGRAPHY_VARIABLES = {
   letterSpacing: ['letter-spacing', 'dimension'],
   lineHeight: ['line-height', 'dimension'],
 };
-const TEXT_CASE = { none: 'ORIGINAL', uppercase: 'UPPER', lowercase: 'LOWER', capitalize: 'TITLE' };
+// No `uppercase` -> UPPER: the system never produces ALL CAPS (check-no-uppercase), so a
+// token asking for it fails the model build instead of reaching Figma.
+const TEXT_CASE = { none: 'ORIGINAL', lowercase: 'LOWER', capitalize: 'TITLE' };
 const FONT_STYLE_BY_WEIGHT = {
   100: 'Thin',
   200: 'ExtraLight',
@@ -496,7 +499,9 @@ function expandTypography(graph, token) {
   if (!fontStyle)
     throw new Error(`No Figma font style for weight ${weight} at ${at('fontWeight')}`);
   if (!textCase)
-    throw new Error(`No Figma text case for textTransform "${v.textTransform}" at ${path}`);
+    throw new Error(
+      `No Figma text case for textTransform "${v.textTransform}" at ${path} (uppercase is not allowed: sentence case only)`,
+    );
 
   const textStyle = {
     name: token.path.slice(1).join('/'),
@@ -869,6 +874,8 @@ function tokenVariable(graph, token) {
     themed: isThemed(token),
     unit: unitOf(graph, token),
     description: token.description ?? '',
+    // A $deprecated token stays live (bindings resolve) but leaves the library picker.
+    deprecated: Boolean(token.deprecated),
     entryFor: (mode) =>
       modeEntry(graph, mode === SINGLE_MODE ? token.value : modeValue(token, mode), token.type),
   };
@@ -966,7 +973,7 @@ export function buildFigmaModel(raw, { brands = null } = {}) {
             .filter(Boolean)
             .join(' '),
           scopes: scopesFor(item.segments, item.tokenType, resolvedType),
-          hiddenFromPublishing: item.segments[0] === 'primitive',
+          hiddenFromPublishing: item.segments[0] === 'primitive' || Boolean(item.deprecated),
           codeSyntax: { WEB: `var(--${item.segments.join('-')})` },
           valuesByMode: Object.fromEntries(modes.map((mode) => [mode, item.entryFor(mode)])),
         };

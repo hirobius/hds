@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "0ae0d0665d691d46378699b876337ec2a3b9c44547a6c9767a6390897f981c40",
-  "precommitStructureHashUpdatedAt": "2026-10-12T05:13:53.265Z",
+  "precommitStructureHash": "f778f865d3783a7e5931b678eefd54849d1426e926b55e5ec614090000bb2afa",
+  "precommitStructureHashUpdatedAt": "2026-10-12T18:19:55.593Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -508,6 +508,18 @@
       "supportsJson": true
     },
     {
+      "id": "check-no-uppercase",
+      "description": "The design system never produces ALL CAPS text (Adrian, 2026-10-12). Fails the Tailwind `uppercase` class (also variant-prefixed and @apply), CSS or arbitrary-property `text-transform: uppercase`, small caps (font-variant), `textTransform: 'uppercase'` in JS or JSON, `textCase: 'UPPER'` (also SMALL_CAPS) in tokens or the Figma model, and `.toUpperCase()` / `.toLocaleUpperCase()` in code except the first-letter idiom (charAt(0) or [0]). Scans src/, docs-site/, preview/, starter-kit/, tools/, templates/, tenants/, docs/*.html, hirobius.tokens.json and figma/model.json + snapshot.json; skips comments, tests and fixtures. A line is exempt with // uppercase-ok: <reason> on the same line or either line above; the reason is required (a bare marker fails). Known limit: a class assembled at runtime is not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over the repo in pnpm test.",
+      "severity": "error",
+      "gateScript": "scripts/check-no-uppercase.mjs",
+      "fixturePath": "fixtures/check-no-uppercase",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
       "id": "check-type-ramp",
       "description": "hds#486 -- keeps src/ on the type ramp of 5 roles plus mono (display, title, body, ui, caption, mono; epic hds#483). Fails a font size, weight or line height outside the roles: any Tailwind text-<size>, font-<weight> or leading-* utility, a text-[12px] arbitrary size, an inline or CSS font-size/font-weight/line-height whose value is a literal, and a raw rung of the primitive scale (--primitive-typography-size-*); and fails a deprecated composite (typeStyles.h1/heading1-3/technical/eyebrow/..., --semantic-typography-h1..h3/eyebrow, semantic.typography.h1..h3/eyebrow, Text variants heading1-3/technical/eyebrow/badge/doc*). A role var, inherit, unset and initial are fine. Also reads hirobius.tokens.json: exactly six live semantic.typography composites, and each deprecated alias (h1, h2, h3 to title; eyebrow to caption) equal to its role. Exempts tokens.ts and text.tsx (they define the deprecated names), generated CSS/TS, fonts.css and tests; a line is exempt with // type-ramp-ok: <reason> on the same line or either line above. Known limit: a value reached through an identifier or a class name assembled at runtime is not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over src/ in pnpm test.",
       "severity": "error",
@@ -537,6 +549,28 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "on-demand"
+    },
+    {
+      "id": "check-state-surfaces",
+      "description": "State-surface registry gate (hds#612, spec ops#576): docs/state-surfaces.json lists every file or section that describes project state as generated (a generator builds it; it names a `check` command that proves it fresh, which the gate verifies is a node script that exists and, when passed --check, handles --check, or says `freshness: unchecked`), checked (a named gate compares it with the code) or editorial (owner, reviewedAt, maxAgeDays). The gate fails on a registered path that does not exist (SURFACE_MISSING), a `by` script that does not exist, a generated surface with no verifiable check and no `unchecked` (REGISTRY_INVALID), a reviewedAt in the future, and a repo path named in non-generated markdown (registered files, markdown inside registered directories, README/CLAUDE/CONTRIBUTING/AGENTS; fenced code and HTML comments skipped; links resolve against their own file, root-absolute links against the repo root, `path §n` names the path; gitignored build output counts as present) that does not exist (DEAD_REFERENCE). An editorial surface older than its maxAgeDays is a warning (REVIEW_DUE, exit 0) and an error under --strict-review, for a scheduled run. The opt-in registry key registerAll flags markdown in a listed directory that no entry covers (UNREGISTERED_DOC). --run-checks also runs each declared `check` command. Reads --root/--registry, so it vendors to other repos with scripts/lib/gate-output.mjs. Runs in pretest. Fixtures: fixtures/check-state-surfaces/{passing,violating}.example.d, mini-roots passed through FIXTURE_DIR.",
+      "severity": "error",
+      "gateScript": "scripts/check-state-surfaces.mjs",
+      "fixturePath": "fixtures/check-state-surfaces",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-steering-budget",
+      "description": "Caps the always-on agent context (ported from ops#292; hds#612): the files in docs/guardrails/steering-budget.json (CLAUDE.md and what it marks read-first) are loaded by every agent every session, so their total size may not pass maxTotalBytes, set to the measured size plus 5% (the list includes the generated repo front door, docs/ai/FRONT-DOOR.md). Fix by moving history to an on-demand file, not by raising the cap. The same list is `alwaysOn` in docs/state-surfaces.json, where check-state-surfaces forbids derived facts. Runs in pretest. Fixtures: fixtures/check-steering-budget/{passing,violating}.example.d, mini-roots passed through FIXTURE_DIR.",
+      "severity": "error",
+      "gateScript": "scripts/check-steering-budget.mjs",
+      "fixturePath": "fixtures/check-steering-budget",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
     },
     {
       "id": "check-record-freshness",
@@ -923,7 +957,7 @@
     },
     {
       "id": "upgrade-compile",
-      "description": "Release-compiler drift (hds#451): `node scripts/upgrade/compile.mjs --check` fails when UPGRADING.md or upgrade/index.json is not byte-equal to what scripts/upgrade/compile.mjs compiles from the committed ledgers (upgrade/releases/<v>.json), or when status.json has no `release` object or one that is not the newest ledger's, naming the file and the fix (`node scripts/upgrade/compile.mjs`). Reads committed files only: no network, no build, never writes. Runs in pretest; scripts/__tests__/upgrade-compile.test.mjs proves it fails on a one-value hand edit to each of the three files, and that this entry exists (validate-guardrail-registry does not scan scripts/upgrade/). The same script records each release at `pnpm changeset:version` (--release).",
+      "description": "Release-compiler drift (hds#451): `node scripts/upgrade/compile.mjs --check` fails when UPGRADING.md or upgrade/index.json is not byte-equal to what scripts/upgrade/compile.mjs compiles from the committed ledgers (upgrade/releases/<v>.json), naming the file and the fix (`node scripts/upgrade/compile.mjs`). Reads committed files only: no network, no build, never writes. Runs in pretest; scripts/__tests__/upgrade-compile.test.mjs proves it fails on a one-value hand edit to each of the two files, and that this entry exists (validate-guardrail-registry does not scan scripts/upgrade/). The same script records each release at `pnpm changeset:version` (--release).",
       "severity": "error",
       "gateScript": "scripts/upgrade/compile.mjs",
       "fixturePath": null,

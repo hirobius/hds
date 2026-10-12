@@ -1,3 +1,5 @@
+> **Archived 2026-10-12 (hds#612).** This is history, not current state: a stale component inventory; the live one is public/hds-manifest.json. Paths and numbers below are not kept up to date.
+
 # HDS Content Inventory & Migration Map (`inventory.md`)
 
 > **Hand-off Note for Muse / Claude**
