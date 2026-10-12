@@ -518,3 +518,14 @@ Results: #1 Kbd Size=md 2026:3, Size=sm 2026:5, Size=lg 2026:7 now carry one dro
 | 4   | --         | `get_screenshot` | read  | Kbd set 2026:9 after the fallback fix, for Adrian                                                                                                                                                                                          |
 
 Results: #2 the variable is correct (color/border/strong → neutral/300 light, neutral/600 dark) but the drop shadow's raw fallback was black, which Figma showed. #3 scanned 1758 bound paints/effects; 21 fallbacks did not match their variable's default-mode value and were set to it (bindings unchanged): Kbd 2026:3/5/7 effects, Toast Title/Message fills (10), Slider Track/Filled Track fills (7), Dialog 93:27 fill. #4 screenshot (base64) shows light-grey edges on all three sizes. Session total 4 calls. Nothing deleted or published.
+
+## 2026-10-12 · session `claude/figma-fallback-guard`
+
+First live run of the bound-colour fallback guard, plus the titleSm token sync (drift showed 6 missing). Budget 2 calls. Rows are written before the call is made.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                                                     |
+| --- | ---------- | ----------- | ----- | ------------------------------------------------------------------------------------------- |
+| 1   | --         | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` unmodified (titleSm: 5 variables + 1 text style) |
+| 2   | --         | `use_figma` | read  | Library: `fallbacks.js` unmodified (bound-colour fallback record)                           |
+
+Results: #1 created the 5 typography/titleSm variables (VariableID:2178:2–6) and the typography/titleSm text style; receipt post c70cefd6 on base 4764179b, snapshot rebuilt, drift 0. #2 59 pages (Archive and Deprecated skipped), 2773 nodes, 1863 colour bindings, 0 fallback mismatches (checksum 99955183), ingested as `bindingFallbacks`. Session total 2 calls. Nothing deleted or published.
