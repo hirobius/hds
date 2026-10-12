@@ -403,6 +403,18 @@ declare module 'react' {
     '--component-badge-fontWeight'?: string | undefined;
     '--component-badge-text'?: string | undefined;
     '--component-badge-bg'?: string | undefined;
+    '--component-badge-neutral-bg'?: string | undefined;
+    '--component-badge-neutral-text'?: string | undefined;
+    '--component-badge-info-bg'?: string | undefined;
+    '--component-badge-info-text'?: string | undefined;
+    '--component-badge-success-bg'?: string | undefined;
+    '--component-badge-success-text'?: string | undefined;
+    '--component-badge-danger-bg'?: string | undefined;
+    '--component-badge-danger-text'?: string | undefined;
+    '--component-badge-warning-bg'?: string | undefined;
+    '--component-badge-warning-text'?: string | undefined;
+    '--component-badge-inProgress-bg'?: string | undefined;
+    '--component-badge-inProgress-text'?: string | undefined;
     '--component-badge-radius'?: string | undefined;
     '--component-badge-height'?: string | undefined;
     '--component-badge-minWidth'?: string | undefined;

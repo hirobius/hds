@@ -84,13 +84,23 @@
           "paddingY": ".hds-badge | padding | 0",
           "paddingX": ".hds-badge | padding | 1",
           "radius": ".hds-badge | border-radius",
-          "bg": ".hds-badge | background-color",
-          "text": ".hds-badge | color"
+          "neutral.bg": ".hds-badge--neutral | background-color",
+          "neutral.text": ".hds-badge--neutral | color",
+          "info.bg": ".hds-badge--info | background-color",
+          "info.text": ".hds-badge--info | color",
+          "success.bg": ".hds-badge--success | background-color",
+          "success.text": ".hds-badge--success | color",
+          "danger.bg": ".hds-badge--danger | background-color",
+          "danger.text": ".hds-badge--danger | color",
+          "warning.bg": ".hds-badge--warning | background-color",
+          "warning.text": ".hds-badge--warning | color",
+          "inProgress.bg": ".hds-badge--in-progress | background-color",
+          "inProgress.text": ".hds-badge--in-progress | color"
         }
       },
       "rules": [
-        { "match": "bg", "ctx": { "tone": "neutral" } },
-        { "match": "text", "ctx": { "tone": "neutral" } }
+        { "match": "*.bg", "ctx": { "tone": "$1" } },
+        { "match": "*.text", "ctx": { "tone": "$1" } }
       ]
     },
     "input": {

@@ -38,6 +38,12 @@ function hex(path: string, mode: 'Light' | 'Dark'): string {
 const PAGE = 'semantic.color.surface.page';
 const RAISED = 'semantic.color.surface.raised';
 const OVERLAY = 'semantic.color.surface.overlay';
+const HOVER = 'semantic.color.surface.hover';
+const MUTED = 'semantic.color.surface.muted';
+const PRESSED = 'semantic.color.surface.pressed';
+const BORDER_SUBTLE = 'semantic.color.border.subtle';
+const lum = (p: string) => hexToLuminance(hex(p, 'Dark'));
+const ratio = (a: string, b: string) => contrastRatio(hex(a, 'Dark'), hex(b, 'Dark'));
 
 describe('dark surface ladder', () => {
   it('raised is distinct from the page: at least 1.2:1', () => {
@@ -66,6 +72,45 @@ describe('dark surface ladder', () => {
     expect(hex(PAGE, 'Light')).toBe('#ffffff');
     expect(hex(RAISED, 'Light')).toBe('#fafafa');
     expect(hex(OVERLAY, 'Light')).toBe('#f5f5f5');
+  });
+});
+
+describe('dark state steps on the lighter raised surface', () => {
+  it('hover and muted sit lighter than raised', () => {
+    expect(lum(HOVER)).toBeGreaterThan(lum(RAISED));
+    expect(lum(MUTED)).toBeGreaterThan(lum(RAISED));
+  });
+
+  it('hover is distinct from both raised and overlay (at least 1.2:1)', () => {
+    expect(ratio(HOVER, RAISED)).toBeGreaterThanOrEqual(1.2);
+    expect(ratio(HOVER, OVERLAY)).toBeGreaterThanOrEqual(1.2);
+  });
+
+  it('muted is distinct from raised (at least 1.1:1)', () => {
+    expect(ratio(MUTED, RAISED)).toBeGreaterThanOrEqual(1.1);
+  });
+
+  it('pressed reads darker than hover and still distinct from raised (at least 1.2:1)', () => {
+    expect(lum(PRESSED)).toBeLessThan(lum(HOVER));
+    expect(ratio(PRESSED, RAISED)).toBeGreaterThanOrEqual(1.2);
+  });
+
+  it('border.subtle is visible on raised (at least 1.2:1) without turning into a hard edge (at most 1.8:1)', () => {
+    expect(ratio(BORDER_SUBTLE, RAISED)).toBeGreaterThanOrEqual(1.2);
+    expect(ratio(BORDER_SUBTLE, RAISED)).toBeLessThanOrEqual(1.8);
+  });
+
+  it.each([HOVER, MUTED, PRESSED])('keeps content.primary on %s at AA (4.5:1)', (surface) => {
+    expect(
+      contrastRatio(hex('semantic.color.content.primary', 'Dark'), hex(surface, 'Dark')),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('leaves the light steps alone', () => {
+    expect(hex(HOVER, 'Light')).toBe('#f5f5f5');
+    expect(hex(MUTED, 'Light')).toBe('#f5f5f5');
+    expect(hex(PRESSED, 'Light')).toBe('#fafafa');
+    expect(hex(BORDER_SUBTLE, 'Light')).toBe('#f5f5f5');
   });
 });
 

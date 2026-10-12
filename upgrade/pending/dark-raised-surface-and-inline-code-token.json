@@ -1,4 +1,104 @@
 {
   "impact": "look",
-  "plain": "In dark mode, cards and other raised surfaces are now a step lighter than the page (neutral.850 instead of neutral.950), and overlay and sunken surfaces a step lighter again; nothing to change unless you styled against the old dark values."
+  "plain": "In dark mode, cards and other raised surfaces are a step lighter than the page, and the hover, muted, pressed and subtle-border steps moved with them; nothing to change unless you styled against the old dark values.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-color-border-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the subtle border is now neutral.700 (was neutral.850) so it shows on raised surfaces; check any hairline you matched to the old value.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-subtle"],
+        "cssVarWrites": ["--semantic-color-border-subtle"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-subtle:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-subtle:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the hover surface is now neutral.700 (was neutral.900) so hover reads on raised surfaces; check any hover colour you matched to the old value.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-hover"],
+        "cssVarWrites": ["--semantic-color-surface-hover"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-hover:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-muted",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the muted surface is now neutral.800 (was neutral.900) so it stays lighter than raised; check any muted block you matched to the old value.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-muted"],
+        "cssVarWrites": ["--semantic-color-surface-muted"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-overlay",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the overlay surface is now neutral.800 (was neutral.850) so it stays above raised; check any overlay colour you matched to the old value.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-overlay"],
+        "cssVarWrites": ["--semantic-color-surface-overlay"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-overlay:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-overlay:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the pressed surface is now black (was neutral.950) so it reads darker than hover and apart from raised; check any pressed colour you matched to the old value.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-pressed"],
+        "cssVarWrites": ["--semantic-color-surface-pressed"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-pressed:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-raised",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the raised surface is now neutral.850 (was neutral.950) so cards read against the page; check any card colour you matched to the old value.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-raised"],
+        "cssVarWrites": ["--semantic-color-surface-raised"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-sunken",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the sunken surface is now neutral.800 (was neutral.850) to keep the surface order; check any sunken colour you matched to the old value.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-sunken"],
+        "cssVarWrites": ["--semantic-color-surface-sunken"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=dark]"
+      ]
+    }
+  ]
 }

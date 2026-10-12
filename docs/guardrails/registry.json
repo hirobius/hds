@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "952c9f2d65217f5c82ab84273c5880f404f1b5be709485eeb75ae8bde28138bb",
-  "precommitStructureHashUpdatedAt": "2026-10-11T06:35:05.461Z",
+  "precommitStructureHash": "0ae0d0665d691d46378699b876337ec2a3b9c44547a6c9767a6390897f981c40",
+  "precommitStructureHashUpdatedAt": "2026-10-12T05:13:53.265Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -547,6 +547,19 @@
       "source": "human",
       "firingChannel": "pre-push",
       "firingChannels": ["pre-push"]
+    },
+    {
+      "id": "check-ralph-kit-drift",
+      "description": "Catches local edits to the vendored hirobius/ralph kit files (ralph/{lib,next,run,loop,status}.sh, prompt.md) at commit time by comparing sha256 against ralph/kit.lock.json (ported from ops#492). Pre-commit runs it with --staged, so it only fires when a kit file is staged. --report lists drift without failing; --update re-pins after a kit release.",
+      "severity": "error",
+      "gateScript": "scripts/check-ralph-kit-drift.mjs",
+      "fixturePath": "fixtures/check-ralph-kit-drift",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "glob": "ralph/**",
+      "strictArgv": "--staged"
     },
     {
       "id": "check-tests-with-code",

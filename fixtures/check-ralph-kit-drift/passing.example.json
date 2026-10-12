@@ -1,0 +1,11 @@
+{
+  "lock": {
+    "ref": "hirobius/ralph@fixture",
+    "files": {
+      "prompt.md": "4b6a35ae2b61f78305b4bbf543f179d38c721c3943f1608e39d9388c45f971dd"
+    }
+  },
+  "files": {
+    "prompt.md": "pinned prompt\n"
+  }
+}

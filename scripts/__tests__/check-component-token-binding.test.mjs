@@ -402,18 +402,18 @@ describe('CLI modes', () => {
 // ── The repo itself (acceptance fixture: audit at origin/main 7895210) ───────
 
 describe('repo counts', () => {
-  it('counts after code-wins re-value (hds#595): 21 BOUND / 44 LITERAL-MATCH / 4 LITERAL-MISMATCH / 11 UNUSED of 80 (was 20/28/20/11 of 79, hds#595; inlineCode.bg bound)', () => {
+  it('counts after the state-token decisions (hds#595): 36 BOUND / 43 LITERAL-MATCH / 0 LITERAL-MISMATCH / 13 UNUSED of 92 (was 20/44/4/11; inlineCode.bg bound)', () => {
     const r = cli(['--json']);
     expect(r.status).toBe(0);
     const { summary } = JSON.parse(r.out);
-    expect(summary.total).toBe(80);
+    expect(summary.total).toBe(92);
     expect(summary.counts).toMatchObject({
-      BOUND: 21,
-      'LITERAL-MATCH': 44,
-      'LITERAL-MISMATCH': 4,
-      UNUSED: 11,
+      BOUND: 36,
+      'LITERAL-MATCH': 43,
+      'LITERAL-MISMATCH': 0,
+      UNUSED: 13,
     });
-    expect(summary.matchKinds).toEqual({ alias: 23, 'type-role': 8, literal: 13 });
+    expect(summary.matchKinds).toEqual({ alias: 22, 'type-role': 8, literal: 13 });
   });
 
   it('--enforce passes on the committed baseline', () => {

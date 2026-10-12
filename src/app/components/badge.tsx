@@ -15,22 +15,28 @@ import { cn } from '../../lib/utils';
 import { isProduction } from '../../lib/env';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
-// Tone is the only styling axis. Neutral is theme-aware via the `dark:` variant
-// (no runtime useTheme branch). Semantic tones use the named feedback utilities
-// (text-feedback-* / bg-feedback-bg-*) so there are no arbitrary color values.
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing tokens and the neutral 4% overlay have no Tailwind-theme utility; var()-based so still token-driven. the caption role matches component.badge.fontSize (12px).
+// Tone is the only styling axis. Every tone binds its own pair of tokens,
+// `component.badge.<tone>.{bg,text}` (hds#595), which flip per theme in the token
+// layer, so there is no `dark:` variant and no runtime useTheme branch. The flat
+// `component.badge.{bg,text}` are deprecated. Neutral's fill is `surface.overlay`
+// (it was a 4% black/white wash; the solid token is a few percent lighter in light mode).
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing and per-tone color tokens have no Tailwind-theme utility; var()-based so still token-driven. the caption role matches component.badge.fontSize (12px).
 const badgeVariants = /* @__PURE__ */ cva(
   'inline-flex w-fit items-center justify-center whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] py-[var(--component-badge-paddingY)] rounded-[var(--component-badge-radius)]',
   {
     variants: {
       tone: {
         neutral:
-          'bg-black/[0.04] text-[color:var(--semantic-color-content-secondary)] dark:bg-white/[0.04]',
-        info: 'bg-feedback-bg-info text-feedback-info',
-        success: 'bg-feedback-bg-success text-feedback-success',
-        danger: 'bg-feedback-bg-danger text-feedback-danger',
-        warning: 'bg-feedback-bg-warning text-feedback-warning',
-        inProgress: 'bg-feedback-bg-inProgress text-feedback-inProgress',
+          'bg-[color:var(--component-badge-neutral-bg)] text-[color:var(--component-badge-neutral-text)]',
+        info: 'bg-[color:var(--component-badge-info-bg)] text-[color:var(--component-badge-info-text)]',
+        success:
+          'bg-[color:var(--component-badge-success-bg)] text-[color:var(--component-badge-success-text)]',
+        danger:
+          'bg-[color:var(--component-badge-danger-bg)] text-[color:var(--component-badge-danger-text)]',
+        warning:
+          'bg-[color:var(--component-badge-warning-bg)] text-[color:var(--component-badge-warning-text)]',
+        inProgress:
+          'bg-[color:var(--component-badge-inProgress-bg)] text-[color:var(--component-badge-inProgress-text)]',
       },
     },
     defaultVariants: { tone: 'neutral' },

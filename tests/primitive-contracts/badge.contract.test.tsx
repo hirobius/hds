@@ -28,28 +28,28 @@ describe('Badge contract', () => {
     expect(el?.tagName.toLowerCase()).toBe('span');
   });
 
-  it('tone=info applies the feedback-bg-info class', () => {
+  it('tone=info binds the component.badge.info.bg token', () => {
     const { container } = render(<Badge tone="info">Info</Badge>);
     const el = container.firstChild as HTMLElement;
-    expect(el.classList.contains('bg-feedback-bg-info')).toBe(true);
+    expect(el.classList.contains('bg-[color:var(--component-badge-info-bg)]')).toBe(true);
   });
 
-  it('tone=success applies the feedback-bg-success class', () => {
+  it('tone=success binds the component.badge.success.bg token', () => {
     const { container } = render(<Badge tone="success">OK</Badge>);
     const el = container.firstChild as HTMLElement;
-    expect(el.classList.contains('bg-feedback-bg-success')).toBe(true);
+    expect(el.classList.contains('bg-[color:var(--component-badge-success-bg)]')).toBe(true);
   });
 
-  it('tone=danger applies the feedback-bg-danger class', () => {
+  it('tone=danger binds the component.badge.danger.bg token', () => {
     const { container } = render(<Badge tone="danger">Error</Badge>);
     const el = container.firstChild as HTMLElement;
-    expect(el.classList.contains('bg-feedback-bg-danger')).toBe(true);
+    expect(el.classList.contains('bg-[color:var(--component-badge-danger-bg)]')).toBe(true);
   });
 
-  it('tone=warning applies the feedback-bg-warning class', () => {
+  it('tone=warning binds the component.badge.warning.bg token', () => {
     const { container } = render(<Badge tone="warning">Warn</Badge>);
     const el = container.firstChild as HTMLElement;
-    expect(el.classList.contains('bg-feedback-bg-warning')).toBe(true);
+    expect(el.classList.contains('bg-[color:var(--component-badge-warning-bg)]')).toBe(true);
   });
 
   it('as="div" renders a div element', () => {

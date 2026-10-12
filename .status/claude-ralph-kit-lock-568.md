@@ -1,0 +1,1 @@
+Ralph kit lock (ops#568): re-vendored ralph/lib.sh byte-identical to hirobius/ralph@13f8cec (adds retry_hop_issue), added ralph/kit.lock.json + check-ralph-kit-drift (pre-commit --staged, registered), ralph/test.sh + check-tests.sh so the kit's red-first check runs (RALPH_TDD_ENFORCE_AFTER 2026-10-21). Workflow pin stays @v1.
