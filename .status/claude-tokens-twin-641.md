@@ -1,0 +1,1 @@
+`pnpm tokens` now writes one CSS-variables file, `src/styles/tokens.generated.css`; the byte-identical `src/styles/tokens.css` twin is gone and every reader, gate and fixture points at the survivor (hds#641). The built `dist/` is byte-identical, so nothing ships.

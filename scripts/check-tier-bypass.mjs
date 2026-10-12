@@ -7,7 +7,7 @@
  * tier, making design decisions impossible to update in a single place.
  *
  * Allowlisted files (may reference --primitive-* by design):
- *   - src/styles/tokens.css         — generated; defines all CSS custom properties
+ *   - src/styles/tokens.generated.css — generated; defines all CSS custom properties
  *   - src/styles/theme.css          — bridges primitives to semantic vars
  *   - src/app/design-system/generated-tokens.ts — generated TS constants
  *
@@ -29,7 +29,6 @@ const SKIP_DIRS = new Set(['node_modules', '.git', 'dist']);
 
 // Resolved absolute paths of files that legitimately use --primitive-* vars
 const ALLOWLIST = new Set([
-  join(ROOT, 'src', 'styles', 'tokens.css'),
   join(ROOT, 'src', 'styles', 'tokens.generated.css'),
   join(ROOT, 'src', 'styles', 'theme.css'),
   join(ROOT, 'src', 'app', 'design-system', 'generated-tokens.ts'),

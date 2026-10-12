@@ -84,7 +84,6 @@ const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', '__tests__']);
 const EXEMPT_FILES = new Set([
   'src/app/design-system/tokens.ts',
   'src/app/components/text.tsx',
-  'src/styles/tokens.css',
   'src/styles/tokens.generated.css',
   'src/styles/static.css',
   'src/styles/tenants.css',
