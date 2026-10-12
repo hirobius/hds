@@ -21,8 +21,8 @@ const find = (text, file = 'fake.tsx') => findViolationsInText(text, file);
 const rules = (text, file) => find(text, file).map((v) => v.rule);
 
 describe('ROLES', () => {
-  it('are the five roles plus mono', () => {
-    expect([...ROLES]).toEqual(['display', 'title', 'body', 'ui', 'caption', 'mono']);
+  it('are the five roles plus titleSm and mono', () => {
+    expect([...ROLES]).toEqual(['display', 'title', 'titleSm', 'body', 'ui', 'caption', 'mono']);
   });
 });
 
@@ -85,7 +85,7 @@ describe('findViolationsInText: deprecated composites', () => {
     }
   });
 
-  it('allows the six roles on typeStyles', () => {
+  it('allows the seven roles on typeStyles', () => {
     for (const r of ROLES) expect(find(`<p style={hds.typeStyles.${r}} />`)).toEqual([]);
   });
 
@@ -137,6 +137,7 @@ describe('findTokenViolations: the token file itself', () => {
       typography: {
         display: role('a'),
         title: role('b'),
+        titleSm: role('s'),
         body: role('c'),
         ui: role('d'),
         caption: role('e'),
@@ -148,11 +149,11 @@ describe('findTokenViolations: the token file itself', () => {
     },
   });
 
-  it('passes when only the six roles are live and aliases match their role', () => {
+  it('passes when only the seven roles are live and aliases match their role', () => {
     expect(findTokenViolations(base(), { h1: 'title', eyebrow: 'caption' })).toEqual([]);
   });
 
-  it('flags a seventh live composite', () => {
+  it('flags an eighth live composite', () => {
     const t = base();
     t.semantic.typography.lead = role('g');
     expect(findTokenViolations(t, {}).map((v) => v.rule)).toEqual(['ramp-size']);

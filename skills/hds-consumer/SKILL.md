@@ -152,7 +152,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 
 ### Actions
 
-- `DestructiveSection` — Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`.
+- `DestructiveSection` — Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an `AlertDialog`.
 - `FormActions` — Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most.
 
 ### Display

@@ -1815,7 +1815,7 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "5-role type ramp plus mono (hds#483): display, title, body, ui, caption, mono. h1, h2, h3 and eyebrow are deprecated aliases.",
+      "$description": "5-role type ramp plus title-sm and mono (hds#483): display, title, titleSm, body, ui, caption, mono. h1, h2, h3 and eyebrow are deprecated aliases.",
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
@@ -1835,6 +1835,16 @@
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
         "$description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6."
+      },
+      "titleSm": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.display}",
+          "fontSize": "{primitive.typography.size.base}",
+          "fontWeight": "{primitive.typography.weight.bold}",
+          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "lineHeight": "{primitive.typography.lineHeight.snug}"
+        },
+        "$description": "Small heading inside a card or section band. 16px / 1.375 / 700."
       },
       "body": {
         "$value": {

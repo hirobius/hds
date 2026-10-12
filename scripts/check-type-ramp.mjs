@@ -52,8 +52,16 @@ const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 
-/** The six roles of the ramp. */
-export const ROLES = Object.freeze(['display', 'title', 'body', 'ui', 'caption', 'mono']);
+/** The seven roles of the ramp. */
+export const ROLES = Object.freeze([
+  'display',
+  'title',
+  'titleSm',
+  'body',
+  'ui',
+  'caption',
+  'mono',
+]);
 
 /** Deprecated composite to the role it now points at (semantic.typography.*). */
 export const TOKEN_ALIASES = Object.freeze({
@@ -283,7 +291,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
 
   if (violations.length === 0) {
     console.log(
-      '[ok] check-type-ramp: src/ uses the six roles only (display, title, body, ui, caption, mono)',
+      '[ok] check-type-ramp: src/ uses the seven roles only (display, title, titleSm, body, ui, caption, mono)',
     );
     process.exit(0);
   }
