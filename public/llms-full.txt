@@ -303,7 +303,7 @@ Load only what the task needs. Same text as this file (`public/llms-full.txt`), 
 
 - `public/llms-full.txt` - the full bundle: this text + the full `DESIGN.md` + a compact props digest for every component.
 
-Paths in this file that begin with `docs/architecture/`, `src/app/components/`, `src/scroll/` or under `scripts/`, or that name `public/manifest.json`, `DESIGN-HANDOFF.md`, `TOKEN_GOVERNANCE.md` or `SYSTEMS_REGISTRY.md` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
+Paths in this file that begin with `docs/architecture/`, `src/app/components/`, `src/scroll/` or under `scripts/`, or that name `public/manifest.json`, `DESIGN-HANDOFF.md` or `TOKEN_GOVERNANCE.md` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 
 ## Context Loading Rules (Credit Efficiency)
 
@@ -319,7 +319,6 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 
 - `DESIGN-HANDOFF.md`
 - `TOKEN_GOVERNANCE.md`
-- `SYSTEMS_REGISTRY.md`
 
 ## Pattern Inventory
 
@@ -355,7 +354,7 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 - Token source of truth: read `hirobius.tokens.json` (W3C DTCG). Prefer `semantic.*` and `component.*` tokens over `primitive.*` for product UI.
 - CSS variables: token path `semantic.color.surface.page` maps to `var(--semantic-color-surface-page)` (see generated token refs).
 - Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.
-- Load `TOKEN_GOVERNANCE.md` and `SYSTEMS_REGISTRY.md` only on-demand (when explicitly requested or required by the task).
+- Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).
 - Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.
 - Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.
 
@@ -421,6 +420,7 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 | --- | --- | --- | --- |
 | `semantic.typography.display` | 48px | 700 | One per page, hero only |
 | `semantic.typography.title` | 24px | 700 | Section and card headings |
+| `semantic.typography.titleSm` | 16px | 700 | Small heading inside a card or section band |
 | `semantic.typography.body` | 16px | 400 | Prose |
 | `semantic.typography.ui` | 14px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 12px | 500 | Metadata, help text and labels, in sentence case |
@@ -433,6 +433,8 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
+
+**Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
 
 ## Spacing
 
@@ -593,6 +595,7 @@ Three more needs are props on an existing component, not components of their own
 - Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
+- Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
 - Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
@@ -609,7 +612,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (423 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (424 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -801,7 +804,7 @@ Section heading and toolbar over a `Table`. Row actions are consumer nodes in a 
   - toolbar: ReactNode
 
 ### DestructiveSection
-Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's …
+Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an …
   - actionLabel: ReactNode
   - cancelLabel: string = Cancel
   - confirmBody: ReactNode

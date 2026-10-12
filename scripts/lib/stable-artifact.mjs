@@ -37,6 +37,28 @@ const SENTINEL = '__VOLATILE__';
 const DEFAULT_VOLATILE_RE = /\d{4}-\d{2}-\d{2}(T[\d:.]+Z)?/g;
 
 /**
+ * True when `absPath` exists and holds `newContent` apart from volatile
+ * fragments (the test `writeStableArtifact` applies before it skips a write).
+ * `--check` modes use it so "fresh" means exactly "a regen would not write".
+ *
+ * @param {string} absPath
+ * @param {string} newContent
+ * @param {{ volatileRe?: RegExp }} [options]
+ * @returns {boolean}
+ */
+export function matchesArtifact(absPath, newContent, { volatileRe } = {}) {
+  if (!existsSync(absPath)) return false;
+  const re = volatileRe ?? DEFAULT_VOLATILE_RE;
+  // Reset the regex lastIndex between uses (global regexes are stateful).
+  const normalize = (str) =>
+    str.replace(
+      new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g'),
+      SENTINEL,
+    );
+  return normalize(readFileSync(absPath, 'utf-8')) === normalize(newContent);
+}
+
+/**
  * Write `newContent` to `absPath` only when the non-volatile content differs
  * from what is already on disk.
  *
@@ -46,18 +68,8 @@ const DEFAULT_VOLATILE_RE = /\d{4}-\d{2}-\d{2}(T[\d:.]+Z)?/g;
  * @returns {boolean} `true` if the file was written, `false` if preserved.
  */
 export function writeStableArtifact(absPath, newContent, { volatileRe } = {}) {
-  const re = volatileRe ?? DEFAULT_VOLATILE_RE;
-
-  if (existsSync(absPath)) {
-    const oldContent = readFileSync(absPath, 'utf-8');
-    // Normalise both sides by replacing all volatile matches with the sentinel.
-    // We must reset the regex lastIndex between uses (global regexes are stateful).
-    const normalize = (str) => str.replace(new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g'), SENTINEL);
-    if (normalize(oldContent) === normalize(newContent)) {
-      return false; // No substantive change — preserve existing file.
-    }
-  }
-
+  // Not yet on disk, or changed beyond its volatile fragments: write it.
+  if (matchesArtifact(absPath, newContent, { volatileRe })) return false; // preserve existing file
   writeFileSync(absPath, newContent, 'utf-8');
   return true;
 }

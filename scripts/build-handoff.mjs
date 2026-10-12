@@ -31,7 +31,8 @@
  */
 
 import { readFileSync } from 'fs';
-import { writeGenerated } from './lib/write-generated.mjs';
+import { formatGenerated, writeGenerated } from './lib/write-generated.mjs';
+import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -499,10 +500,10 @@ export function buildDensity() {
   return lines.join('\n');
 }
 
-// ── CLI ───────────────────────────────────────────────────────────────────────
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
-  let handoff = readFileSync(join(ROOT, 'DESIGN-HANDOFF.md'), 'utf8');
+/** The DESIGN-HANDOFF.md that `root`'s token source produces (before Prettier). */
+export function renderHandoff(root) {
+  const raw = readTokenSource(join(root, 'hirobius.tokens.json'));
+  let handoff = readFileSync(join(root, 'DESIGN-HANDOFF.md'), 'utf8');
 
   handoff = replaceSection(handoff, 'brand-identity', buildBrandIdentity(raw));
   handoff = replaceSection(handoff, 'primitives-color', buildPrimitivesColor(raw));
@@ -517,7 +518,23 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   handoff = replaceSection(handoff, 'motion', buildMotion(raw));
   handoff = replaceSection(handoff, 'agent-constraints', buildAgentConstraints(raw));
   handoff = replaceSection(handoff, 'token-count', buildTokenCount(raw));
+  return handoff;
+}
 
-  await writeGenerated(join(ROOT, 'DESIGN-HANDOFF.md'), handoff);
+// ── CLI ───────────────────────────────────────────────────────────────────────
+// `--check` writes nothing and exits 1 when the generated token tables in
+// DESIGN-HANDOFF.md differ from a fresh build; `--root <dir>` reads and writes
+// under <dir> (tests).
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const root = rootFromArgv(ROOT);
+  const handoff = renderHandoff(root);
+  if (process.argv.includes('--check')) {
+    await runCheck(
+      root,
+      { 'DESIGN-HANDOFF.md': handoff },
+      { label: 'build-handoff --check', fix: 'pnpm tokens', format: formatGenerated },
+    );
+  }
+  await writeGenerated(join(root, 'DESIGN-HANDOFF.md'), handoff);
   console.log('✓ DESIGN-HANDOFF.md updated from token source.');
 }

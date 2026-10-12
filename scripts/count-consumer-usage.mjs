@@ -37,6 +37,7 @@ import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from '
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RENAMES as HDS_PREFIX_RENAMES } from '../codemods/hds-prefix.mjs';
+import { runCheck } from './lib/generated-check.mjs';
 
 export const IN_USE_BLOCK = 'consumer-usage';
 const SKIP_DIRS = new Set([
@@ -204,6 +205,11 @@ export function renderInUseBlock(s) {
   ].join('\n');
 }
 
+/** The README with its "In use" block rendered from `snapshot`: what `--check` compares. */
+export function readmeWithUsage(readme, snapshot) {
+  return replaceInUseBlock(readme, renderInUseBlock(snapshot));
+}
+
 export function replaceInUseBlock(readme, block) {
   const start = `<!-- auto:start:${IN_USE_BLOCK} -->`;
   const end = `<!-- auto:end:${IN_USE_BLOCK} -->`;
@@ -217,6 +223,21 @@ export function replaceInUseBlock(readme, block) {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
   const snapshotPath = join(REPO, 'docs/data/consumer-usage.json');
+  if (process.argv.includes('--check')) {
+    // Writes nothing: exit 1 when the README block differs from the committed
+    // snapshot rendered today. (The snapshot itself is measured from the
+    // consumer repo, which `--root` does; that part cannot be checked here.)
+    await runCheck(
+      REPO,
+      {
+        'README.md': readmeWithUsage(
+          readFileSync(join(REPO, 'README.md'), 'utf8'),
+          JSON.parse(readFileSync(snapshotPath, 'utf8')),
+        ),
+      },
+      { label: 'count-consumer-usage --check', fix: 'pnpm consumer:usage' },
+    );
+  }
   const argRoot = process.argv.includes('--root')
     ? process.argv[process.argv.indexOf('--root') + 1]
     : null;
@@ -256,8 +277,5 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     console.log('consumer:usage: no --root or OPS_ROOT given, using the committed snapshot');
   }
   const readmePath = join(REPO, 'README.md');
-  writeFileSync(
-    readmePath,
-    replaceInUseBlock(readFileSync(readmePath, 'utf8'), renderInUseBlock(snapshot)),
-  );
+  writeFileSync(readmePath, readmeWithUsage(readFileSync(readmePath, 'utf8'), snapshot));
 }

@@ -38,6 +38,7 @@ function* walkTokens(node, path = [], inheritedType = null) {
       value: node.$value,
       extensions: node.$extensions,
       description: node.$description,
+      deprecated: node.$deprecated,
     };
     return;
   }
@@ -873,6 +874,8 @@ function tokenVariable(graph, token) {
     themed: isThemed(token),
     unit: unitOf(graph, token),
     description: token.description ?? '',
+    // A $deprecated token stays live (bindings resolve) but leaves the library picker.
+    deprecated: Boolean(token.deprecated),
     entryFor: (mode) =>
       modeEntry(graph, mode === SINGLE_MODE ? token.value : modeValue(token, mode), token.type),
   };
@@ -970,7 +973,7 @@ export function buildFigmaModel(raw, { brands = null } = {}) {
             .filter(Boolean)
             .join(' '),
           scopes: scopesFor(item.segments, item.tokenType, resolvedType),
-          hiddenFromPublishing: item.segments[0] === 'primitive',
+          hiddenFromPublishing: item.segments[0] === 'primitive' || Boolean(item.deprecated),
           codeSyntax: { WEB: `var(--${item.segments.join('-')})` },
           valuesByMode: Object.fromEntries(modes.map((mode) => [mode, item.entryFor(mode)])),
         };

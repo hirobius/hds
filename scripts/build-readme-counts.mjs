@@ -20,12 +20,15 @@
  * and a README that claims more than the source has always fails.
  *
  * Run: pnpm readme:counts
+ * Check: node scripts/build-readme-counts.mjs --check  (exit 1 when the README would change; writes nothing)
+ *        --root <dir> reads and writes under <dir> (tests).
  */
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CORE_SET_BLOCK, collectCoreSet, renderCoreSetBlock } from './lib/core-set.mjs';
+import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
 export const COUNTS_BLOCK = 'front-door-counts';
@@ -121,7 +124,7 @@ export function findOverclaims(claims, counts) {
 
 // ── CLI ───────────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+  const ROOT = rootFromArgv(join(dirname(fileURLToPath(import.meta.url)), '..'));
   const readmePath = join(ROOT, 'README.md');
   const before = readFileSync(readmePath, 'utf8');
   const after = replaceAutoBlock(
@@ -129,7 +132,14 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     CORE_SET_BLOCK,
     renderCoreSetBlock(collectCoreSet(ROOT)),
   );
-  if (after === before) {
+  if (process.argv.includes('--check')) {
+    // Writes nothing: exit 1 when the README would change.
+    await runCheck(
+      ROOT,
+      { 'README.md': after },
+      { label: 'build-readme-counts --check', fix: 'pnpm readme:counts' },
+    );
+  } else if (after === before) {
     console.log('✓ README.md counts and core set already match the source.');
   } else {
     writeFileSync(readmePath, after);

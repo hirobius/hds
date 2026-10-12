@@ -1,6 +1,10 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, it, expect } from 'vitest';
 import { foldStatus } from '../status-fold.mjs';
+
+const read = (rel) => readFileSync(resolve(__dirname, '..', '..', rel), 'utf8');
 
 const text = JSON.stringify({ updatedAt: '2026-01-01T00:00:00Z', phase: 'active' }, null, 2) + '\n';
 
@@ -43,4 +47,19 @@ describe('foldStatus', () => {
     expect(out.text).toBe(withRelease.replace('2026-01-01T00:00:00Z', '2026-10-07T01:02:03Z'));
     expect(JSON.parse(out.text).release).toEqual(release);
   });
+});
+
+// status.json is v2 (hds#612): the hand-written part is `focus` and `phase`; ops
+// derives release, next and blocked. Text that tells a person to maintain
+// headline/next/blocked by hand sends them to fields that no longer exist.
+describe('the fold instructions describe the v2 status.json', () => {
+  it.each(['scripts/status-fold.mjs', '.status/README.md'])(
+    '%s names focus, not headline/next/blocked',
+    (file) => {
+      const text = read(file);
+      expect(text).not.toMatch(/headline|next\/blocked/i);
+      expect(text).toMatch(/focus/);
+      expect(text).toMatch(/derive/i);
+    },
+  );
 });

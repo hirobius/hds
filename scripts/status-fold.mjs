@@ -4,8 +4,9 @@
  * status-fold.mjs — `pnpm status:fold`: fold pending .status/*.md notes into
  * root status.json. PRs add a note (unique filename, never conflicts) instead
  * of bumping status.json; this runs once, serially, on main at session end:
- * it sets updatedAt to now, deletes the notes and prints their text so the
- * folder can update headline/next/blocked by hand if they changed.
+ * it sets updatedAt to now, deletes the notes and prints their text. status.json
+ * is v2: `focus` and `phase` are the only hand-written fields (change `focus`
+ * only when the repo's direction changed); ops derives release, next and blocked.
  */
 import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';

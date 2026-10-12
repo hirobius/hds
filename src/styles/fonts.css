@@ -3,7 +3,7 @@
  * Faces (type ramp, Adrian 2026-10-07, hds#483):
  *   - Plus Jakarta Sans 400 — body
  *   - Plus Jakarta Sans 500 — ui, caption
- *   - Plus Jakarta Sans 700 — display, title
+ *   - Plus Jakarta Sans 700 — display, title, title-sm
  *   - IBM Plex Mono 400 — mono
  *
  * Audit gate: scripts/audit-typography-overrides.mjs fails on inline

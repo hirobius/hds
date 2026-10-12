@@ -32,9 +32,11 @@ import { buildWhichOneWhen } from './lib/which-one-when.mjs';
 import { coreByCategory, renderCoreSetLines } from './lib/core-set.mjs';
 import { readVoice, voiceMarkdown } from './lib/voice.mjs';
 import { buildLlmsIndex } from './lib/llms-index.mjs';
+import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+// `--root <dir>` reads and writes under <dir> (tests).
+const ROOT = rootFromArgv(join(__dirname, '..'));
 
 const manifestPath = join(ROOT, 'public', 'hds-manifest.json');
 const componentApiPath = join(ROOT, 'src', 'app', 'data', 'component-api.json');
@@ -60,7 +62,7 @@ const tokenRules = [
   'Token source of truth: read `hirobius.tokens.json` (W3C DTCG). Prefer `semantic.*` and `component.*` tokens over `primitive.*` for product UI.',
   'CSS variables: token path `semantic.color.surface.page` maps to `var(--semantic-color-surface-page)` (see generated token refs).',
   'Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.',
-  'Load `TOKEN_GOVERNANCE.md` and `SYSTEMS_REGISTRY.md` only on-demand (when explicitly requested or required by the task).',
+  'Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).',
   "Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.",
   'Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.',
 ];
@@ -300,7 +302,7 @@ ${SLICE_INDEX}
 
 - \`public/llms-full.txt\` - the full bundle: this text + the full \`DESIGN.md\` + a compact props digest for every component.
 
-Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\`, \`TOKEN_GOVERNANCE.md\` or \`SYSTEMS_REGISTRY.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
+Paths in this file that begin with \`docs/architecture/\`, \`src/app/components/\`, \`src/scroll/\` or under \`scripts/\`, or that name \`public/manifest.json\`, \`DESIGN-HANDOFF.md\` or \`TOKEN_GOVERNANCE.md\` exist only in the source repo, not in the npm package. Everything under "Default context" below ships in the package.
 
 ## Context Loading Rules (Credit Efficiency)
 
@@ -316,7 +318,6 @@ On-demand only (load only if explicitly requested or the task clearly requires i
 
 - \`DESIGN-HANDOFF.md\`
 - \`TOKEN_GOVERNANCE.md\`
-- \`SYSTEMS_REGISTRY.md\`
 
 ${patternSection}${iconSection}## Token Rules
 
@@ -386,11 +387,20 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
   return index;
 }
 
-export function main() {
+export async function main() {
+  // `--check` writes nothing and exits 1 when any output differs from a fresh
+  // build (dates excepted, as in the write path).
+  if (process.argv.includes('--check')) {
+    await runCheck(ROOT, generateLlmsTxt({ write: false }), {
+      label: 'generate-llms-txt --check',
+      fix: 'pnpm llms:generate',
+      stable: true,
+    });
+  }
   generateLlmsTxt();
   console.log('✓ public/llms.txt, public/llms-full.txt, public/llms/*.txt');
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main();
+  await main();
 }

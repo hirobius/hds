@@ -189,26 +189,7 @@ describe('README claims', () => {
 
 // ── 3. Figma claims in the core docs ─────────────────────────────────────────
 /** Docs agents and reviewers read as current truth (ADRs are history, so excluded). */
-const CORE_DOCS = [
-  'README.md',
-  'CLAUDE.md',
-  'DESIGN-HANDOFF.md',
-  'SYSTEMS_REGISTRY.md',
-  'docs/rules/MANIFEST_SYNC.md',
-];
-
-/** Workflow YAML with comment lines removed, so an "archived: figma-sync" note does not count. */
-function activeWorkflowsRunFigma() {
-  const dir = join(ROOT, '.github', 'workflows');
-  return readdirSync(dir)
-    .filter((f) => /\.ya?ml$/.test(f))
-    .some((f) =>
-      readFileSync(join(dir, f), 'utf8')
-        .split('\n')
-        .filter((l) => !l.trim().startsWith('#'))
-        .some((l) => /figma/i.test(l)),
-    );
-}
+const CORE_DOCS = ['README.md', 'CLAUDE.md', 'DESIGN-HANDOFF.md', 'docs/rules/MANIFEST_SYNC.md'];
 
 /** The `**Status:**` line of an ADR, by number. */
 function adrStatus(number) {
@@ -346,22 +327,8 @@ describe('Figma claims in the core docs', () => {
     expect(missing).toEqual([]);
   });
 
-  // Skipped (not silently passed) once an active workflow really runs a Figma step.
-  it.skipIf(activeWorkflowsRunFigma())(
-    'lists no automatic Figma trigger while no active workflow runs one',
-    () => {
-      const registry = read('SYSTEMS_REGISTRY.md');
-      const triggers = registry.slice(
-        registry.indexOf('## Triggers'),
-        registry.indexOf('### Prepare step'),
-      );
-      const figmaRows = triggers.split('\n').filter((l) => l.startsWith('|') && /figma/i.test(l));
-      expect(figmaRows).toEqual([]);
-    },
-  );
-
   // The docs offer `pnpm figma-variables` as a legacy export "projected from
-  // the same model" (README, DESIGN-HANDOFF, SYSTEMS_REGISTRY, MANIFEST_SYNC).
+  // the same model" (README, DESIGN-HANDOFF, MANIFEST_SYNC).
   // These two assert the export really carries what the model has. Before
   // #213/#215 it flattened Dark onto Light and dropped the role tier, and the
   // docs had to warn readers off importing it.

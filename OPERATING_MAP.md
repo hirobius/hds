@@ -16,7 +16,7 @@ Do not use it as a second policy file.
 | a new task or follow-up                  | a GitHub Issue in this repo (fleet-hub convention, see `CLAUDE.md`) |
 | a token-rule change                      | `TOKEN_GOVERNANCE.md`                                               |
 | a visual/brand rule change               | `DESIGN.md`                                                         |
-| a scripts/checks inventory update        | `SYSTEMS_REGISTRY.md`                                               |
+| a scripts/checks inventory update        | `docs/guardrails/registry.json`                                     |
 | a long-term memory or cross-project item | the ops repo's HANDOFF doc (fleet hub, see `CLAUDE.md`)             |
 
 ## Typical Flow
