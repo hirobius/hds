@@ -92,6 +92,36 @@
   --role-accent-foreground: var(
     --semantic-color-content-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-bg: var(
+    --semantic-color-surface-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-bgHover: var(
+    --semantic-accent-hover
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-secondary-bg-hover: var(
+    --semantic-color-surface-accentSubtle
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-secondary-border-hover: var(
+    --semantic-color-border-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-secondary-border-pressed: var(
+    --semantic-color-border-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-tag-activeBackground: var(
+    --semantic-accent-rest
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-tag-activeBorder: var(
+    --semantic-accent-rest
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-tag-activeHover: var(
+    --semantic-accent-hover
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-nav-bgActive: var(
+    --semantic-accent-subtle
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-nav-borderActive: var(
+    --semantic-color-surface-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-accent-rest: var(
     --primitive-color-mauve-600
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
@@ -241,6 +271,21 @@
     --semantic-radius-action
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --role-card: var(
+    --semantic-color-surface-raised
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --role-secondary: var(
+    --semantic-color-surface-raised
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-radius: var(
+    --semantic-radius-action
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-input-radius: var(
+    --semantic-radius-action
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-card-bg: var(
+    --semantic-color-surface-raised
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-tag-background: var(
     --semantic-color-surface-raised
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-radius-action: 20px; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */

@@ -33,22 +33,27 @@ so the neutral `onAccent` text stays correct in both (no `onAccent` override).
 | `semantic.accent.subtle`, `surface.accentSubtle`                                              | `mauve.50`  | `mauve.900` |
 
 Text on the fill clears AA in both modes (`tests/primitive-contracts/tenant-contrast.contract.test.ts`).
-The four `role.*` entries (`primary`, `ring`, `accent`, `accent-foreground`) re-declare the
-aliases on the tenant element; without them Button's fill and the focus ring stay on the default
-accent in light mode wherever `data-brand` is set below `<html>` (Gaps 4).
+The `role.*` entries (`primary`, `ring`, `accent`, `accent-foreground`) and the `component.*`
+entries (Button `bg`, `bgHover` and the secondary hover and pressed colours, Tag's three active
+colours, nav's two active colours) re-declare those aliases on the tenant element with the same
+alias as base. Without them Button's fill and hover, the focus ring, an active Tag and the
+active nav item stay on the default accent in light mode wherever `data-brand` is set below
+`<html>`, which is where the explorations harness sets it (Gaps 4).
 
 ## The supporting accent (`support-overlay.css`)
 
-Plain CSS beside the tokens: not generated, not part of the package. Load it as plain CSS
-after the HDS token CSS, in an exploration's entry file:
+Plain CSS beside the tokens: not generated and not in the package, so it is loaded next to the
+package's CSS, after it:
 
-```ts
-import '@hirobius/design-system/tokens.css';
-import '../tenants/accent-pair-demo/support-overlay.css';
-```
+- **In this repo** (the preview bench, a test): import it after the token CSS, as
+  `preview/main.tsx` does: `import '../tenants/accent-pair-demo/support-overlay.css'`.
+- **In an explorations harness run** (hds#628): a direction cannot load it itself. The harness
+  copies only `src/` over the template, this file is outside the packed package, and a `.css`
+  file in `src/` counts as custom CSS. The harness adds it to the page where it applies the
+  tenant (for example `page.addStyleTag({ path })` next to setting `data-brand`).
 
-and put `data-brand="accent-pair-demo"` and `data-theme` on the **same element** (`<html>` or
-one wrapper): the dark rule is `[data-brand][data-theme="dark"]`, like every compiled tenant block.
+Put `data-brand="accent-pair-demo"` and `data-theme` on the **same element** (`<html>` or one
+wrapper): the dark rule is `[data-brand][data-theme="dark"]`, like every compiled tenant block.
 
 | Variable                            | Light           | Dark        | Use                                                                 |
 | ----------------------------------- | --------------- | ----------- | ------------------------------------------------------------------- |
@@ -63,9 +68,12 @@ Measured contrast, light / dark (enforced by `scripts/__tests__/explorations-dem
 `on` on `rest` 4.7:1 / 6.7:1, `on` on `hover` 6.5:1 / 5.2:1, `content` on the page and on `subtle`
 at least 5.6:1 in both, `rest` against the page at least 3:1 (it is a boundary, not text).
 
-Use it with a plain class or style that reads the variable, for example
-`className="bg-[var(--semantic-accent-support-subtle)] text-[var(--semantic-accent-support-content)]"`.
-The lint plugin accepts a `var(--...)` reference; no raw colour appears anywhere.
+Read the variables with an inline style, for example
+`style={{ backgroundColor: 'var(--semantic-accent-support-subtle)', color: 'var(--semantic-accent-support-content)' }}`.
+A style object holding only `var(--...)` references passes the lint plugin and the harness's
+violation scan (no raw hex, no px). Do not use an arbitrary-value class such as
+`bg-[var(--semantic-accent-support-subtle)]`: a consumer app has no Tailwind build, so the class
+compiles to nothing, and the harness counts it as a Tailwind utility.
 
 ### Promoting it to a token
 
@@ -89,12 +97,13 @@ subtle, content, on}` with Light and Dark modes, base values that alias an exist
    earns its place.
 3. **Sparse primitive ramps (primitive).** `stone` has eight steps and `amber` four; a real supporting
    accent probably wants its own full ramp, which is a primitive change, outside any tenant.
-4. **Role aliases are declared on `:root` (bug).** An override of `semantic.color.surface.accent`
-   on a `[data-brand]` element below `<html>` does not reach `--role-primary` or `--role-ring` in
-   light mode, so Button keeps the default accent. This tenant re-declares the four `role.*`
-   aliases it needs; `accent-lilac` does not, and shows the default accent on its Buttons in a
-   nested light scope. The generator should re-anchor every `role.*` alias, as it already does for
-   `$deprecated` ones (hds#206).
+4. **Alias tokens are declared on `:root` (bug).** An override of `semantic.color.surface.accent`
+   on a `[data-brand]` element below `<html>` does not reach `--role-primary`, `--role-ring` or
+   `--component-button-bgHover` in light mode, so Button keeps the default accent. This tenant
+   re-declares all 14 `role.*` and `component.*` aliases of what it overrides (a test checks none
+   is missing); `accent-lilac` does not, and shows the default accent on its Buttons, Tags and nav
+   in a nested light scope. The generator should re-anchor every alias of an overridden token, as
+   it already does for `$deprecated` ones (hds#206).
 5. **Brand and theme must share an element (limit).** The supporting dark values, like every
    compiled tenant dark block, need `data-brand` and `data-theme` on one element.
 
