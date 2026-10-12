@@ -76,7 +76,7 @@ The numbers come from `pnpm consumer:usage --root <consumer checkout>`, which me
 
 `AssetImg`, `CodeBlock`, `DataTableSection`, `DestructiveSection`, `ErrorPattern`, `Form`, `FormActions`, `MetricTiles`, `Page`, `PageHeader`, `Reveal`, `StatusTile`
 
-The package root also exports the rest of the allow-list (compound parts, and the components outside the core set; the [consumer skill](skills/hds-consumer/SKILL.md) lists them by category): reach for the core set first. 0.20.0 removed the root re-exports of the pattern modules, the docs internals and 13 components that fold into a survivor ([MIGRATIONS.md](MIGRATIONS.md#0200-removals-2026-10-01)).
+The package root also exports the rest of the allow-list (compound parts, and the components outside the core set; the [consumer skill](skills/hds-consumer/SKILL.md) lists them by category): reach for the core set first. 0.20.0 removed the root re-exports of the pattern modules, the docs internals and 13 components that fold into a survivor ([MIGRATIONS.md](MIGRATIONS.md#0200-removals-2026-10-01)). Deprecated, exported only until removed: `CardMetric` (removed in 1.0.0), `MetricTile` (removed in 1.0.0), `MetricTiles` (removed in 1.0.0), `Stat` (removed in 1.0.0).
 
 Every component's disposition (core, pattern, fold or internal) is in the [architecture doc](docs/hds-architecture-2026-09-18.html), ratified 2026-09-26 in [hds#254](https://github.com/hirobius/hds/issues/254); [ADR-031](docs/adr/031-core-set-and-dispositions.md) records the decision and what has changed since.
 

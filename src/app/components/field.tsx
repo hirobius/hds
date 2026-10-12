@@ -4,7 +4,6 @@
  * @usage Show a labelled read-only value, such as a name and its value in a detail view.
  * @whenNot Editable input, or a single headline figure.
  * @useInstead Input an editable single-line value
- * @useInstead Card.Metric a headline figure inside a Card
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81
  */
 

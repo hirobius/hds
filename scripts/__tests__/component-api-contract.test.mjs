@@ -31,7 +31,7 @@ describe('component-api contract fields', () => {
   it('does not point Button or Card.Metric at components hds#254 folds into them', () => {
     const targets = (n) => (components[n].usage.useInstead ?? []).map((u) => u.component);
     expect(targets('Button')).not.toContain('IconButton');
-    expect(targets('CardMetric')).not.toContain('Stat');
+    expect(targets('CardMetric')).toEqual([]);
   });
 
   it('carries keyboard lines for Menu and Select', () => {

@@ -138,13 +138,6 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
   - metadata: ReactNode
 
-### CardMetric
-Card.Metric — one label, a large value and an optional sub-line inside a Card.
-  - label: ReactNode
-  - sub: ReactNode
-  - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
-  - value: ReactNode
-
 ### CardProgress
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
   - label: ReactNode
@@ -429,17 +422,6 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - orientation: "horizontal" | "vertical" | null = vertical
   - variant: "plain" | "divided" = plain
 
-### MetricTile
-One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the eyeb…
-  - label: ReactNode
-  - sub: ReactNode
-  - tone: 'neutral' | 'success' | 'warning' | 'danger' | 'info' = neutral
-  - value: ReactNode
-
-### MetricTiles
-A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. The default for any row of hea…
-  - children: ReactNode
-
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
   - children: ReactNode
@@ -570,13 +552,6 @@ Stack — one-dimensional layout primitive.
   - justify: 'start' | 'center' | 'end' | 'space-between'
   - style: CSSProperties
   - wrap: FlexWrap
-
-### Stat
-Headline metric — large value, caption label, optional sub-line.
-  - label: string
-  - sub: ReactNode
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
-  - value: ReactNode
 
 ### StatusListItem
 Status dot + title row with optional muted notes and trailing slot (e.g. badge).
