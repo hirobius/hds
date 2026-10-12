@@ -290,6 +290,11 @@ declare module 'react' {
     '--semantic-typography-title-font-weight'?: string | undefined;
     '--semantic-typography-title-letter-spacing'?: string | undefined;
     '--semantic-typography-title-line-height'?: string | undefined;
+    '--semantic-typography-titleSm-font-family'?: string | undefined;
+    '--semantic-typography-titleSm-font-size'?: string | undefined;
+    '--semantic-typography-titleSm-font-weight'?: string | undefined;
+    '--semantic-typography-titleSm-letter-spacing'?: string | undefined;
+    '--semantic-typography-titleSm-line-height'?: string | undefined;
     '--semantic-typography-body-font-family'?: string | undefined;
     '--semantic-typography-body-font-size'?: string | undefined;
     '--semantic-typography-body-font-weight'?: string | undefined;

@@ -13,7 +13,7 @@
 import * as React from 'react';
 import { AlertDialog } from './alert-dialog';
 import { Button } from './button';
-import { Card } from './card';
+import { Callout } from './callout';
 import { Stack } from './stack';
 import { Text } from './text';
 
@@ -38,7 +38,8 @@ export interface DestructiveSectionProps extends Omit<React.HTMLAttributes<HTMLE
 }
 
 /**
- * Titled danger zone: a title, an explanation, and one danger `Button` that
+ * Titled danger zone, a danger `Callout` (the shared feedback fill, no border of
+ * its own) holding a title, an explanation, and one danger `Button` that
  * opens an `AlertDialog`. Pressing the button never runs the action; only the
  * dialog's confirm does. Place it last on the screen, below the form.
  * @screenPattern
@@ -68,21 +69,25 @@ export const DestructiveSection = /* @__PURE__ */ React.forwardRef<
       aria-labelledby={headingId}
       {...props}
     >
-      <Card tone="danger">
+      <Callout tone="danger">
         <Stack direction="row" wrap="wrap" gap="normal" align="center" justify="space-between">
           {/* The shared heading pair takes string-only text and no heading id; this section needs a ReactNode title and an id for aria-labelledby. */}
           <div data-slot="copy" className="min-w-0 grow basis-64">
-            <Text id={headingId} as={`h${level}`} variant="title">
+            <Text id={headingId} as={`h${level}`} variant="titleSm" className="text-foreground">
               {title}
             </Text>
-            <Text as="p" variant="caption" className="text-muted-foreground">
+            <Text as="p" variant="ui" className="text-muted-foreground">
               {description}
             </Text>
           </div>
           <div data-slot="action" className="shrink-0">
             <AlertDialog>
               <AlertDialog.Trigger asChild>
-                <Button variant="secondary" tone="danger">
+                <Button
+                  variant="secondary"
+                  tone="danger"
+                  className="border-feedback-danger hover:border-feedback-danger bg-background hover:bg-background"
+                >
                   {actionLabel ?? confirmLabel}
                 </Button>
               </AlertDialog.Trigger>
@@ -105,7 +110,7 @@ export const DestructiveSection = /* @__PURE__ */ React.forwardRef<
             </AlertDialog>
           </div>
         </Stack>
-      </Card>
+      </Callout>
     </section>
   );
 });

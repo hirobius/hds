@@ -14,7 +14,7 @@
  *      tenants/<slug>/tokens.json)
  *
  * Owns content that doesn't belong in the generated token layer:
- *   - Type ramp role classes (.hds-type-display/title/body/ui/caption/mono)
+ *   - Type ramp role classes (.hds-type-display/title/title-sm/body/ui/caption/mono)
  *   - Mobile breakpoint overrides (max-width: 639px)
  *   - Component utility classes (.hds-focus, .hds-tag-btn/.hds-tag-pill,
  *     .hds-skeleton, .hds-link, etc.)
@@ -248,6 +248,7 @@
   --primitive-typography-family-mono: var(--hds-font-family-mono);
   --semantic-typography-display-font-family: var(--hds-font-family);
   --semantic-typography-title-font-family: var(--hds-font-family);
+  --semantic-typography-titleSm-font-family: var(--hds-font-family);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
   --semantic-typography-h1-font-family: var(--hds-font-family);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
@@ -572,6 +573,13 @@ input[data-search-input='true'] {
     font-weight: var(--semantic-typography-title-font-weight);
     letter-spacing: var(--semantic-typography-title-letter-spacing);
     line-height: var(--semantic-typography-title-line-height);
+  }
+  .hds-type-title-sm {
+    font-family: var(--semantic-typography-titleSm-font-family);
+    font-size: var(--semantic-typography-titleSm-font-size);
+    font-weight: var(--semantic-typography-titleSm-font-weight);
+    letter-spacing: var(--semantic-typography-titleSm-letter-spacing);
+    line-height: var(--semantic-typography-titleSm-line-height);
   }
   .hds-type-body {
     font-family: var(--semantic-typography-body-font-family);

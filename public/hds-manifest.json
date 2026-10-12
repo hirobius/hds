@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T17:17:10.765Z",
+  "generated": "2026-10-12T18:05:03.332Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -2463,7 +2463,6 @@
         "src/app/components/box-sx.ts",
         "src/app/components/card-progress.test.tsx",
         "src/app/components/card.test.tsx",
-        "src/app/components/destructive-section.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/focus-visible.test.tsx",
         "src/app/components/grid.tsx",
@@ -3263,7 +3262,10 @@
         "exportName": "Callout",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/destructive-section.test.tsx",
+        "src/app/components/destructive-section.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -7497,7 +7499,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/destructive-section.tsx",
-      "description": "Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's confirm does. Place it last on the screen, below the form.",
+      "description": "Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's confirm does. Place it last on the screen, below the form.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3",
@@ -10124,6 +10126,19 @@
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
+        }
+      },
+      {
+        "path": "semantic.typography.titleSm",
+        "cssVar": "--semantic-typography-titleSm",
+        "type": "typography",
+        "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+        "composite": {
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "700",
+          "letterSpacing": "0em",
+          "lineHeight": "1.375"
         }
       },
       {

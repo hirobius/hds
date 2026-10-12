@@ -39,6 +39,7 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 | --- | --- | --- | --- |
 | `semantic.typography.display` | 48px | 700 | One per page, hero only |
 | `semantic.typography.title` | 24px | 700 | Section and card headings |
+| `semantic.typography.titleSm` | 16px | 700 | Small heading inside a card or section band |
 | `semantic.typography.body` | 16px | 400 | Prose |
 | `semantic.typography.ui` | 14px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 12px | 500 | Metadata, help text and labels, in sentence case |
@@ -227,6 +228,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (424 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (425 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
