@@ -333,6 +333,16 @@ Agent delta sync after #606 (per-tone badge tokens, secondary disabled border) a
 
 Session total: 1 call. Snapshot rebuilt from the receipt; `check:figma-drift` 0, `figma:push --plan` "updated 0 · created 0 · deleted 0". Nothing published.
 
+## 2026-10-12 · session `claude/figma-flat-effect`
+
+Adrian could not publish `elevation/flat`: Figma refuses an effect style with no effects. The model now gives it one transparent drop shadow; this sync applies it. Budget 1 call.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                                       | Result                                    |
+| --- | ---------- | ----------- | ----- | ----------------------------------------------------------------------------- | ----------------------------------------- |
+| 1   | 07:05      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` unmodified (update elevation/flat) | OK. 0b661647 → 29bb1b0e; lastPush written |
+
+Session total: 1 call. Snapshot rebuilt from the receipt; drift 0, plan 0/0/0. Nothing published.
+
 ## 2026-10-12 · session `claude/figma-component-fixes`
 
 Component and doc-frame fixes in the library (Input 38:20, Badge 31:15, TypographyDoc, Icon doc, ColorDoc, SpacingDoc). No variable or style is created, renamed or deleted; nothing published. Budget 40 calls.
