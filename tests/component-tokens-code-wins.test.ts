@@ -68,8 +68,8 @@ const COLOR: Array<[string, string, string]> = [
   ],
   [
     '--component-button-secondary-border-disabled',
-    '--semantic-color-border-interactive',
-    'border-input (no disabled border class)',
+    '--semantic-color-border-subdued',
+    'disabled:border-[color:var(--component-button-secondary-border-disabled)] (hds#595 decision 4)',
   ],
   ['--component-input-bg', '--semantic-color-surface-page', 'bg-background'],
   [

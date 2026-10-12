@@ -790,6 +790,17 @@ export function analyze(input) {
       continue;
     }
 
+    // A deprecated leaf nobody names is retired, not drifting: report it UNUSED
+    // instead of grading it against whatever the source happens to render.
+    if (tokens.flat.get(path)?.$deprecated && !refs.has(id)) {
+      results.push({
+        ...row,
+        class: 'UNUSED',
+        detail: `deprecated: ${tokens.flat.get(path).$deprecated}`,
+      });
+      continue;
+    }
+
     const spec = leafSpec(group, leafPath);
     const tokenLight = tokens.resolveToken(path, 'Light');
     const tokenDark = tokens.resolveToken(path, 'Dark');
