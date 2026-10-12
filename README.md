@@ -237,22 +237,36 @@ The governing direction is "Editorial Enterprise" — enterprise rigor with edit
 
 The gates are deterministic and need no browser or live site:
 
-- **pre-commit** (`.husky/pre-commit`): secrets scan (when `gitleaks` is installed locally; not yet in CI), Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
+- **pre-commit** (`.husky/pre-commit`): secrets scan (when `gitleaks` is installed locally), Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
 - **pre-push** (`.husky/pre-push`): `pnpm test` (the pretest gates, then Vitest unit and contract tests), then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
-- **CI** (`.github/workflows/ci.yml`): typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and the docs-site build with its axe gate.
+- **CI** (`.github/workflows/ci.yml`): a gitleaks secrets scan over the full history, typecheck, zero-warning ESLint, token validity and contrast, Vitest, and the consumer smoke build, plus bundle budgets and the docs-site build with its axe gate.
 - **Visual review:** the docs site (`docs-site/`) is the visual verification surface: every core component and pattern has a page with a live demo, `check-docs-axe` gates its accessibility.
+
+`CLAUDE.md` is the operating contract for agents working in this repo.
+
+## Open explorations
+
+Work in progress, shown as it stands. These are questions the system is still
+testing, not features it promises.
 
 ### Agent consistency
 
-Three agents build the same Client-detail screen from the public docs, and `pnpm eval:consistency` measures how alike the results are: builds, token violations, axe, component-set overlap (Jaccard) and pixel diff. Today it runs the offline half over a directory of apps (`pnpm eval:consistency -- --apps <dir> --offline`, violations and Jaccard from source only). The ledger, the thresholds and the screen spec live in [`eval/consistency/`](eval/consistency/README.md). The latest recorded run, as printed by `pnpm eval:consistency -- --summary`:
+Can the public docs alone make different agents build the same screen? Three
+agents build one Client-detail screen from the docs, and `pnpm eval:consistency`
+compares the results: builds, token violations, axe, component-set overlap
+(Jaccard) and pixel diff. Today it runs the offline half over a directory of apps
+(`pnpm eval:consistency -- --apps <dir> --offline`: violations and Jaccard from
+source only). The screen spec, thresholds and ledger live in
+[`eval/consistency/`](eval/consistency/README.md). The latest recorded run, as
+printed by `pnpm eval:consistency -- --summary`:
 
 ```text
 Agent consistency 2026-10-05 (harness, design-system 0.20.0): FAIL - builds 3/3, violations 0, axe 0, Jaccard min 0.4091 (limit >= 0.85), light diff max 3.2096% (limit <= 1.5%)
 ```
 
-The baseline misses its thresholds on purpose: they are not softened to make it pass.
-
-`CLAUDE.md` is the operating contract for agents working in this repo.
+The baseline misses its thresholds, and they stay where they are: the useful
+output is where the agents diverge, which points at the docs to fix next. The
+eval measures the docs; it does not gate merges or constrain how agents work.
 
 ## Bundle and release hygiene
 

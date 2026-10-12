@@ -403,7 +403,7 @@ describe('pnpm figma:push --bundle', () => {
     expect(missing.stderr).toMatch(/build stops here/);
     const pruning = runCli(['--bundle', join(tmpdir(), 'never.json'), '--prune']);
     expect(pruning.status).toBe(1);
-    expect(pruning.stderr).toMatch(/never prunes/);
+    expect(pruning.stderr).toMatch(/never prune/);
   });
 
   it('runs in the docs site build after the site, chained with && so its failure fails the deploy', () => {
@@ -412,7 +412,7 @@ describe('pnpm figma:push --bundle', () => {
     ];
     const steps = publish.split(' && ');
     expect(steps.at(-1)).toBe(
-      'node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json',
+      'node scripts/figma-push.mjs --bundle docs-site/out/figma/sync-bundle.json --plugin-zip docs-site/out/figma/hds-tokens-sync.zip',
     );
     expect(steps.findIndex((s) => s.includes('docs:build'))).toBeLessThan(steps.length - 1);
     expect(publish).not.toMatch(/\|\||;|&\s*$/);

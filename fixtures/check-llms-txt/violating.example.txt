@@ -1,0 +1,8 @@
+Example Design System
+
+Generated: 2026-10-11T20:46:31.293Z
+
+## Start here
+
+- [AGENTS.md](AGENTS.md): a relative link, no H1 and no summary above.
+- [Gone](https://unpkg.com/@hirobius/design-system/NOT-A-REAL-FILE.md): points at a file the package lacks.

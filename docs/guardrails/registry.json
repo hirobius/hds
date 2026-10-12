@@ -590,6 +590,17 @@
       "firingChannel": "ci-pr"
     },
     {
+      "id": "check-llms-txt",
+      "description": "Keeps public/llms.txt (and the package-root llms.txt mirror) a conformant llms.txt index (hds#592): an H1, a one-line '> ' summary, every link absolute and under the one LLMS_BASE_URL in scripts/lib/llms-index.mjs, pointing at a file that exists and ships in package.json#files, and no timestamp. The body (voice, recipes, card anatomy) lives in public/llms-full.txt. Runs in pretest. Fixtures: fixtures/check-llms-txt/{passing,violating}.example.txt, a file passed through FIXTURE_FILE.",
+      "severity": "error",
+      "gateScript": "scripts/check-llms-txt.mjs",
+      "fixturePath": "fixtures/check-llms-txt",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
       "id": "check-pack-contents",
       "description": "Runs npm pack --dry-run and fails when the tarball lacks the agent context (llms.txt, llms-full.txt and slices, DESIGN.md, CONSUMING.md, component-api.json, AGENTS.md), the hds-mcp server and the patterns name list it reads, the ESLint plugin entry, the manifest, tokens or dist entry, or contains .env*, repo src/ (other than component-api.json), repo scripts/ (other than the ESLint plugin). Consumers' agents read node_modules, so a file missing from the pack is a file they never see (#341).",
       "severity": "error",
