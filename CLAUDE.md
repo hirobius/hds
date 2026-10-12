@@ -221,6 +221,9 @@ Reach for Osmani where Pocock has nothing: `security-and-hardening`,
 slash commands and reviewer personas are not vendored (no `.claude/commands` or
 `.claude/agents` here). Detail: `.claude/skills/_vendor/osmani-agent-skills/ROUTING.md`.
 
+Third-party skills (vercel-labs `vercel-composition-patterns`, `vercel-react-best-practices`;
+pinned in `skills-lock.json`): `.claude/skills/_vendor/third-party-skills/ROUTING.md`.
+
 ## Agent skills
 
 Issue tracker: GitHub Issues, see `docs/agents/issue-tracker.md` (includes Wayfinding operations).
