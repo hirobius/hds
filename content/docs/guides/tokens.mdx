@@ -1,0 +1,48 @@
+---
+title: 'Tokens'
+description: 'How one token file becomes the CSS, TypeScript, Tailwind, Figma and docs every consumer reads.'
+status: 'stable'
+related:
+  - '/docs/foundations/color'
+  - '/docs/guides/getting-started'
+---
+
+Every color, space, radius, type and motion value in HDS is defined once, in [`hirobius.tokens.json`](https://github.com/hirobius/hds/blob/main/hirobius.tokens.json). Everything else is generated from that file and never edited by hand, so a value changes in one place and reaches code, Figma and these docs together.
+
+## One source, many outputs
+
+The token file uses the [W3C Design Tokens (DTCG)](https://www.w3.org/community/design-tokens/) format. `pnpm tokens` compiles it, through a validated alias chain, into each form a consumer reads:
+
+| Output                                                                                                                             | What it is for                                                                                                                                             |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`src/styles/tokens.css`](https://github.com/hirobius/hds/blob/main/src/styles/tokens.css)                                         | CSS custom properties, the runtime contract every component reads. Ships as `@hirobius/design-system/tokens.css`.                                          |
+| [`src/app/design-system/generated-tokens.ts`](https://github.com/hirobius/hds/blob/main/src/app/design-system/generated-tokens.ts) | The same values as typed constants for JavaScript, exported from `@hirobius/design-system/tokens`.                                                         |
+| [`tailwind.config.tokens.cjs`](https://github.com/hirobius/hds/blob/main/tailwind.config.tokens.cjs)                               | A Tailwind theme projected from the tokens, so utility classes resolve to the same variables.                                                              |
+| The Figma model                                                                                                                    | Variables for the HDS Figma library: primitives, semantic Light and Dark, component, brand and density collections. Sync runs one way, from code to Figma. |
+| [`DESIGN.md`](https://github.com/hirobius/hds/blob/main/DESIGN.md), the manifest and `llms.txt`                                    | The visual spec and the machine-readable inventory agents read.                                                                                            |
+
+The token tables on the [foundation pages](/docs/foundations/color) and each component page are rendered from the same file when this site builds, so they can't fall behind it either.
+
+## Three tiers
+
+| Tier          | Holds                                                               | Example                          |
+| ------------- | ------------------------------------------------------------------- | -------------------------------- |
+| `primitive.*` | Raw values only: the palette, the 4px spacing scale, font families. | `primitive.color.neutral.900`    |
+| `semantic.*`  | Purpose: what a value is for, with a Light and a Dark value.        | `semantic.color.content.primary` |
+| `component.*` | One component's use of a semantic value.                            | `component.button.bgHover`       |
+
+Components read semantic and component tokens, never primitives. That indirection is what makes dark mode, density and brand overlays work without touching component code: a theme changes which primitive a semantic token points at, and every component follows.
+
+## Using tokens
+
+- In CSS, read the variables: `var(--semantic-color-content-primary)`.
+- In JavaScript, import the typed constants from `@hirobius/design-system/tokens`.
+- Don't write hex, RGB or pixel values in component styles. The repo's check scripts (`check-hardcoded-colors`, `check-hardcoded-spacing`) flag them.
+
+## Adding or changing a token
+
+1. Edit `hirobius.tokens.json`, keeping primitive → semantic → component: a raw value goes in a primitive, and semantic and component tokens alias it.
+2. Run `pnpm tokens:verify` to rebuild every output and check it.
+3. Commit the token file and the regenerated outputs together.
+
+Contrast is checked on every commit: a change that drops a text and background pair below WCAG AA, in light or dark, can't land. The full rules are in [TOKEN_GOVERNANCE.md](https://github.com/hirobius/hds/blob/main/TOKEN_GOVERNANCE.md).
