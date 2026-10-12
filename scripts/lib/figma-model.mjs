@@ -408,7 +408,9 @@ const TYPOGRAPHY_VARIABLES = {
   letterSpacing: ['letter-spacing', 'dimension'],
   lineHeight: ['line-height', 'dimension'],
 };
-const TEXT_CASE = { none: 'ORIGINAL', uppercase: 'UPPER', lowercase: 'LOWER', capitalize: 'TITLE' };
+// No `uppercase` -> UPPER: the system never produces ALL CAPS (check-no-uppercase), so a
+// token asking for it fails the model build instead of reaching Figma.
+const TEXT_CASE = { none: 'ORIGINAL', lowercase: 'LOWER', capitalize: 'TITLE' };
 const FONT_STYLE_BY_WEIGHT = {
   100: 'Thin',
   200: 'ExtraLight',
@@ -497,7 +499,9 @@ function expandTypography(graph, token) {
   if (!fontStyle)
     throw new Error(`No Figma font style for weight ${weight} at ${at('fontWeight')}`);
   if (!textCase)
-    throw new Error(`No Figma text case for textTransform "${v.textTransform}" at ${path}`);
+    throw new Error(
+      `No Figma text case for textTransform "${v.textTransform}" at ${path} (uppercase is not allowed: sentence case only)`,
+    );
 
   const textStyle = {
     name: token.path.slice(1).join('/'),

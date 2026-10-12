@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T18:05:03.332Z",
+  "generated": "2026-10-12T18:19:40.069Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -9006,13 +9006,6 @@
         "cssVar": "--primitive-typography-letterSpacing-normal",
         "type": "dimension",
         "value": "0em"
-      },
-      {
-        "path": "primitive.typography.letterSpacing.caps",
-        "cssVar": "--primitive-typography-letterSpacing-caps",
-        "type": "dimension",
-        "description": "All-caps tracking for eyebrow / kicker labels. Always pairs with text-transform: uppercase.",
-        "value": "0.06em"
       },
       {
         "path": "primitive.duration.instant",

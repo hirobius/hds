@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "00778a6304cb0418bc399775e7d232908087e75a8822a9f4ce5e5db80677b59c",
-  "precommitStructureHashUpdatedAt": "2026-10-12T17:38:24.250Z",
+  "precommitStructureHash": "f778f865d3783a7e5931b678eefd54849d1426e926b55e5ec614090000bb2afa",
+  "precommitStructureHashUpdatedAt": "2026-10-12T18:19:55.593Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -501,6 +501,18 @@
       "severity": "error",
       "gateScript": "scripts/check-layout-gap-vocabulary.mjs",
       "fixturePath": "fixtures/check-layout-gap-vocabulary",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
+      "id": "check-no-uppercase",
+      "description": "The design system never produces ALL CAPS text (Adrian, 2026-10-12). Fails the Tailwind `uppercase` class (also variant-prefixed and @apply), CSS or arbitrary-property `text-transform: uppercase`, small caps (font-variant), `textTransform: 'uppercase'` in JS or JSON, `textCase: 'UPPER'` (also SMALL_CAPS) in tokens or the Figma model, and `.toUpperCase()` / `.toLocaleUpperCase()` in code except the first-letter idiom (charAt(0) or [0]). Scans src/, docs-site/, preview/, starter-kit/, tools/, templates/, tenants/, docs/*.html, hirobius.tokens.json and figma/model.json + snapshot.json; skips comments, tests and fixtures. A line is exempt with // uppercase-ok: <reason> on the same line or either line above; the reason is required (a bare marker fails). Known limit: a class assembled at runtime is not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over the repo in pnpm test.",
+      "severity": "error",
+      "gateScript": "scripts/check-no-uppercase.mjs",
+      "fixturePath": "fixtures/check-no-uppercase",
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",

@@ -185,8 +185,7 @@ export const tokens = {
       },
       letterSpacing: {
         tight: "var(--primitive-typography-letterSpacing-tight)",
-        normal: "var(--primitive-typography-letterSpacing-normal)",
-        caps: "var(--primitive-typography-letterSpacing-caps)"
+        normal: "var(--primitive-typography-letterSpacing-normal)"
       }
     },
     duration: {
