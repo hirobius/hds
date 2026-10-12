@@ -1292,6 +1292,17 @@ prune_merged_ralph_branches() {
 
 # Executed directly (`bash ralph/lib.sh <fn> [args]`) → dispatch one helper,
 # so workflows reuse the exact same logic as the local scripts.
+# retry_hop_issue <reconcile-outcome> <n> - echoes <n> when a failed attempt
+# still has budget ("failed:... (attempt N/M)" with N<M), else nothing (ops#481).
+# The workflow re-dispatches that issue right away instead of waiting for a
+# throttled cron. The attempt cap bounds it: attempt M parks, never retries.
+retry_hop_issue() {
+  local re='\(attempt ([0-9]+)/([0-9]+)\)$'
+  [[ ${1:-} == failed:* && ${1:-} =~ $re ]] || return 0
+  [ "${BASH_REMATCH[1]}" -lt "${BASH_REMATCH[2]}" ] && echo "$2"
+  return 0
+}
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   "$@"
 fi

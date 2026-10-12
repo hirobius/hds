@@ -80,3 +80,9 @@ node scripts/check-layout-gap-vocabulary.mjs
 # only: reads src/ and hirobius.tokens.json, no build, no network.
 echo "Type ramp (src/ uses the six roles only)…"
 node scripts/check-type-ramp.mjs
+
+# hds#568 (ops#568): ralph/{lib,next,run,loop,status}.sh and prompt.md are
+# vendored byte-identical from hirobius/ralph/kit. A local edit is caught here,
+# not only by ralph-gate in CI. --staged: no-op unless a kit file is staged.
+echo "Ralph kit drift (vendored kit files match ralph/kit.lock.json)…"
+node scripts/check-ralph-kit-drift.mjs --staged
