@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Primary Button hover is the solid accent hover fill, secondary Button pressed a solid overlay fill, a disabled secondary Button a lighter border, and neutral Badge the solid overlay surface; Badge gains --component-badge-<tone>-bg and -text, the flat -bg and -text are deprecated."
+}

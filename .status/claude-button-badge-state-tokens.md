@@ -1,0 +1,1 @@
+Button and Badge bind the state tokens (hds#595 decisions 1-4): primary hover -> component.button.bgHover, secondary pressed -> secondary.bg.pressed, secondary disabled border -> border.subdued, per-tone component.badge.<tone>.{bg,text} (flat badge.bg/text deprecated), InlineCode off the badge borrow. Binding gate: 0 LITERAL-MISMATCH.

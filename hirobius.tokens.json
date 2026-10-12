@@ -2349,7 +2349,8 @@
       "text": {
         "$type": "color",
         "$value": "{semantic.color.content.primary}",
-        "$description": "Badge text color."
+        "$description": "Badge text color.",
+        "$deprecated": "hds#595 — use component.badge.<tone>.text (one per tone)"
       },
       "bg": {
         "$type": "color",
@@ -2362,7 +2363,80 @@
             }
           }
         },
-        "$description": "Badge background color."
+        "$description": "Badge background color.",
+        "$deprecated": "hds#595 — use component.badge.<tone>.bg (one per tone)"
+      },
+      "neutral": {
+        "bg": {
+          "$type": "color",
+          "$value": "{semantic.color.surface.overlay}",
+          "$description": "Neutral badge fill."
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{semantic.color.content.secondary}",
+          "$description": "Neutral badge text color."
+        }
+      },
+      "info": {
+        "bg": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.bg.info}",
+          "$description": "Info badge fill."
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.info}",
+          "$description": "Info badge text color."
+        }
+      },
+      "success": {
+        "bg": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.bg.success}",
+          "$description": "Success badge fill."
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.success}",
+          "$description": "Success badge text color."
+        }
+      },
+      "danger": {
+        "bg": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.bg.error}",
+          "$description": "Danger badge fill."
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.error}",
+          "$description": "Danger badge text color."
+        }
+      },
+      "warning": {
+        "bg": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.bg.warning}",
+          "$description": "Warning badge fill."
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.warning}",
+          "$description": "Warning badge text color."
+        }
+      },
+      "inProgress": {
+        "bg": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.bg.inProgress}",
+          "$description": "Inprogress badge fill."
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.inProgress}",
+          "$description": "Inprogress badge text color."
+        }
       },
       "radius": {
         "$type": "dimension",
@@ -2567,8 +2641,8 @@
           },
           "disabled": {
             "$type": "color",
-            "$value": "{semantic.color.border.interactive}",
-            "$description": "Secondary button disabled border (no disabled border class: the rest border stays)."
+            "$value": "{semantic.color.border.subdued}",
+            "$description": "Secondary button disabled border (lighter than rest so a disabled button reads disabled)."
           }
         },
         "text": {

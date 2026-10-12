@@ -228,7 +228,12 @@ describe('Button tone over variant', () => {
       const classes = classesOf(renderButton('primary', 'danger', shape, 'bg-background'));
       expect(classes).toContain('bg-background');
       expect(
-        classes.filter((c) => c.includes('bg-feedback-bg-danger') && !c.startsWith('hover:')),
+        classes.filter(
+          (c) =>
+            c.includes('bg-feedback-bg-danger') &&
+            !c.startsWith('hover:') &&
+            !c.startsWith('active:'),
+        ),
       ).toEqual([]);
     },
   );
