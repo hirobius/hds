@@ -21,4 +21,9 @@ describe('Kbd', () => {
     render(<Kbd size="lg">K</Kbd>);
     expect(screen.getByText('K').getAttribute('data-size')).toBe('lg');
   });
+
+  it('carries the raised-key class (bottom-edge shadow lives in theme.css)', () => {
+    render(<Kbd>K</Kbd>);
+    expect(screen.getByText('K').className).toContain('hds-kbd');
+  });
 });
