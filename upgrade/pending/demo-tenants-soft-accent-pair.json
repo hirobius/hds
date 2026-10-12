@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Nothing to do: two new demo tenants (soft-demo and accent-pair-demo) ship in the tenant CSS and only apply when you set data-brand to one of them."
+}
