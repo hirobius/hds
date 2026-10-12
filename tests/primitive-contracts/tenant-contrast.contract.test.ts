@@ -55,7 +55,9 @@ const baseOnAccentNode = getByPath(baseRaw, 'semantic.color.content.onAccent');
 
 // Phase 1 pilot tenants (ISSUE-02 scope) — brutalist-demo is a dev fixture,
 // not a real tenant, so it's excluded here.
-const TENANTS = ['concrete-creations', 'accent-lilac'] as const;
+// accent-pair-demo (hds#628) is the primary half of the accent pair: it overrides the accent in
+// both modes, so the same AA pairing applies. soft-demo changes shape and fill only (no accent).
+const TENANTS = ['concrete-creations', 'accent-lilac', 'accent-pair-demo'] as const;
 
 describe.each(TENANTS)('tenant contrast contract: %s', (slug) => {
   const overlay = JSON.parse(readFileSync(resolve(ROOT, 'tenants', slug, 'tokens.json'), 'utf8'));
