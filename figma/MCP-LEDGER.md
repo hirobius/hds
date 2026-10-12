@@ -322,3 +322,13 @@ through `delta.js` unmodified. Nothing published.
 "updated 0 · created 0 · deleted 0". Not scanned: layers on the other ~95 pages
 bound directly to an apple primitive (hidden from publishing, so unlikely); a
 deleted variable leaves such a layer with its last colour, unbound.
+
+## 2026-10-12 · session `claude/figma-sync-1012`
+
+Agent delta sync after #606 (per-tone badge tokens, secondary disabled border) and #615 (dark surface ladder, `inlineCode.bg`). Budget 2 calls.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                                        | Result                                    |
+| --- | ---------- | ----------- | ----- | ------------------------------------------------------------------------------ | ----------------------------------------- |
+| 1   | 06:40      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` unmodified (updated 8 · created 13) | OK. b5159864 → 0b661647; lastPush written |
+
+Session total: 1 call. Snapshot rebuilt from the receipt; `check:figma-drift` 0, `figma:push --plan` "updated 0 · created 0 · deleted 0". Nothing published.
