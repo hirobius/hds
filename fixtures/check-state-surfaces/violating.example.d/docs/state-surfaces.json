@@ -5,7 +5,8 @@
       "path": "generated.json",
       "describes": "A generated file",
       "kind": "generated",
-      "by": "scripts/gen.mjs"
+      "by": "scripts/gen.mjs",
+      "check": "node scripts/gen.mjs --check"
     },
     {
       "path": "NOTES.md",
@@ -18,6 +19,13 @@
     {
       "path": "gone.json",
       "describes": "Registered but missing",
+      "kind": "generated",
+      "by": "scripts/gen.mjs",
+      "check": "node scripts/gen.mjs --check"
+    },
+    {
+      "path": "unproven.json",
+      "describes": "Generated, but nothing proves it fresh",
       "kind": "generated",
       "by": "scripts/gen.mjs"
     }

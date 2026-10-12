@@ -32,9 +32,11 @@ import { buildWhichOneWhen } from './lib/which-one-when.mjs';
 import { coreByCategory, renderCoreSetLines } from './lib/core-set.mjs';
 import { readVoice, voiceMarkdown } from './lib/voice.mjs';
 import { buildLlmsIndex } from './lib/llms-index.mjs';
+import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+// `--root <dir>` reads and writes under <dir> (tests).
+const ROOT = rootFromArgv(join(__dirname, '..'));
 
 const manifestPath = join(ROOT, 'public', 'hds-manifest.json');
 const componentApiPath = join(ROOT, 'src', 'app', 'data', 'component-api.json');
@@ -384,11 +386,20 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
   return index;
 }
 
-export function main() {
+export async function main() {
+  // `--check` writes nothing and exits 1 when any output differs from a fresh
+  // build (dates excepted, as in the write path).
+  if (process.argv.includes('--check')) {
+    await runCheck(ROOT, generateLlmsTxt({ write: false }), {
+      label: 'generate-llms-txt --check',
+      fix: 'pnpm llms:generate',
+      stable: true,
+    });
+  }
   generateLlmsTxt();
   console.log('✓ public/llms.txt, public/llms-full.txt, public/llms/*.txt');
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main();
+  await main();
 }

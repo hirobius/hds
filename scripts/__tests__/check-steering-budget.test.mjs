@@ -5,7 +5,7 @@
 // (the arithmetic) and the CLI, which reads docs/guardrails/steering-budget.json
 // under FIXTURE_DIR (or the repo) and reports over-budget or missing files.
 import { describe, it, expect, afterEach } from 'vitest';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync, statSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
@@ -91,5 +91,21 @@ describe('this repo', () => {
     );
     const surfaces = JSON.parse(readFileSync(join(ROOT, 'docs/state-surfaces.json'), 'utf8'));
     expect([...budget.files].sort()).toEqual([...surfaces.alwaysOn].sort());
+  });
+
+  it('keeps the cap within 5% of the measured size, so slack does not accumulate', () => {
+    const budget = JSON.parse(
+      readFileSync(join(ROOT, 'docs/guardrails/steering-budget.json'), 'utf8'),
+    );
+    const total = budget.files.reduce((n, f) => n + statSync(join(ROOT, f)).size, 0);
+    expect(budget.maxTotalBytes).toBeGreaterThanOrEqual(total);
+    expect(budget.maxTotalBytes).toBeLessThanOrEqual(Math.ceil(total * 1.05));
+  });
+
+  it('counts the repo front door, which every session must read', () => {
+    const budget = JSON.parse(
+      readFileSync(join(ROOT, 'docs/guardrails/steering-budget.json'), 'utf8'),
+    );
+    expect(budget.files).toContain('docs/ai/FRONT-DOOR.md');
   });
 });

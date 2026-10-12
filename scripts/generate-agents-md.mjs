@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * generate-agents-md.mjs — the AGENTS.md shipped in the npm package.
+ * generate-agents-md.mjs — the AGENTS.md shipped in the npm package, and the
+ * repo's own front door.
  *
  * Agents that consume @hirobius/design-system read
  * node_modules/@hirobius/design-system/AGENTS.md first. Everything above
@@ -9,29 +10,36 @@
  *   - mcp/guide.mjs                        which component answers which need
  *   - src/app/data/component-api.json      that each named component exists
  *   - codemods/patterns-subpath.names.json which names import from /patterns
- * Below the marker, the repo-notes front door (hds#613, spec hirobius/ops#576)
- * is generated too, between FRONT_DOOR_START and FRONT_DOOR_END: what the repo
- * is, the read order, where live state is, and an index of every document in
- * docs/state-surfaces.json grouped by kind. After the block come hand-written
- * notes for agents working IN this repo (the Ralph quality bar that
- * ralph/prompt.md reads); the generator keeps those byte for byte. Root
- * AGENTS.md has to serve both readers because the package ships the repo
- * root's file and ralph/ (vendored) reads the same path.
+ * Below the marker are hand-written notes for agents working IN this repo (the
+ * Ralph quality bar that ralph/prompt.md reads, and one line pointing at the
+ * front door); the generator keeps those byte for byte. Root AGENTS.md has to
+ * serve both readers because the package ships the repo root's file and ralph/
+ * (vendored) reads the same path. Nothing about the repo's own state, owners or
+ * review cadence goes in it: it ships.
+ *
+ * The repo front door (hds#613, spec hirobius/ops#576) is generated from
+ * docs/state-surfaces.json into two files that do NOT ship (not in
+ * package.json#files; check-pack-contents forbids docs/ai/):
+ *   - docs/ai/FRONT-DOOR.md  short and always-on: what the repo is, the read
+ *                            order, where live state is, a pointer to the index
+ *   - docs/ai/DOCS-INDEX.md  every registered document by kind and how it is
+ *                            kept true; on demand, not always-on
  *
  * Usage:
- *   node scripts/generate-agents-md.mjs           write AGENTS.md
- *   node scripts/generate-agents-md.mjs --check   exit 1 when AGENTS.md is stale
+ *   node scripts/generate-agents-md.mjs           write the three files
+ *   node scripts/generate-agents-md.mjs --check   exit 1 when any is stale
  *   --root <dir>  read and write under <dir> instead of the repo (tests)
  *
  * Deterministic (no run dates; the index prints each editorial doc's reviewedAt
  * from the registry), so --check compares exact bytes.
  */
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { HOOKS, recommendedComponents } from '../mcp/guide.mjs';
 import { NEEDS_INTRO, needsMarkdown } from './lib/guide-markdown.mjs';
 import { readVoice, voiceMarkdown } from './lib/voice.mjs';
+import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const AGENTS_PATH = 'AGENTS.md';
@@ -39,9 +47,8 @@ const REGISTRY_PATH = 'docs/state-surfaces.json';
 export const REPO_NOTES_MARKER =
   '<!-- hds:repo-notes — everything below is hand-written, for agents working in the hds repo itself; consumers can stop here. -->';
 
-export const FRONT_DOOR_START =
-  '<!-- hds:front-door:start — generated from docs/state-surfaces.json by scripts/generate-agents-md.mjs (pnpm agents:generate); do not hand-edit until the end marker. -->';
-export const FRONT_DOOR_END = '<!-- hds:front-door:end -->';
+export const FRONT_DOOR_PATH = 'docs/ai/FRONT-DOOR.md';
+export const DOCS_INDEX_PATH = 'docs/ai/DOCS-INDEX.md';
 
 const PKG = '@hirobius/design-system';
 const code = (name) => `\`${name}\``;
@@ -50,37 +57,69 @@ const KIND_ORDER = [
   [
     'generated',
     'Generated',
-    'A script builds it; its `--check` fails when it is stale. Do not hand-edit.',
+    'A script builds it: change its source, never the file. A named check fails when the file is stale; where no check is named, nothing compares the file with a fresh build.',
   ],
   ['checked', 'Checked', 'Hand-kept, but a gate compares it with the code.'],
   [
     'editorial',
     'Editorial',
-    'Written by a person; the registry carries who, and when it was last re-read.',
+    'Written by a person; the registry carries when it was last re-read. `pnpm check:state-surfaces` warns "review due" past the re-read window and fails under `--strict-review`.',
   ],
 ];
 
 /** The tail of a registry entry: how the document is kept true. */
 function upkeep(s) {
-  if (s.kind === 'editorial') {
-    return `${s.owner}, reviewed ${s.reviewedAt}, re-read within ${s.maxAgeDays} days.`;
-  }
-  return `${s.kind === 'generated' ? 'Built' : 'Checked'} by ${code(s.by)}.`;
+  if (s.kind === 'editorial')
+    return `Reviewed ${s.reviewedAt}, re-read within ${s.maxAgeDays} days.`;
+  if (s.kind === 'checked') return `Checked by ${code(s.by)}.`;
+  const fresh = s.check ? `fresh when ${code(s.check)} passes` : 'not freshness-checked';
+  return `Built by ${code(s.by)}; ${fresh}.`;
 }
 
 /**
- * The generated front door of the repo notes: what the repo is, the read order,
- * where live state lives, and every registered document by kind. Holds no
- * versions, counts or open work: those are derived, and ops states them live.
- * @param {{ alwaysOn?: string[], surfaces: object[] }} registry docs/state-surfaces.json
+ * docs/ai/FRONT-DOOR.md: the short, always-on entry for an agent working in
+ * the repo. What the repo is, the read order, where live state is, and where
+ * the full document index is. Holds no versions, counts, open work, owners or
+ * host: those are derived, and ops states them live.
+ * @param {{ alwaysOn?: string[] }} registry docs/state-surfaces.json
  */
 export function buildFrontDoor(registry) {
-  const first = registry.alwaysOn ?? [];
-  const index = KIND_ORDER.flatMap(([kind, title, gloss]) => {
+  const first = (registry.alwaysOn ?? []).filter((f) => f !== FRONT_DOOR_PATH);
+  return [
+    '# Front door: working in the hds repo',
+    '',
+    '<!-- Generated by scripts/generate-agents-md.mjs from docs/state-surfaces.json (pnpm agents:generate); do not hand-edit. Not shipped in the npm package. -->',
+    '',
+    `${PKG} is a token-first React product foundation: one opinionated, re-themeable system, published as an npm package, with the token layer portable to other front ends.`,
+    '',
+    '## Read order',
+    '',
+    `1. This file, then ${first.length ? first.map(code).join(', then ') : code('CLAUDE.md')}. These are the always-on files: rules, read order and pointers, no state.`,
+    `2. ${code('docs/ENGINEERING.md')}: how the system is built (sources of truth, gates, release, design and code sync).`,
+    `3. For the task at hand: ${code('public/hds-manifest.json')} and ${code('src/app/data/component-api.json')} (inventory and props), ${code('DESIGN.md')} (visual spec), ${code('docs/guardrails/registry.json')} (every gate and where it fires).`,
+    '',
+    '## Where live state is',
+    '',
+    `Nothing in the repo records the release, the open work or what is blocked: the ops dashboard derives them. Read its \`/ops/standing\` (every verdict, from live data) and \`GET /api/projects?status=hirobius/hds\` (this repo's derived state). No host is recorded here. ${code('status.json')} holds only the hand-written focus and phase. Open work is GitHub Issues in this repo.`,
+    '',
+    '## Every document',
+    '',
+    `${code(DOCS_INDEX_PATH)} lists each registered document, what keeps it true and when it was last re-read. Read it to find or change one; it is not always-on.`,
+    '',
+  ].join('\n');
+}
+
+/**
+ * docs/ai/DOCS-INDEX.md: every document in docs/state-surfaces.json by kind,
+ * and how each is kept true. On demand; the front door points here.
+ * @param {{ surfaces: object[] }} registry docs/state-surfaces.json
+ */
+export function buildDocsIndex(registry) {
+  const sections = KIND_ORDER.flatMap(([kind, title, gloss]) => {
     const rows = registry.surfaces.filter((s) => s.kind === kind);
     if (rows.length === 0) return [];
     return [
-      `### ${title}`,
+      `## ${title}`,
       '',
       gloss,
       '',
@@ -92,36 +131,20 @@ export function buildFrontDoor(registry) {
     ];
   });
   return [
-    FRONT_DOOR_START,
+    '# Documents and what keeps them true',
     '',
-    '## Front door: working in the hds repo',
+    `<!-- Generated by scripts/generate-agents-md.mjs from docs/state-surfaces.json (pnpm agents:generate); do not hand-edit. Not shipped in the npm package. -->`,
     '',
-    `${PKG} is a token-first React product foundation: one opinionated, re-themeable system, published as an npm package, with the token layer portable to other front ends.`,
+    `Built from ${code('docs/state-surfaces.json')}, which ${code('scripts/check-state-surfaces.mjs')} gates. Re-read an editorial document, bump its \`reviewedAt\` there (today or earlier), then run \`pnpm agents:generate\`. The short entry point is ${code(FRONT_DOOR_PATH)}.`,
     '',
-    '### Read order',
-    '',
-    `1. ${first.length ? first.map(code).join(', then ') : code('CLAUDE.md')}. These are the always-on files: rules, read order and pointers, no state.`,
-    `2. ${code('docs/ENGINEERING.md')}: how the system is built (sources of truth, gates, release, design and code sync).`,
-    `3. For the task at hand: ${code('public/hds-manifest.json')} and ${code('src/app/data/component-api.json')} (inventory and props), ${code('DESIGN.md')} (visual spec), ${code('docs/guardrails/registry.json')} (every gate and where it fires).`,
-    '',
-    '### Where live state is',
-    '',
-    `Nothing in the repo records the release, the open work or what is blocked: ops derives them. Read the ops dashboard's \`/ops/standing\` (every verdict from live data) and its \`GET /api/projects?status=hirobius/hds\` (this repo's derived state). The host is not recorded here on purpose: AGENTS.md ships in the npm package. ${code('status.json')} holds only the hand-written focus and phase. Open work is GitHub Issues in this repo.`,
-    '',
-    '### Documents and what keeps them true',
-    '',
-    `Built from ${code('docs/state-surfaces.json')}, which ${code('scripts/check-state-surfaces.mjs')} gates. Re-read an editorial document, bump its \`reviewedAt\` there, then run \`pnpm agents:generate\`.`,
-    '',
-    ...index,
-    FRONT_DOOR_END,
-    '',
+    ...sections,
   ].join('\n');
 }
 
 /**
- * @param {{ componentApi: { components: Record<string, unknown> }, patternNames: string[], repoNotes: string, voice?: object, registry?: { alwaysOn?: string[], surfaces: object[] } }} input
+ * @param {{ componentApi: { components: Record<string, unknown> }, patternNames: string[], repoNotes: string, voice?: object }} input
  */
-export function buildAgentsMd({ componentApi, patternNames, repoNotes, voice, registry }) {
+export function buildAgentsMd({ componentApi, patternNames, repoNotes, voice }) {
   const api = componentApi.components;
   const fromPatterns = new Set(patternNames);
   const needs = needsMarkdown(api);
@@ -178,26 +201,19 @@ export function buildAgentsMd({ componentApi, patternNames, repoNotes, voice, re
     '',
   ].join('\n');
 
-  const door = registry ? `\n${buildFrontDoor(registry)}` : '';
-  return `${body}\n${REPO_NOTES_MARKER}\n${door}${repoNotes ? `\n${repoNotes}` : ''}`;
+  return `${body}\n${REPO_NOTES_MARKER}\n${repoNotes ? `\n${repoNotes}` : ''}`;
 }
 
-/** The hand-written notes below the marker in an existing AGENTS.md ('' when absent). The generated front door is not one of them. */
+/** The hand-written notes below the marker in an existing AGENTS.md ('' when absent). */
 export function readRepoNotes(existing) {
   if (!existing) return '';
   const at = existing.indexOf(REPO_NOTES_MARKER);
   if (at < 0) return '';
-  let notes = existing.slice(at + REPO_NOTES_MARKER.length);
-  const start = notes.indexOf(FRONT_DOOR_START);
-  const end = notes.indexOf(FRONT_DOOR_END);
-  if (start >= 0 && end > start)
-    notes = notes.slice(0, start) + notes.slice(end + FRONT_DOOR_END.length);
-  return notes.replace(/^\n+/, '');
+  return existing.slice(at + REPO_NOTES_MARKER.length).replace(/^\n+/, '');
 }
 
-function main() {
-  const rootFlag = process.argv.indexOf('--root');
-  const root = rootFlag >= 0 ? resolve(process.argv[rootFlag + 1]) : ROOT;
+async function main() {
+  const root = rootFromArgv(ROOT);
   const readJson = (rel) => JSON.parse(readFileSync(join(root, rel), 'utf8'));
   const outPath = join(root, AGENTS_PATH);
   const current = existsSync(outPath) ? readFileSync(outPath, 'utf8') : null;
@@ -208,26 +224,30 @@ function main() {
     );
     process.exit(1);
   }
-  const content = buildAgentsMd({
-    componentApi: readJson(apiPath),
-    patternNames: readJson('codemods/patterns-subpath.names.json').names,
-    repoNotes: readRepoNotes(current),
-    voice: readVoice(root),
-    registry: readJson(REGISTRY_PATH),
-  });
+  const registry = readJson(REGISTRY_PATH);
+  const outputs = {
+    [AGENTS_PATH]: buildAgentsMd({
+      componentApi: readJson(apiPath),
+      patternNames: readJson('codemods/patterns-subpath.names.json').names,
+      repoNotes: readRepoNotes(current),
+      voice: readVoice(root),
+    }),
+    [FRONT_DOOR_PATH]: buildFrontDoor(registry),
+    [DOCS_INDEX_PATH]: buildDocsIndex(registry),
+  };
 
   if (process.argv.includes('--check')) {
-    if (current !== content) {
-      console.error(
-        `✗ ${AGENTS_PATH} is out of date with mcp/guide.mjs, component-api.json, content/docs/voice.mdx or docs/state-surfaces.json. Run: pnpm agents:generate (hand-edit only below the front-door end marker).`,
-      );
-      process.exit(1);
-    }
-    console.log(`✓ ${AGENTS_PATH} is up to date`);
-    return;
+    // Writes nothing: exit 1 when any of the three differs from a fresh build.
+    await runCheck(root, outputs, {
+      label: 'generate-agents-md --check',
+      fix: 'pnpm agents:generate (hand-edit AGENTS.md only below the repo-notes marker)',
+    });
   }
-  writeFileSync(outPath, content);
-  console.log(`✓ wrote ${AGENTS_PATH}`);
+  for (const [rel, text] of Object.entries(outputs)) {
+    mkdirSync(dirname(join(root, rel)), { recursive: true });
+    writeFileSync(join(root, rel), text);
+    console.log(`✓ wrote ${rel}`);
+  }
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();

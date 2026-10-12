@@ -1,6 +1,6 @@
 {
-  "$comment": "State-surface registry (hds#612, spec hirobius/ops#576). Every file or section that describes project state, and what keeps it true: generated (a generator builds it; its --check runs elsewhere), checked (a named gate compares it with the code), editorial (hand-written; owner, reviewedAt and maxAgeDays; the gate says \"review due\" past maxAgeDays). Read by scripts/check-state-surfaces.mjs. After re-reading an editorial file, bump its reviewedAt, then run pnpm agents:generate: the front door in AGENTS.md prints it. ignoreReferences lists path prefixes that docs name but a clean checkout lacks. alwaysOn lists the files every agent loads first (CLAUDE.md and what it marks read-first); the gate flags derived facts (versions, counts, issue lists, \"as of\" state) in them, and docs/guardrails/steering-budget.json caps their size.",
-  "alwaysOn": ["CLAUDE.md", "docs/ai/NORTH_STAR.md", "public/llms.txt"],
+  "$comment": "State-surface registry (hds#612, spec hirobius/ops#576). Every file or section that describes project state, and what keeps it true: generated (a generator builds it; `check` is the command that proves it fresh, which the gate verifies exists and handles --check, or `\"freshness\": \"unchecked\"` says honestly that nothing does), checked (a named gate compares it with the code), editorial (hand-written; owner, reviewedAt and maxAgeDays; past maxAgeDays the gate warns \"review due\", and fails under --strict-review). Read by scripts/check-state-surfaces.mjs. After re-reading an editorial file, bump its reviewedAt (not into the future), then run pnpm agents:generate: docs/ai/DOCS-INDEX.md prints it. ignoreReferences lists path prefixes that docs name but a clean checkout lacks. registerAll (off by default) lists directories whose markdown must all be registered. alwaysOn lists the files every agent loads first (CLAUDE.md and what it marks read-first); the gate flags derived facts (versions, counts, lists of three or more issues, \"as of\" state) in them, and docs/guardrails/steering-budget.json caps their size.",
+  "alwaysOn": ["CLAUDE.md", "docs/ai/FRONT-DOOR.md", "docs/ai/NORTH_STAR.md", "public/llms.txt"],
   "ignoreReferences": [],
   "surfaces": [
     {
@@ -45,14 +45,16 @@
       "describes": "Who uses HDS (consumer usage)",
       "kind": "generated",
       "by": "scripts/count-consumer-usage.mjs",
-      "section": "auto:consumer-usage"
+      "section": "auto:consumer-usage",
+      "check": "node scripts/count-consumer-usage.mjs --check"
     },
     {
       "path": "README.md",
       "describes": "The core set of components",
       "kind": "generated",
       "by": "scripts/build-readme-counts.mjs",
-      "section": "auto:core-set"
+      "section": "auto:core-set",
+      "check": "node scripts/build-readme-counts.mjs --check"
     },
     {
       "path": "README.md",
@@ -79,11 +81,17 @@
       "check": "node scripts/generate-agents-md.mjs --check"
     },
     {
-      "path": "AGENTS.md",
-      "describes": "Front door for agents working in this repo: read order, where live state is, and this index",
+      "path": "docs/ai/FRONT-DOOR.md",
+      "describes": "Front door for an agent working in this repo: what it is, read order, where live state is (short, always-on; not shipped in the package)",
       "kind": "generated",
       "by": "scripts/generate-agents-md.mjs",
-      "section": "front door",
+      "check": "node scripts/generate-agents-md.mjs --check"
+    },
+    {
+      "path": "docs/ai/DOCS-INDEX.md",
+      "describes": "Every registered document in this registry by kind, and how each is kept true (on demand; not shipped in the package)",
+      "kind": "generated",
+      "by": "scripts/generate-agents-md.mjs",
       "check": "node scripts/generate-agents-md.mjs --check"
     },
     {
@@ -91,33 +99,35 @@
       "describes": "llms.txt index, package-root mirror",
       "kind": "generated",
       "by": "scripts/generate-llms-txt.mjs",
-      "check": "node scripts/check-llms-txt.mjs"
+      "check": "node scripts/generate-llms-txt.mjs --check"
     },
     {
       "path": "public/llms.txt",
       "describes": "llms.txt index (absolute links, no timestamp)",
       "kind": "generated",
       "by": "scripts/generate-llms-txt.mjs",
-      "check": "node scripts/check-llms-txt.mjs"
+      "check": "node scripts/generate-llms-txt.mjs --check"
     },
     {
       "path": "public/llms-full.txt",
       "describes": "llms-full.txt: the system map body, DESIGN.md and the props digest",
       "kind": "generated",
-      "by": "scripts/generate-llms-txt.mjs"
+      "by": "scripts/generate-llms-txt.mjs",
+      "check": "node scripts/generate-llms-txt.mjs --check"
     },
     {
       "path": "public/llms",
       "describes": "Per-topic llms slices: components, layout, scroll, tokens",
       "kind": "generated",
-      "by": "scripts/generate-llms-txt.mjs"
+      "by": "scripts/generate-llms-txt.mjs",
+      "check": "node scripts/generate-llms-txt.mjs --check"
     },
     {
       "path": "public/hds-manifest.json",
       "describes": "Machine-readable inventory of components, categories and phase status",
       "kind": "generated",
       "by": "scripts/generate-manifest.mjs",
-      "check": "node scripts/check-manifest-drift.mjs"
+      "check": "node scripts/check-token-rebake-needed.mjs"
     },
     {
       "path": "docs/sync-map.json",
@@ -130,7 +140,8 @@
       "path": "DESIGN.md",
       "describes": "The visual spec for agents, built from DESIGN.source.md and the tokens",
       "kind": "generated",
-      "by": "scripts/build-design-md.mjs"
+      "by": "scripts/build-design-md.mjs",
+      "check": "node scripts/build-design-md.mjs --check"
     },
     {
       "path": "DESIGN.source.md",
@@ -145,7 +156,8 @@
       "describes": "Token reference tables mirrored from hirobius.tokens.json",
       "kind": "generated",
       "by": "scripts/build-handoff.mjs",
-      "section": "token tables"
+      "section": "token tables",
+      "check": "node scripts/build-handoff.mjs --check"
     },
     {
       "path": "DESIGN-HANDOFF.md",
@@ -160,7 +172,8 @@
       "path": "CHANGELOG.md",
       "describes": "Release notes, one entry per version",
       "kind": "generated",
-      "by": "changesets (pnpm changeset:version)"
+      "by": "changesets (pnpm changeset:version)",
+      "freshness": "unchecked"
     },
     {
       "path": "UPGRADING.md",
@@ -274,11 +287,9 @@
     },
     {
       "path": "figma/MCP-LEDGER.md",
-      "describes": "Budget log of every Figma MCP call an agent session makes",
-      "kind": "editorial",
-      "owner": "Adrian",
-      "reviewedAt": "2026-10-12",
-      "maxAgeDays": 30
+      "describes": "Append-only log of every Figma MCP call an agent session makes (the budget record); it has no review age",
+      "kind": "checked",
+      "by": "scripts/__tests__/figma-one-library-rule.test.mjs"
     },
     {
       "path": "figma/snapshot.json",
@@ -291,13 +302,15 @@
       "path": "figma/inventory.json",
       "describes": "Every page, component set and variant count in the Figma library",
       "kind": "generated",
-      "by": "scripts/figma-inventory.mjs"
+      "by": "scripts/figma-inventory.mjs",
+      "freshness": "unchecked"
     },
     {
       "path": "figma/disposition.json",
       "describes": "What becomes of each Figma component",
       "kind": "generated",
-      "by": "scripts/figma-disposition.mjs"
+      "by": "scripts/figma-disposition.mjs",
+      "check": "node scripts/figma-disposition.mjs --check"
     },
     {
       "path": "figma/code-connect.json",
@@ -334,7 +347,8 @@
       "path": "docs/DESIGN_LINKS.md",
       "describes": "Where each component lives in Figma, the docs site and source",
       "kind": "generated",
-      "by": "scripts/figma-links.mjs"
+      "by": "scripts/figma-links.mjs",
+      "check": "node scripts/figma-links.mjs --check"
     },
     {
       "path": "docs/guardrails/registry.json",

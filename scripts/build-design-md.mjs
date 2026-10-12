@@ -33,6 +33,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 import { brandAccent } from './lib/brand-truth.mjs';
+import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
 
 import {
   walk,
@@ -475,11 +476,11 @@ export function stripSourceHeader(doc) {
   return doc.replace(/^<!--[\s\S]*?-->\s*/, notice);
 }
 
-// ── CLI ───────────────────────────────────────────────────────────────────────
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
-  const manifest = JSON.parse(readFileSync(join(ROOT, 'public', 'hds-manifest.json'), 'utf8'));
-  let doc = readFileSync(join(ROOT, 'DESIGN.source.md'), 'utf8');
+/** The DESIGN.md that `root`'s sources (DESIGN.source.md, tokens, manifest) produce. */
+export function renderDesignMd(root) {
+  const raw = readTokenSource(join(root, 'hirobius.tokens.json'));
+  const manifest = JSON.parse(readFileSync(join(root, 'public', 'hds-manifest.json'), 'utf8'));
+  let doc = readFileSync(join(root, 'DESIGN.source.md'), 'utf8');
 
   doc = replaceSection(doc, 'colors', buildColors(raw));
   doc = replaceSection(doc, 'typography', buildTypography(raw));
@@ -488,8 +489,22 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   doc = replaceSection(doc, 'motion', buildMotion(raw));
   doc = replaceSection(doc, 'components', buildComponents(raw, manifest));
   doc = replaceSection(doc, 'build-meta', buildMeta(raw));
-  doc = stripSourceHeader(doc);
+  return stripSourceHeader(doc);
+}
 
-  writeFileSync(join(ROOT, 'DESIGN.md'), doc);
+// ── CLI ───────────────────────────────────────────────────────────────────────
+// `--check` writes nothing and exits 1 when DESIGN.md differs from a fresh build;
+// `--root <dir>` reads and writes under <dir> (tests).
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const root = rootFromArgv(ROOT);
+  const doc = renderDesignMd(root);
+  if (process.argv.includes('--check')) {
+    await runCheck(
+      root,
+      { 'DESIGN.md': doc },
+      { label: 'build-design-md --check', fix: 'pnpm tokens' },
+    );
+  }
+  writeFileSync(join(root, 'DESIGN.md'), doc);
   console.log('✓ DESIGN.md generated from DESIGN.source.md + tokens + manifest.');
 }
