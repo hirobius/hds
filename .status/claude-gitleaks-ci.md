@@ -1,0 +1,1 @@
+- CI now runs a pinned, checksum-verified gitleaks over the full history (`scripts/ci-secrets-scan.sh`, #263).
