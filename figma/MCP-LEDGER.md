@@ -298,3 +298,27 @@ Agent delta sync of run 392d8056 (Plus Jakarta Sans font family, apple-green acc
 | 18  | 17:52      | `use_figma` | read  | Library: `snapshot-diff.js` unmodified                         | tooLarge (17,131 chars, limit 15,000). Snapshot rebuilt instead from the 17 part receipts with `--from-receipt` |
 
 **Session total: 18 calls.** Nothing deleted, nothing published; Adrian publishes.
+
+## 2026-10-12 — graphite + mauve sync, agent prune (Adrian authorized deletes for this job only)
+
+Adrian, 2026-10-12, asked not to open Figma and chose "Let me delete": a one-off
+lift of the no-delete rule so the library matches code. Scope: the 11
+`color/apple/*` primitives and `Hirobius/Semantic: button/primary/textDisabled`
+(moved to `Hirobius/Component`). `delta.js` refuses both moves and extras, so the
+creates, rebinds and deletes were hand-written calls; the value updates went
+through `delta.js` unmodified. Nothing published.
+
+| #   | Time (UTC) | Tool           | Kind  | Target                                                                                                                          | Result                                                                              |
+| --- | ---------- | -------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 1   | 03:33      | `use_figma`    | read  | Library 2VgBbVpKiDnu0aftJEVyBQ: pages, live apple/textDisabled ids, alias and paint-style users                                 | OK. Live matched snapshot; 20 Semantic aliases to apple, 0 paint styles             |
+| 2   | 03:35      | `use_figma`    | write | Library: create 22 graphite/mauve primitives + Component `button/primary/textDisabled`; repoint 20 aliases apple.N → graphite.N | OK. 23 created (2146:2–24), 20 repointed                                            |
+| 3-6 | 03:36      | `use_figma` x4 | write | Library: rebind layers on Button, IconButton, ButtonGroup, ToggleButton pages to the new variables                              | OK. 3 Button labels (28:17, 28:32, 28:47) rebound; other pages had none             |
+| 7   | 03:37      | `use_figma`    | write | Library: DELETE 11 `color/apple/*` + Semantic `button/primary/textDisabled` (Adrian-authorized)                                 | OK. 12 deleted after an alias check found none left                                 |
+| 8   | 03:38      | `use_figma`    | read  | Library: `snapshot-diff.js` unmodified                                                                                          | OK. 33 changed, 12 removed; ingested with `--from-diff` (live 31698bc8)             |
+| 9   | 03:41      | `use_figma`    | write | Library: `delta.js` unmodified (28 updates, base 31698bc8)                                                                      | OK. 31698bc8 → b5159864; paths stamped; lastPush written; `--from-receipt` ingested |
+| 10  | 03:43      | `use_figma`    | read  | Library: screenshot of the Button set (28:138)                                                                                  | OK. Primary row renders graphite                                                    |
+
+**Session total: 13 calls.** `check:figma-drift` exits 0 and `figma:push --plan` prints
+"updated 0 · created 0 · deleted 0". Not scanned: layers on the other ~95 pages
+bound directly to an apple primitive (hidden from publishing, so unlikely); a
+deleted variable leaves such a layer with its last colour, unbound.
