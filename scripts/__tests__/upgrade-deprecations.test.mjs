@@ -54,6 +54,12 @@ function usageOf(node) {
     const jsx = owner && nameOf(owner) ? jsxOf(nameOf(owner)) : null;
     return jsx && `${jsx} ${nameOf(node)}`;
   }
+  if (ts.isVariableStatement(node)) {
+    // A deprecated component: `export const Stat = forwardRef(...)` is used as `<Stat`.
+    const name = nameOf(node.declarationList.declarations[0]);
+    return name && `<${name}`;
+  }
+  if (ts.isInterfaceDeclaration(node)) return jsxOf(node.name.text);
   if (ts.isLiteralTypeNode(node) && ts.isStringLiteral(node.literal)) {
     const alias = node.parent && ts.isUnionTypeNode(node.parent) ? node.parent.parent : null;
     return alias && ts.isTypeAliasDeclaration(alias)

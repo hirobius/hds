@@ -33,6 +33,11 @@ export interface BlockquoteProps
   extends React.BlockquoteHTMLAttributes<HTMLQuoteElement>, BlockquoteVariantProps {
   /** Optional attribution rendered beneath the quote (e.g. the author). */
   attribution?: React.ReactNode;
+  /**
+   * @deprecated Blockquote has one size (md); sm and lg render as before until removed.
+   * @removeIn 1.0.0
+   */
+  size?: BlockquoteVariantProps['size'];
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
