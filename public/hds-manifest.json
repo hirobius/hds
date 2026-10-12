@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T05:57:55.903Z",
+  "generated": "2026-10-12T17:17:10.765Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -4472,7 +4472,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/form-control.ts"
+        "src/app/components/form-control.ts",
+        "src/styles/__tests__/slider-touch-target.test.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -9630,6 +9631,7 @@
         "path": "semantic.color.border.subdued",
         "cssVar": "--semantic-color-border-subdued",
         "type": "color",
+        "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {

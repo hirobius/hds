@@ -166,6 +166,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.color.content.warning": "Warning-toned text/icon color, independent of feedback banners.",
   "semantic.color.content.danger": "Danger-toned text/icon color, independent of feedback banners.",
   "semantic.color.border.interactive": "Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.",
+  "semantic.color.border.subdued": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
   "semantic.color.border.subtle": "Lowest-contrast border for resting hairline edges on flat surfaces.",
   "semantic.color.border.accent": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces.",
   "semantic.color.border.success": "Success-toned border for status outlines and success-state inputs.",

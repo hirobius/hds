@@ -1393,8 +1393,12 @@ export function validateTenantOverlay(overlay, baseRaw, slug) {
  */
 export function indexDeprecatedAliases(baseRaw) {
   const index = new Map();
-  for (const { path, value, deprecated } of walkTokens(baseRaw)) {
+  for (const { path, value, deprecated, extensions } of walkTokens(baseRaw)) {
     if (!deprecated || typeof value !== 'string') continue;
+    // A themed alias (its Dark differs from $value) cannot be re-anchored to one
+    // var without pinning its Light value in dark mode; it keeps the :root value.
+    const dark = readModes(extensions)?.Dark;
+    if (dark !== undefined && dark !== value) continue;
     const m = /^\{([^}]+)\}$/.exec(value);
     if (!m) continue;
     const list = index.get(m[1]) ?? [];

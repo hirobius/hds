@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "Nothing changes on screen; --semantic-color-border-subdued is deprecated, so switch new code to --semantic-color-border-default (one step lighter in dark mode) before it is removed in a later breaking release."
+}
