@@ -3475,7 +3475,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/page.tsx",
-      "description": "Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewport edges on scroll. Use as the outermost element of any new page so vertical rhythm is consistent across the system without per-page reinvention. Footer: every page mounted under HDSLayout (the standard route shell) gets a shared footer rendered after this component's content, with bottom space below the footer owned by the layout shell. Page intentionally does not render its own footer — the shell is the single source of truth. Use Container directly only for full-bleed surfaces (sketches, hero sections, embedded canvases) where the page owns its own vertical padding. Usage: <Page> <Stack direction=\"column\" gap=\"spacious\">...</Stack> </Page> <Page maxWidth=\"content\" paddingY=\"compact\"> <article>...</article> </Page>",
+      "description": "Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding and a responsive side gutter (16/24/32px) so content breathes against the viewport edges on scroll. Use as the outermost element of any new page so vertical rhythm is consistent across the system without per-page reinvention. Footer: every page mounted under HDSLayout (the standard route shell) gets a shared footer rendered after this component's content, with bottom space below the footer owned by the layout shell. Page intentionally does not render its own footer — the shell is the single source of truth. Use Container directly only for full-bleed surfaces (sketches, hero sections, embedded canvases) where the page owns its own vertical padding. Usage: <Page> <Stack direction=\"column\" gap=\"spacious\">...</Stack> </Page> <Page maxWidth=\"content\" paddingY=\"compact\"> <article>...</article> </Page>",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -3486,6 +3486,7 @@
       },
       "consumers": [
         "src/app/components/container.tsx",
+        "src/app/components/page.test.tsx",
         "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
@@ -4472,7 +4473,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/form-control.ts"
+        "src/app/components/form-control.ts",
+        "src/styles/__tests__/slider-touch-target.test.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",

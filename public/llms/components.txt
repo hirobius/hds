@@ -423,7 +423,7 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - variant: "plain" | "divided" = plain
 
 ### Page
-Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
+Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding and a responsive side gutter (16/24/3…
   - children: ReactNode
   - className: string
   - maxWidth: 'content' | 'max' = max

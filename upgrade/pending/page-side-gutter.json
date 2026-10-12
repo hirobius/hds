@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Page now has a side gutter (16/24/32px by width); if you added your own side padding inside a Page to work around its absence, remove it to avoid a double gutter."
+}
