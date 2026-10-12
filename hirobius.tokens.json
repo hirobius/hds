@@ -329,7 +329,6 @@
         "$description": "Discrete values within the amber range at defined lightness steps."
       },
       "stone": {
-        "$description": "Warm stone/brown palette for Concrete Creations brand accent ramp. PLACEHOLDER values pending final brand identity work.",
         "100": {
           "$value": "#F5EFE7",
           "$description": "Stone 100 — near-white warm tint; accent-subtle surface."
@@ -361,7 +360,8 @@
         "950": {
           "$value": "#3A2E1F",
           "$description": "Stone 950 — near-black warm tone; dark-mode subtle accent surface."
-        }
+        },
+        "$description": "Warm stone/brown palette for Concrete Creations brand accent ramp. PLACEHOLDER values pending final brand identity work."
       },
       "projectBrand": {
         "microsoftGameDev": {
@@ -982,6 +982,14 @@
           },
           "$description": "96px width step."
         },
+        "280": {
+          "$type": "dimension",
+          "$value": {
+            "value": 280,
+            "unit": "px"
+          },
+          "$description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room."
+        },
         "760": {
           "$type": "dimension",
           "$value": {
@@ -1002,14 +1010,6 @@
             "value": 50,
             "unit": "ch"
           }
-        },
-        "280": {
-          "$type": "dimension",
-          "$value": {
-            "value": 280,
-            "unit": "px"
-          },
-          "$description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room."
         }
       }
     },
@@ -2261,13 +2261,13 @@
     "tag": {
       "background": {
         "$type": "color",
-        "$value": "{semantic.accent.subtle}",
-        "$description": "Base tag surface color."
+        "$value": "{semantic.color.surface.raised}",
+        "$description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground)."
       },
       "text": {
         "$type": "color",
-        "$value": "{semantic.color.content.primary}",
-        "$description": "Default tag text color."
+        "$value": "{semantic.color.content.secondary}",
+        "$description": "Unselected tag text color (the active label uses activeText)."
       },
       "border": {
         "$type": "color",
@@ -2418,15 +2418,15 @@
       },
       "paddingY": {
         "$type": "dimension",
-        "$value": "{primitive.space.3}",
-        "$description": "Vertical button padding."
+        "$value": "{primitive.space.2}",
+        "$description": "Vertical button padding (8px, the md size; legacy flat alias of size.md.paddingY)."
       },
       "size": {
         "sm": {
           "paddingX": {
             "$type": "dimension",
-            "$value": "{primitive.space.2}",
-            "$description": "Small button horizontal padding (8px)."
+            "$value": "{primitive.space.3}",
+            "$description": "Small button horizontal padding (12px)."
           },
           "paddingY": {
             "$type": "dimension",
@@ -2445,13 +2445,13 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.space.7}",
-            "$description": "Small button height (28px)."
+            "$value": "{primitive.size.32}",
+            "$description": "Small button height (32px)."
           },
           "itemSpacing": {
             "$type": "dimension",
-            "$value": "{primitive.space.1}",
-            "$description": "Small button icon-to-label gap (4px)."
+            "$value": "{primitive.space.2}",
+            "$description": "Small button icon-to-label gap (8px)."
           }
         },
         "md": {
@@ -2462,8 +2462,8 @@
           },
           "paddingY": {
             "$type": "dimension",
-            "$value": "{primitive.space.3}",
-            "$description": "Medium button vertical padding (12px)."
+            "$value": "{primitive.space.2}",
+            "$description": "Medium button vertical padding (8px; the 40px height drives the box)."
           },
           "fontSize": {
             "$type": "dimension",
@@ -2499,8 +2499,8 @@
           },
           "fontSize": {
             "$type": "dimension",
-            "$value": "{primitive.typography.size.base}",
-            "$description": "Large button label size (16px, hds#283: was 17px)."
+            "$value": "{primitive.typography.size.sm}",
+            "$description": "Large button label size (14px, the same hds-type-ui role as md)."
           },
           "iconSize": {
             "$type": "dimension",
@@ -2540,7 +2540,7 @@
           },
           "hover": {
             "$type": "color",
-            "$value": "{semantic.color.surface.raised}",
+            "$value": "{semantic.color.surface.accentSubtle}",
             "$description": "Secondary button hover fill."
           },
           "pressed": {
@@ -2557,18 +2557,18 @@
           },
           "hover": {
             "$type": "color",
-            "$value": "{semantic.color.border.interactive}",
+            "$value": "{semantic.color.border.accent}",
             "$description": "Secondary button hover border."
           },
           "pressed": {
             "$type": "color",
-            "$value": "{semantic.color.border.interactive}",
-            "$description": "Secondary button pressed border."
+            "$value": "{semantic.color.border.accent}",
+            "$description": "Secondary button pressed border (the hover border still applies while pressed)."
           },
           "disabled": {
             "$type": "color",
-            "$value": "{semantic.color.border.subdued}",
-            "$description": "Secondary button disabled border."
+            "$value": "{semantic.color.border.interactive}",
+            "$description": "Secondary button disabled border (no disabled border class: the rest border stays)."
           }
         },
         "text": {
@@ -2581,7 +2581,7 @@
     "input": {
       "bg": {
         "$type": "color",
-        "$value": "{semantic.color.surface.raised}"
+        "$value": "{semantic.color.surface.page}"
       },
       "text": {
         "$type": "color",
@@ -2601,7 +2601,7 @@
       },
       "paddingX": {
         "$type": "dimension",
-        "$value": "{primitive.space.4}"
+        "$value": "{primitive.space.3}"
       },
       "paddingY": {
         "$type": "dimension",
@@ -2619,7 +2619,7 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{primitive.radius.8}"
+        "$value": "{primitive.radius.12}"
       },
       "padding": {
         "$type": "dimension",
@@ -2627,7 +2627,7 @@
       },
       "gap": {
         "$type": "dimension",
-        "$value": "{primitive.space.2}"
+        "$value": "{semantic.space.scale.sm}"
       }
     },
     "lightbox": {
