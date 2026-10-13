@@ -10,9 +10,9 @@ A deprecated name still works, so nothing breaks when it is deprecated. It is re
 
 ## How a deprecation works
 
-1. **Tagged in code.** The name gets a `@deprecated` JSDoc tag with what to use instead, and a `@removeIn` version. A check fails any `@deprecated` tag without a removal version, so nothing stays deprecated forever.
+1. **Tagged in code.** A component, prop or other JavaScript name gets a `@deprecated` JSDoc tag with what to use instead, and a `@removeIn` version. A check fails any `@deprecated` tag without a removal version, so nothing stays deprecated forever. Deprecated token paths and Tailwind utilities have no JSDoc, so they are recorded in the ledger only.
 2. **Recorded in the ledger.** The release that deprecates it adds a `deprecated` step with a plain-language note and, where the change can be automated, a codemod.
-3. **Removed on schedule.** When the package reaches the removal version, the same check fails until the name is deleted. The upgrade command then runs the codemod or lists the change under **Do by hand**.
+3. **Removed on schedule.** When the package reaches the removal version, the check fails until a tagged name is deleted. The upgrade command then runs the codemod or lists the change under **Do by hand**.
 
 Editors that read TypeScript types, such as VS Code, strike through a deprecated import, so you see it while you type.
 

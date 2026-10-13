@@ -15,20 +15,30 @@ HDS ships to the public npm registry as `@hirobius/design-system`. It is ESM, Re
 pnpm add @hirobius/design-system react react-dom
 ```
 
-`react-router` is an optional peer: add it only if you want HDS links to drive your router.
+Some peers are optional and only needed for one entry point:
+
+- `react-router`, if you want HDS links to drive your router;
+- `react-hook-form`, `zod` and `@hookform/resolvers`, for `@hirobius/design-system/form`;
+- `lenis`, for `@hirobius/design-system/scroll`.
 
 ## Load the CSS once
 
-Import the tokens at your app root. `tokens.css` is the full bundle: the token variables, the theme layer and the utility classes the components use.
+Import one stylesheet at your app root. Pick it by how much of the page HDS should own:
+
+| Stylesheet      | What it holds                                                                                                 | Use it for                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `styles.css`    | Token variables, component styles and utilities. No global reset.                                             | Adding HDS to an existing app. Recommended. |
+| `tokens.css`    | Everything in `styles.css`, plus a global reset (Tailwind preflight) that restyles every element on the page. | An app built on HDS from the start.         |
+| `variables.css` | The token variables only.                                                                                     | Theming another system from HDS tokens.     |
 
 ```tsx
-import '@hirobius/design-system/tokens.css';
+import '@hirobius/design-system/styles.css';
 import '@hirobius/design-system/fonts.css'; // optional: the HDS typefaces
 ```
 
 ## Mark the HDS scope
 
-Base styles (type baseline, resets) apply only inside an element with `data-hds`, so HDS never restyles the rest of a page you don't own.
+HDS base styles (the type baseline) apply only inside an element with `data-hds`. With `styles.css`, nothing outside that element changes.
 
 ```tsx
 import { Button } from '@hirobius/design-system';

@@ -97,3 +97,8 @@ export function RemovalLedger() {
     </>
   );
 }
+
+/** The oldest release the upgrade command can start from (upgrade/index.json#floor). */
+export function UpgradeFloor() {
+  return <code>{loadUpgradeIndex().floor}</code>;
+}

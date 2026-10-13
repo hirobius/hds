@@ -58,3 +58,38 @@ describe.each(GUIDES)('guides/%s', (slug) => {
     expect(pkg.bin['design-system']).toBe('codemods/upgrade.mjs');
   });
 });
+
+describe('guide claims the package backs', () => {
+  it('imports from /tokens only names src/app/design-system/tokens.ts exports', () => {
+    const src = readFileSync(join(ROOT, 'src/app/design-system/tokens.ts'), 'utf8');
+    const exported = new Set(
+      [...src.matchAll(/export\s+(?:const|function)\s+(\w+)|export\s+\{\s*([\w\s,]+)\}/g)].flatMap(
+        (m) => (m[1] ?? m[2]!).split(',').map((s) => s.trim()),
+      ),
+    );
+    const named = GUIDES.flatMap((g) =>
+      [
+        ...read(g).matchAll(
+          /import\s+(?:\w+\s*,\s*)?\{([^}]+)\}\s+from\s+'@hirobius\/design-system\/tokens'/g,
+        ),
+      ].flatMap((m) => m[1]!.split(',').map((s) => s.trim())),
+    );
+    expect(named.length).toBeGreaterThan(0);
+    expect(named.filter((n) => !exported.has(n))).toEqual([]);
+  });
+
+  it('never presents tokens.css as reset-free (it ships a global Tailwind preflight)', () => {
+    const page = read('getting-started');
+    expect(page).toContain("'@hirobius/design-system/styles.css'");
+    expect(page).not.toMatch(/never restyles/i);
+  });
+
+  it('renders the upgrade floor from the ledger instead of writing it', () => {
+    const page = read('upgrade');
+    expect(page).toContain('<UpgradeFloor />');
+    const { floor } = JSON.parse(readFileSync(join(ROOT, 'upgrade/index.json'), 'utf8')) as {
+      floor: string;
+    };
+    expect(page).not.toContain(floor);
+  });
+});
