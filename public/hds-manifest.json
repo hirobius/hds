@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T18:19:40.069Z",
+  "generated": "2026-10-13T12:30:05.429Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -8233,6 +8233,13 @@
         "value": "#a3a3a3"
       },
       {
+        "path": "primitive.color.neutral.450",
+        "cssVar": "--primitive-color-neutral-450",
+        "type": "color",
+        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).",
+        "value": "#909090"
+      },
+      {
         "path": "primitive.color.neutral.500",
         "cssVar": "--primitive-color-neutral-500",
         "type": "color",
@@ -9644,6 +9651,18 @@
         "dark": {
           "alias": "{primitive.color.neutral.400}",
           "resolvedValue": "#a3a3a3"
+        }
+      },
+      {
+        "path": "semantic.color.content.tertiary",
+        "cssVar": "--semantic-color-content-tertiary",
+        "type": "color",
+        "description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+        "alias": "{primitive.color.neutral.500}",
+        "resolvedValue": "#737373",
+        "dark": {
+          "alias": "{primitive.color.neutral.450}",
+          "resolvedValue": "#909090"
         }
       },
       {
