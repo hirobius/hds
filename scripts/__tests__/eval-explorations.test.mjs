@@ -1,4 +1,5 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
+// @vitest-environment node
 /**
  * hds#628 phase 0 — the explorations option on the consistency harness entry:
  * `pnpm eval:consistency -- --explorations <runs/date>`. The orchestration is
@@ -24,9 +25,30 @@ import { readDirection } from '../lib/explorations/direction.mjs';
 import { runExplorations } from '../lib/explorations/live.mjs';
 import { EXPLORATION_VIEWPORTS } from '../lib/explorations/spec.mjs';
 import { axeScanRow } from '../lib/consistency/live-plan.mjs';
-import { HEX_APP, TENANTS, direction, writeDirection } from './helpers/explorations-fixtures.mjs';
+import {
+  CLEAN_APP,
+  HEX_APP,
+  TENANTS,
+  direction,
+  writeDirection,
+} from './helpers/explorations-fixtures.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+
+/** A real (non-demo) tenant, read from tenants/ so no client name is written in this file. */
+const CLIENT_TENANT = (() => {
+  const dir = path.join(ROOT, 'tenants');
+  for (const slug of readdirSync(dir).sort()) {
+    if (slug.startsWith('_')) continue;
+    try {
+      const meta = JSON.parse(readFileSync(path.join(dir, slug, 'metadata.json'), 'utf8'));
+      if (meta.demo !== true && meta.displayName) return { slug, name: meta.displayName };
+    } catch {
+      /* no metadata: not a tenant */
+    }
+  }
+  throw new Error('tenants/ has no non-demo tenant to test the client-tenant gates with');
+})();
 const tmpDirs = [];
 const makeTmp = (prefix = 'eval-explorations-') => {
   const dir = mkdtempSync(path.join(os.tmpdir(), prefix));
@@ -299,6 +321,28 @@ describe('runExplorations: the live half, with its stages injected', () => {
     );
   });
 
+  it('fails an axe stage that returned no scans, rather than passing what it never measured', async () => {
+    const stages = fakeStages({ axe: async () => [] });
+    const r = await runExplorations(input([direction('A')]), stages);
+    expect(r.code).toBe(1);
+    expect(find(r.report, 'standing-A', 'axe').status).toBe('fail');
+    expect(find(r.report, 'standing-A', 'axe').detail.join()).toMatch(/no scan for light@1280/);
+  });
+
+  it('fails an axe stage that skipped a viewport, naming the ones it missed', async () => {
+    const stages = fakeStages({
+      axe: async (app, opts) =>
+        opts.viewports
+          .filter((v) => v.width === 1280)
+          .map((v) => axeScanRow(app.id, `${v.theme}@${v.width}`, { violations: [] })),
+    });
+    const r = await runExplorations(input([direction('A')]), stages);
+    expect(r.code).toBe(1);
+    const axe = find(r.report, 'standing-A', 'axe');
+    expect(axe.status).toBe('fail');
+    expect(axe.detail).toEqual(['no scan for light@390', 'no scan for dark@390']);
+  });
+
   it('does not render or scan a direction that did not build, and still runs the others', async () => {
     const stages = fakeStages({
       build: async (app) =>
@@ -428,6 +472,15 @@ describe('pnpm eval:consistency -- --explorations (CLI, offline)', () => {
     expect(run(['--explorations', dir, '--offline']).code).toBe(1);
   });
 
+  it('exits 1 when A fails the lint plugin where the harness scan sees nothing (a raw <form>)', () => {
+    const app = CLEAN_APP.replace('<Button>Save</Button>', '<form><Button>Save</Button></form>');
+    const dir = runOf(direction('A', { files: { 'src/App.tsx': app } }));
+    const r = run(['--explorations', dir, '--offline']);
+    expect(r.code).toBe(1);
+    expect(r.out).toMatch(/FAIL lint standing-A/);
+    expect(r.out).toMatch(/src\/App\.tsx:\d+ hds\/no-raw-controls form/);
+  });
+
   it('exits 1 on a real-looking phone number in a direction, and on a denylisted term from a private file', () => {
     const phone = runOf(
       direction('A', { texts: { 'src/fixture.json': '{ "phone": "(312) 867-5309" }' } }),
@@ -454,7 +507,7 @@ describe('pnpm eval:consistency -- --explorations (CLI, offline)', () => {
         meta: {
           refs: {
             present: true,
-            value: { tenant: 'concrete-creations', searches: [], refs: [] },
+            value: { tenant: CLIENT_TENANT.slug, searches: [], refs: [] },
           },
         },
       }),
@@ -586,10 +639,10 @@ describe('pnpm eval:consistency -- --gaps and --pii (CLI)', () => {
 
   it('--pii always checks against the real tenants in tenants/', () => {
     const dir = makeTmp();
-    writeFileSync(path.join(dir, 'brief.md'), 'A pitch to Concrete Creations');
+    writeFileSync(path.join(dir, 'brief.md'), `A pitch to ${CLIENT_TENANT.name}`);
     const r = run(['--pii', dir]);
     expect(r.code).toBe(1);
-    expect(r.out).toMatch(/denylist Concrete Creations/);
+    expect(r.out).toContain(`denylist ${CLIENT_TENANT.name}`);
   });
 });
 

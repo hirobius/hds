@@ -1,4 +1,5 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
+// @vitest-environment node
 /**
  * hds#628 phase 0 — the PII check for exploration fixture data. hds has no PII
  * or denylist tooling (the only denylist in scripts/ is the license one), so
@@ -8,7 +9,7 @@
  * The inputs that must FAIL are written to temp dirs here, never committed.
  */
 import { afterAll, describe, expect, it } from 'vitest';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { clientDenylist, loadDenylistFile, scanPaths, scanText } from '../lib/explorations/pii.mjs';
@@ -125,10 +126,10 @@ describe('scanText: email addresses', () => {
 
 describe('scanText: the denylist', () => {
   it('flags a term, whatever its case', () => {
-    const found = scanText('Prepared for Concrete Creations, LLC', {
-      denylist: ['concrete creations'],
+    const found = scanText('Prepared for Alder Bay Plumbing, LLC', {
+      denylist: ['alder bay plumbing'],
     });
-    expect(found).toEqual([{ file: '', line: 1, kind: 'denylist', match: 'Concrete Creations' }]);
+    expect(found).toEqual([{ file: '', line: 1, kind: 'denylist', match: 'Alder Bay Plumbing' }]);
   });
 
   it('matches whole words only', () => {
@@ -179,8 +180,19 @@ describe('clientDenylist: a client tenant never reaches a board', () => {
   });
 
   it('finds the real tenants in this repository, and none of the demo ones', () => {
-    const terms = clientDenylist(path.resolve(import.meta.dirname, '..', '..', 'tenants'));
-    expect(terms).toContain('concrete-creations');
+    const dir = path.resolve(import.meta.dirname, '..', '..', 'tenants');
+    const terms = clientDenylist(dir);
+    // Every non-demo tenant directory, read from disk so no client name is written here.
+    const clients = readdirSync(dir).filter((n) => {
+      if (n.startsWith('_')) return false;
+      try {
+        return JSON.parse(readFileSync(path.join(dir, n, 'metadata.json'), 'utf8')).demo !== true;
+      } catch {
+        return false;
+      }
+    });
+    expect(clients.length).toBeGreaterThan(0);
+    for (const slug of clients) expect(terms).toContain(slug);
     expect(terms).not.toContain('brutalist-demo');
     expect(terms).not.toContain('accent-lilac');
     expect(terms).not.toContain('_template');
@@ -246,6 +258,13 @@ describe('scanPaths: files and directories', () => {
       'shot.png': 'person@gmail.com',
     });
     expect(scanPaths([root])).toEqual([]);
+  });
+
+  it('reads a large text file rather than skipping it unscanned', () => {
+    const root = tree({
+      'big.json': `${' '.repeat(3 * 1024 * 1024)}\n{ "e": "person@gmail.com" }`,
+    });
+    expect(kinds(scanPaths([root]))).toEqual(['email']);
   });
 
   it('throws for a path that does not exist, rather than passing an empty check', () => {

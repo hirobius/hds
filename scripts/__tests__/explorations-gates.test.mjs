@@ -1,4 +1,5 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
+// @vitest-environment node
 /**
  * hds#628 phase 0 — the gates by direction. A and B must have 0 lint
  * violations; C may have them only where its bend-log.json lists each one (and
@@ -10,6 +11,7 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   BEND_KINDS,
+  PLUGIN_KINDS,
   matchBends,
   readTenants,
   validateBendLog,
@@ -38,7 +40,7 @@ describe('validateBendLog', () => {
     change: 'rule: allow one token-driven gradient on a hero surface',
   };
 
-  it('knows the six scanner kinds and design-rule', () => {
+  it("knows the six scanner kinds, the lint plugin's error rules and design-rule", () => {
     expect(BEND_KINDS).toEqual([
       'hex',
       'colour-fn',
@@ -46,8 +48,15 @@ describe('validateBendLog', () => {
       'raw-control',
       'custom-css',
       'tailwind',
+      ...PLUGIN_KINDS,
       'design-rule',
     ]);
+    expect(PLUGIN_KINDS).toEqual(expect.arrayContaining(['hds/no-raw-controls']));
+  });
+
+  it('accepts a bend that names a lint plugin rule, shaped like a scanner bend', () => {
+    const r = validateBendLog([{ ...scannerBend, kind: 'hds/no-raw-controls', match: 'form' }]);
+    expect(r).toMatchObject({ ok: true, problems: [] });
   });
 
   it('accepts an empty log, a scanner bend and a design-rule bend', () => {
@@ -194,11 +203,11 @@ describe('validateRefs', () => {
   });
 
   it('refuses a client tenant, and says why', () => {
-    const r = validateRefs(refs({ tenant: 'concrete-creations' }), {
+    const r = validateRefs(refs({ tenant: 'alder-bay-plumbing' }), {
       letter: 'B',
       tenants: TENANTS,
     });
-    expect(r.problems.join()).toMatch(/concrete-creations.*not a demo tenant.*"demo": true/);
+    expect(r.problems.join()).toMatch(/alder-bay-plumbing.*not a demo tenant.*"demo": true/);
   });
 
   it('refuses a tenant that does not exist', () => {
@@ -239,7 +248,9 @@ describe('readTenants', () => {
     const tenants = readTenants(path.resolve(import.meta.dirname, '..', '..', 'tenants'));
     expect(tenants['brutalist-demo']).toEqual({ demo: true });
     expect(tenants['accent-lilac']).toEqual({ demo: true });
-    expect(tenants['concrete-creations']).toEqual({ demo: false });
+    // At least one client tenant, read as not a demo (named only on disk, not here).
+    expect(Object.values(tenants)).toContainEqual({ demo: false });
+    for (const v of Object.values(tenants)) expect(typeof v.demo).toBe('boolean');
     expect(tenants._template).toBeUndefined();
   });
 });
@@ -400,6 +411,75 @@ describe('judgeStatic: C may bend, but only what it lists', () => {
   });
 });
 
+describe('judgeStatic: the lint plugin runs beside the scan (hds#628: "pass the lint plugin")', () => {
+  const FORM_APP = CLEAN_APP.replace(
+    '<Button>Save</Button>',
+    '<form onSubmit={() => {}}><Button>Save</Button></form>',
+  );
+  const SPACING_APP = CLEAN_APP.replace(
+    '<Button>Save</Button>',
+    '<Button style={{ padding: 16 }}>Save</Button>',
+  );
+  const formBend = {
+    kind: 'hds/no-raw-controls',
+    file: 'src/App.tsx',
+    match: 'form',
+    why: 'The capture box posts on Enter, which the Form pattern does not do yet.',
+    change: 'component: let Form submit on Enter from a single field',
+  };
+
+  it.each(['A', 'B'])('fails %s on a raw <form>, which only the plugin sees', (letter) => {
+    const r = judgeStatic(direction(letter, { files: { 'src/App.tsx': FORM_APP } }), ctx);
+    expect(status(r, 'lint')).toBe('fail');
+    expect(detail(r, 'lint')).toMatch(/src\/App\.tsx:\d+ hds\/no-raw-controls form/);
+  });
+
+  it.each(['A', 'B'])('fails %s on a bare number on a spacing prop in style', (letter) => {
+    const r = judgeStatic(direction(letter, { files: { 'src/App.tsx': SPACING_APP } }), ctx);
+    expect(status(r, 'lint')).toBe('fail');
+    expect(detail(r, 'lint')).toMatch(/hds\/no-raw-px-spacing 16/);
+  });
+
+  it('FAILS a C whose plugin violation is not in its bend log, and PASSES it once listed', () => {
+    const files = { 'src/App.tsx': FORM_APP };
+    const bare = judgeStatic(
+      direction('C', { files, meta: { bendLog: { present: true, value: [] } } }),
+      ctx,
+    );
+    expect(status(bare, 'lint')).toBe('fail');
+    expect(detail(bare, 'lint')).toMatch(/not in bend-log\.json.*hds\/no-raw-controls form/s);
+    const listed = judgeStatic(
+      direction('C', { files, meta: { bendLog: { present: true, value: [formBend] } } }),
+      ctx,
+    );
+    expect(status(listed, 'lint')).toBe('pass');
+  });
+
+  it('counts a violation both tools see once: one bend covers it', () => {
+    // HEX_APP puts the hex in Box sx, which the plugin's sx-token-first also flags
+    const r = judgeStatic(
+      direction('C', {
+        files: { 'src/App.tsx': HEX_APP },
+        meta: {
+          bendLog: {
+            present: true,
+            value: [{ ...formBend, kind: 'hex', match: '#7c3aed' }],
+          },
+        },
+      }),
+      ctx,
+    );
+    expect(status(r, 'lint')).toBe('pass');
+    expect(r.hits.map((h) => h.kind)).toEqual(['hex']);
+  });
+
+  it('cannot be switched off with an eslint-disable comment', () => {
+    const app = `/* eslint-disable */\n${FORM_APP}`;
+    const r = judgeStatic(direction('A', { files: { 'src/App.tsx': app } }), ctx);
+    expect(status(r, 'lint')).toBe('fail');
+  });
+});
+
 describe('judgeStatic: the run layout', () => {
   it('fails a direction with no src/App.tsx', () => {
     const r = judgeStatic(direction('A', { files: {}, texts: {} }), ctx);
@@ -432,7 +512,7 @@ describe('judgeStatic: the run layout', () => {
         meta: {
           refs: {
             present: true,
-            value: { tenant: 'concrete-creations', searches: [], refs: [] },
+            value: { tenant: 'alder-bay-plumbing', searches: [], refs: [] },
           },
         },
       }),

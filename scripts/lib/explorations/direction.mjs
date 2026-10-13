@@ -15,11 +15,26 @@
  */
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
+import hds from '../../eslint-plugin-hds/index.mjs';
 import { parseDirectionId, screenOrder } from './spec.mjs';
 
-/** What the harness's violation scan reports, plus the DESIGN.md rules it cannot see. */
+/** What the harness's violation scan reports. */
 export const SCANNER_KINDS = ['hex', 'colour-fn', 'px', 'raw-control', 'custom-css', 'tailwind'];
-export const BEND_KINDS = [...SCANNER_KINDS, 'design-rule'];
+
+/**
+ * The lint plugin's error rules (its `recommended` config), which the gate runs
+ * beside the scan (plugin-lint.mjs). Read from the plugin, so a rule it adds or
+ * promotes to error is gated without an edit here.
+ */
+export const PLUGIN_KINDS = Object.entries(
+  Object.assign({}, ...hds.configs.recommended.map((c) => c.rules)),
+)
+  .filter(([, level]) => level === 'error')
+  .map(([id]) => id)
+  .sort();
+
+/** Every violation a C bend may name, plus the DESIGN.md rules no tool can see. */
+export const BEND_KINDS = [...SCANNER_KINDS, ...PLUGIN_KINDS, 'design-rule'];
 
 const BEND_KEYS = {
   scanner: { required: ['kind', 'file', 'match', 'why', 'change'], optional: [] },
@@ -30,7 +45,7 @@ const isText = (v) => typeof v === 'string' && v.trim().length > 0;
 
 /**
  * Problems with the contents of one bend-log.json. A bend is either a scanner
- * violation the code contains (`kind` is one of SCANNER_KINDS, named by `file`
+ * violation the code contains (`kind` is a scan kind or a lint plugin rule, named by `file`
  * and the exact `match`), or a DESIGN.md rule the code bends that no scanner can
  * see (`kind: 'design-rule'`, named by `rule`: gradients, glass and glow). Both
  * say why, and what system change would make the bend legal.

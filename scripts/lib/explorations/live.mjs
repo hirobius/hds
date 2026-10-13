@@ -41,10 +41,20 @@ const notMeasured = (name) => ({
   detail: [],
 });
 
-function axeCheck(rows) {
-  if (!rows.length) return notMeasured('axe');
+/** The row label axe-run gives each viewport: `<theme>@<width>`. */
+const axeLabel = (v) => `${v.theme}@${v.width}`;
+
+/**
+ * Called only after a build, when every viewport must have been scanned: a
+ * viewport with no scan (or a skipped one) fails, so a stage that returned
+ * nothing can never read as clean.
+ */
+function axeCheck(rows, viewports) {
+  const scanned = new Set(rows.filter((r) => !r.skipped).map((r) => r.theme));
+  const missing = viewports.map(axeLabel).filter((label) => !scanned.has(label));
   const scan = evaluateScan(rows, []);
   const detail = [
+    ...missing.map((label) => `no scan for ${label}`),
     ...scan.blocking.map(
       (b) => `${b.theme}: ${b.ruleId} (${b.impact}), ${plural(b.nodes, 'node')}`,
     ),
@@ -54,7 +64,13 @@ function axeCheck(rows) {
     name: 'axe',
     status: detail.length ? 'fail' : 'pass',
     text: detail.length
-      ? `${plural(detail.length, 'serious or critical finding')}`
+      ? [
+          missing.length && `${plural(missing.length, 'viewport')} not scanned`,
+          detail.length > missing.length &&
+            plural(detail.length - missing.length, 'serious or critical finding'),
+        ]
+          .filter(Boolean)
+          .join('; ')
       : `0 serious or critical, ${plural(rows.length, 'scan')} (light and dark, every viewport)`,
     detail,
   };
@@ -124,7 +140,7 @@ export async function runExplorations(input, stages) {
     log(`[${d.id}] rendering ${EXPLORATION_VIEWPORTS.map((v) => v.key).join(', ')} at ${where}...`);
     shots[d.id] = await stages.render(prepared, opts);
     log(`[${d.id}] axe (light and dark, 1280 and 390)...`);
-    j.checks.push(axeCheck(await stages.axe(prepared, opts)));
+    j.checks.push(axeCheck(await stages.axe(prepared, opts), EXPLORATION_VIEWPORTS));
   }
 
   const fixtures = {

@@ -28,7 +28,7 @@ export const HEX_APP = CLEAN_APP.replace(
 export const TENANTS = {
   'accent-lilac': { demo: true },
   'brutalist-demo': { demo: true },
-  'concrete-creations': { demo: false },
+  'alder-bay-plumbing': { demo: false },
 };
 
 export const gap = (screen, direction) => ({

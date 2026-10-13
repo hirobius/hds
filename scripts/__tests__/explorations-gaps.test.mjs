@@ -1,4 +1,5 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
+// @vitest-environment node
 /**
  * hds#628 phase 0 — the gap log: one JSON file per direction, validated, then
  * ranked across every screen by how many screens hit each gap. Pure functions
