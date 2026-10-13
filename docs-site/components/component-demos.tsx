@@ -52,11 +52,13 @@ import {
   Tag,
   Text,
   Textarea,
+  Timeline,
+  TimelineItem,
   Toggle,
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
-import { Copy, Search, Star } from '@hirobius/design-system/icons';
+import { CircleCheck, Copy, Search, Star } from '@hirobius/design-system/icons';
 import {
   AssetImg,
   CodeBlock,
@@ -589,6 +591,28 @@ function TextareaDemo() {
   );
 }
 
+function TimelineDemo() {
+  return (
+    <Timeline aria-label="Recent activity">
+      <TimelineItem
+        date={new Date(2026, 9, 12, 16, 40)}
+        title="Shipped hds 0.24"
+        icon={CircleCheck}
+        tone="success"
+      />
+      <TimelineItem date={new Date(2026, 9, 12, 9, 15)} title="Client portal deployed">
+        Preview checked on desktop and mobile, then promoted by the owner.
+      </TimelineItem>
+      <TimelineItem date={new Date(2026, 9, 11, 14, 5)} title="Invoice reminder sent" />
+      <TimelineItem
+        date={new Date(2026, 9, 11, 10, 30)}
+        title="Lead pipeline run finished"
+        tone="info"
+      />
+    </Timeline>
+  );
+}
+
 function ToggleDemo() {
   const [on, setOn] = useState(true);
   return <Toggle label="Dark mode" checked={on} onChange={setOn} />;
@@ -822,6 +846,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Tag: TagDemo,
   Text: TextDemo,
   Textarea: TextareaDemo,
+  Timeline: TimelineDemo,
   Toggle: ToggleDemo,
   Tooltip: TooltipDemo,
   VisuallyHidden: VisuallyHiddenDemo,
