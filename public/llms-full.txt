@@ -687,7 +687,7 @@ A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
   - size: "sm" | "md" | "lg" | null
 
 ### Board
-A row of status columns that wraps, in order, as the container narrows. Read-only: it has no drag handlers.
+Status columns that sit side by side from tablet width and stack in order, first column on top, below it. Read-only: it has no drag handlers.
   - children: ReactNode
 
 ### BoardColumn
