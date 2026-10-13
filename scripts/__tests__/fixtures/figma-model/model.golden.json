@@ -1299,7 +1299,7 @@
         "unit": "PIXELS",
         "value": 0.72
       },
-      "textCase": "UPPER",
+      "textCase": "TITLE",
       "boundVariables": {
         "fontFamily": "semantic.typography.caption.font-family",
         "fontSize": "semantic.typography.caption.font-size",

@@ -17,6 +17,15 @@
  *     <Card.Footer>…</Card.Footer>
  *   </Card>
  *
+ * A compact titled status (what StatusTile was, hds#622) is one Row:
+ *
+ *   <Card padding="item" className="border-0">
+ *     <Card.Row trailing={<Badge tone="success">Synced</Badge>}>
+ *       <Card.RowTitle>Figma sync</Card.RowTitle>
+ *       <Card.RowNote>Last run 2 hours ago</Card.RowNote>
+ *     </Card.Row>
+ *   </Card>
+ *
  * Slot reservations:
  * - Header: title (h3) + optional description (caption) + optional metadata
  *   zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans).
@@ -27,6 +36,10 @@
  * - Body: prose, lists, structured content. NO inline status, progress, or
  *   thin colored bars. Group sections via separate <Card.Body> blocks.
  * - Footer: actions, secondary metadata, timestamps.
+ * - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone
+ *   for a <Badge> or one affordance. No padding of its own: pair it with
+ *   `padding="item"` for the compact tile, and `className="border-0"` to drop
+ *   Card's resting 1px transparent border: the tile is then StatusTile's box.
  *
  * `variant`: 'default' (borderless) | 'accent' (2px accent border) — the
  * structural axis, for highlighted entries like "recommended package".
@@ -190,6 +203,9 @@ interface CardComponent extends React.ForwardRefExoticComponent<
   Description: typeof CardDescription;
   Body: typeof CardBody;
   Footer: typeof CardFooter;
+  Row: typeof CardRow;
+  RowTitle: typeof CardRowTitle;
+  RowNote: typeof CardRowNote;
   Progress: typeof CardProgress;
   Metric: typeof CardMetric;
 }
@@ -341,6 +357,65 @@ const CardFooter = /* @__PURE__ */ React.forwardRef<
   return <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />;
 });
 
+// ── Row slot (hds#622) ────────────────────────────────────────────────────────
+
+// The Card slot StatusTile folds into: a title at the ui role, muted caption
+// notes under it, and a trailing zone for a Badge or one affordance. The class
+// strings are StatusTile's own, so `<Card padding="item" className="border-0">`
+// around a Card.Row renders the tile's content with the same elements and classes on the same
+// surface tokens (card-row.test.tsx pins it). Like the other parts it has no
+// padding of its own: the Card pads it.
+
+/** @public */
+export interface CardRowProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Trailing zone at the row's end, top-aligned and never shrunk: a <Badge>
+   *  for status, or one affordance. Status colour goes here, never as a tinted
+   *  surface or a coloured rule on the card. */
+  trailing?: React.ReactNode;
+}
+
+/**
+ * Card.Row — a title with muted notes and a trailing slot, inside a Card.
+ * @usage Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lines, and a Badge in `trailing`.
+ * @whenNot A headline number, or a card with a full header, body and footer.
+ * @slot trailing A Badge for status, or one affordance; it never shrinks.
+ */
+const CardRow = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardRowProps>(function CardRow(
+  { className, trailing, children, ...props },
+  ref,
+) {
+  // `cond && <Badge />` passes false: no trailing zone, so no stray gap.
+  const hasTrailing = Boolean(trailing) || trailing === 0;
+  return (
+    <div ref={ref} className={cn('flex items-start gap-3', className)} {...props}>
+      <div className="min-w-0 flex-1">{children}</div>
+      {hasTrailing && <div className="shrink-0">{trailing}</div>}
+    </div>
+  );
+});
+
+/** Card.RowTitle — the row's title, at the ui role. */
+const CardRowTitle = /* @__PURE__ */ React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(function CardRowTitle({ className, ...props }, ref) {
+  return <p ref={ref} className={cn('m-0 hds-type-ui text-foreground', className)} {...props} />;
+});
+
+/** Card.RowNote — one muted caption line under the row's title; repeat it for more. */
+const CardRowNote = /* @__PURE__ */ React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(function CardRowNote({ className, ...props }, ref) {
+  return (
+    <p
+      ref={ref}
+      className={cn('m-0 mt-1 hds-type-caption text-muted-foreground', className)}
+      {...props}
+    />
+  );
+});
+
 // ── Progress slot ─────────────────────────────────────────────────────────────
 
 // `neutral` maps to the same content-accent fill the removed `default`/`accent`
@@ -453,7 +528,7 @@ const METRIC_TONE_VALUE_COLOR: Record<CardTone, string> = {
  * @removeIn 1.0.0
  */
 export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Uppercase eyebrow label (e.g. "Retainer", "Open tasks"). */
+  /** Sentence-case eyebrow label (e.g. "Retainer", "Open tasks"). */
   label: React.ReactNode;
   /** Big value (e.g. "$3,500", "12", "67%"). Rendered at h2 weight. */
   value: React.ReactNode;
@@ -512,11 +587,12 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
 
 // ── Compound assembly ─────────────────────────────────────────────────────────
 
+// @figma is tagged per-export, not on the file block: this module exports one
+// component per part, and a file-level @figma would hand them all this one node.
 /**
- * Tagged per-export, not on the file block: this module exports eight
- * components and a file-level @figma would hand all eight this one node.
+ * Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11
- * @usage Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.
+ * @usage Group related content on a raised surface with header, body, footer and row slots, or as one selectable option.
  * @whenNot A bare padded background with no slot anatomy, or a single headline figure.
  * @useInstead Surface a padded background without slot anatomy
  * @a11y component required a11y:card.selectable-role A selectable card is a focusable checkbox that reports aria-checked; a plain card is neither.
@@ -535,6 +611,9 @@ export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
   Description: CardDescription,
   Body: CardBody,
   Footer: CardFooter,
+  Row: CardRow,
+  RowTitle: CardRowTitle,
+  RowNote: CardRowNote,
   Progress: CardProgress,
   Metric: CardMetric,
   // Set here, not by a later `Card.displayName = …` write: a top-level
@@ -542,4 +621,15 @@ export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
   displayName: 'Card',
 });
 
-export { CardHeader, CardTitle, CardDescription, CardBody, CardFooter, CardProgress, CardMetric };
+export {
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardBody,
+  CardFooter,
+  CardRow,
+  CardRowTitle,
+  CardRowNote,
+  CardProgress,
+  CardMetric,
+};

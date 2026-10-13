@@ -26,7 +26,7 @@ Set type with `<Text variant="…">`, `hds.typeStyles.<role>`, or the `.hds-type
 
 Deprecated aliases still resolve, to the role they now point at, and go in 1.0.0: `h1`, `h2`, `h3` and `heading1` to `heading3` → `title`; `technical` → `mono`; `eyebrow`, `badge`, `micro` → `caption`; `small` → `ui`. Do not use them in new code; the gate fails a reference to one.
 
-Use `ui` for standard UI text, `caption` for helper text and metadata, and `mono` only for code, token names, keyboard shortcuts, git hashes, hex codes and ids, never for status tags, categories, dates or user names. Casing is never changed inline; labels are sentence case.
+Use `ui` for standard UI text, `caption` for helper text and metadata, and `mono` only for code, token names, keyboard shortcuts, git hashes, hex codes and ids, never for status tags, categories, dates or user names. **Never transform text to uppercase** (`uppercase` class, `text-transform: uppercase`, `textCase: UPPER`, `.toUpperCase()` for display): sentence case for all UI text, eyebrows and table headers included; raw content keeps its own case. `scripts/check-no-uppercase.mjs` fails the commit (exempt a line with `// uppercase-ok: <reason>`).
 
 Plus Jakarta Sans ships a 500 and a 700 face only (no 600, which is why `title` is 700), so `body` (400) renders on the 500 face until a Plus Jakarta Sans Regular (400) face is added.
 
@@ -214,10 +214,10 @@ A block that carries `@deprecated <notice>` also gives the spec `deprecated` (th
 
 ```tsx
 /**
- * Tile — a padded status block.
- * @deprecated Use StatusTile; the props are the same.
+ * LegacyWidget — a padded status block.
+ * @deprecated Use Widget; the props are the same.
  * @removeIn 1.0.0
- * @useInstead StatusTile
+ * @useInstead Widget
  */
 ```
 

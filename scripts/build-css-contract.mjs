@@ -47,20 +47,18 @@
  *
  * Part of `pnpm build:lib`, after every stylesheet is written.
  */
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CONTRACT_FILE, buildCssContract, formatContract } from './lib/css-contract.mjs';
+import { runGenerator } from './lib/generated-check.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-function main(argv) {
+async function main(argv) {
   let root = REPO;
-  let check = false;
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--root') root = resolve(argv[++i] ?? '.');
-    else if (argv[i] === '--check') check = true;
-    else {
+    else if (argv[i] !== '--check') {
       console.error(`build-css-contract: unknown argument ${argv[i]}`);
       console.error('usage: build-css-contract.mjs [--root <package dir>] [--check]');
       return 2;
@@ -73,30 +71,27 @@ function main(argv) {
     );
     return 1;
   }
-  const text = formatContract(contract);
-  const file = join(root, CONTRACT_FILE);
-  if (check) {
-    const committed = existsSync(file) ? readFileSync(file, 'utf8') : null;
-    if (committed !== text) {
-      console.error(
-        `build-css-contract: ${CONTRACT_FILE} is not the contract of the stylesheets beside it; run node scripts/build-css-contract.mjs (pnpm build:lib does)`,
-      );
-      return 1;
-    }
-    console.log(`build-css-contract: ${CONTRACT_FILE} is current`);
-    return 0;
+  // dist/ is gitignored, so the contract keeps formatContract's bytes: a
+  // release tarball carries them, and snapshot.mjs reads them from there.
+  const result = await runGenerator({
+    root,
+    outputs: { [CONTRACT_FILE]: formatContract(contract) },
+    label: 'build-css-contract',
+    fix: 'node scripts/build-css-contract.mjs (pnpm build:lib does)',
+    argv,
+  });
+  if (!result.check) {
+    const counts = Object.entries(contract.bundles).map(
+      ([key, b]) => `${key} ${Object.keys(b.variables).length} vars, ${b.classes.length} classes`,
+    );
+    console.log(`  ${counts.join('; ')}`);
   }
-  writeFileSync(file, text);
-  const counts = Object.entries(contract.bundles).map(
-    ([key, b]) => `${key} ${Object.keys(b.variables).length} vars, ${b.classes.length} classes`,
-  );
-  console.log(`build-css-contract — wrote ${CONTRACT_FILE} (${counts.join('; ')})`);
-  return 0;
+  return result.exitCode;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
-    process.exitCode = main(process.argv.slice(2));
+    process.exitCode = await main(process.argv.slice(2));
   } catch (error) {
     console.error(`build-css-contract: ${error?.message ?? error}`);
     process.exitCode = 2;

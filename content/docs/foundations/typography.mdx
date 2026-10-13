@@ -1,6 +1,6 @@
 ---
 title: 'Typography'
-description: 'Two typefaces and six text styles, from page titles to code.'
+description: 'Two typefaces and seven text styles, from page titles to code.'
 status: 'stable'
 since: '0.1.0'
 ---
@@ -9,17 +9,18 @@ since: '0.1.0'
 
 Two typefaces, each with one job:
 
-- **Plus Jakarta Sans** sets everything people read: Bold (700) for display and titles, Regular (400) for body, Medium (500) for controls and captions.
+- **Plus Jakarta Sans** sets everything people read: Bold (700) for display, titles and small titles, Regular (400) for body, Medium (500) for controls and captions.
 - **IBM Plex Mono** sets code, token names and ids.
 
 ## The ramp
 
-Five text styles plus mono. Set one with `<Text variant="…">`, `hds.typeStyles.<role>` or the `.hds-type-<role>` class.
+Six text styles plus mono. Set one with `<Text variant="…">`, `hds.typeStyles.<role>` or the `.hds-type-<role>` class.
 
 | Role      | Size / line-height | Weight | Use                                           |
 | --------- | ------------------ | ------ | --------------------------------------------- |
 | `display` | 48 / 1.05          | 700    | One per page, hero only                       |
 | `title`   | 24 / 1.25          | 700    | Section and card headings                     |
+| `titleSm` | 16 / 1.375         | 700    | Small heading inside a card or section band   |
 | `body`    | 16 / 1.6           | 400    | Prose                                         |
 | `ui`      | 14 / 1.5           | 500    | Controls, nav, table text, values             |
 | `caption` | 12 / 1.5           | 500    | Metadata, help text and labels, sentence case |
@@ -28,7 +29,7 @@ Five text styles plus mono. Set one with `<Text variant="…">`, `hds.typeStyles
 ## Best practices
 
 - Set text with the `Text` component so sizes stay on the ramp.
-- Use `title` for headings, `body` for prose and `ui` for controls and labels.
+- Use `title` for headings, `titleSm` for the heading of a small band such as a danger zone, `body` for prose and `ui` for controls and labels.
 - Use mono only for code, token names and ids.
 - Don't use `display` for body text or labels.
 - Don't set your own font sizes or line heights.

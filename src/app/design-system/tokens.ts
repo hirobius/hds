@@ -217,11 +217,12 @@ const hds = {
   // Each style object spreads directly into a React inline style prop.
   // CSS vars resolve at paint time — no hardcoded pixel values.
   typeStyles: {
-    // ── The 5-role ramp plus mono (hds#483) ───────────────────────────────────
-    // display 48 / title 24 / body 16 / ui 14 / caption 12 / mono 13. body, ui
+    // ── The 5-role ramp plus titleSm and mono (hds#483) ───────────────────────────────────
+    // display 48 / title 24 / titleSm 16 bold / body 16 / ui 14 / caption 12 / mono 13. body, ui
     // and mono carry maxWidth: 60ch. Casing is never changed inline.
     display: tokenRefs.semantic.typography.display as React.CSSProperties,
     title: tokenRefs.semantic.typography.title as React.CSSProperties,
+    titleSm: tokenRefs.semantic.typography.titleSm as React.CSSProperties,
     body: tokenRefs.semantic.typography.body as React.CSSProperties,
     ui: tokenRefs.semantic.typography.ui as React.CSSProperties,
     caption: tokenRefs.semantic.typography.caption as React.CSSProperties,

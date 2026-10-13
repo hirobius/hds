@@ -84,7 +84,7 @@ const takeSnapshot = async (root, edit = async () => {}, builder = (model) => mo
 };
 
 describe('pnpm figma:push', () => {
-  it('writes the Sync plugin, the promote plugin, one use_figma script per chunk, and the snapshot and receipt scripts', () => {
+  it('writes the Sync plugin, the promote plugin, one use_figma script per chunk, and the snapshot, receipt and fallbacks scripts', () => {
     const root = tempRoot();
     const outDir = join(root, 'figma', 'push');
     const result = writePushArtifacts({ root, outDir });
@@ -111,6 +111,8 @@ describe('pnpm figma:push', () => {
       '03-component.js',
       '04-role.js',
       '05-styles.js',
+      'fallbacks-components.js',
+      'fallbacks.js',
       'receipt.js',
       'snapshot.js',
     ]);
@@ -144,8 +146,13 @@ describe('pnpm figma:push', () => {
       'Push and prune extras (deletes)',
     );
     // The earlier run's push scripts are gone too: nothing an agent passes to use_figma prunes.
-    expect(readdirSync(join(outDir, 'use-figma')).sort()).toEqual(['receipt.js', 'snapshot.js']);
-    for (const name of ['receipt.js', 'snapshot.js']) {
+    expect(readdirSync(join(outDir, 'use-figma')).sort()).toEqual([
+      'fallbacks-components.js',
+      'fallbacks.js',
+      'receipt.js',
+      'snapshot.js',
+    ]);
+    for (const name of ['fallbacks.js', 'receipt.js', 'snapshot.js']) {
       expect(readFileSync(join(outDir, 'use-figma', name), 'utf8')).not.toMatch(/"prune":true/);
     }
     const printed = formatRun(result, outDir);

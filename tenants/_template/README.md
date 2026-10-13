@@ -4,11 +4,11 @@ Canonical starter for onboarding a new HDS tenant.
 
 ## What lives here
 
-| File | Purpose |
-|---|---|
-| `tokens.json` | DTCG-shape **partial** — only the brand tokens this tenant overrides. Inactive in the template (top-level group keys are prefixed with `_` so the build emits nothing). |
-| `metadata.json` | Tenant identity, deployment target, brand basics, legal info. |
-| `README.md` | This file. Describes the tenant for humans + agents. |
+| File            | Purpose                                                                                                                                                                 |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tokens.json`   | DTCG-shape **partial** — only the brand tokens this tenant overrides. Inactive in the template (top-level group keys are prefixed with `_` so the build emits nothing). |
+| `metadata.json` | Tenant identity, deployment target, brand basics, legal info.                                                                                                           |
+| `README.md`     | This file. Describes the tenant for humans + agents.                                                                                                                    |
 
 ## Onboarding a new tenant
 
@@ -36,7 +36,7 @@ $EDITOR tenants/<slug>/tokens.json
 pnpm tokens
 
 # 5. Verify
-rg 'data-tenant="<slug>"' src/styles/tokens.css
+rg 'data-tenant="<slug>"' src/styles/tenants.css
 
 # 6. Tenant repo: set <html data-tenant="<slug>"> at SSR; deploy.
 ```
@@ -59,4 +59,4 @@ the BASE level — but that's a system change, not a tenant change).
 - Format spec: `docs/architecture/tenant-token-overlay-format.md`
 - Scope decision (why `[data-tenant=]`): `docs/architecture/ADR-0001-multi-tenant-scope.md`
 - Base tokens: `hirobius.tokens.json`
-- Generated CSS: `src/styles/tokens.css`
+- Generated CSS: `src/styles/tenants.css`

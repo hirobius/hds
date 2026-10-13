@@ -14,11 +14,11 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ROOT = resolve(__dirname, '..');
-const tokensCss = readFileSync(resolve(ROOT, 'src/styles/tokens.css'), 'utf8');
+const tokensCss = readFileSync(resolve(ROOT, 'src/styles/tokens.generated.css'), 'utf8');
 
 function block(selector: string): Record<string, string> {
   const start = tokensCss.indexOf(`${selector} {`);
-  expect(start, `no ${selector} block in tokens.css`).toBeGreaterThanOrEqual(0);
+  expect(start, `no ${selector} block in tokens.generated.css`).toBeGreaterThanOrEqual(0);
   const body = tokensCss.slice(start, tokensCss.indexOf('\n}', start));
   const out: Record<string, string> = {};
   for (const m of body.matchAll(/^\s*(--[\w-]+):\s*(.+?);/gm)) out[m[1]] = m[2];

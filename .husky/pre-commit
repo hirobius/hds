@@ -77,12 +77,18 @@ node scripts/check-spacing-vocabulary.mjs
 echo "Layout-gap vocabulary (one name map, in box-sx.ts)…"
 node scripts/check-layout-gap-vocabulary.mjs
 
-# hds#486: the type ramp is 5 roles plus mono (display, title, body, ui, caption,
-# mono). A raw size, weight or line height in src/, or a deprecated composite
+# hds#486: the type ramp is 5 roles plus title-sm and mono (display, title, titleSm, body,
+# ui, caption, mono). A raw size, weight or line height in src/, or a deprecated composite
 # (h1..h3, eyebrow, technical, ...), reads as design but is off the ramp. Source
 # only: reads src/ and hirobius.tokens.json, no build, no network.
-echo "Type ramp (src/ uses the six roles only)…"
+echo "Type ramp (src/ uses the seven roles only)…"
 node scripts/check-type-ramp.mjs
+
+# The system never produces ALL CAPS (Adrian, 2026-10-12): no uppercase class,
+# text-transform, textCase UPPER or .toUpperCase() for display. Sentence case
+# everywhere. Source only: reads src/, docs-site/, tokens, no build, no network.
+echo "No ALL CAPS (nothing transforms text to uppercase)…"
+node scripts/check-no-uppercase.mjs
 
 # hds#568 (ops#568): ralph/{lib,next,run,loop,status}.sh and prompt.md are
 # vendored byte-identical from hirobius/ralph/kit. A local edit is caught here,

@@ -60,4 +60,19 @@ describe('DestructiveSection', () => {
     const button = screen.getByRole('button', { name: 'Archive client' });
     expect(button.getAttribute('data-tone')).toBe('danger');
   });
+
+  it('is a danger Callout: the shared feedback fill, no border', () => {
+    setup();
+    const region = screen.getByRole('region', { name: 'Archive client' });
+    const callout = region.querySelector('[data-tone="danger"]') as HTMLElement;
+    expect(callout.className).toContain('bg-feedback-bg-danger');
+    expect(callout.className).not.toMatch(/\bborder\b/);
+  });
+
+  it('sets the title on title-sm and the description on ui', () => {
+    setup();
+    const heading = screen.getByRole('heading', { name: 'Archive client' });
+    expect(heading.className).toContain('hds-type-title-sm');
+    expect(screen.getByText(/Hides the client/).className).toContain('hds-type-ui');
+  });
 });
