@@ -176,7 +176,7 @@ export function ToastProvider({
               <ToastPrimitive.Close
                 aria-label="Dismiss"
                 className={cn(
-                  'absolute right-2 top-2 inline-flex size-6 items-center justify-center',
+                  'absolute right-2 top-2 inline-flex size-6 hds-touch-target items-center justify-center',
                   'rounded-sm text-muted-foreground transition-colors hover:text-foreground hds-focus',
                 )}
               >

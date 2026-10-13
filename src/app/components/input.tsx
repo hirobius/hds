@@ -394,7 +394,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           onClick={handleClear}
           aria-label={type === 'search' ? 'Clear search' : 'Clear input'}
           className={cn(
-            'absolute right-0 flex items-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
+            'absolute right-0 flex items-center justify-center hds-touch-target text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
             padCfg.inset,
           )}
         >

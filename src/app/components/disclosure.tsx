@@ -116,7 +116,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
     }
 
     const triggerClassName = cn(
-      'hds-focus',
+      'hds-focus hds-touch-row',
       disclosureTriggerVariants({ variant }),
       variant === 'nav' ? 'hds-text-hover hds-bg-hover-neutral' : '',
       className,
