@@ -1,0 +1,617 @@
+{
+  "$comment": "INVENTED data for design explorations (hds#628). Fictional businesses, people and towns; phone numbers are 555-01xx and addresses are example.com. Nothing here is a real lead, client or person.",
+  "screen": "client-dashboard",
+  "asOf": "2026-10-13T09:00:00Z",
+  "client": {
+    "name": "Brightwater Dental Studio",
+    "slug": "brightwater-dental",
+    "status": "active",
+    "location": "Port Marrow",
+    "type": "Dental practice",
+    "customers": 1840,
+    "startedOn": "2026-03-02"
+  },
+  "breadcrumbs": ["Ops", "Clients", "Brightwater Dental Studio"],
+  "retainer": {
+    "currentPhase": {
+      "phase": "Phase 2: Booking and reminders",
+      "scopedAt": 4800,
+      "status": "in-progress"
+    },
+    "blockers": ["Review link not shared yet", "Sender number still pending verification"],
+    "futureTiers": [
+      { "tier": "Care plan: monthly summary and two small changes" },
+      { "tier": "Growth: reactivation and referral campaigns" }
+    ]
+  },
+  "phases": [
+    {
+      "id": "p1",
+      "name": "Phase 1: Brand and site",
+      "status": "done",
+      "description": "Logo refresh, one-page site, booking link.",
+      "budget": 3200,
+      "tasks": [
+        {
+          "id": "1-1",
+          "title": "Refresh the logo and colour set",
+          "status": "done",
+          "owner": "Studio",
+          "notes": "Approved on the second round."
+        },
+        {
+          "id": "1-2",
+          "title": "Build the one-page site",
+          "status": "done",
+          "owner": "Studio",
+          "notes": "Live on the preview domain."
+        },
+        {
+          "id": "1-3",
+          "title": "Connect the booking link",
+          "status": "done",
+          "owner": "Client",
+          "notes": "Uses their existing scheduler."
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "name": "Phase 2: Booking and reminders",
+      "status": "in-progress",
+      "description": "Online booking, reminder texts, review requests.",
+      "budget": 4800,
+      "tasks": [
+        {
+          "id": "2-1",
+          "title": "Set up reminder texts",
+          "status": "in-progress",
+          "owner": "Studio",
+          "notes": "Waiting on the sender number to be verified."
+        },
+        {
+          "id": "2-2",
+          "title": "Review request after each visit",
+          "status": "blocked",
+          "owner": "Client",
+          "notes": "Needs the review link from their Google listing.",
+          "blockedReason": "Client has not shared the review link"
+        },
+        {
+          "id": "2-3",
+          "title": "Weekly summary email to the front desk",
+          "status": "planned",
+          "owner": "Studio",
+          "notes": "Starts once reminders are live."
+        },
+        {
+          "id": "2-4",
+          "title": "Train the front desk on the booking view",
+          "status": "todo",
+          "owner": "Client",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "name": "Phase 3: Reactivation",
+      "status": "not-started",
+      "description": "Win back patients who have not booked in a year.",
+      "budget": null,
+      "tasks": [
+        {
+          "id": "3-1",
+          "title": "Draft the reactivation message",
+          "status": "not-started",
+          "owner": "Studio",
+          "notes": ""
+        },
+        {
+          "id": "3-2",
+          "title": "Segment the patient list",
+          "status": "evaluating",
+          "owner": "Client",
+          "notes": "Needs a consent check first."
+        }
+      ]
+    }
+  ],
+  "automations": [
+    { "name": "Appointment reminder text", "status": "pending-activation", "lastRun": null },
+    { "name": "Review request after visit", "status": "blocked", "lastRun": null },
+    { "name": "Weekly front desk summary", "status": "planned", "lastRun": null }
+  ],
+  "checklist": [
+    { "id": "c1", "label": "Signed engagement letter", "done": true },
+    { "id": "c2", "label": "Domain access", "done": true },
+    { "id": "c3", "label": "Google listing access", "done": false },
+    { "id": "c4", "label": "Consent text approved", "done": false }
+  ],
+  "goals": [
+    { "id": "g1", "label": "No-shows under 8%", "target": "8%", "now": "12%" },
+    { "id": "g2", "label": "Ten new reviews a month", "target": "10", "now": "3" }
+  ],
+  "engagement": { "lastTouch": "2d ago", "openQuestions": 2, "nextCall": "2026-10-16" },
+  "documents": [
+    { "name": "Engagement letter", "kind": "PDF", "updated": "2026-03-02" },
+    { "name": "Brand sheet", "kind": "Link", "updated": "2026-04-11" },
+    { "name": "Reminder text drafts", "kind": "Doc", "updated": "2026-10-09" }
+  ],
+  "states": {
+    "empty": {
+      "client": {
+        "name": "Brightwater Dental Studio",
+        "slug": "brightwater-dental",
+        "status": "prospect",
+        "location": "Port Marrow",
+        "type": "Dental practice",
+        "customers": null,
+        "startedOn": "2026-03-02"
+      },
+      "breadcrumbs": ["Ops", "Clients", "Brightwater Dental Studio"],
+      "retainer": null,
+      "phases": [],
+      "automations": [],
+      "checklist": [],
+      "goals": [],
+      "engagement": null,
+      "documents": []
+    },
+    "loading": { "note": "No data. Render the header and a placeholder for each panel." },
+    "error": {
+      "client": {
+        "name": "Brightwater Dental Studio",
+        "slug": "brightwater-dental",
+        "status": "active",
+        "location": "Port Marrow",
+        "type": "Dental practice",
+        "customers": 1840,
+        "startedOn": "2026-03-02"
+      },
+      "breadcrumbs": ["Ops", "Clients", "Brightwater Dental Studio"],
+      "retainer": {
+        "currentPhase": {
+          "phase": "Phase 2: Booking and reminders",
+          "scopedAt": 4800,
+          "status": "in-progress"
+        },
+        "blockers": ["Review link not shared yet", "Sender number still pending verification"],
+        "futureTiers": [
+          { "tier": "Care plan: monthly summary and two small changes" },
+          { "tier": "Growth: reactivation and referral campaigns" }
+        ]
+      },
+      "phases": [
+        {
+          "id": "p1",
+          "name": "Phase 1: Brand and site",
+          "status": "done",
+          "description": "Logo refresh, one-page site, booking link.",
+          "budget": 3200,
+          "tasks": [
+            {
+              "id": "1-1",
+              "title": "Refresh the logo and colour set",
+              "status": "done",
+              "owner": "Studio",
+              "notes": "Approved on the second round."
+            },
+            {
+              "id": "1-2",
+              "title": "Build the one-page site",
+              "status": "done",
+              "owner": "Studio",
+              "notes": "Live on the preview domain."
+            },
+            {
+              "id": "1-3",
+              "title": "Connect the booking link",
+              "status": "done",
+              "owner": "Client",
+              "notes": "Uses their existing scheduler."
+            }
+          ]
+        },
+        {
+          "id": "p2",
+          "name": "Phase 2: Booking and reminders",
+          "status": "in-progress",
+          "description": "Online booking, reminder texts, review requests.",
+          "budget": 4800,
+          "tasks": [
+            {
+              "id": "2-1",
+              "title": "Set up reminder texts",
+              "status": "in-progress",
+              "owner": "Studio",
+              "notes": "Waiting on the sender number to be verified."
+            },
+            {
+              "id": "2-2",
+              "title": "Review request after each visit",
+              "status": "blocked",
+              "owner": "Client",
+              "notes": "Needs the review link from their Google listing.",
+              "blockedReason": "Client has not shared the review link"
+            },
+            {
+              "id": "2-3",
+              "title": "Weekly summary email to the front desk",
+              "status": "planned",
+              "owner": "Studio",
+              "notes": "Starts once reminders are live."
+            },
+            {
+              "id": "2-4",
+              "title": "Train the front desk on the booking view",
+              "status": "todo",
+              "owner": "Client",
+              "notes": ""
+            }
+          ]
+        },
+        {
+          "id": "p3",
+          "name": "Phase 3: Reactivation",
+          "status": "not-started",
+          "description": "Win back patients who have not booked in a year.",
+          "budget": null,
+          "tasks": [
+            {
+              "id": "3-1",
+              "title": "Draft the reactivation message",
+              "status": "not-started",
+              "owner": "Studio",
+              "notes": ""
+            },
+            {
+              "id": "3-2",
+              "title": "Segment the patient list",
+              "status": "evaluating",
+              "owner": "Client",
+              "notes": "Needs a consent check first."
+            }
+          ]
+        }
+      ],
+      "automations": [
+        { "name": "Appointment reminder text", "status": "pending-activation", "lastRun": null },
+        { "name": "Review request after visit", "status": "blocked", "lastRun": null },
+        { "name": "Weekly front desk summary", "status": "planned", "lastRun": null }
+      ],
+      "checklist": [
+        { "id": "c1", "label": "Signed engagement letter", "done": true },
+        { "id": "c2", "label": "Domain access", "done": true },
+        { "id": "c3", "label": "Google listing access", "done": false },
+        { "id": "c4", "label": "Consent text approved", "done": false }
+      ],
+      "goals": [
+        { "id": "g1", "label": "No-shows under 8%", "target": "8%", "now": "12%" },
+        { "id": "g2", "label": "Ten new reviews a month", "target": "10", "now": "3" }
+      ],
+      "engagement": { "lastTouch": "2d ago", "openQuestions": 2, "nextCall": "2026-10-16" },
+      "documents": [
+        { "name": "Engagement letter", "kind": "PDF", "updated": "2026-03-02" },
+        { "name": "Brand sheet", "kind": "Link", "updated": "2026-04-11" },
+        { "name": "Reminder text drafts", "kind": "Doc", "updated": "2026-10-09" }
+      ],
+      "panelError": {
+        "panel": "documents",
+        "message": "Could not load documents: GitHub returned 404 for harborlane/brightwater-internal (links.json). Check the repository name in the client file."
+      }
+    },
+    "longContent": {
+      "client": {
+        "name": "Brightwater Dental Studio and Associated Orthodontic, Periodontal and Cosmetic Care Group of Port Marrow",
+        "slug": "brightwater-dental",
+        "status": "active",
+        "location": "Port Marrow",
+        "type": "Dental practice",
+        "customers": 1840,
+        "startedOn": "2026-03-02"
+      },
+      "breadcrumbs": ["Ops", "Clients", "Brightwater Dental Studio"],
+      "retainer": {
+        "currentPhase": {
+          "phase": "Phase 2: Booking and reminders",
+          "scopedAt": 4800,
+          "status": "in-progress"
+        },
+        "blockers": [
+          "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+          "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+          "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens"
+        ],
+        "futureTiers": [
+          { "tier": "Care plan: monthly summary and two small changes" },
+          { "tier": "Growth: reactivation and referral campaigns" }
+        ]
+      },
+      "phases": [
+        {
+          "id": "p2",
+          "name": "Phase 2: Booking and reminders",
+          "status": "in-progress",
+          "description": "Online booking, reminder texts, review requests.",
+          "budget": 4800,
+          "tasks": [
+            {
+              "id": "L-1",
+              "title": "Task 1: Reconcile the quarterly retainer invoices for the ",
+              "status": "done",
+              "owner": "Studio",
+              "notes": "Short note."
+            },
+            {
+              "id": "L-2",
+              "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+              "status": "in-progress",
+              "owner": "Studio",
+              "notes": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "id": "L-3",
+              "title": "Task 3: Reconcile the quarterly retainer invoices for the three cl",
+              "status": "blocked",
+              "owner": "Studio",
+              "notes": "Short note.",
+              "blockedReason": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "id": "L-4",
+              "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+              "status": "planned",
+              "owner": "Studio",
+              "notes": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "id": "L-5",
+              "title": "Task 5: Reconcile the quarterly retainer invoices for the three clients wh",
+              "status": "done",
+              "owner": "Studio",
+              "notes": "Short note."
+            },
+            {
+              "id": "L-6",
+              "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+              "status": "in-progress",
+              "owner": "Studio",
+              "notes": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "id": "L-7",
+              "title": "Task 7: Reconcile the quarterly retainer invoices for the three clients whose bill",
+              "status": "blocked",
+              "owner": "Studio",
+              "notes": "Short note.",
+              "blockedReason": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "id": "L-8",
+              "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+              "status": "planned",
+              "owner": "Studio",
+              "notes": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "id": "L-9",
+              "title": "Task 9: Reconcile the quarterly retainer invoices for the three clients whose billing cont",
+              "status": "done",
+              "owner": "Studio",
+              "notes": "Short note."
+            },
+            {
+              "id": "L-10",
+              "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+              "status": "in-progress",
+              "owner": "Studio",
+              "notes": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "id": "L-11",
+              "title": "Task 11: Reconcile the quarterly retainer invoices for the three clients whose billing contacts cha",
+              "status": "blocked",
+              "owner": "Studio",
+              "notes": "Short note.",
+              "blockedReason": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "id": "L-12",
+              "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+              "status": "planned",
+              "owner": "Studio",
+              "notes": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            }
+          ]
+        },
+        {
+          "id": "p3",
+          "name": "Phase 3: Reactivation",
+          "status": "not-started",
+          "description": "Win back patients who have not booked in a year.",
+          "budget": null,
+          "tasks": [
+            {
+              "id": "3-1",
+              "title": "Draft the reactivation message",
+              "status": "not-started",
+              "owner": "Studio",
+              "notes": ""
+            },
+            {
+              "id": "3-2",
+              "title": "Segment the patient list",
+              "status": "evaluating",
+              "owner": "Client",
+              "notes": "Needs a consent check first."
+            }
+          ]
+        }
+      ],
+      "automations": [
+        { "name": "Appointment reminder text", "status": "pending-activation", "lastRun": null },
+        { "name": "Review request after visit", "status": "blocked", "lastRun": null },
+        { "name": "Weekly front desk summary", "status": "planned", "lastRun": null }
+      ],
+      "checklist": [
+        { "id": "c1", "label": "Signed engagement letter", "done": true },
+        { "id": "c2", "label": "Domain access", "done": true },
+        { "id": "c3", "label": "Google listing access", "done": false },
+        { "id": "c4", "label": "Consent text approved", "done": false }
+      ],
+      "goals": [
+        { "id": "g1", "label": "No-shows under 8%", "target": "8%", "now": "12%" },
+        { "id": "g2", "label": "Ten new reviews a month", "target": "10", "now": "3" }
+      ],
+      "engagement": { "lastTouch": "2d ago", "openQuestions": 2, "nextCall": "2026-10-16" },
+      "documents": [
+        { "name": "Engagement letter", "kind": "PDF", "updated": "2026-03-02" },
+        { "name": "Brand sheet", "kind": "Link", "updated": "2026-04-11" },
+        { "name": "Reminder text drafts", "kind": "Doc", "updated": "2026-10-09" }
+      ]
+    },
+    "tokenFailure": {
+      "client": {
+        "name": "Brightwater Dental Studio",
+        "slug": "brightwater-dental",
+        "status": "active",
+        "location": "Port Marrow",
+        "type": "Dental practice",
+        "customers": 1840,
+        "startedOn": "2026-03-02"
+      },
+      "breadcrumbs": ["Ops", "Clients", "Brightwater Dental Studio"],
+      "retainer": {
+        "currentPhase": {
+          "phase": "Phase 2: Booking and reminders",
+          "scopedAt": 4800,
+          "status": "in-progress"
+        },
+        "blockers": ["Review link not shared yet", "Sender number still pending verification"],
+        "futureTiers": [
+          { "tier": "Care plan: monthly summary and two small changes" },
+          { "tier": "Growth: reactivation and referral campaigns" }
+        ]
+      },
+      "phases": [
+        {
+          "id": "p1",
+          "name": "Phase 1: Brand and site",
+          "status": "done",
+          "description": "Logo refresh, one-page site, booking link.",
+          "budget": 3200,
+          "tasks": [
+            {
+              "id": "1-1",
+              "title": "Refresh the logo and colour set",
+              "status": "done",
+              "owner": "Studio",
+              "notes": "Approved on the second round."
+            },
+            {
+              "id": "1-2",
+              "title": "Build the one-page site",
+              "status": "done",
+              "owner": "Studio",
+              "notes": "Live on the preview domain."
+            },
+            {
+              "id": "1-3",
+              "title": "Connect the booking link",
+              "status": "done",
+              "owner": "Client",
+              "notes": "Uses their existing scheduler."
+            }
+          ]
+        },
+        {
+          "id": "p2",
+          "name": "Phase 2: Booking and reminders",
+          "status": "in-progress",
+          "description": "Online booking, reminder texts, review requests.",
+          "budget": 4800,
+          "tasks": [
+            {
+              "id": "2-1",
+              "title": "Set up reminder texts",
+              "status": "in-progress",
+              "owner": "Studio",
+              "notes": "Waiting on the sender number to be verified."
+            },
+            {
+              "id": "2-2",
+              "title": "Review request after each visit",
+              "status": "blocked",
+              "owner": "Client",
+              "notes": "Needs the review link from their Google listing.",
+              "blockedReason": "Client has not shared the review link"
+            },
+            {
+              "id": "2-3",
+              "title": "Weekly summary email to the front desk",
+              "status": "planned",
+              "owner": "Studio",
+              "notes": "Starts once reminders are live."
+            },
+            {
+              "id": "2-4",
+              "title": "Train the front desk on the booking view",
+              "status": "todo",
+              "owner": "Client",
+              "notes": ""
+            }
+          ]
+        },
+        {
+          "id": "p3",
+          "name": "Phase 3: Reactivation",
+          "status": "not-started",
+          "description": "Win back patients who have not booked in a year.",
+          "budget": null,
+          "tasks": [
+            {
+              "id": "3-1",
+              "title": "Draft the reactivation message",
+              "status": "not-started",
+              "owner": "Studio",
+              "notes": ""
+            },
+            {
+              "id": "3-2",
+              "title": "Segment the patient list",
+              "status": "evaluating",
+              "owner": "Client",
+              "notes": "Needs a consent check first."
+            }
+          ]
+        }
+      ],
+      "automations": [
+        { "name": "Appointment reminder text", "status": "pending-activation", "lastRun": null },
+        { "name": "Review request after visit", "status": "blocked", "lastRun": null },
+        { "name": "Weekly front desk summary", "status": "planned", "lastRun": null }
+      ],
+      "checklist": [
+        { "id": "c1", "label": "Signed engagement letter", "done": true },
+        { "id": "c2", "label": "Domain access", "done": true },
+        { "id": "c3", "label": "Google listing access", "done": false },
+        { "id": "c4", "label": "Consent text approved", "done": false }
+      ],
+      "goals": [
+        { "id": "g1", "label": "No-shows under 8%", "target": "8%", "now": "12%" },
+        { "id": "g2", "label": "Ten new reviews a month", "target": "10", "now": "3" }
+      ],
+      "engagement": { "lastTouch": "2d ago", "openQuestions": 2, "nextCall": "2026-10-16" },
+      "documents": [
+        { "name": "Engagement letter", "kind": "PDF", "updated": "2026-03-02" },
+        { "name": "Brand sheet", "kind": "Link", "updated": "2026-04-11" },
+        { "name": "Reminder text drafts", "kind": "Doc", "updated": "2026-10-09" }
+      ],
+      "panelError": {
+        "panel": "engagement",
+        "message": "GITHUB_TOKEN is expired: rotate it in Vercel env vars (Production), then redeploy. The engagement panel is off until then."
+      }
+    }
+  }
+}
