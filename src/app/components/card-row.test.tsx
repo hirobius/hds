@@ -76,14 +76,14 @@ describe('Card.Row renders a StatusTile’s content (hds#622)', () => {
     expect(read('tailwind.config.tokens.cjs')).toMatch(
       /card:\s*\{\s*DEFAULT:\s*'var\(--role-card\)'/,
     );
-    expect(read('src/styles/tokens.css').match(/--role-card:\s*([^;]+);/g)).toEqual([
+    expect(read('src/styles/tokens.generated.css').match(/--role-card:\s*([^;]+);/g)).toEqual([
       '--role-card: var(--semantic-color-surface-raised);',
       '--role-card: var(--semantic-color-surface-raised);',
     ]);
     // ...the same container radius, and padding="item" is p-4's 16px.
     expect(card.classList.contains('rounded-lg')).toBe(true);
     expect(card.style.padding).toBe('16px');
-    expect(read('src/styles/tokens.css')).toMatch(/--primitive-space-4:\s*16px;/);
+    expect(read('src/styles/tokens.generated.css')).toMatch(/--primitive-space-4:\s*16px;/);
     // ...and no border: `border-0` cancels Card's resting 1px transparent
     // border, so the box is 0px border + 16px padding, StatusTile's own.
     const widths = [...card.classList].filter((c) => /^border(-\d+)?$/.test(c));
