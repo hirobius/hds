@@ -821,9 +821,7 @@
         "exportName": "Divider",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/metadata-list.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {
         "Default stroke": "semantic.color.border.default",
         "Strong stroke": "semantic.color.border.strong",
@@ -1352,7 +1350,6 @@
       },
       "consumers": [
         "src/app/components/inline-code.test.tsx",
-        "src/app/components/metadata-list.tsx",
         "src/app/components/state-tokens.test.tsx"
       ],
       "tokenMapping": {
@@ -1496,6 +1493,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox.tsx",
         "src/app/components/field.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
@@ -2467,7 +2465,6 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/focus-visible.test.tsx",
         "src/app/components/grid.tsx",
-        "src/app/components/metadata-list.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/components/stat.tsx",
@@ -2720,6 +2717,7 @@
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/kbd.tsx",
+        "src/app/components/select.tsx",
         "src/app/components/table.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -4392,6 +4390,10 @@
         "options": {
           "type": "{ value: string; label: string; }[]"
         },
+        "placeholder": {
+          "type": "string",
+          "default": "Select…"
+        },
         "showLabel": {
           "type": "boolean",
           "default": true
@@ -5258,7 +5260,9 @@
       "consumers": [
         "src/app/components/combobox.tsx",
         "src/app/components/form.test.tsx",
+        "src/app/components/input.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/textarea.tsx",
         "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx"
       ],

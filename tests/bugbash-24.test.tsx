@@ -19,6 +19,11 @@ import { useState } from 'react';
 import { Page } from '../src/app/components/page';
 import { Card } from '../src/app/components/card';
 import { Badge } from '../src/app/components/badge';
+import { Input } from '../src/app/components/input';
+import { Textarea } from '../src/app/components/textarea';
+import { Select } from '../src/app/components/select';
+import { Combobox } from '../src/app/components/combobox';
+import { FormField } from '../src/app/components/form';
 import { MetadataList } from '../src/app/components/metadata-list';
 
 const css = (p: string) => readFileSync(resolve(process.cwd(), 'src/styles', p), 'utf8');
@@ -300,6 +305,71 @@ describe('MetadataList variants (item 12)', () => {
     expect(dl.className).not.toMatch(/rounded/);
     expect(container.innerHTML).not.toMatch(/\bp-5\b/);
     expect((container.querySelector('dd') as HTMLElement).className).not.toMatch(/hds-type-ui/);
+  });
+});
+
+describe('FormField error reaches the control (items 13, 14, 19)', () => {
+  const noop = () => {};
+  const opts = [{ value: 'a', label: 'Alpha' }];
+  it('Input and Textarea take the red border from aria-invalid set by FormField', () => {
+    render(
+      <>
+        <FormField label="Email" error="Bad">
+          <Input data-testid="i" />
+        </FormField>
+        <FormField label="Notes" error="Bad">
+          <Textarea data-testid="t" />
+        </FormField>
+      </>,
+    );
+    for (const id of ['i', 't']) {
+      const el = screen.getByTestId(id);
+      expect(el.getAttribute('aria-invalid')).toBe('true');
+      expect(el.className).toMatch(/border-destructive/);
+      expect(el.className).not.toMatch(/border-input/);
+    }
+  });
+  it('Select and Combobox triggers take it too', () => {
+    render(
+      <>
+        <FormField label="Pick" error="Bad">
+          <Select label="" showLabel={false} options={opts} value="a" onChange={noop} />
+        </FormField>
+        <FormField label="Pick2" error="Bad">
+          <Combobox options={opts} multiple={false} value="a" onChange={noop} />
+        </FormField>
+      </>,
+    );
+    for (const el of [screen.getAllByRole('combobox')[0], screen.getAllByRole('combobox')[1]]) {
+      expect(el.getAttribute('aria-invalid')).toBe('true');
+      expect(el.className).toMatch(/border-destructive/);
+    }
+  });
+  it('a valid control keeps the neutral border', () => {
+    render(<Input data-testid="i" />);
+    expect(screen.getByTestId('i').className).toMatch(/border-input/);
+  });
+  it('Input and Textarea labels sit the same 8px above the control as Select and FormField', () => {
+    const { container } = render(
+      <>
+        <Input label="A" />
+        <Textarea label="B" />
+      </>,
+    );
+    for (const root of Array.from(container.children)) {
+      expect((root as HTMLElement).className).toMatch(/\bgap-2\b/);
+      expect((root as HTMLElement).className).not.toMatch(/gap-1\.5/);
+    }
+  });
+  it('Select shows a placeholder when value matches nothing', () => {
+    render(<Select label="Pick" options={opts} value="" onChange={noop} />);
+    expect(screen.getByRole('combobox').textContent).toContain('Select…');
+  });
+  it('Select placeholder is configurable', () => {
+    render(
+      <Select label="Pick" options={opts} value="" onChange={noop} placeholder="Choose one" />,
+    );
+    expect(screen.getByRole('combobox').textContent).toContain('Choose one');
   });
 });
 void fireEvent;

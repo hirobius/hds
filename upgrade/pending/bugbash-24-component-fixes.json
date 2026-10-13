@@ -49,6 +49,15 @@
       "detect": {
         "regex": ["<MetadataList\\b[^>]*variant=[\"']divided"]
       }
+    },
+    {
+      "id": "look/FormField-error-border",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Input, Textarea, Select and Combobox now draw the red error border whenever aria-invalid is true, and Input and Textarea labels sit 8px above the control instead of 6px; nothing to change unless you styled around the old gap.",
+      "detect": {
+        "regex": ["<FormField\\b[^>]*\\berror="]
+      }
     }
   ]
 }
