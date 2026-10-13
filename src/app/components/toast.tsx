@@ -6,6 +6,15 @@
  * @whenNot A message people must act on or that must stay next to its content.
  * @useInstead Alert a message that stays next to its content
  * @useInstead Dialog a message that needs a decision
+ * @a11y component required a11y:toast.live-region The title and description are announced through a role=status live region (4.1.3).
+ * @a11y component required a11y:toast.viewport-named The viewport is a region named "Notifications".
+ * @a11y component required a11y:toast.f8-focuses-viewport F8 moves focus to the notifications viewport.
+ * @a11y component required a11y:toast.dismiss-keyboard The Dismiss button is named, reachable by Tab and closes the toast with Enter.
+ * @a11y component required a11y:toast.dismiss-target-size The Dismiss button is at least 24px (2.5.8).
+ * @a11y component required a11y:toast.tone-icon-decorative The tone icon is aria-hidden; the title carries the meaning, never colour alone (1.4.1).
+ * @a11y component required a11y:toast.pause-on-hover-focus The auto-dismiss timer pauses while the pointer or focus is on the viewport (2.2.1).
+ * @a11y consumer required Keep a toast to a short confirmation; use Alert or Dialog for anything people must act on or re-read.
+ * @a11y consumer required Set a duration long enough to read the message; the default is 5000 ms.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-367
  * @doc-exempt: no Overlays/Feedback-overlay doc page yet — add demo when created
  *

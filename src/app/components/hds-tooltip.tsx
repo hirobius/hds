@@ -121,6 +121,16 @@ interface HdsTooltipComponent extends React.FC<
  * @keyboard Focus Opens the tooltip when the trigger receives keyboard focus.
  * @keyboard Escape Closes the tooltip and keeps focus on the trigger.
  * @keyboard Tab Moves on to the next control and closes the tooltip.
+ * @a11y component required a11y:tooltip.opens-on-focus The tooltip opens when the trigger takes keyboard focus.
+ * @a11y component required a11y:tooltip.role The bubble has role=tooltip.
+ * @a11y component required a11y:tooltip.describedby The trigger points aria-describedby at the bubble.
+ * @a11y component required a11y:tooltip.escape-dismisses Escape dismisses the tooltip and focus stays on the trigger (1.4.13 dismissible).
+ * @a11y component required a11y:tooltip.tab-moves-on Tab moves on to the next control and closes the tooltip.
+ * @a11y component required a11y:tooltip.hoverable The pointer can move from the trigger onto the bubble without it closing (1.4.13 hoverable).
+ * @a11y component required a11y:tooltip.persistent The tooltip stays open until focus leaves, Escape is pressed or the pointer leaves; no timer closes it (1.4.13 persistent).
+ * @a11y component required a11y:tooltip.no-interactive-content The bubble holds no tab stops.
+ * @a11y consumer required Make the Tooltip.Trigger focusable and named; wrap a non-focusable element in a button.
+ * @a11y consumer required Never put essential information or interactive content only in a tooltip; touch has no hover.
  * @public
  */
 const Tooltip: HdsTooltipComponent = /* @__PURE__ */ Object.assign(TooltipRoot, {
