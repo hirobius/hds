@@ -158,8 +158,8 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
                   key={opt.value}
                   value={opt.value}
                   className={cn(
-                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 hds-type-ui outline-none',
-                    'text-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
+                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none',
+                    'text-foreground data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)]',
                     'data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring',
                   )}
                 >

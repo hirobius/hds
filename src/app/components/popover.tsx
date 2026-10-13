@@ -64,10 +64,35 @@ const PopoverContent = /* @__PURE__ */ React.forwardRef<
   { className, align = 'center', sideOffset = 4, container, ...props },
   ref,
 ) {
+  // Radix gives the content role="dialog" and links the trigger to it with aria-controls, but never
+  // names it. Default the name to the trigger's (axe aria-dialog-name); an explicit aria-label or
+  // aria-labelledby wins. The trigger gets an id only if it has none.
+  const generatedId = React.useId();
+  const [node, setNode] = React.useState<HTMLDivElement | null>(null);
+  const named = props['aria-label'] !== undefined || props['aria-labelledby'] !== undefined;
+  React.useLayoutEffect(() => {
+    if (named || !node?.id) return;
+    const trigger = Array.from(document.querySelectorAll<HTMLElement>('[aria-controls]')).find(
+      (el) => el.getAttribute('aria-controls') === node.id,
+    );
+    if (!trigger) return;
+    if (!trigger.id) trigger.id = generatedId;
+    // Set on the node, not through state: React never manages this attribute here.
+    node.setAttribute('aria-labelledby', trigger.id);
+    return () => node.removeAttribute('aria-labelledby');
+  }, [named, node, generatedId]);
+  const setRefs = React.useCallback(
+    (el: HTMLDivElement | null) => {
+      setNode(el);
+      if (typeof ref === 'function') ref(el);
+      else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = el;
+    },
+    [ref],
+  );
   return (
     <PopoverPortal container={container}>
       <PopoverPrimitive.Content
-        ref={ref}
+        ref={setRefs}
         align={align}
         sideOffset={sideOffset}
         collisionPadding={8}
