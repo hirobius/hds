@@ -54,6 +54,21 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
       docSmall: 'hds-type-ui max-w-[var(--semantic-typography-ui-max-width)]',
       docCode: 'hds-type-mono max-w-[var(--semantic-typography-mono-max-width)]',
     },
+    // hds#655: one semantic content colour per tone, the same vocabulary as
+    // Badge and Alert. No tone keeps the inherited colour, so it is additive.
+    // `disabled` reads content.disabled, which sits below 4.5:1 by design: it
+    // is for the text of an inactive control (WCAG 1.4.3 exempts it), never
+    // for faint helper copy (that third text level is hds#663).
+    tone: {
+      primary: 'text-[var(--semantic-color-content-primary)]',
+      secondary: 'text-[var(--semantic-color-content-secondary)]',
+      disabled: 'text-[var(--semantic-color-content-disabled)]',
+      accent: 'text-[var(--semantic-accent-content)]',
+      success: 'text-[var(--semantic-color-feedback-success)]',
+      warning: 'text-[var(--semantic-color-feedback-warning)]',
+      error: 'text-[var(--semantic-color-feedback-error)]',
+      info: 'text-[var(--semantic-color-feedback-info)]',
+    },
   },
 });
 
@@ -119,6 +134,17 @@ export type TextVariant =
    */
   | 'docCode';
 
+/** The colour of the text: a semantic content token. Unset, it inherits. */
+export type TextTone =
+  | 'primary'
+  | 'secondary'
+  | 'disabled'
+  | 'accent'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'info';
+
 type TextTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'div';
 
 const defaultTagMap: Record<TextVariant, TextTag> = {
@@ -145,6 +171,12 @@ const defaultTagMap: Record<TextVariant, TextTag> = {
 export type TextProps = {
   children: ReactNode;
   variant: TextVariant;
+  /**
+   * Text colour from the semantic content tokens. Omit it to inherit the
+   * parent's colour. `secondary` is the subtitle / meta treatment;
+   * `disabled` is only for the text of an inactive control.
+   */
+  tone?: TextTone;
   as?: TextTag | ElementType;
   className?: string;
   style?: CSSProperties;
@@ -153,11 +185,16 @@ export type TextProps = {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export const Text = /* @__PURE__ */ forwardRef<HTMLElement, TextProps>(function Text(
-  { children, variant, as: Tag = defaultTagMap[variant], className, style, ...rest },
+  { children, variant, tone, as: Tag = defaultTagMap[variant], className, style, ...rest },
   ref,
 ) {
   return (
-    <Tag ref={ref} className={cn(textVariants({ variant }), className)} style={style} {...rest}>
+    <Tag
+      ref={ref}
+      className={cn(textVariants({ variant, tone }), className)}
+      style={style}
+      {...rest}
+    >
       {children}
     </Tag>
   );
