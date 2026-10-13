@@ -18,18 +18,20 @@
  * `npx skills add hirobius/hds --skill hds-consumer`).
  *
  * Usage:
- *   node scripts/generate-consumer-skill.mjs           write the file
- *   node scripts/generate-consumer-skill.mjs --check   exit 1 on any byte difference
+ *   node scripts/generate-consumer-skill.mjs                   write the file
+ *   node scripts/generate-consumer-skill.mjs --check           exit 1 on any byte difference
+ *   node scripts/generate-consumer-skill.mjs --root <dir> ...  read and write a copy of the tree (tests)
  *
  * The output is deterministic (sorted, no dates) so --check compares exact bytes.
- * HDS_SKILL_OUT / HDS_SKILL_MANIFEST override the paths; the tests use them.
+ * scripts/lib/generated-check.mjs (runGenerator) owns the write and the check.
  */
 
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { layoutRecipeSteps, layoutNegativeRules } from './lib/layout-recipe.mjs';
 import { coreByCategory, renderCoreSetByCategory } from './lib/core-set.mjs';
+import { rootFromArgv, runGenerator } from './lib/generated-check.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -198,31 +200,21 @@ export function buildConsumerSkill({
   );
 }
 
-function main() {
-  const manifestPath = process.env.HDS_SKILL_MANIFEST || join(ROOT, 'public', 'hds-manifest.json');
-  const outPath = process.env.HDS_SKILL_OUT || join(ROOT, SKILL_PATH);
+async function main() {
+  const root = rootFromArgv(ROOT);
+  const read = (rel) => readFileSync(join(root, rel), 'utf8');
   const content = buildConsumerSkill({
-    manifest: JSON.parse(readFileSync(manifestPath, 'utf8')),
-    indexSource: readFileSync(join(ROOT, 'src', 'index.ts'), 'utf8'),
-    patternsSource: readFileSync(join(ROOT, 'src', 'patterns.ts'), 'utf8'),
-    packageExports: JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).exports,
+    manifest: JSON.parse(read('public/hds-manifest.json')),
+    indexSource: read('src/index.ts'),
+    patternsSource: read('src/patterns.ts'),
+    packageExports: JSON.parse(read('package.json')).exports,
   });
-
-  if (process.argv.includes('--check')) {
-    const current = existsSync(outPath) ? readFileSync(outPath, 'utf8') : null;
-    if (current !== content) {
-      console.error(
-        `✗ ${SKILL_PATH} is out of date with its sources. Run: pnpm skill:generate (do not hand-edit).`,
-      );
-      process.exit(1);
-    }
-    console.log(`✓ ${SKILL_PATH} is up to date`);
-    return;
-  }
-
-  mkdirSync(dirname(outPath), { recursive: true });
-  writeFileSync(outPath, content);
-  console.log(`✓ wrote ${SKILL_PATH}`);
+  await runGenerator({
+    root,
+    outputs: { [SKILL_PATH]: content },
+    label: 'consumer skill',
+    fix: 'pnpm skill:generate (do not hand-edit)',
+  });
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();
