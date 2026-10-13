@@ -298,6 +298,7 @@ Divider — semantic separator between content regions.
 
 ### EmptyState
 EmptyState — consistent no-data placeholder for lists, grids, and sections.
+  - action: ReactNode
   - className: string
   - description: ReactNode
   - title: ReactNode
