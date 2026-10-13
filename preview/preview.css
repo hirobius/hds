@@ -61,8 +61,6 @@ body {
 }
 .pv-eyebrow {
   font: 600 11px/1 var(--pv-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--pv-dim);
   margin: 0 0 10px;
 }
@@ -98,8 +96,6 @@ body {
   align-items: center;
   gap: 8px;
   font: 600 10px/1 var(--pv-mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--pv-dim);
 }
 .pv-rail select {
@@ -123,8 +119,6 @@ body {
 }
 .pv-reset {
   font: 600 10px/1 var(--pv-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   border: 1px solid var(--pv-rule);
   background: transparent;
   color: var(--pv-dim);
@@ -162,8 +156,6 @@ body {
 }
 .pv-sec h2 {
   font: 600 10px/1 var(--pv-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--pv-dim);
   margin: 0 0 16px;
 }
@@ -221,5 +213,30 @@ body {
   border-top: 1px solid var(--pv-rule);
   font-size: 12px;
   line-height: 1.5;
+  color: var(--pv-dim);
+}
+
+/* Supporting-accent swatches: they read the overlay variables on purpose, so on any other
+   brand (where the variables are unset) they fall back to a plain outline. */
+.pv-support {
+  font: 600 12px/1 var(--pv-mono);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px dashed var(--pv-rule);
+  color: var(--pv-dim);
+}
+.pv-support[data-role='rest'] {
+  background: var(--semantic-accent-support-rest, transparent);
+  color: var(--semantic-accent-support-on, var(--pv-dim));
+}
+.pv-support[data-role='subtle'] {
+  background: var(--semantic-accent-support-subtle, transparent);
+  color: var(--semantic-accent-support-content, var(--pv-dim));
+}
+.pv-support[data-role='content'] {
+  color: var(--semantic-accent-support-content, var(--pv-dim));
+}
+.pv-note {
+  font-size: 12px;
   color: var(--pv-dim);
 }

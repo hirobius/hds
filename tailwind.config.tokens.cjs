@@ -130,9 +130,7 @@ const config = {
         '6xl': 'var(--primitive-typography-size-6xl)',
         code: 'var(--primitive-typography-size-code)',
       },
-      letterSpacing: {
-        caps: 'var(--primitive-typography-letterSpacing-caps)',
-      },
+      letterSpacing: {},
     },
   },
 };

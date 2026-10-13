@@ -1,0 +1,12 @@
+[
+  {
+    "screen": "standing",
+    "direction": "A",
+    "kind": "pattern",
+    "id": "band-section",
+    "needed": "A band section: a header with a name and a count, rows, and show all",
+    "didInstead": "A Disclosure with the count written into its label and a tertiary Button for show all",
+    "proposal": "Add a Band pattern with name, count, rows and a show-all control",
+    "evidence": "src/App.tsx:58"
+  }
+]

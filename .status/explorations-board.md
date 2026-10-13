@@ -1,0 +1,1 @@
+Explorations board and index generator (scripts/explorations-board.mjs: one inlined HTML page per screen, ranked gap index, no-op pick and decision hooks for Artifact storage), and the 21st MCP wired in .mcp.json from API_KEY_21ST with every account-changing tool denied in .claude/settings.json (hds#628 phase 0).

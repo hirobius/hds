@@ -27,7 +27,7 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 - **Screen title with breadcrumb, status and actions** → `PageHeader`, `Breadcrumb`, `Badge`. Not: Text as the page title, a Stack row of Text and Badge.
   Exactly one per screen: `<PageHeader breadcrumb={<Breadcrumb items={[{ label, href }, { label }]} />} title="…" status={<Badge tone="success">Active</Badge>} />`.
 - **Row of headline numbers (stats, KPIs, counts, totals)** → `MetricTiles`, `MetricTile`. Not: `Stat`, `StatusTile`, `CardMetric`, Card with Text.
-  `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, `StatusTile` for a state with notes (never a number).
+  `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, a `Card` with `Card.Row` for a state with notes (never a number; it replaces the deprecated `StatusTile`).
 - **Table of records with row actions** → `DataTableSection`, `Badge`, `Button`. Not: Table on its own, Card around a Table.
   `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
 - **Switch between panels of related content** → `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. Not: `SegmentedControl`, Button rows.
@@ -155,7 +155,8 @@ Badge: [core] Label a status, state or count with a compact neutral or semantic 
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
 Button: [core] Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
-Card: [core] Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option. Use instead: Surface
+Card: [core] Group related content on a raised surface with header, body, footer and row slots, or as one selectable option. Use instead: Surface
+CardRow: Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lines, and a Badge in `trailing`.
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
@@ -165,7 +166,7 @@ DestructiveSection: Put a dangerous action, such as delete, in its own section w
 Dialog: [core] Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider, AlertDialog
 Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. Use instead: Tabs
 Divider: [core] Separate two blocks of content with a thin line. Use instead: Stack, Surface
-EmptyState: [core] Say that a list, grid or section has no data yet, with a title and an optional description. Use instead: Skeleton, Alert
+EmptyState: [core] Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step. Use instead: Skeleton, Alert
 ErrorPattern: Show an error with a short message and a Back button, in place or as a full page.
 Field: [core] Show a labelled read-only value, such as a name and its value in a detail view. Use instead: Input
 Form: Wrap form fields so they stack with even spacing.
@@ -191,7 +192,6 @@ Skeleton: [core] Reserve the shape of content that is still loading, so the layo
 Slider: [core] Pick a number within a known range by dragging, when the exact value matters less than the position. Use instead: Input
 Spinner: [core] Show that something is loading when the wait is short or has no measurable end. Use instead: Progress, Skeleton
 Stack: [core] Space items in a row or column with even gaps. Use instead: Grid, Surface
-StatusTile: Show a titled status block with optional notes and a trailing badge or affordance. Use instead: StatusListItem
 Surface: [core] Give a block of content a background and padding, with no header or footer. Use instead: Card, Stack
 Table: [core] Show rows of structured data in aligned columns, with optional sorting. Use instead: Field, Stack
 Tabs: [core] Switch between panels of related content in the same place, one visible at a time. Use instead: SegmentedControl, Disclosure
@@ -231,7 +231,7 @@ Canonical skeleton, outermost to innermost:
 3. Reach for a named layout primitive before hand-rolling flex/grid math for a common intent: `Stack direction="row" wrap="wrap"` (wrapping row of same-ish things), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query). A full-height shell with a centered main region, an aspect-ratio-locked media box or a negative margin that escapes a parent padding is a `Box` with `style` (not `sx`, which applies on the client only).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
 5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). A row of headline numbers is always `MetricTiles`; `Stat`, `Card.Metric` and `StatusTile` answer other needs (see "Pick By Need" in `llms.txt`). Pick between `Card` and `Surface` with the "Which one, when" table in `DESIGN.md`.
-6. `Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
+6. `Box` `style` / `sx` LAST — only for genuinely one-off layout that no named primitive covers (prefer `style` over `sx`, as `sx` applies on the client only). `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
 
 Negative rules (apply everywhere, checked by `scripts/audit-tokens.mjs --full`, `check-hardcoded-spacing.mjs`, `check-hardcoded-colors.mjs`):
 
@@ -355,6 +355,7 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 - CSS variables: token path `semantic.color.surface.page` maps to `var(--semantic-color-surface-page)` (see generated token refs).
 - Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.
 - Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).
+- Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.
 - Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.
 
 ## Agent Workflow
@@ -419,6 +420,7 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 | --- | --- | --- | --- |
 | `semantic.typography.display` | 48px | 700 | One per page, hero only |
 | `semantic.typography.title` | 24px | 700 | Section and card headings |
+| `semantic.typography.titleSm` | 16px | 700 | Small heading inside a card or section band |
 | `semantic.typography.body` | 16px | 400 | Prose |
 | `semantic.typography.ui` | 14px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 12px | 500 | Metadata, help text and labels, in sentence case |
@@ -431,6 +433,8 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
+
+**Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
 
 ## Spacing
 
@@ -531,6 +535,8 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->
 
+When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, and HDS tokens and rules always win.
+
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
 Every HDS card surface must conform to this anatomy exactly. No creative interpretation is permitted on any of these properties.
@@ -565,7 +571,7 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `MetricTiles`        | The default for any row of headline numbers on a screen. One fixed tile size. | Nothing: start here.                                                         |
 | `Stat`               | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
 | `Card.Metric`        | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
-| `StatusTile`         | State with notes and a trailing badge, never a number.                        | `MetricTiles` when the tile is a number; `StatusTile` never carries a value. |
+| `Card.Row`           | State with notes and a trailing badge, never a number (was `StatusTile`).     | `MetricTiles` when the tile is a number; a status row never carries a value. |
 | `Card`               | A titled or interactive content object (header, body, footer, `selectable`).  | `Surface` when there is no title and nothing to press.                       |
 | `Surface`            | A plain padded background around content that has no header of its own.       | `Card` when the content is titled or interactive.                            |
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
@@ -591,6 +597,7 @@ Three more needs are props on an existing component, not components of their own
 - Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
+- Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
 - Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
@@ -710,7 +717,7 @@ Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback f
   - tone: 'accent' | 'info' | 'success' | 'warning' | 'danger' = info
 
 ### Card
-Tagged per-export, not on the file block: this module exports eight components and a file-level @figma would hand all eight this one node.
+Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
   - as: ElementType<any, keyof IntrinsicElements>
   - bordered: boolean = false
   - gap: GapOption = tight
@@ -741,6 +748,16 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
   - max: number = 100
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
   - value: number
+
+### CardRow
+Card.Row — a title with muted notes and a trailing slot, inside a Card.
+  - trailing: ReactNode
+
+### CardRowNote
+Card.RowNote — one muted caption line under the row's title; repeat it for more.
+
+### CardRowTitle
+Card.RowTitle — the row's title, at the ui role.
 
 ### CardTitle
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
@@ -799,7 +816,7 @@ Section heading and toolbar over a `Table`. Row actions are consumer nodes in a 
   - toolbar: ReactNode
 
 ### DestructiveSection
-Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's …
+Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an …
   - actionLabel: ReactNode
   - cancelLabel: string = Cancel
   - confirmBody: ReactNode
@@ -885,6 +902,7 @@ Divider — semantic separator between content regions.
 
 ### EmptyState
 EmptyState — consistent no-data placeholder for lists, grids, and sections.
+  - action: ReactNode
   - className: string
   - description: ReactNode
   - title: ReactNode
@@ -1156,13 +1174,6 @@ Status dot + title row with optional muted notes and trailing slot (e.g. badge).
   - notes: ReactNode[]
   - title: ReactNode
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
-  - trailing: ReactNode
-
-### StatusTile
-Block-layout sibling of StatusListItem. Renders a raised surface tile with title, optional muted notes, and a trailing slot for a badge or affordance. Status c…
-  - notes: ReactNode[]
-  - title: ReactNode
-  - tone: 'success' | 'warning' | 'danger' | 'info' | 'neutral' = neutral
   - trailing: ReactNode
 
 ### Surface

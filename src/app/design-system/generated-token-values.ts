@@ -194,8 +194,7 @@ export const tokenValues = {
       },
       letterSpacing: {
         tight: "-0.01em",
-        normal: "0em",
-        caps: "0.06em"
+        normal: "0em"
       }
     },
     duration: {

@@ -26,6 +26,9 @@ export interface StatusTileProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * genuinely interrupting states.
  * @usage Show a titled status block with optional notes and a trailing badge or affordance.
  * @whenNot A headline number (never a value), or a row inside a list.
+ * @deprecated Compose a Card instead, with the same content and surface (hds#622): `<Card padding="item" className="border-0"><Card.Row trailing={trailing}><Card.RowTitle>{title}</Card.RowTitle>{notes.map((note) => <Card.RowNote key={note}>{note}</Card.RowNote>)}</Card.Row></Card>`. Drop `tone`: StatusTile never painted it, and Card's `tone` paints a border.
+ * @removeIn 1.0.0
+ * @useInstead Card a Card with a Card.Row, Card.RowTitle and Card.RowNote lines
  * @useInstead StatusListItem a status row inside a list
  */
 export const StatusTile = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatusTileProps>(

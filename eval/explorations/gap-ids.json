@@ -1,0 +1,47 @@
+{
+  "$comment": "The gaps hirobius/hds#628 predicts, as ids a gaps.json may reuse so the index can count one gap across screens. A prediction is not a finding: confirm a gap with evidence or leave it out. A gap that is not here gets its own kebab-case id, or none.",
+  "ids": [
+    {
+      "id": "file-drop-control",
+      "kind": "component",
+      "summary": "A file drop or upload control with per-file progress and retry.",
+      "predictedFor": ["ops-home", "drops-inbox"]
+    },
+    {
+      "id": "activity-timeline",
+      "kind": "pattern",
+      "summary": "An activity timeline: who did what, when, newest first (lead history, drop status history).",
+      "predictedFor": ["drops-inbox", "pitch"]
+    },
+    {
+      "id": "stage-chain",
+      "kind": "pattern",
+      "summary": "A stage chain or stepper that reads as a funnel, with a count per stage.",
+      "predictedFor": ["leads"]
+    },
+    {
+      "id": "band-section",
+      "kind": "pattern",
+      "summary": "A band section: a header with a name and a count, rows, and \"show all\".",
+      "predictedFor": ["standing"]
+    },
+    {
+      "id": "phone-action-bar",
+      "kind": "pattern",
+      "summary": "A phone action bar or bottom sheet for thumb-reachable actions.",
+      "predictedFor": ["pitch"]
+    },
+    {
+      "id": "label-value-lockup",
+      "kind": "pattern",
+      "summary": "The label-value lockup (hirobius/hds#520).",
+      "predictedFor": ["ops-home", "drops-inbox", "leads", "client-dashboard"]
+    },
+    {
+      "id": "supporting-accent",
+      "kind": "token",
+      "summary": "A supporting accent token, the second half of the planned accent pair (North Star).",
+      "predictedFor": ["standing", "ops-home", "pitch", "leads", "client-dashboard"]
+    }
+  ]
+}

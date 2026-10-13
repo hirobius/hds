@@ -481,3 +481,51 @@ Sync after hds#624: deprecated tokens hidden from publishing (border.subdued, 7 
 | 1   | 17:42      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` unmodified (updated 10) | OK. 29bb1b0e → 4764179b; lastPush written |
 
 Session total: 1 call. Snapshot rebuilt from the receipt; drift 0. Nothing published.
+
+## 2026-10-12 · session `claude/figma-round4`
+
+Budget 12 calls. Rows are written before the call is made.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                                                                                                                                                                                                          |
+| --- | ---------- | ---------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | --         | `use_figma`      | read  | Form 85:94 tree + Form page children, FormActions/Field/Input/Select component keys, Deprecated page 2157:826 names, Kbd 2026:3/5/7 effects, variable color/border/strong id                                                     |
+| 2   | --         | `get_screenshot` | read  | Form page before (url)                                                                                                                                                                                                           |
+| 3   | --         | `get_screenshot` | read  | Kbd page before (url)                                                                                                                                                                                                            |
+| 4   | --         | `use_figma`      | write | Create plain frame `Form — example` on Form page from instances; move Form 85:94 to Deprecated as `_Form (now an example frame)`                                                                                                 |
+| 5   | --         | `use_figma`      | write | Rebind Kbd 2026:3/5/7 inner-shadow colour to variable color/border/strong                                                                                                                                                        |
+| 6   | --         | `get_screenshot` | read  | Form page after (url)                                                                                                                                                                                                            |
+| 7   | --         | `get_screenshot` | read  | Kbd page after (url)                                                                                                                                                                                                             |
+| 8   | --         | `use_figma`      | write | Extra task 3 (no ALL CAPS): walk every page except Deprecated 2157:826 and Archive 2083:2; textCase UPPER to ORIGINAL; rewrite all-caps literal text to sentence case; text inside instances skipped (fix at the main component) |
+| 9   | --         | `use_figma`      | write | Delete the 3 empty pages 88:246, 2075:88, 2121:28 (Adrian authorized this delete, 2026-10-12); each page is checked for zero children first and skipped if not empty                                                             |
+| 10  | --         | `use_figma`      | read  | List pages with zero children (2121:28 was not found in #9)                                                                                                                                                                      |
+
+Results: #1 Form 85:94 was a COMPONENT (400x418, gap 20, 3 Field instances + Footer frame); Kbd shadows were bound to variable 2018:762. #4 new plain frame `Form — example` 2169:102 (400x550, gap bound to space/16 VariableID:5:15, 3 Field instance clones + FormActions Layout=inline instance), old Form 85:94 moved to Deprecated 2157:826 as `_Form (now an example frame)`. #5 Kbd 2026:3, 2026:5, 2026:7 inner shadow colour now bound to color/border/strong (VariableID:10:17), read back OK. #8 found 0 UPPER textCase nodes and 0 all-caps literals outside instances (159 instance-internal text nodes skipped), nothing changed. Screenshots #2, #3, #6, #7 returned URLs but the sandbox proxy blocks downloading them, so no pixel review; verification is by readback. Total 8 calls (budget raised to 16 for task 3). Nothing deleted, published, or created as a variable/style. #9 (Adrian authorized): deleted empty pages 88:246 `Stat` and 2075:88 `MetricTile` (0 children each, checked before removal); 2121:28 was not found (already gone). #10 the only remaining empty page is 20:6 `———`, a page-list divider, kept on purpose. 61 pages left. Total 10 calls. Nothing published.
+
+## 2026-10-12 · session `claude/kbd-outer-edge`
+
+Kbd edge changes from a 1px inset line to a 2px outer drop edge (Adrian's pick). Budget 2 calls. Rows are written before the call is made.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                                                                                                                                        |
+| --- | ---------- | ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | --         | `use_figma` | write | Every Kbd component on the Kbd page: replace the inner shadow with a drop shadow x 0, y 2, blur 0, spread 0, colour bound to color/border/strong (VariableID:10:17); read back |
+
+Results: #1 Kbd Size=md 2026:3, Size=sm 2026:5, Size=lg 2026:7 now carry one drop shadow (y 2, blur 0, spread 0) bound to color/border/strong (VariableID:10:17), inner shadow removed, read back OK; the set 2026:9 had no effect and was left alone. Total 1 call. Nothing deleted or published.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                                                                                                                                                                                                                    |
+| --- | ---------- | ---------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2   | --         | `use_figma`      | read  | Adrian says the Kbd edge looks too dark: resolve VariableID:10:17 name and per-mode values, and read Kbd 2026:3 fills/strokes bindings                                                                                                     |
+| 3   | --         | `use_figma`      | write | Every page except Deprecated/Archive: find fills, strokes and effects bound to a colour variable whose raw (fallback) colour differs from the variable's default-mode value; set the raw colour to that value, binding kept; report counts |
+| 4   | --         | `get_screenshot` | read  | Kbd set 2026:9 after the fallback fix, for Adrian                                                                                                                                                                                          |
+
+Results: #2 the variable is correct (color/border/strong → neutral/300 light, neutral/600 dark) but the drop shadow's raw fallback was black, which Figma showed. #3 scanned 1758 bound paints/effects; 21 fallbacks did not match their variable's default-mode value and were set to it (bindings unchanged): Kbd 2026:3/5/7 effects, Toast Title/Message fills (10), Slider Track/Filled Track fills (7), Dialog 93:27 fill. #4 screenshot (base64) shows light-grey edges on all three sizes. Session total 4 calls. Nothing deleted or published.
+
+## 2026-10-12 · session `claude/figma-fallback-guard`
+
+First live run of the bound-colour fallback guard, plus the titleSm token sync (drift showed 6 missing). Budget 2 calls. Rows are written before the call is made.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                                                     |
+| --- | ---------- | ----------- | ----- | ------------------------------------------------------------------------------------------- |
+| 1   | --         | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` unmodified (titleSm: 5 variables + 1 text style) |
+| 2   | --         | `use_figma` | read  | Library: `fallbacks.js` unmodified (bound-colour fallback record)                           |
+
+Results: #1 created the 5 typography/titleSm variables (VariableID:2178:2–6) and the typography/titleSm text style; receipt post c70cefd6 on base 4764179b, snapshot rebuilt, drift 0. #2 59 pages (Archive and Deprecated skipped), 2773 nodes, 1863 colour bindings, 0 fallback mismatches (checksum 99955183), ingested as `bindingFallbacks`. Session total 2 calls. Nothing deleted or published.
