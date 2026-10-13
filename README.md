@@ -282,7 +282,7 @@ src/
     components/     the components
     context/        theme provider
     design-system/  generated token constants
-  styles/           tokens.css, theme.css, generated CSS
+  styles/           tokens.generated.css, theme.css, generated CSS
   brand/ form/ mui/ scroll/   subpath entry points
 hirobius.tokens.json  the single token source
 scripts/            generators and gates

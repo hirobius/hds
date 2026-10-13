@@ -22,7 +22,7 @@ let tokensCss: string;
 let buttonSource: string;
 
 beforeAll(() => {
-  tokensCss = readFileSync(resolve(__dirname, '../tokens.css'), 'utf8');
+  tokensCss = readFileSync(resolve(__dirname, '../tokens.generated.css'), 'utf8');
   buttonSource = readFileSync(resolve(__dirname, '../../app/components/button.tsx'), 'utf8');
 });
 
@@ -52,10 +52,10 @@ describe('semantic.color.state.pressed.overlay', () => {
 
   it('is opaque black in light and opaque white in dark (alpha lives in the class)', () => {
     expect(declaration(blockBody(tokensCss, ':root'), TOKEN_VAR)).toBe(
-      'var(--primitive-color-neutral-black)', // tier-ok: reads a semantic token's declaration in generated tokens.css; a semantic aliasing a primitive is the tier contract, not a bypass (hds#322)
+      'var(--primitive-color-neutral-black)', // tier-ok: reads a semantic token's declaration in tokens.generated.css; a semantic aliasing a primitive is the tier contract, not a bypass (hds#322)
     );
     expect(declaration(blockBody(tokensCss, '[data-theme="dark"]'), TOKEN_VAR)).toBe(
-      'var(--primitive-color-neutral-white)', // tier-ok: reads a semantic token's declaration in generated tokens.css; a semantic aliasing a primitive is the tier contract, not a bypass (hds#322)
+      'var(--primitive-color-neutral-white)', // tier-ok: reads a semantic token's declaration in tokens.generated.css; a semantic aliasing a primitive is the tier contract, not a bypass (hds#322)
     );
   });
 

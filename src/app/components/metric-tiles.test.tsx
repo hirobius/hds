@@ -9,9 +9,9 @@ afterEach(cleanup);
 
 const TONES = ['neutral', 'success', 'warning', 'danger', 'info'] as const;
 
-const tokensCss = readFileSync(resolve(__dirname, '../../styles/tokens.css'), 'utf8');
+const tokensCss = readFileSync(resolve(__dirname, '../../styles/tokens.generated.css'), 'utf8');
 
-/** Value of the first `prop: value;` declaration in generated tokens.css. */
+/** Value of the first `prop: value;` declaration in tokens.generated.css. */
 function cssDeclaration(prop: string): string | null {
   const match = tokensCss.match(new RegExp(`${prop}:\\s*([^;]+);`));
   return match ? match[1].trim() : null;
@@ -41,7 +41,7 @@ describe('MetricTile', () => {
   it('takes that min-height from the semantic tile size token, which resolves to 120px', () => {
     expect(tileMinHeight(<MetricTile label="Open" value="12" />)).toBe('var(--semantic-size-tile)');
     // Same 120px the tile had as calc(96 + 24) from two primitive steps (hds#403).
-    expect(cssDeclaration('--semantic-size-tile')).toBe('var(--primitive-size-120)'); // tier-ok: reads the semantic token's declaration in generated tokens.css; its primitive alias is the tier contract
+    expect(cssDeclaration('--semantic-size-tile')).toBe('var(--primitive-size-120)'); // tier-ok: reads the semantic token's declaration in tokens.generated.css; its primitive alias is the tier contract
     expect(cssDeclaration('--primitive-size-120')).toBe('120px');
   });
 

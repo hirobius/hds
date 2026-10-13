@@ -196,7 +196,7 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "scope": "full-tree",
-      "glob": "src/styles/tokens.css"
+      "glob": "src/styles/tokens.generated.css"
     },
     {
       "id": "check-deprecations",
