@@ -1,0 +1,1 @@
+Bug bash 24 (hardening/bugbash): fixing the 24 measured component defects by root cause, test-first in tests/bugbash-24.test.tsx. Item 22 (raised-surface contrast) is a token decision for Adrian and is not changed.
