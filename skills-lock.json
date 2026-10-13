@@ -177,6 +177,27 @@
       "computedHash": "54a394b2da9768a551b1cc59a6818b1a6522d79b35aed6729973faa677253201",
       "paths": ["AGENT-BRIEF.md", "OUT-OF-SCOPE.md"]
     },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/composition-patterns/SKILL.md",
+      "pinnedCommit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "hashAlgorithm": "sha256",
+      "computedHash": "40b7667494dfee29a2f69dea6e2edbeb879b5b2c7ca8e824bad5d10f1b87dc1e",
+      "paths": [
+        "AGENTS.md",
+        "rules/architecture-avoid-boolean-props.md",
+        "rules/architecture-compound-components.md",
+        "rules/patterns-children-over-render-props.md",
+        "rules/patterns-explicit-variants.md",
+        "rules/react19-no-forwardref.md",
+        "rules/state-context-interface.md",
+        "rules/state-decouple-implementation.md",
+        "rules/state-lift-state.md"
+      ],
+      "license": "MIT",
+      "hashNote": "Installed under the id/dir vercel-composition-patterns (its SKILL.md name:); upstream directory is skills/composition-patterns/. rules/_sections.md, _template.md, README.md and metadata.json are authoring scaffolding and not vendored."
+    },
     "wayfinder": {
       "source": "mattpocock/skills",
       "sourceType": "github",

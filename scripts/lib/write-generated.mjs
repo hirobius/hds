@@ -19,7 +19,13 @@
  */
 
 import { writeFileSync } from 'node:fs';
-import { format, resolveConfig } from 'prettier';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { format, getFileInfo, resolveConfig } from 'prettier';
+
+const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
+/** What Prettier's CLI (so lint-staged) skips by default. */
+const IGNORE_FILES = ['.gitignore', '.prettierignore'].map((f) => join(REPO, f));
 
 /**
  * Format `content` with the repo's Prettier config for `filePath`, or return it
@@ -39,6 +45,25 @@ export async function formatGenerated(filePath, content) {
     // say so if it matters.
     return content;
   }
+}
+
+/**
+ * The bytes this repo commits for the generated file at `relPath`: Prettier
+ * with this repo's config, or `content` unchanged when .gitignore or
+ * .prettierignore lists the path (Prettier's CLI, so lint-staged, never
+ * touches those; their generator owns the layout).
+ *
+ * Resolved against this repository whatever root the generator writes under,
+ * so a test's throwaway copy of the tree formats exactly like the real one.
+ *
+ * @param {string} relPath - output path relative to the generator's root
+ * @param {string} content - generated content
+ * @returns {Promise<string>}
+ */
+export async function formatCommitted(relPath, content) {
+  const filePath = join(REPO, relPath);
+  const { ignored } = await getFileInfo(filePath, { ignorePath: IGNORE_FILES });
+  return ignored ? content : formatGenerated(filePath, content);
 }
 
 /**

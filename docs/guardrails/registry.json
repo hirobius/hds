@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "5389d7f6f850185611ae0fac400b746ae6de5edd7facb52e35c1d0a75d008612",
-  "precommitStructureHashUpdatedAt": "2026-10-13T04:03:26.714Z",
+  "precommitStructureHash": "3e499354d553fc53743dd3d0f884dd33458909f936001d943284983135d2246c",
+  "precommitStructureHashUpdatedAt": "2026-10-13T10:39:47.217Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -196,7 +196,7 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "scope": "full-tree",
-      "glob": "src/styles/tokens.css"
+      "glob": "src/styles/tokens.generated.css"
     },
     {
       "id": "check-deprecations",
@@ -274,6 +274,17 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "ci-pr",
+      "supportsJson": true
+    },
+    {
+      "id": "check-figma-fallbacks",
+      "description": "Fails when the committed Figma snapshot (figma/snapshot.json, bindingFallbacks) records a paint or effect bound to a colour variable whose raw fallback colour differs from the variable's value in its collection's default mode. Figma renders the raw colour where the binding cannot resolve (a consumer file before the library is published), so a binding over the wrong raw colour looks right in the library and wrong elsewhere (the Kbd shadow bound to color/border/strong over pure black, 2026-10-12; a sweep found 21). Each finding names the node and the fix: set the raw colour to the variable's value and keep the binding. The record is taken by figma/push/use-figma/fallbacks.js and ingested with `pnpm figma:snapshot --fallbacks <file>`; a snapshot that predates the key warns once and passes. Exit 0 clean or not recorded, 1 a mismatch is recorded or the snapshot or its record fails its checksum. Runs in pretest, so pre-push and ci.yml reach it through `pnpm test`.",
+      "severity": "error",
+      "gateScript": "scripts/check-figma-fallbacks.mjs",
+      "fixturePath": "fixtures/check-figma-fallbacks",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
       "supportsJson": true
     },
     {
@@ -501,6 +512,18 @@
       "severity": "error",
       "gateScript": "scripts/check-layout-gap-vocabulary.mjs",
       "fixturePath": "fixtures/check-layout-gap-vocabulary",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
+      "id": "check-no-uppercase",
+      "description": "The design system never produces ALL CAPS text (Adrian, 2026-10-12). Fails the Tailwind `uppercase` class (also variant-prefixed and @apply), CSS or arbitrary-property `text-transform: uppercase`, small caps (font-variant), `textTransform: 'uppercase'` in JS or JSON, `textCase: 'UPPER'` (also SMALL_CAPS) in tokens or the Figma model, and `.toUpperCase()` / `.toLocaleUpperCase()` in code except the first-letter idiom (charAt(0) or [0]). Scans src/, docs-site/, preview/, starter-kit/, tools/, templates/, tenants/, docs/*.html, hirobius.tokens.json and figma/model.json + snapshot.json; skips comments, tests and fixtures. A line is exempt with // uppercase-ok: <reason> on the same line or either line above; the reason is required (a bare marker fails). Known limit: a class assembled at runtime is not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over the repo in pnpm test.",
+      "severity": "error",
+      "gateScript": "scripts/check-no-uppercase.mjs",
+      "fixturePath": "fixtures/check-no-uppercase",
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",

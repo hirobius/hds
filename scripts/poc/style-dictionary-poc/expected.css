@@ -1,10 +1,10 @@
 /**
- * Expected output — extracted from src/styles/tokens.css (build-tokens.mjs)
+ * Expected output — extracted from src/styles/tokens.generated.css (build-tokens.mjs)
  * for the POC scope: primitive.color, primitive.space, primitive.radius
  * Source: hirobius.tokens.json (W3C DTCG 2025.10)
  *
  * This file is the reference for byte-equivalence checking.
- * It contains ONLY the vars covered by the POC; the full tokens.css contains
+ * It contains ONLY the vars covered by the POC; the full tokens.generated.css contains
  * many additional vars (semantic, component, role, typography composites, etc.)
  * that are explicitly out of scope for this POC run.
  */
@@ -27,13 +27,13 @@
   --primitive-color-blue-50: oklch(0.96 0.03 266.54);
   --primitive-color-blue-100: oklch(0.92 0.04 266.54);
   --primitive-color-blue-200: oklch(0.88 0.07 266.54);
-  --primitive-color-blue-300: oklch(0.70 0.2903 266.54);
+  --primitive-color-blue-300: oklch(0.7 0.2903 266.54);
   --primitive-color-blue-400: oklch(0.65 0.2903 266.54);
-  --primitive-color-blue-450: oklch(0.56 0.29 266.60);
-  --primitive-color-blue-500: #1E2EFD;
+  --primitive-color-blue-450: oklch(0.56 0.29 266.6);
+  --primitive-color-blue-500: #1e2efd;
   --primitive-color-blue-600: oklch(0.45 0.2903 266.54);
   --primitive-color-blue-700: oklch(0.44 0.2903 266.54);
-  --primitive-color-blue-800: oklch(0.30 0.07 266.54);
+  --primitive-color-blue-800: oklch(0.3 0.07 266.54);
   --primitive-color-blue-900: oklch(0.22 0.05 266.54);
   --primitive-color-red-50: #fef2f2;
   --primitive-color-red-400: #f87171;
@@ -47,7 +47,7 @@
   --primitive-color-amber-400: #fbbf24;
   --primitive-color-amber-800: #92400e;
   --primitive-color-amber-950: #451a03;
-  --primitive-color-projectBrand-microsoftGameDev-100: #E5E5FC;
+  --primitive-color-projectBrand-microsoftGameDev-100: #e5e5fc;
   --primitive-color-projectBrand-microsoftGameDev-500: #6d31fb;
   --primitive-color-projectBrand-microsoftGameDev-900: oklch(0.22 0.16 304);
   --primitive-space-0: 0px;

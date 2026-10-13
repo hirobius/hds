@@ -50,5 +50,8 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           playwright: true
-          exitZeroOnChanges: true
+          # On a PR, a visual change fails this check until it is accepted in
+          # Chromatic, so a look nobody saw cannot merge (Adrian, 2026-10-12:
+          # the Kbd edge went green without anyone looking). main auto-accepts.
+          exitZeroOnChanges: ${{ github.event_name != 'pull_request' }}
           autoAcceptChanges: ${{ github.ref == 'refs/heads/main' }}

@@ -151,7 +151,6 @@
   --primitive-typography-lineHeight-body: 1.6;
   --primitive-typography-letterSpacing-tight: -0.01em;
   --primitive-typography-letterSpacing-normal: 0em;
-  --primitive-typography-letterSpacing-caps: 0.06em;
   --primitive-duration-instant: 100ms;
   --primitive-duration-short: 150ms;
   --primitive-duration-medium: 250ms;
@@ -299,6 +298,12 @@
   --semantic-typography-title-font-weight: var(--primitive-typography-weight-bold);
   --semantic-typography-title-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-title-line-height: var(--primitive-typography-lineHeight-tight);
+  /* semantic.typography.titleSm */
+  --semantic-typography-titleSm-font-family: var(--primitive-typography-family-display);
+  --semantic-typography-titleSm-font-size: var(--primitive-typography-size-base);
+  --semantic-typography-titleSm-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-titleSm-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-titleSm-line-height: var(--primitive-typography-lineHeight-snug);
   /* semantic.typography.body */
   --semantic-typography-body-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-body-font-size: var(--primitive-typography-size-base);

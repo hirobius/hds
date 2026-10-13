@@ -34,6 +34,8 @@ Hirobius is a clean, structured visual language that bridges digital precision a
 <!-- auto:start:typography -->
 <!-- auto:end:typography -->
 
+**Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
+
 ## Spacing
 
 <!-- auto:start:spacing -->
@@ -83,6 +85,8 @@ Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the n
 <!-- auto:start:components -->
 <!-- auto:end:components -->
 
+When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, and HDS tokens and rules always win.
+
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
 Every HDS card surface must conform to this anatomy exactly. No creative interpretation is permitted on any of these properties.
@@ -117,7 +121,7 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `MetricTiles`        | The default for any row of headline numbers on a screen. One fixed tile size. | Nothing: start here.                                                         |
 | `Stat`               | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
 | `Card.Metric`        | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
-| `StatusTile`         | State with notes and a trailing badge, never a number.                        | `MetricTiles` when the tile is a number; `StatusTile` never carries a value. |
+| `Card.Row`           | State with notes and a trailing badge, never a number (was `StatusTile`).     | `MetricTiles` when the tile is a number; a status row never carries a value. |
 | `Card`               | A titled or interactive content object (header, body, footer, `selectable`).  | `Surface` when there is no title and nothing to press.                       |
 | `Surface`            | A plain padded background around content that has no header of its own.       | `Card` when the content is titled or interactive.                            |
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
@@ -143,6 +147,7 @@ Three more needs are props on an existing component, not components of their own
 - Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
+- Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
 - Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.

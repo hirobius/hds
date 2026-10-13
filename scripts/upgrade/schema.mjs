@@ -31,8 +31,13 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
+import { compareVersions, isVersion } from '../../codemods/lib/semver.mjs';
 import { emitResult, hasJsonFlag } from '../lib/gate-output.mjs';
 import { formatJson, sortedObject } from './format.mjs';
+
+// The one ordering of versions lives in codemods/lib/semver.mjs (hds#642); the
+// upgrade scripts keep importing it from here.
+export { compareVersions };
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 export const SCHEMA_PATH = join(REPO, 'upgrade/schema.json');
@@ -57,23 +62,6 @@ export const IMPACTS = ['none', 'additive', 'look', 'behavior', 'breaking'];
 export const BUMPS = ['patch', 'minor', 'major'];
 
 const SEMVER = '\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?';
-
-/** -1, 0 or 1. A pre-release sorts before its release (0.21.0-next.1 < 0.21.0). */
-export function compareVersions(a, b) {
-  const parse = (v) => {
-    const [core, pre = null] = v.split(/-(.*)/s);
-    return { nums: core.split('.').map(Number), pre };
-  };
-  const x = parse(a);
-  const y = parse(b);
-  for (let i = 0; i < 3; i++) {
-    if (x.nums[i] !== y.nums[i]) return x.nums[i] < y.nums[i] ? -1 : 1;
-  }
-  if (x.pre === y.pre) return 0;
-  if (x.pre === null) return 1;
-  if (y.pre === null) return -1;
-  return x.pre < y.pre ? -1 : 1;
-}
 
 const version = () =>
   z
@@ -293,7 +281,9 @@ export const Release = z
         });
       }
       seen.add(step.id);
-      if (step.removeIn && compareVersions(step.removeIn, release.version) <= 0) {
+      // A malformed version is an issue on its own field; only two real ones are ordered.
+      const ordered = isVersion(step.removeIn) && isVersion(release.version);
+      if (ordered && compareVersions(step.removeIn, release.version) <= 0) {
         ctx.addIssue({
           code: 'custom',
           message: `removeIn ${step.removeIn} is not after ${release.version}`,
