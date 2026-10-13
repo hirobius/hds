@@ -130,7 +130,6 @@ export function loadDenylistFile(file) {
 }
 
 const TEXT_FILE = /\.(?:json|md|mdx|txt|[cm]?[jt]sx?|html?|css|svg|csv|ya?ml)$/i;
-const MAX_BYTES = 2 * 1024 * 1024;
 
 function walk(entry, out) {
   const s = statSync(entry);
@@ -139,7 +138,7 @@ function walk(entry, out) {
       if (name === 'node_modules' || name === '.git') continue;
       const full = path.join(entry, name);
       if (statSync(full).isDirectory()) walk(full, out);
-      else if (TEXT_FILE.test(name) && statSync(full).size <= MAX_BYTES) out.push(full);
+      else if (TEXT_FILE.test(name)) out.push(full); // every text file, whatever its size: a skipped file would pass unscanned
     }
   } else out.push(entry);
 }

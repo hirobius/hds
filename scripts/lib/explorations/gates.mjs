@@ -5,8 +5,10 @@
  *   layout  src/App.tsx, rationale.md, refs.json (and its tenant), bend-log.json
  *           (C only, and required there)
  *   lint    the harness's violation scan (raw hex and colour functions, raw px,
- *           Tailwind, raw controls, custom CSS). A and B: 0. C: each violation
- *           must be listed in bend-log.json, and each listed one must exist.
+ *           Tailwind, raw controls, custom CSS) plus the lint plugin's
+ *           `recommended` error rules (plugin-lint.mjs), one violation seen by
+ *           both counted once. A and B: 0. C: each violation must be listed in
+ *           bend-log.json, and each listed one must exist.
  *   gaps    gaps.json is a valid gap log
  *   pii     nothing that would be published looks like real personal data
  *
@@ -14,6 +16,7 @@
  * the orchestrator in live.mjs; this module is pure.
  */
 import { scanApp } from '../consistency/violations.mjs';
+import { lintWithPlugin, mergeLintHits } from './plugin-lint.mjs';
 import { matchBends, validateBendLog, validateRationale, validateRefs } from './direction.mjs';
 import { validateGapLog } from './gaps.mjs';
 import { scanText } from './pii.mjs';
@@ -63,7 +66,7 @@ function layoutProblems(d, tenants) {
 }
 
 function lintCheck(d, bends) {
-  const hits = scanApp(d.files);
+  const hits = mergeLintHits(scanApp(d.files), lintWithPlugin(d.files));
   if (d.letter !== 'C') {
     return {
       hits,

@@ -60,16 +60,22 @@ The six screens, in priority order (`scripts/lib/explorations/spec.mjs` is the o
 
 ## The directions and their gates
 
-| Direction   | May move                                | Lint (the harness violation scan)                                             | axe                                   |
+| Direction   | May move                                | Lint (the harness scan and the lint plugin)                                   | axe                                   |
 | ----------- | --------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------- |
 | A, Faithful | nothing; renders at the HDS default     | 0 violations                                                                  | 0 serious or critical, light and dark |
 | B, Ceiling  | tokens, through one demo tenant overlay | 0 violations                                                                  | the same                              |
 | C, Wildcard | anything, if logged                     | every violation listed in `bend-log.json`, and every listed violation present | the same, no exception                |
 
-"Lint" is the harness's own violation scan (`scripts/lib/consistency/violations.mjs`): raw
-hex and colour functions, raw `px`, Tailwind utility classes, raw `button` / `input` /
-`select` / `textarea`, custom CSS. It is not the ESLint plugin, which the harness does not
-run today; a generator is still told to pass the plugin's `recommended` rules.
+"Lint" is two tools, run over the same `src/` files, with one violation both report counted
+once (`scripts/lib/explorations/plugin-lint.mjs`):
+
+- the harness's own violation scan (`scripts/lib/consistency/violations.mjs`): raw hex and
+  colour functions, raw `px`, Tailwind utility classes, raw `button` / `input` / `select` /
+  `textarea`, custom CSS;
+- the error rules of the lint plugin's `recommended` config, the plugin consumers install
+  as `@hirobius/design-system/eslint-plugin` (source in `scripts/eslint-plugin-hds/`), which
+  also see a raw `<form>` and bare numbers on spacing props in `style`. Its warnings do not
+  gate. Inline `eslint-disable` comments are ignored, and a file it cannot parse fails.
 
 axe is the harness's: the same engine, rule sets (WCAG 2.0 to 2.2 A and AA) and blocking
 impacts as `scripts/check-docs-axe.mjs`. Explorations scan every viewport in both themes
@@ -157,9 +163,11 @@ on the board.
 ]
 ```
 
-- A scanner bend names a violation the code contains: `kind` (`hex`, `colour-fn`, `px`,
-  `raw-control`, `custom-css`, `tailwind`), `file` and the exact `match` text the scan prints,
-  with `why` and `change`. One bend covers every occurrence of that text in that file,
+- A scanner bend names a violation the code contains: `kind` (a scan kind, `hex`,
+  `colour-fn`, `px`, `raw-control`, `custom-css` or `tailwind`, or a lint plugin rule,
+  `hds/no-raw-controls`, `hds/no-raw-hex`, `hds/no-raw-px-spacing` or `hds/sx-token-first`),
+  `file` and the exact `match` text the gate prints, with `why` and `change`. A violation
+  both tools report is printed once, under the scan's kind, and one bend covers it. One bend covers every occurrence of that text in that file,
   because lines move as a direction is edited. A bend with no matching violation is stale and
   fails the gate, so the log says what the code does.
 - A `design-rule` bend names a DESIGN.md rule the code bends that no scanner can see

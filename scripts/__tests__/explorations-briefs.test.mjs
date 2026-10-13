@@ -1,4 +1,5 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
+// @vitest-environment node
 /**
  * hds#628 phase 0 — the content of eval/explorations/: one brief per screen with
  * the sections every brief owes, shared sections that cannot drift apart, invented
@@ -9,6 +10,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { clientDenylist, scanPaths } from '../lib/explorations/pii.mjs';
+import { BEND_KINDS } from '../lib/explorations/direction.mjs';
 import { GAP_KINDS } from '../lib/explorations/gaps.mjs';
 import { REQUIRED_STATES, SCREENS, SCREEN_IDS } from '../lib/explorations/spec.mjs';
 
@@ -67,6 +69,13 @@ describe('eval/explorations/screens: one brief and one fixture per screen', () =
 
   describe.each(SCREENS.map((s) => [s.id, s]))('%s', (id, screen) => {
     const md = brief(id);
+
+    it('tells C every bend kind the gate accepts, and A and B how to run the lint plugin', () => {
+      const contract = section(md, 'Output contract');
+      for (const kind of BEND_KINDS)
+        expect(contract, kind).toMatch(new RegExp(`[\`"]${kind}[\`"]`));
+      expect(section(md, 'Allowed inputs')).toContain('@hirobius/design-system/eslint-plugin');
+    });
 
     it('has every section a generator needs, in order', () => {
       const headings = md.split('\n').filter((l) => l.startsWith('## '));
@@ -263,6 +272,11 @@ describe('eval/explorations/gap-ids.json', () => {
 
 describe('eval/explorations: the README and the run directory', () => {
   const readme = read('README.md');
+
+  it('names every bend kind the gate accepts, the lint plugin rules included', () => {
+    for (const kind of BEND_KINDS) expect(readme, kind).toContain(`\`${kind}\``);
+    expect(readme).not.toMatch(/It is not the ESLint plugin/);
+  });
 
   it('names every screen and every command it documents', () => {
     for (const id of SCREEN_IDS) expect(readme).toContain(`\`${id}\``);
