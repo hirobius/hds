@@ -260,7 +260,7 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
         />
       </motion.span>
       <motion.span
-        className="text-secondary"
+        className="text-muted-foreground"
         animate={{
           x: isPressed ? hds.space.px1 : 0,
         }}

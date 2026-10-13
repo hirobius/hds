@@ -102,6 +102,9 @@ export function InlineCode({
         display: 'inline-flex',
         alignItems: 'center',
         gap: hds.semantic.space.subgrid.gap,
+        // The 44px touch target overflows this one-line box (centred) instead of stretching the text
+        // line around it: a two-line paragraph was 72px tall at 390 (bug bash 24, item 20).
+        blockSize: '1lh',
         ...style,
       }}
     >

@@ -31,7 +31,7 @@ const progressTrackVariants = /* @__PURE__ */ cva(
 
 // Tone (hds#393) colors the fill: the bar's background, the ring's stroke via
 // currentColor. `neutral` keeps each shape's existing color: `bg-primary` (the accent surface, which contrasts with the track) for
-// the bar, `text-primary` for the ring (the color the standalone ring used).
+// the bar, the content-primary token for the ring (the color the standalone ring used).
 //
 // `tone` and `variant` are lookups here, not cva axes: a cva contract axis is a
 // VARIANT on the Figma Progress set (88:91; docs/architecture/variant-contract.md
@@ -39,7 +39,7 @@ const progressTrackVariants = /* @__PURE__ */ cva(
 // them, move these into cva and list them in Progress's variantAxes in
 // scripts/build-tokens.mjs, like the dot-size lookup in badge.tsx.
 const PROGRESS_TONES = {
-  neutral: { bar: 'bg-primary', ring: 'text-primary' },
+  neutral: { bar: 'bg-primary', ring: 'text-foreground' },
   danger: { bar: 'bg-feedback-danger', ring: 'text-feedback-danger' },
   success: { bar: 'bg-feedback-success', ring: 'text-feedback-success' },
   warning: { bar: 'bg-feedback-warning', ring: 'text-feedback-warning' },

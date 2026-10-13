@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T17:17:10.765Z",
+  "generated": "2026-10-13T08:43:32.549Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -3261,7 +3261,9 @@
         "exportName": "Callout",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/alert.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10904,9 +10906,9 @@
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
-        "description": "Small rounded radius for badges.",
-        "alias": "{primitive.radius.4}",
-        "resolvedValue": "4px"
+        "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
+        "alias": "{semantic.radius.action}",
+        "resolvedValue": "8px"
       },
       {
         "path": "component.badge.height",

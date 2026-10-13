@@ -284,7 +284,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.badge.warning.text": "Warning badge text color.",
   "component.badge.inProgress.bg": "Inprogress badge fill.",
   "component.badge.inProgress.text": "Inprogress badge text color.",
-  "component.badge.radius": "Small rounded radius for badges.",
+  "component.badge.radius": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
   "component.badge.height": "Badge height.",
   "component.badge.minWidth": "Badge minimum width.",
   "component.badge.paddingY": "Vertical padding inside the badge.",

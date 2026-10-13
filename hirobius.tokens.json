@@ -2442,8 +2442,8 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{primitive.radius.4}",
-        "$description": "Small rounded radius for badges."
+        "$value": "{semantic.radius.action}",
+        "$description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius)."
       },
       "height": {
         "$type": "dimension",

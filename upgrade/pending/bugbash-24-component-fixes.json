@@ -58,6 +58,25 @@
       "detect": {
         "regex": ["<FormField\\b[^>]*\\berror="]
       }
+    },
+    {
+      "id": "look/Alert-Callout-Badge-shape",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Alert is padded like Callout (24px instead of 8px), and Alert, Callout, Badge and CodeBlock use the action radius (8px, following a tenant role.radius) instead of a fixed 4px or 8px; nothing to change unless you styled around the old size.",
+      "detect": {
+        "regex": ["<Alert\\b", "<Callout\\b", "<Badge\\b"]
+      }
+    },
+    {
+      "id": "value-changed/--component-badge-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The badge radius token is now the 8px action radius instead of 4px; nothing to change unless you read it directly.",
+      "detect": {
+        "cssVars": ["--component-badge-radius"],
+        "cssVarWrites": ["--component-badge-radius"]
+      }
     }
   ]
 }

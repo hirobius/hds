@@ -30,7 +30,7 @@ type DisclosureVariant = 'panel' | 'nav' | 'card';
 // untouched by this migration — only the static layout/color styling moved.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
 const disclosureTriggerVariants = /* @__PURE__ */ cva(
-  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-primary transition-[border-color,box-shadow,color]',
+  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-foreground transition-[border-color,box-shadow,color]',
   {
     variants: {
       variant: {

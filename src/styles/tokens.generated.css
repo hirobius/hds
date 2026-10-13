@@ -438,7 +438,7 @@
   --component-badge-warning-text: var(--semantic-color-feedback-warning);
   --component-badge-inProgress-bg: var(--semantic-color-feedback-bg-inProgress);
   --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
-  --component-badge-radius: var(--primitive-radius-4);
+  --component-badge-radius: var(--semantic-radius-action);
   --component-badge-height: var(--primitive-size-20);
   --component-badge-minWidth: var(--primitive-size-20);
   --component-badge-paddingY: var(--primitive-space-px2);
