@@ -21,6 +21,7 @@ import {
   Card,
   Checkbox,
   Combobox,
+  Composer,
   Container,
   Dialog,
   Disclosure,
@@ -420,6 +421,22 @@ function InlineLinkDemo() {
   );
 }
 
+function ComposerDemo() {
+  const [sent, setSent] = useState<string | null>(null);
+  return (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <Composer
+        placeholder="Drop a thought, or paste something long"
+        pasteFoldThreshold={200}
+        onSubmit={({ text, attachments }) =>
+          setSent(`${text.length} chars, ${attachments.length} attachments`)
+        }
+      />
+      {sent && <p style={{ margin: 0 }}>Sent: {sent}</p>}
+    </div>
+  );
+}
+
 function KbdDemo() {
   return (
     <p style={{ margin: 0 }}>
@@ -807,6 +824,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Grid: GridDemo,
   Icon: IconDemo,
   InlineLink: InlineLinkDemo,
+  Composer: ComposerDemo,
   Kbd: KbdDemo,
   Pagination: PaginationDemo,
   Popover: PopoverDemo,

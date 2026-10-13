@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-12",
+  "generatedAt": "2026-10-13",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 100,
+    "total": 101,
     "byClass": {
-      "library": 59,
+      "library": 60,
       "slot": 21,
       "layout": 8,
       "internal": 12
     },
     "libraryLinked": 59,
-    "libraryMissing": 0,
+    "libraryMissing": 1,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -233,6 +233,14 @@
       "category": "Inputs",
       "tier": "pattern",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237"
+    },
+    {
+      "name": "Composer",
+      "class": "library",
+      "parent": null,
+      "category": "Inputs",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Container",

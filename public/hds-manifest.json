@@ -63,6 +63,7 @@
     "Checkbox",
     "CodeBlock",
     "Combobox",
+    "Composer",
     "Container",
     "DataTableSection",
     "DestructiveSection",
@@ -2216,6 +2217,7 @@
         "src/app/components/box.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/pin.tsx",
         "src/app/components/reveal.tsx",
@@ -2717,6 +2719,7 @@
       "consumers": [
         "src/app/components/alert-dialog.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
@@ -2771,6 +2774,7 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/dialog.test.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
@@ -3019,6 +3023,7 @@
         "src/app/components/button.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
@@ -3876,6 +3881,7 @@
         "src/app/components/badge.test.tsx",
         "src/app/components/card-row.test.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/state-tokens.test.tsx",
         "src/app/components/tag.tsx",
@@ -5581,6 +5587,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/composer.tsx",
         "src/app/components/kbd.test.tsx",
         "src/app/components/text.tsx"
       ],
@@ -6189,6 +6196,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/composer.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
@@ -7725,6 +7733,100 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null
+    },
+    "Composer": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/composer.tsx",
+      "description": "Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer than `pasteFoldThreshold` characters never enters the field: it becomes an attachment card (a Tag) that opens a Dialog to edit or remove the text. Cmd/Ctrl+Enter submits; plain Enter stays a newline. `text` and `attachments` can each be controlled or uncontrolled; an uncontrolled composer clears itself after a submit.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Composer",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/composer.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "attachments": {
+          "type": "ComposerAttachment[]",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "defaultAttachments": {
+          "type": "ComposerAttachment[]",
+          "default": "[]"
+        },
+        "defaultValue": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "default": "Message"
+        },
+        "onAttachmentsChange": {
+          "type": "(attachments: ComposerAttachment[]) => void",
+          "optional": true
+        },
+        "onSubmit": {
+          "type": "(submission: ComposerSubmission) => void",
+          "optional": true
+        },
+        "onValueChange": {
+          "type": "(value: string) => void",
+          "optional": true
+        },
+        "pasteFoldThreshold": {
+          "type": "number",
+          "default": 500
+        },
+        "pending": {
+          "type": "boolean",
+          "default": false
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "value": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Capture a prompt or a quick note where a long paste should not flood the field.",
+        "whenNot": "A plain multi-line field with no submit action, or a form with several fields.",
+        "useInstead": [
+          {
+            "component": "Textarea",
+            "reason": "a plain multi-line field"
+          }
+        ]
+      }
     },
     "HdsPhosphor": {
       "category": "Compiler",

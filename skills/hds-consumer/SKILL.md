@@ -91,6 +91,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Checkbox` — Checkbox — custom-drawn checkbox with check / indeterminate glyph.
 - `Combobox` — Combobox — searchable single- or multi-select (Popover + filtered listbox).
+- `Composer` — Composer — prompt and capture box that grows with its text and folds long pastes into cards.
 - `Input` — Input — text field primitive with label, helper, and error slots.
 - `Radio` — Radio — radio button with animated selection indicator.
 - `SegmentedControl` — SegmentedControl " segmented selection input for compact mutually-exclusive choices.
