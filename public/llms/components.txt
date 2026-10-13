@@ -535,6 +535,7 @@ Slider — range slider with label and value display.
   - onChange: (v: number) => void
   - step: number = 1
   - value: number
+  - valueText: string
 
 ### Spinner
 Indeterminate spinner. Inherits the surrounding text color via currentColor.
@@ -628,7 +629,7 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline p
   - value: string
 
 ### Tag
-Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps th…
+Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visi…
   - active: boolean = false
   - children: ReactNode
 

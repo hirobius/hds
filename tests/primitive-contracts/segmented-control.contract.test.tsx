@@ -84,7 +84,7 @@ describe('SegmentedControl contract', () => {
     expect(container.textContent).toContain('Sort by');
   });
 
-  it('hds-focus class is applied to each button', () => {
+  it('a11y:segmented-control.focus-ring hds-focus class is applied to each button', () => {
     const { container } = render(
       <SegmentedControl options={OPTIONS} value="a" onChange={() => {}} />,
     );

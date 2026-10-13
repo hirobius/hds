@@ -3,3 +3,5 @@ Design explorations phase 0 (hds#628) integrated: spec set and gates (six briefs
 @a11y JSDoc tags (hds#520 slice 0): owner/testId on a11yRules, reaches component-api.json, MCP get_component and the docs Accessibility fold; scripts/check-a11y-contracts.mjs registered at severity warn (pre-commit, lists every gap, exits 0) until the family backfills land.
 
 Family A of the hds#520 a11y backfill (overlays, listboxes, announcements): @a11y tags on 12 components, overlay-a11y.contract.test.tsx, Combobox result-count live region.
+
+@a11y backfill, family B (hds#520): Checkbox, Radio, Toggle, Slider, SegmentedControl, Tag, Input, Textarea, Form, FormField, FormFieldShell and FormActions carry @a11y tags, each owner:component rule proved by an a11y:<id> test (tests/primitive-contracts/form-controls.contract.test.tsx and the colocated tests). Code fixes found by the tests: Slider valueText and label association, compact SegmentedControl 24px hit area.
