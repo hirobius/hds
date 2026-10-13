@@ -36,10 +36,11 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
-import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, dirname, extname, basename, relative, resolve } from 'node:path';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { join, dirname, extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { scanSources, findMarker, maskComments, isSpecFile } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -51,19 +52,9 @@ const fixtureFile = process.env.FIXTURE_FILE;
 
 const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'tools', 'templates', 'tenants'];
 const SCAN_FILES = ['hirobius.tokens.json', 'figma/model.json', 'figma/snapshot.json'];
-const EXTENSIONS = new Set([
-  '.ts',
-  '.tsx',
-  '.js',
-  '.jsx',
-  '.mjs',
-  '.cjs',
-  '.css',
-  '.html',
-  '.json',
-]);
+const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.css', '.html', '.json'];
 const CODE_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.css']);
-const SKIP_DIRS = new Set([
+const SKIP_DIRS = [
   'node_modules',
   '.git',
   'dist',
@@ -73,18 +64,14 @@ const SKIP_DIRS = new Set([
   '.source',
   '__tests__',
   'fixtures',
-]);
+];
+
+// A `//` comment may also follow punctuation here (`{ // note`, `f(// note`).
+const COMMENT_LEADS = ' \t;,{(';
 
 /** Whether a repo-relative path is out of scope (tests prove translators). */
 export function isExempt(rel) {
-  return /\.(test|spec)\.[cm]?[jt]sx?$/.test(basename(rel));
-}
-
-/** Blanks comments (keeping every newline) so prose never reads as code. */
-function maskComments(text) {
-  return text
-    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '))
-    .replace(/(^|[ \t;,{(])\/\/[^\n]*/gm, (m, lead) => lead + ' '.repeat(m.length - lead.length));
+  return isSpecFile(rel);
 }
 
 /** [regex, message] pairs applied to every line. */
@@ -140,15 +127,13 @@ function findClassUppercase(line) {
 export function findViolationsInText(text, file) {
   const raw = text.split('\n');
   const isCode = CODE_EXTENSIONS.has(extname(file));
-  const masked = (isCode ? maskComments(text) : text).split('\n');
+  const masked = (isCode ? maskComments(text, { leadChars: COMMENT_LEADS }) : text).split('\n');
   const out = [];
 
   const marker = (i) => {
-    for (const j of [i, i - 1, i - 2]) {
-      const m = /uppercase-ok:(.*)$/.exec(raw[j] ?? '');
-      if (m) return /[A-Za-z]{3}/.test(m[1]) ? 'ok' : 'bare';
-    }
-    return null;
+    const found = findMarker(raw, i, 'uppercase-ok', 2);
+    if (!found) return null;
+    return /[A-Za-z]{3}/.test(found.reason) ? 'ok' : 'bare';
   };
 
   masked.forEach((line, i) => {
@@ -185,19 +170,17 @@ export function findViolationsInText(text, file) {
   return out;
 }
 
-function collectFiles(dir, results = []) {
-  for (const entry of readdirSync(dir)) {
-    if (SKIP_DIRS.has(entry)) continue;
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) collectFiles(full, results);
-    else if (EXTENSIONS.has(extname(entry))) results.push(full);
-  }
-  return results;
-}
-
 function defaultFiles() {
-  const files = [];
-  for (const d of SCAN_DIRS) if (existsSync(join(ROOT, d))) collectFiles(join(ROOT, d), files);
+  const files = [
+    ...scanSources({
+      root: ROOT,
+      gate: 'check-no-uppercase',
+      roots: SCAN_DIRS.map((d) => ({ path: d, optional: true })),
+      exts: EXTENSIONS,
+      skipDirs: SKIP_DIRS,
+      includeSpecs: true,
+    }),
+  ];
   for (const f of SCAN_FILES) if (existsSync(join(ROOT, f))) files.push(join(ROOT, f));
   const docs = join(ROOT, 'docs');
   for (const e of readdirSync(docs)) if (e.endsWith('.html')) files.push(join(docs, e));
