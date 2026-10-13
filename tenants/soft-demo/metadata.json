@@ -1,0 +1,30 @@
+{
+  "$schema": "../../hirobius.tenant-metadata.schema.json",
+  "slug": "soft-demo",
+  "displayName": "Soft Demo",
+  "tagline": "hds#505 soft direction as an overlay: pill actions, soft containers, grey-fill grouping, roomier surfaces. demo-only, not a real client.",
+  "demo": true,
+  "tier": 1,
+  "deployment": {
+    "vercelProject": null,
+    "primaryDomain": null,
+    "previewDomain": null
+  },
+  "brand": {
+    "primaryHex": "#433A3F",
+    "accentName": "graphite",
+    "logoPath": null
+  },
+  "legal": {
+    "entity": null,
+    "jurisdiction": null,
+    "stripeAccountKind": null
+  },
+  "createdAt": "2026-10-12",
+  "status": "scaffold",
+  "_notes": [
+    "Design-explorations demo tenant (hds#628, phase 0) implementing the token deltas of hds#505. Not a real client: no deployment, no legal entity. Not listed in figma/brand-modes.json; publishing a Brand mode is Adrian's call.",
+    "Keeps the base accent (graphite.700, #433A3F), so brand.primaryHex is the default's. It overrides shape, one surface fill and surface padding only; the deltas the tokens cannot express are the README's Gaps.",
+    "Scaffolded with pnpm scaffold:tenant, then rewritten: the scaffold's accent overlay, $schema ref and missing demo flag do not fit a demo tenant."
+  ]
+}
