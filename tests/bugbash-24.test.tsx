@@ -82,12 +82,21 @@ describe('Toggle (item 3, 17)', () => {
 });
 
 describe('Radio disabled (item 17)', () => {
-  it('a disabled Radio ring fades like Checkbox and Toggle', () => {
-    const s = src('radio.tsx');
-    const m = s.match(/disabled:\s*\{[\s\S]*?\}/g)?.join('\n') ?? '';
-    expect(s).toMatch(/border-default/);
-    expect(m).not.toMatch(/border-\[color:var\(--semantic-color-content-secondary\)\]/);
-  });
+  // Renders the ring: the earlier source-regex looked for a `disabled: {` block radio.tsx never had,
+  // so it passed by construction.
+  const ring = (el: HTMLElement) =>
+    Array.from(el.querySelectorAll('span')).find((s) => /border-\[color:/.test(s.className))!;
+  it.each([false, true])(
+    'a disabled Radio ring (checked=%s) fades to border-default',
+    (checked) => {
+      const { container } = render(
+        <Radio label="r" name="r" value="1" checked={checked} disabled onChange={() => {}} />,
+      );
+      const cls = ring(container).className;
+      expect(cls).toMatch(/border-\[color:var\(--semantic-color-border-default\)\]/);
+      expect(cls).not.toMatch(/content-secondary|border-accent/);
+    },
+  );
 });
 
 describe('CodeBlock (items 5, 9)', () => {
@@ -387,6 +396,40 @@ describe('Overflow (item 15) and shape (item 16)', () => {
     expect(li(21).className).toMatch(/max-sm:hidden/);
     for (const n of [1, 20, 40]) expect(li(n).className).not.toMatch(/max-sm:hidden/);
   });
+  // Reviewer: hiding sibling pages below sm must never leave a silent gap. At 7 pages on page 4 the
+  // phone row read "1 4 7" with no ellipsis, so pages 2-3 and 5-6 vanished without a cue.
+  it.each([
+    [7, 4],
+    [7, 2],
+    [9, 5],
+    [40, 20],
+    [40, 3],
+    [10, 9],
+    [5, 3],
+  ])(
+    'Pagination count=%i page=%i marks every skipped run with an ellipsis, wide and narrow',
+    (count, page) => {
+      const { container } = render(
+        <Pagination count={count} page={page} onPageChange={() => {}} />,
+      );
+      const items = Array.from(container.querySelectorAll('li')).slice(1, -1);
+      const row = (hiddenClass: RegExp) =>
+        items
+          .filter((li) => !hiddenClass.test(li.className))
+          .map((li) => (li.textContent === '…' ? '…' : Number(li.textContent)));
+      // narrow: drop max-sm:hidden; wide: drop the sm:hidden that only phones show
+      for (const r of [row(/(^|\s)max-sm:hidden(\s|$)/), row(/(^|\s)sm:hidden(\s|$)/)]) {
+        expect(r[0]).toBe(1);
+        expect(r[r.length - 1]).toBe(count);
+        expect(r).toContain(page);
+        for (let i = 1; i < r.length; i++) {
+          const [a, b] = [r[i - 1], r[i]];
+          if (typeof a === 'number' && typeof b === 'number') expect(b - a).toBe(1);
+          expect(a === '…' && b === '…').toBe(false);
+        }
+      }
+    },
+  );
   it('Field values wrap long unbroken text', () => {
     render(<Field label="URL" mono value="https://example.com/a/very/long/path" />);
     expect(screen.getByText(/very\/long/).className).toMatch(/break-words/);
@@ -437,4 +480,17 @@ describe('No hidden dependency on the hand-written text utilities (item 21)', ()
   );
 });
 void fireEvent;
-void Radio;
+
+describe('Reduced motion reaches the spinners (review of item 21)', () => {
+  // utilities.css is unlayered, so its .animate-spin outranked Tailwind's layered
+  // motion-reduce:animate-none: Spinner, Button loading, Input loading and the indeterminate
+  // Progress ring kept spinning under prefers-reduced-motion (measured in Chromium).
+  it('the hand-written .animate-spin only applies when motion is not reduced', () => {
+    const util = css('utilities.css');
+    const top = util.replace(/@media[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '');
+    expect(top).not.toMatch(/\.animate-spin\s*\{/);
+    expect(util).toMatch(
+      /@media\s*\(prefers-reduced-motion:\s*no-preference\)\s*\{\s*\.animate-spin\s*\{/,
+    );
+  });
+});
