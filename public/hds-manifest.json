@@ -1671,8 +1671,62 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Must have associated label via label prop or aria-labelledby",
-          "required": true
+          "rule": "The label prop renders a real label associated with the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.label"
+        },
+        {
+          "rule": "A prefix, suffix or icon stays out of the accessible name, so the label is the whole name.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.slots-name"
+        },
+        {
+          "rule": "The helper text is linked with aria-describedby only while it renders.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.helper-described"
+        },
+        {
+          "rule": "An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.error-wiring"
+        },
+        {
+          "rule": "A loading field stays focusable (read-only with aria-busy), so typing keeps focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.loading-focusable"
+        },
+        {
+          "rule": "The clear button is named, reachable by Tab, and returns focus to the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.clear-button"
+        },
+        {
+          "rule": "The clear button spans the field height and is 24px or wider (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.clear-target-size"
+        },
+        {
+          "rule": "A screen reader speaks the label, the invalid state and the error message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.sr-field"
+        },
+        {
+          "rule": "Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Set autoComplete on fields that collect the person's own details (WCAG 1.3.5).",
+          "required": false,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [
@@ -1868,12 +1922,45 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Must have accessible group label (aria-label or aria-labelledby on the container)",
-          "required": true
+          "rule": "The control is one Tab stop; arrow keys move focus between segments and Space or Enter selects.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.roving-focus"
         },
         {
-          "rule": "Selected option must be communicated via aria-pressed or aria-selected",
-          "required": true
+          "rule": "It is a radiogroup named by label or aria-label, and each segment is a radio with aria-checked.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.group-and-radio-roles"
+        },
+        {
+          "rule": "A screen reader speaks the group name and each radio with its state, position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.sr-group"
+        },
+        {
+          "rule": "Every segment carries the shared hds-focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.focus-ring"
+        },
+        {
+          "rule": "Each segment hit area is 24px or taller, including the compact size (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.target-size"
+        },
+        {
+          "rule": "The indicator slide goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Give the control a label or an aria-label so the group has a name.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [],
@@ -2201,7 +2288,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/tag.tsx",
-      "description": "Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps the visible surface compact. Colors (background, border-color, color) live in the pill's cva variants, painted through `group-hover`/`group-active` so the pill reacts to interaction on the shared outer button (converted off the former .hds-tag-btn/.hds-tag-pill theme.css rules for #60 — same behavior, now token-driven Tailwind classes). The `active` prop (aria-pressed selected state) is not one of the variant contract's four axes — it's expressed as the pill's `selected` cva variant, carrying the same rest → hover → pressed → focus-visible state matrix the contract expects, just keyed by selection instead of tone/size/density.",
+      "description": "Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visible surface compact. Colors (background, border-color, color) live in the pill's cva variants, painted through `group-hover`/`group-active` so the pill reacts to interaction on the shared outer button (converted off the former .hds-tag-btn/.hds-tag-pill theme.css rules for #60 — same behavior, now token-driven Tailwind classes). The `active` prop (aria-pressed selected state) is not one of the variant contract's four axes — it's expressed as the pill's `selected` cva variant, carrying the same rest → hover → pressed → focus-visible state matrix the contract expects, just keyed by selection instead of tone/size/density.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "figmaId": null,
       "preview": {
@@ -2261,12 +2348,45 @@
       ],
       "a11yRules": [
         {
-          "rule": "When used as interactive chip (onClick), must have role=\"button\" and keyboard activation",
-          "required": true
+          "rule": "Enter and Space activate the tag (it is always a native button).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.keyboard-activate"
         },
         {
-          "rule": "When used as status indicator (no onClick), role should be \"status\" or omitted",
-          "required": false
+          "rule": "The selected state is reported with aria-pressed.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.pressed-state"
+        },
+        {
+          "rule": "A screen reader speaks a toggle button with its name and pressed or not pressed.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.sr-toggle-button"
+        },
+        {
+          "rule": "A disabled tag is skipped by Tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.disabled-skipped"
+        },
+        {
+          "rule": "The tag carries the shared hds-focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.focus-ring"
+        },
+        {
+          "rule": "The pill is at least 24px tall and 48px wide (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.target-size"
+        },
+        {
+          "rule": "Name the tag by its text, or by an aria-label when the text is not enough; use Badge for a label that does nothing.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [
@@ -4304,7 +4424,49 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Arrow keys move and select inside a same-name group, and the group is one Tab stop.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.arrows-select-group"
+        },
+        {
+          "rule": "A screen reader speaks each radio with its name, state, position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.sr-group"
+        },
+        {
+          "rule": "A disabled radio is skipped by Tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.disabled-skipped"
+        },
+        {
+          "rule": "The focus ring shows on keyboard focus only (:focus-visible) and hover never hides it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.focus-ring"
+        },
+        {
+          "rule": "The row is 24px or taller and lifts to the 44px touch minimum on a phone (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.target-size"
+        },
+        {
+          "rule": "The selection dot animation goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Give every radio in a group the same name and wrap the group in a fieldset with a legend, or a role=radiogroup with an aria-label.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -4500,6 +4662,10 @@
         },
         "value": {
           "type": "number"
+        },
+        "valueText": {
+          "type": "string",
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -4507,7 +4673,55 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "It is a native range input, so arrows, PageUp/PageDown and Home/End adjust it and the track is a single-pointer alternative to dragging.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.native-range-keys"
+        },
+        {
+          "rule": "The slider exposes its name, min, max and current value.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.name-range-value"
+        },
+        {
+          "rule": "The visible label is associated with the range input, so clicking it focuses the slider.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.label-click"
+        },
+        {
+          "rule": "The valueText prop is exposed as aria-valuetext.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.valuetext"
+        },
+        {
+          "rule": "A screen reader speaks the name and the formatted value.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.sr-value"
+        },
+        {
+          "rule": "Under a coarse pointer the hit area lifts to the 44px touch minimum (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.target-size"
+        },
+        {
+          "rule": "The fill animation goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Pass valueText when the bare number does not read well, such as a price, a percentage or a step name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -4575,7 +4789,49 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Space flips the switch from the keyboard (it is a native input with role=switch).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.space-toggles"
+        },
+        {
+          "rule": "A screen reader speaks a switch with its name and on or off state.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.sr-switch"
+        },
+        {
+          "rule": "A disabled switch is skipped by Tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.disabled-skipped"
+        },
+        {
+          "rule": "The focus ring shows on keyboard focus only (:focus-visible) and hover never hides it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.focus-ring"
+        },
+        {
+          "rule": "The row is 24px or taller and lifts to the 44px touch minimum on a phone (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.target-size"
+        },
+        {
+          "rule": "The thumb slide goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Label the switch with the setting it controls, not with its state, because the state is already spoken.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -5233,7 +5489,24 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "It renders a native form element, so Enter submits and the browser's validation and autofill work.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form.native-form"
+        },
+        {
+          "rule": "Name the form with aria-label or aria-labelledby when a page has more than one.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Submit with a real button, and on a failed submit name each error and move focus to the first invalid field (WCAG 3.3.1, 3.3.3).",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/patterns/form",
       "usage": {
         "when": "Wrap form fields so they stack with even spacing."
@@ -5298,7 +5571,49 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The label is associated with the control through htmlFor and id.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.label-association"
+        },
+        {
+          "rule": "The description is linked to the control with aria-describedby.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.description-described"
+        },
+        {
+          "rule": "An error sets aria-invalid on the control, links the message and announces it with role=alert.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.error-wiring"
+        },
+        {
+          "rule": "The description id is dropped while an error replaces it, so aria-describedby never points at nothing.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.no-dangling-ids"
+        },
+        {
+          "rule": "A required field gets the required attribute and a visible marker that screen readers skip.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.required"
+        },
+        {
+          "rule": "The control keeps its own id, and the label still points at it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.keeps-control-id"
+        },
+        {
+          "rule": "Give FormField exactly one control; for a control that owns a callback ref use FormFieldShell and useFieldWiring.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": null
     },
     "FormFieldShell": {
@@ -5355,7 +5670,19 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The shell renders the label, description and error with ids that useFieldWiring links to the control, and lists the description only while it renders.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field-shell.use-field-wiring"
+        },
+        {
+          "rule": "Pass the controlId from useFieldWiring to the control and spread the returned describedby onto it.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": null
     },
     "HdsThemeProvider": {
@@ -6214,7 +6541,37 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The label prop renders a real label associated with the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:textarea.label"
+        },
+        {
+          "rule": "The helper text is linked with aria-describedby only while it renders.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:textarea.helper-described"
+        },
+        {
+          "rule": "An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:textarea.error-wiring"
+        },
+        {
+          "rule": "A screen reader speaks the label, the invalid state and the error message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:textarea.sr-field"
+        },
+        {
+          "rule": "Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/textarea",
       "usage": {
         "when": "Collect multi-line free text such as a message, note or description.",
@@ -7205,7 +7562,55 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Space toggles the checkbox from the keyboard (it is a native input).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.space-toggles"
+        },
+        {
+          "rule": "The checkbox is named by its label and reports aria-checked=mixed when indeterminate.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.name-and-state"
+        },
+        {
+          "rule": "A disabled checkbox is skipped by Tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.disabled-skipped"
+        },
+        {
+          "rule": "A screen reader speaks the name with checked, not checked or partially checked.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.sr-state"
+        },
+        {
+          "rule": "The focus ring shows on keyboard focus only (:focus-visible) and hover never hides it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.focus-ring"
+        },
+        {
+          "rule": "The row is 24px or taller and lifts to the 44px touch minimum on a phone (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.target-size"
+        },
+        {
+          "rule": "The check animation goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Put related checkboxes in a fieldset with a legend so the group has a name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/checkbox",
       "usage": {
         "when": "Let people tick one or more independent options, or a parent choice that is partly selected.",
@@ -7267,7 +7672,19 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "DOM order matches visual order, with the primary action last (WCAG 1.3.2, 2.4.3).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-actions.dom-order"
+        },
+        {
+          "rule": "Give every action a visible name; an icon-only action needs an aria-label.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/patterns/form-actions",
       "usage": {
         "when": "Lay out a form's buttons in a fixed order: danger on the left, then secondary, then primary on the right."

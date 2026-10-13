@@ -38,18 +38,21 @@ const noop = () => {};
 const CASES = [
   {
     name: 'Checkbox',
+    id: 'a11y:checkbox.focus-ring',
     ui: <Checkbox label="Agree" checked={false} onChange={noop} />,
     role: 'checkbox',
     ring: (input: HTMLElement) => input.nextElementSibling as HTMLElement,
   },
   {
     name: 'Radio',
+    id: 'a11y:radio.focus-ring',
     ui: <Radio label="Card" checked={false} onChange={noop} />,
     role: 'radio',
     ring: (input: HTMLElement) => input.nextElementSibling as HTMLElement,
   },
   {
     name: 'Toggle',
+    id: 'a11y:toggle.focus-ring',
     ui: <Toggle label="Wi-Fi" checked={false} onChange={noop} />,
     role: 'switch',
     ring: (input: HTMLElement) => input.parentElement as HTMLElement,
@@ -58,7 +61,7 @@ const CASES = [
 
 const hasRing = (el: HTMLElement) => el.className.includes('[outline:');
 
-describe.each(CASES)('$name focus ring', ({ ui, role, ring }) => {
+describe.each(CASES)('$id $name focus ring', ({ ui, role, ring }) => {
   it('is hidden at rest', () => {
     render(ui);
     expect(hasRing(ring(screen.getByRole(role)))).toBe(false);

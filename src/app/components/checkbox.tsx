@@ -7,6 +7,14 @@
  * @useInstead Toggle a setting that applies as soon as it flips
  * @useInstead Radio exactly one choice from a set
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=35-29
+ * @a11y component required a11y:checkbox.space-toggles Space toggles the checkbox from the keyboard (it is a native input).
+ * @a11y component required a11y:checkbox.name-and-state The checkbox is named by its label and reports aria-checked=mixed when indeterminate.
+ * @a11y component required a11y:checkbox.disabled-skipped A disabled checkbox is skipped by Tab.
+ * @a11y component required a11y:checkbox.sr-state A screen reader speaks the name with checked, not checked or partially checked.
+ * @a11y component required a11y:checkbox.focus-ring The focus ring shows on keyboard focus only (:focus-visible) and hover never hides it.
+ * @a11y component required a11y:checkbox.target-size The row is 24px or taller and lifts to the 44px touch minimum on a phone (WCAG 2.5.8).
+ * @a11y component required gate:check-reduced-motion The check animation goes through useHdsMotion, so it stops under prefers-reduced-motion.
+ * @a11y consumer required Put related checkboxes in a fieldset with a legend so the group has a name.
  */
 
 import { forwardRef, useEffect, useRef } from 'react';

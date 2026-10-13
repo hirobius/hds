@@ -11,6 +11,11 @@
  * Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity:
  * the four states Default / Focus / Error / Disabled map to the focus-ring,
  * `error`, and `disabled` treatments below.
+ * @a11y component required a11y:textarea.label The label prop renders a real label associated with the field.
+ * @a11y component required a11y:textarea.helper-described The helper text is linked with aria-describedby only while it renders.
+ * @a11y component required a11y:textarea.error-wiring An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.
+ * @a11y component required a11y:textarea.sr-field A screen reader speaks the label, the invalid state and the error message.
+ * @a11y consumer required Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.
  */
 
 import * as React from 'react';
