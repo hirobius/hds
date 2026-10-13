@@ -6,7 +6,7 @@
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154
  */
 
-import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { cva } from 'class-variance-authority';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
@@ -121,6 +121,10 @@ const prePanelVariants = /* @__PURE__ */ cva(
  * only then does it become a keyboard-scrollable `group` named by the filename or language, so a page
  * of short blocks adds no tab stops and no duplicate "Code sample" landmarks (bug bash 24, item 9).
  */
+// A layout effect in the browser (no flash of the unmeasured state); a plain effect on the server,
+// where React 18 warns about useLayoutEffect and neither one runs.
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
+
 function CodePre({
   panelBackground,
   label,
@@ -132,7 +136,7 @@ function CodePre({
 }) {
   const ref = useRef<HTMLPreElement>(null);
   const [overflows, setOverflows] = useState(false);
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
     const measure = () => setOverflows(el.scrollWidth > el.clientWidth);
