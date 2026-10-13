@@ -165,6 +165,13 @@ describe('hds-mcp over stdio', () => {
     );
   });
 
+  it('get_component carries a11y rules, an untagged hand-kept rule as plain text', async () => {
+    const { data } = await callTool(server, 'get_component', { name: 'Dialog' });
+    expect(data.a11y).toEqual(
+      expect.arrayContaining([expect.stringMatching(/^Must have an accessible name/)]),
+    );
+  });
+
   it('get_component reports an unknown name as a tool error with suggestions', async () => {
     const res = await server.request('tools/call', {
       name: 'get_component',
