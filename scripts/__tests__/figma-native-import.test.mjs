@@ -150,7 +150,7 @@ describe('buildNativeImportFiles with Brand and Density', () => {
     },
   };
   const model = buildFigmaModel(JSON.parse(readFileSync(FIXTURE_TOKENS_PATH, 'utf8')), {
-    brands: { baseMode: 'Hirobius', tenants: [sharp] },
+    brands: { baseMode: 'Hirobius', directions: [sharp] },
   });
   const branded = buildNativeImportFiles(model);
   const importOrder = [...new Set(branded.map((f) => f.collection))];

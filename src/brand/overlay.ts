@@ -9,13 +9,21 @@
  * this module maps it onto the HDS semantic custom properties. Everything HDS
  * ships downstream of those semantics (component tokens, utilities) then reads
  * the brand automatically via the `var()` reference chain — the same strategy
- * as the checked-in `[data-brand]` tenant overlays (`src/styles/tenants.css`),
+ * as the checked-in `[data-brand]` direction overlays (`src/styles/tenants.css`),
  * but computed at the consumer instead of at HDS build time, so HDS never has
- * to know the client roster.
+ * to know the client roster (ADR-035: a brand is applied at the consumer, never
+ * shipped in the package).
  *
  * Deliberately dependency-free (no React, no Node) so it runs in any render
  * target and is unit-testable in isolation. Mirrors the zero-dependency idiom
  * of `box-sx.ts`.
+ *
+ * Downstream vendoring: a render target that cannot take the package (a static
+ * site factory that ships no React) vendors this file and adds its own dials
+ * on top. The `BrandPalette` fields and the variables written here are the
+ * contract such a consumer pins against each published release: keep both
+ * additive. A removed field or a renamed variable breaks that consumer on its
+ * next snapshot refresh.
  *
  * Interactive accent states (hover/pressed/subtle) are derived from the primary
  * with CSS `color-mix()` — no colour-math dependency, resolved by the browser.
@@ -117,7 +125,7 @@ export function brandOverlayStyle(palette: BrandPalette): string {
 /**
  * Serialize a palette to a scoped CSS rule (`<selector>{ --var: value; }`) for
  * a static stylesheet — e.g. `[data-brand="acme"]` blocks in an Astro layout,
- * mirroring the checked-in tenant overlays. `selector` is emitted verbatim; the
+ * mirroring the checked-in direction overlays. `selector` is emitted verbatim; the
  * caller owns its trust (typically a slug it controls).
  */
 export function brandOverlayCss(selector: string, palette: BrandPalette): string {

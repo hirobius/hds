@@ -105,7 +105,7 @@ describe("codemods/tile-grid.mjs writes TileGrid's recipe for every ops site (hd
 
 // ── Computed, in Chromium ─────────────────────────────────────────────────────
 
-const TENANTS = ['base', 'accent-lilac', 'brutalist-demo', 'concrete-creations'];
+const TENANTS = ['base', 'accent-lilac', 'brutalist-demo'];
 const DENSITIES = ['comfortable', 'compact'];
 /** The spacing lock's widths; theme.css retunes spacing at 639/640px. */
 const WIDTHS = [1280, 640, 639, 400];

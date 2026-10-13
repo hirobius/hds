@@ -3,7 +3,7 @@
 /**
  * Hirobius Design System — `pnpm figma:model`
  *
- * Builds the Figma model from hirobius.tokens.json and the demo tenants in
+ * Builds the Figma model from hirobius.tokens.json and the directions in
  * figma/brand-modes.json (scripts/lib/figma-model.mjs), checks its invariants,
  * and writes figma/model.json: collections × modes ×
  * variables keyed by token path, text styles, effect styles, and the declared
@@ -25,7 +25,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
  * Builds, validates and (only when valid) writes the model.
  *
  * @param {{ tokensPath: string, outPath: string, brands?: object|null }} paths
- *   brands: demo tenant overlays (loadBrandModes) for the Brand and Density collections.
+ *   brands: direction overlays (loadBrandModes) for the Brand and Density collections.
  * @returns {{ model: object, summary: object, violations: string[] }}
  */
 export function writeFigmaModel({ tokensPath, outPath, brands = null }) {

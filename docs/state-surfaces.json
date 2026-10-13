@@ -329,7 +329,7 @@
     },
     {
       "path": "figma/brand-modes.json",
-      "describes": "Demo tenants that are modes of the Hirobius/Brand collection",
+      "describes": "Directions that are modes of the Hirobius/Brand collection (ADR-035)",
       "kind": "editorial",
       "owner": "Adrian",
       "reviewedAt": "2026-10-12",

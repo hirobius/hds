@@ -2,6 +2,8 @@
 
 **Status:** Accepted (2026-07-10)
 
+**Amended by:** ADR-035 (2026-10-12). The `data-brand` dial now selects a _direction_ shipped in the package or a _brand_ a consumer applies through the brand bridge; the attribute names, selectors and the four-dial surface ratified here are unchanged.
+
 ## Context
 
 `src/styles/theme.css` has, since before this ADR series existed, documented

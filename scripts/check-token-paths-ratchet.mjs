@@ -115,7 +115,7 @@ const SKIP_PATH_FRAGMENTS = [
   '.claude/worktrees',
   'src/app/design-system/generated-token',
   'public/hds-manifest-agent.json',
-  'tenants/',
+  'directions/',
   'docs/archive/',
   'docs/SYSTEMS-LOG.md',
   'docs/ai/AI_ORCHESTRATION.md',

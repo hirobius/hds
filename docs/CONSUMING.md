@@ -279,7 +279,7 @@ directly through a `tone` prop so you rarely need the raw vars:
 <Badge tone="inProgress">Interviewing</Badge>
 ```
 
-## 8. Optional providers — theming / i18n / multi-tenant / fonts
+## 8. Optional providers — theming / i18n / brand or direction / fonts
 
 Only needed if you use those features. Mount them above your app:
 
@@ -302,6 +302,12 @@ import {
 
 `ThemeProvider` toggles light/dark by setting `data-theme` + `.dark` on
 `<html>`. It does not set `data-hds` — add that yourself (§4).
+
+`TenantProvider` writes `data-brand` (and the `data-tenant` alias) for the
+`slug` you pass: one of the package's directions (`accent-lilac`,
+`brutalist-demo`) or the slug of your own brand block from §12.3. ADR-035
+names the layers: a **direction** ships in the package, a **brand** is yours and
+never does, and theme and density are the viewer's **preferences**.
 
 ## 8.5 Optional — typed, schema-validated forms (React Hook Form + Zod)
 
@@ -414,22 +420,24 @@ and may reference DS tokens freely:
 Pick one prefix for your app (`--lb-*` here) and keep every
 local declaration inside it.
 
-### C3 — Brand through the tenant mechanism
+### C3 — Brand through the bridge, directions through the package
 
-Re-theming goes through the DS's own structure, not around it: author a **tenant
-overlay** conforming to
+Re-theming goes through the DS's own structure, not around it. Your **brand**
+(your accent, surfaces, type and shape) never enters the package: build it with
+`@hirobius/design-system/brand` (§12) as an inline style or a `[data-brand]`
+block, or compile your own overlay conforming to
 [`hirobius.tenant-tokens.schema.json`](../hirobius.tenant-tokens.schema.json)
-(**semantic tier only** — the primitive tier is off-limits, per rule R1), and
-activate it with `data-tenant`. A local mirror of a not-yet-merged overlay is
-fine as a stopgap, but mark it temporary and delete it once the overlay ships in
-the package.
+(**semantic tier only** — the primitive tier is off-limits, per rule R1) in your
+own repository. A **direction** (a curated art direction the package ships under
+`directions/`) is selected with `data-brand="<slug>"` and needs nothing local.
+ADR-035 names the three layers; `GLOSSARY.md` defines them.
 
 ### C4 — Route gaps upstream, don't patch around them
 
 A missing primitive, a token you need, or a fundamental flaw becomes an **issue
 and PR against the DS** — not a permanent downstream fork. Every alias target
 must exist in the base `hirobius.tokens.json` (rule R5), so a new brand ramp is
-added upstream first, then the tenant overlay aliases it.
+added upstream first, then the brand overlay aliases it.
 
 > **Optional (no DS obligation):** keep a downstream **drift-guard test** that
 > pins the token paths your app consumes, so your CI fails when an upgrade moves
@@ -438,7 +446,7 @@ added upstream first, then the tenant overlay aliases it.
 **Reference implementation:** the first external consumer follows all four —
 it consumes tokens via
 `@hirobius/design-system/variables.css`, keeps every extension under `--lb-*`,
-mirrors its brand through a tenant overlay, and pins consumed paths with a
+mirrors its brand through its own overlay, and pins consumed paths with a
 CI-enforced drift guard.
 
 ## 11. Lint discipline — the consumer ESLint plugin

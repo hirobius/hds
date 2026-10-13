@@ -7,18 +7,26 @@
  * scripts/build-design-md.mjs (which emits DESIGN.md FROM HDS tokens). This
  * script ingests a Google Aura `design.md` file
  * (schema: https://github.com/google-labs-code/design.md — YAML-structured
- * design spec) and distils it into a candidate HDS tenant brand overlay:
+ * design spec) and distils it into a candidate brand overlay for the
+ * consumer that owns that brand (ADR-035: a client's brand never lives in this
+ * repo, so nothing here writes under directions/):
  *
- *   tenants/<slug>/tokens.json  — DTCG partial overlay (matches the exact
- *                                 shape of tenants/concrete-creations/tokens.json)
- *   tenants/<slug>/HARVEST.md   — rationale capture: what was mapped, what
- *                                 was inferred/guessed, what needs a human
- *                                 to tighten before this overlay ships.
+ *   harvest/<slug>/tokens.json  — DTCG partial overlay, the exact shape of a
+ *                              direction overlay (directions/accent-lilac/tokens.json)
+ *   harvest/<slug>/HARVEST.md   — rationale capture: what was mapped, what
+ *                              was inferred/guessed, what needs a human to
+ *                              tighten before this overlay ships.
+ *
+ * harvest/ is gitignored: the consumer takes tokens.json home and compiles it
+ * there. When a design.md describes a shared art direction instead, move the
+ * folder to directions/<slug>/, add metadata.json (directions/_template) and
+ * run `pnpm tokens`.
  *
  * Usage:
  *   pnpm harvest:design-md --in=<path-to-design.md> --slug=<brand-slug>
  *   pnpm harvest:design-md --in=fixtures/harvest-design-md/sample.design.md --slug=acme-co --dry-run
- *   pnpm harvest:design-md --in=... --slug=... --force   (overwrite existing tenants/<slug>/)
+ *   pnpm harvest:design-md --in=... --slug=... --out=<dir>   (default: harvest/)
+ *   pnpm harvest:design-md --in=... --slug=... --force       (overwrite an existing <out>/<slug>/)
  *
  * design.md is a loosely-structured format in the wild (frontmatter YAML,
  * fenced ```yaml blocks, or a bare YAML file) — every field access below is
@@ -28,7 +36,7 @@
  *
  * Color math: primary/accent color is converted hex → sRGB → linear sRGB →
  * OKLab → OKLCH, stepped in OKLCH space for hover/pressed (Light: darker;
- * Dark: LIGHTER — mirrors how tenants/concrete-creations/tokens.json's Dark
+ * Dark: LIGHTER — mirrors how a direction overlay such as directions/accent-lilac/tokens.json's Dark
  * modes go lighter for contrast on dark surfaces), gamut-mapped back to
  * sRGB, and re-encoded to hex. See oklchSelfCheck() for a round-trip sanity
  * print (#2563eb → oklch → hex, within ~1 rgb unit).
@@ -55,12 +63,13 @@ function parseArgs(argv) {
 
 function usage() {
   console.error(
-    'Usage: pnpm harvest:design-md --in=<path-to-design.md> --slug=<brand-slug> [--dry-run] [--force]',
+    'Usage: pnpm harvest:design-md --in=<path-to-design.md> --slug=<brand-slug> [--out=<dir>] [--dry-run] [--force]',
   );
   console.error('  --in        Required. Path to the Aura design.md file to ingest.');
   console.error('  --slug      Required. Lowercase kebab-case tenant slug (e.g. acme-co).');
   console.error('  --dry-run   Print planned writes without touching disk.');
-  console.error('  --force     Overwrite an existing tenants/<slug>/ directory.');
+  console.error('  --out       Directory to write <slug>/ into (default: harvest/, gitignored).');
+  console.error('  --force     Overwrite an existing <out>/<slug>/ directory.');
 }
 
 function validateSlug(slug) {
@@ -209,12 +218,12 @@ export function oklchSelfCheck(hex = '#2563EB') {
 }
 
 /**
- * Derives the concrete-creations-shaped accent ramp from a single brand hex.
+ * Derives a direction-shaped accent ramp from a single brand hex.
  * Light mode steps darker with interaction depth (rest → hover → pressed);
  * Dark mode steps LIGHTER with interaction depth, and Dark.rest is lifted
- * above Light.rest for contrast against dark surfaces — mirroring
- * tenants/concrete-creations/tokens.json (stone.600/700/800 Light vs.
- * stone.500/450/400 Dark).
+ * above Light.rest for contrast against dark surfaces — the shape the warm
+ * stone ramp (primitive.color.stone) was drawn for: 600/700/800 in Light,
+ * 500/450/400 in Dark.
  */
 export function deriveAccentRamp(hex) {
   const base = hexToOklch(hex);
@@ -232,8 +241,8 @@ export function deriveAccentRamp(hex) {
     pressed: step(darkRest.L + 0.1),
   };
   // Subtle: a faint tint surface — very light in Light mode, very deep
-  // (near-background) in Dark mode, same low-chroma treatment as
-  // concrete-creations' stone.100 / stone.950 pairing.
+  // (near-background) in Dark mode, same low-chroma treatment as the
+  // stone ramp's 100 / 950 pairing.
   const subtle = {
     light: step(0.96, base.C * 0.15),
     dark: step(0.16, base.C * 0.2),
@@ -247,14 +256,13 @@ export function deriveAccentRamp(hex) {
     rest: { light: toHex(light.rest), dark: toHex(dark.rest) },
     hover: { light: toHex(light.hover), dark: toHex(dark.hover) },
     pressed: { light: toHex(light.pressed), dark: toHex(dark.pressed) },
-    // content mirrors hover in both modes — matches concrete-creations,
-    // where semantic.accent.content is identical to semantic.accent.hover
-    // in both Light and Dark.
+    // content mirrors hover in both modes, the stone exemplar's choice:
+    // semantic.accent.content identical to semantic.accent.hover in both
+    // Light and Dark.
     content: { light: toHex(light.hover), dark: toHex(dark.hover) },
     subtle: { light: toHex(subtle.light), dark: toHex(subtle.dark) },
-    // surface.accent is mode-invariant (always the Light rest value) —
-    // matches concrete-creations, where CTA fills stay vivid regardless
-    // of theme.
+    // surface.accent is mode-invariant (always the Light rest value), so
+    // CTA fills stay vivid regardless of theme.
     surfaceAccent: { light: toHex(light.rest), dark: toHex(light.rest) },
   };
 }
@@ -732,10 +740,10 @@ function buildHarvestMd({
     lines.push('');
     lines.push(
       'Light steps darken with interaction depth (rest → hover → pressed); Dark steps LIGHTEN with interaction ' +
-        'depth, and Dark.rest is lifted above Light.rest for contrast against dark surfaces — this mirrors ' +
-        '`tenants/concrete-creations/tokens.json` (stone.600/700/800 Light vs. stone.500/450/400 Dark). ' +
+        'depth, and Dark.rest is lifted above Light.rest for contrast against dark surfaces — the shape the ' +
+        'warm stone ramp (`primitive.color.stone`) was drawn for: 600/700/800 in Light, 500/450/400 in Dark. ' +
         '`semantic.color.surface.accent` stays mode-invariant (always the Light rest value) for CTA fills that ' +
-        'must stay vivid regardless of theme, matching the concrete-creations pattern.',
+        'must stay vivid regardless of theme.',
     );
     lines.push('');
     lines.push(
@@ -844,21 +852,18 @@ function buildHarvestMd({
     '- [ ] Verify the harvested accent hex(es) against the real brand guidelines (these are OKLCH-derived candidates, not final).',
   );
   lines.push(
-    '- [ ] Wire the `--hds-font-family` / `--hds-font-family-mono` recipe above if this tenant needs a custom typeface.',
+    '- [ ] Wire the `--hds-font-family` / `--hds-font-family-mono` recipe above if this brand needs a custom typeface.',
   );
   lines.push(
     '- [ ] Pick specific `semantic.space.*` overrides by hand if the brand needs non-default rhythm.',
   );
   lines.push(
-    '- [ ] Create `tenants/' +
+    '- [ ] This is a brand overlay for the consumer that owns the brand (ADR-035): take `tokens.json` to that repo and compile it there (the `@hirobius/design-system/brand` bridge, or its own overlay build). It is never filed under `directions/`.',
+  );
+  lines.push(
+    '- [ ] Only if this design.md describes a shared art direction: move the folder to `directions/' +
       slug +
-      '/metadata.json` (not generated by this tool) — see `tenants/_template/metadata.json`.',
-  );
-  lines.push(
-    '- [ ] Run `pnpm tokens` to compile this overlay into `src/styles/tenants.css` once reviewed.',
-  );
-  lines.push(
-    '- [ ] Flip `status` from `scaffold` to `active` in metadata.json when ready to ship.',
+      '/`, add `metadata.json` from `directions/_template/`, and run `pnpm tokens`.',
   );
   lines.push('');
 
@@ -866,7 +871,13 @@ function buildHarvestMd({
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
-export function harvest({ inPath, slug, dryRun = false, force = false }) {
+export function harvest({
+  inPath,
+  slug,
+  dryRun = false,
+  force = false,
+  outDir = join(ROOT, 'harvest'),
+}) {
   const sourcePath = resolve(inPath);
   const content = readFileSync(sourcePath, 'utf8');
   const { doc, warnings, source: parseSource } = parseDesignMd(content);
@@ -901,9 +912,9 @@ export function harvest({ inPath, slug, dryRun = false, force = false }) {
     spacingScale,
   });
 
-  const tenantDir = join(ROOT, 'tenants', slug);
-  const tokensPath = join(tenantDir, 'tokens.json');
-  const harvestPath = join(tenantDir, 'HARVEST.md');
+  const targetDir = join(outDir, slug);
+  const tokensPath = join(targetDir, 'tokens.json');
+  const harvestPath = join(targetDir, 'HARVEST.md');
 
   const summary = {
     slug,
@@ -922,13 +933,13 @@ export function harvest({ inPath, slug, dryRun = false, force = false }) {
     return { ...summary, dryRun: true };
   }
 
-  if (existsSync(tenantDir) && !force) {
+  if (existsSync(targetDir) && !force) {
     throw new Error(
-      `tenants/${slug}/ already exists. Re-run with --force to overwrite, or choose a different --slug.`,
+      `${targetDir} already exists. Re-run with --force to overwrite, or choose a different --slug.`,
     );
   }
 
-  mkdirSync(tenantDir, { recursive: true });
+  mkdirSync(targetDir, { recursive: true });
   writeFileSync(tokensPath, JSON.stringify(overlay, null, 2) + '\n');
   writeFileSync(harvestPath, harvestMd);
 
@@ -998,6 +1009,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       slug: String(flags.slug),
       dryRun: Boolean(flags['dry-run']),
       force: Boolean(flags.force),
+      ...(typeof flags.out === 'string' ? { outDir: resolve(flags.out) } : {}),
     });
     printSummary(result);
   } catch (e) {

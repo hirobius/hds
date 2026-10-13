@@ -1,18 +1,19 @@
 /**
- * Contract test: per-tenant accent contrast
+ * Contract test: per-direction accent contrast
  *
- * Each tenant overlay (`tenants/<slug>/tokens.json`) re-points the accent
- * role to a brand-specific hue. `semantic.color.content.onAccent` (the fixed
+ * A direction overlay (`directions/<slug>/tokens.json`) may re-point the accent
+ * role to its own hue. `semantic.color.content.onAccent` (the fixed
  * white text/icon color used on accent surfaces — see button, badge "accent"
  * tone, etc.) is never overridden per tenant, so a brand's accent hue alone
  * can silently drop below WCAG AA without any per-tenant visual coverage
  * catching it. This asserts that pairing directly, per tenant, per mode.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { resolveAlias } from '../../scripts/build-tokens.mjs';
+import { listDirectionSlugs } from '../../scripts/lib/directions.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
@@ -53,12 +54,28 @@ function resolveModeHex(node: any, mode: 'Light' | 'Dark', root: object) {
 
 const baseOnAccentNode = getByPath(baseRaw, 'semantic.color.content.onAccent');
 
-// Phase 1 pilot tenants (ISSUE-02 scope) — brutalist-demo is a dev fixture,
-// not a real tenant, so it's excluded here.
-const TENANTS = ['concrete-creations', 'accent-lilac'] as const;
+// Every direction that overrides the accent surface (ADR-035: directions/ holds
+// the shared art directions; a client's brand never lives here). A direction
+// that leaves the accent alone (brutalist-demo: shape and density only) has
+// nothing to pair and is skipped.
+const DIRECTIONS_DIR = resolve(ROOT, 'directions');
+const TENANTS = listDirectionSlugs(DIRECTIONS_DIR)
+  .filter((slug) => {
+    const file = resolve(DIRECTIONS_DIR, slug, 'tokens.json');
+    if (!existsSync(file)) return false;
+    const overlay = JSON.parse(readFileSync(file, 'utf8'));
+    return getByPath(overlay, 'semantic.color.surface.accent') !== undefined;
+  })
+  .sort();
 
-describe.each(TENANTS)('tenant contrast contract: %s', (slug) => {
-  const overlay = JSON.parse(readFileSync(resolve(ROOT, 'tenants', slug, 'tokens.json'), 'utf8'));
+it('finds at least one direction that overrides the accent', () => {
+  expect(TENANTS.length).toBeGreaterThan(0);
+});
+
+describe.each(TENANTS)('direction contrast contract: %s', (slug) => {
+  const overlay = JSON.parse(
+    readFileSync(resolve(ROOT, 'directions', slug, 'tokens.json'), 'utf8'),
+  );
   const accentNode = getByPath(overlay, 'semantic.color.surface.accent');
   // onAccent is tenant-overridable: the base flips to a dark neutral in dark mode
   // (for the neutral base accent), but a tenant with a colored accent fill sets its

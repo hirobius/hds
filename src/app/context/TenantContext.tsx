@@ -1,6 +1,11 @@
 import { createContext, useContext, useEffect, type ReactNode } from 'react';
 
-export type TenantSlug = 'hirobius' | 'concrete-creations' | 'accent-lilac' | (string & {});
+/**
+ * A `data-brand` value: one of the package's directions (`directions/<slug>`,
+ * ADR-035) or a slug the consumer's own brand overlay declares. A client's
+ * brand never ships in this package, so no client slug is listed here.
+ */
+export type TenantSlug = 'hirobius' | 'accent-lilac' | 'brutalist-demo' | (string & {});
 
 interface TenantCtx {
   /** Active tenant slug, or null in single-tenant mode. */

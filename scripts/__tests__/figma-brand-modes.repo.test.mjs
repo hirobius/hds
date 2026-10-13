@@ -2,12 +2,12 @@
 // @vitest-environment node
 /**
  * The Brand and Density collections this repo actually builds: from
- * hirobius.tokens.json, figma/brand-modes.json and tenants/*.
+ * hirobius.tokens.json, figma/brand-modes.json and directions/*.
  *
- * Expectations come from the tenant files, read here without the exporter.
- * Tenant slugs and names are read at run time and never written into this
- * file: the point of the last checks is that tenants the config does not list
- * leave no trace in the Figma model.
+ * Expectations come from the direction files, read here without the exporter.
+ * Slugs and names are read at run time and never written into this file: the
+ * point of the last checks is that directions the config does not list leave
+ * no trace in the Figma model.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, existsSync } from 'fs';
@@ -15,7 +15,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
-import { BRAND_MODES_FILE, demoTenantProblems } from '../lib/figma-brand-modes.mjs';
+import { BRAND_MODES_FILE, directionProblems } from '../lib/figma-brand-modes.mjs';
 import { PRO_MODE_LIMIT } from '../lib/figma-model-invariants.mjs';
 import { hdsRunPush } from '../lib/figma-runtime.mjs';
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
@@ -33,10 +33,10 @@ const variableByPath = new Map(
   model.collections.flatMap((c) => c.variables.map((v) => [v.path, v])),
 );
 
-const tenantDirs = readdirSync(join(ROOT, 'tenants'), { withFileTypes: true })
+const tenantDirs = readdirSync(join(ROOT, 'directions'), { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && !entry.name.startsWith('_'))
   .map((entry) => entry.name);
-const unlisted = tenantDirs.filter((slug) => !config.tenants.includes(slug));
+const unlisted = tenantDirs.filter((slug) => !config.directions.includes(slug));
 
 /**
  * A tenant alias into a non-primitive (a scale step, hds#206) lands on the
@@ -72,28 +72,26 @@ const leavesOf = (overlay) => {
 };
 
 describe(`${BRAND_MODES_FILE}`, () => {
-  it('lists at least one tenant, and only demo tenants', () => {
-    expect(config.tenants.length).toBeGreaterThan(0);
-    for (const slug of config.tenants) {
-      expect(demoTenantProblems(readJson('tenants', slug, 'metadata.json')), slug).toEqual([]);
+  it('lists at least one direction, and nothing shaped like a client', () => {
+    expect(config.directions.length).toBeGreaterThan(0);
+    for (const slug of config.directions) {
+      expect(directionProblems(readJson('directions', slug, 'metadata.json')), slug).toEqual([]);
     }
   });
 
-  it('does not admit the tenant template, which every new client tenant starts from', () => {
-    expect(demoTenantProblems(readJson('tenants', '_template', 'metadata.json'))).toContain(
-      'demo is not true',
-    );
+  it('never lists the template, which build-tokens and the validator skip by its underscore', () => {
+    expect(config.directions).not.toContain('_template');
   });
 
   it(`gives Hirobius/Brand the base mode plus one mode per listed tenant, at most ${PRO_MODE_LIMIT}`, () => {
-    expect(brand.modes).toEqual([config.baseMode, ...config.tenants]);
+    expect(brand.modes).toEqual([config.baseMode, ...config.directions]);
     expect(brand.modes.length).toBeLessThanOrEqual(PRO_MODE_LIMIT);
   });
 
   it('carries every listed tenant override as that tenant Brand mode value, and the token variable follows it', () => {
     let checked = 0;
-    for (const slug of config.tenants) {
-      for (const leaf of leavesOf(readJson('tenants', slug, 'tokens.json'))) {
+    for (const slug of config.directions) {
+      for (const leaf of leavesOf(readJson('directions', slug, 'tokens.json'))) {
         if (!variableByPath.has(leaf.path)) continue; // declared not in Figma
         const variants = brand.variables.filter(
           (v) => v.path === `brand.${leaf.path}` || v.path.startsWith(`brand.${leaf.path}.`),
@@ -128,10 +126,10 @@ describe(`${BRAND_MODES_FILE}`, () => {
     const withBrands = JSON.stringify(model);
     const withoutBrands = JSON.stringify(buildFigmaModel(raw));
     unlisted.forEach((slug, i) => {
-      const metadataPath = join(ROOT, 'tenants', slug, 'metadata.json');
+      const metadataPath = join(ROOT, 'directions', slug, 'metadata.json');
       const needles = [slug];
       if (existsSync(metadataPath))
-        needles.push(readJson('tenants', slug, 'metadata.json').displayName);
+        needles.push(readJson('directions', slug, 'metadata.json').displayName);
       for (const needle of needles.filter(Boolean)) {
         expect(count(withBrands, needle), `unlisted tenant #${i}`).toBe(
           count(withoutBrands, needle),

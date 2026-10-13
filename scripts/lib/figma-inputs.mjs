@@ -1,7 +1,7 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
  * Hirobius Design System — what every Figma sync command reads from the repo:
- * the Figma model built from hirobius.tokens.json plus the demo tenants
+ * the Figma model built from hirobius.tokens.json plus the directions
  * figma/brand-modes.json lists (refused when it breaks an invariant), and the
  * renames in TOKEN_MIGRATION.md.
  */

@@ -361,7 +361,7 @@
           "$value": "#3A2E1F",
           "$description": "Stone 950 — near-black warm tone; dark-mode subtle accent surface."
         },
-        "$description": "Warm stone/brown palette for Concrete Creations brand accent ramp. PLACEHOLDER values pending final brand identity work."
+        "$description": "Warm stone/brown accent ramp. No direction in this repo uses it; it stays published so a consumer can compose a warm brand overlay from it through the brand bridge."
       },
       "projectBrand": {
         "microsoftGameDev": {

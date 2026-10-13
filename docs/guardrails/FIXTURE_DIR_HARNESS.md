@@ -18,7 +18,7 @@ file**:
 | Two-file / snapshot  | check-token-renames, check-manifest-schema-semver, check-snapshot-staleness, check-template-source-of-truth, check-token-rebake-needed, check-css-integrity | compare a source-of-truth file against a committed snapshot/second file               |
 | Manifest-dependent   | audit-tokens, check-manifest-drift, check-binding-drift, check-asset-manifest, check-attributions, audit-batch-deliverables                                 | read `public/hds-manifest.json` / `public/assets/manifest.json`                       |
 | deps / SBOM / bundle | audit-deps, audit-sbom, audit-bundle                                                                                                                        | read `package.json` + lockfile / build output                                         |
-| Tenant tree          | check-tenant-tokens                                                                                                                                         | needs `hirobius.tokens.json` base + a `tenants/<slug>/` tree                          |
+| Direction tree       | check-tenant-tokens                                                                                                                                         | needs `hirobius.tokens.json` base + a `directions/<slug>/` tree                       |
 | Browser / external   | check-route-smoke, audit-figma-system, check-code-connect, check-security-baseline                                                                          | need a running browser / external service                                             |
 
 ## Design — `FIXTURE_DIR` directory fixtures

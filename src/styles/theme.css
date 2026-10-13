@@ -11,7 +11,7 @@
  *   3. tokens.generated.css (CSS vars for every token — generated from
  *      hirobius.tokens.json by scripts/build-tokens.mjs)
  *   4. tenants.css (per-tenant overrides, also generated from
- *      tenants/<slug>/tokens.json)
+ *      directions/<slug>/tokens.json, ADR-035)
  *
  * Owns content that doesn't belong in the generated token layer:
  *   - Type ramp role classes (.hds-type-display/title/title-sm/body/ui/caption/mono)

@@ -652,11 +652,11 @@ function effectStyleFor(graph, token) {
 
 // ── Brand and density axes ───────────────────────────────────────────────────
 /**
- * Demo tenant overlays (tenants/<slug>/tokens.json, chosen and validated by
+ * Direction overlays (directions/<slug>/tokens.json, chosen and validated by
  * scripts/lib/figma-brand-modes.mjs) become two more collections, mirroring the
  * CSS buildTenantCSS emits:
  *
- *   Hirobius/Brand    one mode per brand: the base mode plus each demo tenant.
+ *   Hirobius/Brand    one mode per brand: the base mode plus each direction.
  *                     One variable per overridden path, per variant: Light and
  *                     Dark when the path is themed, Comfortable and Compact when
  *                     a tenant compacts it, else one. The base mode holds the
@@ -713,10 +713,10 @@ const collectionNameOf = (key) =>
 
 /**
  * Validates the brand list and collects, per base token path, which demo
- * tenants override it. Refuses what a Brand mode cannot express.
+ * directions override it. Refuses what a Brand mode cannot express.
  */
 function collectBrandOverrides(graph, brands, excludedBy) {
-  const slugs = brands.tenants.map((t) => t.slug);
+  const slugs = brands.directions.map((t) => t.slug);
   slugs.forEach((slug, i) => {
     if (slugs.indexOf(slug) !== i) throw new Error(`Brand mode "${slug}" is listed twice.`);
     if (slug === brands.baseMode) {
@@ -727,13 +727,13 @@ function collectBrandOverrides(graph, brands, excludedBy) {
   });
 
   const overrides = new Map();
-  for (const { slug, overlay } of brands.tenants) {
+  for (const { slug, overlay } of brands.directions) {
     for (const leaf of walkTokens(overlay)) {
       const path = leaf.path.join('.');
       const base = graph.byPath.get(path);
       if (!base) {
         throw new Error(
-          `${slug} overrides ${path}, which is not in hirobius.tokens.json (R5: tenants override, they do not extend).`,
+          `${slug} overrides ${path}, which is not in hirobius.tokens.json (R5: directions override, they do not extend).`,
         );
       }
       const type = leaf.type ?? base.type;
@@ -760,13 +760,13 @@ function collectBrandOverrides(graph, brands, excludedBy) {
  * overridden token variable at them.
  *
  * @param {object} graph
- * @param {{ baseMode: string, tenants: Array<{ slug: string, overlay: object }> }} brands
+ * @param {{ baseMode: string, directions: Array<{ slug: string, overlay: object }> }} brands
  * @param {{ excludedBy: Map<string,string>, pendingByPath: Map<string,object> }} context
  * @returns {object[]} Collections to append to the model.
  */
 function buildBrandAxes(graph, brands, { excludedBy, pendingByPath }) {
   const overrides = collectBrandOverrides(graph, brands, excludedBy);
-  const brandModes = [brands.baseMode, ...brands.tenants.map((t) => t.slug)];
+  const brandModes = [brands.baseMode, ...brands.directions.map((t) => t.slug)];
   const brandVariables = [];
   const densityVariables = [];
 
@@ -899,8 +899,8 @@ function assertAliasesResolve(collections, excludedBy) {
  * Builds the Figma model for a token graph.
  *
  * @param {object} raw  Parsed hirobius.tokens.json (or a fixture graph).
- * @param {{ brands?: { baseMode: string, tenants: Array<{ slug: string, overlay: object }> } | null }} [options]
- *   brands: demo tenant overlays for the Brand and Density collections
+ * @param {{ brands?: { baseMode: string, directions: Array<{ slug: string, overlay: object }> } | null }} [options]
+ *   brands: direction overlays for the Brand and Density collections
  *   (scripts/lib/figma-brand-modes.mjs loads them). Omitted: no axis collections.
  * @returns {object}    The model written to figma/model.json.
  */
@@ -940,7 +940,7 @@ export function buildFigmaModel(raw, { brands = null } = {}) {
     }
   }
 
-  const axes = brands?.tenants?.length
+  const axes = brands?.directions?.length
     ? buildBrandAxes(graph, brands, {
         excludedBy,
         pendingByPath: new Map(

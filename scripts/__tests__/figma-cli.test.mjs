@@ -622,20 +622,19 @@ describe('pnpm figma:native-import', () => {
     );
   });
 
-  it('adds a file per Brand and Density mode when the root lists demo tenants', () => {
+  it('adds a file per Brand and Density mode when the root lists directions', () => {
     const root = tempRoot();
     mkdirSync(join(root, 'figma'), { recursive: true });
     writeFileSync(
       join(root, 'figma', 'brand-modes.json'),
-      JSON.stringify({ baseMode: 'Hirobius', tenants: ['sharp-demo'] }),
+      JSON.stringify({ baseMode: 'Hirobius', directions: ['sharp-demo'] }),
     );
-    mkdirSync(join(root, 'tenants', 'sharp-demo'), { recursive: true });
+    mkdirSync(join(root, 'directions', 'sharp-demo'), { recursive: true });
     writeFileSync(
-      join(root, 'tenants', 'sharp-demo', 'metadata.json'),
+      join(root, 'directions', 'sharp-demo', 'metadata.json'),
       JSON.stringify({
         slug: 'sharp-demo',
         displayName: 'Sharp Demo',
-        demo: true,
         tier: 1,
         deployment: { vercelProject: null, primaryDomain: null, previewDomain: null },
         legal: { entity: null, jurisdiction: null, stripeAccountKind: null },
@@ -643,7 +642,7 @@ describe('pnpm figma:native-import', () => {
       }),
     );
     writeFileSync(
-      join(root, 'tenants', 'sharp-demo', 'tokens.json'),
+      join(root, 'directions', 'sharp-demo', 'tokens.json'),
       JSON.stringify({
         role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
         semantic: {

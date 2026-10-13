@@ -22,7 +22,7 @@ A machine- and human-readable specification of the Hirobius Design System for AI
 
 ## Overview
 
-Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast monochromatic neutral palette and a single accent that each tenant sets — a warm graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
+Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast monochromatic neutral palette and a single accent that each direction or brand sets (ADR-035) — a warm graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
 
 ## Colors
 
@@ -53,7 +53,7 @@ Approved 2026-10-07 as the **target**; adoption is in progress, so some componen
 
 ## Corner-Radius Policy
 
-Shape is one knob. `semantic.radius.action` is the system's single shape value — interactive controls (buttons, inputs, badges, alerts, segmented items) all resolve to it, and Tailwind's `rounded-md` maps to it exactly so the utility and the token cannot disagree. Containers sit one step above at `rounded-lg` (`action + 4px`); `rounded-sm` (`action - 2px`) is for chrome nested inside a control. `full` is reserved for pills and circular forms, and `0px` only for intentional outer canvas or substrate boundaries, never everyday UI controls. Reshaping the whole system means overriding `role.radius` in one tenant overlay — that is how `brutalist-demo` goes square in a single value.
+Shape is one lever. `semantic.radius.action` is the system's single shape value — interactive controls (buttons, inputs, badges, alerts, segmented items) all resolve to it, and Tailwind's `rounded-md` maps to it exactly so the utility and the token cannot disagree. Containers sit one step above at `rounded-lg` (`action + 4px`); `rounded-sm` (`action - 2px`) is for chrome nested inside a control. `full` is reserved for pills and circular forms, and `0px` only for intentional outer canvas or substrate boundaries, never everyday UI controls. Reshaping the whole system means overriding `role.radius` in one tenant overlay — that is how `brutalist-demo` goes square in a single value.
 
 <!-- auto:start:radius -->
 <!-- auto:end:radius -->
@@ -93,7 +93,7 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | Background               | `var(--semantic-color-surface-raised)`                                                                                                                                                    | Any gradient, tinted fill, or custom color                                                  |
 | Border                   | Default variant: **borderless**. Opt-in (`bordered`/`tone`/`accent`): 1px solid the matching token (`border.default` / feedback color / `border.accent`). Never border + shadow together. | `box-shadow` as an elevation substitute; a border on the default variant (use `bordered`)   |
-| Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                                                                                                 | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
+| Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the direction or brand)                                                                                                     | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
 | Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                                                                                                           | Raw pixel values or ad hoc insets                                                           |
 | Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`                                                                                  | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
 | Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                                                                                                         | Any other type style for the primary card heading                                           |
@@ -127,7 +127,7 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 
 Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state.
 
-`Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
+`Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the direction or brand.
 
 `MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `title`, the label in `caption` and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
 
@@ -142,7 +142,7 @@ Three more needs are props on an existing component, not components of their own
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a lever each direction or brand sets (ADR-035) and defaults to a warm graphite — read the token, never assume a hue.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.

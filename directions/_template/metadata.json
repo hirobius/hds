@@ -1,0 +1,29 @@
+{
+  "$schema": "../../hirobius.tenant-metadata.schema.json",
+  "slug": "_template",
+  "displayName": "Direction Template",
+  "tagline": "Starter scaffold — copy this directory and rename to add a direction (ADR-035).",
+  "tier": 1,
+  "deployment": {
+    "vercelProject": null,
+    "primaryDomain": null,
+    "previewDomain": null
+  },
+  "brand": {
+    "primaryHex": "#888888",
+    "accentName": "placeholder",
+    "logoPath": null
+  },
+  "legal": {
+    "entity": null,
+    "jurisdiction": null,
+    "stripeAccountKind": null
+  },
+  "createdAt": "2026-05-01",
+  "status": "scaffold",
+  "_notes": [
+    "This is the canonical starter for new directions (ADR-035). Do NOT deploy from this directory.",
+    "Adding a direction: cp -r directions/_template directions/<slug> && set slug, displayName and brand; keep deployment and legal empty at tier 1, or the Figma gate refuses it.",
+    "A client's brand never starts here: it is applied in the client's own repository through @hirobius/design-system/brand (docs/CONSUMING.md section 12)."
+  ]
+}
