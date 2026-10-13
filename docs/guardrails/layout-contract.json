@@ -127,6 +127,27 @@
       "kind": "part",
       "probe": false
     },
+    "CardRow": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardRowNote": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardRowTitle": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
     "CardTitle": {
       "width": "hug",
       "height": "hug",
