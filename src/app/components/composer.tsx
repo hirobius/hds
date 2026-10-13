@@ -165,6 +165,8 @@ export const Composer = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Co
     };
 
     const editing = cards.find((card) => card.id === editingId);
+    // The dialog has no Trigger, so Radix cannot restore focus itself; remember the chip.
+    const openerRef = React.useRef<HTMLElement | null>(null);
     const openEditor = (card: ComposerAttachment) => {
       setDraft(card.text ?? '');
       setEditingId(card.id);
@@ -172,9 +174,13 @@ export const Composer = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Co
     const closeEditor = () => setEditingId(null);
 
     return (
-      <div className={cn('flex flex-col gap-2', className)}>
+      <div className={cn('flex flex-col gap-[var(--semantic-space-scale-xs)]', className)}>
         {cards.length > 0 && (
-          <ul className="m-0 flex list-none flex-wrap gap-2 p-0" aria-label="Attachments">
+          <ul
+            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility
+            className="m-0 flex list-none flex-wrap gap-[var(--semantic-space-scale-xs)] p-0"
+            aria-label="Attachments"
+          >
             {cards.map((card) => (
               <li key={card.id}>
                 {card.text === undefined ? (
@@ -185,7 +191,10 @@ export const Composer = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Co
                     aria-haspopup="dialog"
                     aria-label={`${card.label}, edit`}
                     disabled={locked}
-                    onClick={() => openEditor(card)}
+                    onClick={(event) => {
+                      openerRef.current = event.currentTarget;
+                      openEditor(card);
+                    }}
                   >
                     {card.label}
                   </Tag>
@@ -194,7 +203,6 @@ export const Composer = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Co
             ))}
           </ul>
         )}
-
         <Textarea
           ref={setRefs}
           aria-label={label}
@@ -204,13 +212,16 @@ export const Composer = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Co
           resize="none"
           disabled={disabled}
           readOnly={pending}
+          // Arbitrary on purpose: viewport-relative growth cap (half the dynamic viewport) has no spacing/size token; keeps the auto-growing field from pushing Send off-screen.
           textareaClassName="max-h-[50dvh] overflow-y-auto"
           onChange={(event) => setText(event.target.value)}
           onPaste={onPaste}
           onKeyDown={onKeyDown}
         />
-
-        <div className="flex items-center justify-end gap-2">
+        <div
+          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility
+          className="flex items-center justify-end gap-[var(--semantic-space-scale-xs)]"
+        >
           <span className="hds-type-caption text-muted-foreground">
             <Kbd size="sm">⌘</Kbd> <Kbd size="sm">Enter</Kbd> to send
           </span>
@@ -223,9 +234,16 @@ export const Composer = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Co
             Send
           </Button>
         </div>
-
         <Dialog open={editing !== undefined} onOpenChange={(open) => !open && closeEditor()}>
-          <Dialog.Content>
+          <Dialog.Content
+            onCloseAutoFocus={(event) => {
+              const opener = openerRef.current;
+              if (opener?.isConnected) {
+                event.preventDefault();
+                opener.focus();
+              }
+            }}
+          >
             <Dialog.Header>
               <Dialog.Title>Edit pasted text</Dialog.Title>
               <Dialog.Description>{editing?.label}</Dialog.Description>

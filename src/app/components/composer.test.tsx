@@ -3,7 +3,7 @@
  * chord, and the pending/disabled lock. Plain-DOM assertions (no jest-dom).
  */
 import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
-import { render, screen, fireEvent, cleanup, within } from '@testing-library/react';
+import { render, screen, fireEvent, cleanup, within, waitFor } from '@testing-library/react';
 import { Composer } from './composer';
 
 beforeAll(() => {
@@ -74,6 +74,20 @@ describe('Composer', () => {
       text: '',
       attachments: [expect.objectContaining({ text: 'edited paste' })],
     });
+  });
+
+  it('returns focus to the fold chip when the edit dialog closes', async () => {
+    render(<Composer pasteFoldThreshold={5} />);
+    paste(box(), 'original long paste');
+    const chip = screen.getByRole('button', { name: /pasted text/i });
+    chip.focus();
+    fireEvent.click(chip);
+    const dialog = screen.getByRole('dialog');
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Save' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    await waitFor(() =>
+      expect(document.activeElement).toBe(screen.getByRole('button', { name: /pasted text/i })),
+    );
   });
 
   it('removes a fold from its dialog', () => {
