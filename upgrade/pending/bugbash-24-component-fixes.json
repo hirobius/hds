@@ -1,6 +1,6 @@
 {
   "impact": "behavior",
-  "plain": "Keyboard focus no longer moves controls, CodeBlock is no longer a landmark unless its code scrolls, and Button label now names the button.",
+  "plain": "Keyboard focus no longer moves controls, Page, Card parts and the divided MetadataList change their insets, CodeBlock is no longer a landmark unless its code scrolls, and Button label now names the button.",
   "steps": [
     {
       "id": "behavior/CodeBlock-landmark",
@@ -18,6 +18,36 @@
       "plain": "Button label now sets the accessible name whenever it is given, even with children, so a Button that passes both is announced by the label and the label should still describe the visible text.",
       "detect": {
         "regex": ["<Button\\b[^>]*\\slabel="]
+      }
+    },
+    {
+      "id": "look/Page-gutter",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Page now pads its content with the region gutter (24px, 16px below 640px), so content that relied on running edge to edge is inset; pass style paddingLeft and paddingRight of 0 to keep the old fit.",
+      "detect": {
+        "regex": ["<Page\\b"]
+      }
+    },
+    {
+      "id": "look/Card-parts-inset",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Card.Header, Card.Body, Card.Footer, Card.Progress and Card.Metric no longer add their own 24px inside a padded Card, so their content moves out to the Card's single 24px inset, while a Card with padding none keeps the parts' own padding.",
+      "detect": {
+        "regex": [
+          "<Card\\.(Header|Body|Footer|Progress|Metric)\\b",
+          "<Card(Header|Body|Footer|Progress|Metric)\\b"
+        ]
+      }
+    },
+    {
+      "id": "look/MetadataList-divided",
+      "kind": "look",
+      "impact": "look",
+      "plain": "MetadataList variant divided no longer draws a padded, rounded, bordered box and renders its value in body type; wrap it in a Card or Surface if you want the box.",
+      "detect": {
+        "regex": ["<MetadataList\\b[^>]*variant=[\"']divided"]
       }
     }
   ]

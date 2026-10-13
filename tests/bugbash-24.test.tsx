@@ -16,6 +16,10 @@ import { Button } from '../src/app/components/button';
 import { Popover } from '../src/app/components/popover';
 import { SegmentedControl } from '../src/app/components/segmented-control';
 import { useState } from 'react';
+import { Page } from '../src/app/components/page';
+import { Card } from '../src/app/components/card';
+import { Badge } from '../src/app/components/badge';
+import { MetadataList } from '../src/app/components/metadata-list';
 
 const css = (p: string) => readFileSync(resolve(process.cwd(), 'src/styles', p), 'utf8');
 const src = (p: string) => readFileSync(resolve(process.cwd(), 'src/app/components', p), 'utf8');
@@ -236,6 +240,67 @@ describe('Touch targets (item 6, and the highlight fill of item 21)', () => {
       expect(src(file)).not.toMatch(/data-\[(highlighted|active=true)\]:bg-accent/);
     },
   );
+});
+
+describe('Page gutter (item 10)', () => {
+  it('Page pads its content with the region gutter token', () => {
+    const { container } = render(<Page>x</Page>);
+    const inner = container.querySelector('[data-hds-component="Page"]') as HTMLElement;
+    const style = inner.getAttribute('style') ?? '';
+    expect(style).toMatch(/padding-left:\s*var\(--semantic-space-region-gutter\)/);
+    expect(style).toMatch(/padding-right:\s*var\(--semantic-space-region-gutter\)/);
+  });
+});
+
+describe('Card inset (items 11, 18)', () => {
+  const parts = (padding?: 'none') => (
+    <Card padding={padding} data-testid="card">
+      <Card.Header metadata={<Badge>New</Badge>}>
+        <Card.Title>T</Card.Title>
+      </Card.Header>
+      <Card.Progress value={30} label="p" />
+      <Card.Body>b</Card.Body>
+      <Card.Footer>f</Card.Footer>
+    </Card>
+  );
+  it('parts add no second inset inside a padded Card', () => {
+    const { container } = render(parts());
+    const html = container.innerHTML;
+    for (const sel of ['p-6', 'px-6', 'pt-0', 'pb-2']) {
+      expect(html.split(/\s+/).join(' ')).not.toMatch(new RegExp(`class="[^"]*\\b${sel}\\b`));
+    }
+  });
+  it('parts keep their own inset under padding="none" (the legacy composition)', () => {
+    const { container } = render(parts('none'));
+    expect(container.querySelectorAll('.p-6').length).toBeGreaterThanOrEqual(2);
+    expect(container.querySelector('.px-6')).not.toBeNull();
+  });
+  it('an accent Card gives the extra border pixel back from its padding', () => {
+    render(
+      <>
+        <Card data-testid="d">x</Card>
+        <Card variant="accent" data-testid="a">
+          x
+        </Card>
+      </>,
+    );
+    expect((screen.getByTestId('d') as HTMLElement).style.padding).not.toMatch(/calc/);
+    expect((screen.getByTestId('a') as HTMLElement).getAttribute('style')).toMatch(
+      /padding:\s*calc\(.*- 1px\)/,
+    );
+  });
+});
+
+describe('MetadataList variants (item 12)', () => {
+  const items = [{ term: 'Status', description: 'Active' }];
+  it('divided pads nothing and its value uses the plain body type', () => {
+    const { container } = render(<MetadataList variant="divided" items={items} />);
+    const dl = container.querySelector('dl') as HTMLElement;
+    expect(dl.getAttribute('style') ?? '').not.toMatch(/border/);
+    expect(dl.className).not.toMatch(/rounded/);
+    expect(container.innerHTML).not.toMatch(/\bp-5\b/);
+    expect((container.querySelector('dd') as HTMLElement).className).not.toMatch(/hds-type-ui/);
+  });
 });
 void fireEvent;
 void Radio;

@@ -68,6 +68,17 @@ const CARD_GAP = {
   numbers: 'raw',
 } satisfies SpacingVocabulary;
 
+// ── Padding ownership ─────────────────────────────────────────────────────────
+// Layout contract v1 §2: the container pads, compound parts have zero padding and the container's gap
+// spaces them. A padded Card tells its parts so; a part under `padding="none"` (the legacy way to
+// compose parts) or outside any Card keeps its own 24px so that older markup renders as before. Without
+// this, parts inside the default padded Card were inset twice (+49px, not +25px; bug bash 24, item 11).
+const CardPaddedContext = /* @__PURE__ */ React.createContext(false);
+/** Part padding classes, dropped when the Card already pads. */
+function usePartPadding(classes: string): string {
+  return React.useContext(CardPaddedContext) ? '' : classes;
+}
+
 // ── Root ──────────────────────────────────────────────────────────────────────
 
 // #60 Phase 3: resolved the prior 'default'/'accent' tone vocab-ok exemption.
@@ -216,6 +227,12 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
   const Comp = (as ?? 'div') as React.ElementType;
   const resolvedPadding = noPadding ? 'none' : padding;
   const paddingValue = resolvePaddingValue(resolvedPadding);
+  // The accent variant's 2px border is 1px thicker per side than the default's 1px; take that 1px off the
+  // padding so an accent Card is the same height as its siblings and its content does not shift (item 18).
+  const accentPadding =
+    variant === 'accent' && tone === 'neutral' && resolvedPadding !== 'none'
+      ? `calc(${paddingValue} - 1px)`
+      : undefined;
   const gapValue = resolvedPadding === 'none' ? '0' : resolveSpacingValue(gap, CARD_GAP);
   // Controlled only, like the other selection controls: the card reports the
   // next state and the page decides it.
@@ -254,14 +271,16 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
       )}
       // inline-ok: token-driven padding/gap legacy contract (not a variant-contract axis)
       style={{
-        padding: paddingValue,
+        padding: accentPadding ?? paddingValue,
         gap: gapValue,
         ...style,
       }}
       {...rest}
       {...selectableProps}
     >
-      {children}
+      <CardPaddedContext.Provider value={resolvedPadding !== 'none'}>
+        {children}
+      </CardPaddedContext.Provider>
     </Comp>
   );
 });
@@ -281,20 +300,21 @@ export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const CardHeader = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardHeaderProps>(
   function CardHeader({ className, metadata, children, ...props }, ref) {
+    const pad = usePartPadding('p-6');
     if (metadata !== undefined) {
       // Top-of-card metadata + stacked title/description below. Inline-flex
       // wrapper around the metadata keeps the badge sized to its content
       // (no full-width stretch). The 12px gap reads as a single header
       // section without crowding either zone.
       return (
-        <div ref={ref} className={cn('flex flex-col gap-3 p-6', className)} {...props}>
+        <div ref={ref} className={cn('flex flex-col gap-3', pad, className)} {...props}>
           <div className="flex flex-wrap items-center gap-2">{metadata}</div>
           <div className="flex flex-col space-y-1.5 min-w-0">{children}</div>
         </div>
       );
     }
     return (
-      <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props}>
+      <div ref={ref} className={cn('flex flex-col space-y-1.5', pad, className)} {...props}>
         {children}
       </div>
     );
@@ -331,14 +351,16 @@ const CardBody = /* @__PURE__ */ React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(function CardBody({ className, ...props }, ref) {
-  return <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />;
+  const pad = usePartPadding('p-6 pt-0');
+  return <div ref={ref} className={cn(pad, className)} {...props} />;
 });
 
 const CardFooter = /* @__PURE__ */ React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(function CardFooter({ className, ...props }, ref) {
-  return <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />;
+  const pad = usePartPadding('p-6 pt-0');
+  return <div ref={ref} className={cn('flex items-center', pad, className)} {...props} />;
 });
 
 // ── Progress slot ─────────────────────────────────────────────────────────────
@@ -377,12 +399,13 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
     { className, value, max = 100, label, tone = 'neutral', style, ...props },
     ref,
   ) {
+    const pad = usePartPadding('px-6 pb-2');
     const clamped = Math.max(0, Math.min(value, max));
     const pct = max > 0 ? (clamped / max) * 100 : 0;
     return (
       <div
         ref={ref}
-        className={cn('px-6 pb-2', className)}
+        className={cn(pad, className)}
         // The Progress slot owns its vertical rail. Padding-x matches the
         // Header/Body 24px inset; padding-bottom reserves 8px below the
         // optional label. NO direct collision with adjacent prose.
@@ -472,8 +495,9 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricProps>(
   function CardMetric({ className, label, value, sub, tone = 'neutral', style, ...props }, ref) {
+    const pad = usePartPadding('px-6');
     return (
-      <div ref={ref} className={cn('flex flex-col px-6', className)} style={style} {...props}>
+      <div ref={ref} className={cn('flex flex-col', pad, className)} style={style} {...props}>
         <p
           style={{
             ...hds.typeStyles.caption,
