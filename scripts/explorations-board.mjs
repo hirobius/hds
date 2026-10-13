@@ -25,6 +25,9 @@ Commands:
         rationale.md, refs.json, bend-log.json, gaps.json and review.json.
         Options:
           --title <text>      heading for the screen (default: the screen id, humanized)
+          --shots <dir>       the harness reports directory (reports/explorations/<date>): reads
+                              <id>-<vp>-<theme>.png and gates.json there; a direction that failed
+                              its gates is not shown
           --budget-mb <n>     cap for the whole page in MB (default ${DEFAULT_BUDGET_BYTES / 1024 / 1024}, never above the 16 MB
                               Artifact limit); screenshots are downscaled, wide ones first, until it fits
   index <runDir...> --out <file>
@@ -56,7 +59,7 @@ function fail(message) {
   process.exit(2);
 }
 
-const VALUE_FLAGS = new Set(['--out', '--title', '--budget-mb', '--links', '--titles']);
+const VALUE_FLAGS = new Set(['--out', '--title', '--budget-mb', '--links', '--titles', '--shots']);
 const BOOL_FLAGS = new Set(['--artifact', '--strict', '--help']);
 
 function parse(argv) {
@@ -126,6 +129,7 @@ try {
       title: flags['--title'],
       form,
       budgetBytes,
+      shotsDir: flags['--shots'],
     });
     report(result, flags['--strict']);
   } else if (command === 'index') {

@@ -95,10 +95,13 @@ function readText(file) {
   return text ? { state: 'ok', text } : { state: 'empty' };
 }
 
-function readShot(dir, id, theme, vp) {
+function readShot(dir, id, theme, vp, shotsDir) {
   const file = `${theme}-${vp}.png`;
   const rel = `${id}/screenshots/${file}`;
-  const full = path.join(dir, 'screenshots', file);
+  // The harness (scripts/eval-consistency.mjs --explorations) writes <id>-<vp>-<theme>.png to
+  // one reports directory; a direction folder's own screenshots/ is the fallback.
+  const harness = shotsDir ? path.join(shotsDir, `${id}-${vp}-${theme}.png`) : null;
+  const full = harness && existsSync(harness) ? harness : path.join(dir, 'screenshots', file);
   const shot = { theme, vp, file, rel };
   if (!existsSync(full)) return { ...shot, state: 'missing' };
   const buf = readFileSync(full);
@@ -110,15 +113,24 @@ function readShot(dir, id, theme, vp) {
   }
 }
 
+/** The harness verdict for one direction from <shotsDir>/gates.json; `{}` when there is none. */
+function gateResult(shotsDir, id) {
+  if (!shotsDir) return {};
+  const gates = readJson(path.join(shotsDir, 'gates.json'));
+  const entry = gates.state === 'ok' ? gates.value?.directions?.[id] : null;
+  return entry ? { pass: entry.pass !== false } : {};
+}
+
 /**
  * Read one direction. `screenshots: false` skips the images, for the index,
  * which needs the review and the gaps only.
  * @returns {object} the direction as found; `present: false` when no run has it
  */
-export function readDirection(runDirs, screen, letter, { screenshots = true } = {}) {
+export function readDirection(runDirs, screen, letter, { screenshots = true, shotsDir } = {}) {
   const id = `${screen}-${letter}`;
   const at = findDirection(runDirs, screen, letter);
   if (!at) return { id, letter, present: false };
+  const gate = gateResult(shotsDir, id);
   return {
     id,
     letter,
@@ -130,9 +142,14 @@ export function readDirection(runDirs, screen, letter, { screenshots = true } = 
     bends: readJson(path.join(at.dir, 'bend-log.json')),
     gaps: readJson(path.join(at.dir, 'gaps.json')),
     review: readJson(path.join(at.dir, 'review.json')),
-    shots: screenshots
-      ? VIEWPORTS.flatMap((vp) => THEMES.map((theme) => readShot(at.dir, id, theme, vp)))
-      : [],
+    gate,
+    // a direction that failed its gates is not shown
+    shots:
+      screenshots && gate.pass !== false
+        ? VIEWPORTS.flatMap((vp) =>
+            THEMES.map((theme) => readShot(at.dir, id, theme, vp, shotsDir)),
+          )
+        : [],
   };
 }
 

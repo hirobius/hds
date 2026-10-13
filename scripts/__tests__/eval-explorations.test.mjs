@@ -499,7 +499,7 @@ describe('pnpm eval:consistency -- --explorations (CLI, offline)', () => {
     expect(
       run(['--explorations', named, '--offline'], { EXPLORATIONS_PII_DENYLIST: listFile }).code,
     ).toBe(1);
-  });
+  }, 30_000); // four CLI spawns: past the 5 s default when the machine is loaded
 
   it('exits 1 when a direction renders under a client tenant', () => {
     const dir = runOf(
