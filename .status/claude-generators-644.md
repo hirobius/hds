@@ -1,0 +1,1 @@
+Generators run through one seam: runGenerator (scripts/lib/generated-check.mjs) owns --check, Prettier formatting (formatCommitted honours .gitignore/.prettierignore), write, compare, exit code and fix hint; 7 generators migrated, and a state-surfaces test ratchets the rest (hds#644).

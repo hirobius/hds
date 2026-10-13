@@ -63,6 +63,7 @@ const tokenRules = [
   'CSS variables: token path `semantic.color.surface.page` maps to `var(--semantic-color-surface-page)` (see generated token refs).',
   'Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.',
   'Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).',
+  "Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.",
   'Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.',
 ];
 

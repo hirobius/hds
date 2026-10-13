@@ -1,5 +1,5 @@
 {
-  "checksum": "6d1c3bea",
+  "checksum": "e97f9be8",
   "snapshot": {
     "schemaVersion": 1,
     "takenAt": "2026-10-07T05:17:26.800Z",
@@ -1342,7 +1342,7 @@
           "unit": "PIXELS",
           "value": 0.72
         },
-        "textCase": "UPPER",
+        "textCase": "TITLE",
         "boundVariables": {
           "fontFamily": "VariableID:1:51",
           "fontSize": "VariableID:1:52",

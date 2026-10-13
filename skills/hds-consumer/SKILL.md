@@ -57,12 +57,15 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Avatar` — Circular avatar.
 - `AvatarGroup` — Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
-- `Card` — Tagged per-export, not on the file block: this module exports eight components and a file-level @figma would hand all eight this one node.
+- `Card` — Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
 - `CardBody` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardDescription` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardFooter` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardHeader` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardProgress` — Card — surface container with slot anatomy (12d-card-anatomy).
+- `CardRow` — Card.Row — a title with muted notes and a trailing slot, inside a Card.
+- `CardRowNote` — Card.RowNote — one muted caption line under the row's title; repeat it for more.
+- `CardRowTitle` — Card.RowTitle — the row's title, at the ui role.
 - `CardTitle` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `EmptyState` — EmptyState — consistent no-data placeholder for lists, grids, and sections.
 - `Field` — Caption label paired with a value — used in metadata grids and read-only forms.
@@ -152,7 +155,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 
 ### Actions
 
-- `DestructiveSection` — Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`.
+- `DestructiveSection` — Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an `AlertDialog`.
 - `FormActions` — Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most.
 
 ### Display
@@ -160,7 +163,6 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 - `AssetImg` — AssetImg - responsive asset frame with fallback placeholder handling.
 - `CodeBlock` — CodeBlock - code display with copy button and optional collapsible toggle.
 - `DataTableSection` — Section heading and toolbar over a `Table`.
-- `StatusTile` — Block-layout sibling of StatusListItem.
 
 ### Feedback
 
@@ -188,7 +190,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 3. Reach for a named layout primitive before hand-rolling flex/grid math for a common intent: `Stack direction="row" wrap="wrap"` (wrapping row of same-ish things), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query). A full-height shell with a centered main region, an aspect-ratio-locked media box or a negative margin that escapes a parent padding is a `Box` with `style` (not `sx`, which applies on the client only).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
 5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). A row of headline numbers is always `MetricTiles`; `Stat`, `Card.Metric` and `StatusTile` answer other needs (see "Pick By Need" in `llms.txt`). Pick between `Card` and `Surface` with the "Which one, when" table in `DESIGN.md`.
-6. `Box` `sx` LAST — only for genuinely one-off layout that no named primitive covers. `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
+6. `Box` `style` / `sx` LAST — only for genuinely one-off layout that no named primitive covers (prefer `style` over `sx`, as `sx` applies on the client only). `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
 
 Never:
 

@@ -18,6 +18,10 @@
  *   figma/push/use-figma/snapshot.js
  *   figma/push/use-figma/receipt.js  reads a Sync's receipt from the library, for
  *                                 pnpm figma:snapshot --from-receipt (hds#417)
+ *   figma/push/use-figma/fallbacks.js  reads the library and returns the paints and effects
+ *                                 bound to a colour variable whose raw fallback colour differs
+ *                                 from the variable (fallbacks-components.js: components only),
+ *                                 for pnpm figma:snapshot --fallbacks and pnpm check:figma-fallbacks
  *   figma/push/use-figma/snapshot-diff.js  reads the library and returns only what differs
  *                                 from the committed figma/snapshot.json (a few KB, not
  *                                 the whole 165 KB), for pnpm figma:snapshot --from-diff
@@ -71,6 +75,7 @@ import {
   buildUseFigmaPushScript,
   buildUseFigmaReceiptScript,
   buildUseFigmaSnapshotDiffScript,
+  buildUseFigmaFallbacksScript,
   buildUseFigmaSnapshotScript,
   modelHash,
   syncPluginBuild,
@@ -130,6 +135,11 @@ export function writePushArtifacts({ root, outDir, prune = false }) {
   }
   outputs.push([join('use-figma', 'snapshot.js'), buildUseFigmaSnapshotScript(links)]);
   outputs.push([join('use-figma', 'receipt.js'), buildUseFigmaReceiptScript(links)]);
+  outputs.push([join('use-figma', 'fallbacks.js'), buildUseFigmaFallbacksScript(links)]);
+  outputs.push([
+    join('use-figma', 'fallbacks-components.js'),
+    buildUseFigmaFallbacksScript(links, { scope: 'components' }),
+  ]);
   const committedSnapshot = join(root, 'figma', 'snapshot.json');
   if (existsSync(committedSnapshot)) {
     outputs.push([
@@ -385,6 +395,7 @@ export function formatRun({ model, prune, files, pluginBuild }, outDir) {
     '  Then take a snapshot (pnpm figma:snapshot) and run pnpm check:figma-drift.',
     '',
     `  After a Sync, an agent collects its receipt with ${rel}/use-figma/receipt.js (reads only; figma/README.md "Agent: collect a sync").`,
+    `  Bound-colour fallbacks: ${rel}/use-figma/fallbacks.js (reads only; ${rel}/use-figma/fallbacks-components.js walks components only), then pnpm figma:snapshot --fallbacks <file> (figma/README.md "Bound-colour fallbacks").`,
   ].join('\n');
 }
 

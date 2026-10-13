@@ -22,8 +22,8 @@ import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
-// hds#483: the type ramp is 5 roles plus mono — display, title, body, ui,
-// caption, mono. Each role is one `.hds-type-<role>` class (theme.css), which
+// hds#483: the type ramp is 5 roles plus title-sm and mono — display, title,
+// titleSm, body, ui, caption, mono. Each role is one `.hds-type-<role>` class (theme.css), which
 // reads that role's --semantic-typography-<role>-* composite vars, so the
 // component carries no size, weight or leading of its own. body, ui and mono
 // also cap the measure at 60ch.
@@ -37,6 +37,7 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
     variant: {
       display: 'hds-type-display',
       title: 'hds-type-title',
+      titleSm: 'hds-type-title-sm',
       body: 'hds-type-body max-w-[var(--semantic-typography-body-max-width)]',
       ui: 'hds-type-ui max-w-[var(--semantic-typography-ui-max-width)]',
       caption: 'hds-type-caption',
@@ -58,10 +59,11 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-/** The six roles of the type ramp, plus the deprecated names that still resolve. */
+/** The seven roles of the type ramp, plus the deprecated names that still resolve. */
 export type TextVariant =
   | 'display'
   | 'title'
+  | 'titleSm'
   | 'body'
   | 'ui'
   | 'caption'
@@ -122,6 +124,7 @@ type TextTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'div';
 const defaultTagMap: Record<TextVariant, TextTag> = {
   display: 'h1',
   title: 'h2',
+  titleSm: 'h3',
   body: 'p',
   ui: 'p',
   caption: 'p',

@@ -1,0 +1,12 @@
+{
+  "tenant": "brutalist-demo",
+  "searches": [
+    { "tool": "get_inspiration", "query": "dashboard section headers with a soft fade" }
+  ],
+  "refs": [
+    {
+      "url": "https://example.com/inspiration/section-fade",
+      "took": "Idea: a soft fade behind a section heading"
+    }
+  ]
+}

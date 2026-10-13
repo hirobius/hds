@@ -135,6 +135,47 @@ describe('check-deprecations', () => {
     });
   });
 
+  // hds#642: versions order by semver.org precedence, through codemods/lib/semver.mjs.
+  describe('orders versions the way semver does (hds#642)', () => {
+    const PROBE = '\n/**\n * @deprecated Probe.\n * @removeIn 1.0.0\n */\nexport const __p = 1;\n';
+
+    /** The copy's package.json version, the one @removeIn is compared against. */
+    function withVersion(dir, version) {
+      edit(dir, 'package.json', (src) => JSON.stringify({ ...JSON.parse(src), version }, null, 2));
+    }
+
+    it('keeps a release ahead of its own pre-release', () => {
+      withCopy((dir) => {
+        withVersion(dir, '1.0.0-rc.1');
+        edit(dir, 'src/patterns.ts', (src) => src + PROBE);
+        expect(run(dir).status).toBe(0);
+      });
+    });
+
+    it('is past-due once the release itself is current', () => {
+      withCopy((dir) => {
+        withVersion(dir, '1.0.0');
+        edit(dir, 'src/patterns.ts', (src) => src + PROBE);
+        const { status, output } = run(dir);
+        expect(output).toMatch(/@removeIn 1\.0\.0 is past-due/);
+        expect(status).toBe(1);
+      });
+    });
+
+    it('names a @removeIn that is not a version', () => {
+      withCopy((dir) => {
+        edit(
+          dir,
+          'src/patterns.ts',
+          (src) => src + PROBE.replace('@removeIn 1.0.0', '@removeIn 1.0'),
+        );
+        const { status, output } = run(dir);
+        expect(output).toMatch(/@removeIn "1\.0" is not a valid semver/);
+        expect(status).toBe(1);
+      });
+    });
+  });
+
   it('runs in pretest, as the registry declares (hds#389 D6)', () => {
     const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
     expect(pkg.scripts.pretest).toContain('node scripts/check-deprecations.mjs');

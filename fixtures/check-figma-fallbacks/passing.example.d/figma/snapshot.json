@@ -1,0 +1,37 @@
+{
+  "checksum": "472cb443",
+  "snapshot": {
+    "schemaVersion": 1,
+    "takenAt": "2026-10-12T00:00:00.000Z",
+    "file": {
+      "name": "Fixture library",
+      "key": "FIXTURElibrary"
+    },
+    "lastPush": null,
+    "collections": [],
+    "textStyles": [],
+    "effectStyles": []
+  },
+  "bindingFallbacks": {
+    "format": "binding-fallbacks",
+    "schemaVersion": 1,
+    "file": "FIXTURElibrary",
+    "takenAt": "2026-10-12T00:00:00.000Z",
+    "scope": "all",
+    "pages": 2,
+    "skippedPages": [
+      {
+        "id": "2157:826",
+        "name": "Deprecated"
+      },
+      {
+        "id": "2083:2",
+        "name": "Archive"
+      }
+    ],
+    "nodes": 12,
+    "bindings": 5,
+    "mismatches": [],
+    "checksum": "6c9cc416"
+  }
+}

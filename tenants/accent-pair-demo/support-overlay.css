@@ -1,0 +1,48 @@
+/*
+ * Accent pair demo: the supporting accent, as a CSS-variable overlay.
+ *
+ * HDS has one accent. hds#628 decision 4 explores a second, supporting one as an
+ * overlay FIRST, before any token change, so this file is plain CSS beside the
+ * tenant's tokens.json and is NOT generated and NOT shipped in the package.
+ * Load it as plain CSS after the HDS token CSS (tokens + tenants), for example
+ * `import '../tenants/accent-pair-demo/support-overlay.css'` in an exploration's
+ * entry file. See README.md in this directory for what it is for and how to
+ * promote it.
+ *
+ * The variable names are the CSS names a token at `semantic.accent.support.*`
+ * would compile to, so promoting it is "add the token, delete this file" and no
+ * consumer changes. Values alias existing primitives (stone), never raw colours.
+ *
+ * Scope: only inside `data-brand` / `data-tenant` = accent-pair-demo, like every
+ * compiled tenant block. The dark rule needs data-brand and data-theme on the
+ * SAME element (the same rule as src/styles/tenants.css), so put both on <html>
+ * or both on one wrapper.
+ *
+ * Roles (checked for WCAG AA by scripts/__tests__/explorations-demo-tenants.test.mjs):
+ *   rest      fill for a supporting emphasis (a tag, a stage marker, a highlighted
+ *             stat); `on` text sits on it (4.5:1 on rest and hover); 3:1 against the page
+ *   hover     rest, one step stronger
+ *   pressed   rest, two steps stronger (a fill, not a text pairing)
+ *   subtle    a faint tint surface; `content` text sits on it (4.5:1)
+ *   content   text and icons in the supporting colour on the page or on subtle (4.5:1)
+ *   on        text and icons on a rest or hover fill
+ */
+[data-brand='accent-pair-demo'],
+[data-tenant='accent-pair-demo'] {
+  --semantic-accent-support-rest: var(--primitive-color-stone-600);
+  --semantic-accent-support-hover: var(--primitive-color-stone-700);
+  --semantic-accent-support-pressed: var(--primitive-color-stone-800);
+  --semantic-accent-support-subtle: var(--primitive-color-stone-100);
+  --semantic-accent-support-content: var(--primitive-color-stone-700);
+  --semantic-accent-support-on: var(--primitive-color-neutral-white);
+}
+
+[data-brand='accent-pair-demo'][data-theme='dark'],
+[data-tenant='accent-pair-demo'][data-theme='dark'] {
+  --semantic-accent-support-rest: var(--primitive-color-stone-400);
+  --semantic-accent-support-hover: var(--primitive-color-stone-450);
+  --semantic-accent-support-pressed: var(--primitive-color-stone-500);
+  --semantic-accent-support-subtle: var(--primitive-color-stone-950);
+  --semantic-accent-support-content: var(--primitive-color-stone-400);
+  --semantic-accent-support-on: var(--primitive-color-stone-950);
+}

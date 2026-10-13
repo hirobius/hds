@@ -1,0 +1,17 @@
+{
+  "impact": "breaking",
+  "plain": "Avatar initials now keep the case of the name or the initials you pass instead of being forced to capitals, so pass capital initials where you want them, and the tracking-caps class and --primitive-typography-letterSpacing-caps are removed, so delete them from your code.",
+  "steps": [
+    {
+      "id": "removed/--primitive-typography-letterSpacing-caps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The CSS variable --primitive-typography-letterSpacing-caps and the tracking-caps class are gone because the system is sentence case, so delete them from your styles.",
+      "detect": {
+        "cssVars": ["--primitive-typography-letterSpacing-caps"],
+        "cssVarWrites": ["--primitive-typography-letterSpacing-caps"]
+      },
+      "facts": ["css-var-removed:--primitive-typography-letterSpacing-caps"]
+    }
+  ]
+}

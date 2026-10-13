@@ -18,7 +18,7 @@
  * the invariant from it rather than trusting that build-tokens ran the
  * re-emission step.
  *
- * Reads src/styles/tokens.css, so it is fast and needs no browser. It runs
+ * Reads src/styles/tokens.generated.css, so it is fast and needs no browser. It runs
  * from `pretest`, the channel CI actually invokes via `pnpm test`.
  *
  * Usage: node scripts/check-dark-alias-flip.mjs
@@ -32,7 +32,7 @@ import { fileURLToPath } from 'node:url';
 import { darkAliasReemissions } from './lib/dark-alias-reemit.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const CSS = path.join(ROOT, 'src', 'styles', 'tokens.css');
+const CSS = path.join(ROOT, 'src', 'styles', 'tokens.generated.css');
 
 /** The declarations inside one top-level block, by selector. */
 function blocksOf(css) {

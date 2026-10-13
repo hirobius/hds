@@ -32,7 +32,7 @@ import type { PaddingOption } from './surface-padding';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // The background is the theme-aware `--semantic-color-surface-raised` var, which
-// re-roots under `[data-theme="dark"]` (see styles/tokens.css). The `theme` prop
+// re-roots under `[data-theme="dark"]` (see styles/tokens.generated.css). The `theme` prop
 // therefore forces a theme by setting `data-theme` on the element itself — that
 // re-roots BOTH the surface background AND descendant content-color vars, so
 // forced-dark content stays readable. (Previously a JS isDark branch picked a

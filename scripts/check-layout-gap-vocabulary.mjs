@@ -55,15 +55,15 @@
  * Or:  pnpm check:layout-gap-vocabulary
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, dirname, extname, basename, relative, resolve } from 'path';
+import { readFileSync } from 'fs';
+import { join, dirname, extname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { scanSources, suppressionFor, isSpecFile } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC = join(ROOT, 'src');
 
 /** The one copy of the map. */
 const CANONICAL = 'src/app/components/box-sx.ts';
@@ -78,12 +78,13 @@ export const LAYOUT_GAP_NAMES = Object.freeze(['tight', 'normal', 'inset', 'spac
 const NAMES = new Set(LAYOUT_GAP_NAMES);
 const STEPS = new Set(['xs', 'sm', 'md', 'lg', 'xl']);
 const SCALE_VAR = /var\(\s*--semantic-space-scale-(xs|sm|md|lg|xl)\s*\)/;
-const EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs']);
-const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', '__tests__']);
+const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mjs'];
+const SKIP_DIRS = ['node_modules', '.git', 'dist', '__tests__'];
+const isSuppressed = suppressionFor('layout-gap-ok');
 
 /** Whether a repo-relative path is out of scope: the one copy, or a test. */
 export function isExempt(rel) {
-  return rel === CANONICAL || /\.(test|spec)\.[cm]?[jt]sx?$/.test(basename(rel));
+  return rel === CANONICAL || isSpecFile(rel);
 }
 
 /** Unwraps `(x)`, `x as T`, `x satisfies T` and `<T>x` down to the expression itself. */
@@ -214,10 +215,7 @@ export function findViolationsInText(text, rel) {
 
   const report = (at, name, step) => {
     const line = source.getLineAndCharacterOfPosition(at.getStart(source)).line;
-    const suppressed =
-      lines[line].includes('layout-gap-ok') ||
-      (line > 0 && lines[line - 1].includes('layout-gap-ok'));
-    if (suppressed) return;
+    if (isSuppressed(lines, line)) return;
     violations.push({
       file: rel,
       line: line + 1,
@@ -263,25 +261,19 @@ export function findViolationsInText(text, rel) {
   return violations.sort((a, b) => a.line - b.line);
 }
 
-function collectFiles(dir, results = []) {
-  for (const entry of readdirSync(dir)) {
-    if (SKIP_DIRS.has(entry)) continue;
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      collectFiles(full, results);
-    } else if (EXTENSIONS.has(extname(entry))) {
-      results.push(full);
-    }
-  }
-  return results;
-}
-
 // ── CLI entry ─────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const files =
     isFixtureMode && fixtureFile
       ? [resolve(fixtureFile)]
-      : collectFiles(SRC).filter((file) => !isExempt(relative(ROOT, file).replace(/\\/g, '/')));
+      : scanSources({
+          root: ROOT,
+          gate: 'check-layout-gap-vocabulary',
+          roots: ['src'],
+          exts: EXTENSIONS,
+          skipDirs: SKIP_DIRS,
+          includeSpecs: true,
+        }).filter((file) => !isExempt(relative(ROOT, file).replace(/\\/g, '/')));
 
   const violations = [];
   for (const file of files) {

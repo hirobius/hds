@@ -1,0 +1,109 @@
+{
+  "$comment": "DUMMY fixture for the explorations harness tests (hds#628). A trimmed copy of screens/standing/fixture.json: invented data, nothing real.",
+  "screen": "standing",
+  "updatedLabel": "updated 12s ago",
+  "bands": {
+    "fire": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#601",
+        "title": "Open sev1: a client preview URL is public without its gate",
+        "why": "Add the basic-auth middleware to the preview project, then close this issue",
+        "ageLabel": "open 3h",
+        "at": "2026-10-13T06:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/601"
+      }
+    ],
+    "waiting": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#598",
+        "title": "Decide: keep the Digest page or fold it into Drops",
+        "why": "Decide by Oct 15: pick one; silence applies the default (fold it)",
+        "ageLabel": "decide in 2d",
+        "at": "2026-10-10T09:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/598"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/site-factory",
+        "ref": "#85",
+        "title": "Needs credential: hCaptcha site key for the Brindle preview",
+        "why": "Create the key at the hCaptcha dashboard and paste it into the project env",
+        "ageLabel": "waiting 1d",
+        "at": "2026-10-12T09:00:00Z",
+        "url": "https://example.com/harborlane/site-factory/issues/85"
+      }
+    ],
+    "running": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#610",
+        "title": "Ralph: lead history timeline on the pitch card",
+        "why": "Claimed; tests are red, working on the fix",
+        "ageLabel": "running 12m",
+        "at": "2026-10-13T08:48:00Z",
+        "url": "https://example.com/harborlane/ops/issues/610"
+      },
+      {
+        "kind": "pr",
+        "repo": "harborlane/site-factory",
+        "ref": "#93",
+        "title": "Add the junk-removal preset",
+        "why": "Open, checks running; 2 of 5 done",
+        "ageLabel": "opened 40m",
+        "at": "2026-10-13T08:20:00Z",
+        "url": "https://example.com/harborlane/site-factory/pull/93"
+      }
+    ],
+    "parked": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/site-factory",
+        "ref": "#79",
+        "title": "Video hero for the landscaping preset",
+        "why": "Parked 3d: needs a licensed clip; nothing in the library fits",
+        "ageLabel": "parked 3d",
+        "at": "2026-10-10T09:00:00Z",
+        "url": "https://example.com/harborlane/site-factory/issues/79"
+      }
+    ],
+    "backlog": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#612",
+        "title": "Add a retention purge for lead events",
+        "why": "Queued for the next loop; definition of done is written",
+        "ageLabel": "queued 1d",
+        "at": "2026-10-12T08:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/612"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/site-factory",
+        "ref": "#88",
+        "title": "Photo optimizer rejects files over 4000px",
+        "why": "Queued; needs a failing fixture first",
+        "ageLabel": "queued 2d",
+        "at": "2026-10-11T08:00:00Z",
+        "url": "https://example.com/harborlane/site-factory/issues/88"
+      }
+    ],
+    "shipped": [
+      {
+        "kind": "pr",
+        "repo": "harborlane/ops",
+        "ref": "#606",
+        "title": "Retention purge covers lead notes",
+        "why": "Merged",
+        "ageLabel": "merged 2h",
+        "at": "2026-10-13T07:00:00Z",
+        "url": "https://example.com/harborlane/ops/pull/606"
+      }
+    ]
+  }
+}

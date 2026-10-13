@@ -77,6 +77,116 @@
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
 }
 
+/* ── accent-pair-demo ──────────────────────────────────────────────────── */
+[data-brand='accent-pair-demo'],
+[data-tenant='accent-pair-demo'] {
+  --role-primary: var(
+    --semantic-color-surface-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --role-ring: var(
+    --semantic-color-border-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --role-accent: var(
+    --semantic-color-surface-accentSubtle
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --role-accent-foreground: var(
+    --semantic-color-content-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-bg: var(
+    --semantic-color-surface-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-bgHover: var(
+    --semantic-accent-hover
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-secondary-bg-hover: var(
+    --semantic-color-surface-accentSubtle
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-secondary-border-hover: var(
+    --semantic-color-border-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-secondary-border-pressed: var(
+    --semantic-color-border-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-tag-activeBackground: var(
+    --semantic-accent-rest
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-tag-activeBorder: var(
+    --semantic-accent-rest
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-tag-activeHover: var(
+    --semantic-accent-hover
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-nav-bgActive: var(
+    --semantic-accent-subtle
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-nav-borderActive: var(
+    --semantic-color-surface-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-rest: var(
+    --primitive-color-mauve-600
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-hover: var(
+    --primitive-color-mauve-700
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-pressed: var(
+    --primitive-color-mauve-800
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-subtle: var(
+    --primitive-color-mauve-50
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-content: var(
+    --primitive-color-mauve-600
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-contentHover: var(
+    --primitive-color-mauve-700
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-surface-accent: var(
+    --primitive-color-mauve-600
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-surface-accentSubtle: var(
+    --primitive-color-mauve-50
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-border-accent: var(
+    --primitive-color-mauve-600
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-content-accent: var(
+    --primitive-color-mauve-600
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+}
+[data-brand='accent-pair-demo'][data-theme='dark'],
+[data-tenant='accent-pair-demo'][data-theme='dark'] {
+  --semantic-accent-rest: var(
+    --primitive-color-mauve-300
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-hover: var(
+    --primitive-color-mauve-200
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-pressed: var(
+    --primitive-color-mauve-100
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-subtle: var(
+    --primitive-color-mauve-900
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-content: var(
+    --primitive-color-mauve-300
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-accent-contentHover: var(
+    --primitive-color-mauve-200
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-surface-accent: var(
+    --primitive-color-mauve-300
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-surface-accentSubtle: var(
+    --primitive-color-mauve-900
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-border-accent: var(
+    --primitive-color-mauve-300
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-content-accent: var(
+    --primitive-color-mauve-300
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+}
+
 /* ── brutalist-demo ────────────────────────────────────────────────────── */
 [data-brand='brutalist-demo'],
 [data-tenant='brutalist-demo'] {
@@ -152,4 +262,55 @@
   --semantic-color-border-accent: var(
     --primitive-color-stone-500
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+}
+
+/* ── soft-demo ─────────────────────────────────────────────────────────── */
+[data-brand='soft-demo'],
+[data-tenant='soft-demo'] {
+  --role-radius: var(
+    --semantic-radius-action
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --role-card: var(
+    --semantic-color-surface-raised
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --role-secondary: var(
+    --semantic-color-surface-raised
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-radius: var(
+    --semantic-radius-action
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-input-radius: var(
+    --semantic-radius-action
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-card-bg: var(
+    --semantic-color-surface-raised
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-tag-background: var(
+    --semantic-color-surface-raised
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-radius-action: 20px; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-surface-raised: var(
+    --primitive-color-neutral-100
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-space-surface-padding: var(
+    --semantic-space-scale-lg
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-space-component-padding: var(
+    --semantic-space-surface-padding
+  ); /* deprecated alias re-anchored to the override (hds#206) */
+}
+[data-brand='soft-demo'][data-theme='dark'],
+[data-tenant='soft-demo'][data-theme='dark'] {
+  --semantic-color-surface-raised: var(
+    --primitive-color-neutral-850
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+}
+[data-brand='soft-demo'][data-density='compact'],
+[data-tenant='soft-demo'][data-density='compact'] {
+  --semantic-space-surface-padding: var(
+    --semantic-space-scale-md
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-space-component-padding: var(
+    --semantic-space-surface-padding
+  ); /* deprecated alias re-anchored to the override (hds#206) */
 }

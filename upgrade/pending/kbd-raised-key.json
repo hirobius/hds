@@ -1,4 +1,4 @@
 {
   "impact": "look",
-  "plain": "Kbd now has a 1px inset bottom shadow so it reads as a raised key; its size and layout are unchanged, so nothing to do unless you screenshot-test it."
+  "plain": "Kbd now has a 2px darker edge under it so it reads as a raised key; its size and layout are unchanged, so nothing to do unless you screenshot-test it."
 }

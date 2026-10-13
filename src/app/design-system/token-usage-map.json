@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-11T16:13:35.974Z",
+  "generated": "2026-10-12T21:11:30.990Z",
   "byToken": {
     "--semantic-space-scale-sm": [
       "src/app/components/alert-dialog.tsx",
@@ -14,7 +14,6 @@
       "src/styles/static.css",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-scale-xs": [
@@ -33,7 +32,6 @@
       "src/styles/static.css",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-radius-4": [
@@ -46,7 +44,6 @@
       "src/app/design-system/tokens.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-feedback-success": [
@@ -60,7 +57,6 @@
       "src/mui/index.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-feedback-error": [
@@ -72,7 +68,6 @@
       "src/mui/index.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -86,7 +81,6 @@
       "src/mui/index.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-feedback-info": [
@@ -99,7 +93,6 @@
       "src/mui/index.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/xray.css"
     ],
@@ -113,7 +106,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/xray.css"
     ],
@@ -153,7 +145,6 @@
       "src/mui/index.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -172,13 +163,11 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.space.px4": ["src/app/components/asset-img.tsx", "src/app/design-system/tokens.ts"],
     "--semantic-color-content-secondary": [
       "src/app/components/asset-img.tsx",
-      "src/app/components/badge.tsx",
       "src/app/components/breadcrumb.tsx",
       "src/app/components/card.tsx",
       "src/app/components/checkbox.tsx",
@@ -202,7 +191,6 @@
       "src/mui/index.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -212,7 +200,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-badge-minWidth": [
@@ -221,7 +208,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-badge-paddingX": [
@@ -230,7 +216,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-badge-paddingY": [
@@ -239,7 +224,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-badge-radius": [
@@ -248,7 +232,102 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-neutral-bg": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-neutral-text": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-info-bg": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-info-text": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-success-bg": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-success-text": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-danger-bg": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-danger-text": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-warning-bg": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-warning-text": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-inProgress-bg": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-inProgress-text": [
+      "src/app/components/badge.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/static.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-2": [
@@ -258,7 +337,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-1": [
@@ -269,7 +347,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-layout-tight": [
@@ -278,7 +355,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-layout-normal": [
@@ -287,7 +363,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-layout-inset": [
@@ -296,7 +371,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-layout-spacious": [
@@ -305,7 +379,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-scale-lg": [
@@ -318,7 +391,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-scale-md": [
@@ -329,7 +401,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-4": [
@@ -339,7 +410,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--x": ["src/app/components/box-sx.test.ts", "src/app/components/inline-code.test.tsx"],
@@ -364,7 +434,6 @@
       "src/styles/__tests__/interactive-surface-tokens.test.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -374,7 +443,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-accent-rest": [
@@ -389,7 +457,6 @@
       "src/mui/index.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-accent-hover": [
@@ -402,7 +469,6 @@
       "src/brand/overlay.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -414,7 +480,6 @@
       "src/brand/overlay.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-content-accent": [
@@ -428,7 +493,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -439,7 +503,7 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-6": [
@@ -449,7 +513,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.breakpoints": ["src/app/components/box-sx.ts"],
@@ -460,7 +523,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-component-medium": [
@@ -471,7 +533,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-content-disabled": [
@@ -479,9 +540,7 @@
       "src/app/components/button.tsx",
       "src/app/components/checkbox.tsx",
       "src/app/components/combobox.tsx",
-      "src/app/components/inline-code.test.tsx",
       "src/app/components/input.tsx",
-      "src/app/components/pagination.markup.test.tsx",
       "src/app/components/radio.tsx",
       "src/app/components/segmented-control.tsx",
       "src/app/components/tabs.tsx",
@@ -493,7 +552,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/theme.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.duration": [
@@ -502,6 +560,73 @@
       "src/app/components/textarea.tsx"
     ],
     "--tw-inset-shadow": ["src/app/components/button.tsx"],
+    "--component-button-primary-bgDisabled": [
+      "src/app/components/button.tsx",
+      "src/app/components/inline-code.test.tsx",
+      "src/app/components/pagination.markup.test.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-button-primary-textDisabled": [
+      "src/app/components/button.tsx",
+      "src/app/components/inline-code.test.tsx",
+      "src/app/components/pagination.markup.test.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-button-bgHover": [
+      "src/app/components/button.tsx",
+      "src/app/components/state-tokens.test.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-button-secondary-bg-pressed": [
+      "src/app/components/button.tsx",
+      "src/app/components/pagination.markup.test.tsx",
+      "src/app/components/state-tokens.test.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-button-secondary-border-disabled": [
+      "src/app/components/button.tsx",
+      "src/app/components/pagination.markup.test.tsx",
+      "src/app/components/state-tokens.test.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-button-size-sm-iconSize": [
+      "src/app/components/button.tsx",
+      "src/app/components/inline-code.test.tsx",
+      "src/app/components/pagination.markup.test.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-button-size-md-iconSize": [
+      "src/app/components/button.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-button-size-lg-iconSize": [
+      "src/app/components/button.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
     "--semantic-space-surface-padding": [
       "src/app/components/callout.tsx",
       "src/app/components/code-block.tsx",
@@ -516,7 +641,6 @@
       "src/styles/static.css",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.space": [
@@ -539,7 +663,6 @@
       "src/styles/static.css",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -560,7 +683,6 @@
       "src/mui/index.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -580,7 +702,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-surface-accentSubtle": [
@@ -597,7 +718,6 @@
       "src/styles/__tests__/interactive-surface-tokens.test.ts",
       "src/styles/static.css",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-size-control-md": [
@@ -606,7 +726,8 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
+      "src/styles/__tests__/slider-touch-target.test.ts",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-radius-control": [
@@ -614,7 +735,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-borderWidth-emphasis": [
@@ -626,7 +746,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-borderWidth-sm": [
@@ -638,7 +757,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-surface-accent": [
@@ -655,7 +773,6 @@
       "src/brand/overlay.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -671,7 +788,6 @@
       "src/brand/overlay.test.ts",
       "src/brand/overlay.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css",
       "src/styles/xray.css"
@@ -688,8 +804,8 @@
       "src/app/components/inline-code.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
+      "src/styles/__tests__/font-dial.test.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css",
       "src/styles/xray.css"
@@ -701,7 +817,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -712,7 +827,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css",
       "src/styles/xray.css"
@@ -724,7 +838,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -733,7 +846,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -744,7 +856,6 @@
       "src/app/components/text.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-radius-action": [
@@ -756,7 +867,6 @@
       "src/app/design-system/tokens.ts",
       "src/brand/overlay.test.ts",
       "src/brand/overlay.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/xray.css"
     ],
@@ -765,7 +875,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--hds-motion-productive-duration": [
@@ -776,7 +885,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-muted": [
@@ -784,7 +892,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--radix-popover-trigger-width": ["src/app/components/combobox.tsx"],
@@ -793,7 +900,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-layout-width-max": [
@@ -801,7 +907,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-sidebar-gap": [
@@ -811,7 +916,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-nav-paddingY": [
@@ -819,7 +923,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.semantic.space.sidebar.gap": ["src/app/components/disclosure.tsx"],
@@ -836,7 +939,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--hds-icon-small": [
@@ -854,7 +956,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-content-inverse": [
@@ -864,7 +965,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -872,6 +972,15 @@
       "src/app/components/icon.tsx",
       "src/app/components/inline-code.test.tsx",
       "src/app/components/pagination.markup.test.tsx"
+    ],
+    "--component-inlineCode-bg": [
+      "src/app/components/inline-code.test.tsx",
+      "src/app/components/inline-code.tsx",
+      "src/app/components/state-tokens.test.tsx",
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
     ],
     "--primitive-size-16": [
       "src/app/components/inline-code.test.tsx",
@@ -882,16 +991,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--component-badge-bg": [
-      "src/app/components/inline-code.test.tsx",
-      "src/app/components/inline-code.tsx",
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.semantic.space.subgrid.gap": [
@@ -907,7 +1006,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-120": [
@@ -915,7 +1013,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.typeStyles.heading2.fontSize": ["src/app/components/page-header.test.tsx"],
@@ -936,7 +1033,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-radius-full": [
@@ -948,7 +1044,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-size-control-sm": [
@@ -957,7 +1052,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.motion": [
@@ -976,7 +1070,6 @@
       "src/brand/overlay.ts",
       "src/mui/index.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -987,7 +1080,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-accent-pressed": [
@@ -999,7 +1091,6 @@
       "src/brand/overlay.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
     ],
@@ -1013,7 +1104,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.semantic.space.layout.gap": ["src/app/components/segmented-control.tsx"],
@@ -1026,7 +1116,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-section-stack": [
@@ -1037,7 +1126,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-subgrid-xs": [
@@ -1048,7 +1136,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/xray.css"
     ],
@@ -1057,14 +1144,12 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-raised-shadow": [
       "src/app/components/surface.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-size-row-compact": [
@@ -1073,7 +1158,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-size-row-comfortable": [
@@ -1082,7 +1166,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-zIndex-sticky": [
@@ -1090,7 +1173,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-borderWidth-default": [
@@ -1099,7 +1181,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-border-subdued": [
@@ -1107,7 +1188,6 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.typeStyles.X": ["src/app/components/table.tsx"],
@@ -1118,9 +1198,9 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
+      "src/styles/__tests__/slider-touch-target.test.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-minHeight": [
@@ -1129,7 +1209,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-minWidth": [
@@ -1138,7 +1217,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-radius": [
@@ -1147,7 +1225,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-paddingX": [
@@ -1156,7 +1233,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-paddingY": [
@@ -1165,7 +1241,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-activeBorder": [
@@ -1175,7 +1250,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-activeBackground": [
@@ -1185,7 +1259,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-activeText": [
@@ -1195,7 +1268,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-activeHover": [
@@ -1205,21 +1277,18 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-body-max-width": [
       "src/app/components/text.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-ui-max-width": [
       "src/app/components/text.tsx",
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-40": [
@@ -1228,7 +1297,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.borderRadius.full": ["src/app/components/tooltip.tsx"],
@@ -1245,17 +1313,20 @@
       "src/app/design-system/tokens.ts",
       "src/brand/overlay.test.ts",
       "src/brand/overlay.ts",
-      "src/styles/tokens.css",
+      "src/styles/__tests__/font-dial.test.ts",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--hds-font-family": [
       "src/app/context/__tests__/context.test.tsx",
       "src/app/context/hds-theme.tsx",
+      "src/styles/__tests__/font-dial.test.ts",
       "src/styles/theme.css"
     ],
     "--hds-font-family-mono": [
       "src/app/context/__tests__/context.test.tsx",
       "src/app/context/hds-theme.tsx",
+      "src/styles/__tests__/font-dial.test.ts",
       "src/styles/theme.css"
     ],
     "--hds-icon-medium": [
@@ -1270,84 +1341,72 @@
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-100": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-200": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-300": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-400": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-500": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-600": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-700": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-800": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-850": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-900": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-950": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-white": [
@@ -1357,7 +1416,6 @@
       "src/app/design-system/tokens.ts",
       "src/styles/__tests__/pressed-overlay-token.test.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-neutral-black": [
@@ -1365,7 +1423,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/__tests__/pressed-overlay-token.test.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-50": [
@@ -1374,7 +1431,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-100": [
@@ -1383,7 +1439,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-200": [
@@ -1392,7 +1447,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-300": [
@@ -1401,7 +1455,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-400": [
@@ -1410,7 +1463,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-450": [
@@ -1418,7 +1470,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-500": [
@@ -1427,7 +1478,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-600": [
@@ -1436,7 +1486,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-700": [
@@ -1445,7 +1494,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-800": [
@@ -1454,7 +1502,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-blue-900": [
@@ -1463,168 +1510,210 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-red-50": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-red-400": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-red-700": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-red-950": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-green-50": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-green-400": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-green-700": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-green-950": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-50": [
+    "--primitive-color-graphite-50": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-100": [
+    "--primitive-color-graphite-100": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-200": [
+    "--primitive-color-graphite-200": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-300": [
+    "--primitive-color-graphite-300": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-400": [
+    "--primitive-color-graphite-400": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-500": [
+    "--primitive-color-graphite-500": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-600": [
+    "--primitive-color-graphite-600": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-700": [
+    "--primitive-color-graphite-700": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-800": [
+    "--primitive-color-graphite-800": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-900": [
+    "--primitive-color-graphite-900": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
-    "--primitive-color-apple-950": [
+    "--primitive-color-graphite-950": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-50": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-100": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-200": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-300": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-400": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-500": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-600": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-700": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-800": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-900": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
+      "src/styles/tokens.generated.css"
+    ],
+    "--primitive-color-mauve-950": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-violet-50": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-violet-400": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-violet-700": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-violet-950": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-50": [
@@ -1632,7 +1721,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-100": [
@@ -1640,7 +1728,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-200": [
@@ -1648,7 +1735,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-300": [
@@ -1656,7 +1742,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-400": [
@@ -1664,7 +1749,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-450": [
@@ -1672,7 +1756,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-500": [
@@ -1680,7 +1763,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-600": [
@@ -1688,7 +1770,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-700": [
@@ -1696,14 +1777,12 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-800": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-lilac-900": [
@@ -1711,35 +1790,30 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-amber-50": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-amber-400": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-amber-800": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-amber-950": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-stone-100": [
@@ -1747,7 +1821,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-stone-400": [
@@ -1755,7 +1828,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-stone-450": [
@@ -1763,7 +1835,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-stone-500": [
@@ -1771,7 +1842,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-stone-600": [
@@ -1779,7 +1849,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-stone-700": [
@@ -1787,7 +1856,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-stone-800": [
@@ -1795,7 +1863,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-stone-950": [
@@ -1803,35 +1870,30 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-projectBrand-microsoftGameDev-100": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-projectBrand-microsoftGameDev-500": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-color-projectBrand-microsoftGameDev-900": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-0": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-3": [
@@ -1840,7 +1902,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-5": [
@@ -1849,7 +1910,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-7": [
@@ -1857,7 +1917,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-8": [
@@ -1866,7 +1925,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-10": [
@@ -1875,7 +1933,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-12": [
@@ -1884,7 +1941,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-16": [
@@ -1893,7 +1949,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-20": [
@@ -1902,7 +1957,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-24": [
@@ -1910,7 +1964,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-32": [
@@ -1918,7 +1971,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-px1": [
@@ -1926,7 +1978,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-px2": [
@@ -1935,7 +1986,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-px6": [
@@ -1944,7 +1994,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-space-px10": [
@@ -1952,7 +2001,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-blur-8": [
@@ -1960,14 +2008,12 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-blur-16": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-radius-0": [
@@ -1976,7 +2022,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-radius-2": [
@@ -1985,7 +2030,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-radius-8": [
@@ -1994,14 +2038,12 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-radius-12": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-family-display": [
@@ -2010,7 +2052,7 @@
       "src/app/design-system/generated-tokens.ts",
       "src/brand/overlay.test.ts",
       "src/brand/overlay.ts",
-      "src/styles/tokens.css",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-family-mono": [
@@ -2018,7 +2060,7 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-xs": [
@@ -2026,7 +2068,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-sm": [
@@ -2034,7 +2075,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-lg": [
@@ -2042,7 +2082,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-xl": [
@@ -2050,7 +2089,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-2xl": [
@@ -2058,7 +2096,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-3xl": [
@@ -2066,7 +2103,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-4xl": [
@@ -2074,7 +2110,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-5xl": [
@@ -2082,21 +2117,18 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-6xl": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-size-code": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-weight-regular": [
@@ -2104,7 +2136,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-weight-medium": [
@@ -2112,7 +2143,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-weight-bold": [
@@ -2120,7 +2150,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-lineHeight-compact": [
@@ -2128,7 +2157,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-lineHeight-none": [
@@ -2136,7 +2164,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-lineHeight-tight": [
@@ -2144,7 +2171,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-lineHeight-snug": [
@@ -2152,7 +2178,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-lineHeight-normal": [
@@ -2160,7 +2185,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-lineHeight-relaxed": [
@@ -2168,21 +2192,18 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-lineHeight-display": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-lineHeight-body": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-letterSpacing-tight": [
@@ -2190,7 +2211,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-typography-letterSpacing-normal": [
@@ -2199,14 +2219,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--primitive-typography-letterSpacing-caps": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-duration-instant": [
@@ -2215,7 +2227,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-duration-short": [
@@ -2224,7 +2235,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-duration-medium": [
@@ -2233,7 +2243,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-duration-long": [
@@ -2242,49 +2251,42 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-easing-emphasized": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-easing-decelerate": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-easing-accelerate": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-easing-elastic": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-shadow-color": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-breakpoint-xs": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-breakpoint-sm": [
@@ -2292,28 +2294,24 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-breakpoint-md": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-breakpoint-lg": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-breakpoint-xl": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-8": [
@@ -2321,7 +2319,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-10": [
@@ -2329,7 +2326,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-12": [
@@ -2337,7 +2333,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-24": [
@@ -2346,7 +2341,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-32": [
@@ -2354,7 +2348,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-48": [
@@ -2362,7 +2355,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-64": [
@@ -2370,7 +2362,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-80": [
@@ -2378,7 +2369,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-96": [
@@ -2386,14 +2376,12 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-interactive-minCompact": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-width-96": [
@@ -2401,14 +2389,12 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-width-280": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-width-760": [
@@ -2416,7 +2402,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-width-1200": [
@@ -2424,7 +2409,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-size-width-50ch": [
@@ -2432,28 +2416,24 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-grid-columns-1": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-grid-columns-2": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-grid-columns-3": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-zIndex-0": [
@@ -2461,7 +2441,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-zIndex-100": [
@@ -2469,7 +2448,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-zIndex-1000": [
@@ -2477,7 +2455,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-borderWidth-xs": [
@@ -2485,7 +2462,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--primitive-borderWidth-md": [
@@ -2493,48 +2469,41 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--hds-motion-expressive-duration": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--hds-motion-expressive-easing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--hds-motion-spatial-duration": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--hds-motion-spatial-easing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--hds-motion-exit-duration": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--hds-motion-exit-easing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-motion-distance": [
@@ -2542,7 +2511,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/scroll-motion.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-surface-scrim": [
@@ -2550,7 +2518,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/__tests__/scrim-and-color-scheme.test.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-surface-hover": [
@@ -2559,28 +2526,24 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/__tests__/interactive-surface-tokens.test.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-surface-pressed": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-surface-selected": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-surface-muted": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-surface-sunken": [
@@ -2588,58 +2551,49 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-content-success": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-content-warning": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-content-danger": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-border-interactive": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-border-success": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-border-warning": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-feedback-inProgress": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-feedback-bg-error": [
@@ -2648,7 +2602,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-feedback-bg-success": [
@@ -2657,7 +2610,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-feedback-bg-warning": [
@@ -2666,7 +2618,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-feedback-bg-info": [
@@ -2675,16 +2626,13 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-feedback-bg-inProgress": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-color-state-pressed-overlay": [
@@ -2692,7 +2640,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/__tests__/pressed-overlay-token.test.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-region-gutter": [
@@ -2701,14 +2648,12 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-component-gap": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-component-padding": [
@@ -2717,7 +2662,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-layout-gutter": [
@@ -2725,7 +2669,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-section-inset": [
@@ -2734,14 +2677,12 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-section-heroMax": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-sidebar-indent": [
@@ -2749,7 +2690,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-sidebar-sectionGap": [
@@ -2758,7 +2698,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-sidebar-railPadding": [
@@ -2767,35 +2706,30 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-space-sidebar-railWidth": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-layout-container-maxWidth": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-layout-content-maxWidth": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-layout-prose-maxWidth": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-layout-section-paddingY": [
@@ -2804,7 +2738,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-layout-grid-gap": [
@@ -2812,133 +2745,145 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-layout-grid-columns-mobile": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-layout-grid-columns-tablet": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-layout-grid-columns-desktop": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-display-font-family": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-display-font-size": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-display-font-weight": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-display-letter-spacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-display-line-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-title-font-family": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-title-font-size": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-title-font-weight": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-title-letter-spacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-title-line-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--semantic-typography-titleSm-font-family": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/styles/theme.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--semantic-typography-titleSm-font-size": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/styles/theme.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--semantic-typography-titleSm-font-weight": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/styles/theme.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--semantic-typography-titleSm-letter-spacing": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/styles/theme.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--semantic-typography-titleSm-line-height": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-body-font-family": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
+      "src/styles/__tests__/font-dial.test.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-body-font-size": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-body-font-weight": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-body-letter-spacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-body-line-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-ui-font-family": [
@@ -2946,7 +2891,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-ui-font-size": [
@@ -2954,7 +2898,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-ui-font-weight": [
@@ -2962,14 +2905,12 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-ui-letter-spacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-ui-line-height": [
@@ -2977,7 +2918,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-caption-font-family": [
@@ -2985,7 +2925,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-caption-font-size": [
@@ -2993,7 +2932,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/xray.css"
     ],
@@ -3002,14 +2940,12 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-caption-letter-spacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-caption-line-height": [
@@ -3017,128 +2953,111 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/styles/static.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/xray.css"
     ],
     "--semantic-typography-h1-font-family": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h1-font-size": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h1-font-weight": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h1-letter-spacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h1-line-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h2-font-family": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h2-font-size": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h2-font-weight": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h2-letter-spacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h2-line-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h3-font-family": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h3-font-size": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h3-font-weight": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h3-letter-spacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-h3-line-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-eyebrow-font-family": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
+      "src/styles/theme.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-eyebrow-font-size": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-eyebrow-font-weight": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-eyebrow-letter-spacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-eyebrow-line-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-typography-lineHeight-none": [
@@ -3146,28 +3065,24 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-docs-space-section": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-docs-space-paragraph": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-docs-space-inline": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-accent-inactive": [
@@ -3176,7 +3091,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-accent-disabled": [
@@ -3185,7 +3099,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-accent-contentHover": [
@@ -3194,7 +3107,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-accent-subtle": [
@@ -3205,185 +3117,157 @@
       "src/brand/overlay.ts",
       "src/styles/tenants.css",
       "src/styles/theme.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-shadow-floating": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-shadow-overlay": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-flat-surface": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-flat-shadow": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-flat-border": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-raised-surface": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-raised-border": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-floating-surface": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-floating-shadow": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-floating-border": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-overlay-surface": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-overlay-shadow": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-elevation-overlay-border": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-size-icon-sm": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-size-icon-md": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-size-icon-lg": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--semantic-size-avatar": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-nav-bg": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-nav-bgActive": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-nav-borderActive": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-nav-text": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-nav-textActive": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-nav-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-nav-paddingX": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-background": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-text": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-border": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-fontSize": [
@@ -3391,7 +3275,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-fontWeight": [
@@ -3399,14 +3282,12 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-tag-lineHeight": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-badge-fontSize": [
@@ -3414,7 +3295,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-badge-fontWeight": [
@@ -3422,337 +3302,247 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-badge-text": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
+      "src/styles/tokens.generated.css"
+    ],
+    "--component-badge-bg": [
+      "src/app/design-system/generated-token-refs.ts",
+      "src/app/design-system/generated-token-vars.d.ts",
+      "src/app/design-system/generated-tokens.ts",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-bg": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css",
       "src/styles/utilities.css"
-    ],
-    "--component-button-bgHover": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
     ],
     "--component-button-text": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-radius": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-paddingX": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-paddingY": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-sm-paddingX": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-sm-paddingY": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-sm-fontSize": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--component-button-size-sm-iconSize": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-sm-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-sm-itemSpacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-md-paddingX": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-md-paddingY": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-md-fontSize": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--component-button-size-md-iconSize": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-md-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-md-itemSpacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-lg-paddingX": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-lg-paddingY": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-lg-fontSize": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--component-button-size-lg-iconSize": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-lg-height": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-size-lg-itemSpacing": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--component-button-primary-textDisabled": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--component-button-primary-bgDisabled": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-secondary-bg-rest": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-secondary-bg-hover": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--component-button-secondary-bg-pressed": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-secondary-border-rest": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-secondary-border-hover": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-secondary-border-pressed": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
-      "src/styles/tokens.generated.css"
-    ],
-    "--component-button-secondary-border-disabled": [
-      "src/app/design-system/generated-token-refs.ts",
-      "src/app/design-system/generated-token-vars.d.ts",
-      "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-button-secondary-text": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-input-bg": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-input-text": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-input-border": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-input-borderError": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-input-radius": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-input-paddingX": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-input-paddingY": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-card-bg": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-card-border": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-card-radius": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-card-padding": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-card-gap": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--component-lightbox-backdrop-blur": [
@@ -3760,21 +3550,18 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/app/design-system/tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-background": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-foreground": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-card": [
@@ -3782,7 +3569,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-card-foreground": [
@@ -3790,14 +3576,12 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-popover": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-scrim": [
@@ -3805,7 +3589,6 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/__tests__/scrim-and-color-scheme.test.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-pressed-overlay": [
@@ -3813,98 +3596,84 @@
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
       "src/styles/__tests__/pressed-overlay-token.test.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-popover-foreground": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-primary": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-primary-foreground": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-secondary": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-secondary-foreground": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-muted-foreground": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-accent": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-accent-foreground": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-destructive": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-destructive-foreground": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-border": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-input": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-ring": [
       "src/app/design-system/generated-token-refs.ts",
       "src/app/design-system/generated-token-vars.d.ts",
       "src/app/design-system/generated-tokens.ts",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "--role-radius": [
@@ -3913,7 +3682,6 @@
       "src/app/design-system/generated-tokens.ts",
       "src/styles/static.css",
       "src/styles/tenants.css",
-      "src/styles/tokens.css",
       "src/styles/tokens.generated.css"
     ],
     "hds.color.surface.page": ["src/app/design-system/theme.ts"],
@@ -3965,7 +3733,7 @@
     "--var": ["src/brand/overlay.ts"],
     "--define": ["src/lib/env.test.ts"],
     "hds.env.absent": ["src/lib/env.ts"],
-    "--semantic-typography-eyebrow-text-transform": ["src/styles/static.css"],
+    "--depth": ["src/styles/__tests__/slider-touch-target.test.ts"],
     "--neutral": ["src/styles/static.css"],
     "--info": ["src/styles/static.css"],
     "--success": ["src/styles/static.css"],
@@ -4103,7 +3871,18 @@
       "--component-badge-paddingX",
       "--component-badge-paddingY",
       "--component-badge-radius",
-      "--semantic-color-content-secondary"
+      "--component-badge-neutral-bg",
+      "--component-badge-neutral-text",
+      "--component-badge-info-bg",
+      "--component-badge-info-text",
+      "--component-badge-success-bg",
+      "--component-badge-success-text",
+      "--component-badge-danger-bg",
+      "--component-badge-danger-text",
+      "--component-badge-warning-bg",
+      "--component-badge-warning-text",
+      "--component-badge-inProgress-bg",
+      "--component-badge-inProgress-text"
     ],
     "src/app/components/box-sx.test.ts": [
       "--primitive-space-2",
@@ -4152,6 +3931,14 @@
     "src/app/components/button.tsx": [
       "hds.duration",
       "--tw-inset-shadow",
+      "--component-button-primary-bgDisabled",
+      "--component-button-primary-textDisabled",
+      "--component-button-bgHover",
+      "--component-button-secondary-bg-pressed",
+      "--component-button-secondary-border-disabled",
+      "--component-button-size-sm-iconSize",
+      "--component-button-size-md-iconSize",
+      "--component-button-size-lg-iconSize",
       "--semantic-color-content-disabled"
     ],
     "src/app/components/callout.tsx": ["--primitive-radius-4", "--semantic-space-surface-padding"],
@@ -4254,14 +4041,16 @@
     ],
     "src/app/components/icon.tsx": ["hds.iconSize", "--semantic-color-content-secondary"],
     "src/app/components/inline-code.test.tsx": [
+      "--component-inlineCode-bg",
       "--x",
       "--primitive-size-16",
       "hds.iconSize",
       "--semantic-color-content-accent",
       "--semantic-space-subgrid-gap",
-      "--semantic-color-content-disabled",
+      "--component-button-primary-bgDisabled",
+      "--component-button-primary-textDisabled",
+      "--component-button-size-sm-iconSize",
       "--semantic-typography-mono-max-width",
-      "--component-badge-bg",
       "--semantic-typography-mono-font-family",
       "--semantic-typography-mono-font-size",
       "--semantic-typography-mono-font-weight",
@@ -4269,7 +4058,7 @@
     ],
     "src/app/components/inline-code.tsx": [
       "--semantic-typography-mono-max-width",
-      "--component-badge-bg",
+      "--component-inlineCode-bg",
       "--semantic-space-subgrid-gap",
       "--semantic-typography-mono-font-family",
       "--semantic-typography-mono-font-size",
@@ -4308,7 +4097,11 @@
     "src/app/components/pagination.markup.test.tsx": [
       "--primitive-size-16",
       "hds.iconSize",
-      "--semantic-color-content-disabled"
+      "--component-button-primary-bgDisabled",
+      "--component-button-primary-textDisabled",
+      "--component-button-size-sm-iconSize",
+      "--component-button-secondary-bg-pressed",
+      "--component-button-secondary-border-disabled"
     ],
     "src/app/components/pin.test.tsx": ["--hds-pin-top"],
     "src/app/components/pin.tsx": ["--hds-pin-top"],
@@ -4387,6 +4180,12 @@
       "--semantic-space-subgrid-hairline",
       "--semantic-space-subgrid-xs",
       "--semantic-space-section-stack"
+    ],
+    "src/app/components/state-tokens.test.tsx": [
+      "--component-button-bgHover",
+      "--component-button-secondary-bg-pressed",
+      "--component-button-secondary-border-disabled",
+      "--component-inlineCode-bg"
     ],
     "src/app/components/status-tile.tsx": ["--semantic-color-surface-raised"],
     "src/app/components/surface-padding.ts": ["--semantic-space-surface-padding"],
@@ -4533,17 +4332,28 @@
       "--primitive-color-green-400",
       "--primitive-color-green-700",
       "--primitive-color-green-950",
-      "--primitive-color-apple-50",
-      "--primitive-color-apple-100",
-      "--primitive-color-apple-200",
-      "--primitive-color-apple-300",
-      "--primitive-color-apple-400",
-      "--primitive-color-apple-500",
-      "--primitive-color-apple-600",
-      "--primitive-color-apple-700",
-      "--primitive-color-apple-800",
-      "--primitive-color-apple-900",
-      "--primitive-color-apple-950",
+      "--primitive-color-graphite-50",
+      "--primitive-color-graphite-100",
+      "--primitive-color-graphite-200",
+      "--primitive-color-graphite-300",
+      "--primitive-color-graphite-400",
+      "--primitive-color-graphite-500",
+      "--primitive-color-graphite-600",
+      "--primitive-color-graphite-700",
+      "--primitive-color-graphite-800",
+      "--primitive-color-graphite-900",
+      "--primitive-color-graphite-950",
+      "--primitive-color-mauve-50",
+      "--primitive-color-mauve-100",
+      "--primitive-color-mauve-200",
+      "--primitive-color-mauve-300",
+      "--primitive-color-mauve-400",
+      "--primitive-color-mauve-500",
+      "--primitive-color-mauve-600",
+      "--primitive-color-mauve-700",
+      "--primitive-color-mauve-800",
+      "--primitive-color-mauve-900",
+      "--primitive-color-mauve-950",
       "--primitive-color-violet-50",
       "--primitive-color-violet-400",
       "--primitive-color-violet-700",
@@ -4628,7 +4438,6 @@
       "--primitive-typography-lineHeight-body",
       "--primitive-typography-letterSpacing-tight",
       "--primitive-typography-letterSpacing-normal",
-      "--primitive-typography-letterSpacing-caps",
       "--primitive-duration-instant",
       "--primitive-duration-short",
       "--primitive-duration-medium",
@@ -4767,6 +4576,11 @@
       "--semantic-typography-title-font-weight",
       "--semantic-typography-title-letter-spacing",
       "--semantic-typography-title-line-height",
+      "--semantic-typography-titleSm-font-family",
+      "--semantic-typography-titleSm-font-size",
+      "--semantic-typography-titleSm-font-weight",
+      "--semantic-typography-titleSm-letter-spacing",
+      "--semantic-typography-titleSm-line-height",
       "--semantic-typography-body-font-family",
       "--semantic-typography-body-font-size",
       "--semantic-typography-body-font-weight",
@@ -4880,6 +4694,18 @@
       "--component-badge-fontWeight",
       "--component-badge-text",
       "--component-badge-bg",
+      "--component-badge-neutral-bg",
+      "--component-badge-neutral-text",
+      "--component-badge-info-bg",
+      "--component-badge-info-text",
+      "--component-badge-success-bg",
+      "--component-badge-success-text",
+      "--component-badge-danger-bg",
+      "--component-badge-danger-text",
+      "--component-badge-warning-bg",
+      "--component-badge-warning-text",
+      "--component-badge-inProgress-bg",
+      "--component-badge-inProgress-text",
       "--component-badge-radius",
       "--component-badge-height",
       "--component-badge-minWidth",
@@ -4931,6 +4757,7 @@
       "--component-card-radius",
       "--component-card-padding",
       "--component-card-gap",
+      "--component-inlineCode-bg",
       "--component-lightbox-backdrop-blur",
       "--role-background",
       "--role-foreground",
@@ -4989,17 +4816,28 @@
       "--primitive-color-green-400",
       "--primitive-color-green-700",
       "--primitive-color-green-950",
-      "--primitive-color-apple-50",
-      "--primitive-color-apple-100",
-      "--primitive-color-apple-200",
-      "--primitive-color-apple-300",
-      "--primitive-color-apple-400",
-      "--primitive-color-apple-500",
-      "--primitive-color-apple-600",
-      "--primitive-color-apple-700",
-      "--primitive-color-apple-800",
-      "--primitive-color-apple-900",
-      "--primitive-color-apple-950",
+      "--primitive-color-graphite-50",
+      "--primitive-color-graphite-100",
+      "--primitive-color-graphite-200",
+      "--primitive-color-graphite-300",
+      "--primitive-color-graphite-400",
+      "--primitive-color-graphite-500",
+      "--primitive-color-graphite-600",
+      "--primitive-color-graphite-700",
+      "--primitive-color-graphite-800",
+      "--primitive-color-graphite-900",
+      "--primitive-color-graphite-950",
+      "--primitive-color-mauve-50",
+      "--primitive-color-mauve-100",
+      "--primitive-color-mauve-200",
+      "--primitive-color-mauve-300",
+      "--primitive-color-mauve-400",
+      "--primitive-color-mauve-500",
+      "--primitive-color-mauve-600",
+      "--primitive-color-mauve-700",
+      "--primitive-color-mauve-800",
+      "--primitive-color-mauve-900",
+      "--primitive-color-mauve-950",
       "--primitive-color-violet-50",
       "--primitive-color-violet-400",
       "--primitive-color-violet-700",
@@ -5084,7 +4922,6 @@
       "--primitive-typography-lineHeight-body",
       "--primitive-typography-letterSpacing-tight",
       "--primitive-typography-letterSpacing-normal",
-      "--primitive-typography-letterSpacing-caps",
       "--primitive-duration-instant",
       "--primitive-duration-short",
       "--primitive-duration-medium",
@@ -5224,6 +5061,11 @@
       "--semantic-typography-title-font-weight",
       "--semantic-typography-title-letter-spacing",
       "--semantic-typography-title-line-height",
+      "--semantic-typography-titleSm-font-family",
+      "--semantic-typography-titleSm-font-size",
+      "--semantic-typography-titleSm-font-weight",
+      "--semantic-typography-titleSm-letter-spacing",
+      "--semantic-typography-titleSm-line-height",
       "--semantic-typography-body-font-family",
       "--semantic-typography-body-font-size",
       "--semantic-typography-body-font-weight",
@@ -5337,6 +5179,18 @@
       "--component-badge-fontWeight",
       "--component-badge-text",
       "--component-badge-bg",
+      "--component-badge-neutral-bg",
+      "--component-badge-neutral-text",
+      "--component-badge-info-bg",
+      "--component-badge-info-text",
+      "--component-badge-success-bg",
+      "--component-badge-success-text",
+      "--component-badge-danger-bg",
+      "--component-badge-danger-text",
+      "--component-badge-warning-bg",
+      "--component-badge-warning-text",
+      "--component-badge-inProgress-bg",
+      "--component-badge-inProgress-text",
       "--component-badge-radius",
       "--component-badge-height",
       "--component-badge-minWidth",
@@ -5388,6 +5242,7 @@
       "--component-card-radius",
       "--component-card-padding",
       "--component-card-gap",
+      "--component-inlineCode-bg",
       "--component-lightbox-backdrop-blur",
       "--role-background",
       "--role-foreground",
@@ -5446,17 +5301,28 @@
       "--primitive-color-green-400",
       "--primitive-color-green-700",
       "--primitive-color-green-950",
-      "--primitive-color-apple-50",
-      "--primitive-color-apple-100",
-      "--primitive-color-apple-200",
-      "--primitive-color-apple-300",
-      "--primitive-color-apple-400",
-      "--primitive-color-apple-500",
-      "--primitive-color-apple-600",
-      "--primitive-color-apple-700",
-      "--primitive-color-apple-800",
-      "--primitive-color-apple-900",
-      "--primitive-color-apple-950",
+      "--primitive-color-graphite-50",
+      "--primitive-color-graphite-100",
+      "--primitive-color-graphite-200",
+      "--primitive-color-graphite-300",
+      "--primitive-color-graphite-400",
+      "--primitive-color-graphite-500",
+      "--primitive-color-graphite-600",
+      "--primitive-color-graphite-700",
+      "--primitive-color-graphite-800",
+      "--primitive-color-graphite-900",
+      "--primitive-color-graphite-950",
+      "--primitive-color-mauve-50",
+      "--primitive-color-mauve-100",
+      "--primitive-color-mauve-200",
+      "--primitive-color-mauve-300",
+      "--primitive-color-mauve-400",
+      "--primitive-color-mauve-500",
+      "--primitive-color-mauve-600",
+      "--primitive-color-mauve-700",
+      "--primitive-color-mauve-800",
+      "--primitive-color-mauve-900",
+      "--primitive-color-mauve-950",
       "--primitive-color-violet-50",
       "--primitive-color-violet-400",
       "--primitive-color-violet-700",
@@ -5541,7 +5407,6 @@
       "--primitive-typography-lineHeight-body",
       "--primitive-typography-letterSpacing-tight",
       "--primitive-typography-letterSpacing-normal",
-      "--primitive-typography-letterSpacing-caps",
       "--primitive-duration-instant",
       "--primitive-duration-short",
       "--primitive-duration-medium",
@@ -5721,6 +5586,18 @@
       "--component-badge-fontWeight",
       "--component-badge-text",
       "--component-badge-bg",
+      "--component-badge-neutral-bg",
+      "--component-badge-neutral-text",
+      "--component-badge-info-bg",
+      "--component-badge-info-text",
+      "--component-badge-success-bg",
+      "--component-badge-success-text",
+      "--component-badge-danger-bg",
+      "--component-badge-danger-text",
+      "--component-badge-warning-bg",
+      "--component-badge-warning-text",
+      "--component-badge-inProgress-bg",
+      "--component-badge-inProgress-text",
       "--component-badge-radius",
       "--component-badge-height",
       "--component-badge-minWidth",
@@ -5772,6 +5649,7 @@
       "--component-card-radius",
       "--component-card-padding",
       "--component-card-gap",
+      "--component-inlineCode-bg",
       "--component-lightbox-backdrop-blur",
       "--role-background",
       "--role-foreground",
@@ -6009,6 +5887,13 @@
       "--semantic-color-border-default"
     ],
     "src/scroll/smooth-scroll.tsx": ["hds.motion."],
+    "src/styles/__tests__/font-dial.test.ts": [
+      "--hds-font-family",
+      "--hds-font-family-mono",
+      "--primitive-typography-family-primary",
+      "--semantic-typography-body-font-family",
+      "--semantic-typography-mono-font-family"
+    ],
     "src/styles/__tests__/interactive-surface-tokens.test.ts": [
       "--semantic-color-surface-raised",
       "--semantic-color-surface-accentSubtle",
@@ -6024,9 +5909,13 @@
       "--semantic-color-surface-scrim",
       "--role-scrim"
     ],
+    "src/styles/__tests__/slider-touch-target.test.ts": [
+      "--depth",
+      "--primitive-size-interactive-min",
+      "--semantic-size-control-md"
+    ],
     "src/styles/scroll-motion.css": ["--semantic-motion-distance", "--hds-pin-top"],
     "src/styles/static.css": [
-      "--semantic-typography-eyebrow-text-transform",
       "--component-badge-fontSize",
       "--component-badge-fontWeight",
       "--component-badge-height",
@@ -6034,23 +5923,24 @@
       "--component-badge-paddingY",
       "--component-badge-paddingX",
       "--component-badge-radius",
-      "--semantic-color-content-secondary",
+      "--component-badge-neutral-bg",
+      "--component-badge-neutral-text",
       "--neutral",
       "--info",
-      "--semantic-color-feedback-bg-info",
-      "--semantic-color-feedback-info",
+      "--component-badge-info-bg",
+      "--component-badge-info-text",
       "--success",
-      "--semantic-color-feedback-bg-success",
-      "--semantic-color-feedback-success",
+      "--component-badge-success-bg",
+      "--component-badge-success-text",
       "--danger",
-      "--semantic-color-feedback-bg-error",
-      "--semantic-color-feedback-error",
+      "--component-badge-danger-bg",
+      "--component-badge-danger-text",
       "--warning",
-      "--semantic-color-feedback-bg-warning",
-      "--semantic-color-feedback-warning",
+      "--component-badge-warning-bg",
+      "--component-badge-warning-text",
       "--in-progress",
-      "--semantic-color-feedback-bg-inProgress",
-      "--semantic-color-feedback-inProgress",
+      "--component-badge-inProgress-bg",
+      "--component-badge-inProgress-text",
       "--accent",
       "--bordered",
       "--role-radius",
@@ -6061,9 +5951,17 @@
       "--no-padding",
       "--semantic-color-border-accent",
       "--semantic-color-border-default",
+      "--semantic-color-feedback-error",
+      "--semantic-color-feedback-success",
+      "--semantic-color-feedback-warning",
+      "--semantic-color-feedback-info",
       "--semantic-space-scale-xs",
       "--primitive-radius-4",
+      "--semantic-color-feedback-bg-info",
       "--with-title",
+      "--semantic-color-feedback-bg-success",
+      "--semantic-color-feedback-bg-error",
+      "--semantic-color-feedback-bg-warning",
       "--primitive-typography-size-base",
       "hds.iconSize.small",
       "--semantic-typography-ui-font-family",
@@ -6089,6 +5987,7 @@
       "--component-tag-paddingY",
       "--component-tag-paddingX",
       "--semantic-color-surface-raised",
+      "--semantic-color-content-secondary",
       "--semantic-color-surface-accentSubtle",
       "--active",
       "--component-tag-activeBorder",
@@ -6313,15 +6212,31 @@
       "--hds-badge-sale",
       "--hds-badge-sold-out",
       "--hds-badge-featured",
+      "--primitive-typography-family-primary",
+      "--primitive-typography-family-display",
+      "--primitive-typography-family-mono",
+      "--semantic-typography-display-font-family",
+      "--semantic-typography-title-font-family",
+      "--semantic-typography-titleSm-font-family",
+      "--semantic-typography-h1-font-family",
+      "--semantic-typography-h2-font-family",
+      "--semantic-typography-h3-font-family",
+      "--semantic-typography-body-font-family",
+      "--semantic-typography-ui-font-family",
+      "--semantic-typography-caption-font-family",
+      "--semantic-typography-eyebrow-font-family",
+      "--semantic-typography-mono-font-family",
       "--semantic-space-scale-sm",
       "--primitive-size-interactive-min",
       "--semantic-color-surface-accent",
+      "--semantic-size-control-md",
       "--semantic-color-surface-sunken",
       "--primitive-duration-instant",
       "--primitive-duration-short",
       "--primitive-duration-medium",
       "--primitive-duration-long",
       "--hds-motion-exit-duration",
+      "--semantic-color-border-strong",
       "--semantic-color-surface-raised",
       "--semantic-color-border-default",
       "--component-tag-activeText",
@@ -6331,32 +6246,30 @@
       "--semantic-color-border-accent",
       "--component-tag-activeHover",
       "hds.typeStyles.",
-      "--semantic-typography-display-font-family",
       "--semantic-typography-display-font-size",
       "--semantic-typography-display-font-weight",
       "--semantic-typography-display-letter-spacing",
       "--semantic-typography-display-line-height",
-      "--semantic-typography-title-font-family",
       "--semantic-typography-title-font-size",
       "--semantic-typography-title-font-weight",
       "--semantic-typography-title-letter-spacing",
       "--semantic-typography-title-line-height",
-      "--semantic-typography-body-font-family",
+      "--semantic-typography-titleSm-font-size",
+      "--semantic-typography-titleSm-font-weight",
+      "--semantic-typography-titleSm-letter-spacing",
+      "--semantic-typography-titleSm-line-height",
       "--semantic-typography-body-font-size",
       "--semantic-typography-body-font-weight",
       "--semantic-typography-body-letter-spacing",
       "--semantic-typography-body-line-height",
-      "--semantic-typography-ui-font-family",
       "--semantic-typography-ui-font-size",
       "--semantic-typography-ui-font-weight",
       "--semantic-typography-ui-letter-spacing",
       "--semantic-typography-ui-line-height",
-      "--semantic-typography-caption-font-family",
       "--semantic-typography-caption-font-size",
       "--semantic-typography-caption-font-weight",
       "--semantic-typography-caption-letter-spacing",
       "--semantic-typography-caption-line-height",
-      "--semantic-typography-mono-font-family",
       "--semantic-typography-mono-font-size",
       "--semantic-typography-mono-font-weight",
       "--semantic-typography-mono-letter-spacing",
@@ -6372,463 +6285,6 @@
       "--primitive-space-px2",
       "--semantic-space-surface-padding",
       "--semantic-space-component-padding"
-    ],
-    "src/styles/tokens.css": [
-      "--primitive-color-neutral-50",
-      "--primitive-color-neutral-100",
-      "--primitive-color-neutral-200",
-      "--primitive-color-neutral-300",
-      "--primitive-color-neutral-400",
-      "--primitive-color-neutral-500",
-      "--primitive-color-neutral-600",
-      "--primitive-color-neutral-700",
-      "--primitive-color-neutral-800",
-      "--primitive-color-neutral-850",
-      "--primitive-color-neutral-900",
-      "--primitive-color-neutral-950",
-      "--primitive-color-neutral-white",
-      "--primitive-color-neutral-black",
-      "--primitive-color-blue-50",
-      "--primitive-color-blue-100",
-      "--primitive-color-blue-200",
-      "--primitive-color-blue-300",
-      "--primitive-color-blue-400",
-      "--primitive-color-blue-450",
-      "--primitive-color-blue-500",
-      "--primitive-color-blue-600",
-      "--primitive-color-blue-700",
-      "--primitive-color-blue-800",
-      "--primitive-color-blue-900",
-      "--primitive-color-red-50",
-      "--primitive-color-red-400",
-      "--primitive-color-red-700",
-      "--primitive-color-red-950",
-      "--primitive-color-green-50",
-      "--primitive-color-green-400",
-      "--primitive-color-green-700",
-      "--primitive-color-green-950",
-      "--primitive-color-apple-50",
-      "--primitive-color-apple-100",
-      "--primitive-color-apple-200",
-      "--primitive-color-apple-300",
-      "--primitive-color-apple-400",
-      "--primitive-color-apple-500",
-      "--primitive-color-apple-600",
-      "--primitive-color-apple-700",
-      "--primitive-color-apple-800",
-      "--primitive-color-apple-900",
-      "--primitive-color-apple-950",
-      "--primitive-color-violet-50",
-      "--primitive-color-violet-400",
-      "--primitive-color-violet-700",
-      "--primitive-color-violet-950",
-      "--primitive-color-lilac-50",
-      "--primitive-color-lilac-100",
-      "--primitive-color-lilac-200",
-      "--primitive-color-lilac-300",
-      "--primitive-color-lilac-400",
-      "--primitive-color-lilac-450",
-      "--primitive-color-lilac-500",
-      "--primitive-color-lilac-600",
-      "--primitive-color-lilac-700",
-      "--primitive-color-lilac-800",
-      "--primitive-color-lilac-900",
-      "--primitive-color-amber-50",
-      "--primitive-color-amber-400",
-      "--primitive-color-amber-800",
-      "--primitive-color-amber-950",
-      "--primitive-color-stone-100",
-      "--primitive-color-stone-400",
-      "--primitive-color-stone-450",
-      "--primitive-color-stone-500",
-      "--primitive-color-stone-600",
-      "--primitive-color-stone-700",
-      "--primitive-color-stone-800",
-      "--primitive-color-stone-950",
-      "--primitive-color-projectBrand-microsoftGameDev-100",
-      "--primitive-color-projectBrand-microsoftGameDev-500",
-      "--primitive-color-projectBrand-microsoftGameDev-900",
-      "--primitive-space-0",
-      "--primitive-space-1",
-      "--primitive-space-2",
-      "--primitive-space-3",
-      "--primitive-space-4",
-      "--primitive-space-5",
-      "--primitive-space-6",
-      "--primitive-space-7",
-      "--primitive-space-8",
-      "--primitive-space-10",
-      "--primitive-space-12",
-      "--primitive-space-16",
-      "--primitive-space-20",
-      "--primitive-space-24",
-      "--primitive-space-32",
-      "--primitive-space-px1",
-      "--primitive-space-px2",
-      "--primitive-space-px6",
-      "--primitive-space-px10",
-      "--primitive-blur-8",
-      "--primitive-blur-16",
-      "--primitive-radius-0",
-      "--primitive-radius-2",
-      "--primitive-radius-4",
-      "--primitive-radius-8",
-      "--primitive-radius-12",
-      "--primitive-radius-full",
-      "--primitive-typography-family-primary",
-      "--primitive-typography-family-display",
-      "--primitive-typography-family-mono",
-      "--primitive-typography-size-xs",
-      "--primitive-typography-size-sm",
-      "--primitive-typography-size-base",
-      "--primitive-typography-size-lg",
-      "--primitive-typography-size-xl",
-      "--primitive-typography-size-2xl",
-      "--primitive-typography-size-3xl",
-      "--primitive-typography-size-4xl",
-      "--primitive-typography-size-5xl",
-      "--primitive-typography-size-6xl",
-      "--primitive-typography-size-code",
-      "--primitive-typography-weight-regular",
-      "--primitive-typography-weight-medium",
-      "--primitive-typography-weight-bold",
-      "--primitive-typography-lineHeight-compact",
-      "--primitive-typography-lineHeight-none",
-      "--primitive-typography-lineHeight-tight",
-      "--primitive-typography-lineHeight-snug",
-      "--primitive-typography-lineHeight-normal",
-      "--primitive-typography-lineHeight-relaxed",
-      "--primitive-typography-lineHeight-display",
-      "--primitive-typography-lineHeight-body",
-      "--primitive-typography-letterSpacing-tight",
-      "--primitive-typography-letterSpacing-normal",
-      "--primitive-typography-letterSpacing-caps",
-      "--primitive-duration-instant",
-      "--primitive-duration-short",
-      "--primitive-duration-medium",
-      "--primitive-duration-long",
-      "--primitive-easing-emphasized",
-      "--primitive-easing-decelerate",
-      "--primitive-easing-accelerate",
-      "--primitive-easing-elastic",
-      "--primitive-shadow-color",
-      "--primitive-breakpoint-xs",
-      "--primitive-breakpoint-sm",
-      "--primitive-breakpoint-md",
-      "--primitive-breakpoint-lg",
-      "--primitive-breakpoint-xl",
-      "--primitive-size-8",
-      "--primitive-size-10",
-      "--primitive-size-12",
-      "--primitive-size-16",
-      "--primitive-size-20",
-      "--primitive-size-24",
-      "--primitive-size-32",
-      "--primitive-size-40",
-      "--primitive-size-48",
-      "--primitive-size-64",
-      "--primitive-size-80",
-      "--primitive-size-96",
-      "--primitive-size-120",
-      "--primitive-size-interactive-min",
-      "--primitive-size-interactive-minCompact",
-      "--primitive-size-width-96",
-      "--primitive-size-width-280",
-      "--primitive-size-width-760",
-      "--primitive-size-width-1200",
-      "--primitive-size-width-50ch",
-      "--primitive-grid-columns-1",
-      "--primitive-grid-columns-2",
-      "--primitive-grid-columns-3",
-      "--primitive-zIndex-0",
-      "--primitive-zIndex-10",
-      "--primitive-zIndex-100",
-      "--primitive-zIndex-1000",
-      "--primitive-borderWidth-xs",
-      "--primitive-borderWidth-sm",
-      "--primitive-borderWidth-md",
-      "--hds-motion-productive-duration",
-      "--hds-motion-productive-easing",
-      "--hds-motion-expressive-duration",
-      "--hds-motion-expressive-easing",
-      "--hds-motion-spatial-duration",
-      "--hds-motion-spatial-easing",
-      "--hds-motion-exit-duration",
-      "--hds-motion-exit-easing",
-      "--semantic-motion-distance",
-      "--semantic-color-surface-page",
-      "--semantic-color-surface-raised",
-      "--semantic-color-surface-overlay",
-      "--semantic-color-surface-scrim",
-      "--semantic-color-surface-inverse",
-      "--semantic-color-surface-accent",
-      "--semantic-color-surface-accentSubtle",
-      "--semantic-color-surface-hover",
-      "--semantic-color-surface-pressed",
-      "--semantic-color-surface-selected",
-      "--semantic-color-surface-muted",
-      "--semantic-color-surface-sunken",
-      "--semantic-color-content-primary",
-      "--semantic-color-content-secondary",
-      "--semantic-color-content-disabled",
-      "--semantic-color-content-inverse",
-      "--semantic-color-content-accent",
-      "--semantic-color-content-onAccent",
-      "--semantic-color-content-success",
-      "--semantic-color-content-warning",
-      "--semantic-color-content-danger",
-      "--semantic-color-border-default",
-      "--semantic-color-border-interactive",
-      "--semantic-color-border-subdued",
-      "--semantic-color-border-subtle",
-      "--semantic-color-border-strong",
-      "--semantic-color-border-accent",
-      "--semantic-color-border-success",
-      "--semantic-color-border-warning",
-      "--semantic-color-feedback-error",
-      "--semantic-color-feedback-success",
-      "--semantic-color-feedback-warning",
-      "--semantic-color-feedback-info",
-      "--semantic-color-feedback-inProgress",
-      "--semantic-color-feedback-bg-error",
-      "--semantic-color-feedback-bg-success",
-      "--semantic-color-feedback-bg-warning",
-      "--semantic-color-feedback-bg-info",
-      "--semantic-color-feedback-bg-inProgress",
-      "--semantic-color-state-pressed-overlay",
-      "--semantic-space-scale-xs",
-      "--semantic-space-scale-sm",
-      "--semantic-space-scale-md",
-      "--semantic-space-scale-lg",
-      "--semantic-space-scale-xl",
-      "--semantic-space-surface-padding",
-      "--semantic-space-region-gutter",
-      "--semantic-space-subgrid-hairline",
-      "--semantic-space-subgrid-xs",
-      "--semantic-space-subgrid-gap",
-      "--semantic-space-component-gap",
-      "--semantic-space-component-medium",
-      "--semantic-space-component-padding",
-      "--semantic-space-layout-tight",
-      "--semantic-space-layout-normal",
-      "--semantic-space-layout-gutter",
-      "--semantic-space-layout-inset",
-      "--semantic-space-layout-spacious",
-      "--semantic-space-section-stack",
-      "--semantic-space-section-inset",
-      "--semantic-space-section-heroMax",
-      "--semantic-space-sidebar-indent",
-      "--semantic-space-sidebar-gap",
-      "--semantic-space-sidebar-sectionGap",
-      "--semantic-space-sidebar-railPadding",
-      "--semantic-space-sidebar-railWidth",
-      "--semantic-layout-width-content",
-      "--semantic-layout-width-max",
-      "--semantic-layout-container-maxWidth",
-      "--semantic-layout-content-maxWidth",
-      "--semantic-layout-prose-maxWidth",
-      "--semantic-layout-section-paddingY",
-      "--semantic-layout-grid-gap",
-      "--semantic-layout-grid-columns-mobile",
-      "--semantic-layout-grid-columns-tablet",
-      "--semantic-layout-grid-columns-desktop",
-      "--semantic-typography-display-font-family",
-      "--semantic-typography-display-font-size",
-      "--semantic-typography-display-font-weight",
-      "--semantic-typography-display-letter-spacing",
-      "--semantic-typography-display-line-height",
-      "--semantic-typography-title-font-family",
-      "--semantic-typography-title-font-size",
-      "--semantic-typography-title-font-weight",
-      "--semantic-typography-title-letter-spacing",
-      "--semantic-typography-title-line-height",
-      "--semantic-typography-body-font-family",
-      "--semantic-typography-body-font-size",
-      "--semantic-typography-body-font-weight",
-      "--semantic-typography-body-letter-spacing",
-      "--semantic-typography-body-line-height",
-      "--semantic-typography-body-max-width",
-      "--semantic-typography-ui-font-family",
-      "--semantic-typography-ui-font-size",
-      "--semantic-typography-ui-font-weight",
-      "--semantic-typography-ui-letter-spacing",
-      "--semantic-typography-ui-line-height",
-      "--semantic-typography-ui-max-width",
-      "--semantic-typography-caption-font-family",
-      "--semantic-typography-caption-font-size",
-      "--semantic-typography-caption-font-weight",
-      "--semantic-typography-caption-letter-spacing",
-      "--semantic-typography-caption-line-height",
-      "--semantic-typography-mono-font-family",
-      "--semantic-typography-mono-font-size",
-      "--semantic-typography-mono-font-weight",
-      "--semantic-typography-mono-letter-spacing",
-      "--semantic-typography-mono-line-height",
-      "--semantic-typography-mono-max-width",
-      "--semantic-typography-h1-font-family",
-      "--semantic-typography-h1-font-size",
-      "--semantic-typography-h1-font-weight",
-      "--semantic-typography-h1-letter-spacing",
-      "--semantic-typography-h1-line-height",
-      "--semantic-typography-h2-font-family",
-      "--semantic-typography-h2-font-size",
-      "--semantic-typography-h2-font-weight",
-      "--semantic-typography-h2-letter-spacing",
-      "--semantic-typography-h2-line-height",
-      "--semantic-typography-h3-font-family",
-      "--semantic-typography-h3-font-size",
-      "--semantic-typography-h3-font-weight",
-      "--semantic-typography-h3-letter-spacing",
-      "--semantic-typography-h3-line-height",
-      "--semantic-typography-eyebrow-font-family",
-      "--semantic-typography-eyebrow-font-size",
-      "--semantic-typography-eyebrow-font-weight",
-      "--semantic-typography-eyebrow-letter-spacing",
-      "--semantic-typography-eyebrow-line-height",
-      "--semantic-typography-lineHeight-none",
-      "--semantic-docs-space-section",
-      "--semantic-docs-space-paragraph",
-      "--semantic-docs-space-inline",
-      "--semantic-accent-rest",
-      "--semantic-accent-hover",
-      "--semantic-accent-pressed",
-      "--semantic-accent-inactive",
-      "--semantic-accent-disabled",
-      "--semantic-accent-content",
-      "--semantic-accent-contentHover",
-      "--semantic-accent-subtle",
-      "--semantic-radius-action",
-      "--semantic-radius-control",
-      "--semantic-borderWidth-default",
-      "--semantic-borderWidth-emphasis",
-      "--semantic-shadow-subtle",
-      "--semantic-shadow-floating",
-      "--semantic-shadow-overlay",
-      "--semantic-elevation-flat-surface",
-      "--semantic-elevation-flat-shadow",
-      "--semantic-elevation-flat-border",
-      "--semantic-elevation-raised-surface",
-      "--semantic-elevation-raised-shadow",
-      "--semantic-elevation-raised-border",
-      "--semantic-elevation-floating-surface",
-      "--semantic-elevation-floating-shadow",
-      "--semantic-elevation-floating-border",
-      "--semantic-elevation-overlay-surface",
-      "--semantic-elevation-overlay-shadow",
-      "--semantic-elevation-overlay-border",
-      "--semantic-size-control-sm",
-      "--semantic-size-control-md",
-      "--semantic-size-control-lg",
-      "--semantic-size-icon-sm",
-      "--semantic-size-icon-md",
-      "--semantic-size-icon-lg",
-      "--semantic-size-avatar",
-      "--semantic-size-tile",
-      "--semantic-size-row-compact",
-      "--semantic-size-row-comfortable",
-      "--semantic-zIndex-control",
-      "--semantic-zIndex-sticky",
-      "--component-nav-bg",
-      "--component-nav-bgActive",
-      "--component-nav-borderActive",
-      "--component-nav-text",
-      "--component-nav-textActive",
-      "--component-nav-height",
-      "--component-nav-paddingX",
-      "--component-nav-paddingY",
-      "--component-tag-background",
-      "--component-tag-text",
-      "--component-tag-border",
-      "--component-tag-radius",
-      "--component-tag-fontSize",
-      "--component-tag-fontWeight",
-      "--component-tag-lineHeight",
-      "--component-tag-minWidth",
-      "--component-tag-minHeight",
-      "--component-tag-paddingX",
-      "--component-tag-paddingY",
-      "--component-tag-activeText",
-      "--component-tag-activeBackground",
-      "--component-tag-activeBorder",
-      "--component-tag-activeHover",
-      "--component-badge-fontSize",
-      "--component-badge-fontWeight",
-      "--component-badge-text",
-      "--component-badge-bg",
-      "--component-badge-radius",
-      "--component-badge-height",
-      "--component-badge-minWidth",
-      "--component-badge-paddingY",
-      "--component-badge-paddingX",
-      "--component-button-bg",
-      "--component-button-bgHover",
-      "--component-button-text",
-      "--component-button-radius",
-      "--component-button-paddingX",
-      "--component-button-paddingY",
-      "--component-button-size-sm-paddingX",
-      "--component-button-size-sm-paddingY",
-      "--component-button-size-sm-fontSize",
-      "--component-button-size-sm-iconSize",
-      "--component-button-size-sm-height",
-      "--component-button-size-sm-itemSpacing",
-      "--component-button-size-md-paddingX",
-      "--component-button-size-md-paddingY",
-      "--component-button-size-md-fontSize",
-      "--component-button-size-md-iconSize",
-      "--component-button-size-md-height",
-      "--component-button-size-md-itemSpacing",
-      "--component-button-size-lg-paddingX",
-      "--component-button-size-lg-paddingY",
-      "--component-button-size-lg-fontSize",
-      "--component-button-size-lg-iconSize",
-      "--component-button-size-lg-height",
-      "--component-button-size-lg-itemSpacing",
-      "--component-button-primary-textDisabled",
-      "--component-button-primary-bgDisabled",
-      "--component-button-secondary-bg-rest",
-      "--component-button-secondary-bg-hover",
-      "--component-button-secondary-bg-pressed",
-      "--component-button-secondary-border-rest",
-      "--component-button-secondary-border-hover",
-      "--component-button-secondary-border-pressed",
-      "--component-button-secondary-border-disabled",
-      "--component-button-secondary-text",
-      "--component-input-bg",
-      "--component-input-text",
-      "--component-input-border",
-      "--component-input-borderError",
-      "--component-input-radius",
-      "--component-input-paddingX",
-      "--component-input-paddingY",
-      "--component-card-bg",
-      "--component-card-border",
-      "--component-card-radius",
-      "--component-card-padding",
-      "--component-card-gap",
-      "--component-lightbox-backdrop-blur",
-      "--role-background",
-      "--role-foreground",
-      "--role-card",
-      "--role-card-foreground",
-      "--role-popover",
-      "--role-scrim",
-      "--role-pressed-overlay",
-      "--role-popover-foreground",
-      "--role-primary",
-      "--role-primary-foreground",
-      "--role-secondary",
-      "--role-secondary-foreground",
-      "--role-muted",
-      "--role-muted-foreground",
-      "--role-accent",
-      "--role-accent-foreground",
-      "--role-destructive",
-      "--role-destructive-foreground",
-      "--role-border",
-      "--role-input",
-      "--role-ring",
-      "--role-radius"
     ],
     "src/styles/tokens.generated.css": [
       "--primitive-color-neutral-50",
@@ -6864,17 +6320,28 @@
       "--primitive-color-green-400",
       "--primitive-color-green-700",
       "--primitive-color-green-950",
-      "--primitive-color-apple-50",
-      "--primitive-color-apple-100",
-      "--primitive-color-apple-200",
-      "--primitive-color-apple-300",
-      "--primitive-color-apple-400",
-      "--primitive-color-apple-500",
-      "--primitive-color-apple-600",
-      "--primitive-color-apple-700",
-      "--primitive-color-apple-800",
-      "--primitive-color-apple-900",
-      "--primitive-color-apple-950",
+      "--primitive-color-graphite-50",
+      "--primitive-color-graphite-100",
+      "--primitive-color-graphite-200",
+      "--primitive-color-graphite-300",
+      "--primitive-color-graphite-400",
+      "--primitive-color-graphite-500",
+      "--primitive-color-graphite-600",
+      "--primitive-color-graphite-700",
+      "--primitive-color-graphite-800",
+      "--primitive-color-graphite-900",
+      "--primitive-color-graphite-950",
+      "--primitive-color-mauve-50",
+      "--primitive-color-mauve-100",
+      "--primitive-color-mauve-200",
+      "--primitive-color-mauve-300",
+      "--primitive-color-mauve-400",
+      "--primitive-color-mauve-500",
+      "--primitive-color-mauve-600",
+      "--primitive-color-mauve-700",
+      "--primitive-color-mauve-800",
+      "--primitive-color-mauve-900",
+      "--primitive-color-mauve-950",
       "--primitive-color-violet-50",
       "--primitive-color-violet-400",
       "--primitive-color-violet-700",
@@ -6959,7 +6426,6 @@
       "--primitive-typography-lineHeight-body",
       "--primitive-typography-letterSpacing-tight",
       "--primitive-typography-letterSpacing-normal",
-      "--primitive-typography-letterSpacing-caps",
       "--primitive-duration-instant",
       "--primitive-duration-short",
       "--primitive-duration-medium",
@@ -7099,6 +6565,11 @@
       "--semantic-typography-title-font-weight",
       "--semantic-typography-title-letter-spacing",
       "--semantic-typography-title-line-height",
+      "--semantic-typography-titleSm-font-family",
+      "--semantic-typography-titleSm-font-size",
+      "--semantic-typography-titleSm-font-weight",
+      "--semantic-typography-titleSm-letter-spacing",
+      "--semantic-typography-titleSm-line-height",
       "--semantic-typography-body-font-family",
       "--semantic-typography-body-font-size",
       "--semantic-typography-body-font-weight",
@@ -7212,6 +6683,18 @@
       "--component-badge-fontWeight",
       "--component-badge-text",
       "--component-badge-bg",
+      "--component-badge-neutral-bg",
+      "--component-badge-neutral-text",
+      "--component-badge-info-bg",
+      "--component-badge-info-text",
+      "--component-badge-success-bg",
+      "--component-badge-success-text",
+      "--component-badge-danger-bg",
+      "--component-badge-danger-text",
+      "--component-badge-warning-bg",
+      "--component-badge-warning-text",
+      "--component-badge-inProgress-bg",
+      "--component-badge-inProgress-text",
       "--component-badge-radius",
       "--component-badge-height",
       "--component-badge-minWidth",
@@ -7263,6 +6746,7 @@
       "--component-card-radius",
       "--component-card-padding",
       "--component-card-gap",
+      "--component-inlineCode-bg",
       "--component-lightbox-backdrop-blur",
       "--role-background",
       "--role-foreground",
@@ -7358,17 +6842,28 @@
     "--primitive-color-green-400": "#34d399",
     "--primitive-color-green-700": "#047857",
     "--primitive-color-green-950": "#022c22",
-    "--primitive-color-apple-50": "#f2faeb",
-    "--primitive-color-apple-100": "#e2f3cf",
-    "--primitive-color-apple-200": "#c7e7a4",
-    "--primitive-color-apple-300": "#a6d873",
-    "--primitive-color-apple-400": "#85c84c",
-    "--primitive-color-apple-500": "#66b239",
-    "--primitive-color-apple-600": "#54922d",
-    "--primitive-color-apple-700": "#416f20",
-    "--primitive-color-apple-800": "#34571b",
-    "--primitive-color-apple-900": "#2b4518",
-    "--primitive-color-apple-950": "#16250c",
+    "--primitive-color-graphite-50": "#f5f4f4",
+    "--primitive-color-graphite-100": "#e9e7e8",
+    "--primitive-color-graphite-200": "#d4d0d2",
+    "--primitive-color-graphite-300": "#b2abae",
+    "--primitive-color-graphite-400": "#8b8488",
+    "--primitive-color-graphite-500": "#655e62",
+    "--primitive-color-graphite-600": "#544d51",
+    "--primitive-color-graphite-700": "#433a3f",
+    "--primitive-color-graphite-800": "#352e32",
+    "--primitive-color-graphite-900": "#2a2428",
+    "--primitive-color-graphite-950": "#19161a",
+    "--primitive-color-mauve-50": "#fff0f6",
+    "--primitive-color-mauve-100": "#f4e2ea",
+    "--primitive-color-mauve-200": "#e1cad4",
+    "--primitive-color-mauve-300": "#c0a4b1",
+    "--primitive-color-mauve-400": "#9d7b8a",
+    "--primitive-color-mauve-500": "#734b5e",
+    "--primitive-color-mauve-600": "#674254",
+    "--primitive-color-mauve-700": "#523141",
+    "--primitive-color-mauve-800": "#432634",
+    "--primitive-color-mauve-900": "#361d29",
+    "--primitive-color-mauve-950": "#240f1a",
     "--primitive-color-violet-50": "#f5f3ff",
     "--primitive-color-violet-400": "#a78bfa",
     "--primitive-color-violet-700": "#6d28d9",
@@ -7453,7 +6948,6 @@
     "--primitive-typography-lineHeight-body": "1.6",
     "--primitive-typography-letterSpacing-tight": "-0.01em",
     "--primitive-typography-letterSpacing-normal": "0em",
-    "--primitive-typography-letterSpacing-caps": "0.06em",
     "--primitive-duration-instant": "100ms",
     "--primitive-duration-short": "150ms",
     "--primitive-duration-medium": "250ms",
@@ -7508,8 +7002,8 @@
     "--semantic-color-surface-overlay": "#f5f5f5",
     "--semantic-color-surface-scrim": "#111111",
     "--semantic-color-surface-inverse": "#000000",
-    "--semantic-color-surface-accent": "#66b239",
-    "--semantic-color-surface-accentSubtle": "#f2faeb",
+    "--semantic-color-surface-accent": "#433a3f",
+    "--semantic-color-surface-accentSubtle": "#f5f4f4",
     "--semantic-color-surface-hover": "#f5f5f5",
     "--semantic-color-surface-pressed": "#fafafa",
     "--semantic-color-surface-selected": "#e5e5e5",
@@ -7519,8 +7013,8 @@
     "--semantic-color-content-secondary": "#525252",
     "--semantic-color-content-disabled": "#d4d4d4",
     "--semantic-color-content-inverse": "#f5f5f5",
-    "--semantic-color-content-accent": "#416f20",
-    "--semantic-color-content-onAccent": "#111111",
+    "--semantic-color-content-accent": "#433a3f",
+    "--semantic-color-content-onAccent": "#fafafa",
     "--semantic-color-content-success": "#047857",
     "--semantic-color-content-warning": "#92400e",
     "--semantic-color-content-danger": "#b91c1c",
@@ -7529,7 +7023,7 @@
     "--semantic-color-border-subdued": "#e5e5e5",
     "--semantic-color-border-subtle": "#f5f5f5",
     "--semantic-color-border-strong": "#d4d4d4",
-    "--semantic-color-border-accent": "#54922d",
+    "--semantic-color-border-accent": "#433a3f",
     "--semantic-color-border-success": "#34d399",
     "--semantic-color-border-warning": "#fbbf24",
     "--semantic-color-feedback-error": "#b91c1c",
@@ -7581,6 +7075,7 @@
     "--semantic-layout-grid-columns-desktop": "3",
     "--semantic-typography-display": "{\"fontFamily\":\"{primitive.typography.family.display}\",\"fontSize\":\"{primitive.typography.size.5xl}\",\"fontWeight\":\"{primitive.typography.weight.bold}\",\"letterSpacing\":\"{primitive.typography.letterSpacing.tight}\",\"lineHeight\":\"{primitive.typography.lineHeight.display}\"}",
     "--semantic-typography-title": "{\"fontFamily\":\"{primitive.typography.family.display}\",\"fontSize\":\"{primitive.typography.size.2xl}\",\"fontWeight\":\"{primitive.typography.weight.bold}\",\"letterSpacing\":\"{primitive.typography.letterSpacing.tight}\",\"lineHeight\":\"{primitive.typography.lineHeight.tight}\"}",
+    "--semantic-typography-titleSm": "{\"fontFamily\":\"{primitive.typography.family.display}\",\"fontSize\":\"{primitive.typography.size.base}\",\"fontWeight\":\"{primitive.typography.weight.bold}\",\"letterSpacing\":\"{primitive.typography.letterSpacing.normal}\",\"lineHeight\":\"{primitive.typography.lineHeight.snug}\"}",
     "--semantic-typography-body": "{\"fontFamily\":\"{primitive.typography.family.primary}\",\"fontSize\":\"{primitive.typography.size.base}\",\"fontWeight\":\"{primitive.typography.weight.regular}\",\"letterSpacing\":\"{primitive.typography.letterSpacing.normal}\",\"lineHeight\":\"{primitive.typography.lineHeight.body}\",\"maxWidth\":{\"value\":60,\"unit\":\"ch\"}}",
     "--semantic-typography-ui": "{\"fontFamily\":\"{primitive.typography.family.primary}\",\"fontSize\":\"{primitive.typography.size.sm}\",\"fontWeight\":\"{primitive.typography.weight.medium}\",\"letterSpacing\":\"{primitive.typography.letterSpacing.normal}\",\"lineHeight\":\"{primitive.typography.lineHeight.normal}\",\"maxWidth\":{\"value\":60,\"unit\":\"ch\"}}",
     "--semantic-typography-caption": "{\"fontFamily\":\"{primitive.typography.family.primary}\",\"fontSize\":\"{primitive.typography.size.xs}\",\"fontWeight\":\"{primitive.typography.weight.medium}\",\"letterSpacing\":\"{primitive.typography.letterSpacing.normal}\",\"lineHeight\":\"{primitive.typography.lineHeight.normal}\"}",
@@ -7593,14 +7088,14 @@
     "--semantic-docs-space-section": "48px",
     "--semantic-docs-space-paragraph": "24px",
     "--semantic-docs-space-inline": "8px",
-    "--semantic-accent-rest": "#66b239",
-    "--semantic-accent-hover": "#54922d",
-    "--semantic-accent-pressed": "#416f20",
+    "--semantic-accent-rest": "#433a3f",
+    "--semantic-accent-hover": "#352e32",
+    "--semantic-accent-pressed": "#2a2428",
     "--semantic-accent-inactive": "#a3a3a3",
     "--semantic-accent-disabled": "#d4d4d4",
-    "--semantic-accent-content": "#416f20",
-    "--semantic-accent-contentHover": "#34571b",
-    "--semantic-accent-subtle": "#f2faeb",
+    "--semantic-accent-content": "#433a3f",
+    "--semantic-accent-contentHover": "#352e32",
+    "--semantic-accent-subtle": "#f5f4f4",
     "--semantic-radius-action": "8px",
     "--semantic-radius-control": "4px",
     "--semantic-borderWidth-default": "1px",
@@ -7621,15 +7116,15 @@
     "--semantic-zIndex-control": "10",
     "--semantic-zIndex-sticky": "100",
     "--component-nav-bg": "#ffffff",
-    "--component-nav-bgActive": "#f2faeb",
-    "--component-nav-borderActive": "#66b239",
+    "--component-nav-bgActive": "#f5f4f4",
+    "--component-nav-borderActive": "#433a3f",
     "--component-nav-text": "#525252",
     "--component-nav-textActive": "#111111",
     "--component-nav-height": "64px",
     "--component-nav-paddingX": "24px",
     "--component-nav-paddingY": "8px",
-    "--component-tag-background": "#f2faeb",
-    "--component-tag-text": "#111111",
+    "--component-tag-background": "#fafafa",
+    "--component-tag-text": "#525252",
     "--component-tag-border": "#e5e5e5",
     "--component-tag-radius": "9999px",
     "--component-tag-fontSize": "12px",
@@ -7639,65 +7134,78 @@
     "--component-tag-minHeight": "24px",
     "--component-tag-paddingX": "12px",
     "--component-tag-paddingY": "8px",
-    "--component-tag-activeText": "#111111",
-    "--component-tag-activeBackground": "#66b239",
-    "--component-tag-activeBorder": "#66b239",
-    "--component-tag-activeHover": "#54922d",
+    "--component-tag-activeText": "#fafafa",
+    "--component-tag-activeBackground": "#433a3f",
+    "--component-tag-activeBorder": "#433a3f",
+    "--component-tag-activeHover": "#352e32",
     "--component-badge-fontSize": "12px",
     "--component-badge-fontWeight": "500",
     "--component-badge-text": "#111111",
     "--component-badge-bg": "oklch(0.96 0.03 266.54)",
+    "--component-badge-neutral-bg": "#f5f5f5",
+    "--component-badge-neutral-text": "#525252",
+    "--component-badge-info-bg": "oklch(0.96 0.03 266.54)",
+    "--component-badge-info-text": "#1E2EFD",
+    "--component-badge-success-bg": "#ecfdf5",
+    "--component-badge-success-text": "#047857",
+    "--component-badge-danger-bg": "#fef2f2",
+    "--component-badge-danger-text": "#b91c1c",
+    "--component-badge-warning-bg": "#fffbeb",
+    "--component-badge-warning-text": "#92400e",
+    "--component-badge-inProgress-bg": "#f5f3ff",
+    "--component-badge-inProgress-text": "#6d28d9",
     "--component-badge-radius": "4px",
     "--component-badge-height": "20px",
     "--component-badge-minWidth": "20px",
     "--component-badge-paddingY": "2px",
     "--component-badge-paddingX": "6px",
-    "--component-button-bg": "#66b239",
-    "--component-button-bgHover": "#54922d",
-    "--component-button-text": "#111111",
+    "--component-button-bg": "#433a3f",
+    "--component-button-bgHover": "#352e32",
+    "--component-button-text": "#fafafa",
     "--component-button-radius": "8px",
     "--component-button-paddingX": "16px",
-    "--component-button-paddingY": "12px",
-    "--component-button-size-sm-paddingX": "8px",
+    "--component-button-paddingY": "8px",
+    "--component-button-size-sm-paddingX": "12px",
     "--component-button-size-sm-paddingY": "4px",
     "--component-button-size-sm-fontSize": "12px",
     "--component-button-size-sm-iconSize": "12px",
-    "--component-button-size-sm-height": "28px",
-    "--component-button-size-sm-itemSpacing": "4px",
+    "--component-button-size-sm-height": "32px",
+    "--component-button-size-sm-itemSpacing": "8px",
     "--component-button-size-md-paddingX": "16px",
-    "--component-button-size-md-paddingY": "12px",
+    "--component-button-size-md-paddingY": "8px",
     "--component-button-size-md-fontSize": "14px",
     "--component-button-size-md-iconSize": "16px",
     "--component-button-size-md-height": "40px",
     "--component-button-size-md-itemSpacing": "8px",
     "--component-button-size-lg-paddingX": "24px",
     "--component-button-size-lg-paddingY": "16px",
-    "--component-button-size-lg-fontSize": "16px",
+    "--component-button-size-lg-fontSize": "14px",
     "--component-button-size-lg-iconSize": "20px",
     "--component-button-size-lg-height": "48px",
     "--component-button-size-lg-itemSpacing": "8px",
-    "--component-button-primary-textDisabled": "#111111",
-    "--component-button-primary-bgDisabled": "#f2faeb",
+    "--component-button-primary-textDisabled": "#d4d4d4",
+    "--component-button-primary-bgDisabled": "#f5f5f5",
     "--component-button-secondary-bg-rest": "#ffffff",
-    "--component-button-secondary-bg-hover": "#fafafa",
+    "--component-button-secondary-bg-hover": "#f5f4f4",
     "--component-button-secondary-bg-pressed": "#f5f5f5",
     "--component-button-secondary-border-rest": "#737373",
-    "--component-button-secondary-border-hover": "#737373",
-    "--component-button-secondary-border-pressed": "#737373",
+    "--component-button-secondary-border-hover": "#433a3f",
+    "--component-button-secondary-border-pressed": "#433a3f",
     "--component-button-secondary-border-disabled": "#e5e5e5",
     "--component-button-secondary-text": "#111111",
-    "--component-input-bg": "#fafafa",
+    "--component-input-bg": "#ffffff",
     "--component-input-text": "#111111",
     "--component-input-border": "#737373",
     "--component-input-borderError": "#b91c1c",
     "--component-input-radius": "8px",
-    "--component-input-paddingX": "16px",
+    "--component-input-paddingX": "12px",
     "--component-input-paddingY": "12px",
     "--component-card-bg": "#fafafa",
     "--component-card-border": "#e5e5e5",
-    "--component-card-radius": "8px",
+    "--component-card-radius": "12px",
     "--component-card-padding": "24px",
-    "--component-card-gap": "8px",
+    "--component-card-gap": "16px",
+    "--component-inlineCode-bg": "#f5f5f5",
     "--component-lightbox-backdrop-blur": "16px",
     "--role-background": "#ffffff",
     "--role-foreground": "#111111",
@@ -7707,19 +7215,19 @@
     "--role-scrim": "#111111",
     "--role-pressed-overlay": "#000000",
     "--role-popover-foreground": "#111111",
-    "--role-primary": "#66b239",
-    "--role-primary-foreground": "#111111",
+    "--role-primary": "#433a3f",
+    "--role-primary-foreground": "#fafafa",
     "--role-secondary": "#fafafa",
     "--role-secondary-foreground": "#111111",
     "--role-muted": "#f5f5f5",
     "--role-muted-foreground": "#525252",
-    "--role-accent": "#f2faeb",
-    "--role-accent-foreground": "#416f20",
+    "--role-accent": "#f5f4f4",
+    "--role-accent-foreground": "#433a3f",
     "--role-destructive": "#b91c1c",
     "--role-destructive-foreground": "#f5f5f5",
     "--role-border": "#e5e5e5",
     "--role-input": "#737373",
-    "--role-ring": "#54922d",
+    "--role-ring": "#433a3f",
     "--role-radius": "8px"
   },
   "handoffDrift": [],
@@ -7732,6 +7240,7 @@
     "--current-cols",
     "--danger",
     "--define",
+    "--depth",
     "--hds-border",
     "--hds-fill",
     "--hds-font-size-xs",
@@ -7746,7 +7255,6 @@
     "--radix-popover-trigger-width",
     "--radix-select-content-available-height",
     "--radix-select-trigger-width",
-    "--semantic-typography-eyebrow-text-transform",
     "--strong",
     "--success",
     "--tw-inset-shadow",

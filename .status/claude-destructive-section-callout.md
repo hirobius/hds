@@ -1,0 +1,1 @@
+DestructiveSection is now a danger Callout (feedback fill, no border) with the new `titleSm` type role (16px / 700 / 1.375) for its title and `ui` for its description; props and confirm flow unchanged.

@@ -33,7 +33,9 @@ either file, also follows these rules:
 - Bind only to the library's variables and styles; create none. In the library they
   are local, found by name; in HDS Staging they come from the enabled library,
   imported by key. Variables and styles come from code, into the library only,
-  through Sync or `delta.js`.
+  through Sync or `delta.js`. When a script binds a paint or effect to a colour
+  variable it sets the raw colour to that variable's value in the same script
+  (see the gotcha "A bound paint or effect keeps a raw colour").
 - Report the component, its library node ids and both screenshots to Adrian, who
   publishes.
 
@@ -51,7 +53,7 @@ either file, also follows these rules:
 1. **Read the code first.** The cva `variants` block is the variant matrix; the
    `defaultVariants` block is the default. Resolve every Tailwind utility to the
    CSS custom property it emits (`tailwind.config.ts` for the semantic aliases,
-   `src/styles/tokens.css` for the token itself). Do not guess a hue.
+   `src/styles/tokens.generated.css` for the token itself). Do not guess a hue.
 
 2. **Resolve each token to a Figma variable ID** before drawing. The Figma
    variable name mirrors the CSS custom property:
@@ -99,6 +101,15 @@ either file, also follows these rules:
 - **`componentPropertyDefinitions[axis].defaultValue` reports
   `variantOptions[0]`**, which is _not_ necessarily the real default. Read
   `set.defaultVariant.name` instead, or instantiate and inspect.
+- **A bound paint or effect keeps a raw colour, and Figma renders it where the
+  binding cannot resolve.** `setBoundVariableForPaint` and
+  `setBoundVariableForEffect` leave the old raw colour in place, so a binding over
+  pure black looks right in the library and shows black in a consumer file before
+  the library is published (the Kbd shadow, 2026-10-12). In the same script, set
+  the raw colour to the variable's default-mode value (follow aliases:
+  `valuesByMode[collection.defaultModeId]`) and keep the binding; for an effect
+  that includes the alpha. `pnpm check:figma-fallbacks` fails on a mismatch
+  (`figma/README.md`, "Bound-colour fallbacks").
 - **Reading `fills[0].color` does not resolve the active mode.** It returns the
   baked colour, so it cannot be used to prove a binding is live. Resolve
   `variable.valuesByMode` and follow the aliases instead.

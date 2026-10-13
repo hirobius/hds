@@ -68,7 +68,7 @@ export const INTENTS = [
     ],
     use: ['MetricTiles', 'MetricTile'],
     avoid: ['Stat', 'StatusTile', 'CardMetric', 'Card with Text'],
-    how: '`<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, `StatusTile` for a state with notes (never a number).',
+    how: '`<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, a `Card` with `Card.Row` for a state with notes (never a number; it replaces the deprecated `StatusTile`).',
   },
   {
     id: 'table',
