@@ -208,6 +208,8 @@ describe('Card asChild (a whole card that is one link)', () => {
     expect(link.className).toContain('hds-focus');
     expect(link.className).toContain('hover:scale-102');
     expect(link.className).toContain('motion-reduce:hover:scale-100');
+    // Tailwind 4 `scale-*` sets the `scale` property, so that is what must ease.
+    expect(link.className).toContain('transition-[scale,box-shadow]');
   });
 
   it('keeps a plain Card non-interactive', () => {
