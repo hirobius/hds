@@ -9,7 +9,7 @@ token to install it. hds#39 describes the P0.2 consumer-readiness item as "previ
 human-gated pending the decision to make the package publicly readable". Its body says
 "Adrian authorized it and provisioned the `hirobius` npm org + `NPM_TOKEN` secret."
 
-On 2026-07-06 the first external consumer, `hirobius/lilac-bonds`, proposed a
+On 2026-07-06 the first external consumer, a client microsite, proposed a
 consumption contract. The aim was to make token-namespace collisions between the
 design system and its consumers "structurally impossible".
 
@@ -31,7 +31,7 @@ design system and its consumers "structurally impossible".
      tokens (rule R5), so a new ramp lands upstream first.
 3. **`data-brand` is primary, `data-tenant` is an alias** (hds#88). Overlays compile to
    `[data-brand="slug"], [data-tenant="slug"]`. "No breaking change: existing
-   data-tenant consumers (incl. the lilac-bonds tenant) keep working."
+   data-tenant consumers (incl. that consumer's tenant) keep working."
 
 ## Alternatives considered
 
@@ -42,7 +42,7 @@ None recorded at the time.
 The commits give the install reason as a plain `npm install` with no `.npmrc` or token
 setup. For the contract, the reason is the one above: one invariant, DS-owned names are
 never declared by consumers, removes the need for a shared registry or coordination.
-The same hds#82 change added the `primitive.color.lilac` ramp and a `lilac-bonds`
+The same hds#82 change added the `primitive.color.lilac` ramp and a consumer
 overlay, so C4 was exercised on day one.
 
 ## Consequences
@@ -71,7 +71,7 @@ overlay, so C4 was exercised on day one.
 ## Evidence
 
 - `ab78052` Publish to public npm instead of GitHub Packages (P0.2) (#39)
-- `c611e3b` Implement the lilac-bonds consumption proposal + npm README note (#82)
+- `c611e3b` Implement the first consumer's consumption proposal + npm README note (#82)
 - `a98714b` feat(tokens): data-brand primary attribute + data-tenant alias (#88)
 - `0b3738f` Astro consumption bridge (#64) + multi-brand switch tests (#62) (#111)
 - `1996d78` ci(release): publish to npm with Trusted Publishing (OIDC) (#346)

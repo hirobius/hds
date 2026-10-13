@@ -77,7 +77,6 @@ consumers are private, so the list is never committed."
   only "part 1" of hds#449 landing, so the safelist is not confirmed built.
 - Ledgers up to 0.22.0 are frozen: their CSS facts need no step
   (`LAST_RELEASE_WITHOUT_CSS_STEPS`).
-- hds#445 itself was still open on 2026-10-08.
 
 ## Lessons
 
@@ -87,7 +86,6 @@ consumers are private, so the list is never committed."
   types in a changeset were never checked until this work.
 - Freeze each release's sources. Live codemod data and CHANGELOG line numbers drift,
   and a shipped ledger must not drift with them.
-- When a list of consumers includes private repos, design the redaction first.
 
 ## Evidence
 

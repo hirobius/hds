@@ -6,7 +6,7 @@ One file per decision, numbered in the order recorded ([ADR-009](009-adr-convent
 An Accepted ADR is not edited; a change is a new ADR that supersedes it through its
 Status line.
 
-58 records. 24 are **retroactive**: decisions made between June and
+61 records. 27 are **retroactive**: decisions made between June and
 October 2026 that shipped without an ADR, written up afterwards from the commit and PR
 history. Each one lists its evidence and says when the evidence does not record a reason.
 Their "Decided" date is when the decision landed, not when it was written up.
@@ -74,3 +74,6 @@ the bundle budget) predates this folder; see ADR-009.
 | [057](057-upgrade-ledger-and-command.md) | Codify upgrades: release ledger, upgrade command, CSS contract | Accepted | 2026-10-01 | yes |
 | [058](058-retire-storybook.md) | Retire Storybook; the docs site is the one surface | Accepted | 2026-10-11 | yes |
 | [059](059-typeface-delivery-and-licensing.md) | Typefaces: how fonts ship, and only what the license allows | Accepted | 2026-10-10 | yes |
+| [060](060-code-wins-component-token-binding.md) | When a component token and the rendered component disagree, code wins | Accepted | 2026-10-11 | yes |
+| [061](061-state-is-derived.md) | Project state is derived, and every state surface is registered | Accepted | 2026-10-12 | yes |
+| [062](062-no-client-names-in-public-repo.md) | Keep client names out of the public repo | Accepted | 2026-09-29 | yes |
