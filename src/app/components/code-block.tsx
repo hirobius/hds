@@ -5,9 +5,8 @@
  * @tier primitive
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154
  */
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex -- scrollable code region requires tabIndex for keyboard navigation */
 
-import { useId, useRef, useState, type ReactNode } from 'react';
+import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { cva } from 'class-variance-authority';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
@@ -117,6 +116,43 @@ const prePanelVariants = /* @__PURE__ */ cva(
   },
 );
 
+/**
+ * The scrolling <pre>. It is a plain element (no landmark, no tab stop) until its code overflows;
+ * only then does it become a keyboard-scrollable `group` named by the filename or language, so a page
+ * of short blocks adds no tab stops and no duplicate "Code sample" landmarks (bug bash 24, item 9).
+ */
+function CodePre({
+  panelBackground,
+  label,
+  children,
+}: {
+  panelBackground: boolean;
+  label: string;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLPreElement>(null);
+  const [overflows, setOverflows] = useState(false);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => setOverflows(el.scrollWidth > el.clientWidth);
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [children]);
+  return (
+    <pre
+      ref={ref}
+      {...(overflows ? { tabIndex: 0, role: 'group', 'aria-label': label } : {})}
+      className={prePanelVariants({ panelBackground })}
+    >
+      {children}
+    </pre>
+  );
+}
+
 export interface CodeBlockProps {
   /** Code string displayed in the block. */
   code: string;
@@ -183,6 +219,7 @@ export function CodeBlock({
         </code>
 
         <button
+          type="button"
           onClick={handleCopy}
           aria-label={copied ? 'Copied' : 'Copy code'}
           className={cn('hds-focus', copyButtonVariants({ variant: 'inline' }))}
@@ -225,6 +262,7 @@ export function CodeBlock({
 
   const copyBtn = (
     <button
+      type="button"
       onClick={handleCopy}
       aria-label={copied ? 'Copied' : 'Copy code'}
       className={cn('hds-focus', copyButtonVariants({ variant: 'block' }))}
@@ -239,14 +277,12 @@ export function CodeBlock({
 
   const codePanel = (
     <div className="relative">
-      <pre
-        tabIndex={0}
-        role="region"
-        aria-label="Code sample"
-        className={prePanelVariants({ panelBackground: true })}
+      <CodePre
+        panelBackground
+        label={filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample')}
       >
         <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
-      </pre>
+      </CodePre>
       {copyBtn}
     </div>
   );
@@ -292,14 +328,12 @@ export function CodeBlock({
     <div className={cn(blockContainerVariants(), className)}>
       {headerEl}
       <div className="relative">
-        <pre
-          tabIndex={0}
-          role="region"
-          aria-label="Code sample"
-          className={prePanelVariants({ panelBackground: false })}
+        <CodePre
+          panelBackground={false}
+          label={filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample')}
         >
           <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
-        </pre>
+        </CodePre>
         {copyBtn}
       </div>
     </div>

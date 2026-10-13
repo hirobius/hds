@@ -60,8 +60,9 @@ export function TabsTrigger({
     <TabsPrimitive.Trigger
       className={cn(
         'relative -mb-px inline-flex items-center px-3 py-2 hds-type-ui transition-colors',
-        'border-b-2 border-transparent text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
-        'data-[state=active]:border-foreground data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
+        // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
+        'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
+        'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
         'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
         className,

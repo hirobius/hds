@@ -1,0 +1,24 @@
+{
+  "impact": "behavior",
+  "plain": "Keyboard focus no longer moves controls, CodeBlock is no longer a landmark unless its code scrolls, and Button label now names the button.",
+  "steps": [
+    {
+      "id": "behavior/CodeBlock-landmark",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A CodeBlock is no longer a region named Code sample with its own tab stop; it becomes a keyboard-scrollable group named by its filename or language only when its code overflows. Update any test or selector that looked for that region.",
+      "detect": {
+        "regex": ["Code sample"]
+      }
+    },
+    {
+      "id": "behavior/Button-label",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Button label now sets the accessible name whenever it is given, even with children; a Button that passes both label and children is announced by the label, so make sure it still describes the visible text.",
+      "detect": {
+        "regex": ["<Button\\b[^>]*\\slabel="]
+      }
+    }
+  ]
+}
