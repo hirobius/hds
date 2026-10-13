@@ -1,1 +1,1 @@
-Added Composer (prompt/capture box: auto-grow, paste folding, Cmd/Ctrl+Enter submit); Figma steps of hds#635 still open.
+Composer review nits (#682): spacing tokens, dvh cap justified, focus returns to fold chip on dialog close.
