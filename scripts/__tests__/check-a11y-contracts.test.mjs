@@ -117,6 +117,19 @@ describe('findA11yGaps', () => {
     expect(out.errors).toEqual([]);
     expect(out.warnings.map((w) => w.code).sort()).toEqual(['W1-orphan', 'W2-duplicate']);
   });
+
+  it('W2 skips gate: ids: one gate proves one property for many components', () => {
+    const out = gaps(
+      {
+        Menu: spec('Overlays', [owned('gate:check-a11y-contracts')]),
+        Select: spec('Inputs', [owned('gate:check-a11y-contracts')]),
+      },
+      [],
+      ['check-a11y-contracts'],
+    );
+    expect(out.errors).toEqual([]);
+    expect(out.warnings).toEqual([]);
+  });
 });
 
 describe('collectTestIds', () => {
@@ -183,5 +196,27 @@ describe('the command', () => {
 
   it('the committed manifest: report mode exits 0', () => {
     expect(run([]).status).toBe(0);
+  });
+
+  it('the committed manifest has zero gaps: --enforce exits 0', () => {
+    const res = run(['--enforce']);
+    expect(res.stderr).toBe('');
+    expect(res.stdout).toMatch(/, 0 gap\(s\)/);
+    expect(res.status).toBe(0);
+  });
+});
+
+describe('the flip (hds#520): the gate blocks, it no longer only reports', () => {
+  it('the registry entry is severity error', () => {
+    const registry = JSON.parse(
+      readFileSync(path.join(ROOT, 'docs/guardrails/registry.json'), 'utf8'),
+    );
+    const gate = registry.gates.find((g) => g.id === 'check-a11y-contracts');
+    expect(gate.severity).toBe('error');
+  });
+
+  it('pre-commit runs it with --enforce', () => {
+    const hook = readFileSync(path.join(ROOT, '.husky/pre-commit'), 'utf8');
+    expect(hook).toMatch(/^node scripts\/check-a11y-contracts\.mjs --enforce$/m);
   });
 });

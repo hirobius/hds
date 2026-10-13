@@ -332,6 +332,14 @@ describe('SegmentedControl accessibility contract', () => {
       const minH = Number(cls.match(/(?<![:\w-])min-h-\[(\d+)px\]/)?.[1] ?? 0);
       // A pseudo-element grows the hit area past the segment into the rail padding.
       const grow = Number(cls.match(/before:-inset-y-\[(\d+)px\]/)?.[1] ?? 0);
+      if (grow > 0) {
+        // An inset with no generated box is inert: the pseudo-element must exist and be
+        // positioned against the (relative) segment, or the hit area never grows.
+        const tokens = cls.split(/\s+/);
+        expect(tokens).toContain("before:content-['']");
+        expect(tokens).toContain('before:absolute');
+        expect(tokens).toContain('relative');
+      }
       expect(minH + 2 * grow).toBeGreaterThanOrEqual(24);
     },
   );

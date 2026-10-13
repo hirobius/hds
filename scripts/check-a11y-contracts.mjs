@@ -22,10 +22,11 @@
  *   E4-unclassified a component in Overlays/Inputs/Navigation/Actions that is in
  *                    neither INTERACTIVE, PARTS nor COMPOSITE (scripts/lib/a11y-interactive.mjs)
  *   W1-orphan        an a11y:<id> in a test that no rule references
- *   W2-duplicate     two rules share a testId
+ *   W2-duplicate     two rules share an a11y:<id> (a gate:<id> may back many
+ *                    rules: one gate proves one property across components)
  *
- *   node scripts/check-a11y-contracts.mjs             # lists every gap, exits 0 (severity warn)
- *   node scripts/check-a11y-contracts.mjs --enforce   # exits 1 on any E1-E4
+ *   node scripts/check-a11y-contracts.mjs             # lists every gap, exits 0 (report only)
+ *   node scripts/check-a11y-contracts.mjs --enforce   # exits 1 on any E1-E4; pre-commit runs this (severity error)
  *
  * --manifest <path> reads another manifest and --tests <dir> another test root,
  * for the tests. The proof-of-firing harness (FIXTURE_FILE) hands a fixture
@@ -149,7 +150,7 @@ export function findA11yGaps({ specs, testFiles, gateIds }) {
   }
 
   for (const [id, owners] of referenced) {
-    if (owners.length > 1) {
+    if (owners.length > 1 && !id.startsWith('gate:')) {
       warnings.push({
         code: 'W2-duplicate',
         component: owners[0],

@@ -166,10 +166,14 @@ describe('hds-mcp over stdio', () => {
   });
 
   it('get_component carries a11y rules, an untagged hand-kept rule as plain text', async () => {
-    const { data } = await callTool(server, 'get_component', { name: 'InlineLink' });
+    // Icon has no @a11y tags (it is not interactive), so its hand-kept rule is served as is.
+    const { data } = await callTool(server, 'get_component', { name: 'Icon' });
     expect(data.a11y).toEqual(
-      expect.arrayContaining([expect.stringMatching(/^Link text must be descriptive/)]),
+      expect.arrayContaining([
+        expect.stringMatching(/^Must have aria-label when used without adjacent text/),
+      ]),
     );
+    expect(data.a11y.some((line) => /^(you|built in):/.test(line))).toBe(false);
   });
 
   it('get_component serves a tagged component its a11y as "you:" lines first', async () => {

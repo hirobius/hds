@@ -369,6 +369,28 @@ describe('Toast accessibility contract', () => {
     });
     expect(screen.queryAllByText('Saved')).toHaveLength(0);
   });
+
+  it('a11y:toast.pause-on-hover-focus - the timer also pauses while focus is inside the viewport', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: false });
+    renderToast(1000);
+    fireEvent.click(screen.getByText('fire'));
+    await act(async () => {});
+    const region = screen.getByRole('region', { name: /Notifications/ });
+    const dismiss = screen.getByRole('button', { name: 'Dismiss' });
+    // Focus entering the region pauses; 10s later the toast is still there.
+    act(() => dismiss.focus());
+    expect(region.contains(document.activeElement)).toBe(true);
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(10_000);
+    });
+    expect(screen.queryAllByText('Saved').length).toBeGreaterThan(0);
+    // Focus leaving resumes; the timer then runs out.
+    act(() => dismiss.blur());
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2_000);
+    });
+    expect(screen.queryAllByText('Saved')).toHaveLength(0);
+  });
 });
 
 // ── Table ─────────────────────────────────────────────────────────────────────

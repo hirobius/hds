@@ -1,5 +1,4 @@
 {
   "impact": "look",
-  "plain": "CodeBlock and InlineCode (copyable) add a visually hidden status element that announces a copy, the Disclosure trigger is at least 24px tall (the panel variant grows from about 18px), and a clickable AssetImg that is not expandable becomes a focusable button. Nothing to change unless you snapshot their markup or height.",
-  "steps": []
+  "plain": "The Disclosure trigger is at least 24px tall, copyable CodeBlock and InlineCode gain a hidden copy-status element, and a clickable non-expandable AssetImg becomes a focusable button; nothing to change unless you snapshot their markup or height."
 }

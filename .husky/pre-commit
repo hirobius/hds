@@ -49,12 +49,12 @@ echo "Contract coverage (every core component says when to use it)…"
 node scripts/check-contract-coverage.mjs --enforce
 
 # hds#520: every interactive component states its accessibility contract as
-# @a11y tags, and each rule the component keeps points at a test. Severity warn
-# until the family backfills land: it lists every gap and exits 0. The
-# integrator adds --enforce when the gaps are zero. Reads the manifest and greps
-# the test files: no build, no browser, no network.
+# @a11y tags, and each rule the component keeps points at a test. Severity
+# error: --enforce fails the commit on any gap (the family backfills reached
+# zero). Reads the manifest and greps the test files: no build, no browser, no
+# network.
 echo "A11y contracts (interactive components state and test their a11y rules)…"
-node scripts/check-a11y-contracts.mjs
+node scripts/check-a11y-contracts.mjs --enforce
 
 # A bare top-level React.forwardRef / cva / createContext / withHdsPortal call
 # is a side effect every bundler keeps, so one in a module that reaches the

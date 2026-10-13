@@ -213,6 +213,20 @@ describe('Pagination accessibility contract', () => {
     expect(document.activeElement).not.toBe(previous);
     expect(document.activeElement).not.toBe(document.body);
     expect(screen.getByRole('navigation').contains(document.activeElement)).toBe(true);
+    // The rule names the destination: the current page button, not just "somewhere in the nav".
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Page 1' }));
+    expect(document.activeElement?.getAttribute('aria-current')).toBe('page');
+  });
+
+  it('a11y:pagination.focus-kept - activating Next on the second-last page moves focus to the current page', async () => {
+    const user = userEvent.setup();
+    render(<PagedFixture start={4} count={5} />);
+    const next = screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement;
+    next.focus();
+    await user.keyboard('{Enter}');
+    expect(next.disabled).toBe(true);
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Page 5' }));
+    expect(document.activeElement?.getAttribute('aria-current')).toBe('page');
   });
 
   it('a11y:pagination.target-size - page buttons lift to the touch target and Previous/Next are at least 24px', () => {
