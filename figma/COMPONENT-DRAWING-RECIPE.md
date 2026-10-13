@@ -53,7 +53,7 @@ either file, also follows these rules:
 1. **Read the code first.** The cva `variants` block is the variant matrix; the
    `defaultVariants` block is the default. Resolve every Tailwind utility to the
    CSS custom property it emits (`tailwind.config.ts` for the semantic aliases,
-   `src/styles/tokens.css` for the token itself). Do not guess a hue.
+   `src/styles/tokens.generated.css` for the token itself). Do not guess a hue.
 
 2. **Resolve each token to a Figma variable ID** before drawing. The Figma
    variable name mirrors the CSS custom property:

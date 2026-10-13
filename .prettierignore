@@ -20,7 +20,6 @@ src/app/design-system/generated-token-values.ts
 src/app/design-system/generated-token-descriptions.ts
 src/app/design-system/generated-token-vars.d.ts
 src/app/design-system/generated-token-refs.ts
-src/styles/tokens.css
 src/styles/tokens.generated.css
 src/app/data/**.json
 public/hds-manifest.json

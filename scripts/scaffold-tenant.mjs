@@ -73,13 +73,16 @@ function darken(hex, factor = 0.85) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
-  const d = (c) => Math.round(c * factor).toString(16).padStart(2, '0');
+  const d = (c) =>
+    Math.round(c * factor)
+      .toString(16)
+      .padStart(2, '0');
   return `#${d(r)}${d(g)}${d(b)}`;
 }
 
 /** Derive a pressed shade (~30% darker). */
 function pressed(hex) {
-  return darken(hex, 0.70);
+  return darken(hex, 0.7);
 }
 
 /** Derive a subtle tint (mix toward white). */
@@ -87,7 +90,10 @@ function tint(hex, factor = 0.92) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
-  const t = (c) => Math.round(c + (255 - c) * factor).toString(16).padStart(2, '0');
+  const t = (c) =>
+    Math.round(c + (255 - c) * factor)
+      .toString(16)
+      .padStart(2, '0');
   return `#${t(r)}${t(g)}${t(b)}`;
 }
 
@@ -253,7 +259,7 @@ Hirobius Design System tenant overlay for **${displayName}**.
 2. Open \`tokens.json\` and refine hover / pressed / subtle shades
    (auto-derived defaults are safe but rarely perfect).
 3. Run \`pnpm tokens\` from the repo root to compile the CSS overlay.
-4. Verify: \`rg 'data-tenant="${slug}"' src/styles/tokens.css\`
+4. Verify: \`rg 'data-tenant="${slug}"' src/styles/tenants.css\`
 5. Set \`<html data-tenant="${slug}">\` in the tenant's SSR entry point.
 6. Follow the full runbook at \`docs/operations/tenant-onboarding.md\`.
 
@@ -302,7 +308,9 @@ function main() {
   const tenantDir = path.join(TENANTS_DIR, slug);
 
   if (!dryRun && fs.existsSync(tenantDir)) {
-    console.error(`Error: tenants/${slug} already exists. Remove it first or choose a different slug.`);
+    console.error(
+      `Error: tenants/${slug} already exists. Remove it first or choose a different slug.`,
+    );
     process.exit(1);
   }
 
@@ -311,14 +319,27 @@ function main() {
   const readmePath = path.join(tenantDir, 'README.md');
 
   const tokensContent = JSON.stringify(buildTokens(slug, primaryHex), null, 2) + '\n';
-  const metadataContent = JSON.stringify(buildMetadata(slug, displayName, tier, primaryHex), null, 2) + '\n';
+  const metadataContent =
+    JSON.stringify(buildMetadata(slug, displayName, tier, primaryHex), null, 2) + '\n';
   const readmeContent = buildReadme(slug, displayName, primaryHex, tier);
 
   if (dryRun) {
     console.log('[dry-run] would create directory:', `tenants/${slug}/`);
-    console.log('[dry-run] would write:', `tenants/${slug}/tokens.json`, `(${tokensContent.length} bytes)`);
-    console.log('[dry-run] would write:', `tenants/${slug}/metadata.json`, `(${metadataContent.length} bytes)`);
-    console.log('[dry-run] would write:', `tenants/${slug}/README.md`, `(${readmeContent.length} bytes)`);
+    console.log(
+      '[dry-run] would write:',
+      `tenants/${slug}/tokens.json`,
+      `(${tokensContent.length} bytes)`,
+    );
+    console.log(
+      '[dry-run] would write:',
+      `tenants/${slug}/metadata.json`,
+      `(${metadataContent.length} bytes)`,
+    );
+    console.log(
+      '[dry-run] would write:',
+      `tenants/${slug}/README.md`,
+      `(${readmeContent.length} bytes)`,
+    );
     console.log('[dry-run] primary-color:', primaryHex);
     console.log('[dry-run] hover (auto):', darken(primaryHex));
     console.log('[dry-run] pressed (auto):', pressed(primaryHex));
@@ -339,7 +360,7 @@ function main() {
   console.log('  1. Edit tenants/' + slug + '/tokens.json  — refine hover/pressed/subtle shades');
   console.log('  2. Edit tenants/' + slug + '/metadata.json — fill deployment + legal fields');
   console.log('  3. Run: pnpm tokens');
-  console.log('  4. Verify: rg \'data-tenant="' + slug + '"\' src/styles/tokens.css');
+  console.log('  4. Verify: rg \'data-tenant="' + slug + '"\' src/styles/tenants.css');
   console.log('  5. Set <html data-tenant="' + slug + '"> in the tenant SSR entry point');
   console.log('  6. Deploy via Vercel project for this tenant');
   console.log('\nFull runbook: docs/operations/tenant-onboarding.md');
