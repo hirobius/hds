@@ -152,6 +152,8 @@ AlertDialog: Confirm a destructive or irreversible action (delete, archive, remo
 AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
 Avatar: [core] Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
 Badge: [core] Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
+Board: Show work grouped by status as side-by-side columns, each with a title, a count and a tone, such as leads by pipeline stage. Use instead: Table, Grid
+BoardColumn: Hold the cards for one status inside a Board, with a heading that announces the count. Use instead: Stack
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
 Button: [core] Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
@@ -683,6 +685,17 @@ Compact metadata/status chip. Tone is the only styling input.
 A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
   - attribution: ReactNode
   - size: "sm" | "md" | "lg" | null
+
+### Board
+A row of status columns that wraps, in order, as the container narrows. Read-only: it has no drag handlers.
+  - children: ReactNode
+
+### BoardColumn
+One status column: a heading with the title, a count and a tone dot, then its items. The column is a labelled region and the count is part of the heading's nam…
+  - children: ReactNode
+  - count: number
+  - title: ReactNode
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" = neutral
 
 ### Box
 Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing short…
