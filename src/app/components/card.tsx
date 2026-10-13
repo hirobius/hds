@@ -519,6 +519,15 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
  * @usage Group related content on a raised surface with header, body, footer and metric slots, or as one selectable option.
  * @whenNot A bare padded background with no slot anatomy, or a single headline figure.
  * @useInstead Surface a padded background without slot anatomy
+ * @a11y component required a11y:card.selectable-role A selectable card is a focusable checkbox that reports aria-checked; a plain card is neither.
+ * @a11y component required a11y:card.space-toggles Space toggles a focused selectable card and Enter does not.
+ * @a11y component required a11y:card.nested-controls A key or click inside a control in the card is left to that control.
+ * @a11y component required a11y:card.selection-not-colour-only Selection adds a 2px ring and aria-checked, not a colour change alone (WCAG 1.4.1).
+ * @a11y component required a11y:card.focus-ring A selectable card carries the shared focus ring, apart from the selection ring.
+ * @a11y component required a11y:card.title-heading Card.Title is a heading (h3) and takes its level from as.
+ * @a11y component required a11y:card.progress-name Card.Progress is a progressbar with a name (label, else Progress) and its value.
+ * @a11y consumer required Give a selectable Card a name from its content or an aria-label, and keep controls nested in it out of its name.
+ * @a11y consumer recommended Set Card.Title's heading level with as so it fits the page outline.
  */
 export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
   Header: CardHeader,

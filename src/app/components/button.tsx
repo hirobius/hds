@@ -177,6 +177,16 @@ let warnedIconOnlyWithoutName = false;
  * @usage Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed.
  * @whenNot Navigating to another page, where a link is the correct element.
  * @useInstead InlineLink navigation to another page
+ * @a11y component required a11y:button.keyboard-activate Enter and Space activate it, and it takes part in the Tab order.
+ * @a11y component required a11y:button.focus-ring Keyboard focus draws a visible ring from the focus-visible utilities; the outline is never removed without it.
+ * @a11y component required a11y:button.loading-busy loading sets aria-busy and disables the button, and the spinner is hidden from assistive technology.
+ * @a11y component required a11y:button.toggle-pressed A toggle button reports its state with aria-pressed and flips it on activation.
+ * @a11y component required a11y:button.aschild-disabled A disabled asChild link is aria-disabled and leaves the tab order, since a link cannot be natively disabled.
+ * @a11y component required a11y:button.icon-only-name An icon-only button takes its accessible name from label (as aria-label).
+ * @a11y component required a11y:button.target-size Every size is at least 24px tall, and an icon-only button at least 24px wide (WCAG 2.5.8).
+ * @a11y component required a11y:button.reduced-motion The loading spinner stops under prefers-reduced-motion.
+ * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
+ * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.
  */
 export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(

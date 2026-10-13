@@ -6,6 +6,12 @@
  * @usage Show an image that scales to its frame, with a placeholder if it fails to load.
  * @tier primitive
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67
+ * @a11y component required a11y:asset-img.alt The alt text reaches the image, and a failed image with alt is still exposed as a named image.
+ * @a11y component required a11y:asset-img.decorative alt of an empty string makes the image decorative, and a failed image without alt is hidden from assistive technology.
+ * @a11y component required a11y:asset-img.interactive-button A clickable image is a labelled button that Enter and Space activate.
+ * @a11y component required a11y:asset-img.interactive-everywhere A clickable image is keyboard operable in every context, with expandable off and in the lightbox.
+ * @a11y component required a11y:asset-img.focus-ring The interactive wrapper keeps the shared focus ring and never sets outline.
+ * @a11y consumer required Pass meaningful alt text, or alt of an empty string for a decorative image; a clickable image needs alt for its name (WCAG 1.1.1, 4.1.2).
  */
 import { useState, CSSProperties } from 'react';
 import type React from 'react';
@@ -106,19 +112,26 @@ export function AssetImg({
   if (!failed) {
     if (!isExpandable) {
       return (
+        // A clicked image is a button for the keyboard too: focusable, named by alt,
+        // and activated by Enter or Space (2.1.1). Without onClick it stays a plain image.
         // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
         <img
           src={src}
           alt={alt}
           loading={loading}
           style={resolvedStyle}
-          className={className}
+          className={onClick ? (className ? `hds-focus ${className}` : 'hds-focus') : className}
           draggable={draggable}
+          role={onClick ? 'button' : undefined}
+          tabIndex={onClick ? 0 : undefined}
           onClick={onClick}
           onKeyDown={
             onClick
               ? (e) => {
-                  if (e.key === 'Enter') onClick(e as unknown as React.MouseEvent);
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onClick(e as unknown as React.MouseEvent);
+                  }
                 }
               : undefined
           }

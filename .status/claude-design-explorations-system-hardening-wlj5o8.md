@@ -5,3 +5,5 @@ Design explorations phase 0 (hds#628) integrated: spec set and gates (six briefs
 Family A of the hds#520 a11y backfill (overlays, listboxes, announcements): @a11y tags on 12 components, overlay-a11y.contract.test.tsx, Combobox result-count live region.
 
 @a11y backfill, family B (hds#520): Checkbox, Radio, Toggle, Slider, SegmentedControl, Tag, Input, Textarea, Form, FormField, FormFieldShell and FormActions carry @a11y tags, each owner:component rule proved by an a11y:<id> test (tests/primitive-contracts/form-controls.contract.test.tsx and the colocated tests). Code fixes found by the tests: Slider valueText and label association, compact SegmentedControl 24px hit area.
+
+@a11y family C (hds#520): contracts and contract tests for Button, InlineLink, Breadcrumb, Pagination, Tabs, Disclosure, Card, AssetImg, CodeBlock, InlineCode; fixes for Pagination focus after the focused button disables, clickable non-expandable AssetImg keyboard access, copy-status announcements in CodeBlock and InlineCode, and a 24px Disclosure trigger.
