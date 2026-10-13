@@ -166,7 +166,7 @@ DestructiveSection: Put a dangerous action, such as delete, in its own section w
 Dialog: [core] Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider, AlertDialog
 Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. Use instead: Tabs
 Divider: [core] Separate two blocks of content with a thin line. Use instead: Stack, Surface
-EmptyState: [core] Say that a list, grid or section has no data yet, with a title and an optional description. Use instead: Skeleton, Alert
+EmptyState: [core] Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step. Use instead: Skeleton, Alert
 ErrorPattern: Show an error with a short message and a Back button, in place or as a full page.
 Field: [core] Show a labelled read-only value, such as a name and its value in a detail view. Use instead: Input
 Form: Wrap form fields so they stack with even spacing.
@@ -902,6 +902,7 @@ Divider — semantic separator between content regions.
 
 ### EmptyState
 EmptyState — consistent no-data placeholder for lists, grids, and sections.
+  - action: ReactNode
   - className: string
   - description: ReactNode
   - title: ReactNode
