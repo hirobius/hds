@@ -66,7 +66,7 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
       accent: 'text-[var(--semantic-accent-content)]',
       success: 'text-[var(--semantic-color-feedback-success)]',
       warning: 'text-[var(--semantic-color-feedback-warning)]',
-      error: 'text-[var(--semantic-color-feedback-error)]',
+      danger: 'text-[var(--semantic-color-feedback-error)]',
       info: 'text-[var(--semantic-color-feedback-info)]',
     },
   },
@@ -142,7 +142,7 @@ export type TextTone =
   | 'accent'
   | 'success'
   | 'warning'
-  | 'error'
+  | 'danger'
   | 'info';
 
 type TextTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'div';

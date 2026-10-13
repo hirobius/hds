@@ -18,7 +18,7 @@ const EXPECTED: Array<[TextTone, string]> = [
   ['accent', '--semantic-accent-content'],
   ['success', '--semantic-color-feedback-success'],
   ['warning', '--semantic-color-feedback-warning'],
-  ['error', '--semantic-color-feedback-error'],
+  ['danger', '--semantic-color-feedback-error'],
   ['info', '--semantic-color-feedback-info'],
 ];
 

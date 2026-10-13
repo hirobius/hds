@@ -642,7 +642,7 @@ Text — polymorphic typography primitive spanning the full HDS type ramp.
   - children: ReactNode
   - className: string
   - style: CSSProperties
-  - tone: 'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'erro…
+  - tone: 'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'dang…
   - variant: TextVariant
 
 ### Textarea
