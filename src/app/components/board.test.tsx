@@ -95,18 +95,35 @@ describe('Board', () => {
     expect((container.firstElementChild as HTMLElement).getAttribute('data-tone')).toBe('neutral');
   });
 
-  it('lays columns on a wrapping grid with a min width, so a narrow container stacks them in DOM order', () => {
+  // jsdom has no layout engine and does not evaluate container queries, so these
+  // assert the classes that produce the layout (Tailwind compiles each to a rule),
+  // not the rendered result. A real check of stacking below tablet and a
+  // side-by-side scroll above it needs a browser (the docs site / Chromatic).
+  it('stacks one column in DOM order below tablet, side by side from tablet up', () => {
     const { container } = renderBoard();
-    const board = container.querySelector('[data-hds-grid]') as HTMLElement;
-    expect(board.style.gridTemplateColumns).toBe('repeat(auto-fit, minmax(min(16rem, 100%), 1fr))');
+    const root = container.querySelector('[data-hds-component="Board"]') as HTMLElement;
+    const track = root.querySelector('[data-hds-board-track]') as HTMLElement;
+    const root_ = root.className.split(/\s+/);
+    const tr = track.className.split(/\s+/);
+    // The Board is the query container, so a Board in a panel stacks by its own width.
+    expect(root_).toContain('@container');
+    // Below tablet: a single column track.
+    expect(tr).toContain('grid');
+    expect(tr).toContain('grid-cols-1');
+    // At tablet (48rem = 768px, hds.breakpoints.md) and up: columns flow sideways at a floor width.
+    expect(tr).toContain('@3xl:grid-flow-col');
+    expect(tr).toContain('@3xl:auto-cols-[minmax(16rem,1fr)]');
+    // Overflow scrolls inside the Board instead of wrapping, so no column is orphaned.
+    expect(root_).toContain('overflow-x-auto');
+    expect(tr.some((c) => c.includes('flex-wrap') || c.includes('auto-fit'))).toBe(false);
+    expect(track.style.gridTemplateColumns).toBe('');
     // Stacked order is DOM order: no CSS order, no row-reverse, no explicit placement.
-    for (const el of board.querySelectorAll<HTMLElement>('*')) {
+    for (const el of track.querySelectorAll<HTMLElement>('*')) {
       expect(el.style.order).toBe('');
       expect(el.style.gridColumnStart).toBe('');
       expect(el.style.gridRowStart).toBe('');
     }
-    expect(board.style.direction).toBe('');
-    const titles = within(board)
+    const titles = within(track)
       .getAllByRole('heading')
       .map((h) => h.textContent);
     expect(titles[0]).toContain('On fire');

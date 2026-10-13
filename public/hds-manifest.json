@@ -7741,7 +7741,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/board.tsx",
-      "description": "A row of status columns that wraps, in order, as the container narrows. Read-only: it has no drag handlers.",
+      "description": "Status columns that sit side by side from tablet width and stack in order, first column on top, below it. Read-only: it has no drag handlers.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7782,7 +7782,7 @@
           }
         ]
       },
-      "aiRules": "Put Card or Card.Row children inside BoardColumn and keep click and link handling on those children: Board owns layout only. Do NOT add drag and drop; Board is read-only. Do NOT wrap a BoardColumn in a Card or Surface (columns are open bands, not outlined cards). List columns in priority order: when the container is narrow they stack top to bottom in that same order."
+      "aiRules": "Put Card or Card.Row children inside BoardColumn and keep click and link handling on those children: Board owns layout only. Do NOT add drag and drop; Board is read-only. Do NOT wrap a BoardColumn in a Card or Surface (columns are open bands, not outlined cards). List columns in priority order: when the container is below tablet width they stack top to bottom in that same order."
     },
     "BoardColumn": {
       "category": "Layout",

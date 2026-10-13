@@ -8,16 +8,21 @@
 
 import * as React from 'react';
 import { cn } from '../../lib/utils';
-import { Grid } from './grid';
 import { VisuallyHidden } from './visually-hidden';
 
 /**
- * The narrowest a column gets. Grid's auto-fit wraps at this width, capped at the
- * container, so a narrow container (a phone, a side panel) gets one full-width
- * column and the rest stack beneath it in DOM order. The same rule sits in the
- * container, not the viewport, so a Board in a sidebar stacks too.
+ * Layout, in the Board's own width (a container query), not the viewport, so a
+ * Board in a side panel stacks too.
+ * - Below tablet (`@3xl` = 48rem = 768px = `hds.breakpoints.md`): one column, the
+ *   columns stack in DOM order.
+ * - From tablet up: columns flow sideways, each at least 16rem, filling the row.
+ *   Past that width the track scrolls horizontally inside the Board; it never
+ *   wraps, so no column is orphaned on a second row.
  */
-const COLUMN_MIN_WIDTH = '16rem';
+const ROOT_CLASS = '@container overflow-x-auto';
+// arbitrary-ok: the 16rem column floor has no spacing token; it is the one width the Board owns, and the variant is a container query that tokens cannot express.
+const TRACK_CLASS =
+  'grid grid-cols-1 gap-[var(--semantic-space-layout-inset)] @3xl:grid-flow-col @3xl:auto-cols-[minmax(16rem,1fr)]';
 
 const HEADING_CLASS =
   'm-0 flex items-center gap-[var(--semantic-space-scale-xs)] border-b border-border pb-[var(--semantic-space-scale-xs)] hds-type-ui text-foreground';
@@ -58,7 +63,11 @@ export interface BoardColumnProps extends Omit<
 > {
   /** Column heading, for example "On fire". */
   title: React.ReactNode;
-  /** Number of items in the column, shown and announced. Defaults to the number of children. */
+  /**
+   * Number of items in the column, shown and announced. Defaults to the number of
+   * direct children, so a wrapper element (a `<ul>` or `<div>`) counts
+   * as 1. Pass `count` explicitly whenever the items are not direct children.
+   */
   count?: number;
   /** Status colour of the column's dot, from the feedback vocabulary. Defaults to neutral. */
   tone?: BoardColumnTone;
@@ -67,24 +76,30 @@ export interface BoardColumnProps extends Omit<
 }
 
 /**
- * A row of status columns that wraps, in order, as the container narrows.
+ * Status columns that sit side by side from tablet width and stack in order, first column on top, below it.
  * Read-only: it has no drag handlers.
  * @usage Show work grouped by status as side-by-side columns, each with a title, a count and a tone, such as leads by pipeline stage.
  * @whenNot Rows of columns and cells that sort or filter, or a board people rearrange by dragging.
  * @useInstead Table rows of data with sortable columns
  * @useInstead Grid a plain responsive layout with no status columns
- * @ai-intent Solves "group cards by status" with a heading, count and tone per column on a wrapping grid, so agents do not hand-roll a kanban with flex and media queries.
- * @ai-rules Put Card or Card.Row children inside BoardColumn and keep click and link handling on those children: Board owns layout only. Do NOT add drag and drop; Board is read-only. Do NOT wrap a BoardColumn in a Card or Surface (columns are open bands, not outlined cards). List columns in priority order: when the container is narrow they stack top to bottom in that same order.
+ * @ai-intent Solves "group cards by status" with a heading, count and tone per column on a stacking-then-scrolling grid, so agents do not hand-roll a kanban with flex and media queries.
+ * @ai-rules Put Card or Card.Row children inside BoardColumn and keep click and link handling on those children: Board owns layout only. Do NOT add drag and drop; Board is read-only. Do NOT wrap a BoardColumn in a Card or Surface (columns are open bands, not outlined cards). List columns in priority order: when the container is below tablet width they stack top to bottom in that same order.
  */
 export const Board = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoardProps>(function Board(
   { children, className, ...rest },
   ref,
 ) {
   return (
-    <div role="group" {...rest} ref={ref} className={className} data-hds-component="Board">
-      <Grid layout="auto-fit" minItemWidth={COLUMN_MIN_WIDTH} gap="inset">
+    <div
+      role="group"
+      {...rest}
+      ref={ref}
+      className={cn(ROOT_CLASS, className)}
+      data-hds-component="Board"
+    >
+      <div className={TRACK_CLASS} data-hds-board-track="">
         {children}
-      </Grid>
+      </div>
     </div>
   );
 });
