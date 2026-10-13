@@ -40,6 +40,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { dirname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { gt, isVersion } from '../codemods/lib/semver.mjs';
 import { parseDeprecation } from './lib/jsdoc-contract.mjs';
 import { readJsExportEntries } from './lib/package-entries.mjs';
 
@@ -56,24 +57,10 @@ const fixtureFile = process.env.FIXTURE_FILE;
 // regardless of the real package version.
 const COMPARE_VERSION = isFixtureMode ? '1.0.0' : CURRENT_VERSION;
 
-/** Parse "X.Y.Z" → [X,Y,Z] ints; returns null if not a clean semver. */
-function parseSemver(v) {
-  const m = /^(\d+)\.(\d+)\.(\d+)/.exec(v.trim());
-  return m ? [Number(m[1]), Number(m[2]), Number(m[3])] : null;
-}
-/** a > b ? */
-function gt(a, b) {
-  for (let i = 0; i < 3; i++) {
-    if (a[i] !== b[i]) return a[i] > b[i];
-  }
-  return false;
-}
-
 const JSDOC_RE = /\/\*\*[\s\S]*?\*\//g;
 
 function findViolations(content) {
   const out = [];
-  const cur = parseSemver(COMPARE_VERSION);
   for (const block of content.match(JSDOC_RE) ?? []) {
     const deprecation = parseDeprecation(block);
     if (!deprecation) continue;
@@ -83,12 +70,11 @@ function findViolations(content) {
       );
       continue;
     }
-    const target = parseSemver(deprecation.removeIn);
-    if (!target) {
+    if (!isVersion(deprecation.removeIn)) {
       out.push(`@removeIn "${deprecation.removeIn}" is not a valid semver (expected X.Y.Z)`);
       continue;
     }
-    if (cur && !gt(target, cur)) {
+    if (isVersion(COMPARE_VERSION) && !gt(deprecation.removeIn, COMPARE_VERSION)) {
       out.push(
         `@removeIn ${deprecation.removeIn} is past-due (<= current ${COMPARE_VERSION}) — remove the API + ship its codemod`,
       );
