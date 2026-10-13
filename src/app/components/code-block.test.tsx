@@ -13,7 +13,7 @@ afterEach(cleanup);
 
 const css = (file: string) => readFileSync(resolve(__dirname, '../../styles', file), 'utf8');
 const tokenPx = (name: string) =>
-  Number(css('tokens.css').match(new RegExp(`${name}:\\s*(\\d+)px`))?.[1]);
+  Number(css('tokens.generated.css').match(new RegExp(`${name}:\\s*(\\d+)px`))?.[1]);
 
 describe('CodeBlock accessibility contract', () => {
   it('a11y:code-block.scroll-region - the code is a named, focusable region so keyboard users can scroll it', async () => {
