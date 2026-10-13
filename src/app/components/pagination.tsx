@@ -71,6 +71,9 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
     if (count <= 1) return null;
     const tokens = paginationRange(page, count, siblingCount);
     const go = (next: number) => onPageChange(Math.max(1, Math.min(count, next)));
+    // Below 640px the 44px touch targets leave room for about seven slots, so the sibling pages step aside
+    // (kept at sm and up) and the first, current and last pages stay: no wrapped second row (item 15).
+    const compact = new Set(paginationRange(page, count, 0));
 
     return (
       <nav ref={ref} aria-label={label} className={cn('w-full', className)} {...props}>
@@ -96,7 +99,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
                 …
               </li>
             ) : (
-              <li key={token}>
+              <li key={token} className={compact.has(token) ? undefined : 'max-sm:hidden'}>
                 <Button
                   variant={token === page ? 'secondary' : 'tertiary'}
                   size="sm"

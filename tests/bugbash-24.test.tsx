@@ -19,6 +19,12 @@ import { useState } from 'react';
 import { Page } from '../src/app/components/page';
 import { Card } from '../src/app/components/card';
 import { Badge } from '../src/app/components/badge';
+import { Pagination } from '../src/app/components/pagination';
+import { Field } from '../src/app/components/field';
+import { Tag } from '../src/app/components/tag';
+import { Alert } from '../src/app/components/alert';
+import { Callout } from '../src/app/components/callout';
+import { InlineCode } from '../src/app/components/inline-code';
 import { Input } from '../src/app/components/input';
 import { Textarea } from '../src/app/components/textarea';
 import { Select } from '../src/app/components/select';
@@ -371,6 +377,64 @@ describe('FormField error reaches the control (items 13, 14, 19)', () => {
     );
     expect(screen.getByRole('combobox').textContent).toContain('Choose one');
   });
+});
+
+describe('Overflow (item 15) and shape (item 16)', () => {
+  it('Pagination hides sibling pages below sm and keeps first, current and last', () => {
+    render(<Pagination count={40} page={20} onPageChange={() => {}} />);
+    const li = (n: number) => screen.getByRole('button', { name: `Page ${n}` }).closest('li')!;
+    expect(li(19).className).toMatch(/max-sm:hidden/);
+    expect(li(21).className).toMatch(/max-sm:hidden/);
+    for (const n of [1, 20, 40]) expect(li(n).className).not.toMatch(/max-sm:hidden/);
+  });
+  it('Field values wrap long unbroken text', () => {
+    render(<Field label="URL" mono value="https://example.com/a/very/long/path" />);
+    expect(screen.getByText(/very\/long/).className).toMatch(/break-words/);
+    expect(screen.getByText(/very\/long/).className).toMatch(/min-w-0/);
+  });
+  it('Badge and Tag cannot be wider than their container', () => {
+    render(
+      <>
+        <Badge>b</Badge>
+        <Tag>t</Tag>
+      </>,
+    );
+    expect(screen.getByText('b').className).toMatch(/max-w-full/);
+    expect(screen.getByText('t').className).toMatch(/max-w-full/);
+  });
+  it('Alert and Callout share padding and the action radius (rounded-md follows role.radius)', () => {
+    const a = render(<Alert tone="info">x</Alert>).container.firstElementChild as HTMLElement;
+    const c = render(<Callout tone="info">x</Callout>).container.firstElementChild as HTMLElement;
+    for (const el of [a, c]) {
+      expect(el.className).toMatch(/p-\[var\(--semantic-space-surface-padding\)\]/);
+      expect(el.className).toMatch(/\brounded-md\b/);
+      expect(el.className).not.toMatch(/primitive-radius-4/);
+    }
+  });
+  it('Badge, CodeBlock use the tenant-following radius, not a fixed value', () => {
+    expect(render(<Badge>b</Badge>).container.firstElementChild!.className).toMatch(
+      /\brounded-md\b/,
+    );
+    expect(src('code-block.tsx')).not.toMatch(/rounded-\[var\(--semantic-radius-action\)\]/);
+  });
+});
+
+describe('InlineCode copyable (item 20)', () => {
+  it('the copy button stays out of the line box: the wrapper is one line tall', () => {
+    const { container } = render(<InlineCode copyable>abc</InlineCode>);
+    expect((container.firstElementChild as HTMLElement).getAttribute('style')).toMatch(
+      /block-size:\s*1lh/,
+    );
+  });
+});
+
+describe('No hidden dependency on the hand-written text utilities (item 21)', () => {
+  it.each(['toggle', 'checkbox', 'error-pattern', 'table', 'slider', 'disclosure', 'progress'])(
+    '%s.tsx does not rely on utilities.css for text-primary or text-secondary',
+    (name) => {
+      expect(src(`${name}.tsx`)).not.toMatch(/(^|[\s"'`])text-(primary|secondary)(?![\w-])/m);
+    },
+  );
 });
 void fireEvent;
 void Radio;

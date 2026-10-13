@@ -231,7 +231,7 @@ export function Table({
             <div className="flex items-center justify-between">
               <div
                 id={hasCaption ? captionId : undefined}
-                className="m-0 text-primary"
+                className="m-0 text-foreground"
                 style={hds.typeStyles.ui}
               >
                 {caption}
@@ -240,7 +240,7 @@ export function Table({
             </div>
           ) : null}
           {description ? (
-            <div className="text-secondary" style={hds.typeStyles.ui}>
+            <div className="text-muted-foreground" style={hds.typeStyles.ui}>
               {description}
             </div>
           ) : null}
