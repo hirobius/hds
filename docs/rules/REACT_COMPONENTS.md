@@ -213,10 +213,10 @@ A block that carries `@deprecated <notice>` also gives the spec `deprecated` (th
 
 ```tsx
 /**
- * Tile — a padded status block.
- * @deprecated Use StatusTile; the props are the same.
+ * LegacyWidget — a padded status block.
+ * @deprecated Use Widget; the props are the same.
  * @removeIn 1.0.0
- * @useInstead StatusTile
+ * @useInstead Widget
  */
 ```
 

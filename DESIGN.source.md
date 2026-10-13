@@ -85,6 +85,8 @@ Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the n
 <!-- auto:start:components -->
 <!-- auto:end:components -->
 
+When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, and HDS tokens and rules always win.
+
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
 Every HDS card surface must conform to this anatomy exactly. No creative interpretation is permitted on any of these properties.
