@@ -15,38 +15,9 @@
  */
 
 import { readModes, modeValue } from './token-modes.mjs';
+import { walkTokens } from './token-tree.mjs';
 
 // ── Token graph ──────────────────────────────────────────────────────────────
-// build-tokens.mjs exports the same walker, but importing it reads
-// public/hds-manifest.json at module load, which would make this module impure.
-const DTCG_KEYS = new Set([
-  '$type',
-  '$value',
-  '$description',
-  '$extensions',
-  '$schema',
-  '$deprecated',
-]);
-
-function* walkTokens(node, path = [], inheritedType = null) {
-  if (!node || typeof node !== 'object') return;
-  const type = node.$type || inheritedType;
-  if ('$value' in node) {
-    yield {
-      path,
-      type,
-      value: node.$value,
-      extensions: node.$extensions,
-      description: node.$description,
-      deprecated: node.$deprecated,
-    };
-    return;
-  }
-  for (const key of Object.keys(node)) {
-    if (DTCG_KEYS.has(key)) continue;
-    yield* walkTokens(node[key], [...path, key], type);
-  }
-}
 
 const isAlias = (v) => typeof v === 'string' && v.startsWith('{') && v.endsWith('}');
 const aliasPath = (v) => v.slice(1, -1);
