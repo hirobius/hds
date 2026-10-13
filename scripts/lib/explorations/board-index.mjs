@@ -252,7 +252,7 @@ const DECISION_HOOK = `/* === DECISION HOOK ====================================
    It is a no-op by default. To store decisions (Artifact data, one document per
    gap key), replace the body below and return a promise that resolves to true
    once the decision is stored, or rejects with an Error that says why it was not.
-   For any other return value the page says "Not stored".
+   For any other value (even a truthy one) the page says "Not stored".
 
    To show stored decisions when the index opens, read them back and call
    hdsIndex.setDecisions({ "<gapKey>": "accept" | "reject", ... }).
@@ -299,7 +299,7 @@ const INDEX_SCRIPT = `(function () {
         try { result = window.recordGapDecision(key, next || 'clear'); } catch (e) { result = Promise.reject(e); }
         Promise.resolve(result).then(
           function (ok) {
-            if (ok === undefined || ok === null || ok === false) say('Noted on this page only. Not stored: the storage hook is not wired yet.', 'warn');
+            if (ok !== true) say('Noted on this page only. Not stored: the storage hook did not confirm a save (it is a no-op until wired).', 'warn');
             else say('Saved.', 'ok');
           },
           function (err) {
