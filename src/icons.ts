@@ -31,6 +31,7 @@ export {
   ArrowRight,
   ArrowUp,
   ArrowDown,
+  ArrowUpRight,
   ExternalLink,
   Settings,
   Info,
@@ -60,5 +61,10 @@ export {
   Clock,
   FileText,
   Image,
+  Images,
+  Phone,
+  Users,
+  Briefcase,
+  Wrench,
 } from 'lucide-react';
 export type { LucideIcon } from 'lucide-react';

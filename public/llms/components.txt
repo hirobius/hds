@@ -115,6 +115,7 @@ Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback f
 ### Card
 Tagged per-export, not on the file block: this module exports eight components and a file-level @figma would hand all eight this one node.
   - as: ElementType<any, keyof IntrinsicElements>
+  - asChild: boolean = false
   - bordered: boolean = false
   - gap: GapOption = tight
   - noPadding: boolean = false
@@ -434,6 +435,7 @@ Page — standard page shell. Wraps page content in Container (width constraint)
 Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `…
   - actions: ReactNode
   - breadcrumb: ReactNode
+  - description: ReactNode
   - level: PageHeaderLevel = 1
   - status: ReactNode
   - title: ReactNode

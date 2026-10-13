@@ -21,11 +21,23 @@ describe('PageHeader', () => {
     expect(screen.getByRole('button', { name: 'Edit' })).not.toBeNull();
   });
 
+  it('renders a one-line description under the title', () => {
+    const { container } = render(
+      <PageHeader title="Pitch" description="Businesses with a site built and ready to show." />,
+    );
+    const description = container.querySelector('[data-slot="description"]');
+    expect(description?.textContent).toBe('Businesses with a site built and ready to show.');
+    const heading = screen.getByRole('heading', { name: 'Pitch' });
+    // After the title in reading order, and not part of the heading's name.
+    expect(heading.compareDocumentPosition(description!)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+
   it('omits the empty slots', () => {
     const { container } = render(<PageHeader title="Only a title" />);
     expect(container.querySelector('[data-slot="breadcrumb"]')).toBeNull();
     expect(container.querySelector('[data-slot="status"]')).toBeNull();
     expect(container.querySelector('[data-slot="actions"]')).toBeNull();
+    expect(container.querySelector('[data-slot="description"]')).toBeNull();
   });
 
   it('uses the heading2 font size at every level; level only changes the element', () => {

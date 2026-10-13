@@ -14,7 +14,7 @@
     "./icons": "src/icons.ts"
   },
   "version": "0.24.1",
-  "generatedAt": "2026-10-12",
+  "generatedAt": "2026-10-13",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -246,8 +246,10 @@
       "ArrowLeft",
       "ArrowRight",
       "ArrowUp",
+      "ArrowUpRight",
       "Bell",
       "Bookmark",
+      "Briefcase",
       "Calendar",
       "Check",
       "ChevronDown",
@@ -270,6 +272,7 @@
       "Heart",
       "House",
       "Image",
+      "Images",
       "Info",
       "Link",
       "Lock",
@@ -280,6 +283,7 @@
       "Menu",
       "Minus",
       "Pencil",
+      "Phone",
       "Plus",
       "RefreshCw",
       "Save",
@@ -291,6 +295,8 @@
       "TriangleAlert",
       "Upload",
       "User",
+      "Users",
+      "Wrench",
       "X"
     ]
   }

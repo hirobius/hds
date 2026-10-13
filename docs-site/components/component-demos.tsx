@@ -56,7 +56,7 @@ import {
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
-import { Copy, Search, Star } from '@hirobius/design-system/icons';
+import { ArrowRight, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
 import {
   AssetImg,
   CodeBlock,
@@ -296,18 +296,35 @@ function BreadcrumbDemo() {
 
 function CardDemo() {
   return (
-    <Card padding="none" style={{ maxWidth: 360 }}>
-      <Card.Header>
-        <Card.Title>Design tokens</Card.Title>
-        <Card.Description>Semantic color and spacing for every product.</Card.Description>
-      </Card.Header>
-      <Card.Body>389 variables across light and dark.</Card.Body>
-      <Card.Footer>
-        <Button variant="secondary" size="sm">
-          Browse
-        </Button>
-      </Card.Footer>
-    </Card>
+    <Stack direction="row" gap="normal" wrap="wrap" align="start">
+      <Card padding="none" style={{ maxWidth: 360 }}>
+        <Card.Header>
+          <Card.Title>Design tokens</Card.Title>
+          <Card.Description>Semantic color and spacing for every product.</Card.Description>
+        </Card.Header>
+        <Card.Body>389 variables across light and dark.</Card.Body>
+        <Card.Footer>
+          <Button variant="secondary" size="sm">
+            Browse
+          </Button>
+        </Card.Footer>
+      </Card>
+      {/* asChild: the whole card is one link, with the interactive hover. */}
+      <Card asChild padding="item" style={{ maxWidth: 240 }}>
+        <a href="#card">
+          <Stack direction="row" gap="tight" justify="space-between" align="center">
+            <Users size={18} aria-hidden="true" />
+            <ArrowRight size={14} aria-hidden="true" />
+          </Stack>
+          <Text variant="titleSm" as="span">
+            Leads
+          </Text>
+          <Text variant="ui" as="span" className="text-muted-foreground">
+            Find businesses and build sites
+          </Text>
+        </a>
+      </Card>
+    </Stack>
   );
 }
 
@@ -622,6 +639,7 @@ function PageHeaderDemo() {
       level={2}
       breadcrumb={<Breadcrumb items={[{ label: 'Clients', href: '#' }, { label: 'Acme Co' }]} />}
       title="Acme Co"
+      description="Brand refresh and the spring campaign site."
       status={<Badge tone="success">Active</Badge>}
       actions={
         <>
