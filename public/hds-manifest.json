@@ -3335,12 +3335,17 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/data-table-section.tsx"
+        "src/app/components/data-table-section.tsx",
+        "src/app/components/empty-state.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "action": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "className": {
           "type": "string",
           "optional": true
@@ -3361,7 +3366,7 @@
       "a11yRules": [],
       "docsPage": "/docs/components/empty-state",
       "usage": {
-        "when": "Say that a list, grid or section has no data yet, with a title and an optional description.",
+        "when": "Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step.",
         "whenNot": "Content that is still loading, or a full-page error.",
         "useInstead": [
           {
