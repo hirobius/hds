@@ -354,6 +354,16 @@ describe('buildIndex: accepting or rejecting a gap', () => {
     expect(text(doc.querySelector('#decision-status'))).toMatch(/not stored/i);
   });
 
+  it('claims a decision is stored only when the hook resolves to exactly true', async () => {
+    for (const value of [{ id: 'gaps/band-section' }, 'ok', 1]) {
+      const { doc, win } = open(buildIndex({ runDirs: [twoScreens()] }).html);
+      win.recordGapDecision = () => Promise.resolve(value);
+      doc.querySelector('[data-gap-row="band-section"] [data-decide="accept"]').click();
+      await new Promise((r) => win.setTimeout(r, 0));
+      expect(text(doc.querySelector('#decision-status')), String(value)).toMatch(/not stored/i);
+    }
+  });
+
   it('shows stored decisions when the page is told about them', () => {
     const { doc, win } = open(buildIndex({ runDirs: [twoScreens()] }).html);
     win.hdsIndex.setDecisions({ 'band-section': 'accept', 'label-value-lockup': 'reject' });

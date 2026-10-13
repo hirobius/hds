@@ -458,6 +458,17 @@ describe('the page behavior in a browser', () => {
       expect(text(doc.querySelector('#pick-status'))).not.toMatch(/\bsaved\b/i);
     });
 
+    it('claims a save only when the hook resolves to exactly true', async () => {
+      for (const value of [{ id: 'picks/standing' }, 'ok', 1]) {
+        const { doc, win } = open(board().html);
+        win.recordPick = () => Promise.resolve(value);
+        doc.querySelector('input[name="pick"][value="A"]').click();
+        doc.querySelector('#pick-save').click();
+        await new Promise((r) => win.setTimeout(r, 0));
+        expect(text(doc.querySelector('#pick-status')), String(value)).toMatch(/not stored/i);
+      }
+    });
+
     it('reports a failed save instead of claiming one', async () => {
       const { doc, win } = open(board().html);
       win.recordPick = () => Promise.reject(new Error('quota exceeded'));
