@@ -174,6 +174,17 @@ interface AlertDialogComponent extends React.FC<
  * @whenNot A modal that collects input or shows content, or a confirmation after the action is done.
  * @useInstead Dialog a modal with a form or other content
  * @useInstead ToastProvider a brief confirmation after the action
+ * @a11y component required a11y:alertdialog.open-keys Enter and Space on the trigger open the alert dialog.
+ * @a11y component required a11y:alertdialog.trigger-expanded The trigger exposes aria-expanded, false while closed and true while open.
+ * @a11y component required a11y:alertdialog.trigger-controls The trigger points aria-controls at the open alert dialog.
+ * @a11y component required a11y:alertdialog.initial-focus-cancel Focus lands on Cancel, the least destructive action, when it opens.
+ * @a11y component required a11y:alertdialog.focus-trapped Tab and Shift+Tab stay inside the open alert dialog.
+ * @a11y component required a11y:alertdialog.escape-returns-focus Escape closes the alert dialog and returns focus to the trigger.
+ * @a11y component required a11y:alertdialog.no-outside-dismiss A click outside does not dismiss it; the person must choose Cancel or Action.
+ * @a11y component required a11y:alertdialog.named-and-described It has role=alertdialog, named by the title and described by the description.
+ * @a11y component required a11y:alertdialog.actions-named Cancel and Action are named buttons.
+ * @a11y consumer required Render an AlertDialog.Title and AlertDialog.Description; they name and describe the dialog.
+ * @a11y consumer required Name the Action by its outcome ("Delete project"), not "OK" or "Yes".
  * @public
  */
 export const AlertDialog: AlertDialogComponent = /* @__PURE__ */ Object.assign(AlertDialogRoot, {

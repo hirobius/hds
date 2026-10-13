@@ -423,8 +423,27 @@
       ],
       "a11yRules": [
         {
-          "rule": "role=alert is set by the component — do not override",
-          "required": false
+          "rule": "Danger and warning use role=alert (assertive); info and success use role=status.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alert.tone-roles"
+        },
+        {
+          "rule": "A rendered alert reads its role, then its title and message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alert.read-order"
+        },
+        {
+          "rule": "An alert inserted after load is announced assertively.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alert.live-insert"
+        },
+        {
+          "rule": "Mount an Alert when the condition appears; one already on the page at load is read in order, not announced.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [
@@ -2164,12 +2183,45 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Column headers must use <th> with scope=\"col\", row headers with scope=\"row\"",
-          "required": true
+          "rule": "The grid is exposed as a table with column headers.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.table-role"
         },
         {
-          "rule": "Table must have caption or aria-label describing its contents",
-          "required": false
+          "rule": "A sortable column header reports aria-sort none, ascending or descending.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.aria-sort"
+        },
+        {
+          "rule": "A screen reader reads the sorted column header with its sort direction.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.sorted-header"
+        },
+        {
+          "rule": "The sort control is a button named by the column label.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.sort-button-named"
+        },
+        {
+          "rule": "The sort button activates with Enter and Space.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.sort-keyboard"
+        },
+        {
+          "rule": "The scroll region is a named tab stop so keyboard users can scroll it (1.4.10).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.scroll-region-focusable"
+        },
+        {
+          "rule": "Name the table with a caption or aria-labelledby when more than one is on the screen.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [],
@@ -2920,12 +2972,73 @@
       ],
       "a11yRules": [
         {
-          "rule": "Must have an accessible name via Dialog.Title or aria-label",
-          "required": true
+          "rule": "Enter and Space on the trigger open the dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.open-keys"
         },
         {
-          "rule": "Description should be associated via Dialog.Description when present",
-          "required": false
+          "rule": "The trigger announces a dialog popup (aria-haspopup).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.trigger-haspopup"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.trigger-controls"
+        },
+        {
+          "rule": "Focus moves inside the dialog when it opens.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.initial-focus"
+        },
+        {
+          "rule": "Tab and Shift+Tab stay inside the open modal dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.focus-trapped"
+        },
+        {
+          "rule": "Escape closes the dialog and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.escape-returns-focus"
+        },
+        {
+          "rule": "The dialog is named by Dialog.Title and described by Dialog.Description.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.named-by-title"
+        },
+        {
+          "rule": "The built-in close button is named \"Close\".",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.close-named"
+        },
+        {
+          "rule": "Render a Dialog.Title in every Dialog.Content; it is the dialog's accessible name.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Render a Dialog.Description, or pass aria-describedby={undefined} on Dialog.Content when there is none.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Give an icon-only Dialog.Trigger or custom Dialog.Close an aria-label.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "compoundMembers": [
@@ -4405,7 +4518,115 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter, Space and ArrowDown on the trigger open the listbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.open-keys"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open listbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.trigger-controls"
+        },
+        {
+          "rule": "Escape closes the listbox and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.escape-returns-focus"
+        },
+        {
+          "rule": "Tab does not move focus out of the open listbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.tab-contained"
+        },
+        {
+          "rule": "The selected option is highlighted and focused when the listbox opens.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.selected-highlighted"
+        },
+        {
+          "rule": "ArrowDown and ArrowUp move the highlight.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.arrow-keys"
+        },
+        {
+          "rule": "Home and End jump to the first and last option.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.home-end"
+        },
+        {
+          "rule": "Typing letters highlights the matching option.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.typeahead"
+        },
+        {
+          "rule": "Enter commits the highlighted option and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.commit-returns-focus"
+        },
+        {
+          "rule": "The trigger is a combobox named \"Label: value\".",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.trigger-name-with-value"
+        },
+        {
+          "rule": "The trigger keeps the field label in its name when showLabel is false.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.hidden-label-named"
+        },
+        {
+          "rule": "The open listbox is named by the field label.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.listbox-named"
+        },
+        {
+          "rule": "Each option reports whether it is selected, its position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.option-state-position"
+        },
+        {
+          "rule": "The visible label is a real label wired to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.label-wired"
+        },
+        {
+          "rule": "Inside FormField the field label names the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.form-field-label"
+        },
+        {
+          "rule": "Inside FormField an error sets aria-invalid and describes the trigger by the message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.form-field-error"
+        },
+        {
+          "rule": "Always pass label, even with showLabel={false}; it names the trigger and the listbox.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -5056,7 +5277,60 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The title and description are announced through a role=status live region (4.1.3).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.live-region"
+        },
+        {
+          "rule": "The viewport is a region named \"Notifications\".",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.viewport-named"
+        },
+        {
+          "rule": "F8 moves focus to the notifications viewport.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.f8-focuses-viewport"
+        },
+        {
+          "rule": "The Dismiss button is named, reachable by Tab and closes the toast with Enter.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.dismiss-keyboard"
+        },
+        {
+          "rule": "The Dismiss button is at least 24px (2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.dismiss-target-size"
+        },
+        {
+          "rule": "The tone icon is aria-hidden; the title carries the meaning, never colour alone (1.4.1).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.tone-icon-decorative"
+        },
+        {
+          "rule": "The auto-dismiss timer pauses while the pointer or focus is on the viewport (2.2.1).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.pause-on-hover-focus"
+        },
+        {
+          "rule": "Keep a toast to a short confirmation; use Alert or Dialog for anything people must act on or re-read.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Set a duration long enough to read the message; the default is 5000 ms.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/guides/providers",
       "usage": {
         "when": "Confirm an action with a brief message that appears and dismisses itself, through useToast.",
@@ -5157,7 +5431,145 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter and Space on the trigger open the list.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.open-keys"
+        },
+        {
+          "rule": "The trigger is a combobox with a listbox popup that reports collapsed and expanded.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.trigger-state"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open list.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.trigger-controls"
+        },
+        {
+          "rule": "Focus moves to the search field when the list opens and Tab stays inside the list.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.focus-search-field"
+        },
+        {
+          "rule": "Escape closes the list and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.escape-returns-focus"
+        },
+        {
+          "rule": "The search field exposes the active option through aria-activedescendant; the options themselves stay out of the tab order.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.activedescendant"
+        },
+        {
+          "rule": "ArrowDown and ArrowUp move the active option and wrap at the ends.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.arrow-wrap"
+        },
+        {
+          "rule": "Arrow keys skip disabled options.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.skips-disabled"
+        },
+        {
+          "rule": "Typing filters the options and Enter commits the active one.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.filter-commit"
+        },
+        {
+          "rule": "The popover dialog is named by the field label, or the placeholder when there is none.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.popover-named"
+        },
+        {
+          "rule": "The listbox is named by the field label.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.listbox-named"
+        },
+        {
+          "rule": "Each option reports its position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.option-position"
+        },
+        {
+          "rule": "Options are outside the tab order; focus stays on the search field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.options-not-tabbable"
+        },
+        {
+          "rule": "The no-results message sits outside the listbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.no-results-outside-listbox"
+        },
+        {
+          "rule": "The match count is announced in a polite status as the list is filtered (4.1.3).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.result-count-announced"
+        },
+        {
+          "rule": "With multiple, Enter toggles the active option and keeps the list open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.multiple-enter-toggles"
+        },
+        {
+          "rule": "With multiple, Escape closes the list and keeps the selection.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.escape-keeps-selection"
+        },
+        {
+          "rule": "With multiple, each chip is a button named \"Remove <option>\".",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.chips-named"
+        },
+        {
+          "rule": "A chip removes its value from the keyboard and focus stays on the chips.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.chip-keyboard"
+        },
+        {
+          "rule": "Inside FormField the field label names the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.form-field-label"
+        },
+        {
+          "rule": "Inside FormField an error sets aria-invalid and describes the trigger by the message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.form-field-error"
+        },
+        {
+          "rule": "Pass label or aria-label; it names the trigger, the popover and the listbox.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/combobox",
       "usage": {
         "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
@@ -5800,7 +6212,72 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter and Space on the trigger open the alert dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.open-keys"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open alert dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.trigger-controls"
+        },
+        {
+          "rule": "Focus lands on Cancel, the least destructive action, when it opens.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.initial-focus-cancel"
+        },
+        {
+          "rule": "Tab and Shift+Tab stay inside the open alert dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.focus-trapped"
+        },
+        {
+          "rule": "Escape closes the alert dialog and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.escape-returns-focus"
+        },
+        {
+          "rule": "A click outside does not dismiss it; the person must choose Cancel or Action.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.no-outside-dismiss"
+        },
+        {
+          "rule": "It has role=alertdialog, named by the title and described by the description.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.named-and-described"
+        },
+        {
+          "rule": "Cancel and Action are named buttons.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.actions-named"
+        },
+        {
+          "rule": "Render an AlertDialog.Title and AlertDialog.Description; they name and describe the dialog.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Name the Action by its outcome (\"Delete project\"), not \"OK\" or \"Yes\".",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": null,
       "usage": {
         "when": "Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.",
@@ -6921,7 +7398,66 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The tooltip opens when the trigger takes keyboard focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.opens-on-focus"
+        },
+        {
+          "rule": "The bubble has role=tooltip.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.role"
+        },
+        {
+          "rule": "The trigger points aria-describedby at the bubble.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.describedby"
+        },
+        {
+          "rule": "Escape dismisses the tooltip and focus stays on the trigger (1.4.13 dismissible).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.escape-dismisses"
+        },
+        {
+          "rule": "Tab moves on to the next control and closes the tooltip.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.tab-moves-on"
+        },
+        {
+          "rule": "The pointer can move from the trigger onto the bubble without it closing (1.4.13 hoverable).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.hoverable"
+        },
+        {
+          "rule": "The tooltip stays open until focus leaves, Escape is pressed or the pointer leaves; no timer closes it (1.4.13 persistent).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.persistent"
+        },
+        {
+          "rule": "The bubble holds no tab stops.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.no-interactive-content"
+        },
+        {
+          "rule": "Make the Tooltip.Trigger focusable and named; wrap a non-focusable element in a button.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Never put essential information or interactive content only in a tooltip; touch has no hover.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/tooltip",
       "usage": {
         "when": "Name an icon-only control, or add a short hint that appears on hover and keyboard focus.",
@@ -7012,7 +7548,108 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter, Space and ArrowDown on the trigger open the menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.open-keys"
+        },
+        {
+          "rule": "The trigger announces a menu popup (aria-haspopup=menu).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.trigger-haspopup"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.trigger-controls"
+        },
+        {
+          "rule": "Escape closes the menu and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.escape-returns-focus"
+        },
+        {
+          "rule": "Tab does not move focus out of the open menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.tab-contained"
+        },
+        {
+          "rule": "ArrowDown and ArrowUp move the highlight and stop at the first and last item.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.arrow-keys"
+        },
+        {
+          "rule": "Home and End jump to the first and last item.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.home-end"
+        },
+        {
+          "rule": "Typing a letter highlights the next item that starts with it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.typeahead"
+        },
+        {
+          "rule": "Enter selects the highlighted item and closes the menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.enter-selects"
+        },
+        {
+          "rule": "Space selects the highlighted item and closes the menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.space-activates"
+        },
+        {
+          "rule": "The menu is named by its trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.named-by-trigger"
+        },
+        {
+          "rule": "Each item is a menuitem that reports its position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.item-position"
+        },
+        {
+          "rule": "Items render with menuitem semantics once open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.item-semantics"
+        },
+        {
+          "rule": "A disabled item is aria-disabled and arrow keys step over it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.disabled-skipped"
+        },
+        {
+          "rule": "Give an icon-only Menu.Trigger an aria-label.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Use Menu for actions; use links or Select for navigation and value choice.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "slots": [
         {
           "name": "trigger",
@@ -7124,7 +7761,66 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter and Space on the trigger open the popover.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.open-keys"
+        },
+        {
+          "rule": "The trigger announces a dialog popup (aria-haspopup=dialog).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.trigger-haspopup"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open content.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.trigger-controls"
+        },
+        {
+          "rule": "Escape closes the popover and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.escape-returns-focus"
+        },
+        {
+          "rule": "The open content is a role=dialog that takes the name the consumer gives it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.content-role-dialog"
+        },
+        {
+          "rule": "Tab cycles inside the open content instead of walking the page behind it (Radix default).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.tab-loop"
+        },
+        {
+          "rule": "The page behind stays reachable: no aria-hidden and no pointer-events lock.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.non-modal"
+        },
+        {
+          "rule": "Give Popover.Content an aria-label or aria-labelledby; the open dialog is otherwise unnamed.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Give an icon-only Popover.Trigger an aria-label.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/popover",
       "usage": {
         "when": "Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.",
@@ -7484,7 +8180,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The table and its scroll region are named after the section heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:data-table-section.named"
+        }
+      ],
       "docsPage": "/docs/patterns/data-table-section",
       "usage": {
         "when": "Put a heading and toolbar above a Table."
@@ -7546,7 +8249,37 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The section is a labelled region named by its heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:destructive-section.labelled"
+        },
+        {
+          "rule": "The first press opens a confirmation and never runs the action.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:destructive-section.first-press-safe"
+        },
+        {
+          "rule": "Cancel closes the confirmation, returns focus to the trigger and never runs the action.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:destructive-section.cancel-returns-focus"
+        },
+        {
+          "rule": "Confirm runs the action once and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:destructive-section.confirm-returns-focus"
+        },
+        {
+          "rule": "Name confirmLabel by its outcome (\"Archive client\"), not \"OK\".",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/patterns/destructive-section",
       "usage": {
         "when": "Put a dangerous action, such as delete, in its own section with a warning and a confirm step."

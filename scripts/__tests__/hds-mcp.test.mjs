@@ -166,10 +166,15 @@ describe('hds-mcp over stdio', () => {
   });
 
   it('get_component carries a11y rules, an untagged hand-kept rule as plain text', async () => {
-    const { data } = await callTool(server, 'get_component', { name: 'Dialog' });
+    const { data } = await callTool(server, 'get_component', { name: 'InlineLink' });
     expect(data.a11y).toEqual(
-      expect.arrayContaining([expect.stringMatching(/^Must have an accessible name/)]),
+      expect.arrayContaining([expect.stringMatching(/^Link text must be descriptive/)]),
     );
+  });
+
+  it('get_component serves a tagged component its a11y as "you:" lines first', async () => {
+    const { data } = await callTool(server, 'get_component', { name: 'Dialog' });
+    expect(data.a11y[0]).toMatch(/^you: Render a Dialog\.Title/);
   });
 
   it('get_component reports an unknown name as a tool error with suggestions', async () => {

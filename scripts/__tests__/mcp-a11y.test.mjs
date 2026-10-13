@@ -25,10 +25,10 @@ function catalogWith(rules) {
   mkdirSync(join(root, 'public'));
   mkdirSync(join(root, 'codemods'));
   writeFileSync(join(root, 'public/hds-manifest.json'), JSON.stringify(manifest));
-  writeFileSync(
-    join(root, 'src/app/data/component-api.json'),
-    JSON.stringify(read('src/app/data/component-api.json')),
-  );
+  // Menu carries real @a11y tags now, so the API copy must not hand them back.
+  const api = read('src/app/data/component-api.json');
+  api.components.Menu.a11yRules = rules;
+  writeFileSync(join(root, 'src/app/data/component-api.json'), JSON.stringify(api));
   writeFileSync(
     join(root, 'codemods/patterns-subpath.names.json'),
     JSON.stringify(read('codemods/patterns-subpath.names.json')),

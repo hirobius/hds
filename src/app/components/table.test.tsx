@@ -50,7 +50,7 @@ describe('Table — sortable columns', () => {
     expect(headerCell?.getAttribute('aria-sort')).toBe('none');
   });
 
-  it('sets aria-sort="ascending" when sortDirection is ascending', () => {
+  it('a11y:table.aria-sort - sets aria-sort="ascending" when sortDirection is ascending', () => {
     render(
       <Table columns={columnsWith({ sortable: true, sortDirection: 'ascending' })} rows={rows} />,
     );
