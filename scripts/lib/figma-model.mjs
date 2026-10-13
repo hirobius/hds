@@ -15,38 +15,9 @@
  */
 
 import { readModes, modeValue } from './token-modes.mjs';
+import { walkTokens } from './token-tree.mjs';
 
 // ── Token graph ──────────────────────────────────────────────────────────────
-// build-tokens.mjs exports the same walker, but importing it reads
-// public/hds-manifest.json at module load, which would make this module impure.
-const DTCG_KEYS = new Set([
-  '$type',
-  '$value',
-  '$description',
-  '$extensions',
-  '$schema',
-  '$deprecated',
-]);
-
-function* walkTokens(node, path = [], inheritedType = null) {
-  if (!node || typeof node !== 'object') return;
-  const type = node.$type || inheritedType;
-  if ('$value' in node) {
-    yield {
-      path,
-      type,
-      value: node.$value,
-      extensions: node.$extensions,
-      description: node.$description,
-      deprecated: node.$deprecated,
-    };
-    return;
-  }
-  for (const key of Object.keys(node)) {
-    if (DTCG_KEYS.has(key)) continue;
-    yield* walkTokens(node[key], [...path, key], type);
-  }
-}
 
 const isAlias = (v) => typeof v === 'string' && v.startsWith('{') && v.endsWith('}');
 const aliasPath = (v) => v.slice(1, -1);
@@ -408,7 +379,9 @@ const TYPOGRAPHY_VARIABLES = {
   letterSpacing: ['letter-spacing', 'dimension'],
   lineHeight: ['line-height', 'dimension'],
 };
-const TEXT_CASE = { none: 'ORIGINAL', uppercase: 'UPPER', lowercase: 'LOWER', capitalize: 'TITLE' };
+// No `uppercase` -> UPPER: the system never produces ALL CAPS (check-no-uppercase), so a
+// token asking for it fails the model build instead of reaching Figma.
+const TEXT_CASE = { none: 'ORIGINAL', lowercase: 'LOWER', capitalize: 'TITLE' };
 const FONT_STYLE_BY_WEIGHT = {
   100: 'Thin',
   200: 'ExtraLight',
@@ -497,7 +470,9 @@ function expandTypography(graph, token) {
   if (!fontStyle)
     throw new Error(`No Figma font style for weight ${weight} at ${at('fontWeight')}`);
   if (!textCase)
-    throw new Error(`No Figma text case for textTransform "${v.textTransform}" at ${path}`);
+    throw new Error(
+      `No Figma text case for textTransform "${v.textTransform}" at ${path} (uppercase is not allowed: sentence case only)`,
+    );
 
   const textStyle = {
     name: token.path.slice(1).join('/'),

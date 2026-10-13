@@ -100,7 +100,15 @@ const LAYOUT_PROPS = [
   'left',
 ];
 
-const ALLOWED_TYPOGRAPHY_TOKENS = new Set(['display', 'title', 'body', 'ui', 'caption', 'mono']);
+const ALLOWED_TYPOGRAPHY_TOKENS = new Set([
+  'display',
+  'title',
+  'titleSm',
+  'body',
+  'ui',
+  'caption',
+  'mono',
+]);
 
 const DEPRECATED_TYPOGRAPHY_TOKENS = [
   'heading1',

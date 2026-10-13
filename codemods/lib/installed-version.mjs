@@ -17,6 +17,8 @@
  * copies included, oldest first: more than one means two copies of HDS.
  */
 
+import { compareVersions, isVersion } from './semver.mjs';
+
 export const HDS_PACKAGE = '@hirobius/design-system';
 
 // ── tiny YAML subset ─────────────────────────────────────────────────────────
@@ -78,23 +80,8 @@ function parseYamlMap(text) {
 
 // ── versions ─────────────────────────────────────────────────────────────────
 
-const SEMVER = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
-
-/** -1/0/1-signed difference of two semver versions; a pre-release sorts before its release. */
-export function compareVersions(a, b) {
-  const [coreA, preA = ''] = a.split('-');
-  const [coreB, preB = ''] = b.split('-');
-  const na = coreA.split('.').map(Number);
-  const nb = coreB.split('.').map(Number);
-  for (let i = 0; i < 3; i += 1) if (na[i] !== nb[i]) return na[i] - nb[i];
-  if (preA === preB) return 0;
-  if (!preA) return 1;
-  if (!preB) return -1;
-  return preA < preB ? -1 : 1;
-}
-
 function distinctSorted(list) {
-  return [...new Set(list.filter((v) => v && SEMVER.test(v)))].sort(compareVersions);
+  return [...new Set(list.filter(isVersion))].sort(compareVersions);
 }
 
 // ── pnpm (lockfile v6 and v9) ────────────────────────────────────────────────
@@ -107,7 +94,7 @@ function pnpmVersion(ref, name) {
   let v = ref.replace(/^\//, '');
   if (v.startsWith(`${name}@`)) v = v.slice(name.length + 1);
   v = v.replace(/\(.*$/, '').replace(/_.*$/, '');
-  return SEMVER.test(v) ? v : null;
+  return isVersion(v) ? v : null;
 }
 
 function parsePnpm(text, name) {

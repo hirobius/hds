@@ -296,18 +296,27 @@ function BreadcrumbDemo() {
 
 function CardDemo() {
   return (
-    <Card padding="none" style={{ maxWidth: 360 }}>
-      <Card.Header>
-        <Card.Title>Design tokens</Card.Title>
-        <Card.Description>Semantic color and spacing for every product.</Card.Description>
-      </Card.Header>
-      <Card.Body>389 variables across light and dark.</Card.Body>
-      <Card.Footer>
-        <Button variant="secondary" size="sm">
-          Browse
-        </Button>
-      </Card.Footer>
-    </Card>
+    <Stack gap="normal" style={{ maxWidth: 360 }}>
+      <Card padding="none">
+        <Card.Header>
+          <Card.Title>Design tokens</Card.Title>
+          <Card.Description>Semantic color and spacing for every product.</Card.Description>
+        </Card.Header>
+        <Card.Body>389 variables across light and dark.</Card.Body>
+        <Card.Footer>
+          <Button variant="secondary" size="sm">
+            Browse
+          </Button>
+        </Card.Footer>
+      </Card>
+      {/* The row slot: a titled status with notes and a trailing badge (hds#622). */}
+      <Card padding="item" className="border-0">
+        <Card.Row trailing={<Badge tone="success">Synced</Badge>}>
+          <Card.RowTitle>Figma sync</Card.RowTitle>
+          <Card.RowNote>Last run 2 hours ago</Card.RowNote>
+        </Card.Row>
+      </Card>
+    </Stack>
   );
 }
 

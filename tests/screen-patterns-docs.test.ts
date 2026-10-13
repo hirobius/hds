@@ -65,12 +65,19 @@ describe('DESIGN.md screen rules', () => {
     expect(header, 'no table header row containing "Use instead"').toBeDefined();
   });
 
-  it('has a row for Stat, Card.Metric, StatusTile and MetricTiles', () => {
+  it('has a row for Stat, Card.Metric, Card.Row and MetricTiles', () => {
     const rows = design.split('\n').filter((l) => l.startsWith('|'));
-    for (const name of ['Stat', 'Card.Metric', 'StatusTile', 'MetricTiles']) {
+    for (const name of ['Stat', 'Card.Metric', 'Card.Row', 'MetricTiles']) {
       const found = rows.some((l) => l.split('|')[1]?.includes(`\`${name}\``));
       expect(found, `no table row led by \`${name}\``).toBe(true);
     }
+  });
+
+  // hds#622: StatusTile folded into Card.Row. The row names it, so an agent
+  // looking for StatusTile lands on the survivor.
+  it('leads the status row with Card.Row and names the deprecated StatusTile in it', () => {
+    const row = design.split('\n').find((l) => l.startsWith('| `Card.Row`'));
+    expect(row, 'no table row led by `Card.Row`').toContain('`StatusTile`');
   });
 
   it('has a row for Card, Surface, DestructiveSection and DataTableSection', () => {

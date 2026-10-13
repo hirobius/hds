@@ -8,7 +8,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { buildRadius, buildComponents } from '../build-design-md.mjs';
+import { buildRadius, buildComponents, renderDesignMd } from '../build-design-md.mjs';
 import { buildAgentConstraints } from '../build-handoff.mjs';
 
 const raw = JSON.parse(readFileSync(resolve(__dirname, '../../hirobius.tokens.json'), 'utf8'));
@@ -57,5 +57,23 @@ describe('buildAgentConstraints', () => {
     expect(line).toContain('`8px` for interactive controls');
     expect(line).toContain('`12px` containers');
     expect(line).not.toContain('`4px`');
+  });
+});
+
+describe('design inspiration source (hds#632)', () => {
+  const lines = renderDesignMd(resolve(__dirname, '../..'))
+    .split('\n')
+    .filter((l) => l.includes('21st.dev'));
+
+  it('names 21st.dev on one line as the first place to look for visual inspiration', () => {
+    expect(lines).toHaveLength(1);
+    expect(lines[0]).toMatch(
+      /visual inspiration, look at \[21st\.dev\]\(https:\/\/21st\.dev\) first/,
+    );
+  });
+
+  it('says it is inspiration only and that HDS tokens and rules always win', () => {
+    expect(lines[0]).toMatch(/inspiration only/);
+    expect(lines[0]).toMatch(/HDS tokens and rules always win/);
   });
 });

@@ -33,8 +33,9 @@ describe('committed manifest', () => {
       .sort();
     // StatusDot was deprecated for Badge dot and removed in 0.21.0 (hds#465).
     expect(manifest.componentSpecs.StatusDot).toBeUndefined();
-    // Card.Metric, Stat, MetricTile and MetricTiles are deprecated, not removed.
-    expect(deprecated).toEqual(['CardMetric', 'MetricTile', 'MetricTiles', 'Stat']);
+    // Card.Metric, Stat, MetricTile, MetricTiles and StatusTile (hds#622: compose
+    // a Card with Card.Row) are deprecated, not removed.
+    expect(deprecated).toEqual(['CardMetric', 'MetricTile', 'MetricTiles', 'Stat', 'StatusTile']);
   });
 
   it('never carries removeIn or useInstead on a spec that is not deprecated', () => {

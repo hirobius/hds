@@ -1,15 +1,96 @@
 /**
- * semver — the little of semver the upgrade command needs (hds#452), Node
- * builtins only. compareVersions is installed-version.mjs's, so the lockfile
- * readers and the command order versions the same way.
+ * semver — the little of semver the upgrade tooling needs (hds#452, hds#642),
+ * Node builtins only (it imports nothing): this file ships in the npm package.
+ *
+ * It is the one place versions are parsed and ordered. The upgrade ledger, its
+ * compiler and gate, the deprecation gate and the shipped `upgrade` codemod all
+ * order releases through compareVersions, so a pre-release sorts the same way
+ * in each: semver.org precedence (§11).
+ *
+ *   compareVersions('0.21.0-next.2', '0.21.0-next.10')  // -1: numeric identifiers
+ *   compareVersions('0.21.0-next-1', '0.21.0-next-2')   // -1: one alphanumeric identifier
+ *   compareVersions('0.21.0-next.1', '0.21.0')          // -1: a release follows its pre-releases
+ *
+ * A version here is `X.Y.Z` or `X.Y.Z-<dot-separated identifiers>`; build
+ * metadata (`+build`) and partial versions are not versions.
  */
-import { compareVersions } from './installed-version.mjs';
 
-export { compareVersions };
+const VERSION = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/;
+const NUMERIC = /^\d+$/;
 
-const VERSION = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
+/**
+ * A version's parts, or null when `text` is not a version. Numeric pre-release
+ * identifiers come back as numbers, the rest as strings.
+ * @param {unknown} text
+ * @returns {{ major: number, minor: number, patch: number, prerelease: (string|number)[] } | null}
+ */
+export function parseVersion(text) {
+  const match = typeof text === 'string' ? VERSION.exec(text) : null;
+  if (!match) return null;
+  const [, major, minor, patch, pre] = match;
+  return {
+    major: Number(major),
+    minor: Number(minor),
+    patch: Number(patch),
+    prerelease:
+      pre === undefined ? [] : pre.split('.').map((id) => (NUMERIC.test(id) ? Number(id) : id)),
+  };
+}
 
-export const isVersion = (value) => typeof value === 'string' && VERSION.test(value);
+export const isVersion = (value) => parseVersion(value) !== null;
+
+const order = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+
+/** §11: numbers compare as numbers, text in ASCII order, and a number is lower than text. */
+function compareIdentifiers(a, b) {
+  if (typeof a === 'number' && typeof b === 'number') return order(a, b);
+  if (typeof a === 'number') return -1;
+  if (typeof b === 'number') return 1;
+  return order(a, b);
+}
+
+function need(text) {
+  const version = parseVersion(text);
+  if (version === null) {
+    throw new TypeError(
+      `Not a version: ${JSON.stringify(text)} (expected X.Y.Z or X.Y.Z-pre.release)`,
+    );
+  }
+  return version;
+}
+
+/**
+ * -1, 0 or 1 by semver.org precedence. A pre-release is lower than its own
+ * release (0.21.0-next.1 < 0.21.0); between pre-releases the identifiers
+ * compare one by one, and with all of them equal the longer set is higher.
+ * Throws a TypeError for anything that is not a version: ordering a guess
+ * would sort a bad value silently.
+ * @param {string} a
+ * @param {string} b
+ * @returns {-1 | 0 | 1}
+ */
+export function compareVersions(a, b) {
+  const x = need(a);
+  const y = need(b);
+  for (const part of ['major', 'minor', 'patch']) {
+    if (x[part] !== y[part]) return order(x[part], y[part]);
+  }
+  const xs = x.prerelease;
+  const ys = y.prerelease;
+  // A release (no identifiers) is higher than any pre-release of it.
+  if (xs.length === 0 || ys.length === 0) return order(ys.length, xs.length);
+  for (let i = 0; i < Math.min(xs.length, ys.length); i += 1) {
+    const result = compareIdentifiers(xs[i], ys[i]);
+    if (result !== 0) return result;
+  }
+  return order(xs.length, ys.length);
+}
+
+/** Whether `a` is after `b`. */
+export const gt = (a, b) => compareVersions(a, b) > 0;
+
+/** Whether `a` is `b` or after it. */
+export const gte = (a, b) => compareVersions(a, b) >= 0;
 
 /** One comparator: an optional operator and a full or partial version (`^0.16`, `0.16.0`). */
 const SIMPLE = /^(\^|~|>=|=)?\s*v?(\d+)(?:\.(\d+|x|\*))?(?:\.(\d+|x|\*))?(-[0-9A-Za-z.-]+)?$/;
