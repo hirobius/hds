@@ -142,13 +142,21 @@ describe('README "In use" section', () => {
     expect(snapshot.commit).toMatch(/^[0-9a-f]{40}$/);
   });
 
-  it('publishes the confirmed split: Ops is the only product app (hds#389, 2026-10-01)', () => {
+  it('publishes the confirmed split: ops and job-hunt are the product apps (2026-10-12)', () => {
     expect(snapshot.consumersConfirmed).toBe(true);
-    expect(snapshot.consumers.productApps).toBe(1);
+    expect(snapshot.consumers.productApps).toBe(2);
     expect(readme).toMatch(/^## In use$/m);
-    expect(readme).toMatch(/is the only product app that uses components/);
-    expect(readme).toMatch(/\| Product apps\s+\| 1 /);
+    expect(readme).toMatch(/is one of 2 product apps that use components/);
+    expect(readme).toMatch(/\| Product apps\s+\| 2 /);
     expect(readme).not.toMatch(/not yet confirmed/);
+    expect(readme).not.toMatch(/there is no second product app/);
+  });
+
+  it('declares every product app it counts', () => {
+    const { apps, productApps } = snapshot.consumers;
+    expect(apps.map((a) => a.id)).toEqual(['hirobius/ops', 'hirobius/job-hunt']);
+    expect(productApps).toBe(apps.length);
+    for (const a of apps) expect(a.label).toMatch(/^Internal /);
   });
 });
 
