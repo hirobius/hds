@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "EmptyState accepts a new optional action prop that renders under the description; existing title and description output is unchanged, so nothing to do unless you want the teaching variant."
+}
