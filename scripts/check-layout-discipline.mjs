@@ -62,14 +62,14 @@
  * Or:  pnpm check:layout-discipline
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, dirname, extname, basename, resolve, relative } from 'path';
+import { readFileSync } from 'fs';
+import { join, dirname, resolve, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { scanSources, suppressionFor, lineOf } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC = join(ROOT, 'src', 'app', 'components');
 const jsonMode = hasJsonFlag(process.argv);
 
 // Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
@@ -118,25 +118,6 @@ const LAYOUT_PROPS = new Set([
 ]);
 
 // ── File collector ─────────────────────────────────────────────────────────
-function isSkippedFile(fullPath) {
-  const base = basename(fullPath);
-  return /\.(test|spec)\.tsx?$/.test(base);
-}
-
-function collectFiles(dir, results = []) {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      if (entry === 'node_modules') continue;
-      collectFiles(full, results);
-    } else if (extname(entry) === '.tsx' || extname(entry) === '.ts') {
-      if (isSkippedFile(full)) continue;
-      results.push(full);
-    }
-  }
-  return results;
-}
-
 // ── Detection regexes (applied within a balanced style={{…}} block only) ─────
 // Matches: propName: '16px' or propName: "16px"
 const PX_STRING = /(\w+)\s*:\s*['"](-?\d+(?:\.\d+)?)px['"]/g;
@@ -179,10 +160,6 @@ function findStyleBlocks(content) {
   return blocks;
 }
 
-function lineNumberAt(content, index) {
-  return content.slice(0, index).split('\n').length;
-}
-
 function isTokenValue(fullLine) {
   return fullLine.includes('hds.') || fullLine.includes('var(--');
 }
@@ -213,16 +190,21 @@ function sxFix(prop) {
     : `Box sx={{ ${prop}: <token key> }}`;
 }
 
-function isSuppressed(lines, lineIdx) {
-  const same = lines[lineIdx] || '';
-  const prev = lineIdx > 0 ? lines[lineIdx - 1] : '';
-  return same.includes('layout-ok:') || prev.includes('layout-ok:');
-}
+const isSuppressed = suppressionFor('layout-ok:');
 
 // ── Scan ────────────────────────────────────────────────────────────────────
 const violations = [];
 
-const filesToScan = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : collectFiles(SRC);
+const filesToScan =
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : scanSources({
+        root: ROOT,
+        gate: 'check-layout-discipline',
+        roots: ['src/app/components'],
+        exts: ['.ts', '.tsx'],
+        skipDirs: ['node_modules'],
+      });
 
 for (const file of filesToScan) {
   const rel = relative(ROOT, file).replace(/\\/g, '/');
@@ -241,7 +223,7 @@ for (const file of filesToScan) {
         if (num === 0) continue; // reset value, no scale to tokenize
 
         const matchIndex = block.start + m.index;
-        const lineIdx = lineNumberAt(content, matchIndex) - 1;
+        const lineIdx = lineOf(content, matchIndex) - 1;
         const lineText = lines[lineIdx] || '';
 
         if (isTokenValue(lineText)) continue; // defense in depth; regexes shouldn't match token exprs anyway

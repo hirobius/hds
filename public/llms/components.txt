@@ -113,7 +113,7 @@ Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback f
   - tone: 'accent' | 'info' | 'success' | 'warning' | 'danger' = info
 
 ### Card
-Tagged per-export, not on the file block: this module exports eight components and a file-level @figma would hand all eight this one node.
+Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
   - as: ElementType<any, keyof IntrinsicElements>
   - bordered: boolean = false
   - gap: GapOption = tight
@@ -144,6 +144,16 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
   - max: number = 100
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
   - value: number
+
+### CardRow
+Card.Row — a title with muted notes and a trailing slot, inside a Card.
+  - trailing: ReactNode
+
+### CardRowNote
+Card.RowNote — one muted caption line under the row's title; repeat it for more.
+
+### CardRowTitle
+Card.RowTitle — the row's title, at the ui role.
 
 ### CardTitle
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
@@ -202,7 +212,7 @@ Section heading and toolbar over a `Table`. Row actions are consumer nodes in a 
   - toolbar: ReactNode
 
 ### DestructiveSection
-Titled danger zone: a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's …
+Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an …
   - actionLabel: ReactNode
   - cancelLabel: string = Cancel
   - confirmBody: ReactNode
@@ -288,6 +298,7 @@ Divider — semantic separator between content regions.
 
 ### EmptyState
 EmptyState — consistent no-data placeholder for lists, grids, and sections.
+  - action: ReactNode
   - className: string
   - description: ReactNode
   - title: ReactNode
@@ -558,13 +569,6 @@ Status dot + title row with optional muted notes and trailing slot (e.g. badge).
   - notes: ReactNode[]
   - title: ReactNode
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
-  - trailing: ReactNode
-
-### StatusTile
-Block-layout sibling of StatusListItem. Renders a raised surface tile with title, optional muted notes, and a trailing slot for a badge or affordance. Status c…
-  - notes: ReactNode[]
-  - title: ReactNode
-  - tone: 'success' | 'warning' | 'danger' | 'info' | 'neutral' = neutral
   - trailing: ReactNode
 
 ### Surface

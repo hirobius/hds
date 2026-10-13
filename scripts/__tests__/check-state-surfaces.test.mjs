@@ -14,7 +14,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { checkStateSurfaces } from '../check-state-surfaces.mjs';
+import { checkStateSurfaces, usesGeneratorRunner } from '../check-state-surfaces.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SCRIPT = join(ROOT, 'scripts/check-state-surfaces.mjs');
@@ -211,6 +211,19 @@ describe('a generated surface proves it is fresh', () => {
       'scripts/gen.mjs': '// writes the file, never compares\n',
     });
     expect(v.message).toContain('--check');
+  });
+
+  it('accepts a --check command whose script goes through runGenerator, which reads --check itself', () => {
+    const runner = [
+      "import { runGenerator } from './lib/generated-check.mjs';",
+      "await runGenerator({ root, outputs: { 'a.json': '{}' }, label: 'gen', fix: 'pnpm gen' });",
+    ].join('\n');
+    expect(
+      invalid(entry({ check: 'node scripts/gen.mjs --check' }), {
+        ...files,
+        'scripts/gen.mjs': runner,
+      }),
+    ).toEqual([]);
   });
 
   it('accepts a dedicated checker run without --check, so long as it exists', () => {
@@ -634,5 +647,113 @@ describe("this repo: a generated surface's check actually runs somewhere", () =>
       const runs = pkg.scripts.pretest.includes(s.check) || gateScripts.has(script);
       expect(runs, `${s.path}: ${s.check}`).toBe(true);
     }
+  });
+});
+
+// hds#644: one seam for every generated surface. A generated surface's check
+// script goes through runGenerator (scripts/lib/generated-check.mjs), which
+// owns argv, Prettier formatting, the write, the comparison, the exit code and
+// the fix hint, so no generator can drift into a check that is red forever
+// because its own output is not what lint-staged commits. A ratchet: the
+// scripts below are not migrated yet, each with its reason. The list may only
+// shrink; a script leaves it the day it uses the runner.
+const NOT_YET_ON_RUNNER = {
+  'scripts/build-readme-counts.mjs': 'checks through runCheck, but writes on its own path',
+  'scripts/count-consumer-usage.mjs': 'checks through runCheck, but writes on its own path',
+  'scripts/generate-agents-md.mjs': 'checks through runCheck, but writes on its own path',
+  'scripts/generate-llms-txt.mjs': 'checks through runCheck, but writes on its own path',
+  'scripts/build-design-md.mjs': 'checks through runCheck, but writes on its own path',
+  'scripts/build-handoff.mjs':
+    'checks through runCheck and writes through writeGenerated; it shares DESIGN-HANDOFF.md with build-tokens',
+  'scripts/check-sync-map.mjs':
+    'its own --check and writeFileSync (formats through formatGenerated)',
+  'scripts/check-token-rebake-needed.mjs':
+    'the rebake gate over build-tokens outputs; build-tokens is being reworked on its own branch (hds#641)',
+  'scripts/upgrade/compile.mjs': 'upgrade/* migrates after the simple generators (hds#644, step 2)',
+  'scripts/check-figma-drift.mjs':
+    'figma/snapshot.json is ingested from the Figma file, not built from repo sources; its check is a drift report',
+  'scripts/check-code-connect.mjs':
+    'a gate that diffs the generated templates (generate-code-connect runs on the runner) and parses them with the Code Connect CLI',
+};
+
+/**
+ * One line per generated surface whose `check` script skips the runner and is
+ * not excused in `allow`.
+ */
+function surfacesSkippingRunner(surfaces, readScript, allow) {
+  const problems = [];
+  for (const s of surfaces) {
+    if (s.kind !== 'generated' || !s.check) continue;
+    const script = String(s.check).trim().split(/\s+/)[1];
+    if (usesGeneratorRunner(readScript(script)) || script in allow) continue;
+    problems.push(
+      `${s.path}: its check \`${s.check}\` does not go through runGenerator (scripts/lib/generated-check.mjs)`,
+    );
+  }
+  return problems;
+}
+
+describe('a generated surface is checked through runGenerator (hds#644)', () => {
+  const RUNNER_GEN = [
+    "import { runGenerator } from './lib/generated-check.mjs';",
+    "await runGenerator({ root, outputs: { 'out.md': '# x\\n' }, label: 'gen', fix: 'pnpm gen' });",
+  ].join('\n');
+  const surface = generated('out.md', 'scripts/gen.mjs', 'node scripts/gen.mjs --check');
+
+  it('names a generated surface whose check script skips the runner', () => {
+    expect(surfacesSkippingRunner([surface], () => GEN, {})).toEqual([
+      'out.md: its check `node scripts/gen.mjs --check` does not go through runGenerator (scripts/lib/generated-check.mjs)',
+    ]);
+  });
+
+  it('accepts a check script that imports and calls runGenerator', () => {
+    expect(surfacesSkippingRunner([surface], () => RUNNER_GEN, {})).toEqual([]);
+  });
+
+  it('does not take a mention of runGenerator for a use of it', () => {
+    const mention = '// TODO: move this to runGenerator()\n' + GEN;
+    expect(surfacesSkippingRunner([surface], () => mention, {})).toHaveLength(1);
+  });
+
+  it('excuses a script on the allowlist, and ignores surfaces that are not generated', () => {
+    expect(surfacesSkippingRunner([surface], () => GEN, { 'scripts/gen.mjs': 'later' })).toEqual(
+      [],
+    );
+    expect(surfacesSkippingRunner([editorial('a.md', TODAY)], () => GEN, {})).toEqual([]);
+  });
+});
+
+describe('this repo: generated surfaces go through runGenerator', () => {
+  const reg = JSON.parse(readFileSync(join(ROOT, 'docs/state-surfaces.json'), 'utf8'));
+  const read = (script) => readFileSync(join(ROOT, script), 'utf8');
+  const checked = reg.surfaces.filter((s) => s.kind === 'generated' && s.check);
+  const scriptOf = (s) => String(s.check).trim().split(/\s+/)[1];
+
+  it('every generated surface is checked through the runner, or its script is listed with a reason', () => {
+    expect(surfacesSkippingRunner(reg.surfaces, read, NOT_YET_ON_RUNNER)).toEqual([]);
+  });
+
+  it('the list only shrinks: a listed script names a surface, still skips the runner, and says why', () => {
+    const named = new Set(checked.map(scriptOf));
+    for (const [script, reason] of Object.entries(NOT_YET_ON_RUNNER)) {
+      expect(
+        named.has(script),
+        `${script} checks no generated surface; drop it from the list`,
+      ).toBe(true);
+      expect(
+        usesGeneratorRunner(read(script)),
+        `${script} uses runGenerator now; drop it from the list`,
+      ).toBe(false);
+      expect(reason.length, script).toBeGreaterThan(10);
+    }
+  });
+
+  it('at least the migrated generators already pass without an excuse', () => {
+    const onRunner = checked
+      .filter((s) => usesGeneratorRunner(read(scriptOf(s))))
+      .map((s) => s.path);
+    expect(onRunner).toEqual(
+      expect.arrayContaining(['figma/disposition.json', 'docs/DESIGN_LINKS.md']),
+    );
   });
 });

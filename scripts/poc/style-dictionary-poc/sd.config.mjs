@@ -20,15 +20,15 @@
  *      hirobius.tokens.json. It's cosmetic (browsers are case-insensitive for hex).
  *
  *   4. The custom format hds/css-variables strips inline $description comments that
- *      SD adds by default (build-tokens.mjs emits no inline comments in tokens.css).
+ *      SD adds by default (build-tokens.mjs emits no inline comments in tokens.generated.css).
  *
  * Run: node scripts/poc/style-dictionary-poc/run.sh
  */
 
 import StyleDictionary from 'style-dictionary';
-import { fileURLToPath }  from 'url';
-import { dirname, join }  from 'path';
-import { readFileSync }   from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { readFileSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '../../..');
@@ -42,7 +42,7 @@ const pocTokens = {
     color: rawTokens.primitive.color,
     space: rawTokens.primitive.space,
     radius: rawTokens.primitive.radius,
-  }
+  },
 };
 
 // ── Custom transform: preserve camelCase in path segment names ────────────────
@@ -102,7 +102,7 @@ const transformValueDimensionPx = {
 //
 const formatHdsCssVariables = async ({ dictionary, options }) => {
   const selector = options?.selector ?? ':root';
-  const lines = dictionary.allTokens.map(token => {
+  const lines = dictionary.allTokens.map((token) => {
     const name = token.name;
     const value = token.$value ?? token.value;
     return `  --${name}: ${value};`;

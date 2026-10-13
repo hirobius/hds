@@ -17,6 +17,7 @@ import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { EXEMPTION_MARKERS } from '../lib/source-scan.mjs';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const GATE = path.join(REPO_ROOT, 'scripts', 'check-exemptions.mjs');
@@ -75,5 +76,23 @@ describe('check-exemptions', () => {
     const r = runOnText('no-reason.ts', 'const x = 1; // spacing-vocab-ok:\n');
     expect(r.status).toBe(1);
     expect(r.stderr).toContain('exemption "spacing-vocab-ok" is missing a usable reason');
+  });
+
+  // The vocabulary is enumerated from lib/source-scan.mjs (hds#643), so a marker
+  // added there is accepted here with no second list to edit.
+  it.each(EXEMPTION_MARKERS)('accepts %s, a marker the shared module lists', (marker) => {
+    const r = runOnText(
+      `shared-${marker}.ts`,
+      `const x = 1; // ${marker}: intentional exception\n`,
+    );
+    expect(r.stderr).toBe('');
+    expect(r.status).toBe(0);
+  });
+
+  it('rejects a marker the shared module does not list', () => {
+    expect(EXEMPTION_MARKERS).not.toContain('widget-ok');
+    const r = runOnText('widget.ts', 'const x = 1; // widget-ok: intentional exception\n');
+    expect(r.status).toBe(1);
+    expect(r.stderr).toContain('unknown exemption marker "widget-ok"');
   });
 });

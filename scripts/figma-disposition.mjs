@@ -56,24 +56,33 @@
  *   pnpm figma:disposition            human-readable summary
  *   pnpm figma:disposition --json     machine-readable
  *   pnpm figma:disposition --write    (re)write figma/disposition.json
+ *   pnpm figma:disposition --check    exit 1 when figma/disposition.json is stale
+ *   --root <dir>                      read and write a copy of the tree (tests)
  *
  * @module figma-disposition
  */
 
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { collectCompoundMembers } from './lib/check-component-docs.mjs';
+import { rootFromArgv, runGenerator } from './lib/generated-check.mjs';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+// Guarded because check-sync-map imports buildDisposition and mappedByOverride
+// from this module: an unguarded report printed its whole banner into that
+// gate's stdout and corrupted its --json output. Same shape as the
+// check-link-integrity finding in #255 — a module that runs its own gate on
+// import is not importable.
+const isEntrypoint =
+  process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+// `--root <dir>` reads and writes a copy of the tree instead (tests); only for
+// the CLI, never for a module that imports this one.
+const ROOT = isEntrypoint ? rootFromArgv(REPO) : REPO;
+const TABLE = 'figma/disposition.json';
 const MANIFEST = path.join(ROOT, 'public/hds-manifest.json');
 const COMPONENT_DIR = path.join(ROOT, 'src/app/components');
-// `--out <file>` reads and writes that table instead (tests).
-const outFlag = process.argv.indexOf('--out');
-const OUT =
-  outFlag >= 0 && process.argv[outFlag + 1]
-    ? path.resolve(process.argv[outFlag + 1])
-    : path.join(ROOT, 'figma/disposition.json');
+const OUT = path.join(ROOT, TABLE);
 const MAPPING_OVERRIDES = path.join(ROOT, 'figma/mapping-overrides.json');
 
 /**
@@ -108,8 +117,8 @@ export function mappedByOverride() {
 
 const argv = process.argv.slice(2);
 const asJson = argv.includes('--json');
-const write = argv.includes('--write');
-const check = argv.includes('--check');
+// --write and --check both go through runGenerator, which reads --check itself.
+const generate = argv.includes('--write') || argv.includes('--check');
 
 /**
  * Classes a component can fall into. Only `library` components are expected to
@@ -270,40 +279,25 @@ export function dispositionDocument(result, existing = {}) {
   };
 }
 
-// Everything below is the CLI. Guarded because check-sync-map imports
-// buildDisposition and mappedByOverride from this module: an unguarded report
-// printed its whole banner into that gate's stdout and corrupted its --json
-// output. Same shape as the check-link-integrity finding in #255 — a module
-// that runs its own gate on import is not importable.
-const isEntrypoint =
-  process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
-
+// Everything below is the CLI (see isEntrypoint above).
 if (isEntrypoint) {
   const result = buildDisposition();
 
-  if (check) {
-    // Writes nothing: exit 1 when the committed table differs from what the
-    // manifest, the source and figma/links.json produce today. Ignores the
-    // `generatedAt` stamp, which only records when `--write` last ran.
-    const committed = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
-    const fresh = dispositionDocument(result, committed);
-    const stale =
-      JSON.stringify({ ...committed, generatedAt: null }) !==
-      JSON.stringify({ ...fresh, generatedAt: null });
-    if (stale) {
-      console.error(
-        '✗ figma:disposition --check: figma/disposition.json is out of date. Run: pnpm figma:disposition --write',
-      );
-      process.exit(1);
-    }
-    console.log('✓ figma:disposition --check: figma/disposition.json up to date');
-    process.exit(0);
-  }
-
-  if (write) {
+  if (generate) {
+    // `--check` writes nothing and exits 1 when the committed table differs
+    // from what the manifest, the source and the overrides produce today. The
+    // `generatedAt` stamp only records when `--write` last ran, so neither the
+    // check nor a write that changes nothing else looks at it.
     const existing = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
-    writeFileSync(OUT, `${JSON.stringify(dispositionDocument(result, existing), null, 2)}\n`);
-    console.log(`✓ figma:disposition — wrote ${path.relative(ROOT, OUT)}`);
+    const { check } = await runGenerator({
+      root: ROOT,
+      outputs: { [TABLE]: `${JSON.stringify(dispositionDocument(result, existing), null, 2)}\n` },
+      label: 'figma:disposition',
+      fix: 'pnpm figma:disposition --write',
+      stable: true,
+      volatileRe: /"generatedAt": "[^"]*"/g,
+    });
+    if (check) process.exit();
   }
 
   if (asJson) {

@@ -93,7 +93,12 @@ export function App() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Layers size={20} style={{ color: 'var(--semantic-color-brand-primary, var(--hds-color-brand-500, #6366f1))' }} />
+          <Layers
+            size={20}
+            style={{
+              color: 'var(--semantic-color-brand-primary, var(--hds-color-brand-500, #6366f1))',
+            }}
+          />
           <span style={{ fontWeight: 600, fontSize: '16px', letterSpacing: '-0.01em' }}>
             HDS Starter Kit
           </span>
@@ -146,8 +151,8 @@ export function App() {
             <code style={{ fontFamily: 'var(--hds-font-mono, monospace)', fontSize: '13px' }}>
               @hirobius/design-system
             </code>{' '}
-            and import components directly. Tokens flow through CSS custom properties; dark mode
-            is a single attribute flip on{' '}
+            and import components directly. Tokens flow through CSS custom properties; dark mode is
+            a single attribute flip on{' '}
             <code style={{ fontFamily: 'var(--hds-font-mono, monospace)', fontSize: '13px' }}>
               &lt;html&gt;
             </code>
@@ -164,10 +169,18 @@ export function App() {
             <HdsButton variant="primary">Primary</HdsButton>
             <HdsButton variant="secondary">Secondary</HdsButton>
             <HdsButton variant="tertiary">Tertiary</HdsButton>
-            <HdsButton variant="primary" size="sm">Small</HdsButton>
-            <HdsButton variant="secondary" size="lg">Large</HdsButton>
-            <HdsButton variant="primary" loading>Loading</HdsButton>
-            <HdsButton variant="secondary" disabled>Disabled</HdsButton>
+            <HdsButton variant="primary" size="sm">
+              Small
+            </HdsButton>
+            <HdsButton variant="secondary" size="lg">
+              Large
+            </HdsButton>
+            <HdsButton variant="primary" loading>
+              Loading
+            </HdsButton>
+            <HdsButton variant="secondary" disabled>
+              Disabled
+            </HdsButton>
           </div>
         </section>
 
@@ -192,11 +205,7 @@ export function App() {
           <SectionHeading label="HdsTag" subtitle="Click to toggle active state" />
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {tags.map((tag) => (
-              <HdsTag
-                key={tag}
-                active={activeTags.has(tag)}
-                onClick={() => toggleTag(tag)}
-              >
+              <HdsTag key={tag} active={activeTags.has(tag)} onClick={() => toggleTag(tag)}>
                 {tag}
               </HdsTag>
             ))}
@@ -215,11 +224,7 @@ export function App() {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />
-            <HdsInput
-              label="Disabled"
-              placeholder="Cannot edit"
-              disabled
-            />
+            <HdsInput label="Disabled" placeholder="Cannot edit" disabled />
             <HdsInput
               label="Error state"
               placeholder="Something went wrong"
@@ -238,8 +243,12 @@ export function App() {
               Design tokens flow from <code>hirobius.tokens.json</code> through CSS custom
               properties — no runtime theming library required.
             </HdsAlert>
-            <HdsAlert variant="success">Build passed. All visual regression snapshots match.</HdsAlert>
-            <HdsAlert variant="warning">A new token path was added; regenerate the manifest.</HdsAlert>
+            <HdsAlert variant="success">
+              Build passed. All visual regression snapshots match.
+            </HdsAlert>
+            <HdsAlert variant="warning">
+              A new token path was added; regenerate the manifest.
+            </HdsAlert>
             <HdsAlert variant="error">Typecheck failed — 3 errors in 2 files.</HdsAlert>
           </div>
         </section>
@@ -257,7 +266,14 @@ export function App() {
               </HdsCard.Description>
             </HdsCard.Header>
             <HdsCard.Body>
-              <p style={{ margin: 0, fontSize: '14px', color: 'var(--semantic-color-content-secondary)', lineHeight: 1.6 }}>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: '14px',
+                  color: 'var(--semantic-color-content-secondary)',
+                  lineHeight: 1.6,
+                }}
+              >
                 All visual decisions resolve through CSS custom properties. Dark mode is handled by{' '}
                 <code style={{ fontFamily: 'var(--hds-font-mono, monospace)', fontSize: '13px' }}>
                   [data-theme="dark"]
@@ -271,8 +287,12 @@ export function App() {
             </HdsCard.Body>
             <HdsCard.Footer>
               <div style={{ display: 'flex', gap: '8px' }}>
-                <HdsButton variant="primary" size="sm">Accept</HdsButton>
-                <HdsButton variant="tertiary" size="sm">Cancel</HdsButton>
+                <HdsButton variant="primary" size="sm">
+                  Accept
+                </HdsButton>
+                <HdsButton variant="tertiary" size="sm">
+                  Cancel
+                </HdsButton>
               </div>
             </HdsCard.Footer>
           </HdsCard>
@@ -283,7 +303,8 @@ export function App() {
         <footer
           style={{
             fontSize: '12px',
-            color: 'var(--semantic-color-content-tertiary, var(--semantic-color-content-secondary))',
+            color:
+              'var(--semantic-color-content-tertiary, var(--semantic-color-content-secondary))',
             textAlign: 'center',
           }}
         >
@@ -303,8 +324,6 @@ function SectionHeading({ label, subtitle }: { label: string; subtitle?: string 
         style={{
           fontSize: '13px',
           fontWeight: 600,
-          letterSpacing: '0.06em',
-          textTransform: 'uppercase',
           color: 'var(--semantic-color-content-secondary)',
           margin: 0,
         }}
@@ -315,7 +334,8 @@ function SectionHeading({ label, subtitle }: { label: string; subtitle?: string 
         <p
           style={{
             fontSize: '12px',
-            color: 'var(--semantic-color-content-tertiary, var(--semantic-color-content-secondary))',
+            color:
+              'var(--semantic-color-content-tertiary, var(--semantic-color-content-secondary))',
             margin: '2px 0 0',
           }}
         >

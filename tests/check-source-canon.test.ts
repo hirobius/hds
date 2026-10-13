@@ -54,10 +54,10 @@ export function TestComponent() {
     }
   });
 
-  it('should NOT flag [data-tenant=] selectors in src/styles/tokens.css', () => {
-    // Verify that tokens.css is exempt by checking the validator logic
+  it('should NOT flag [data-tenant=] selectors in src/styles/tokens.generated.css', () => {
+    // Verify that tokens.generated.css is exempt by checking the validator logic
     // (The file itself should have DATA_TENANT selectors as the source of truth)
-    const tokensCssPath = path.join(ROOT, 'src/styles/tokens.css');
+    const tokensCssPath = path.join(ROOT, 'src/styles/tokens.generated.css');
     expect(fs.existsSync(tokensCssPath)).toBe(true);
 
     // The validator may exit non-zero for unrelated violations, so capture
@@ -72,8 +72,8 @@ export function TestComponent() {
       output = (err.stdout || '') + (err.stderr || '');
     }
 
-    // tokens.css is the exempt source of truth for tenant overrides: it may
+    // tokens.generated.css is the exempt source of truth for tenant overrides: it may
     // contain [data-tenant=] selectors but must never be flagged for DATA_TENANT.
-    expect(output).not.toMatch(/tokens\.css:\d+\s+\[DATA_TENANT\]/);
+    expect(output).not.toMatch(/tokens\.generated\.css:\d+\s+\[DATA_TENANT\]/);
   });
 });

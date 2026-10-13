@@ -64,13 +64,13 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
     expect(css).toContain('--semantic-space-region-gutter: var(--semantic-space-scale-sm);');
     // The deprecated alias is only re-declared inside the zero-specificity compact
     // scope (hds#336), so nested scopes resolve it against the remapped scale;
-    // everywhere else it follows region.gutter via its :root alias in tokens.css.
+    // everywhere else it follows region.gutter via its :root alias in tokens.generated.css.
     const outsideCompact = css.replace(/:where\(\[data-density='compact'\]\)\s*\{[^}]*\}/g, '');
     expect(outsideCompact).not.toMatch(/--semantic-space-layout-gutter\s*:/);
   });
 
-  it('tokens.css declares the deprecated aliases as var() of the new names', () => {
-    const css = read('src/styles/tokens.css');
+  it('tokens.generated.css declares the deprecated aliases as var() of the new names', () => {
+    const css = read('src/styles/tokens.generated.css');
     expect(css).toContain(
       '--semantic-space-component-padding: var(--semantic-space-surface-padding);',
     );

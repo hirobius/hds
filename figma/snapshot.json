@@ -1,15 +1,15 @@
 {
-  "checksum": "4764179b",
+  "checksum": "c70cefd6",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-12T17:43:05.600Z",
+    "takenAt": "2026-10-12T20:18:23.125Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "62db6261",
-      "pushedAt": "2026-10-12T17:43:05.563Z",
+      "modelHash": "7b1d1f15",
+      "pushedAt": "2026-10-12T20:18:23.097Z",
       "scope": null
     },
     "collections": [
@@ -6671,6 +6671,122 @@
             }
           },
           {
+            "id": "VariableID:2178:2",
+            "name": "typography/titleSm/font-family",
+            "path": "semantic.typography.titleSm.font-family",
+            "resolvedType": "STRING",
+            "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+            "scopes": [
+              "FONT_FAMILY"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-titleSm-font-family)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:32",
+                "to": "Hirobius/Primitives: typography/family/display"
+              },
+              "Dark": {
+                "alias": "VariableID:5:32",
+                "to": "Hirobius/Primitives: typography/family/display"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2178:3",
+            "name": "typography/titleSm/font-size",
+            "path": "semantic.typography.titleSm.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-titleSm-font-size)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
+              },
+              "Dark": {
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2178:4",
+            "name": "typography/titleSm/font-weight",
+            "path": "semantic.typography.titleSm.font-weight",
+            "resolvedType": "FLOAT",
+            "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-titleSm-font-weight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:49",
+                "to": "Hirobius/Primitives: typography/weight/bold"
+              },
+              "Dark": {
+                "alias": "VariableID:5:49",
+                "to": "Hirobius/Primitives: typography/weight/bold"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2178:5",
+            "name": "typography/titleSm/letter-spacing",
+            "path": "semantic.typography.titleSm.letter-spacing",
+            "resolvedType": "FLOAT",
+            "description": "Small heading inside a card or section band. 16px / 1.375 / 700. Converted from 0em at 16px.",
+            "scopes": [
+              "LETTER_SPACING"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-titleSm-letter-spacing)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 0
+              },
+              "Dark": {
+                "value": 0
+              }
+            }
+          },
+          {
+            "id": "VariableID:2178:6",
+            "name": "typography/titleSm/line-height",
+            "path": "semantic.typography.titleSm.line-height",
+            "resolvedType": "FLOAT",
+            "description": "Small heading inside a card or section band. 16px / 1.375 / 700. Converted from 1.375 × 16px.",
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-titleSm-line-height)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 22
+              },
+              "Dark": {
+                "value": 22
+              }
+            }
+          },
+          {
             "id": "VariableID:13:17",
             "name": "typography/ui/font-family",
             "path": "semantic.typography.ui.font-family",
@@ -9461,6 +9577,31 @@
         }
       },
       {
+        "id": "S:ee33d604c391c50fa387dc3457b96affb95b842c,",
+        "name": "typography/titleSm",
+        "path": "semantic.typography.titleSm",
+        "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+        "fontFamily": "Plus Jakarta Sans",
+        "fontStyle": "Bold",
+        "fontSize": 16,
+        "lineHeight": {
+          "unit": "PIXELS",
+          "value": 22
+        },
+        "letterSpacing": {
+          "unit": "PIXELS",
+          "value": 0
+        },
+        "textCase": "ORIGINAL",
+        "boundVariables": {
+          "fontFamily": "VariableID:2178:2",
+          "fontSize": "VariableID:2178:3",
+          "fontWeight": "VariableID:2178:4",
+          "letterSpacing": "VariableID:2178:5",
+          "lineHeight": "VariableID:2178:6"
+        }
+      },
+      {
         "id": "S:d0d958d10e42931dc895aff494d4223b234b1514,",
         "name": "typography/ui",
         "path": "semantic.typography.ui",
@@ -9778,5 +9919,27 @@
         ]
       }
     ]
+  },
+  "bindingFallbacks": {
+    "format": "binding-fallbacks",
+    "schemaVersion": 1,
+    "file": "2VgBbVpKiDnu0aftJEVyBQ",
+    "takenAt": "2026-10-12T20:19:12.890Z",
+    "scope": "all",
+    "pages": 59,
+    "skippedPages": [
+      {
+        "id": "2083:2",
+        "name": "Archive"
+      },
+      {
+        "id": "2157:826",
+        "name": "Deprecated"
+      }
+    ],
+    "nodes": 2773,
+    "bindings": 1863,
+    "mismatches": [],
+    "checksum": "99955183"
   }
 }

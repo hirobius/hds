@@ -372,6 +372,13 @@ describe('transformSource: comments and same-line statements (hds#434)', () => {
       `import {\n  Button,\n} from '${ROOT}';\nimport {\n  Reveal,\n  Page, // shell\n} from '${SUB}';\n`,
     );
   });
+
+  it('moves a trailing comment after the last specifier to /patterns when all specifiers move', () => {
+    const src = `import {\n  Page,\n  // trailing comment\n} from '${ROOT}';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.source).toBe(`import {\n  Page,\n  // trailing comment\n} from '${SUB}';\n`);
+    expect(out.moved).toEqual(['Page']);
+  });
 });
 
 describe('transformSource: idempotence', () => {

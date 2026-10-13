@@ -198,7 +198,6 @@ if (RUN_ALL || OVERRIDES_ONLY) {
   const ALLOWLIST_FILES_OVERRIDES = new Set([]);
   const SKIP_BASENAME_PATTERNS = [/^generated-/, /\.generated\./, /\.test\./, /\.spec\./];
   const SKIP_EXACT_FILES = new Set([
-    'src/styles/tokens.css',
     'src/styles/tokens.generated.css',
     'src/styles/tenants.css',
     'src/styles/fonts.css',

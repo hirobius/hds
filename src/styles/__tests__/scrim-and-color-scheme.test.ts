@@ -18,7 +18,7 @@ let tokensCss: string;
 
 beforeAll(() => {
   themeCss = readFileSync(resolve(__dirname, '../theme.css'), 'utf8');
-  tokensCss = readFileSync(resolve(__dirname, '../tokens.css'), 'utf8');
+  tokensCss = readFileSync(resolve(__dirname, '../tokens.generated.css'), 'utf8');
 });
 
 /** Body of the first top-level block whose selector list is exactly `selector`. */
