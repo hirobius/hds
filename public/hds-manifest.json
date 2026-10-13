@@ -1561,7 +1561,12 @@
           "optional": true
         },
         "size": {
-          "type": "InputSize",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
           "default": "md"
         },
         "suffix": {
@@ -1647,6 +1652,14 @@
         },
         "loading": {
           "type": "boolean"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
         },
         "textStyle": {
           "type": "enum",
@@ -1977,7 +1990,36 @@
           "default": "column"
         },
         "gap": {
-          "type": "GapOption",
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "gap",
+            "medium",
+            "hairline",
+            "xs",
+            "stack",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ],
           "default": "tight"
         },
         "justify": {
@@ -2020,6 +2062,38 @@
           "values": [
             "row",
             "column"
+          ]
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "gap",
+            "medium",
+            "hairline",
+            "xs",
+            "stack",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
           ]
         },
         "justify": {
@@ -2385,7 +2459,14 @@
           "optional": true
         },
         "padding": {
-          "type": "PaddingOption",
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ],
           "default": "component"
         },
         "shadow": {
@@ -2411,6 +2492,16 @@
       "propConstraints": {
         "className": {
           "type": "string"
+        },
+        "padding": {
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ]
         },
         "shadow": {
           "type": "boolean"
@@ -2498,7 +2589,31 @@
           "default": false
         },
         "gap": {
-          "type": "GapOption",
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ],
           "default": "tight"
         },
         "noPadding": {
@@ -2510,7 +2625,14 @@
           "optional": true
         },
         "padding": {
-          "type": "PaddingOption",
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ],
           "default": "component"
         },
         "selectable": {
@@ -2560,9 +2682,7 @@
       "allowedChildren": [
         "*"
       ],
-      "requiredProps": [
-        "children"
-      ],
+      "requiredProps": [],
       "a11yRules": [],
       "preview": {
         "exportName": "Card",
@@ -2635,8 +2755,45 @@
         "bordered": {
           "type": "boolean"
         },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ]
+        },
         "noPadding": {
           "type": "boolean"
+        },
+        "padding": {
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ]
         },
         "selectable": {
           "type": "boolean"
@@ -2697,7 +2854,26 @@
           "optional": true
         },
         "variant": {
-          "type": "TextVariant"
+          "type": "enum",
+          "values": [
+            "display",
+            "title",
+            "titleSm",
+            "body",
+            "ui",
+            "caption",
+            "mono",
+            "heading1",
+            "heading2",
+            "heading3",
+            "technical",
+            "eyebrow",
+            "badge",
+            "docLede",
+            "docBody",
+            "docSmall",
+            "docCode"
+          ]
         }
       },
       "allowedChildren": [
@@ -6223,7 +6399,12 @@
           "optional": true
         },
         "resize": {
-          "type": "TextareaResize",
+          "type": "enum",
+          "values": [
+            "none",
+            "both",
+            "vertical"
+          ],
           "default": "vertical"
         },
         "textareaClassName": {
