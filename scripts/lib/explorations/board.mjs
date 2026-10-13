@@ -167,6 +167,8 @@ function readView(d) {
   state('gaps.json', d.gaps);
   view.gaps.problems.forEach((p) => add('gaps.json', p));
 
+  if (d.gate?.pass === false)
+    view.problems.push(`${d.id} failed the gates, so no capture of it is shown (see gates.json)`);
   for (const s of d.shots) {
     if (s.state === 'missing') view.problems.push(`${s.rel} is missing`);
     if (s.state === 'unreadable') view.problems.push(`${s.rel} is not a readable PNG`);
@@ -758,8 +760,9 @@ const dataUri = (buf) => `data:image/png;base64,${buf.toString('base64')}`;
 /**
  * Build one screen's board.
  * @param {{ runDir?: string, runDirs?: string[], screen: string, out?: string, title?: string,
- *           form?: 'document'|'artifact', budgetBytes?: number }} opts
+ *           form?: 'document'|'artifact', budgetBytes?: number, shotsDir?: string }} opts
  *   `runDir` is `runs/<date>` (or a `runs/` root); give `runDirs` for several runs, oldest first.
+ *   `shotsDir` is the harness reports directory (`<id>-<vp>-<theme>.png` and gates.json).
  *   `budgetBytes` caps the whole page; screenshots are downscaled to fit (see board-images.mjs).
  */
 export function buildBoard({
@@ -770,9 +773,10 @@ export function buildBoard({
   title,
   form = 'document',
   budgetBytes = DEFAULT_BUDGET_BYTES,
+  shotsDir,
 }) {
   const budget = Math.min(budgetBytes, PAGE_LIMIT_BYTES);
-  const model = readScreenRun(expandRunDirs(runDirs ?? [runDir]), screen);
+  const model = readScreenRun(expandRunDirs(runDirs ?? [runDir]), screen, { shotsDir });
 
   const shots = [];
   for (const d of model.directions) {

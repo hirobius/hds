@@ -1,0 +1,923 @@
+{
+  "$comment": "INVENTED data for design explorations (hds#628). Fictional businesses, people and towns; phone numbers are 555-01xx and addresses are example.com. Nothing here is a real lead, client or person.",
+  "screen": "standing",
+  "asOf": "2026-10-13T09:00:00Z",
+  "showFirst": 3,
+  "refreshSeconds": 45,
+  "updatedLabel": "updated 12s ago",
+  "bands": {
+    "fire": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#601",
+        "title": "Open sev1: a client preview URL is public without its gate",
+        "why": "Add the basic-auth middleware to the preview project, then close this issue",
+        "ageLabel": "open 3h",
+        "at": "2026-10-13T06:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/601"
+      }
+    ],
+    "waiting": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#598",
+        "title": "Decide: keep the Digest page or fold it into Drops",
+        "why": "Decide by Oct 15: pick one; silence applies the default (fold it)",
+        "ageLabel": "decide in 2d",
+        "at": "2026-10-10T09:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/598"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/site-factory",
+        "ref": "#85",
+        "title": "Needs credential: hCaptcha site key for the Brindle preview",
+        "why": "Create the key at the hCaptcha dashboard and paste it into the project env",
+        "ageLabel": "waiting 1d",
+        "at": "2026-10-12T09:00:00Z",
+        "url": "https://example.com/harborlane/site-factory/issues/85"
+      },
+      {
+        "kind": "session",
+        "repo": "harborlane/ops",
+        "ref": "session_k3m9x2",
+        "title": "Claude session: standing bands, blocked on a question",
+        "why": "Answer: should \"show all\" expand in place or open the band on its own page?",
+        "ageLabel": "waiting 22m",
+        "at": "2026-10-13T08:38:00Z",
+        "url": "https://example.com/sessions/session_k3m9x2"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/design-kit",
+        "ref": "#240",
+        "title": "Needs Adrian: approve the soft overlay token deltas",
+        "why": "Review the compare page and reply promote, keep as tenant, or drop",
+        "ageLabel": "waiting 4d",
+        "at": "2026-10-09T09:00:00Z",
+        "url": "https://example.com/harborlane/design-kit/issues/240"
+      }
+    ],
+    "running": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#610",
+        "title": "Ralph: lead history timeline on the pitch card",
+        "why": "Claimed; tests are red, working on the fix",
+        "ageLabel": "running 12m",
+        "at": "2026-10-13T08:48:00Z",
+        "url": "https://example.com/harborlane/ops/issues/610"
+      },
+      {
+        "kind": "pr",
+        "repo": "harborlane/site-factory",
+        "ref": "#93",
+        "title": "Add the junk-removal preset",
+        "why": "Open, checks running; 2 of 5 done",
+        "ageLabel": "opened 40m",
+        "at": "2026-10-13T08:20:00Z",
+        "url": "https://example.com/harborlane/site-factory/pull/93"
+      },
+      {
+        "kind": "pr",
+        "repo": "harborlane/design-kit",
+        "ref": "#249",
+        "title": "Fold StatusTile into Card",
+        "why": "Open, waiting on review",
+        "ageLabel": "opened 5h",
+        "at": "2026-10-13T04:00:00Z",
+        "url": "https://example.com/harborlane/design-kit/pull/249"
+      },
+      {
+        "kind": "session",
+        "repo": "harborlane/portal-kit",
+        "ref": "session_q7d1a4",
+        "title": "Claude session: portal invoices table",
+        "why": "Active; last tool call 2m ago",
+        "ageLabel": "running 31m",
+        "at": "2026-10-13T08:29:00Z",
+        "url": "https://example.com/sessions/session_q7d1a4"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#611",
+        "title": "Ralph: drops capture box upload states",
+        "why": "Claimed; first draft pushed",
+        "ageLabel": "running 1h",
+        "at": "2026-10-13T08:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/611"
+      }
+    ],
+    "parked": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/site-factory",
+        "ref": "#79",
+        "title": "Video hero for the landscaping preset",
+        "why": "Parked 3d: needs a licensed clip; nothing in the library fits",
+        "ageLabel": "parked 3d",
+        "at": "2026-10-10T09:00:00Z",
+        "url": "https://example.com/harborlane/site-factory/issues/79"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#577",
+        "title": "Gemini as a second suggester for drops",
+        "why": "Parked 6d: waiting for the Max plan quota to reset",
+        "ageLabel": "parked 6d",
+        "at": "2026-10-07T09:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/577"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/portal-kit",
+        "ref": "#44",
+        "title": "Magic-link login",
+        "why": "Parked 9d: depends on the email domain being warmed",
+        "ageLabel": "parked 9d",
+        "at": "2026-10-04T09:00:00Z",
+        "url": "https://example.com/harborlane/portal-kit/issues/44"
+      }
+    ],
+    "backlog": [
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#612",
+        "title": "Add a retention purge for lead events",
+        "why": "Queued for the next loop; definition of done is written",
+        "ageLabel": "queued 1d",
+        "at": "2026-10-12T08:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/612"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/site-factory",
+        "ref": "#88",
+        "title": "Photo optimizer rejects files over 4000px",
+        "why": "Queued; needs a failing fixture first",
+        "ageLabel": "queued 2d",
+        "at": "2026-10-11T08:00:00Z",
+        "url": "https://example.com/harborlane/site-factory/issues/88"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/design-kit",
+        "ref": "#241",
+        "title": "Tooltip flips off-screen near the bottom edge",
+        "why": "Queued; reproduced in the docs site",
+        "ageLabel": "queued 3d",
+        "at": "2026-10-10T08:00:00Z",
+        "url": "https://example.com/harborlane/design-kit/issues/241"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#619",
+        "title": "Digest page links to a removed route",
+        "why": "Unlabeled; needs triage",
+        "ageLabel": "queued 4d",
+        "at": "2026-10-09T08:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/619"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/portal-kit",
+        "ref": "#57",
+        "title": "Invoice table overflows at 390 wide",
+        "why": "Queued; screenshot attached",
+        "ageLabel": "queued 5d",
+        "at": "2026-10-08T08:00:00Z",
+        "url": "https://example.com/harborlane/portal-kit/issues/57"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/site-factory",
+        "ref": "#91",
+        "title": "Footer year is hard-coded in two presets",
+        "why": "Unlabeled; small",
+        "ageLabel": "queued 6d",
+        "at": "2026-10-07T08:00:00Z",
+        "url": "https://example.com/harborlane/site-factory/issues/91"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/ops",
+        "ref": "#623",
+        "title": "Show the last sync time on the clients index",
+        "why": "Queued",
+        "ageLabel": "queued 7d",
+        "at": "2026-10-06T08:00:00Z",
+        "url": "https://example.com/harborlane/ops/issues/623"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/design-kit",
+        "ref": "#247",
+        "title": "Document the keyboard contract for Menu",
+        "why": "Queued; a11y backfill",
+        "ageLabel": "queued 8d",
+        "at": "2026-10-05T08:00:00Z",
+        "url": "https://example.com/harborlane/design-kit/issues/247"
+      }
+    ],
+    "shipped": [
+      {
+        "kind": "pr",
+        "repo": "harborlane/ops",
+        "ref": "#606",
+        "title": "Retention purge covers lead notes",
+        "why": "Merged",
+        "ageLabel": "merged 2h",
+        "at": "2026-10-13T07:00:00Z",
+        "url": "https://example.com/harborlane/ops/pull/606"
+      },
+      {
+        "kind": "pr",
+        "repo": "harborlane/design-kit",
+        "ref": "#246",
+        "title": "Kbd raised-key bottom edge",
+        "why": "Merged",
+        "ageLabel": "merged 1d",
+        "at": "2026-10-12T09:00:00Z",
+        "url": "https://example.com/harborlane/design-kit/pull/246"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/site-factory",
+        "ref": "#80",
+        "title": "Footer privacy link on every preset",
+        "why": "Closed by #92",
+        "ageLabel": "closed 1d",
+        "at": "2026-10-12T05:00:00Z",
+        "url": "https://example.com/harborlane/site-factory/issues/80"
+      },
+      {
+        "kind": "session",
+        "repo": "harborlane/ops",
+        "ref": "session_a2w8c6",
+        "title": "Claude session: schema migration notes",
+        "why": "Finished",
+        "ageLabel": "finished 2d",
+        "at": "2026-10-11T09:00:00Z",
+        "url": "https://example.com/sessions/session_a2w8c6"
+      },
+      {
+        "kind": "pr",
+        "repo": "harborlane/portal-kit",
+        "ref": "#55",
+        "title": "Empty state for the documents list",
+        "why": "Merged",
+        "ageLabel": "merged 3d",
+        "at": "2026-10-10T09:00:00Z",
+        "url": "https://example.com/harborlane/portal-kit/pull/55"
+      },
+      {
+        "kind": "pr",
+        "repo": "harborlane/ops",
+        "ref": "#603",
+        "title": "Token errors name the variable and the fix",
+        "why": "Merged",
+        "ageLabel": "merged 4d",
+        "at": "2026-10-09T09:00:00Z",
+        "url": "https://example.com/harborlane/ops/pull/603"
+      },
+      {
+        "kind": "issue",
+        "repo": "harborlane/design-kit",
+        "ref": "#238",
+        "title": "Docs page for Callout",
+        "why": "Closed by #244",
+        "ageLabel": "closed 6d",
+        "at": "2026-10-07T09:00:00Z",
+        "url": "https://example.com/harborlane/design-kit/issues/238"
+      }
+    ]
+  },
+  "sourceErrors": [],
+  "states": {
+    "empty": {
+      "bands": {
+        "fire": [],
+        "waiting": [],
+        "running": [],
+        "parked": [],
+        "backlog": [],
+        "shipped": []
+      },
+      "sourceErrors": []
+    },
+    "loading": {
+      "note": "No data. Render what the screen shows before the first response arrives."
+    },
+    "error": {
+      "bands": {
+        "fire": [],
+        "waiting": [
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops",
+            "ref": "#598",
+            "title": "Decide: keep the Digest page or fold it into Drops",
+            "why": "Decide by Oct 15: pick one; silence applies the default (fold it)",
+            "ageLabel": "decide in 2d",
+            "at": "2026-10-10T09:00:00Z",
+            "url": "https://example.com/harborlane/ops/issues/598"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory",
+            "ref": "#85",
+            "title": "Needs credential: hCaptcha site key for the Brindle preview",
+            "why": "Create the key at the hCaptcha dashboard and paste it into the project env",
+            "ageLabel": "waiting 1d",
+            "at": "2026-10-12T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory/issues/85"
+          }
+        ],
+        "running": [
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops",
+            "ref": "#610",
+            "title": "Ralph: lead history timeline on the pitch card",
+            "why": "Claimed; tests are red, working on the fix",
+            "ageLabel": "running 12m",
+            "at": "2026-10-13T08:48:00Z",
+            "url": "https://example.com/harborlane/ops/issues/610"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/site-factory",
+            "ref": "#93",
+            "title": "Add the junk-removal preset",
+            "why": "Open, checks running; 2 of 5 done",
+            "ageLabel": "opened 40m",
+            "at": "2026-10-13T08:20:00Z",
+            "url": "https://example.com/harborlane/site-factory/pull/93"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/design-kit",
+            "ref": "#249",
+            "title": "Fold StatusTile into Card",
+            "why": "Open, waiting on review",
+            "ageLabel": "opened 5h",
+            "at": "2026-10-13T04:00:00Z",
+            "url": "https://example.com/harborlane/design-kit/pull/249"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops",
+            "ref": "#611",
+            "title": "Ralph: drops capture box upload states",
+            "why": "Claimed; first draft pushed",
+            "ageLabel": "running 1h",
+            "at": "2026-10-13T08:00:00Z",
+            "url": "https://example.com/harborlane/ops/issues/611"
+          }
+        ],
+        "parked": [],
+        "backlog": [
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops",
+            "ref": "#612",
+            "title": "Add a retention purge for lead events",
+            "why": "Queued for the next loop; definition of done is written",
+            "ageLabel": "queued 1d",
+            "at": "2026-10-12T08:00:00Z",
+            "url": "https://example.com/harborlane/ops/issues/612"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory",
+            "ref": "#88",
+            "title": "Photo optimizer rejects files over 4000px",
+            "why": "Queued; needs a failing fixture first",
+            "ageLabel": "queued 2d",
+            "at": "2026-10-11T08:00:00Z",
+            "url": "https://example.com/harborlane/site-factory/issues/88"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/design-kit",
+            "ref": "#241",
+            "title": "Tooltip flips off-screen near the bottom edge",
+            "why": "Queued; reproduced in the docs site",
+            "ageLabel": "queued 3d",
+            "at": "2026-10-10T08:00:00Z",
+            "url": "https://example.com/harborlane/design-kit/issues/241"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops",
+            "ref": "#619",
+            "title": "Digest page links to a removed route",
+            "why": "Unlabeled; needs triage",
+            "ageLabel": "queued 4d",
+            "at": "2026-10-09T08:00:00Z",
+            "url": "https://example.com/harborlane/ops/issues/619"
+          }
+        ],
+        "shipped": []
+      },
+      "sourceErrors": [
+        {
+          "source": "sessions",
+          "summary": "Claude sessions are unavailable",
+          "detail": "GET /api/agent-events returned 500: the agent_events table is missing. Apply the migration in the SQL editor, then reload."
+        }
+      ]
+    },
+    "longContent": {
+      "bands": {
+        "fire": [],
+        "waiting": [
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#700",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 1d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/issues/700"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#701",
+            "title": "Item 2: Reconcile the quarterly retainer invoices for the three clients",
+            "why": "Short reason.",
+            "ageLabel": "queued 2d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/issues/701"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#702",
+            "title": "Item 3: Reconcile the quarterly retainer invoices for the three clients wh",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 3d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/issues/702"
+          }
+        ],
+        "running": [
+          {
+            "kind": "pr",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#700",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 1d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/pull/700"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#701",
+            "title": "Item 2: Reconcile the quarterly retainer invoices for the three clients",
+            "why": "Short reason.",
+            "ageLabel": "queued 2d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/pull/701"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#702",
+            "title": "Item 3: Reconcile the quarterly retainer invoices for the three clients wh",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 3d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/pull/702"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#703",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Short reason.",
+            "ageLabel": "queued 4d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/pull/703"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#704",
+            "title": "Item 5: Reconcile the quarterly retainer invoices for the three clients whose bi",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 5d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/pull/704"
+          }
+        ],
+        "parked": [
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#700",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 1d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/issues/700"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#701",
+            "title": "Item 2: Reconcile the quarterly retainer invoices for the three clients",
+            "why": "Short reason.",
+            "ageLabel": "queued 2d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/issues/701"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#702",
+            "title": "Item 3: Reconcile the quarterly retainer invoices for the three clients wh",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 3d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/issues/702"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#703",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Short reason.",
+            "ageLabel": "queued 4d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/issues/703"
+          }
+        ],
+        "backlog": [
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#700",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 1d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/issues/700"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#701",
+            "title": "Item 2: Reconcile the quarterly retainer invoices for the three clients",
+            "why": "Short reason.",
+            "ageLabel": "queued 2d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/issues/701"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#702",
+            "title": "Item 3: Reconcile the quarterly retainer invoices for the three clients wh",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 3d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/issues/702"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#703",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Short reason.",
+            "ageLabel": "queued 4d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/issues/703"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#704",
+            "title": "Item 5: Reconcile the quarterly retainer invoices for the three clients whose bi",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 5d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/issues/704"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#705",
+            "title": "Item 6: Reconcile the quarterly retainer invoices for the three clients whose billi",
+            "why": "Short reason.",
+            "ageLabel": "queued 6d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/issues/705"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#706",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 7d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/issues/706"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#707",
+            "title": "Item 8: Reconcile the quarterly retainer invoices for the three clients whose billing con",
+            "why": "Short reason.",
+            "ageLabel": "queued 8d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/issues/707"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#708",
+            "title": "Item 9: Reconcile the quarterly retainer invoices for the three clients whose billing contac",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 9d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/issues/708"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#709",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Short reason.",
+            "ageLabel": "queued 10d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/issues/709"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#710",
+            "title": "Item 11: Reconcile the quarterly retainer invoices for the three clients whose billing contacts cha",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 11d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/issues/710"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#711",
+            "title": "Item 12: Reconcile the quarterly retainer invoices for the three clients whose billing contacts change",
+            "why": "Short reason.",
+            "ageLabel": "queued 12d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/issues/711"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#712",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 13d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/issues/712"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#713",
+            "title": "Item 14: Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed afte",
+            "why": "Short reason.",
+            "ageLabel": "queued 14d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/issues/713"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#714",
+            "title": "Item 15: Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after t",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 15d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/issues/714"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#715",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Short reason.",
+            "ageLabel": "queued 16d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/issues/715"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#716",
+            "title": "Item 17: Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spr",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 17d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/issues/716"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#717",
+            "title": "Item 18: Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring",
+            "why": "Short reason.",
+            "ageLabel": "queued 18d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/issues/717"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#718",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 19d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/issues/718"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#719",
+            "title": "Item 20: Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migra",
+            "why": "Short reason.",
+            "ageLabel": "queued 20d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/issues/719"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#720",
+            "title": "Item 21: Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migratio",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 21d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/issues/720"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#721",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Short reason.",
+            "ageLabel": "queued 22d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/issues/721"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#722",
+            "title": "Item 23: Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 23d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/issues/722"
+          },
+          {
+            "kind": "issue",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#723",
+            "title": "Item 24: Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and co",
+            "why": "Short reason.",
+            "ageLabel": "queued 24d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/issues/723"
+          }
+        ],
+        "shipped": [
+          {
+            "kind": "pr",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#700",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 1d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/pull/700"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#701",
+            "title": "Item 2: Reconcile the quarterly retainer invoices for the three clients",
+            "why": "Short reason.",
+            "ageLabel": "queued 2d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/pull/701"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#702",
+            "title": "Item 3: Reconcile the quarterly retainer invoices for the three clients wh",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 3d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/pull/702"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#703",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Short reason.",
+            "ageLabel": "queued 4d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/pull/703"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/ops-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#704",
+            "title": "Item 5: Reconcile the quarterly retainer invoices for the three clients whose bi",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 5d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/ops-with-a-very-long-repository-name-for-wrapping/pull/704"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/site-factory-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#705",
+            "title": "Item 6: Reconcile the quarterly retainer invoices for the three clients whose billi",
+            "why": "Short reason.",
+            "ageLabel": "queued 6d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/site-factory-with-a-very-long-repository-name-for-wrapping/pull/705"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/design-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#706",
+            "title": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens",
+            "why": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "ageLabel": "queued 7d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/design-kit-with-a-very-long-repository-name-for-wrapping/pull/706"
+          },
+          {
+            "kind": "pr",
+            "repo": "harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping",
+            "ref": "#707",
+            "title": "Item 8: Reconcile the quarterly retainer invoices for the three clients whose billing con",
+            "why": "Short reason.",
+            "ageLabel": "queued 8d",
+            "at": "2026-10-01T09:00:00Z",
+            "url": "https://example.com/harborlane/portal-kit-with-a-very-long-repository-name-for-wrapping/pull/707"
+          }
+        ]
+      },
+      "sourceErrors": []
+    },
+    "tokenFailure": {
+      "bands": {
+        "fire": [
+          {
+            "kind": "alert",
+            "repo": null,
+            "ref": "GITHUB_TOKEN",
+            "title": "GitHub is not reachable: GITHUB_TOKEN is expired",
+            "why": "Rotate GITHUB_TOKEN in Vercel env vars (Production), then redeploy",
+            "ageLabel": "since 09:00",
+            "at": "2026-10-13T09:00:00Z",
+            "url": "https://example.com/settings/tokens"
+          }
+        ],
+        "waiting": [],
+        "running": [],
+        "parked": [],
+        "backlog": [],
+        "shipped": []
+      },
+      "sourceErrors": [
+        {
+          "source": "github",
+          "variable": "GITHUB_TOKEN",
+          "fix": "Rotate GITHUB_TOKEN in Vercel env vars (Production), then redeploy"
+        }
+      ]
+    }
+  }
+}

@@ -11,7 +11,7 @@
  * look at how the module builds the string.
  */
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
@@ -560,5 +560,55 @@ describe('explorations-board CLI: board', () => {
     expect(r.stdout).toMatch(/Usage: node scripts\/explorations-board\.mjs/);
     expect(r.stdout).toContain('board');
     expect(r.stdout).toContain('index');
+  });
+});
+
+describe('buildBoard: the harness report layout', () => {
+  // The harness writes <id>-<viewport>-<theme>.png and gates.json to one reports directory.
+  function harnessReports(runDir, { fail = [] } = {}) {
+    const reports = tmpDir();
+    const directions = {};
+    for (const letter of ['A', 'B', 'C']) {
+      const id = `standing-${letter}`;
+      for (const theme of ['light', 'dark']) {
+        for (const vp of [1280, 390]) {
+          const from = path.join(runDir, id, 'screenshots', `${theme}-${vp}.png`);
+          writeFileSync(path.join(reports, `${id}-${vp}-${theme}.png`), readFileSync(from));
+        }
+      }
+      rmSync(path.join(runDir, id, 'screenshots'), { recursive: true });
+      directions[id] = { screen: 'standing', direction: letter, pass: !fail.includes(letter) };
+    }
+    writeFileSync(path.join(reports, 'gates.json'), JSON.stringify({ pass: true, directions }));
+    return reports;
+  }
+
+  it('reads screenshots named <id>-<viewport>-<theme>.png from the reports directory', () => {
+    const runDir = run();
+    const shotsDir = harnessReports(runDir);
+    const result = buildBoard({ runDir, screen: 'standing', shotsDir });
+    expect(result.captures).toMatchObject({ present: 12, total: 12 });
+    expect(result.problems).toEqual([]);
+  });
+
+  it('shows no capture of a direction that failed its gates, and says why', () => {
+    const runDir = run();
+    const shotsDir = harnessReports(runDir, { fail: ['C'] });
+    const result = buildBoard({ runDir, screen: 'standing', shotsDir });
+    expect(result.captures.present).toBe(8);
+    expect(result.problems.join('\n')).toMatch(/standing-C failed the gates/);
+  });
+
+  it('takes --shots on the command line', () => {
+    const runDir = run();
+    const shotsDir = harnessReports(runDir);
+    const out = path.join(tmpDir(), 'b.html');
+    const r = spawnSync(
+      process.execPath,
+      [CLI, 'board', runDir, 'standing', '--shots', shotsDir, '--out', out, '--strict'],
+      { encoding: 'utf8' },
+    );
+    expect(r.status).toBe(0);
+    expect(existsSync(out)).toBe(true);
   });
 });
