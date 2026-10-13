@@ -57,12 +57,15 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Avatar` — Circular avatar.
 - `AvatarGroup` — Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
-- `Card` — Tagged per-export, not on the file block: this module exports eight components and a file-level @figma would hand all eight this one node.
+- `Card` — Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
 - `CardBody` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardDescription` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardFooter` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardHeader` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardProgress` — Card — surface container with slot anatomy (12d-card-anatomy).
+- `CardRow` — Card.Row — a title with muted notes and a trailing slot, inside a Card.
+- `CardRowNote` — Card.RowNote — one muted caption line under the row's title; repeat it for more.
+- `CardRowTitle` — Card.RowTitle — the row's title, at the ui role.
 - `CardTitle` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `EmptyState` — EmptyState — consistent no-data placeholder for lists, grids, and sections.
 - `Field` — Caption label paired with a value — used in metadata grids and read-only forms.
@@ -160,7 +163,6 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 - `AssetImg` — AssetImg - responsive asset frame with fallback placeholder handling.
 - `CodeBlock` — CodeBlock - code display with copy button and optional collapsible toggle.
 - `DataTableSection` — Section heading and toolbar over a `Table`.
-- `StatusTile` — Block-layout sibling of StatusListItem.
 
 ### Feedback
 

@@ -66,6 +66,10 @@
       "CardProgress",
       "CardProgressProps",
       "CardProps",
+      "CardRow",
+      "CardRowNote",
+      "CardRowProps",
+      "CardRowTitle",
       "CardTitle",
       "CardTone",
       "CardVariant"

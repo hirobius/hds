@@ -296,8 +296,8 @@ function BreadcrumbDemo() {
 
 function CardDemo() {
   return (
-    <Stack direction="row" gap="normal" wrap="wrap" align="start">
-      <Card padding="none" style={{ maxWidth: 360 }}>
+    <Stack gap="normal" style={{ maxWidth: 360 }}>
+      <Card padding="none">
         <Card.Header>
           <Card.Title>Design tokens</Card.Title>
           <Card.Description>Semantic color and spacing for every product.</Card.Description>
@@ -309,8 +309,15 @@ function CardDemo() {
           </Button>
         </Card.Footer>
       </Card>
+      {/* The row slot: a titled status with notes and a trailing badge (hds#622). */}
+      <Card padding="item" className="border-0">
+        <Card.Row trailing={<Badge tone="success">Synced</Badge>}>
+          <Card.RowTitle>Figma sync</Card.RowTitle>
+          <Card.RowNote>Last run 2 hours ago</Card.RowNote>
+        </Card.Row>
+      </Card>
       {/* asChild: the whole card is one link, with the interactive hover. */}
-      <Card asChild padding="item" style={{ maxWidth: 240 }}>
+      <Card asChild padding="item">
         <a href="#card">
           <Stack direction="row" gap="tight" justify="space-between" align="center">
             <Users size={18} aria-hidden="true" />

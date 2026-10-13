@@ -23,11 +23,13 @@
  *     markers stays untouched. Only the table body changes.
  *
  * Idempotency: running twice with the same inventory produces a
- * byte-identical plan (rows are stably sorted).
+ * byte-identical plan (rows are stably sorted, and scripts/lib/generated-check.mjs
+ * writes it in the Prettier form lint-staged commits).
  *
  * Usage:
- *   node scripts/generate-closure-plan.mjs        # regen plan in place
- *   node scripts/generate-closure-plan.mjs --check  # exit 1 if regen would change the plan
+ *   node scripts/generate-closure-plan.mjs                # regen plan in place
+ *   node scripts/generate-closure-plan.mjs --check        # exit 1 if regen would change the plan
+ *   node scripts/generate-closure-plan.mjs --root <dir>   # against a copy of the tree (tests)
  *
  * @module generate-closure-plan
  */
@@ -35,189 +37,185 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { rootFromArgv, runGenerator } from './lib/generated-check.mjs';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const INVENTORY_PATH = path.join(ROOT, 'docs/guardrails/full-strictness-inventory.json');
-const PLAN_PATH = path.join(ROOT, 'docs/guardrails/full-strictness-closure-plan.md');
-const REMOVED_LOG = path.join(ROOT, 'docs/guardrails/closure-plan-removed.jsonl');
-
-const argv = process.argv.slice(2);
-const checkMode = argv.includes('--check');
-const verbose = argv.includes('--verbose');
+const INVENTORY = 'docs/guardrails/full-strictness-inventory.json';
+const PLAN = 'docs/guardrails/full-strictness-closure-plan.md';
+const REMOVED_LOG = 'docs/guardrails/closure-plan-removed.jsonl';
 
 const BEGIN_MARKER = '<!-- BEGIN auto-generated rows -->';
 const END_MARKER = '<!-- END auto-generated rows -->';
 
-// ── Load inventory ───────────────────────────────────────────────────────────
-
-if (!fs.existsSync(INVENTORY_PATH)) {
-  console.error(`✗ generate-closure-plan: inventory not found at ${INVENTORY_PATH}`);
-  console.error('  Run: node scripts/run-gates.mjs --channel pre-commit --emit-inventory docs/guardrails/full-strictness-inventory.json');
-  process.exit(2);
-}
-
-let inventory;
-try {
-  inventory = JSON.parse(fs.readFileSync(INVENTORY_PATH, 'utf8'));
-} catch (e) {
-  console.error(`✗ generate-closure-plan: inventory parse failed: ${e.message}`);
-  process.exit(2);
-}
-
-// ── Build current row set ────────────────────────────────────────────────────
-
-const currentRows = [];
-for (const gate of inventory.gates ?? []) {
-  if (!Array.isArray(gate.violations)) continue;
-  for (const v of gate.violations) {
-    const file = v.file ?? '*';
-    const line = v.line == null ? 'null' : String(v.line);
-    const rule = v.rule ?? 'unknown';
-    const key = `${gate.id}::${file}::${line}::${rule}`;
-    currentRows.push({
-      key,
-      gateId: gate.id,
-      file,
-      line,
-      rule,
-      severity: v.severity ?? 'info',
-      message: v.message ?? '',
-    });
-  }
-}
-
-// Stable sort: severity-first (error > warn > baselined > info), then gate, file, line, rule
-const SEVERITY_ORDER = { error: 0, warn: 1, baselined: 2, info: 3 };
-currentRows.sort((a, b) => {
-  const sa = SEVERITY_ORDER[a.severity] ?? 4;
-  const sb = SEVERITY_ORDER[b.severity] ?? 4;
-  if (sa !== sb) return sa - sb;
-  if (a.gateId !== b.gateId) return a.gateId.localeCompare(b.gateId);
-  if (a.file !== b.file) return a.file.localeCompare(b.file);
-  if (a.line !== b.line) return a.line.localeCompare(b.line);
-  return a.rule.localeCompare(b.rule);
-});
-
-// ── Parse existing plan, extract preserved classifications ───────────────────
-
-if (!fs.existsSync(PLAN_PATH)) {
-  console.error(`✗ generate-closure-plan: plan not found at ${PLAN_PATH}`);
-  process.exit(2);
-}
-
-const planRaw = fs.readFileSync(PLAN_PATH, 'utf8');
-const beginIdx = planRaw.indexOf(BEGIN_MARKER);
-const endIdx = planRaw.indexOf(END_MARKER);
-
-if (beginIdx === -1 || endIdx === -1 || endIdx < beginIdx) {
-  console.error(`✗ generate-closure-plan: closure plan must contain BEGIN/END markers`);
-  console.error(`  Add these on their own lines: ${BEGIN_MARKER}  ...  ${END_MARKER}`);
-  process.exit(2);
-}
-
-const preamble = planRaw.slice(0, beginIdx + BEGIN_MARKER.length);
-const postamble = planRaw.slice(endIdx);
-
-// Existing rows live between markers. Parse to extract row-key → classification.
-const existingBlock = planRaw.slice(beginIdx + BEGIN_MARKER.length, endIdx);
-
-const preservedMap = new Map(); // rowKey → classification text
-
 // Row format we emit (and parse back):
 //   | <gate-id> | <file> | <line> | <rule> | <severity> | <classification> |
-// HTML comment immediately above each row carries the row key:
+// HTML comment above each row carries the row key (Prettier puts a blank line
+// between them; the parser carries the key across it):
 //   <!-- key: <gate-id>::<file>::<line>::<rule> -->
 const KEY_COMMENT_RE = /<!--\s*key:\s*([^\s][^>]*?)\s*-->/;
-const TABLE_ROW_RE = /^\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*$/;
+const TABLE_ROW_RE =
+  /^\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*$/;
 
-const existingLines = existingBlock.split('\n');
-let pendingKey = null;
-for (const line of existingLines) {
-  const km = line.match(KEY_COMMENT_RE);
-  if (km) {
-    pendingKey = km[1].trim();
-    continue;
-  }
-  if (pendingKey && TABLE_ROW_RE.test(line)) {
-    const m = line.match(TABLE_ROW_RE);
-    const classification = (m[6] || '').trim();
-    if (classification && !/^classification\b/i.test(classification)) {
-      preservedMap.set(pendingKey, classification);
+// Severity-first (error > warn > baselined > info), then gate, file, line, rule.
+const SEVERITY_ORDER = { error: 0, warn: 1, baselined: 2, info: 3 };
+
+/** One row per violation in the inventory, stably sorted. */
+function inventoryRows(inventory) {
+  const rows = [];
+  for (const gate of inventory.gates ?? []) {
+    if (!Array.isArray(gate.violations)) continue;
+    for (const v of gate.violations) {
+      const file = v.file ?? '*';
+      const line = v.line == null ? 'null' : String(v.line);
+      const rule = v.rule ?? 'unknown';
+      rows.push({
+        key: `${gate.id}::${file}::${line}::${rule}`,
+        gateId: gate.id,
+        file,
+        line,
+        rule,
+        severity: v.severity ?? 'info',
+      });
     }
-    pendingKey = null;
   }
+  return rows.sort((a, b) => {
+    const sa = SEVERITY_ORDER[a.severity] ?? 4;
+    const sb = SEVERITY_ORDER[b.severity] ?? 4;
+    if (sa !== sb) return sa - sb;
+    if (a.gateId !== b.gateId) return a.gateId.localeCompare(b.gateId);
+    if (a.file !== b.file) return a.file.localeCompare(b.file);
+    if (a.line !== b.line) return a.line.localeCompare(b.line);
+    return a.rule.localeCompare(b.rule);
+  });
 }
 
-// ── Detect removed rows ──────────────────────────────────────────────────────
-
-const currentKeys = new Set(currentRows.map((r) => r.key));
-const removedKeys = [];
-for (const oldKey of preservedMap.keys()) {
-  if (!currentKeys.has(oldKey)) removedKeys.push(oldKey);
+/** row key → hand-set classification, read from the rows between the markers. */
+function preservedClassifications(block) {
+  const preserved = new Map();
+  let pendingKey = null;
+  for (const line of block.split('\n')) {
+    const km = line.match(KEY_COMMENT_RE);
+    if (km) {
+      pendingKey = km[1].trim();
+      continue;
+    }
+    const m = pendingKey ? line.match(TABLE_ROW_RE) : null;
+    if (m) {
+      const classification = (m[6] || '').trim();
+      if (classification && !/^classification\b/i.test(classification)) {
+        preserved.set(pendingKey, classification);
+      }
+      pendingKey = null;
+    }
+  }
+  return preserved;
 }
 
-// ── Emit new rows block ──────────────────────────────────────────────────────
+/**
+ * The plan regenerated from `inventory`, keeping the text outside the markers
+ * and every classification a person set on a row that still exists.
+ *
+ * @param {{ inventory: object, planRaw: string }} input
+ * @returns {{ plan: string, rows: object[], preserved: Map<string, string>, removedKeys: string[] }}
+ */
+export function buildClosurePlan({ inventory, planRaw }) {
+  const beginIdx = planRaw.indexOf(BEGIN_MARKER);
+  const endIdx = planRaw.indexOf(END_MARKER);
+  if (beginIdx === -1 || endIdx === -1 || endIdx < beginIdx) {
+    throw new Error(
+      `closure plan must contain BEGIN/END markers. Add these on their own lines: ${BEGIN_MARKER}  ...  ${END_MARKER}`,
+    );
+  }
+  const preamble = planRaw.slice(0, beginIdx + BEGIN_MARKER.length);
+  const postamble = planRaw.slice(endIdx);
+  const preserved = preservedClassifications(planRaw.slice(beginIdx + BEGIN_MARKER.length, endIdx));
 
-const lines = [];
-lines.push('');
-lines.push(`> Auto-generated by \`scripts/generate-closure-plan.mjs\` from \`docs/guardrails/full-strictness-inventory.json\`. ${currentRows.length} row(s). Do not edit between BEGIN/END markers — re-run \`pnpm closure:plan\`. Edit only the **classification** column; row keys preserve your edits across regens.`);
-lines.push('');
+  const rows = inventoryRows(inventory);
+  const currentKeys = new Set(rows.map((r) => r.key));
+  const removedKeys = [...preserved.keys()].filter((key) => !currentKeys.has(key));
 
-if (currentRows.length === 0) {
-  lines.push('_(No violation rows in the current inventory.)_');
-  lines.push('');
-} else {
-  lines.push('| gate | file | line | rule | severity | classification |');
-  lines.push('|---|---|---|---|---|---|');
-  for (const r of currentRows) {
-    lines.push(`<!-- key: ${r.key} -->`);
-    const cls = preservedMap.get(r.key) || 'classification: TODO';
+  const lines = [
+    '',
+    `> Auto-generated by \`scripts/generate-closure-plan.mjs\` from \`${INVENTORY}\`. ${rows.length} row(s). Do not edit between BEGIN/END markers — re-run \`pnpm closure:plan\`. Edit only the **classification** column; row keys preserve your edits across regens.`,
+    '',
+  ];
+  if (rows.length === 0) {
+    lines.push('_(No violation rows in the current inventory.)_', '');
+  } else {
+    lines.push('| gate | file | line | rule | severity | classification |');
+    lines.push('|---|---|---|---|---|---|');
     // Pipe characters in cell content would break the markdown table — escape them.
     const safe = (s) => String(s).replace(/\|/g, '\\|');
-    lines.push(`| ${safe(r.gateId)} | ${safe(r.file)} | ${safe(r.line)} | ${safe(r.rule)} | ${safe(r.severity)} | ${safe(cls)} |`);
+    for (const r of rows) {
+      const cls = preserved.get(r.key) || 'classification: TODO';
+      lines.push(`<!-- key: ${r.key} -->`);
+      lines.push(
+        `| ${safe(r.gateId)} | ${safe(r.file)} | ${safe(r.line)} | ${safe(r.rule)} | ${safe(r.severity)} | ${safe(cls)} |`,
+      );
+    }
+    lines.push('');
   }
-  lines.push('');
+
+  return { plan: preamble + lines.join('\n') + postamble, rows, preserved, removedKeys };
 }
 
-const newBlock = lines.join('\n');
-const newPlan = preamble + newBlock + postamble;
+async function main() {
+  const root = rootFromArgv(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'));
+  const verbose = process.argv.includes('--verbose');
 
-// ── Write or check ──────────────────────────────────────────────────────────
-
-if (checkMode) {
-  if (newPlan !== planRaw) {
-    console.error('✗ generate-closure-plan --check: plan would change. Run without --check to update.');
-    process.exit(1);
+  const inventoryPath = path.join(root, INVENTORY);
+  if (!fs.existsSync(inventoryPath)) {
+    console.error(`✗ generate-closure-plan: inventory not found at ${inventoryPath}`);
+    console.error(
+      `  Run: node scripts/run-gates.mjs --channel pre-commit --emit-inventory ${INVENTORY}`,
+    );
+    return 2;
   }
-  console.log('✓ generate-closure-plan --check: plan is up-to-date');
-  process.exit(0);
+  const planPath = path.join(root, PLAN);
+  if (!fs.existsSync(planPath)) {
+    console.error(`✗ generate-closure-plan: plan not found at ${planPath}`);
+    return 2;
+  }
+
+  let built;
+  try {
+    built = buildClosurePlan({
+      inventory: JSON.parse(fs.readFileSync(inventoryPath, 'utf8')),
+      planRaw: fs.readFileSync(planPath, 'utf8'),
+    });
+  } catch (e) {
+    console.error(`✗ generate-closure-plan: ${e.message}`);
+    return 2;
+  }
+
+  const result = await runGenerator({
+    root,
+    outputs: { [PLAN]: built.plan },
+    label: 'generate-closure-plan',
+    fix: 'node scripts/generate-closure-plan.mjs',
+  });
+  if (result.check) return result.exitCode;
+
+  const { rows, preserved, removedKeys } = built;
+  // Append-only audit log of the classified rows a regen dropped.
+  if (removedKeys.length > 0) {
+    const ts = new Date().toISOString();
+    const entries = removedKeys.map((key) =>
+      JSON.stringify({ ts, removedRowKey: key, priorClassification: preserved.get(key) }),
+    );
+    fs.mkdirSync(path.dirname(path.join(root, REMOVED_LOG)), { recursive: true });
+    fs.appendFileSync(path.join(root, REMOVED_LOG), `${entries.join('\n')}\n`);
+  }
+  const kept = rows.filter((r) => preserved.has(r.key)).length;
+  console.log(
+    `  rows: ${rows.length} (${kept} preserved · ${rows.length - kept} new · ${removedKeys.length} removed)`,
+  );
+  if (verbose && removedKeys.length > 0) {
+    console.log(`\nRemoved rows (logged to ${REMOVED_LOG}):`);
+    for (const k of removedKeys) console.log(`  - ${k}`);
+  }
+  return 0;
 }
 
-// Atomic write
-const tmp = `${PLAN_PATH}.tmp`;
-fs.writeFileSync(tmp, newPlan);
-fs.renameSync(tmp, PLAN_PATH);
-
-// Append removed-row audit log
-if (removedKeys.length > 0) {
-  const ts = new Date().toISOString();
-  const entries = removedKeys
-    .map((key) => JSON.stringify({ ts, removedRowKey: key, priorClassification: preservedMap.get(key) }))
-    .join('\n') + '\n';
-  fs.mkdirSync(path.dirname(REMOVED_LOG), { recursive: true });
-  fs.appendFileSync(REMOVED_LOG, entries);
-}
-
-const summary = {
-  total: currentRows.length,
-  preserved: currentRows.filter((r) => preservedMap.has(r.key)).length,
-  newRows: currentRows.filter((r) => !preservedMap.has(r.key)).length,
-  removed: removedKeys.length,
-};
-
-console.log(`✓ generate-closure-plan — ${path.relative(ROOT, PLAN_PATH)}`);
-console.log(`  rows: ${summary.total} (${summary.preserved} preserved · ${summary.newRows} new · ${summary.removed} removed)`);
-if (verbose && removedKeys.length > 0) {
-  console.log('\nRemoved rows (logged to docs/guardrails/closure-plan-removed.jsonl):');
-  for (const k of removedKeys) console.log(`  - ${k}`);
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  process.exitCode = await main();
 }
