@@ -34,6 +34,15 @@ import { cn } from '../../lib/utils';
  * @whenNot A compact mode switch with no panels, or content that must all be visible.
  * @useInstead SegmentedControl a compact switch with no panels
  * @useInstead Disclosure optional content that expands in place
+ * @a11y component required a11y:tabs.roles It exposes tablist, tab and tabpanel roles, with aria-selected on the active tab and aria-controls and aria-labelledby linking each tab to its panel.
+ * @a11y component required a11y:tabs.single-tab-stop The tablist is one Tab stop, entering on the selected tab; Tab then moves on to the panel.
+ * @a11y component required a11y:tabs.arrow-keys Left and Right move between tabs and select them, wrapping at the ends; Home and End jump to the first and last tab.
+ * @a11y component required a11y:tabs.disabled-skipped Arrow keys skip a disabled tab.
+ * @a11y component required a11y:tabs.panel-focus The active panel is focusable, so keyboard users can reach and scroll its content.
+ * @a11y component required a11y:tabs.focus-ring The trigger focus ring is drawn inset, so the scrolling tab list cannot clip it.
+ * @a11y component required a11y:tabs.target-size The tab strip is 40px tall, over the 24px floor (WCAG 2.5.8).
+ * @a11y consumer required Give every TabsTrigger value a TabsContent with the same value, so aria-controls resolves.
+ * @a11y consumer recommended Name the TabsList (aria-label or aria-labelledby) when the surrounding heading does not make its purpose clear.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89
  */
 export const Tabs = TabsPrimitive.Root;

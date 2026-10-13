@@ -6,6 +6,12 @@
  * @whenNot An action that changes something, or a control that needs button styling.
  * @useInstead Button an action or a link that needs button styling
  * @useInstead Text unlinked body copy
+ * @a11y component required a11y:inline-link.real-anchor Every href renders a real link (<a href>), so keyboard, middle-click and screen-reader link lists work.
+ * @a11y component required a11y:inline-link.keyboard-reach Tab reaches each link in document order.
+ * @a11y component required a11y:inline-link.new-tab-notice An external link opens a new tab and says so in text (visually hidden), and its icon is decorative.
+ * @a11y component required a11y:inline-link.focus-ring A focused link draws the shared focus ring.
+ * @a11y component required a11y:inline-link.not-colour-only Links are underlined at rest, so they are not told apart from body text by colour alone (WCAG 1.4.1).
+ * @a11y consumer required Write link text that says where it goes, without relying on the surrounding sentence (WCAG 2.4.4).
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161
  */
 import React from 'react';

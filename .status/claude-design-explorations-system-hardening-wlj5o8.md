@@ -1,3 +1,5 @@
 Design explorations phase 0 (hds#628) integrated: spec set and gates (six briefs, invented fixtures, plugin-lint, axe, PII, gap aggregator) on the consistency harness; soft-demo and accent-pair-demo demo tenants; board and index generators (board reads the harness reports directory with --shots and hides a direction that failed its gates); the 21st MCP wired read-only. A dummy run (standing A, and B under soft-demo) passes every gate and renders a board.
 
 @a11y JSDoc tags (hds#520 slice 0): owner/testId on a11yRules, reaches component-api.json, MCP get_component and the docs Accessibility fold; scripts/check-a11y-contracts.mjs registered at severity warn (pre-commit, lists every gap, exits 0) until the family backfills land.
+
+@a11y family C (hds#520): contracts and contract tests for Button, InlineLink, Breadcrumb, Pagination, Tabs, Disclosure, Card, AssetImg, CodeBlock, InlineCode; fixes for Pagination focus after the focused button disables, clickable non-expandable AssetImg keyboard access, copy-status announcements in CodeBlock and InlineCode, and a 24px Disclosure trigger.

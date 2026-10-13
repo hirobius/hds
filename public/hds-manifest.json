@@ -541,7 +541,9 @@
         "exportName": "CodeBlock",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/code-block.test.tsx"
+      ],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
         "Border stroke": "semantic.color.border.default",
@@ -592,7 +594,61 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The code is a named, focusable region (Code sample), so keyboard users can scroll long lines.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.scroll-region"
+        },
+        {
+          "rule": "The copy button is a named button of type button, and is renamed Copied once it has copied.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.copy-name"
+        },
+        {
+          "rule": "Copying is announced from a polite status region that is mounted before the change.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.copy-status"
+        },
+        {
+          "rule": "The collapsible toggle reports aria-expanded and aria-controls, works with Enter and Space, and a collapsed panel is removed from the document.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.expand-state"
+        },
+        {
+          "rule": "Collapsing while focus is inside the panel returns focus to the toggle.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.focus-return"
+        },
+        {
+          "rule": "The copy button and the toggle carry the shared focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.focus-ring"
+        },
+        {
+          "rule": "The copy button is at least 24px and lifts to the touch target on coarse pointers (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.target-size"
+        },
+        {
+          "rule": "The chevron and copy-button transitions use the productive motion token, which is zero under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Put the CodeBlock under a heading, or state what the sample shows in the text before it, since the region is only named Code sample.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -698,6 +754,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/disclosure.test.tsx",
         "src/app/components/tabs.tsx"
       ],
       "tokenMapping": {
@@ -760,7 +817,61 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The trigger is a button whose aria-expanded follows the panel and whose aria-controls names it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.expanded-state"
+        },
+        {
+          "rule": "Enter and Space toggle it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.keyboard"
+        },
+        {
+          "rule": "A collapsed panel is removed from the document, so assistive technology cannot reach it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.hidden-collapsed"
+        },
+        {
+          "rule": "Collapsing while focus is inside the panel returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.focus-return"
+        },
+        {
+          "rule": "The trigger carries the shared focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.focus-ring"
+        },
+        {
+          "rule": "The trigger is at least 24px tall in every variant (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.target-size"
+        },
+        {
+          "rule": "The chevron is decorative and hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.chevron-hidden"
+        },
+        {
+          "rule": "The height and chevron animation take their duration from useHdsMotion, which is zero under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Put the Disclosure under a heading of the right level when it introduces a section, so the section stays in the outline.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "pattern",
@@ -1393,7 +1504,37 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "With copyable, the copy button is a named button and is renamed Copied once it has copied.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-code.copy-name"
+        },
+        {
+          "rule": "Tab reaches the copy button and Enter and Space copy.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-code.keyboard"
+        },
+        {
+          "rule": "Copying is announced from a polite status region that is mounted before the change.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-code.copy-status"
+        },
+        {
+          "rule": "The copy button is the small Button, 32px, over the 24px floor (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-code.target-size"
+        },
+        {
+          "rule": "Pass a string child when copyable; the text copied is the child.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -1451,12 +1592,39 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Link text must be descriptive — avoid \"click here\" or \"read more\"",
-          "required": true
+          "rule": "Every href renders a real link (<a href>), so keyboard, middle-click and screen-reader link lists work.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.real-anchor"
         },
         {
-          "rule": "External links must signal new-tab behavior via aria-label or visually hidden text",
-          "required": false
+          "rule": "Tab reaches each link in document order.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.keyboard-reach"
+        },
+        {
+          "rule": "An external link opens a new tab and says so in text (visually hidden), and its icon is decorative.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.new-tab-notice"
+        },
+        {
+          "rule": "A focused link draws the shared focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.focus-ring"
+        },
+        {
+          "rule": "Links are underlined at rest, so they are not told apart from body text by colour alone (WCAG 1.4.1).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.not-colour-only"
+        },
+        {
+          "rule": "Write link text that says where it goes, without relying on the surrounding sentence (WCAG 2.4.4).",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [],
@@ -2559,7 +2727,60 @@
       "requiredProps": [
         "children"
       ],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "A selectable card is a focusable checkbox that reports aria-checked; a plain card is neither.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.selectable-role"
+        },
+        {
+          "rule": "Space toggles a focused selectable card and Enter does not.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.space-toggles"
+        },
+        {
+          "rule": "A key or click inside a control in the card is left to that control.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.nested-controls"
+        },
+        {
+          "rule": "Selection adds a 2px ring and aria-checked, not a colour change alone (WCAG 1.4.1).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.selection-not-colour-only"
+        },
+        {
+          "rule": "A selectable card carries the shared focus ring, apart from the selection ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.focus-ring"
+        },
+        {
+          "rule": "Card.Title is a heading (h3) and takes its level from as.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.title-heading"
+        },
+        {
+          "rule": "Card.Progress is a progressbar with a name (label, else Progress) and its value.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.progress-name"
+        },
+        {
+          "rule": "Give a selectable Card a name from its content or an aria-label, and keep controls nested in it out of its name.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Set Card.Title's heading level with as so it fits the page outline.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "preview": {
         "exportName": "Card",
         "sizing": "panel"
@@ -3177,12 +3398,62 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Must have accessible name via label prop or aria-label",
-          "required": true
+          "rule": "Enter and Space activate it, and it takes part in the Tab order.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.keyboard-activate"
         },
         {
-          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
-          "required": true
+          "rule": "Keyboard focus draws a visible ring from the focus-visible utilities; the outline is never removed without it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.focus-ring"
+        },
+        {
+          "rule": "loading sets aria-busy and disables the button, and the spinner is hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.loading-busy"
+        },
+        {
+          "rule": "A toggle button reports its state with aria-pressed and flips it on activation.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.toggle-pressed"
+        },
+        {
+          "rule": "A disabled asChild link is aria-disabled and leaves the tab order, since a link cannot be natively disabled.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.aschild-disabled"
+        },
+        {
+          "rule": "An icon-only button takes its accessible name from label (as aria-label).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.icon-only-name"
+        },
+        {
+          "rule": "Every size is at least 24px tall, and an icon-only button at least 24px wide (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.target-size"
+        },
+        {
+          "rule": "The loading spinner stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.reduced-motion"
+        },
+        {
+          "rule": "Give an icon-only Button a label (or aria-label); without one it has no accessible name.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "propConstraints": {
@@ -4032,12 +4303,39 @@
       ],
       "a11yRules": [
         {
-          "rule": "Must have alt text (decorative images use alt=\"\")",
-          "required": true
+          "rule": "The alt text reaches the image, and a failed image with alt is still exposed as a named image.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.alt"
         },
         {
-          "rule": "Caption or description should be associated via aria-describedby when present",
-          "required": false
+          "rule": "alt of an empty string makes the image decorative, and a failed image without alt is hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.decorative"
+        },
+        {
+          "rule": "A clickable image is a labelled button that Enter and Space activate.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.interactive-button"
+        },
+        {
+          "rule": "A clickable image is keyboard operable in every context, with expandable off and in the lightbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.interactive-everywhere"
+        },
+        {
+          "rule": "The interactive wrapper keeps the shared focus ring and never sets outline.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.focus-ring"
+        },
+        {
+          "rule": "Pass meaningful alt text, or alt of an empty string for a decorative image; a clickable image needs alt for its name (WCAG 1.1.1, 4.1.2).",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "docsPage": "/docs/patterns/asset-img",
@@ -4113,7 +4411,60 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "It exposes tablist, tab and tabpanel roles, with aria-selected on the active tab and aria-controls and aria-labelledby linking each tab to its panel.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.roles"
+        },
+        {
+          "rule": "The tablist is one Tab stop, entering on the selected tab; Tab then moves on to the panel.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.single-tab-stop"
+        },
+        {
+          "rule": "Left and Right move between tabs and select them, wrapping at the ends; Home and End jump to the first and last tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.arrow-keys"
+        },
+        {
+          "rule": "Arrow keys skip a disabled tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.disabled-skipped"
+        },
+        {
+          "rule": "The active panel is focusable, so keyboard users can reach and scroll its content.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.panel-focus"
+        },
+        {
+          "rule": "The trigger focus ring is drawn inset, so the scrolling tab list cannot clip it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.focus-ring"
+        },
+        {
+          "rule": "The tab strip is 40px tall, over the 24px floor (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.target-size"
+        },
+        {
+          "rule": "Give every TabsTrigger value a TabsContent with the same value, so aria-controls resolves.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Name the TabsList (aria-label or aria-labelledby) when the surrounding heading does not make its purpose clear.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/tabs",
       "usage": {
         "when": "Switch between panels of related content in the same place, one visible at a time.",
@@ -4932,7 +5283,43 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The trail is a navigation landmark with an accessible name (default Breadcrumb).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.nav-landmark"
+        },
+        {
+          "rule": "The trail is an ordered list of its crumbs.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.ordered-list"
+        },
+        {
+          "rule": "The last crumb is marked aria-current=page and is not a link.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.current-page"
+        },
+        {
+          "rule": "The chevron separators are hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.separators-hidden"
+        },
+        {
+          "rule": "Tab visits each link in trail order and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.keyboard-focus"
+        },
+        {
+          "rule": "Give each Breadcrumb a distinct label when a page has more than one navigation landmark.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/breadcrumb",
       "usage": {
         "when": "Show where the current page sits in a hierarchy and link back up it.",
@@ -4998,7 +5385,61 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The controls are a navigation landmark with an accessible name (default Pagination).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.nav-landmark"
+        },
+        {
+          "rule": "Previous, Next and every page number have an accessible name (Previous page, Next page, Page N).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.control-names"
+        },
+        {
+          "rule": "Only the current page is marked aria-current=page.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.current-page"
+        },
+        {
+          "rule": "Previous is disabled on the first page and Next on the last.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.disabled-ends"
+        },
+        {
+          "rule": "The truncation ellipsis is hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.ellipsis-hidden"
+        },
+        {
+          "rule": "Tab reaches every control and Enter and Space change the page.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.keyboard"
+        },
+        {
+          "rule": "When activating Previous or Next disables the focused button, focus moves to the current page instead of being stranded.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.focus-kept"
+        },
+        {
+          "rule": "Previous and Next are 32px and page buttons lift to the touch target, over the 24px floor (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.target-size"
+        },
+        {
+          "rule": "After a page change, keep focus on the control or move it to the start of the results, and tell screen-reader users the results changed.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/pagination",
       "usage": {
         "when": "Move between pages of a long result set, with truncated page numbers.",

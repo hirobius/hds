@@ -5,6 +5,15 @@
  * @usage Hide optional explanatory content behind a heading that people can expand.
  * @whenNot Content people must see, or switching between panels.
  * @useInstead Tabs switching between panels of content
+ * @a11y component required a11y:disclosure.expanded-state The trigger is a button whose aria-expanded follows the panel and whose aria-controls names it.
+ * @a11y component required a11y:disclosure.keyboard Enter and Space toggle it.
+ * @a11y component required a11y:disclosure.hidden-collapsed A collapsed panel is removed from the document, so assistive technology cannot reach it.
+ * @a11y component required a11y:disclosure.focus-return Collapsing while focus is inside the panel returns focus to the trigger.
+ * @a11y component required a11y:disclosure.focus-ring The trigger carries the shared focus ring.
+ * @a11y component required a11y:disclosure.target-size The trigger is at least 24px tall in every variant (WCAG 2.5.8).
+ * @a11y component required a11y:disclosure.chevron-hidden The chevron is decorative and hidden from assistive technology.
+ * @a11y component required gate:check-reduced-motion The height and chevron animation take their duration from useHdsMotion, which is zero under prefers-reduced-motion.
+ * @a11y consumer recommended Put the Disclosure under a heading of the right level when it introduces a section, so the section stays in the outline.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453
  */
 import React, { useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
@@ -28,9 +37,10 @@ type DisclosureVariant = 'panel' | 'nav' | 'card';
 // Height/opacity/chevron-rotation stay motion/react-driven (JS spring/tween
 // timing an accordion needs, not a CSS transition), so that animation is
 // untouched by this migration — only the static layout/color styling moved.
+// min-h: the caption-size label is 18px tall, under the 24px WCAG 2.5.8 floor (hds#520).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
 const disclosureTriggerVariants = /* @__PURE__ */ cva(
-  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-primary transition-[border-color,box-shadow,color]',
+  'flex min-h-[var(--primitive-size-interactive-minCompact)] w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-primary transition-[border-color,box-shadow,color]',
   {
     variants: {
       variant: {
