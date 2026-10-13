@@ -25,7 +25,7 @@ function renderBoth(content: {
 }) {
   const tile = render(<StatusTile {...content} />).container.firstElementChild as HTMLElement;
   const card = render(
-    <Card padding="item">
+    <Card padding="item" className="border-0">
       <Card.Row trailing={content.trailing}>
         <Card.RowTitle>{content.title}</Card.RowTitle>
         {content.notes?.map((note, i) => (
@@ -84,9 +84,11 @@ describe('Card.Row renders a StatusTile’s content (hds#622)', () => {
     expect(card.classList.contains('rounded-lg')).toBe(true);
     expect(card.style.padding).toBe('16px');
     expect(read('src/styles/tokens.css')).toMatch(/--primitive-space-4:\s*16px;/);
-    // The one difference: Card's resting 1px border is transparent, kept so a
-    // bordered or toned Card is the same size. It paints nothing.
-    expect(card.classList.contains('border-transparent')).toBe(true);
+    // ...and no border: `border-0` cancels Card's resting 1px transparent
+    // border, so the box is 0px border + 16px padding, StatusTile's own.
+    const widths = [...card.classList].filter((c) => /^border(-\d+)?$/.test(c));
+    expect(widths).toEqual(['border-0']);
+    expect(tile.className).not.toMatch(/\bborder\b/);
     expect(card.getAttribute('data-tone')).toBe('neutral');
     expect(card.getAttribute('data-bordered')).toBe('false');
   });
@@ -115,6 +117,19 @@ describe('Card.Row renders a StatusTile’s content (hds#622)', () => {
 });
 
 describe('StatusTile deprecation (hds#622)', () => {
+  it("every published recipe cancels Card's resting border, so the tile is pixel-equal", () => {
+    const recipes = {
+      'status-tile.tsx': read('src/app/components/status-tile.tsx').match(/@deprecated[^\n]*/)?.[0],
+      'card.tsx': read('src/app/components/card.tsx').match(/<Card padding="item"[^>]*>/)?.[0],
+      'MIGRATIONS.md': read('MIGRATIONS.md').match(
+        /\/\/ After[\s\S]*?<Card padding="item"[^>]*>/,
+      )?.[0],
+      'upgrade note': JSON.parse(read('upgrade/pending/statustile-into-card.json')).steps[0].plain,
+    };
+    for (const [where, recipe] of Object.entries(recipes))
+      expect(recipe, where).toMatch(/<Card padding=\\?"item\\?" className=\\?"border-0\\?">/);
+  });
+
   const manifest = JSON.parse(read('public/hds-manifest.json'));
 
   it('is deprecated in the manifest, pointing at the Card composition', () => {

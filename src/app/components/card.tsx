@@ -19,7 +19,7 @@
  *
  * A compact titled status (what StatusTile was, hds#622) is one Row:
  *
- *   <Card padding="item">
+ *   <Card padding="item" className="border-0">
  *     <Card.Row trailing={<Badge tone="success">Synced</Badge>}>
  *       <Card.RowTitle>Figma sync</Card.RowTitle>
  *       <Card.RowNote>Last run 2 hours ago</Card.RowNote>
@@ -38,7 +38,8 @@
  * - Footer: actions, secondary metadata, timestamps.
  * - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone
  *   for a <Badge> or one affordance. No padding of its own: pair it with
- *   `padding="item"` for the compact tile.
+ *   `padding="item"` for the compact tile, and `className="border-0"` to drop
+ *   Card's resting 1px transparent border: the tile is then StatusTile's box.
  *
  * `variant`: 'default' (borderless) | 'accent' (2px accent border) — the
  * structural axis, for highlighted entries like "recommended package".
@@ -360,8 +361,8 @@ const CardFooter = /* @__PURE__ */ React.forwardRef<
 
 // The Card slot StatusTile folds into: a title at the ui role, muted caption
 // notes under it, and a trailing zone for a Badge or one affordance. The class
-// strings are StatusTile's own, so `<Card padding="item">` around a Card.Row
-// renders the tile's content with the same elements and classes on the same
+// strings are StatusTile's own, so `<Card padding="item" className="border-0">`
+// around a Card.Row renders the tile's content with the same elements and classes on the same
 // surface tokens (card-row.test.tsx pins it). Like the other parts it has no
 // padding of its own: the Card pads it.
 

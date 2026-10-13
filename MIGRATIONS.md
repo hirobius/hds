@@ -159,18 +159,18 @@ scale, and each replacement computes the same pixels at both densities:
   where the array is built from `filter(Boolean)`, and the one consumer app
   has five call sites.
 
-`<Card padding="item">` around a `Card.Row` renders the tile's content with the
-same elements and classes, on the same raised surface, radius and 16px inset
-(`src/app/components/card-row.test.tsx` pins it). The one difference is Card's
-resting 1px border, which is transparent: it paints nothing and keeps a
-bordered or toned Card the same size, so the content sits 1px further in.
+`<Card padding="item" className="border-0">` around a `Card.Row` renders the
+tile pixel for pixel: the same elements and classes, on the same raised surface,
+radius and 16px inset (`src/app/components/card-row.test.tsx` pins it). Keep
+`border-0`: it drops Card's resting 1px transparent border, which would make the
+tile 2px larger and move its content 1px in.
 
 ```tsx
 // Before
 <StatusTile tone={tone} title={task.title} notes={notes} trailing={<Badge tone={tone}>{label}</Badge>} />
 
 // After: drop `tone`. StatusTile never painted it, and Card's `tone` paints a border.
-<Card padding="item">
+<Card padding="item" className="border-0">
   <Card.Row trailing={<Badge tone={tone}>{label}</Badge>}>
     <Card.RowTitle>{task.title}</Card.RowTitle>
     {notes.map((note) => (
@@ -180,14 +180,14 @@ bordered or toned Card the same size, so the content sits 1px further in.
 </Card>
 ```
 
-| Deprecated       | Use instead                                                          |
-| ---------------- | -------------------------------------------------------------------- |
-| `StatusTile`     | `<Card padding="item">` around `<Card.Row trailing={…}>`             |
-| `title`          | `<Card.RowTitle>` as the row's first child                           |
-| `notes`          | one `<Card.RowNote>` per note, after the title                       |
-| `trailing`       | `Card.Row`'s `trailing`                                              |
-| `tone`           | nothing: drop it (it set only a `data-hds-metrics` attribute)        |
-| `StatusTileTone` | your own union, or `BadgeProps['tone']` when it feeds a Badge's tone |
+| Deprecated       | Use instead                                                                   |
+| ---------------- | ----------------------------------------------------------------------------- |
+| `StatusTile`     | `<Card padding="item" className="border-0">` around `<Card.Row trailing={…}>` |
+| `title`          | `<Card.RowTitle>` as the row's first child                                    |
+| `notes`          | one `<Card.RowNote>` per note, after the title                                |
+| `trailing`       | `Card.Row`'s `trailing`                                                       |
+| `tone`           | nothing: drop it (it set only a `data-hds-metrics` attribute)                 |
+| `StatusTileTone` | your own union, or `BadgeProps['tone']` when it feeds a Badge's tone          |
 
 ## 0.20.0 removals (2026-10-01)
 

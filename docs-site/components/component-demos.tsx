@@ -310,7 +310,7 @@ function CardDemo() {
         </Card.Footer>
       </Card>
       {/* The row slot: a titled status with notes and a trailing badge (hds#622). */}
-      <Card padding="item">
+      <Card padding="item" className="border-0">
         <Card.Row trailing={<Badge tone="success">Synced</Badge>}>
           <Card.RowTitle>Figma sync</Card.RowTitle>
           <Card.RowNote>Last run 2 hours ago</Card.RowNote>
