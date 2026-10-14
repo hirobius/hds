@@ -685,6 +685,12 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - resize: "none" | "both" | "vertical" = vertical
   - textareaClassName: string
 
+### ThemeToggle
+One-button light/dark switch with a sun-to-moon morph.
+  - className: string
+  - isDark: boolean
+  - onToggle: (() => void)
+
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.
   - date: string | number | Date

@@ -53,6 +53,7 @@ import {
   TabsList,
   TabsTrigger,
   Tag,
+  ThemeToggle,
   Text,
   Textarea,
   Toggle,
@@ -471,6 +472,19 @@ function ComposerDemo() {
   );
 }
 
+function ThemeToggleDemo() {
+  // Local state only: the demo shows the morph without switching the docs theme.
+  const [dark, setDark] = useState(false);
+  return (
+    <div style={demoRow}>
+      <ThemeToggle isDark={dark} onToggle={() => setDark((d) => !d)} />
+      <span>{dark ? 'Dark' : 'Light'}: press to morph</span>
+      <ThemeToggle isDark={false} onToggle={() => {}} />
+      <ThemeToggle isDark onToggle={() => {}} />
+    </div>
+  );
+}
+
 function KbdDemo() {
   return (
     <p style={{ margin: 0 }}>
@@ -872,6 +886,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Stack: StackDemo,
   Surface: SurfaceDemo,
   Tabs: TabsDemo,
+  ThemeToggle: ThemeToggleDemo,
   Tag: TagDemo,
   Text: TextDemo,
   Textarea: TextareaDemo,

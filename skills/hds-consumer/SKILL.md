@@ -53,6 +53,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Actions
 
 - `Button` — Triggers an action when activated.
+- `ThemeToggle` — One-button light/dark switch with a sun-to-moon morph.
 
 ### Display
 

@@ -45,6 +45,7 @@ export const PREVIEWED_COMPONENTS = [
   'Tag',
   'Text',
   'Textarea',
+  'ThemeToggle',
   'Toggle',
   'Tooltip',
   'VisuallyHidden',

@@ -40,7 +40,7 @@
 // Side-effect import: design system base styles (tokens + theme + utilities)
 import './styles/index.css';
 
-// ── primitives (38) ──
+// ── primitives (39) ──
 export * from './app/components/alert';
 export * from './app/components/avatar';
 export * from './app/components/badge';
@@ -65,6 +65,7 @@ export * from './app/components/inline-link';
 export * from './app/components/input';
 export * from './app/components/textarea';
 export * from './app/components/composer';
+export * from './app/components/theme-toggle';
 export * from './app/components/checkbox';
 export * from './app/components/radio';
 export * from './app/components/slider';
