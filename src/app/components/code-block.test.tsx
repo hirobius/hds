@@ -4,7 +4,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CodeBlock } from './code-block';
@@ -16,13 +16,25 @@ const tokenPx = (name: string) =>
   Number(css('tokens.generated.css').match(new RegExp(`${name}:\\s*(\\d+)px`))?.[1]);
 
 describe('CodeBlock accessibility contract', () => {
-  it('a11y:code-block.scroll-region - the code is a named, focusable region so keyboard users can scroll it', async () => {
+  // jsdom does no layout, so fake an overflowing <pre> (scrollWidth past clientWidth).
+  function fakeOverflow() {
+    vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(500);
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(100);
+  }
+
+  it('a11y:code-block.scroll-region - overflowing code is a named, focusable group so keyboard users can scroll it; short code adds no tab stop', async () => {
     const user = userEvent.setup();
-    render(<CodeBlock code="const a = 1;" language="ts" />);
-    const region = screen.getByRole('region', { name: 'Code sample' });
-    expect(region.getAttribute('tabindex')).toBe('0');
+    const { unmount } = render(<CodeBlock code="const a = 1;" language="ts" />);
+    expect(screen.queryByRole('group', { name: 'ts code' })).toBeNull();
+    expect(screen.queryByRole('region')).toBeNull();
+    unmount();
+    fakeOverflow();
+    render(<CodeBlock code={'const a = 1;'.repeat(40)} language="ts" />);
+    const group = screen.getByRole('group', { name: 'ts code' });
+    expect(group.getAttribute('tabindex')).toBe('0');
     await user.tab();
-    expect(document.activeElement).toBe(region);
+    expect(document.activeElement).toBe(group);
+    vi.restoreAllMocks();
   });
 
   it('a11y:code-block.copy-name - the copy button is a named button that is not a submit button, and is renamed after copying', async () => {
@@ -70,13 +82,15 @@ describe('CodeBlock accessibility contract', () => {
 
   it('a11y:code-block.focus-return - collapsing while focus is inside the panel returns focus to the toggle', async () => {
     const user = userEvent.setup();
+    fakeOverflow();
     render(<CodeBlock code="x" collapsible defaultExpanded />);
-    const region = screen.getByRole('region', { name: 'Code sample' });
-    region.focus();
-    expect(document.activeElement).toBe(region);
+    const group = screen.getByRole('group', { name: 'Code sample' });
+    group.focus();
+    expect(document.activeElement).toBe(group);
     const toggle = screen.getByRole('button', { name: /hide code/i });
     await user.click(toggle);
     expect(document.activeElement).toBe(toggle);
+    vi.restoreAllMocks();
   });
 
   it('a11y:code-block.focus-ring - the copy button and the toggle carry the shared focus ring class', () => {

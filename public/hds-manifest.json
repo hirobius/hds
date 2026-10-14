@@ -621,7 +621,7 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "The code is a named, focusable region (Code sample), so keyboard users can scroll long lines.",
+          "rule": "When its code overflows, the block is a focusable group named by its filename or language, so keyboard users can scroll long lines; short code adds no tab stop.",
           "required": true,
           "owner": "component",
           "testId": "a11y:code-block.scroll-region"
@@ -669,7 +669,7 @@
           "testId": "gate:check-reduced-motion"
         },
         {
-          "rule": "Put the CodeBlock under a heading, or state what the sample shows in the text before it, since the region is only named Code sample.",
+          "rule": "Put the CodeBlock under a heading, or state what the sample shows in the text before it, since the scroll group is named only by its filename or language.",
           "required": false,
           "owner": "consumer"
         }
