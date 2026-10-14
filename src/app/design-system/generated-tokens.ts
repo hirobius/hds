@@ -12,6 +12,7 @@ export const tokens = {
         "200": "var(--primitive-color-neutral-200)",
         "300": "var(--primitive-color-neutral-300)",
         "400": "var(--primitive-color-neutral-400)",
+        "450": "var(--primitive-color-neutral-450)",
         "500": "var(--primitive-color-neutral-500)",
         "600": "var(--primitive-color-neutral-600)",
         "700": "var(--primitive-color-neutral-700)",
@@ -277,6 +278,7 @@ export const tokens = {
       content: {
         primary: "var(--semantic-color-content-primary)",
         secondary: "var(--semantic-color-content-secondary)",
+        tertiary: "var(--semantic-color-content-tertiary)",
         disabled: "var(--semantic-color-content-disabled)",
         inverse: "var(--semantic-color-content-inverse)",
         accent: "var(--semantic-color-content-accent)",
