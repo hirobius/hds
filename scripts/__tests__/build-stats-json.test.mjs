@@ -205,3 +205,34 @@ describe('wiring', () => {
     ]);
   });
 });
+
+describe('release flow', () => {
+  const steps = readJson('package.json')
+    .scripts['changeset:version'].split('&&')
+    .map((step) => step.trim());
+
+  it('regenerates the stats after the version bump in changeset:version', () => {
+    // release.yml's changesets/action runs `pnpm changeset:version` to build the
+    // Version Packages PR; `changeset version` bumps package.json, which the stats carry.
+    const bump = steps.indexOf('changeset version');
+    const stats = steps.indexOf('node scripts/build-stats-json.mjs');
+    expect(bump).toBeGreaterThanOrEqual(0);
+    expect(stats).toBeGreaterThan(bump);
+  });
+
+  it('leaves --check passing once the version moves and that step has run', () => {
+    const root = copyRoot();
+    const pkgPath = join(root, 'package.json');
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
+    writeFileSync(pkgPath, JSON.stringify({ ...pkg, version: '99.0.0' }));
+    expect(run(root, '--check').status).toBe(1);
+    // The release step, run against the temp root the way pnpm runs it in the repo.
+    const step = steps.find((s) => s.startsWith('node scripts/build-stats-json.mjs'));
+    expect(run(root).status).toBe(0);
+    expect(step).toBe('node scripts/build-stats-json.mjs');
+    const res = run(root, '--check');
+    expect(res.stderr).toBe('');
+    expect(res.status).toBe(0);
+    expect(JSON.parse(readFileSync(join(root, STATS_PATH), 'utf8')).version).toBe('99.0.0');
+  });
+});
