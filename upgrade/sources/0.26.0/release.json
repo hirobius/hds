@@ -1,0 +1,86 @@
+{
+  "$comment": "Frozen inputs of the 0.26.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.26.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.26.0",
+  "previous": "0.25.0",
+  "date": "2026-10-14",
+  "summary": "3 changes to make by hand (1 breaking) and 44 that look different.",
+  "backfilled": false,
+  "notes": {
+    "a11y-contract-tags": {
+      "needle": "26aee5a: Components can state their accessibility",
+      "source": "CHANGELOG.md:28"
+    },
+    "a11y-contracts-navigation-actions": {
+      "needle": "26aee5a: Accessibility contracts (`@a11y` tags,",
+      "source": "CHANGELOG.md:29"
+    },
+    "a11y-form-inputs": {
+      "needle": "26aee5a: Accessibility contracts for Checkbox,",
+      "source": "CHANGELOG.md:30"
+    },
+    "a11y-overlays-family": {
+      "needle": "26aee5a: Accessibility contracts (`@a11y` tags with",
+      "source": "CHANGELOG.md:31"
+    },
+    "asset-img-placeholder-focus": {
+      "needle": "15652fd: AssetImg's clickable fallback (shown",
+      "source": "CHANGELOG.md:32"
+    },
+    "board-status-columns": {
+      "needle": "235c912: Add `Board` and `BoardColumn` (hds#636):",
+      "source": "CHANGELOG.md:19"
+    },
+    "bugbash-24-component-fixes": {
+      "needle": "6226165: Bug bash 24 component fixes. Keyboard",
+      "source": "CHANGELOG.md:33"
+    },
+    "card-aschild-header-description": {
+      "needle": "8aadda1: Three additions for app screens,",
+      "source": "CHANGELOG.md:43"
+    },
+    "composer": {
+      "needle": "74153fa: New `Composer`: a prompt and capture",
+      "source": "CHANGELOG.md:20"
+    },
+    "consuming-tokens-import": {
+      "needle": "ce84e3d: The `docs/CONSUMING.md` section",
+      "source": "CHANGELOG.md:48"
+    },
+    "content-tertiary-text-token": {
+      "needle": "2519276: New semantic text token `semantic.color.content.tertiary`",
+      "source": "CHANGELOG.md:21"
+    },
+    "demo-tenants-soft-accent-pair": {
+      "needle": "0b1124e: Two demo tenant overlays join the",
+      "source": "CHANGELOG.md:49"
+    },
+    "expand-prop-aliases": {
+      "needle": "ad6211d: Props typed by a named alias now",
+      "source": "CHANGELOG.md:50"
+    },
+    "hds-stats-json": {
+      "needle": "82235df: The package ships `public/hds-stats.json`,",
+      "source": "CHANGELOG.md:51"
+    },
+    "tailwind-arbitrary-error": {
+      "needle": "1179066: Surface's `item`, `px16` and `px24`",
+      "source": "CHANGELOG.md:52"
+    },
+    "text-tone": {
+      "needle": "f976d95: Text takes an optional `tone` prop",
+      "source": "CHANGELOG.md:22"
+    },
+    "theme-toggle": {
+      "needle": "81c3312: New `ThemeToggle`: one button that",
+      "source": "CHANGELOG.md:53"
+    },
+    "timeline": {
+      "needle": "4124e4a: New `Timeline` and `TimelineItem`:",
+      "source": "CHANGELOG.md:23"
+    },
+    "typed-icon-color-table-width": {
+      "needle": "9e67b2e: `Icon`'s `color` and a `Table` column's",
+      "source": "CHANGELOG.md:24"
+    }
+  }
+}
