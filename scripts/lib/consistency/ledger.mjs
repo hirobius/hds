@@ -64,8 +64,14 @@ export function validateEntry(e, at = 'entry') {
   } else {
     if (!isNum(m.builds?.passing) || !isNum(m.builds?.of))
       p.push(`${at}: measured.builds needs passing and of`);
-    for (const k of ['violations', 'axe', 'jaccardMin', 'lightDiffMax']) {
+    for (const k of ['violations', 'axe', 'jaccardMin']) {
       if (!isNum(m[k])) p.push(`${at}: measured.${k} must be a number`);
+    }
+    // The pixel diff needs every app rendered, so it may be null only when an
+    // app did not build (and the entry then fails on builds).
+    const someFailed = isNum(m.builds?.passing) && m.builds.passing < m.builds.of;
+    if (!isNum(m.lightDiffMax) && !(m.lightDiffMax === null && someFailed)) {
+      p.push(`${at}: measured.lightDiffMax must be a number (null only when an app did not build)`);
     }
     const d = e.detail;
     if (d?.jaccard && isNum(m.jaccardMin) && Math.min(...d.jaccard) !== m.jaccardMin) {
@@ -142,7 +148,9 @@ export function summaryLine(e) {
     `${e.pass ? 'PASS' : 'FAIL'} - builds ${m.builds.passing}/${m.builds.of}, ` +
     `violations ${m.violations}, axe ${m.axe}, ` +
     `Jaccard min ${num(m.jaccardMin)} (limit >= ${num(e.thresholds.jaccard.min)}), ` +
-    `light diff max ${num(m.lightDiffMax)}% (limit <= ${num(e.thresholds.lightDiff.max)}%)`
+    (isNum(m.lightDiffMax)
+      ? `light diff max ${num(m.lightDiffMax)}% (limit <= ${num(e.thresholds.lightDiff.max)}%)`
+      : 'light diff not measured (an app did not build)')
   );
 }
 

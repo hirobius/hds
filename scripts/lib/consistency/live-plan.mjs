@@ -174,7 +174,16 @@ export function buildEntry({
     },
   };
   const report = evaluate(rounded, thresholds);
-  if (!report.complete) return { entry: null, report };
+  // A run where an app did not build still gets an entry: the pixel diff needs
+  // every app rendered, so it is recorded as not measured (null) and the entry
+  // fails on builds. Any other missing figure still writes nothing.
+  const lightDiffCheck = report.checks.find((c) => c.name === 'lightDiff');
+  const buildFailed =
+    report.measured.builds && report.measured.builds.passing < report.measured.builds.of;
+  const onlyDiffMissing = report.checks.every(
+    (c) => c.status !== 'not-measured' || (c === lightDiffCheck && buildFailed),
+  );
+  if (!report.complete && !onlyDiffMissing) return { entry: null, report };
   const dark = (results.darkDiff?.pairs ?? []).map((p) => round4(p.pct));
   const entry = {
     date,
@@ -183,7 +192,7 @@ export function buildEntry({
     tarballSha256,
     commit,
     apps,
-    measured: report.measured,
+    measured: { ...report.measured, lightDiffMax: report.measured.lightDiffMax ?? null },
     detail: {
       jaccard: rounded.jaccard.pairs.map((p) => p.value),
       lightDiff: rounded.lightDiff.pairs.map((p) => p.pct),
