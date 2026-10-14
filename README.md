@@ -261,7 +261,7 @@ source only). The screen spec, thresholds and ledger live in
 printed by `pnpm eval:consistency -- --summary`:
 
 ```text
-Agent consistency 2026-10-05 (harness, design-system 0.20.0): FAIL - builds 3/3, violations 0, axe 0, Jaccard min 0.4091 (limit >= 0.85), light diff max 3.2096% (limit <= 1.5%)
+Agent consistency 2026-10-14 (harness, design-system 0.25.0): FAIL - builds 2/3, violations 0, axe 0, Jaccard min 0.95 (limit >= 0.85), light diff not measured (an app did not build)
 ```
 
 The baseline misses its thresholds, and they stay where they are: the useful
