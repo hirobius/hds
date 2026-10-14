@@ -1,5 +1,6 @@
 import { defineDocs, defineConfig, frontmatterSchema } from 'fumadocs-mdx/config';
 import { remarkTokenTables } from './lib/remark-token-tables';
+import { remarkRepoDoc } from './lib/remark-repo-doc';
 
 // Content source is the repo's own MDX (content/docs/**), not a copy.
 export const docs = defineDocs({
@@ -13,6 +14,8 @@ export const docs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    remarkPlugins: [remarkTokenTables],
+    // <RepoDoc path /> splices a repo doc in before Fumadocs' own plugins run,
+    // so its headings get ids, the contents rail and search like any page.
+    remarkPlugins: (defaults) => [remarkRepoDoc as never, ...defaults, remarkTokenTables as never],
   },
 });
