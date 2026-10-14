@@ -36,7 +36,7 @@ Always run the full pipeline, in this order. Partial runs leave derived files ou
 
 ```
 generate-manifest.mjs      → rebuilds public/hds-manifest.json from source
-build-tokens.mjs           → hirobius.tokens.json → src/styles/tokens.css + src/app/design-system/tokens.ts
+build-tokens.mjs           → hirobius.tokens.json → src/styles/tokens.generated.css + src/app/design-system/tokens.ts
 audit-tokens.mjs --forbidden → fails if theme.css has hardcoded overrides
 sync-hds-registry.mjs      → syncs component registry across the system
 build-handoff.mjs          → produces DESIGN-HANDOFF.md

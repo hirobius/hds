@@ -20,7 +20,6 @@ src/app/design-system/generated-token-values.ts
 src/app/design-system/generated-token-descriptions.ts
 src/app/design-system/generated-token-vars.d.ts
 src/app/design-system/generated-token-refs.ts
-src/styles/tokens.css
 src/styles/tokens.generated.css
 src/app/data/**.json
 public/hds-manifest.json
@@ -73,6 +72,9 @@ codemods/__fixtures__/
 # Agent-built consistency runs are recorded inputs to the harness (hds#344);
 # formatting them would change what the ledger entry measured.
 eval/consistency/runs/
+
+# Fleet lessons copy — vendored from hirobius/ops and pinned by sha256 in .claude/lessons/lessons.lock.json; formatting would break the hash
+.claude/lessons/
 
 # Vendored skills — pinned by sha256 in skills-lock.json; formatting would break the hash
 .claude/skills/

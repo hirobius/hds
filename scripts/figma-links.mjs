@@ -19,6 +19,7 @@
  * Usage:
  *   pnpm figma:links                                  write docs/DESIGN_LINKS.md and carriers
  *   pnpm figma:links --check                          exit 1 when stale or broken; writes nothing
+ *   pnpm figma:links [--check] --root <dir>           the same against a copy of the tree (tests)
  *   FIGMA_ACCESS_TOKEN=… pnpm figma:links --dev-resources [--dry-run]
  *                                                     add "HDS source" / "HDS docs" dev resources
  *                                                     to every linked node (never deletes)
@@ -29,11 +30,12 @@
  * for one run; never store it in the repo.
  */
 
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, rmSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
-import { format, resolveConfig } from 'prettier';
 import { figmaToken } from './lib/figma-token.mjs';
+import { rootFromArgv, runGenerator, writeOutputs } from './lib/generated-check.mjs';
+import { formatCommitted } from './lib/write-generated.mjs';
 import {
   buildDescriptionsScript,
   collectDesignLinks,
@@ -77,17 +79,54 @@ export function computeDesignLinks(root) {
   });
 }
 
-/** docs/DESIGN_LINKS.md with a current, Prettier-formatted section. */
+/** docs/DESIGN_LINKS.md with a current section, in the bytes the repo commits. */
 async function nextDesignLinksDoc(root, collected) {
   const readmePath = join(root, DESIGN_LINKS_DOC);
   const current = existsSync(readmePath) ? readFileSync(readmePath, 'utf8') : '';
-  const options = (await resolveConfig(readmePath)) ?? {};
-  const section = await format(renderReadmeSection(collected, { base: '../' }), {
-    ...options,
-    parser: 'markdown',
-  });
+  const section = await formatCommitted(
+    DESIGN_LINKS_DOC,
+    renderReadmeSection(collected, { base: '../' }),
+  );
   const next = upsertReadmeSection(current === '' ? DESIGN_LINKS_DOC_HEAD : current, section);
-  return { readmePath, current, next: await format(next, { ...options, parser: 'markdown' }) };
+  return { current, next: await formatCommitted(DESIGN_LINKS_DOC, next) };
+}
+
+/**
+ * The gitignored carriers under figma/links/: the dev resources body and the
+ * use_figma descriptions scripts, as `{ path under outDir: text }`.
+ */
+function carrierOutputs(collected) {
+  const outputs = {
+    'dev-resources.json': `${JSON.stringify(
+      {
+        dev_resources: planDevResources(collected.links, []).create.map(
+          ({ component: _component, ...resource }) => resource,
+        ),
+      },
+      null,
+      2,
+    )}\n`,
+  };
+  for (const fileKey of [...new Set(collected.links.map((link) => link.fileKey))].sort()) {
+    outputs[`use-figma/descriptions-${fileKey}.dry-run.js`] = buildDescriptionsScript(
+      collected.links,
+      fileKey,
+      { dryRun: true },
+    );
+    outputs[`use-figma/descriptions-${fileKey}.js`] = buildDescriptionsScript(
+      collected.links,
+      fileKey,
+    );
+  }
+  return outputs;
+}
+
+/** Replace every carrier under outDir (a file key that went away takes its scripts with it). */
+function writeCarriers(outDir, collected) {
+  const outputs = carrierOutputs(collected);
+  rmSync(outDir, { recursive: true, force: true });
+  writeOutputs(outDir, outputs);
+  return Object.keys(outputs);
 }
 
 /**
@@ -137,41 +176,10 @@ export async function checkDesignLinks(root) {
  */
 export async function writeDesignLinks({ root, outDir }) {
   const collected = computeDesignLinks(root);
-  const { readmePath, current, next } = await nextDesignLinksDoc(root, collected);
-  if (next !== current) {
-    mkdirSync(dirname(readmePath), { recursive: true });
-    writeFileSync(readmePath, next);
-  }
-
-  const outputs = [
-    [
-      'dev-resources.json',
-      `${JSON.stringify(
-        {
-          dev_resources: planDevResources(collected.links, []).create.map(
-            ({ component: _component, ...resource }) => resource,
-          ),
-        },
-        null,
-        2,
-      )}\n`,
-    ],
-  ];
-  for (const fileKey of [...new Set(collected.links.map((link) => link.fileKey))].sort()) {
-    outputs.push(
-      [
-        `use-figma/descriptions-${fileKey}.dry-run.js`,
-        buildDescriptionsScript(collected.links, fileKey, { dryRun: true }),
-      ],
-      [`use-figma/descriptions-${fileKey}.js`, buildDescriptionsScript(collected.links, fileKey)],
-    );
-  }
-  rmSync(outDir, { recursive: true, force: true });
-  for (const [path, text] of outputs) {
-    mkdirSync(dirname(join(outDir, path)), { recursive: true });
-    writeFileSync(join(outDir, path), text);
-  }
-  return { ...collected, readmeChanged: next !== current, files: outputs.map(([path]) => path) };
+  const { current, next } = await nextDesignLinksDoc(root, collected);
+  writeOutputs(root, { [DESIGN_LINKS_DOC]: next });
+  const files = writeCarriers(outDir, collected);
+  return { ...collected, readmeChanged: next !== current, files };
 }
 
 function printProblems(problems) {
@@ -182,22 +190,11 @@ function printProblems(problems) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  const outDir = join(ROOT, 'figma', 'links');
+  const root = rootFromArgv(ROOT);
+  const outDir = join(root, 'figma', 'links');
   try {
-    if (args.includes('--check')) {
-      const check = await checkDesignLinks(ROOT);
-      printProblems(check.problems);
-      if (!check.readmeUpToDate) {
-        console.error(
-          `✗ ${DESIGN_LINKS_DOC} is stale. Run: pnpm manifest:generate && pnpm figma:links`,
-        );
-      }
-      if (check.problems.length > 0 || !check.readmeUpToDate) process.exit(1);
-      console.log(
-        `✓ figma:links — ${check.links} of ${check.total} components link a Figma node; ${DESIGN_LINKS_DOC} current`,
-      );
-    } else if (args.includes('--dev-resources')) {
-      const { links, problems } = computeDesignLinks(ROOT);
+    if (args.includes('--dev-resources')) {
+      const { links, problems } = computeDesignLinks(root);
       printProblems(problems);
       const result = await syncDevResources({
         links,
@@ -214,20 +211,35 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       for (const error of result.errors) console.error(`  ✗ ${error}`);
       if (result.errors.length > 0) process.exit(1);
     } else {
-      const result = await writeDesignLinks({ root: ROOT, outDir });
-      const rel = relative(ROOT, outDir).replaceAll('\\', '/');
-      console.log(
-        [
-          `figma:links — ${result.links.length} of ${result.total} components link a Figma node`,
-          `  ${DESIGN_LINKS_DOC} ${result.readmeChanged ? 'updated' : 'already current'}`,
-          ...result.files.map((file) => `  ${rel}/${file}`),
-          '',
-          '  Dev resources:  FIGMA_ACCESS_TOKEN=<token> pnpm figma:links --dev-resources --dry-run',
-          `  Descriptions:   run ${rel}/use-figma/descriptions-<file>.dry-run.js through use_figma, then the .js`,
-        ].join('\n'),
-      );
-      printProblems(result.problems);
-      if (result.problems.length > 0) process.exit(1);
+      // Write, or with --check compare and write nothing: runGenerator owns
+      // both for the committed doc. The carriers are gitignored, so only a
+      // write regenerates them and nothing checks them.
+      const collected = computeDesignLinks(root);
+      const { next } = await nextDesignLinksDoc(root, collected);
+      const result = await runGenerator({
+        root,
+        outputs: { [DESIGN_LINKS_DOC]: next },
+        label: 'figma:links',
+        fix: 'pnpm manifest:generate && pnpm figma:links',
+      });
+      const linked = `${collected.links.length} of ${collected.total} components link a Figma node`;
+      if (result.check) {
+        console.log(`  ${linked}`);
+      } else {
+        const files = writeCarriers(outDir, collected);
+        const rel = relative(root, outDir).replaceAll('\\', '/');
+        console.log(
+          [
+            `figma:links — ${linked}`,
+            ...files.map((file) => `  ${rel}/${file}`),
+            '',
+            '  Dev resources:  FIGMA_ACCESS_TOKEN=<token> pnpm figma:links --dev-resources --dry-run',
+            `  Descriptions:   run ${rel}/use-figma/descriptions-<file>.dry-run.js through use_figma, then the .js`,
+          ].join('\n'),
+        );
+      }
+      printProblems(collected.problems);
+      if (collected.problems.length > 0) process.exitCode = 1;
     }
   } catch (error) {
     console.error(`✗ figma:links — ${error.message}`);

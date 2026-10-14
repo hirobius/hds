@@ -23,7 +23,7 @@
  *   LOREM             — lorem ipsum text content
  *   ELLIPSIS          — three-period `...` in JSX text content (use `…`)
  *   OFF_GRID_SPACING  — tailwind p-/m-/gap- utility outside the on-grid set
- *   DATA_TENANT       — `[data-tenant=...]` selector outside src/styles/tokens.css
+ *   DATA_TENANT       — `[data-tenant=...]` selector outside src/styles/tokens.generated.css
  *
  * Modes:
  *   default — exit 1 on any violation
@@ -359,9 +359,9 @@ function scanFile(filePath) {
   }
 
   // ── Multi-tenant selector rule ──
-  // [data-tenant=...] selectors are only allowed in src/styles/tokens.css.
+  // [data-tenant=...] selectors are only allowed in src/styles/tokens.generated.css.
   // Component-level CSS must use the token system, not tenant selectors.
-  if (!skip('DATA_TENANT') && !rel.includes('src/styles/tokens.css')) {
+  if (!skip('DATA_TENANT') && !rel.includes('src/styles/tokens.generated.css')) {
     const reTenant = new RegExp(DATA_TENANT_SELECTOR_RE.source, 'g');
     while ((m = reTenant.exec(source)) !== null) {
       violations.push({
@@ -370,7 +370,7 @@ function scanFile(filePath) {
         code: 'DATA_TENANT',
         sample: m[0],
         message:
-          '[data-tenant=...] selector found — tenant overrides only permitted in src/styles/tokens.css',
+          '[data-tenant=...] selector found — tenant overrides only permitted in src/styles/tokens.generated.css',
       });
     }
   }

@@ -1,0 +1,1 @@
+One source-scan module (scripts/lib/source-scan.mjs) for gate file walking, spec exclusion, exemption markers and comment masking; nine layout/spacing/type/uppercase gates plus check-exemptions migrated, violation counts and scanned file sets unchanged (hds#643).

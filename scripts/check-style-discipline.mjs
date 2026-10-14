@@ -288,7 +288,6 @@ if (RUN_ALL || STYLE_PROPS_ONLY) {
 if ((RUN_ALL || CSS_VALUES_ONLY) && !isFixtureMode) {
   const STYLES_DIR = join(ROOT, 'src', 'styles');
   const EXCLUDED_CSS = new Set([
-    join(STYLES_DIR, 'tokens.css'),
     join(STYLES_DIR, 'tokens.generated.css'),
     join(STYLES_DIR, 'theme.css'),
     join(STYLES_DIR, 'fonts.css'),
