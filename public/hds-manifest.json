@@ -2323,6 +2323,10 @@
           ],
           "optional": true
         },
+        "role": {
+          "type": "AriaRole",
+          "optional": true
+        },
         "style": {
           "type": "CSSProperties",
           "optional": true
@@ -4973,7 +4977,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5016,7 +5020,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5056,7 +5060,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9160,7 +9164,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/metric-tiles.tsx",
-      "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. Use `StatusTile` for state with notes (never a number).",
+      "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth; at phone width (640px and under) it is capped at 2 columns. Use `StatusTile` for state with notes (never a number).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",

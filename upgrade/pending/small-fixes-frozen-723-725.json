@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "MetricTiles now shows at most 2 columns at 640px and under, TabsList fades the edge that has hidden tabs, and Stack passes aria-* and role through, so check any phone-width screenshot tests that include them."
+}
