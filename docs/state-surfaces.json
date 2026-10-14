@@ -378,6 +378,13 @@
       "maxAgeDays": 90
     },
     {
+      "path": "docs/adr/README.md",
+      "describes": "Index of every ADR: number, title, status, decision date, retroactive flag",
+      "kind": "generated",
+      "by": "scripts/build-adr-index.mjs",
+      "check": "node scripts/build-adr-index.mjs --check"
+    },
+    {
       "path": "DECISIONS.md",
       "describes": "Pointer to docs/adr, where decisions live",
       "kind": "editorial",

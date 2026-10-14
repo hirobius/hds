@@ -8,6 +8,7 @@ test-results/
 
 # Generated artifacts
 DESIGN.md
+docs/adr/README.md
 # Generated token outputs — build-tokens.mjs owns their format (double-quoted
 # JS/TS constants + raw CSS). Prettier's singleQuote reformat diverges from the
 # generator output, which breaks check-token-rebake-needed on every token commit
