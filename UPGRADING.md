@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.25.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.26.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,29 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.26.0
+
+Released 2026-10-14 (minor). 3 changes to make by hand (1 breaking) and 44 that look different.
+
+### Looks different
+
+- The badge radius token is now the 8px action radius instead of 4px, and the new soft-demo tenant also sets it; nothing to change unless you read it directly.
+- Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set each of these, and every other brand looks the same: `--component-button-bg`, `--component-button-bgHover`, `--component-button-radius`, `--component-button-secondary-bg-hover`, `--component-button-secondary-border-hover`, `--component-button-secondary-border-pressed`, `--component-card-bg`, `--component-input-radius`, `--component-nav-bgActive`, `--component-nav-borderActive`, `--component-tag-activeBackground`, `--component-tag-activeBorder`, `--component-tag-activeHover`, `--component-tag-background`, `--role-accent`, `--role-accent-foreground`, `--role-card`, `--role-primary`, `--role-radius`, `--role-ring`, `--role-secondary`, `--semantic-accent-content`, `--semantic-accent-contentHover`, `--semantic-accent-hover`, `--semantic-accent-pressed`, `--semantic-accent-rest`, `--semantic-accent-subtle`, `--semantic-color-border-accent`, `--semantic-color-content-accent`, `--semantic-color-surface-accent`, `--semantic-color-surface-accentSubtle`, `--semantic-color-surface-raised`, `--semantic-radius-action`, `--semantic-space-component-padding` and `--semantic-space-surface-padding`.
+- Nothing to do: in dark mode the default border is one step lighter (neutral-600), so card and input edges read against the page; light mode is unchanged.
+- Nothing to do: in dark mode the sunken surface is one step lighter (neutral-700), so inset wells and the highlighted menu, select and combobox item stand out from the overlay; light mode is unchanged.
+- Alert is padded like Callout (24px instead of 8px), and Alert, Callout, Badge and CodeBlock use the action radius (8px, following a tenant role.radius) instead of a fixed 4px or 8px; nothing to change unless you styled around the old size.
+- Card.Header, Card.Body, Card.Footer, Card.Progress and Card.Metric no longer add their own 24px inside a padded Card, so their content moves out to the Card's single 24px inset, while a Card with padding none keeps the parts' own padding.
+- Input, Textarea, Select and Combobox now draw the red error border whenever aria-invalid is true, and Input and Textarea labels sit 8px above the control instead of 6px; nothing to change unless you styled around the old gap.
+- MetadataList variant divided no longer draws a padded, rounded, bordered box and renders its value in body type; wrap it in a Card or Surface if you want the box.
+- Page now pads its content with the region gutter (24px, 16px below 640px), so content that relied on running edge to edge is inset; pass style paddingLeft and paddingRight of 0 to keep the old fit.
+- The Disclosure trigger is at least 24px tall, copyable CodeBlock and InlineCode gain a hidden copy-status element, and a clickable non-expandable AssetImg becomes a focusable button; nothing to change unless you snapshot their markup or height.
+
+### Do by hand
+
+- Icon color and Table column width are now typed to tokens: pass currentColor or a var(--semantic-…) token as the colour, and an fr value, minmax(), max-content or a var(--…) token as the width; a hex, rgb(), px or rem value is a type error.
+- Button label now sets the accessible name whenever it is given, even with children, so a Button that passes both is announced by the label and the label should still describe the visible text.
+- A CodeBlock is no longer a region named Code sample with its own tab stop; it becomes a keyboard-scrollable group named by its filename or language only when its code overflows, so update any test or selector that looked for that region.
 
 ## 0.25.0
 

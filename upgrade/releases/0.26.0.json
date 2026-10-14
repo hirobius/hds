@@ -1,0 +1,810 @@
+{
+  "version": "0.26.0",
+  "date": "2026-10-14",
+  "bump": "minor",
+  "summary": "3 changes to make by hand (1 breaking) and 44 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.26.0/value-changed/--component-badge-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The badge radius token is now the 8px action radius instead of 4px, and the new soft-demo tenant also sets it; nothing to change unless you read it directly.",
+      "detect": {
+        "cssVars": [
+          "--component-badge-radius"
+        ],
+        "cssVarWrites": [
+          "--component-badge-radius"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-radius::root",
+        "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-button-bg",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-button-bg, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-button-bg"
+        ],
+        "cssVarWrites": [
+          "--component-button-bg"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-bg:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-button-bgHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-button-bgHover, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-button-bgHover"
+        ],
+        "cssVarWrites": [
+          "--component-button-bgHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-bgHover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-button-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-button-radius, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-button-radius"
+        ],
+        "cssVarWrites": [
+          "--component-button-radius"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-button-secondary-bg-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-button-secondary-bg-hover, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-hover"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-hover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-button-secondary-border-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-button-secondary-border-hover, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-border-hover"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-border-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-hover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-button-secondary-border-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-button-secondary-border-pressed, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-border-pressed"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-border-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-pressed:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-card-bg",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-card-bg, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-card-bg"
+        ],
+        "cssVarWrites": [
+          "--component-card-bg"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-card-bg:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-input-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-input-radius, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-input-radius"
+        ],
+        "cssVarWrites": [
+          "--component-input-radius"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-input-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-nav-bgActive",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-nav-bgActive, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-nav-bgActive"
+        ],
+        "cssVarWrites": [
+          "--component-nav-bgActive"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-nav-bgActive:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-nav-borderActive",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-nav-borderActive, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-nav-borderActive"
+        ],
+        "cssVarWrites": [
+          "--component-nav-borderActive"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-nav-borderActive:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-tag-activeBackground",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-tag-activeBackground, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-activeBackground"
+        ],
+        "cssVarWrites": [
+          "--component-tag-activeBackground"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeBackground:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-tag-activeBorder",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-tag-activeBorder, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-activeBorder"
+        ],
+        "cssVarWrites": [
+          "--component-tag-activeBorder"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeBorder:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-tag-activeHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-tag-activeHover, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-activeHover"
+        ],
+        "cssVarWrites": [
+          "--component-tag-activeHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeHover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--component-tag-background",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-tag-background, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-background"
+        ],
+        "cssVarWrites": [
+          "--component-tag-background"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-background:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--role-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --role-accent, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--role-accent"
+        ],
+        "cssVarWrites": [
+          "--role-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-accent:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--role-accent-foreground",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --role-accent-foreground, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--role-accent-foreground"
+        ],
+        "cssVarWrites": [
+          "--role-accent-foreground"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-accent-foreground:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--role-card",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --role-card, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--role-card"
+        ],
+        "cssVarWrites": [
+          "--role-card"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-card:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--role-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --role-primary, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--role-primary"
+        ],
+        "cssVarWrites": [
+          "--role-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-primary:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--role-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --role-radius, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--role-radius"
+        ],
+        "cssVarWrites": [
+          "--role-radius"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--role-ring",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --role-ring, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--role-ring"
+        ],
+        "cssVarWrites": [
+          "--role-ring"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-ring:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--role-secondary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --role-secondary, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--role-secondary"
+        ],
+        "cssVarWrites": [
+          "--role-secondary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-secondary:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-accent-content",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-accent-content, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-content"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-content"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-content:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-content:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-accent-contentHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-accent-contentHover, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-contentHover"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-contentHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-contentHover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-contentHover:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-accent-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-accent-hover, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-hover"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-hover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-hover:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-accent-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-accent-pressed, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-pressed"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-pressed:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-pressed:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-accent-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-accent-rest, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-rest"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-rest"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-rest:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-rest:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-accent-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-accent-subtle, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-subtle"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-subtle"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-subtle:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-subtle:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-color-border-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-color-border-accent, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-accent:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-color-border-accent:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-color-border-default",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do: in dark mode the default border is one step lighter (neutral-600), so card and input edges read against the page; light mode is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-default"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-default"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-default:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-default:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-color-content-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-color-content-accent, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-accent:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-color-content-accent:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-color-surface-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-color-surface-accent, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accent:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-color-surface-accent:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-color-surface-accentSubtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-color-surface-accentSubtle, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-accentSubtle"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-accentSubtle"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-color-surface-raised",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-color-surface-raised, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-raised"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-raised"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-raised:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--semantic-color-surface-raised:[data-brand=soft-demo][data-theme=dark],[data-tenant=soft-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-color-surface-sunken",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do: in dark mode the sunken surface is one step lighter (neutral-700), so inset wells and the highlighted menu, select and combobox item stand out from the overlay; light mode is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-sunken"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-sunken"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-radius-action",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-radius-action, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-radius-action"
+        ],
+        "cssVarWrites": [
+          "--semantic-radius-action"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-radius-action:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-space-component-padding",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-space-component-padding, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-component-padding"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-component-padding"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-component-padding:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--semantic-space-component-padding:[data-brand=soft-demo][data-density=compact],[data-tenant=soft-demo][data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/value-changed/--semantic-space-surface-padding",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --semantic-space-surface-padding, and every other brand looks the same.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-surface-padding"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-surface-padding"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-surface-padding:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--semantic-space-surface-padding:[data-brand=soft-demo][data-density=compact],[data-tenant=soft-demo][data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:49"
+    },
+    {
+      "id": "0.26.0/look/Alert-Callout-Badge-shape",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Alert is padded like Callout (24px instead of 8px), and Alert, Callout, Badge and CodeBlock use the action radius (8px, following a tenant role.radius) instead of a fixed 4px or 8px; nothing to change unless you styled around the old size.",
+      "detect": {
+        "regex": [
+          "<Alert\\b",
+          "<Callout\\b",
+          "<Badge\\b"
+        ]
+      },
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/look/Card-parts-inset",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Card.Header, Card.Body, Card.Footer, Card.Progress and Card.Metric no longer add their own 24px inside a padded Card, so their content moves out to the Card's single 24px inset, while a Card with padding none keeps the parts' own padding.",
+      "detect": {
+        "regex": [
+          "<Card\\.(Header|Body|Footer|Progress|Metric)\\b",
+          "<Card(Header|Body|Footer|Progress|Metric)\\b"
+        ]
+      },
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/look/FormField-error-border",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Input, Textarea, Select and Combobox now draw the red error border whenever aria-invalid is true, and Input and Textarea labels sit 8px above the control instead of 6px; nothing to change unless you styled around the old gap.",
+      "detect": {
+        "regex": [
+          "<FormField\\b[^>]*\\berror="
+        ]
+      },
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/look/MetadataList-divided",
+      "kind": "look",
+      "impact": "look",
+      "plain": "MetadataList variant divided no longer draws a padded, rounded, bordered box and renders its value in body type; wrap it in a Card or Surface if you want the box.",
+      "detect": {
+        "regex": [
+          "<MetadataList\\b[^>]*variant=[\"']divided"
+        ]
+      },
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/look/Page-gutter",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Page now pads its content with the region gutter (24px, 16px below 640px), so content that relied on running edge to edge is inset; pass style paddingLeft and paddingRight of 0 to keep the old fit.",
+      "detect": {
+        "regex": [
+          "<Page\\b"
+        ]
+      },
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/look/a11y-contracts-navigation-actions",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The Disclosure trigger is at least 24px tall, copyable CodeBlock and InlineCode gain a hidden copy-status element, and a clickable non-expandable AssetImg becomes a focusable button; nothing to change unless you snapshot their markup or height.",
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.26.0/behavior/Button-label",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Button label now sets the accessible name whenever it is given, even with children, so a Button that passes both is announced by the label and the label should still describe the visible text.",
+      "detect": {
+        "regex": [
+          "<Button\\b[^>]*\\slabel="
+        ]
+      },
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/behavior/CodeBlock-landmark",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A CodeBlock is no longer a region named Code sample with its own tab stop; it becomes a keyboard-scrollable group named by its filename or language only when its code overflows, so update any test or selector that looked for that region.",
+      "detect": {
+        "regex": [
+          "Code sample"
+        ]
+      },
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.26.0/manual/typed-icon-color-table-width",
+      "kind": "manual",
+      "impact": "breaking",
+      "plain": "Icon color and Table column width are now typed to tokens: pass currentColor or a var(--semantic-…) token as the colour, and an fr value, minmax(), max-content or a var(--…) token as the width; a hex, rgb(), px or rem value is a type error.",
+      "source": "CHANGELOG.md:24"
+    }
+  ]
+}

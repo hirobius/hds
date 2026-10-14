@@ -1,6 +1,6 @@
 {
   "package": "@hirobius/design-system",
-  "latest": "0.25.0",
+  "latest": "0.26.0",
   "floor": "0.16.0",
   "versions": [
     {
@@ -93,6 +93,13 @@
       "bump": "minor",
       "breaking": 1,
       "summary": "1 change to make by hand (1 breaking), 10 that look different and 6 deprecations."
+    },
+    {
+      "version": "0.26.0",
+      "date": "2026-10-14",
+      "bump": "minor",
+      "breaking": 1,
+      "summary": "3 changes to make by hand (1 breaking) and 44 that look different."
     }
   ],
   "deprecated": [
