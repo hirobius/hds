@@ -9,7 +9,7 @@ import { Form, FormField, useFieldWiring } from './form';
 afterEach(cleanup);
 
 describe('Form', () => {
-  it('renders a form element', () => {
+  it('a11y:form.native-form renders a form element', () => {
     const { container } = render(
       <Form aria-label="settings">
         <button type="submit">Save</button>
@@ -20,7 +20,7 @@ describe('Form', () => {
 });
 
 describe('FormField', () => {
-  it('associates the label with the control', () => {
+  it('a11y:form-field.label-association associates the label with the control', () => {
     render(
       <FormField label="Email">
         <input />
@@ -30,7 +30,7 @@ describe('FormField', () => {
     expect(input.tagName).toBe('INPUT');
   });
 
-  it('links a description via aria-describedby (no error)', () => {
+  it('a11y:form-field.description-described links a description via aria-describedby (no error)', () => {
     render(
       <FormField label="Email" description="We never share it.">
         <input />
@@ -43,7 +43,7 @@ describe('FormField', () => {
     expect(desc?.textContent).toBe('We never share it.');
   });
 
-  it('sets aria-invalid and links the error (which has role=alert)', () => {
+  it('a11y:form-field.error-wiring sets aria-invalid and links the error (which has role=alert)', () => {
     render(
       <FormField label="Email" error="Required field">
         <input />
@@ -56,7 +56,7 @@ describe('FormField', () => {
     expect(input.getAttribute('aria-describedby')).toContain(alert.id);
   });
 
-  it('drops the description id while an error replaces it, so nothing dangles', () => {
+  it('a11y:form-field.no-dangling-ids drops the description id while an error replaces it, so nothing dangles', () => {
     render(
       <FormField label="Email" description="We never share it." error="Required field">
         <input />
@@ -68,7 +68,7 @@ describe('FormField', () => {
     expect(document.getElementById(ids[0])?.textContent).toBe('Required field');
   });
 
-  it('useFieldWiring only lists the description when it renders', () => {
+  it('a11y:form-field-shell.use-field-wiring useFieldWiring only lists the description when it renders', () => {
     const { result: withErr } = renderHook(() =>
       useFieldWiring({ htmlFor: 'f', description: 'help', error: 'bad' }),
     );
@@ -79,7 +79,7 @@ describe('FormField', () => {
     expect(noErr.current.describedBy).toBe('f-description');
   });
 
-  it('marks the control required and shows the asterisk', () => {
+  it('a11y:form-field.required marks the control required and shows the asterisk', () => {
     render(
       <FormField label="Email" required>
         <input />
@@ -90,7 +90,7 @@ describe('FormField', () => {
     expect(screen.getByText('*')).not.toBeNull();
   });
 
-  it('preserves a control’s own id when provided', () => {
+  it('a11y:form-field.keeps-control-id preserves a control’s own id when provided', () => {
     render(
       <FormField label="Email">
         <input id="custom-email" />

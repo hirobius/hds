@@ -229,6 +229,18 @@ interface DialogComponent extends React.FC<DialogProps> {
  * @keyboard Escape Closes the dialog and returns focus to the trigger.
  * @keyboard Tab Cycles focus inside the open dialog.
  * @keyboard Shift+Tab Cycles focus backwards inside the open dialog.
+ * @a11y component required a11y:dialog.open-keys Enter and Space on the trigger open the dialog.
+ * @a11y component required a11y:dialog.trigger-haspopup The trigger announces a dialog popup (aria-haspopup).
+ * @a11y component required a11y:dialog.trigger-expanded The trigger exposes aria-expanded, false while closed and true while open.
+ * @a11y component required a11y:dialog.trigger-controls The trigger points aria-controls at the open dialog.
+ * @a11y component required a11y:dialog.initial-focus Focus moves inside the dialog when it opens.
+ * @a11y component required a11y:dialog.focus-trapped Tab and Shift+Tab stay inside the open modal dialog.
+ * @a11y component required a11y:dialog.escape-returns-focus Escape closes the dialog and returns focus to the trigger.
+ * @a11y component required a11y:dialog.named-by-title The dialog is named by Dialog.Title and described by Dialog.Description.
+ * @a11y component required a11y:dialog.close-named The built-in close button is named "Close".
+ * @a11y consumer required Render a Dialog.Title in every Dialog.Content; it is the dialog's accessible name.
+ * @a11y consumer required Render a Dialog.Description, or pass aria-describedby={undefined} on Dialog.Content when there is none.
+ * @a11y consumer required Give an icon-only Dialog.Trigger or custom Dialog.Close an aria-label.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-27
  */
 export const Dialog: DialogComponent = /* @__PURE__ */ Object.assign(DialogRoot, {

@@ -134,13 +134,17 @@ function accessibilitySection(spec) {
     );
   }
   if (Array.isArray(spec?.a11yRules) && spec.a11yRules.length) {
-    parts.push(
-      [
-        '**Requirements**',
-        '',
-        ...spec.a11yRules.map((r) => `- ${prose(r.rule)}${r.required ? '' : ' (recommended)'}`),
-      ].join('\n'),
-    );
+    const item = (r) => `- ${prose(r.rule)}${r.required ? '' : ' (recommended)'}`;
+    const rules = spec.a11yRules;
+    if (rules.some((r) => r.owner)) {
+      // hds#520: tagged rules say who keeps them. Rules not yet tagged read as the caller's.
+      const mine = rules.filter((r) => r.owner === 'component');
+      const yours = rules.filter((r) => r.owner !== 'component');
+      if (yours.length) parts.push(['**You provide**', '', ...yours.map(item)].join('\n'));
+      if (mine.length) parts.push(['**Built in**', '', ...mine.map(item)].join('\n'));
+    } else {
+      parts.push(['**Requirements**', '', ...rules.map(item)].join('\n'));
+    }
   }
   return parts.length ? parts.join('\n\n') : null;
 }

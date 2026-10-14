@@ -226,10 +226,14 @@ describe('release flow', () => {
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
     writeFileSync(pkgPath, JSON.stringify({ ...pkg, version: '99.0.0' }));
     expect(run(root, '--check').status).toBe(1);
-    // The release step, run against the temp root the way pnpm runs it in the repo.
-    const step = steps.find((s) => s.startsWith('node scripts/build-stats-json.mjs'));
-    expect(run(root).status).toBe(0);
-    expect(step).toBe('node scripts/build-stats-json.mjs');
+    // Run the very command the release script holds, pointed at the temp root.
+    const command = steps.find((s) => /^node scripts\/build-stats-json\.mjs$/.test(s));
+    expect(command, 'changeset:version has no plain build-stats-json step').toBeDefined();
+    const [, script] = command.split(' ');
+    const release = spawnSync(process.execPath, [join(ROOT, script), '--root', root], {
+      encoding: 'utf8',
+    });
+    expect(release.status, release.stderr).toBe(0);
     const res = run(root, '--check');
     expect(res.stderr).toBe('');
     expect(res.status).toBe(0);
