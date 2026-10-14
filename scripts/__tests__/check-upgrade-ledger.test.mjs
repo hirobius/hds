@@ -251,6 +251,23 @@ describe('checkUpgradeLedger: changesets need notes', () => {
     expect(messages(result)).toMatch(/TODO/);
   });
 
+  it('fails two pending notes that share a step id, which compile.mjs --release would reject when it cuts the release', () => {
+    const root = releasedRepo();
+    changeset(root, 'a', 'patch');
+    changeset(root, 'b', 'patch');
+    note(root, 'a', stepFor('value-changed/--x', 'look', ['css-var-changed:--x::root']));
+    note(
+      root,
+      'b',
+      stepFor('value-changed/--x', 'look', ['css-var-changed:--x:[data-theme=dark]']),
+    );
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['note-step-id-shared']);
+    expect(messages(result)).toContain('value-changed/--x');
+    expect(messages(result)).toContain('upgrade/pending/a.json');
+    expect(messages(result)).toContain('upgrade/pending/b.json');
+  });
+
   it('fails a sidecar with no impact, and one that is not JSON', () => {
     const root = releasedRepo();
     changeset(root, 'a', 'patch');
