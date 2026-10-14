@@ -134,6 +134,81 @@ function checkerProps(program, filePath, exportName) {
   return rows;
 }
 
+/**
+ * hds#406: expand a named type alias to its string-literal values with the
+ * checker. Docgen records a prop typed `InputSize` (a
+ * `NonNullable<VariantProps<…>>` alias), `PaddingOption` (imported) or
+ * `GapOption` (aliases plus `keyof typeof hds.space`) as the bare alias name,
+ * which the regex resolver in `tryResolveLiteralUnion` cannot see through.
+ * Resolve the name in the component file's scope (following imports); when
+ * every member, after dropping `undefined` and `null`, is a string literal,
+ * return the literal union (`"sm" | "md" | "lg"`). Anything else — ReactNode,
+ * CSSProperties, a mixed union — returns undefined and keeps its name.
+ *
+ * @returns {string | undefined}
+ */
+function expandLiteralAlias(program, filePath, typeName) {
+  if (!/^[A-Za-z_$][\w$]*$/.test(typeName ?? '')) return undefined;
+  const sourceFile = program.getSourceFile(filePath);
+  if (!sourceFile) return undefined;
+  const checker = program.getTypeChecker();
+  let symbol = checker
+    .getSymbolsInScope(sourceFile, ts.SymbolFlags.Type | ts.SymbolFlags.Alias)
+    .find((sym) => sym.name === typeName);
+  if (!symbol) return undefined;
+  // An exported alias shows up in scope as its local symbol (no flags); the
+  // declaration lives on the export symbol.
+  symbol = checker.getExportSymbolOfSymbol(symbol);
+  if (symbol.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
+  if (!(symbol.flags & ts.SymbolFlags.TypeAlias)) return undefined;
+
+  const type = checker.getDeclaredTypeOfSymbol(symbol);
+  const members = (type.isUnion() ? type.types : [type]).filter(
+    (member) => !(member.flags & (ts.TypeFlags.Undefined | ts.TypeFlags.Null)),
+  );
+  if (members.length === 0 || !members.every((member) => member.isStringLiteral())) {
+    return undefined;
+  }
+  // The checker orders union members by type id, which shifts when unrelated
+  // code is checked first. Order by the alias's own declaration instead, so
+  // the generated files only change when the alias does.
+  const values = new Set(members.map((member) => member.value));
+  const ordered = [...declarationOrder(checker, symbol.declarations?.[0]?.type)].filter((value) =>
+    values.delete(value),
+  );
+  return [...ordered, ...values].map((value) => JSON.stringify(value)).join(' | ');
+}
+
+/** String literals of a type node in source order, following local and imported aliases. */
+function* declarationOrder(checker, node, trail = new Set()) {
+  if (!node || trail.has(node)) return;
+  trail.add(node);
+  if (ts.isParenthesizedTypeNode(node)) {
+    yield* declarationOrder(checker, node.type, trail);
+  } else if (ts.isUnionTypeNode(node)) {
+    for (const member of node.types) yield* declarationOrder(checker, member, trail);
+  } else if (ts.isLiteralTypeNode(node) && ts.isStringLiteral(node.literal)) {
+    yield node.literal.text;
+  } else if (ts.isTypeOperatorNode(node) && node.operator === ts.SyntaxKind.KeyOfKeyword) {
+    // `keyof typeof hds.space`: property order is the object's source order.
+    for (const prop of checker.getPropertiesOfType(checker.getTypeFromTypeNode(node.type))) {
+      yield prop.getName();
+    }
+  } else {
+    let target = ts.isTypeReferenceNode(node) && checker.getSymbolAtLocation(node.typeName);
+    if (target && target.flags & ts.SymbolFlags.Alias) target = checker.getAliasedSymbol(target);
+    const declaration = target?.declarations?.[0];
+    if (declaration && ts.isTypeAliasDeclaration(declaration) && !declaration.typeParameters) {
+      yield* declarationOrder(checker, declaration.type, trail);
+      return;
+    }
+    const type = checker.getTypeFromTypeNode(node);
+    for (const member of type.isUnion() ? type.types : [type]) {
+      if (member.isStringLiteral()) yield member.value;
+    }
+  }
+}
+
 /** JSDoc on each member of a string-literal union alias, in declaration order. */
 function unionMemberDocs(program, filePath, typeName) {
   const sourceFile = program.getSourceFile(filePath);
@@ -625,10 +700,11 @@ function extractObservedTokens(source) {
   ]);
 }
 
-function toPropRow(propName, prop, aliases) {
+function toPropRow(propName, prop, aliases, expandAlias = () => undefined) {
+  const type = formatType(prop.type, aliases);
   return {
     name: propName,
-    type: formatType(prop.type, aliases),
+    type: expandAlias(type) ?? type,
     default: resolveDefaultValue(prop.defaultValue),
     required: Boolean(prop.required),
     description: cleanText(prop.description),
@@ -681,7 +757,11 @@ export function buildManifest() {
     }
     const props = Object.entries(docProps)
       .sort(([a], [b]) => a.localeCompare(b))
-      .map(([propName, prop]) => toPropRow(propName, prop, aliases));
+      .map(([propName, prop]) =>
+        toPropRow(propName, prop, aliases, (name) =>
+          doc.filePath ? expandLiteralAlias(program, doc.filePath, name) : undefined,
+        ),
+      );
     const cellSlots =
       doc.displayName === 'Table' && doc.filePath
         ? unionMemberDocs(program, doc.filePath, 'TableCellSlot')
@@ -715,7 +795,11 @@ export function buildManifest() {
     const fallbackAliases = extractTypeAliases(source);
     const fallbackProps = checkerProps(program, join(ROOT, metadata.filePath), metadata.name)
       .sort((a, b) => a.name.localeCompare(b.name))
-      .map(({ name, prop }) => toPropRow(name, prop, fallbackAliases));
+      .map(({ name, prop }) =>
+        toPropRow(name, prop, fallbackAliases, (typeName) =>
+          expandLiteralAlias(program, join(ROOT, metadata.filePath), typeName),
+        ),
+      );
 
     components[metadata.name] = {
       filePath: metadata.filePath,

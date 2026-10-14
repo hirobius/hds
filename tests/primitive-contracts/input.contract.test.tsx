@@ -58,7 +58,7 @@ describe('Input contract', () => {
     expect(input?.disabled).toBe(true);
   });
 
-  it('label prop renders a label element', () => {
+  it('a11y:input.label label prop renders a label element', () => {
     const { container } = render(<Input label="Username" />);
     const label = container.querySelector('label');
     expect(label).not.toBeNull();

@@ -29,6 +29,7 @@ Subpath exports:
 - `@hirobius/design-system/patterns`
 - `@hirobius/design-system/icons`
 - `@hirobius/design-system/eslint-plugin`
+- `@hirobius/design-system/stats.json`
 
 ## Core set
 
@@ -93,6 +94,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Checkbox` — Checkbox — custom-drawn checkbox with check / indeterminate glyph.
 - `Combobox` — Combobox — searchable single- or multi-select (Popover + filtered listbox).
+- `Composer` — Composer — prompt and capture box that grows with its text and folds long pastes into cards.
 - `Input` — Input — text field primitive with label, helper, and error slots.
 - `Radio` — Radio — radio button with animated selection indicator.
 - `SegmentedControl` — SegmentedControl " segmented selection input for compact mutually-exclusive choices.
@@ -104,6 +106,8 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 ### Layout
 
+- `Board` — Status columns that sit side by side from tablet width and stack in order, first column on top, below it.
+- `BoardColumn` — One status column: a heading with the title, a count and a tone dot, then its items.
 - `Box` — Box — polymorphic layout primitive with a token-first `sx` engine.
 - `Container` — Container — semantic width-constrained layout.
 - `Disclosure` — Disclosure - compact disclosure surface for optional explanatory content.

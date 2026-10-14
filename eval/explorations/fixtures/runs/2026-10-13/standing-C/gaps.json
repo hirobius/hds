@@ -1,0 +1,12 @@
+[
+  {
+    "screen": "standing",
+    "direction": "C",
+    "kind": "pattern",
+    "id": "band-section",
+    "needed": "A band section: a header with a name and a count, rows, and show all",
+    "didInstead": "A plain section with a Text title over a faded strip, and no show all",
+    "proposal": "Add a Band pattern with name, count, rows and a show-all control",
+    "evidence": "src/App.tsx:30"
+  }
+]

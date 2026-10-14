@@ -80,6 +80,17 @@ A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
   - attribution: ReactNode
   - size: "sm" | "md" | "lg" | null
 
+### Board
+Status columns that sit side by side from tablet width and stack in order, first column on top, below it. Read-only: it has no drag handlers.
+  - children: ReactNode
+
+### BoardColumn
+One status column: a heading with the title, a count and a tone dot, then its items. The column is a labelled region and the count is part of the heading's nam…
+  - children: ReactNode
+  - count: number
+  - title: ReactNode
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" = neutral
+
 ### Box
 Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing short…
   - as: ElementType<any, keyof IntrinsicElements> = div
@@ -116,10 +127,10 @@ Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback f
 Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
   - as: ElementType<any, keyof IntrinsicElements>
   - bordered: boolean = false
-  - gap: GapOption = tight
+  - gap: "tight" | "normal" | "inset" | "spacious" | "px1" | "px2" | "px4" | "px6" | "px… = tight
   - noPadding: boolean = false
   - onSelectedChange: ((selected: boolean) => void)
-  - padding: PaddingOption = component
+  - padding: "component" | "item" | "px16" | "px24" | "none" = component
   - selectable: boolean = false
   - selected: boolean = false
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -191,6 +202,22 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
   - value: string | readonly string[] | null
+
+### Composer
+Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer t…
+  - attachments: ComposerAttachment[]
+  - className: string
+  - defaultAttachments: ComposerAttachment[] = []
+  - defaultValue: string
+  - disabled: boolean = false
+  - label: string = Message
+  - onAttachmentsChange: ((attachments: ComposerAttachment[]) => void)
+  - onSubmit: ((submission: ComposerSubmission) => void)
+  - onValueChange: ((value: string) => void)
+  - pasteFoldThreshold: number = 500
+  - pending: boolean = false
+  - placeholder: string
+  - value: string
 
 ### Container
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
@@ -375,7 +402,7 @@ Renders a `data-hds` scope wrapper that carries the four theming dials as root a
 Icon — semantic icon wrapper for Lucide icons.
   - aria-hidden: boolean | "true" | "false" = true
   - className: string
-  - color: string = currentColor
+  - color: IconColor = currentColor
   - icon: LucideIcon
   - size: IconSize = small
   - style: CSSProperties
@@ -407,7 +434,7 @@ Input — text field primitive with label, helper, and error slots.
   - leadingVisual: ReactNode
   - loading: boolean = false
   - prefix: ReactNode
-  - size: InputSize = md
+  - size: "sm" | "md" | "lg" = md
   - suffix: ReactNode
   - textStyle: "body" | "mono" = body
   - trailingVisual: ReactNode
@@ -518,6 +545,7 @@ Select — dropdown selector built on Radix Select (ADR-001 Radix convention). R
   - label: string
   - onChange: (v: string) => void
   - options: { value: string; label: string; }[]
+  - placeholder: string = Select…
   - showLabel: boolean = true
   - value: string
 
@@ -546,6 +574,7 @@ Slider — range slider with label and value display.
   - onChange: (v: number) => void
   - step: number = 1
   - value: number
+  - valueText: string
 
 ### Spinner
 Indeterminate spinner. Inherits the surrounding text color via currentColor.
@@ -559,7 +588,7 @@ Stack — one-dimensional layout primitive.
   - children: ReactNode
   - className: string
   - direction: "row" | "column" = column
-  - gap: GapOption = tight
+  - gap: "tight" | "normal" | "inset" | "spacious" | "gap" | "medium" | "hairline" | "xs… = tight
   - justify: 'start' | 'center' | 'end' | 'space-between'
   - style: CSSProperties
   - wrap: FlexWrap
@@ -577,7 +606,7 @@ Surface — governed inset surface primitive. Enforces the "Surface Inset" rule:
   - children: ReactNode
   - className: string
   - overflow: Overflow
-  - padding: PaddingOption = component
+  - padding: "component" | "item" | "px16" | "px24" | "none" = component
   - shadow: boolean = false
   - style: CSSProperties
   - theme: "light" | "dark"
@@ -632,7 +661,7 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline p
   - value: string
 
 ### Tag
-Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps th…
+Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visi…
   - active: boolean = false
   - children: ReactNode
 
@@ -642,7 +671,8 @@ Text — polymorphic typography primitive spanning the full HDS type ramp.
   - children: ReactNode
   - className: string
   - style: CSSProperties
-  - variant: TextVariant
+  - tone: 'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'dang…
+  - variant: "display" | "title" | "titleSm" | "body" | "ui" | "caption" | "mono" | "heading…
 
 ### Textarea
 Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the …
@@ -652,7 +682,7 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - errorMessage: string
   - helperText: string
   - label: string
-  - resize: TextareaResize = vertical
+  - resize: "none" | "both" | "vertical" = vertical
   - textareaClassName: string
 
 ### Timeline

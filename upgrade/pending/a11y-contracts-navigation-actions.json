@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "The Disclosure trigger is at least 24px tall, copyable CodeBlock and InlineCode gain a hidden copy-status element, and a clickable non-expandable AssetImg becomes a focusable button; nothing to change unless you snapshot their markup or height."
+}

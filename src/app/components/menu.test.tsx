@@ -42,7 +42,7 @@ function Example({ onSelect }: { onSelect?: () => void } = {}) {
 }
 
 describe('Menu', () => {
-  it('renders items with menu semantics when open', () => {
+  it('a11y:menu.item-semantics - renders items with menu semantics when open', () => {
     render(<Example />);
     expect(screen.getByRole('menuitem', { name: 'Profile' })).not.toBeNull();
     expect(screen.getByText('Account')).not.toBeNull();

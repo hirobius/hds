@@ -11,6 +11,11 @@
  * Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity:
  * the four states Default / Focus / Error / Disabled map to the focus-ring,
  * `error`, and `disabled` treatments below.
+ * @a11y component required a11y:textarea.label The label prop renders a real label associated with the field.
+ * @a11y component required a11y:textarea.helper-described The helper text is linked with aria-describedby only while it renders.
+ * @a11y component required a11y:textarea.error-wiring An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.
+ * @a11y component required a11y:textarea.sr-field A screen reader speaks the label, the invalid state and the error message.
+ * @a11y consumer required Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.
  */
 
 import * as React from 'react';
@@ -92,6 +97,8 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     const id = providedId ?? generatedId;
 
     const hasError = Boolean(error);
+    // FormField marks its control aria-invalid without an `error` prop: draw the same red border for it.
+    const invalid = hasError || rest['aria-invalid'] === true || rest['aria-invalid'] === 'true';
     const errorTextId = hasError && errorMessage ? `${id}-error` : undefined;
     // The helper only renders while no error is shown, so only reference it then.
     const helperTextId = helperText && !errorTextId ? `${id}-hint` : undefined;
@@ -99,7 +106,7 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     const state = disabled ? 'disabled' : hasError ? 'error' : 'default';
 
     return (
-      <div className={cn('flex flex-col gap-1.5', FORM_CONTROL_WIDTH, className)}>
+      <div className={cn('flex flex-col gap-2', FORM_CONTROL_WIDTH, className)}>
         {label && (
           <label htmlFor={id} className="hds-type-ui text-foreground">
             {label}
@@ -116,7 +123,7 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
           aria-errormessage={errorTextId}
           aria-invalid={hasError || undefined}
           data-state={state}
-          className={cn(textareaVariants({ resize, invalid: hasError }), textareaClassName)}
+          className={cn(textareaVariants({ resize, invalid }), textareaClassName)}
           {...rest}
         />
 

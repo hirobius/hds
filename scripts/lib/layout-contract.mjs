@@ -40,6 +40,7 @@ const FORM_CONTROLS = ['Input', 'Textarea', 'Select', 'Combobox'];
 const BLOCK_FILL = [
   'Alert',
   'Blockquote',
+  'Board',
   'Box',
   'Pin',
   'StatusListItem',
@@ -87,6 +88,7 @@ const PADS = [
 ];
 /** Compound parts: zero padding, the container's gap spaces them. */
 const PARTS = [
+  'BoardColumn',
   'CardBody',
   'CardDescription',
   'CardFooter',
@@ -135,6 +137,7 @@ const PRIMITIVES = [
 ];
 const CONTAINERS = [
   'Alert',
+  'Board',
   'AlertDialog',
   'Callout',
   'Card',

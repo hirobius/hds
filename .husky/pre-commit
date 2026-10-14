@@ -48,6 +48,14 @@ node scripts/check-sync-map.mjs --check
 echo "Contract coverage (every core component says when to use it)…"
 node scripts/check-contract-coverage.mjs --enforce
 
+# hds#520: every interactive component states its accessibility contract as
+# @a11y tags, and each rule the component keeps points at a test. Severity
+# error: --enforce fails the commit on any gap (the family backfills reached
+# zero). Reads the manifest and greps the test files: no build, no browser, no
+# network.
+echo "A11y contracts (interactive components state and test their a11y rules)…"
+node scripts/check-a11y-contracts.mjs --enforce
+
 # A bare top-level React.forwardRef / cva / createContext / withHdsPortal call
 # is a side effect every bundler keeps, so one in a module that reaches the
 # chunk shared with Button re-breaks the Button-only budget (hds#363). Source
@@ -87,3 +95,10 @@ node scripts/check-no-uppercase.mjs
 # not only by ralph-gate in CI. --staged: no-op unless a kit file is staged.
 echo "Ralph kit drift (vendored kit files match ralph/kit.lock.json)…"
 node scripts/check-ralph-kit-drift.mjs --staged
+
+# ops#610 (ops#600): .claude/lessons/ holds the fleet lessons ledger and the recall
+# hook, vendored byte-identical from hirobius/ops (`pnpm lessons:vendor` there). A
+# local edit is caught here, not at the next session. Hashes only: no network, no
+# build. Fix: re-run lessons:vendor from the ops checkout.
+echo "Lessons copy (vendored .claude/lessons matches its lock)…"
+node .claude/lessons/check-drift.mjs

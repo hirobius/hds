@@ -15,12 +15,15 @@ import {
   Alert,
   Avatar,
   Badge,
+  Board,
+  BoardColumn,
   Box,
   Breadcrumb,
   Button,
   Card,
   Checkbox,
   Combobox,
+  Composer,
   Container,
   Dialog,
   Disclosure,
@@ -228,6 +231,38 @@ function MetricTilesDemo() {
   );
 }
 
+function BoardDemo() {
+  return (
+    <Board aria-label="Lead pipeline">
+      <BoardColumn title="On fire" tone="danger">
+        <Card padding="item" className="border-0">
+          <Card.Row trailing={<Badge tone="danger">Today</Badge>}>
+            <Card.RowTitle>Monroe Landscaping</Card.RowTitle>
+            <Card.RowNote>Asked for a quote</Card.RowNote>
+          </Card.Row>
+        </Card>
+        <Card padding="item" className="border-0">
+          <Card.Row>
+            <Card.RowTitle>Cedar Fencing</Card.RowTitle>
+            <Card.RowNote>Preview sent</Card.RowNote>
+          </Card.Row>
+        </Card>
+      </BoardColumn>
+      <BoardColumn title="Warm" tone="warning">
+        <Card padding="item" className="border-0">
+          <Card.Row>
+            <Card.RowTitle>Northside Pressure Washing</Card.RowTitle>
+            <Card.RowNote>Follow up Friday</Card.RowNote>
+          </Card.Row>
+        </Card>
+      </BoardColumn>
+      <BoardColumn title="Won" tone="success" count={0}>
+        <EmptyState title="Nothing here yet" />
+      </BoardColumn>
+    </Board>
+  );
+}
+
 function AlertDemo() {
   return (
     <div style={demoStack}>
@@ -419,6 +454,22 @@ function InlineLinkDemo() {
     <p style={{ margin: 0 }}>
       Read the <InlineLink href="#">upgrade guide</InlineLink> before you bump the range.
     </p>
+  );
+}
+
+function ComposerDemo() {
+  const [sent, setSent] = useState<string | null>(null);
+  return (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <Composer
+        placeholder="Drop a thought, or paste something long"
+        pasteFoldThreshold={200}
+        onSubmit={({ text, attachments }) =>
+          setSent(`${text.length} chars, ${attachments.length} attachments`)
+        }
+      />
+      {sent && <p style={{ margin: 0 }}>Sent: {sent}</p>}
+    </div>
   );
 }
 
@@ -819,6 +870,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Alert: AlertDemo,
   Avatar: AvatarDemo,
   Badge: BadgeDemo,
+  Board: BoardDemo,
   Box: BoxDemo,
   Breadcrumb: BreadcrumbDemo,
   Card: CardDemo,
@@ -831,6 +883,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Grid: GridDemo,
   Icon: IconDemo,
   InlineLink: InlineLinkDemo,
+  Composer: ComposerDemo,
   Kbd: KbdDemo,
   Pagination: PaginationDemo,
   Popover: PopoverDemo,

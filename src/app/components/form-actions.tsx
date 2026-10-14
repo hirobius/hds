@@ -4,6 +4,8 @@
  * @usage Lay out a form's buttons in a fixed order: danger on the left, then secondary, then primary on the right.
  * @tier pattern
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-87
+ * @a11y component required a11y:form-actions.dom-order DOM order matches visual order, with the primary action last (WCAG 1.3.2, 2.4.3).
+ * @a11y consumer required Give every action a visible name; an icon-only action needs an aria-label.
  */
 
 import * as React from 'react';
