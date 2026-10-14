@@ -529,3 +529,14 @@ First live run of the bound-colour fallback guard, plus the titleSm token sync (
 | 2   | --         | `use_figma` | read  | Library: `fallbacks.js` unmodified (bound-colour fallback record)                           |
 
 Results: #1 created the 5 typography/titleSm variables (VariableID:2178:2–6) and the typography/titleSm text style; receipt post c70cefd6 on base 4764179b, snapshot rebuilt, drift 0. #2 59 pages (Archive and Deprecated skipped), 2773 nodes, 1863 colour bindings, 0 fallback mismatches (checksum 99955183), ingested as `bindingFallbacks`. Session total 2 calls. Nothing deleted or published.
+
+## 2026-10-14: agent sync, HDS 0.26.1 dark-mode tokens (branch claude/figma-sync-0-26-1)
+
+Zero-click delta sync (hds#681, hds#733). Budget 2 calls (1 skill load, 1 write). Rows are written before the call is made.
+
+| #   | Time (UTC) | Tool              | Kind  | Purpose                                                                                   |
+| --- | ---------- | ----------------- | ----- | ----------------------------------------------------------------------------------------- |
+| 1   | 23:19      | `get_figma_skill` | read  | Load skill://figma/figma-use/SKILL.md                                                     |
+| 2   | 23:19      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` unmodified (updated 5 · created 3 · deleted 0) |
+
+Results: #1 loaded. #2 delta.js unmodified: updated 5 · created 3 · deleted 0 (neutral.350, neutral.450, content.tertiary created; surface.sunken, content.secondary, border.default values, border.subdued and badge.radius descriptions/values updated); receipt post 2aa8b0e8 on base c70cefd6, snapshot rebuilt, drift 0, plan 0. Session total 2 calls. Nothing deleted or published.

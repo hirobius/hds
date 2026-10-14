@@ -1,15 +1,15 @@
 {
-  "checksum": "c70cefd6",
+  "checksum": "2aa8b0e8",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-12T20:18:23.125Z",
+    "takenAt": "2026-10-14T23:19:55.760Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "7b1d1f15",
-      "pushedAt": "2026-10-12T20:18:23.097Z",
+      "modelHash": "2ac6699a",
+      "pushedAt": "2026-10-14T23:19:55.681Z",
       "scope": null
     },
     "collections": [
@@ -1319,6 +1319,28 @@
             }
           },
           {
+            "id": "VariableID:2182:2",
+            "name": "color/neutral/350",
+            "path": "primitive.color.neutral.350",
+            "resolvedType": "COLOR",
+            "description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-350)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.705882,
+                  "g": 0.705882,
+                  "b": 0.705882,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
             "id": "VariableID:3:6",
             "name": "color/neutral/400",
             "path": "primitive.color.neutral.400",
@@ -1335,6 +1357,28 @@
                   "r": 0.639216,
                   "g": 0.639216,
                   "b": 0.639216,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2182:3",
+            "name": "color/neutral/450",
+            "path": "primitive.color.neutral.450",
+            "resolvedType": "COLOR",
+            "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-450)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.564706,
+                  "g": 0.564706,
+                  "b": 0.564706,
                   "a": 1
                 }
               }
@@ -3414,8 +3458,8 @@
                 "to": "Hirobius/Primitives: color/neutral/200"
               },
               "Dark": {
-                "alias": "VariableID:3:9",
-                "to": "Hirobius/Primitives: color/neutral/700"
+                "alias": "VariableID:3:8",
+                "to": "Hirobius/Primitives: color/neutral/600"
               }
             }
           },
@@ -3472,7 +3516,7 @@
             "name": "color/border/subdued",
             "path": "semantic.color.border.subdued",
             "resolvedType": "COLOR",
-            "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
+            "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -3740,8 +3784,8 @@
                 "to": "Hirobius/Primitives: color/neutral/600"
               },
               "Dark": {
-                "alias": "VariableID:3:6",
-                "to": "Hirobius/Primitives: color/neutral/400"
+                "alias": "VariableID:2182:2",
+                "to": "Hirobius/Primitives: color/neutral/350"
               }
             }
           },
@@ -3768,6 +3812,32 @@
               "Dark": {
                 "alias": "VariableID:3:32",
                 "to": "Hirobius/Primitives: color/green/400"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2182:4",
+            "name": "color/content/tertiary",
+            "path": "semantic.color.content.tertiary",
+            "resolvedType": "COLOR",
+            "description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-content-tertiary)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:7",
+                "to": "Hirobius/Primitives: color/neutral/500"
+              },
+              "Dark": {
+                "alias": "VariableID:2182:3",
+                "to": "Hirobius/Primitives: color/neutral/450"
               }
             }
           },
@@ -4367,8 +4437,8 @@
                 "to": "Hirobius/Primitives: color/neutral/200"
               },
               "Dark": {
-                "alias": "VariableID:3:10",
-                "to": "Hirobius/Primitives: color/neutral/800"
+                "alias": "VariableID:3:9",
+                "to": "Hirobius/Primitives: color/neutral/700"
               }
             }
           },
@@ -7211,7 +7281,7 @@
             "name": "badge/radius",
             "path": "component.badge.radius",
             "resolvedType": "FLOAT",
-            "description": "Small rounded radius for badges.",
+            "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -7221,8 +7291,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:27",
-                "to": "Hirobius/Primitives: radius/4"
+                "alias": "VariableID:12:29",
+                "to": "Hirobius/Semantic: radius/action"
               }
             }
           },
