@@ -1,0 +1,1 @@
+Audit follow-ups: check-skills-lock ported from ops and wired into the lean gate (every third-party skill pinned to a commit and hash-matched; extract-design re-pinned to the ops commit); `pnpm eval:consistency -- --release` plus consistency.yml re-run the frozen 2026-10-07 apps that built against each release's package; renovate.json added.

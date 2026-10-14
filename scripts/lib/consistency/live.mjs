@@ -22,6 +22,7 @@ import {
   buildEntry,
   failedStages,
   pairwiseDiffs,
+  releaseThresholds,
   shotName,
   trimBuildLog,
 } from './live-plan.mjs';
@@ -30,13 +31,14 @@ import { scanApp } from './violations.mjs';
 /**
  * @param {{ root:string, ledgerFile:string, reportsDir:string, date:string,
  *   apps:{id:string, dir:string, files:Record<string,string>}[],
- *   outDir?:string, skipBuild:boolean, writeLedger:boolean, notes?:string, log:(line:string)=>void }} input
+ *   outDir?:string, skipBuild:boolean, writeLedger:boolean, release?:boolean, notes?:string, log:(line:string)=>void }} input
  * @returns {Promise<{ code:number, report:object, entry:object|null }>}
  */
 export async function runLive(input, stages) {
   const { apps, log } = input;
-  const thresholds = readLedger(input.ledgerFile).thresholds;
   const ids = apps.map((a) => a.id);
+  const recorded = readLedger(input.ledgerFile).thresholds;
+  const thresholds = input.release ? releaseThresholds(recorded, ids.length) : recorded;
 
   log(
     `packing the library (${input.skipBuild ? 'reusing the existing tarball' : 'build:lib + npm pack'})...`,
@@ -141,7 +143,7 @@ export async function runLive(input, stages) {
       `ledger entry appended: ${input.date} harness, commit ${packed.commit}, pass ${entry.pass}`,
     );
   } else {
-    log('ledger entry NOT written: fixture input.');
+    log(`ledger entry NOT written: ${input.release ? 'release check' : 'fixture input'}.`);
   }
   log(report.pass ? 'RESULT: PASS' : 'RESULT: FAIL');
   return { code: report.pass ? 0 : 1, report, entry };

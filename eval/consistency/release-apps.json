@@ -1,0 +1,5 @@
+{
+  "$comment": "The frozen app set `pnpm eval:consistency -- --release` re-runs against the package under release (.github/workflows/consistency.yml). These are the after-arm apps that built first try on 2026-10-07 (after-haiku did not, on its own type errors; see that run's NOTES.md), so a build, axe, Jaccard or light-diff failure here is a regression in the package, not in the agents' code. Point run and apps at a newer run once one is recorded for a new model.",
+  "run": "eval/consistency/runs/2026-10-07",
+  "apps": ["after-opus", "after-sonnet"]
+}

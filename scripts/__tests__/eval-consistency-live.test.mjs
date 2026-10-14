@@ -30,6 +30,7 @@ import {
   failedStages,
   installFailureMessage,
   pairwiseDiffs,
+  releaseThresholds,
   peerSpecs,
   checkPackRecord,
   runDate,
@@ -860,5 +861,40 @@ describe('packLibrary --skip-build: the commit comes from the pack record', () =
     expect(() => packLibrary({ root: dir, packDir: dir, skipBuild: true })).toThrow(
       /does not match/,
     );
+  });
+});
+
+describe('the release check (a regression gate over a frozen app set)', () => {
+  const ledger = {
+    builds: { min: 3, of: 3 },
+    violations: { max: 0 },
+    axe: { max: 0 },
+    jaccard: { min: 0.85 },
+    lightDiff: { max: 1.5 },
+  };
+
+  it('requires every supplied app to build and keeps every other threshold as recorded', () => {
+    const t = releaseThresholds(ledger, 2);
+    expect(t.builds).toEqual({ min: 2, of: 2 });
+    expect(t.violations).toEqual(ledger.violations);
+    expect(t.axe).toEqual(ledger.axe);
+    expect(t.jaccard).toEqual(ledger.jaccard);
+    expect(t.lightDiff).toEqual(ledger.lightDiff);
+    expect(ledger.builds).toEqual({ min: 3, of: 3 });
+  });
+
+  it('refuses fewer than two apps, since Jaccard and pixel diff need a pair', () => {
+    expect(() => releaseThresholds(ledger, 1)).toThrow(/two apps/);
+  });
+
+  it('names a committed app set whose apps all exist on disk', () => {
+    const file = path.join(ROOT, 'eval/consistency/release-apps.json');
+    const set = JSON.parse(readFileSync(file, 'utf8'));
+    expect(set.apps.length).toBeGreaterThanOrEqual(2);
+    for (const id of set.apps) {
+      expect(existsSync(path.join(ROOT, set.run, id, 'src/App.tsx')), `${set.run}/${id}`).toBe(
+        true,
+      );
+    }
   });
 });

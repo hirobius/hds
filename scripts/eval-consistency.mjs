@@ -66,6 +66,11 @@ Modes:
   --apps <dir> --offline   Measure violations and component-set Jaccard from source
                            only and check them against the ledger thresholds. No
                            network, no browser, no ledger entry.
+  --release                The per-release regression check (.github/workflows/consistency.yml):
+                           the full run over the frozen app set that
+                           eval/consistency/release-apps.json names, against a fresh
+                           pack of this tree. Every app must build and every other
+                           ledger threshold must hold. Never writes a ledger entry.
   --summary                Print the latest ledger entry as one line.
 
 Design explorations (hds#628; eval/explorations/README.md). A run directory holds
@@ -118,6 +123,8 @@ function parse(argv) {
     offline: false,
     skipBuild: false,
     summary: false,
+    release: false,
+    only: null,
     help: false,
     explorations: null,
     gaps: null,
@@ -153,6 +160,7 @@ function parse(argv) {
     else if (a === '--skip-build') opts.skipBuild = true;
     else if (a === '--json') opts.json = true;
     else if (a === '--summary') opts.summary = true;
+    else if (a === '--release') opts.release = true;
     else if (a === '--help' || a === '-h') opts.help = true;
     else fail(`unknown argument ${a}`);
   }
@@ -170,12 +178,13 @@ function walk(dir, base, out) {
   }
 }
 
-/** { root, apps: { appId: { 'src/App.tsx': text, ... } } } for every <dir>/<app-id>/src. */
-function loadApps(dir) {
+/** { root, apps: { appId: { 'src/App.tsx': text, ... } } } for every <dir>/<app-id>/src (only the ids in `only`, when given). */
+function loadApps(dir, only = null) {
   const root = path.resolve(ROOT, dir);
   if (!existsSync(root) || !statSync(root).isDirectory()) fail(`${dir} is not a directory`);
   const apps = {};
   for (const id of readdirSync(root).sort()) {
+    if (only && !only.includes(id)) continue;
     const src = path.join(root, id, 'src');
     if (!existsSync(src) || !statSync(src).isDirectory()) continue;
     const files = {};
@@ -255,7 +264,7 @@ async function liveStages(log) {
 }
 
 async function live(dir, opts) {
-  const { root, apps } = loadApps(dir);
+  const { root, apps } = loadApps(dir, opts.only);
   const isFixture = (root + path.sep).startsWith(FIXTURES + path.sep);
   const log = (line) => console.log(line);
   const { stages, close, cleanup } = await liveStages(log);
@@ -271,7 +280,8 @@ async function live(dir, opts) {
       date,
       apps: Object.entries(apps).map(([id, files]) => ({ id, dir: path.join(root, id), files })),
       skipBuild: opts.skipBuild,
-      writeLedger: !isFixture,
+      writeLedger: !isFixture && !opts.release,
+      release: opts.release,
       notes: `Harness run over ${rel}.`,
       log,
     },
@@ -403,6 +413,14 @@ if (opts.summary) {
   if (!entry) fail('ledger has no entries');
   console.log(summaryLine(entry));
   process.exit(0);
+}
+if (opts.release) {
+  if (opts.apps || opts.offline) fail('--release picks its own apps and always builds');
+  const set = JSON.parse(
+    readFileSync(path.join(ROOT, 'eval/consistency/release-apps.json'), 'utf8'),
+  );
+  opts.apps = set.run;
+  opts.only = set.apps;
 }
 const modes = ['apps', 'explorations', 'gaps', 'pii'].filter((m) => opts[m]);
 if (modes.length > 1)
