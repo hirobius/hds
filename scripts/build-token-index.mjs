@@ -12,12 +12,13 @@
  * Pure functions are exported so they can be unit-tested with Vitest.
  */
 
-import { readFileSync, writeFileSync, mkdirSync , readdirSync, statSync } from 'fs';
-import { join, dirname, relative }                 from 'path';
-import { fileURLToPath }                           from 'url';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync } from 'fs';
+import { join, dirname, relative } from 'path';
+import { fileURLToPath } from 'url';
+import { resolveAlias } from './lib/token-tree.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT      = join(__dirname, '..');
+const ROOT = join(__dirname, '..');
 
 // ── Pure helpers (exported for tests) ────────────────────────────────────────
 
@@ -27,21 +28,6 @@ const ROOT      = join(__dirname, '..');
  */
 export function pathToCSSVar(dotPath) {
   return '--' + dotPath.replaceAll('.', '-');
-}
-
-/** Resolve a {ref} alias to its raw leaf $value in the token tree. */
-function resolveAlias(ref, root, visited = new Set()) {
-  if (typeof ref !== 'string' || !ref.startsWith('{')) return ref;
-  if (visited.has(ref)) throw new Error(`Circular reference: ${ref}`);
-  visited.add(ref);
-  const parts = ref.replace(/^\{|\}$/g, '').split('.');
-  let node = root;
-  for (const p of parts) {
-    node = node?.[p];
-    if (node === undefined) throw new Error(`Token not found: ${ref}`);
-  }
-  if (!('$value' in node)) throw new Error(`Not a leaf token: ${ref}`);
-  return resolveAlias(node.$value, root, visited);
 }
 
 /** Convert a raw token $value to a flat string (handles hex, numbers, arrays). */
@@ -169,9 +155,7 @@ export function parseHandoffHexes(markdown) {
  * @returns {Array<{ handoffValue: string, tokenValue: null, file: string }>}
  */
 export function diffHandoffHexes(handoffHexes, expectedValues) {
-  const tokenValues = new Set(
-    Object.values(expectedValues).map((v) => v.toLowerCase())
-  );
+  const tokenValues = new Set(Object.values(expectedValues).map((v) => v.toLowerCase()));
   return handoffHexes
     .filter((hex) => !tokenValues.has(hex.toLowerCase()))
     .map((hex) => ({ handoffValue: hex, tokenValue: null, file: 'DESIGN-HANDOFF.md' }));
@@ -217,21 +201,21 @@ function* walkFiles(dir, exts) {
 // ── Main entry (runs when called directly) ────────────────────────────────────
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const SRC_DIR     = join(ROOT, 'src');
+  const SRC_DIR = join(ROOT, 'src');
   const OUTPUT_FILE = join(ROOT, 'src', 'app', 'design-system', 'token-usage-map.json');
   const HANDOFF_FILE = join(ROOT, 'DESIGN-HANDOFF.md');
-  const TOKEN_FILE   = join(ROOT, 'hirobius.tokens.json');
+  const TOKEN_FILE = join(ROOT, 'hirobius.tokens.json');
   const THEME_CSS_FILE = join(ROOT, 'src', 'styles', 'theme.css');
 
   // 1. Build expectedValues from the token source of truth
-  const tokenTree    = JSON.parse(readFileSync(TOKEN_FILE, 'utf8'));
+  const tokenTree = JSON.parse(readFileSync(TOKEN_FILE, 'utf8'));
   const expectedValues = buildExpectedValues(tokenTree);
 
-  // 1b. Build allowlist from theme.css + tokens.css — both define valid CSS vars
+  // 1b. Build allowlist from theme.css + tokens.generated.css — both define valid CSS vars
   //     that are not in hirobius.tokens.json (HDS vars, Tailwind bridge, composites)
   const cssAllowlistFiles = [
-    { path: THEME_CSS_FILE,          label: 'theme.css' },
-    { path: join(ROOT, 'src', 'styles', 'tokens.css'), label: 'tokens.css' },
+    { path: THEME_CSS_FILE, label: 'theme.css' },
+    { path: join(ROOT, 'src', 'styles', 'tokens.generated.css'), label: 'tokens.generated.css' },
   ];
   const themeDefinedVars = new Set();
   for (const { path, label } of cssAllowlistFiles) {
@@ -245,8 +229,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   }
 
   // 2. Walk src/ files collecting all token refs
-  const byToken = {};  // { tokenRef: Set<relPath> }
-  const byFile  = {};  // { relPath: Set<tokenRef> }
+  const byToken = {}; // { tokenRef: Set<relPath> }
+  const byFile = {}; // { relPath: Set<tokenRef> }
   const allSourceRefs = new Set();
   const auditOkComments = [];
 
@@ -301,7 +285,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
   // 5. Serialize byToken values to sorted arrays
   const byTokenSorted = Object.fromEntries(
-    Object.entries(byToken).map(([k, v]) => [k, [...new Set(v)].sort()])
+    Object.entries(byToken).map(([k, v]) => [k, [...new Set(v)].sort()]),
   );
 
   // 6. Write output
@@ -318,12 +302,14 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   mkdirSync(dirname(OUTPUT_FILE), { recursive: true });
   writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2));
 
-  const tokenCount  = Object.keys(byToken).length;
-  const fileCount   = Object.keys(byFile).length;
-  const deadCount   = deadTokens.length;
-  const driftCount  = handoffDrift.length;
-  const auditCount  = auditOkComments.length;
-  const expCount    = Object.keys(expectedValues).length;
+  const tokenCount = Object.keys(byToken).length;
+  const fileCount = Object.keys(byFile).length;
+  const deadCount = deadTokens.length;
+  const driftCount = handoffDrift.length;
+  const auditCount = auditOkComments.length;
+  const expCount = Object.keys(expectedValues).length;
 
-  console.log(`[ok] token-usage-map.json - ${tokenCount} token refs across ${fileCount} files | ${expCount} expected tokens | ${deadCount} dead | ${driftCount} handoff drift | ${auditCount} audit-ok`);
+  console.log(
+    `[ok] token-usage-map.json - ${tokenCount} token refs across ${fileCount} files | ${expCount} expected tokens | ${deadCount} dead | ${driftCount} handoff drift | ${auditCount} audit-ok`,
+  );
 }

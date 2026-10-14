@@ -4,7 +4,7 @@
  * Hirobius Design System — Token Pipeline Verifier
  *
  * Verifies that hirobius.tokens.json compiles correctly to:
- *   • tokens.css          — every JSON token has a CSS var; semantic vars reference upstream
+ *   • tokens.generated.css — every JSON token has a CSS var; semantic vars reference upstream
  *   • generated-tokens.ts — every non-composite token has a TS var() reference
  *
  * Run AFTER pnpm tokens:  node scripts/verify-tokens.mjs
@@ -63,9 +63,9 @@ export function expandedElevationVars(path) {
   return ELEVATION_SLOTS.map((slot) => `${base}-${slot}`);
 }
 
-// ── Parse tokens.css → var map ────────────────────────────────────────────────
+// ── Parse tokens.generated.css → var map ────────────────────────────────────────────────
 /**
- * Parses a tokens.css string into a Map of { varName → value }.
+ * Parses a tokens.generated.css string into a Map of { varName → value }.
  * Captures ALL declarations (both :root and [data-theme="dark"]).
  * Keeps first occurrence so light-mode values are authoritative for alias checks.
  */
@@ -144,7 +144,7 @@ export function runChecks(raw, cssVarMap, tsText) {
       continue;
     }
 
-    // ── Check 1: CSS var exists in tokens.css ──────────────────────────────────
+    // ── Check 1: CSS var exists in tokens.generated.css ──────────────────────────────────
     if (!cssVarMap.has(cssVar)) {
       errors.push(`MISSING_CSS_VAR  ${cssVar}`);
       continue;
@@ -173,7 +173,7 @@ export function runChecks(raw, cssVarMap, tsText) {
           .trim();
         if (!cssVarMap.has(refVar)) {
           errors.push(
-            `BROKEN_ALIAS     ${cssVar} → ${refVar}  (target var not found in tokens.css)`,
+            `BROKEN_ALIAS     ${cssVar} → ${refVar}  (target var not found in tokens.generated.css)`,
           );
         }
       }
@@ -234,7 +234,7 @@ export function runChecks(raw, cssVarMap, tsText) {
   let orphans = 0;
   for (const v of cssVarMap.keys()) {
     if (!jsonVars.has(v)) {
-      warnings.push(`ORPHANED_CSS_VAR ${v}  (in tokens.css but no matching JSON token)`);
+      warnings.push(`ORPHANED_CSS_VAR ${v}  (in tokens.generated.css but no matching JSON token)`);
       orphans++;
     }
   }
@@ -254,7 +254,10 @@ function loadFile(path, label) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
-  const cssText = loadFile(join(ROOT, 'src', 'styles', 'tokens.css'), 'tokens.css');
+  const cssText = loadFile(
+    join(ROOT, 'src', 'styles', 'tokens.generated.css'),
+    'tokens.generated.css',
+  );
   const tsText = loadFile(
     join(ROOT, 'src', 'app', 'design-system', 'generated-tokens.ts'),
     'generated-tokens.ts',

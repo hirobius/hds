@@ -1,6 +1,6 @@
 {
   "package": "@hirobius/design-system",
-  "latest": "0.24.1",
+  "latest": "0.25.0",
   "floor": "0.16.0",
   "versions": [
     {
@@ -86,13 +86,30 @@
       "bump": "patch",
       "breaking": 0,
       "summary": "16 that look different."
+    },
+    {
+      "version": "0.25.0",
+      "date": "2026-10-13",
+      "bump": "minor",
+      "breaking": 1,
+      "summary": "1 change to make by hand (1 breaking), 10 that look different and 6 deprecations."
     }
   ],
   "deprecated": [
     {
+      "name": "Blockquote.size",
+      "removeIn": "1.0.0",
+      "step": "0.25.0/deprecated/Blockquote.size"
+    },
+    {
       "name": "Box-sx-layout-names",
       "removeIn": "1.0.0",
       "step": "0.20.0/deprecated/Box-sx-layout-names"
+    },
+    {
+      "name": "CardMetric",
+      "removeIn": "1.0.0",
+      "step": "0.25.0/deprecated/CardMetric"
     },
     {
       "name": "Divider.strong",
@@ -105,9 +122,29 @@
       "step": "0.22.0/deprecated/InlineCode.compact"
     },
     {
+      "name": "MetricTile",
+      "removeIn": "1.0.0",
+      "step": "0.25.0/deprecated/MetricTile"
+    },
+    {
+      "name": "MetricTiles",
+      "removeIn": "1.0.0",
+      "step": "0.25.0/deprecated/MetricTiles"
+    },
+    {
       "name": "Stack-gap-layout-names",
       "removeIn": "1.0.0",
       "step": "0.20.0/deprecated/Stack-gap-layout-names"
+    },
+    {
+      "name": "Stat",
+      "removeIn": "1.0.0",
+      "step": "0.25.0/deprecated/Stat"
+    },
+    {
+      "name": "StatusTile",
+      "removeIn": "1.0.0",
+      "step": "0.25.0/deprecated/StatusTile"
     },
     {
       "name": "Text-variants",

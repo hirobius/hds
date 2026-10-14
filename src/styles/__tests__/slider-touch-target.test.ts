@@ -22,7 +22,7 @@ function coarseBlock(): string {
 }
 
 describe('slider touch target', () => {
-  it('lifts .hds-slider-input to the interactive-min token under a coarse pointer', () => {
+  it('a11y:slider.target-size lifts .hds-slider-input to the interactive-min token under a coarse pointer', () => {
     const block = coarseBlock();
     const rule = block.match(/\.hds-slider-input\s*\{([^}]*)\}/);
     expect(rule, '.hds-slider-input rule inside @media (pointer: coarse)').toBeTruthy();

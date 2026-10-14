@@ -190,6 +190,48 @@
       },
       "pass": false,
       "notes": "Harness run over eval/consistency/runs/2026-10-05."
+    },
+    {
+      "date": "2026-10-14",
+      "source": "harness",
+      "packageVersion": "0.25.0",
+      "tarballSha256": "dce3b2d7f55f2ab043cedf288a3beeaaa9dc9b3b8bf4dbff89f2591feb527d08",
+      "commit": "a38670c9e4bb44649693005e40996bcd5bb31eba",
+      "apps": ["after-haiku", "after-opus", "after-sonnet"],
+      "measured": {
+        "builds": {
+          "passing": 2,
+          "of": 3
+        },
+        "violations": 0,
+        "axe": 0,
+        "jaccardMin": 0.95,
+        "lightDiffMax": null
+      },
+      "detail": {
+        "jaccard": [0.95, 0.95, 1],
+        "lightDiff": []
+      },
+      "thresholds": {
+        "builds": {
+          "min": 3,
+          "of": 3
+        },
+        "violations": {
+          "max": 0
+        },
+        "axe": {
+          "max": 0
+        },
+        "jaccard": {
+          "min": 0.85
+        },
+        "lightDiff": {
+          "max": 1.5
+        }
+      },
+      "pass": false,
+      "notes": "Harness run over eval/consistency/runs/2026-10-14. After arm on 0.25.0, generators as subagents without the hds MCP server (runs/2026-10-14/NOTES.md). after-sonnet imported Form from the package root instead of /patterns; AGENTS.md recipe gap filed as hds#715."
     }
   ]
 }

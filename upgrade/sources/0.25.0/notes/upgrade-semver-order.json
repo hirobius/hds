@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "Release ordering in the upgrade tooling now follows semver for pre-release versions; nothing to do."
+}

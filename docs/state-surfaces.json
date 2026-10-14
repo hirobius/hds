@@ -49,6 +49,13 @@
       "check": "node scripts/count-consumer-usage.mjs --check"
     },
     {
+      "path": "public/hds-stats.json",
+      "describes": "The HDS numbers other repos read (component, core, pattern and token counts, contrast pairs, typography styles, the consumer split), each computed from the code",
+      "kind": "generated",
+      "by": "scripts/build-stats-json.mjs",
+      "check": "node scripts/build-stats-json.mjs --check"
+    },
+    {
       "path": "README.md",
       "describes": "The core set of components",
       "kind": "generated",

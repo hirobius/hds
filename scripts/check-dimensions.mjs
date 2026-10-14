@@ -18,50 +18,41 @@
  * Or:  pnpm check:dimensions
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, dirname, extname, relative, resolve } from 'path';
+import { readFileSync } from 'fs';
+import { join, dirname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { isSpecFile } from './lib/gate-scope.mjs';
+import { scanSources, suppressionFor } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC = join(ROOT, 'src', 'app');
-const SKIP_DIRS = new Set(['data', 'node_modules', 'dist']);
+const SKIP_DIRS = ['data', 'node_modules', 'dist'];
 
 // Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
 const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 const DIMENSION_PROP_RE = /\b(width|minWidth|maxWidth|height|minHeight|maxHeight)\s*:\s*([^,}]+)/g;
+const isAuditOk = suppressionFor('audit-ok', { lookback: 0 });
 const WATCHED_SIZES = new Set([12, 32, 48]);
 const DISALLOWED_DIMENSION_VALUE_RE =
   /\b(?:hds\.space|hds\.semantic\.space|hds\.density)\b|var\(--(?:primitive|semantic|hds)-space-/;
 
-function collectFiles(dir, results = []) {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      if (SKIP_DIRS.has(entry)) continue;
-      collectFiles(full, results);
-    } else if (
-      (extname(entry) === '.tsx' || extname(entry) === '.ts') &&
-      // Both violations this gate reported on main were box-sx.test.ts
-      // asserting the resolver's output — the dimension regex matched inside a
-      // CSS string literal the test exists to pin, and read it as a width set
-      // from a spacing token. Someone had already tried to silence it with a
-      // `tier-ok` marker, which belongs to a different gate.
-      !isSpecFile(entry)
-    ) {
-      results.push(full);
-    }
-  }
-  return results;
-}
+// Specs are left out (the default): the only two violations this gate once reported
+// on main were box-sx.test.ts asserting the resolver's output, where the dimension
+// regex matched inside a CSS string literal the test exists to pin.
+const SOURCES = () =>
+  scanSources({
+    root: ROOT,
+    gate: 'check-dimensions',
+    roots: ['src/app'],
+    exts: ['.ts', '.tsx'],
+    skipDirs: SKIP_DIRS,
+  });
 
 export function runDimensionCheck() {
   const violations = [];
 
-  const filesToScan = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : collectFiles(SRC);
+  const filesToScan = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : SOURCES();
 
   for (const file of filesToScan) {
     const rel = relative(ROOT, file).replace(/\\/g, '/');
@@ -69,7 +60,7 @@ export function runDimensionCheck() {
 
     lines.forEach((line, index) => {
       const trimmed = line.trim();
-      if (trimmed.startsWith('//') || trimmed.startsWith('*') || line.includes('audit-ok')) return;
+      if (trimmed.startsWith('//') || trimmed.startsWith('*') || isAuditOk(lines, index)) return;
 
       for (const match of line.matchAll(DIMENSION_PROP_RE)) {
         const propName = match[1];

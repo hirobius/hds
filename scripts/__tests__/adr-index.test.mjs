@@ -56,6 +56,30 @@ describe('parseAdr', () => {
   });
 });
 
+describe('renderIndex', () => {
+  const row = (title) =>
+    renderIndex([
+      { number: '001', file: '001-x.md', title, status: 'Accepted', date: '', retroactive: false },
+    ])
+      .split('\n')
+      .find((l) => l.startsWith('| [001]'));
+
+  it('escapes a pipe in a title so it stays one table cell', () => {
+    expect(row('A | B')).toContain('A \\| B');
+  });
+
+  it('escapes a backslash before a pipe, so the pipe cannot be un-escaped', () => {
+    expect(row('A \\| B')).toContain('A \\\\\\| B');
+  });
+});
+
+describe('ADR numbering', () => {
+  it('gives every ADR file a unique number', () => {
+    const numbers = readAdrs(join(ROOT, 'docs/adr')).map((a) => a.number);
+    expect(numbers.filter((n, i) => numbers.indexOf(n) !== i)).toEqual([]);
+  });
+});
+
 describe('docs/adr/README.md', () => {
   it('matches the generator output (run: node scripts/build-adr-index.mjs)', () => {
     const committed = readFileSync(join(ROOT, 'docs/adr/README.md'), 'utf8');

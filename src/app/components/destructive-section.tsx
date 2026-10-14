@@ -2,6 +2,11 @@
  * DestructiveSection - the one place a screen puts an irreversible action.
  * @category Actions
  * @usage Put a dangerous action, such as delete, in its own section with a warning and a confirm step.
+ * @a11y component required a11y:destructive-section.labelled The section is a labelled region named by its heading.
+ * @a11y component required a11y:destructive-section.first-press-safe The first press opens a confirmation and never runs the action.
+ * @a11y component required a11y:destructive-section.cancel-returns-focus Cancel closes the confirmation, returns focus to the trigger and never runs the action.
+ * @a11y component required a11y:destructive-section.confirm-returns-focus Confirm runs the action once and returns focus to the trigger.
+ * @a11y consumer required Name confirmLabel by its outcome ("Archive client"), not "OK".
  * @tier pattern
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3
  */

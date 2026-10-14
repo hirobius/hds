@@ -26,13 +26,25 @@ const WEIGHT_TO_STROKE: Record<string, number> = {
   duotone: 2,
 };
 
+/**
+ * A colour Icon accepts: `currentColor` (inherit the text colour, the default),
+ * `inherit`, or a semantic or component design-token variable. Raw hex, rgb()
+ * and primitive tokens are type errors so a colour can't be hard-coded here.
+ * @public
+ */
+export type IconColor =
+  | 'currentColor'
+  | 'inherit'
+  | `var(--semantic-${string})`
+  | `var(--component-${string})`;
+
 export interface IconProps {
   /** Lucide icon component to render. */
   icon: LucideIcon;
   /** Size token from `hds.iconSize`. */
   size?: IconSize;
-  /** CSS color value or token, such as `var(--semantic-color-content-secondary)`. */
-  color?: string;
+  /** `currentColor` (default), `inherit`, or a token variable such as `var(--semantic-color-content-secondary)`. */
+  color?: IconColor;
   /** Optional class hook for layout or utility styling (rotation, transition, etc.). */
   className?: string;
   /** Optional inline styles for rare rotation, transition, or layout tweaks. */

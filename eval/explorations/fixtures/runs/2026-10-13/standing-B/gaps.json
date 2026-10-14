@@ -1,0 +1,22 @@
+[
+  {
+    "screen": "standing",
+    "direction": "B",
+    "kind": "pattern",
+    "id": "band-section",
+    "needed": "A band section: a header with a name and a count, rows, and show all",
+    "didInstead": "A Card per band with the count in its title",
+    "proposal": "Add a Band pattern with name, count, rows and a show-all control",
+    "evidence": "src/App.tsx:23"
+  },
+  {
+    "screen": "standing",
+    "direction": "B",
+    "kind": "token",
+    "id": "supporting-accent",
+    "needed": "A supporting accent to mark the band that waits on you, next to the primary accent",
+    "didInstead": "The accent Card variant for the one band",
+    "proposal": "Add a supporting accent to the semantic tier",
+    "evidence": "src/App.tsx:25"
+  }
+]

@@ -2,7 +2,7 @@
  * EmptyState — consistent no-data placeholder for lists, grids, and sections.
  * @category Display
  * @tier primitive
- * @usage Say that a list, grid or section has no data yet, with a title and an optional description.
+ * @usage Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step.
  * @whenNot Content that is still loading, or a full-page error.
  * @useInstead Skeleton content that is still loading
  * @useInstead Alert a message about something that went wrong
@@ -25,13 +25,15 @@ export interface EmptyStateProps {
   title: React.ReactNode;
   /** Optional supporting line. */
   description?: React.ReactNode;
+  /** Optional action that fills the space, rendered under the description. */
+  action?: React.ReactNode;
   /** Escape hatch for layout adjustments — token-only, no business logic. */
   className?: string;
 }
 
 /** @public */
 export const EmptyState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, EmptyStateProps>(
-  function EmptyState({ title, description, className }, ref) {
+  function EmptyState({ title, description, action, className }, ref) {
     return (
       <div
         ref={ref}
@@ -40,6 +42,10 @@ export const EmptyState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Empty
       >
         <p className="m-0">{title}</p>
         {description && <p className="m-0 not-italic hds-type-caption">{description}</p>}
+        {/* not-italic: the root is italic for the message; the action opts back
+            out so a button or link inside keeps its own type style. The wrapper
+            also keeps the action at its natural width instead of stretching. */}
+        {action && <div className="not-italic">{action}</div>}
       </div>
     );
   },

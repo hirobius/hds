@@ -37,15 +37,15 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
-import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, dirname, extname, basename, relative, resolve } from 'node:path';
+import { readFileSync } from 'node:fs';
+import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { scanSources, suppressionFor, maskComments, isSpecFile } from './lib/source-scan.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC = join(ROOT, 'src');
 
 const jsonMode = hasJsonFlag(process.argv);
 const isFixtureMode =
@@ -79,12 +79,12 @@ const DEPRECATED_TYPE_STYLES =
 const DEPRECATED_VARIANTS =
   'heading1|heading2|heading3|technical|eyebrow|badge|docLede|docBody|docSmall|docCode';
 
-const EXTENSIONS = new Set(['.ts', '.tsx', '.css']);
-const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', '__tests__']);
+const EXTENSIONS = ['.ts', '.tsx', '.css'];
+const SKIP_DIRS = ['node_modules', '.git', 'dist', '__tests__'];
+const isExemptedLine = suppressionFor('type-ramp-ok', { requireReason: true, lookback: 2 });
 const EXEMPT_FILES = new Set([
   'src/app/design-system/tokens.ts',
   'src/app/components/text.tsx',
-  'src/styles/tokens.css',
   'src/styles/tokens.generated.css',
   'src/styles/static.css',
   'src/styles/tenants.css',
@@ -93,18 +93,7 @@ const EXEMPT_FILES = new Set([
 
 /** Whether a repo-relative path is out of scope. */
 export function isExempt(rel) {
-  return (
-    EXEMPT_FILES.has(rel) ||
-    /(^|\/)generated-[^/]+$/.test(rel) ||
-    /\.(test|spec)\.[cm]?[jt]sx?$/.test(basename(rel))
-  );
-}
-
-/** Blanks comments (keeping every newline) so a comment never reads as code. */
-function maskComments(text) {
-  return text
-    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '))
-    .replace(/(^|[ \t])\/\/[^\n]*/gm, (m, lead) => lead + ' '.repeat(m.length - lead.length));
+  return EXEMPT_FILES.has(rel) || /(^|\/)generated-[^/]+$/.test(rel) || isSpecFile(rel);
 }
 
 const OFF_RAMP_PATTERNS = [
@@ -152,8 +141,7 @@ export function findViolationsInText(text, file) {
   const isCss = file.endsWith('.css');
   const out = [];
 
-  const exempt = (i) =>
-    [i, i - 1, i - 2].some((j) => j >= 0 && /type-ramp-ok:\s*\S/.test(raw[j] ?? ''));
+  const exempt = (i) => isExemptedLine(raw, i);
   const push = (i, col, rule, message) =>
     out.push({ file, line: i + 1, col, rule, message, sample: raw[i].trim().slice(0, 140) });
 
@@ -244,22 +232,18 @@ export function findTokenViolations(tokens, aliases = TOKEN_ALIASES) {
   return out;
 }
 
-function collectFiles(dir, results = []) {
-  for (const entry of readdirSync(dir)) {
-    if (SKIP_DIRS.has(entry)) continue;
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) collectFiles(full, results);
-    else if (EXTENSIONS.has(extname(entry))) results.push(full);
-  }
-  return results;
-}
-
 // ── CLI entry ─────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const files =
     isFixtureMode && fixtureFile
       ? [resolve(fixtureFile)]
-      : collectFiles(SRC).filter((f) => !isExempt(relative(ROOT, f).replace(/\\/g, '/')));
+      : scanSources({
+          root: ROOT,
+          gate: 'check-type-ramp',
+          roots: ['src'],
+          exts: EXTENSIONS,
+          skipDirs: SKIP_DIRS,
+        }).filter((f) => !isExempt(relative(ROOT, f).replace(/\\/g, '/')));
 
   const violations = [];
   for (const f of files) {

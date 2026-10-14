@@ -6,7 +6,7 @@ One file per decision, numbered in the order recorded ([ADR-009](009-adr-convent
 An Accepted ADR is not edited; a change is a new ADR that supersedes it through its
 Status line.
 
-61 records. 27 are **retroactive**: decisions made between June and
+62 records. 26 are **retroactive**: decisions made between June and
 October 2026 that shipped without an ADR, written up afterwards from the commit and PR
 history. Each one lists its evidence and says when the evidence does not record a reason.
 Their "Decided" date is when the decision landed, not when it was written up.
@@ -33,10 +33,10 @@ the bundle budget) predates this folder; see ADR-009.
 | [015](015-interaction-state-scope.md) | Scope Interaction-State Sharing to Single-Element Primitives | Accepted | 2026-06-26 |  |
 | [016](016-scoped-base-styles.md) | Scope base styles to `[data-hds]` for non-HDS coexistence | Accepted | 2026-06-29 |  |
 | [017](017-docs-nav-single-source.md) | Single-source, derived docs-site navigation | Accepted | 2026-06-30 |  |
-| [018](018-repo-sterilization.md) | Repo sterilization — reduce the repo to the design system | Accepted | — |  |
+| [018](018-repo-sterilization.md) | Repo sterilization — reduce the repo to the design system | Accepted | 2026-10-14 |  |
 | [019](019-figma-sync-via-mcp.md) | Figma sync via the official Figma MCP server + Code Connect | Accepted | 2026-07-01 |  |
 | [020](020-date-time-component-library.md) | Date/time components on react-day-picker v10 + date-fns | Superseded | 2026-10-01 |  |
-| [021](021-animation-engine-motion-core-gsap-downstream.md) | Animation engine — Motion in core, GSAP rejected, Lenis as an opt-in `/scroll` subpath | Accepted | — |  |
+| [021](021-animation-engine-motion-core-gsap-downstream.md) | Animation engine — Motion in core, GSAP rejected, Lenis as an opt-in `/scroll` subpath | Accepted | n/a |  |
 | [022](022-per-tenant-shape-density-axis.md) | Per-Tenant Shape/Density Overlay Axis | Accepted | 2026-07-10 |  |
 | [023](023-four-theming-dials-contract.md) | The Four Theming Dials Contract | Accepted | 2026-07-10 |  |
 | [024](024-token-utility-bridge-scope.md) | Token→Utility Bridge Scope, and Style Dictionary: Not Now | Accepted | 2026-07-10 |  |
@@ -44,36 +44,37 @@ the bundle budget) predates this folder; see ADR-009.
 | [026](026-agent-figma-writes.md) | Agents May Write to Figma, on a Staging File | Accepted | 2026-09-20 |  |
 | [027](027-remove-gate-firing-telemetry.md) | Remove the Gate Firing Telemetry | Accepted | 2026-09-20 |  |
 | [028](028-adr-025-provenance-erratum.md) | Erratum — ADR-025's Figma Provenance Claim Was Wrong | Accepted | 2026-09-24 |  |
-| [029](029-decisions-carried-over.md) | Decisions Carried Over from the Root DECISIONS.md | Accepted | — |  |
+| [029](029-decisions-carried-over.md) | Decisions Carried Over from the Root DECISIONS.md | Accepted | n/a |  |
 | [030](030-tone-precedence-without-important.md) | Tone Precedence Without the Important Modifier | Accepted | 2026-09-30 |  |
 | [031](031-core-set-and-dispositions.md) | The Core Set and the Component Dispositions | Accepted | 2026-09-26 |  |
 | [032](032-figma-sync-plugin-receipt.md) | The Sync Plugin Fetches Its Model; the Promote Plugin Stays Baked | Proposed | 2026-10-01 |  |
 | [033](033-zero-click-agent-sync.md) | Zero-Click Agent Sync Through One Pinned use_figma Call | Proposed | 2026-10-01 |  |
 | [034](034-remove-date-pickers.md) | Remove the Date Pickers; TimeInput Stays Native | Accepted | 2026-10-01 |  |
-| [036](036-consumer-side-verification-gates-publish.md) | Consumer-Side Verification Gates the Publish | Accepted | 2026-06-19 | yes |
-| [037](037-radix-for-interactive-primitives.md) | Rebase Hand-Rolled Interactive Primitives on Radix | Accepted | 2026-06-27 | yes |
-| [038](038-zero-dependency-by-default.md) | Zero Dependencies by Default: Router Adapter and Opt-In Peer Subpaths | Accepted | 2026-06-29 | yes |
-| [039](039-public-npm-and-consumer-contract.md) | Publish to Public npm, and the C1-C4 Consumer Contract | Accepted | 2026-07-01 | yes |
-| [040](040-variant-contract-and-prop-vocabulary.md) | One Variant Contract (cva Axes) and a Prop-Vocabulary Gate | Accepted | 2026-06-24 | yes |
-| [041](041-pre-1-0-breaking-is-minor.md) | Before 1.0, a Breaking Change Is a Minor | Accepted | 2026-07-08 | yes |
-| [042](042-retire-checks-that-cannot-run.md) | Retire Verification That Can No Longer Run | Accepted | 2026-07-11 | yes |
-| [043](043-freeze-and-unfreeze.md) | Shelve HDS, Then Reverse It Two Days Later | Accepted | 2026-07-08 | yes |
-| [044](044-ralph-org-engine.md) | Run the Autonomous Loop as an Org-Level Engine, Hardened by Its Failures | Accepted | 2026-07-10 | yes |
-| [045](045-gates-must-be-seen-to-fail.md) | A Gate Counts Only If It Has Been Seen to Fail | Accepted | 2026-09-22 | yes |
-| [046](046-verify-by-rendering.md) | Verify by Rendering, Not by Reading Source | Accepted | 2026-09-23 | yes |
-| [047](047-audit-the-built-package.md) | Audit the built package, not the source | Accepted | 2026-09-22 | yes |
-| [048](048-release-pat-for-version-pr.md) | Open the Version Packages PR with a release PAT | Accepted | 2026-09-22 | yes |
-| [049](049-neutral-accent-and-interactive-border.md) | A neutral accent, and a separate border for controls | Accepted | 2026-09-19 | yes |
-| [050](050-type-system-fix-the-generator.md) | Type: fix the generator, then cut the ramp | Accepted | 2026-09-19 | yes |
-| [051](051-spacing-t-shirt-scale.md) | Spacing uses one t-shirt scale | Accepted | 2026-09-26 | yes |
-| [052](052-budgets-are-fixed.md) | Bundle budgets are fixed; fix the side effects instead | Accepted | 2026-09-30 | yes |
-| [053](053-accessibility-tested-by-behavior.md) | Test accessibility by behavior: axe in CI, keyboard and screen-reader suites | Accepted | 2026-09-30 | yes |
-| [054](054-record-freshness-at-pre-push.md) | Enforce the record at pre-push | Accepted | 2026-09-24 | yes |
-| [055](055-measure-agent-consistency.md) | Measure agent consistency, with frozen thresholds | Accepted | 2026-09-30 | yes |
-| [056](056-prune-survival-rule.md) | The 0.20.0 prune: consumer evidence decides what survives | Accepted | 2026-10-01 | yes |
-| [057](057-upgrade-ledger-and-command.md) | Codify upgrades: release ledger, upgrade command, CSS contract | Accepted | 2026-10-01 | yes |
-| [058](058-retire-storybook.md) | Retire Storybook; the docs site is the one surface | Accepted | 2026-10-11 | yes |
-| [059](059-typeface-delivery-and-licensing.md) | Typefaces: how fonts ship, and only what the license allows | Accepted | 2026-10-10 | yes |
-| [060](060-code-wins-component-token-binding.md) | When a component token and the rendered component disagree, code wins | Accepted | 2026-10-11 | yes |
-| [061](061-state-is-derived.md) | Project state is derived, and every state surface is registered | Accepted | 2026-10-12 | yes |
-| [062](062-no-client-names-in-public-repo.md) | Keep client names out of the public repo | Accepted | 2026-09-29 | yes |
+| [036](036-docs-site-replaces-storybook.md) | The Docs Site Replaces Storybook | Accepted | 2026-10-14 |  |
+| [037](037-generated-docs-no-hosted-platform.md) | Docs, Agent Files and MCP Are Generated From Code; No Hosted Docs Platform | Accepted | 2026-10-14 |  |
+| [038](038-consumer-side-verification-gates-publish.md) | Consumer-Side Verification Gates the Publish | Accepted | 2026-06-19 | yes |
+| [039](039-radix-for-interactive-primitives.md) | Rebase Hand-Rolled Interactive Primitives on Radix | Accepted | 2026-06-27 | yes |
+| [040](040-zero-dependency-by-default.md) | Zero Dependencies by Default: Router Adapter and Opt-In Peer Subpaths | Accepted | 2026-06-29 | yes |
+| [041](041-public-npm-and-consumer-contract.md) | Publish to Public npm, and the C1-C4 Consumer Contract | Accepted | 2026-07-01 | yes |
+| [042](042-variant-contract-and-prop-vocabulary.md) | One Variant Contract (cva Axes) and a Prop-Vocabulary Gate | Accepted | 2026-06-24 | yes |
+| [043](043-pre-1-0-breaking-is-minor.md) | Before 1.0, a Breaking Change Is a Minor | Accepted | 2026-07-08 | yes |
+| [044](044-retire-checks-that-cannot-run.md) | Retire Verification That Can No Longer Run | Accepted | 2026-07-11 | yes |
+| [045](045-freeze-and-unfreeze.md) | Shelve HDS, Then Reverse It Two Days Later | Accepted | 2026-07-08 | yes |
+| [046](046-ralph-org-engine.md) | Run the Autonomous Loop as an Org-Level Engine, Hardened by Its Failures | Accepted | 2026-07-10 | yes |
+| [047](047-gates-must-be-seen-to-fail.md) | A Gate Counts Only If It Has Been Seen to Fail | Accepted | 2026-09-22 | yes |
+| [048](048-verify-by-rendering.md) | Verify by Rendering, Not by Reading Source | Accepted | 2026-09-23 | yes |
+| [049](049-audit-the-built-package.md) | Audit the built package, not the source | Accepted | 2026-09-22 | yes |
+| [050](050-release-pat-for-version-pr.md) | Open the Version Packages PR with a release PAT | Accepted | 2026-09-22 | yes |
+| [051](051-neutral-accent-and-interactive-border.md) | A neutral accent, and a separate border for controls | Accepted | 2026-09-19 | yes |
+| [052](052-type-system-fix-the-generator.md) | Type: fix the generator, then cut the ramp | Accepted | 2026-09-19 | yes |
+| [053](053-spacing-t-shirt-scale.md) | Spacing uses one t-shirt scale | Accepted | 2026-09-26 | yes |
+| [054](054-budgets-are-fixed.md) | Bundle budgets are fixed; fix the side effects instead | Accepted | 2026-09-30 | yes |
+| [055](055-accessibility-tested-by-behavior.md) | Test accessibility by behavior: axe in CI, keyboard and screen-reader suites | Accepted | 2026-09-30 | yes |
+| [056](056-record-freshness-at-pre-push.md) | Enforce the record at pre-push | Accepted | 2026-09-24 | yes |
+| [057](057-measure-agent-consistency.md) | Measure agent consistency, with frozen thresholds | Accepted | 2026-09-30 | yes |
+| [058](058-prune-survival-rule.md) | The 0.20.0 prune: consumer evidence decides what survives | Accepted | 2026-10-01 | yes |
+| [059](059-upgrade-ledger-and-command.md) | Codify upgrades: release ledger, upgrade command, CSS contract | Accepted | 2026-10-01 | yes |
+| [060](060-typeface-delivery-and-licensing.md) | Typefaces: how fonts ship, and only what the license allows | Accepted | 2026-10-10 | yes |
+| [061](061-code-wins-component-token-binding.md) | When a component token and the rendered component disagree, code wins | Accepted | 2026-10-11 | yes |
+| [062](062-state-is-derived.md) | Project state is derived, and every state surface is registered | Accepted | 2026-10-12 | yes |
+| [063](063-no-client-names-in-public-repo.md) | Keep client names out of the public repo | Accepted | 2026-09-29 | yes |

@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-10",
+  "generatedAt": "2026-10-14",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 97,
+    "total": 105,
     "byClass": {
-      "library": 59,
-      "slot": 18,
-      "layout": 8,
+      "library": 61,
+      "slot": 23,
+      "layout": 9,
       "internal": 12
     },
     "libraryLinked": 59,
-    "libraryMissing": 0,
+    "libraryMissing": 2,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -89,6 +89,22 @@
       "category": "Typography",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2024-18"
+    },
+    {
+      "name": "Board",
+      "class": "layout",
+      "parent": null,
+      "category": "Layout",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "BoardColumn",
+      "class": "slot",
+      "parent": "Board",
+      "category": "Layout",
+      "tier": "primitive",
+      "figmaUrl": null
     },
     {
       "name": "Box",
@@ -179,6 +195,30 @@
       "figmaUrl": null
     },
     {
+      "name": "CardRow",
+      "class": "slot",
+      "parent": "Card",
+      "category": "Display",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "CardRowNote",
+      "class": "slot",
+      "parent": "Card",
+      "category": "Display",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "CardRowTitle",
+      "class": "slot",
+      "parent": "Card",
+      "category": "Display",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
       "name": "CardTitle",
       "class": "slot",
       "parent": "Card",
@@ -209,6 +249,14 @@
       "category": "Inputs",
       "tier": "pattern",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237"
+    },
+    {
+      "name": "Composer",
+      "class": "library",
+      "parent": null,
+      "category": "Inputs",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Container",
@@ -775,6 +823,22 @@
       "category": "Inputs",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14"
+    },
+    {
+      "name": "Timeline",
+      "class": "library",
+      "parent": null,
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "TimelineItem",
+      "class": "slot",
+      "parent": "Timeline",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Timestamp",

@@ -38,7 +38,7 @@ layout and utility values — section spacing, `clamp()` layout helpers — stil
 lives in `src/styles/theme.css`, outside the token file.) `pnpm tokens` compiles
 that source, through a validated alias chain, into every consumable form:
 
-- **CSS custom properties** (`src/styles/tokens.css`) — the runtime contract.
+- **CSS custom properties** (`src/styles/tokens.generated.css`) — the runtime contract.
 - **TypeScript constants** — the same values, typed, for JS consumers.
 - **A Tailwind config** projected from the tokens, so utility classes resolve to
   the same variables.

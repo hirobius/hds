@@ -208,7 +208,7 @@ If your app runs MUI `<CssBaseline>` + Emotion (or any opinionated global CSS),
 ```tsx
 import { Button, Card, Badge } from '@hirobius/design-system';
 import { cn } from '@hirobius/design-system/cn';
-import { tokens } from '@hirobius/design-system/tokens';
+import tokens from '@hirobius/design-system/tokens';
 import manifest from '@hirobius/design-system/manifest';
 
 export function Example() {
@@ -235,6 +235,7 @@ export function Example() {
 | `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                                                                                                                                         |
 | `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                                                                                                                                                                                       |
 | `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                                                                                                                                                                              |
+| `@hirobius/design-system/stats.json`    | Generated HDS numbers (component, core, pattern and token counts, contrast pairs, typography styles, consumer split), each computed from the code (`hds-stats.json`)                                                                    |
 | `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                                                                                                                                                              |
 | `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                                                                                                                                                                  |
 | `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                                                                                                                                                          |

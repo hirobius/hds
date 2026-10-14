@@ -62,3 +62,21 @@ describe('Toast', () => {
     spy.mockRestore();
   });
 });
+
+describe('Toast dismiss target vs text (bug bash 24 review)', () => {
+  it('below sm the toast reserves room for the 44px dismiss target, so the X never sits on the title', () => {
+    render(
+      <ToastProvider>
+        <Trigger />
+      </ToastProvider>,
+    );
+    fireEvent.click(screen.getByText('fire'));
+    const close = screen.getByRole('button', { name: 'Dismiss' });
+    expect(close.className).toMatch(/hds-touch-target/);
+    // right-2 (8px) + the 44px target = 52px; max-sm:pr-16 (64px) keeps the text clear of it.
+    const root = close.parentElement as HTMLElement;
+    expect(root.className).toMatch(/(^|\s)max-sm:pr-16(\s|$)/);
+    // utilities.css's unlayered .p-4 outranks any layered pr-*; the root must not use it.
+    expect(root.className).not.toMatch(/(^|\s)p-4(\s|$)/);
+  });
+});

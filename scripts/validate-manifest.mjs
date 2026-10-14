@@ -184,6 +184,17 @@ function validateA11yRules(component, value, violations) {
     if ('selector' in rule && typeof rule.selector !== 'string') {
       pushViolation(violations, component, `${baseField}.selector`, 'must be a string');
     }
+
+    if ('owner' in rule && rule.owner !== 'component' && rule.owner !== 'consumer') {
+      pushViolation(violations, component, `${baseField}.owner`, 'must be component or consumer');
+    }
+
+    if (
+      'testId' in rule &&
+      !(typeof rule.testId === 'string' && /^(a11y|gate):/.test(rule.testId))
+    ) {
+      pushViolation(violations, component, `${baseField}.testId`, 'must start with a11y: or gate:');
+    }
   });
 }
 

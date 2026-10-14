@@ -15,7 +15,6 @@
  *   DESIGN.md                     → scripts/build-design-md.mjs (template: DESIGN.source.md)
  *   DESIGN-HANDOFF.md             → scripts/build-handoff.mjs
  *   public/hds-manifest.json      → scripts/generate-manifest.mjs
- *   src/styles/tokens.css         → scripts/build-tokens.mjs
  *   src/styles/tokens.generated.css → scripts/build-tokens.mjs
  *   src/app/design-system/generated-tokens.ts       → scripts/build-tokens.mjs
  *   src/app/design-system/generated-token-values.ts → scripts/build-tokens.mjs
@@ -70,7 +69,6 @@ const AUTO_GEN_MAP = {
   'DESIGN.md': ['scripts/build-design-md.mjs', 'DESIGN.source.md'],
   'DESIGN-HANDOFF.md': ['scripts/build-handoff.mjs', 'hirobius.tokens.json'],
   'public/hds-manifest.json': ['scripts/generate-manifest.mjs', 'scripts/build-tokens.mjs'],
-  'src/styles/tokens.css': ['scripts/build-tokens.mjs', 'hirobius.tokens.json'],
   'src/styles/tokens.generated.css': ['scripts/build-tokens.mjs', 'hirobius.tokens.json'],
   'src/app/design-system/generated-tokens.ts': ['scripts/build-tokens.mjs'],
   'src/app/design-system/generated-token-values.ts': ['scripts/build-tokens.mjs'],

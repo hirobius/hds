@@ -76,32 +76,76 @@ export async function launch() {
 }
 
 /**
+ * Apply a demo tenant to the template's scope element, the way a consumer sets
+ * `<html data-brand="slug">`: tenants.css scopes its overrides to
+ * `[data-brand="slug"]`, and its dark overrides to `[data-brand][data-theme="dark"]`
+ * on the SAME element, so the attribute goes on the element that carries
+ * `data-theme`, not on a wrapper inside it. Refuses a tenant the packed
+ * stylesheet has no rules for: that page would silently render at the default.
+ */
+export async function applyTenant(page, tenant) {
+  const applied = await page.evaluate((slug) => {
+    const hasRule = (rules) => {
+      for (const rule of rules) {
+        if (rule.selectorText?.includes(`[data-brand="${slug}"]`)) return true;
+        if (rule.cssRules && hasRule(rule.cssRules)) return true;
+      }
+      return false;
+    };
+    const found = [...document.styleSheets].some((sheet) => {
+      try {
+        return hasRule(sheet.cssRules);
+      } catch {
+        return false; // a cross-origin sheet cannot be read
+      }
+    });
+    if (!found) return false;
+    document.querySelector('#root > [data-theme]')?.setAttribute('data-brand', slug);
+    return true;
+  }, tenant);
+  if (!applied) {
+    throw new Error(
+      `tenant ${tenant}: the packed stylesheet has no [data-brand="${tenant}"] rules, so the page would ` +
+        'render at the HDS default. Run pnpm tokens and rebuild the package, or check the slug.',
+    );
+  }
+}
+
+/**
  * A page open on `<base>/?theme=<theme>` at `viewport`, motion frozen and fonts
- * loaded, with the app mounted under the template's `[data-theme]` scope.
+ * loaded, with the app mounted under the template's `[data-theme]` scope and,
+ * when `tenant` is given, that demo tenant applied to it.
  * The caller closes the returned context.
  */
-export async function openApp(browser, base, viewport, theme) {
+export async function openApp(browser, base, viewport, theme, tenant = null) {
   const context = await browser.newContext({
     viewport: { width: viewport.width, height: viewport.height },
     deviceScaleFactor: 1,
     reducedMotion: 'reduce',
     colorScheme: theme,
   });
-  const page = await context.newPage();
-  await page.goto(`${base}/index.html?theme=${theme}`, { waitUntil: 'load', timeout: 45000 });
-  await page.addStyleTag({ content: FREEZE_CSS });
-  await page.waitForSelector('#root > [data-theme]', { timeout: 15000 });
-  const applied = await page.evaluate(
-    () => document.querySelector('#root > [data-theme]')?.getAttribute('data-theme') ?? null,
-  );
-  if (applied !== theme) throw new Error(`theme not applied: wanted ${theme}, page has ${applied}`);
-  await page.evaluate(async () => {
-    await document.fonts?.ready;
-    const imgs = [...document.querySelectorAll('img')];
-    await Promise.all(
-      imgs.filter((i) => !i.complete).map((i) => new Promise((r) => (i.onload = i.onerror = r))),
+  try {
+    const page = await context.newPage();
+    await page.goto(`${base}/index.html?theme=${theme}`, { waitUntil: 'load', timeout: 45000 });
+    await page.addStyleTag({ content: FREEZE_CSS });
+    await page.waitForSelector('#root > [data-theme]', { timeout: 15000 });
+    const applied = await page.evaluate(
+      () => document.querySelector('#root > [data-theme]')?.getAttribute('data-theme') ?? null,
     );
-    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-  });
-  return { context, page };
+    if (applied !== theme)
+      throw new Error(`theme not applied: wanted ${theme}, page has ${applied}`);
+    if (tenant) await applyTenant(page, tenant);
+    await page.evaluate(async () => {
+      await document.fonts?.ready;
+      const imgs = [...document.querySelectorAll('img')];
+      await Promise.all(
+        imgs.filter((i) => !i.complete).map((i) => new Promise((r) => (i.onload = i.onerror = r))),
+      );
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    });
+    return { context, page };
+  } catch (err) {
+    await context.close();
+    throw err;
+  }
 }
