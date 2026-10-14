@@ -1,0 +1,18 @@
+{
+  "$comment": "Frozen inputs of the 0.26.1 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.26.1 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.26.1",
+  "previous": "0.26.0",
+  "date": "2026-10-14",
+  "summary": "2 that look different.",
+  "backfilled": false,
+  "notes": {
+    "dark-secondary-contrast": {
+      "needle": "32c7804: Dark `content.secondary` moves from",
+      "source": "CHANGELOG.md:17"
+    },
+    "small-fixes-frozen-723-725": {
+      "needle": "7584efb: TabsList fades the edge that has",
+      "source": "CHANGELOG.md:18"
+    }
+  }
+}
