@@ -252,5 +252,22 @@ test('a component page without its props marker fails', () => {
   }
 });
 
+test('a text-style count that disagrees with the manifest fails (counts)', () => {
+  const rootDir = mutate((docs) => {
+    writeFileSync(
+      join(docs, 'foundations', 'typography.mdx'),
+      `---\ntitle: "Typography"\ndescription: "Two typefaces and seven text styles."\nstatus: "stable"\nsince: "0.20.0"\n---\n\n# Typography\n\nSix text styles plus mono, 6 text styles in all, and the text styles below.\n\n{/* generated: tokens */}\n`,
+    );
+  });
+  try {
+    const { status, out } = run(rootDir);
+    assert.equal(status, 1, out);
+    assert.match(out, /\[counts\] says "seven text styles"/);
+    assert.doesNotMatch(out, /says "(Six|6) text styles"/);
+  } finally {
+    rmSync(rootDir, { recursive: true, force: true });
+  }
+});
+
 // Keep cpSync imported for future fixture-copy cases without lint noise.
 void cpSync;

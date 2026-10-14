@@ -5,7 +5,8 @@ import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '../..');
 const tokens = JSON.parse(readFileSync(resolve(root, 'hirobius.tokens.json'), 'utf8'));
-const script = readFileSync(resolve(root, 'scripts/check-contrast.mjs'), 'utf8');
+// The pairs moved to scripts/lib/contrast-pairs.mjs (ops#681); check-contrast.mjs imports them.
+const script = readFileSync(resolve(root, 'scripts/lib/contrast-pairs.mjs'), 'utf8');
 
 describe('content.tertiary contrast gate (hds#663)', () => {
   it('defines semantic.color.content.tertiary with Light and Dark modes', () => {
