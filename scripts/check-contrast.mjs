@@ -146,6 +146,16 @@ const PAIRS = [
     bg: 'semantic.color.surface.overlay',
   },
   {
+    label: 'content.tertiary / surface.page',
+    text: 'semantic.color.content.tertiary',
+    bg: 'semantic.color.surface.page',
+  },
+  {
+    label: 'content.tertiary / surface.raised',
+    text: 'semantic.color.content.tertiary',
+    bg: 'semantic.color.surface.raised',
+  },
+  {
     label: 'content.onAccent / surface.accent',
     text: 'semantic.color.content.onAccent',
     bg: 'semantic.color.surface.accent',

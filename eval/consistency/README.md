@@ -164,9 +164,12 @@ sessions). It:
 7. judges all five thresholds, appends a `source: "harness"` entry to
    `ledger.json` and exits 0 or 1 from the result.
 
-If an app does not build, the run exits 1 and writes no ledger entry: nothing
-can be rendered or scanned for it, so the other figures would describe a
-different set of apps. Input under `fixtures/` never writes a ledger entry. A
+If an app does not build, the run exits 1 and still writes a ledger entry, so
+a failed build shows in the trend instead of vanishing (2026-10-14; the
+2026-10-07 and 2026-10-14 runs each lost a build). Nothing can be rendered for
+that app, so the entry records `lightDiffMax: null` (not measured), its axe
+count covers only the apps that built, and `pass` is false on builds. A run
+where no app built writes nothing. Input under `fixtures/` never writes a ledger entry. A
 run that would write an entry refuses (exit 2) when the git tree has
 uncommitted changes, because the commit would not describe what was tested;
 commit or stash first. Fixture runs only warn.

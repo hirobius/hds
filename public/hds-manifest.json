@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T18:19:40.069Z",
+  "generated": "2026-10-13T12:30:05.429Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -1206,6 +1206,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/hds-tooltip.tsx",
+        "src/app/components/icon.test.tsx",
         "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
@@ -1235,7 +1236,7 @@
           "optional": true
         },
         "color": {
-          "type": "string",
+          "type": "IconColor",
           "default": "currentColor"
         },
         "icon": {
@@ -1268,9 +1269,6 @@
           "type": "boolean"
         },
         "className": {
-          "type": "string"
-        },
-        "color": {
           "type": "string"
         },
         "weight": {
@@ -1562,7 +1560,12 @@
           "optional": true
         },
         "size": {
-          "type": "InputSize",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
           "default": "md"
         },
         "suffix": {
@@ -1648,6 +1651,14 @@
         },
         "loading": {
           "type": "boolean"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
         },
         "textStyle": {
           "type": "enum",
@@ -1978,7 +1989,36 @@
           "default": "column"
         },
         "gap": {
-          "type": "GapOption",
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "gap",
+            "medium",
+            "hairline",
+            "xs",
+            "stack",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ],
           "default": "tight"
         },
         "justify": {
@@ -2021,6 +2061,38 @@
           "values": [
             "row",
             "column"
+          ]
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "gap",
+            "medium",
+            "hairline",
+            "xs",
+            "stack",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
           ]
         },
         "justify": {
@@ -2096,6 +2168,7 @@
       },
       "consumers": [
         "src/app/components/data-table-section.tsx",
+        "src/app/components/icon.test.tsx",
         "src/app/components/table.test.tsx",
         "src/app/data/manifest-types.ts"
       ],
@@ -2386,7 +2459,14 @@
           "optional": true
         },
         "padding": {
-          "type": "PaddingOption",
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ],
           "default": "component"
         },
         "shadow": {
@@ -2412,6 +2492,16 @@
       "propConstraints": {
         "className": {
           "type": "string"
+        },
+        "padding": {
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ]
         },
         "shadow": {
           "type": "boolean"
@@ -2499,7 +2589,31 @@
           "default": false
         },
         "gap": {
-          "type": "GapOption",
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ],
           "default": "tight"
         },
         "noPadding": {
@@ -2511,7 +2625,14 @@
           "optional": true
         },
         "padding": {
-          "type": "PaddingOption",
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ],
           "default": "component"
         },
         "selectable": {
@@ -2561,9 +2682,7 @@
       "allowedChildren": [
         "*"
       ],
-      "requiredProps": [
-        "children"
-      ],
+      "requiredProps": [],
       "a11yRules": [],
       "preview": {
         "exportName": "Card",
@@ -2636,8 +2755,45 @@
         "bordered": {
           "type": "boolean"
         },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ]
+        },
         "noPadding": {
           "type": "boolean"
+        },
+        "padding": {
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ]
         },
         "selectable": {
           "type": "boolean"
@@ -2712,7 +2868,26 @@
           "optional": true
         },
         "variant": {
-          "type": "TextVariant"
+          "type": "enum",
+          "values": [
+            "display",
+            "title",
+            "titleSm",
+            "body",
+            "ui",
+            "caption",
+            "mono",
+            "heading1",
+            "heading2",
+            "heading3",
+            "technical",
+            "eyebrow",
+            "badge",
+            "docLede",
+            "docBody",
+            "docSmall",
+            "docCode"
+          ]
         }
       },
       "allowedChildren": [
@@ -6240,7 +6415,12 @@
           "optional": true
         },
         "resize": {
-          "type": "TextareaResize",
+          "type": "enum",
+          "values": [
+            "none",
+            "both",
+            "vertical"
+          ],
           "default": "vertical"
         },
         "textareaClassName": {
@@ -8250,6 +8430,13 @@
         "value": "#a3a3a3"
       },
       {
+        "path": "primitive.color.neutral.450",
+        "cssVar": "--primitive-color-neutral-450",
+        "type": "color",
+        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).",
+        "value": "#909090"
+      },
+      {
         "path": "primitive.color.neutral.500",
         "cssVar": "--primitive-color-neutral-500",
         "type": "color",
@@ -9661,6 +9848,18 @@
         "dark": {
           "alias": "{primitive.color.neutral.400}",
           "resolvedValue": "#a3a3a3"
+        }
+      },
+      {
+        "path": "semantic.color.content.tertiary",
+        "cssVar": "--semantic-color-content-tertiary",
+        "type": "color",
+        "description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+        "alias": "{primitive.color.neutral.500}",
+        "resolvedValue": "#737373",
+        "dark": {
+          "alias": "{primitive.color.neutral.450}",
+          "resolvedValue": "#909090"
         }
       },
       {

@@ -41,7 +41,7 @@ import {
 import { packLibrary } from '../lib/consistency/pack.mjs';
 import { stageApp } from '../lib/consistency/stage.mjs';
 import { runLive } from '../lib/consistency/live.mjs';
-import { readLedger, validateEntry } from '../lib/consistency/ledger.mjs';
+import { readLedger, summaryLine, validateEntry } from '../lib/consistency/ledger.mjs';
 import { evaluate } from '../lib/consistency/evaluate.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -250,6 +250,30 @@ describe('buildEntry', () => {
     const { entry } = buildEntry(input);
     expect(entry.pass).toBe(false);
     expect(entry.thresholds).toEqual(THRESHOLDS);
+  });
+
+  it('records a run where an app did not build, with the pixel diff marked not measured', () => {
+    // A failed build is the most important trend to keep (2026-10-07 and
+    // 2026-10-14 both failed one build and, before this, left no ledger trace).
+    const input = base();
+    input.results.builds['app-c'] = false;
+    input.results.axe = input.results.axe.filter((r) => r.storyId !== 'app-c');
+    input.results.lightDiff = { pairs: [] };
+    input.results.darkDiff = { pairs: [] };
+    const { entry } = buildEntry(input);
+    expect(entry).not.toBeNull();
+    expect(entry.measured.builds).toEqual({ passing: 2, of: 3 });
+    expect(entry.measured.lightDiffMax).toBeNull();
+    expect(entry.detail.lightDiff).toEqual([]);
+    expect(entry.pass).toBe(false);
+    expect(validateEntry(entry)).toEqual([]);
+    expect(summaryLine(entry)).toContain('light diff not measured');
+  });
+
+  it('rejects a missing pixel diff on an entry where every app built', () => {
+    const { entry } = buildEntry(base());
+    const broken = { ...entry, measured: { ...entry.measured, lightDiffMax: null } };
+    expect(validateEntry(broken).join(' ')).toMatch(/lightDiffMax/);
   });
 
   it('returns no entry when a figure could not be measured', () => {
@@ -496,7 +520,7 @@ describe('runLive: the orchestration, with its stages injected', () => {
     expect(r.report.checks.find((c) => c.name === 'axe').status).toBe('fail');
   });
 
-  it('does not render or scan an app that failed to build, and writes no entry', async () => {
+  it('does not render or scan an app that failed to build, and records a failing entry', async () => {
     const input = fakeInput();
     const stages = fakeStages({
       build: async (app) =>
@@ -508,8 +532,11 @@ describe('runLive: the orchestration, with its stages injected', () => {
     expect(r.code).toBe(1);
     expect(stages.calls.some((c) => c[0] === 'render' && c[1] === 'app-b')).toBe(false);
     expect(stages.calls.some((c) => c[0] === 'axe' && c[1] === 'app-b')).toBe(false);
-    expect(r.entry).toBeNull();
-    expect(readLedger(input.ledgerFile).entries).toHaveLength(0);
+    // The failed build is the trend worth keeping: the entry is written with
+    // the pixel diff not measured (null) and pass: false.
+    expect(r.entry.pass).toBe(false);
+    expect(r.entry.measured.lightDiffMax).toBeNull();
+    expect(readLedger(input.ledgerFile).entries).toHaveLength(1);
     expect(r.report.checks.find((c) => c.name === 'builds').status).toBe('fail');
   });
 
