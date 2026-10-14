@@ -405,6 +405,7 @@
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
+        "src/app/components/text.tsx",
         "src/app/components/toast.tsx"
       ],
       "tokenMapping": {
@@ -3089,6 +3090,20 @@
           "type": "CSSProperties",
           "optional": true
         },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "primary",
+            "secondary",
+            "disabled",
+            "accent",
+            "success",
+            "warning",
+            "danger",
+            "info"
+          ],
+          "optional": true
+        },
         "variant": {
           "type": "TextVariant"
         }
@@ -3118,6 +3133,7 @@
         "src/app/components/inline-link.tsx",
         "src/app/components/kbd.tsx",
         "src/app/components/table.tsx",
+        "src/app/components/text.test.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts"
@@ -4383,6 +4399,7 @@
         "src/app/components/page-header.tsx",
         "src/app/components/state-tokens.test.tsx",
         "src/app/components/tag.tsx",
+        "src/app/components/text.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/mui/index.ts"
       ],
