@@ -263,7 +263,7 @@ export function AssetImg({
 
   return (
     <div
-      className={className}
+      className={onClick ? (className ? `hds-focus ${className}` : 'hds-focus') : className}
       // inline-ok: HDS component — inline styles are the intentional pattern for token-driven styling
       style={{
         ...placeholderStyle,
@@ -283,7 +283,10 @@ export function AssetImg({
       onKeyDown={
         onClick
           ? (e) => {
-              if (e.key === 'Enter' || e.key === ' ') onClick(e as unknown as React.MouseEvent);
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault(); // Space must not scroll the page
+                onClick(e as unknown as React.MouseEvent);
+              }
             }
           : undefined
       }

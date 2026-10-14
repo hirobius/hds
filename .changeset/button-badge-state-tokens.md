@@ -1,5 +1,0 @@
----
-'@hirobius/design-system': patch
----
-
-Button and Badge now render the state tokens instead of ad-hoc classes (hds#595). The primary Button hover fill is the solid `component.button.bgHover` (`semantic.accent.hover`) instead of a 90% mix of the accent. The secondary Button pressed state is the solid `component.button.secondary.bg.pressed` (`surface.overlay`) instead of a 5% wash, and its disabled border is the lighter `border.subdued` (was `border.interactive`), now actually applied. A toned Button presses and disables as before. Badge gains per-tone tokens, `component.badge.<tone>.bg` and `.text` for neutral, info, success, danger, warning and inProgress (new `--component-badge-<tone>-bg|text` variables); the neutral fill is the solid `surface.overlay` instead of a 4% black or white tint, a few percent lighter in light mode. The flat `component.badge.bg` and `component.badge.text` are deprecated in favour of them. InlineCode no longer borrows the badge fill and uses `surface.overlay`.
