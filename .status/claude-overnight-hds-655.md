@@ -1,0 +1,1 @@
+Text gains an optional `tone` prop (primary, secondary, disabled, accent, success, warning, danger, info) mapped to semantic content tokens; DESIGN.md subtitle/meta row now says `<Text variant="caption" tone="secondary">` (hds#655).
