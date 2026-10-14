@@ -1,4 +1,4 @@
-# ADR-036: Docs, Agent Files and MCP Are Generated From Code; No Hosted Docs Platform
+# ADR-037: Docs, Agent Files and MCP Are Generated From Code; No Hosted Docs Platform
 
 **Status:** Accepted (2026-10-14). Decider: Adrian.
 
@@ -18,7 +18,7 @@ Not adopted. Documentation is generated from the code and checked for staleness:
   `mcp/guide.mjs`, `hirobius.tokens.json` and the docs content. Each generator has a
   `--check` mode in `pretest`, so a stale file fails the build.
 - The MCP server (`mcp/hds-mcp.mjs`, `npx hds-mcp`) reads the same generated data.
-- The docs site (ADR-035) renders from the same component source.
+- The docs site (ADR-036) renders from the same component source.
 - `docs/state-surfaces.json` lists every generated file with the check that proves it fresh.
 
 ## Consequences

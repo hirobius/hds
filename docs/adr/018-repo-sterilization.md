@@ -1,6 +1,6 @@
 # ADR-018: Repo sterilization — reduce the repo to the design system
 
-- **Status:** Accepted. §4 ("Storybook-only") superseded by ADR-035 (2026-10-14): the docs site replaced Storybook.
+- **Status:** Accepted. §4 ("Storybook-only") superseded by ADR-036 (2026-10-14): the docs site replaced Storybook.
 - **Date:** 2026-07-01
 - **Decider:** Adrian (with Claude analysis pass)
 - **Related:** [repo map](../architecture/repo-map.mmd), ADR-016 (scoped base styles), ADR-017 (docs nav)

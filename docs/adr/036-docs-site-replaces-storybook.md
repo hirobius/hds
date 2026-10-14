@@ -1,4 +1,4 @@
-# ADR-035: The Docs Site Replaces Storybook
+# ADR-036: The Docs Site Replaces Storybook
 
 **Status:** Accepted (2026-10-14). Records hds#590 (merged 2026-10-11). Supersedes the "Storybook-only" call in ADR-018 §4. Decider: Adrian.
 
