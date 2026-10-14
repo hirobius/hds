@@ -9,6 +9,7 @@ import * as React from 'react';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { Stack } from './stack';
+import { Text } from './text';
 
 /** @public */
 export type PageHeaderLevel = 1 | 2 | 3 | 4 | 5 | 6;
@@ -19,6 +20,9 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
   breadcrumb?: React.ReactNode;
   /** The screen title. Always set in the `heading2` type style; there is no size prop. */
   title: React.ReactNode;
+  /** One supporting line under the title, in secondary body text. Only when it
+   *  adds information; longer context belongs in the page body. */
+  description?: React.ReactNode;
   /** Status marker beside the title (a `Badge`). One marker, not a row of them. */
   status?: React.ReactNode;
   /** Screen-level actions, right-aligned; they wrap below the title on narrow widths. */
@@ -39,7 +43,10 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
  * @screenPattern
  */
 export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHeaderProps>(
-  function PageHeader({ breadcrumb, title, status, actions, level = 1, className, ...props }, ref) {
+  function PageHeader(
+    { breadcrumb, title, description, status, actions, level = 1, className, ...props },
+    ref,
+  ) {
     const Heading = `h${level}` as const;
     return (
       <header
@@ -72,6 +79,16 @@ export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHead
               </div>
             ) : null}
           </Stack>
+          {description ? (
+            <Text
+              as="p"
+              variant="body"
+              data-slot="description"
+              className="m-0 text-muted-foreground"
+            >
+              {description}
+            </Text>
+          ) : null}
         </Stack>
       </header>
     );
