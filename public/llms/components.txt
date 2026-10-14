@@ -80,6 +80,17 @@ A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
   - attribution: ReactNode
   - size: "sm" | "md" | "lg" | null
 
+### Board
+Status columns that sit side by side from tablet width and stack in order, first column on top, below it. Read-only: it has no drag handlers.
+  - children: ReactNode
+
+### BoardColumn
+One status column: a heading with the title, a count and a tone dot, then its items. The column is a labelled region and the count is part of the heading's nam…
+  - children: ReactNode
+  - count: number
+  - title: ReactNode
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" = neutral
+
 ### Box
 Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing short…
   - as: ElementType<any, keyof IntrinsicElements> = div
