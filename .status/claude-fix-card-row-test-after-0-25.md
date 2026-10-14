@@ -1,0 +1,1 @@
+- card-row test reads the StatusTile upgrade step from upgrade/releases/0.25.0.json (the pending note was folded in by the 0.25.0 release), so main is green again.

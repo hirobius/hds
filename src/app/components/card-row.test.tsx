@@ -124,7 +124,10 @@ describe('StatusTile deprecation (hds#622)', () => {
       'MIGRATIONS.md': read('MIGRATIONS.md').match(
         /\/\/ After[\s\S]*?<Card padding="item"[^>]*>/,
       )?.[0],
-      'upgrade note': JSON.parse(read('upgrade/pending/statustile-into-card.json')).steps[0].plain,
+      // The pending note was folded into the release record when 0.25.0 shipped.
+      'upgrade note': (
+        JSON.parse(read('upgrade/releases/0.25.0.json')).steps as { id: string; plain: string }[]
+      ).find((s) => s.id === '0.25.0/deprecated/StatusTile')?.plain,
     };
     for (const [where, recipe] of Object.entries(recipes))
       expect(recipe, where).toMatch(/<Card padding=\\?"item\\?" className=\\?"border-0\\?">/);
