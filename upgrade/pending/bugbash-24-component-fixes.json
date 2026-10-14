@@ -72,11 +72,15 @@
       "id": "value-changed/--component-badge-radius",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The badge radius token is now the 8px action radius instead of 4px; nothing to change unless you read it directly.",
+      "plain": "The badge radius token is now the 8px action radius instead of 4px, and the new soft-demo tenant also sets it; nothing to change unless you read it directly.",
       "detect": {
         "cssVars": ["--component-badge-radius"],
         "cssVarWrites": ["--component-badge-radius"]
-      }
+      },
+      "facts": [
+        "css-var-changed:--component-badge-radius::root",
+        "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ]
     },
     {
       "id": "value-changed/--semantic-color-border-default",

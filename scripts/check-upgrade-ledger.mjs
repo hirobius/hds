@@ -188,6 +188,26 @@ function noteViolations(state, versionPr) {
       out.push(violation(note.file, 'note-invalid', `${note.file}: ${note.problems.join('; ')}.`));
     }
   }
+  // compile.mjs --release merges every pending note into one ledger whose step
+  // ids must be unique, so two notes naming the same step broke the 0.26.0
+  // Version PR; catch it on the PR that adds the second one.
+  const owners = new Map();
+  for (const note of state.notes) {
+    for (const step of note.note?.steps ?? []) {
+      owners.set(step.id, [...(owners.get(step.id) ?? []), note.file]);
+    }
+  }
+  for (const [id, files] of owners) {
+    if (files.length > 1) {
+      out.push(
+        violation(
+          files[1],
+          'note-step-id-shared',
+          `${list(files)} each declare the step ${id}, and the release ledger takes one step per id: fold them into one step in one note (keep both notes' facts on it).`,
+        ),
+      );
+    }
+  }
   // hds#541: a note with no changeset of its name. Once package.json's version
   // has its snapshot, or names a prerelease, no release is waiting to be
   // recorded, so no note belongs to one (releasedNotes): the next release
