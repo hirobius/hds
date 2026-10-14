@@ -20,6 +20,7 @@ describe('parseJsdocContract', () => {
       usage: { when: null, whenNot: null, useInstead: [] },
       slots: [],
       keyboard: [],
+      a11y: [],
       aiRules: null,
     });
   });
@@ -220,5 +221,57 @@ describe('parseDeprecation (hds#390)', () => {
 
   it('ignores an @deprecated word inside prose', () => {
     expect(parseDeprecation(block('variant="diagram" is a @deprecated alias.'))).toBeNull();
+  });
+});
+
+describe('@a11y tags', () => {
+  it('reads owner, required, test id and the rule sentence', () => {
+    const out = parseJsdocContract(
+      block(
+        '@a11y component required a11y:menu.escape-returns-focus Escape closes the menu and returns focus.',
+        '@a11y consumer required Give an icon-only Menu.Trigger an aria-label.',
+        '@a11y component recommended gate:check-contrast Item text meets AA.',
+      ),
+    );
+    expect(out.a11y).toEqual([
+      {
+        rule: 'Escape closes the menu and returns focus.',
+        required: true,
+        owner: 'component',
+        testId: 'a11y:menu.escape-returns-focus',
+      },
+      { rule: 'Give an icon-only Menu.Trigger an aria-label.', required: true, owner: 'consumer' },
+      {
+        rule: 'Item text meets AA.',
+        required: false,
+        owner: 'component',
+        testId: 'gate:check-contrast',
+      },
+    ]);
+  });
+
+  it('keeps a rule sentence that starts with a colon-free word as the sentence', () => {
+    const out = parseJsdocContract(block('@a11y consumer required a11y users need a name.'));
+    expect(out.a11y[0].rule).toBe('a11y users need a name.');
+    expect(out.a11y[0].testId).toBeUndefined();
+  });
+
+  it('throws, naming the tag, on an unknown owner or level or an empty rule', () => {
+    expect(() => parseJsdocContract(block('@a11y author required Do it.'))).toThrow(/@a11y.*owner/);
+    expect(() => parseJsdocContract(block('@a11y consumer maybe Do it.'))).toThrow(
+      /@a11y.*required/,
+    );
+    expect(() => parseJsdocContract(block('@a11y consumer required'))).toThrow(/@a11y/);
+    expect(() => parseJsdocContract(block('@a11y component required a11y:x.y'))).toThrow(/@a11y/);
+  });
+
+  it('compactContract carries them as a11yRules and omits the key when there are none', () => {
+    const out = compactContract(parseJsdocContract(block('@a11y consumer required Name it.')));
+    expect(out).toEqual({
+      a11yRules: [{ rule: 'Name it.', required: true, owner: 'consumer' }],
+    });
+    expect(compactContract(parseJsdocContract(block('@usage Do it.')))).not.toHaveProperty(
+      'a11yRules',
+    );
   });
 });

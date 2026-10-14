@@ -7,6 +7,13 @@
  * @useInstead Checkbox a form option confirmed on submit
  * @useInstead Radio one choice from a set
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19
+ * @a11y component required a11y:toggle.space-toggles Space flips the switch from the keyboard (it is a native input with role=switch).
+ * @a11y component required a11y:toggle.sr-switch A screen reader speaks a switch with its name and on or off state.
+ * @a11y component required a11y:toggle.disabled-skipped A disabled switch is skipped by Tab.
+ * @a11y component required a11y:toggle.focus-ring The focus ring shows on keyboard focus only (:focus-visible) and hover never hides it.
+ * @a11y component required a11y:toggle.target-size The row is 24px or taller and lifts to the 44px touch minimum on a phone (WCAG 2.5.8).
+ * @a11y component required gate:check-reduced-motion The thumb slide goes through useHdsMotion, so it stops under prefers-reduced-motion.
+ * @a11y consumer required Label the switch with the setting it controls, not with its state, because the state is already spoken.
  */
 
 import { forwardRef } from 'react';

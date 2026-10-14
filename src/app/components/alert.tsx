@@ -6,6 +6,10 @@
  * @whenNot A brief confirmation that should disappear on its own, or a status label.
  * @useInstead ToastProvider a brief confirmation that fades away
  * @useInstead Badge a short status label
+ * @a11y component required a11y:alert.tone-roles Danger and warning use role=alert (assertive); info and success use role=status.
+ * @a11y component required a11y:alert.read-order A rendered alert reads its role, then its title and message.
+ * @a11y component required a11y:alert.live-insert An alert inserted after load is announced assertively.
+ * @a11y consumer required Mount an Alert when the condition appears; one already on the page at load is read in order, not announced.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34
  */
 

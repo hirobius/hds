@@ -12,6 +12,29 @@
  * @keyboard Enter Commits the active option and closes the list; with `multiple`, toggles it and keeps the list open.
  * @keyboard Escape Closes the list.
  * @keyboard Tab Stays inside the open list.
+ * @a11y component required a11y:combobox.open-keys Enter and Space on the trigger open the list.
+ * @a11y component required a11y:combobox.trigger-state The trigger is a combobox with a listbox popup that reports collapsed and expanded.
+ * @a11y component required a11y:combobox.trigger-expanded The trigger exposes aria-expanded, false while closed and true while open.
+ * @a11y component required a11y:combobox.trigger-controls The trigger points aria-controls at the open list.
+ * @a11y component required a11y:combobox.focus-search-field Focus moves to the search field when the list opens and Tab stays inside the list.
+ * @a11y component required a11y:combobox.escape-returns-focus Escape closes the list and returns focus to the trigger.
+ * @a11y component required a11y:combobox.activedescendant The search field exposes the active option through aria-activedescendant; the options themselves stay out of the tab order.
+ * @a11y component required a11y:combobox.arrow-wrap ArrowDown and ArrowUp move the active option and wrap at the ends.
+ * @a11y component required a11y:combobox.skips-disabled Arrow keys skip disabled options.
+ * @a11y component required a11y:combobox.filter-commit Typing filters the options and Enter commits the active one.
+ * @a11y component required a11y:combobox.popover-named The popover dialog is named by the field label, or the placeholder when there is none.
+ * @a11y component required a11y:combobox.listbox-named The listbox is named by the field label.
+ * @a11y component required a11y:combobox.option-position Each option reports its position and set size.
+ * @a11y component required a11y:combobox.options-not-tabbable Options are outside the tab order; focus stays on the search field.
+ * @a11y component required a11y:combobox.no-results-outside-listbox The no-results message sits outside the listbox.
+ * @a11y component required a11y:combobox.result-count-announced The match count is announced in a polite status as the list is filtered (4.1.3).
+ * @a11y component required a11y:combobox.multiple-enter-toggles With multiple, Enter toggles the active option and keeps the list open.
+ * @a11y component required a11y:combobox.escape-keeps-selection With multiple, Escape closes the list and keeps the selection.
+ * @a11y component required a11y:combobox.chips-named With multiple, each chip is a button named "Remove <option>".
+ * @a11y component required a11y:combobox.chip-keyboard A chip removes its value from the keyboard and focus stays on the chips.
+ * @a11y component required a11y:combobox.form-field-label Inside FormField the field label names the trigger.
+ * @a11y component required a11y:combobox.form-field-error Inside FormField an error sets aria-invalid and describes the trigger by the message.
+ * @a11y consumer required Pass label or aria-label; it names the trigger, the popover and the listbox.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237
  * @doc-exempt: no Inputs-overlay doc page yet — add demo when created
  *
@@ -407,6 +430,11 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
               {emptyMessage}
             </p>
           ) : null}
+          {/* Filtering changes the list without moving focus, so the match count is
+              announced through a polite live region (WCAG 4.1.3). */}
+          <div role="status" aria-live="polite" className="sr-only">
+            {`${filtered.length} ${filtered.length === 1 ? 'result' : 'results'}`}
+          </div>
         </Popover.Content>
       </Popover>
     );

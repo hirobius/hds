@@ -242,6 +242,9 @@ for (const entry of activeDiscoveredComponents) {
     ...(contract.usage ? { usage: contract.usage } : {}),
     ...(contract.keyboard ? { keyboard: contract.keyboard } : {}),
     ...(contract.aiRules ? { aiRules: contract.aiRules } : {}),
+    // @a11y tags are the source of a component's a11yRules (hds#520). A
+    // component with no tag keeps its hand-kept rules until it gets one.
+    ...(contract.a11yRules ? { a11yRules: contract.a11yRules } : {}),
     // hds#390: `deprecated` (the notice), `removeIn`, `useInstead`, from the
     // @deprecated block. Consumer surfaces (SKILL.md, llms) skip these specs.
     ...(entry.deprecation ?? {}),

@@ -4,6 +4,15 @@
  * @usage Show a code sample with a copy button, optionally collapsed.
  * @tier primitive
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154
+ * @a11y component required a11y:code-block.scroll-region When its code overflows, the block is a focusable group named by its filename or language, so keyboard users can scroll long lines; short code adds no tab stop.
+ * @a11y component required a11y:code-block.copy-name The copy button is a named button of type button, and is renamed Copied once it has copied.
+ * @a11y component required a11y:code-block.copy-status Copying is announced from a polite status region that is mounted before the change.
+ * @a11y component required a11y:code-block.expand-state The collapsible toggle reports aria-expanded and aria-controls, works with Enter and Space, and a collapsed panel is removed from the document.
+ * @a11y component required a11y:code-block.focus-return Collapsing while focus is inside the panel returns focus to the toggle.
+ * @a11y component required a11y:code-block.focus-ring The copy button and the toggle carry the shared focus ring.
+ * @a11y component required a11y:code-block.target-size The copy button is at least 24px and lifts to the touch target on coarse pointers (WCAG 2.5.8).
+ * @a11y component required gate:check-reduced-motion The chevron and copy-button transitions use the productive motion token, which is zero under prefers-reduced-motion.
+ * @a11y consumer recommended Put the CodeBlock under a heading, or state what the sample shows in the text before it, since the scroll group is named only by its filename or language.
  */
 
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
@@ -234,6 +243,7 @@ export function CodeBlock({
             <Icon icon={Copy} size="small" color="var(--semantic-color-content-primary)" />
           )}
         </button>
+        <CopyStatus copied={copied} />
       </div>
     );
   }
@@ -288,6 +298,7 @@ export function CodeBlock({
         <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
       </CodePre>
       {copyBtn}
+      <CopyStatus copied={copied} />
     </div>
   );
 
@@ -339,8 +350,21 @@ export function CodeBlock({
           <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
         </CodePre>
         {copyBtn}
+        <CopyStatus copied={copied} />
       </div>
     </div>
+  );
+}
+
+/**
+ * Polite live region for the copy result (4.1.3). It is always mounted, empty until
+ * a copy lands, because a region added with its text already in it is not announced.
+ */
+function CopyStatus({ copied }: { copied: boolean }) {
+  return (
+    <span role="status" className="sr-only">
+      {copied ? 'Copied to clipboard' : ''}
+    </span>
   );
 }
 

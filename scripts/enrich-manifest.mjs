@@ -54,76 +54,22 @@ const allowedChildrenDefaults = {
   StatusListItem: [],
 };
 
+// Hand-kept rules for components that have no @a11y tags (hds#520). A
+// component with @a11y JSDoc tags gets its a11yRules from those tags
+// (scripts/generate-manifest.mjs), so it has no entry here: the interactive
+// roots (scripts/lib/a11y-interactive.mjs) all carry tags, and
+// check-a11y-contracts fails the commit if one loses them.
 const a11yDefaults = {
-  // ── Actions ──────────────────────────────────────────────────────────────────
-  Button: [
-    { rule: 'Must have accessible name via label prop or aria-label', required: true },
-    { rule: 'Focus ring visible in all interactive states (uses hds-focus class)', required: true },
-  ],
-  // ── Inputs ───────────────────────────────────────────────────────────────────
-  Input: [
-    { rule: 'Must have associated label via label prop or aria-labelledby', required: true },
-    {
-      rule: 'Error state must be communicated via aria-describedby or aria-invalid',
-      required: true,
-    },
-  ],
-  SegmentedControl: [
-    {
-      rule: 'Must have accessible group label (aria-label or aria-labelledby on the container)',
-      required: true,
-    },
-    {
-      rule: 'Selected option must be communicated via aria-pressed or aria-selected',
-      required: true,
-    },
-  ],
-  Tag: [
-    {
-      rule: 'When used as interactive chip (onClick), must have role="button" and keyboard activation',
-      required: true,
-    },
-    {
-      rule: 'When used as status indicator (no onClick), role should be "status" or omitted',
-      required: false,
-    },
-  ],
-  // ── Navigation ───────────────────────────────────────────────────────────────
-  InlineLink: [
-    { rule: 'Link text must be descriptive — avoid "click here" or "read more"', required: true },
-    {
-      rule: 'External links must signal new-tab behavior via aria-label or visually hidden text',
-      required: false,
-    },
-  ],
-  // ── Display / Media ──────────────────────────────────────────────────────────
-  AssetImg: [
-    { rule: 'Must have alt text (decorative images use alt="")', required: true },
-    {
-      rule: 'Caption or description should be associated via aria-describedby when present',
-      required: false,
-    },
-  ],
-  Table: [
-    {
-      rule: 'Column headers must use <th> with scope="col", row headers with scope="row"',
-      required: true,
-    },
-    { rule: 'Table must have caption or aria-label describing its contents', required: false },
-  ],
-  // ── Overlays ─────────────────────────────────────────────────────────────────
   Icon: [
     { rule: 'Must have aria-label when used without adjacent text', required: true },
     { rule: 'Decorative icons must have aria-hidden="true"', required: true },
   ],
-  Alert: [{ rule: 'role=alert is set by the component — do not override', required: false }],
   Callout: [
     {
       rule: 'Callout is decorative; tone is signaled visually — pair with semantic role when meaning matters',
       required: false,
     },
   ],
-  // ── Display ──────────────────────────────────────────────────────────────────
   Field: [
     {
       rule: 'Label must describe the value; pair with aria-describedby when value is non-trivial',
@@ -141,15 +87,6 @@ const a11yDefaults = {
       rule: 'Status dot is decorative (aria-hidden); convey status meaning via title or trailing badge',
       required: true,
     },
-  ],
-  Dialog: [
-    { rule: 'Must have an accessible name via Dialog.Title or aria-label', required: true },
-    {
-      rule: 'Description should be associated via Dialog.Description when present',
-      required: false,
-    },
-    { rule: 'Focus must be trapped within dialog while open', required: true },
-    { rule: 'Escape key must close the dialog', required: true },
   ],
 };
 

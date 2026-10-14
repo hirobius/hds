@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "3e499354d553fc53743dd3d0f884dd33458909f936001d943284983135d2246c",
-  "precommitStructureHashUpdatedAt": "2026-10-13T09:54:01.396Z",
+  "precommitStructureHash": "92571c87f415927db488422dc69ac4fd2a7de71e8949f473ed455a083d8b7876",
+  "precommitStructureHashUpdatedAt": "2026-10-14T04:31:42.037Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -1033,6 +1033,17 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "supportsJson": true
+    },
+    {
+      "id": "check-a11y-contracts",
+      "description": "Every interactive component (scripts/lib/a11y-interactive.mjs) states an accessibility contract as @a11y JSDoc tags that reach a11yRules in the manifest, component-api.json and the MCP get_component answer (hds#520). Lists every gap: E1 an interactive root with no rules, E2 a rule with no owner (component|consumer), E3 an owner:component rule whose a11y:<id> is not a literal in an active test (or whose gate:<id> is not in this registry), E4 a component in Overlays/Inputs/Navigation/Actions that nobody classified. Severity error since the family backfills landed with zero gaps: pre-commit runs it with --enforce, so any E1-E4 gap fails the commit (W1 orphan and W2 duplicate test ids only warn).",
+      "severity": "error",
+      "gateScript": "scripts/check-a11y-contracts.mjs",
+      "fixturePath": "fixtures/check-a11y-contracts",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"]
     }
   ]
 }
