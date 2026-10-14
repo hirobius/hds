@@ -201,6 +201,7 @@ Tabs: [core] Switch between panels of related content in the same place, one vis
 Tag: [core] Show an interactive filter or category chip that people can toggle. Use instead: Badge
 Text: [core] Set any text on the type ramp, with the element chosen by `as`. Use instead: InlineLink, Kbd
 Textarea: [core] Collect multi-line free text such as a message, note or description. Use instead: Input
+ThemeToggle: A single header or menu control to switch between the light and dark theme. Use instead: SegmentedControl
 Timeline: Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
@@ -1294,6 +1295,12 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - label: string
   - resize: "none" | "both" | "vertical" = vertical
   - textareaClassName: string
+
+### ThemeToggle
+One-button light/dark switch with a sun-to-moon morph.
+  - className: string
+  - isDark: boolean
+  - onToggle: (() => void)
 
 ### Timeline
 The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.

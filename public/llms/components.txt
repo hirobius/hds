@@ -687,6 +687,12 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - resize: "none" | "both" | "vertical" = vertical
   - textareaClassName: string
 
+### ThemeToggle
+One-button light/dark switch with a sun-to-moon morph.
+  - className: string
+  - isDark: boolean
+  - onToggle: (() => void)
+
 ### Timeline
 The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.
   - aria-label: string

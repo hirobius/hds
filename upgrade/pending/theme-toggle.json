@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "ThemeToggle is a new export (a one-button light/dark switch with a sun-to-moon morph); nothing existing changes, so there is nothing to do unless you want it."
+}

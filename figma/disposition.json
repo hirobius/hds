@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 105,
+    "total": 106,
     "byClass": {
-      "library": 61,
+      "library": 62,
       "slot": 23,
       "layout": 9,
       "internal": 12
     },
     "libraryLinked": 59,
-    "libraryMissing": 2,
+    "libraryMissing": 3,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -823,6 +823,14 @@
       "category": "Inputs",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14"
+    },
+    {
+      "name": "ThemeToggle",
+      "class": "library",
+      "parent": null,
+      "category": "Actions",
+      "tier": "primitive",
+      "figmaUrl": null
     },
     {
       "name": "Timeline",
