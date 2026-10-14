@@ -109,10 +109,24 @@ export type TableColumnAlign = 'left' | 'center' | 'right';
 /** @public */
 export type TableSortDirection = 'ascending' | 'descending' | 'none';
 
+/**
+ * A column's grid track: a sizing keyword, a fraction, a `minmax()` track or a
+ * token variable. Raw `px` / `rem` widths are type errors; size from tokens.
+ * @public
+ */
+export type TableColumnWidth =
+  | 'auto'
+  | 'min-content'
+  | 'max-content'
+  | `${number}fr`
+  | `minmax(${string})`
+  | `var(--${string})`;
+
 export type TableColumn = {
   key: string;
   label: ReactNode;
-  width?: string;
+  /** Grid track for this column; defaults to `minmax(0, 1fr)`. */
+  width?: TableColumnWidth;
   align?: TableColumnAlign;
   /** Renders the header as a button and sets `aria-sort` on the header cell. */
   sortable?: boolean;

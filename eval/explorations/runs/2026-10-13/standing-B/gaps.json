@@ -1,0 +1,12 @@
+[
+  {
+    "screen": "standing",
+    "direction": "B",
+    "kind": "pattern",
+    "id": "band-section",
+    "needed": "A band section: a header with a name and a count, rows, and show all",
+    "didInstead": "A heading with a count Badge beside it over a Stack of rows, and a tertiary Button for show all",
+    "proposal": "Add a Band pattern with name, count, rows and a show-all control",
+    "evidence": "src/App.tsx:58"
+  }
+]

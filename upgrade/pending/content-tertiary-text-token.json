@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "New --semantic-color-content-tertiary text token for small helper text; nothing to change unless you want to replace a primitive neutral used as a faint text colour."
+}

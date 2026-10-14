@@ -6,15 +6,15 @@ monorepo.
 
 ## What's demonstrated
 
-| Primitive | Notes |
-|-----------|-------|
-| `HdsButton` | All three variants (primary / secondary / tertiary), sizes, loading, disabled |
-| `HdsBadge` | All five tones (neutral, info, success, warning, danger) |
-| `HdsTag` | Click-to-toggle active state |
-| `HdsInput` | Default, disabled, and error states |
-| `HdsAlert` | All four variants (info, success, warning, error) |
-| `HdsCard` | Compound-parts pattern (Header / Body / Footer) |
-| `HdsDivider` | Semantic separator |
+| Primitive | Notes                                                                         |
+| --------- | ----------------------------------------------------------------------------- |
+| `Button`  | All three variants (primary / secondary / tertiary), sizes, loading, disabled |
+| `Badge`   | All five tones (neutral, info, success, warning, danger)                      |
+| `Tag`     | Click-to-toggle active state                                                  |
+| `Input`   | Default, disabled, and error states                                           |
+| `Alert`   | All four tones (info, success, warning, danger)                               |
+| `Card`    | Compound-parts pattern (Header / Body / Footer)                               |
+| `Divider` | Semantic separator                                                            |
 
 Light/dark toggle in the header flips `data-theme` and `.dark` on `<html>` —
 the same pattern used internally.

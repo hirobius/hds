@@ -1,0 +1,1208 @@
+{
+  "$comment": "INVENTED data for design explorations (hds#628). Fictional businesses, people and towns; phone numbers are 555-01xx and addresses are example.com. Nothing here is a real lead, client or person.",
+  "screen": "leads",
+  "asOf": "2026-10-13T09:00:00Z",
+  "pull": {
+    "niches": ["Landscaping", "Junk removal", "Pressure washing", "Concrete and fencing"],
+    "metros": ["Alder Bay", "Port Marrow", "Kestrel Falls", "Dunmore Heights"]
+  },
+  "updatedLabel": "updated 12s ago",
+  "offline": false,
+  "chain": {
+    "stages": [
+      {
+        "key": "lead",
+        "label": "Lead",
+        "count": 412,
+        "verdict": "proven",
+        "note": "Pulled from the source and de-duplicated"
+      },
+      {
+        "key": "score",
+        "label": "Score",
+        "count": 188,
+        "verdict": "proven",
+        "note": "Qualified at 60 or above"
+      },
+      {
+        "key": "site",
+        "label": "Site",
+        "count": 41,
+        "verdict": "proven",
+        "note": "A config was generated and passed the judge"
+      },
+      {
+        "key": "preview",
+        "label": "Preview",
+        "count": 41,
+        "verdict": "proven",
+        "note": "A gated preview is live for each"
+      },
+      {
+        "key": "outreach",
+        "label": "Outreach",
+        "count": 38,
+        "verdict": "proven",
+        "note": "Pitched by phone or email"
+      },
+      {
+        "key": "reply",
+        "label": "Reply",
+        "count": 3,
+        "verdict": "proven",
+        "note": "Real replies from real owners"
+      },
+      {
+        "key": "deal",
+        "label": "Deal",
+        "count": 1,
+        "verdict": "unproven",
+        "note": "One verbal yes, nothing signed yet"
+      },
+      {
+        "key": "invoice",
+        "label": "Invoice",
+        "count": 0,
+        "verdict": "unproven",
+        "note": "No lead has reached this stage"
+      }
+    ],
+    "break": "invoice",
+    "biggestLeak": { "from": "outreach", "to": "reply", "lost": 35, "pct": 92 }
+  },
+  "leads": [
+    {
+      "id": "lead_301",
+      "business": "Fernhill Lawn & Garden",
+      "category": "Landscaper",
+      "city": "Alder Bay",
+      "region": "Coast County",
+      "rating": 4.7,
+      "reviewCount": 112,
+      "status": "sent",
+      "score": 91,
+      "nextAction": null,
+      "error": null,
+      "updatedAgo": "2d"
+    },
+    {
+      "id": "lead_322",
+      "business": "Tidewater Pressure Washing",
+      "category": "Pressure washing service",
+      "city": "Kestrel Falls",
+      "region": "Coast County",
+      "rating": 4.5,
+      "reviewCount": 64,
+      "status": "scored",
+      "score": 88,
+      "nextAction": "Render site",
+      "error": null,
+      "updatedAgo": "1h"
+    },
+    {
+      "id": "lead_287",
+      "business": "Quarry Road Concrete",
+      "category": "Concrete contractor",
+      "city": "Port Marrow",
+      "region": "Coast County",
+      "rating": 4.8,
+      "reviewCount": 203,
+      "status": "sent",
+      "score": 84,
+      "nextAction": null,
+      "error": null,
+      "updatedAgo": "1d"
+    },
+    {
+      "id": "lead_318",
+      "business": "Halloran Fence Co.",
+      "category": "Fence contractor",
+      "city": "Dunmore Heights",
+      "region": "Coast County",
+      "rating": 4.3,
+      "reviewCount": 38,
+      "status": "rendered",
+      "score": 79,
+      "nextAction": null,
+      "error": null,
+      "updatedAgo": "3h"
+    },
+    {
+      "id": "lead_309",
+      "business": "Brindle Junk Removal",
+      "category": "Junk removal service",
+      "city": "Alder Bay",
+      "region": "Coast County",
+      "rating": 4.6,
+      "reviewCount": 91,
+      "status": "generating",
+      "score": 76,
+      "nextAction": null,
+      "error": null,
+      "updatedAgo": "just now"
+    },
+    {
+      "id": "lead_331",
+      "business": "Cedar Loop Landscaping",
+      "category": "Landscaper",
+      "city": "Port Marrow",
+      "region": "Coast County",
+      "rating": 4.4,
+      "reviewCount": 57,
+      "status": "scored",
+      "score": 72,
+      "nextAction": "Render site",
+      "error": null,
+      "updatedAgo": "5h"
+    },
+    {
+      "id": "lead_290",
+      "business": "Marlow Paving",
+      "category": "Paving contractor",
+      "city": "Kestrel Falls",
+      "region": "Coast County",
+      "rating": 4.1,
+      "reviewCount": 29,
+      "status": "lost",
+      "score": 68,
+      "nextAction": null,
+      "error": null,
+      "updatedAgo": "5d"
+    },
+    {
+      "id": "lead_338",
+      "business": "Northgate Gutter Care",
+      "category": "Gutter service",
+      "city": "Dunmore Heights",
+      "region": "Coast County",
+      "rating": 4.9,
+      "reviewCount": 144,
+      "status": "sourced",
+      "score": 64,
+      "nextAction": "Generate",
+      "error": null,
+      "updatedAgo": "6h"
+    },
+    {
+      "id": "lead_340",
+      "business": "Pinewell Tree Service",
+      "category": "Tree service",
+      "city": "Alder Bay",
+      "region": "Coast County",
+      "rating": 4.2,
+      "reviewCount": 33,
+      "status": "sourced",
+      "score": 58,
+      "nextAction": "Generate",
+      "error": null,
+      "updatedAgo": "6h"
+    },
+    {
+      "id": "lead_341",
+      "business": "Harbor Lane Garage Doors",
+      "category": "Garage door supplier",
+      "city": "Port Marrow",
+      "region": "Coast County",
+      "rating": 4,
+      "reviewCount": 21,
+      "status": "sourced",
+      "score": 52,
+      "nextAction": "Generate",
+      "error": null,
+      "updatedAgo": "7h"
+    }
+  ],
+  "states": {
+    "empty": {
+      "pull": {
+        "niches": ["Landscaping", "Junk removal", "Pressure washing", "Concrete and fencing"],
+        "metros": ["Alder Bay", "Port Marrow", "Kestrel Falls", "Dunmore Heights"]
+      },
+      "updatedLabel": "updated 12s ago",
+      "offline": false,
+      "chain": {
+        "stages": [
+          {
+            "key": "lead",
+            "label": "Lead",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No leads yet"
+          },
+          {
+            "key": "score",
+            "label": "Score",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No leads yet"
+          },
+          {
+            "key": "site",
+            "label": "Site",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No leads yet"
+          },
+          {
+            "key": "preview",
+            "label": "Preview",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No leads yet"
+          },
+          {
+            "key": "outreach",
+            "label": "Outreach",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No leads yet"
+          },
+          {
+            "key": "reply",
+            "label": "Reply",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No leads yet"
+          },
+          {
+            "key": "deal",
+            "label": "Deal",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No leads yet"
+          },
+          {
+            "key": "invoice",
+            "label": "Invoice",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No leads yet"
+          }
+        ],
+        "break": "lead",
+        "biggestLeak": null
+      },
+      "leads": []
+    },
+    "loading": {
+      "note": "No data. Render the chain as eight unlabeled steps and the list as skeleton rows."
+    },
+    "error": {
+      "pull": {
+        "niches": ["Landscaping", "Junk removal", "Pressure washing", "Concrete and fencing"],
+        "metros": ["Alder Bay", "Port Marrow", "Kestrel Falls", "Dunmore Heights"]
+      },
+      "updatedLabel": "updated 12s ago",
+      "offline": false,
+      "chain": {
+        "stages": [
+          {
+            "key": "lead",
+            "label": "Lead",
+            "count": 412,
+            "verdict": "proven",
+            "note": "Pulled from the source and de-duplicated"
+          },
+          {
+            "key": "score",
+            "label": "Score",
+            "count": 188,
+            "verdict": "proven",
+            "note": "Qualified at 60 or above"
+          },
+          {
+            "key": "site",
+            "label": "Site",
+            "count": 41,
+            "verdict": "proven",
+            "note": "A config was generated and passed the judge"
+          },
+          {
+            "key": "preview",
+            "label": "Preview",
+            "count": 41,
+            "verdict": "proven",
+            "note": "A gated preview is live for each"
+          },
+          {
+            "key": "outreach",
+            "label": "Outreach",
+            "count": 38,
+            "verdict": "proven",
+            "note": "Pitched by phone or email"
+          },
+          {
+            "key": "reply",
+            "label": "Reply",
+            "count": 3,
+            "verdict": "proven",
+            "note": "Real replies from real owners"
+          },
+          {
+            "key": "deal",
+            "label": "Deal",
+            "count": 1,
+            "verdict": "unproven",
+            "note": "One verbal yes, nothing signed yet"
+          },
+          {
+            "key": "invoice",
+            "label": "Invoice",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No lead has reached this stage"
+          }
+        ],
+        "break": "invoice",
+        "biggestLeak": { "from": "outreach", "to": "reply", "lost": 35, "pct": 92 }
+      },
+      "leads": [
+        {
+          "id": "lead_301",
+          "business": "Fernhill Lawn & Garden",
+          "category": "Landscaper",
+          "city": "Alder Bay",
+          "region": "Coast County",
+          "rating": 4.7,
+          "reviewCount": 112,
+          "status": "sent",
+          "score": 91,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "2d"
+        },
+        {
+          "id": "lead_322",
+          "business": "Tidewater Pressure Washing",
+          "category": "Pressure washing service",
+          "city": "Kestrel Falls",
+          "region": "Coast County",
+          "rating": 4.5,
+          "reviewCount": 64,
+          "status": "scored",
+          "score": 88,
+          "nextAction": "Render site",
+          "error": null,
+          "updatedAgo": "1h"
+        },
+        {
+          "id": "lead_287",
+          "business": "Quarry Road Concrete",
+          "category": "Concrete contractor",
+          "city": "Port Marrow",
+          "region": "Coast County",
+          "rating": 4.8,
+          "reviewCount": 203,
+          "status": "sent",
+          "score": 84,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "1d"
+        },
+        {
+          "id": "lead_318",
+          "business": "Halloran Fence Co.",
+          "category": "Fence contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.3,
+          "reviewCount": 38,
+          "status": "rendered",
+          "score": 79,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "3h"
+        },
+        {
+          "id": "lead_309",
+          "business": "Brindle Junk Removal",
+          "category": "Junk removal service",
+          "city": "Alder Bay",
+          "region": "Coast County",
+          "rating": 4.6,
+          "reviewCount": 91,
+          "status": "generating",
+          "score": 76,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "just now"
+        },
+        {
+          "id": "lead_331",
+          "business": "Cedar Loop Landscaping",
+          "category": "Landscaper",
+          "city": "Port Marrow",
+          "region": "Coast County",
+          "rating": 4.4,
+          "reviewCount": 57,
+          "status": "scored",
+          "score": 72,
+          "nextAction": "Render site",
+          "error": null,
+          "updatedAgo": "5h"
+        },
+        {
+          "id": "lead_290",
+          "business": "Marlow Paving",
+          "category": "Paving contractor",
+          "city": "Kestrel Falls",
+          "region": "Coast County",
+          "rating": 4.1,
+          "reviewCount": 29,
+          "status": "lost",
+          "score": 68,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "5d"
+        },
+        {
+          "id": "lead_338",
+          "business": "Northgate Gutter Care",
+          "category": "Gutter service",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.9,
+          "reviewCount": 144,
+          "status": "sourced",
+          "score": 64,
+          "nextAction": "Generate",
+          "error": "Generate failed: the model returned a config with no hero call to action. Nothing was saved; try again.",
+          "updatedAgo": "6h"
+        },
+        {
+          "id": "lead_340",
+          "business": "Pinewell Tree Service",
+          "category": "Tree service",
+          "city": "Alder Bay",
+          "region": "Coast County",
+          "rating": 4.2,
+          "reviewCount": 33,
+          "status": "sourced",
+          "score": 58,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "6h"
+        },
+        {
+          "id": "lead_341",
+          "business": "Harbor Lane Garage Doors",
+          "category": "Garage door supplier",
+          "city": "Port Marrow",
+          "region": "Coast County",
+          "rating": 4,
+          "reviewCount": 21,
+          "status": "sourced",
+          "score": 52,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "7h"
+        }
+      ]
+    },
+    "longContent": {
+      "pull": {
+        "niches": ["Landscaping", "Junk removal", "Pressure washing", "Concrete and fencing"],
+        "metros": ["Alder Bay", "Port Marrow", "Kestrel Falls", "Dunmore Heights"]
+      },
+      "updatedLabel": "updated 12s ago",
+      "offline": false,
+      "chain": {
+        "stages": [
+          {
+            "key": "lead",
+            "label": "Lead",
+            "count": 412,
+            "verdict": "proven",
+            "note": "Pulled from the source and de-duplicated. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+          },
+          {
+            "key": "score",
+            "label": "Score",
+            "count": 188,
+            "verdict": "proven",
+            "note": "Qualified at 60 or above. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+          },
+          {
+            "key": "site",
+            "label": "Site",
+            "count": 41,
+            "verdict": "proven",
+            "note": "A config was generated and passed the judge. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+          },
+          {
+            "key": "preview",
+            "label": "Preview",
+            "count": 41,
+            "verdict": "proven",
+            "note": "A gated preview is live for each. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+          },
+          {
+            "key": "outreach",
+            "label": "Outreach",
+            "count": 38,
+            "verdict": "proven",
+            "note": "Pitched by phone or email. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+          },
+          {
+            "key": "reply",
+            "label": "Reply",
+            "count": 3,
+            "verdict": "proven",
+            "note": "Real replies from real owners. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+          },
+          {
+            "key": "deal",
+            "label": "Deal",
+            "count": 1,
+            "verdict": "unproven",
+            "note": "One verbal yes, nothing signed yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+          },
+          {
+            "key": "invoice",
+            "label": "Invoice",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No lead has reached this stage. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+          }
+        ],
+        "break": "invoice",
+        "biggestLeak": { "from": "outreach", "to": "reply", "lost": 35, "pct": 92 }
+      },
+      "leads": [
+        {
+          "id": "lead_900",
+          "business": "The Fernhill and Dunmore Heights Combined Lawn, Garden and Seasonal Planting Company",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4,
+          "reviewCount": 20,
+          "status": "sourced",
+          "score": 90,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "1h"
+        },
+        {
+          "id": "lead_901",
+          "business": "Business number 2 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.1,
+          "reviewCount": 27,
+          "status": "scored",
+          "score": 89,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "2h"
+        },
+        {
+          "id": "lead_902",
+          "business": "Business number 3 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.2,
+          "reviewCount": 34,
+          "status": "rendered",
+          "score": 88,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "3h"
+        },
+        {
+          "id": "lead_903",
+          "business": "Business number 4 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.3,
+          "reviewCount": 41,
+          "status": "sent",
+          "score": 87,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "4h"
+        },
+        {
+          "id": "lead_904",
+          "business": "The Fernhill and Dunmore Heights Combined Lawn, Garden and Seasonal Planting Company",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.4,
+          "reviewCount": 48,
+          "status": "sourced",
+          "score": 86,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "5h"
+        },
+        {
+          "id": "lead_905",
+          "business": "Business number 6 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.5,
+          "reviewCount": 55,
+          "status": "scored",
+          "score": 85,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "6h"
+        },
+        {
+          "id": "lead_906",
+          "business": "Business number 7 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.6,
+          "reviewCount": 62,
+          "status": "rendered",
+          "score": 84,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "7h"
+        },
+        {
+          "id": "lead_907",
+          "business": "Business number 8 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.7,
+          "reviewCount": 69,
+          "status": "sent",
+          "score": 83,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "8h"
+        },
+        {
+          "id": "lead_908",
+          "business": "The Fernhill and Dunmore Heights Combined Lawn, Garden and Seasonal Planting Company",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.8,
+          "reviewCount": 76,
+          "status": "sourced",
+          "score": 82,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "9h"
+        },
+        {
+          "id": "lead_909",
+          "business": "Business number 10 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.9,
+          "reviewCount": 83,
+          "status": "scored",
+          "score": 81,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "10h"
+        },
+        {
+          "id": "lead_910",
+          "business": "Business number 11 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4,
+          "reviewCount": 90,
+          "status": "rendered",
+          "score": 80,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "11h"
+        },
+        {
+          "id": "lead_911",
+          "business": "Business number 12 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.1,
+          "reviewCount": 97,
+          "status": "sent",
+          "score": 79,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "12h"
+        },
+        {
+          "id": "lead_912",
+          "business": "The Fernhill and Dunmore Heights Combined Lawn, Garden and Seasonal Planting Company",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.2,
+          "reviewCount": 104,
+          "status": "sourced",
+          "score": 78,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "13h"
+        },
+        {
+          "id": "lead_913",
+          "business": "Business number 14 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.3,
+          "reviewCount": 111,
+          "status": "scored",
+          "score": 77,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "14h"
+        },
+        {
+          "id": "lead_914",
+          "business": "Business number 15 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.4,
+          "reviewCount": 118,
+          "status": "rendered",
+          "score": 76,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "15h"
+        },
+        {
+          "id": "lead_915",
+          "business": "Business number 16 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.5,
+          "reviewCount": 125,
+          "status": "sent",
+          "score": 75,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "16h"
+        },
+        {
+          "id": "lead_916",
+          "business": "The Fernhill and Dunmore Heights Combined Lawn, Garden and Seasonal Planting Company",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.6,
+          "reviewCount": 132,
+          "status": "sourced",
+          "score": 74,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "17h"
+        },
+        {
+          "id": "lead_917",
+          "business": "Business number 18 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.7,
+          "reviewCount": 139,
+          "status": "scored",
+          "score": 73,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "18h"
+        },
+        {
+          "id": "lead_918",
+          "business": "Business number 19 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.8,
+          "reviewCount": 146,
+          "status": "rendered",
+          "score": 72,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "19h"
+        },
+        {
+          "id": "lead_919",
+          "business": "Business number 20 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.9,
+          "reviewCount": 153,
+          "status": "sent",
+          "score": 71,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "20h"
+        },
+        {
+          "id": "lead_920",
+          "business": "The Fernhill and Dunmore Heights Combined Lawn, Garden and Seasonal Planting Company",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4,
+          "reviewCount": 160,
+          "status": "sourced",
+          "score": 70,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "21h"
+        },
+        {
+          "id": "lead_921",
+          "business": "Business number 22 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.1,
+          "reviewCount": 167,
+          "status": "scored",
+          "score": 69,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "22h"
+        },
+        {
+          "id": "lead_922",
+          "business": "Business number 23 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.2,
+          "reviewCount": 174,
+          "status": "rendered",
+          "score": 68,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "23h"
+        },
+        {
+          "id": "lead_923",
+          "business": "Business number 24 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.3,
+          "reviewCount": 181,
+          "status": "sent",
+          "score": 67,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "24h"
+        },
+        {
+          "id": "lead_924",
+          "business": "The Fernhill and Dunmore Heights Combined Lawn, Garden and Seasonal Planting Company",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.4,
+          "reviewCount": 188,
+          "status": "sourced",
+          "score": 66,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "25h"
+        },
+        {
+          "id": "lead_925",
+          "business": "Business number 26 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.5,
+          "reviewCount": 195,
+          "status": "scored",
+          "score": 65,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "26h"
+        },
+        {
+          "id": "lead_926",
+          "business": "Business number 27 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.6,
+          "reviewCount": 202,
+          "status": "rendered",
+          "score": 64,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "27h"
+        },
+        {
+          "id": "lead_927",
+          "business": "Business number 28 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.7,
+          "reviewCount": 209,
+          "status": "sent",
+          "score": 63,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "28h"
+        },
+        {
+          "id": "lead_928",
+          "business": "The Fernhill and Dunmore Heights Combined Lawn, Garden and Seasonal Planting Company",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.8,
+          "reviewCount": 216,
+          "status": "sourced",
+          "score": 62,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "29h"
+        },
+        {
+          "id": "lead_929",
+          "business": "Business number 30 with a name long enough to wrap",
+          "category": "Landscaper and seasonal planting contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.9,
+          "reviewCount": 223,
+          "status": "scored",
+          "score": 61,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "30h"
+        }
+      ]
+    },
+    "tokenFailure": {
+      "pull": {
+        "niches": ["Landscaping", "Junk removal", "Pressure washing", "Concrete and fencing"],
+        "metros": ["Alder Bay", "Port Marrow", "Kestrel Falls", "Dunmore Heights"]
+      },
+      "updatedLabel": "updated 12s ago",
+      "offline": false,
+      "chain": {
+        "stages": [
+          {
+            "key": "lead",
+            "label": "Lead",
+            "count": 412,
+            "verdict": "proven",
+            "note": "Pulled from the source and de-duplicated"
+          },
+          {
+            "key": "score",
+            "label": "Score",
+            "count": 188,
+            "verdict": "proven",
+            "note": "Qualified at 60 or above"
+          },
+          {
+            "key": "site",
+            "label": "Site",
+            "count": 41,
+            "verdict": "proven",
+            "note": "A config was generated and passed the judge"
+          },
+          {
+            "key": "preview",
+            "label": "Preview",
+            "count": 41,
+            "verdict": "proven",
+            "note": "A gated preview is live for each"
+          },
+          {
+            "key": "outreach",
+            "label": "Outreach",
+            "count": 38,
+            "verdict": "proven",
+            "note": "Pitched by phone or email"
+          },
+          {
+            "key": "reply",
+            "label": "Reply",
+            "count": 3,
+            "verdict": "proven",
+            "note": "Real replies from real owners"
+          },
+          {
+            "key": "deal",
+            "label": "Deal",
+            "count": 1,
+            "verdict": "unproven",
+            "note": "One verbal yes, nothing signed yet"
+          },
+          {
+            "key": "invoice",
+            "label": "Invoice",
+            "count": 0,
+            "verdict": "unproven",
+            "note": "No lead has reached this stage"
+          }
+        ],
+        "break": "invoice",
+        "biggestLeak": { "from": "outreach", "to": "reply", "lost": 35, "pct": 92 }
+      },
+      "leads": [
+        {
+          "id": "lead_301",
+          "business": "Fernhill Lawn & Garden",
+          "category": "Landscaper",
+          "city": "Alder Bay",
+          "region": "Coast County",
+          "rating": 4.7,
+          "reviewCount": 112,
+          "status": "sent",
+          "score": 91,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "2d"
+        },
+        {
+          "id": "lead_322",
+          "business": "Tidewater Pressure Washing",
+          "category": "Pressure washing service",
+          "city": "Kestrel Falls",
+          "region": "Coast County",
+          "rating": 4.5,
+          "reviewCount": 64,
+          "status": "scored",
+          "score": 88,
+          "nextAction": "Render site",
+          "error": null,
+          "updatedAgo": "1h"
+        },
+        {
+          "id": "lead_287",
+          "business": "Quarry Road Concrete",
+          "category": "Concrete contractor",
+          "city": "Port Marrow",
+          "region": "Coast County",
+          "rating": 4.8,
+          "reviewCount": 203,
+          "status": "sent",
+          "score": 84,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "1d"
+        },
+        {
+          "id": "lead_318",
+          "business": "Halloran Fence Co.",
+          "category": "Fence contractor",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.3,
+          "reviewCount": 38,
+          "status": "rendered",
+          "score": 79,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "3h"
+        },
+        {
+          "id": "lead_309",
+          "business": "Brindle Junk Removal",
+          "category": "Junk removal service",
+          "city": "Alder Bay",
+          "region": "Coast County",
+          "rating": 4.6,
+          "reviewCount": 91,
+          "status": "generating",
+          "score": 76,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "just now"
+        },
+        {
+          "id": "lead_331",
+          "business": "Cedar Loop Landscaping",
+          "category": "Landscaper",
+          "city": "Port Marrow",
+          "region": "Coast County",
+          "rating": 4.4,
+          "reviewCount": 57,
+          "status": "scored",
+          "score": 72,
+          "nextAction": "Render site",
+          "error": null,
+          "updatedAgo": "5h"
+        },
+        {
+          "id": "lead_290",
+          "business": "Marlow Paving",
+          "category": "Paving contractor",
+          "city": "Kestrel Falls",
+          "region": "Coast County",
+          "rating": 4.1,
+          "reviewCount": 29,
+          "status": "lost",
+          "score": 68,
+          "nextAction": null,
+          "error": null,
+          "updatedAgo": "5d"
+        },
+        {
+          "id": "lead_338",
+          "business": "Northgate Gutter Care",
+          "category": "Gutter service",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "rating": 4.9,
+          "reviewCount": 144,
+          "status": "sourced",
+          "score": 64,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "6h"
+        },
+        {
+          "id": "lead_340",
+          "business": "Pinewell Tree Service",
+          "category": "Tree service",
+          "city": "Alder Bay",
+          "region": "Coast County",
+          "rating": 4.2,
+          "reviewCount": 33,
+          "status": "sourced",
+          "score": 58,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "6h"
+        },
+        {
+          "id": "lead_341",
+          "business": "Harbor Lane Garage Doors",
+          "category": "Garage door supplier",
+          "city": "Port Marrow",
+          "region": "Coast County",
+          "rating": 4,
+          "reviewCount": 21,
+          "status": "sourced",
+          "score": 52,
+          "nextAction": "Generate",
+          "error": null,
+          "updatedAgo": "7h"
+        }
+      ],
+      "setupError": "OUTSCRAPER_API_KEY is missing: pulling leads is off. Set it in Vercel env vars (Production), then redeploy."
+    }
+  }
+}
