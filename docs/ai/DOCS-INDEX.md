@@ -31,7 +31,7 @@ A script builds it: change its source, never the file. A named check fails when 
 - `figma/disposition.json`: What becomes of each Figma component. Built by `scripts/figma-disposition.mjs`; fresh when `node scripts/figma-disposition.mjs --check` passes.
 - `figma/code-connect.json`: Code Connect templates registry. Built by `scripts/generate-code-connect.mjs`; fresh when `node scripts/check-code-connect.mjs` passes.
 - `docs/DESIGN_LINKS.md`: Where each component lives in Figma, the docs site and source. Built by `scripts/figma-links.mjs`; fresh when `node scripts/figma-links.mjs --check` passes.
-- `eval/refs/INDEX.md`: The design refs index: every ref Adrian saved, its text card, fidelity and gaps, read by build agents instead of the images. Built by `scripts/eval-refs.mjs`; fresh when `node scripts/eval-refs.mjs --check` passes.
+- `eval/refs/INDEX.md`: The design refs index: every ref Adrian saved, its text card, fidelity and gaps, read by build agents instead of the images. Built by `scripts/build-refs-index.mjs`; fresh when `node scripts/build-refs-index.mjs --check` passes.
 
 ## Checked
 

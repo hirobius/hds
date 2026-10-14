@@ -78,7 +78,7 @@ For each new image:
    from `--vocab`. Write `[]` only when nothing was missed.
 8. **Write `card.md`**: what works (the patterns a build agent can copy), the closest
    tokens, and every gap id. Text only, 30 lines at most.
-9. `pnpm eval:refs -- --index --write`, then `pnpm eval:refs -- --check` must pass.
+9. `pnpm refs:index`, then `pnpm eval:refs -- --check` must pass.
    Commit: `refs: add <ref-id>`.
 
 ## 4. Propose

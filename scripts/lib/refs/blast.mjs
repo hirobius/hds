@@ -7,7 +7,7 @@
  *
  * `cssVarFor` and `aliasesOf` are pure; `findUsages` reads src/.
  */
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 
 /** `primitive.space.32` -> `--primitive-space-32` (scripts/build-hds-tokens.mjs keeps case). */
@@ -52,9 +52,11 @@ export function tokenExists(tokens, tokenPath) {
   return Boolean(node && typeof node === 'object' && '$value' in node);
 }
 
-const SOURCE = /\.(?:tsx?|css)$/;
+const SOURCE = /\.(?:tsx?|mdx|css)$/;
+/** The library and the docs site: the pages a token change can move inside this repo. */
+const SCAN_DIRS = ['src', 'docs-site/app', 'docs-site/components'];
 const SKIP =
-  /(?:^|\/)(?:__tests__|node_modules)(?:\/|$)|\.test\.|\.figma\.ts$|tokens\.generated\.css$|generated-token/;
+  /(?:^|\/)(?:__tests__|node_modules|\.next)(?:\/|$)|\.test\.|\.figma\.ts$|tokens\.generated\.css$|generated-token/;
 
 function walkSources(dir, root, out) {
   for (const name of readdirSync(dir).sort()) {
@@ -67,7 +69,9 @@ function walkSources(dir, root, out) {
 }
 
 /**
- * Files under src/ that read the token or any alias of it, by CSS variable.
+ * Files in the library and the docs site that read the token or any alias of
+ * it, by CSS variable. Consumers (ops, job-hunt) are outside this repo; the
+ * proposal's visual diff covers them through the rendered refs.
  * @returns {{ token:string, exists:boolean, aliases:string[], files:{file:string, vars:string[]}[], components:string[] }}
  */
 export function findUsages(root, tokens, tokenPath) {
@@ -76,7 +80,9 @@ export function findUsages(root, tokens, tokenPath) {
   const vars = [tokenPath, ...aliases].map(cssVarFor);
   const files = [];
   const all = [];
-  walkSources(path.join(root, 'src'), root, all);
+  for (const dir of SCAN_DIRS) {
+    if (existsSync(path.join(root, dir))) walkSources(path.join(root, dir), root, all);
+  }
   for (const rel of all) {
     const text = readFileSync(path.join(root, rel), 'utf8');
     // a var name followed by a character that cannot continue it (so -space-3 is not -space-32)

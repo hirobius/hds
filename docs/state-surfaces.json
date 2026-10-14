@@ -373,8 +373,8 @@
       "path": "eval/refs/INDEX.md",
       "describes": "The design refs index: every ref Adrian saved, its text card, fidelity and gaps, read by build agents instead of the images",
       "kind": "generated",
-      "by": "scripts/eval-refs.mjs",
-      "check": "node scripts/eval-refs.mjs --check"
+      "by": "scripts/build-refs-index.mjs",
+      "check": "node scripts/build-refs-index.mjs --check"
     },
     {
       "path": "eval/refs/decisions.json",

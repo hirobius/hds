@@ -14,6 +14,7 @@
  *
  * Pure logic: scripts/lib/refs/*.mjs. Live stages: scripts/lib/consistency/.
  */
+import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -23,15 +24,22 @@ import { failedStages, trimBuildLog } from './lib/consistency/live-plan.mjs';
 import { formatChecks } from './lib/explorations/gates.mjs';
 import { findUsages } from './lib/refs/blast.mjs';
 import { buildReviewBoard } from './lib/refs/board.mjs';
-import { latestDecisions, newBoardDecisions, validateDecisions } from './lib/refs/decisions.mjs';
+import { latestDecisions, newBoardDecisions } from './lib/refs/decisions.mjs';
 import { COMPARE_WIDTH, compareImages, fidelityFlags } from './lib/refs/fidelity.mjs';
 import { clusterGaps } from './lib/refs/gaps.mjs';
-import { renderIndex } from './lib/refs/index-md.mjs';
+import {
+  clustersFor,
+  corpus,
+  loadRefs as load,
+  readConfig,
+  readDecisions,
+  readJsonFile,
+  readTokens,
+} from './lib/refs/load.mjs';
 import { validateProposal } from './lib/refs/proposal.mjs';
-import { SCAFFOLD_MARK, judgeRef, listRefs, readRef } from './lib/refs/ref.mjs';
+import { SCAFFOLD_MARK, judgeRef } from './lib/refs/ref.mjs';
 import { assessValue, readScale } from './lib/refs/scale.mjs';
 import {
-  DEFAULT_THRESHOLD,
   PATHS,
   REF_ID,
   SURFACES,
@@ -63,7 +71,6 @@ Source only (no network, no browser):
   --scale <scale> <px>     Where <px> would sit on a token scale (primitive.space, primitive.size,
                            primitive.radius, primitive.typography.size) and how risky it is.
   --blast <token-path>     Tokens that alias it and files under src/ that read it.
-  --index [--write]        Print INDEX.md, or write it.
   --merge-decisions <file> Append the review board's new decisions to decisions.json. <file> is
                            the board's "decisions" collection as JSON: [{ id, decision, reason,
                            decidedAt }] (ArtifactData list output, flattened).
@@ -101,7 +108,6 @@ function parse(argv) {
     '--candidates',
     '--scale',
     '--blast',
-    '--index',
     '--merge-decisions',
     '--diff',
     '--board',
@@ -128,74 +134,19 @@ function parse(argv) {
   return o;
 }
 
-function readJsonFile(rel, fallback) {
-  const file = at(rel);
-  if (!existsSync(file)) return fallback;
+const wrap = (fn) => {
   try {
-    return JSON.parse(readFileSync(file, 'utf8'));
+    return fn();
   } catch (err) {
-    return fail(`${rel} is not valid JSON (${err.message})`);
+    return fail(err.message);
   }
-}
-
-function config() {
-  const c = readJsonFile(PATHS.config, {});
-  const threshold = c.threshold ?? DEFAULT_THRESHOLD;
-  if (!Number.isInteger(threshold) || threshold < 2)
-    fail(`${PATHS.config}: threshold must be a whole number of 2 or more`);
-  return { ...c, threshold };
-}
-
-const tokens = () => readJsonFile('hirobius.tokens.json', {});
-
-/** Every ref, read and judged. */
-function loadRefs() {
-  const { ids, ignored } = listRefs(at(PATHS.refs));
-  const refs = ids.map((id) => readRef(at(PATHS.refs), id));
-  return { refs, ignored };
-}
-
-/** The valid gaps of every ref whose gap log validates, and each ref's surface. */
-function corpus(refs) {
-  const gaps = [];
-  const surfaces = {};
-  const meta = {};
-  for (const r of refs) {
-    if (r.meta.value && typeof r.meta.value === 'object') {
-      surfaces[r.id] = r.meta.value.surface;
-      meta[r.id] = r.meta.value;
-    }
-    if (Array.isArray(r.gaps.value))
-      gaps.push(...r.gaps.value.filter((g) => g && g.ref === r.id && g.id));
-  }
-  return { gaps, surfaces, meta };
-}
-
-function decisions() {
-  const list = readJsonFile(PATHS.decisions, []);
-  return { list, ...validateDecisions(list) };
-}
-
-function clusters(refs, cfg, decided) {
-  const { gaps, surfaces } = corpus(refs);
-  const out = clusterGaps(gaps, { threshold: cfg.threshold, decisions: decided, surfaces });
-  const t = tokens();
-  for (const g of out.candidates) {
-    if (g.want) g.scaleFacts = assessValue(readScale(t, g.want.scale), g.want.median);
-  }
-  return out;
-}
-
-function indexText(refs, cfg, decided) {
-  const valid = refs.filter((r) => judgeRef(r).pass);
-  const rows = valid.map((r) => ({
-    id: r.id,
-    meta: r.meta.value,
-    gapIds: [...new Set(r.gaps.value.map((g) => g.id))],
-    card: r.card.text,
-  }));
-  return renderIndex(rows, clusters(valid, cfg, decided), { threshold: cfg.threshold });
-}
+};
+const config = () => wrap(() => readConfig(ROOT));
+const tokens = () => wrap(() => readTokens(ROOT));
+const loadRefs = () => load(ROOT);
+const decisions = () => wrap(() => readDecisions(ROOT));
+const clusters = (refs, cfg, decided) =>
+  clustersFor(refs, { threshold: cfg.threshold, decisions: decided, tokens: tokens() });
 
 function readProposals() {
   const dir = at(PATHS.proposals);
@@ -263,10 +214,13 @@ function check() {
       for (const x of problems) line(`    ${x}`);
     }
   }
-  const committed = existsSync(at(PATHS.index)) ? readFileSync(at(PATHS.index), 'utf8') : null;
-  if (committed !== indexText(refs, cfg, decided)) {
+  const fresh = spawnSync(process.execPath, ['scripts/build-refs-index.mjs', '--check'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+  });
+  if (fresh.status !== 0) {
     failed = true;
-    line(`FAIL index: ${PATHS.index} is stale; run pnpm eval:refs -- --index --write`);
+    line(`FAIL index: ${PATHS.index} is stale; run pnpm refs:index`);
   }
   line(
     failed
@@ -314,7 +268,7 @@ function scaffold(values, flags) {
 }
 
 function vocab() {
-  const seeded = readJsonFile(PATHS.vocab, { ids: [] }).ids ?? [];
+  const seeded = wrap(() => readJsonFile(ROOT, PATHS.vocab, { ids: [] })).ids ?? [];
   const { refs } = loadRefs();
   const { gaps } = corpus(refs);
   const counts = new Map();
@@ -386,18 +340,6 @@ function scale(values) {
 function blast(values) {
   if (!values[0]) fail('--blast needs a token path, e.g. --blast primitive.space.32');
   console.log(JSON.stringify(findUsages(ROOT, tokens(), values[0]), null, 2));
-}
-
-function index(flags) {
-  const cfg = config();
-  const { refs } = loadRefs();
-  const d = decisions();
-  if (!d.ok) fail(`${PATHS.decisions} is invalid: ${d.problems[0]}`);
-  const text = indexText(refs, cfg, d.decisions);
-  if (flags.write) {
-    writeFileSync(at(PATHS.index), text);
-    console.log(`wrote ${PATHS.index}`);
-  } else process.stdout.write(text);
 }
 
 function mergeDecisions(values) {
@@ -658,9 +600,6 @@ switch (o.mode) {
     break;
   case '--blast':
     blast(o.values);
-    break;
-  case '--index':
-    index(o.flags);
     break;
   case '--merge-decisions':
     mergeDecisions(o.values);
