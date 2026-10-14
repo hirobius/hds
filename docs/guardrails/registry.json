@@ -1022,6 +1022,17 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "supportsJson": true
+    },
+    {
+      "id": "check-skill-content",
+      "description": "Scans every installed skill under .claude/skills for prompt injection, pipe-to-shell installs, secret exfiltration and hidden unicode (byte-identical copy of hirobius/ops scripts/check-skill-content.mjs). skills-lock.json proves the text is unchanged; this proves it is not hostile. Reviewed false positives live in docs/guardrails/skill-content-allowlist.json keyed on the exact text, so an edit re-fails. Runs in pretest. Fixtures: fixtures/check-skill-content/{passing,violating}.example.d/ (FIXTURE_DIR mini-root).",
+      "severity": "error",
+      "gateScript": "scripts/check-skill-content.mjs",
+      "fixturePath": "fixtures/check-skill-content",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
     }
   ]
 }
