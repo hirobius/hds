@@ -1,11 +1,7 @@
+Shared harness + skills tooling synced from hirobius/ops: hds now has the drift check, skills-lock check and installer, with its shared guardrail scripts pinned byte-identical.
 Design explorations phase 0 (hds#628) integrated: spec set and gates (six briefs, invented fixtures, plugin-lint, axe, PII, gap aggregator) on the consistency harness; soft-demo and accent-pair-demo demo tenants; board and index generators (board reads the harness reports directory with --shots and hides a direction that failed its gates); the 21st MCP wired read-only. A dummy run (standing A, and B under soft-demo) passes every gate and renders a board.
-
 @a11y JSDoc tags (hds#520 slice 0): owner/testId on a11yRules, reaches component-api.json, MCP get_component and the docs Accessibility fold; scripts/check-a11y-contracts.mjs registered at severity warn (pre-commit, lists every gap, exits 0) until the family backfills land.
-
 Family A of the hds#520 a11y backfill (overlays, listboxes, announcements): @a11y tags on 12 components, overlay-a11y.contract.test.tsx, Combobox result-count live region.
-
 @a11y backfill, family B (hds#520): Checkbox, Radio, Toggle, Slider, SegmentedControl, Tag, Input, Textarea, Form, FormField, FormFieldShell and FormActions carry @a11y tags, each owner:component rule proved by an a11y:<id> test (tests/primitive-contracts/form-controls.contract.test.tsx and the colocated tests). Code fixes found by the tests: Slider valueText and label association, compact SegmentedControl 24px hit area.
-
 @a11y family C (hds#520): contracts and contract tests for Button, InlineLink, Breadcrumb, Pagination, Tabs, Disclosure, Card, AssetImg, CodeBlock, InlineCode; fixes for Pagination focus after the focused button disables, clickable non-expandable AssetImg keyboard access, copy-status announcements in CodeBlock and InlineCode, and a 24px Disclosure trigger.
-
 @a11y flip (hds#520): the three family branches merged with zero gaps over 31 interactive roots; check-a11y-contracts is severity error and pre-commit runs it with --enforce; W2 no longer warns on a shared gate: id; the a11yDefaults entries replaced by tags are gone from enrich-manifest. Review tightened the Pagination focus-kept, SegmentedControl hit-area and Toast focus-pause tests and fixed the family C upgrade note.

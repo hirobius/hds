@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
   "precommitStructureHash": "92571c87f415927db488422dc69ac4fd2a7de71e8949f473ed455a083d8b7876",
-  "precommitStructureHashUpdatedAt": "2026-10-14T02:50:55.884Z",
+  "precommitStructureHashUpdatedAt": "2026-10-14T03:25:47.055Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -996,6 +996,28 @@
       "severity": "error",
       "gateScript": "scripts/check-upgrade-css.mjs",
       "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-guardrail-drift",
+      "description": "Verifies the shared guardrail harness and skills tooling scripts this repo vendors from hirobius/ops match the sha256 pins in docs/guardrails/shared-manifest.json (a consumer subset of ops's canonical manifest, role \"consumer\": --write refuses here). Fails on drift or a missing file so a fix to a shared script cannot silently fail to reach this repo. Runs in pretest, so pre-push and CI (pnpm test) both fire it. Fixtures: fixtures/check-guardrail-drift/{passing,violating}.example.json (FIXTURE_FILE substitutes the manifest).",
+      "severity": "error",
+      "gateScript": "scripts/check-guardrail-drift.mjs",
+      "fixturePath": "fixtures/check-guardrail-drift",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-skills-lock",
+      "description": "Verifies every skill pinned in skills-lock.json is installed under .claude/skills/<id>/ and hash-matches the lock (ported from hirobius/ops, pinned in shared-manifest.json). Read-only, no network; run scripts/install-skills.mjs (pnpm skills:install) to fetch a missing or stale skill. Runs in pretest, so pre-push and CI (pnpm test) both fire it. Fixtures: fixtures/check-skills-lock/{passing,violating}.example.json (FIXTURE_FILE substitutes the lock; skills are read from beside it).",
+      "severity": "error",
+      "gateScript": "scripts/check-skills-lock.mjs",
+      "fixturePath": "fixtures/check-skills-lock",
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pnpm-meta",

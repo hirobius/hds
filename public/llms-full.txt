@@ -979,7 +979,7 @@ Renders a `data-hds` scope wrapper that carries the four theming dials as root a
 Icon — semantic icon wrapper for Lucide icons.
   - aria-hidden: boolean | "true" | "false" = true
   - className: string
-  - color: string = currentColor
+  - color: IconColor = currentColor
   - icon: LucideIcon
   - size: IconSize = small
   - style: CSSProperties

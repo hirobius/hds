@@ -20,7 +20,7 @@ import { CircleCheck, TriangleAlert, CircleX, Info, type LucideIcon } from 'luci
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import { Icon } from './icon';
+import { Icon, type IconColor } from './icon';
 
 type AlertTone = 'success' | 'danger' | 'warning' | 'info';
 
@@ -58,7 +58,7 @@ export interface AlertProps {
   children: React.ReactNode;
 }
 
-const TONE_CONFIG: Record<AlertTone, { icon: LucideIcon; colorVar: string }> = {
+const TONE_CONFIG: Record<AlertTone, { icon: LucideIcon; colorVar: IconColor }> = {
   success: { icon: CircleCheck, colorVar: 'var(--semantic-color-feedback-success)' },
   danger: { icon: CircleX, colorVar: 'var(--semantic-color-feedback-error)' },
   warning: { icon: TriangleAlert, colorVar: 'var(--semantic-color-feedback-warning)' },
