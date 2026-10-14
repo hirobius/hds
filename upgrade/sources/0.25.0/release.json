@@ -1,0 +1,62 @@
+{
+  "$comment": "Frozen inputs of the 0.25.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.25.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.25.0",
+  "previous": "0.24.1",
+  "date": "2026-10-13",
+  "summary": "1 change to make by hand (1 breaking), 10 that look different and 6 deprecations.",
+  "backfilled": false,
+  "notes": {
+    "button-badge-state-tokens": {
+      "needle": "75ff831: Button and Badge now render the",
+      "source": "CHANGELOG.md:24"
+    },
+    "dark-raised-surface-and-inline-code-token": {
+      "needle": "af782c3: In dark mode a raised surface (Card,",
+      "source": "CHANGELOG.md:25"
+    },
+    "deprecate-card-metric": {
+      "needle": "5baf951: Deprecated, not removed: `Card.Metric`,",
+      "source": "CHANGELOG.md:26"
+    },
+    "destructive-section-callout": {
+      "needle": "0946fac: DestructiveSection is now a danger",
+      "source": "CHANGELOG.md:27"
+    },
+    "empty-state-action": {
+      "needle": "645cf08: EmptyState takes an optional `action`",
+      "source": "CHANGELOG.md:19"
+    },
+    "kbd-raised-key": {
+      "needle": "8cdc601: Kbd now looks like a raised key:",
+      "source": "CHANGELOG.md:28"
+    },
+    "llms-txt-index": {
+      "needle": "acfb6a5: `llms.txt` is now a short index",
+      "source": "CHANGELOG.md:29"
+    },
+    "no-all-caps": {
+      "needle": "26a103b: The design system never produces",
+      "source": "CHANGELOG.md:20"
+    },
+    "no-consumer-name-in-types": {
+      "needle": "d0100ad: The JSDoc in the package root and",
+      "source": "CHANGELOG.md:30"
+    },
+    "slider-touch-target": {
+      "needle": "dd1c8c9: Slider's drag area is now 44px tall",
+      "source": "CHANGELOG.md:31"
+    },
+    "statustile-into-card": {
+      "needle": "997c2b6: Card gains a row slot for a titled",
+      "source": "CHANGELOG.md:32"
+    },
+    "token-consolidation": {
+      "needle": "3a73fdf: Token consolidation, no value changes.",
+      "source": "CHANGELOG.md:33"
+    },
+    "upgrade-semver-order": {
+      "needle": "ecc3c10: The upgrade command and the upgrade",
+      "source": "CHANGELOG.md:34"
+    }
+  }
+}

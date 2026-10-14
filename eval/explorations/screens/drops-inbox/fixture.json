@@ -1,0 +1,1219 @@
+{
+  "$comment": "INVENTED data for design explorations (hds#628). Fictional businesses, people and towns; phone numbers are 555-01xx and addresses are example.com. Nothing here is a real lead, client or person.",
+  "screen": "drops-inbox",
+  "asOf": "2026-10-13T09:00:00Z",
+  "active": "new",
+  "selectedId": "drop_1040",
+  "tabs": { "new": 5, "sorted": 3, "done": 3 },
+  "drops": [
+    {
+      "id": "drop_1040",
+      "text": "Preview for the Brindle junk removal site shows the old phone number in the footer.",
+      "attachments": [{ "name": "footer-bug.png", "kind": "image", "sizeKb": 412 }],
+      "status": "new",
+      "route": null,
+      "suggestion": {
+        "route": "github-issue",
+        "target": "harborlane/site-factory",
+        "reason": "A reproducible bug in a shared template.",
+        "source": "claude-routine"
+      },
+      "ageLabel": "2h",
+      "createdAt": "2026-10-13T07:00:00Z",
+      "title": "Preview for the Brindle junk removal site shows the old phone number i",
+      "history": [
+        {
+          "at": "2026-10-13T07:00:00Z",
+          "actor": "you",
+          "event": "created",
+          "note": "Saved from the phone"
+        },
+        {
+          "at": "2026-10-13T07:05:00Z",
+          "actor": "claude-routine",
+          "event": "suggested",
+          "note": "github-issue in harborlane/site-factory: a reproducible bug in a shared template"
+        }
+      ]
+    },
+    {
+      "id": "drop_1041",
+      "text": "Photo of the whiteboard from the Tuesday call, three pricing options circled.",
+      "attachments": [{ "name": "whiteboard-tuesday.jpg", "kind": "image", "sizeKb": 1840 }],
+      "status": "new",
+      "route": null,
+      "suggestion": {
+        "route": "client-note",
+        "target": "Brightwater Dental Studio",
+        "reason": "Pricing options discussed on a client call.",
+        "source": "claude-routine"
+      },
+      "ageLabel": "38m",
+      "createdAt": "2026-10-13T08:22:00Z",
+      "title": "Photo of the whiteboard from the Tuesday call, three pricing options c",
+      "history": [
+        {
+          "at": "2026-10-13T08:22:00Z",
+          "actor": "you",
+          "event": "created",
+          "note": "Saved with 1 photo"
+        },
+        {
+          "at": "2026-10-13T08:30:00Z",
+          "actor": "claude-routine",
+          "event": "suggested",
+          "note": "client-note for Brightwater Dental Studio"
+        }
+      ]
+    },
+    {
+      "id": "drop_1042",
+      "text": "The standing page should lead with what is on fire and say nothing else when all is clear.",
+      "attachments": [],
+      "status": "new",
+      "route": null,
+      "suggestion": {
+        "route": "idea",
+        "target": null,
+        "reason": "A product opinion, not a task: park it with the other standing ideas.",
+        "source": "claude-routine"
+      },
+      "ageLabel": "4m",
+      "createdAt": "2026-10-13T08:56:00Z",
+      "title": "The standing page should lead with what is on fire and say nothing els",
+      "history": [
+        { "at": "2026-10-13T08:56:00Z", "actor": "you", "event": "created", "note": "Saved" }
+      ]
+    },
+    {
+      "id": "drop_1036",
+      "text": "Ask the accountant whether the retainer deposit counts as revenue this quarter.",
+      "attachments": [],
+      "status": "new",
+      "route": null,
+      "suggestion": null,
+      "ageLabel": "3d",
+      "createdAt": "2026-10-10T09:00:00Z",
+      "title": "Ask the accountant whether the retainer deposit counts as revenue this",
+      "history": [
+        { "at": "2026-10-10T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" }
+      ]
+    },
+    {
+      "id": "drop_1035",
+      "text": "Screenshot of the competitor pricing page, three tiers, annual toggle.",
+      "attachments": [{ "name": "pricing-page.png", "kind": "image", "sizeKb": 540 }],
+      "status": "new",
+      "route": null,
+      "suggestion": {
+        "route": "idea",
+        "target": null,
+        "reason": "Reference material, no action.",
+        "source": "claude-routine"
+      },
+      "ageLabel": "4d",
+      "createdAt": "2026-10-09T09:00:00Z",
+      "title": "Screenshot of the competitor pricing page, three tiers, annual toggle",
+      "history": [
+        {
+          "at": "2026-10-09T09:00:00Z",
+          "actor": "you",
+          "event": "created",
+          "note": "Saved with 1 photo"
+        },
+        {
+          "at": "2026-10-09T09:20:00Z",
+          "actor": "claude-routine",
+          "event": "suggested",
+          "note": "idea"
+        }
+      ]
+    },
+    {
+      "id": "drop_1039",
+      "text": "Ask the partner to try the call outcome chips on a real phone before Friday.",
+      "attachments": [],
+      "status": "sorted",
+      "route": { "kind": "github-issue", "target": "harborlane/ops#614" },
+      "suggestion": null,
+      "ageLabel": "5h",
+      "createdAt": "2026-10-13T04:00:00Z",
+      "title": "Ask the partner to try the call outcome chips on a real phone before F",
+      "history": [
+        { "at": "2026-10-13T04:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+        {
+          "at": "2026-10-13T04:10:00Z",
+          "actor": "you",
+          "event": "routed",
+          "note": "GitHub issue harborlane/ops#614"
+        }
+      ]
+    },
+    {
+      "id": "drop_1038",
+      "text": "Competitor teardown: the quick-capture app with the big plus button.",
+      "attachments": [
+        { "name": "capture-app-notes.pdf", "kind": "file", "sizeKb": 920 },
+        { "name": "screenshot-1.png", "kind": "image", "sizeKb": 640 }
+      ],
+      "status": "sorted",
+      "route": { "kind": "idea", "target": null },
+      "suggestion": null,
+      "ageLabel": "1d",
+      "createdAt": "2026-10-12T09:00:00Z",
+      "title": "Competitor teardown",
+      "history": [
+        {
+          "at": "2026-10-12T09:00:00Z",
+          "actor": "you",
+          "event": "created",
+          "note": "Saved with 2 files"
+        },
+        {
+          "at": "2026-10-12T09:45:00Z",
+          "actor": "claude-routine",
+          "event": "suggested",
+          "note": "idea"
+        },
+        { "at": "2026-10-12T10:00:00Z", "actor": "you", "event": "confirmed", "note": "Idea" }
+      ]
+    },
+    {
+      "id": "drop_1034",
+      "text": "Tell the partner the new pitch order: due follow-ups first.",
+      "attachments": [],
+      "status": "sorted",
+      "route": { "kind": "client-note", "target": "Partner onboarding" },
+      "suggestion": null,
+      "ageLabel": "5d",
+      "createdAt": "2026-10-08T09:00:00Z",
+      "title": "Tell the partner the new pitch order",
+      "history": [
+        { "at": "2026-10-08T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+        {
+          "at": "2026-10-08T09:05:00Z",
+          "actor": "you",
+          "event": "routed",
+          "note": "Client note: Partner onboarding"
+        }
+      ]
+    },
+    {
+      "id": "drop_1033",
+      "text": "Fix the footer year in the junk removal preset.",
+      "attachments": [],
+      "status": "done",
+      "route": { "kind": "github-issue", "target": "harborlane/site-factory#91" },
+      "suggestion": null,
+      "ageLabel": "6d",
+      "createdAt": "2026-10-07T09:00:00Z",
+      "title": "Fix the footer year in the junk removal preset",
+      "history": [
+        { "at": "2026-10-07T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+        {
+          "at": "2026-10-07T09:02:00Z",
+          "actor": "you",
+          "event": "routed",
+          "note": "GitHub issue harborlane/site-factory#91"
+        },
+        {
+          "at": "2026-10-12T05:00:00Z",
+          "actor": "ralph",
+          "event": "done",
+          "note": "Closed by harborlane/site-factory#92"
+        }
+      ]
+    },
+    {
+      "id": "drop_1032",
+      "text": "Old idea: a weekly digest email of what shipped.",
+      "attachments": [],
+      "status": "done",
+      "route": { "kind": "idea", "target": null },
+      "suggestion": null,
+      "ageLabel": "8d",
+      "createdAt": "2026-10-05T09:00:00Z",
+      "title": "Old idea",
+      "history": [
+        { "at": "2026-10-05T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+        { "at": "2026-10-05T09:10:00Z", "actor": "you", "event": "routed", "note": "Idea" },
+        {
+          "at": "2026-10-06T09:00:00Z",
+          "actor": "you",
+          "event": "done",
+          "note": "Folded into the standing page"
+        }
+      ]
+    },
+    {
+      "id": "drop_1037",
+      "text": "Duplicate of the standing bands note.",
+      "attachments": [],
+      "status": "discarded",
+      "route": { "kind": "discard", "target": null },
+      "suggestion": null,
+      "ageLabel": "2d",
+      "createdAt": "2026-10-11T09:00:00Z",
+      "title": "Duplicate of the standing bands note",
+      "history": [
+        { "at": "2026-10-11T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+        { "at": "2026-10-11T09:01:00Z", "actor": "you", "event": "discarded", "note": "Duplicate" }
+      ]
+    }
+  ],
+  "states": {
+    "empty": {
+      "active": "new",
+      "selectedId": null,
+      "tabs": { "new": 0, "sorted": 4, "done": 3 },
+      "drops": [
+        {
+          "id": "drop_1039",
+          "text": "Ask the partner to try the call outcome chips on a real phone before Friday.",
+          "attachments": [],
+          "status": "sorted",
+          "route": { "kind": "github-issue", "target": "harborlane/ops#614" },
+          "suggestion": null,
+          "ageLabel": "5h",
+          "createdAt": "2026-10-13T04:00:00Z",
+          "title": "Ask the partner to try the call outcome chips on a real phone before F",
+          "history": [
+            { "at": "2026-10-13T04:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-13T04:10:00Z",
+              "actor": "you",
+              "event": "routed",
+              "note": "GitHub issue harborlane/ops#614"
+            }
+          ]
+        },
+        {
+          "id": "drop_1038",
+          "text": "Competitor teardown: the quick-capture app with the big plus button.",
+          "attachments": [
+            { "name": "capture-app-notes.pdf", "kind": "file", "sizeKb": 920 },
+            { "name": "screenshot-1.png", "kind": "image", "sizeKb": 640 }
+          ],
+          "status": "sorted",
+          "route": { "kind": "idea", "target": null },
+          "suggestion": null,
+          "ageLabel": "1d",
+          "createdAt": "2026-10-12T09:00:00Z",
+          "title": "Competitor teardown",
+          "history": [
+            {
+              "at": "2026-10-12T09:00:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved with 2 files"
+            },
+            {
+              "at": "2026-10-12T09:45:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "idea"
+            },
+            { "at": "2026-10-12T10:00:00Z", "actor": "you", "event": "confirmed", "note": "Idea" }
+          ]
+        },
+        {
+          "id": "drop_1034",
+          "text": "Tell the partner the new pitch order: due follow-ups first.",
+          "attachments": [],
+          "status": "sorted",
+          "route": { "kind": "client-note", "target": "Partner onboarding" },
+          "suggestion": null,
+          "ageLabel": "5d",
+          "createdAt": "2026-10-08T09:00:00Z",
+          "title": "Tell the partner the new pitch order",
+          "history": [
+            { "at": "2026-10-08T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-08T09:05:00Z",
+              "actor": "you",
+              "event": "routed",
+              "note": "Client note: Partner onboarding"
+            }
+          ]
+        },
+        {
+          "id": "drop_1033",
+          "text": "Fix the footer year in the junk removal preset.",
+          "attachments": [],
+          "status": "done",
+          "route": { "kind": "github-issue", "target": "harborlane/site-factory#91" },
+          "suggestion": null,
+          "ageLabel": "6d",
+          "createdAt": "2026-10-07T09:00:00Z",
+          "title": "Fix the footer year in the junk removal preset",
+          "history": [
+            { "at": "2026-10-07T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-07T09:02:00Z",
+              "actor": "you",
+              "event": "routed",
+              "note": "GitHub issue harborlane/site-factory#91"
+            },
+            {
+              "at": "2026-10-12T05:00:00Z",
+              "actor": "ralph",
+              "event": "done",
+              "note": "Closed by harborlane/site-factory#92"
+            }
+          ]
+        },
+        {
+          "id": "drop_1032",
+          "text": "Old idea: a weekly digest email of what shipped.",
+          "attachments": [],
+          "status": "done",
+          "route": { "kind": "idea", "target": null },
+          "suggestion": null,
+          "ageLabel": "8d",
+          "createdAt": "2026-10-05T09:00:00Z",
+          "title": "Old idea",
+          "history": [
+            { "at": "2026-10-05T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            { "at": "2026-10-05T09:10:00Z", "actor": "you", "event": "routed", "note": "Idea" },
+            {
+              "at": "2026-10-06T09:00:00Z",
+              "actor": "you",
+              "event": "done",
+              "note": "Folded into the standing page"
+            }
+          ]
+        },
+        {
+          "id": "drop_1037",
+          "text": "Duplicate of the standing bands note.",
+          "attachments": [],
+          "status": "discarded",
+          "route": { "kind": "discard", "target": null },
+          "suggestion": null,
+          "ageLabel": "2d",
+          "createdAt": "2026-10-11T09:00:00Z",
+          "title": "Duplicate of the standing bands note",
+          "history": [
+            { "at": "2026-10-11T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-11T09:01:00Z",
+              "actor": "you",
+              "event": "discarded",
+              "note": "Duplicate"
+            }
+          ]
+        }
+      ]
+    },
+    "loading": {
+      "note": "No data. Render the list and the detail pane as they look before the first response."
+    },
+    "error": {
+      "active": "new",
+      "selectedId": "drop_1040",
+      "tabs": { "new": 5, "sorted": 3, "done": 3 },
+      "drops": [
+        {
+          "id": "drop_1040",
+          "text": "Preview for the Brindle junk removal site shows the old phone number in the footer.",
+          "attachments": [{ "name": "footer-bug.png", "kind": "image", "sizeKb": 412 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "github-issue",
+            "target": "harborlane/site-factory",
+            "reason": "A reproducible bug in a shared template.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "2h",
+          "createdAt": "2026-10-13T07:00:00Z",
+          "title": "Preview for the Brindle junk removal site shows the old phone number i",
+          "history": [
+            {
+              "at": "2026-10-13T07:00:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved from the phone"
+            },
+            {
+              "at": "2026-10-13T07:05:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "github-issue in harborlane/site-factory: a reproducible bug in a shared template"
+            }
+          ]
+        },
+        {
+          "id": "drop_1041",
+          "text": "Photo of the whiteboard from the Tuesday call, three pricing options circled.",
+          "attachments": [{ "name": "whiteboard-tuesday.jpg", "kind": "image", "sizeKb": 1840 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "client-note",
+            "target": "Brightwater Dental Studio",
+            "reason": "Pricing options discussed on a client call.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "38m",
+          "createdAt": "2026-10-13T08:22:00Z",
+          "title": "Photo of the whiteboard from the Tuesday call, three pricing options c",
+          "history": [
+            {
+              "at": "2026-10-13T08:22:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved with 1 photo"
+            },
+            {
+              "at": "2026-10-13T08:30:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "client-note for Brightwater Dental Studio"
+            }
+          ]
+        },
+        {
+          "id": "drop_1042",
+          "text": "The standing page should lead with what is on fire and say nothing else when all is clear.",
+          "attachments": [],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "idea",
+            "target": null,
+            "reason": "A product opinion, not a task: park it with the other standing ideas.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "4m",
+          "createdAt": "2026-10-13T08:56:00Z",
+          "title": "The standing page should lead with what is on fire and say nothing els",
+          "history": [
+            { "at": "2026-10-13T08:56:00Z", "actor": "you", "event": "created", "note": "Saved" }
+          ]
+        },
+        {
+          "id": "drop_1036",
+          "text": "Ask the accountant whether the retainer deposit counts as revenue this quarter.",
+          "attachments": [],
+          "status": "new",
+          "route": null,
+          "suggestion": null,
+          "ageLabel": "3d",
+          "createdAt": "2026-10-10T09:00:00Z",
+          "title": "Ask the accountant whether the retainer deposit counts as revenue this",
+          "history": [
+            { "at": "2026-10-10T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" }
+          ]
+        },
+        {
+          "id": "drop_1035",
+          "text": "Screenshot of the competitor pricing page, three tiers, annual toggle.",
+          "attachments": [{ "name": "pricing-page.png", "kind": "image", "sizeKb": 540 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "idea",
+            "target": null,
+            "reason": "Reference material, no action.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "4d",
+          "createdAt": "2026-10-09T09:00:00Z",
+          "title": "Screenshot of the competitor pricing page, three tiers, annual toggle",
+          "history": [
+            {
+              "at": "2026-10-09T09:00:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved with 1 photo"
+            },
+            {
+              "at": "2026-10-09T09:20:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "idea"
+            }
+          ]
+        },
+        {
+          "id": "drop_1039",
+          "text": "Ask the partner to try the call outcome chips on a real phone before Friday.",
+          "attachments": [],
+          "status": "sorted",
+          "route": { "kind": "github-issue", "target": "harborlane/ops#614" },
+          "suggestion": null,
+          "ageLabel": "5h",
+          "createdAt": "2026-10-13T04:00:00Z",
+          "title": "Ask the partner to try the call outcome chips on a real phone before F",
+          "history": [
+            { "at": "2026-10-13T04:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-13T04:10:00Z",
+              "actor": "you",
+              "event": "routed",
+              "note": "GitHub issue harborlane/ops#614"
+            }
+          ]
+        },
+        {
+          "id": "drop_1038",
+          "text": "Competitor teardown: the quick-capture app with the big plus button.",
+          "attachments": [
+            { "name": "capture-app-notes.pdf", "kind": "file", "sizeKb": 920 },
+            { "name": "screenshot-1.png", "kind": "image", "sizeKb": 640 }
+          ],
+          "status": "sorted",
+          "route": { "kind": "idea", "target": null },
+          "suggestion": null,
+          "ageLabel": "1d",
+          "createdAt": "2026-10-12T09:00:00Z",
+          "title": "Competitor teardown",
+          "history": [
+            {
+              "at": "2026-10-12T09:00:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved with 2 files"
+            },
+            {
+              "at": "2026-10-12T09:45:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "idea"
+            },
+            { "at": "2026-10-12T10:00:00Z", "actor": "you", "event": "confirmed", "note": "Idea" }
+          ]
+        },
+        {
+          "id": "drop_1034",
+          "text": "Tell the partner the new pitch order: due follow-ups first.",
+          "attachments": [],
+          "status": "sorted",
+          "route": { "kind": "client-note", "target": "Partner onboarding" },
+          "suggestion": null,
+          "ageLabel": "5d",
+          "createdAt": "2026-10-08T09:00:00Z",
+          "title": "Tell the partner the new pitch order",
+          "history": [
+            { "at": "2026-10-08T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-08T09:05:00Z",
+              "actor": "you",
+              "event": "routed",
+              "note": "Client note: Partner onboarding"
+            }
+          ]
+        },
+        {
+          "id": "drop_1033",
+          "text": "Fix the footer year in the junk removal preset.",
+          "attachments": [],
+          "status": "done",
+          "route": { "kind": "github-issue", "target": "harborlane/site-factory#91" },
+          "suggestion": null,
+          "ageLabel": "6d",
+          "createdAt": "2026-10-07T09:00:00Z",
+          "title": "Fix the footer year in the junk removal preset",
+          "history": [
+            { "at": "2026-10-07T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-07T09:02:00Z",
+              "actor": "you",
+              "event": "routed",
+              "note": "GitHub issue harborlane/site-factory#91"
+            },
+            {
+              "at": "2026-10-12T05:00:00Z",
+              "actor": "ralph",
+              "event": "done",
+              "note": "Closed by harborlane/site-factory#92"
+            }
+          ]
+        },
+        {
+          "id": "drop_1032",
+          "text": "Old idea: a weekly digest email of what shipped.",
+          "attachments": [],
+          "status": "done",
+          "route": { "kind": "idea", "target": null },
+          "suggestion": null,
+          "ageLabel": "8d",
+          "createdAt": "2026-10-05T09:00:00Z",
+          "title": "Old idea",
+          "history": [
+            { "at": "2026-10-05T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            { "at": "2026-10-05T09:10:00Z", "actor": "you", "event": "routed", "note": "Idea" },
+            {
+              "at": "2026-10-06T09:00:00Z",
+              "actor": "you",
+              "event": "done",
+              "note": "Folded into the standing page"
+            }
+          ]
+        },
+        {
+          "id": "drop_1037",
+          "text": "Duplicate of the standing bands note.",
+          "attachments": [],
+          "status": "discarded",
+          "route": { "kind": "discard", "target": null },
+          "suggestion": null,
+          "ageLabel": "2d",
+          "createdAt": "2026-10-11T09:00:00Z",
+          "title": "Duplicate of the standing bands note",
+          "history": [
+            { "at": "2026-10-11T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-11T09:01:00Z",
+              "actor": "you",
+              "event": "discarded",
+              "note": "Duplicate"
+            }
+          ]
+        }
+      ],
+      "actionError": "Could not route this drop: GitHub returned 422 (the label ralph-ready does not exist in harborlane/site-factory). Nothing changed; the suggestion is still waiting."
+    },
+    "longContent": {
+      "active": "new",
+      "selectedId": "drop_long",
+      "tabs": { "new": 31, "sorted": 12, "done": 48 },
+      "drops": [
+        {
+          "id": "drop_long",
+          "text": "Reconcile the quarterly retainer invoices for the three clients whose billing contacts changed after the spring migration, and confirm the new payment terms in writing before the next cycle opens. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+          "attachments": [
+            {
+              "name": "site-visit-photo-with-a-long-descriptive-name-1.jpeg",
+              "kind": "file",
+              "sizeKb": 700
+            },
+            {
+              "name": "site-visit-photo-with-a-long-descriptive-name-2.jpeg",
+              "kind": "image",
+              "sizeKb": 790
+            },
+            {
+              "name": "site-visit-photo-with-a-long-descriptive-name-3.jpeg",
+              "kind": "image",
+              "sizeKb": 880
+            },
+            {
+              "name": "site-visit-photo-with-a-long-descriptive-name-4.jpeg",
+              "kind": "file",
+              "sizeKb": 970
+            },
+            {
+              "name": "site-visit-photo-with-a-long-descriptive-name-5.jpeg",
+              "kind": "image",
+              "sizeKb": 1060
+            },
+            {
+              "name": "site-visit-photo-with-a-long-descriptive-name-6.jpeg",
+              "kind": "image",
+              "sizeKb": 1150
+            },
+            {
+              "name": "site-visit-photo-with-a-long-descriptive-name-7.jpeg",
+              "kind": "file",
+              "sizeKb": 1240
+            },
+            {
+              "name": "site-visit-photo-with-a-long-descriptive-name-8.jpeg",
+              "kind": "image",
+              "sizeKb": 1330
+            },
+            {
+              "name": "site-visit-photo-with-a-long-descriptive-name-9.jpeg",
+              "kind": "image",
+              "sizeKb": 1420
+            }
+          ],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "github-issue",
+            "target": "harborlane/a-repository-with-a-name-long-enough-to-wrap-in-the-confirm-button",
+            "reason": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "2h",
+          "createdAt": "2026-10-13T07:00:00Z",
+          "title": "Reconcile the quarterly retainer invoices for the three clients whose ",
+          "history": [
+            { "at": "2026-10-01T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-02T09:00:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is"
+            },
+            {
+              "at": "2026-10-03T09:00:00Z",
+              "actor": "you",
+              "event": "confirmed",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is rea"
+            },
+            {
+              "at": "2026-10-04T09:00:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready i"
+            },
+            {
+              "at": "2026-10-05T09:00:00Z",
+              "actor": "you",
+              "event": "confirmed",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in th"
+            },
+            {
+              "at": "2026-10-06T09:00:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the sh"
+            },
+            {
+              "at": "2026-10-07T09:00:00Z",
+              "actor": "you",
+              "event": "confirmed",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared"
+            },
+            {
+              "at": "2026-10-08T09:00:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared fol"
+            },
+            {
+              "at": "2026-10-09T09:00:00Z",
+              "actor": "you",
+              "event": "confirmed",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder "
+            },
+            {
+              "at": "2026-10-10T09:00:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and "
+            },
+            {
+              "at": "2026-10-11T09:00:00Z",
+              "actor": "you",
+              "event": "confirmed",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only"
+            },
+            {
+              "at": "2026-10-12T09:00:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only nee"
+            },
+            {
+              "at": "2026-10-13T09:00:00Z",
+              "actor": "you",
+              "event": "confirmed",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a"
+            },
+            {
+              "at": "2026-10-14T09:00:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a sen"
+            }
+          ]
+        },
+        {
+          "id": "drop_1040",
+          "text": "Preview for the Brindle junk removal site shows the old phone number in the footer.",
+          "attachments": [{ "name": "footer-bug.png", "kind": "image", "sizeKb": 412 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "github-issue",
+            "target": "harborlane/site-factory",
+            "reason": "A reproducible bug in a shared template.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "2h",
+          "createdAt": "2026-10-13T07:00:00Z",
+          "title": "Preview for the Brindle junk removal site shows the old phone number i",
+          "history": [
+            {
+              "at": "2026-10-13T07:00:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved from the phone"
+            },
+            {
+              "at": "2026-10-13T07:05:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "github-issue in harborlane/site-factory: a reproducible bug in a shared template"
+            }
+          ]
+        },
+        {
+          "id": "drop_1041",
+          "text": "Photo of the whiteboard from the Tuesday call, three pricing options circled.",
+          "attachments": [{ "name": "whiteboard-tuesday.jpg", "kind": "image", "sizeKb": 1840 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "client-note",
+            "target": "Brightwater Dental Studio",
+            "reason": "Pricing options discussed on a client call.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "38m",
+          "createdAt": "2026-10-13T08:22:00Z",
+          "title": "Photo of the whiteboard from the Tuesday call, three pricing options c",
+          "history": [
+            {
+              "at": "2026-10-13T08:22:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved with 1 photo"
+            },
+            {
+              "at": "2026-10-13T08:30:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "client-note for Brightwater Dental Studio"
+            }
+          ]
+        },
+        {
+          "id": "drop_1042",
+          "text": "The standing page should lead with what is on fire and say nothing else when all is clear.",
+          "attachments": [],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "idea",
+            "target": null,
+            "reason": "A product opinion, not a task: park it with the other standing ideas.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "4m",
+          "createdAt": "2026-10-13T08:56:00Z",
+          "title": "The standing page should lead with what is on fire and say nothing els",
+          "history": [
+            { "at": "2026-10-13T08:56:00Z", "actor": "you", "event": "created", "note": "Saved" }
+          ]
+        },
+        {
+          "id": "drop_1036",
+          "text": "Ask the accountant whether the retainer deposit counts as revenue this quarter.",
+          "attachments": [],
+          "status": "new",
+          "route": null,
+          "suggestion": null,
+          "ageLabel": "3d",
+          "createdAt": "2026-10-10T09:00:00Z",
+          "title": "Ask the accountant whether the retainer deposit counts as revenue this",
+          "history": [
+            { "at": "2026-10-10T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" }
+          ]
+        },
+        {
+          "id": "drop_1035",
+          "text": "Screenshot of the competitor pricing page, three tiers, annual toggle.",
+          "attachments": [{ "name": "pricing-page.png", "kind": "image", "sizeKb": 540 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "idea",
+            "target": null,
+            "reason": "Reference material, no action.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "4d",
+          "createdAt": "2026-10-09T09:00:00Z",
+          "title": "Screenshot of the competitor pricing page, three tiers, annual toggle",
+          "history": [
+            {
+              "at": "2026-10-09T09:00:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved with 1 photo"
+            },
+            {
+              "at": "2026-10-09T09:20:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "idea"
+            }
+          ]
+        }
+      ]
+    },
+    "tokenFailure": {
+      "active": "new",
+      "selectedId": "drop_1040",
+      "tabs": { "new": 5, "sorted": 3, "done": 3 },
+      "drops": [
+        {
+          "id": "drop_1040",
+          "text": "Preview for the Brindle junk removal site shows the old phone number in the footer.",
+          "attachments": [{ "name": "footer-bug.png", "kind": "image", "sizeKb": 412 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "github-issue",
+            "target": "harborlane/site-factory",
+            "reason": "A reproducible bug in a shared template.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "2h",
+          "createdAt": "2026-10-13T07:00:00Z",
+          "title": "Preview for the Brindle junk removal site shows the old phone number i",
+          "history": [
+            {
+              "at": "2026-10-13T07:00:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved from the phone"
+            },
+            {
+              "at": "2026-10-13T07:05:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "github-issue in harborlane/site-factory: a reproducible bug in a shared template"
+            }
+          ]
+        },
+        {
+          "id": "drop_1041",
+          "text": "Photo of the whiteboard from the Tuesday call, three pricing options circled.",
+          "attachments": [{ "name": "whiteboard-tuesday.jpg", "kind": "image", "sizeKb": 1840 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "client-note",
+            "target": "Brightwater Dental Studio",
+            "reason": "Pricing options discussed on a client call.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "38m",
+          "createdAt": "2026-10-13T08:22:00Z",
+          "title": "Photo of the whiteboard from the Tuesday call, three pricing options c",
+          "history": [
+            {
+              "at": "2026-10-13T08:22:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved with 1 photo"
+            },
+            {
+              "at": "2026-10-13T08:30:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "client-note for Brightwater Dental Studio"
+            }
+          ]
+        },
+        {
+          "id": "drop_1042",
+          "text": "The standing page should lead with what is on fire and say nothing else when all is clear.",
+          "attachments": [],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "idea",
+            "target": null,
+            "reason": "A product opinion, not a task: park it with the other standing ideas.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "4m",
+          "createdAt": "2026-10-13T08:56:00Z",
+          "title": "The standing page should lead with what is on fire and say nothing els",
+          "history": [
+            { "at": "2026-10-13T08:56:00Z", "actor": "you", "event": "created", "note": "Saved" }
+          ]
+        },
+        {
+          "id": "drop_1036",
+          "text": "Ask the accountant whether the retainer deposit counts as revenue this quarter.",
+          "attachments": [],
+          "status": "new",
+          "route": null,
+          "suggestion": null,
+          "ageLabel": "3d",
+          "createdAt": "2026-10-10T09:00:00Z",
+          "title": "Ask the accountant whether the retainer deposit counts as revenue this",
+          "history": [
+            { "at": "2026-10-10T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" }
+          ]
+        },
+        {
+          "id": "drop_1035",
+          "text": "Screenshot of the competitor pricing page, three tiers, annual toggle.",
+          "attachments": [{ "name": "pricing-page.png", "kind": "image", "sizeKb": 540 }],
+          "status": "new",
+          "route": null,
+          "suggestion": {
+            "route": "idea",
+            "target": null,
+            "reason": "Reference material, no action.",
+            "source": "claude-routine"
+          },
+          "ageLabel": "4d",
+          "createdAt": "2026-10-09T09:00:00Z",
+          "title": "Screenshot of the competitor pricing page, three tiers, annual toggle",
+          "history": [
+            {
+              "at": "2026-10-09T09:00:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved with 1 photo"
+            },
+            {
+              "at": "2026-10-09T09:20:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "idea"
+            }
+          ]
+        },
+        {
+          "id": "drop_1039",
+          "text": "Ask the partner to try the call outcome chips on a real phone before Friday.",
+          "attachments": [],
+          "status": "sorted",
+          "route": { "kind": "github-issue", "target": "harborlane/ops#614" },
+          "suggestion": null,
+          "ageLabel": "5h",
+          "createdAt": "2026-10-13T04:00:00Z",
+          "title": "Ask the partner to try the call outcome chips on a real phone before F",
+          "history": [
+            { "at": "2026-10-13T04:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-13T04:10:00Z",
+              "actor": "you",
+              "event": "routed",
+              "note": "GitHub issue harborlane/ops#614"
+            }
+          ]
+        },
+        {
+          "id": "drop_1038",
+          "text": "Competitor teardown: the quick-capture app with the big plus button.",
+          "attachments": [
+            { "name": "capture-app-notes.pdf", "kind": "file", "sizeKb": 920 },
+            { "name": "screenshot-1.png", "kind": "image", "sizeKb": 640 }
+          ],
+          "status": "sorted",
+          "route": { "kind": "idea", "target": null },
+          "suggestion": null,
+          "ageLabel": "1d",
+          "createdAt": "2026-10-12T09:00:00Z",
+          "title": "Competitor teardown",
+          "history": [
+            {
+              "at": "2026-10-12T09:00:00Z",
+              "actor": "you",
+              "event": "created",
+              "note": "Saved with 2 files"
+            },
+            {
+              "at": "2026-10-12T09:45:00Z",
+              "actor": "claude-routine",
+              "event": "suggested",
+              "note": "idea"
+            },
+            { "at": "2026-10-12T10:00:00Z", "actor": "you", "event": "confirmed", "note": "Idea" }
+          ]
+        },
+        {
+          "id": "drop_1034",
+          "text": "Tell the partner the new pitch order: due follow-ups first.",
+          "attachments": [],
+          "status": "sorted",
+          "route": { "kind": "client-note", "target": "Partner onboarding" },
+          "suggestion": null,
+          "ageLabel": "5d",
+          "createdAt": "2026-10-08T09:00:00Z",
+          "title": "Tell the partner the new pitch order",
+          "history": [
+            { "at": "2026-10-08T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-08T09:05:00Z",
+              "actor": "you",
+              "event": "routed",
+              "note": "Client note: Partner onboarding"
+            }
+          ]
+        },
+        {
+          "id": "drop_1033",
+          "text": "Fix the footer year in the junk removal preset.",
+          "attachments": [],
+          "status": "done",
+          "route": { "kind": "github-issue", "target": "harborlane/site-factory#91" },
+          "suggestion": null,
+          "ageLabel": "6d",
+          "createdAt": "2026-10-07T09:00:00Z",
+          "title": "Fix the footer year in the junk removal preset",
+          "history": [
+            { "at": "2026-10-07T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-07T09:02:00Z",
+              "actor": "you",
+              "event": "routed",
+              "note": "GitHub issue harborlane/site-factory#91"
+            },
+            {
+              "at": "2026-10-12T05:00:00Z",
+              "actor": "ralph",
+              "event": "done",
+              "note": "Closed by harborlane/site-factory#92"
+            }
+          ]
+        },
+        {
+          "id": "drop_1032",
+          "text": "Old idea: a weekly digest email of what shipped.",
+          "attachments": [],
+          "status": "done",
+          "route": { "kind": "idea", "target": null },
+          "suggestion": null,
+          "ageLabel": "8d",
+          "createdAt": "2026-10-05T09:00:00Z",
+          "title": "Old idea",
+          "history": [
+            { "at": "2026-10-05T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            { "at": "2026-10-05T09:10:00Z", "actor": "you", "event": "routed", "note": "Idea" },
+            {
+              "at": "2026-10-06T09:00:00Z",
+              "actor": "you",
+              "event": "done",
+              "note": "Folded into the standing page"
+            }
+          ]
+        },
+        {
+          "id": "drop_1037",
+          "text": "Duplicate of the standing bands note.",
+          "attachments": [],
+          "status": "discarded",
+          "route": { "kind": "discard", "target": null },
+          "suggestion": null,
+          "ageLabel": "2d",
+          "createdAt": "2026-10-11T09:00:00Z",
+          "title": "Duplicate of the standing bands note",
+          "history": [
+            { "at": "2026-10-11T09:00:00Z", "actor": "you", "event": "created", "note": "Saved" },
+            {
+              "at": "2026-10-11T09:01:00Z",
+              "actor": "you",
+              "event": "discarded",
+              "note": "Duplicate"
+            }
+          ]
+        }
+      ],
+      "setupError": "GITHUB_TOKEN is expired: rotate it in Vercel env vars (Production), then redeploy. Routing to a GitHub issue is off until then."
+    }
+  }
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "kind": "hex",
+    "file": "src/App.tsx",
+    "match": "#7c3aed",
+    "why": "A violet band title that the palette has no accent step for.",
+    "change": "token: add a supporting accent (a violet primitive) to the semantic tier"
+  },
+  {
+    "kind": "design-rule",
+    "rule": "DESIGN.md: no gradients",
+    "why": "A fade from the page surface into the card surface sets each band heading apart.",
+    "change": "rule: allow one token-driven gradient behind a section heading"
+  }
+]

@@ -12,17 +12,23 @@ import { openApp, serve } from './browser.mjs';
  * @param {import('playwright').Browser} browser
  * @param {string} root repository root (where axe-core is resolved from)
  * @param {{id:string, dir:string}} app a prepared app
+ * @param {{ viewports?: {key:string,width:number,height:number,theme:string}[], tenant?: string|null }} [opts]
+ *   Without `viewports`: 1280 wide, in AXE_THEMES (the consistency run). With them (the
+ *   explorations option): one scan per viewport, its rows labelled `<theme>@<width>`.
+ *   The rule set is the same either way.
  */
-export async function scanApp(browser, root, app) {
+export async function scanApp(browser, root, app, { viewports, tenant = null } = {}) {
   const axeSource = loadAxeSource(root);
-  const viewport = VIEWPORTS[0];
+  const plan = viewports
+    ? viewports.map((v) => ({ viewport: v, theme: v.theme, label: `${v.theme}@${v.width}` }))
+    : AXE_THEMES.map((theme) => ({ viewport: VIEWPORTS[0], theme, label: theme }));
   const site = await serve(path.join(app.dir, 'dist'));
   try {
     const rows = [];
-    for (const theme of AXE_THEMES) {
+    for (const { viewport, theme, label } of plan) {
       let context;
       try {
-        const opened = await openApp(browser, site.base, viewport, theme);
+        const opened = await openApp(browser, site.base, viewport, theme, tenant);
         context = opened.context;
         await opened.page.evaluate(axeSource);
         const result = await opened.page.evaluate(
@@ -33,9 +39,9 @@ export async function scanApp(browser, root, app) {
             }),
           AXE_TAGS,
         );
-        rows.push(axeScanRow(app.id, theme, result));
+        rows.push(axeScanRow(app.id, label, result));
       } catch (error) {
-        rows.push(axeScanRow(app.id, theme, { error }));
+        rows.push(axeScanRow(app.id, label, { error }));
       } finally {
         await context?.close();
       }
