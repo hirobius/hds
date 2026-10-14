@@ -195,3 +195,14 @@ export function buildEntry({
   };
   return { entry, report };
 }
+
+/**
+ * Thresholds for the release check (`--release`): the ledger's, except that
+ * every supplied app must build. The release check re-runs a frozen app set
+ * against the package under release, so an app that built before and fails
+ * now is a regression the package caused. The ledger is never changed.
+ */
+export function releaseThresholds(thresholds, appCount) {
+  if (appCount < 2) throw new Error('the release check needs at least two apps to compare');
+  return { ...thresholds, builds: { min: appCount, of: appCount } };
+}

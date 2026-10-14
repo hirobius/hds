@@ -749,6 +749,17 @@
       "firingChannel": "on-demand"
     },
     {
+      "id": "check-skills-lock",
+      "description": "Supply-chain gate for third-party agent skills (ported from hirobius/ops): every skill in skills-lock.json must carry a 40-character pinnedCommit, be installed under .claude/skills/<id>/, and hash-match the lock. Read-only, no network.",
+      "severity": "error",
+      "gateScript": "scripts/check-skills-lock.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "ci-pr",
+      "supportsJson": true
+    },
+    {
       "id": "check-source-canon",
       "description": "Source-side companion to validators/swiss-canon.mjs. The JSX validator runs on LLM-generated output; this scanner runs on hand-authored .tsx files.",
       "severity": "warn",

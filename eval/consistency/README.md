@@ -183,6 +183,17 @@ proxy, or `--offline`).
 `pnpm test` runs none of this: it imports only the pure modules and runs the
 orchestration with its stages replaced by fakes.
 
+## Release check
+
+`pnpm eval:consistency -- --release` re-runs the frozen app set that
+`release-apps.json` names against a fresh pack of the tree: every app must
+build, and every other ledger threshold must hold. Those apps already built and
+passed once, so a failure is a regression in the package, not in the agents'
+code. It never writes the ledger. `.github/workflows/consistency.yml` runs it
+on the changesets "Version Packages" PR (one per release) and on demand. When a
+run for a new model is recorded, point `release-apps.json` at the apps from it
+that built.
+
 ## Ledger
 
 `ledger.json` is append-only: a `thresholds` block and dated `entries`. Each
