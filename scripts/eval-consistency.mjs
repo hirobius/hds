@@ -21,7 +21,7 @@
  * `--gaps` ranks the gap logs, `--pii` checks fixture data. Their logic is in
  * scripts/lib/explorations/*.mjs.
  */
-import { existsSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { evaluate, formatCheck } from './lib/consistency/evaluate.mjs';
@@ -34,6 +34,7 @@ import { clientDenylist, loadDenylistFile, scanPaths } from './lib/explorations/
 import { listDirections, readDirection, readTenants } from './lib/explorations/direction.mjs';
 import { aggregateGaps, collectGapLogs } from './lib/explorations/gaps.mjs';
 import { runExplorations } from './lib/explorations/live.mjs';
+import { liveStages as sharedStages } from './lib/consistency/live-stages.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LEDGER = path.join(ROOT, 'eval/consistency/ledger.json');
@@ -215,44 +216,7 @@ function offline(dir) {
   process.exit(report.pass ? 0 : 1);
 }
 
-/**
- * The real stages (pack, prepare, build, render, axe), shared by every mode that
- * builds: the consistency run and the explorations option. `close()` always;
- * `cleanup()` only after a run that finished, so a failed one keeps its scratch directory.
- */
-async function liveStages(log) {
-  const [{ launch }, pack, { buildApp }, { renderApp }, { scanApp }] = await Promise.all([
-    import('./lib/consistency/browser.mjs'),
-    import('./lib/consistency/pack.mjs'),
-    import('./lib/consistency/build.mjs'),
-    import('./lib/consistency/render.mjs'),
-    import('./lib/consistency/axe-run.mjs'),
-  ]);
-  const scratch = pack.makeScratch();
-  const templateDir = path.join(ROOT, 'eval/consistency/template');
-  const packDir = path.join(ROOT, 'reports/consistency/pack');
-  let browser = null;
-  const getBrowser = async () => (browser ??= await launch());
-  log(`scratch directory ${scratch}`);
-  const stages = {
-    pack: async ({ skipBuild }) => pack.packLibrary({ root: ROOT, packDir, skipBuild }),
-    prepare: async (app, packed) => {
-      const r = pack.prepareApp({ templateDir, scratch, app, packed });
-      for (const f of r.ignored) log(`[${app.id}] ${f} ignored: the template owns it`);
-      return { dir: r.dir };
-    },
-    build: async (app) => buildApp(app.dir),
-    render: async (app, o) => renderApp(await getBrowser(), app.dir, o),
-    axe: async (app, o) => scanApp(await getBrowser(), ROOT, app, o),
-  };
-  return {
-    stages,
-    close: async () => {
-      await browser?.close();
-    },
-    cleanup: () => rmSync(scratch, { recursive: true, force: true }),
-  };
-}
+const liveStages = (log) => sharedStages({ root: ROOT, log });
 
 async function live(dir, opts) {
   const { root, apps } = loadApps(dir);

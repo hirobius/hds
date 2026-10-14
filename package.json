@@ -258,6 +258,7 @@
     "check:skills-lock": "node scripts/check-skills-lock.mjs",
     "check:status-claims": "node scripts/check-status-claims.mjs --check",
     "eval:consistency": "node scripts/eval-consistency.mjs",
+    "eval:refs": "node scripts/eval-refs.mjs",
     "explorations:board": "node scripts/explorations-board.mjs",
     "check:record-freshness": "node scripts/check-record-freshness.mjs",
     "check:tailwind": "pnpm lint --rule '{\"tailwindcss/no-custom-classname\":\"error\"}'",

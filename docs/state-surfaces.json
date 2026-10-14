@@ -370,6 +370,19 @@
       "by": "scripts/check-status-claims.mjs"
     },
     {
+      "path": "eval/refs/INDEX.md",
+      "describes": "The design refs index: every ref Adrian saved, its text card, fidelity and gaps, read by build agents instead of the images",
+      "kind": "generated",
+      "by": "scripts/eval-refs.mjs",
+      "check": "node scripts/eval-refs.mjs --check"
+    },
+    {
+      "path": "eval/refs/decisions.json",
+      "describes": "Append-only history of the design-refs review board: approved, rejected (with a reason) and deferred proposals",
+      "kind": "checked",
+      "by": "scripts/eval-refs.mjs"
+    },
+    {
       "path": "OPERATING_MAP.md",
       "describes": "Where each kind of information should go",
       "kind": "editorial",

@@ -1,0 +1,11 @@
+{
+  "$comment": "Design-refs pipeline settings (eval/refs/README.md). threshold: distinct refs a gap needs before it becomes a proposal. drive: the folder the nightly run reads. board: the private review board Artifact.",
+  "threshold": 3,
+  "drive": {
+    "folderName": "Design Refs",
+    "folderId": "1q--XAZ_hfv_M93r91ocBp-wQNUxCXfNh"
+  },
+  "board": {
+    "url": null
+  }
+}

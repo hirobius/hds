@@ -1,0 +1,100 @@
+{
+  "$comment": "Gap ids a ref's gaps.json may reuse, so the clustering counts one gap across refs. A seed, not a limit: a gap that is not here gets its own kebab-case id, and `pnpm eval:refs -- --vocab` lists every id already in use. Reuse before minting. A prediction is not a finding: log a gap only when the rebuild hit it.",
+  "ids": [
+    {
+      "id": "section-gap-xl",
+      "kind": "token",
+      "summary": "Space between page sections larger than the spacing scale's top step."
+    },
+    {
+      "id": "display-type-xl",
+      "kind": "token",
+      "summary": "Display or hero text larger than the top of the type ramp."
+    },
+    {
+      "id": "display-tracking-tight",
+      "kind": "token",
+      "summary": "Tighter (negative) letter spacing on large display text than the ramp allows."
+    },
+    {
+      "id": "radius-xl",
+      "kind": "token",
+      "summary": "Corner radius larger than the radius scale (cards or media at 16px and up)."
+    },
+    {
+      "id": "accent-secondary",
+      "kind": "token",
+      "summary": "A second, supporting accent hue beside the one accent."
+    },
+    {
+      "id": "surface-tint",
+      "kind": "token",
+      "summary": "A tinted (non-neutral) surface or panel fill."
+    },
+    {
+      "id": "stat-tile",
+      "kind": "pattern",
+      "summary": "A big-number tile: value, label, change or trend."
+    },
+    {
+      "id": "sparkline",
+      "kind": "component",
+      "summary": "A small inline trend chart beside a value or in a row."
+    },
+    {
+      "id": "media-card",
+      "kind": "pattern",
+      "summary": "A card led by a cover image or illustration."
+    },
+    {
+      "id": "hero-media",
+      "kind": "pattern",
+      "summary": "A full-bleed image or media band behind or beside a headline."
+    },
+    {
+      "id": "icon-tile",
+      "kind": "pattern",
+      "summary": "An icon set inside a filled square or circle as a visual anchor."
+    },
+    {
+      "id": "avatar-stack",
+      "kind": "component",
+      "summary": "Overlapping avatars with a +N count."
+    },
+    {
+      "id": "chip-filter-row",
+      "kind": "pattern",
+      "summary": "A scrolling row of filter chips above a list or grid."
+    },
+    {
+      "id": "bottom-tab-bar",
+      "kind": "pattern",
+      "summary": "A phone bottom navigation bar with icons and labels."
+    },
+    {
+      "id": "sticky-action-bar",
+      "kind": "pattern",
+      "summary": "A thumb-reachable bar of primary actions pinned to the bottom of a phone screen."
+    },
+    {
+      "id": "label-value-lockup",
+      "kind": "pattern",
+      "summary": "The label-value lockup (hirobius/hds#520), shared with the explorations gap ids."
+    },
+    {
+      "id": "dense-table",
+      "kind": "token",
+      "summary": "Table rows denser than the row size tokens allow."
+    },
+    {
+      "id": "gradient-surface",
+      "kind": "rule",
+      "summary": "A gradient fill, which DESIGN.md rules out."
+    },
+    {
+      "id": "glass-surface",
+      "kind": "rule",
+      "summary": "A frosted or translucent surface, which DESIGN.md rules out."
+    }
+  ]
+}
