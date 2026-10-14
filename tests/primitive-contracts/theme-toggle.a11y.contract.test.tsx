@@ -103,5 +103,25 @@ describe('ThemeToggle accessibility contract', () => {
     }
     const stop = reduced.find((body) => body.includes('.hds-theme-toggle')) ?? '';
     expect(stop).toMatch(/transition:\s*none/);
+    // Every part that has a transition in the base styles must be named in the reduced-motion
+    // block, so dropping `__rays` or `__core` from it fails here rather than animating silently.
+    const animated = new Set<string>();
+    for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+      if (!/transition:/.test(m[2])) continue;
+      for (const sel of m[1].match(/\.hds-theme-toggle(?:__[a-z]+)?(?![\w-])/g) ?? [])
+        animated.add(sel);
+    }
+    expect([...animated].sort()).toEqual(
+      expect.arrayContaining([
+        '.hds-theme-toggle',
+        '.hds-theme-toggle__core',
+        '.hds-theme-toggle__cut',
+        '.hds-theme-toggle__icon',
+        '.hds-theme-toggle__rays',
+      ]),
+    );
+    const stopped = new Set(stop.match(/\.hds-theme-toggle(?:__[a-z]+)?(?![\w-])/g) ?? []);
+    for (const sel of animated)
+      expect(stopped.has(sel), `${sel} stops under reduced motion`).toBe(true);
   });
 });

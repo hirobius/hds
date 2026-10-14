@@ -10,6 +10,8 @@ const MODE_STORAGE_KEY = 'hds-theme-mode'; // Written by ThemeToggle; read here 
 const THEME_STORAGE_KEY = 'hds-theme'; // Legacy binary key; kept for backward compat
 
 interface ThemeCtx {
+  /** False for the default context: no ThemeProvider above, so toggles do nothing. */
+  hasProvider: boolean;
   isDark: boolean;
   toggleDark: () => void;
   mode: ThemeMode;
@@ -20,6 +22,7 @@ interface ThemeCtx {
 }
 
 const ThemeContext = /* @__PURE__ */ createContext<ThemeCtx>({
+  hasProvider: false,
   isDark: true,
   toggleDark: () => {},
   mode: 'system',
@@ -138,7 +141,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext.Provider
-      value={{ isDark, toggleDark, mode, setMode, density, toggleDensity, setDensity }}
+      value={{
+        hasProvider: true,
+        isDark,
+        toggleDark,
+        mode,
+        setMode,
+        density,
+        toggleDensity,
+        setDensity,
+      }}
     >
       {children}
     </ThemeContext.Provider>

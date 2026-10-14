@@ -17,7 +17,8 @@
  *
  *  2. MISSING FOCUS — raw <button> or <a> JSX element without any focus class
  *     Catches un-wrapped interactive elements that bypass HDS components.
- *     HDS components (Button, Input) add hds-focus internally.
+ *     HDS components (Button, Input) add hds-focus internally, and the child
+ *     of `Card asChild` or `Button asChild` takes it from the parent.
  *
  * Usage:   pnpm check:focus
  * Exempt:  Add // audit-ok: <reason> to suppress a specific line
@@ -99,6 +100,16 @@ function checkOutlineNone(lines, filePath) {
   }
 }
 
+/** True when the nearest JSX opening tag above line `i` is `<Card|Button … asChild`. */
+function asChildParent(lines, i) {
+  for (let j = i - 1; j >= Math.max(0, i - 4); j--) {
+    const prev = lines[j].trim();
+    if (!prev) continue;
+    return /^<(Card|Button)\b[^>]*\basChild\b/.test(prev);
+  }
+  return false;
+}
+
 /**
  * Check 2 — raw <button> JSX element without focus class
  * Looks for JSX opening tags on a single line. Multi-line elements are
@@ -119,6 +130,10 @@ function checkRawInteractive(lines, filePath) {
 
       // Skip self-closing tags with no className (they're structural, e.g. <br>)
       if (window.match(/^[^>]*\/>/m)) continue;
+
+      // The child of `Card asChild` / `Button asChild`: the Slot merges the
+      // parent's hds-focus onto it, so the ring is there.
+      if (asChildParent(lines, i)) continue;
 
       if (!hasFocusIndicator(window)) {
         violations.push({

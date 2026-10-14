@@ -56,11 +56,13 @@ import {
   ThemeToggle,
   Text,
   Textarea,
+  Timeline,
+  TimelineItem,
   Toggle,
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
-import { Copy, Search, Star } from '@hirobius/design-system/icons';
+import { ArrowRight, CircleCheck, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
 import {
   AssetImg,
   CodeBlock,
@@ -351,6 +353,21 @@ function CardDemo() {
           <Card.RowTitle>Figma sync</Card.RowTitle>
           <Card.RowNote>Last run 2 hours ago</Card.RowNote>
         </Card.Row>
+      </Card>
+      {/* asChild: the whole card is one link, with the interactive hover. */}
+      <Card asChild padding="item">
+        <a href="#card">
+          <Stack direction="row" gap="tight" justify="space-between" align="center">
+            <Users size={18} aria-hidden="true" />
+            <ArrowRight size={14} aria-hidden="true" />
+          </Stack>
+          <Text variant="titleSm" as="span">
+            Leads
+          </Text>
+          <Text variant="ui" as="span" className="text-muted-foreground">
+            Find businesses and build sites
+          </Text>
+        </a>
       </Card>
     </Stack>
   );
@@ -654,6 +671,28 @@ function TextareaDemo() {
   );
 }
 
+function TimelineDemo() {
+  return (
+    <Timeline aria-label="Recent activity">
+      <TimelineItem
+        date={new Date(2026, 9, 12, 16, 40)}
+        title="Shipped hds 0.24"
+        icon={CircleCheck}
+        tone="success"
+      />
+      <TimelineItem date={new Date(2026, 9, 12, 9, 15)} title="Client portal deployed">
+        Preview checked on desktop and mobile, then promoted by the owner.
+      </TimelineItem>
+      <TimelineItem date={new Date(2026, 9, 11, 14, 5)} title="Invoice reminder sent" />
+      <TimelineItem
+        date={new Date(2026, 9, 11, 10, 30)}
+        title="Lead pipeline run finished"
+        tone="info"
+      />
+    </Timeline>
+  );
+}
+
 function ToggleDemo() {
   const [on, setOn] = useState(true);
   return <Toggle label="Dark mode" checked={on} onChange={setOn} />;
@@ -696,6 +735,7 @@ function PageHeaderDemo() {
       level={2}
       breadcrumb={<Breadcrumb items={[{ label: 'Clients', href: '#' }, { label: 'Acme Co' }]} />}
       title="Acme Co"
+      description="Brand refresh and the spring campaign site."
       status={<Badge tone="success">Active</Badge>}
       actions={
         <>
@@ -890,6 +930,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Tag: TagDemo,
   Text: TextDemo,
   Textarea: TextareaDemo,
+  Timeline: TimelineDemo,
   Toggle: ToggleDemo,
   Tooltip: TooltipDemo,
   VisuallyHidden: VisuallyHiddenDemo,

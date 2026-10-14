@@ -83,4 +83,27 @@ describe('ThemeToggle', () => {
     expect(ref.current).toBe(screen.getByRole('button'));
     expect(ref.current?.className).toContain('hds-extra');
   });
+
+  it('warns in dev when clicked with no provider and no props, and stays quiet otherwise', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { unmount } = render(<ThemeToggle />);
+    fireEvent.click(screen.getByRole('button'));
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(String(warn.mock.calls[0][0])).toMatch(/ThemeToggle.*ThemeProvider.*isDark.*onToggle/);
+    unmount();
+
+    warn.mockClear();
+    const controlled = render(<ThemeToggle isDark={false} onToggle={() => {}} />);
+    fireEvent.click(screen.getByRole('button'));
+    controlled.unmount();
+    mockOs(false);
+    render(
+      <ThemeProvider>
+        <ThemeToggle />
+      </ThemeProvider>,
+    );
+    fireEvent.click(screen.getByRole('button'));
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  });
 });

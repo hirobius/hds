@@ -77,6 +77,8 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
 - `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
+- `Timeline` — The timeline itself.
+- `TimelineItem` — One event on a Timeline.
 - `Timestamp` — Presents a date/time with a machine-readable `dateTime` for accessibility.
 
 ### Feedback

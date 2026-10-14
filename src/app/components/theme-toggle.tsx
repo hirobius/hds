@@ -25,6 +25,7 @@
 
 import * as React from 'react';
 import { cn } from '../../lib/utils';
+import { isDevelopment } from '../../lib/env';
 import { useTheme } from '../context/ThemeContext';
 
 /** Props for {@link ThemeToggle}. */
@@ -60,7 +61,17 @@ export const ThemeToggle = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, T
         aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
         data-theme-state={dark ? 'dark' : 'light'}
         className={cn('hds-theme-toggle hds-focus', className)}
-        onClick={onToggle ?? theme.toggleDark}
+        onClick={
+          onToggle ??
+          (() => {
+            if (!theme.hasProvider && isDevelopment()) {
+              console.warn(
+                '[ThemeToggle] clicked with no ThemeProvider above it and no isDark/onToggle props, so it cannot switch the theme. Wrap the app in <ThemeProvider> or pass isDark and onToggle.',
+              );
+            }
+            theme.toggleDark();
+          })
+        }
       >
         <svg
           className="hds-theme-toggle__icon"

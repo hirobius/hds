@@ -202,6 +202,7 @@ Tag: [core] Show an interactive filter or category chip that people can toggle. 
 Text: [core] Set any text on the type ramp, with the element chosen by `as`. Use instead: InlineLink, Kbd
 Textarea: [core] Collect multi-line free text such as a message, note or description. Use instead: Input
 ThemeToggle: A single header or menu control to switch between the light and dark theme. Use instead: SegmentedControl
+Timeline: Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
 Tooltip: [core] Name an icon-only control, or add a short hint that appears on hover and keyboard focus. Use instead: Popover, Text
@@ -345,7 +346,7 @@ import { Ellipsis } from '@hirobius/design-system/icons';
 
 Rule: icon-only actions (row menus, close, edit) use `Button iconOnly` with a `label` and an `Icon` in `iconLeft`; do not hand-roll a button with a glyph or text "...".
 
-Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Bell, Bookmark, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Info, Link, Lock, LogIn, LogOut, Mail, Menu, Minus, Pencil, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, X
+Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Bell, Bookmark, Briefcase, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Images, Info, Link, Lock, LogIn, LogOut, Mail, Menu, Minus, Pencil, Phone, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, Users, Wrench, X
 
 Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.
 
@@ -734,6 +735,7 @@ Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback f
 ### Card
 Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
   - as: ElementType<any, keyof IntrinsicElements>
+  - asChild: boolean = false
   - bordered: boolean = false
   - gap: "tight" | "normal" | "inset" | "spacious" | "px1" | "px2" | "px4" | "px6" | "px… = tight
   - noPadding: boolean = false
@@ -1080,6 +1082,7 @@ Page — standard page shell. Wraps page content in Container (width constraint)
 Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `…
   - actions: ReactNode
   - breadcrumb: ReactNode
+  - description: ReactNode
   - level: PageHeaderLevel = 1
   - status: ReactNode
   - title: ReactNode
@@ -1298,6 +1301,24 @@ One-button light/dark switch with a sun-to-moon morph.
   - className: string
   - isDark: boolean
   - onToggle: (() => void)
+
+### Timeline
+The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.
+  - aria-label: string
+  - children: ReactNode
+  - className: string
+  - locale: string
+  - order: "desc" | "asc" = desc
+
+### TimelineItem
+One event on a Timeline. Render it only as a child of Timeline.
+  - children: ReactNode
+  - date: string | number | Date
+  - defaultOpen: boolean
+  - icon: LucideIcon
+  - locale: string
+  - title: ReactNode
+  - tone: 'success' | 'danger' | 'warning' | 'info'
 
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.

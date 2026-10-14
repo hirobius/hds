@@ -179,3 +179,73 @@ describe('Card.Metric deprecation', () => {
     expect(screen.getByText('$3,500')).toBeTruthy();
   });
 });
+
+describe('Card asChild (a whole card that is one link)', () => {
+  it('renders the card as its child element, with no wrapper', () => {
+    const { container } = render(
+      <Card asChild>
+        <a href="/ops/leads">
+          <Card.Title>Leads</Card.Title>
+        </a>
+      </Card>,
+    );
+    const link = screen.getByRole('link', { name: 'Leads' });
+    expect(link.getAttribute('href')).toBe('/ops/leads');
+    // The link IS the card: the root carries the card surface, no div around it.
+    expect(container.firstElementChild).toBe(link);
+    expect(link.getAttribute('data-variant')).toBe('default');
+    expect(link.className).toContain('rounded-lg');
+  });
+
+  it('marks the card interactive: a focus ring and the hover lift, none under reduced motion', () => {
+    render(
+      <Card asChild>
+        <a href="/x">Go</a>
+      </Card>,
+    );
+    const link = screen.getByRole('link', { name: 'Go' });
+    expect(link.getAttribute('data-interactive')).toBe('true');
+    expect(link.className).toContain('hds-focus');
+    expect(link.className).toContain('hover:scale-102');
+    expect(link.className).toContain('motion-reduce:hover:scale-100');
+    // Tailwind 4 `scale-*` sets the `scale` property, so that is what must ease.
+    expect(link.className).toContain('transition-[scale,box-shadow]');
+  });
+
+  it('still tells its parts the card pads, so they are not inset twice', () => {
+    render(
+      <Card asChild>
+        <a href="/x">
+          <Card.Body>Body text</Card.Body>
+        </a>
+      </Card>,
+    );
+    expect(screen.getByText('Body text').className).not.toContain('p-6');
+  });
+
+  it('ignores selectable: a link is navigation, never a checkbox', () => {
+    const onSelectedChange = vi.fn();
+    render(
+      <Card asChild selectable selected onSelectedChange={onSelectedChange}>
+        <a href="/x">Go</a>
+      </Card>,
+    );
+    const link = screen.getByRole('link', { name: 'Go' });
+    expect(screen.queryByRole('checkbox')).toBeNull();
+    expect(link.hasAttribute('aria-checked')).toBe(false);
+    expect(link.hasAttribute('data-selected')).toBe(false);
+    expect(link.getAttribute('tabindex')).toBeNull();
+    expect(link.className).not.toContain('cursor-pointer');
+    fireEvent.click(link);
+    fireEvent.keyDown(link, { key: ' ' });
+    expect(onSelectedChange).not.toHaveBeenCalled();
+  });
+
+  it('keeps a plain Card non-interactive', () => {
+    const { container } = render(<Card>Plain</Card>);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root.tagName).toBe('DIV');
+    expect(root.hasAttribute('data-interactive')).toBe(false);
+    expect(root.className).not.toContain('hover:scale-102');
+  });
+});
