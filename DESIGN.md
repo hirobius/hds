@@ -154,7 +154,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->
 
-When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, and HDS tokens and rules always win.
+When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
