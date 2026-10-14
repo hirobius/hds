@@ -16,6 +16,7 @@ declare module 'react' {
     '--primitive-color-neutral-200'?: string | undefined;
     '--primitive-color-neutral-300'?: string | undefined;
     '--primitive-color-neutral-400'?: string | undefined;
+    '--primitive-color-neutral-450'?: string | undefined;
     '--primitive-color-neutral-500'?: string | undefined;
     '--primitive-color-neutral-600'?: string | undefined;
     '--primitive-color-neutral-700'?: string | undefined;
@@ -217,6 +218,7 @@ declare module 'react' {
     '--semantic-color-surface-sunken'?: string | undefined;
     '--semantic-color-content-primary'?: string | undefined;
     '--semantic-color-content-secondary'?: string | undefined;
+    '--semantic-color-content-tertiary'?: string | undefined;
     '--semantic-color-content-disabled'?: string | undefined;
     '--semantic-color-content-inverse'?: string | undefined;
     '--semantic-color-content-accent'?: string | undefined;
