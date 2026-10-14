@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.24.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.25.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,34 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.25.0
+
+Released 2026-10-13 (minor). 1 change to make by hand (1 breaking), 10 that look different and 6 deprecations.
+
+### Looks different
+
+- A disabled secondary button now draws a lighter border (border.subdued), so it reads as disabled; nothing to change unless you styled against the old darker border.
+- In dark mode, the subtle border is now neutral.700 (was neutral.850) so it shows on raised surfaces; check any hairline you matched to the old value.
+- In dark mode, the hover surface is now neutral.700 (was neutral.900) so hover reads on raised surfaces; check any hover colour you matched to the old value.
+- In dark mode, the muted surface is now neutral.800 (was neutral.900) so it stays lighter than raised; check any muted block you matched to the old value.
+- In dark mode, the overlay surface is now neutral.800 (was neutral.850) so it stays above raised; check any overlay colour you matched to the old value.
+- In dark mode, the pressed surface is now black (was neutral.950) so it reads darker than hover and apart from raised; check any pressed colour you matched to the old value.
+- In dark mode, the raised surface is now neutral.850 (was neutral.950) so cards read against the page; check any card colour you matched to the old value.
+- In dark mode, the sunken surface is now neutral.800 (was neutral.850) to keep the surface order; check any sunken colour you matched to the old value.
+- DestructiveSection now sits on the tinted danger background with a smaller bold title and an outlined button, and a new titleSm text style (16px bold) is available for small headings.
+- Kbd now has a 2px darker edge under it so it reads as a raised key; its size and layout are unchanged, so nothing to do unless you screenshot-test it.
+
+### Coming next
+
+- Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed. Removed in 1.0.0.
+- Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value). Removed in 1.0.0.
+- Each of these is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value): `MetricTile`, `MetricTiles` and `Stat`. Removed in 1.0.0.
+- StatusTile still works until 1.0.0; replace it with \<Card padding="item" className="border-0">\<Card.Row trailing={trailing}>\<Card.RowTitle>{title}\</Card.RowTitle> plus one \<Card.RowNote> per note, and drop tone, which StatusTile never painted. Removed in 1.0.0.
+
+### Do by hand
+
+- The CSS variable --primitive-typography-letterSpacing-caps and the tracking-caps class are gone because the system is sentence case, so delete them from your styles.
 
 ## 0.24.1
 
