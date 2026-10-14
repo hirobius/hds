@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-12T18:19:40.069Z",
+  "generated": "2026-10-14T04:07:35.216Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -45,6 +45,8 @@
     "AvatarGroup",
     "Badge",
     "Blockquote",
+    "Board",
+    "BoardColumn",
     "Box",
     "Breadcrumb",
     "Button",
@@ -406,6 +408,7 @@
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
+        "src/app/components/text.tsx",
         "src/app/components/toast.tsx"
       ],
       "tokenMapping": {
@@ -427,8 +430,27 @@
       ],
       "a11yRules": [
         {
-          "rule": "role=alert is set by the component — do not override",
-          "required": false
+          "rule": "Danger and warning use role=alert (assertive); info and success use role=status.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alert.tone-roles"
+        },
+        {
+          "rule": "A rendered alert reads its role, then its title and message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alert.read-order"
+        },
+        {
+          "rule": "An alert inserted after load is announced assertively.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alert.live-insert"
+        },
+        {
+          "rule": "Mount an Alert when the condition appears; one already on the page at load is read in order, not announced.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [
@@ -545,7 +567,9 @@
         "exportName": "CodeBlock",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/code-block.test.tsx"
+      ],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
         "Border stroke": "semantic.color.border.default",
@@ -596,7 +620,61 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "When its code overflows, the block is a focusable group named by its filename or language, so keyboard users can scroll long lines; short code adds no tab stop.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.scroll-region"
+        },
+        {
+          "rule": "The copy button is a named button of type button, and is renamed Copied once it has copied.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.copy-name"
+        },
+        {
+          "rule": "Copying is announced from a polite status region that is mounted before the change.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.copy-status"
+        },
+        {
+          "rule": "The collapsible toggle reports aria-expanded and aria-controls, works with Enter and Space, and a collapsed panel is removed from the document.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.expand-state"
+        },
+        {
+          "rule": "Collapsing while focus is inside the panel returns focus to the toggle.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.focus-return"
+        },
+        {
+          "rule": "The copy button and the toggle carry the shared focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.focus-ring"
+        },
+        {
+          "rule": "The copy button is at least 24px and lifts to the touch target on coarse pointers (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:code-block.target-size"
+        },
+        {
+          "rule": "The chevron and copy-button transitions use the productive motion token, which is zero under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Put the CodeBlock under a heading, or state what the sample shows in the text before it, since the scroll group is named only by its filename or language.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -702,6 +780,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/disclosure.test.tsx",
         "src/app/components/tabs.tsx"
       ],
       "tokenMapping": {
@@ -764,7 +843,61 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The trigger is a button whose aria-expanded follows the panel and whose aria-controls names it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.expanded-state"
+        },
+        {
+          "rule": "Enter and Space toggle it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.keyboard"
+        },
+        {
+          "rule": "A collapsed panel is removed from the document, so assistive technology cannot reach it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.hidden-collapsed"
+        },
+        {
+          "rule": "Collapsing while focus is inside the panel returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.focus-return"
+        },
+        {
+          "rule": "The trigger carries the shared focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.focus-ring"
+        },
+        {
+          "rule": "The trigger is at least 24px tall in every variant (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.target-size"
+        },
+        {
+          "rule": "The chevron is decorative and hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.chevron-hidden"
+        },
+        {
+          "rule": "The height and chevron animation take their duration from useHdsMotion, which is zero under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Put the Disclosure under a heading of the right level when it introduces a section, so the section stays in the outline.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "pattern",
@@ -825,9 +958,7 @@
         "exportName": "Divider",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/metadata-list.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {
         "Default stroke": "semantic.color.border.default",
         "Strong stroke": "semantic.color.border.strong",
@@ -1022,6 +1153,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/board.tsx",
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
@@ -1206,6 +1338,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/hds-tooltip.tsx",
+        "src/app/components/icon.test.tsx",
         "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
@@ -1235,7 +1368,7 @@
           "optional": true
         },
         "color": {
-          "type": "string",
+          "type": "IconColor",
           "default": "currentColor"
         },
         "icon": {
@@ -1268,9 +1401,6 @@
           "type": "boolean"
         },
         "className": {
-          "type": "string"
-        },
-        "color": {
           "type": "string"
         },
         "weight": {
@@ -1356,7 +1486,6 @@
       },
       "consumers": [
         "src/app/components/inline-code.test.tsx",
-        "src/app/components/metadata-list.tsx",
         "src/app/components/state-tokens.test.tsx"
       ],
       "tokenMapping": {
@@ -1397,7 +1526,37 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "With copyable, the copy button is a named button and is renamed Copied once it has copied.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-code.copy-name"
+        },
+        {
+          "rule": "Tab reaches the copy button and Enter and Space copy.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-code.keyboard"
+        },
+        {
+          "rule": "Copying is announced from a polite status region that is mounted before the change.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-code.copy-status"
+        },
+        {
+          "rule": "The copy button is the small Button, 32px, over the 24px floor (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-code.target-size"
+        },
+        {
+          "rule": "Pass a string child when copyable; the text copied is the child.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -1455,12 +1614,39 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Link text must be descriptive — avoid \"click here\" or \"read more\"",
-          "required": true
+          "rule": "Every href renders a real link (<a href>), so keyboard, middle-click and screen-reader link lists work.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.real-anchor"
         },
         {
-          "rule": "External links must signal new-tab behavior via aria-label or visually hidden text",
-          "required": false
+          "rule": "Tab reaches each link in document order.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.keyboard-reach"
+        },
+        {
+          "rule": "An external link opens a new tab and says so in text (visually hidden), and its icon is decorative.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.new-tab-notice"
+        },
+        {
+          "rule": "A focused link draws the shared focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.focus-ring"
+        },
+        {
+          "rule": "Links are underlined at rest, so they are not told apart from body text by colour alone (WCAG 1.4.1).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:inline-link.not-colour-only"
+        },
+        {
+          "rule": "Write link text that says where it goes, without relying on the surrounding sentence (WCAG 2.4.4).",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [],
@@ -1500,6 +1686,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox.tsx",
         "src/app/components/field.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
@@ -1562,7 +1749,12 @@
           "optional": true
         },
         "size": {
-          "type": "InputSize",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
           "default": "md"
         },
         "suffix": {
@@ -1649,6 +1841,14 @@
         "loading": {
           "type": "boolean"
         },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
         "textStyle": {
           "type": "enum",
           "values": [
@@ -1675,8 +1875,62 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Must have associated label via label prop or aria-labelledby",
-          "required": true
+          "rule": "The label prop renders a real label associated with the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.label"
+        },
+        {
+          "rule": "A prefix, suffix or icon stays out of the accessible name, so the label is the whole name.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.slots-name"
+        },
+        {
+          "rule": "The helper text is linked with aria-describedby only while it renders.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.helper-described"
+        },
+        {
+          "rule": "An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.error-wiring"
+        },
+        {
+          "rule": "A loading field stays focusable (read-only with aria-busy), so typing keeps focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.loading-focusable"
+        },
+        {
+          "rule": "The clear button is named, reachable by Tab, and returns focus to the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.clear-button"
+        },
+        {
+          "rule": "The clear button spans the field height and is 24px or wider (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.clear-target-size"
+        },
+        {
+          "rule": "A screen reader speaks the label, the invalid state and the error message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.sr-field"
+        },
+        {
+          "rule": "Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Set autoComplete on fields that collect the person's own details (WCAG 1.3.5).",
+          "required": false,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [
@@ -1872,12 +2126,45 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Must have accessible group label (aria-label or aria-labelledby on the container)",
-          "required": true
+          "rule": "The control is one Tab stop; arrow keys move focus between segments and select, like a native radio group.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.roving-focus"
         },
         {
-          "rule": "Selected option must be communicated via aria-pressed or aria-selected",
-          "required": true
+          "rule": "It is a radiogroup named by label or aria-label, and each segment is a radio with aria-checked.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.group-and-radio-roles"
+        },
+        {
+          "rule": "A screen reader speaks the group name and each radio with its state, position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.sr-group"
+        },
+        {
+          "rule": "Every segment carries the shared hds-focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.focus-ring"
+        },
+        {
+          "rule": "Each segment hit area is 24px or taller, including the compact size (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.target-size"
+        },
+        {
+          "rule": "The indicator slide goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Give the control a label or an aria-label so the group has a name.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [],
@@ -1921,6 +2208,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/board.tsx",
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
@@ -1978,7 +2266,36 @@
           "default": "column"
         },
         "gap": {
-          "type": "GapOption",
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "gap",
+            "medium",
+            "hairline",
+            "xs",
+            "stack",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ],
           "default": "tight"
         },
         "justify": {
@@ -2021,6 +2338,38 @@
           "values": [
             "row",
             "column"
+          ]
+        },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "gap",
+            "medium",
+            "hairline",
+            "xs",
+            "stack",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
           ]
         },
         "justify": {
@@ -2095,7 +2444,9 @@
         "sizing": "full"
       },
       "consumers": [
+        "src/app/components/board.tsx",
         "src/app/components/data-table-section.tsx",
+        "src/app/components/icon.test.tsx",
         "src/app/components/table.test.tsx",
         "src/app/data/manifest-types.ts"
       ],
@@ -2168,12 +2519,45 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Column headers must use <th> with scope=\"col\", row headers with scope=\"row\"",
-          "required": true
+          "rule": "The grid is exposed as a table with column headers.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.table-role"
         },
         {
-          "rule": "Table must have caption or aria-label describing its contents",
-          "required": false
+          "rule": "A sortable column header reports aria-sort none, ascending or descending.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.aria-sort"
+        },
+        {
+          "rule": "A screen reader reads the sorted column header with its sort direction.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.sorted-header"
+        },
+        {
+          "rule": "The sort control is a button named by the column label.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.sort-button-named"
+        },
+        {
+          "rule": "The sort button activates with Enter and Space.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.sort-keyboard"
+        },
+        {
+          "rule": "The scroll region is a named tab stop so keyboard users can scroll it (1.4.10).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:table.scroll-region-focusable"
+        },
+        {
+          "rule": "Name the table with a caption or aria-labelledby when more than one is on the screen.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [],
@@ -2205,7 +2589,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/tag.tsx",
-      "description": "Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps the visible surface compact. Colors (background, border-color, color) live in the pill's cva variants, painted through `group-hover`/`group-active` so the pill reacts to interaction on the shared outer button (converted off the former .hds-tag-btn/.hds-tag-pill theme.css rules for #60 — same behavior, now token-driven Tailwind classes). The `active` prop (aria-pressed selected state) is not one of the variant contract's four axes — it's expressed as the pill's `selected` cva variant, carrying the same rest → hover → pressed → focus-visible state matrix the contract expects, just keyed by selection instead of tone/size/density.",
+      "description": "Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visible surface compact. Colors (background, border-color, color) live in the pill's cva variants, painted through `group-hover`/`group-active` so the pill reacts to interaction on the shared outer button (converted off the former .hds-tag-btn/.hds-tag-pill theme.css rules for #60 — same behavior, now token-driven Tailwind classes). The `active` prop (aria-pressed selected state) is not one of the variant contract's four axes — it's expressed as the pill's `selected` cva variant, carrying the same rest → hover → pressed → focus-visible state matrix the contract expects, just keyed by selection instead of tone/size/density.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "figmaId": null,
       "preview": {
@@ -2266,12 +2650,45 @@
       ],
       "a11yRules": [
         {
-          "rule": "When used as interactive chip (onClick), must have role=\"button\" and keyboard activation",
-          "required": true
+          "rule": "Enter and Space activate the tag (it is always a native button).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.keyboard-activate"
         },
         {
-          "rule": "When used as status indicator (no onClick), role should be \"status\" or omitted",
-          "required": false
+          "rule": "The selected state is reported with aria-pressed.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.pressed-state"
+        },
+        {
+          "rule": "A screen reader speaks a toggle button with its name and pressed or not pressed.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.sr-toggle-button"
+        },
+        {
+          "rule": "A disabled tag is skipped by Tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.disabled-skipped"
+        },
+        {
+          "rule": "The tag carries the shared hds-focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.focus-ring"
+        },
+        {
+          "rule": "The pill is at least 24px tall and 48px wide (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.target-size"
+        },
+        {
+          "rule": "Name the tag by its text, or by an aria-label when the text is not enough; use Badge for a label that does nothing.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "variantAxes": [
@@ -2349,6 +2766,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/board.tsx",
         "src/app/components/card.tsx",
         "src/app/components/container.tsx",
         "src/app/components/dialog.tsx",
@@ -2387,7 +2805,14 @@
           "optional": true
         },
         "padding": {
-          "type": "PaddingOption",
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ],
           "default": "component"
         },
         "shadow": {
@@ -2413,6 +2838,16 @@
       "propConstraints": {
         "className": {
           "type": "string"
+        },
+        "padding": {
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ]
         },
         "shadow": {
           "type": "boolean"
@@ -2464,6 +2899,7 @@
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
+        "src/app/components/board.tsx",
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/card-progress.test.tsx",
@@ -2472,7 +2908,6 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/focus-visible.test.tsx",
         "src/app/components/grid.tsx",
-        "src/app/components/metadata-list.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/components/stat.tsx",
@@ -2500,7 +2935,31 @@
           "default": false
         },
         "gap": {
-          "type": "GapOption",
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ],
           "default": "tight"
         },
         "noPadding": {
@@ -2512,7 +2971,14 @@
           "optional": true
         },
         "padding": {
-          "type": "PaddingOption",
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ],
           "default": "component"
         },
         "selectable": {
@@ -2562,10 +3028,61 @@
       "allowedChildren": [
         "*"
       ],
-      "requiredProps": [
-        "children"
+      "requiredProps": [],
+      "a11yRules": [
+        {
+          "rule": "A selectable card is a focusable checkbox that reports aria-checked; a plain card is neither.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.selectable-role"
+        },
+        {
+          "rule": "Space toggles a focused selectable card and Enter does not.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.space-toggles"
+        },
+        {
+          "rule": "A key or click inside a control in the card is left to that control.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.nested-controls"
+        },
+        {
+          "rule": "Selection adds a 2px ring and aria-checked, not a colour change alone (WCAG 1.4.1).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.selection-not-colour-only"
+        },
+        {
+          "rule": "A selectable card carries the shared focus ring, apart from the selection ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.focus-ring"
+        },
+        {
+          "rule": "Card.Title is a heading (h3) and takes its level from as.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.title-heading"
+        },
+        {
+          "rule": "Card.Progress is a progressbar with a name (label, else Progress) and its value.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:card.progress-name"
+        },
+        {
+          "rule": "Give a selectable Card a name from its content or an aria-label, and keep controls nested in it out of its name.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Set Card.Title's heading level with as so it fits the page outline.",
+          "required": false,
+          "owner": "consumer"
+        }
       ],
-      "a11yRules": [],
       "preview": {
         "exportName": "Card",
         "sizing": "panel"
@@ -2637,8 +3154,45 @@
         "bordered": {
           "type": "boolean"
         },
+        "gap": {
+          "type": "enum",
+          "values": [
+            "tight",
+            "normal",
+            "inset",
+            "spacious",
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ]
+        },
         "noPadding": {
           "type": "boolean"
+        },
+        "padding": {
+          "type": "enum",
+          "values": [
+            "component",
+            "item",
+            "px16",
+            "px24",
+            "none"
+          ]
         },
         "selectable": {
           "type": "boolean"
@@ -2698,8 +3252,41 @@
           "type": "CSSProperties",
           "optional": true
         },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "primary",
+            "secondary",
+            "disabled",
+            "accent",
+            "success",
+            "warning",
+            "danger",
+            "info"
+          ],
+          "optional": true
+        },
         "variant": {
-          "type": "TextVariant"
+          "type": "enum",
+          "values": [
+            "display",
+            "title",
+            "titleSm",
+            "body",
+            "ui",
+            "caption",
+            "mono",
+            "heading1",
+            "heading2",
+            "heading3",
+            "technical",
+            "eyebrow",
+            "badge",
+            "docLede",
+            "docBody",
+            "docSmall",
+            "docCode"
+          ]
         }
       },
       "allowedChildren": [
@@ -2727,7 +3314,9 @@
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/kbd.tsx",
+        "src/app/components/select.tsx",
         "src/app/components/table.tsx",
+        "src/app/components/text.test.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts"
@@ -2928,12 +3517,73 @@
       ],
       "a11yRules": [
         {
-          "rule": "Must have an accessible name via Dialog.Title or aria-label",
-          "required": true
+          "rule": "Enter and Space on the trigger open the dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.open-keys"
         },
         {
-          "rule": "Description should be associated via Dialog.Description when present",
-          "required": false
+          "rule": "The trigger announces a dialog popup (aria-haspopup).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.trigger-haspopup"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.trigger-controls"
+        },
+        {
+          "rule": "Focus moves inside the dialog when it opens.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.initial-focus"
+        },
+        {
+          "rule": "Tab and Shift+Tab stay inside the open modal dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.focus-trapped"
+        },
+        {
+          "rule": "Escape closes the dialog and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.escape-returns-focus"
+        },
+        {
+          "rule": "The dialog is named by Dialog.Title and described by Dialog.Description.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.named-by-title"
+        },
+        {
+          "rule": "The built-in close button is named \"Close\".",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dialog.close-named"
+        },
+        {
+          "rule": "Render a Dialog.Title in every Dialog.Content; it is the dialog's accessible name.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Render a Dialog.Description, or pass aria-describedby={undefined} on Dialog.Content when there is none.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Give an icon-only Dialog.Trigger or custom Dialog.Close an aria-label.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "compoundMembers": [
@@ -3186,12 +3836,62 @@
       "requiredProps": [],
       "a11yRules": [
         {
-          "rule": "Must have accessible name via label prop or aria-label",
-          "required": true
+          "rule": "Enter and Space activate it, and it takes part in the Tab order.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.keyboard-activate"
         },
         {
-          "rule": "Focus ring visible in all interactive states (uses hds-focus class)",
-          "required": true
+          "rule": "Keyboard focus draws a visible ring from the focus-visible utilities; the outline is never removed without it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.focus-ring"
+        },
+        {
+          "rule": "loading sets aria-busy and disables the button, and the spinner is hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.loading-busy"
+        },
+        {
+          "rule": "A toggle button reports its state with aria-pressed and flips it on activation.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.toggle-pressed"
+        },
+        {
+          "rule": "A disabled asChild link is aria-disabled and leaves the tab order, since a link cannot be natively disabled.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.aschild-disabled"
+        },
+        {
+          "rule": "An icon-only button takes its accessible name from label (as aria-label).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.icon-only-name"
+        },
+        {
+          "rule": "Every size is at least 24px tall, and an icon-only button at least 24px wide (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.target-size"
+        },
+        {
+          "rule": "The loading spinner stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.reduced-motion"
+        },
+        {
+          "rule": "Give an icon-only Button a label (or aria-label); without one it has no accessible name.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "propConstraints": {
@@ -3273,6 +3973,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert.tsx",
         "src/app/components/destructive-section.test.tsx",
         "src/app/components/destructive-section.tsx"
       ],
@@ -3885,6 +4586,7 @@
         "src/app/components/page-header.tsx",
         "src/app/components/state-tokens.test.tsx",
         "src/app/components/tag.tsx",
+        "src/app/components/text.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/mui/index.ts"
       ],
@@ -4060,12 +4762,39 @@
       ],
       "a11yRules": [
         {
-          "rule": "Must have alt text (decorative images use alt=\"\")",
-          "required": true
+          "rule": "The alt text reaches the image, and a failed image with alt is still exposed as a named image.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.alt"
         },
         {
-          "rule": "Caption or description should be associated via aria-describedby when present",
-          "required": false
+          "rule": "alt of an empty string makes the image decorative, and a failed image without alt is hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.decorative"
+        },
+        {
+          "rule": "A clickable image is a labelled button that Enter and Space activate.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.interactive-button"
+        },
+        {
+          "rule": "A clickable image is keyboard operable in every context, with expandable off and in the lightbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.interactive-everywhere"
+        },
+        {
+          "rule": "The interactive wrapper keeps the shared focus ring and never sets outline.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:asset-img.focus-ring"
+        },
+        {
+          "rule": "Pass meaningful alt text, or alt of an empty string for a decorative image; a clickable image needs alt for its name (WCAG 1.1.1, 4.1.2).",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "docsPage": "/docs/patterns/asset-img",
@@ -4141,7 +4870,60 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "It exposes tablist, tab and tabpanel roles, with aria-selected on the active tab and aria-controls and aria-labelledby linking each tab to its panel.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.roles"
+        },
+        {
+          "rule": "The tablist is one Tab stop, entering on the selected tab; Tab then moves on to the panel.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.single-tab-stop"
+        },
+        {
+          "rule": "Left and Right move between tabs and select them, wrapping at the ends; Home and End jump to the first and last tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.arrow-keys"
+        },
+        {
+          "rule": "Arrow keys skip a disabled tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.disabled-skipped"
+        },
+        {
+          "rule": "The active panel is focusable, so keyboard users can reach and scroll its content.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.panel-focus"
+        },
+        {
+          "rule": "The trigger focus ring is drawn inset, so the scrolling tab list cannot clip it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.focus-ring"
+        },
+        {
+          "rule": "The tab strip is 40px tall, over the 24px floor (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tabs.target-size"
+        },
+        {
+          "rule": "Give every TabsTrigger value a TabsContent with the same value, so aria-controls resolves.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Name the TabsList (aria-label or aria-labelledby) when the surrounding heading does not make its purpose clear.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/tabs",
       "usage": {
         "when": "Switch between panels of related content in the same place, one visible at a time.",
@@ -4332,7 +5114,49 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Arrow keys move and select inside a same-name group, and the group is one Tab stop.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.arrows-select-group"
+        },
+        {
+          "rule": "A screen reader speaks each radio with its name, state, position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.sr-group"
+        },
+        {
+          "rule": "A disabled radio is skipped by Tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.disabled-skipped"
+        },
+        {
+          "rule": "The focus ring shows on keyboard focus only (:focus-visible) and hover never hides it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.focus-ring"
+        },
+        {
+          "rule": "The row is 24px or taller and lifts to the 44px touch minimum on a phone (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:radio.target-size"
+        },
+        {
+          "rule": "The selection dot animation goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Give every radio in a group the same name and wrap the group in a fieldset with a legend, or a role=radiogroup with an aria-label.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -4420,6 +5244,10 @@
         "options": {
           "type": "{ value: string; label: string; }[]"
         },
+        "placeholder": {
+          "type": "string",
+          "default": "Select…"
+        },
         "showLabel": {
           "type": "boolean",
           "default": true
@@ -4433,7 +5261,115 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter, Space and ArrowDown on the trigger open the listbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.open-keys"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open listbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.trigger-controls"
+        },
+        {
+          "rule": "Escape closes the listbox and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.escape-returns-focus"
+        },
+        {
+          "rule": "Tab does not move focus out of the open listbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.tab-contained"
+        },
+        {
+          "rule": "The selected option is highlighted and focused when the listbox opens.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.selected-highlighted"
+        },
+        {
+          "rule": "ArrowDown and ArrowUp move the highlight.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.arrow-keys"
+        },
+        {
+          "rule": "Home and End jump to the first and last option.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.home-end"
+        },
+        {
+          "rule": "Typing letters highlights the matching option.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.typeahead"
+        },
+        {
+          "rule": "Enter commits the highlighted option and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.commit-returns-focus"
+        },
+        {
+          "rule": "The trigger is a combobox named \"Label: value\".",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.trigger-name-with-value"
+        },
+        {
+          "rule": "The trigger keeps the field label in its name when showLabel is false.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.hidden-label-named"
+        },
+        {
+          "rule": "The open listbox is named by the field label.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.listbox-named"
+        },
+        {
+          "rule": "Each option reports whether it is selected, its position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.option-state-position"
+        },
+        {
+          "rule": "The visible label is a real label wired to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.label-wired"
+        },
+        {
+          "rule": "Inside FormField the field label names the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.form-field-label"
+        },
+        {
+          "rule": "Inside FormField an error sets aria-invalid and describes the trigger by the message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:select.form-field-error"
+        },
+        {
+          "rule": "Always pass label, even with showLabel={false}; it names the trigger and the listbox.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -4528,6 +5464,10 @@
         },
         "value": {
           "type": "number"
+        },
+        "valueText": {
+          "type": "string",
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -4535,7 +5475,55 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "It is a native range input, so arrows, PageUp/PageDown and Home/End adjust it and the track is a single-pointer alternative to dragging.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.native-range-keys"
+        },
+        {
+          "rule": "The slider exposes its name, min, max and current value.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.name-range-value"
+        },
+        {
+          "rule": "The visible label is associated with the range input, so clicking it focuses the slider.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.label-click"
+        },
+        {
+          "rule": "The valueText prop is exposed as aria-valuetext.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.valuetext"
+        },
+        {
+          "rule": "A screen reader speaks the name and the formatted value.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.sr-value"
+        },
+        {
+          "rule": "Under a coarse pointer the hit area lifts to the 44px touch minimum (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:slider.target-size"
+        },
+        {
+          "rule": "The fill animation goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Pass valueText when the bare number does not read well, such as a price, a percentage or a step name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -4603,7 +5591,49 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Space flips the switch from the keyboard (it is a native input with role=switch).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.space-toggles"
+        },
+        {
+          "rule": "A screen reader speaks a switch with its name and on or off state.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.sr-switch"
+        },
+        {
+          "rule": "A disabled switch is skipped by Tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.disabled-skipped"
+        },
+        {
+          "rule": "The focus ring shows on keyboard focus only (:focus-visible) and hover never hides it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.focus-ring"
+        },
+        {
+          "rule": "The row is 24px or taller and lifts to the 44px touch minimum on a phone (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toggle.target-size"
+        },
+        {
+          "rule": "The thumb slide goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Label the switch with the setting it controls, not with its state, because the state is already spoken.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
@@ -4960,7 +5990,43 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The trail is a navigation landmark with an accessible name (default Breadcrumb).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.nav-landmark"
+        },
+        {
+          "rule": "The trail is an ordered list of its crumbs.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.ordered-list"
+        },
+        {
+          "rule": "The last crumb is marked aria-current=page and is not a link.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.current-page"
+        },
+        {
+          "rule": "The chevron separators are hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.separators-hidden"
+        },
+        {
+          "rule": "Tab visits each link in trail order and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:breadcrumb.keyboard-focus"
+        },
+        {
+          "rule": "Give each Breadcrumb a distinct label when a page has more than one navigation landmark.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/breadcrumb",
       "usage": {
         "when": "Show where the current page sits in a hierarchy and link back up it.",
@@ -5026,7 +6092,61 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The controls are a navigation landmark with an accessible name (default Pagination).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.nav-landmark"
+        },
+        {
+          "rule": "Previous, Next and every page number have an accessible name (Previous page, Next page, Page N).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.control-names"
+        },
+        {
+          "rule": "Only the current page is marked aria-current=page.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.current-page"
+        },
+        {
+          "rule": "Previous is disabled on the first page and Next on the last.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.disabled-ends"
+        },
+        {
+          "rule": "The truncation ellipsis is hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.ellipsis-hidden"
+        },
+        {
+          "rule": "Tab reaches every control and Enter and Space change the page.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.keyboard"
+        },
+        {
+          "rule": "When activating Previous or Next disables the focused button, focus moves to the current page instead of being stranded.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.focus-kept"
+        },
+        {
+          "rule": "Previous and Next are 32px and page buttons lift to the touch target, over the 24px floor (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.target-size"
+        },
+        {
+          "rule": "After a page change, keep focus on the control or move it to the start of the results, and tell screen-reader users the results changed.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/pagination",
       "usage": {
         "when": "Move between pages of a long result set, with truncated page numbers.",
@@ -5084,7 +6204,60 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The title and description are announced through a role=status live region (4.1.3).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.live-region"
+        },
+        {
+          "rule": "The viewport is a region named \"Notifications\".",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.viewport-named"
+        },
+        {
+          "rule": "F8 moves focus to the notifications viewport.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.f8-focuses-viewport"
+        },
+        {
+          "rule": "The Dismiss button is named, reachable by Tab and closes the toast with Enter.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.dismiss-keyboard"
+        },
+        {
+          "rule": "The Dismiss button is at least 24px (2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.dismiss-target-size"
+        },
+        {
+          "rule": "The tone icon is aria-hidden; the title carries the meaning, never colour alone (1.4.1).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.tone-icon-decorative"
+        },
+        {
+          "rule": "The auto-dismiss timer pauses while the pointer or focus is on the viewport (2.2.1).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:toast.pause-on-hover-focus"
+        },
+        {
+          "rule": "Keep a toast to a short confirmation; use Alert or Dialog for anything people must act on or re-read.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Set a duration long enough to read the message; the default is 5000 ms.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/guides/providers",
       "usage": {
         "when": "Confirm an action with a brief message that appears and dismisses itself, through useToast.",
@@ -5185,7 +6358,145 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter and Space on the trigger open the list.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.open-keys"
+        },
+        {
+          "rule": "The trigger is a combobox with a listbox popup that reports collapsed and expanded.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.trigger-state"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open list.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.trigger-controls"
+        },
+        {
+          "rule": "Focus moves to the search field when the list opens and Tab stays inside the list.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.focus-search-field"
+        },
+        {
+          "rule": "Escape closes the list and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.escape-returns-focus"
+        },
+        {
+          "rule": "The search field exposes the active option through aria-activedescendant; the options themselves stay out of the tab order.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.activedescendant"
+        },
+        {
+          "rule": "ArrowDown and ArrowUp move the active option and wrap at the ends.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.arrow-wrap"
+        },
+        {
+          "rule": "Arrow keys skip disabled options.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.skips-disabled"
+        },
+        {
+          "rule": "Typing filters the options and Enter commits the active one.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.filter-commit"
+        },
+        {
+          "rule": "The popover dialog is named by the field label, or the placeholder when there is none.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.popover-named"
+        },
+        {
+          "rule": "The listbox is named by the field label.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.listbox-named"
+        },
+        {
+          "rule": "Each option reports its position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.option-position"
+        },
+        {
+          "rule": "Options are outside the tab order; focus stays on the search field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.options-not-tabbable"
+        },
+        {
+          "rule": "The no-results message sits outside the listbox.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.no-results-outside-listbox"
+        },
+        {
+          "rule": "The match count is announced in a polite status as the list is filtered (4.1.3).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.result-count-announced"
+        },
+        {
+          "rule": "With multiple, Enter toggles the active option and keeps the list open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.multiple-enter-toggles"
+        },
+        {
+          "rule": "With multiple, Escape closes the list and keeps the selection.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.escape-keeps-selection"
+        },
+        {
+          "rule": "With multiple, each chip is a button named \"Remove <option>\".",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.chips-named"
+        },
+        {
+          "rule": "A chip removes its value from the keyboard and focus stays on the chips.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.chip-keyboard"
+        },
+        {
+          "rule": "Inside FormField the field label names the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.form-field-label"
+        },
+        {
+          "rule": "Inside FormField an error sets aria-invalid and describes the trigger by the message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.form-field-error"
+        },
+        {
+          "rule": "Pass label or aria-label; it names the trigger, the popover and the listbox.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/combobox",
       "usage": {
         "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
@@ -5261,7 +6572,24 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "It renders a native form element, so Enter submits and the browser's validation and autofill work.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form.native-form"
+        },
+        {
+          "rule": "Name the form with aria-label or aria-labelledby when a page has more than one.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Submit with a real button, and on a failed submit name each error and move focus to the first invalid field (WCAG 3.3.1, 3.3.3).",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/patterns/form",
       "usage": {
         "when": "Wrap form fields so they stack with even spacing."
@@ -5286,7 +6614,9 @@
       "consumers": [
         "src/app/components/combobox.tsx",
         "src/app/components/form.test.tsx",
+        "src/app/components/input.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/textarea.tsx",
         "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx"
       ],
@@ -5326,7 +6656,49 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The label is associated with the control through htmlFor and id.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.label-association"
+        },
+        {
+          "rule": "The description is linked to the control with aria-describedby.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.description-described"
+        },
+        {
+          "rule": "An error sets aria-invalid on the control, links the message and announces it with role=alert.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.error-wiring"
+        },
+        {
+          "rule": "The description id is dropped while an error replaces it, so aria-describedby never points at nothing.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.no-dangling-ids"
+        },
+        {
+          "rule": "A required field gets the required attribute and a visible marker that screen readers skip.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.required"
+        },
+        {
+          "rule": "The control keeps its own id, and the label still points at it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field.keeps-control-id"
+        },
+        {
+          "rule": "Give FormField exactly one control; for a control that owns a callback ref use FormFieldShell and useFieldWiring.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": null
     },
     "FormFieldShell": {
@@ -5383,7 +6755,19 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The shell renders the label, description and error with ids that useFieldWiring links to the control, and lists the description only while it renders.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-field-shell.use-field-wiring"
+        },
+        {
+          "rule": "Pass the controlId from useFieldWiring to the control and spread the returned describedby onto it.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": null
     },
     "HdsThemeProvider": {
@@ -5694,6 +7078,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/board.tsx",
         "src/app/components/visually-hidden.test.tsx"
       ],
       "tokenMapping": {},
@@ -5829,7 +7214,72 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter and Space on the trigger open the alert dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.open-keys"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open alert dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.trigger-controls"
+        },
+        {
+          "rule": "Focus lands on Cancel, the least destructive action, when it opens.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.initial-focus-cancel"
+        },
+        {
+          "rule": "Tab and Shift+Tab stay inside the open alert dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.focus-trapped"
+        },
+        {
+          "rule": "Escape closes the alert dialog and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.escape-returns-focus"
+        },
+        {
+          "rule": "A click outside does not dismiss it; the person must choose Cancel or Action.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.no-outside-dismiss"
+        },
+        {
+          "rule": "It has role=alertdialog, named by the title and described by the description.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.named-and-described"
+        },
+        {
+          "rule": "Cancel and Action are named buttons.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:alertdialog.actions-named"
+        },
+        {
+          "rule": "Render an AlertDialog.Title and AlertDialog.Description; they name and describe the dialog.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Name the Action by its outcome (\"Delete project\"), not \"OK\" or \"Yes\".",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": null,
       "usage": {
         "when": "Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.",
@@ -6231,7 +7681,12 @@
           "optional": true
         },
         "resize": {
-          "type": "TextareaResize",
+          "type": "enum",
+          "values": [
+            "none",
+            "both",
+            "vertical"
+          ],
           "default": "vertical"
         },
         "textareaClassName": {
@@ -6244,7 +7699,37 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The label prop renders a real label associated with the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:textarea.label"
+        },
+        {
+          "rule": "The helper text is linked with aria-describedby only while it renders.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:textarea.helper-described"
+        },
+        {
+          "rule": "An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:textarea.error-wiring"
+        },
+        {
+          "rule": "A screen reader speaks the label, the invalid state and the error message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:textarea.sr-field"
+        },
+        {
+          "rule": "Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/textarea",
       "usage": {
         "when": "Collect multi-line free text such as a message, note or description.",
@@ -6951,7 +8436,66 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The tooltip opens when the trigger takes keyboard focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.opens-on-focus"
+        },
+        {
+          "rule": "The bubble has role=tooltip.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.role"
+        },
+        {
+          "rule": "The trigger points aria-describedby at the bubble.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.describedby"
+        },
+        {
+          "rule": "Escape dismisses the tooltip and focus stays on the trigger (1.4.13 dismissible).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.escape-dismisses"
+        },
+        {
+          "rule": "Tab moves on to the next control and closes the tooltip.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.tab-moves-on"
+        },
+        {
+          "rule": "The pointer can move from the trigger onto the bubble without it closing (1.4.13 hoverable).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.hoverable"
+        },
+        {
+          "rule": "The tooltip stays open until focus leaves, Escape is pressed or the pointer leaves; no timer closes it (1.4.13 persistent).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.persistent"
+        },
+        {
+          "rule": "The bubble holds no tab stops.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tooltip.no-interactive-content"
+        },
+        {
+          "rule": "Make the Tooltip.Trigger focusable and named; wrap a non-focusable element in a button.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Never put essential information or interactive content only in a tooltip; touch has no hover.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/tooltip",
       "usage": {
         "when": "Name an icon-only control, or add a short hint that appears on hover and keyboard focus.",
@@ -7042,7 +8586,108 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter, Space and ArrowDown on the trigger open the menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.open-keys"
+        },
+        {
+          "rule": "The trigger announces a menu popup (aria-haspopup=menu).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.trigger-haspopup"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.trigger-controls"
+        },
+        {
+          "rule": "Escape closes the menu and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.escape-returns-focus"
+        },
+        {
+          "rule": "Tab does not move focus out of the open menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.tab-contained"
+        },
+        {
+          "rule": "ArrowDown and ArrowUp move the highlight and stop at the first and last item.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.arrow-keys"
+        },
+        {
+          "rule": "Home and End jump to the first and last item.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.home-end"
+        },
+        {
+          "rule": "Typing a letter highlights the next item that starts with it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.typeahead"
+        },
+        {
+          "rule": "Enter selects the highlighted item and closes the menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.enter-selects"
+        },
+        {
+          "rule": "Space selects the highlighted item and closes the menu.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.space-activates"
+        },
+        {
+          "rule": "The menu is named by its trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.named-by-trigger"
+        },
+        {
+          "rule": "Each item is a menuitem that reports its position and set size.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.item-position"
+        },
+        {
+          "rule": "Items render with menuitem semantics once open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.item-semantics"
+        },
+        {
+          "rule": "A disabled item is aria-disabled and arrow keys step over it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.disabled-skipped"
+        },
+        {
+          "rule": "Give an icon-only Menu.Trigger an aria-label.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Use Menu for actions; use links or Select for navigation and value choice.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "slots": [
         {
           "name": "trigger",
@@ -7154,7 +8799,66 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Enter and Space on the trigger open the popover.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.open-keys"
+        },
+        {
+          "rule": "The trigger announces a dialog popup (aria-haspopup=dialog).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.trigger-haspopup"
+        },
+        {
+          "rule": "The trigger exposes aria-expanded, false while closed and true while open.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.trigger-expanded"
+        },
+        {
+          "rule": "The trigger points aria-controls at the open content.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.trigger-controls"
+        },
+        {
+          "rule": "Escape closes the popover and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.escape-returns-focus"
+        },
+        {
+          "rule": "The open content is a role=dialog that takes the name the consumer gives it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.content-role-dialog"
+        },
+        {
+          "rule": "Tab cycles inside the open content instead of walking the page behind it (Radix default).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.tab-loop"
+        },
+        {
+          "rule": "The page behind stays reachable: no aria-hidden and no pointer-events lock.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:popover.non-modal"
+        },
+        {
+          "rule": "Give Popover.Content an aria-label or aria-labelledby; the open dialog is otherwise unnamed.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Give an icon-only Popover.Trigger an aria-label.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/popover",
       "usage": {
         "when": "Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.",
@@ -7235,7 +8939,55 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "Space toggles the checkbox from the keyboard (it is a native input).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.space-toggles"
+        },
+        {
+          "rule": "The checkbox is named by its label and reports aria-checked=mixed when indeterminate.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.name-and-state"
+        },
+        {
+          "rule": "A disabled checkbox is skipped by Tab.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.disabled-skipped"
+        },
+        {
+          "rule": "A screen reader speaks the name with checked, not checked or partially checked.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.sr-state"
+        },
+        {
+          "rule": "The focus ring shows on keyboard focus only (:focus-visible) and hover never hides it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.focus-ring"
+        },
+        {
+          "rule": "The row is 24px or taller and lifts to the 44px touch minimum on a phone (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:checkbox.target-size"
+        },
+        {
+          "rule": "The check animation goes through useHdsMotion, so it stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Put related checkboxes in a fieldset with a legend so the group has a name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/checkbox",
       "usage": {
         "when": "Let people tick one or more independent options, or a parent choice that is partly selected.",
@@ -7297,7 +9049,19 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "DOM order matches visual order, with the primary action last (WCAG 1.3.2, 2.4.3).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:form-actions.dom-order"
+        },
+        {
+          "rule": "Give every action a visible name; an icon-only action needs an aria-label.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/patterns/form-actions",
       "usage": {
         "when": "Lay out a form's buttons in a fixed order: danger on the left, then secondary, then primary on the right."
@@ -7514,7 +9278,14 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The table and its scroll region are named after the section heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:data-table-section.named"
+        }
+      ],
       "docsPage": "/docs/patterns/data-table-section",
       "usage": {
         "when": "Put a heading and toolbar above a Table."
@@ -7576,7 +9347,37 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The section is a labelled region named by its heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:destructive-section.labelled"
+        },
+        {
+          "rule": "The first press opens a confirmation and never runs the action.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:destructive-section.first-press-safe"
+        },
+        {
+          "rule": "Cancel closes the confirmation, returns focus to the trigger and never runs the action.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:destructive-section.cancel-returns-focus"
+        },
+        {
+          "rule": "Confirm runs the action once and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:destructive-section.confirm-returns-focus"
+        },
+        {
+          "rule": "Name confirmLabel by its outcome (\"Archive client\"), not \"OK\".",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/patterns/destructive-section",
       "usage": {
         "when": "Put a dangerous action, such as delete, in its own section with a warning and a confirm step."
@@ -7734,6 +9535,120 @@
       "a11yRules": [],
       "docsPage": null
     },
+    "Board": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/board.tsx",
+      "description": "Status columns that sit side by side from tablet width and stack in order, first column on top, below it. Read-only: it has no drag handlers.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Board",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/board.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Show work grouped by status as side-by-side columns, each with a title, a count and a tone, such as leads by pipeline stage.",
+        "whenNot": "Rows of columns and cells that sort or filter, or a board people rearrange by dragging.",
+        "useInstead": [
+          {
+            "component": "Table",
+            "reason": "rows of data with sortable columns"
+          },
+          {
+            "component": "Grid",
+            "reason": "a plain responsive layout with no status columns"
+          }
+        ]
+      },
+      "aiRules": "Put Card or Card.Row children inside BoardColumn and keep click and link handling on those children: Board owns layout only. Do NOT add drag and drop; Board is read-only. Do NOT wrap a BoardColumn in a Card or Surface (columns are open bands, not outlined cards). List columns in priority order: when the container is below tablet width they stack top to bottom in that same order."
+    },
+    "BoardColumn": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/board.tsx",
+      "description": "One status column: a heading with the title, a count and a tone dot, then its items. The column is a labelled region and the count is part of the heading's name.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "BoardColumn",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/board.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "count": {
+          "type": "number",
+          "optional": true
+        },
+        "title": {
+          "type": "ReactNode"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info",
+            "neutral"
+          ],
+          "default": "neutral"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Hold the cards for one status inside a Board, with a heading that announces the count.",
+        "whenNot": "Standing alone outside a Board, or a list with no status.",
+        "useInstead": [
+          {
+            "component": "Stack",
+            "reason": "a plain vertical list"
+          }
+        ]
+      }
+    },
     "Composer": {
       "category": "Inputs",
       "categorySource": "jsdoc",
@@ -7815,7 +9730,55 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The textarea has an accessible name: the label prop, \"Message\" by default.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.field-label"
+        },
+        {
+          "rule": "Tab reaches the field and Send; Cmd or Ctrl+Enter submits and plain Enter only adds a newline.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.keyboard"
+        },
+        {
+          "rule": "A fold chip is a button named by its label plus \"edit\", and announces that it opens a dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.chip-name"
+        },
+        {
+          "rule": "Enter on a focused fold chip opens its edit dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.chip-keyboard"
+        },
+        {
+          "rule": "The edit dialog is named by its title and described by the fold label, and its text field is labelled.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.dialog-labelled"
+        },
+        {
+          "rule": "Tab and Shift+Tab stay inside the edit dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.dialog-focus-trapped"
+        },
+        {
+          "rule": "Closing the edit dialog by Escape or Save returns focus to the fold chip that opened it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.chip-focus-return"
+        },
+        {
+          "rule": "Pass a label that names the purpose when more than one Composer is on a page; the default \"Message\" is the same on each.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": null,
       "usage": {
         "when": "Capture a prompt or a quick note where a long paste should not flood the field.",
@@ -8333,6 +10296,13 @@
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
         "value": "#a3a3a3"
+      },
+      {
+        "path": "primitive.color.neutral.450",
+        "cssVar": "--primitive-color-neutral-450",
+        "type": "color",
+        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).",
+        "value": "#909090"
       },
       {
         "path": "primitive.color.neutral.500",
@@ -9722,8 +11692,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -9746,6 +11716,18 @@
         "dark": {
           "alias": "{primitive.color.neutral.400}",
           "resolvedValue": "#a3a3a3"
+        }
+      },
+      {
+        "path": "semantic.color.content.tertiary",
+        "cssVar": "--semantic-color-content-tertiary",
+        "type": "color",
+        "description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+        "alias": "{primitive.color.neutral.500}",
+        "resolvedValue": "#737373",
+        "dark": {
+          "alias": "{primitive.color.neutral.450}",
+          "resolvedValue": "#909090"
         }
       },
       {
@@ -9837,8 +11819,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "alias": "{primitive.color.neutral.600}",
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -9857,7 +11839,7 @@
         "path": "semantic.color.border.subdued",
         "cssVar": "--semantic-color-border-subdued",
         "type": "color",
-        "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
+        "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
@@ -11139,9 +13121,9 @@
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
-        "description": "Small rounded radius for badges.",
-        "alias": "{primitive.radius.4}",
-        "resolvedValue": "4px"
+        "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
+        "alias": "{semantic.radius.action}",
+        "resolvedValue": "8px"
       },
       {
         "path": "component.badge.height",

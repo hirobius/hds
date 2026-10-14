@@ -7,14 +7,16 @@ import { openApp, serve } from './browser.mjs';
  * Full-page PNG of a built app at every viewport in the matrix.
  * @param {import('playwright').Browser} browser
  * @param {string} appDir a prepared app directory with dist/
+ * @param {{ viewports?: {key:string,width:number,height:number,theme:string}[], tenant?: string|null }} [opts]
+ *   the explorations option passes its own matrix and the demo tenant to apply
  * @returns {Promise<Record<string, Buffer>>} viewport key -> PNG
  */
-export async function renderApp(browser, appDir) {
+export async function renderApp(browser, appDir, { viewports = VIEWPORTS, tenant = null } = {}) {
   const site = await serve(path.join(appDir, 'dist'));
   try {
     const out = {};
-    for (const v of VIEWPORTS) {
-      const { context, page } = await openApp(browser, site.base, v, v.theme);
+    for (const v of viewports) {
+      const { context, page } = await openApp(browser, site.base, v, v.theme, tenant);
       try {
         out[v.key] = await page.screenshot({ fullPage: true, animations: 'disabled' });
       } finally {

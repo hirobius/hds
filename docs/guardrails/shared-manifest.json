@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "canonicalRepo": "hirobius/ops",
+  "role": "consumer",
+  "note": "Consumer copy: the subset of hirobius/ops docs/guardrails/shared-manifest.json that this repo vendors byte-identical, with the hashes copied from there. Never re-pin here (`check-guardrail-drift --write` refuses on role \"consumer\"). To take a shared fix: copy the changed file(s) from hirobius/ops and the matching hash(es) from its manifest in the same commit.",
+  "files": {
+    "scripts/check-guardrail-drift.mjs": "sha256:10ecd5fe68187a20dab7bb50e3aa21b07a2ea441372be178d934bb0648d54739",
+    "scripts/check-ralph-kit-drift.mjs": "sha256:2d41b10e0205a80e1f87a4faf66af3eec1389103c4c3b175e9116f7e5d83733a",
+    "scripts/check-skills-lock.mjs": "sha256:cd1ee86389a74e1570b8842e927a012808fc46c416062829acde86397031eeb6",
+    "scripts/install-skills.mjs": "sha256:d4397a2ce95dd4dd2a0cf4a8ef657ca203b913cd55b6a118c66ff9a44518fd14",
+    "scripts/lib/gate-output.mjs": "sha256:ca3c17b58b41cb673fb66108ed688186d0d9f5aa540b17ee76c015f5dff6b9d1",
+    "scripts/lib/gate-scope.mjs": "sha256:8b67e048a3d3d1fb7caa13eff2403e19e7429055075c1f8796c371dd2727fddd",
+    "scripts/lib/guardrail-core.mjs": "sha256:5c7b179de5a51f0f76a67f72d034993638a0d97749d876fbd22dd4d592d32b06",
+    "scripts/lib/hook-logs.mjs": "sha256:97ac2f10ac335b911b7fcb66263cd07f14480f7ffaf16386ce2cb25bd75afe32",
+    "scripts/lib/skills-lock.mjs": "sha256:edc41ea3098e1b245a1f742d6b5c915eeee50f7051c0fd7346fdb7659c83137e",
+    "scripts/run-gates.mjs": "sha256:072d2ff807b108b619ea99a482e047896b824a115b2d7e99f58d0b1c1d255463",
+    "scripts/validate-fixture-proof-of-firing.mjs": "sha256:a89b21f3e2f608bfd26aadba7a3a26b80982af0058da742dcfff37ae3b654cb1",
+    "scripts/validate-guardrail-registry.mjs": "sha256:d7acb3f5423039270d2308ce834553dd6292343e957601a29c6f0d9d4835048f"
+  }
+}

@@ -3,12 +3,12 @@
   "focus": "Publish the graphite Figma library, then close the agent-consistency gap (#593).",
   "phase": "active",
   "note": "State is derived: ops reads release from package.json and next/blocked from issue labels. Only focus and phase are written by hand.",
-  "updatedAt": "2026-10-12T05:48:05Z",
+  "updatedAt": "2026-10-13T08:49:00Z",
   "consistency": {
-    "date": "2026-10-05",
+    "date": "2026-10-14",
     "source": "harness",
     "pass": false,
-    "jaccardMin": 0.4091,
-    "lightDiffMax": 3.2096
+    "jaccardMin": 0.95,
+    "lightDiffMax": null
   }
 }

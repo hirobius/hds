@@ -45,10 +45,11 @@ const surfaceVariants = /* @__PURE__ */ cva(
     variants: {
       padding: {
         component: 'p-[var(--semantic-space-surface-padding)]',
-        // spacing-ok: 16px/24px are the surface's fixed inset contract (not layout spacing); kept as the legacy values these named options have always resolved to
-        item: 'p-[16px]',
-        px16: 'p-[16px]',
-        px24: 'p-[24px]',
+        // The surface's fixed inset contract (not layout spacing): the primitive
+        // 16px/24px steps, so a tenant's semantic scale never moves them.
+        item: 'p-[var(--primitive-space-4)]',
+        px16: 'p-[var(--primitive-space-4)]',
+        px24: 'p-[var(--primitive-space-6)]',
         none: 'p-0',
       },
       shadow: {

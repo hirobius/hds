@@ -13,6 +13,14 @@
  * Cmd/Ctrl+Enter submits; plain Enter stays a newline. `text` and
  * `attachments` can each be controlled or uncontrolled; an uncontrolled
  * composer clears itself after a submit.
+ * @a11y component required a11y:composer.field-label The textarea has an accessible name: the label prop, "Message" by default.
+ * @a11y component required a11y:composer.keyboard Tab reaches the field and Send; Cmd or Ctrl+Enter submits and plain Enter only adds a newline.
+ * @a11y component required a11y:composer.chip-name A fold chip is a button named by its label plus "edit", and announces that it opens a dialog.
+ * @a11y component required a11y:composer.chip-keyboard Enter on a focused fold chip opens its edit dialog.
+ * @a11y component required a11y:composer.dialog-labelled The edit dialog is named by its title and described by the fold label, and its text field is labelled.
+ * @a11y component required a11y:composer.dialog-focus-trapped Tab and Shift+Tab stay inside the edit dialog.
+ * @a11y component required a11y:composer.chip-focus-return Closing the edit dialog by Escape or Save returns focus to the fold chip that opened it.
+ * @a11y consumer required Pass a label that names the purpose when more than one Composer is on a page; the default "Message" is the same on each.
  */
 
 import * as React from 'react';

@@ -6,6 +6,13 @@
  * @whenNot A single record, a short list of links, or content that reflows as cards.
  * @useInstead Field one record as label and value pairs
  * @useInstead Stack a short list of items
+ * @a11y component required a11y:table.table-role The grid is exposed as a table with column headers.
+ * @a11y component required a11y:table.aria-sort A sortable column header reports aria-sort none, ascending or descending.
+ * @a11y component required a11y:table.sorted-header A screen reader reads the sorted column header with its sort direction.
+ * @a11y component required a11y:table.sort-button-named The sort control is a button named by the column label.
+ * @a11y component required a11y:table.sort-keyboard The sort button activates with Enter and Space.
+ * @a11y component required a11y:table.scroll-region-focusable The scroll region is a named tab stop so keyboard users can scroll it (1.4.10).
+ * @a11y consumer required Name the table with a caption or aria-labelledby when more than one is on the screen.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300
  */
 import { useId, type CSSProperties, type ReactNode } from 'react';
@@ -109,10 +116,24 @@ export type TableColumnAlign = 'left' | 'center' | 'right';
 /** @public */
 export type TableSortDirection = 'ascending' | 'descending' | 'none';
 
+/**
+ * A column's grid track: a sizing keyword, a fraction, a `minmax()` track or a
+ * token variable. Raw `px` / `rem` widths are type errors; size from tokens.
+ * @public
+ */
+export type TableColumnWidth =
+  | 'auto'
+  | 'min-content'
+  | 'max-content'
+  | `${number}fr`
+  | `minmax(${string})`
+  | `var(--${string})`;
+
 export type TableColumn = {
   key: string;
   label: ReactNode;
-  width?: string;
+  /** Grid track for this column; defaults to `minmax(0, 1fr)`. */
+  width?: TableColumnWidth;
   align?: TableColumnAlign;
   /** Renders the header as a button and sets `aria-sort` on the header cell. */
   sortable?: boolean;
@@ -231,7 +252,7 @@ export function Table({
             <div className="flex items-center justify-between">
               <div
                 id={hasCaption ? captionId : undefined}
-                className="m-0 text-primary"
+                className="m-0 text-foreground"
                 style={hds.typeStyles.ui}
               >
                 {caption}
@@ -240,7 +261,7 @@ export function Table({
             </div>
           ) : null}
           {description ? (
-            <div className="text-secondary" style={hds.typeStyles.ui}>
+            <div className="text-muted-foreground" style={hds.typeStyles.ui}>
               {description}
             </div>
           ) : null}

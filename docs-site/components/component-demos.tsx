@@ -15,6 +15,8 @@ import {
   Alert,
   Avatar,
   Badge,
+  Board,
+  BoardColumn,
   Box,
   Breadcrumb,
   Button,
@@ -224,6 +226,38 @@ function MetricTilesDemo() {
       <MetricTile label="Shipped" value="12" sub="This month" tone="success" />
       <MetricTile label="Blocked" value="3" sub="Needs a decision" tone="danger" />
     </MetricTiles>
+  );
+}
+
+function BoardDemo() {
+  return (
+    <Board aria-label="Lead pipeline">
+      <BoardColumn title="On fire" tone="danger">
+        <Card padding="item" className="border-0">
+          <Card.Row trailing={<Badge tone="danger">Today</Badge>}>
+            <Card.RowTitle>Monroe Landscaping</Card.RowTitle>
+            <Card.RowNote>Asked for a quote</Card.RowNote>
+          </Card.Row>
+        </Card>
+        <Card padding="item" className="border-0">
+          <Card.Row>
+            <Card.RowTitle>Cedar Fencing</Card.RowTitle>
+            <Card.RowNote>Preview sent</Card.RowNote>
+          </Card.Row>
+        </Card>
+      </BoardColumn>
+      <BoardColumn title="Warm" tone="warning">
+        <Card padding="item" className="border-0">
+          <Card.Row>
+            <Card.RowTitle>Northside Pressure Washing</Card.RowTitle>
+            <Card.RowNote>Follow up Friday</Card.RowNote>
+          </Card.Row>
+        </Card>
+      </BoardColumn>
+      <BoardColumn title="Won" tone="success" count={0}>
+        <EmptyState title="Nothing here yet" />
+      </BoardColumn>
+    </Board>
   );
 }
 
@@ -812,6 +846,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Alert: AlertDemo,
   Avatar: AvatarDemo,
   Badge: BadgeDemo,
+  Board: BoardDemo,
   Box: BoxDemo,
   Breadcrumb: BreadcrumbDemo,
   Card: CardDemo,

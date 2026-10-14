@@ -15,6 +15,24 @@
  * @keyboard Enter Commits the highlighted option and returns focus to the trigger.
  * @keyboard Escape Closes the listbox and returns focus to the trigger.
  * @keyboard Tab Does not leave the open listbox.
+ * @a11y component required a11y:select.open-keys Enter, Space and ArrowDown on the trigger open the listbox.
+ * @a11y component required a11y:select.trigger-expanded The trigger exposes aria-expanded, false while closed and true while open.
+ * @a11y component required a11y:select.trigger-controls The trigger points aria-controls at the open listbox.
+ * @a11y component required a11y:select.escape-returns-focus Escape closes the listbox and returns focus to the trigger.
+ * @a11y component required a11y:select.tab-contained Tab does not move focus out of the open listbox.
+ * @a11y component required a11y:select.selected-highlighted The selected option is highlighted and focused when the listbox opens.
+ * @a11y component required a11y:select.arrow-keys ArrowDown and ArrowUp move the highlight.
+ * @a11y component required a11y:select.home-end Home and End jump to the first and last option.
+ * @a11y component required a11y:select.typeahead Typing letters highlights the matching option.
+ * @a11y component required a11y:select.commit-returns-focus Enter commits the highlighted option and returns focus to the trigger.
+ * @a11y component required a11y:select.trigger-name-with-value The trigger is a combobox named "Label: value".
+ * @a11y component required a11y:select.hidden-label-named The trigger keeps the field label in its name when showLabel is false.
+ * @a11y component required a11y:select.listbox-named The open listbox is named by the field label.
+ * @a11y component required a11y:select.option-state-position Each option reports whether it is selected, its position and set size.
+ * @a11y component required a11y:select.label-wired The visible label is a real label wired to the trigger.
+ * @a11y component required a11y:select.form-field-label Inside FormField the field label names the trigger.
+ * @a11y component required a11y:select.form-field-error Inside FormField an error sets aria-invalid and describes the trigger by the message.
+ * @a11y consumer required Always pass label, even with showLabel={false}; it names the trigger and the listbox.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49
  */
 
@@ -61,6 +79,8 @@ export interface SelectProps {
   'aria-describedby'?: string;
   /** Marks the trigger invalid, for example while the field shows an error. */
   'aria-invalid'?: boolean;
+  /** Text shown in the trigger while `value` matches no option. Defaults to "Select…", like Combobox. */
+  placeholder?: string;
 }
 
 export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>(function Select(
@@ -74,6 +94,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
     id,
     'aria-describedby': ariaDescribedBy,
     'aria-invalid': ariaInvalid,
+    placeholder = 'Select…',
   },
   ref,
 ) {
@@ -121,11 +142,14 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
             // h-10 is the one md control height shared with Input, Combobox and Button;
             // the trigger had py-2 and rendered 38px (hds#522). bg-background matches Input.
             'hds-focus group flex h-10 w-full items-center justify-between gap-2 rounded-md border px-3 hds-type-ui',
-            'border-input bg-background text-foreground transition-colors',
-            'hover:border-ring data-[state=open]:border-ring',
+            'bg-background text-foreground transition-colors',
+            // aria-invalid (set by FormField or the caller) draws the same red border as Input.
+            ariaInvalid
+              ? 'border-destructive'
+              : 'border-input hover:border-ring data-[state=open]:border-ring',
           )}
         >
-          <RSelect.Value />
+          <RSelect.Value placeholder={placeholder} />
           <RSelect.Icon className="flex shrink-0 text-muted-foreground">
             <Icon icon={ChevronsUpDown} size="small" color="currentColor" />
           </RSelect.Icon>
@@ -158,8 +182,8 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
                   key={opt.value}
                   value={opt.value}
                   className={cn(
-                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 hds-type-ui outline-none',
-                    'text-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
+                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none',
+                    'text-foreground data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)]',
                     'data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring',
                   )}
                 >

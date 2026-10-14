@@ -24,7 +24,7 @@ function setup(onConfirm = vi.fn()) {
 }
 
 describe('DestructiveSection', () => {
-  it('shows the title and explanation as a labelled section', () => {
+  it('a11y:destructive-section.labelled - shows the title and explanation as a labelled section', () => {
     setup();
     const region = screen.getByRole('region', { name: 'Archive client' });
     expect(within(region).getByText(/Hides the client/)).not.toBeNull();

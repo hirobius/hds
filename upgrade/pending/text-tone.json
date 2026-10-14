@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Text accepts a new optional tone prop that sets its colour from a semantic content token; without it the colour is inherited as before, so nothing to do unless you want to replace an inline color style such as content-secondary with tone=\"secondary\"."
+}

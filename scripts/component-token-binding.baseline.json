@@ -3,6 +3,7 @@
   "leaves": {
     "badge.fontSize": "LITERAL-MATCH",
     "badge.fontWeight": "LITERAL-MATCH",
+    "badge.radius": "LITERAL-MATCH",
     "button.bg": "LITERAL-MATCH",
     "button.paddingX": "LITERAL-MATCH",
     "button.paddingY": "LITERAL-MATCH",

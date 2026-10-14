@@ -254,6 +254,16 @@
         },
         "selector": {
           "type": "string"
+        },
+        "owner": {
+          "type": "string",
+          "enum": ["component", "consumer"],
+          "description": "Who keeps the rule: the component itself, or the consumer who composes it (hds#520)."
+        },
+        "testId": {
+          "type": "string",
+          "pattern": "^(a11y|gate):",
+          "description": "The contract test (a11y:<component>.<behaviour>) or registry gate (gate:<id>) that proves an owner:component rule."
         }
       }
     },

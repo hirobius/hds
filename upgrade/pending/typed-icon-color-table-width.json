@@ -1,0 +1,4 @@
+{
+  "impact": "breaking",
+  "plain": "Icon color and Table column width are now typed to tokens: pass currentColor or a var(--semantic-…) token as the colour, and an fr value, minmax(), max-content or a var(--…) token as the width; a hex, rgb(), px or rem value is a type error."
+}

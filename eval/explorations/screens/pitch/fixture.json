@@ -1,0 +1,1068 @@
+{
+  "$comment": "INVENTED data for design explorations (hds#628). Fictional businesses, people and towns; phone numbers are 555-01xx and addresses are example.com. Nothing here is a real lead, client or person.",
+  "screen": "pitch",
+  "asOf": "2026-10-13T09:00:00Z",
+  "me": { "name": "Sam", "role": "partner" },
+  "filter": "all",
+  "outcomes": [
+    { "id": "no-answer", "label": "No answer" },
+    { "id": "voicemail", "label": "Voicemail" },
+    { "id": "gatekeeper", "label": "Gatekeeper" },
+    { "id": "callback", "label": "Callback" },
+    { "id": "interested", "label": "Interested" },
+    { "id": "not-interested", "label": "Not interested" },
+    { "id": "wrong-number", "label": "Wrong number" },
+    { "id": "meeting-booked", "label": "Meeting booked" }
+  ],
+  "followUps": [
+    { "id": "tomorrow", "label": "Tomorrow" },
+    { "id": "in-3-days", "label": "3 days" },
+    { "id": "next-week", "label": "Next week" },
+    { "id": "pick-date", "label": "Pick date" }
+  ],
+  "selectedLeadId": "lead_287",
+  "summary": { "total": 8, "toPitch": 5, "inPlay": 3, "dueToday": 2, "won": 0 },
+  "today": [
+    {
+      "id": "lead_301",
+      "business": "Fernhill Lawn & Garden",
+      "contact": "Maya",
+      "phone": "(206) 555-0111",
+      "city": "Alder Bay",
+      "region": "Coast County",
+      "trade": "Landscaping",
+      "score": 91,
+      "stage": "sent",
+      "callAttempts": 2,
+      "lastCallAgo": "2d",
+      "nextActionAt": "2026-10-12T17:00:00Z",
+      "followUp": "overdue 1d",
+      "assignedTo": "Sam",
+      "previewUrl": "https://example.com/previews/lead_301",
+      "gbpGap": { "line": "Your Google listing has no photos from this year." },
+      "notes": [
+        {
+          "author": "Sam",
+          "ago": "2d",
+          "body": "Voicemail left. Maya texts back faster than she calls."
+        }
+      ],
+      "events": [
+        {
+          "actor": "Sam",
+          "kind": "call",
+          "summary": "voicemail",
+          "ago": "2d",
+          "at": "2026-10-11T16:00:00Z"
+        },
+        {
+          "actor": "Sam",
+          "kind": "call",
+          "summary": "no answer",
+          "ago": "4d",
+          "at": "2026-10-09T15:30:00Z"
+        },
+        {
+          "actor": "Sam",
+          "kind": "assign",
+          "summary": "claimed the lead",
+          "ago": "4d",
+          "at": "2026-10-09T15:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "lead_287",
+      "business": "Quarry Road Concrete",
+      "contact": "Dev",
+      "phone": "(312) 555-0112",
+      "city": "Port Marrow",
+      "region": "Coast County",
+      "trade": "Concrete",
+      "score": 84,
+      "stage": "replied",
+      "callAttempts": 3,
+      "lastCallAgo": "1d",
+      "nextActionAt": "2026-10-13T15:00:00Z",
+      "followUp": "due today",
+      "assignedTo": "Sam",
+      "previewUrl": "https://example.com/previews/lead_287",
+      "gbpGap": null,
+      "notes": [
+        {
+          "author": "Sam",
+          "ago": "1d",
+          "body": "Asked for the site link again; wants to see the mobile view."
+        }
+      ],
+      "events": [
+        {
+          "actor": "Sam",
+          "kind": "call",
+          "summary": "callback",
+          "ago": "1d",
+          "at": "2026-10-12T14:00:00Z"
+        },
+        {
+          "actor": "Sam",
+          "kind": "follow_up",
+          "summary": "set for today 3pm",
+          "ago": "1d",
+          "at": "2026-10-12T14:01:00Z"
+        },
+        {
+          "actor": "Sam",
+          "kind": "stage",
+          "summary": "moved to replied",
+          "ago": "1d",
+          "at": "2026-10-12T14:02:00Z"
+        }
+      ]
+    },
+    {
+      "id": "lead_322",
+      "business": "Tidewater Pressure Washing",
+      "contact": null,
+      "phone": "(404) 555-0113",
+      "city": "Kestrel Falls",
+      "region": "Coast County",
+      "trade": "Pressure washing",
+      "score": 88,
+      "stage": "queued",
+      "callAttempts": 0,
+      "lastCallAgo": null,
+      "nextActionAt": null,
+      "followUp": "fresh",
+      "assignedTo": null,
+      "previewUrl": "https://example.com/previews/lead_322",
+      "gbpGap": { "line": "Hours are missing on your Google listing." },
+      "notes": [],
+      "events": [
+        {
+          "actor": "system",
+          "kind": "assign",
+          "summary": "added to the queue",
+          "ago": "1d",
+          "at": "2026-10-12T09:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "lead_318",
+      "business": "Halloran Fence Co.",
+      "contact": "Teri",
+      "phone": "(503) 555-0114",
+      "city": "Dunmore Heights",
+      "region": "Coast County",
+      "trade": "Fencing",
+      "score": 79,
+      "stage": "queued",
+      "callAttempts": 0,
+      "lastCallAgo": null,
+      "nextActionAt": null,
+      "followUp": "fresh",
+      "assignedTo": null,
+      "previewUrl": "https://example.com/previews/lead_318",
+      "gbpGap": null,
+      "notes": [],
+      "events": []
+    },
+    {
+      "id": "lead_309",
+      "business": "Brindle Junk Removal",
+      "contact": "Cal",
+      "phone": "(617) 555-0115",
+      "city": "Alder Bay",
+      "region": "Coast County",
+      "trade": "Junk removal",
+      "score": 76,
+      "stage": "queued",
+      "callAttempts": 1,
+      "lastCallAgo": "3d",
+      "nextActionAt": null,
+      "followUp": "fresh",
+      "assignedTo": "Rowan",
+      "previewUrl": "https://example.com/previews/lead_309",
+      "gbpGap": { "line": "Two reviews from last month have no reply." },
+      "notes": [
+        { "author": "Rowan", "ago": "3d", "body": "Gatekeeper said the owner is on jobs until 4." }
+      ],
+      "events": [
+        {
+          "actor": "Rowan",
+          "kind": "call",
+          "summary": "gatekeeper",
+          "ago": "3d",
+          "at": "2026-10-10T13:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "lead_331",
+      "business": "Cedar Loop Landscaping",
+      "contact": null,
+      "phone": "(206) 555-0116",
+      "city": "Port Marrow",
+      "region": "Coast County",
+      "trade": "Landscaping",
+      "score": 72,
+      "stage": "queued",
+      "callAttempts": 0,
+      "lastCallAgo": null,
+      "nextActionAt": null,
+      "followUp": "fresh",
+      "assignedTo": null,
+      "previewUrl": "https://example.com/previews/lead_331",
+      "gbpGap": null,
+      "notes": [],
+      "events": []
+    },
+    {
+      "id": "lead_338",
+      "business": "Northgate Gutter Care",
+      "contact": "Ines",
+      "phone": "(312) 555-0118",
+      "city": "Dunmore Heights",
+      "region": "Coast County",
+      "trade": "Gutters",
+      "score": 64,
+      "stage": "queued",
+      "callAttempts": 0,
+      "lastCallAgo": null,
+      "nextActionAt": null,
+      "followUp": "fresh",
+      "assignedTo": null,
+      "previewUrl": "https://example.com/previews/lead_338",
+      "gbpGap": null,
+      "notes": [],
+      "events": []
+    },
+    {
+      "id": "lead_290",
+      "business": "Marlow Paving",
+      "contact": "Gus",
+      "phone": "(404) 555-0117",
+      "city": "Kestrel Falls",
+      "region": "Coast County",
+      "trade": "Paving",
+      "score": 68,
+      "stage": "sent",
+      "callAttempts": 1,
+      "lastCallAgo": "5d",
+      "nextActionAt": null,
+      "followUp": "fresh",
+      "assignedTo": "Sam",
+      "previewUrl": "https://example.com/previews/lead_290",
+      "gbpGap": null,
+      "notes": [],
+      "events": [
+        {
+          "actor": "Sam",
+          "kind": "call",
+          "summary": "no answer",
+          "ago": "5d",
+          "at": "2026-10-08T12:00:00Z"
+        }
+      ]
+    }
+  ],
+  "states": {
+    "empty": {
+      "me": { "name": "Sam", "role": "partner" },
+      "filter": "all",
+      "outcomes": [
+        { "id": "no-answer", "label": "No answer" },
+        { "id": "voicemail", "label": "Voicemail" },
+        { "id": "gatekeeper", "label": "Gatekeeper" },
+        { "id": "callback", "label": "Callback" },
+        { "id": "interested", "label": "Interested" },
+        { "id": "not-interested", "label": "Not interested" },
+        { "id": "wrong-number", "label": "Wrong number" },
+        { "id": "meeting-booked", "label": "Meeting booked" }
+      ],
+      "followUps": [
+        { "id": "tomorrow", "label": "Tomorrow" },
+        { "id": "in-3-days", "label": "3 days" },
+        { "id": "next-week", "label": "Next week" },
+        { "id": "pick-date", "label": "Pick date" }
+      ],
+      "selectedLeadId": null,
+      "summary": { "total": 0, "toPitch": 0, "inPlay": 0, "dueToday": 0, "won": 0 },
+      "today": [],
+      "emptyReason": "Nothing due and no fresh leads. The queue refills when new leads are scored."
+    },
+    "loading": {
+      "note": "No data. Render the Today list as skeleton rows; the header and the filter are known."
+    },
+    "error": {
+      "me": { "name": "Sam", "role": "partner" },
+      "filter": "all",
+      "outcomes": [
+        { "id": "no-answer", "label": "No answer" },
+        { "id": "voicemail", "label": "Voicemail" },
+        { "id": "gatekeeper", "label": "Gatekeeper" },
+        { "id": "callback", "label": "Callback" },
+        { "id": "interested", "label": "Interested" },
+        { "id": "not-interested", "label": "Not interested" },
+        { "id": "wrong-number", "label": "Wrong number" },
+        { "id": "meeting-booked", "label": "Meeting booked" }
+      ],
+      "followUps": [
+        { "id": "tomorrow", "label": "Tomorrow" },
+        { "id": "in-3-days", "label": "3 days" },
+        { "id": "next-week", "label": "Next week" },
+        { "id": "pick-date", "label": "Pick date" }
+      ],
+      "selectedLeadId": "lead_287",
+      "summary": { "total": 8, "toPitch": 5, "inPlay": 3, "dueToday": 2, "won": 0 },
+      "today": [
+        {
+          "id": "lead_301",
+          "business": "Fernhill Lawn & Garden",
+          "contact": "Maya",
+          "phone": "(206) 555-0111",
+          "city": "Alder Bay",
+          "region": "Coast County",
+          "trade": "Landscaping",
+          "score": 91,
+          "stage": "sent",
+          "callAttempts": 2,
+          "lastCallAgo": "2d",
+          "nextActionAt": "2026-10-12T17:00:00Z",
+          "followUp": "overdue 1d",
+          "assignedTo": "Sam",
+          "previewUrl": "https://example.com/previews/lead_301",
+          "gbpGap": { "line": "Your Google listing has no photos from this year." },
+          "notes": [
+            {
+              "author": "Sam",
+              "ago": "2d",
+              "body": "Voicemail left. Maya texts back faster than she calls."
+            }
+          ],
+          "events": [
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "2d",
+              "at": "2026-10-11T16:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "no answer",
+              "ago": "4d",
+              "at": "2026-10-09T15:30:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "4d",
+              "at": "2026-10-09T15:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "lead_287",
+          "business": "Quarry Road Concrete",
+          "contact": "Dev",
+          "phone": "(312) 555-0112",
+          "city": "Port Marrow",
+          "region": "Coast County",
+          "trade": "Concrete",
+          "score": 84,
+          "stage": "replied",
+          "callAttempts": 3,
+          "lastCallAgo": "1d",
+          "nextActionAt": "2026-10-13T15:00:00Z",
+          "followUp": "due today",
+          "assignedTo": "Sam",
+          "previewUrl": "https://example.com/previews/lead_287",
+          "gbpGap": null,
+          "notes": [
+            {
+              "author": "Sam",
+              "ago": "1d",
+              "body": "Asked for the site link again; wants to see the mobile view."
+            }
+          ],
+          "events": [
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "callback",
+              "ago": "1d",
+              "at": "2026-10-12T14:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "follow_up",
+              "summary": "set for today 3pm",
+              "ago": "1d",
+              "at": "2026-10-12T14:01:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "stage",
+              "summary": "moved to replied",
+              "ago": "1d",
+              "at": "2026-10-12T14:02:00Z"
+            }
+          ]
+        },
+        {
+          "id": "lead_322",
+          "business": "Tidewater Pressure Washing",
+          "contact": null,
+          "phone": "(404) 555-0113",
+          "city": "Kestrel Falls",
+          "region": "Coast County",
+          "trade": "Pressure washing",
+          "score": 88,
+          "stage": "queued",
+          "callAttempts": 0,
+          "lastCallAgo": null,
+          "nextActionAt": null,
+          "followUp": "fresh",
+          "assignedTo": null,
+          "previewUrl": "https://example.com/previews/lead_322",
+          "gbpGap": { "line": "Hours are missing on your Google listing." },
+          "notes": [],
+          "events": [
+            {
+              "actor": "system",
+              "kind": "assign",
+              "summary": "added to the queue",
+              "ago": "1d",
+              "at": "2026-10-12T09:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "lead_318",
+          "business": "Halloran Fence Co.",
+          "contact": "Teri",
+          "phone": "(503) 555-0114",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "trade": "Fencing",
+          "score": 79,
+          "stage": "queued",
+          "callAttempts": 0,
+          "lastCallAgo": null,
+          "nextActionAt": null,
+          "followUp": "fresh",
+          "assignedTo": null,
+          "previewUrl": "https://example.com/previews/lead_318",
+          "gbpGap": null,
+          "notes": [],
+          "events": []
+        },
+        {
+          "id": "lead_309",
+          "business": "Brindle Junk Removal",
+          "contact": "Cal",
+          "phone": "(617) 555-0115",
+          "city": "Alder Bay",
+          "region": "Coast County",
+          "trade": "Junk removal",
+          "score": 76,
+          "stage": "queued",
+          "callAttempts": 1,
+          "lastCallAgo": "3d",
+          "nextActionAt": null,
+          "followUp": "fresh",
+          "assignedTo": "Rowan",
+          "previewUrl": "https://example.com/previews/lead_309",
+          "gbpGap": { "line": "Two reviews from last month have no reply." },
+          "notes": [
+            {
+              "author": "Rowan",
+              "ago": "3d",
+              "body": "Gatekeeper said the owner is on jobs until 4."
+            }
+          ],
+          "events": [
+            {
+              "actor": "Rowan",
+              "kind": "call",
+              "summary": "gatekeeper",
+              "ago": "3d",
+              "at": "2026-10-10T13:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "lead_331",
+          "business": "Cedar Loop Landscaping",
+          "contact": null,
+          "phone": "(206) 555-0116",
+          "city": "Port Marrow",
+          "region": "Coast County",
+          "trade": "Landscaping",
+          "score": 72,
+          "stage": "queued",
+          "callAttempts": 0,
+          "lastCallAgo": null,
+          "nextActionAt": null,
+          "followUp": "fresh",
+          "assignedTo": null,
+          "previewUrl": "https://example.com/previews/lead_331",
+          "gbpGap": null,
+          "notes": [],
+          "events": []
+        },
+        {
+          "id": "lead_338",
+          "business": "Northgate Gutter Care",
+          "contact": "Ines",
+          "phone": "(312) 555-0118",
+          "city": "Dunmore Heights",
+          "region": "Coast County",
+          "trade": "Gutters",
+          "score": 64,
+          "stage": "queued",
+          "callAttempts": 0,
+          "lastCallAgo": null,
+          "nextActionAt": null,
+          "followUp": "fresh",
+          "assignedTo": null,
+          "previewUrl": "https://example.com/previews/lead_338",
+          "gbpGap": null,
+          "notes": [],
+          "events": []
+        },
+        {
+          "id": "lead_290",
+          "business": "Marlow Paving",
+          "contact": "Gus",
+          "phone": "(404) 555-0117",
+          "city": "Kestrel Falls",
+          "region": "Coast County",
+          "trade": "Paving",
+          "score": 68,
+          "stage": "sent",
+          "callAttempts": 1,
+          "lastCallAgo": "5d",
+          "nextActionAt": null,
+          "followUp": "fresh",
+          "assignedTo": "Sam",
+          "previewUrl": "https://example.com/previews/lead_290",
+          "gbpGap": null,
+          "notes": [],
+          "events": [
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "no answer",
+              "ago": "5d",
+              "at": "2026-10-08T12:00:00Z"
+            }
+          ]
+        }
+      ],
+      "actionError": "Could not log the call: the network dropped. Nothing was lost. Tap Voicemail again to retry.",
+      "actionLeadId": "lead_287"
+    },
+    "longContent": {
+      "me": { "name": "Sam", "role": "partner" },
+      "filter": "all",
+      "outcomes": [
+        { "id": "no-answer", "label": "No answer" },
+        { "id": "voicemail", "label": "Voicemail" },
+        { "id": "gatekeeper", "label": "Gatekeeper" },
+        { "id": "callback", "label": "Callback" },
+        { "id": "interested", "label": "Interested" },
+        { "id": "not-interested", "label": "Not interested" },
+        { "id": "wrong-number", "label": "Wrong number" },
+        { "id": "meeting-booked", "label": "Meeting booked" }
+      ],
+      "followUps": [
+        { "id": "tomorrow", "label": "Tomorrow" },
+        { "id": "in-3-days", "label": "3 days" },
+        { "id": "next-week", "label": "Next week" },
+        { "id": "pick-date", "label": "Pick date" }
+      ],
+      "selectedLeadId": "lead_287",
+      "summary": { "total": 8, "toPitch": 5, "inPlay": 3, "dueToday": 2, "won": 0 },
+      "today": [
+        {
+          "id": "lead_301",
+          "business": "The Fernhill and Dunmore Heights Combined Lawn, Garden and Seasonal Planting Company (Residential and Commercial)",
+          "contact": "Maya",
+          "phone": "(206) 555-0111",
+          "city": "Alder Bay",
+          "region": "Coast County",
+          "trade": "Landscaping",
+          "score": 91,
+          "stage": "sent",
+          "callAttempts": 2,
+          "lastCallAgo": "2d",
+          "nextActionAt": "2026-10-12T17:00:00Z",
+          "followUp": "overdue 1d",
+          "assignedTo": "Sam",
+          "previewUrl": "https://example.com/previews/lead_301",
+          "gbpGap": { "line": "Your Google listing has no photos from this year." },
+          "notes": [
+            {
+              "author": "Sam",
+              "ago": "1d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Rowan",
+              "ago": "2d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Sam",
+              "ago": "3d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Rowan",
+              "ago": "4d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Sam",
+              "ago": "5d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Rowan",
+              "ago": "6d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            }
+          ],
+          "events": [
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "1d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "note",
+              "summary": "left a note",
+              "ago": "2d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "stage",
+              "summary": "moved to pitched",
+              "ago": "3d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "4d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "follow_up",
+              "summary": "set for next week",
+              "ago": "5d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "6d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "note",
+              "summary": "left a note",
+              "ago": "7d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "stage",
+              "summary": "moved to pitched",
+              "ago": "8d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "9d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "follow_up",
+              "summary": "set for next week",
+              "ago": "10d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "11d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "note",
+              "summary": "left a note",
+              "ago": "12d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "stage",
+              "summary": "moved to pitched",
+              "ago": "13d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "14d",
+              "at": "2026-10-01T09:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "lead_287",
+          "business": "Quarry Road Concrete",
+          "contact": "Dev",
+          "phone": "(312) 555-0112",
+          "city": "Port Marrow",
+          "region": "Coast County",
+          "trade": "Concrete",
+          "score": 84,
+          "stage": "replied",
+          "callAttempts": 3,
+          "lastCallAgo": "1d",
+          "nextActionAt": "2026-10-13T15:00:00Z",
+          "followUp": "due today",
+          "assignedTo": "Sam",
+          "previewUrl": "https://example.com/previews/lead_287",
+          "gbpGap": null,
+          "notes": [
+            {
+              "author": "Sam",
+              "ago": "1d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Rowan",
+              "ago": "2d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Sam",
+              "ago": "3d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Rowan",
+              "ago": "4d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Sam",
+              "ago": "5d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Rowan",
+              "ago": "6d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            }
+          ],
+          "events": [
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "1d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "note",
+              "summary": "left a note",
+              "ago": "2d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "stage",
+              "summary": "moved to pitched",
+              "ago": "3d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "4d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "follow_up",
+              "summary": "set for next week",
+              "ago": "5d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "6d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "note",
+              "summary": "left a note",
+              "ago": "7d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "stage",
+              "summary": "moved to pitched",
+              "ago": "8d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "9d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "follow_up",
+              "summary": "set for next week",
+              "ago": "10d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "11d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "note",
+              "summary": "left a note",
+              "ago": "12d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "stage",
+              "summary": "moved to pitched",
+              "ago": "13d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "14d",
+              "at": "2026-10-01T09:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "lead_322",
+          "business": "Tidewater Pressure Washing",
+          "contact": null,
+          "phone": "(404) 555-0113",
+          "city": "Kestrel Falls",
+          "region": "Coast County",
+          "trade": "Pressure washing",
+          "score": 88,
+          "stage": "queued",
+          "callAttempts": 0,
+          "lastCallAgo": null,
+          "nextActionAt": null,
+          "followUp": "fresh",
+          "assignedTo": null,
+          "previewUrl": "https://example.com/previews/lead_322",
+          "gbpGap": { "line": "Hours are missing on your Google listing." },
+          "notes": [
+            {
+              "author": "Sam",
+              "ago": "1d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Rowan",
+              "ago": "2d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Sam",
+              "ago": "3d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Rowan",
+              "ago": "4d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Sam",
+              "ago": "5d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            },
+            {
+              "author": "Rowan",
+              "ago": "6d",
+              "body": "Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet. Blocked on a reply from the billing contact, who is out until the 24th; the draft is ready in the shared folder and only needs a send, but the reminder emails were switched off during the migration and have not been re-enabled yet."
+            }
+          ],
+          "events": [
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "1d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "note",
+              "summary": "left a note",
+              "ago": "2d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "stage",
+              "summary": "moved to pitched",
+              "ago": "3d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "4d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "follow_up",
+              "summary": "set for next week",
+              "ago": "5d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "6d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "note",
+              "summary": "left a note",
+              "ago": "7d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "stage",
+              "summary": "moved to pitched",
+              "ago": "8d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "9d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "follow_up",
+              "summary": "set for next week",
+              "ago": "10d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "call",
+              "summary": "voicemail",
+              "ago": "11d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "note",
+              "summary": "left a note",
+              "ago": "12d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Sam",
+              "kind": "stage",
+              "summary": "moved to pitched",
+              "ago": "13d",
+              "at": "2026-10-01T09:00:00Z"
+            },
+            {
+              "actor": "Rowan",
+              "kind": "assign",
+              "summary": "claimed the lead",
+              "ago": "14d",
+              "at": "2026-10-01T09:00:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    "tokenFailure": {
+      "me": { "name": "Sam", "role": "partner" },
+      "filter": "all",
+      "outcomes": [
+        { "id": "no-answer", "label": "No answer" },
+        { "id": "voicemail", "label": "Voicemail" },
+        { "id": "gatekeeper", "label": "Gatekeeper" },
+        { "id": "callback", "label": "Callback" },
+        { "id": "interested", "label": "Interested" },
+        { "id": "not-interested", "label": "Not interested" },
+        { "id": "wrong-number", "label": "Wrong number" },
+        { "id": "meeting-booked", "label": "Meeting booked" }
+      ],
+      "followUps": [
+        { "id": "tomorrow", "label": "Tomorrow" },
+        { "id": "in-3-days", "label": "3 days" },
+        { "id": "next-week", "label": "Next week" },
+        { "id": "pick-date", "label": "Pick date" }
+      ],
+      "selectedLeadId": "lead_287",
+      "summary": { "total": 0, "toPitch": 0, "inPlay": 0, "dueToday": 0, "won": 0 },
+      "today": [],
+      "setupError": "The queue is unavailable: SUPABASE_SERVICE_ROLE_KEY is missing. Tell the owner; they set it in Vercel env vars (Production), then redeploy."
+    }
+  }
+}

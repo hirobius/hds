@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "f778f865d3783a7e5931b678eefd54849d1426e926b55e5ec614090000bb2afa",
-  "precommitStructureHashUpdatedAt": "2026-10-12T18:19:55.593Z",
+  "precommitStructureHash": "92571c87f415927db488422dc69ac4fd2a7de71e8949f473ed455a083d8b7876",
+  "precommitStructureHashUpdatedAt": "2026-10-14T04:31:42.037Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -1000,6 +1000,50 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "supportsJson": true
+    },
+    {
+      "id": "check-guardrail-drift",
+      "description": "Verifies the shared guardrail harness and skills tooling scripts this repo vendors from hirobius/ops match the sha256 pins in docs/guardrails/shared-manifest.json (a consumer subset of ops's canonical manifest, role \"consumer\": --write refuses here). Fails on drift or a missing file so a fix to a shared script cannot silently fail to reach this repo. Runs in pretest, so pre-push and CI (pnpm test) both fire it. Fixtures: fixtures/check-guardrail-drift/{passing,violating}.example.json (FIXTURE_FILE substitutes the manifest).",
+      "severity": "error",
+      "gateScript": "scripts/check-guardrail-drift.mjs",
+      "fixturePath": "fixtures/check-guardrail-drift",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-skills-lock",
+      "description": "Verifies every skill pinned in skills-lock.json is installed under .claude/skills/<id>/ and hash-matches the lock (ported from hirobius/ops, pinned in shared-manifest.json). Read-only, no network; run scripts/install-skills.mjs (pnpm skills:install) to fetch a missing or stale skill. Runs in pretest, so pre-push and CI (pnpm test) both fire it. Fixtures: fixtures/check-skills-lock/{passing,violating}.example.json (FIXTURE_FILE substitutes the lock; skills are read from beside it).",
+      "severity": "error",
+      "gateScript": "scripts/check-skills-lock.mjs",
+      "fixturePath": "fixtures/check-skills-lock",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-skill-content",
+      "description": "Scans every installed skill under .claude/skills for prompt injection, pipe-to-shell installs, secret exfiltration and hidden unicode (byte-identical copy of hirobius/ops scripts/check-skill-content.mjs). skills-lock.json proves the text is unchanged; this proves it is not hostile. Reviewed false positives live in docs/guardrails/skill-content-allowlist.json keyed on the exact text, so an edit re-fails. Runs in pretest. Fixtures: fixtures/check-skill-content/{passing,violating}.example.d/ (FIXTURE_DIR mini-root).",
+      "severity": "error",
+      "gateScript": "scripts/check-skill-content.mjs",
+      "fixturePath": "fixtures/check-skill-content",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-a11y-contracts",
+      "description": "Every interactive component (scripts/lib/a11y-interactive.mjs) states an accessibility contract as @a11y JSDoc tags that reach a11yRules in the manifest, component-api.json and the MCP get_component answer (hds#520). Lists every gap: E1 an interactive root with no rules, E2 a rule with no owner (component|consumer), E3 an owner:component rule whose a11y:<id> is not a literal in an active test (or whose gate:<id> is not in this registry), E4 a component in Overlays/Inputs/Navigation/Actions that nobody classified. Severity error since the family backfills landed with zero gaps: pre-commit runs it with --enforce, so any E1-E4 gap fails the commit (W1 orphan and W2 duplicate test ids only warn).",
+      "severity": "error",
+      "gateScript": "scripts/check-a11y-contracts.mjs",
+      "fixturePath": "fixtures/check-a11y-contracts",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"]
     }
   ]
 }

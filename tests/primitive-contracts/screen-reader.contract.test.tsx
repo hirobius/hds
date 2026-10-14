@@ -92,23 +92,34 @@ function SaveFixture() {
 }
 
 describe('Dialog screen-reader contract', () => {
-  it('reads the trigger, then the open dialog by its title and description', async () => {
+  async function readOpenDialog() {
     render(<DialogFixture />);
     await startReader();
     await press(screen.getByRole('button', { name: 'Open dialog' }), '{Enter}');
     await screen.findByRole('dialog');
     await next(4);
+    return virtual.spokenPhraseLog();
+  }
 
-    const log = await virtual.spokenPhraseLog();
+  it('a11y:dialog.trigger-haspopup - reads the trigger as collapsed with a dialog popup', async () => {
+    const log = await readOpenDialog();
     expect(log).toContain('button, Open dialog, not expanded, has popup dialog');
+  });
+
+  it('a11y:dialog.named-by-title - reads the open dialog by its title and description', async () => {
+    const log = await readOpenDialog();
     expect(log).toContain('dialog, Settings, Adjust things.');
-    expect(log).toContain('button, Close');
     expect(log).toContain('end of dialog, Settings, Adjust things.');
+  });
+
+  it('a11y:dialog.close-named - reads the built-in close button as "Close"', async () => {
+    const log = await readOpenDialog();
+    expect(log).toContain('button, Close');
   });
 });
 
 describe('Menu screen-reader contract', () => {
-  it('reads the open menu by its trigger, then each item with position and set size', async () => {
+  it('a11y:menu.named-by-trigger a11y:menu.item-position - reads the open menu by its trigger, then each item with position and set size', async () => {
     render(<MenuFixture />);
     await startReader();
     await press(screen.getByRole('button', { name: 'Actions' }), '{Enter}');
@@ -125,7 +136,7 @@ describe('Menu screen-reader contract', () => {
 });
 
 describe('Select screen-reader contract', () => {
-  it('reads the closed trigger as a collapsed combobox named by its label and value', async () => {
+  it('a11y:select.trigger-name-with-value - reads the closed trigger as a collapsed combobox named by its label and value', async () => {
     render(<SelectFixture />);
     await startReader();
     await next(3);
@@ -136,7 +147,7 @@ describe('Select screen-reader contract', () => {
     );
   });
 
-  it('reads the open options with the selected one marked, position and set size', async () => {
+  it('a11y:select.option-state-position - reads the open options with the selected one marked, position and set size', async () => {
     render(<SelectFixture />);
     await startReader();
     await press(screen.getByRole('combobox'), '{Enter}');
@@ -151,7 +162,7 @@ describe('Select screen-reader contract', () => {
 
   // With the label hidden, the trigger still carries the field label, not only
   // the value (hds#408).
-  it('reads the closed trigger with the field label when the label is hidden', async () => {
+  it('a11y:select.hidden-label-named - reads the closed trigger with the field label when the label is hidden', async () => {
     render(<SelectFixture showLabel={false} />);
     await startReader();
     await next(2);
@@ -164,7 +175,7 @@ describe('Select screen-reader contract', () => {
 
   // Radix Select Content names nothing itself: select.tsx labels the listbox
   // with the field label (hds#398).
-  it('names the open listbox by the field label', async () => {
+  it('a11y:select.listbox-named - names the open listbox by the field label', async () => {
     render(<SelectFixture />);
     await startReader();
     await press(screen.getByRole('combobox'), '{Enter}');
@@ -180,7 +191,7 @@ describe('Select screen-reader contract', () => {
 });
 
 describe('Combobox screen-reader contract', () => {
-  it('reads the closed trigger as a collapsed combobox with a listbox popup', async () => {
+  it('a11y:combobox.trigger-state - reads the closed trigger as a collapsed combobox with a listbox popup', async () => {
     render(<ComboboxFixture />);
     await startReader();
     await next(2);
@@ -189,7 +200,7 @@ describe('Combobox screen-reader contract', () => {
     expect(log).toContain('combobox, Fruit, has popup listbox, not expanded');
   });
 
-  it('reads the open search field and named listbox, and the trigger as expanded', async () => {
+  it('a11y:combobox.activedescendant - reads the open search field and named listbox, and the trigger as expanded', async () => {
     render(<ComboboxFixture />);
     await startReader();
     await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
@@ -209,7 +220,7 @@ describe('Combobox screen-reader contract', () => {
   // Each option's <li> is role="none", so the option's parent in the
   // accessibility tree is the listbox and the reader counts it among its
   // siblings, not alone in a list item (hds#407).
-  it('reads each open option with its real position and set size', async () => {
+  it('a11y:combobox.option-position - reads each open option with its real position and set size', async () => {
     render(<ComboboxFixture />);
     await startReader();
     await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
@@ -224,7 +235,7 @@ describe('Combobox screen-reader contract', () => {
 
   // The popover is Popover.Content, role="dialog": combobox.tsx names it with
   // the field label, so the reader does not enter an unnamed "dialog" (hds#399).
-  it('names the open popover dialog by the field label', async () => {
+  it('a11y:combobox.popover-named - names the open popover dialog by the field label', async () => {
     render(<ComboboxFixture />);
     await startReader();
     await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
@@ -238,7 +249,7 @@ describe('Combobox screen-reader contract', () => {
 });
 
 describe('Table screen-reader contract', () => {
-  it('reads the sorted column header with its sort state, and its sort button', async () => {
+  it('a11y:table.sorted-header a11y:table.sort-button-named - reads the sorted column header with its sort state, and its sort button', async () => {
     render(<Table columns={SORTED_COLUMNS} rows={ROWS} />);
     await startReader();
     await next(6);
@@ -251,7 +262,7 @@ describe('Table screen-reader contract', () => {
 });
 
 describe('Alert screen-reader contract', () => {
-  it('reads a rendered alert: the role, then its title and message', async () => {
+  it('a11y:alert.read-order - reads a rendered alert: the role, then its title and message', async () => {
     render(
       <Alert tone="danger" title="Not saved">
         Your changes were not saved.
@@ -271,7 +282,7 @@ describe('Alert screen-reader contract', () => {
     ]);
   });
 
-  it('announces an alert that appears after the page loaded, assertively', async () => {
+  it('a11y:alert.live-insert - announces an alert that appears after the page loaded, assertively', async () => {
     render(<SaveFixture />);
     await startReader();
     await press(screen.getByRole('button', { name: 'Save' }), '{Enter}');

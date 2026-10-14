@@ -73,7 +73,7 @@ describe('Select highlighted row ring', () => {
 });
 
 describe('Select label (a11y)', () => {
-  it('renders a real <label> wired to the trigger, so clicking it focuses the trigger', () => {
+  it('a11y:select.label-wired - renders a real <label> wired to the trigger, so clicking it focuses the trigger', () => {
     render(<Select label="Plan" value="pro" onChange={() => {}} options={OPTIONS} />);
     const label = screen.getByText('Plan');
     expect(label.tagName).toBe('LABEL');

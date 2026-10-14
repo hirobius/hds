@@ -16,6 +16,7 @@ export const PREVIEWED_COMPONENTS = [
   'Alert',
   'Avatar',
   'Badge',
+  'Board',
   'Box',
   'Breadcrumb',
   'Card',
