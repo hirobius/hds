@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-13T10:32:15.388Z",
+  "generated": "2026-10-14T03:02:50.834Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -9642,8 +9642,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -9757,8 +9757,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "alias": "{primitive.color.neutral.600}",
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -9777,7 +9777,7 @@
         "path": "semantic.color.border.subdued",
         "cssVar": "--semantic-color-border-subdued",
         "type": "color",
-        "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
+        "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
