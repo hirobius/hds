@@ -73,6 +73,9 @@ codemods/__fixtures__/
 # formatting them would change what the ledger entry measured.
 eval/consistency/runs/
 
+# Fleet lessons copy — vendored from hirobius/ops and pinned by sha256 in .claude/lessons/lessons.lock.json; formatting would break the hash
+.claude/lessons/
+
 # Vendored skills — pinned by sha256 in skills-lock.json; formatting would break the hash
 .claude/skills/
 .claude/references/
