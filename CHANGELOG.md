@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.26.1
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Nothing to do: dark secondary text is a new half-step lighter (neutral.350) so it reads on sunken surfaces; it stays visibly dimmer than primary text.
+- Looks different: MetricTiles now shows at most 2 columns at 640px and under, TabsList fades the edge that has hidden tabs, and Stack passes aria-\* and role through, so check any phone-width screenshot tests that include them.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0261).
+
+### Patch Changes
+
+- 32c7804: Dark `content.secondary` moves from neutral-400 to the new half-step primitive `neutral.350` (`#b4b4b4`), so secondary text clears WCAG AA (5.0:1) on `surface.sunken`, where it measured 4.11:1 (#730). It stays 1.9:1 below dark `content.primary`, so the text hierarchy holds. The contrast check now covers that pair, and a test pins the primary/secondary gap (#733).
+- 7584efb: TabsList fades the edge that has hidden tabs (`data-overflow`), MetricTiles caps at 2 columns at phone width (640px and under), and Stack forwards `aria-*` and `role` to its element.
+
 ## 0.26.0
 
 ### Upgrade
