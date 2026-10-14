@@ -203,6 +203,22 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - searchPlaceholder: string = Search…
   - value: string | readonly string[] | null
 
+### Composer
+Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer t…
+  - attachments: ComposerAttachment[]
+  - className: string
+  - defaultAttachments: ComposerAttachment[] = []
+  - defaultValue: string
+  - disabled: boolean = false
+  - label: string = Message
+  - onAttachmentsChange: ((attachments: ComposerAttachment[]) => void)
+  - onSubmit: ((submission: ComposerSubmission) => void)
+  - onValueChange: ((value: string) => void)
+  - pasteFoldThreshold: number = 500
+  - pending: boolean = false
+  - placeholder: string
+  - value: string
+
 ### Container
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
   - children: ReactNode

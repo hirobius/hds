@@ -8,7 +8,7 @@ Where each component lives in Figma, the docs site and source.
 
 Each component has one Figma source: `figmaUrl` in `public/hds-manifest.json`, which `pnpm manifest:generate` sets from the `@figma` tag in the component JSDoc. `pnpm figma:links` keeps this table current. The Figma-side links (dev resources and component descriptions) exist only once someone runs their steps in [`figma/README.md`](../figma/README.md).
 
-**56 of 102** components link a Figma node.
+**56 of 103** components link a Figma node.
 
 | Component            | Figma node                                                                                             | Docs                                                                                                               | Source                                                                   |
 | -------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |

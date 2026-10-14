@@ -162,6 +162,7 @@ CardRow: Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lin
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
+Composer: Capture a prompt or a quick note where a long paste should not flood the field. Use instead: Textarea
 Container: [core] Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
 DataTableSection: Put a heading and toolbar above a Table.
 DestructiveSection: Put a dangerous action, such as delete, in its own section with a warning and a confirm step.
@@ -808,6 +809,22 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
   - value: string | readonly string[] | null
+
+### Composer
+Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer t…
+  - attachments: ComposerAttachment[]
+  - className: string
+  - defaultAttachments: ComposerAttachment[] = []
+  - defaultValue: string
+  - disabled: boolean = false
+  - label: string = Message
+  - onAttachmentsChange: ((attachments: ComposerAttachment[]) => void)
+  - onSubmit: ((submission: ComposerSubmission) => void)
+  - onValueChange: ((value: string) => void)
+  - pasteFoldThreshold: number = 500
+  - pending: boolean = false
+  - placeholder: string
+  - value: string
 
 ### Container
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…

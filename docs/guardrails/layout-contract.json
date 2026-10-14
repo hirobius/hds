@@ -191,6 +191,13 @@
       "probe": true,
       "maxWidth": "40rem"
     },
+    "Composer": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "Container": {
       "width": "fill",
       "height": "hug",
