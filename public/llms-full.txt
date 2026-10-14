@@ -1201,6 +1201,7 @@ Stack — one-dimensional layout primitive.
   - direction: "row" | "column" = column
   - gap: "tight" | "normal" | "inset" | "spacious" | "gap" | "medium" | "hairline" | "xs… = tight
   - justify: 'start' | 'center' | 'end' | 'space-between'
+  - role: AriaRole
   - style: CSSProperties
   - wrap: FlexWrap
 
@@ -1262,7 +1263,7 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline p
   - value: string
 
 ### TabsList
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
+The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look absent. The …
   - asChild: boolean
   - loop: boolean
 

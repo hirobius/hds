@@ -15,7 +15,8 @@
  * Overflow:
  *   TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`)
  *   for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar
- *   chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's
+ *   chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the
+ *   edge that has hidden tabs (`data-overflow`). The trigger's
  *   focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn
  *   outside the list box (an outer ring was cut on the first/last tab).
  *
@@ -23,6 +24,7 @@
  * @tier primitive
  */
 
+import * as React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cn } from '../../lib/utils';
 
@@ -47,9 +49,72 @@ import { cn } from '../../lib/utils';
  */
 export const Tabs = TabsPrimitive.Root;
 
-export function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
+/** Which edges of the strip have tabs scrolled out of view. */
+type TabsOverflow = 'start' | 'end' | 'both' | undefined;
+
+function measureOverflow(el: HTMLElement): TabsOverflow {
+  const hiddenStart = el.scrollLeft > 1;
+  const hiddenEnd = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
+  if (hiddenStart && hiddenEnd) return 'both';
+  if (hiddenStart) return 'start';
+  if (hiddenEnd) return 'end';
+  return undefined;
+}
+
+const FADE = 'var(--semantic-space-scale-lg)';
+
+/** Mask that fades the edge(s) with hidden tabs, one fade width (scale.lg) deep. Inline, so it costs no CSS. */
+function fadeStyle(overflow: TabsOverflow): React.CSSProperties | undefined {
+  if (!overflow) return undefined;
+  const start = overflow === 'end' ? '0px' : FADE;
+  const end = overflow === 'start' ? '0px' : FADE;
+  const mask = `linear-gradient(90deg,transparent,currentColor ${start},currentColor calc(100% - ${end}),transparent)`;
+  return { maskImage: mask, WebkitMaskImage: mask };
+}
+
+/**
+ * The tab strip. When tabs scroll out of view it fades the hidden edge
+ * (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look
+ * absent. The fade is a mask, so it needs no colour and holds in light and dark.
+ */
+export const TabsList = /* @__PURE__ */ React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.List>,
+  React.ComponentProps<typeof TabsPrimitive.List>
+>(function TabsList({ className, onScroll, style, ...props }, forwardedRef) {
+  const innerRef = React.useRef<HTMLDivElement | null>(null);
+  const [overflow, setOverflow] = React.useState<TabsOverflow>(undefined);
+
+  const setRefs = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      innerRef.current = node;
+      if (typeof forwardedRef === 'function') forwardedRef(node);
+      else if (forwardedRef) forwardedRef.current = node;
+    },
+    [forwardedRef],
+  );
+
+  const update = React.useCallback(() => {
+    if (innerRef.current) setOverflow(measureOverflow(innerRef.current));
+  }, []);
+
+  React.useEffect(() => {
+    update();
+    const el = innerRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [update]);
+
   return (
     <TabsPrimitive.List
+      ref={setRefs}
+      data-overflow={overflow}
+      style={{ ...fadeStyle(overflow), ...style }}
+      onScroll={(event) => {
+        update();
+        onScroll?.(event);
+      }}
       className={cn(
         'flex h-10 items-center gap-6 overflow-x-auto whitespace-nowrap',
         'border-b border-border/40 mb-6',
@@ -59,7 +124,7 @@ export function TabsList({ className, ...props }: React.ComponentProps<typeof Ta
       {...props}
     />
   );
-}
+});
 
 export function TabsTrigger({
   className,
