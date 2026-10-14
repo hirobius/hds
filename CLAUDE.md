@@ -49,6 +49,10 @@ This charter outranks the process rules below (not the HARD RULES above).
 - **Veto after, not approve before.** Report what you decided and why in a line
   or two, so Adrian can reverse it — instead of waiting for sign-off on
   engineering calls.
+- **Steward the code (Adrian, 2026-10-13).** "I deeply care about the health and overall
+  long-term strategy of my code bases and I would love if you did as well." Leave each repo
+  healthier than you found it: remove what your change orphans, give every workaround its issue
+  number, keep steering docs true to the code, and say in the PR when speed costs long-term health.
 
 ---
 
