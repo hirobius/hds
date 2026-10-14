@@ -13,13 +13,13 @@
  *   node scripts/build-adr-index.mjs --check   # exit 1 when it is stale
  */
 
-import { readFileSync, readdirSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { runGenerator } from './lib/generated-check.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ADR_DIR = join(ROOT, 'docs/adr');
-const INDEX = join(ADR_DIR, 'README.md');
 const ADR_FILE = /^(\d{3})-.+\.md$/;
 
 /** Number, title, status word, decision date and retroactive flag of one ADR. */
@@ -74,21 +74,13 @@ export function renderIndex(adrs) {
   ].join('\n');
 }
 
-function main() {
-  const next = renderIndex(readAdrs());
-  if (process.argv.includes('--check')) {
-    const current = existsSync(INDEX) ? readFileSync(INDEX, 'utf8') : '';
-    if (current !== next) {
-      console.error('docs/adr/README.md is stale. Run: node scripts/build-adr-index.mjs');
-      process.exit(1);
-    }
-    console.log('docs/adr/README.md is current.');
-    return;
-  }
-  writeFileSync(INDEX, next);
-  console.log(
-    `Wrote docs/adr/README.md (${next.split('\n').filter((l) => l.startsWith('| [')).length} ADRs).`,
-  );
+async function main() {
+  await runGenerator({
+    root: ROOT,
+    outputs: { 'docs/adr/README.md': renderIndex(readAdrs()) },
+    label: 'build-adr-index',
+    fix: 'node scripts/build-adr-index.mjs',
+  });
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) main();
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) await main();

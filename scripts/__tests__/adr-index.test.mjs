@@ -12,6 +12,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { formatCommitted } from '../lib/write-generated.mjs';
 import { parseAdr, renderIndex, readAdrs } from '../build-adr-index.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -81,8 +82,12 @@ describe('ADR numbering', () => {
 });
 
 describe('docs/adr/README.md', () => {
-  it('matches the generator output (run: node scripts/build-adr-index.mjs)', () => {
+  it('matches the generator output (run: node scripts/build-adr-index.mjs)', async () => {
     const committed = readFileSync(join(ROOT, 'docs/adr/README.md'), 'utf8');
-    expect(committed).toBe(renderIndex(readAdrs(join(ROOT, 'docs/adr'))));
+    const expected = await formatCommitted(
+      'docs/adr/README.md',
+      renderIndex(readAdrs(join(ROOT, 'docs/adr'))),
+    );
+    expect(committed).toBe(expected);
   });
 });
