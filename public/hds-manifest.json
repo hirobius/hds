@@ -127,6 +127,8 @@
     "Tag",
     "Text",
     "Textarea",
+    "Timeline",
+    "TimelineItem",
     "Timestamp",
     "ToastProvider",
     "Toggle",
@@ -409,6 +411,7 @@
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/text.tsx",
+        "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
       ],
       "tokenMapping": {
@@ -781,7 +784,9 @@
       },
       "consumers": [
         "src/app/components/disclosure.test.tsx",
-        "src/app/components/tabs.tsx"
+        "src/app/components/tabs.tsx",
+        "src/app/components/timeline.test.tsx",
+        "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
@@ -1347,6 +1352,7 @@
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
+        "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
       ],
       "tokenMapping": {
@@ -2227,6 +2233,7 @@
         "src/app/components/surface.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/table.tsx",
+        "src/app/components/timeline.tsx",
         "src/app/components/tooltip.tsx",
         "src/index.ts"
       ],
@@ -3317,6 +3324,7 @@
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
         "src/app/components/text.test.tsx",
+        "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts"
@@ -4350,7 +4358,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/status-tile.tsx"
+        "src/app/components/status-tile.tsx",
+        "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7025,6 +7034,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/timeline.tsx",
         "src/app/components/timestamp.test.tsx"
       ],
       "tokenMapping": {},
@@ -7126,7 +7136,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/metadata-list.test.tsx"
+        "src/app/components/metadata-list.test.tsx",
+        "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -9790,6 +9801,140 @@
           }
         ]
       }
+    },
+    "Timeline": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/timeline.tsx",
+      "description": "The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Timeline",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/timeline.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "locale": {
+          "type": "string",
+          "optional": true
+        },
+        "order": {
+          "type": "enum",
+          "values": [
+            "desc",
+            "asc"
+          ],
+          "default": "desc"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Show a dated history of events, such as shipped releases or client activity, grouped under day headings.",
+        "whenNot": "A list with no dates, or steps someone completes in order.",
+        "useInstead": [
+          {
+            "component": "MetadataList",
+            "reason": "term and value pairs about one object"
+          },
+          {
+            "component": "StatusListItem",
+            "reason": "a status list with no time axis"
+          }
+        ]
+      },
+      "aiRules": "Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only."
+    },
+    "TimelineItem": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/timeline.tsx",
+      "description": "One event on a Timeline. Render it only as a child of Timeline.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "TimelineItem",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/timeline.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "date": {
+          "type": "string | number | Date"
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "optional": true
+        },
+        "icon": {
+          "type": "LucideIcon",
+          "optional": true
+        },
+        "locale": {
+          "type": "string",
+          "optional": true
+        },
+        "title": {
+          "type": "ReactNode"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
     },
     "HdsPhosphor": {
       "category": "Compiler",
