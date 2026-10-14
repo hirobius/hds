@@ -55,11 +55,18 @@
  * The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes
  * from whitespace/dividers, not an edge. A resting 1px border is opt-in via
  * `bordered` (border.default), a feedback `tone`, or `accent` (border.accent).
- * Elevation tokens are not bound by default — pass `className="shadow-..."` for
- * a hover/floating treatment on interactive cards.
+ * Elevation tokens are not bound by default. `asChild` makes the whole card one
+ * link or button (its child element, e.g. `<a href>` or a router `Link`): it
+ * gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)`
+ * and a lift to `elevation.raised`, with no transform under reduced motion.
+ *
+ *   <Card asChild>
+ *     <a href="/ops/leads"><Card.Title>Leads</Card.Title></a>
+ *   </Card>
  */
 
 import * as React from 'react';
+import { Slot } from '@radix-ui/react-slot';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
@@ -165,6 +172,15 @@ const cardVariants = /* @__PURE__ */ cva('flex flex-col rounded-lg bg-card text-
 const SELECTABLE_CARD =
   'cursor-pointer hds-focus data-[selected=true]:ring-2 data-[selected=true]:ring-inset data-[selected=true]:ring-ring';
 
+// `asChild`: the card is one link or button. The DESIGN.md interactive-card
+// hover — `scale(1.02)` plus the `elevation.raised` shadow, never a fill or
+// border change — and no transform under reduced motion. Tailwind 4's
+// `scale-*` sets the CSS `scale` property, not `transform`, so that is the
+// property to transition. `no-underline` and `text-inherit` keep a link child
+// reading as a card, not as link text.
+const INTERACTIVE_CARD =
+  'hds-focus no-underline text-inherit transition-[scale,box-shadow] duration-150 hover:scale-102 hover:shadow-[var(--semantic-elevation-raised-shadow)] motion-reduce:transition-none motion-reduce:hover:scale-100';
+
 // A click on a control inside a selectable card belongs to that control, the
 // same rule as Space typed into a nested field.
 const NESTED_CONTROL =
@@ -204,6 +220,10 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   selected?: boolean;
   /** Called with the next selected state when a selectable card is toggled. */
   onSelectedChange?: (selected: boolean) => void;
+  /** Render the card as its one child element (an `<a href>`, a router `Link`, a
+   *  `<button>`) so the whole card is that link or button, with the
+   *  interactive-card hover and focus ring. Wins over `selectable`, which is ignored. */
+  asChild?: boolean;
 }
 
 interface CardComponent extends React.ForwardRefExoticComponent<
@@ -235,12 +255,13 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
     selectable = false,
     selected = false,
     onSelectedChange,
+    asChild = false,
     children,
     ...rest
   },
   ref,
 ) {
-  const Comp = (as ?? 'div') as React.ElementType;
+  const Comp = (asChild ? Slot : (as ?? 'div')) as React.ElementType;
   const resolvedPadding = noPadding ? 'none' : padding;
   const paddingValue = resolvePaddingValue(resolvedPadding);
   // The accent variant's 2px border is 1px thicker per side than the default's 1px; take that 1px off the
@@ -252,7 +273,10 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
   const gapValue = resolvedPadding === 'none' ? '0' : resolveSpacingValue(gap, CARD_GAP);
   // Controlled only, like the other selection controls: the card reports the
   // next state and the page decides it.
-  const selectableProps = selectable
+  // A link or button card is navigation or an action, never a checkbox: `asChild` wins and
+  // `selectable` is ignored (role, tabindex and handlers on a link would break it).
+  const isSelectable = selectable && !asChild;
+  const selectableProps = isSelectable
     ? {
         role: 'checkbox',
         'aria-checked': selected,
@@ -280,9 +304,11 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
       data-variant={variant}
       data-tone={tone}
       data-bordered={bordered ? 'true' : 'false'}
+      data-interactive={asChild ? 'true' : undefined}
       className={cn(
         cardVariants({ variant, tone, bordered }),
-        selectable && SELECTABLE_CARD,
+        isSelectable && SELECTABLE_CARD,
+        asChild && INTERACTIVE_CARD,
         className,
       )}
       // inline-ok: token-driven padding/gap legacy contract (not a variant-contract axis)
@@ -294,9 +320,20 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
       {...rest}
       {...selectableProps}
     >
-      <CardPaddedContext.Provider value={resolvedPadding !== 'none'}>
-        {children}
-      </CardPaddedContext.Provider>
+      {asChild && React.isValidElement<{ children?: React.ReactNode }>(children) ? (
+        // Slot clones its only child, so the context goes inside that child, not around it.
+        React.cloneElement(
+          children,
+          undefined,
+          <CardPaddedContext.Provider value={resolvedPadding !== 'none'}>
+            {children.props.children}
+          </CardPaddedContext.Provider>,
+        )
+      ) : (
+        <CardPaddedContext.Provider value={resolvedPadding !== 'none'}>
+          {children}
+        </CardPaddedContext.Provider>
+      )}
     </Comp>
   );
 });

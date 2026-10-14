@@ -43,6 +43,12 @@ describe('./icons subpath', () => {
     }
   });
 
+  it('carries the app icons the fleet reaches for (ops home tiles, the call sheet)', () => {
+    for (const name of ['Phone', 'Users', 'Briefcase', 'Wrench', 'ArrowUpRight', 'Images']) {
+      expect(exportNames).toContain(name);
+    }
+  });
+
   it('manifest iconSet.names equals the sorted export names', () => {
     const manifest = JSON.parse(read('public/hds-manifest.json'));
     expect(manifest.iconSet.subpath).toBe('@hirobius/design-system/icons');

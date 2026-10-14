@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "To make a whole card one link, wrap the link in Card asChild instead of putting a Card inside an <a>; PageHeader takes a description line, and the icons subpath adds ArrowUpRight, Briefcase, Images, Phone, Users and Wrench."
+}

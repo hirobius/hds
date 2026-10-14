@@ -61,7 +61,7 @@ import {
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
-import { CircleCheck, Copy, Search, Star } from '@hirobius/design-system/icons';
+import { ArrowRight, CircleCheck, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
 import {
   AssetImg,
   CodeBlock,
@@ -352,6 +352,21 @@ function CardDemo() {
           <Card.RowTitle>Figma sync</Card.RowTitle>
           <Card.RowNote>Last run 2 hours ago</Card.RowNote>
         </Card.Row>
+      </Card>
+      {/* asChild: the whole card is one link, with the interactive hover. */}
+      <Card asChild padding="item">
+        <a href="#card">
+          <Stack direction="row" gap="tight" justify="space-between" align="center">
+            <Users size={18} aria-hidden="true" />
+            <ArrowRight size={14} aria-hidden="true" />
+          </Stack>
+          <Text variant="titleSm" as="span">
+            Leads
+          </Text>
+          <Text variant="ui" as="span" className="text-muted-foreground">
+            Find businesses and build sites
+          </Text>
+        </a>
       </Card>
     </Stack>
   );
@@ -706,6 +721,7 @@ function PageHeaderDemo() {
       level={2}
       breadcrumb={<Breadcrumb items={[{ label: 'Clients', href: '#' }, { label: 'Acme Co' }]} />}
       title="Acme Co"
+      description="Brand refresh and the spring campaign site."
       status={<Badge tone="success">Active</Badge>}
       actions={
         <>
