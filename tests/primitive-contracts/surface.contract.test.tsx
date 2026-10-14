@@ -1,7 +1,7 @@
 /**
  * Contract test: Surface
  * Verifies that Surface renders the expected data attributes and the CVA
- * padding utility class (p-0 / p-[16px]) for each padding option.
+ * padding utility class (p-0 / p-[var(--primitive-space-4)]) for each padding option.
  * ThemeContext has a default value so no Provider is needed.
  *
  * @primitive Surface
@@ -53,10 +53,10 @@ describe('Surface contract', () => {
     expect(el.classList.contains('p-0')).toBe(true);
   });
 
-  it('padding="px16" applies the p-[16px] class', () => {
+  it('padding="px16" applies the 16px primitive-space-4 class', () => {
     const { container } = render(<Surface padding="px16">Content</Surface>);
     const el = container.firstChild as HTMLElement;
-    expect(el.classList.contains('p-[16px]')).toBe(true);
+    expect(el.classList.contains('p-[var(--primitive-space-4)]')).toBe(true);
   });
 
   it('as prop changes the rendered element', () => {

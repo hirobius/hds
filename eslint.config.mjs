@@ -128,12 +128,13 @@ export default [
       // --- tailwindcss rules -------------------------------------------
       // Replaces check-tailwind-arbitrary.mjs (116 LOC) + check-tailwind-colors.mjs (120 LOC).
       // no-arbitrary-value: catches bg-[#hex], text-[14px], p-[1.25rem] in class strings.
-      //   CSS var bracket syntax (bg-[var(--...)]) is exempt — those are semantic tokens.
-      //   Exemption: eslint-disable-next-line tailwindcss/no-arbitrary-value (replaces // tw-ok:)
+      //   An error since 2026-10-14: a literal value (bg-[#hex], p-[16px]) fails the build.
+      //   The plugin does not exempt token brackets (bg-[var(--...)]); a line that needs one
+      //   carries eslint-disable-next-line tailwindcss/no-arbitrary-value with a reason.
       // no-custom-classname: catches text-zinc-400, bg-gray-100 Tailwind default palette classes.
       //   HDS custom classes (hds-*, skip-link) are whitelisted via cssFiles pointing at the
       //   project CSS where they're defined.
-      'tailwindcss/no-arbitrary-value': 'warn',
+      'tailwindcss/no-arbitrary-value': 'error',
       'tailwindcss/no-custom-classname': [
         'warn',
         {
