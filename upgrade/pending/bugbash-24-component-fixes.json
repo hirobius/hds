@@ -77,6 +77,34 @@
         "cssVars": ["--component-badge-radius"],
         "cssVarWrites": ["--component-badge-radius"]
       }
+    },
+    {
+      "id": "value-changed/--semantic-color-border-default",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do: in dark mode the default border is one step lighter (neutral-600), so card and input edges read against the page; light mode is unchanged.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-default"],
+        "cssVarWrites": ["--semantic-color-border-default"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-default:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-default:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-sunken",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do: in dark mode the sunken surface is one step lighter (neutral-700), so inset wells and the highlighted menu, select and combobox item stand out from the overlay; light mode is unchanged.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-sunken"],
+        "cssVarWrites": ["--semantic-color-surface-sunken"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=dark]"
+      ]
     }
   ]
 }

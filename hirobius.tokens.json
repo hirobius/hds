@@ -1263,7 +1263,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.200}",
-                "Dark": "{primitive.color.neutral.800}"
+                "Dark": "{primitive.color.neutral.700}"
               }
             }
           }
@@ -1382,7 +1382,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.200}",
-                "Dark": "{primitive.color.neutral.700}"
+                "Dark": "{primitive.color.neutral.600}"
               }
             }
           }
@@ -1401,8 +1401,8 @@
         },
         "subdued": {
           "$value": "{primitive.color.neutral.200}",
-          "$description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
-          "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.700 vs 800)",
+          "$description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
+          "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
