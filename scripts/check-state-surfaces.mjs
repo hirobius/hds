@@ -220,10 +220,25 @@ export function derivedFacts(line) {
 }
 
 /**
+ * True when a script's source imports runGenerator from the shared generator
+ * runner (scripts/lib/generated-check.mjs) and calls it. The runner reads
+ * --check itself, so such a script handles the flag without naming it (hds#644).
+ * @param {string} source
+ */
+export function usesGeneratorRunner(source) {
+  return (
+    /import\s*\{[^}]*\brunGenerator\b[^}]*\}\s*from\s*['"][^'"]*\/generated-check\.mjs['"]/.test(
+      source,
+    ) && /\brunGenerator\(/.test(source)
+  );
+}
+
+/**
  * What is wrong with a generated surface's `check` command, or null. The gate
  * cannot run every check (that is pretest's job), so it verifies statically
  * that the command is real: a node script that exists and, when the command
- * passes --check, one whose source handles that flag.
+ * passes --check, one whose source handles that flag (or hands it to
+ * runGenerator, which does).
  */
 function checkProblem(root, check) {
   const m = /^node\s+(\S+)((?:\s+\S+)*)\s*$/.exec(String(check).trim());
@@ -234,9 +249,11 @@ function checkProblem(root, check) {
   if (!existsSync(join(root, script))) {
     return `"check" runs ${script}, which does not exist`;
   }
+  const source = readFileSync(join(root, script), 'utf8');
   if (
     rest.split(/\s+/).includes('--check') &&
-    !/['"`]--check['"`]/.test(readFileSync(join(root, script), 'utf8'))
+    !/['"`]--check['"`]/.test(source) &&
+    !usesGeneratorRunner(source)
   ) {
     return `"check" passes --check to ${script}, whose source does not handle --check (a generator with no --check proves nothing; add one, or name a real checker)`;
   }

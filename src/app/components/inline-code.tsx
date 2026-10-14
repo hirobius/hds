@@ -3,6 +3,11 @@
  * @category Display
  * @tier primitive
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155
+ * @a11y component required a11y:inline-code.copy-name With copyable, the copy button is a named button and is renamed Copied once it has copied.
+ * @a11y component required a11y:inline-code.keyboard Tab reaches the copy button and Enter and Space copy.
+ * @a11y component required a11y:inline-code.copy-status Copying is announced from a polite status region that is mounted before the change.
+ * @a11y component required a11y:inline-code.target-size The copy button is the small Button, 32px, over the 24px floor (WCAG 2.5.8).
+ * @a11y consumer recommended Pass a string child when copyable; the text copied is the child.
  */
 // motion-ok: copy feedback is handled by the nested icon-only Button, while the inline code chip stays visually stable inside prose and tables
 import { useState } from 'react';
@@ -102,6 +107,9 @@ export function InlineCode({
         display: 'inline-flex',
         alignItems: 'center',
         gap: hds.semantic.space.subgrid.gap,
+        // The 44px touch target overflows this one-line box (centred) instead of stretching the text
+        // line around it: a two-line paragraph was 72px tall at 390 (bug bash 24, item 20).
+        blockSize: '1lh',
         ...style,
       }}
     >
@@ -115,6 +123,10 @@ export function InlineCode({
         iconLeft={<Icon icon={copied ? Check : Copy} size="small" />}
       />
       {codeEl}
+      {/* Polite live region, always mounted: a region added with its text in it is not announced (4.1.3). */}
+      <span role="status" className="sr-only">
+        {copied ? 'Copied to clipboard' : ''}
+      </span>
     </span>
   );
 }

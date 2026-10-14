@@ -4,7 +4,7 @@
  * Hirobius Design System — Token Build Script
  *
  * Compiles hirobius.tokens.json (W3C DTCG 2025.10) into:
- *   src/styles/tokens.css                       — CSS custom properties
+ *   src/styles/tokens.generated.css             — CSS custom properties
  *   src/app/design-system/generated-tokens.ts   — TypeScript constants
  *
  * Run: node scripts/build-tokens.mjs
@@ -22,10 +22,17 @@ import { readModes } from './lib/token-modes.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
 import { darkAliasReemissions } from './lib/dark-alias-reemit.mjs';
+import { DTCG_KEYS, resolveAlias, walkTokens } from './lib/token-tree.mjs';
+
+// Re-exported for the ~16 importers of this module (one release; then import token-tree).
+export { DTCG_KEYS, resolveAlias, walkTokens };
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SYSTEM_MANIFEST = JSON.parse(readFileSync(join(ROOT, 'public', 'hds-manifest.json'), 'utf8'));
+
+/** The previous build's manifest (its own output). Read lazily, never at import. */
+const readSystemManifest = () =>
+  JSON.parse(readFileSync(join(ROOT, 'public', 'hds-manifest.json'), 'utf8'));
 
 // ── Path → CSS var ───────────────────────────────────────────────────────────
 /** ['primitive','color','neutral','white'] → '--primitive-color-neutral-white' */
@@ -34,22 +41,6 @@ export const pathToCSSVar = (parts) => '--' + parts.join('-');
 /** '{primitive.color.neutral.white}' → 'var(--primitive-color-neutral-white)' */
 export const aliasToCSSVar = (alias) =>
   `var(${pathToCSSVar(alias.replace(/^\{|\}$/g, '').split('.'))})`;
-
-// ── Alias resolver ───────────────────────────────────────────────────────────
-/** Recursively resolves a {ref} alias to its raw $value. */
-export function resolveAlias(ref, root, visited = new Set()) {
-  if (typeof ref !== 'string' || !ref.startsWith('{')) return ref;
-  if (visited.has(ref)) throw new Error(`Circular reference: ${ref}`);
-  visited.add(ref);
-  const parts = ref.replace(/^\{|\}$/g, '').split('.');
-  let node = root;
-  for (const p of parts) {
-    node = node?.[p];
-    if (node === undefined) throw new Error(`Token not found: ${ref}`);
-  }
-  if (!('$value' in node)) throw new Error(`Not a leaf token: ${ref}`);
-  return resolveAlias(node.$value, root, visited);
-}
 
 // ── Value → CSS string ───────────────────────────────────────────────────────
 export function colorToCSS(val) {
@@ -158,40 +149,6 @@ export function valueToCSS(val, type, preserveAlias, root = null) {
       return shadowToCSS(val);
     default:
       return String(val);
-  }
-}
-
-// ── Tree walker ──────────────────────────────────────────────────────────────
-export const DTCG_KEYS = new Set([
-  '$type',
-  '$value',
-  '$description',
-  '$extensions',
-  '$schema',
-  '$deprecated',
-]);
-
-/**
- * Generator: walks the token tree yielding leaf token descriptors.
- * Handles group-level $type inheritance (nearest ancestor wins).
- */
-export function* walkTokens(node, path = [], inheritedType = null) {
-  if (!node || typeof node !== 'object') return;
-  const type = node.$type || inheritedType;
-  if ('$value' in node) {
-    yield {
-      path,
-      type,
-      value: node.$value,
-      extensions: node.$extensions,
-      description: node.$description,
-      deprecated: node.$deprecated,
-    };
-    return;
-  }
-  for (const key of Object.keys(node)) {
-    if (DTCG_KEYS.has(key)) continue;
-    yield* walkTokens(node[key], [...path, key], type);
   }
 }
 
@@ -672,9 +629,9 @@ export function validateTokens(raw) {
 /**
  * Builds public/hds-manifest.json — a machine-readable snapshot of the full
  * token system for AI agents and LLMs building with or on top of HDS.
- * Auto-generated on every `pnpm tokens` run alongside tokens.css.
+ * Auto-generated on every `pnpm tokens` run alongside tokens.generated.css.
  */
-export function buildManifest(allTokens, raw) {
+export function buildManifest(allTokens, raw, systemManifest = readSystemManifest()) {
   const resolveValue = (val, type) => {
     if (typeof val === 'string' && val.startsWith('{')) {
       try {
@@ -695,9 +652,9 @@ export function buildManifest(allTokens, raw) {
     ? fontFamRaw[0]
     : String(fontFamRaw ?? 'Plus Jakarta Sans');
   const componentSpecs = {
-    ...(SYSTEM_MANIFEST.componentSpecs ?? {}),
+    ...(systemManifest.componentSpecs ?? {}),
     Button: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Button ?? {}),
+      ...(systemManifest.componentSpecs?.Button ?? {}),
       sourcePath: 'src/app/components/button.tsx',
       sourceExport: 'Button',
       // No `props` here (hds#390). enrich-manifest owns every spec's props and
@@ -758,7 +715,7 @@ export function buildManifest(allTokens, raw) {
       states: ['default', 'hover', 'focus', 'active', 'disabled', 'loading'],
     },
     Card: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Card ?? {}),
+      ...(systemManifest.componentSpecs?.Card ?? {}),
       sourcePath: 'src/app/components/Card.tsx',
       sourceExport: 'Card',
       // No `props` here: enrich-manifest owns them (hds#390, see Button).
@@ -780,7 +737,7 @@ export function buildManifest(allTokens, raw) {
       states: ['default'],
     },
     Input: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Input ?? {}),
+      ...(systemManifest.componentSpecs?.Input ?? {}),
       sourcePath: 'src/app/components/Input.tsx',
       sourceExport: 'Input',
       // No `props` here: enrich-manifest owns them (hds#390, see Button).
@@ -820,7 +777,7 @@ export function buildManifest(allTokens, raw) {
       states: ['default', 'focus', 'filled', 'error', 'disabled', 'loading'],
     },
     Dialog: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Dialog ?? {}),
+      ...(systemManifest.componentSpecs?.Dialog ?? {}),
       sourcePath: 'src/app/components/Dialog.tsx',
       sourceExport: 'Dialog',
       // No `props` here: enrich-manifest owns them (hds#390, see Button).
@@ -888,7 +845,7 @@ export function buildManifest(allTokens, raw) {
     // These get full props/tokens via auto-discovery + tokenMapping preservation.
     // We only seed the Figma master shape: variantAxes, componentProperties, states.
     Alert: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Alert ?? {}),
+      ...(systemManifest.componentSpecs?.Alert ?? {}),
       variantAxes: ['tone'],
       componentProperties: [
         {
@@ -911,13 +868,13 @@ export function buildManifest(allTokens, raw) {
       states: ['default'],
     },
     Stack: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Stack ?? {}),
+      ...(systemManifest.componentSpecs?.Stack ?? {}),
       variantAxes: ['direction'],
       componentProperties: [],
       states: ['default'],
     },
     Badge: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Badge ?? {}),
+      ...(systemManifest.componentSpecs?.Badge ?? {}),
       variantAxes: ['tone'],
       componentProperties: [
         {
@@ -934,29 +891,29 @@ export function buildManifest(allTokens, raw) {
     // Avatar has a Code Connect template (figma/code-connect.json), so its
     // cva-backed `size` axis must be declared (check-figma-mapping).
     Avatar: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Avatar ?? {}),
+      ...(systemManifest.componentSpecs?.Avatar ?? {}),
       variantAxes: ['size'],
     },
     Surface: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Surface ?? {}),
+      ...(systemManifest.componentSpecs?.Surface ?? {}),
       variantAxes: [],
       componentProperties: [],
       states: ['default'],
     },
     Grid: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Grid ?? {}),
+      ...(systemManifest.componentSpecs?.Grid ?? {}),
       variantAxes: [],
       componentProperties: [],
       states: ['default'],
     },
     Icon: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Icon ?? {}),
+      ...(systemManifest.componentSpecs?.Icon ?? {}),
       variantAxes: ['size'],
       componentProperties: [],
       states: ['default'],
     },
     Tag: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Tag ?? {}),
+      ...(systemManifest.componentSpecs?.Tag ?? {}),
       variantAxes: ['active'],
       componentProperties: [
         {
@@ -971,7 +928,7 @@ export function buildManifest(allTokens, raw) {
       states: ['default', 'hover', 'disabled'],
     },
     Divider: {
-      ...(SYSTEM_MANIFEST.componentSpecs?.Divider ?? {}),
+      ...(systemManifest.componentSpecs?.Divider ?? {}),
       variantAxes: ['orientation', 'variant'],
       componentProperties: [],
       states: ['default'],
@@ -1045,7 +1002,7 @@ export function buildManifest(allTokens, raw) {
     format: 'W3C DTCG 2025.10',
     docs: 'https://hirobius-hds-components.vercel.app/',
     llmsTxt: 'https://hirobius-hds-components.vercel.app/llms.txt',
-    systemSpecs: SYSTEM_MANIFEST.systemSpecs ?? {
+    systemSpecs: systemManifest.systemSpecs ?? {
       engine: 'React + TypeScript',
       icons: 'Phosphor (Bold)',
       tokens: 'W3C DTCG',
@@ -1065,9 +1022,8 @@ export function buildManifest(allTokens, raw) {
     brand: {
       // #246: was `primitive.color.blue.500`, hardcoded, emitting electric blue
       // into an agent-facing artifact three days after #208 made the accent a
-      // neutral. Resolved from the semantic layer with this file's own
-      // resolveAlias — brand-truth.mjs imports THAT, so importing it back here
-      // would be circular.
+      // neutral. Resolved from the semantic layer with
+      // lib/token-tree.mjs's resolveAlias.
       primaryColor: resolveValue(raw.semantic?.accent?.rest?.$value, 'color') ?? '',
       primaryColorToken: 'semantic.accent.rest',
       font: fontName + ' variable 100–900, self-hosted',
@@ -1077,7 +1033,7 @@ export function buildManifest(allTokens, raw) {
       neutralScale: 'true monochromatic (equal RGB channels)',
       accentCount: 1,
     },
-    componentInventory: SYSTEM_MANIFEST.componentInventory ?? [
+    componentInventory: systemManifest.componentInventory ?? [
       'Button',
       'Card',
       'Input',
@@ -1092,15 +1048,15 @@ export function buildManifest(allTokens, raw) {
       'InlineLink',
       'CodeBlock',
     ],
-    typographyRamp: SYSTEM_MANIFEST.typographyRamp ?? null,
-    patternInventory: SYSTEM_MANIFEST.patternInventory ?? [],
+    typographyRamp: systemManifest.typographyRamp ?? null,
+    patternInventory: systemManifest.patternInventory ?? [],
     // hds#342: forwarded verbatim from generate-manifest (build-tokens runs after it).
-    ...(SYSTEM_MANIFEST.iconSet ? { iconSet: SYSTEM_MANIFEST.iconSet } : {}),
-    phases: SYSTEM_MANIFEST.phases ?? [],
+    ...(systemManifest.iconSet ? { iconSet: systemManifest.iconSet } : {}),
+    phases: systemManifest.phases ?? [],
     // No `health` (hds#431): it was a frozen 2026-06-18 snapshot no script
     // wrote, forwarded unchanged into ./manifest. Dropping the key here also
     // drops it from public/hds-manifest.json on the next run.
-    inventory: SYSTEM_MANIFEST.inventory ?? {},
+    inventory: systemManifest.inventory ?? {},
     agentEntrypoint: 'llms.txt',
     breakingChangePolicy:
       'Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.',
@@ -1109,7 +1065,7 @@ export function buildManifest(allTokens, raw) {
     // (8x-5). build-tokens runs after generate-manifest in `pnpm tokens`, so
     // we forward it through verbatim — losing it here would empty the peer
     // on every tokens rebuild.
-    utilities: SYSTEM_MANIFEST.utilities ?? {},
+    utilities: systemManifest.utilities ?? {},
     tokens: {
       primitive: allTokens.filter((t) => t.path[0] === 'primitive').map(formatToken),
       semantic: allTokens.filter((t) => t.path[0] === 'semantic').map(formatToken),
@@ -1118,7 +1074,7 @@ export function buildManifest(allTokens, raw) {
     },
     // hds#449: generate-manifest writes publicClasses (scripts/lib/public-classes.mjs);
     // forwarded verbatim, last, where that generator appends it.
-    publicClasses: SYSTEM_MANIFEST.publicClasses ?? [],
+    publicClasses: systemManifest.publicClasses ?? [],
   };
 }
 
@@ -1379,7 +1335,7 @@ export function validateTenantOverlay(overlay, baseRaw, slug) {
  * (base leaves whose `$value` is exactly `{canonical.path}`), e.g.
  * `semantic.space.surface.padding` → [`--semantic-space-component-padding`].
  *
- * Why: tokens.css declares an alias on :root as `var(--canonical)`, and a
+ * Why: tokens.generated.css declares an alias on :root as `var(--canonical)`, and a
  * custom property is computed where it is declared. A tenant overlay that
  * overrides the canonical var on a descendant `[data-brand]` element (a
  * docs or app brand switcher does exactly that) would therefore never reach a
@@ -1771,7 +1727,9 @@ ${serialize(refsTree)}
   mkdirSync(join(ROOT, 'src', 'app', 'design-system'), { recursive: true });
   mkdirSync(join(ROOT, 'public'), { recursive: true });
 
-  writeFileSync(join(ROOT, 'src', 'styles', 'tokens.css'), css);
+  // The one CSS-variables file (hds#641). Written raw, not through writeGenerated:
+  // it is in .prettierignore (the generator owns its format), and Prettier would
+  // reflow it and change the bytes dist/tokens.css and dist/variables.css derive from.
   writeFileSync(join(ROOT, 'src', 'styles', 'tokens.generated.css'), css);
   writeFileSync(join(ROOT, 'src', 'app', 'design-system', 'generated-tokens.ts'), ts);
   writeFileSync(
@@ -1869,7 +1827,6 @@ module.exports = config;
     tenantResult.css || '/* Generated by scripts/build-tokens.mjs — no tenant overlays found */\n',
   );
 
-  console.log('âœ“ src/styles/tokens.css');
   console.log('âœ“ src/styles/tokens.generated.css');
   console.log('âœ“ src/app/design-system/generated-tokens.ts');
   console.log('âœ“ src/app/design-system/generated-token-values.ts');

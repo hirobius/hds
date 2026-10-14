@@ -148,6 +148,47 @@ scale, and each replacement computes the same pixels at both densities:
 | `hds.density.xl2` (`var(--hds-space-2xl)`)  | `hds.semantic.space.scale.xl`                                      |
 | `hds.density.xs`, `hds.density.xl3`, `.xl4` | no scale step; `hds.space.px4`, `px64`, `px80` (not density-aware) |
 
+## StatusTile folds into Card
+
+- **Deprecated in:** the release after 0.24.1 (hds#622). `StatusTile` carries
+  `@deprecated` with `@removeIn 1.0.0` and renders exactly as before. Card
+  gained the slot it folds into: `Card.Row`, with `Card.RowTitle` and
+  `Card.RowNote` (also exported as `CardRow`, `CardRowTitle`, `CardRowNote`).
+- **Removed in:** 1.0.0.
+- **Codemod:** none. Moving the `notes` array into children is a by-hand edit
+  where the array is built from `filter(Boolean)`, and the one consumer app
+  has five call sites.
+
+`<Card padding="item" className="border-0">` around a `Card.Row` renders the
+tile pixel for pixel: the same elements and classes, on the same raised surface,
+radius and 16px inset (`src/app/components/card-row.test.tsx` pins it). Keep
+`border-0`: it drops Card's resting 1px transparent border, which would make the
+tile 2px larger and move its content 1px in.
+
+```tsx
+// Before
+<StatusTile tone={tone} title={task.title} notes={notes} trailing={<Badge tone={tone}>{label}</Badge>} />
+
+// After: drop `tone`. StatusTile never painted it, and Card's `tone` paints a border.
+<Card padding="item" className="border-0">
+  <Card.Row trailing={<Badge tone={tone}>{label}</Badge>}>
+    <Card.RowTitle>{task.title}</Card.RowTitle>
+    {notes.map((note) => (
+      <Card.RowNote key={note}>{note}</Card.RowNote>
+    ))}
+  </Card.Row>
+</Card>
+```
+
+| Deprecated       | Use instead                                                                   |
+| ---------------- | ----------------------------------------------------------------------------- |
+| `StatusTile`     | `<Card padding="item" className="border-0">` around `<Card.Row trailing={…}>` |
+| `title`          | `<Card.RowTitle>` as the row's first child                                    |
+| `notes`          | one `<Card.RowNote>` per note, after the title                                |
+| `trailing`       | `Card.Row`'s `trailing`                                                       |
+| `tone`           | nothing: drop it (it set only a `data-hds-metrics` attribute)                 |
+| `StatusTileTone` | your own union, or `BadgeProps['tone']` when it feeds a Badge's tone          |
+
 ## 0.20.0 removals (2026-10-01)
 
 The first removal batches under step 4. hds#389 R1 removes names deprecated in

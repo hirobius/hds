@@ -46,7 +46,7 @@ const MenuPortal = /* @__PURE__ */ withHdsPortal(MenuPrimitive.Portal);
 const SURFACE =
   'z-50 min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-overlay';
 const ITEM =
-  'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 hds-type-ui outline-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
+  'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)] data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
 
 // ── Content ────────────────────────────────────────────────────────────────────
 
@@ -149,7 +149,7 @@ const MenuSubTrigger = /* @__PURE__ */ React.forwardRef<
   return (
     <MenuPrimitive.SubTrigger
       ref={ref}
-      className={cn(ITEM, 'data-[state=open]:bg-accent', className)}
+      className={cn(ITEM, 'data-[state=open]:bg-[var(--semantic-color-surface-sunken)]', className)}
       {...props}
     >
       {children}
@@ -207,6 +207,23 @@ interface MenuComponent extends React.FC<React.ComponentProps<typeof MenuPrimiti
  * @keyboard Enter Selects the highlighted item and closes the menu.
  * @keyboard Escape Closes the menu and returns focus to the trigger.
  * @keyboard Tab Does not leave the open menu.
+ * @a11y component required a11y:menu.open-keys Enter, Space and ArrowDown on the trigger open the menu.
+ * @a11y component required a11y:menu.trigger-haspopup The trigger announces a menu popup (aria-haspopup=menu).
+ * @a11y component required a11y:menu.trigger-expanded The trigger exposes aria-expanded, false while closed and true while open.
+ * @a11y component required a11y:menu.trigger-controls The trigger points aria-controls at the open menu.
+ * @a11y component required a11y:menu.escape-returns-focus Escape closes the menu and returns focus to the trigger.
+ * @a11y component required a11y:menu.tab-contained Tab does not move focus out of the open menu.
+ * @a11y component required a11y:menu.arrow-keys ArrowDown and ArrowUp move the highlight and stop at the first and last item.
+ * @a11y component required a11y:menu.home-end Home and End jump to the first and last item.
+ * @a11y component required a11y:menu.typeahead Typing a letter highlights the next item that starts with it.
+ * @a11y component required a11y:menu.enter-selects Enter selects the highlighted item and closes the menu.
+ * @a11y component required a11y:menu.space-activates Space selects the highlighted item and closes the menu.
+ * @a11y component required a11y:menu.named-by-trigger The menu is named by its trigger.
+ * @a11y component required a11y:menu.item-position Each item is a menuitem that reports its position and set size.
+ * @a11y component required a11y:menu.item-semantics Items render with menuitem semantics once open.
+ * @a11y component required a11y:menu.disabled-skipped A disabled item is aria-disabled and arrow keys step over it.
+ * @a11y consumer required Give an icon-only Menu.Trigger an aria-label.
+ * @a11y consumer required Use Menu for actions; use links or Select for navigation and value choice.
  * @public
  */
 const Menu: MenuComponent = /* @__PURE__ */ Object.assign(MenuRoot, {

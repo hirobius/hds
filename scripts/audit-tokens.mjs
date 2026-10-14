@@ -12,7 +12,7 @@
  *       not exist in hirobius.tokens.json, or if it contains forbidden hardcoded
  *       visual overrides.
  *   - --full
- *       Also verifies that generated CSS output (src/styles/tokens.css) contains
+ *       Also verifies that generated CSS output (src/styles/tokens.generated.css) contains
  *       every component token from hirobius.tokens.json.
  *   - --forbidden
  *       Only checks forbidden overrides in src/styles/theme.css.
@@ -986,7 +986,7 @@ function getIntegrityGrade(score) {
 
 const tokens = readTokenSource(join(INPUT_ROOT, 'hirobius.tokens.json'));
 const themeCssPath = join(INPUT_ROOT, 'src', 'styles', 'theme.css');
-const tokensCssPath = join(INPUT_ROOT, 'src', 'styles', 'tokens.css');
+const tokensCssPath = join(INPUT_ROOT, 'src', 'styles', 'tokens.generated.css');
 const themeCss = readFileSync(themeCssPath, 'utf8');
 const tokensCss = readFileSync(tokensCssPath, 'utf8');
 const semanticScopeFiles = [
@@ -1240,7 +1240,7 @@ if (full && missingGeneratedTokens.length > 0) {
   for (const token of missingGeneratedTokens) {
     console.error(`    ${token.tokenPath}`);
     console.error(`      CSS var: ${token.cssVar}`);
-    console.error(`      Fix: run pnpm tokens to regenerate src/styles/tokens.css\n`);
+    console.error(`      Fix: run pnpm tokens to regenerate src/styles/tokens.generated.css\n`);
   }
 }
 

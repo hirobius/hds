@@ -28,7 +28,7 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 - **Screen title with breadcrumb, status and actions** → `PageHeader`, `Breadcrumb`, `Badge`. Not: Text as the page title, a Stack row of Text and Badge.
   Exactly one per screen: `<PageHeader breadcrumb={<Breadcrumb items={[{ label, href }, { label }]} />} title="…" status={<Badge tone="success">Active</Badge>} />`.
 - **Row of headline numbers (stats, KPIs, counts, totals)** → `MetricTiles`, `MetricTile`. Not: `Stat`, `StatusTile`, `CardMetric`, Card with Text.
-  `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, `StatusTile` for a state with notes (never a number).
+  `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, a `Card` with `Card.Row` for a state with notes (never a number; it replaces the deprecated `StatusTile`).
 - **Table of records with row actions** → `DataTableSection`, `Badge`, `Button`. Not: Table on its own, Card around a Table.
   `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
 - **Switch between panels of related content** → `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. Not: `SegmentedControl`, Button rows.

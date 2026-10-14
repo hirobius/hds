@@ -50,6 +50,20 @@
       "kind": "leaf",
       "probe": true
     },
+    "Board": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "container",
+      "probe": true
+    },
+    "BoardColumn": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
     "Box": {
       "width": "fill",
       "height": "hug",
@@ -127,6 +141,27 @@
       "kind": "part",
       "probe": false
     },
+    "CardRow": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardRowNote": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
+    "CardRowTitle": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
     "CardTitle": {
       "width": "hug",
       "height": "hug",
@@ -155,6 +190,13 @@
       "kind": "leaf",
       "probe": true,
       "maxWidth": "40rem"
+    },
+    "Composer": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
     },
     "Container": {
       "width": "fill",

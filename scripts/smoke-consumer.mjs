@@ -55,6 +55,7 @@ import {
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { extractTsxFences } from './lib/doc-fences.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -423,6 +424,171 @@ if (ok) {
   }
 }
 
+// ── 3c2. Starter kit + doc samples compile against the packed build (hds#457) ──
+// The starter kit and every ```tsx fence the package teaches from are typechecked
+// as a consumer would see them: against the installed tarball's dist/*.d.ts.
+// Fences are fragments, so only diagnostics that mean "this sample uses an API
+// the package does not have" fail (missing export/module, unknown prop or
+// member, wrong prop type); undeclared locals like `rows` are ignored. A
+// fixture fence importing a removed name must be flagged, or the check is blind.
+const DOC_SAMPLE_FILES = [
+  'CONSUMING.md',
+  'docs/CONSUMING.md',
+  'MIGRATIONS.md',
+  'llms.txt',
+  'public/llms.txt',
+  'public/llms-full.txt',
+  'skills/hds-consumer/SKILL.md',
+];
+// 2305/2724 no (such) exported member, 2307 module not found, 2614 no export to
+// import, 2339/2551 unknown property, 2322/2769/2353 prop mismatches. Missing-required-prop (2741) is not
+// here: a fragment that elides children or props is not stale.
+const API_DRIFT_CODES = new Set([2305, 2307, 2339, 2353, 2322, 2551, 2614, 2724, 2769]);
+let ranSamples = false;
+// Real gaps in the package, tracked in an issue and listed so the check can ship
+// green. Remove the entry when its issue closes; an entry that no longer matches
+// anything fails (stale allowance).
+const KNOWN_GAPS = [
+  { issue: 'hirobius/hds#676', file: 'docs/CONSUMING.md', code: 2322, msg: 'Ref<unknown>' },
+];
+const FIXTURE_NAME = 'fixture-removed-name';
+
+if (ok) {
+  log('typechecking starter-kit and doc ```tsx fences against the packed build…');
+  // The optional peers the form/scroll docs import, so those fences resolve.
+  run(
+    'npm',
+    [
+      'install',
+      'react-hook-form@^7',
+      'zod@^3.23',
+      '@hookform/resolvers@^3.9',
+      'lenis@^1.3',
+      '--no-save',
+      '--no-audit',
+      '--no-fund',
+      '--loglevel',
+      'error',
+    ],
+    { cwd: app },
+  );
+  const samples = join(app, 'doc-samples');
+  mkdirSync(samples, { recursive: true });
+  const origin = new Map(); // generated file name → "doc:line"
+  let n = 0;
+  for (const rel of DOC_SAMPLE_FILES) {
+    const abs = join(ROOT, rel);
+    if (!existsSync(abs)) continue;
+    for (const f of extractTsxFences(readFileSync(abs, 'utf8'), rel)) {
+      const name = `sample-${String(n++).padStart(3, '0')}.tsx`;
+      writeFileSync(join(samples, name), `${f.code}\nexport {};\n`);
+      origin.set(name, `${rel}:${f.line}`);
+    }
+  }
+  writeFileSync(
+    join(samples, `${FIXTURE_NAME}.tsx`),
+    `import { HdsButton } from '${PKG}';\nexport const x = <HdsButton>Hi</HdsButton>;\n`,
+  );
+  const kit = join(app, 'starter-kit');
+  mkdirSync(join(kit, 'src'), { recursive: true });
+  for (const f of readdirSync(join(ROOT, 'starter-kit', 'src'))) {
+    writeFileSync(join(kit, 'src', f), readFileSync(join(ROOT, 'starter-kit', 'src', f)));
+  }
+  writeFileSync(join(kit, 'css.d.ts'), "declare module '*.css';\n");
+  writeFileSync(
+    join(app, 'tsconfig.samples.json'),
+    `${JSON.stringify(
+      {
+        compilerOptions: {
+          strict: false,
+          skipLibCheck: true,
+          noEmit: true,
+          module: 'ESNext',
+          moduleResolution: 'Bundler',
+          target: 'ES2022',
+          jsx: 'react-jsx',
+          lib: ['ES2022', 'DOM', 'DOM.Iterable'],
+          types: [],
+        },
+        include: ['doc-samples', 'starter-kit'],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  // Fences are fragments: bare sibling JSX elements are a syntax error, and
+  // `tsc -p` then skips semantic checks for the whole project. So ask the compiler
+  // API for each file's semantic diagnostics, which it still produces.
+  writeFileSync(
+    join(app, 'check-samples.cjs'),
+    [
+      "const ts = require('typescript');",
+      "const cfg = ts.getParsedCommandLineOfConfigFile('tsconfig.samples.json', {}, {",
+      '  ...ts.sys,',
+      '  onUnRecoverableConfigFileDiagnostic: (d) => { throw new Error(String(d.messageText)); },',
+      '});',
+      'const program = ts.createProgram(cfg.fileNames, cfg.options);',
+      'const out = [];',
+      'for (const sf of program.getSourceFiles()) {',
+      "  if (sf.fileName.includes('node_modules')) continue;",
+      '  for (const d of program.getSemanticDiagnostics(sf)) {',
+      '    const { line } = sf.getLineAndCharacterOfPosition(d.start ?? 0);',
+      "    out.push({ file: sf.fileName, line: line + 1, code: d.code, msg: ts.flattenDiagnosticMessageText(d.messageText, ' ') });",
+      '  }',
+      '}',
+      'console.log(JSON.stringify(out));',
+    ].join('\n'),
+  );
+  const tsc = spawnSync(process.execPath, ['check-samples.cjs'], { cwd: app, encoding: 'utf8' });
+  let diags = [];
+  try {
+    diags = JSON.parse(tsc.stdout).filter(
+      // A sample may import a third-party lib the scratch app does not install
+      // (MUI): only a missing module of ours is drift.
+      (d) => API_DRIFT_CODES.has(d.code) && (d.code !== 2307 || d.msg.includes(PKG)),
+    );
+  } catch {
+    console.error(`  samples FAIL could not read the compiler output: ${tsc.stderr || tsc.stdout}`);
+    ok = false;
+  }
+  const problems = [];
+  if (!diags.some((d) => d.file.endsWith(`${FIXTURE_NAME}.tsx`))) {
+    problems.push('negative control: a fixture fence importing a removed name was NOT flagged');
+  }
+  const usedGaps = new Set();
+  for (const d of diags) {
+    if (d.file.endsWith(`${FIXTURE_NAME}.tsx`)) continue;
+    const gap = KNOWN_GAPS.find(
+      (g) =>
+        g.code === d.code &&
+        d.msg.includes(g.msg) &&
+        (origin.get(d.file.split('/').pop()) ?? '').startsWith(`${g.file}:`),
+    );
+    if (gap) {
+      usedGaps.add(gap);
+      continue;
+    }
+    const base = d.file.split('/').pop();
+    const where = d.file.includes('starter-kit/')
+      ? `${d.file.replace(/^.*?starter-kit\//, 'starter-kit/')}:${d.line}`
+      : `${origin.get(base) ?? d.file} (fence line ${d.line})`;
+    problems.push(`${where} TS${d.code}: ${d.msg}`);
+  }
+  for (const g of KNOWN_GAPS) {
+    if (!usedGaps.has(g)) problems.push(`stale KNOWN_GAPS entry for ${g.issue}: remove it`);
+  }
+  if (n === 0) problems.push('no ```tsx fences were extracted from the doc files');
+  if (problems.length) {
+    for (const p of problems) console.error(`  samples FAIL ${p}`);
+    ok = false;
+  } else {
+    ranSamples = true;
+    console.log(
+      `  samples ok   starter-kit + ${n} doc fences compile; stale-name fixture was flagged`,
+    );
+  }
+}
+
 // ── 3d. publint — package export/types correctness ───────────────────────────
 if (ok) {
   log('running publint (export/types correctness)…');
@@ -615,6 +781,10 @@ if (ok) {
 
 // Outcome check: a green run must have actually run the 3g upgrade bin smoke,
 // so disabling that block cannot leave this script passing.
+if (ok && !ranSamples) {
+  console.error('  samples FAIL starter-kit/doc sample typecheck did not run');
+  ok = false;
+}
 if (ok && !ranUpgrade) {
   console.error('  upgrade FAIL upgrade bin smoke did not run');
   ok = false;

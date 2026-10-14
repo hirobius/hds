@@ -26,6 +26,10 @@
           "$value": "#a3a3a3",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
+        "450": {
+          "$value": "#909090",
+          "$description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black)."
+        },
         "500": {
           "$value": "#737373",
           "$description": "Specific value within the neutral range at a defined lightness step."
@@ -1263,7 +1267,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.200}",
-                "Dark": "{primitive.color.neutral.800}"
+                "Dark": "{primitive.color.neutral.700}"
               }
             }
           }
@@ -1288,6 +1292,18 @@
               "modes": {
                 "Light": "{primitive.color.neutral.600}",
                 "Dark": "{primitive.color.neutral.400}"
+              }
+            }
+          }
+        },
+        "tertiary": {
+          "$value": "{primitive.color.neutral.500}",
+          "$description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.500}",
+                "Dark": "{primitive.color.neutral.450}"
               }
             }
           }
@@ -1382,7 +1398,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.200}",
-                "Dark": "{primitive.color.neutral.700}"
+                "Dark": "{primitive.color.neutral.600}"
               }
             }
           }
@@ -1401,8 +1417,8 @@
         },
         "subdued": {
           "$value": "{primitive.color.neutral.200}",
-          "$description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
-          "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.700 vs 800)",
+          "$description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
+          "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2445,8 +2461,8 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{primitive.radius.4}",
-        "$description": "Small rounded radius for badges."
+        "$value": "{semantic.radius.action}",
+        "$description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius)."
       },
       "height": {
         "$type": "dimension",

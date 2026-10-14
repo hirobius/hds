@@ -58,7 +58,7 @@ export function ErrorPattern({
             <Text
               variant="display"
               as="h1"
-              className="text-primary"
+              className="text-foreground"
               style={{ overflowWrap: 'anywhere' }}
             >
               {displayText}
@@ -67,7 +67,7 @@ export function ErrorPattern({
             <Text
               variant="title"
               as="p"
-              className="text-secondary"
+              className="text-muted-foreground"
               style={{ overflowWrap: 'anywhere' }}
             >
               {message}

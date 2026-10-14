@@ -29,7 +29,7 @@ let tokensCss: string;
 
 beforeAll(() => {
   themeCss = readFileSync(resolve(__dirname, '../theme.css'), 'utf8');
-  tokensCss = readFileSync(resolve(__dirname, '../tokens.css'), 'utf8');
+  tokensCss = readFileSync(resolve(__dirname, '../tokens.generated.css'), 'utf8');
 });
 
 /** Every font-family custom property the generated tokens declare. */

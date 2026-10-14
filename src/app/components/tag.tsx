@@ -7,8 +7,8 @@
  * @useInstead Badge a read-only status or count
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11
  *
- * The outer <button> carries the accessible 44px hit target directly via the
- * size token while the inner pill keeps the visible surface compact. Colors
+ * The outer <button> carries the hit target (48px wide, as tall as the 24px
+ * pill) while the inner pill keeps the visible surface compact. Colors
  * (background, border-color, color) live in the pill's cva variants, painted
  * through `group-hover`/`group-active` so the pill reacts to interaction on
  * the shared outer button (converted off the former .hds-tag-btn/.hds-tag-pill
@@ -18,6 +18,13 @@
  * contract's four axes — it's expressed as the pill's `selected` cva variant,
  * carrying the same rest → hover → pressed → focus-visible state matrix the
  * contract expects, just keyed by selection instead of tone/size/density.
+ * @a11y component required a11y:tag.keyboard-activate Enter and Space activate the tag (it is always a native button).
+ * @a11y component required a11y:tag.pressed-state The selected state is reported with aria-pressed.
+ * @a11y component required a11y:tag.sr-toggle-button A screen reader speaks a toggle button with its name and pressed or not pressed.
+ * @a11y component required a11y:tag.disabled-skipped A disabled tag is skipped by Tab.
+ * @a11y component required a11y:tag.focus-ring The tag carries the shared hds-focus ring.
+ * @a11y component required a11y:tag.target-size The pill is at least 24px tall and 48px wide (WCAG 2.5.8).
+ * @a11y consumer required Name the tag by its text, or by an aria-label when the text is not enough; use Badge for a label that does nothing.
  */
 
 import * as React from 'react';
@@ -37,7 +44,7 @@ const tagButtonVariants = /* @__PURE__ */ cva(
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-tag-* sizing/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tagPillVariants = /* @__PURE__ */ cva(
-  'pointer-events-none box-border inline-flex min-h-[var(--component-tag-minHeight)] min-w-[var(--component-tag-minWidth)] items-center justify-center whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid px-[var(--component-tag-paddingX)] py-[var(--component-tag-paddingY)] hds-type-caption transition-colors',
+  'pointer-events-none box-border inline-flex min-h-[var(--component-tag-minHeight)] min-w-[var(--component-tag-minWidth)] max-w-full items-center justify-center overflow-hidden whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid px-[var(--component-tag-paddingX)] py-[var(--component-tag-paddingY)] hds-type-caption transition-colors',
   {
     variants: {
       selected: {
