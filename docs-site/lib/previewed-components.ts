@@ -21,6 +21,7 @@ export const PREVIEWED_COMPONENTS = [
   'Breadcrumb',
   'Card',
   'Combobox',
+  'Composer',
   'Container',
   'Disclosure',
   'Divider',
