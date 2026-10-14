@@ -1,0 +1,30 @@
+{
+  "$schema": "../../hirobius.tenant-metadata.schema.json",
+  "slug": "accent-pair-demo",
+  "displayName": "Accent Pair Demo",
+  "tagline": "A primary accent plus a supporting accent: mauve and stone. The supporting half is a CSS-variable overlay, not a token. demo-only, not a real client.",
+  "demo": true,
+  "tier": 1,
+  "deployment": {
+    "vercelProject": null,
+    "primaryDomain": null,
+    "previewDomain": null
+  },
+  "brand": {
+    "primaryHex": "#674254",
+    "accentName": "mauve-and-stone",
+    "logoPath": null
+  },
+  "legal": {
+    "entity": null,
+    "jurisdiction": null,
+    "stripeAccountKind": null
+  },
+  "createdAt": "2026-10-12",
+  "status": "scaffold",
+  "_notes": [
+    "Design-explorations demo tenant (hds#628, phase 0, decision 4: overlay first, no token change). Not a real client: no deployment, no legal entity. Not listed in figma/brand-modes.json; publishing a Brand mode is Adrian's call.",
+    "Brand hex #674254 = primitive.color.mauve.600 (the primary accent in light mode). The supporting accent is stone (primitive.color.stone.*) and lives in support-overlay.css.",
+    "Scaffolded with pnpm scaffold:tenant, then rewritten: the scaffold's hand-derived hexes, $schema ref and missing demo flag do not fit a demo tenant."
+  ]
+}
