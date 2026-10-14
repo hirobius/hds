@@ -2,6 +2,7 @@
  * DataTableSection - a titled table with a toolbar, row actions and an empty state.
  * @category Display
  * @usage Put a heading and toolbar above a Table.
+ * @a11y component required a11y:data-table-section.named The table and its scroll region are named after the section heading.
  * @tier pattern
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-268
  */

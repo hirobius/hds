@@ -110,3 +110,29 @@ describe('Dialog compound assembly (hds#363)', () => {
     expect(screen.getByRole('dialog', { name: 'Default open' })).toBeTruthy();
   });
 });
+
+describe('Dialog close vs title (bug bash 24 review)', () => {
+  // The close button sits in the content's top-right padding; a long title ran under the X at
+  // 1280 and 390 (measured in Chromium). The first child (Title or Header) keeps clear of it.
+  const reserve = /(^|\s)\[&>:first-child\]:pr-10(\s|$)/;
+  it('reserves the close button column beside the first child when the close button shows', () => {
+    render(
+      <Dialog open>
+        <Dialog.Content>
+          <Dialog.Title>A long title</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    expect(screen.getByRole('dialog').className).toMatch(reserve);
+  });
+  it('reserves nothing with hideClose', () => {
+    render(
+      <Dialog open>
+        <Dialog.Content hideClose>
+          <Dialog.Title>A long title</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    expect(screen.getByRole('dialog').className).not.toMatch(reserve);
+  });
+});

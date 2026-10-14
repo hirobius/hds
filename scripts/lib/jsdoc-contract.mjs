@@ -8,6 +8,10 @@
  *   @useInstead <Component> [reason]   repeatable
  *   @slot <name> <description>         repeatable
  *   @keyboard <keys> <effect>          repeatable; <keys> is one token
+ *   @a11y <owner> <level> [<testId>] <rule>   repeatable; accessibility contract rule
+ *       owner   component | consumer   who keeps the rule
+ *       level   required | recommended
+ *       testId  a11y:<component>.<behaviour> | gate:<registry-id>   the test or gate that proves it
  *   @ai-rules <text>                   agent-facing authoring rules
  *
  * A tag body runs until the next `@tag` at the start of a line, a blank line
@@ -65,12 +69,32 @@ export function stripJsdocTags(block) {
   return splitBlock(block).prose;
 }
 
+const A11Y_TEST_ID = /^(a11y|gate):\S+$/;
+
+/** One `@a11y` body to a rule. Throws on a malformed tag: a typo must fail the regen, not vanish. */
+function parseA11yTag(body) {
+  const shape = '@a11y <component|consumer> <required|recommended> [a11y:<c>.<b>|gate:<id>] <rule>';
+  const [owner, level, ...rest] = body.split(' ');
+  if (owner !== 'component' && owner !== 'consumer') {
+    throw new Error(`${shape}: owner must be component or consumer, got "${owner ?? ''}"`);
+  }
+  if (level !== 'required' && level !== 'recommended') {
+    throw new Error(`${shape}: required|recommended expected, got "${level ?? ''}"`);
+  }
+  let testId;
+  if (A11Y_TEST_ID.test(rest[0] ?? '')) testId = rest.shift();
+  const rule = rest.join(' ');
+  if (!rule) throw new Error(`${shape}: the rule sentence is missing`);
+  return { rule, required: level === 'required', owner, ...(testId ? { testId } : {}) };
+}
+
 /**
  * @param {string} block a JSDoc block, or ''
  * @returns {{
  *   usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> },
  *   slots: Array<{name: string, description: string}>,
  *   keyboard: Array<{keys: string, effect: string}>,
+ *   a11y: Array<{rule: string, required: boolean, owner: 'component'|'consumer', testId?: string}>,
  *   aiRules: string|null,
  * }}
  */
@@ -79,10 +103,15 @@ export function parseJsdocContract(block) {
     usage: { when: null, whenNot: null, useInstead: [] },
     slots: [],
     keyboard: [],
+    a11y: [],
     aiRules: null,
   };
 
   for (const { name, body } of splitBlock(block).tags) {
+    if (name === 'a11y') {
+      out.a11y.push(parseA11yTag(body));
+      continue;
+    }
     if (!body) continue;
     const [head, ...rest] = body.split(' ');
     const tail = rest.join(' ');
@@ -147,6 +176,7 @@ export function compactContract(contract) {
   if (Object.keys(usage).length) out.usage = usage;
   if (contract.slots.length) out.slots = contract.slots;
   if (contract.keyboard.length) out.keyboard = contract.keyboard;
+  if (contract.a11y?.length) out.a11yRules = contract.a11y;
   if (contract.aiRules) out.aiRules = contract.aiRules;
   return out;
 }

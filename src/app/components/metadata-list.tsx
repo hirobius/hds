@@ -48,13 +48,13 @@ export interface MetadataListProps
   /**
    * Visual treatment.
    * - `'plain'` (default) — bare term/description pairs; honours `orientation`.
-   * - `'divided'` — one bordered, rounded container with a full-width rule
+   * - `'divided'` — a full-width rule
    *   between each pair (term above its rich description). Ignores `orientation`
    *   (always term-above-description). Use for spec sheets / namespace tables.
    */
   variant?: 'plain' | 'divided';
   /**
-   * Optional summary band rendered as the final row on a subtle surface —
+   * Optional summary row rendered last, under its own rule, in secondary text —
    * e.g. a footnote or aggregate note. Only rendered by the `divided` variant.
    */
   footer?: React.ReactNode;
@@ -74,18 +74,16 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
           ref={ref}
           data-variant="divided"
           data-orientation="vertical"
-          className={cn('flex flex-col overflow-hidden rounded-lg', className)}
-          // Semantic tokens (not the --role-* utility layer) so colours resolve
-          // correctly in both themes — matching Divider/Card/InlineCode.
-          style={{
-            border: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
-          }}
+          // No box, radius or inset: MetadataList pads nothing (layout contract v1), so the term starts at
+          // the same x as in the plain and horizontal variants. Only the rules between pairs remain.
+          className={cn('flex flex-col', className)}
           {...rest}
         >
           {items.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col gap-2 p-5"
+              // eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing token has no Tailwind-theme utility; var()-based so still token-driven
+              className="flex flex-col gap-2 py-[var(--semantic-space-scale-sm)] first:pt-0 last:pb-0"
               style={
                 index === 0
                   ? undefined
@@ -100,20 +98,15 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
               >
                 {item.term}
               </dt>
-              <dd
-                className="m-0 hds-type-ui"
-                style={{ color: 'var(--semantic-color-content-primary)' }}
-              >
-                {item.description}
-              </dd>
+              <dd className="m-0 text-foreground">{item.description}</dd>
             </div>
           ))}
           {footer != null && (
             <div
-              className="p-5 hds-type-ui"
+              // eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing token has no Tailwind-theme utility; var()-based so still token-driven
+              className="py-[var(--semantic-space-scale-sm)] pb-0 hds-type-ui"
               style={{
                 borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-subtle)`,
-                background: 'var(--semantic-color-surface-raised)',
                 color: 'var(--semantic-color-content-secondary)',
               }}
             >

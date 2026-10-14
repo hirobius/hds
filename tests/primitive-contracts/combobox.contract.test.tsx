@@ -34,7 +34,7 @@ async function open() {
 }
 
 describe('Combobox contract', () => {
-  it('names the open popover dialog and its listbox by the field label', async () => {
+  it('a11y:combobox.popover-named a11y:combobox.listbox-named - names the open popover dialog and its listbox by the field label', async () => {
     renderCombobox({ 'aria-label': 'Fruit' });
     await open();
 
@@ -62,7 +62,7 @@ describe('Combobox contract', () => {
 describe('Combobox listbox', () => {
   // axe fails a listbox that holds text but no option (aria-required-children,
   // critical), so the no-results message sits beside the listbox (hds#407).
-  it('keeps the no-results message out of the listbox', async () => {
+  it('a11y:combobox.no-results-outside-listbox - keeps the no-results message out of the listbox', async () => {
     renderCombobox({ 'aria-label': 'Fruit', emptyMessage: 'No fruit' });
     await open();
     await user().keyboard('zzz');
@@ -74,7 +74,7 @@ describe('Combobox listbox', () => {
 });
 
 describe('Combobox in a FormField', () => {
-  it('is the control the field label names', () => {
+  it('a11y:combobox.form-field-label - is the control the field label names', () => {
     render(
       <FormField label="Fruit" description="Pick one">
         <Combobox options={FRUIT} value={null} onChange={() => {}} />
@@ -87,7 +87,7 @@ describe('Combobox in a FormField', () => {
     expect(trigger.getAttribute('aria-describedby')).toBe(screen.getByText('Pick one').id);
   });
 
-  it('carries the field error: invalid, and described by the message', () => {
+  it('a11y:combobox.form-field-error - carries the field error: invalid, and described by the message', () => {
     render(
       <FormField label="Fruit" error="Pick a fruit">
         <Combobox options={FRUIT} value={null} onChange={() => {}} />
@@ -126,7 +126,7 @@ async function openMulti() {
 }
 
 describe('Combobox multiple, keyboard', () => {
-  it('Enter toggles the active option on and keeps the list open for the next pick', async () => {
+  it('a11y:combobox.multiple-enter-toggles - Enter toggles the active option on and keeps the list open for the next pick', async () => {
     render(<MultiFixture />);
     await openMulti();
     const u = user();
@@ -153,7 +153,7 @@ describe('Combobox multiple, keyboard', () => {
     expect(isSelected('Apple')).toBe('false');
   });
 
-  it('Escape closes the list and keeps the selection', async () => {
+  it('a11y:combobox.escape-keeps-selection - Escape closes the list and keeps the selection', async () => {
     render(<MultiFixture start={['banana']} />);
     await openMulti();
 
@@ -164,7 +164,7 @@ describe('Combobox multiple, keyboard', () => {
     expect(screen.getByRole('combobox', { name: 'Fruit' }).textContent).toContain('1 selected');
   });
 
-  it('removes a value from its chip with the keyboard and keeps focus on the chips', async () => {
+  it('a11y:combobox.chip-keyboard - removes a value from its chip with the keyboard and keeps focus on the chips', async () => {
     render(<MultiFixture start={['apple', 'banana', 'cherry']} />);
     const u = user();
     screen.getByRole('button', { name: 'Remove Banana' }).focus();

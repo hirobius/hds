@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "Board and BoardColumn are new read-only status columns; nothing existing changes."
+}

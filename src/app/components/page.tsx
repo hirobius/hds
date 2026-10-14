@@ -67,7 +67,15 @@ export function Page({
       <div
         data-hds-component="Page"
         data-hds-metrics={`paddingY:${paddingY}`}
-        style={{ paddingTop: py.top, paddingBottom: py.bottom, ...style }}
+        // Page pads (layout contract v1): the region gutter (24px, 16px below 640px) keeps content off the viewport
+        // edges; Container no longer owns padding, so without this the content ran flush at 768 and 390.
+        style={{
+          paddingTop: py.top,
+          paddingBottom: py.bottom,
+          paddingLeft: 'var(--semantic-space-region-gutter)',
+          paddingRight: 'var(--semantic-space-region-gutter)',
+          ...style,
+        }}
       >
         {children}
       </div>

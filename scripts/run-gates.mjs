@@ -20,11 +20,26 @@
  * Options:
  *   --channel <name>    Required (unless --gate). Filter by firingChannel —
  *                       also matches gates that declare that channel inside
- *                       firingChannels: string[] (#188, multi-channel gates).
+ *                       firingChannels: string[] (hds#188, multi-channel gates).
  *   --dry-run           List which gates would run; exit 0.
  *   --parallel <N>      Run up to N gates concurrently (default: 1 for
  *                       pre-commit; 4 for ci-pr). pre-commit MUST stay serial.
  *   --gate <id>         Run a single gate by registry id (ignores --channel).
+ *   --emit-jsonl <path> Append one JSONL line per gate to <path> with
+ *                       {ts, channel, gate, exitCode, durationMs, commitSha},
+ *                       as each gate finishes — including a failing gate,
+ *                       before pre-commit's fail-fast exit (issue #330: a
+ *                       violation must reach the log even when the gate that
+ *                       caught it aborts the commit). Does not by itself
+ *                       change fail-fast; pair with --continue-on-failure to
+ *                       also run every remaining gate.
+ *   --continue-on-failure
+ *                       Disable pre-commit fail-fast so every gate in the
+ *                       channel runs and is logged, even after one fails
+ *                       (used by .husky/post-commit's full unscoped re-run,
+ *                       which detects --no-verify bypasses post-hoc per
+ *                       13g-12 — it needs every gate's result, not just the
+ *                       first failure).
  *   --emit-inventory <path>
  *                       Write a single aggregate JSON inventory to <path> with
  *                       per-gate {id, exitCode, durationMs, supportsJson,
@@ -32,6 +47,7 @@
  *                       gatesWithJson + gatesWithoutJson. When set, fail-fast
  *                       is disabled so every gate runs (used by 13p-2 to
  *                       generate the Phase 2 strict-gate debt baseline).
+ *                       Orthogonal to --emit-jsonl; both can be set together.
  *                       When a gate's registry entry has supportsJson:true,
  *                       the gate is invoked with --json appended; the parsed
  *                       structured violations array is captured. Otherwise
@@ -46,9 +62,22 @@
  *                       Used by .husky/pre-commit for per-file scoping
  *                       per unit 13g-2-validator-self-register.
  *
+ * Quiet mode (token-lean hooks): for --channel pre-commit / pre-push, run
+ * standalone (not inside scripts/hook-quiet.mjs, which already logs), gate output
+ * is captured to `<git-dir>/hook-logs/run-gates-<channel>-<ts>.log` (last 5 kept).
+ * Green prints one `✓ run-gates ...` line; red prints each failing gate's output
+ * plus the log path. HOOK_VERBOSE=1 restores the full streamed output.
+ *
+ * Severity (ops#306): each gate's registry `severity` decides what a non-zero
+ * exit means. `error` fails the run (and stops pre-commit's fail-fast); `warn`
+ * and `info` print a warning and let the run pass. A missing or unrecognised
+ * severity fails closed as `error`. Semantics: docs/guardrails/SCHEMA.md.
+ * (Classification lives in scripts/lib/guardrail-core.mjs — gateOutcome,
+ * runGatesSerial, summarizeRun.)
+ *
  * Exit codes:
- *   0 — all gates passed
- *   1 — one or more gates failed (error details written to stderr)
+ *   0 — no error-severity gate failed (warn-severity findings may have printed)
+ *   1 — one or more error-severity gates failed (details written to stderr)
  *   2 — invocation error (bad flags, registry not found, etc.)
  *
  * @module run-gates
@@ -59,11 +88,18 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync, spawn } from 'node:child_process';
 import { performance } from 'node:perf_hooks';
-import { matchesScope } from './lib/gate-scope.mjs';
-import { failureExcerpt, formatDuration, openLog } from './lib/hook-output.mjs';
+import {
+  loadRegistry,
+  selectGates,
+  gateOutcome,
+  gateResult,
+  runGatesSerial,
+  summarizeRun,
+  REGISTRY_PATH,
+} from './lib/guardrail-core.mjs';
+import { logDirFor, newLogPath, pruneLogs, formatDuration } from './lib/hook-logs.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const REGISTRY_PATH = path.join(ROOT, 'docs/guardrails/registry.json');
 
 // ── Arg parsing ───────────────────────────────────────────────────────────────
 
@@ -83,6 +119,8 @@ const channelArg = getFlag('--channel');
 const gateArg = getFlag('--gate');
 const dryRun = hasFlag('--dry-run');
 const parallelArg = getFlag('--parallel');
+const emitJsonlArg = getFlag('--emit-jsonl');
+const continueOnFailure = hasFlag('--continue-on-failure');
 const emitInventoryArg = getFlag('--emit-inventory');
 const scopeArg = getFlag('--scope');
 const scopeFiles = scopeArg
@@ -92,12 +130,21 @@ const scopeFiles = scopeArg
       .filter(Boolean)
   : null;
 
+// The union of every consuming repo's registry vocabulary (this file is vendored
+// byte-identical; docs/guardrails/shared-manifest.json pins it): ops declares
+// ci-dispatch, hds declares commit-msg, on-demand and ralph-gate.
 const VALID_CHANNELS = new Set([
   'pre-commit',
+  'commit-msg',
   'pre-push',
   'ci-pr',
   'ci-scheduled',
+  // Lives in a workflow but fires only on workflow_dispatch. Accepted as a
+  // --channel value for symmetry with the registry, though nothing schedules it.
+  'ci-dispatch',
   'pnpm-meta',
+  'on-demand',
+  // Runs inside ralph/gate.sh before a Ralph PR opens (hds#188).
   'ralph-gate',
   'manual',
 ]);
@@ -119,6 +166,67 @@ const isPreCommit = channelArg === 'pre-commit';
 const defaultParallel = isPreCommit ? 1 : 4;
 const concurrency = parallelArg ? Math.max(1, parseInt(parallelArg, 10)) : defaultParallel;
 
+// Quiet mode: see the header. Never when capturing an inventory, dry-running, or
+// already inside the hook-quiet wrapper / HOOK_VERBOSE.
+const quiet =
+  (channelArg === 'pre-commit' || channelArg === 'pre-push') &&
+  !gateArg &&
+  !dryRun &&
+  !emitInventoryArg &&
+  !process.env.HOOK_VERBOSE &&
+  !process.env.HOOK_WRAPPED;
+const quietBuf = [];
+/** stdout line: streamed normally, buffered for the log in quiet mode. */
+const say = (m) => (quiet ? quietBuf.push(m) : console.log(m));
+/** stderr line: same. */
+const sayErr = (m) => (quiet ? quietBuf.push(m) : console.error(m));
+const sayWarn = (m) => (quiet ? quietBuf.push(m) : console.warn(m));
+const runStart = performance.now();
+
+function flushQuietLog() {
+  const dir = logDirFor(ROOT);
+  if (!dir) return null;
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+    const name = `run-gates-${channelArg}`;
+    const file = newLogPath(dir, name);
+    fs.writeFileSync(file, quietBuf.join('\n') + '\n');
+    pruneLogs(dir, name);
+    return file;
+  } catch {
+    return null;
+  }
+}
+
+// Resolve commit SHA once at startup when emitting JSONL — used to attribute
+// every per-gate firing to a specific HEAD (post-commit verifier per 13g-12).
+let commitSha = null;
+if (emitJsonlArg) {
+  const r = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT });
+  commitSha = r.status === 0 ? r.stdout.toString().trim() : null;
+}
+
+function appendFiringLog(gate, exitCode, durationMs) {
+  if (!emitJsonlArg) return;
+  const line =
+    JSON.stringify({
+      ts: new Date().toISOString(),
+      channel: channelArg ?? null,
+      gate: gate.id,
+      exitCode,
+      durationMs,
+      commitSha,
+    }) + '\n';
+  try {
+    const target = path.isAbsolute(emitJsonlArg) ? emitJsonlArg : path.join(ROOT, emitJsonlArg);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.appendFileSync(target, line);
+  } catch (e) {
+    // Logging failure must not break the gate run; surface to stderr only.
+    console.error(`✗ run-gates: emit-jsonl append failed: ${e.message}`);
+  }
+}
+
 // ── Inventory capture (--emit-inventory) ──────────────────────────────────────
 //
 // When --emit-inventory is set, each gate's combined stdout+stderr is captured
@@ -126,29 +234,6 @@ const concurrency = parallelArg ? Math.max(1, parseInt(parallelArg, 10)) : defau
 // captured output is re-emitted to the parent's stdout so the operator still
 // sees progress, and the per-gate record is appended to inventoryRecords.
 // At process exit time the aggregate is written to the inventory path.
-
-// Quiet mode (default for local serial runs): per-gate output is captured to
-// $(git rev-parse --git-dir)/hook-logs/run-gates-<ts>.log; green gates print
-// one line, a red gate prints its excerpt plus the log path. HOOK_VERBOSE=1 or
-// CI=true (CI logs want everything) restore streaming. Exit codes unchanged.
-const QUIET =
-  process.env.HOOK_VERBOSE !== '1' &&
-  process.env.CI !== 'true' &&
-  concurrency <= 1 &&
-  !emitInventoryArg &&
-  !dryRun;
-let quietLog = null;
-if (QUIET) {
-  try {
-    const gitDir = spawnSync('git', ['rev-parse', '--absolute-git-dir'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-    }).stdout.trim();
-    if (gitDir) quietLog = openLog(gitDir, 'run-gates');
-  } catch {
-    /* no log */
-  }
-}
 
 const inventoryRecords = [];
 
@@ -228,66 +313,55 @@ if (isPreCommit && concurrency > 1) {
 
 // ── Load registry ─────────────────────────────────────────────────────────────
 
-if (!fs.existsSync(REGISTRY_PATH)) {
-  console.error(`✗ run-gates: registry not found at ${REGISTRY_PATH}`);
+const loaded = loadRegistry(REGISTRY_PATH);
+if (!loaded.ok) {
+  if (loaded.error.kind === 'not-found') {
+    console.error(`✗ run-gates: registry not found at ${REGISTRY_PATH}`);
+  } else {
+    console.error(`✗ run-gates: could not parse registry: ${loaded.error.message}`);
+  }
   process.exit(2);
 }
-
-let registry;
-try {
-  registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
-} catch (e) {
-  console.error(`✗ run-gates: could not parse registry: ${e.message}`);
-  process.exit(2);
-}
+const registry = loaded.registry;
 
 // ── Select gates ──────────────────────────────────────────────────────────────
+//
+// loadRegistry + selectGates (scripts/lib/guardrail-core.mjs) own the mechanics:
+// gate-by-id lookup, channel filter (declaration order preserved), and --scope
+// glob matching per unit 13g-2-validator-self-register. The exact console text,
+// exit codes, and message ordering stay here so the CLI contract is unchanged.
 
-let selectedGates;
+const selection = selectGates({
+  registry,
+  channel: channelArg,
+  gate: gateArg,
+  changedFiles: scopeFiles,
+});
 
-if (gateArg) {
-  const found = registry.gates.find((g) => g.id === gateArg);
-  if (!found) {
-    console.error(`✗ run-gates: gate '${gateArg}' not found in registry`);
-    process.exit(2);
-  }
-  selectedGates = [found];
-} else {
-  // Declaration order is preserved because JSON.parse preserves array order.
-  // Gates that fire from more than one real channel (e.g. pre-commit AND
-  // ralph-gate) declare firingChannels: string[] alongside the primary
-  // firingChannel (#188) — match on either.
-  selectedGates = registry.gates.filter(
-    (g) =>
-      g.firingChannel === channelArg ||
-      (Array.isArray(g.firingChannels) && g.firingChannels.includes(channelArg)),
+if (!selection.ok) {
+  // gate-not-found
+  console.error(`✗ run-gates: gate '${selection.gate}' not found in registry`);
+  process.exit(2);
+}
+
+// --scope skip log prints before any "nothing to do", matching prior order.
+// (Empty channels never reach scope filtering, so skippedByScope is [] there.)
+if (selection.skippedByScope.length > 0) {
+  say(
+    `run-gates: --scope skipped ${selection.skippedByScope.length} gate(s) (no glob match): ${selection.skippedByScope.join(', ')}`,
   );
-  if (selectedGates.length === 0) {
-    console.log(`run-gates: no gates registered for channel '${channelArg}' — nothing to do`);
-    process.exit(0);
-  }
 }
 
-// Apply per-file scoping (--scope). Gates whose registry entry has
-// scope:'full-tree' OR no glob always run. Gates with a glob run only when
-// at least one changed file matches. Per unit 13g-2-validator-self-register.
-const skippedByScope = [];
-if (scopeFiles) {
-  selectedGates = selectedGates.filter((g) => {
-    const keep = matchesScope(g, scopeFiles);
-    if (!keep) skippedByScope.push(g.id);
-    return keep;
-  });
-  if (skippedByScope.length > 0) {
-    console.log(
-      `run-gates: --scope skipped ${skippedByScope.length} gate(s) (no glob match): ${skippedByScope.join(', ')}`,
-    );
-  }
-  if (selectedGates.length === 0) {
+if (selection.gates.length === 0) {
+  if (selection.emptyReason === 'no-gates-for-channel') {
+    console.log(`run-gates: no gates registered for channel '${channelArg}' — nothing to do`);
+  } else if (selection.emptyReason === 'scope-filtered-all') {
     console.log(`run-gates: --scope filtered out every gate — nothing to do`);
-    process.exit(0);
   }
+  process.exit(0);
 }
+
+const selectedGates = selection.gates;
 
 // ── Dry-run ───────────────────────────────────────────────────────────────────
 
@@ -336,7 +410,7 @@ function buildArgv(gate) {
 function runGateSync(gate) {
   const args = buildArgv(gate);
   const start = performance.now();
-  const useCapture = !!emitInventoryArg || QUIET;
+  const useCapture = !!emitInventoryArg || quiet;
   const result = spawnSync(process.execPath, args, {
     cwd: ROOT,
     stdio: useCapture ? ['ignore', 'pipe', 'pipe'] : 'inherit',
@@ -348,22 +422,18 @@ function runGateSync(gate) {
   const durationMs = Math.round(performance.now() - start);
   if (useCapture) {
     const captured = { stdout: result.stdout ?? '', stderr: result.stderr ?? '' };
-    if (QUIET) {
-      const all = `${captured.stdout}${captured.stderr}`;
-      if (quietLog) fs.appendFileSync(quietLog, `\n===== ${gate.id} (exit ${code}) =====\n${all}`);
-      if (code === 0) {
-        console.log(`✓ ${gate.id} (${formatDuration(durationMs)})`);
-      } else {
-        console.error(`✗ ${gate.id} (exit ${code})`);
-        console.error(failureExcerpt(all));
-        if (quietLog) console.error(`full log: ${quietLog}  (HOOK_VERBOSE=1 for live output)`);
-      }
+    if (quiet) {
+      // Keep the gate's output for the log; show it now only if it will block.
+      const text = [captured.stdout, captured.stderr].filter(Boolean).join('');
+      quietBuf.push(text.replace(/\n$/, ''));
+      if (gateOutcome(gate, code) === 'error') process.stdout.write(`── [${gate.id}] ──\n${text}`);
     } else {
       if (captured.stdout) process.stdout.write(captured.stdout);
       if (captured.stderr) process.stderr.write(captured.stderr);
       recordInventory(gate, code, durationMs, captured);
     }
   }
+  appendFiringLog(gate, code, durationMs);
   return code;
 }
 
@@ -401,6 +471,7 @@ function runGateAsync(gate) {
         if (stderrBuf) process.stderr.write(stderrBuf);
         recordInventory(gate, exit, durationMs, { stdout: stdoutBuf, stderr: stderrBuf });
       }
+      appendFiringLog(gate, exit, durationMs);
       resolve(exit);
     });
     child.on('error', (err) => {
@@ -412,6 +483,7 @@ function runGateAsync(gate) {
           stderr: stderrBuf + `\n${err.message}`,
         });
       }
+      appendFiringLog(gate, 1, durationMs);
       resolve(1);
     });
   });
@@ -423,26 +495,45 @@ const label = gateArg
   ? `gate '${gateArg}'`
   : `channel '${channelArg}' (${selectedGates.length} gate(s))`;
 
-if (!QUIET) console.log(`run-gates: running ${label}`);
+say(`run-gates: running ${label}`);
 
-const failures = [];
+const results = [];
 
 if (concurrency <= 1) {
-  // Serial execution — declaration order preserved
-  for (const gate of selectedGates) {
-    if (!QUIET) console.log(`\n── [${gate.id}] ──`);
-    const code = runGateSync(gate);
-    if (code !== 0) {
-      failures.push({ id: gate.id, code });
-      // For pre-commit, fail fast on the first error — unless --emit-inventory
-      // is set, because the debt-baseline run needs every gate's result or the
-      // inventory file is truncated mid-channel (13p-1/13p-2).
-      if (isPreCommit && !emitInventoryArg) {
-        console.error(`\n✗ run-gates: gate '${gate.id}' failed (exit ${code})`);
-        writeInventory();
-        process.exit(1);
-      }
+  // Serial execution — declaration order preserved.
+  // For pre-commit, fail fast on the first failing ERROR-severity gate — a
+  // failing warn gate prints and the run continues (ops#306). Fail-fast is off
+  // when --continue-on-failure is set (post-commit's logger needs every gate's
+  // result, even after one fails — see 13g-12-postcommit-verifier) OR
+  // --emit-inventory is set (debt-baseline run needs every gate's result so the
+  // inventory file isn't truncated mid-channel — see 13p-1/13p-2). --emit-jsonl
+  // alone does NOT disable fail-fast: the failing gate's own entry is appended
+  // in runGateSync before the stop, so a blocking pre-commit run can log a
+  // violation and still stop at the first failure (issue #330) instead of
+  // paying for every remaining gate on every failed commit.
+  const serial = runGatesSerial({
+    gates: selectedGates,
+    failFast: isPreCommit && !continueOnFailure && !emitInventoryArg,
+    runGate: (gate) => {
+      say(`\n── [${gate.id}] ──`);
+      const code = runGateSync(gate);
+      reportWarnedGate(gate, code);
+      return code;
+    },
+  });
+  results.push(...serial.results);
+  if (serial.stoppedAt) {
+    const { exitCode } = serial.results.at(-1);
+    sayErr(`\n✗ run-gates: gate '${serial.stoppedAt}' failed (exit ${exitCode})`);
+    writeInventory();
+    if (quiet) {
+      const file = flushQuietLog();
+      console.error(
+        `✗ run-gates ${channelArg}: gate '${serial.stoppedAt}' failed (exit ${exitCode})` +
+          (file ? ` — full log: ${file}` : ''),
+      );
     }
+    process.exit(1);
   }
 } else {
   // Parallel execution with concurrency cap
@@ -451,11 +542,10 @@ if (concurrency <= 1) {
   async function runWorker() {
     while (cursor < selectedGates.length) {
       const gate = selectedGates[cursor++];
-      console.log(`\n── [${gate.id}] ──`);
+      say(`\n── [${gate.id}] ──`);
       const code = await runGateAsync(gate);
-      if (code !== 0) {
-        failures.push({ id: gate.id, code });
-      }
+      reportWarnedGate(gate, code);
+      results.push(gateResult(gate, code));
     }
   }
 
@@ -463,21 +553,64 @@ if (concurrency <= 1) {
   await Promise.all(workers);
 }
 
+/**
+ * Right under a gate's own output, flag a non-zero exit that will NOT block the
+ * run (warn/info severity), so a red-looking gate isn't mistaken for the reason
+ * a commit stopped. Blocking failures are reported by the fail-fast / summary.
+ */
+function reportWarnedGate(gate, exitCode) {
+  if (gateOutcome(gate, exitCode) !== 'warn') return;
+  sayWarn(
+    `⚠ run-gates: [${gate.id}] exit ${exitCode} — severity '${gate.severity}', reported, not blocking`,
+  );
+}
+
 // ── Final summary ─────────────────────────────────────────────────────────────
 
 writeInventory();
 
+const { failures, warnings } = summarizeRun(results);
+
+if (warnings.length > 0) {
+  sayWarn(`\n⚠ run-gates: ${warnings.length} gate(s) warned (not blocking):`);
+  for (const { id, severity, exitCode } of warnings) {
+    sayWarn(`    [${id}] exit ${exitCode} (severity '${severity}')`);
+  }
+}
+
 if (failures.length === 0) {
-  console.log(`${QUIET ? '' : '\n'}✓ run-gates: all ${selectedGates.length} gate(s) passed`);
+  const passed = selectedGates.length - warnings.length;
+  say(
+    warnings.length === 0
+      ? `\n✓ run-gates: all ${selectedGates.length} gate(s) passed`
+      : `\n✓ run-gates: no blocking failures (${passed} passed, ${warnings.length} warned)`,
+  );
+  if (quiet) {
+    const file = flushQuietLog();
+    const warned = warnings.length
+      ? ` (${warnings.length} warned: ${warnings.map((w) => w.id).join(', ')})`
+      : '';
+    console.log(
+      `✓ run-gates ${channelArg}: ${selectedGates.length} gates${warned} (${formatDuration(performance.now() - runStart)})` +
+        (file && warnings.length ? ` — log: ${file}` : ''),
+    );
+  }
   process.exit(0);
 } else {
-  console.error(`\n✗ run-gates: ${failures.length} gate(s) failed:`);
-  for (const { id, code } of failures) {
-    console.error(`    [${id}] exit ${code}`);
+  sayErr(`\n✗ run-gates: ${failures.length} gate(s) failed:`);
+  for (const { id, exitCode } of failures) {
+    sayErr(`    [${id}] exit ${exitCode}`);
+  }
+  if (quiet) {
+    const file = flushQuietLog();
+    console.error(
+      `✗ run-gates ${channelArg}: ${failures.length} gate(s) failed: ${failures.map((f) => f.id).join(', ')}` +
+        (file ? ` — full log: ${file}` : ''),
+    );
   }
   // When --emit-inventory is set, exit 0 even if gates failed: the inventory's
   // job is to capture the current state of debt for downstream classification.
-  // The failures table still prints to stderr for human visibility. (--emit-inventory
+  // The failures table still prints to stderr for human visibility. (--emit-jsonl
   // is unchanged: it logs but still exits 1 because it's used post-commit to
   // detect bypass, where the exit signals "post-commit found a real failure".)
   if (emitInventoryArg) {

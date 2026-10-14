@@ -45,7 +45,7 @@ describe('Input prefix and suffix slots (hds#393)', () => {
     expect(follows(field, suffix)).toBe(true);
   });
 
-  it('keeps the label as the whole accessible name and leaves aria-describedby on the helper', () => {
+  it('a11y:input.slots-name keeps the label as the whole accessible name and leaves aria-describedby on the helper', () => {
     render(
       <Input label="Website" prefix="https://" suffix=".com" helperText="Your public homepage." />,
     );
@@ -228,7 +228,7 @@ describe('Input horizontal padding (hds#393 review)', () => {
 });
 
 describe('Input aria-describedby targets (a11y)', () => {
-  it('points at the helper while it renders', () => {
+  it('a11y:input.helper-described points at the helper while it renders', () => {
     render(<Input label="Email" helperText="We never share it." />);
     const field = screen.getByLabelText('Email');
     const id = field.getAttribute('aria-describedby') as string;
@@ -251,7 +251,7 @@ describe('Input aria-describedby targets (a11y)', () => {
 });
 
 describe('Input loading (a11y)', () => {
-  it('stays focusable (readOnly + aria-busy), not disabled, so typing keeps focus', () => {
+  it('a11y:input.loading-focusable stays focusable (readOnly + aria-busy), not disabled, so typing keeps focus', () => {
     render(<Input label="Search" type="search" loading />);
     const field = screen.getByLabelText('Search') as HTMLInputElement;
     expect(field.disabled).toBe(false);
