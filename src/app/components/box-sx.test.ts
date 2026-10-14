@@ -302,6 +302,21 @@ describe('resolveSx — generic CSS properties', () => {
 });
 
 describe('resolveSx — responsive values', () => {
+  it('compiles a base value to a plain rule with no media query, and sm to a media query (hds#652)', () => {
+    const rules = resolveSx({ flexDirection: { base: 'column', sm: 'row' } }, 'cls');
+    expect(rules).toEqual([
+      '.cls{flex-direction:column}',
+      '@media (min-width:640px){.cls{flex-direction:row}}',
+    ]);
+    expect(rules.join('')).not.toContain('min-width:375px');
+  });
+
+  it('compiles an xs-only map exactly as before (hds#652)', () => {
+    expect(resolveSx({ flexDirection: { xs: 'column' } }, 'cls')).toEqual([
+      '@media (min-width:375px){.cls{flex-direction:column}}',
+    ]);
+  });
+
   it('compiles a responsive object to ascending min-width media queries', () => {
     const rules = resolveSx({ width: { xs: 100, md: 200 } }, 'cls');
     expect(rules).toEqual([
