@@ -19,6 +19,7 @@ export const tokenRefs = {
         "100": "var(--primitive-color-neutral-100)",
         "200": "var(--primitive-color-neutral-200)",
         "300": "var(--primitive-color-neutral-300)",
+        "350": "var(--primitive-color-neutral-350)",
         "400": "var(--primitive-color-neutral-400)",
         "450": "var(--primitive-color-neutral-450)",
         "500": "var(--primitive-color-neutral-500)",
