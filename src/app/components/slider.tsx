@@ -56,7 +56,7 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
         </label>
         <motion.span
           key={value}
-          className="text-secondary shrink-0"
+          className="text-muted-foreground shrink-0"
           initial={{ opacity: 0.72, y: hds.space.px2 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
@@ -69,7 +69,7 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
         </motion.span>
       </div>
       {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven height; var()-based, no Tailwind-theme utility exists */}
-      <motion.div className="relative h-[var(--semantic-size-control-md)] grid items-center">
+      <motion.div className="relative h-[var(--semantic-size-control-md)] hds-touch-row grid items-center">
         <div
           aria-hidden="true"
           // A bare track, not a padded Surface: Surface's inset padding made the track a 48px slab with a 0px fill (hds#522).
@@ -103,7 +103,7 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
           onPointerCancel={() => setIsActive(false)}
           onBlur={() => setIsActive(false)}
           // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven accent-color/z-index; var()-based, no Tailwind-theme utility exists
-          className="hds-focus hds-slider-input w-full h-full block m-0 bg-transparent accent-[var(--semantic-color-surface-accent)] cursor-pointer relative z-[var(--semantic-zIndex-control)]"
+          className="hds-focus hds-touch-row hds-slider-input w-full h-full block m-0 bg-transparent accent-[var(--semantic-color-surface-accent)] cursor-pointer relative z-[var(--semantic-zIndex-control)]"
         />
       </motion.div>
     </div>

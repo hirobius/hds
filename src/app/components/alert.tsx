@@ -27,7 +27,9 @@ type AlertTone = 'success' | 'danger' | 'warning' | 'info';
 // the Icon takes a color value). `hasTitle` flips cross-axis alignment.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap/padding/radius; var()-based, no Tailwind-theme utility exists
 const alertVariants = /* @__PURE__ */ cva(
-  'flex gap-[var(--semantic-space-scale-xs)] p-[var(--semantic-space-scale-xs)] rounded-[var(--primitive-radius-4)]', // tier-ok: 4px primitive radius, no semantic 4px token
+  // Same padding and radius as Callout (they differ by role only, DESIGN.md): the surface padding, and the
+  // action radius via rounded-md so a tenant's shape setting reaches it.
+  'flex gap-[var(--semantic-space-scale-xs)] p-[var(--semantic-space-surface-padding)] rounded-md',
   {
     variants: {
       tone: {

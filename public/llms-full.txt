@@ -1135,6 +1135,7 @@ Select — dropdown selector built on Radix Select (ADR-001 Radix convention). R
   - label: string
   - onChange: (v: string) => void
   - options: { value: string; label: string; }[]
+  - placeholder: string = Select…
   - showLabel: boolean = true
   - value: string
 

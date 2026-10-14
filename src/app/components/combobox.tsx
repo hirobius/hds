@@ -287,7 +287,9 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             disabled={disabled}
             onClick={() => setOpen((o) => !o)}
             className={cn(
-              'hds-focus flex h-10 items-center justify-between gap-2 rounded-md border border-input',
+              'hds-focus flex h-10 items-center justify-between gap-2 rounded-md border',
+              // aria-invalid (set by FormField or the caller) draws the same red border as Input.
+              ariaInvalid ? 'border-destructive' : 'border-input',
               FORM_CONTROL_WIDTH,
               'bg-background px-3 hds-type-ui text-foreground',
               'disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]',
@@ -380,8 +382,8 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                     onMouseEnter={() => setActiveIndex(i)}
                     onClick={() => commit(option)}
                     className={cn(
-                      'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left hds-type-ui outline-none',
-                      'data-[active=true]:bg-accent data-[active=true]:text-accent-foreground',
+                      'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left hds-type-ui hds-touch-row outline-none',
+                      'data-[active=true]:bg-[var(--semantic-color-surface-sunken)] data-[active=true]:text-[var(--semantic-color-content-primary)]',
                       'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
                       'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                     )}
@@ -425,7 +427,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                   disabled={disabled || option.disabled}
                   onClick={() => remove(option, i)}
                   className={cn(
-                    'hds-focus inline-flex h-7 items-center gap-1 rounded-sm border border-border bg-muted pl-2 pr-1',
+                    'hds-focus hds-touch-row inline-flex h-7 items-center gap-1 rounded-sm border border-border bg-muted pl-2 pr-1',
                     'hds-type-caption text-foreground hover:bg-accent hover:text-accent-foreground',
                     'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                   )}

@@ -44,6 +44,44 @@ export function paginationRange(page: number, count: number, siblingCount = 1): 
   return [1, 'ellipsis', ...range(leftSibling, rightSibling), 'ellipsis', count];
 }
 
+/** Where a rendered slot shows: everywhere, only at sm and up, or only below sm. */
+type SlotReach = 'all' | 'wide' | 'narrow';
+type Slot = { token: PageToken; reach: SlotReach };
+
+/**
+ * One row that renders the wide range (`siblingCount`) at sm and up and the compact range (no
+ * siblings) below sm. Pages only the wide range shows are `wide`; a run they leave uncovered on a
+ * phone gets its own `narrow` ellipsis, so neither row ever skips pages without one.
+ */
+function paginationSlots(page: number, count: number, siblingCount: number): Slot[] {
+  const pagesOf = (tokens: PageToken[]) => tokens.filter((t): t is number => t !== 'ellipsis');
+  const wide = new Set(pagesOf(paginationRange(page, count, siblingCount)));
+  const narrow = new Set(pagesOf(paginationRange(page, count, 0)));
+  const all = [...new Set([...wide, ...narrow])].sort((a, b) => a - b);
+  const slots: Slot[] = [];
+  let lastWide = 0;
+  let lastNarrow = 0;
+  for (const p of all) {
+    const inWide = wide.has(p);
+    const inNarrow = narrow.has(p);
+    const wideGap = inWide && lastWide > 0 && p - lastWide > 1;
+    const narrowGap = inNarrow && lastNarrow > 0 && p - lastNarrow > 1;
+    if (wideGap && narrowGap) slots.push({ token: 'ellipsis', reach: 'all' });
+    else if (wideGap) slots.push({ token: 'ellipsis', reach: 'wide' });
+    else if (narrowGap) slots.push({ token: 'ellipsis', reach: 'narrow' });
+    slots.push({ token: p, reach: inWide && inNarrow ? 'all' : inWide ? 'wide' : 'narrow' });
+    if (inWide) lastWide = p;
+    if (inNarrow) lastNarrow = p;
+  }
+  return slots;
+}
+
+const REACH_CLASS: Record<SlotReach, string | undefined> = {
+  all: undefined,
+  wide: 'max-sm:hidden',
+  narrow: 'sm:hidden',
+};
+
 // ── Types ──────────────────────────────────────────────────────────────────────
 
 /** @public */
@@ -69,8 +107,11 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
     ref,
   ) {
     if (count <= 1) return null;
-    const tokens = paginationRange(page, count, siblingCount);
     const go = (next: number) => onPageChange(Math.max(1, Math.min(count, next)));
+    // Below 640px the 44px touch targets leave room for about seven slots, so the sibling pages step aside
+    // (kept at sm and up) and the first, current and last pages stay: no wrapped second row (item 15).
+    // Every run of pages a row skips keeps its ellipsis in that row.
+    const slots = paginationSlots(page, count, siblingCount);
 
     return (
       <nav ref={ref} aria-label={label} className={cn('w-full', className)} {...props}>
@@ -86,17 +127,17 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
               iconLeft={<Icon icon={ChevronLeft} size="small" />}
             />
           </li>
-          {tokens.map((token, index) =>
+          {slots.map(({ token, reach }, index) =>
             token === 'ellipsis' ? (
               <li
                 key={`ellipsis-${index}`}
                 aria-hidden="true"
-                className="px-2 text-muted-foreground select-none"
+                className={cn('px-2 text-muted-foreground select-none', REACH_CLASS[reach])}
               >
                 …
               </li>
             ) : (
-              <li key={token}>
+              <li key={token} className={REACH_CLASS[reach]}>
                 <Button
                   variant={token === page ? 'secondary' : 'tertiary'}
                   size="sm"

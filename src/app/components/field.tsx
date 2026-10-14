@@ -15,7 +15,9 @@ import { cn } from '../../lib/utils';
 // Non-interactive — no hover/active/focus states. Tone drives only the value
 // color; the label stays muted regardless. Renamed the pre-contract 'default'
 // value to the fixed vocabulary's 'neutral' (#60 — check-prop-vocabulary rule C).
-const fieldValueVariants = /* @__PURE__ */ cva('hds-type-ui', {
+// min-w-0 + break-words: a long unbroken value (a URL, a hash) wraps inside the column instead of
+// widening it past a 390px viewport.
+const fieldValueVariants = /* @__PURE__ */ cva('hds-type-ui min-w-0 break-words', {
   variants: {
     tone: {
       neutral: 'text-foreground',
@@ -56,7 +58,7 @@ export const Field = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FieldProps
     <div
       ref={ref}
       data-tone={tone ?? 'neutral'}
-      className={cn('flex flex-col gap-1', className)}
+      className={cn('flex min-w-0 flex-col gap-1', className)}
       {...props}
     >
       <span className="hds-type-caption text-muted-foreground">{label}</span>
