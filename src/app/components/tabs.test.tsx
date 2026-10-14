@@ -3,7 +3,7 @@
  * Plain-DOM assertions (no jest-dom matchers).
  */
 import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 
 afterEach(cleanup);
@@ -37,5 +37,31 @@ describe('Tabs', () => {
       expect(cls).toContain('focus-visible:ring-2');
       expect(cls).toContain('focus-visible:ring-inset');
     }
+  });
+});
+
+describe('TabsList overflow cue (hds#723)', () => {
+  const list = () => screen.getByRole('tablist');
+  const setMetrics = (el: HTMLElement, m: { scrollWidth: number; clientWidth: number }) => {
+    Object.defineProperty(el, 'scrollWidth', { configurable: true, value: m.scrollWidth });
+    Object.defineProperty(el, 'clientWidth', { configurable: true, value: m.clientWidth });
+  };
+
+  it('marks no overflow when the tabs fit', () => {
+    render(<Example />);
+    expect(list().getAttribute('data-overflow')).toBeNull();
+  });
+
+  it('marks the trailing edge when tabs overflow, and the leading edge once scrolled', () => {
+    render(<Example />);
+    setMetrics(list(), { scrollWidth: 600, clientWidth: 300 });
+    fireEvent.scroll(list());
+    expect(list().getAttribute('data-overflow')).toBe('end');
+    list().scrollLeft = 100;
+    fireEvent.scroll(list());
+    expect(list().getAttribute('data-overflow')).toBe('both');
+    list().scrollLeft = 300;
+    fireEvent.scroll(list());
+    expect(list().getAttribute('data-overflow')).toBe('start');
   });
 });
