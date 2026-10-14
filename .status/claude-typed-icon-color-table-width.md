@@ -1,0 +1,1 @@
+- Icon color and Table column width typed to token values (IconColor, TableColumnWidth); minor changeset + upgrade note.
