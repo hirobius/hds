@@ -17,7 +17,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { useState } from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
 import { virtual } from '@guidepup/virtual-screen-reader';
 import { Checkbox } from '@/app/components/checkbox';
 import { Radio } from '@/app/components/radio';
@@ -295,17 +295,22 @@ describe('SegmentedControl accessibility contract', () => {
     );
   }
 
-  it('a11y:segmented-control.roving-focus is one tab stop; arrows move focus and Space or Enter selects', async () => {
+  it('a11y:segmented-control.roving-focus is one tab stop; arrows move focus and select, like native radios', async () => {
     render(<Seg />);
     await user().tab();
     expect(document.activeElement).toBe(screen.getByRole('radio', { name: 'Day' }));
     await user().keyboard('{ArrowRight}');
     expect(document.activeElement).toBe(screen.getByRole('radio', { name: 'Week' }));
-    expect(screen.getByRole('radio', { name: 'Day' }).getAttribute('aria-checked')).toBe('true');
-    await user().keyboard(' ');
-    expect(screen.getByRole('radio', { name: 'Week' }).getAttribute('aria-checked')).toBe('true');
-    await user().keyboard('{ArrowRight}{Enter}');
-    expect(screen.getByRole('radio', { name: 'Month' }).getAttribute('aria-checked')).toBe('true');
+    await waitFor(() =>
+      expect(screen.getByRole('radio', { name: 'Week' }).getAttribute('aria-checked')).toBe('true'),
+    );
+    expect(screen.getByRole('radio', { name: 'Day' }).getAttribute('aria-checked')).toBe('false');
+    await user().keyboard('{ArrowRight}');
+    await waitFor(() =>
+      expect(screen.getByRole('radio', { name: 'Month' }).getAttribute('aria-checked')).toBe(
+        'true',
+      ),
+    );
     await user().tab();
     expect(document.activeElement).toBe(screen.getByRole('button', { name: 'after' }));
   });

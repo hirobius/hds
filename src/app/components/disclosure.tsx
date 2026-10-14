@@ -40,7 +40,7 @@ type DisclosureVariant = 'panel' | 'nav' | 'card';
 // min-h: the caption-size label is 18px tall, under the 24px WCAG 2.5.8 floor (hds#520).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
 const disclosureTriggerVariants = /* @__PURE__ */ cva(
-  'flex min-h-[var(--primitive-size-interactive-minCompact)] w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-primary transition-[border-color,box-shadow,color]',
+  'flex min-h-[var(--primitive-size-interactive-minCompact)] w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-foreground transition-[border-color,box-shadow,color]',
   {
     variants: {
       variant: {
@@ -126,7 +126,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
     }
 
     const triggerClassName = cn(
-      'hds-focus',
+      'hds-focus hds-touch-row',
       disclosureTriggerVariants({ variant }),
       variant === 'nav' ? 'hds-text-hover hds-bg-hover-neutral' : '',
       className,

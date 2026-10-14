@@ -79,6 +79,8 @@ export interface SelectProps {
   'aria-describedby'?: string;
   /** Marks the trigger invalid, for example while the field shows an error. */
   'aria-invalid'?: boolean;
+  /** Text shown in the trigger while `value` matches no option. Defaults to "Select…", like Combobox. */
+  placeholder?: string;
 }
 
 export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>(function Select(
@@ -92,6 +94,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
     id,
     'aria-describedby': ariaDescribedBy,
     'aria-invalid': ariaInvalid,
+    placeholder = 'Select…',
   },
   ref,
 ) {
@@ -139,11 +142,14 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
             // h-10 is the one md control height shared with Input, Combobox and Button;
             // the trigger had py-2 and rendered 38px (hds#522). bg-background matches Input.
             'hds-focus group flex h-10 w-full items-center justify-between gap-2 rounded-md border px-3 hds-type-ui',
-            'border-input bg-background text-foreground transition-colors',
-            'hover:border-ring data-[state=open]:border-ring',
+            'bg-background text-foreground transition-colors',
+            // aria-invalid (set by FormField or the caller) draws the same red border as Input.
+            ariaInvalid
+              ? 'border-destructive'
+              : 'border-input hover:border-ring data-[state=open]:border-ring',
           )}
         >
-          <RSelect.Value />
+          <RSelect.Value placeholder={placeholder} />
           <RSelect.Icon className="flex shrink-0 text-muted-foreground">
             <Icon icon={ChevronsUpDown} size="small" color="currentColor" />
           </RSelect.Icon>
@@ -176,8 +182,8 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
                   key={opt.value}
                   value={opt.value}
                   className={cn(
-                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 hds-type-ui outline-none',
-                    'text-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
+                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none',
+                    'text-foreground data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)]',
                     'data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring',
                   )}
                 >

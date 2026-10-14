@@ -248,6 +248,8 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
     | null;
 
   const hasError = Boolean(error) || effectiveDemoState === 'error';
+  // FormField marks its control aria-invalid without an `error` prop: draw the same red border for it.
+  const invalid = hasError || rest['aria-invalid'] === true || rest['aria-invalid'] === 'true';
   const isLoading = loading || effectiveDemoState === 'loading';
   // Loading keeps the field enabled: `disabled` would drop focus and the caret
   // on every keystroke of a search-as-you-type field. It is read-only + busy instead.
@@ -358,7 +360,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
         data-size={size}
         data-search-input={type === 'search' ? 'true' : undefined}
         className={cn(
-          inputVariants({ size, textStyle, invalid: hasError }),
+          inputVariants({ size, textStyle, invalid }),
           padLeft,
           padRight,
           inShell && SHELLED_INPUT,
@@ -404,7 +406,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           onClick={handleClear}
           aria-label={type === 'search' ? 'Clear search' : 'Clear input'}
           className={cn(
-            'absolute right-0 flex items-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
+            'absolute right-0 flex items-center justify-center hds-touch-target text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
             padCfg.inset,
           )}
         >
@@ -415,7 +417,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
   );
 
   return (
-    <div className={cn('flex flex-col gap-1.5', FORM_CONTROL_WIDTH, className)}>
+    <div className={cn('flex flex-col gap-2', FORM_CONTROL_WIDTH, className)}>
       {label && (
         <label htmlFor={id} className="hds-type-ui text-foreground">
           {label}
@@ -423,7 +425,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
       )}
 
       {inShell ? (
-        <div className={inputShellVariants({ size, textStyle, invalid: hasError })}>
+        <div className={inputShellVariants({ size, textStyle, invalid })}>
           {hasPrefix && <span className={cn(slotClass, padCfg.prefixPad)}>{prefix}</span>}
           {field}
           {hasSuffix && <span className={cn(slotClass, padCfg.suffixPad)}>{suffix}</span>}

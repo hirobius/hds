@@ -2,7 +2,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { docsPagePath, loadDocsRouting } from './lib/docs-routing.mjs';
-import { deriveRequiredProps, refreshSpecProps } from './lib/manifest-props.mjs';
+import {
+  deriveRequiredProps,
+  reconcileRequiredProps,
+  refreshSpecProps,
+} from './lib/manifest-props.mjs';
 
 const repoRoot = process.cwd();
 const manifestPath = path.join(repoRoot, 'public', 'hds-manifest.json');
@@ -197,6 +201,7 @@ for (const [name, spec] of Object.entries(componentSpecs)) {
   if (!('requiredProps' in spec)) {
     spec.requiredProps = targets.has(name) ? deriveRequiredProps(props) : [];
   }
+  spec.requiredProps = reconcileRequiredProps(spec.requiredProps, props);
 
   // Apply a11yRules: set if not present, or if empty and we have defaults for this component
   if (

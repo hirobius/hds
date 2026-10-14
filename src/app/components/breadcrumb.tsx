@@ -78,7 +78,7 @@ export const Breadcrumb = /* @__PURE__ */ React.forwardRef<HTMLElement, Breadcru
                   <LinkComponent
                     to={item.href as string}
                     style={hds.typeStyles.ui}
-                    className="hds-focus text-muted-foreground transition-colors hover:text-foreground"
+                    className="hds-focus hds-touch-row inline-flex items-center text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {item.label}
                   </LinkComponent>

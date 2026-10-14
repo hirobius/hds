@@ -296,9 +296,10 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       );
     }
 
-    // iconOnly hides the label text, so the label becomes the name instead.
-    // Spread only when set, so an aria-label from props keeps its old position.
-    const nameProps = iconOnly && label ? { 'aria-label': label } : {};
+    // `label` is the accessible name whenever it is given (iconOnly hides the text; with children it
+    // overrides them). Spread only when set, so an aria-label from props keeps its old position.
+    // When label is the only content it already is the name, so no redundant aria-label.
+    const nameProps = label && (iconOnly || children != null) ? { 'aria-label': label } : {};
 
     return (
       <button

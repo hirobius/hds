@@ -18,7 +18,7 @@
  * hover/focus tracking (per-segment `string | null` cardinality) rather than
  * the shared `useInteractionState` single-element machine; only the class
  * composition changed, not the state machine feeding it.
- * @a11y component required a11y:segmented-control.roving-focus The control is one Tab stop; arrow keys move focus between segments and Space or Enter selects.
+ * @a11y component required a11y:segmented-control.roving-focus The control is one Tab stop; arrow keys move focus between segments and select, like a native radio group.
  * @a11y component required a11y:segmented-control.group-and-radio-roles It is a radiogroup named by label or aria-label, and each segment is a radio with aria-checked.
  * @a11y component required a11y:segmented-control.sr-group A screen reader speaks the group name and each radio with its state, position and set size.
  * @a11y component required a11y:segmented-control.focus-ring Every segment carries the shared hds-focus ring.
@@ -27,7 +27,7 @@
  * @a11y consumer required Give the control a label or an aria-label so the group has a name.
  */
 // motion-ok: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
-import { forwardRef, useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -79,15 +79,17 @@ const segmentedControlRailVariants = /* @__PURE__ */ cva(
 // …` short-circuit.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- segment button color/spacing/motion tokens have no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlItemVariants = /* @__PURE__ */ cva(
-  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-md border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
+  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-md border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center hds-touch-row transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
   {
     variants: {
       size: {
         // Rail = item + 2 x 4px padding + 2px border: 22px -> 32px (Button sm), 30px -> 40px (Button/Input md).
         // WCAG 2.5.8: the 22px segment is under 24px, so an invisible pseudo-element grows the
         // hit area 1px above and below into the rail padding, to 24px, without moving the layout.
-        sm: "min-h-[22px] py-0 before:absolute before:inset-x-0 before:-inset-y-[1px] before:content-['']",
-        md: 'min-h-[30px]',
+        // Default inline padding is a class so it can step down on a phone: five 16px-padded segments are
+        // wider than a 390px viewport (bug bash 24, item 15). A consumer segmentPaddingX still wins inline.
+        sm: "min-h-[22px] py-0 px-[var(--semantic-space-scale-xs)] before:absolute before:inset-x-0 before:-inset-y-[1px] before:content-['']",
+        md: 'min-h-[30px] px-[var(--semantic-space-scale-xs)] sm:px-[var(--semantic-space-layout-gap)]',
       },
       fullWidth: {
         true: 'w-full min-w-0 flex-1',
@@ -365,11 +367,11 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
     const demoState = frozenState as 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled' | null;
     const isDisabled = demoState === 'disabled';
     const productiveMotion = useHdsMotion('productive');
-    const isCompact = size === 'sm';
     const isSecondary = variant === 'secondary';
     const resolvedAriaLabel = ariaLabel ?? label;
-    const resolvedSegmentPaddingX =
-      segmentPaddingX ?? (isCompact ? hds.semantic.space.scale.xs : hds.semantic.space.layout.gap);
+    // Arrow/Home/End focus moves select, like a native radio group (WAI-ARIA radio pattern); Tab does not.
+    // Radix moves focus in a timeout after the key, so remember when the navigation key was pressed.
+    const lastNavKeyAt = useRef(-Infinity);
 
     return (
       <div ref={ref} className={segmentedControlWrapperVariants({ fullWidth })}>
@@ -397,6 +399,13 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
             if (next && !isDisabled) onChange(next);
           }}
           disabled={isDisabled}
+          onKeyDownCapture={(e) => {
+            if (
+              ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key)
+            ) {
+              lastNavKeyAt.current = performance.now();
+            }
+          }}
           className={segmentedControlRailVariants({ variant, fullWidth })}
           // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
           style={{ padding: railPadding ?? '4px' }}
@@ -427,7 +436,12 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                   type="button"
                   onHoverStart={() => !demoState && setHoveredValue(option.value)}
                   onHoverEnd={() => !demoState && setHoveredValue(null)}
-                  onFocus={() => !demoState && setFocusedValue(option.value)}
+                  onFocus={() => {
+                    if (demoState) return;
+                    setFocusedValue(option.value);
+                    if (performance.now() - lastNavKeyAt.current < 100 && !active)
+                      onChange(option.value);
+                  }}
                   onBlur={() => !demoState && setFocusedValue(null)}
                   animate={
                     isSecondary
@@ -458,10 +472,11 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                     demoFocusRing && segmentedControlFocusRingVariants({ variant }),
                   )}
                   // inline-ok: segmentPaddingX is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
-                  style={{
-                    paddingLeft: resolvedSegmentPaddingX,
-                    paddingRight: resolvedSegmentPaddingX,
-                  }}
+                  style={
+                    segmentPaddingX === undefined
+                      ? undefined
+                      : { paddingLeft: segmentPaddingX, paddingRight: segmentPaddingX }
+                  }
                 >
                   <span
                     aria-hidden="true"

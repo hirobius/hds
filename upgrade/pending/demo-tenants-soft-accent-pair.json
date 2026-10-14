@@ -463,6 +463,20 @@
         "css-var-changed:--semantic-space-surface-padding:[data-brand=soft-demo],[data-tenant=soft-demo]",
         "css-var-changed:--semantic-space-surface-padding:[data-brand=soft-demo][data-density=compact],[data-tenant=soft-demo][data-density=compact]"
       ]
+    },
+    {
+      "id": "value-changed/--component-badge-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do unless you set data-brand to soft-demo or accent-pair-demo: those new demo tenants set --component-badge-radius, and every other brand looks the same.",
+      "detect": {
+        "cssVars": ["--component-badge-radius"],
+        "cssVarWrites": ["--component-badge-radius"]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-radius::root",
+        "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ]
     }
   ]
 }

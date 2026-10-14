@@ -14,9 +14,8 @@
  * @a11y component required gate:check-reduced-motion The chevron and copy-button transitions use the productive motion token, which is zero under prefers-reduced-motion.
  * @a11y consumer recommended Put the CodeBlock under a heading, or state what the sample shows in the text before it, since the region is only named Code sample.
  */
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex -- scrollable code region requires tabIndex for keyboard navigation */
 
-import { useId, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { cva } from 'class-variance-authority';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
@@ -34,12 +33,12 @@ const TECHNICAL_TYPE_CLASSES =
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default/surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const blockContainerVariants = /* @__PURE__ */ cva(
-  'overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)]',
+  'overflow-hidden rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const inlineWrapperVariants = /* @__PURE__ */ cva(
-  'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
+  'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven
@@ -85,7 +84,7 @@ const copyButtonVariants = /* @__PURE__ */ cva(
         inline:
           'shrink-0 border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)] transition-[background-color,color,transform] duration-[var(--hds-motion-productive-duration)] ease',
         block:
-          'absolute right-[var(--semantic-space-subgrid-gap)] top-[var(--semantic-space-subgrid-gap)] rounded-[var(--semantic-radius-action)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-scale-xs)] py-[var(--semantic-space-subgrid-gap)] transition-[background-color,color] duration-[var(--hds-motion-productive-duration)] ease',
+          'absolute right-[var(--semantic-space-subgrid-gap)] top-[var(--semantic-space-subgrid-gap)] rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-scale-xs)] py-[var(--semantic-space-subgrid-gap)] transition-[background-color,color] duration-[var(--hds-motion-productive-duration)] ease',
       },
     },
     defaultVariants: { variant: 'block' },
@@ -125,6 +124,47 @@ const prePanelVariants = /* @__PURE__ */ cva(
     defaultVariants: { panelBackground: false },
   },
 );
+
+/**
+ * The scrolling <pre>. It is a plain element (no landmark, no tab stop) until its code overflows;
+ * only then does it become a keyboard-scrollable `group` named by the filename or language, so a page
+ * of short blocks adds no tab stops and no duplicate "Code sample" landmarks (bug bash 24, item 9).
+ */
+// A layout effect in the browser (no flash of the unmeasured state); a plain effect on the server,
+// where React 18 warns about useLayoutEffect and neither one runs.
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
+
+function CodePre({
+  panelBackground,
+  label,
+  children,
+}: {
+  panelBackground: boolean;
+  label: string;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLPreElement>(null);
+  const [overflows, setOverflows] = useState(false);
+  useIsomorphicLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => setOverflows(el.scrollWidth > el.clientWidth);
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [children]);
+  return (
+    <pre
+      ref={ref}
+      {...(overflows ? { tabIndex: 0, role: 'group', 'aria-label': label } : {})}
+      className={prePanelVariants({ panelBackground })}
+    >
+      {children}
+    </pre>
+  );
+}
 
 export interface CodeBlockProps {
   /** Code string displayed in the block. */
@@ -251,14 +291,12 @@ export function CodeBlock({
 
   const codePanel = (
     <div className="relative">
-      <pre
-        tabIndex={0}
-        role="region"
-        aria-label="Code sample"
-        className={prePanelVariants({ panelBackground: true })}
+      <CodePre
+        panelBackground
+        label={filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample')}
       >
         <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
-      </pre>
+      </CodePre>
       {copyBtn}
       <CopyStatus copied={copied} />
     </div>
@@ -305,14 +343,12 @@ export function CodeBlock({
     <div className={cn(blockContainerVariants(), className)}>
       {headerEl}
       <div className="relative">
-        <pre
-          tabIndex={0}
-          role="region"
-          aria-label="Code sample"
-          className={prePanelVariants({ panelBackground: false })}
+        <CodePre
+          panelBackground={false}
+          label={filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample')}
         >
           <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
-        </pre>
+        </CodePre>
         {copyBtn}
         <CopyStatus copied={copied} />
       </div>

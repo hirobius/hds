@@ -180,7 +180,8 @@ describe('Pagination accessibility contract', () => {
   it('a11y:pagination.ellipsis-hidden - the truncation ellipsis is hidden from assistive tech', () => {
     const { container } = render(<Pagination page={10} count={20} onPageChange={() => {}} />);
     const ellipses = [...container.querySelectorAll('li')].filter((li) => li.textContent === '…');
-    expect(ellipses).toHaveLength(2);
+    // Gaps on both sides; a phone row can add its own narrow ellipsis (bug bash 24), so at least two.
+    expect(ellipses.length).toBeGreaterThanOrEqual(2);
     for (const li of ellipses) expect(li.getAttribute('aria-hidden')).toBe('true');
   });
 

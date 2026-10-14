@@ -44,7 +44,7 @@ const tagButtonVariants = /* @__PURE__ */ cva(
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-tag-* sizing/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tagPillVariants = /* @__PURE__ */ cva(
-  'pointer-events-none box-border inline-flex min-h-[var(--component-tag-minHeight)] min-w-[var(--component-tag-minWidth)] items-center justify-center whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid px-[var(--component-tag-paddingX)] py-[var(--component-tag-paddingY)] hds-type-caption transition-colors',
+  'pointer-events-none box-border inline-flex min-h-[var(--component-tag-minHeight)] min-w-[var(--component-tag-minWidth)] max-w-full items-center justify-center overflow-hidden whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid px-[var(--component-tag-paddingX)] py-[var(--component-tag-paddingY)] hds-type-caption transition-colors',
   {
     variants: {
       selected: {
