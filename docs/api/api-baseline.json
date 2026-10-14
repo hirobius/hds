@@ -13,7 +13,7 @@
     "./patterns": "src/patterns.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.25.0",
+  "version": "0.26.0",
   "generatedAt": "2026-10-14",
   "modules": {
     "(barrel)": [
@@ -112,6 +112,7 @@
       "ComposerProps",
       "ComposerSubmission"
     ],
+    "./app/components/theme-toggle": ["ThemeToggle", "ThemeToggleProps"],
     "./app/components/checkbox": ["Checkbox", "CheckboxProps", "HdsCheckboxDemoState"],
     "./app/components/radio": ["HdsRadioDemoState", "Radio", "RadioProps"],
     "./app/components/slider": ["Slider", "SliderProps"],
