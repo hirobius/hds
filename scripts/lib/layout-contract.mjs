@@ -40,6 +40,7 @@ const FORM_CONTROLS = ['Input', 'Textarea', 'Select', 'Combobox'];
 const BLOCK_FILL = [
   'Alert',
   'Blockquote',
+  'Board',
   'Box',
   'Pin',
   'StatusListItem',
@@ -70,6 +71,8 @@ const BLOCK_FILL = [
   'Tabs',
   'TabsContent',
   'TabsList',
+  'Timeline',
+  'TimelineItem',
   'Text',
 ];
 /** Rule 4: only these pad. */
@@ -85,6 +88,7 @@ const PADS = [
 ];
 /** Compound parts: zero padding, the container's gap spaces them. */
 const PARTS = [
+  'BoardColumn',
   'CardBody',
   'CardDescription',
   'CardFooter',
@@ -110,6 +114,7 @@ const PARTS = [
   'TabsContent',
   'TabsList',
   'TabsTrigger',
+  'TimelineItem',
 ];
 const PROVIDERS = [
   'HdsRouterProvider',
@@ -132,6 +137,7 @@ const PRIMITIVES = [
 ];
 const CONTAINERS = [
   'Alert',
+  'Board',
   'AlertDialog',
   'Callout',
   'Card',
@@ -144,6 +150,7 @@ const CONTAINERS = [
   'MetricTiles',
   'Surface',
   'Page',
+  'Timeline',
 ];
 
 export function buildContract(names) {

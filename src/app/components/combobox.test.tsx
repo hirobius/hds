@@ -137,7 +137,7 @@ describe('Combobox multiple', () => {
     expect(screen.queryByRole('button', { name: /^Remove / })).toBeNull();
   });
 
-  it('shows the selection as a count on the trigger and one named chip per value', () => {
+  it('a11y:combobox.chips-named - shows the selection as a count on the trigger and one named chip per value', () => {
     render(<MultiExample start={['us', 'ca']} />);
     expect(screen.getByRole('combobox', { name: 'Countries' }).textContent).toContain('2 selected');
     const chips = screen.getAllByRole('button', { name: /^Remove / });
@@ -182,7 +182,7 @@ describe('Combobox keyboard a11y', () => {
   const activeId = () => search().getAttribute('aria-activedescendant');
   const activeLabel = () => document.getElementById(activeId() as string)?.textContent;
 
-  it('keeps options out of the tab order (focus stays on the search field)', () => {
+  it('a11y:combobox.options-not-tabbable - keeps options out of the tab order (focus stays on the search field)', () => {
     render(<Example />);
     fireEvent.click(trigger());
     for (const option of screen.getAllByRole('option')) {
@@ -263,7 +263,7 @@ describe('Combobox keyboard a11y', () => {
     expect(activeLabel()).toBe('Canada');
   });
 
-  it('skips disabled options with ArrowDown / ArrowUp', () => {
+  it('a11y:combobox.skips-disabled - skips disabled options with ArrowDown / ArrowUp', () => {
     const opts: ComboboxOption[] = [
       { value: 'a', label: 'Alpha' },
       { value: 'b', label: 'Bravo', disabled: true },

@@ -17,7 +17,7 @@ describe('Alert contract', () => {
     expect(container.firstChild).not.toBeNull();
   });
 
-  it('urgent tones have role="alert"; info and success have role="status" (hds#522)', () => {
+  it('a11y:alert.tone-roles - urgent tones have role="alert"; info and success have role="status" (hds#522)', () => {
     for (const tone of ['danger', 'warning'] as const) {
       const { container, unmount } = render(<Alert tone={tone}>Message</Alert>);
       expect(container.querySelector('[role="alert"]')).not.toBeNull();

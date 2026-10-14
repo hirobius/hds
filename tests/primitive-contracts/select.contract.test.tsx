@@ -33,7 +33,7 @@ async function open() {
 }
 
 describe('Select contract', () => {
-  it('names the open listbox by the visible field label', async () => {
+  it('a11y:select.listbox-named - names the open listbox by the visible field label', async () => {
     renderSelect();
     await open();
 
@@ -64,7 +64,7 @@ describe('Select contract', () => {
 });
 
 describe('Select in a FormField', () => {
-  it('is the control the field label names', () => {
+  it('a11y:select.form-field-label - is the control the field label names', () => {
     render(
       <FormField label="Fruit" description="Pick one">
         <Select label="Fruit" showLabel={false} options={FRUIT} value="apple" onChange={() => {}} />
@@ -77,7 +77,7 @@ describe('Select in a FormField', () => {
     expect(trigger.getAttribute('aria-describedby')).toBe(screen.getByText('Pick one').id);
   });
 
-  it('carries the field error: invalid, and described by the message', () => {
+  it('a11y:select.form-field-error - carries the field error: invalid, and described by the message', () => {
     render(
       <FormField label="Fruit" error="Pick a fruit">
         <Select label="Fruit" showLabel={false} options={FRUIT} value="apple" onChange={() => {}} />

@@ -132,9 +132,12 @@ export function deprecatedSpecs(specs) {
 // ── README ───────────────────────────────────────────────────────────────────
 const code = (names) => names.map((n) => `\`${n}\``).join(', ');
 
+/** How many core components `coreByCategory` found: the number the README and hds-stats.json state. */
+export const countCore = (core) => core.reduce((n, group) => n + group.names.length, 0);
+
 /** The markdown inside `<!-- auto:start:core-set -->` in README.md. */
 export function renderCoreSetBlock({ core, patterns, deprecated = [] }) {
-  const coreCount = core.reduce((n, group) => n + group.names.length, 0);
+  const coreCount = countCore(core);
   const deprecatedNote = deprecated.length
     ? ` Deprecated, exported only until removed: ${deprecated
         .map(({ name, removeIn }) => `\`${name}\`${removeIn ? ` (removed in ${removeIn})` : ''}`)

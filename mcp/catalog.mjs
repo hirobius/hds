@@ -10,7 +10,7 @@
  *
  * Sources, all inside the installed package:
  *   src/app/data/component-api.json      props, descriptions, usage contracts
- *   public/hds-manifest.json             compound parts, keyboard, tokens (cssVar, light/dark values)
+ *   public/hds-manifest.json             compound parts, a11y rules, keyboard, tokens (cssVar, light/dark values)
  *   codemods/patterns-subpath.names.json which names import from /patterns
  *   mcp/guide.mjs                        which component answers which need
  */
@@ -56,6 +56,28 @@ function editDistance(a, b) {
     prev = cur;
   }
   return prev[b.length];
+}
+
+/**
+ * a11yRules as short lines an agent can act on: what the caller must do
+ * ("you: ...") before what the component already does ("built in: ...").
+ * `scope` 'all' keeps both, 'consumer' only the consumer rules, 'none' drops them.
+ * A rule with no owner (hand-kept, not yet tagged @a11y) reads as plain text.
+ */
+function a11yLines(rules, scope) {
+  if (scope === 'none' || !rules?.length) return [];
+  const line = (r) => {
+    const text = firstSentence(r.rule, 120);
+    const soft = r.required === false ? ' (recommended)' : '';
+    if (r.owner === 'consumer') return { rank: 0, text: `you${soft}: ${text}` };
+    if (r.owner === 'component') return { rank: 1, text: `built in${soft}: ${text}` };
+    return { rank: 0, text: `${text}${soft}` };
+  };
+  return rules
+    .filter((r) => scope === 'all' || r.owner !== 'component')
+    .map(line)
+    .sort((a, b) => a.rank - b.rank)
+    .map((l) => l.text);
 }
 
 /** Drops the entries of `list` from the end until `make(list)` fits the budget. */
@@ -192,7 +214,8 @@ export function loadCatalog(root) {
       const desc = withDesc && p.description ? ` — ${firstSentence(p.description, 90)}` : '';
       return `${p.name}${p.required ? '' : '?'}: ${type}${def}${desc}`;
     };
-    const build = (withDesc, typeMax, withHow) => ({
+    const a11yRules = spec.a11yRules?.length ? spec.a11yRules : entry.a11yRules;
+    const build = (withDesc, typeMax, withHow, a11yScope = 'all') => ({
       name: canonical,
       import: importOf(canonical),
       category: entry.category,
@@ -210,19 +233,23 @@ export function loadCatalog(root) {
             ),
           }
         : {}),
+      ...(a11yLines(a11yRules, a11yScope).length ? { a11y: a11yLines(a11yRules, a11yScope) } : {}),
       props: (entry.props ?? []).map((p) => propLine(p, withDesc, typeMax)),
       ...(guide.length ? { guide: withHow ? guide : guide.map((g) => ({ need: g.need })) } : {}),
     });
-    for (const [withDesc, typeMax, withHow] of [
-      [true, 80, true],
-      [false, 80, true],
-      [false, 48, true],
-      [false, 48, false],
+    // Props and the guide shrink first; the component's own rules go before the
+    // consumer's, which an agent cannot get from the component itself.
+    for (const [withDesc, typeMax, withHow, a11yScope] of [
+      [true, 80, true, 'all'],
+      [false, 80, true, 'all'],
+      [false, 48, true, 'all'],
+      [false, 48, false, 'all'],
+      [false, 48, false, 'consumer'],
     ]) {
-      const out = build(withDesc, typeMax, withHow);
+      const out = build(withDesc, typeMax, withHow, a11yScope);
       if (bytes(out) <= RESULT_BUDGET) return out;
     }
-    const out = build(false, 32, false);
+    const out = build(false, 32, false, 'consumer');
     return fitList(out.props, (props, dropped) => ({
       ...out,
       props,

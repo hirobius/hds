@@ -90,6 +90,10 @@ const DialogContent = /* @__PURE__ */ React.forwardRef<
         className={cn(
           // 16px of page margin each side, so the panel never sits flush to a 390px viewport (hds#522)
           'fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2*var(--semantic-space-scale-sm))] max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))] max-w-lg overflow-y-auto -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border border-border bg-popover p-6 text-popover-foreground shadow-overlay hds-focus',
+          // The close button sits in the top-right padding (up to 60px in at 390, where it is a 44px
+          // target); the first child, the Title or Header, keeps 40px clear so a long title never runs
+          // under the X.
+          !hideClose && '[&>:first-child]:pr-10',
           className,
         )}
         {...props}
@@ -98,7 +102,7 @@ const DialogContent = /* @__PURE__ */ React.forwardRef<
         {!hideClose && (
           <DialogPrimitive.Close
             className={cn(
-              'absolute right-4 top-4 inline-flex size-8 items-center justify-center rounded-sm text-muted-foreground transition-colors',
+              'absolute right-4 top-4 inline-flex size-8 hds-touch-target items-center justify-center rounded-sm text-muted-foreground transition-colors',
               'hover:bg-accent hover:text-accent-foreground',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
               'disabled:pointer-events-none',
@@ -225,6 +229,18 @@ interface DialogComponent extends React.FC<DialogProps> {
  * @keyboard Escape Closes the dialog and returns focus to the trigger.
  * @keyboard Tab Cycles focus inside the open dialog.
  * @keyboard Shift+Tab Cycles focus backwards inside the open dialog.
+ * @a11y component required a11y:dialog.open-keys Enter and Space on the trigger open the dialog.
+ * @a11y component required a11y:dialog.trigger-haspopup The trigger announces a dialog popup (aria-haspopup).
+ * @a11y component required a11y:dialog.trigger-expanded The trigger exposes aria-expanded, false while closed and true while open.
+ * @a11y component required a11y:dialog.trigger-controls The trigger points aria-controls at the open dialog.
+ * @a11y component required a11y:dialog.initial-focus Focus moves inside the dialog when it opens.
+ * @a11y component required a11y:dialog.focus-trapped Tab and Shift+Tab stay inside the open modal dialog.
+ * @a11y component required a11y:dialog.escape-returns-focus Escape closes the dialog and returns focus to the trigger.
+ * @a11y component required a11y:dialog.named-by-title The dialog is named by Dialog.Title and described by Dialog.Description.
+ * @a11y component required a11y:dialog.close-named The built-in close button is named "Close".
+ * @a11y consumer required Render a Dialog.Title in every Dialog.Content; it is the dialog's accessible name.
+ * @a11y consumer required Render a Dialog.Description, or pass aria-describedby={undefined} on Dialog.Content when there is none.
+ * @a11y consumer required Give an icon-only Dialog.Trigger or custom Dialog.Close an aria-label.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-27
  */
 export const Dialog: DialogComponent = /* @__PURE__ */ Object.assign(DialogRoot, {

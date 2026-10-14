@@ -77,6 +77,8 @@ interface Spec {
   openKeys: string[];
   /** True when the trigger carries aria-expanded / aria-controls. */
   aria: boolean;
+  /** The `a11y:<id>` contract ids the generic cases below prove (hds#520), as literals so the gate can find them. */
+  ids: { open: string; escape: string; expanded: string; controls: string };
 }
 
 const q = (role: string) => screen.queryByRole(role);
@@ -89,6 +91,12 @@ const OVERLAYS: Spec[] = [
     surface: () => q('dialog'),
     openKeys: ['{Enter}', ' '],
     aria: true,
+    ids: {
+      open: 'a11y:dialog.open-keys',
+      escape: 'a11y:dialog.escape-returns-focus',
+      expanded: 'a11y:dialog.trigger-expanded',
+      controls: 'a11y:dialog.trigger-controls',
+    },
   },
   {
     name: 'AlertDialog',
@@ -97,6 +105,12 @@ const OVERLAYS: Spec[] = [
     surface: () => q('alertdialog'),
     openKeys: ['{Enter}', ' '],
     aria: true,
+    ids: {
+      open: 'a11y:alertdialog.open-keys',
+      escape: 'a11y:alertdialog.escape-returns-focus',
+      expanded: 'a11y:alertdialog.trigger-expanded',
+      controls: 'a11y:alertdialog.trigger-controls',
+    },
   },
   {
     name: 'Popover',
@@ -105,6 +119,12 @@ const OVERLAYS: Spec[] = [
     surface: () => q('dialog'),
     openKeys: ['{Enter}', ' '],
     aria: true,
+    ids: {
+      open: 'a11y:popover.open-keys',
+      escape: 'a11y:popover.escape-returns-focus',
+      expanded: 'a11y:popover.trigger-expanded',
+      controls: 'a11y:popover.trigger-controls',
+    },
   },
   {
     name: 'Menu',
@@ -113,6 +133,12 @@ const OVERLAYS: Spec[] = [
     surface: () => q('menu'),
     openKeys: ['{Enter}', ' ', '{ArrowDown}'],
     aria: true,
+    ids: {
+      open: 'a11y:menu.open-keys',
+      escape: 'a11y:menu.escape-returns-focus',
+      expanded: 'a11y:menu.trigger-expanded',
+      controls: 'a11y:menu.trigger-controls',
+    },
   },
   {
     name: 'Select',
@@ -121,6 +147,12 @@ const OVERLAYS: Spec[] = [
     surface: () => q('listbox'),
     openKeys: ['{Enter}', ' ', '{ArrowDown}'],
     aria: true,
+    ids: {
+      open: 'a11y:select.open-keys',
+      escape: 'a11y:select.escape-returns-focus',
+      expanded: 'a11y:select.trigger-expanded',
+      controls: 'a11y:select.trigger-controls',
+    },
   },
   {
     name: 'Combobox',
@@ -129,6 +161,12 @@ const OVERLAYS: Spec[] = [
     surface: () => q('listbox'),
     openKeys: ['{Enter}', ' '],
     aria: true,
+    ids: {
+      open: 'a11y:combobox.open-keys',
+      escape: 'a11y:combobox.escape-returns-focus',
+      expanded: 'a11y:combobox.trigger-expanded',
+      controls: 'a11y:combobox.trigger-controls',
+    },
   },
 ];
 
@@ -145,7 +183,7 @@ async function openWithKeyboard(spec: Spec, key = spec.openKeys[0]) {
 }
 
 describe.each(OVERLAYS)('$name keyboard contract', (spec) => {
-  it.each(spec.openKeys)('opens from the trigger with %j', async (key) => {
+  it.each(spec.openKeys)(`${spec.ids.open} - opens from the trigger with %j`, async (key) => {
     await openWithKeyboard(spec, key);
     expect(spec.surface()).not.toBeNull();
   });
@@ -163,7 +201,7 @@ describe.each(OVERLAYS)('$name keyboard contract', (spec) => {
     await waitFor(() => expect(spec.surface()).toBeNull());
     await waitFor(() => expect(document.activeElement).toBe(trigger));
   };
-  it('Escape closes and returns focus to the trigger', escapeReturnsFocus);
+  it(`${spec.ids.escape} - Escape closes and returns focus to the trigger`, escapeReturnsFocus);
 
   it('Escape closes the surface', async () => {
     const { u } = await openWithKeyboard(spec);
@@ -171,7 +209,7 @@ describe.each(OVERLAYS)('$name keyboard contract', (spec) => {
     await waitFor(() => expect(spec.surface()).toBeNull());
   });
 
-  it('trigger aria-expanded flips false -> true on open', async () => {
+  it(`${spec.ids.expanded} - trigger aria-expanded flips false -> true on open`, async () => {
     render(spec.ui());
     const trigger = spec.trigger();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
@@ -182,7 +220,7 @@ describe.each(OVERLAYS)('$name keyboard contract', (spec) => {
     expect(trigger.getAttribute('aria-expanded')).toBe('true');
   });
 
-  it('trigger aria-controls points at the open surface', async () => {
+  it(`${spec.ids.controls} - trigger aria-controls points at the open surface`, async () => {
     const { trigger } = await openWithKeyboard(spec);
     const id = trigger.getAttribute('aria-controls');
     expect(id).toBeTruthy();
@@ -203,22 +241,25 @@ describe('Tab behaviour', () => {
   it.each([
     ['Dialog', OVERLAYS[0]],
     ['AlertDialog', OVERLAYS[1]],
-  ] as const)('%s traps Tab inside the modal', async (_name, spec) => {
-    const { u } = await openWithKeyboard(spec);
-    const surface = spec.surface() as HTMLElement;
-    const presses = focusables(surface).length + 2;
-    for (let i = 0; i < presses; i++) {
-      await u.tab();
-      expect(surface.contains(document.activeElement)).toBe(true);
-    }
-    // Shift+Tab is trapped too.
-    for (let i = 0; i < presses; i++) {
-      await u.tab({ shift: true });
-      expect(surface.contains(document.activeElement)).toBe(true);
-    }
-  });
+  ] as const)(
+    'a11y:dialog.focus-trapped a11y:alertdialog.focus-trapped - %s traps Tab inside the modal',
+    async (_name, spec) => {
+      const { u } = await openWithKeyboard(spec);
+      const surface = spec.surface() as HTMLElement;
+      const presses = focusables(surface).length + 2;
+      for (let i = 0; i < presses; i++) {
+        await u.tab();
+        expect(surface.contains(document.activeElement)).toBe(true);
+      }
+      // Shift+Tab is trapped too.
+      for (let i = 0; i < presses; i++) {
+        await u.tab({ shift: true });
+        expect(surface.contains(document.activeElement)).toBe(true);
+      }
+    },
+  );
 
-  it('Dialog moves initial focus inside the surface on open', async () => {
+  it('a11y:dialog.initial-focus - Dialog moves initial focus inside the surface on open', async () => {
     await openWithKeyboard(OVERLAYS[0]);
     expect((OVERLAYS[0].surface() as HTMLElement).contains(document.activeElement)).toBe(true);
   });
@@ -230,7 +271,7 @@ describe('Tab behaviour', () => {
   // content (it never walks the page behind it), but the popover is non-modal, so
   // the page stays reachable (no aria-hidden, no pointer-events lock).
   it.each([['Popover', OVERLAYS[2]]] as const)(
-    '%s loops Tab inside the content and leaves the page non-modal',
+    'a11y:popover.tab-loop - %s loops Tab inside the content and leaves the page non-modal',
     async (_n, spec) => {
       const { u, trigger } = await openWithKeyboard(spec);
       const surface = spec.surface() as HTMLElement;
@@ -245,7 +286,7 @@ describe('Tab behaviour', () => {
     },
   );
 
-  it('Menu keeps Tab from leaving to the page while open', async () => {
+  it('a11y:menu.tab-contained - Menu keeps Tab from leaving to the page while open', async () => {
     const spec = OVERLAYS[3];
     const { u } = await openWithKeyboard(spec);
     const surface = spec.surface() as HTMLElement;
@@ -255,7 +296,7 @@ describe('Tab behaviour', () => {
     expect(surface.contains(document.activeElement)).toBe(true);
   });
 
-  it('Select keeps Tab from leaving to the page while open', async () => {
+  it('a11y:select.tab-contained - Select keeps Tab from leaving to the page while open', async () => {
     const spec = OVERLAYS[4];
     const { u } = await openWithKeyboard(spec);
     const surface = spec.surface() as HTMLElement;
@@ -265,7 +306,7 @@ describe('Tab behaviour', () => {
     expect(surface.contains(document.activeElement)).toBe(true);
   });
 
-  it('Combobox: search field takes focus on open, Tab stays in the list, page stays non-modal', async () => {
+  it('a11y:combobox.focus-search-field - Combobox: search field takes focus on open, Tab stays in the list, page stays non-modal', async () => {
     const spec = OVERLAYS[5];
     const { u, trigger } = await openWithKeyboard(spec);
     const input = screen.getByRole('combobox', { name: 'Search…' });
@@ -284,7 +325,7 @@ describe('Tab behaviour', () => {
 const label = () => document.activeElement?.textContent?.trim();
 
 describe('Menu arrow keys and typeahead', () => {
-  it('opens with the first item highlighted, then ArrowDown/ArrowUp move and stop at the ends', async () => {
+  it('a11y:menu.arrow-keys - opens with the first item highlighted, then ArrowDown/ArrowUp move and stop at the ends', async () => {
     const { u } = await openWithKeyboard(OVERLAYS[3]);
     const items = screen.getAllByRole('menuitem');
     await waitFor(() => expect(document.activeElement).toBe(items[0]));
@@ -299,7 +340,7 @@ describe('Menu arrow keys and typeahead', () => {
     expect(document.activeElement).toBe(items[0]);
   });
 
-  it('Home and End jump to the first and last item', async () => {
+  it('a11y:menu.home-end - Home and End jump to the first and last item', async () => {
     const { u } = await openWithKeyboard(OVERLAYS[3]);
     const items = screen.getAllByRole('menuitem');
     await u.keyboard('{End}');
@@ -308,13 +349,13 @@ describe('Menu arrow keys and typeahead', () => {
     expect(document.activeElement).toBe(items[0]);
   });
 
-  it('typeahead focuses the item starting with the typed letter', async () => {
+  it('a11y:menu.typeahead - typeahead focuses the item starting with the typed letter', async () => {
     const { u } = await openWithKeyboard(OVERLAYS[3]);
     await u.keyboard('c');
     expect(label()).toBe('Cherry');
   });
 
-  it('Enter on the highlighted item selects it and closes the menu', async () => {
+  it('a11y:menu.enter-selects - Enter on the highlighted item selects it and closes the menu', async () => {
     const { u } = await openWithKeyboard(OVERLAYS[3]);
     await u.keyboard('{ArrowDown}{Enter}');
     await waitFor(() => expect(OVERLAYS[3].surface()).toBeNull());
@@ -322,14 +363,14 @@ describe('Menu arrow keys and typeahead', () => {
 });
 
 describe('Select arrow keys and typeahead', () => {
-  it('opens with the selected option highlighted', async () => {
+  it('a11y:select.selected-highlighted - opens with the selected option highlighted', async () => {
     await openWithKeyboard(OVERLAYS[4]);
     const selected = screen.getByRole('option', { name: 'Apple' });
     expect(selected.getAttribute('aria-selected')).toBe('true');
     await waitFor(() => expect(document.activeElement).toBe(selected));
   });
 
-  it('ArrowDown/ArrowUp move the highlight', async () => {
+  it('a11y:select.arrow-keys - ArrowDown/ArrowUp move the highlight', async () => {
     const { u } = await openWithKeyboard(OVERLAYS[4]);
     const options = screen.getAllByRole('option');
     await waitFor(() => expect(document.activeElement).toBe(options[0]));
@@ -340,7 +381,7 @@ describe('Select arrow keys and typeahead', () => {
     expect(document.activeElement).toBe(options[0]);
   });
 
-  it('End and Home jump to the last and first option', async () => {
+  it('a11y:select.home-end - End and Home jump to the last and first option', async () => {
     const { u } = await openWithKeyboard(OVERLAYS[4]);
     const options = screen.getAllByRole('option');
     await u.keyboard('{End}');
@@ -349,13 +390,13 @@ describe('Select arrow keys and typeahead', () => {
     expect(document.activeElement).toBe(options[0]);
   });
 
-  it('typeahead highlights the matching option', async () => {
+  it('a11y:select.typeahead - typeahead highlights the matching option', async () => {
     const { u } = await openWithKeyboard(OVERLAYS[4]);
     await u.keyboard('ch');
     expect(label()).toBe('Cherry');
   });
 
-  it('Enter commits the highlighted option and returns focus to the trigger', async () => {
+  it('a11y:select.commit-returns-focus - Enter commits the highlighted option and returns focus to the trigger', async () => {
     const { u, trigger } = await openWithKeyboard(OVERLAYS[4]);
     await u.keyboard('{ArrowDown}{Enter}');
     await waitFor(() => expect(OVERLAYS[4].surface()).toBeNull());
@@ -369,12 +410,12 @@ describe('Combobox arrow keys', () => {
     screen.getByRole('combobox', { name: 'Search…' }).getAttribute('aria-activedescendant');
   const optionId = (name: string) => screen.getByRole('option', { name }).id;
 
-  it('search field starts with the first option active', async () => {
+  it('a11y:combobox.activedescendant - search field starts with the first option active', async () => {
     await openWithKeyboard(OVERLAYS[5]);
     expect(active()).toBe(optionId('Apple'));
   });
 
-  it('ArrowDown/ArrowUp move aria-activedescendant and wrap', async () => {
+  it('a11y:combobox.arrow-wrap - ArrowDown/ArrowUp move aria-activedescendant and wrap', async () => {
     const { u } = await openWithKeyboard(OVERLAYS[5]);
     await waitFor(() =>
       expect(document.activeElement).toBe(screen.getByRole('combobox', { name: 'Search…' })),
@@ -385,7 +426,7 @@ describe('Combobox arrow keys', () => {
     expect(active()).toBe(optionId('Cherry'));
   });
 
-  it('typing filters the list and Enter commits the active option', async () => {
+  it('a11y:combobox.filter-commit - typing filters the list and Enter commits the active option', async () => {
     const { u, trigger } = await openWithKeyboard(OVERLAYS[5]);
     await waitFor(() =>
       expect(document.activeElement).toBe(screen.getByRole('combobox', { name: 'Search…' })),
@@ -430,14 +471,14 @@ describe('Tooltip keyboard contract', () => {
     expect(screen.queryByRole('tooltip')).toBeNull();
   });
 
-  it('opens when the trigger takes keyboard focus and exposes role=tooltip', async () => {
+  it('a11y:tooltip.opens-on-focus a11y:tooltip.role - opens when the trigger takes keyboard focus and exposes role=tooltip', async () => {
     const { trigger } = await focusTrigger();
     await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeNull());
     expect(screen.getByRole('tooltip').textContent).toContain('Copy link');
     expect(trigger.getAttribute('data-state')).not.toBe('closed');
   });
 
-  it('wires aria-describedby from the trigger to the tooltip', async () => {
+  it('a11y:tooltip.describedby - wires aria-describedby from the trigger to the tooltip', async () => {
     const { trigger } = await focusTrigger();
     await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeNull());
     const id = trigger.getAttribute('aria-describedby');
@@ -445,7 +486,7 @@ describe('Tooltip keyboard contract', () => {
     expect(document.getElementById(id as string)?.textContent).toContain('Copy link');
   });
 
-  it('Escape closes it and focus stays on the trigger', async () => {
+  it('a11y:tooltip.escape-dismisses - Escape closes it and focus stays on the trigger', async () => {
     const { u, trigger } = await focusTrigger();
     await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeNull());
     await u.keyboard('{Escape}');
@@ -454,7 +495,7 @@ describe('Tooltip keyboard contract', () => {
     expect(trigger.getAttribute('data-state')).toBe('closed');
   });
 
-  it('Tab moves on to the next control and closes it', async () => {
+  it('a11y:tooltip.tab-moves-on - Tab moves on to the next control and closes it', async () => {
     const { u } = await focusTrigger();
     await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeNull());
     await u.tab();

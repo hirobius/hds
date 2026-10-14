@@ -66,7 +66,7 @@ describe('Tag contract', () => {
     expect(btn?.getAttribute('aria-label')).toBe('Filter by React');
   });
 
-  it('hds-focus class is applied to the button', () => {
+  it('a11y:tag.focus-ring hds-focus class is applied to the button', () => {
     const { container } = render(<Tag>Label</Tag>);
     const btn = container.querySelector('button');
     expect(btn?.classList.contains('hds-focus')).toBe(true);

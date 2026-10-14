@@ -1,0 +1,1 @@
+- check-skill-content (from ops) scans .claude/skills for injection, pipe-to-shell, exfiltration and hidden unicode; runs in pretest.

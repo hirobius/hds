@@ -276,6 +276,9 @@
   --role-secondary: var(
     --semantic-color-surface-raised
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-badge-radius: var(
+    --semantic-radius-action
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-button-radius: var(
     --semantic-radius-action
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */

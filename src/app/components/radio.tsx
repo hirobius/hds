@@ -8,6 +8,13 @@
  * @useInstead Select a long list that can collapse into a dropdown
  * @useInstead SegmentedControl a compact switch between two to five views or modes
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17
+ * @a11y component required a11y:radio.arrows-select-group Arrow keys move and select inside a same-name group, and the group is one Tab stop.
+ * @a11y component required a11y:radio.sr-group A screen reader speaks each radio with its name, state, position and set size.
+ * @a11y component required a11y:radio.disabled-skipped A disabled radio is skipped by Tab.
+ * @a11y component required a11y:radio.focus-ring The focus ring shows on keyboard focus only (:focus-visible) and hover never hides it.
+ * @a11y component required a11y:radio.target-size The row is 24px or taller and lifts to the 44px touch minimum on a phone (WCAG 2.5.8).
+ * @a11y component required gate:check-reduced-motion The selection dot animation goes through useHdsMotion, so it stops under prefers-reduced-motion.
+ * @a11y consumer required Give every radio in a group the same name and wrap the group in a fieldset with a legend, or a role=radiogroup with an aria-label.
  */
 
 import { forwardRef } from 'react';
@@ -99,7 +106,7 @@ const radioRingVariants = /* @__PURE__ */ cva(
       {
         on: true,
         state: 'disabled',
-        className: 'border-[color:var(--semantic-color-border-accent)] bg-transparent',
+        className: 'border-[color:var(--semantic-color-border-default)] bg-transparent',
       },
       {
         on: true,
@@ -114,8 +121,14 @@ const radioRingVariants = /* @__PURE__ */ cva(
       },
       {
         on: false,
-        state: ['rest', 'disabled'],
+        state: 'rest',
         className: 'border-[color:var(--semantic-color-content-secondary)] bg-transparent',
+      },
+      {
+        // Disabled fades to the same border-default as Checkbox and Toggle (bug bash 24, item 17).
+        on: false,
+        state: 'disabled',
+        className: 'border-[color:var(--semantic-color-border-default)] bg-transparent',
       },
     ],
     defaultVariants: { state: 'rest', on: false },
