@@ -27,3 +27,17 @@ describe('content.tertiary contrast gate (hds#663)', () => {
     expect(() => execFileSync('node', ['scripts/check-contrast.mjs'], { cwd: root })).not.toThrow();
   });
 });
+
+describe('content.secondary on surface.sunken contrast gate (hds#730)', () => {
+  it('registers secondary against the sunken well in check-contrast', () => {
+    expect(script).toContain('content.secondary / surface.sunken');
+    expect(script).toContain("'semantic.color.surface.sunken'");
+  });
+
+  it('keeps dark secondary text at or above 4.5:1 on dark sunken', () => {
+    const out = execFileSync('node', ['scripts/check-contrast.mjs'], { cwd: root }).toString();
+    const row = out.split('\n').find((l) => l.includes('content.secondary / surface.sunken'));
+    expect(row).toBeDefined();
+    expect(row).toMatch(/✓\/✓/);
+  });
+});
