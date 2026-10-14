@@ -1,0 +1,20 @@
+{
+  "impact": "look",
+  "plain": "Nothing to do: dark secondary text is a new half-step lighter (neutral.350) so it reads on sunken surfaces; it stays visibly dimmer than primary text.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-color-content-secondary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do: dark secondary text is a new half-step lighter (neutral.350) so it reads on sunken surfaces; it stays visibly dimmer than primary text.",
+      "detect": {
+        "cssVars": ["--semantic-color-content-secondary"],
+        "cssVarWrites": ["--semantic-color-content-secondary"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-secondary:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-content-secondary:[data-theme=dark]"
+      ]
+    }
+  ]
+}
