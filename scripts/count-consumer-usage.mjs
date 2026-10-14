@@ -28,7 +28,9 @@
  *
  * `consumers` (product apps vs token-level sites) is a declared, hand-kept
  * figure: source-scanning cannot tell a site that only imports tokens.css. It is
- * not printed in the README until a human sets `consumersConfirmed` to true.
+ * not printed in the README until a human sets `consumersConfirmed` to true;
+ * `consumersConfirmedAt` is the day they did. public/hds-stats.json (ops#681) repeats
+ * the split with that file as its source and that day.
  *
  * Run: pnpm consumer:usage
  */
