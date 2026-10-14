@@ -29,6 +29,7 @@ Subpath exports:
 - `@hirobius/design-system/patterns`
 - `@hirobius/design-system/icons`
 - `@hirobius/design-system/eslint-plugin`
+- `@hirobius/design-system/stats.json`
 
 ## Core set
 

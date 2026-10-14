@@ -1044,6 +1044,17 @@
       "source": "human",
       "firingChannel": "pre-commit",
       "firingChannels": ["pre-commit"]
+    },
+    {
+      "id": "build-stats-json",
+      "description": "Stats drift (ops#681): `node scripts/build-stats-json.mjs --check` fails when public/hds-stats.json differs from what the script computes from the code today (public component modules, core and pattern counts, token total, contrast pairs, typography styleCount, the consumer split from docs/data/consumer-usage.json), naming the file and the fix (`pnpm stats:build`, also part of `pnpm tokens`). Reads committed files only: no network, and --check never writes. Runs in pretest, so pre-push and CI (pnpm test) both fire it; scripts/__tests__/build-stats-json.test.mjs proves it fails on a stale number and on a moved source, and that this entry exists (validate-guardrail-registry scans only top-level check-*.mjs and audit-*.mjs). The file ships in the package and as the `@hirobius/design-system/stats.json` export.",
+      "severity": "error",
+      "gateScript": "scripts/build-stats-json.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "scope": "full-tree"
     }
   ]
 }

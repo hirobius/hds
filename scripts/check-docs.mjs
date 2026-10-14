@@ -32,6 +32,9 @@
  *      and props marker for each utility component. (Rules 1–3)
  *   7. Voice — no page uses a phrase the Voice page
  *      (content/docs/voice.mdx) lists under "Words we don't use".
+ *   8. Counts — "<n> text styles" (frontmatter included) states the
+ *      manifest's typographyRamp.styleCount, so the Typography page and the
+ *      docs index cannot disagree with each other or the code (ops#681).
  *
  * Generation still beats validation where the build generates for real
  * (token tables, llms.txt); this checker guards the seams.
@@ -77,6 +80,14 @@ const { readVoice, avoidedPhrases, VOICE_FILE } = await import(
 const avoid = existsSync(join(scriptDir, '..', VOICE_FILE))
   ? readVoice(join(scriptDir, '..')).avoid
   : [];
+const styleCount = JSON.parse(
+  readFileSync(join(scriptDir, '..', 'public', 'hds-manifest.json'), 'utf8'),
+).typographyRamp.styleCount;
+const NUMBER_WORDS = Object.fromEntries(
+  'one two three four five six seven eight nine ten eleven twelve'
+    .split(' ')
+    .map((word, i) => [word, i + 1]),
+);
 const mapsTokens = (name) => Object.keys(specs[name]?.tokenMapping ?? {}).length > 0;
 const providers = new Set(rules.providerComponents);
 
@@ -267,6 +278,22 @@ function checkColors(file, proseLines, lineOffset) {
   });
 }
 
+function checkCounts(file, source) {
+  for (const m of source.matchAll(/\b(\d+|[A-Za-z]+) text styles\b/g)) {
+    // "the text styles" / "all text styles" state no number; only a digit or a number word does.
+    const said = NUMBER_WORDS[m[1].toLowerCase()] ?? (/^\d+$/.test(m[1]) ? Number(m[1]) : null);
+    if (said !== null && said !== styleCount) {
+      const line = source.slice(0, m.index).split('\n').length;
+      err(
+        file,
+        line,
+        'counts',
+        `says "${m[0]}", but the manifest's typographyRamp.styleCount is ${styleCount}`,
+      );
+    }
+  }
+}
+
 function checkLinks(file, prose) {
   const linkRe = /\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
   let m;
@@ -320,6 +347,7 @@ for (const file of files) {
   const bodyStart = fm ? fm.bodyLines : 0;
   checkColors(r, proseLines.slice(bodyStart), bodyStart);
   checkLinks(r, proseSource);
+  checkCounts(r, source);
 
   const inDir = (d) => r.startsWith(`${rules.contentRoot}/${d}/`);
   if (inDir('patterns')) {
