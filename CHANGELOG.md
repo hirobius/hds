@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.25.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The CSS variable --primitive-typography-letterSpacing-caps and the tracking-caps class are gone because the system is sentence case, so delete them from your styles.
+- Looks different: A disabled secondary button now draws a lighter border (border.subdued), so it reads as disabled; nothing to change unless you styled against the old darker border.
+- Looks different: In dark mode, the subtle border is now neutral.700 (was neutral.850) so it shows on raised surfaces; check any hairline you matched to the old value.
+- Looks different: In dark mode, the hover surface is now neutral.700 (was neutral.900) so hover reads on raised surfaces; check any hover colour you matched to the old value.
+- And 11 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0250).
+
+### Minor Changes
+
+- 645cf08: EmptyState takes an optional `action` prop: the one action that fills the space, rendered under the description on the component's own spacing. `<EmptyState title="No snippets yet" description="…" action={<Button variant="secondary">New snippet</Button>} />`.
+- 26a103b: The design system never produces ALL CAPS text. Avatar initials now show in the case of the name or the `initials` you pass instead of being forced to capitals, and Badge no longer reads a text-transform variable that no longer exists. The token `primitive.typography.letterSpacing.caps` (CSS variable `--primitive-typography-letterSpacing-caps`, Tailwind class `tracking-caps`) is removed, because its only job was to space out capitals. A Figma model build now refuses `textTransform: "uppercase"`. A new commit gate, `scripts/check-no-uppercase.mjs`, fails any uppercase class, `text-transform: uppercase`, `textCase: UPPER` or `.toUpperCase()` used for display.
+
+### Patch Changes
+
+- 75ff831: Button and Badge now render the state tokens instead of ad-hoc classes (hds#595). The primary Button hover fill is the solid `component.button.bgHover` (`semantic.accent.hover`) instead of a 90% mix of the accent. The secondary Button pressed state is the solid `component.button.secondary.bg.pressed` (`surface.overlay`) instead of a 5% wash, and its disabled border is the lighter `border.subdued` (was `border.interactive`), now actually applied. A toned Button presses and disables as before. Badge gains per-tone tokens, `component.badge.<tone>.bg` and `.text` for neutral, info, success, danger, warning and inProgress (new `--component-badge-<tone>-bg|text` variables); the neutral fill is the solid `surface.overlay` instead of a 4% black or white tint, a few percent lighter in light mode. The flat `component.badge.bg` and `component.badge.text` are deprecated in favour of them. InlineCode no longer borrows the badge fill and uses `surface.overlay`.
+- af782c3: In dark mode a raised surface (Card, Surface, StatusTile, MetricTile) now reads as distinct from the page: `semantic.color.surface.raised` steps from neutral.950 to neutral.850 (1.06:1 to 1.21:1 against the page), and `surface.overlay` and `surface.sunken` step to neutral.800 so the page, raised, overlay order holds. The dark state steps move with it so they stay visible on the lighter raised surface: `surface.hover` neutral.900 to 700, `surface.muted` 900 to 800, `surface.pressed` 950 to black, and `border.subtle` 850 to 700. Light mode is unchanged. `InlineCode` now binds its chip to the new `component.inlineCode.bg` token (an alias of `semantic.color.surface.overlay`) instead of borrowing `component.badge.bg`.
+- 5baf951: Deprecated, not removed: `Card.Metric`, `Stat`, `MetricTile`, `MetricTiles` (no replacement planned: compose a `Card` with the type roles) and `Blockquote`'s `size` prop (one size, md). All render as before until 1.0.0.
+- 0946fac: DestructiveSection is now a danger Callout: the same tinted danger fill as other feedback patterns, no border, a bold 16px title and a 14px secondary description. Props, heading level and the confirm flow are unchanged. Adds the `titleSm` type role (`<Text variant="titleSm">`, `hds.typeStyles.titleSm`, `.hds-type-title-sm`): 16px, bold, 1.375 line height.
+- 8cdc601: Kbd now looks like a raised key: a 2px solid edge under the key in `border.strong` (class `.hds-kbd`, `box-shadow: 0 2px 0`). It is a box-shadow, so the key's size and layout are unchanged.
+- acfb6a5: `llms.txt` is now a short index (a title, a one-line summary and absolute links to AGENTS.md, the `hds-mcp` server, the ESLint plugin, the full bundle, the topic slices, the manifest, the component API, the tokens and the docs). The long text it held, with the voice, the pick-by-need list, the layout and scroll recipes and the card anatomy, is now in `llms-full.txt`. The index no longer carries a generated-at timestamp (hds#592).
+- d0100ad: The JSDoc in the package root and `contexts` entry points no longer names the one app that consumes HDS, so the shipped type declarations carry no consumer name (hds#545).
+- dd1c8c9: Slider's drag area is now 44px tall on touch screens (`pointer: coarse`), up from the 20px row, so it meets the touch-target minimum. The track, thumb and row height are unchanged, and so is desktop.
+- 997c2b6: Card gains a row slot for a titled status: `Card.Row` (a `trailing` zone for a Badge or one affordance), `Card.RowTitle` (the title, at the ui role) and `Card.RowNote` (a muted caption line; repeat it), also exported as `CardRow`, `CardRowTitle` and `CardRowNote`. `StatusTile` is deprecated (removed in 1.0.0) and renders as before; `<Card padding="item" className="border-0">` around a `Card.Row` renders the same tile (hds#622).
+- 3a73fdf: Token consolidation, no value changes. `semantic.color.border.subdued` is deprecated (use `semantic.color.border.default`: identical in Light, one step lighter in Dark, neutral.700 vs 800); it stays live at its current values until a later breaking release. In the Figma model every `$deprecated` token is now hidden from publishing, so the library picker drops `border/subdued`, the hds#206 spacing aliases (`space/component/gap|padding`, `space/layout/tight|normal|gutter|inset|spacious`) and `badge/bg|text`; the variables still exist, so bindings keep resolving. A tenant overlay no longer re-anchors a themed deprecated alias (one whose Dark value differs from its `$value`), which would have pinned it to its Light value in dark mode.
+- ecc3c10: The upgrade command and the upgrade record now order releases by semver precedence, so pre-release versions (`0.21.0-next.2` before `0.21.0-next.10`, `-next-1` before `-next-2`, a pre-release before its release) sort the same way everywhere. One shared `codemods/lib/semver.mjs` replaces the two hand-rolled comparisons that disagreed.
+
 ## 0.24.1
 
 ### Upgrade

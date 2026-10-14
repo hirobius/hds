@@ -50,6 +50,11 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    // Script tests spawn node child processes; at vitest's 5s default the
+    // pre-push suite timed out under load from parallel sessions (4 cores,
+    // load ~15, 2026-10-13) and blocked pushes of unrelated changes. A hung
+    // test still fails, 20s later.
+    testTimeout: 20_000,
     // strip-git-env first: no test may inherit a hook's GIT_DIR (#546).
     // jsdom polyfills (ResizeObserver, pointer capture, scrollIntoView) for Radix overlays.
     setupFiles: ['./tests/setup/strip-git-env.ts', './tests/setup/jsdom-polyfills.ts'],
