@@ -9,15 +9,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  HdsButton,
-  HdsCard,
-  HdsBadge,
-  HdsTag,
-  HdsDivider,
-  HdsAlert,
-  HdsInput,
-} from '@hirobius/design-system';
+import { Button, Card, Badge, Tag, Divider, Alert, Input } from '@hirobius/design-system';
 import { Moon, Sun, Layers } from 'lucide-react';
 
 // ── Theme helpers ─────────────────────────────────────────────────────────────
@@ -102,10 +94,10 @@ export function App() {
           <span style={{ fontWeight: 600, fontSize: '16px', letterSpacing: '-0.01em' }}>
             HDS Starter Kit
           </span>
-          <HdsBadge tone="info">demo</HdsBadge>
+          <Badge tone="info">demo</Badge>
         </div>
 
-        <HdsButton
+        <Button
           variant="tertiary"
           size="sm"
           iconOnly
@@ -160,112 +152,109 @@ export function App() {
           </p>
         </section>
 
-        <HdsDivider />
+        <Divider />
 
         {/* Section: Buttons */}
         <section>
-          <SectionHeading label="HdsButton" />
+          <SectionHeading label="Button" />
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px' }}>
-            <HdsButton variant="primary">Primary</HdsButton>
-            <HdsButton variant="secondary">Secondary</HdsButton>
-            <HdsButton variant="tertiary">Tertiary</HdsButton>
-            <HdsButton variant="primary" size="sm">
+            <Button variant="primary">Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="tertiary">Tertiary</Button>
+            <Button variant="primary" size="sm">
               Small
-            </HdsButton>
-            <HdsButton variant="secondary" size="lg">
+            </Button>
+            <Button variant="secondary" size="lg">
               Large
-            </HdsButton>
-            <HdsButton variant="primary" loading>
+            </Button>
+            <Button variant="primary" loading>
               Loading
-            </HdsButton>
-            <HdsButton variant="secondary" disabled>
+            </Button>
+            <Button variant="secondary" disabled>
               Disabled
-            </HdsButton>
+            </Button>
           </div>
         </section>
 
-        <HdsDivider />
+        <Divider />
 
         {/* Section: Badges */}
         <section>
-          <SectionHeading label="HdsBadge" />
+          <SectionHeading label="Badge" />
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px' }}>
-            <HdsBadge tone="neutral">neutral</HdsBadge>
-            <HdsBadge tone="info">info</HdsBadge>
-            <HdsBadge tone="success">success</HdsBadge>
-            <HdsBadge tone="warning">warning</HdsBadge>
-            <HdsBadge tone="danger">danger</HdsBadge>
+            <Badge tone="neutral">neutral</Badge>
+            <Badge tone="info">info</Badge>
+            <Badge tone="success">success</Badge>
+            <Badge tone="warning">warning</Badge>
+            <Badge tone="danger">danger</Badge>
           </div>
         </section>
 
-        <HdsDivider />
+        <Divider />
 
         {/* Section: Tags */}
         <section>
-          <SectionHeading label="HdsTag" subtitle="Click to toggle active state" />
+          <SectionHeading label="Tag" subtitle="Click to toggle active state" />
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {tags.map((tag) => (
-              <HdsTag key={tag} active={activeTags.has(tag)} onClick={() => toggleTag(tag)}>
+              <Tag key={tag} active={activeTags.has(tag)} onClick={() => toggleTag(tag)}>
                 {tag}
-              </HdsTag>
+              </Tag>
             ))}
           </div>
         </section>
 
-        <HdsDivider />
+        <Divider />
 
         {/* Section: Input */}
         <section>
-          <SectionHeading label="HdsInput" />
+          <SectionHeading label="Input" />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '360px' }}>
-            <HdsInput
+            <Input
               label="Label"
               placeholder="Default input…"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />
-            <HdsInput label="Disabled" placeholder="Cannot edit" disabled />
-            <HdsInput
+            <Input label="Disabled" placeholder="Cannot edit" disabled />
+            <Input
               label="Error state"
               placeholder="Something went wrong"
+              error
               errorMessage="This field is required"
             />
           </div>
         </section>
 
-        <HdsDivider />
+        <Divider />
 
         {/* Section: Alerts */}
         <section>
-          <SectionHeading label="HdsAlert" />
+          <SectionHeading label="Alert" />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <HdsAlert variant="info" title="Token architecture">
+            <Alert tone="info" title="Token architecture">
               Design tokens flow from <code>hirobius.tokens.json</code> through CSS custom
               properties — no runtime theming library required.
-            </HdsAlert>
-            <HdsAlert variant="success">
-              Build passed. All visual regression snapshots match.
-            </HdsAlert>
-            <HdsAlert variant="warning">
-              A new token path was added; regenerate the manifest.
-            </HdsAlert>
-            <HdsAlert variant="error">Typecheck failed — 3 errors in 2 files.</HdsAlert>
+            </Alert>
+            <Alert tone="success">Build passed. All visual regression snapshots match.</Alert>
+            <Alert tone="warning">A new token path was added; regenerate the manifest.</Alert>
+            <Alert tone="danger">Typecheck failed — 3 errors in 2 files.</Alert>
           </div>
         </section>
 
-        <HdsDivider />
+        <Divider />
 
         {/* Section: Card */}
         <section>
-          <SectionHeading label="HdsCard" />
-          <HdsCard padding="none" style={{ maxWidth: '360px' }}>
-            <HdsCard.Header>
-              <HdsCard.Title>Component card</HdsCard.Title>
-              <HdsCard.Description>
+          <SectionHeading label="Card" />
+          <Card padding="none" style={{ maxWidth: '360px' }}>
+            <Card.Header>
+              <Card.Title>Component card</Card.Title>
+              <Card.Description>
                 Compound-parts pattern — Header, Body, Footer compose independently.
-              </HdsCard.Description>
-            </HdsCard.Header>
-            <HdsCard.Body>
+              </Card.Description>
+            </Card.Header>
+            <Card.Body>
               <p
                 style={{
                   margin: 0,
@@ -284,22 +273,22 @@ export function App() {
                 </code>
                 .
               </p>
-            </HdsCard.Body>
-            <HdsCard.Footer>
+            </Card.Body>
+            <Card.Footer>
               <div style={{ display: 'flex', gap: '8px' }}>
-                <HdsButton variant="primary" size="sm">
+                <Button variant="primary" size="sm">
                   Accept
-                </HdsButton>
-                <HdsButton variant="tertiary" size="sm">
+                </Button>
+                <Button variant="tertiary" size="sm">
                   Cancel
-                </HdsButton>
+                </Button>
               </div>
-            </HdsCard.Footer>
-          </HdsCard>
+            </Card.Footer>
+          </Card>
         </section>
 
         {/* Footer */}
-        <HdsDivider />
+        <Divider />
         <footer
           style={{
             fontSize: '12px',

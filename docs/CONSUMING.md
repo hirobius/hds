@@ -208,7 +208,7 @@ If your app runs MUI `<CssBaseline>` + Emotion (or any opinionated global CSS),
 ```tsx
 import { Button, Card, Badge } from '@hirobius/design-system';
 import { cn } from '@hirobius/design-system/cn';
-import { tokens } from '@hirobius/design-system/tokens';
+import tokens from '@hirobius/design-system/tokens';
 import manifest from '@hirobius/design-system/manifest';
 
 export function Example() {
