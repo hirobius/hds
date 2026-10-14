@@ -311,9 +311,17 @@ describe('resolveSx — responsive values', () => {
     expect(rules.join('')).not.toContain('min-width:375px');
   });
 
-  it('compiles an xs-only map exactly as before (hds#652)', () => {
-    expect(resolveSx({ flexDirection: { xs: 'column' } }, 'cls')).toEqual([
+  it('compiles a base value alongside a plain token value in one rule (hds#652)', () => {
+    expect(resolveSx({ color: 'content.primary', p: { base: 'sm', md: 'lg' } }, 'cls')).toEqual([
+      '.cls{color:var(--semantic-color-content-primary);padding:var(--semantic-space-scale-sm)}',
+      '@media (min-width:768px){.cls{padding:var(--semantic-space-scale-lg)}}',
+    ]);
+  });
+
+  it('compiles an xs map exactly as before (hds#652)', () => {
+    expect(resolveSx({ flexDirection: { xs: 'column', sm: 'row' } }, 'cls')).toEqual([
       '@media (min-width:375px){.cls{flex-direction:column}}',
+      '@media (min-width:640px){.cls{flex-direction:row}}',
     ]);
   });
 

@@ -1,1 +1,0 @@
-{"impact":"additive","plain":"Box sx responsive values accept a new base key that applies at every width with no media query, so a mobile-first map can use { base: 'column', sm: 'row' } instead of relying on xs from 375px; existing xs maps are unchanged."}
