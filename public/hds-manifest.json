@@ -127,6 +127,7 @@
     "Tag",
     "Text",
     "Textarea",
+    "ThemeToggle",
     "Timeline",
     "TimelineItem",
     "Timestamp",
@@ -2046,6 +2047,7 @@
         "src/app/components/radio.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/tabs.tsx",
+        "src/app/components/theme-toggle.tsx",
         "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
@@ -9953,6 +9955,103 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null
+    },
+    "ThemeToggle": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/theme-toggle.tsx",
+      "description": "One-button light/dark switch with a sun-to-moon morph.",
+      "a11yRules": [
+        {
+          "rule": "The accessible name says what happens next (\"Switch to dark theme\" or \"Switch to light theme\"), and the state is not repeated as aria-pressed.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.name"
+        },
+        {
+          "rule": "Tab reaches it, and Enter and Space both switch the theme.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.keyboard-activate"
+        },
+        {
+          "rule": "The sun and moon svg is hidden from assistive technology and takes no focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.icon-hidden"
+        },
+        {
+          "rule": "Keyboard focus draws the hds-focus ring, and the control never removes its outline.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.focus-ring"
+        },
+        {
+          "rule": "The touch target is at least 44px square.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.target-size"
+        },
+        {
+          "rule": "The morph moves only on motion tokens and stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.reduced-motion"
+        },
+        {
+          "rule": "Place it where a keyboard user finds it early (the header), and keep one per page; the name already says the next theme, so do not add a visible label that contradicts it.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "ThemeToggle",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/theme-toggle.test.tsx",
+        "src/app/context/ThemeContext.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "isDark": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onToggle": {
+          "type": "() => void",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "A single header or menu control to switch between the light and dark theme.",
+        "whenNot": "Choosing between three or more modes, or a setting that belongs in a form.",
+        "useInstead": [
+          {
+            "component": "SegmentedControl",
+            "reason": "for a labelled choice of several modes"
+          }
+        ]
+      }
     },
     "HdsPhosphor": {
       "category": "Compiler",
