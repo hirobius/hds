@@ -540,7 +540,7 @@
   --semantic-color-surface-muted: var(--primitive-color-neutral-800);
   --semantic-color-surface-sunken: var(--primitive-color-neutral-700);
   --semantic-color-content-primary: var(--primitive-color-neutral-100);
-  --semantic-color-content-secondary: var(--primitive-color-neutral-400);
+  --semantic-color-content-secondary: var(--primitive-color-neutral-300);
   --semantic-color-content-tertiary: var(--primitive-color-neutral-450);
   --semantic-color-content-disabled: var(--primitive-color-neutral-600);
   --semantic-color-content-inverse: var(--primitive-color-neutral-900);

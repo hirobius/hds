@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-14T04:07:35.216Z",
+  "generated": "2026-10-14T20:29:02.251Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11980,8 +11980,8 @@
         "alias": "{primitive.color.neutral.600}",
         "resolvedValue": "#525252",
         "dark": {
-          "alias": "{primitive.color.neutral.400}",
-          "resolvedValue": "#a3a3a3"
+          "alias": "{primitive.color.neutral.300}",
+          "resolvedValue": "#d4d4d4"
         }
       },
       {

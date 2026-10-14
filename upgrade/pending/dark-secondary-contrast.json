@@ -1,0 +1,20 @@
+{
+  "impact": "look",
+  "plain": "Nothing to do: in dark mode secondary text is one step lighter so it reads on sunken surfaces.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-color-content-secondary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do: in dark mode secondary text is one step lighter so it reads on sunken surfaces.",
+      "detect": {
+        "cssVars": ["--semantic-color-content-secondary"],
+        "cssVarWrites": ["--semantic-color-content-secondary"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-secondary:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-content-secondary:[data-theme=dark]"
+      ]
+    }
+  ]
+}
