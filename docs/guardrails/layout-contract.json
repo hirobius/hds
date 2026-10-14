@@ -628,6 +628,20 @@
       "probe": true,
       "maxWidth": "40rem"
     },
+    "Timeline": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "container",
+      "probe": true
+    },
+    "TimelineItem": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
+    },
     "Timestamp": {
       "width": "hug",
       "height": "hug",

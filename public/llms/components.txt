@@ -685,6 +685,24 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - resize: "none" | "both" | "vertical" = vertical
   - textareaClassName: string
 
+### Timeline
+The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.
+  - aria-label: string
+  - children: ReactNode
+  - className: string
+  - locale: string
+  - order: "desc" | "asc" = desc
+
+### TimelineItem
+One event on a Timeline. Render it only as a child of Timeline.
+  - children: ReactNode
+  - date: string | number | Date
+  - defaultOpen: boolean
+  - icon: LucideIcon
+  - locale: string
+  - title: ReactNode
+  - tone: 'success' | 'danger' | 'warning' | 'info'
+
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.
   - date: string | number | Date
