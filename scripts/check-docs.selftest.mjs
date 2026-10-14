@@ -238,6 +238,22 @@ test('a dead internal link fails', () => {
   }
 });
 
+test('links to generated pages resolve before the generator has run', () => {
+  const rootDir = mkdtempSync(join(tmpdir(), 'docs-check-gen-'));
+  try {
+    const docs = join(rootDir, 'content', 'docs');
+    mkdirSync(join(docs, 'guides'), { recursive: true });
+    writeFileSync(
+      join(docs, 'guides', 'start.mdx'),
+      '---\ntitle: "Start"\ndescription: "Start here."\nstatus: "stable"\n---\n\nSee [Button](/docs/components/button) and [providers](/docs/guides/providers).\n',
+    );
+    const { status, out } = run(rootDir);
+    assert.equal(status, 0, out);
+  } finally {
+    rmSync(rootDir, { recursive: true, force: true });
+  }
+});
+
 test('a component page without its props marker fails', () => {
   const rootDir = mutate((docs) => {
     const file = join(docs, 'components', 'card.mdx');

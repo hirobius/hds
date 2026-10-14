@@ -5,7 +5,14 @@ import type { MDXComponents } from 'mdx/types';
 import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
+import { Mermaid } from './components/mermaid';
 import { TokenTable } from './components/token-table';
+import {
+  DeprecationLedger,
+  ReleaseLedger,
+  RemovalLedger,
+  UpgradeFloor,
+} from './components/upgrade-ledger';
 
 type HeadingProps = HTMLAttributes<HTMLHeadingElement>;
 
@@ -20,6 +27,11 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ComponentTokens,
     ComponentPreview,
     ComponentIndex,
+    Mermaid,
+    ReleaseLedger,
+    DeprecationLedger,
+    RemovalLedger,
+    UpgradeFloor,
     ...components,
   };
 }
