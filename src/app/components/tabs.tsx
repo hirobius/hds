@@ -61,6 +61,17 @@ function measureOverflow(el: HTMLElement): TabsOverflow {
   return undefined;
 }
 
+const FADE = 'var(--semantic-space-scale-lg)';
+
+/** Mask that fades the edge(s) with hidden tabs, one fade width (scale.lg) deep. Inline, so it costs no CSS. */
+function fadeStyle(overflow: TabsOverflow): React.CSSProperties | undefined {
+  if (!overflow) return undefined;
+  const start = overflow === 'end' ? '0px' : FADE;
+  const end = overflow === 'start' ? '0px' : FADE;
+  const mask = `linear-gradient(90deg,transparent,currentColor ${start},currentColor calc(100% - ${end}),transparent)`;
+  return { maskImage: mask, WebkitMaskImage: mask };
+}
+
 /**
  * The tab strip. When tabs scroll out of view it fades the hidden edge
  * (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look
@@ -69,7 +80,7 @@ function measureOverflow(el: HTMLElement): TabsOverflow {
 export const TabsList = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentProps<typeof TabsPrimitive.List>
->(function TabsList({ className, onScroll, ...props }, forwardedRef) {
+>(function TabsList({ className, onScroll, style, ...props }, forwardedRef) {
   const innerRef = React.useRef<HTMLDivElement | null>(null);
   const [overflow, setOverflow] = React.useState<TabsOverflow>(undefined);
 
@@ -99,6 +110,7 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
     <TabsPrimitive.List
       ref={setRefs}
       data-overflow={overflow}
+      style={{ ...fadeStyle(overflow), ...style }}
       onScroll={(event) => {
         update();
         onScroll?.(event);
@@ -107,10 +119,6 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
         'flex h-10 items-center gap-6 overflow-x-auto whitespace-nowrap',
         'border-b border-border/40 mb-6',
         '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]',
-        // Overflow cue: fade the edge that has hidden tabs, one fade width (scale.lg) deep.
-        'data-[overflow=end]:[mask-image:linear-gradient(to_right,black_calc(100%-var(--semantic-space-scale-lg)),transparent)]',
-        'data-[overflow=start]:[mask-image:linear-gradient(to_left,black_calc(100%-var(--semantic-space-scale-lg)),transparent)]',
-        'data-[overflow=both]:[mask-image:linear-gradient(to_right,transparent,black_var(--semantic-space-scale-lg),black_calc(100%-var(--semantic-space-scale-lg)),transparent)]',
         className,
       )}
       {...props}
