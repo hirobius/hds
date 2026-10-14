@@ -17,10 +17,10 @@
     "styleCount": 6
   },
   "consumers": {
-    "productApps": 1,
+    "productApps": 2,
     "tokenLevelSites": 4,
     "source": "docs/data/consumer-usage.json",
     "confirmedAt": "2026-10-01"
   },
-  "generatedFrom": "754fdcee0697d78f329afaaa80573c51229055da"
+  "generatedFrom": "9496e61a8b4e830cd74892040672f0fc273dc3e9"
 }
