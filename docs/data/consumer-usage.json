@@ -11,8 +11,8 @@
         "label": "Internal operations dashboard"
       },
       {
-        "id": "hirobius/job-hunt",
-        "label": "Internal job-application tracker"
+        "id": "roleforge",
+        "label": "Roleforge, a job-application tracker"
       }
     ]
   },

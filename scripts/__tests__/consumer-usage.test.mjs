@@ -142,7 +142,7 @@ describe('README "In use" section', () => {
     expect(snapshot.commit).toMatch(/^[0-9a-f]{40}$/);
   });
 
-  it('publishes the confirmed split: ops and job-hunt are the product apps (2026-10-12)', () => {
+  it('publishes the confirmed split: ops and Roleforge are the product apps (2026-10-12)', () => {
     expect(snapshot.consumersConfirmed).toBe(true);
     expect(snapshot.consumers.productApps).toBe(2);
     expect(readme).toMatch(/^## In use$/m);
@@ -154,9 +154,15 @@ describe('README "In use" section', () => {
 
   it('declares every product app it counts', () => {
     const { apps, productApps } = snapshot.consumers;
-    expect(apps.map((a) => a.id)).toEqual(['hirobius/ops', 'hirobius/job-hunt']);
+    expect(apps.map((a) => a.id)).toEqual(['hirobius/ops', 'roleforge']);
     expect(productApps).toBe(apps.length);
-    for (const a of apps) expect(a.label).toMatch(/^Internal /);
+    expect(apps.find((a) => a.id === 'roleforge').label).toMatch(/^Roleforge/);
+  });
+
+  it('names the second product app by its public name, never its private repo (Adrian, 2026-10-14)', () => {
+    expect(JSON.stringify(snapshot)).not.toMatch(/job-hunt/);
+    expect(readme).not.toMatch(/job-hunt/);
+    expect(readme).toMatch(/Roleforge/);
   });
 });
 
