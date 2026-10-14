@@ -85,7 +85,7 @@ Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the n
 <!-- auto:start:components -->
 <!-- auto:end:components -->
 
-When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it supplies ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules still win.
+When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
