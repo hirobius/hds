@@ -61,15 +61,15 @@
  * Or:  pnpm check:spacing-vocabulary
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, dirname, extname, relative, resolve } from 'path';
+import { readFileSync } from 'fs';
+import { join, dirname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { scanSources, suppressionFor } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC = join(ROOT, 'src');
 
 const jsonMode = hasJsonFlag(process.argv);
 const isFixtureMode =
@@ -97,7 +97,8 @@ export const SPACING_KEYS = new Set([
   'columnGap',
 ]);
 
-const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', '__tests__']);
+const SKIP_DIRS = ['node_modules', '.git', 'dist', '__tests__'];
+const isSuppressed = suppressionFor('spacing-vocab-ok');
 
 /** Unwraps `(x)`, `x as T` and `x satisfies T` down to the expression itself. */
 function unwrap(node) {
@@ -237,10 +238,7 @@ export function findViolationsInText(text, rel) {
 
   const report = (key, valueNode, value) => {
     const line = source.getLineAndCharacterOfPosition(valueNode.getStart(source)).line;
-    const suppressed =
-      lines[line].includes('spacing-vocab-ok') ||
-      (line > 0 && lines[line - 1].includes('spacing-vocab-ok'));
-    if (suppressed) return;
+    if (isSuppressed(lines, line)) return;
     violations.push({
       file: rel,
       line: line + 1,
@@ -324,24 +322,19 @@ export function findViolationsInText(text, rel) {
   return violations.sort((a, b) => a.line - b.line);
 }
 
-function collectFiles(dir, results = []) {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (SKIP_DIRS.has(entry)) continue;
-    const stat = statSync(full);
-    if (stat.isDirectory()) {
-      collectFiles(full, results);
-      continue;
-    }
-    const ext = extname(entry);
-    if (ext === '.tsx' || ext === '.ts') results.push(full);
-  }
-  return results;
-}
-
 // ── CLI entry ─────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
-  const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : collectFiles(SRC);
+  const files =
+    isFixtureMode && fixtureFile
+      ? [resolve(fixtureFile)]
+      : scanSources({
+          root: ROOT,
+          gate: 'check-spacing-vocabulary',
+          roots: ['src'],
+          exts: ['.ts', '.tsx'],
+          skipDirs: SKIP_DIRS,
+          includeSpecs: true,
+        });
 
   const violations = [];
   for (const file of files) {

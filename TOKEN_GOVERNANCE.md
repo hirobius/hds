@@ -21,7 +21,7 @@ Any human, AI agent, script, or design tool touching the token system should tre
 
 Everything else is downstream:
 
-- `src/styles/tokens.css`
+- `src/styles/tokens.generated.css`
 - `src/app/design-system/generated-tokens.ts`
 - `DESIGN.md`
 - `DESIGN-HANDOFF.md`
@@ -124,7 +124,7 @@ Do not rely on ad hoc dark-mode-only overrides in places that bypass the token m
 
 Do not edit these manually:
 
-- `src/styles/tokens.css`
+- `src/styles/tokens.generated.css`
 - `src/app/design-system/generated-tokens.ts`
 
 If they are wrong, fix `hirobius.tokens.json` or the token build pipeline.

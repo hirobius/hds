@@ -64,13 +64,13 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
     expect(css).toContain('--semantic-space-region-gutter: var(--semantic-space-scale-sm);');
     // The deprecated alias is only re-declared inside the zero-specificity compact
     // scope (hds#336), so nested scopes resolve it against the remapped scale;
-    // everywhere else it follows region.gutter via its :root alias in tokens.css.
+    // everywhere else it follows region.gutter via its :root alias in tokens.generated.css.
     const outsideCompact = css.replace(/:where\(\[data-density='compact'\]\)\s*\{[^}]*\}/g, '');
     expect(outsideCompact).not.toMatch(/--semantic-space-layout-gutter\s*:/);
   });
 
-  it('tokens.css declares the deprecated aliases as var() of the new names', () => {
-    const css = read('src/styles/tokens.css');
+  it('tokens.generated.css declares the deprecated aliases as var() of the new names', () => {
+    const css = read('src/styles/tokens.generated.css');
     expect(css).toContain(
       '--semantic-space-component-padding: var(--semantic-space-surface-padding);',
     );
@@ -96,6 +96,10 @@ const SURFACE_PX = {
   'accent-lilac': [24, 20],
   'brutalist-demo': [16, 6],
   'concrete-creations': [24, 20],
+  // Design-explorations demo tenants (hds#628): soft-demo opens surfaces up (scale.lg, scale.md
+  // compact); accent-pair-demo changes colour only.
+  'soft-demo': [32, 20],
+  'accent-pair-demo': [24, 20],
 };
 /** Today's region.gutter in px per viewport width, [comfortable, compact]. Same for every tenant. */
 const GUTTER_PX = { 1280: [32, 24], 640: [32, 24], 639: [16, 12], 400: [16, 12] };

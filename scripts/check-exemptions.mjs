@@ -12,9 +12,10 @@
  * Usage: pnpm check:exemptions
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, extname, relative, resolve, dirname } from 'path';
+import { readFileSync } from 'fs';
+import { relative, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { scanSources, EXEMPTION_MARKERS } from './lib/source-scan.mjs';
 
 const __scriptDir = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__scriptDir, '..');
@@ -23,86 +24,31 @@ const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 
-const SCAN_DIRS = isFixtureMode && fixtureFile ? null : [join(ROOT, 'src'), join(ROOT, 'scripts')];
+const SCAN_ROOTS = ['src', 'scripts'];
 
-const SKIP_DIRS = new Set(['node_modules', '.git', 'dist']);
-const ALLOWED_EXTS = new Set(['.ts', '.tsx', '.js', '.mjs', '.cjs', '.css', '.md']);
-const MARKERS = [
-  'audit-ok',
-  'tier-ok',
-  'spacing-ok',
-  'font-ok',
-  'css-ok',
-  'tw-ok',
-  'inline-ok',
-  'security-ok',
-  'route-ok',
-  'doc-ref-ok',
-  'aria-ok',
-  'motion-ok',
-  'grid-ok',
-  // check-layout-discipline.mjs implements this (its own line 178 tests for
-  // it) and tells users to reach for it, but it was never added here — so the
-  // gate that validates exemption markers rejected 7 real uses of a marker
-  // another gate documents. Two gates disagreeing about one vocabulary.
-  'layout-ok',
-  'ref-ok',
-  'semantic-ok',
-  'breakpoint-ok',
-  'color-ok',
-  'hds-ok',
-  'outline-ok',
-  'binding-ok',
-  'link-ok',
-  'doc-structure-ok',
-  'token-path-ok',
-  'eyebrow-ok',
-  'vocab-ok',
-  'deprecation-ok',
-  'style-prop-ok',
-  // check-spacing-vocabulary.mjs (hds#206) documents and honors this marker;
-  // leaving it out made this gate reject the other gate's own escape hatch.
-  'spacing-vocab-ok',
-  // check-layout-gap-vocabulary.mjs (hds#404) documents and honors this
-  // marker; the same omission as the two above would make this gate reject it.
-  'layout-gap-ok',
-  // check-type-ramp.mjs (hds#486) documents and honors this marker.
-  'type-ramp-ok',
-  // check-no-uppercase.mjs documents and honors this marker (a reason is required).
-  'uppercase-ok',
-  // Same gap for src/app/components/__tests__/no-css-var-in-motion-animate.test.ts,
-  // which honors `motion-animate-var-ok` (hds#372).
-  // scripts/__tests__/check-exemptions.test.mjs pins every sibling-gate marker.
-  'motion-animate-var-ok',
-];
+const SKIP_DIRS = ['node_modules', '.git', 'dist'];
+const ALLOWED_EXTS = ['.ts', '.tsx', '.js', '.mjs', '.cjs', '.css', '.md'];
+// The vocabulary lives in lib/source-scan.mjs, next to suppressionFor, so a gate
+// cannot honor a marker this one rejects.
+const MARKERS = EXEMPTION_MARKERS;
 
 const markerPattern = new RegExp(`\\b(${MARKERS.join('|')}):\\s*(.*)$`);
 const unknownPattern = /\b([a-z-]+-ok):/i;
-
-function walk(dir, files = []) {
-  if (!statSync(dir).isDirectory()) return files;
-
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    const stat = statSync(full);
-
-    if (stat.isDirectory()) {
-      if (!SKIP_DIRS.has(entry)) walk(full, files);
-      continue;
-    }
-
-    if (!ALLOWED_EXTS.has(extname(entry))) continue;
-    files.push(full);
-  }
-
-  return files;
-}
 
 const violations = [];
 const counts = new Map();
 
 const filesToScan =
-  isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : SCAN_DIRS.flatMap((dir) => walk(dir));
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : scanSources({
+        root: ROOT,
+        gate: 'check-exemptions',
+        roots: SCAN_ROOTS,
+        exts: ALLOWED_EXTS,
+        skipDirs: SKIP_DIRS,
+        includeSpecs: true,
+      });
 
 for (const file of filesToScan) {
   const rel = relative(ROOT, file).replace(/\\/g, '/');

@@ -13,7 +13,7 @@ import { describe, it, expect } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { format, resolveConfig } from 'prettier';
-import { formatGenerated } from '../lib/write-generated.mjs';
+import { formatCommitted, formatGenerated } from '../lib/write-generated.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -56,6 +56,35 @@ describe('formatGenerated', () => {
   it('returns content unchanged rather than throwing on unparseable input', async () => {
     const raw = ':root{ this is not css ][';
     await expect(formatGenerated(path.join(ROOT, 'broken.css'), raw)).resolves.toBe(raw);
+  });
+});
+
+describe('formatCommitted', () => {
+  // The bytes the repo commits for a path: lint-staged runs `prettier --write`
+  // with this repo's config, and Prettier's CLI skips what .gitignore and
+  // .prettierignore list. A generator writing anything else is red forever.
+  it("formats a path with this repo's Prettier config, whatever root the generator writes under", async () => {
+    const raw = '{"a":[1,2],"b":{"c":\'x\'}}';
+    const config = await resolveConfig(path.join(ROOT, 'docs/x.json'));
+    expect(await formatCommitted('docs/x.json', raw)).toBe(
+      await format(raw, { ...config, filepath: path.join(ROOT, 'docs/x.json') }),
+    );
+    expect(await formatCommitted('docs/x.json', raw)).toBe('{ "a": [1, 2], "b": { "c": "x" } }\n');
+  });
+
+  it('leaves a path .prettierignore hands to its generator byte for byte', async () => {
+    // skills/hds-consumer/SKILL.md is listed: generate-consumer-skill owns its layout.
+    const raw = '# Title\n\n\n\n*   item\n';
+    expect(await formatCommitted('skills/hds-consumer/SKILL.md', raw)).toBe(raw);
+  });
+
+  it('leaves a gitignored path (build output, never committed) byte for byte', async () => {
+    const raw = '{"a":1}';
+    expect(await formatCommitted('dist/css-contract.json', raw)).toBe(raw);
+  });
+
+  it('returns content unchanged when Prettier has no parser for the path', async () => {
+    expect(await formatCommitted('figma/blob.bin', 'x\x00')).toBe('x\x00');
   });
 });
 

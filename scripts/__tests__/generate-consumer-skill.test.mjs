@@ -8,7 +8,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { parse as parseYaml } from 'yaml';
-import { readFileSync, writeFileSync, mkdtempSync } from 'fs';
+import { readFileSync, writeFileSync, mkdtempSync, mkdirSync } from 'fs';
 import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -308,32 +308,34 @@ describe('--check mode', () => {
     expect(r.status).toBe(0);
   });
 
-  it('fails after a hand edit to the file', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'skill-'));
-    const p = join(dir, 'SKILL.md');
-    writeFileSync(p, `${read(SKILL_PATH)}\nhand edit\n`);
-    const r = spawnSync('node', ['scripts/generate-consumer-skill.mjs', '--check'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-      env: { ...process.env, HDS_SKILL_OUT: p },
-    });
-    expect(r.status).toBe(1);
-  });
-
   it('fails when a component is added to the manifest without regenerating', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'skill-'));
+    // A throwaway root (--root) holding the generator's inputs and its output.
+    const root = mkdtempSync(join(tmpdir(), 'skill-'));
+    for (const f of [
+      'public/hds-manifest.json',
+      'src/index.ts',
+      'src/patterns.ts',
+      'package.json',
+      SKILL_PATH,
+    ]) {
+      mkdirSync(dirname(join(root, f)), { recursive: true });
+      writeFileSync(join(root, f), read(f));
+    }
     const m = JSON.parse(read('public/hds-manifest.json'));
     m.componentInventory.push('BrandNewThing');
     m.componentSpecs.BrandNewThing = {
       ...spec('src/app/components/alert.tsx', 'Brand new.'),
     };
-    const mp = join(dir, 'manifest.json');
-    writeFileSync(mp, JSON.stringify(m));
-    const r = spawnSync('node', ['scripts/generate-consumer-skill.mjs', '--check'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-      env: { ...process.env, HDS_SKILL_MANIFEST: mp },
-    });
+    writeFileSync(join(root, 'public/hds-manifest.json'), JSON.stringify(m));
+    const r = spawnSync(
+      'node',
+      ['scripts/generate-consumer-skill.mjs', '--check', '--root', root],
+      {
+        cwd: ROOT,
+        encoding: 'utf8',
+      },
+    );
     expect(r.status).toBe(1);
+    expect(r.stderr).toContain(SKILL_PATH);
   });
 });

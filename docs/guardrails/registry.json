@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "f778f865d3783a7e5931b678eefd54849d1426e926b55e5ec614090000bb2afa",
-  "precommitStructureHashUpdatedAt": "2026-10-12T18:19:55.593Z",
+  "precommitStructureHash": "3e499354d553fc53743dd3d0f884dd33458909f936001d943284983135d2246c",
+  "precommitStructureHashUpdatedAt": "2026-10-13T09:54:01.396Z",
   "gates": [
     {
       "id": "audit-batch-deliverables",
@@ -196,7 +196,7 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "scope": "full-tree",
-      "glob": "src/styles/tokens.css"
+      "glob": "src/styles/tokens.generated.css"
     },
     {
       "id": "check-deprecations",

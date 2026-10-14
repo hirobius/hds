@@ -1,0 +1,273 @@
+{
+  "version": "0.25.0",
+  "date": "2026-10-13",
+  "bump": "minor",
+  "summary": "1 change to make by hand (1 breaking), 10 that look different and 6 deprecations.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.25.0/removed/--primitive-typography-letterSpacing-caps",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The CSS variable --primitive-typography-letterSpacing-caps and the tracking-caps class are gone because the system is sentence case, so delete them from your styles.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-letterSpacing-caps"
+        ],
+        "cssVarWrites": [
+          "--primitive-typography-letterSpacing-caps"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-typography-letterSpacing-caps"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.25.0/deprecated/Blockquote.size",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed.",
+      "detect": {
+        "regex": [
+          "<Blockquote\\b[^>]*\\ssize\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.25.0/deprecated/CardMetric",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).",
+      "detect": {
+        "regex": [
+          "<CardMetric\\b",
+          "\\bCard\\.Metric\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.25.0/deprecated/MetricTile",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "MetricTile is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).",
+      "detect": {
+        "regex": [
+          "<MetricTile\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.25.0/deprecated/MetricTiles",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "MetricTiles is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).",
+      "detect": {
+        "regex": [
+          "<MetricTiles\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.25.0/deprecated/Stat",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Stat is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).",
+      "detect": {
+        "regex": [
+          "<Stat\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.25.0/deprecated/StatusTile",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "StatusTile still works until 1.0.0; replace it with <Card padding=\"item\" className=\"border-0\"><Card.Row trailing={trailing}><Card.RowTitle>{title}</Card.RowTitle> plus one <Card.RowNote> per note, and drop tone, which StatusTile never painted.",
+      "detect": {
+        "regex": [
+          "<StatusTile\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:32"
+    },
+    {
+      "id": "0.25.0/value-changed/--component-button-secondary-border-disabled",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "A disabled secondary button now draws a lighter border (border.subdued), so it reads as disabled; nothing to change unless you styled against the old darker border.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-border-disabled"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-border-disabled"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-disabled::root",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:24"
+    },
+    {
+      "id": "0.25.0/value-changed/--semantic-color-border-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the subtle border is now neutral.700 (was neutral.850) so it shows on raised surfaces; check any hairline you matched to the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-subtle"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-subtle"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-subtle:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-subtle:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.25.0/value-changed/--semantic-color-surface-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the hover surface is now neutral.700 (was neutral.900) so hover reads on raised surfaces; check any hover colour you matched to the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-hover"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-hover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.25.0/value-changed/--semantic-color-surface-muted",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the muted surface is now neutral.800 (was neutral.900) so it stays lighter than raised; check any muted block you matched to the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-muted"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-muted"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.25.0/value-changed/--semantic-color-surface-overlay",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the overlay surface is now neutral.800 (was neutral.850) so it stays above raised; check any overlay colour you matched to the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-overlay"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-overlay"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-overlay:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-overlay:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.25.0/value-changed/--semantic-color-surface-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the pressed surface is now black (was neutral.950) so it reads darker than hover and apart from raised; check any pressed colour you matched to the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-pressed"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-pressed:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.25.0/value-changed/--semantic-color-surface-raised",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the raised surface is now neutral.850 (was neutral.950) so cards read against the page; check any card colour you matched to the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-raised"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-raised"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.25.0/value-changed/--semantic-color-surface-sunken",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode, the sunken surface is now neutral.800 (was neutral.850) to keep the surface order; check any sunken colour you matched to the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-sunken"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-sunken"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.25.0/look/destructive-section-callout",
+      "kind": "look",
+      "impact": "look",
+      "plain": "DestructiveSection now sits on the tinted danger background with a smaller bold title and an outlined button, and a new titleSm text style (16px bold) is available for small headings.",
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.25.0/look/kbd-raised-key",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Kbd now has a 2px darker edge under it so it reads as a raised key; its size and layout are unchanged, so nothing to do unless you screenshot-test it.",
+      "source": "CHANGELOG.md:28"
+    }
+  ]
+}

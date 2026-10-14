@@ -105,7 +105,7 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 - Padding: `var(--semantic-space-surface-padding)` or `<HdsSurface padding="component">`. No raw pixel values.
 - Shadow: none by default (`elevation.flat`). Lifted/interactive cards use `shadow.subtle` via `elevation.raised` — bind to the role token, never a raw box-shadow value.
 - Title: `hds.typeStyles.heading3` / `<Text variant="h3">`. No other type style for the primary card heading.
-- Subtitle / meta: `hds.typeStyles.caption` / `<Text variant="caption">` + `var(--semantic-color-content-secondary)`.
+- Subtitle / meta: `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`); never an inline `color` style.
 - Hover (interactive cards only): `transform: scale(1.02)`. Never change background-color, border-color, or opacity as the primary hover signal.
 
 ### Dialog
@@ -213,10 +213,10 @@ A block that carries `@deprecated <notice>` also gives the spec `deprecated` (th
 
 ```tsx
 /**
- * Tile — a padded status block.
- * @deprecated Use StatusTile; the props are the same.
+ * LegacyWidget — a padded status block.
+ * @deprecated Use Widget; the props are the same.
  * @removeIn 1.0.0
- * @useInstead StatusTile
+ * @useInstead Widget
  */
 ```
 

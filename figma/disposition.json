@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-10",
+  "generatedAt": "2026-10-12",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,10 +22,10 @@
     }
   },
   "summary": {
-    "total": 97,
+    "total": 100,
     "byClass": {
       "library": 59,
-      "slot": 18,
+      "slot": 21,
       "layout": 8,
       "internal": 12
     },
@@ -173,6 +173,30 @@
     {
       "name": "CardProgress",
       "class": "library",
+      "parent": "Card",
+      "category": "Display",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "CardRow",
+      "class": "slot",
+      "parent": "Card",
+      "category": "Display",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "CardRowNote",
+      "class": "slot",
+      "parent": "Card",
+      "category": "Display",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "CardRowTitle",
+      "class": "slot",
       "parent": "Card",
       "category": "Display",
       "tier": "primitive",

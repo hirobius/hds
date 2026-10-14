@@ -17,12 +17,15 @@
  *
  * Run:   pnpm figma:connect:generate           write / refresh templates
  *        pnpm figma:connect:generate --check   exit 1 if committed templates drift
+ *        ... --root <dir>                      against a copy of the tree (tests)
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createCodeModel } from './lib/component-code-model.mjs';
+import { rootFromArgv, runGenerator } from './lib/generated-check.mjs';
+import { formatCommitted } from './lib/write-generated.mjs';
 import {
   REGISTRY_PATH,
   buildTemplateSource,
@@ -62,9 +65,6 @@ export async function generateTemplates({ root = DEFAULT_ROOT, registry, manifes
   const files = [];
   const errors = [];
   const model = codeModel ?? createCodeModel({ root, files: registrySourceFiles(registry) });
-  // Dynamic import: prettier 3 is ESM-only behind an exports map the import-x
-  // resolver cannot read statically.
-  const prettier = await import('prettier');
 
   for (const [name, entry] of Object.entries(registry.templates ?? {})) {
     const exportName = entry.export ?? name;
@@ -91,9 +91,9 @@ export async function generateTemplates({ root = DEFAULT_ROOT, registry, manifes
       figmaUrl,
       importFrom: registry.importFrom,
     });
-    const absolute = path.join(root, relativePath);
-    const options = (await prettier.resolveConfig(absolute)) ?? {};
-    const content = await prettier.format(source, { ...options, filepath: absolute });
+    // This repo's Prettier config whatever the root, so a fixture or a copy of
+    // the tree formats exactly like the committed templates.
+    const content = await formatCommitted(relativePath, source);
     files.push({ name, path: relativePath, content, status });
   }
 
@@ -130,8 +130,7 @@ export function diffAgainstDisk(root, files) {
 }
 
 async function main() {
-  const check = process.argv.includes('--check');
-  const root = DEFAULT_ROOT;
+  const root = rootFromArgv(DEFAULT_ROOT);
   const { registry, manifest } = loadCodeConnectInputs(root);
   const { files, errors } = await generateTemplates({ root, registry, manifest });
 
@@ -143,31 +142,24 @@ async function main() {
     process.exit(1);
   }
 
-  if (check) {
-    const drift = diffAgainstDisk(root, files);
-    if (drift.length > 0) {
-      for (const line of drift) console.error(`  drift ${line}`);
-      console.error('✗ Code Connect templates are stale. Run `pnpm figma:connect:generate`.');
-      process.exit(1);
-    }
-    console.log(`✓ generate-code-connect --check — ${files.length} template(s) up to date`);
-    return;
-  }
-
-  for (const file of files) {
-    fs.writeFileSync(path.join(root, file.path), file.content);
-  }
-  const expected = new Set(files.map((file) => file.path));
+  // One template per registry entry; a generated template whose entry went
+  // away must not exist (null), so a write removes it and --check names it.
+  const outputs = Object.fromEntries(files.map((file) => [file.path, file.content]));
   for (const stale of findGeneratedTemplates(root)) {
-    if (!expected.has(stale)) {
-      fs.rmSync(path.join(root, stale));
-      console.log(`  removed ${stale} (no registry entry)`);
-    }
+    if (!(stale in outputs)) outputs[stale] = null;
   }
-  const unmapped = files.filter((file) => file.status !== 'mapped').map((file) => file.name);
-  console.log(
-    `✓ generate-code-connect — ${files.length} template(s) written; ${files.length - unmapped.length} mapped, ${unmapped.length} unmapped${unmapped.length ? ` (${unmapped.join(', ')})` : ''}`,
-  );
+  const result = await runGenerator({
+    root,
+    outputs,
+    label: 'generate-code-connect',
+    fix: 'pnpm figma:connect:generate',
+  });
+  if (!result.check) {
+    const unmapped = files.filter((file) => file.status !== 'mapped').map((file) => file.name);
+    console.log(
+      `  ${files.length} template(s); ${files.length - unmapped.length} mapped, ${unmapped.length} unmapped${unmapped.length ? ` (${unmapped.join(', ')})` : ''}`,
+    );
+  }
 }
 
 if (

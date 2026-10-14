@@ -41,7 +41,6 @@ const VERBOSE = process.argv.includes('--verbose');
 const FIXTURE_DIR = process.env.FIXTURE_DIR;
 
 const GENERATED_OUTPUTS = [
-  'src/styles/tokens.css',
   'src/styles/tokens.generated.css',
   'src/app/design-system/generated-tokens.ts',
   'src/app/design-system/generated-token-values.ts',

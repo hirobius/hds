@@ -38,14 +38,14 @@
  * Or:  pnpm check:spacing
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, dirname, extname, resolve } from 'path';
+import { readFileSync } from 'fs';
+import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { scanSources, suppressionFor } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC = join(ROOT, 'src', 'app');
 const jsonMode = hasJsonFlag(process.argv);
 
 const isFixtureMode =
@@ -99,20 +99,7 @@ const DIMENSION_PROPS = new Set([
   'cy',
 ]);
 
-// ── File collector ─────────────────────────────────────────────────────────
-function collectFiles(dir, results = []) {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      if (entry === 'data' || entry === 'node_modules') continue;
-      collectFiles(full, results);
-    } else if (extname(entry) === '.tsx' || extname(entry) === '.ts') {
-      results.push(full);
-    }
-  }
-  return results;
-}
-
+const isExempt = suppressionFor(['spacing-ok', 'audit-ok'], { lookback: 0 });
 // ── Detection regex ──────────────────────────────────────────────────────────
 // Matches: propName: '16px' or propName: "16px" in style objects
 const PX_STRING = /(\w+)\s*:\s*['"](\d+(?:\.\d+)?)px['"]/g;
@@ -123,7 +110,17 @@ const BARE_NUM = /(\w+)\s*:\s*(\d+)\s*[,\n}]/g;
 
 const violations = [];
 
-const filesToScan = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : collectFiles(SRC);
+const filesToScan =
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : scanSources({
+        root: ROOT,
+        gate: 'check-hardcoded-spacing',
+        roots: ['src/app'],
+        exts: ['.ts', '.tsx'],
+        skipDirs: ['data', 'node_modules'],
+        includeSpecs: true,
+      });
 
 for (const file of filesToScan) {
   const rel = file.replace(ROOT + '\\', '').replace(ROOT + '/', '');
@@ -137,8 +134,7 @@ for (const file of filesToScan) {
       line.includes('hds.density.') ||
       line.includes('var(--') ||
       line.includes('hds.layout.') ||
-      line.includes('spacing-ok') ||
-      line.includes('audit-ok')
+      isExempt(lines, i)
     )
       return;
 
