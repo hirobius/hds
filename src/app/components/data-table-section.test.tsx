@@ -98,7 +98,7 @@ describe('DataTableSection', () => {
     expect(cells[1].className).toContain('text-right');
   });
 
-  it('names the table and its scroll region after the section heading', () => {
+  it('a11y:data-table-section.named - names the table and its scroll region after the section heading', () => {
     render(
       <>
         <DataTableSection title="Projects" columns={columns} rows={rows} />

@@ -127,6 +127,16 @@ interface PopoverComponent extends React.FC<React.ComponentProps<typeof PopoverP
  * @keyboard Enter/Space Opens the popover from the trigger and moves focus inside it.
  * @keyboard Escape Closes the popover and returns focus to the trigger.
  * @keyboard Tab Cycles focus inside the open popover; the page behind stays reachable.
+ * @a11y component required a11y:popover.open-keys Enter and Space on the trigger open the popover.
+ * @a11y component required a11y:popover.trigger-haspopup The trigger announces a dialog popup (aria-haspopup=dialog).
+ * @a11y component required a11y:popover.trigger-expanded The trigger exposes aria-expanded, false while closed and true while open.
+ * @a11y component required a11y:popover.trigger-controls The trigger points aria-controls at the open content.
+ * @a11y component required a11y:popover.escape-returns-focus Escape closes the popover and returns focus to the trigger.
+ * @a11y component required a11y:popover.content-role-dialog The open content is a role=dialog that takes the name the consumer gives it.
+ * @a11y component required a11y:popover.tab-loop Tab cycles inside the open content instead of walking the page behind it (Radix default).
+ * @a11y component required a11y:popover.non-modal The page behind stays reachable: no aria-hidden and no pointer-events lock.
+ * @a11y consumer required Give Popover.Content an aria-label or aria-labelledby; the open dialog is otherwise unnamed.
+ * @a11y consumer required Give an icon-only Popover.Trigger an aria-label.
  * @public
  */
 const Popover: PopoverComponent = /* @__PURE__ */ Object.assign(PopoverRoot, {

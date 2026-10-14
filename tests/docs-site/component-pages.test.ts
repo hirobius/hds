@@ -109,6 +109,31 @@ describe('buildComponentPages (fixture)', () => {
     expect(page).toContain('Needs a name');
   });
 
+  it('splits tagged a11y rules into what the reader provides and what is built in (hds#520)', () => {
+    const p = buildComponentPages({
+      manifest: {
+        componentSpecs: {
+          Widget: {
+            ...fixtureManifest.componentSpecs.Widget,
+            a11yRules: [
+              { rule: 'Escape closes it.', required: true, owner: 'component' },
+              { rule: 'Name the trigger.', required: true, owner: 'consumer' },
+              { rule: 'Keep it short.', required: false, owner: 'consumer' },
+            ],
+          },
+        },
+      },
+      api: fixtureApi,
+      core: ['Widget'],
+      providers: [],
+    }).get('widget') as string;
+    expect(p).toContain('**You provide**\n\n- Name the trigger.\n- Keep it short. (recommended)');
+    expect(p).toContain('**Built in**\n\n- Escape closes it.');
+    expect(p).not.toContain('**Requirements**');
+    // Untagged rules keep the single list.
+    expect(page).toContain('**Requirements**');
+  });
+
   it('escapes MDX-significant characters in prose', () => {
     expect(page).toContain('\\{gadget\\} for \\<b> | pipes.');
   });

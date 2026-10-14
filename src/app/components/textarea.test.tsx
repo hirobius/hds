@@ -9,12 +9,12 @@ import { Textarea } from './textarea';
 afterEach(cleanup);
 
 describe('Textarea', () => {
-  it('labels the textarea', () => {
+  it('a11y:textarea.label labels the textarea', () => {
     render(<Textarea label="Message" />);
     expect(screen.getByLabelText('Message').tagName).toBe('TEXTAREA');
   });
 
-  it('points aria-describedby at the helper while it renders', () => {
+  it('a11y:textarea.helper-described points aria-describedby at the helper while it renders', () => {
     render(<Textarea label="Message" helperText="Max 200 characters." />);
     const id = screen.getByLabelText('Message').getAttribute('aria-describedby') as string;
     expect(document.getElementById(id)?.textContent).toBe('Max 200 characters.');

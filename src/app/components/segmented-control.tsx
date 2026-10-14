@@ -18,6 +18,13 @@
  * hover/focus tracking (per-segment `string | null` cardinality) rather than
  * the shared `useInteractionState` single-element machine; only the class
  * composition changed, not the state machine feeding it.
+ * @a11y component required a11y:segmented-control.roving-focus The control is one Tab stop; arrow keys move focus between segments and select, like a native radio group.
+ * @a11y component required a11y:segmented-control.group-and-radio-roles It is a radiogroup named by label or aria-label, and each segment is a radio with aria-checked.
+ * @a11y component required a11y:segmented-control.sr-group A screen reader speaks the group name and each radio with its state, position and set size.
+ * @a11y component required a11y:segmented-control.focus-ring Every segment carries the shared hds-focus ring.
+ * @a11y component required a11y:segmented-control.target-size Each segment hit area is 24px or taller, including the compact size (WCAG 2.5.8).
+ * @a11y component required gate:check-reduced-motion The indicator slide goes through useHdsMotion, so it stops under prefers-reduced-motion.
+ * @a11y consumer required Give the control a label or an aria-label so the group has a name.
  */
 // motion-ok: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
 import { forwardRef, useRef, useState } from 'react';
@@ -77,9 +84,11 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
     variants: {
       size: {
         // Rail = item + 2 x 4px padding + 2px border: 22px -> 32px (Button sm), 30px -> 40px (Button/Input md).
+        // WCAG 2.5.8: the 22px segment is under 24px, so an invisible pseudo-element grows the
+        // hit area 1px above and below into the rail padding, to 24px, without moving the layout.
         // Default inline padding is a class so it can step down on a phone: five 16px-padded segments are
         // wider than a 390px viewport (bug bash 24, item 15). A consumer segmentPaddingX still wins inline.
-        sm: 'min-h-[22px] py-0 px-[var(--semantic-space-scale-xs)]',
+        sm: "min-h-[22px] py-0 px-[var(--semantic-space-scale-xs)] before:absolute before:inset-x-0 before:-inset-y-[1px] before:content-['']",
         md: 'min-h-[30px] px-[var(--semantic-space-scale-xs)] sm:px-[var(--semantic-space-layout-gap)]',
       },
       fullWidth: {

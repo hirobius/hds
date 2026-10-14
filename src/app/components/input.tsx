@@ -9,6 +9,16 @@
  * @useInstead Select a short fixed list
  * @useInstead Combobox a long fixed list that needs search
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20
+ * @a11y component required a11y:input.label The label prop renders a real label associated with the field.
+ * @a11y component required a11y:input.slots-name A prefix, suffix or icon stays out of the accessible name, so the label is the whole name.
+ * @a11y component required a11y:input.helper-described The helper text is linked with aria-describedby only while it renders.
+ * @a11y component required a11y:input.error-wiring An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.
+ * @a11y component required a11y:input.loading-focusable A loading field stays focusable (read-only with aria-busy), so typing keeps focus.
+ * @a11y component required a11y:input.clear-button The clear button is named, reachable by Tab, and returns focus to the field.
+ * @a11y component required a11y:input.clear-target-size The clear button spans the field height and is 24px or wider (WCAG 2.5.8).
+ * @a11y component required a11y:input.sr-field A screen reader speaks the label, the invalid state and the error message.
+ * @a11y consumer required Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.
+ * @a11y consumer recommended Set autoComplete on fields that collect the person's own details (WCAG 1.3.5).
  */
 
 import * as React from 'react';

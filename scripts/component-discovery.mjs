@@ -172,6 +172,7 @@ function mergeContract(componentBlock, fileBlock) {
     },
     slots: own.slots.length ? own.slots : file.slots,
     keyboard: own.keyboard.length ? own.keyboard : file.keyboard,
+    a11y: own.a11y.length ? own.a11y : file.a11y,
     aiRules: own.aiRules ?? file.aiRules,
   };
 }
@@ -220,7 +221,7 @@ function parseTags(block, source) {
  *
  * @param {string} source module text
  * @param {string} exportName
- * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string, usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> }, slots: Array<{name: string, description: string}>, keyboard: Array<{keys: string, effect: string}>, aiRules: string|null, deprecation: { deprecated: string, removeIn?: string, useInstead?: string } | null }}
+ * @returns {{ category: string|null, internal: boolean, docIgnore: boolean, docExempt: boolean, figmaUrl: string|null, tier: string|null, screenPattern: boolean, description: string, usage: { when: string|null, whenNot: string|null, useInstead: Array<{component: string, reason: string|null}> }, slots: Array<{name: string, description: string}>, keyboard: Array<{keys: string, effect: string}>, a11y: Array<{rule: string, required: boolean, owner: string, testId?: string}>, aiRules: string|null, deprecation: { deprecated: string, removeIn?: string, useInstead?: string } | null }}
  */
 export function readComponentTags(source, exportName) {
   const fileBlock = findFileJsDocBlock(source);
@@ -283,6 +284,7 @@ export function discoverHdsComponents() {
         usage,
         slots,
         keyboard,
+        a11y,
         aiRules,
         deprecation,
       } = readComponentTags(source, name);
@@ -319,6 +321,7 @@ export function discoverHdsComponents() {
         usage,
         slots,
         keyboard,
+        a11y,
         aiRules,
         deprecation,
         namespaceViolation: name.startsWith('Hds'),
