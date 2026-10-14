@@ -445,7 +445,7 @@
   --component-badge-warning-text: var(--semantic-color-feedback-warning);
   --component-badge-inProgress-bg: var(--semantic-color-feedback-bg-inProgress);
   --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
-  --component-badge-radius: var(--primitive-radius-4);
+  --component-badge-radius: var(--semantic-radius-action);
   --component-badge-height: var(--primitive-size-20);
   --component-badge-minWidth: var(--primitive-size-20);
   --component-badge-paddingY: var(--primitive-space-px2);
@@ -538,7 +538,7 @@
   --semantic-color-surface-pressed: var(--primitive-color-neutral-black);
   --semantic-color-surface-selected: var(--primitive-color-neutral-800);
   --semantic-color-surface-muted: var(--primitive-color-neutral-800);
-  --semantic-color-surface-sunken: var(--primitive-color-neutral-800);
+  --semantic-color-surface-sunken: var(--primitive-color-neutral-700);
   --semantic-color-content-primary: var(--primitive-color-neutral-100);
   --semantic-color-content-secondary: var(--primitive-color-neutral-400);
   --semantic-color-content-tertiary: var(--primitive-color-neutral-450);
@@ -549,7 +549,7 @@
   --semantic-color-content-success: var(--primitive-color-green-400);
   --semantic-color-content-warning: var(--primitive-color-amber-400);
   --semantic-color-content-danger: var(--primitive-color-red-400);
-  --semantic-color-border-default: var(--primitive-color-neutral-700);
+  --semantic-color-border-default: var(--primitive-color-neutral-600);
   --semantic-color-border-interactive: var(--primitive-color-neutral-500);
   --semantic-color-border-subdued: var(--primitive-color-neutral-800);
   --semantic-color-border-subtle: var(--primitive-color-neutral-700);

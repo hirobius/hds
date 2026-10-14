@@ -59,7 +59,7 @@ const toggleRootVariants = /* @__PURE__ */ cva(
         focused:
           'cursor-pointer bg-transparent [outline:var(--semantic-borderWidth-emphasis)_solid_var(--semantic-color-border-accent)]',
         pressed: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
-        disabled: 'cursor-default bg-[var(--semantic-color-surface-raised)]',
+        disabled: 'cursor-default bg-transparent',
       },
     },
     defaultVariants: { state: 'rest' },
@@ -149,7 +149,21 @@ const toggleTrackVariants = /* @__PURE__ */ cva(
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/color; var()-based, no Tailwind-theme utility exists
 const toggleThumbVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.size.16 / primitive.radius.full — no semantic alias for toggle-thumb geometry yet
-  'pointer-events-none block w-[var(--primitive-size-16)] h-[var(--primitive-size-16)] rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-page)]',
+  'pointer-events-none block w-[var(--primitive-size-16)] h-[var(--primitive-size-16)] rounded-[var(--primitive-radius-full)]',
+  {
+    variants: {
+      on: { true: '', false: '' },
+      disabled: { true: '', false: '' },
+    },
+    compoundVariants: [
+      // On: page-coloured thumb on the accent track. Off: the thumb takes the track's own edge colour,
+      // so it is a visible dot (>= 3:1, WCAG 1.4.11) instead of the page colour on a transparent track.
+      { on: true, disabled: false, className: 'bg-[var(--semantic-color-surface-page)]' },
+      { on: false, disabled: false, className: 'bg-[var(--semantic-color-content-secondary)]' },
+      { disabled: true, className: 'bg-[var(--semantic-color-content-disabled)]' },
+    ],
+    defaultVariants: { on: false, disabled: false },
+  },
 );
 
 export interface ToggleProps extends Omit<
@@ -242,11 +256,11 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
             duration: productiveMotion.duration,
             ease: productiveMotion.easing,
           }}
-          className={toggleThumbVariants()}
+          className={toggleThumbVariants({ on: checked, disabled: isDisabled })}
         />
       </motion.span>
       <motion.span
-        className="text-secondary"
+        className="text-muted-foreground"
         animate={{
           x: isPressed ? hds.space.px1 : 0,
         }}

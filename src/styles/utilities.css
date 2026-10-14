@@ -600,8 +600,12 @@ samp {
   }
 }
 
-.animate-spin {
-  animation: hds-utility-spin 1s linear infinite;
+/* Only without reduced motion: this file is unlayered, so an unconditional rule here outranked
+   Tailwind's layered motion-reduce:animate-none and spinners kept turning under reduce. */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-spin {
+    animation: hds-utility-spin 1s linear infinite;
+  }
 }
 
 @media (min-width: 640px) {

@@ -99,7 +99,7 @@ const radioRingVariants = /* @__PURE__ */ cva(
       {
         on: true,
         state: 'disabled',
-        className: 'border-[color:var(--semantic-color-border-accent)] bg-transparent',
+        className: 'border-[color:var(--semantic-color-border-default)] bg-transparent',
       },
       {
         on: true,
@@ -114,8 +114,14 @@ const radioRingVariants = /* @__PURE__ */ cva(
       },
       {
         on: false,
-        state: ['rest', 'disabled'],
+        state: 'rest',
         className: 'border-[color:var(--semantic-color-content-secondary)] bg-transparent',
+      },
+      {
+        // Disabled fades to the same border-default as Checkbox and Toggle (bug bash 24, item 17).
+        on: false,
+        state: 'disabled',
+        className: 'border-[color:var(--semantic-color-border-default)] bg-transparent',
       },
     ],
     defaultVariants: { state: 'rest', on: false },

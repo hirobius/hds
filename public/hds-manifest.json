@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-13T12:30:05.429Z",
+  "generated": "2026-10-14T04:07:35.216Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -827,9 +827,7 @@
         "exportName": "Divider",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/metadata-list.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {
         "Default stroke": "semantic.color.border.default",
         "Strong stroke": "semantic.color.border.strong",
@@ -1357,7 +1355,6 @@
       },
       "consumers": [
         "src/app/components/inline-code.test.tsx",
-        "src/app/components/metadata-list.tsx",
         "src/app/components/state-tokens.test.tsx"
       ],
       "tokenMapping": {
@@ -1501,6 +1498,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox.tsx",
         "src/app/components/field.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
@@ -2568,7 +2566,6 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/focus-visible.test.tsx",
         "src/app/components/grid.tsx",
-        "src/app/components/metadata-list.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/radio.test.tsx",
         "src/app/components/stat.tsx",
@@ -2921,6 +2918,7 @@
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/kbd.tsx",
+        "src/app/components/select.tsx",
         "src/app/components/table.tsx",
         "src/app/components/text.test.tsx",
         "src/app/components/visually-hidden.tsx",
@@ -3466,6 +3464,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert.tsx",
         "src/app/components/destructive-section.test.tsx",
         "src/app/components/destructive-section.tsx"
       ],
@@ -4613,6 +4612,10 @@
         "options": {
           "type": "{ value: string; label: string; }[]"
         },
+        "placeholder": {
+          "type": "string",
+          "default": "Select…"
+        },
         "showLabel": {
           "type": "boolean",
           "default": true
@@ -5479,7 +5482,9 @@
       "consumers": [
         "src/app/components/combobox.tsx",
         "src/app/components/form.test.tsx",
+        "src/app/components/input.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/textarea.tsx",
         "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx"
       ],
@@ -9946,8 +9951,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -10073,8 +10078,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "alias": "{primitive.color.neutral.600}",
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -10093,7 +10098,7 @@
         "path": "semantic.color.border.subdued",
         "cssVar": "--semantic-color-border-subdued",
         "type": "color",
-        "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.700, one step lighter than 800); kept live, no removal yet.",
+        "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
@@ -11375,9 +11380,9 @@
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
-        "description": "Small rounded radius for badges.",
-        "alias": "{primitive.radius.4}",
-        "resolvedValue": "4px"
+        "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
+        "alias": "{semantic.radius.action}",
+        "resolvedValue": "8px"
       },
       {
         "path": "component.badge.height",

@@ -92,6 +92,8 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     const id = providedId ?? generatedId;
 
     const hasError = Boolean(error);
+    // FormField marks its control aria-invalid without an `error` prop: draw the same red border for it.
+    const invalid = hasError || rest['aria-invalid'] === true || rest['aria-invalid'] === 'true';
     const errorTextId = hasError && errorMessage ? `${id}-error` : undefined;
     // The helper only renders while no error is shown, so only reference it then.
     const helperTextId = helperText && !errorTextId ? `${id}-hint` : undefined;
@@ -99,7 +101,7 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     const state = disabled ? 'disabled' : hasError ? 'error' : 'default';
 
     return (
-      <div className={cn('flex flex-col gap-1.5', FORM_CONTROL_WIDTH, className)}>
+      <div className={cn('flex flex-col gap-2', FORM_CONTROL_WIDTH, className)}>
         {label && (
           <label htmlFor={id} className="hds-type-ui text-foreground">
             {label}
@@ -116,7 +118,7 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
           aria-errormessage={errorTextId}
           aria-invalid={hasError || undefined}
           data-state={state}
-          className={cn(textareaVariants({ resize, invalid: hasError }), textareaClassName)}
+          className={cn(textareaVariants({ resize, invalid }), textareaClassName)}
           {...rest}
         />
 
