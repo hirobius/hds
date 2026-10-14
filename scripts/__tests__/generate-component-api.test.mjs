@@ -74,3 +74,73 @@ describe('generate-component-api: Table cellSlots', () => {
     expect(slots.find((slot) => slot.name === 'value').description).toContain('monospace');
   });
 });
+
+/**
+ * hds#406: a prop typed by a named alias used to be recorded as the alias name
+ * (`InputSize`, `GapOption`, `PaddingOption`), so agents reading
+ * component-api.json or the manifest lost the legal values. The checker now
+ * expands any alias that is a pure string-literal union.
+ */
+describe('generate-component-api: named alias expansion (hds#406)', () => {
+  const type = (component, prop) =>
+    components[component]?.props.find((row) => row.name === prop)?.type;
+  const literals = (text) =>
+    [...String(text).matchAll(/"([^"]*)"|'([^']*)'/g)].map((m) => m[1] ?? m[2]);
+
+  it('expands a NonNullable<VariantProps<…>> alias (Input.size) to its literals', () => {
+    expect(type('Input', 'size')).not.toBe('InputSize');
+    expect(literals(type('Input', 'size')).sort()).toEqual(['lg', 'md', 'sm']);
+  });
+
+  it('expands an imported alias (Card.padding, Surface.padding) to its literals', () => {
+    for (const component of ['Card', 'Surface']) {
+      expect(literals(type(component, 'padding')).sort()).toEqual(
+        ['component', 'item', 'none', 'px16', 'px24'].sort(),
+      );
+    }
+  });
+
+  it('expands a union of aliases plus keyof typeof (Stack.gap, Card.gap)', () => {
+    for (const component of ['Stack', 'Card']) {
+      expect(type(component, 'gap')).not.toBe('GapOption');
+      expect(literals(type(component, 'gap'))).toEqual(
+        expect.arrayContaining(['tight', 'normal', 'inset', 'spacious']),
+      );
+    }
+  });
+
+  it('lists the values in source order, not checker order', () => {
+    expect(literals(type('Stack', 'gap')).slice(0, 5)).toEqual([
+      'tight',
+      'normal',
+      'inset',
+      'spacious',
+      'gap',
+    ]);
+    expect(literals(type('Card', 'padding'))).toEqual([
+      'component',
+      'item',
+      'px16',
+      'px24',
+      'none',
+    ]);
+    const space = literals(type('Card', 'gap')).filter((value) => value.startsWith('px'));
+    expect(space.slice(0, 3)).toEqual(['px1', 'px2', 'px4']);
+  });
+
+  it('keeps an alias name that is not a pure string-literal union', () => {
+    expect(type('Stack', 'children')).toBe('ReactNode');
+    expect(type('Stack', 'style')).toBe('CSSProperties');
+  });
+
+  it('leaves no bare alias name behind that resolves to string literals', () => {
+    const bare = [];
+    for (const [name, component] of Object.entries(components)) {
+      for (const row of component.props) {
+        if (/^(InputSize|GapOption|PaddingOption)$/.test(row.type))
+          bare.push(`${name}.${row.name}`);
+      }
+    }
+    expect(bare).toEqual([]);
+  });
+});

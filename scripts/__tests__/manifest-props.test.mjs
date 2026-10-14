@@ -11,7 +11,11 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { normalizePropType, refreshSpecProps } from '../lib/manifest-props.mjs';
+import {
+  normalizePropType,
+  reconcileRequiredProps,
+  refreshSpecProps,
+} from '../lib/manifest-props.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => JSON.parse(readFileSync(join(ROOT, rel), 'utf8'));
@@ -90,6 +94,19 @@ describe('refreshSpecProps', () => {
   });
 });
 
+describe('reconcileRequiredProps (hds#406)', () => {
+  it('drops a required prop the component no longer lists', () => {
+    expect(reconcileRequiredProps(['children', 'title'], { title: { type: 'string' } })).toEqual([
+      'title',
+    ]);
+  });
+
+  it('keeps the list as it is when the spec has no props to check against', () => {
+    expect(reconcileRequiredProps(['children'], {})).toEqual(['children']);
+    expect(reconcileRequiredProps(undefined, { a: {} })).toBeUndefined();
+  });
+});
+
 describe('committed manifest', () => {
   const manifest = read('public/hds-manifest.json');
   const api = read('src/app/data/component-api.json').components;
@@ -108,5 +125,33 @@ describe('committed manifest', () => {
       })
       .map(([name]) => name);
     expect(drift).toEqual([]);
+  });
+
+  // hds#406: alias-typed props carry their values, so agents and
+  // propConstraints see the legal set rather than `InputSize` / `GapOption`.
+  it('expands alias-typed props to enums with matching propConstraints', () => {
+    const specs = manifest.componentSpecs;
+    for (const [component, prop] of [
+      ['Input', 'size'],
+      ['Stack', 'gap'],
+      ['Card', 'gap'],
+      ['Card', 'padding'],
+      ['Surface', 'padding'],
+    ]) {
+      expect(specs[component].props[prop].type, `${component}.${prop}`).toBe('enum');
+      expect(specs[component].propConstraints[prop]?.values, `${component}.${prop}`).toEqual(
+        specs[component].props[prop].values,
+      );
+    }
+    expect(specs.Input.props.size.values).toEqual(['sm', 'md', 'lg']);
+  });
+
+  it('names only listed props as required (Card.children was required but not a prop)', () => {
+    const stray = Object.entries(manifest.componentSpecs).flatMap(([name, spec]) =>
+      Object.keys(spec.props ?? {}).length === 0
+        ? []
+        : (spec.requiredProps ?? []).filter((p) => !(p in spec.props)).map((p) => `${name}.${p}`),
+    );
+    expect(stray).toEqual([]);
   });
 });

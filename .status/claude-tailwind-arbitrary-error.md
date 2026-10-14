@@ -1,0 +1,1 @@
+- tailwindcss/no-arbitrary-value is an error; Surface padding reads primitive space tokens (same 16px/24px).
