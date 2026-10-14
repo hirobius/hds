@@ -212,6 +212,35 @@ describe('Card asChild (a whole card that is one link)', () => {
     expect(link.className).toContain('transition-[scale,box-shadow]');
   });
 
+  it('still tells its parts the card pads, so they are not inset twice', () => {
+    render(
+      <Card asChild>
+        <a href="/x">
+          <Card.Body>Body text</Card.Body>
+        </a>
+      </Card>,
+    );
+    expect(screen.getByText('Body text').className).not.toContain('p-6');
+  });
+
+  it('ignores selectable: a link is navigation, never a checkbox', () => {
+    const onSelectedChange = vi.fn();
+    render(
+      <Card asChild selectable selected onSelectedChange={onSelectedChange}>
+        <a href="/x">Go</a>
+      </Card>,
+    );
+    const link = screen.getByRole('link', { name: 'Go' });
+    expect(screen.queryByRole('checkbox')).toBeNull();
+    expect(link.hasAttribute('aria-checked')).toBe(false);
+    expect(link.hasAttribute('data-selected')).toBe(false);
+    expect(link.getAttribute('tabindex')).toBeNull();
+    expect(link.className).not.toContain('cursor-pointer');
+    fireEvent.click(link);
+    fireEvent.keyDown(link, { key: ' ' });
+    expect(onSelectedChange).not.toHaveBeenCalled();
+  });
+
   it('keeps a plain Card non-interactive', () => {
     const { container } = render(<Card>Plain</Card>);
     const root = container.firstElementChild as HTMLElement;

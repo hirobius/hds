@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The package now exports stats.json with the HDS component, token, contrast and typography counts, so import it instead of typing those numbers; nothing to do otherwise."
+}

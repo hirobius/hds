@@ -23,6 +23,9 @@ import { Stack } from '../src/app/components/stack';
 import { Surface } from '../src/app/components/surface';
 import '../src/styles/fonts.css';
 import '../src/styles/index.css';
+// The accent-pair demo's supporting accent is plain CSS beside its tokens, not a token (hds#628
+// decision 4): the bench loads it the way any consumer must, after the token CSS.
+import '../tenants/accent-pair-demo/support-overlay.css';
 import './preview.css';
 
 /* ── contrast helpers — the preview reports the same numbers the audit does ── */
@@ -77,6 +80,12 @@ function useMeasurements(hostRef: React.RefObject<HTMLElement>, knobs: Knobs) {
         'button radius': btn ? getComputedStyle(btn).borderRadius : '—',
         'input radius': inp ? getComputedStyle(inp).borderRadius : '—',
         'card radius': card ? getComputedStyle(card).borderRadius : '—',
+        // Read the variables, not an element's computed colour: components animate colour, so
+        // a computed fill read in the frame after a knob change is a mid-transition value.
+        'surface.raised': cs.getPropertyValue('--semantic-color-surface-raised').trim() || '—',
+        '--role-card': cs.getPropertyValue('--role-card').trim() || '—',
+        '--role-primary': cs.getPropertyValue('--role-primary').trim() || '—',
+        'support accent': cs.getPropertyValue('--semantic-accent-support-rest').trim() || '—',
         'button height': btn ? `${Math.round(btn.getBoundingClientRect().height)}px` : '—',
         'input height': inp ? `${Math.round(inp.getBoundingClientRect().height)}px` : '—',
         'body size/weight': `${cs.fontSize} / ${cs.fontWeight}`,
@@ -100,6 +109,8 @@ const BRANDS = [
   { value: 'brutalist-demo', label: 'brutalist' },
   { value: 'concrete-creations', label: 'concrete' },
   { value: 'accent-lilac', label: 'lilac' },
+  { value: 'soft-demo', label: 'soft' },
+  { value: 'accent-pair-demo', label: 'accent pair' },
 ];
 
 function App() {
@@ -259,6 +270,23 @@ function App() {
             <Surface>
               <span>Surface — the raised elevation role.</span>
             </Surface>
+          </Section>
+
+          <Section title="Supporting accent">
+            <div data-probe="support" className="pv-row">
+              <span className="pv-support" data-role="rest">
+                rest
+              </span>
+              <span className="pv-support" data-role="subtle">
+                subtle
+              </span>
+              <span className="pv-support" data-role="content">
+                content
+              </span>
+            </div>
+            <span className="pv-note">
+              Not a token: a CSS-variable overlay, set only for the <em>accent pair</em> brand.
+            </span>
           </Section>
 
           <Section title="Feedback">

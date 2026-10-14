@@ -30,6 +30,7 @@
 import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { readTokenSource } from './lib/token-source.mjs';
+import { parseAlias, walkNodes } from './lib/token-tree.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -40,9 +41,6 @@ const TOKENS_FILE = join(ROOT, 'hirobius.tokens.json');
 const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
-
-// Alias pattern: {path.to.token}
-const ALIAS_RE = /^\{([^}]+)\}$/;
 
 // ── Ordered-scale (monotonicity) vocabulary ─────────────────────────────────
 // The shared t-shirt-size step vocabulary, low to high. A tuple entry means
@@ -141,8 +139,8 @@ function getTier(path) {
 // See docs/adr/029-decisions-carried-over.md.
 const COLOR_CROSS_TIER_TYPES = new Set(['color']);
 
-function walkTokens(node, path, inheritedType = null) {
-  if (typeof node !== 'object' || node === null) return;
+function checkNode({ path: parts, node, type: effectiveType, isLeaf }) {
+  const path = parts.join('.');
 
   if (FORBIDDEN_TYPOGRAPHY_SUBTREES.has(path)) {
     violations.push({
@@ -153,19 +151,14 @@ function walkTokens(node, path, inheritedType = null) {
     return;
   }
 
-  // Track the effective $type — set at any level, inherited by children
-  const effectiveType = node['$type'] ?? inheritedType;
-
-  if ('$value' in node) {
-    // This is a leaf token
+  if (isLeaf) {
     const value = node['$value'];
     const currentTier = getTier(path);
 
     // ── Cross-tier check (color only — see ADR-009) ───────────────────────
     if (COLOR_CROSS_TIER_TYPES.has(effectiveType)) {
-      const aliasMatch = typeof value === 'string' && value.match(ALIAS_RE);
-      if (aliasMatch) {
-        const refPath = aliasMatch[1];
+      const refPath = parseAlias(value);
+      if (refPath) {
         const refTier = getTier(refPath);
 
         // semantic → semantic: lateral alias (forbidden)
@@ -223,18 +216,11 @@ function walkTokens(node, path, inheritedType = null) {
       }
     }
 
-    return; // leaf — don't recurse further
+    return; // leaf
   }
 
   // ── Ordered-scale monotonicity check (group level only) ─────────────────
   checkScaleMonotonicity(node, path);
-
-  // Recurse into children (skip $ meta-keys), passing effective type down
-  for (const key of Object.keys(node)) {
-    if (key.startsWith('$')) continue;
-    const childPath = path ? `${path}.${key}` : key;
-    walkTokens(node[key], childPath, effectiveType);
-  }
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
@@ -250,7 +236,13 @@ try {
 // Walk top-level tiers: primitive, semantic, component
 for (const key of Object.keys(tokens)) {
   if (key.startsWith('$')) continue;
-  walkTokens(tokens[key], key);
+  for (const entry of walkNodes(tokens[key], {
+    path: [key],
+    skipKey: (k) => k.startsWith('$'),
+    prune: ({ path }) => FORBIDDEN_TYPOGRAPHY_SUBTREES.has(path.join('.')),
+  })) {
+    checkNode(entry);
+  }
 }
 
 if (violations.length === 0) {

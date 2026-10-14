@@ -1,0 +1,1 @@
+- Consistency ledger records a run where an app did not build (lightDiffMax null, pass false) instead of dropping it, so failed builds show in the trend.

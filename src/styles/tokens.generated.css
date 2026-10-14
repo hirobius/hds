@@ -17,6 +17,7 @@
   --primitive-color-neutral-200: #e5e5e5;
   --primitive-color-neutral-300: #d4d4d4;
   --primitive-color-neutral-400: #a3a3a3;
+  --primitive-color-neutral-450: #909090;
   --primitive-color-neutral-500: #737373;
   --primitive-color-neutral-600: #525252;
   --primitive-color-neutral-700: #404040;
@@ -224,6 +225,7 @@
   --semantic-color-surface-sunken: var(--primitive-color-neutral-200);
   --semantic-color-content-primary: var(--primitive-color-neutral-900);
   --semantic-color-content-secondary: var(--primitive-color-neutral-600);
+  --semantic-color-content-tertiary: var(--primitive-color-neutral-500);
   --semantic-color-content-disabled: var(--primitive-color-neutral-300);
   --semantic-color-content-inverse: var(--primitive-color-neutral-100);
   --semantic-color-content-accent: var(--primitive-color-graphite-700);
@@ -443,7 +445,7 @@
   --component-badge-warning-text: var(--semantic-color-feedback-warning);
   --component-badge-inProgress-bg: var(--semantic-color-feedback-bg-inProgress);
   --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
-  --component-badge-radius: var(--primitive-radius-4);
+  --component-badge-radius: var(--semantic-radius-action);
   --component-badge-height: var(--primitive-size-20);
   --component-badge-minWidth: var(--primitive-size-20);
   --component-badge-paddingY: var(--primitive-space-px2);
@@ -536,9 +538,10 @@
   --semantic-color-surface-pressed: var(--primitive-color-neutral-black);
   --semantic-color-surface-selected: var(--primitive-color-neutral-800);
   --semantic-color-surface-muted: var(--primitive-color-neutral-800);
-  --semantic-color-surface-sunken: var(--primitive-color-neutral-800);
+  --semantic-color-surface-sunken: var(--primitive-color-neutral-700);
   --semantic-color-content-primary: var(--primitive-color-neutral-100);
   --semantic-color-content-secondary: var(--primitive-color-neutral-400);
+  --semantic-color-content-tertiary: var(--primitive-color-neutral-450);
   --semantic-color-content-disabled: var(--primitive-color-neutral-600);
   --semantic-color-content-inverse: var(--primitive-color-neutral-900);
   --semantic-color-content-accent: var(--primitive-color-graphite-300);
@@ -546,7 +549,7 @@
   --semantic-color-content-success: var(--primitive-color-green-400);
   --semantic-color-content-warning: var(--primitive-color-amber-400);
   --semantic-color-content-danger: var(--primitive-color-red-400);
-  --semantic-color-border-default: var(--primitive-color-neutral-700);
+  --semantic-color-border-default: var(--primitive-color-neutral-600);
   --semantic-color-border-interactive: var(--primitive-color-neutral-500);
   --semantic-color-border-subdued: var(--primitive-color-neutral-800);
   --semantic-color-border-subtle: var(--primitive-color-neutral-700);

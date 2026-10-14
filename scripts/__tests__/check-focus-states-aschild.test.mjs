@@ -54,6 +54,32 @@ describe('check-focus-states and asChild', () => {
     ).toBe(0);
   });
 
+  it('still fails a link inside a Card that is not asChild', () => {
+    expect(
+      run(`export const A = () => (
+  <Card>
+    <a href="/x">
+      Go
+    </a>
+  </Card>
+);
+`),
+    ).toBe(1);
+  });
+
+  it('still fails a link inside a component other than Card or Button asChild', () => {
+    expect(
+      run(`export const A = () => (
+  <Banner asChild>
+    <a href="/x">
+      Go
+    </a>
+  </Banner>
+);
+`),
+    ).toBe(1);
+  });
+
   it('still fails a bare link with no focus ring', () => {
     expect(
       run(`export const A = () => (

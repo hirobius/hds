@@ -48,6 +48,9 @@ export type FormProps = React.FormHTMLAttributes<HTMLFormElement>;
  * Tagged per-export: FormField and FormFieldShell share this module and have no
  * Figma node, so a file-level @figma would claim this one for all three.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94
+ * @a11y component required a11y:form.native-form It renders a native form element, so Enter submits and the browser's validation and autofill work.
+ * @a11y consumer required Name the form with aria-label or aria-labelledby when a page has more than one.
+ * @a11y consumer required Submit with a real button, and on a failed submit name each error and move focus to the first invalid field (WCAG 3.3.1, 3.3.3).
  */
 export const Form = /* @__PURE__ */ React.forwardRef<HTMLFormElement, FormProps>(function Form(
   { className, ...props },
@@ -126,6 +129,8 @@ export interface FormFieldShellProps {
  * verbatim — it does NOT clone — so it is safe to use with controls that own a
  * callback ref. Pair it with `useFieldWiring` to apply ids/aria yourself.
  * @public
+ * @a11y component required a11y:form-field-shell.use-field-wiring The shell renders the label, description and error with ids that useFieldWiring links to the control, and lists the description only while it renders.
+ * @a11y consumer required Pass the controlId from useFieldWiring to the control and spread the returned describedby onto it.
  */
 export const FormFieldShell = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FormFieldShellProps>(
   function FormFieldShell(
@@ -193,6 +198,13 @@ type WiredChildProps = {
  * `error` from whatever you use. For controls with an externally-managed callback
  * ref (e.g. react-hook-form), use `FormFieldShell` + `useFieldWiring` instead.
  * @public
+ * @a11y component required a11y:form-field.label-association The label is associated with the control through htmlFor and id.
+ * @a11y component required a11y:form-field.description-described The description is linked to the control with aria-describedby.
+ * @a11y component required a11y:form-field.error-wiring An error sets aria-invalid on the control, links the message and announces it with role=alert.
+ * @a11y component required a11y:form-field.no-dangling-ids The description id is dropped while an error replaces it, so aria-describedby never points at nothing.
+ * @a11y component required a11y:form-field.required A required field gets the required attribute and a visible marker that screen readers skip.
+ * @a11y component required a11y:form-field.keeps-control-id The control keeps its own id, and the label still points at it.
+ * @a11y consumer required Give FormField exactly one control; for a control that owns a callback ref use FormFieldShell and useFieldWiring.
  */
 export const FormField = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FormFieldProps>(
   function FormField(

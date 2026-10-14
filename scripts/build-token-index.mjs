@@ -15,6 +15,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
+import { resolveAlias } from './lib/token-tree.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -27,21 +28,6 @@ const ROOT = join(__dirname, '..');
  */
 export function pathToCSSVar(dotPath) {
   return '--' + dotPath.replaceAll('.', '-');
-}
-
-/** Resolve a {ref} alias to its raw leaf $value in the token tree. */
-function resolveAlias(ref, root, visited = new Set()) {
-  if (typeof ref !== 'string' || !ref.startsWith('{')) return ref;
-  if (visited.has(ref)) throw new Error(`Circular reference: ${ref}`);
-  visited.add(ref);
-  const parts = ref.replace(/^\{|\}$/g, '').split('.');
-  let node = root;
-  for (const p of parts) {
-    node = node?.[p];
-    if (node === undefined) throw new Error(`Token not found: ${ref}`);
-  }
-  if (!('$value' in node)) throw new Error(`Not a leaf token: ${ref}`);
-  return resolveAlias(node.$value, root, visited);
 }
 
 /** Convert a raw token $value to a flat string (handles hex, numbers, arrays). */

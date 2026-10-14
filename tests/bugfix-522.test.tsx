@@ -141,8 +141,8 @@ describe('Broken', () => {
   });
 
   it('CodeBlock: the <pre> is padded 16px, not the 80px section stack', () => {
-    render(<CodeBlock code={'a\nb'} />);
-    const pre = screen.getByRole('region', { name: 'Code sample' });
+    const { container } = render(<CodeBlock code={'a\nb'} />);
+    const pre = container.querySelector('pre') as HTMLElement; // no longer a landmark (bug bash 24, item 9)
     expect(pre.className).not.toMatch(/section-stack/);
     expect(pre.className).toMatch(/scale-sm/);
   });

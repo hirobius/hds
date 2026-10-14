@@ -12,7 +12,7 @@
  *
  * So the accent is read ONE way, here, and everything else imports it:
  * `semantic.accent.rest`, resolved through its aliases by `resolveAlias` from
- * build-tokens.mjs — the same function that resolves it for the shipped CSS.
+ * token-tree.mjs — the same function that resolves it for the shipped CSS.
  * If those two ever disagree the CSS is the thing that ships, so the gate must
  * follow the CSS, not a second implementation of the same idea.
  *
@@ -25,7 +25,7 @@
  * not the resolved accent. A line that merely contains a hex asserts nothing.
  */
 
-import { resolveAlias } from '../build-tokens.mjs';
+import { resolveAlias } from './token-tree.mjs';
 
 /**
  * Words that turn a hex into a claim about the brand.

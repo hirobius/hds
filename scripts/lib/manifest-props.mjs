@@ -159,6 +159,18 @@ export function deriveRequiredProps(props) {
     .map(([propName]) => propName);
 }
 
+/**
+ * hds#406: `requiredProps` is kept once set, so a prop the code stops listing
+ * (Card.children, which docgen leaves out as an HTML attribute) stayed
+ * required. Keep only names the refreshed `props` still has; with no props to
+ * check against, leave the list alone.
+ */
+export function reconcileRequiredProps(requiredProps, props) {
+  if (!Array.isArray(requiredProps) || !isPlainObject(props)) return requiredProps;
+  if (Object.keys(props).length === 0) return requiredProps;
+  return requiredProps.filter((name) => name in props);
+}
+
 export function derivePropConstraints(props) {
   const constraints = {};
 

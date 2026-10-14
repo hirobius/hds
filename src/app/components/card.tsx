@@ -88,6 +88,17 @@ const CARD_GAP = {
   numbers: 'raw',
 } satisfies SpacingVocabulary;
 
+// ── Padding ownership ─────────────────────────────────────────────────────────
+// Layout contract v1 §2: the container pads, compound parts have zero padding and the container's gap
+// spaces them. A padded Card tells its parts so; a part under `padding="none"` (the legacy way to
+// compose parts) or outside any Card keeps its own 24px so that older markup renders as before. Without
+// this, parts inside the default padded Card were inset twice (+49px, not +25px; bug bash 24, item 11).
+const CardPaddedContext = /* @__PURE__ */ React.createContext(false);
+/** Part padding classes, dropped when the Card already pads. */
+function usePartPadding(classes: string): string {
+  return React.useContext(CardPaddedContext) ? '' : classes;
+}
+
 // ── Root ──────────────────────────────────────────────────────────────────────
 
 // #60 Phase 3: resolved the prior 'default'/'accent' tone vocab-ok exemption.
@@ -211,7 +222,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   onSelectedChange?: (selected: boolean) => void;
   /** Render the card as its one child element (an `<a href>`, a router `Link`, a
    *  `<button>`) so the whole card is that link or button, with the
-   *  interactive-card hover and focus ring. Not combined with `selectable`. */
+   *  interactive-card hover and focus ring. Wins over `selectable`, which is ignored. */
   asChild?: boolean;
 }
 
@@ -253,10 +264,19 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
   const Comp = (asChild ? Slot : (as ?? 'div')) as React.ElementType;
   const resolvedPadding = noPadding ? 'none' : padding;
   const paddingValue = resolvePaddingValue(resolvedPadding);
+  // The accent variant's 2px border is 1px thicker per side than the default's 1px; take that 1px off the
+  // padding so an accent Card is the same height as its siblings and its content does not shift (item 18).
+  const accentPadding =
+    variant === 'accent' && tone === 'neutral' && resolvedPadding !== 'none'
+      ? `calc(${paddingValue} - 1px)`
+      : undefined;
   const gapValue = resolvedPadding === 'none' ? '0' : resolveSpacingValue(gap, CARD_GAP);
   // Controlled only, like the other selection controls: the card reports the
   // next state and the page decides it.
-  const selectableProps = selectable
+  // A link or button card is navigation or an action, never a checkbox: `asChild` wins and
+  // `selectable` is ignored (role, tabindex and handlers on a link would break it).
+  const isSelectable = selectable && !asChild;
+  const selectableProps = isSelectable
     ? {
         role: 'checkbox',
         'aria-checked': selected,
@@ -287,20 +307,33 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
       data-interactive={asChild ? 'true' : undefined}
       className={cn(
         cardVariants({ variant, tone, bordered }),
-        selectable && SELECTABLE_CARD,
+        isSelectable && SELECTABLE_CARD,
         asChild && INTERACTIVE_CARD,
         className,
       )}
       // inline-ok: token-driven padding/gap legacy contract (not a variant-contract axis)
       style={{
-        padding: paddingValue,
+        padding: accentPadding ?? paddingValue,
         gap: gapValue,
         ...style,
       }}
       {...rest}
       {...selectableProps}
     >
-      {children}
+      {asChild && React.isValidElement<{ children?: React.ReactNode }>(children) ? (
+        // Slot clones its only child, so the context goes inside that child, not around it.
+        React.cloneElement(
+          children,
+          undefined,
+          <CardPaddedContext.Provider value={resolvedPadding !== 'none'}>
+            {children.props.children}
+          </CardPaddedContext.Provider>,
+        )
+      ) : (
+        <CardPaddedContext.Provider value={resolvedPadding !== 'none'}>
+          {children}
+        </CardPaddedContext.Provider>
+      )}
     </Comp>
   );
 });
@@ -320,20 +353,21 @@ export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const CardHeader = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardHeaderProps>(
   function CardHeader({ className, metadata, children, ...props }, ref) {
+    const pad = usePartPadding('p-6');
     if (metadata !== undefined) {
       // Top-of-card metadata + stacked title/description below. Inline-flex
       // wrapper around the metadata keeps the badge sized to its content
       // (no full-width stretch). The 12px gap reads as a single header
       // section without crowding either zone.
       return (
-        <div ref={ref} className={cn('flex flex-col gap-3 p-6', className)} {...props}>
+        <div ref={ref} className={cn('flex flex-col gap-3', pad, className)} {...props}>
           <div className="flex flex-wrap items-center gap-2">{metadata}</div>
           <div className="flex flex-col space-y-1.5 min-w-0">{children}</div>
         </div>
       );
     }
     return (
-      <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props}>
+      <div ref={ref} className={cn('flex flex-col space-y-1.5', pad, className)} {...props}>
         {children}
       </div>
     );
@@ -370,14 +404,16 @@ const CardBody = /* @__PURE__ */ React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(function CardBody({ className, ...props }, ref) {
-  return <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />;
+  const pad = usePartPadding('p-6 pt-0');
+  return <div ref={ref} className={cn(pad, className)} {...props} />;
 });
 
 const CardFooter = /* @__PURE__ */ React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(function CardFooter({ className, ...props }, ref) {
-  return <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />;
+  const pad = usePartPadding('p-6 pt-0');
+  return <div ref={ref} className={cn('flex items-center', pad, className)} {...props} />;
 });
 
 // ── Row slot (hds#622) ────────────────────────────────────────────────────────
@@ -475,12 +511,13 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
     { className, value, max = 100, label, tone = 'neutral', style, ...props },
     ref,
   ) {
+    const pad = usePartPadding('px-6 pb-2');
     const clamped = Math.max(0, Math.min(value, max));
     const pct = max > 0 ? (clamped / max) * 100 : 0;
     return (
       <div
         ref={ref}
-        className={cn('px-6 pb-2', className)}
+        className={cn(pad, className)}
         // The Progress slot owns its vertical rail. Padding-x matches the
         // Header/Body 24px inset; padding-bottom reserves 8px below the
         // optional label. NO direct collision with adjacent prose.
@@ -570,8 +607,9 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricProps>(
   function CardMetric({ className, label, value, sub, tone = 'neutral', style, ...props }, ref) {
+    const pad = usePartPadding('px-6');
     return (
-      <div ref={ref} className={cn('flex flex-col px-6', className)} style={style} {...props}>
+      <div ref={ref} className={cn('flex flex-col', pad, className)} style={style} {...props}>
         <p
           style={{
             ...hds.typeStyles.caption,
@@ -618,6 +656,15 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
  * @usage Group related content on a raised surface with header, body, footer and row slots, or as one selectable option.
  * @whenNot A bare padded background with no slot anatomy, or a single headline figure.
  * @useInstead Surface a padded background without slot anatomy
+ * @a11y component required a11y:card.selectable-role A selectable card is a focusable checkbox that reports aria-checked; a plain card is neither.
+ * @a11y component required a11y:card.space-toggles Space toggles a focused selectable card and Enter does not.
+ * @a11y component required a11y:card.nested-controls A key or click inside a control in the card is left to that control.
+ * @a11y component required a11y:card.selection-not-colour-only Selection adds a 2px ring and aria-checked, not a colour change alone (WCAG 1.4.1).
+ * @a11y component required a11y:card.focus-ring A selectable card carries the shared focus ring, apart from the selection ring.
+ * @a11y component required a11y:card.title-heading Card.Title is a heading (h3) and takes its level from as.
+ * @a11y component required a11y:card.progress-name Card.Progress is a progressbar with a name (label, else Progress) and its value.
+ * @a11y consumer required Give a selectable Card a name from its content or an aria-label, and keep controls nested in it out of its name.
+ * @a11y consumer recommended Set Card.Title's heading level with as so it fits the page outline.
  */
 export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
   Header: CardHeader,

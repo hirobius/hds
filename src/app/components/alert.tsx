@@ -6,6 +6,10 @@
  * @whenNot A brief confirmation that should disappear on its own, or a status label.
  * @useInstead ToastProvider a brief confirmation that fades away
  * @useInstead Badge a short status label
+ * @a11y component required a11y:alert.tone-roles Danger and warning use role=alert (assertive); info and success use role=status.
+ * @a11y component required a11y:alert.read-order A rendered alert reads its role, then its title and message.
+ * @a11y component required a11y:alert.live-insert An alert inserted after load is announced assertively.
+ * @a11y consumer required Mount an Alert when the condition appears; one already on the page at load is read in order, not announced.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34
  */
 
@@ -16,7 +20,7 @@ import { CircleCheck, TriangleAlert, CircleX, Info, type LucideIcon } from 'luci
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import { Icon } from './icon';
+import { Icon, type IconColor } from './icon';
 
 type AlertTone = 'success' | 'danger' | 'warning' | 'info';
 
@@ -27,7 +31,9 @@ type AlertTone = 'success' | 'danger' | 'warning' | 'info';
 // the Icon takes a color value). `hasTitle` flips cross-axis alignment.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap/padding/radius; var()-based, no Tailwind-theme utility exists
 const alertVariants = /* @__PURE__ */ cva(
-  'flex gap-[var(--semantic-space-scale-xs)] p-[var(--semantic-space-scale-xs)] rounded-[var(--primitive-radius-4)]', // tier-ok: 4px primitive radius, no semantic 4px token
+  // Same padding and radius as Callout (they differ by role only, DESIGN.md): the surface padding, and the
+  // action radius via rounded-md so a tenant's shape setting reaches it.
+  'flex gap-[var(--semantic-space-scale-xs)] p-[var(--semantic-space-surface-padding)] rounded-md',
   {
     variants: {
       tone: {
@@ -54,7 +60,7 @@ export interface AlertProps {
   children: React.ReactNode;
 }
 
-const TONE_CONFIG: Record<AlertTone, { icon: LucideIcon; colorVar: string }> = {
+const TONE_CONFIG: Record<AlertTone, { icon: LucideIcon; colorVar: IconColor }> = {
   success: { icon: CircleCheck, colorVar: 'var(--semantic-color-feedback-success)' },
   danger: { icon: CircleX, colorVar: 'var(--semantic-color-feedback-error)' },
   warning: { icon: TriangleAlert, colorVar: 'var(--semantic-color-feedback-warning)' },

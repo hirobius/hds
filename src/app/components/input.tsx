@@ -9,6 +9,16 @@
  * @useInstead Select a short fixed list
  * @useInstead Combobox a long fixed list that needs search
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20
+ * @a11y component required a11y:input.label The label prop renders a real label associated with the field.
+ * @a11y component required a11y:input.slots-name A prefix, suffix or icon stays out of the accessible name, so the label is the whole name.
+ * @a11y component required a11y:input.helper-described The helper text is linked with aria-describedby only while it renders.
+ * @a11y component required a11y:input.error-wiring An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.
+ * @a11y component required a11y:input.loading-focusable A loading field stays focusable (read-only with aria-busy), so typing keeps focus.
+ * @a11y component required a11y:input.clear-button The clear button is named, reachable by Tab, and returns focus to the field.
+ * @a11y component required a11y:input.clear-target-size The clear button spans the field height and is 24px or wider (WCAG 2.5.8).
+ * @a11y component required a11y:input.sr-field A screen reader speaks the label, the invalid state and the error message.
+ * @a11y consumer required Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.
+ * @a11y consumer recommended Set autoComplete on fields that collect the person's own details (WCAG 1.3.5).
  */
 
 import * as React from 'react';
@@ -238,6 +248,8 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
     | null;
 
   const hasError = Boolean(error) || effectiveDemoState === 'error';
+  // FormField marks its control aria-invalid without an `error` prop: draw the same red border for it.
+  const invalid = hasError || rest['aria-invalid'] === true || rest['aria-invalid'] === 'true';
   const isLoading = loading || effectiveDemoState === 'loading';
   // Loading keeps the field enabled: `disabled` would drop focus and the caret
   // on every keystroke of a search-as-you-type field. It is read-only + busy instead.
@@ -348,7 +360,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
         data-size={size}
         data-search-input={type === 'search' ? 'true' : undefined}
         className={cn(
-          inputVariants({ size, textStyle, invalid: hasError }),
+          inputVariants({ size, textStyle, invalid }),
           padLeft,
           padRight,
           inShell && SHELLED_INPUT,
@@ -394,7 +406,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           onClick={handleClear}
           aria-label={type === 'search' ? 'Clear search' : 'Clear input'}
           className={cn(
-            'absolute right-0 flex items-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
+            'absolute right-0 flex items-center justify-center hds-touch-target text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
             padCfg.inset,
           )}
         >
@@ -405,7 +417,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
   );
 
   return (
-    <div className={cn('flex flex-col gap-1.5', FORM_CONTROL_WIDTH, className)}>
+    <div className={cn('flex flex-col gap-2', FORM_CONTROL_WIDTH, className)}>
       {label && (
         <label htmlFor={id} className="hds-type-ui text-foreground">
           {label}
@@ -413,7 +425,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
       )}
 
       {inShell ? (
-        <div className={inputShellVariants({ size, textStyle, invalid: hasError })}>
+        <div className={inputShellVariants({ size, textStyle, invalid })}>
           {hasPrefix && <span className={cn(slotClass, padCfg.prefixPad)}>{prefix}</span>}
           {field}
           {hasSuffix && <span className={cn(slotClass, padCfg.suffixPad)}>{suffix}</span>}

@@ -1,0 +1,33 @@
+{
+  "componentSpecs": {
+    "Menu": {
+      "category": "Overlays",
+      "filePath": "src/app/components/x.tsx",
+      "hidden": false,
+      "a11yRules": []
+    },
+    "Button": {
+      "category": "Actions",
+      "filePath": "src/app/components/x.tsx",
+      "hidden": false,
+      "a11yRules": [
+        {
+          "rule": "Text meets AA contrast.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-contrast"
+        }
+      ]
+    },
+    "FormActions": {
+      "category": "Actions",
+      "filePath": "src/app/components/x.tsx",
+      "hidden": false,
+      "a11yRules": []
+    }
+  },
+  "testFiles": {
+    "tests/primitive-contracts/keyboard.contract.test.tsx": "it('a11y:menu.escape-returns-focus Escape closes and returns focus', () => {});\n"
+  },
+  "gateIds": ["check-contrast"]
+}

@@ -58,6 +58,10 @@ const NO_CACHE = ARGV.includes('--no-cache') || JSON_MODE;
 const FIXTURE_MODE = ARGV.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const FIXTURE_REGISTRY = process.env.FIXTURE_FILE;
 
+// Channels a human (or a workflow button) starts: nothing fires them on its own,
+// so there is no firing to prove. ops spells it manual/ci-dispatch, hds on-demand.
+const HAND_RUN_CHANNELS = new Set(['manual', 'on-demand', 'ci-dispatch']);
+
 // ---------------------------------------------------------------------------
 // Stub marker detection
 // ---------------------------------------------------------------------------
@@ -117,11 +121,11 @@ function getMtime(filePath) {
 }
 
 // ---------------------------------------------------------------------------
-// Directory-fixture support (proof-of-firing v2 — see FIXTURE_DIR_HARNESS.md)
+// Directory-fixture support (proof-of-firing v2; ported from hirobius/hds@2200eef2, ops#582)
 //
 // A gate whose input is not a single file (registry readers, manifest/snapshot
-// comparisons, deps/SBOM scans) uses a directory fixture: a synthetic mini-root
-// at fixtures/<gate-id>/{violating,passing}.example.d/ holding exactly the input
+// comparisons) uses a directory fixture: a synthetic mini-root at
+// fixtures/<gate-id>/{violating,passing}.example.d/ holding exactly the input
 // files the gate reads. The gate, in fixture mode, treats FIXTURE_DIR as its
 // input root. Directory fixtures take precedence over file fixtures.
 // ---------------------------------------------------------------------------
@@ -208,6 +212,7 @@ function runGateAgainstFixture(gateScript, fixturePath, { isDir = false } = {}) 
     // Exit code 78 = the gate signaled SKIP (e.g. check-secrets when the gitleaks
     // binary is unavailable). A gate that cannot run is neither a firing nor a
     // false-positive — treat it as skipped so it doesn't fail proof-of-firing.
+    // (Ported from hirobius/hds, which had this and ops lacked.)
     if (exitCode === 78) {
       return {
         ran: false,
@@ -234,6 +239,12 @@ function validate() {
   if (!existsSync(registryPath)) {
     console.error(`✗ validate-fixture-proof-of-firing: registry not found: ${registryPath}`);
     process.exit(1);
+  }
+
+  const fixturesRoot = resolve(ROOT, 'fixtures');
+  if (!existsSync(fixturesRoot)) {
+    console.log('validate-fixture-proof-of-firing: fixtures/ directory absent — skip');
+    process.exit(0);
   }
 
   const registry = JSON.parse(readFileSync(registryPath, 'utf-8'));
@@ -288,6 +299,19 @@ function validate() {
 
     // MISSING case: no fixture dir or missing files
     if (!violatingPath || !passingPath) {
+      // Proof-of-firing only applies to gates that AUTO-FIRE in a hook/CI
+      // channel. A `manual` or `on-demand` gate is run by hand, a `ci-dispatch`
+      // gate is equally hand-run (it lives in a workflow but fires only on
+      // workflow_dispatch — it cannot fire on its own), and a gate whose script
+      // is absent cannot fire at all (tracked separately as drift) — none needs
+      // a proof-of-firing fixture, so exempt them rather than hard-failing.
+      if (HAND_RUN_CHANNELS.has(gate.firingChannel) || !scriptExists) {
+        if (VERBOSE)
+          console.warn(
+            `  [EXEMPT] ${gateId}: ${!scriptExists ? 'gate script absent' : `${gate.firingChannel} channel (not auto-firing)`} — fixture not required`,
+          );
+        continue;
+      }
       const detail = !existsSync(fixtureDir)
         ? 'fixture directory does not exist'
         : !violatingPath
@@ -368,6 +392,19 @@ function validate() {
     }
 
     if (violatingRun.exitCode === 0) {
+      // Also run against passing fixture — if it also exits 0, the gate skipped itself
+      // (e.g. a required binary is not installed). Treat as skipped, not a failure.
+      const passingRunEarly = runGateAgainstFixture(gateScript, passingPath, {
+        isDir: isDirFixturePair,
+      });
+      if (!passingRunEarly.skipped && passingRunEarly.exitCode === 0) {
+        if (VERBOSE)
+          console.warn(
+            `  [REAL/SKIP] ${gateId}: gate exited 0 on both fixtures — gate skipped itself (binary or precondition absent)`,
+          );
+        newCache[gateId] = { violatingMtime, passingMtime, lastResult: 'skip' };
+        continue;
+      }
       // Gate should have caught the violation but didn't — proof-of-firing FAILED
       const reason = `violating fixture did not trigger gate (exit 0 expected non-zero)`;
       failures.push({ id: gateId, reason, fixturePath: violatingPath });

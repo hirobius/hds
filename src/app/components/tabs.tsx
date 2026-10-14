@@ -34,6 +34,15 @@ import { cn } from '../../lib/utils';
  * @whenNot A compact mode switch with no panels, or content that must all be visible.
  * @useInstead SegmentedControl a compact switch with no panels
  * @useInstead Disclosure optional content that expands in place
+ * @a11y component required a11y:tabs.roles It exposes tablist, tab and tabpanel roles, with aria-selected on the active tab and aria-controls and aria-labelledby linking each tab to its panel.
+ * @a11y component required a11y:tabs.single-tab-stop The tablist is one Tab stop, entering on the selected tab; Tab then moves on to the panel.
+ * @a11y component required a11y:tabs.arrow-keys Left and Right move between tabs and select them, wrapping at the ends; Home and End jump to the first and last tab.
+ * @a11y component required a11y:tabs.disabled-skipped Arrow keys skip a disabled tab.
+ * @a11y component required a11y:tabs.panel-focus The active panel is focusable, so keyboard users can reach and scroll its content.
+ * @a11y component required a11y:tabs.focus-ring The trigger focus ring is drawn inset, so the scrolling tab list cannot clip it.
+ * @a11y component required a11y:tabs.target-size The tab strip is 40px tall, over the 24px floor (WCAG 2.5.8).
+ * @a11y consumer required Give every TabsTrigger value a TabsContent with the same value, so aria-controls resolves.
+ * @a11y consumer recommended Name the TabsList (aria-label or aria-labelledby) when the surrounding heading does not make its purpose clear.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89
  */
 export const Tabs = TabsPrimitive.Root;
@@ -59,9 +68,10 @@ export function TabsTrigger({
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'relative -mb-px inline-flex items-center px-3 py-2 hds-type-ui transition-colors',
-        'border-b-2 border-transparent text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
-        'data-[state=active]:border-foreground data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
+        'relative -mb-px inline-flex items-center px-3 py-2 hds-type-ui hds-touch-row transition-colors',
+        // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
+        'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
+        'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
         'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
         className,

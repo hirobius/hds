@@ -124,7 +124,8 @@ describe('StatusTile deprecation (hds#622)', () => {
       'MIGRATIONS.md': read('MIGRATIONS.md').match(
         /\/\/ After[\s\S]*?<Card padding="item"[^>]*>/,
       )?.[0],
-      'upgrade note': JSON.parse(read('upgrade/pending/statustile-into-card.json')).steps[0].plain,
+      'upgrade note': JSON.parse(read('upgrade/sources/0.25.0/notes/statustile-into-card.json'))
+        .steps[0].plain,
     };
     for (const [where, recipe] of Object.entries(recipes))
       expect(recipe, where).toMatch(/<Card padding=\\?"item\\?" className=\\?"border-0\\?">/);

@@ -13,7 +13,7 @@ const row = (container: HTMLElement) =>
   ) as HTMLElement;
 
 describe('FormActions', () => {
-  it('puts the primary after the secondary in DOM order', () => {
+  it('a11y:form-actions.dom-order puts the primary after the secondary in DOM order', () => {
     render(
       <FormActions
         primary={<button type="submit">Save</button>}

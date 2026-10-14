@@ -39,33 +39,22 @@
  * Or:  pnpm check:grids
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, dirname, extname, resolve } from 'path';
+import { readFileSync } from 'fs';
+import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { scanSources, suppressionFor } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC  = join(ROOT, 'src', 'app');
+const isExempt = suppressionFor('grid-ok', { lookback: 0 });
 
-const isFixtureMode = process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const isFixtureMode =
+  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 
 // How many lines above/below to look for an isMobile reference
 // (30 covers ternary branches that span a long desktop alternative)
 const MOBILE_GUARD_WINDOW = 30;
-
-function collectFiles(dir, results = []) {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      if (entry === 'node_modules' || entry === 'data' || entry === 'experiments') continue;
-      collectFiles(full, results);
-    } else if (extname(entry) === '.tsx' || extname(entry) === '.ts') {
-      results.push(full);
-    }
-  }
-  return results;
-}
 
 /**
  * Returns true if the gridTemplateColumns value has more than one meaningful column
@@ -95,17 +84,27 @@ function isMultiColumn(value) {
 
 const violations = [];
 
-const filesToScan = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : collectFiles(SRC);
+const filesToScan =
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : scanSources({
+        root: ROOT,
+        gate: 'check-unresponsive-grids',
+        roots: ['src/app'],
+        exts: ['.ts', '.tsx'],
+        skipDirs: ['node_modules', 'data', 'experiments'],
+        includeSpecs: true,
+      });
 
 for (const file of filesToScan) {
-  const rel   = file.replace(ROOT + '/', '');
+  const rel = file.replace(ROOT + '/', '');
   const lines = readFileSync(file, 'utf8').split('\n');
 
   lines.forEach((line, i) => {
     // Skip comments
     if (line.trim().startsWith('//') || line.trim().startsWith('*')) return;
     // Skip explicit exemptions
-    if (line.includes('grid-ok')) return;
+    if (isExempt(lines, i)) return;
     // Skip CSS template literal content (lines inside backtick template strings for docs)
     if (!line.includes('gridTemplateColumns')) return;
 
@@ -117,8 +116,8 @@ for (const file of filesToScan) {
     if (!isMultiColumn(value)) return;
 
     // Check the surrounding window for an isMobile reference
-    const start  = Math.max(0, i - MOBILE_GUARD_WINDOW);
-    const end    = Math.min(lines.length - 1, i + MOBILE_GUARD_WINDOW);
+    const start = Math.max(0, i - MOBILE_GUARD_WINDOW);
+    const end = Math.min(lines.length - 1, i + MOBILE_GUARD_WINDOW);
     const window = lines.slice(start, end + 1).join('\n');
 
     if (window.includes('isMobile')) return; // guarded
@@ -136,8 +135,10 @@ if (violations.length === 0) {
   console.log('\n✓ Unresponsive grid check passed — all multi-column grids have mobile guards.\n');
   process.exit(0);
 } else {
-  console.log(`\n✗ ${violations.length} unresponsive grid(s) found — these will break on mobile:\n`);
-  violations.forEach(v => {
+  console.log(
+    `\n✗ ${violations.length} unresponsive grid(s) found — these will break on mobile:\n`,
+  );
+  violations.forEach((v) => {
     console.log(`  ${v.file}:${v.line}  [gridTemplateColumns: ${v.value}]`);
     console.log(`    ${v.raw}`);
     console.log(`    Fix: gridTemplateColumns: isMobile ? '1fr' : ${v.value}`);

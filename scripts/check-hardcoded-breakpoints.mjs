@@ -35,13 +35,13 @@
  * Or:  pnpm check:breakpoints
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, dirname, extname, resolve } from 'path';
+import { readFileSync } from 'fs';
+import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { scanSources, suppressionFor } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SRC = join(ROOT, 'src', 'app');
 
 // Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
 const isFixtureMode =
@@ -49,6 +49,7 @@ const isFixtureMode =
 const fixtureFile = process.env.FIXTURE_FILE;
 
 // The known breakpoint px values — any bare comparison against these is a violation
+const isExempt = suppressionFor('breakpoint-ok', { lookback: 0 });
 const BREAKPOINT_VALUES = new Set([375, 640, 768, 1024, 1280]);
 const BP_NAME = { 375: 'xs', 640: 'sm', 768: 'md', 1024: 'lg', 1280: 'xl' };
 
@@ -57,20 +58,6 @@ const EXEMPT_FILES = new Set([
   'tokens.ts', // defines the values
   'generated-tokens.ts', // generated output
 ]);
-
-function collectFiles(dir, results = []) {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      if (entry === 'node_modules') continue;
-      collectFiles(full, results);
-    } else {
-      const ext = extname(entry);
-      if (ext === '.tsx' || ext === '.ts') results.push(full);
-    }
-  }
-  return results;
-}
 
 // Match: [comparison operator] [breakpoint value] or [breakpoint value] [comparison operator]
 // e.g.  < 768   >= 1024   === 640   !== 375   > 1280
@@ -81,7 +68,17 @@ const BP_COMPARISON = new RegExp(
 
 const violations = [];
 
-const filesToScan = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : collectFiles(SRC);
+const filesToScan =
+  isFixtureMode && fixtureFile
+    ? [resolve(fixtureFile)]
+    : scanSources({
+        root: ROOT,
+        gate: 'check-hardcoded-breakpoints',
+        roots: ['src/app'],
+        exts: ['.ts', '.tsx'],
+        skipDirs: ['node_modules'],
+        includeSpecs: true,
+      });
 
 for (const file of filesToScan) {
   const filename = file.split('/').pop();
@@ -98,7 +95,7 @@ for (const file of filesToScan) {
     // Skip CSS-in-template (inside backtick strings containing @media)
     if (line.includes('@media')) return;
     // Explicit exemption
-    if (line.includes('breakpoint-ok')) return;
+    if (isExempt(lines, i)) return;
 
     for (const m of line.matchAll(BP_COMPARISON)) {
       const val = parseInt(m[1] || m[2], 10);

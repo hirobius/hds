@@ -152,6 +152,8 @@ AlertDialog: Confirm a destructive or irreversible action (delete, archive, remo
 AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
 Avatar: [core] Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
 Badge: [core] Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
+Board: Show work grouped by status as side-by-side columns, each with a title, a count and a tone, such as leads by pipeline stage. Use instead: Table, Grid
+BoardColumn: Hold the cards for one status inside a Board, with a heading that announces the count. Use instead: Stack
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
 Button: [core] Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
@@ -160,6 +162,7 @@ CardRow: Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lin
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
+Composer: Capture a prompt or a quick note where a long paste should not flood the field. Use instead: Textarea
 Container: [core] Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
 DataTableSection: Put a heading and toolbar above a Table.
 DestructiveSection: Put a dangerous action, such as delete, in its own section with a warning and a confirm step.
@@ -198,6 +201,7 @@ Tabs: [core] Switch between panels of related content in the same place, one vis
 Tag: [core] Show an interactive filter or category chip that people can toggle. Use instead: Badge
 Text: [core] Set any text on the type ramp, with the element chosen by `as`. Use instead: InlineLink, Kbd
 Textarea: [core] Collect multi-line free text such as a message, note or description. Use instead: Input
+Timeline: Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
 Tooltip: [core] Name an icon-only control, or add a short hint that appears on hover and keyboard focus. Use instead: Popover, Text
@@ -549,7 +553,7 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                                                                                                           | Raw pixel values or ad hoc insets                                                           |
 | Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`                                                                                  | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
 | Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                                                                                                         | Any other type style for the primary card heading                                           |
-| Subtitle / meta          | `hds.typeStyles.caption` + `var(--semantic-color-content-secondary)`                                                                                                                      | Primary content color or body size for secondary text                                       |
+| Subtitle / meta          | `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`)                                                                               | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                                                                                                  | Background fill change, border color shift, or opacity fade on hover                        |
 
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
@@ -614,7 +618,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (424 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (426 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -684,6 +688,17 @@ A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
   - attribution: ReactNode
   - size: "sm" | "md" | "lg" | null
 
+### Board
+Status columns that sit side by side from tablet width and stack in order, first column on top, below it. Read-only: it has no drag handlers.
+  - children: ReactNode
+
+### BoardColumn
+One status column: a heading with the title, a count and a tone dot, then its items. The column is a labelled region and the count is part of the heading's nam…
+  - children: ReactNode
+  - count: number
+  - title: ReactNode
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" = neutral
+
 ### Box
 Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing short…
   - as: ElementType<any, keyof IntrinsicElements> = div
@@ -721,10 +736,10 @@ Card — a raised surface with slot anatomy: header, body, footer, and a row for
   - as: ElementType<any, keyof IntrinsicElements>
   - asChild: boolean = false
   - bordered: boolean = false
-  - gap: GapOption = tight
+  - gap: "tight" | "normal" | "inset" | "spacious" | "px1" | "px2" | "px4" | "px6" | "px… = tight
   - noPadding: boolean = false
   - onSelectedChange: ((selected: boolean) => void)
-  - padding: PaddingOption = component
+  - padding: "component" | "item" | "px16" | "px24" | "none" = component
   - selectable: boolean = false
   - selected: boolean = false
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -796,6 +811,22 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
   - value: string | readonly string[] | null
+
+### Composer
+Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer t…
+  - attachments: ComposerAttachment[]
+  - className: string
+  - defaultAttachments: ComposerAttachment[] = []
+  - defaultValue: string
+  - disabled: boolean = false
+  - label: string = Message
+  - onAttachmentsChange: ((attachments: ComposerAttachment[]) => void)
+  - onSubmit: ((submission: ComposerSubmission) => void)
+  - onValueChange: ((value: string) => void)
+  - pasteFoldThreshold: number = 500
+  - pending: boolean = false
+  - placeholder: string
+  - value: string
 
 ### Container
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
@@ -980,7 +1011,7 @@ Renders a `data-hds` scope wrapper that carries the four theming dials as root a
 Icon — semantic icon wrapper for Lucide icons.
   - aria-hidden: boolean | "true" | "false" = true
   - className: string
-  - color: string = currentColor
+  - color: IconColor = currentColor
   - icon: LucideIcon
   - size: IconSize = small
   - style: CSSProperties
@@ -1012,7 +1043,7 @@ Input — text field primitive with label, helper, and error slots.
   - leadingVisual: ReactNode
   - loading: boolean = false
   - prefix: ReactNode
-  - size: InputSize = md
+  - size: "sm" | "md" | "lg" = md
   - suffix: ReactNode
   - textStyle: "body" | "mono" = body
   - trailingVisual: ReactNode
@@ -1124,6 +1155,7 @@ Select — dropdown selector built on Radix Select (ADR-001 Radix convention). R
   - label: string
   - onChange: (v: string) => void
   - options: { value: string; label: string; }[]
+  - placeholder: string = Select…
   - showLabel: boolean = true
   - value: string
 
@@ -1152,6 +1184,7 @@ Slider — range slider with label and value display.
   - onChange: (v: number) => void
   - step: number = 1
   - value: number
+  - valueText: string
 
 ### Spinner
 Indeterminate spinner. Inherits the surrounding text color via currentColor.
@@ -1165,7 +1198,7 @@ Stack — one-dimensional layout primitive.
   - children: ReactNode
   - className: string
   - direction: "row" | "column" = column
-  - gap: GapOption = tight
+  - gap: "tight" | "normal" | "inset" | "spacious" | "gap" | "medium" | "hairline" | "xs… = tight
   - justify: 'start' | 'center' | 'end' | 'space-between'
   - style: CSSProperties
   - wrap: FlexWrap
@@ -1183,7 +1216,7 @@ Surface — governed inset surface primitive. Enforces the "Surface Inset" rule:
   - children: ReactNode
   - className: string
   - overflow: Overflow
-  - padding: PaddingOption = component
+  - padding: "component" | "item" | "px16" | "px24" | "none" = component
   - shadow: boolean = false
   - style: CSSProperties
   - theme: "light" | "dark"
@@ -1238,7 +1271,7 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline p
   - value: string
 
 ### Tag
-Tag — interactive filter and category chip. The outer <button> carries the accessible 44px hit target directly via the size token while the inner pill keeps th…
+Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visi…
   - active: boolean = false
   - children: ReactNode
 
@@ -1248,7 +1281,8 @@ Text — polymorphic typography primitive spanning the full HDS type ramp.
   - children: ReactNode
   - className: string
   - style: CSSProperties
-  - variant: TextVariant
+  - tone: 'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'dang…
+  - variant: "display" | "title" | "titleSm" | "body" | "ui" | "caption" | "mono" | "heading…
 
 ### Textarea
 Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the …
@@ -1258,8 +1292,26 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - errorMessage: string
   - helperText: string
   - label: string
-  - resize: TextareaResize = vertical
+  - resize: "none" | "both" | "vertical" = vertical
   - textareaClassName: string
+
+### Timeline
+The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.
+  - aria-label: string
+  - children: ReactNode
+  - className: string
+  - locale: string
+  - order: "desc" | "asc" = desc
+
+### TimelineItem
+One event on a Timeline. Render it only as a child of Timeline.
+  - children: ReactNode
+  - date: string | number | Date
+  - defaultOpen: boolean
+  - icon: LucideIcon
+  - locale: string
+  - title: ReactNode
+  - tone: 'success' | 'danger' | 'warning' | 'info'
 
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.

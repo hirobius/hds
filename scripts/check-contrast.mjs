@@ -19,6 +19,8 @@
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { readTokenSource } from './lib/token-source.mjs';
+import { resolveAlias } from './lib/token-tree.mjs';
+import { PAIRS, NONTEXT_PAIRS } from './lib/contrast-pairs.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const tokenPath = resolve(__dirname, '../hirobius.tokens.json');
@@ -48,24 +50,6 @@ function getByPath(obj, path) {
 }
 
 /**
- * Resolve an alias string like "{primitive.color.neutral.white}"
- * to its hex $value, following chains up to 10 levels deep.
- */
-function resolveAlias(ref, maxDepth = 10) {
-  let current = ref;
-  for (let i = 0; i < maxDepth; i++) {
-    const match = typeof current === 'string' && current.match(/^\{(.+)\}$/);
-    if (!match) break;
-    const node = getByPath(tokens, match[1]);
-    if (node == null) {
-      throw new Error(`Token path not found: ${match[1]}`);
-    }
-    current = node.$value ?? node;
-  }
-  return current;
-}
-
-/**
  * Resolve a semantic color token to a concrete hex string for a given mode.
  * For light: uses $value (after alias resolution).
  * For dark:  uses $extensions['com.figma.variables'].modes.Dark, falls back to $value.
@@ -83,7 +67,7 @@ function resolveSemanticHex(dotPath, mode) {
     rawValue = node.$value;
   }
 
-  const hex = resolveAlias(rawValue);
+  const hex = resolveAlias(rawValue, tokens, { maxDepth: 10 });
   if (typeof hex !== 'string' || !/^#[0-9a-fA-F]{6}$/.test(hex)) {
     throw new Error(
       `Could not resolve ${dotPath} (${mode}) to a 6-digit hex. Got: ${JSON.stringify(hex)}`,
@@ -129,94 +113,7 @@ function passNonText(ratio) {
   return ratio >= AA_NONTEXT;
 }
 
-// ── Pairs to check ────────────────────────────────────────────
-
-const PAIRS = [
-  {
-    label: 'content.primary / surface.page',
-    text: 'semantic.color.content.primary',
-    bg: 'semantic.color.surface.page',
-  },
-  {
-    label: 'content.primary / surface.raised',
-    text: 'semantic.color.content.primary',
-    bg: 'semantic.color.surface.raised',
-  },
-  {
-    label: 'content.primary / surface.overlay',
-    text: 'semantic.color.content.primary',
-    bg: 'semantic.color.surface.overlay',
-  },
-  {
-    label: 'content.secondary / surface.page',
-    text: 'semantic.color.content.secondary',
-    bg: 'semantic.color.surface.page',
-  },
-  {
-    label: 'content.secondary / surface.raised',
-    text: 'semantic.color.content.secondary',
-    bg: 'semantic.color.surface.raised',
-  },
-  {
-    label: 'content.secondary / surface.overlay',
-    text: 'semantic.color.content.secondary',
-    bg: 'semantic.color.surface.overlay',
-  },
-  {
-    label: 'content.onAccent / surface.accent',
-    text: 'semantic.color.content.onAccent',
-    bg: 'semantic.color.surface.accent',
-  },
-  // Semantic feedback text on both the page ("background") and raised ("card")
-  // surfaces. Consumers theme status UI (Saved / Applied / Interviewing / …)
-  // from these tokens, so each must clear AA for small text on both surfaces in
-  // light and dark. `info` is omitted here because its dark stop (blue.300) is
-  // expressed in oklch, which this hex-only checker can't evaluate; its AA is
-  // held by the token pipeline's own verification. The other four are hex.
-  ...['success', 'warning', 'error', 'inProgress'].flatMap((tone) => [
-    {
-      label: `feedback.${tone} / surface.page`,
-      text: `semantic.color.feedback.${tone}`,
-      bg: 'semantic.color.surface.page',
-    },
-    {
-      label: `feedback.${tone} / surface.raised`,
-      text: `semantic.color.feedback.${tone}`,
-      bg: 'semantic.color.surface.raised',
-    },
-  ]),
-  // content.{success,warning,danger} — new status-toned content tokens (ISSUE-03,
-  // #127) decoupled from the feedback.* banner tokens. Same AA bar applies since
-  // these are used directly as text/icon color.
-  ...['success', 'warning', 'danger'].flatMap((tone) => [
-    {
-      label: `content.${tone} / surface.page`,
-      text: `semantic.color.content.${tone}`,
-      bg: 'semantic.color.surface.page',
-    },
-    {
-      label: `content.${tone} / surface.raised`,
-      text: `semantic.color.content.${tone}`,
-      bg: 'semantic.color.surface.raised',
-    },
-  ]),
-];
-
-// ── Non-text pairs (WCAG 1.4.11, #230) ──────────────────────────
-
-// Control boundaries where the border is the *only* affordance — no fill
-// carries it. Add a pair here whenever a new component's sole boundary
-// starts resolving through `semantic.color.border.interactive`; decorative
-// hairlines (dividers, card edges, `border.subtle` under
-// `semantic.elevation.flat`) stay off this list, since 1.4.11 only binds
-// UI-component boundaries, not ornamentation.
-const NONTEXT_PAIRS = [
-  {
-    label: 'border.interactive / surface.page',
-    border: 'semantic.color.border.interactive',
-    bg: 'semantic.color.surface.page',
-  },
-];
+// The pairs live in lib/contrast-pairs.mjs so build-stats-json.mjs can count them.
 
 // ── Main ──────────────────────────────────────────────────────
 

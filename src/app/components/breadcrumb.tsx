@@ -6,6 +6,12 @@
  * @whenNot Switching between sibling views, or stepping through pages of results.
  * @useInstead Tabs switching between sibling views
  * @useInstead Pagination stepping through pages of results
+ * @a11y component required a11y:breadcrumb.nav-landmark The trail is a navigation landmark with an accessible name (default Breadcrumb).
+ * @a11y component required a11y:breadcrumb.ordered-list The trail is an ordered list of its crumbs.
+ * @a11y component required a11y:breadcrumb.current-page The last crumb is marked aria-current=page and is not a link.
+ * @a11y component required a11y:breadcrumb.separators-hidden The chevron separators are hidden from assistive technology.
+ * @a11y component required a11y:breadcrumb.keyboard-focus Tab visits each link in trail order and each shows the focus ring.
+ * @a11y consumer recommended Give each Breadcrumb a distinct label when a page has more than one navigation landmark.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-159
  */
 
@@ -72,7 +78,7 @@ export const Breadcrumb = /* @__PURE__ */ React.forwardRef<HTMLElement, Breadcru
                   <LinkComponent
                     to={item.href as string}
                     style={hds.typeStyles.ui}
-                    className="hds-focus text-muted-foreground transition-colors hover:text-foreground"
+                    className="hds-focus hds-touch-row inline-flex items-center text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {item.label}
                   </LinkComponent>

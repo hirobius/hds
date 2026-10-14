@@ -1,0 +1,10 @@
+{
+  "tenant": "accent-lilac",
+  "searches": [{ "tool": "search", "query": "collapsible status bands with counts" }],
+  "refs": [
+    {
+      "url": "https://example.com/inspiration/status-bands",
+      "took": "Idea: put the count beside the band name, not in a badge"
+    }
+  ]
+}
