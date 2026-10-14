@@ -26,6 +26,10 @@
           "$value": "#a3a3a3",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
+        "350": {
+          "$value": "#b4b4b4",
+          "$description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary)."
+        },
         "450": {
           "$value": "#909090",
           "$description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black)."
@@ -1291,7 +1295,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.600}",
-                "Dark": "{primitive.color.neutral.300}"
+                "Dark": "{primitive.color.neutral.350}"
               }
             }
           }
