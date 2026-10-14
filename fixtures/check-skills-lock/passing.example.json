@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "demo": {
+      "source": "example/skills",
+      "sourceType": "github",
+      "skillPath": "skills/demo/SKILL.md",
+      "computedHash": "782c1026aa4e86d3e5451b4d6012c473867aca0197283e175455c2e7e7981100"
+    }
+  }
+}
