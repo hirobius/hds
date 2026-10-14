@@ -1,0 +1,1 @@
+- ADR-036 (docs site replaces Storybook, hds#590) and ADR-037 (docs, agent files and MCP generated from code; no hosted docs platform). ADR-018 §4 marked superseded.

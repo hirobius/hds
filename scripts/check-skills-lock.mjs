@@ -2,11 +2,10 @@
 /**
  * scripts/check-skills-lock.mjs
  *
- * Supply-chain gate for skills-lock.json (ported from hirobius/ops): every
- * third-party skill must be pinned to an exact commit, installed under
- * `.claude/skills/<id>/`, and hash-match the lock. Read-only, no network.
- * To install or bump a skill, fetch the file at its pinnedCommit (the ops repo
- * has scripts/install-skills.mjs and bump-skills.mjs) and recompute the hash.
+ * Drift gate for skills-lock.json: for every pinned skill, asserts it is
+ * installed under `.claude/skills/<id>/` and its files hash-match the lock.
+ * Read-only, no network — run `node scripts/install-skills.mjs` first to
+ * fetch a missing/stale skill, then re-run this to confirm.
  *
  * Usage:
  *   node scripts/check-skills-lock.mjs           # human output, exit 1 on drift
@@ -40,20 +39,7 @@ const SKILLS_ROOT = FIXTURE_MODE && FIXTURE_FILE ? dirname(LOCK_PATH) : ROOT;
 const lock = loadLock(LOCK_PATH);
 const violations = [];
 
-const COMMIT_SHA = /^[0-9a-f]{40}$/;
-
 for (const [id, entry] of Object.entries(lock.skills)) {
-  if (!COMMIT_SHA.test(entry.pinnedCommit ?? '')) {
-    violations.push({
-      file: 'skills-lock.json',
-      line: null,
-      rule: 'SKILL_UNPINNED',
-      severity: 'error',
-      message:
-        `skill '${id}' has no pinnedCommit (a 40-character commit SHA) — a hash with no ` +
-        `commit cannot be re-verified against ${entry.source}. Pin the commit the file came from.`,
-    });
-  }
   const result = verifyInstalled(SKILLS_ROOT, id, entry);
   if (result.ok) continue;
 
@@ -65,7 +51,7 @@ for (const [id, entry] of Object.entries(lock.skills)) {
       severity: 'error',
       message:
         `skill '${id}' is pinned in skills-lock.json but missing file(s) ${result.missing.join(', ')} — ` +
-        `install it from ${entry.source} at its pinned commit.`,
+        `run \`node scripts/install-skills.mjs\` to install it.`,
     });
   } else {
     violations.push({
@@ -75,8 +61,8 @@ for (const [id, entry] of Object.entries(lock.skills)) {
       severity: 'error',
       message:
         `skill '${id}' on disk does not match skills-lock.json (${result.algorithm} expected ` +
-        `${result.expected}, got ${result.actual}) — reinstall the file at its ` +
-        `pinned commit, or update the lock if the change is intentional.`,
+        `${result.expected}, got ${result.actual}) — run \`node scripts/install-skills.mjs\` to ` +
+        `reinstall the pinned version, or update the lock if the change is intentional.`,
     });
   }
 }

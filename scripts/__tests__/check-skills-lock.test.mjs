@@ -10,8 +10,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
 const SCRIPT = join(ROOT, 'scripts', 'check-skills-lock.mjs');
 
-const PIN = 'a'.repeat(40);
-
 let cleanup = [];
 afterEach(() => {
   for (const dir of cleanup) rmSync(dir, { recursive: true, force: true });
@@ -65,7 +63,6 @@ describe('check-skills-lock', () => {
         source: 'owner/repo',
         sourceType: 'github',
         skillPath: 'skills/demo/SKILL.md',
-        pinnedCommit: PIN,
         computedHash: hash,
       },
     });
@@ -82,7 +79,6 @@ describe('check-skills-lock', () => {
         source: 'owner/repo',
         sourceType: 'github',
         skillPath: 'skills/demo/SKILL.md',
-        pinnedCommit: PIN,
         computedHash: 'x'.repeat(64),
       },
     });
@@ -90,7 +86,7 @@ describe('check-skills-lock', () => {
     const { code, stdout } = run(lockPath);
     expect(code).toBe(1);
     expect(stdout).toContain('SKILL_MISSING');
-    expect(stdout).toContain('pinned commit');
+    expect(stdout).toContain('install-skills.mjs');
   });
 
   it('fails when the installed skill has drifted from the pinned hash', () => {
@@ -101,7 +97,6 @@ describe('check-skills-lock', () => {
         source: 'owner/repo',
         sourceType: 'github',
         skillPath: 'skills/demo/SKILL.md',
-        pinnedCommit: PIN,
         computedHash: 'x'.repeat(64),
       },
     });
@@ -111,24 +106,6 @@ describe('check-skills-lock', () => {
     expect(stdout).toContain('SKILL_HASH_DRIFT');
   });
 
-  it('fails when a skill has no pinned commit, even if its hash matches', () => {
-    const dir = tmp();
-    const content = 'demo skill content\n';
-    installSkill(dir, 'demo', content);
-    const lockPath = writeLock(dir, {
-      demo: {
-        source: 'owner/repo',
-        sourceType: 'github',
-        skillPath: 'skills/demo/SKILL.md',
-        computedHash: createHash('sha256').update(content).digest('hex'),
-      },
-    });
-
-    const { code, stdout } = run(lockPath);
-    expect(code).toBe(1);
-    expect(stdout).toContain('SKILL_UNPINNED');
-  });
-
   it('emits machine-readable JSON on stdout with --json', () => {
     const dir = tmp();
     const lockPath = writeLock(dir, {
@@ -136,7 +113,6 @@ describe('check-skills-lock', () => {
         source: 'owner/repo',
         sourceType: 'github',
         skillPath: 'skills/demo/SKILL.md',
-        pinnedCommit: PIN,
         computedHash: 'x'.repeat(64),
       },
     });
@@ -147,5 +123,30 @@ describe('check-skills-lock', () => {
     expect(parsed.ok).toBe(false);
     expect(parsed.violations).toHaveLength(1);
     expect(parsed.violations[0].rule).toBe('SKILL_MISSING');
+  });
+});
+
+// The outcome check for the whole mechanism: the repo's own committed lock must
+// verify against the skills committed beside it. Nothing ran the gate on the real
+// tree (it is a manual-channel gate), so an impeccable entry whose `paths` were
+// repo-root-relative sat red for weeks. A drifted hand-edit, a half-synced bump or
+// a lock entry with no installed skill now fails `pnpm test` instead.
+describe('this repo', () => {
+  it("every skill pinned in the repo's own skills-lock.json is installed and hash-matches", () => {
+    let stdout = '';
+    let code = 0;
+    try {
+      stdout = execFileSync('node', [SCRIPT, '--json'], {
+        cwd: ROOT,
+        env: { ...process.env, HDS_FIXTURE_MODE: '' },
+        encoding: 'utf8',
+      });
+    } catch (err) {
+      code = err.status ?? 1;
+      stdout = err.stdout ?? '';
+    }
+    const parsed = JSON.parse(stdout);
+    expect(parsed.violations.map((v) => `${v.rule} ${v.file}`)).toEqual([]);
+    expect(code).toBe(0);
   });
 });

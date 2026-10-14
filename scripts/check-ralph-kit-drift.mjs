@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-/** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * scripts/check-ralph-kit-drift.mjs  (ported from ops#492)
+ * scripts/check-ralph-kit-drift.mjs  (ops#492)
  *
  * `ralph/{lib,next,run,loop,status}.sh` and `ralph/prompt.md` are vendored
  * byte-identical from `hirobius/ralph/kit`. This gate pins their sha256 in

@@ -61,9 +61,14 @@ describe('check-ralph-kit-drift', () => {
     expect(r.out).toContain('✗ ralph/prompt.md drifted from the vendored kit');
     expect(r.out).toContain('edit hirobius/ralph/kit instead');
     expect(r.out).toContain('--update');
+    expect(r.out).not.toContain('ops#477');
   });
 
   it('names lib.sh with the same fix text (no repo-specific behind-note)', () => {
+    // The script is vendored byte-identical into every consumer, so it cannot
+    // carry a message that is only true of one repo. ops used to say "ops is
+    // behind the kit (ops#477)" for lib.sh/next.sh; ops now pins the kit's HEAD
+    // (hirobius/ralph@13f8cec), so the note was stale as well as ops-specific.
     const { dir, git } = repo();
     writeFileSync(join(dir, 'ralph', 'lib.sh'), 'edited\n');
     git('add', 'ralph/lib.sh');
@@ -71,6 +76,7 @@ describe('check-ralph-kit-drift', () => {
     expect(r.code).toBe(1);
     expect(r.out).toContain('✗ ralph/lib.sh drifted');
     expect(r.out).not.toContain('behind');
+    expect(r.out).not.toContain('ops#477');
   });
 
   it('ignores unstaged drift in --staged mode', () => {

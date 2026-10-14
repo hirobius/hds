@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "not-installed": {
+      "source": "example/skills",
+      "sourceType": "github",
+      "skillPath": "skills/not-installed/SKILL.md",
+      "computedHash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  }
+}

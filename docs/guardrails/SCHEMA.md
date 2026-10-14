@@ -96,6 +96,21 @@ whose `package.json` command runs the `gateScript` — somewhere in
 `ralph/gate.sh`. `check-validator-wiring.mjs` reads `ralph/gate.sh` to verify
 this the same way it reads `.husky/pre-commit` for the `pre-commit` channel.
 
+## Shared harness scripts (vendored from hirobius/ops)
+
+Twelve files here are copies of hirobius/ops's, byte-identical, pinned by sha256 in
+`docs/guardrails/shared-manifest.json`: `run-gates`, `validate-guardrail-registry`,
+`validate-fixture-proof-of-firing`, the `scripts/lib` files they import
+(`guardrail-core`, `hook-logs`, `gate-scope`, `gate-output`), the skills-lock tooling
+(`install-skills`, `check-skills-lock`, `lib/skills-lock`) and the drift checks
+(`check-guardrail-drift`, `check-ralph-kit-drift`). `check-guardrail-drift` and
+`check-skills-lock` run in `pretest`, so pre-push and CI both fire them. This
+manifest has `"role": "consumer"`: `--write` refuses, so drift cannot be re-pinned
+away. To take a shared fix, copy the changed file(s) from ops and the matching
+hash(es) from ops's manifest in the same commit; to change one, change it in ops
+first. A skill update works the same way: ops owns `skills-lock.json`'s pins, and a
+bump there is copied here and installed with `pnpm skills:install`.
+
 ## Adding a new gate
 
 1. Create `scripts/check-<name>.mjs` with a JSDoc block at the top.

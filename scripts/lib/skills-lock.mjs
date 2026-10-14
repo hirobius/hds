@@ -1,15 +1,14 @@
 /**
  * scripts/lib/skills-lock.mjs
- * Ported from hirobius/ops (scripts/lib/skills-lock.mjs); keep the two in step.
  *
  * Shared helpers for skills-lock.json — the pin file for skills vendored
  * from outside this repo, installed under `.claude/skills/<id>/`. Consumed
- * by the ops repo's scripts/install-skills.mjs (fetch + verify + write) and
+ * by scripts/install-skills.mjs (fetch + verify + write) and
  * scripts/check-skills-lock.mjs (the read-only drift gate).
  *
  * Lock schema, per skill id:
  *   source        "<owner>/<repo>" GitHub source
- *   sourceType    "github" (the only type ops' install-skills.mjs knows)
+ *   sourceType    "github" (the only type install-skills.mjs knows)
  *   skillPath     path to the skill's SKILL.md within the source repo
  *   pinnedCommit  exact commit SHA to fetch from — required to install;
  *                 an unpinned branch ref isn't reproducible
