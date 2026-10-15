@@ -51,6 +51,12 @@
    back into the build, removed ones included, so Tailwind never reads them. */
 @source not "../../docs/api/releases";
 
+/* The release-notes tooling (changesets and upgrade notes) names removed CSS
+   variables and utilities in prose and JSON; scanned, a note about a removal
+   would compile the removed utility straight back in. */
+@source not "../../.changeset";
+@source not "../../upgrade";
+
 /* Published utility surface kept after hds#391. Tailwind only emits the
    utilities it finds in scanned files, and these 16 lived only in the deleted
    docs-tooling, animated-label and editorial files. Consumers that use
