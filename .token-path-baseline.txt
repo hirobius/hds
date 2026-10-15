@@ -7,6 +7,3 @@
 
 src/app/components/segmented-control.tsx:semantic.space.layout.gap
 src/app/data/foundations/typography.json:semantic.typography.small
-src/app/data/hds-registry.json:component.button.border
-src/app/data/hds-registry.json:semantic.typography.small
-src/app/design-system/token-usage-map.json:semantic.space.layout.gap
