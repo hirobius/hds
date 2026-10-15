@@ -87,3 +87,16 @@ describe('Stack gap', () => {
     expect(source).not.toMatch(/getGapValue/);
   });
 });
+
+describe('Stack accessibility attributes (hds#725)', () => {
+  it('forwards aria-* and role to the DOM element', () => {
+    render(
+      <Stack aria-label="Filters" aria-describedby="hint" role="group">
+        <span>a</span>
+      </Stack>,
+    );
+    const el = screen.getByRole('group', { name: 'Filters' });
+    expect(el.getAttribute('aria-describedby')).toBe('hint');
+    expect(el.getAttribute('data-hds-component')).toBe('Stack');
+  });
+});

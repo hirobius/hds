@@ -44,6 +44,8 @@ export const INTERACTIVE = Object.freeze([
   'AssetImg',
   'CodeBlock',
   'InlineCode',
+  'Composer',
+  'ThemeToggle',
 ]);
 
 /** Compound part (or flat alias) to the root whose rules cover it. */

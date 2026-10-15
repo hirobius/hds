@@ -1,0 +1,1 @@
+- Box sx responsive values take an explicit `base` key compiled to a plain rule with no media query (#652, PR #713); review fixes renamed the changeset to box-sx-base-key (patch) and added base-token and xs-map tests.

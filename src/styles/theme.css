@@ -51,6 +51,13 @@
    back into the build, removed ones included, so Tailwind never reads them. */
 @source not "../../docs/api/releases";
 
+/* The release-notes tooling (changesets, upgrade notes and .status branch notes) names removed CSS
+   variables and utilities in prose and JSON; scanned, a note about a removal
+   would compile the removed utility straight back in. */
+@source not "../../.changeset";
+@source not "../../upgrade";
+@source not "../../.status";
+
 /* Published utility surface kept after hds#391. Tailwind only emits the
    utilities it finds in scanned files, and these 16 lived only in the deleted
    docs-tooling, animated-label and editorial files. Consumers that use
@@ -618,6 +625,77 @@ input[data-search-input='true'] {
   outline-offset: 2px;
   /* Deliberately no positioning: making it relative overrode absolute/fixed and moved the control on keyboard
      focus (Dialog content, Radio/Toggle inputs, CodeBlock copy button; bug bash 24, items 1-2). */
+}
+
+/* --- Theme toggle (ThemeToggle) ------------------------------------------------
+ * One button, one inline SVG. Light: the disc is a sun with eight rays. Dark: the
+ * rays retract and spin out, the disc grows, and a mask circle slides in to cut it
+ * into a crescent. Every duration and easing is a primitive motion token, and the
+ * reduced-motion block below (plus the zeroed duration tokens above) stops the morph. */
+.hds-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px touch target (WCAG 2.5.5); rem so it follows the user's font size. */
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--semantic-radius-action);
+  background: transparent;
+  color: var(--semantic-color-content-primary);
+  cursor: pointer;
+  transition: background-color var(--primitive-duration-short) var(--primitive-easing-decelerate);
+}
+.hds-theme-toggle:hover {
+  background: var(--semantic-color-surface-hover);
+}
+.hds-theme-toggle:active {
+  background: var(--semantic-color-surface-pressed);
+}
+.hds-theme-toggle__icon {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  overflow: visible;
+  transition: transform var(--primitive-duration-long) var(--primitive-easing-emphasized);
+}
+.hds-theme-toggle__core {
+  transform-box: view-box;
+  transform-origin: center;
+  transition: transform var(--primitive-duration-long) var(--primitive-easing-emphasized);
+}
+.hds-theme-toggle__cut {
+  transition: transform var(--primitive-duration-long) var(--primitive-easing-decelerate);
+}
+.hds-theme-toggle__rays {
+  transform-box: view-box;
+  transform-origin: center;
+  transition:
+    transform var(--primitive-duration-medium) var(--primitive-easing-emphasized),
+    opacity var(--primitive-duration-short) var(--primitive-easing-accelerate);
+}
+.hds-theme-toggle[data-theme-state='dark'] .hds-theme-toggle__icon {
+  transform: rotate(40deg);
+}
+.hds-theme-toggle[data-theme-state='dark'] .hds-theme-toggle__core {
+  transform: scale(1.4);
+}
+.hds-theme-toggle[data-theme-state='dark'] .hds-theme-toggle__cut {
+  transform: translate(-8px, 8px);
+}
+.hds-theme-toggle[data-theme-state='dark'] .hds-theme-toggle__rays {
+  transform: rotate(-45deg) scale(0.2);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hds-theme-toggle,
+  .hds-theme-toggle__icon,
+  .hds-theme-toggle__core,
+  .hds-theme-toggle__cut,
+  .hds-theme-toggle__rays {
+    transition: none;
+  }
 }
 
 /* --- Base layer --------------------------------------------------------------- */

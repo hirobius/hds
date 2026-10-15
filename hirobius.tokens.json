@@ -26,6 +26,10 @@
           "$value": "#a3a3a3",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
+        "350": {
+          "$value": "#b4b4b4",
+          "$description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary)."
+        },
         "450": {
           "$value": "#909090",
           "$description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black)."
@@ -665,10 +669,10 @@
         },
         "code": {
           "$value": {
-            "value": 13,
+            "value": 15,
             "unit": "px"
           },
-          "$description": "13px code size. The mono role (hds#485): one px below ui so code sits level with 14px prose."
+          "$description": "15px code size. The mono role (hds#485): one px below ui so code sits level with 16px UI text."
         }
       },
       "weight": {
@@ -1291,7 +1295,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.600}",
-                "Dark": "{primitive.color.neutral.400}"
+                "Dark": "{primitive.color.neutral.350}"
               }
             }
           }
@@ -1848,17 +1852,17 @@
       "titleSm": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.base}",
+          "fontSize": "{primitive.typography.size.lg}",
           "fontWeight": "{primitive.typography.weight.bold}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.snug}"
         },
-        "$description": "Small heading inside a card or section band. 16px / 1.375 / 700."
+        "$description": "Small heading inside a card or section band. 18px / 1.375 / 700."
       },
       "body": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
-          "fontSize": "{primitive.typography.size.base}",
+          "fontSize": "{primitive.typography.size.lg}",
           "fontWeight": "{primitive.typography.weight.regular}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.body}",
@@ -1867,12 +1871,12 @@
             "unit": "ch"
           }
         },
-        "$description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6."
+        "$description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6."
       },
       "ui": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
-          "fontSize": "{primitive.typography.size.sm}",
+          "fontSize": "{primitive.typography.size.base}",
           "fontWeight": "{primitive.typography.weight.medium}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.normal}",
@@ -1881,17 +1885,17 @@
             "unit": "ch"
           }
         },
-        "$description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6."
+        "$description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6."
       },
       "caption": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
-          "fontSize": "{primitive.typography.size.xs}",
+          "fontSize": "{primitive.typography.size.sm}",
           "fontWeight": "{primitive.typography.weight.medium}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.normal}"
         },
-        "$description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6."
+        "$description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6."
       },
       "mono": {
         "$value": {
@@ -1905,7 +1909,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6."
+        "$description": "Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6."
       },
       "h1": {
         "$value": {
@@ -1943,7 +1947,7 @@
       "eyebrow": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
-          "fontSize": "{primitive.typography.size.xs}",
+          "fontSize": "{primitive.typography.size.sm}",
           "fontWeight": "{primitive.typography.weight.medium}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.normal}"
@@ -2302,8 +2306,8 @@
       },
       "fontSize": {
         "$type": "dimension",
-        "$value": "{primitive.typography.size.xs}",
-        "$description": "Tag type size."
+        "$value": "{primitive.typography.size.sm}",
+        "$description": "Tag type size (the caption role, 14px)."
       },
       "fontWeight": {
         "$type": "fontWeight",
@@ -2359,8 +2363,8 @@
     "badge": {
       "fontSize": {
         "$type": "dimension",
-        "$value": "{primitive.typography.size.xs}",
-        "$description": "Badge type size."
+        "$value": "{primitive.typography.size.sm}",
+        "$description": "Badge type size (the caption role, 14px)."
       },
       "fontWeight": {
         "$type": "fontWeight",
@@ -2530,8 +2534,8 @@
           },
           "fontSize": {
             "$type": "dimension",
-            "$value": "{primitive.typography.size.xs}",
-            "$description": "Small button label size (12px, hds#283: was 13px)."
+            "$value": "{primitive.typography.size.sm}",
+            "$description": "Small button label size (14px, the caption role; 12px before 2026-10-15)."
           },
           "iconSize": {
             "$type": "dimension",
@@ -2562,8 +2566,8 @@
           },
           "fontSize": {
             "$type": "dimension",
-            "$value": "{primitive.typography.size.sm}",
-            "$description": "Medium button label size (14px, hds#283: was 15px)."
+            "$value": "{primitive.typography.size.base}",
+            "$description": "Medium button label size (16px, the ui role; 14px before 2026-10-15)."
           },
           "iconSize": {
             "$type": "dimension",
@@ -2594,8 +2598,8 @@
           },
           "fontSize": {
             "$type": "dimension",
-            "$value": "{primitive.typography.size.sm}",
-            "$description": "Large button label size (14px, the same hds-type-ui role as md)."
+            "$value": "{primitive.typography.size.base}",
+            "$description": "Large button label size (16px, the same hds-type-ui role as md)."
           },
           "iconSize": {
             "$type": "dimension",

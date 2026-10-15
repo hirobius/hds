@@ -379,6 +379,15 @@ describe('transformSource: comments and same-line statements (hds#434)', () => {
     expect(out.source).toBe(`import {\n  Page,\n  // trailing comment\n} from '${SUB}';\n`);
     expect(out.moved).toEqual(['Page']);
   });
+
+  it('moves a trailing comment to /patterns with the last specifier when multiple specifiers move', () => {
+    const src = `import {\n  TopNav,\n  Page,\n  // trailing comment\n} from '${ROOT}';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.source).toBe(
+      `import {\n  TopNav,\n  Page,\n  // trailing comment\n} from '${SUB}';\n`,
+    );
+    expect(out.moved).toEqual(['TopNav', 'Page']);
+  });
 });
 
 describe('transformSource: idempotence', () => {

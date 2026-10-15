@@ -13,8 +13,8 @@
     "./patterns": "src/patterns.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.25.0",
-  "generatedAt": "2026-10-13",
+  "version": "0.26.2",
+  "generatedAt": "2026-10-15",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -94,11 +94,25 @@
     "./app/components/popover": ["Popover", "PopoverContentProps"],
     "./app/components/hds-tooltip": ["HdsTooltipContentProps", "Tooltip"],
     "./app/components/grid": ["Grid", "GridItemProps", "GridProps"],
-    "./app/components/icon": ["Icon", "IconProps", "IconSize"],
+    "./app/components/board": [
+      "Board",
+      "BoardColumn",
+      "BoardColumnProps",
+      "BoardColumnTone",
+      "BoardProps"
+    ],
+    "./app/components/icon": ["Icon", "IconColor", "IconProps", "IconSize"],
     "./app/components/inline-code": ["InlineCode", "InlineCodeProps"],
     "./app/components/inline-link": ["InlineLink", "InlineLinkProps"],
     "./app/components/input": ["Input", "InputProps", "InputSize"],
     "./app/components/textarea": ["Textarea", "TextareaProps", "TextareaResize"],
+    "./app/components/composer": [
+      "Composer",
+      "ComposerAttachment",
+      "ComposerProps",
+      "ComposerSubmission"
+    ],
+    "./app/components/theme-toggle": ["ThemeToggle", "ThemeToggleProps"],
     "./app/components/checkbox": ["Checkbox", "CheckboxProps", "HdsCheckboxDemoState"],
     "./app/components/radio": ["HdsRadioDemoState", "Radio", "RadioProps"],
     "./app/components/slider": ["Slider", "SliderProps"],
@@ -116,11 +130,12 @@
       "TableCellSlot",
       "TableColumn",
       "TableColumnAlign",
+      "TableColumnWidth",
       "TableRow",
       "TableSortDirection"
     ],
     "./app/components/tag": ["Tag", "TagProps"],
-    "./app/components/text": ["Text", "TextProps", "TextVariant"],
+    "./app/components/text": ["Text", "TextProps", "TextTone", "TextVariant"],
     "./app/components/kbd": ["Kbd", "KbdProps"],
     "./app/components/timestamp": ["Timestamp", "TimestampFormat", "TimestampProps"],
     "./app/components/blockquote": ["Blockquote", "BlockquoteProps"],
@@ -131,6 +146,13 @@
     "./app/components/sidebar": ["Sidebar", "SidebarProps"],
     "./app/components/switcher": ["Switcher", "SwitcherProps"],
     "./app/components/pin": ["Pin", "PinProps"],
+    "./app/components/timeline": [
+      "Timeline",
+      "TimelineItem",
+      "TimelineItemProps",
+      "TimelineProps",
+      "TimelineTone"
+    ],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
     "./app/components/tabs": ["Tabs", "TabsContent", "TabsList", "TabsTrigger"],
     "./app/components/breadcrumb": ["Breadcrumb", "BreadcrumbItem", "BreadcrumbProps"],
@@ -250,8 +272,10 @@
       "ArrowLeft",
       "ArrowRight",
       "ArrowUp",
+      "ArrowUpRight",
       "Bell",
       "Bookmark",
+      "Briefcase",
       "Calendar",
       "Check",
       "ChevronDown",
@@ -274,6 +298,7 @@
       "Heart",
       "House",
       "Image",
+      "Images",
       "Info",
       "Link",
       "Lock",
@@ -284,6 +309,7 @@
       "Menu",
       "Minus",
       "Pencil",
+      "Phone",
       "Plus",
       "RefreshCw",
       "Save",
@@ -295,6 +321,8 @@
       "TriangleAlert",
       "Upload",
       "User",
+      "Users",
+      "Wrench",
       "X"
     ]
   }

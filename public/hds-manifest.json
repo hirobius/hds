@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-14T04:07:35.216Z",
+  "generated": "2026-10-15T05:54:59.010Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -65,6 +65,7 @@
     "Checkbox",
     "CodeBlock",
     "Combobox",
+    "Composer",
     "Container",
     "DataTableSection",
     "DestructiveSection",
@@ -126,6 +127,9 @@
     "Tag",
     "Text",
     "Textarea",
+    "ThemeToggle",
+    "Timeline",
+    "TimelineItem",
     "Timestamp",
     "ToastProvider",
     "Toggle",
@@ -234,8 +238,10 @@
       "ArrowLeft",
       "ArrowRight",
       "ArrowUp",
+      "ArrowUpRight",
       "Bell",
       "Bookmark",
+      "Briefcase",
       "Calendar",
       "Check",
       "ChevronDown",
@@ -258,6 +264,7 @@
       "Heart",
       "House",
       "Image",
+      "Images",
       "Info",
       "Link",
       "Lock",
@@ -267,6 +274,7 @@
       "Menu",
       "Minus",
       "Pencil",
+      "Phone",
       "Plus",
       "RefreshCw",
       "Save",
@@ -278,6 +286,8 @@
       "TriangleAlert",
       "Upload",
       "User",
+      "Users",
+      "Wrench",
       "X"
     ]
   },
@@ -408,6 +418,7 @@
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/text.tsx",
+        "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
       ],
       "tokenMapping": {
@@ -780,7 +791,9 @@
       },
       "consumers": [
         "src/app/components/disclosure.test.tsx",
-        "src/app/components/tabs.tsx"
+        "src/app/components/tabs.tsx",
+        "src/app/components/timeline.test.tsx",
+        "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
@@ -1346,6 +1359,7 @@
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
+        "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
       ],
       "tokenMapping": {
@@ -2033,6 +2047,7 @@
         "src/app/components/radio.tsx",
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/tabs.tsx",
+        "src/app/components/theme-toggle.tsx",
         "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
@@ -2226,6 +2241,7 @@
         "src/app/components/surface.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/table.tsx",
+        "src/app/components/timeline.tsx",
         "src/app/components/tooltip.tsx",
         "src/index.ts"
       ],
@@ -2305,6 +2321,10 @@
             "end",
             "space-between"
           ],
+          "optional": true
+        },
+        "role": {
+          "type": "AriaRole",
           "optional": true
         },
         "style": {
@@ -2600,6 +2620,7 @@
         "src/app/components/box.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/pin.tsx",
         "src/app/components/reveal.tsx",
@@ -2928,6 +2949,10 @@
           "type": "ElementType<any, keyof IntrinsicElements>",
           "optional": true
         },
+        "asChild": {
+          "type": "boolean",
+          "default": false
+        },
         "bordered": {
           "type": "boolean",
           "default": false
@@ -3149,6 +3174,9 @@
       ],
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11",
       "propConstraints": {
+        "asChild": {
+          "type": "boolean"
+        },
         "bordered": {
           "type": "boolean"
         },
@@ -3304,6 +3332,7 @@
       "consumers": [
         "src/app/components/alert-dialog.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
@@ -3311,9 +3340,11 @@
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/kbd.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
         "src/app/components/text.test.tsx",
+        "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts"
@@ -3360,6 +3391,7 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/dialog.test.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
@@ -3669,6 +3701,7 @@
         "src/app/components/button.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
@@ -4345,7 +4378,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/status-tile.tsx"
+        "src/app/components/status-tile.tsx",
+        "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4577,6 +4611,7 @@
         "src/app/components/badge.test.tsx",
         "src/app/components/card-row.test.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/composer.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/state-tokens.test.tsx",
         "src/app/components/tag.tsx",
@@ -4942,7 +4977,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -4985,7 +5020,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5025,7 +5060,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -6965,6 +7000,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/composer.tsx",
         "src/app/components/kbd.test.tsx",
         "src/app/components/text.tsx"
       ],
@@ -7018,6 +7054,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/timeline.tsx",
         "src/app/components/timestamp.test.tsx"
       ],
       "tokenMapping": {},
@@ -7119,7 +7156,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/metadata-list.test.tsx"
+        "src/app/components/metadata-list.test.tsx",
+        "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7296,7 +7334,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/box.tsx",
-      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ xs, sm, md, lg, xl }` objects compile to `min-width` media queries off the HDS breakpoint scale. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine.",
+      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7639,6 +7677,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/composer.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
@@ -7742,7 +7781,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7773,7 +7812,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7804,7 +7843,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7835,7 +7874,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7930,7 +7969,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7984,7 +8023,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default — pass `className=\"shadow-...\"` for a hover/floating treatment on interactive cards.",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9125,7 +9164,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/metric-tiles.tsx",
-      "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth. Use `StatusTile` for state with notes (never a number).",
+      "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth; at phone width (640px and under) it is capped at 2 columns. Use `StatusTile` for state with notes (never a number).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
@@ -9186,6 +9225,10 @@
           "optional": true
         },
         "breadcrumb": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "description": {
           "type": "ReactNode",
           "optional": true
         },
@@ -9637,6 +9680,379 @@
           {
             "component": "Stack",
             "reason": "a plain vertical list"
+          }
+        ]
+      }
+    },
+    "Composer": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/composer.tsx",
+      "description": "Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer than `pasteFoldThreshold` characters never enters the field: it becomes an attachment card (a Tag) that opens a Dialog to edit or remove the text. Cmd/Ctrl+Enter submits; plain Enter stays a newline. `text` and `attachments` can each be controlled or uncontrolled; an uncontrolled composer clears itself after a submit.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Composer",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/composer.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "attachments": {
+          "type": "ComposerAttachment[]",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "defaultAttachments": {
+          "type": "ComposerAttachment[]",
+          "default": "[]"
+        },
+        "defaultValue": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "default": "Message"
+        },
+        "onAttachmentsChange": {
+          "type": "(attachments: ComposerAttachment[]) => void",
+          "optional": true
+        },
+        "onSubmit": {
+          "type": "(submission: ComposerSubmission) => void",
+          "optional": true
+        },
+        "onValueChange": {
+          "type": "(value: string) => void",
+          "optional": true
+        },
+        "pasteFoldThreshold": {
+          "type": "number",
+          "default": 500
+        },
+        "pending": {
+          "type": "boolean",
+          "default": false
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "value": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [
+        {
+          "rule": "The textarea has an accessible name: the label prop, \"Message\" by default.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.field-label"
+        },
+        {
+          "rule": "Tab reaches the field and Send; Cmd or Ctrl+Enter submits and plain Enter only adds a newline.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.keyboard"
+        },
+        {
+          "rule": "A fold chip is a button named by its label plus \"edit\", and announces that it opens a dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.chip-name"
+        },
+        {
+          "rule": "Enter on a focused fold chip opens its edit dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.chip-keyboard"
+        },
+        {
+          "rule": "The edit dialog is named by its title and described by the fold label, and its text field is labelled.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.dialog-labelled"
+        },
+        {
+          "rule": "Tab and Shift+Tab stay inside the edit dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.dialog-focus-trapped"
+        },
+        {
+          "rule": "Closing the edit dialog by Escape or Save returns focus to the fold chip that opened it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:composer.chip-focus-return"
+        },
+        {
+          "rule": "Pass a label that names the purpose when more than one Composer is on a page; the default \"Message\" is the same on each.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "docsPage": null,
+      "usage": {
+        "when": "Capture a prompt or a quick note where a long paste should not flood the field.",
+        "whenNot": "A plain multi-line field with no submit action, or a form with several fields.",
+        "useInstead": [
+          {
+            "component": "Textarea",
+            "reason": "a plain multi-line field"
+          }
+        ]
+      }
+    },
+    "Timeline": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/timeline.tsx",
+      "description": "The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Timeline",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/timeline.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "locale": {
+          "type": "string",
+          "optional": true
+        },
+        "order": {
+          "type": "enum",
+          "values": [
+            "desc",
+            "asc"
+          ],
+          "default": "desc"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Show a dated history of events, such as shipped releases or client activity, grouped under day headings.",
+        "whenNot": "A list with no dates, or steps someone completes in order.",
+        "useInstead": [
+          {
+            "component": "MetadataList",
+            "reason": "term and value pairs about one object"
+          },
+          {
+            "component": "StatusListItem",
+            "reason": "a status list with no time axis"
+          }
+        ]
+      },
+      "aiRules": "Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only."
+    },
+    "TimelineItem": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/timeline.tsx",
+      "description": "One event on a Timeline. Render it only as a child of Timeline.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "TimelineItem",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/timeline.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "date": {
+          "type": "string | number | Date"
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "optional": true
+        },
+        "icon": {
+          "type": "LucideIcon",
+          "optional": true
+        },
+        "locale": {
+          "type": "string",
+          "optional": true
+        },
+        "title": {
+          "type": "ReactNode"
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "ThemeToggle": {
+      "category": "Actions",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": true,
+      "filePath": "src/app/components/theme-toggle.tsx",
+      "description": "One-button light/dark switch with a sun-to-moon morph.",
+      "a11yRules": [
+        {
+          "rule": "The accessible name says what happens next (\"Switch to dark theme\" or \"Switch to light theme\"), and the state is not repeated as aria-pressed.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.name"
+        },
+        {
+          "rule": "Tab reaches it, and Enter and Space both switch the theme.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.keyboard-activate"
+        },
+        {
+          "rule": "The sun and moon svg is hidden from assistive technology and takes no focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.icon-hidden"
+        },
+        {
+          "rule": "Keyboard focus draws the hds-focus ring, and the control never removes its outline.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.focus-ring"
+        },
+        {
+          "rule": "The touch target is at least 44px square.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.target-size"
+        },
+        {
+          "rule": "The morph moves only on motion tokens and stops under prefers-reduced-motion.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:theme-toggle.reduced-motion"
+        },
+        {
+          "rule": "Place it where a keyboard user finds it early (the header), and keep one per page; the name already says the next theme, so do not add a visible label that contradicts it.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "ThemeToggle",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/theme-toggle.test.tsx",
+        "src/app/context/ThemeContext.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "isDark": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onToggle": {
+          "type": "() => void",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "A single header or menu control to switch between the light and dark theme.",
+        "whenNot": "Choosing between three or more modes, or a setting that belongs in a form.",
+        "useInstead": [
+          {
+            "component": "SegmentedControl",
+            "reason": "for a labelled choice of several modes"
           }
         ]
       }
@@ -10139,6 +10555,13 @@
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
         "value": "#d4d4d4"
+      },
+      {
+        "path": "primitive.color.neutral.350",
+        "cssVar": "--primitive-color-neutral-350",
+        "type": "color",
+        "description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).",
+        "value": "#b4b4b4"
       },
       {
         "path": "primitive.color.neutral.400",
@@ -10973,8 +11396,8 @@
         "path": "primitive.typography.size.code",
         "cssVar": "--primitive-typography-size-code",
         "type": "dimension",
-        "description": "13px code size. The mono role (hds#485): one px below ui so code sits level with 14px prose.",
-        "value": "13px"
+        "description": "15px code size. The mono role (hds#485): one px below ui so code sits level with 16px UI text.",
+        "value": "15px"
       },
       {
         "path": "primitive.typography.weight.regular",
@@ -11564,8 +11987,8 @@
         "alias": "{primitive.color.neutral.600}",
         "resolvedValue": "#525252",
         "dark": {
-          "alias": "{primitive.color.neutral.400}",
-          "resolvedValue": "#a3a3a3"
+          "alias": "{primitive.color.neutral.350}",
+          "resolvedValue": "#b4b4b4"
         }
       },
       {
@@ -12188,10 +12611,10 @@
         "path": "semantic.typography.titleSm",
         "cssVar": "--semantic-typography-titleSm",
         "type": "typography",
-        "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+        "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "16px",
+          "fontSize": "18px",
           "fontWeight": "700",
           "letterSpacing": "0em",
           "lineHeight": "1.375"
@@ -12201,10 +12624,10 @@
         "path": "semantic.typography.body",
         "cssVar": "--semantic-typography-body",
         "type": "typography",
-        "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+        "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "16px",
+          "fontSize": "18px",
           "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "1.6",
@@ -12215,10 +12638,10 @@
         "path": "semantic.typography.ui",
         "cssVar": "--semantic-typography-ui",
         "type": "typography",
-        "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
+        "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "14px",
+          "fontSize": "16px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "1.5",
@@ -12229,10 +12652,10 @@
         "path": "semantic.typography.caption",
         "cssVar": "--semantic-typography-caption",
         "type": "typography",
-        "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
+        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "12px",
+          "fontSize": "14px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "1.5"
@@ -12242,10 +12665,10 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
-          "fontSize": "13px",
+          "fontSize": "15px",
           "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "1.5",
@@ -12298,7 +12721,7 @@
         "description": "deprecated: use semantic.typography.caption",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "12px",
+          "fontSize": "14px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "1.5"
@@ -12751,9 +13174,9 @@
         "path": "component.tag.fontSize",
         "cssVar": "--component-tag-fontSize",
         "type": "dimension",
-        "description": "Tag type size.",
-        "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "12px"
+        "description": "Tag type size (the caption role, 14px).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.tag.fontWeight",
@@ -12839,9 +13262,9 @@
         "path": "component.badge.fontSize",
         "cssVar": "--component-badge-fontSize",
         "type": "dimension",
-        "description": "Badge type size.",
-        "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "12px"
+        "description": "Badge type size (the caption role, 14px).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.badge.fontWeight",
@@ -13075,9 +13498,9 @@
         "path": "component.button.size.sm.fontSize",
         "cssVar": "--component-button-size-sm-fontSize",
         "type": "dimension",
-        "description": "Small button label size (12px, hds#283: was 13px).",
-        "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "12px"
+        "description": "Small button label size (14px, the caption role; 12px before 2026-10-15).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.button.size.sm.iconSize",
@@ -13123,9 +13546,9 @@
         "path": "component.button.size.md.fontSize",
         "cssVar": "--component-button-size-md-fontSize",
         "type": "dimension",
-        "description": "Medium button label size (14px, hds#283: was 15px).",
-        "alias": "{primitive.typography.size.sm}",
-        "resolvedValue": "14px"
+        "description": "Medium button label size (16px, the ui role; 14px before 2026-10-15).",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.button.size.md.iconSize",
@@ -13171,9 +13594,9 @@
         "path": "component.button.size.lg.fontSize",
         "cssVar": "--component-button-size-lg-fontSize",
         "type": "dimension",
-        "description": "Large button label size (14px, the same hds-type-ui role as md).",
-        "alias": "{primitive.typography.size.sm}",
-        "resolvedValue": "14px"
+        "description": "Large button label size (16px, the same hds-type-ui role as md).",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.button.size.lg.iconSize",

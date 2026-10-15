@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "HdsFormField's render props now type ref and value as any, so {...props} compiles on native inputs, selects and textareas; nothing to change in code that already compiles."
+}

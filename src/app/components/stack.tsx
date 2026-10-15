@@ -42,7 +42,7 @@ const justifyMap: Record<FlexJustify, React.CSSProperties['justifyContent']> = {
   'space-between': 'space-between',
 };
 
-export interface StackProps {
+export interface StackProps extends React.AriaAttributes {
   /** Stack content rendered inside the flex wrapper. */
   children: React.ReactNode;
   /** Flex direction for the stack. */
@@ -64,6 +64,8 @@ export interface StackProps {
   style?: React.CSSProperties;
   /** Element rendered as the outer wrapper. */
   as?: React.ElementType;
+  /** ARIA role for the wrapper, for example `group` or `region` when the Stack is labelled with `aria-label`. */
+  role?: React.AriaRole;
 }
 
 /**
@@ -101,11 +103,13 @@ export const Stack = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StackProps
     className,
     style,
     as: Tag = 'div',
+    ...rest
   },
   ref,
 ) {
   return (
     <Tag
+      {...rest}
       ref={ref}
       className={className}
       data-hds-component="Stack"

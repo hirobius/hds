@@ -71,6 +71,8 @@ const BLOCK_FILL = [
   'Tabs',
   'TabsContent',
   'TabsList',
+  'Timeline',
+  'TimelineItem',
   'Text',
 ];
 /** Rule 4: only these pad. */
@@ -112,6 +114,7 @@ const PARTS = [
   'TabsContent',
   'TabsList',
   'TabsTrigger',
+  'TimelineItem',
 ];
 const PROVIDERS = [
   'HdsRouterProvider',
@@ -147,6 +150,7 @@ const CONTAINERS = [
   'MetricTiles',
   'Surface',
   'Page',
+  'Timeline',
 ];
 
 export function buildContract(names) {

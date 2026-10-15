@@ -60,7 +60,7 @@ const { CORE_COMPONENTS } = await import(
 const core = new Set(CORE_COMPONENTS);
 // Pattern pages (content/docs/patterns/) document the modules the /patterns
 // entry re-exports, read from the repo's own src/patterns.ts.
-const { patternComponents } = await import(
+const { patternComponents, docsPageFor } = await import(
   pathToFileURL(join(scriptDir, 'lib', 'docs-component-pages.mjs')).href
 );
 const patterns = new Set(
@@ -193,6 +193,22 @@ for (const f of files) {
   if (route.endsWith('/index')) route = route.slice(0, -'/index'.length);
   routes.add(route);
 }
+// Pages scripts/generate-docs-components.mjs writes into the gitignored
+// content/docs/{components,patterns,guides/providers}. The generator runs at
+// build time, so a link to one resolves even in a checkout that has not
+// generated them yet (this gate runs without an install step in CI).
+for (const name of [...core, ...patterns, ...(rules.providerComponents ?? [])]) {
+  const page = docsPageFor(name, {
+    core: [...core],
+    patterns: [...patterns],
+    providers: rules.providerComponents ?? [],
+    utilities: rules.utilityComponents ?? [],
+    utilityPage: rules.utilityPage,
+    providerGuide: rules.providerGuide,
+  });
+  if (page) routes.add(page.path);
+}
+if (utilities.size) routes.add(`/docs/components/${rules.utilityPage ?? 'utilities'}`);
 
 function checkFrontmatter(file, fm) {
   const { data } = fm;

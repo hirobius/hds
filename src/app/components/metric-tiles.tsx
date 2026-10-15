@@ -6,6 +6,7 @@
  */
 
 import * as React from 'react';
+import hds from '../design-system/tokens';
 import { Card } from './card';
 import { Grid } from './grid';
 import { Surface } from './surface';
@@ -15,6 +16,22 @@ export type MetricTileTone = 'neutral' | 'success' | 'warning' | 'danger' | 'inf
 
 /** Widest a row of tiles gets; a fifth tile wraps to a second row, never a narrower tile. */
 const MAX_COLUMNS = 4;
+
+/** Widest a row of tiles gets at phone width (at or under `breakpoints.sm`), so tiles do not cramp. */
+const PHONE_MAX_COLUMNS = 2;
+
+/** True at or under the phone breakpoint; follows resizes, like Grid's own column clamp. */
+function useIsPhone(): boolean {
+  const read = () => typeof window !== 'undefined' && window.innerWidth <= hds.breakpoints.sm;
+  const [isPhone, setIsPhone] = React.useState(read);
+  React.useEffect(() => {
+    const update = () => setIsPhone(read());
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  return isPhone;
+}
 
 /**
  * The one tile height. Every tile in every row is at least this tall, whatever
@@ -87,7 +104,8 @@ function countTiles(children: React.ReactNode): number {
 
 /**
  * A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles
- * fill three columns and never leave an empty fourth. Use `StatusTile` for state
+ * fill three columns and never leave an empty fourth; at phone width
+ * (640px and under) it is capped at 2 columns. Use `StatusTile` for state
  * with notes (never a number).
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89
  * @deprecated No replacement planned: compose a Card with the type roles (caption label, display/title value).
@@ -96,7 +114,11 @@ function countTiles(children: React.ReactNode): number {
  */
 export const MetricTiles = /* @__PURE__ */ React.forwardRef<HTMLDivElement, MetricTilesProps>(
   function MetricTiles({ children, ...props }, ref) {
-    const columns = Math.min(Math.max(countTiles(children), 1), MAX_COLUMNS);
+    const isPhone = useIsPhone();
+    const columns = Math.min(
+      Math.max(countTiles(children), 1),
+      isPhone ? PHONE_MAX_COLUMNS : MAX_COLUMNS,
+    );
     return (
       <div ref={ref} data-hds-component="MetricTiles" {...props}>
         <Grid columns={columns} gap="tight" align="stretch">

@@ -122,3 +122,23 @@ describe('MetricTiles', () => {
     expect(root.contains(grid(container))).toBe(true);
   });
 });
+
+describe('MetricTiles at phone width (hds#724)', () => {
+  const original = window.innerWidth;
+  afterEach(() => {
+    window.innerWidth = original;
+  });
+
+  it('drops to 2 columns at 390px instead of cramping 4', () => {
+    window.innerWidth = 390;
+    const { container } = render(
+      <MetricTiles>
+        {['A', 'B', 'C', 'D'].map((l) => (
+          <MetricTile key={l} label={l} value="1" />
+        ))}
+      </MetricTiles>,
+    );
+    const grid = container.querySelector('[data-hds-component="Grid"]') as HTMLElement;
+    expect(grid.style.gridTemplateColumns).toBe('repeat(2, minmax(0, 1fr))');
+  });
+});

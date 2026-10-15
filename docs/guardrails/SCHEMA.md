@@ -40,9 +40,9 @@ rarely anyone runs it by hand.
 they were in fact reachable from a `package.json` script. The allowance is gone;
 `manual` now requires a detected channel of `none`.
 
-Of those 24, **6 run on every PR** — `audit-component-integrity`,
-`check-binding-drift`, `check-manifest-drift`, `check-registry`,
-`check-source-canon`, `check-tenant-tokens` — because they sit in `pretest`,
+Of those 24, **5 run on every PR** — `audit-component-integrity`,
+`check-binding-drift`, `check-manifest-drift`, `check-source-canon`,
+`check-tenant-tokens` — because they sit in `pretest`,
 which `.github/workflows/ci.yml` reaches via `pnpm test`. `check-source-canon`
 is the costly one: registered `severity: warn, firingChannel: manual`, and
 simultaneously exiting 1 on any violation in CI, so the registry said the Swiss
@@ -126,6 +126,6 @@ missing list if not. Exit 0 if clean.
 
 Use `--update` to auto-append missing entries (stub fields, severity=warn).
 
-Note: `--warn-only` mode is not implemented. The pre-commit hook runs the
-validator directly; unregistered scripts are a hard gate. This keeps the
+Note: `--warn-only` mode is not implemented; unregistered scripts are a hard
+failure. The validator runs on demand (no hook wires it). This keeps the
 registry honest without a second bypass mechanism.

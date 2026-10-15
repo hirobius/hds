@@ -191,6 +191,13 @@
       "probe": true,
       "maxWidth": "40rem"
     },
+    "Composer": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "Container": {
       "width": "fill",
       "height": "hug",
@@ -620,6 +627,27 @@
       "kind": "leaf",
       "probe": true,
       "maxWidth": "40rem"
+    },
+    "ThemeToggle": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "Timeline": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "container",
+      "probe": true
+    },
+    "TimelineItem": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "part",
+      "probe": false
     },
     "Timestamp": {
       "width": "hug",

@@ -17,8 +17,8 @@ Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. Fro
 
 <!-- auto:start:front-door-counts -->
 
-- **54** public component modules, exported from `src/index.ts`
-- **426** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **57** public component modules, exported from `src/index.ts`
+- **427** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 
 <!-- auto:end:front-door-counts -->
 
@@ -40,11 +40,11 @@ Agents: install the consumer skill with `npx skills add hirobius/hds --skill hds
 
 <!-- auto:start:consumer-usage -->
 
-An internal operations dashboard is the only product app that uses components: **33** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are pages of that app, rendered from its `main` branch.
+An internal operations dashboard is one of 2 product apps that use components: **33** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are pages of that app, rendered from its `main` branch.
 
 | Consumer kind     | Count | How it uses HDS                           |
 | ----------------- | ----- | ----------------------------------------- |
-| Product apps      | 1     | Components and tokens                     |
+| Product apps      | 2     | Components and tokens                     |
 | Token-level sites | 4     | Tokens and CSS only, no component imports |
 
 [![Library page of the product app](docs/images/product-app-library.png)](docs/images/product-app-library.png)
@@ -53,7 +53,7 @@ An internal operations dashboard is the only product app that uses components: *
 
 <!-- auto:end:consumer-usage -->
 
-The numbers come from `pnpm consumer:usage --root <consumer checkout>`, which measures that checkout's `src/` and records its commit in `docs/data/consumer-usage.json` (pass `--commit <sha>` when the root is a `git archive` export); without a root it reuses the committed snapshot. A deprecated alias counts as the component it points to (`HdsCheckbox` as `Checkbox`). The components that the app's page- and video-clone prompts tell generated code to import are listed there as `promptContracts` and are not counted here. `scripts/__tests__/consumer-usage.test.mjs` fails if this section drifts from that snapshot. The product-app and token-level-site split is a declared figure in that file, not a measurement. It was confirmed on 2026-10-01 (there is no second product app), so `consumersConfirmed` there is true and the table above shows it.
+The numbers come from `pnpm consumer:usage --root <consumer checkout>`, which measures that checkout's `src/` and records its commit in `docs/data/consumer-usage.json` (pass `--commit <sha>` when the root is a `git archive` export); without a root it reuses the committed snapshot. A deprecated alias counts as the component it points to (`HdsCheckbox` as `Checkbox`). The components that the app's page- and video-clone prompts tell generated code to import are listed there as `promptContracts` and are not counted here. `scripts/__tests__/consumer-usage.test.mjs` fails if this section drifts from that snapshot. The product-app and token-level-site split is a declared figure in that file, not a measurement. It was confirmed on 2026-10-01 and updated on 2026-10-12, when Roleforge, a job-application tracker, became the second product app, so `consumersConfirmed` there is true and the table above shows it.
 
 ## What belongs in the system
 

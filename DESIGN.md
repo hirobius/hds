@@ -39,15 +39,15 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 | --- | --- | --- | --- |
 | `semantic.typography.display` | 48px | 700 | One per page, hero only |
 | `semantic.typography.title` | 24px | 700 | Section and card headings |
-| `semantic.typography.titleSm` | 16px | 700 | Small heading inside a card or section band |
-| `semantic.typography.body` | 16px | 400 | Prose |
-| `semantic.typography.ui` | 14px | 500 | Controls, nav, table text, values |
-| `semantic.typography.caption` | 12px | 500 | Metadata, help text and labels, in sentence case |
-| `semantic.typography.mono` | 13px | 400 | Code and ids |
+| `semantic.typography.titleSm` | 18px | 700 | Small heading inside a card or section band |
+| `semantic.typography.body` | 18px | 400 | Prose |
+| `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
+| `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.mono` | 15px | 400 | Code and ids |
 | `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
 | `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
 | `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.eyebrow` | 12px | 500 | deprecated: use semantic.typography.caption |
+| `semantic.typography.eyebrow` | 14px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
@@ -154,7 +154,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->
 
-When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, and HDS tokens and rules always win.
+When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
@@ -233,6 +233,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (426 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (427 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

@@ -1,0 +1,35 @@
+{
+  "version": "0.26.1",
+  "date": "2026-10-14",
+  "bump": "patch",
+  "summary": "2 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.26.1/value-changed/--semantic-color-content-secondary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Nothing to do: dark secondary text is a new half-step lighter (neutral.350) so it reads on sunken surfaces; it stays visibly dimmer than primary text.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-secondary"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-secondary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-secondary:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-content-secondary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:17"
+    },
+    {
+      "id": "0.26.1/look/small-fixes-frozen-723-725",
+      "kind": "look",
+      "impact": "look",
+      "plain": "MetricTiles now shows at most 2 columns at 640px and under, TabsList fades the edge that has hidden tabs, and Stack passes aria-* and role through, so check any phone-width screenshot tests that include them.",
+      "source": "CHANGELOG.md:18"
+    }
+  ]
+}

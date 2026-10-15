@@ -20,6 +20,7 @@ export const tokenValues = {
         "100": "#f5f5f5",
         "200": "#e5e5e5",
         "300": "#d4d4d4",
+        "350": "#b4b4b4",
         "400": "#a3a3a3",
         "450": "#909090",
         "500": "#737373",
@@ -176,7 +177,7 @@ export const tokenValues = {
         "4xl": "36px",
         "5xl": "48px",
         "6xl": "60px",
-        code: "13px"
+        code: "15px"
       },
       weight: {
         regular: "400",

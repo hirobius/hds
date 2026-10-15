@@ -1,0 +1,1 @@
+- Release unblocked: folded the duplicate --component-badge-radius upgrade step; check-upgrade-ledger now fails two pending notes that share a step id.

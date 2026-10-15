@@ -40,6 +40,11 @@ export const PAIRS = [
     bg: 'semantic.color.surface.overlay',
   },
   {
+    label: 'content.secondary / surface.sunken',
+    text: 'semantic.color.content.secondary',
+    bg: 'semantic.color.surface.sunken',
+  },
+  {
     label: 'content.tertiary / surface.page',
     text: 'semantic.color.content.tertiary',
     bg: 'semantic.color.surface.page',

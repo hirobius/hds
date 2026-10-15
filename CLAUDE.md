@@ -49,6 +49,10 @@ This charter outranks the process rules below (not the HARD RULES above).
 - **Veto after, not approve before.** Report what you decided and why in a line
   or two, so Adrian can reverse it — instead of waiting for sign-off on
   engineering calls.
+- **Steward the code (Adrian, 2026-10-13).** "I deeply care about the health and overall
+  long-term strategy of my code bases and I would love if you did as well." Leave each repo
+  healthier than you found it: remove what your change orphans, give every workaround its issue
+  number, keep steering docs true to the code, and say in the PR when speed costs long-term health.
 
 ---
 
@@ -69,7 +73,7 @@ The repo has a **closed-loop guardrail system** every agent must understand:
 
 - **`docs/guardrails/SCHEMA.md`** — the registry's field reference and what each `firingChannel` means. (The 2026 hardening roadmap is archived at `docs/archive/HARDENING_ROADMAP.md`: history, not a live plan; open work is in GitHub Issues.)
 - **`docs/state-surfaces.json`** — every file that describes project state: `generated` (names the `check` that proves it fresh, or says `"freshness": "unchecked"`), `checked`, or `editorial` (owner, `reviewedAt`, `maxAgeDays`). `scripts/check-state-surfaces.mjs` fails on a missing file, a doc that names a path that does not exist, or a generated file with no verifiable check; an editorial file past its review age only warns "review due" (`--strict-review` fails). Edit a generated file's source, never the file; after re-reading an editorial one, bump its `reviewedAt` (today or earlier). Index: `docs/ai/DOCS-INDEX.md`.
-- **`docs/guardrails/registry.json`** — every `scripts/check-*.mjs` and `scripts/audit-*.mjs` is registered with `firingChannel` declaring where it fires (pre-commit / pre-push / ci-pr / ci-scheduled / pnpm-meta / manual). Drift caught by `validate-guardrail-registry` + `check-validator-wiring`, both pre-commit gates.
+- **`docs/guardrails/registry.json`** — every `scripts/check-*.mjs` and `scripts/audit-*.mjs` is registered with `firingChannel` declaring where it fires (pre-commit / pre-push / ci-pr / ci-scheduled / pnpm-meta / manual). Drift is caught by `validate-guardrail-registry` + `check-validator-wiring`, run on demand (neither is wired into a hook).
 - **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt` (add a `.status/<branch>.md` note instead of editing it; `pnpm status:fold` folds notes on main), or when a commit that changes what ships has no pending `.changeset/*.md` and no `skip-changeset` marker in its message. Every changeset carries `upgrade/pending/<same name>.json` (`pnpm upgrade:note`); a breaking change needs a minor below 1.0. The gate's registry entry has the exact file lists.
 
 Context Awareness: look for local `CLAUDE.md` files in subdirectories (like `/components` or `/sketches`) for overriding rules before editing.

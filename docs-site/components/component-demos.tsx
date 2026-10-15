@@ -23,6 +23,7 @@ import {
   Card,
   Checkbox,
   Combobox,
+  Composer,
   Container,
   Dialog,
   Disclosure,
@@ -52,13 +53,16 @@ import {
   TabsList,
   TabsTrigger,
   Tag,
+  ThemeToggle,
   Text,
   Textarea,
+  Timeline,
+  TimelineItem,
   Toggle,
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
-import { Copy, Search, Star } from '@hirobius/design-system/icons';
+import { ArrowRight, CircleCheck, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
 import {
   AssetImg,
   CodeBlock,
@@ -350,6 +354,21 @@ function CardDemo() {
           <Card.RowNote>Last run 2 hours ago</Card.RowNote>
         </Card.Row>
       </Card>
+      {/* asChild: the whole card is one link, with the interactive hover. */}
+      <Card asChild padding="item">
+        <a href="#card">
+          <Stack direction="row" gap="tight" justify="space-between" align="center">
+            <Users size={18} aria-hidden="true" />
+            <ArrowRight size={14} aria-hidden="true" />
+          </Stack>
+          <Text variant="titleSm" as="span">
+            Leads
+          </Text>
+          <Text variant="ui" as="span" className="text-muted-foreground">
+            Find businesses and build sites
+          </Text>
+        </a>
+      </Card>
     </Stack>
   );
 }
@@ -451,6 +470,35 @@ function InlineLinkDemo() {
     <p style={{ margin: 0 }}>
       Read the <InlineLink href="#">upgrade guide</InlineLink> before you bump the range.
     </p>
+  );
+}
+
+function ComposerDemo() {
+  const [sent, setSent] = useState<string | null>(null);
+  return (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <Composer
+        placeholder="Drop a thought, or paste something long"
+        pasteFoldThreshold={200}
+        onSubmit={({ text, attachments }) =>
+          setSent(`${text.length} chars, ${attachments.length} attachments`)
+        }
+      />
+      {sent && <p style={{ margin: 0 }}>Sent: {sent}</p>}
+    </div>
+  );
+}
+
+function ThemeToggleDemo() {
+  // Local state only: the demo shows the morph without switching the docs theme.
+  const [dark, setDark] = useState(false);
+  return (
+    <div style={demoRow}>
+      <ThemeToggle isDark={dark} onToggle={() => setDark((d) => !d)} />
+      <span>{dark ? 'Dark' : 'Light'}: press to morph</span>
+      <ThemeToggle isDark={false} onToggle={() => {}} />
+      <ThemeToggle isDark onToggle={() => {}} />
+    </div>
   );
 }
 
@@ -623,6 +671,28 @@ function TextareaDemo() {
   );
 }
 
+function TimelineDemo() {
+  return (
+    <Timeline aria-label="Recent activity">
+      <TimelineItem
+        date={new Date(2026, 9, 12, 16, 40)}
+        title="Shipped hds 0.24"
+        icon={CircleCheck}
+        tone="success"
+      />
+      <TimelineItem date={new Date(2026, 9, 12, 9, 15)} title="Client portal deployed">
+        Preview checked on desktop and mobile, then promoted by the owner.
+      </TimelineItem>
+      <TimelineItem date={new Date(2026, 9, 11, 14, 5)} title="Invoice reminder sent" />
+      <TimelineItem
+        date={new Date(2026, 9, 11, 10, 30)}
+        title="Lead pipeline run finished"
+        tone="info"
+      />
+    </Timeline>
+  );
+}
+
 function ToggleDemo() {
   const [on, setOn] = useState(true);
   return <Toggle label="Dark mode" checked={on} onChange={setOn} />;
@@ -665,6 +735,7 @@ function PageHeaderDemo() {
       level={2}
       breadcrumb={<Breadcrumb items={[{ label: 'Clients', href: '#' }, { label: 'Acme Co' }]} />}
       title="Acme Co"
+      description="Brand refresh and the spring campaign site."
       status={<Badge tone="success">Active</Badge>}
       actions={
         <>
@@ -842,6 +913,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Grid: GridDemo,
   Icon: IconDemo,
   InlineLink: InlineLinkDemo,
+  Composer: ComposerDemo,
   Kbd: KbdDemo,
   Pagination: PaginationDemo,
   Popover: PopoverDemo,
@@ -854,9 +926,11 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Stack: StackDemo,
   Surface: SurfaceDemo,
   Tabs: TabsDemo,
+  ThemeToggle: ThemeToggleDemo,
   Tag: TagDemo,
   Text: TextDemo,
   Textarea: TextareaDemo,
+  Timeline: TimelineDemo,
   Toggle: ToggleDemo,
   Tooltip: TooltipDemo,
   VisuallyHidden: VisuallyHiddenDemo,

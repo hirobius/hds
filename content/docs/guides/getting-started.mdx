@@ -1,0 +1,66 @@
+---
+title: 'Getting started'
+description: 'Install the package, load the CSS once, wrap your app in a data-hds scope and render a first component.'
+status: 'stable'
+related:
+  - 'Button'
+  - '/docs/guides/tokens'
+---
+
+HDS ships to the public npm registry as `@hirobius/design-system`. It is ESM, React 18 or 19, and needs no Tailwind config, router or font files of its own.
+
+## Install
+
+```bash
+pnpm add @hirobius/design-system react react-dom
+```
+
+Some peers are optional and only needed for one entry point:
+
+- `react-router`, if you want HDS links to drive your router;
+- `react-hook-form`, `zod` and `@hookform/resolvers`, for `@hirobius/design-system/form`;
+- `lenis`, for `@hirobius/design-system/scroll`.
+
+## Load the CSS once
+
+Import one stylesheet at your app root. Pick it by how much of the page HDS should own:
+
+| Stylesheet      | What it holds                                                                                                 | Use it for                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `styles.css`    | Token variables, component styles and utilities. No global reset.                                             | Adding HDS to an existing app. Recommended. |
+| `tokens.css`    | Everything in `styles.css`, plus a global reset (Tailwind preflight) that restyles every element on the page. | An app built on HDS from the start.         |
+| `variables.css` | The token variables only.                                                                                     | Theming another system from HDS tokens.     |
+
+```tsx
+import '@hirobius/design-system/styles.css';
+import '@hirobius/design-system/fonts.css'; // optional: the HDS typefaces
+```
+
+## Mark the HDS scope
+
+HDS base styles (the type baseline) apply only inside an element with `data-hds`. With `styles.css`, nothing outside that element changes.
+
+```tsx
+import { Button } from '@hirobius/design-system';
+
+export const App = () => (
+  <div data-hds>
+    <Button variant="primary">Get started</Button>
+  </div>
+);
+```
+
+## Theming
+
+Light and dark mode, density and brand are set with attributes on a root element, so they work without JavaScript. In React, [`HdsThemeProvider`](/docs/guides/providers) sets them for you.
+
+## Where to go next
+
+- **Components** in the sidebar: every core component, with a live demo, props and the tokens it reads. Start with [Button](/docs/components/button).
+- **Patterns** in the sidebar: page-level pieces such as page headers and forms, imported from `@hirobius/design-system/patterns`.
+- [Tokens](/docs/guides/tokens): where every color, space and type value comes from.
+- [Upgrade](/docs/guides/upgrade): moving to a newer release with one command.
+
+## For agents
+
+The package carries its own agent context: `AGENTS.md` and `llms.txt` at the package root, the component API in `src/app/data/component-api.json`, and `hds-mcp`, an MCP server the package installs as the `hds-mcp` bin (`npx hds-mcp` in a project that depends on it). The full consumer guide is [docs/CONSUMING.md](https://github.com/hirobius/hds/blob/main/docs/CONSUMING.md).

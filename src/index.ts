@@ -40,7 +40,7 @@
 // Side-effect import: design system base styles (tokens + theme + utilities)
 import './styles/index.css';
 
-// ── primitives (37) ──
+// ── primitives (39) ──
 export * from './app/components/alert';
 export * from './app/components/avatar';
 export * from './app/components/badge';
@@ -64,6 +64,8 @@ export * from './app/components/inline-code';
 export * from './app/components/inline-link';
 export * from './app/components/input';
 export * from './app/components/textarea';
+export * from './app/components/composer';
+export * from './app/components/theme-toggle';
 export * from './app/components/checkbox';
 export * from './app/components/radio';
 export * from './app/components/slider';
@@ -99,6 +101,7 @@ export * from './app/components/sidebar';
 export * from './app/components/switcher';
 // Scroll-motion primitives — CSS scroll-driven, zero JS/deps (#116).
 export * from './app/components/pin';
+export * from './app/components/timeline';
 
 // ── app-shell + layout primitives consumed by product apps ──
 export * from './app/components/empty-state';

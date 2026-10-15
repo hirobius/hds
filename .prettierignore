@@ -8,12 +8,13 @@ test-results/
 
 # Generated artifacts
 DESIGN.md
+docs/adr/README.md
 # Generated token outputs — build-tokens.mjs owns their format (double-quoted
 # JS/TS constants + raw CSS). Prettier's singleQuote reformat diverges from the
 # generator output, which breaks check-token-rebake-needed on every token commit
 # (it compares the raw build-tokens output to the staged files) and forced
-# --no-verify. Let the generator own the format, same as exceptions-audit.md
-# below. NB: the old `src/design-system/tokens/**` glob was a stale path and
+# --no-verify. Let the generator own the format, same as the other generated
+# files below. NB: the old `src/design-system/tokens/**` glob was a stale path and
 # never matched these — that's what caused the churn.
 src/app/design-system/generated-tokens.ts
 src/app/design-system/generated-token-values.ts
@@ -29,10 +30,6 @@ skills/hds-consumer/SKILL.md
 docs/guardrails/baselines/**
 docs/guardrails/full-strictness-inventory.json
 docs/ai/swarm-watchdog-decisions.jsonl
-# Generated audit report — written by the audit-exceptions gate every run (and
-# the post-commit re-run). Prettier-reformatting it diverged from the generator
-# output and churned the tree on every commit; let the generator own its format.
-docs/audits/exceptions-audit.md
 # Figma model golden snapshot — vitest's toMatchFileSnapshot compares it byte for
 # byte against JSON.stringify output; Prettier's inline arrays would break it.
 scripts/__tests__/fixtures/figma-model/model.golden.json

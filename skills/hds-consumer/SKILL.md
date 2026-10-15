@@ -53,6 +53,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Actions
 
 - `Button` — Triggers an action when activated.
+- `ThemeToggle` — One-button light/dark switch with a sun-to-moon morph.
 
 ### Display
 
@@ -76,6 +77,8 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
 - `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
+- `Timeline` — The timeline itself.
+- `TimelineItem` — One event on a Timeline.
 - `Timestamp` — Presents a date/time with a machine-readable `dateTime` for accessibility.
 
 ### Feedback
@@ -92,6 +95,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Checkbox` — Checkbox — custom-drawn checkbox with check / indeterminate glyph.
 - `Combobox` — Combobox — searchable single- or multi-select (Popover + filtered listbox).
+- `Composer` — Composer — prompt and capture box that grows with its text and folds long pastes into cards.
 - `Input` — Input — text field primitive with label, helper, and error slots.
 - `Radio` — Radio — radio button with animated selection indicator.
 - `SegmentedControl` — SegmentedControl " segmented selection input for compact mutually-exclusive choices.
@@ -123,7 +127,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Pagination` — Paged navigation with first/last anchors, sibling pages, and ellipses.
 - `Tabs` — The tab set itself.
 - `TabsContent` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
-- `TabsList` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
+- `TabsList` — The tab strip.
 - `TabsTrigger` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
 
 ### Overlays
@@ -193,7 +197,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 3. Reach for a named layout primitive before hand-rolling flex/grid math for a common intent: `Stack direction="row" wrap="wrap"` (wrapping row of same-ish things), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query). A full-height shell with a centered main region, an aspect-ratio-locked media box or a negative margin that escapes a parent padding is a `Box` with `style` (not `sx`, which applies on the client only).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
 5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). A row of headline numbers is always `MetricTiles`; `Stat`, `Card.Metric` and `StatusTile` answer other needs (see "Pick By Need" in `llms.txt`). Pick between `Card` and `Surface` with the "Which one, when" table in `DESIGN.md`.
-6. `Box` `style` / `sx` LAST — only for genuinely one-off layout that no named primitive covers (prefer `style` over `sx`, as `sx` applies on the client only). `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
+6. `Box` with `style` (or `sx`) is used last, only for genuinely one-off layout that no named primitive covers (prefer `style` over `sx`, as `sx` applies on the client only). `sx` spacing/color keys must be HDS token keys, never raw hex or px.
 
 Never:
 

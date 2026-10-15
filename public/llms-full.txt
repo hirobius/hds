@@ -162,6 +162,7 @@ CardRow: Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lin
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
+Composer: Capture a prompt or a quick note where a long paste should not flood the field. Use instead: Textarea
 Container: [core] Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
 DataTableSection: Put a heading and toolbar above a Table.
 DestructiveSection: Put a dangerous action, such as delete, in its own section with a warning and a confirm step.
@@ -200,6 +201,8 @@ Tabs: [core] Switch between panels of related content in the same place, one vis
 Tag: [core] Show an interactive filter or category chip that people can toggle. Use instead: Badge
 Text: [core] Set any text on the type ramp, with the element chosen by `as`. Use instead: InlineLink, Kbd
 Textarea: [core] Collect multi-line free text such as a message, note or description. Use instead: Input
+ThemeToggle: A single header or menu control to switch between the light and dark theme. Use instead: SegmentedControl
+Timeline: Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
 Tooltip: [core] Name an icon-only control, or add a short hint that appears on hover and keyboard focus. Use instead: Popover, Text
@@ -233,7 +236,7 @@ Canonical skeleton, outermost to innermost:
 3. Reach for a named layout primitive before hand-rolling flex/grid math for a common intent: `Stack direction="row" wrap="wrap"` (wrapping row of same-ish things), `Sidebar` (fixed-width rail + fluid content, no media query), `Switcher` (row that flips to a column below a threshold, no media query). A full-height shell with a centered main region, an aspect-ratio-locked media box or a negative margin that escapes a parent padding is a `Box` with `style` (not `sx`, which applies on the client only).
 4. `Surface` for any background-bearing, padded wrapper (card, panel, inset). Never a raw element with backgroundColor + padding hand-rolled inline.
 5. Use the screen patterns (`@hirobius/design-system/patterns`) for the parts every screen repeats: `PageHeader` once at the top (breadcrumb, `heading2` title, status, actions), `MetricTiles` for any row of headline numbers, `FormActions` for a form footer (primary right-most and last in DOM order, destructive on the far left), `DataTableSection` for a titled table (toolbar slot, consumer row actions, empty state, scrolls on narrow widths without a caller `minWidth`), and `DestructiveSection` last for an irreversible action (danger button, then an `AlertDialog` confirm). A row of headline numbers is always `MetricTiles`; `Stat`, `Card.Metric` and `StatusTile` answer other needs (see "Pick By Need" in `llms.txt`). Pick between `Card` and `Surface` with the "Which one, when" table in `DESIGN.md`.
-6. `Box` `style` / `sx` LAST — only for genuinely one-off layout that no named primitive covers (prefer `style` over `sx`, as `sx` applies on the client only). `sx` spacing/color keys MUST be HDS token keys, never raw hex/px.
+6. `Box` with `style` (or `sx`) is used last, only for genuinely one-off layout that no named primitive covers (prefer `style` over `sx`, as `sx` applies on the client only). `sx` spacing/color keys must be HDS token keys, never raw hex or px.
 
 Negative rules (apply everywhere, checked by `scripts/audit-tokens.mjs --full`, `check-hardcoded-spacing.mjs`, `check-hardcoded-colors.mjs`):
 
@@ -343,7 +346,7 @@ import { Ellipsis } from '@hirobius/design-system/icons';
 
 Rule: icon-only actions (row menus, close, edit) use `Button iconOnly` with a `label` and an `Icon` in `iconLeft`; do not hand-roll a button with a glyph or text "...".
 
-Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Bell, Bookmark, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Info, Link, Lock, LogIn, LogOut, Mail, Menu, Minus, Pencil, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, X
+Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Bell, Bookmark, Briefcase, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Images, Info, Link, Lock, LogIn, LogOut, Mail, Menu, Minus, Pencil, Phone, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, Users, Wrench, X
 
 Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.
 
@@ -422,15 +425,15 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 | --- | --- | --- | --- |
 | `semantic.typography.display` | 48px | 700 | One per page, hero only |
 | `semantic.typography.title` | 24px | 700 | Section and card headings |
-| `semantic.typography.titleSm` | 16px | 700 | Small heading inside a card or section band |
-| `semantic.typography.body` | 16px | 400 | Prose |
-| `semantic.typography.ui` | 14px | 500 | Controls, nav, table text, values |
-| `semantic.typography.caption` | 12px | 500 | Metadata, help text and labels, in sentence case |
-| `semantic.typography.mono` | 13px | 400 | Code and ids |
+| `semantic.typography.titleSm` | 18px | 700 | Small heading inside a card or section band |
+| `semantic.typography.body` | 18px | 400 | Prose |
+| `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
+| `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.mono` | 15px | 400 | Code and ids |
 | `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
 | `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
 | `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.eyebrow` | 12px | 500 | deprecated: use semantic.typography.caption |
+| `semantic.typography.eyebrow` | 14px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
@@ -537,7 +540,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->
 
-When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, and HDS tokens and rules always win.
+When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
@@ -616,7 +619,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (426 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (427 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -732,6 +735,7 @@ Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback f
 ### Card
 Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
   - as: ElementType<any, keyof IntrinsicElements>
+  - asChild: boolean = false
   - bordered: boolean = false
   - gap: "tight" | "normal" | "inset" | "spacious" | "px1" | "px2" | "px4" | "px6" | "px… = tight
   - noPadding: boolean = false
@@ -808,6 +812,22 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
   - value: string | readonly string[] | null
+
+### Composer
+Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer t…
+  - attachments: ComposerAttachment[]
+  - className: string
+  - defaultAttachments: ComposerAttachment[] = []
+  - defaultValue: string
+  - disabled: boolean = false
+  - label: string = Message
+  - onAttachmentsChange: ((attachments: ComposerAttachment[]) => void)
+  - onSubmit: ((submission: ComposerSubmission) => void)
+  - onValueChange: ((value: string) => void)
+  - pasteFoldThreshold: number = 500
+  - pending: boolean = false
+  - placeholder: string
+  - value: string
 
 ### Container
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
@@ -1062,6 +1082,7 @@ Page — standard page shell. Wraps page content in Container (width constraint)
 Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `…
   - actions: ReactNode
   - breadcrumb: ReactNode
+  - description: ReactNode
   - level: PageHeaderLevel = 1
   - status: ReactNode
   - title: ReactNode
@@ -1180,6 +1201,7 @@ Stack — one-dimensional layout primitive.
   - direction: "row" | "column" = column
   - gap: "tight" | "normal" | "inset" | "spacious" | "gap" | "medium" | "hairline" | "xs… = tight
   - justify: 'start' | 'center' | 'end' | 'space-between'
+  - role: AriaRole
   - style: CSSProperties
   - wrap: FlexWrap
 
@@ -1241,7 +1263,7 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline p
   - value: string
 
 ### TabsList
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
+The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look absent. The …
   - asChild: boolean
   - loop: boolean
 
@@ -1274,6 +1296,30 @@ Textarea — multi-line text field primitive with label, helper, and error slots
   - label: string
   - resize: "none" | "both" | "vertical" = vertical
   - textareaClassName: string
+
+### ThemeToggle
+One-button light/dark switch with a sun-to-moon morph.
+  - className: string
+  - isDark: boolean
+  - onToggle: (() => void)
+
+### Timeline
+The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.
+  - aria-label: string
+  - children: ReactNode
+  - className: string
+  - locale: string
+  - order: "desc" | "asc" = desc
+
+### TimelineItem
+One event on a Timeline. Render it only as a child of Timeline.
+  - children: ReactNode
+  - date: string | number | Date
+  - defaultOpen: boolean
+  - icon: LucideIcon
+  - locale: string
+  - title: ReactNode
+  - tone: 'success' | 'danger' | 'warning' | 'info'
 
 ### Timestamp
 Presents a date/time with a machine-readable `dateTime` for accessibility.
