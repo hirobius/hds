@@ -75,10 +75,14 @@ export function HdsForm<TFieldValues extends FieldValues>({
  */
 export interface HdsFieldRenderProps {
   name: string;
-  value: unknown;
+  /** `any`, like `ref`: the control decides what it holds (string for `<input>`, anything for a custom control). */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- hds#676: must spread onto any control
+  value: any;
   onChange: (...args: unknown[]) => void;
   onBlur: (...args: unknown[]) => void;
-  ref: React.Ref<unknown>;
+  /** `any`, not `unknown`: the element type is the consumer's (`<input>`, `<select>`, …), so it must spread onto any of them (hds#676). */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- hds#676: must spread onto any control
+  ref: React.Ref<any>;
   id: string;
   required?: boolean;
   'aria-invalid'?: boolean;
