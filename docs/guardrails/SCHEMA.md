@@ -126,6 +126,6 @@ missing list if not. Exit 0 if clean.
 
 Use `--update` to auto-append missing entries (stub fields, severity=warn).
 
-Note: `--warn-only` mode is not implemented. The pre-commit hook runs the
-validator directly; unregistered scripts are a hard gate. This keeps the
+Note: `--warn-only` mode is not implemented; unregistered scripts are a hard
+failure. The validator runs on demand (no hook wires it). This keeps the
 registry honest without a second bypass mechanism.

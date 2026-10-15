@@ -27,6 +27,8 @@ const config: KnipConfig = {
     // Vitest + Playwright test files — entries so knip picks up
     // test-only imports (e.g. helpers/* in tests/*.spec.ts).
     'tests/**/*.{test,spec}.{ts,tsx}!',
+    // Compile-only type fixtures, read from disk by their *.test.ts (hds#676).
+    'src/**/__fixtures__/**/*.{ts,tsx}!',
   ],
   project: [
     'src/**/*.{ts,tsx}!',

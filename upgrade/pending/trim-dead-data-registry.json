@@ -1,12 +1,12 @@
 {
   "impact": "breaking",
-  "plain": "The stray CSS variable --leading-relaxed is no longer shipped; use --semantic-typography-body-line-height or set your own line-height instead.",
+  "plain": "The stray CSS variable --leading-relaxed and the .leading-relaxed class are no longer shipped; use --semantic-typography-body-line-height or set your own line-height instead.",
   "steps": [
     {
       "id": "removed/--leading-relaxed",
       "kind": "removed",
       "impact": "breaking",
-      "plain": "The stray CSS variable --leading-relaxed is no longer shipped; use --semantic-typography-body-line-height or set your own line-height instead.",
+      "plain": "The stray CSS variable --leading-relaxed and the .leading-relaxed class are no longer shipped; use --semantic-typography-body-line-height or set your own line-height instead.",
       "detect": {
         "cssVars": ["--leading-relaxed"],
         "cssVarWrites": ["--leading-relaxed"]

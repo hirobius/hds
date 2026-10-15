@@ -448,9 +448,7 @@ let ranSamples = false;
 // Real gaps in the package, tracked in an issue and listed so the check can ship
 // green. Remove the entry when its issue closes; an entry that no longer matches
 // anything fails (stale allowance).
-const KNOWN_GAPS = [
-  { issue: 'hirobius/hds#676', file: 'docs/CONSUMING.md', code: 2322, msg: 'Ref<unknown>' },
-];
+const KNOWN_GAPS = [];
 const FIXTURE_NAME = 'fixture-removed-name';
 
 if (ok) {
