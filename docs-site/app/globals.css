@@ -157,12 +157,12 @@ pre {
   border: 1px solid var(--semantic-color-border-default);
 }
 
-/* Generated props and keyboard tables scroll inside their own frame on a phone
-   instead of pushing the page sideways. */
+/* Markdown tables: Fumadocs already wraps each one in a scrolling frame, so on a
+   phone a wide table scrolls inside it. Keep the table a real table that fills
+   the frame; `display: block` here shrank it to its content and cut the header
+   row and borders off short of the frame's edge. */
 .prose table:not(.hds-token-table) {
-  display: block;
-  max-width: 100%;
-  overflow-x: auto;
+  width: 100%;
 }
 
 /* Collapsed sections (generated pages and token tables): a hairline row with a
