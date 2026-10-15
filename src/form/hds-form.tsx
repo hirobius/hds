@@ -80,9 +80,8 @@ export interface HdsFieldRenderProps {
   value: any;
   onChange: (...args: unknown[]) => void;
   onBlur: (...args: unknown[]) => void;
-  /** `any`, not `unknown`: the element type is the consumer's (`<input>`, `<select>`, …), so it must spread onto any of them (hds#676). */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- hds#676: must spread onto any control
-  ref: React.Ref<any>;
+  /** `never`, not `unknown`: a ref that accepts nothing is assignable to every element's ref, so it spreads onto `<input>`, `<select>`, … (hds#676). */
+  ref: React.Ref<never>;
   id: string;
   required?: boolean;
   'aria-invalid'?: boolean;
