@@ -1,0 +1,1 @@
+- HdsFieldRenderProps: ref is Ref<never> and value is any so the render props spread onto native controls (hds#676); compile fixture + test, KNOWN_GAPS entry removed.
