@@ -44,7 +44,7 @@ const PX: Array<[string, string, string]> = [
   ['--component-button-size-sm-paddingX', '12px', 'px-3'],
   ['--component-button-size-sm-height', '32px', 'h-8'],
   ['--component-button-size-sm-itemSpacing', '8px', 'base gap-2'],
-  ['--component-button-size-lg-fontSize', '14px', 'hds-type-ui'],
+  ['--component-button-size-lg-fontSize', '16px', 'hds-type-ui'],
   ['--component-input-paddingX', '12px', 'pl-3 pr-3'],
   ['--component-card-radius', '12px', 'rounded-lg (role.radius + 4px)'],
   ['--component-card-gap', '16px', "gap='tight' = semantic.space.scale.sm"],

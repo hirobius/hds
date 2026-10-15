@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-14T21:18:58.897Z",
+  "generated": "2026-10-15T05:54:59.010Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11396,8 +11396,8 @@
         "path": "primitive.typography.size.code",
         "cssVar": "--primitive-typography-size-code",
         "type": "dimension",
-        "description": "13px code size. The mono role (hds#485): one px below ui so code sits level with 14px prose.",
-        "value": "13px"
+        "description": "15px code size. The mono role (hds#485): one px below ui so code sits level with 16px UI text.",
+        "value": "15px"
       },
       {
         "path": "primitive.typography.weight.regular",
@@ -12611,10 +12611,10 @@
         "path": "semantic.typography.titleSm",
         "cssVar": "--semantic-typography-titleSm",
         "type": "typography",
-        "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+        "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "16px",
+          "fontSize": "18px",
           "fontWeight": "700",
           "letterSpacing": "0em",
           "lineHeight": "1.375"
@@ -12624,10 +12624,10 @@
         "path": "semantic.typography.body",
         "cssVar": "--semantic-typography-body",
         "type": "typography",
-        "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+        "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "16px",
+          "fontSize": "18px",
           "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "1.6",
@@ -12638,10 +12638,10 @@
         "path": "semantic.typography.ui",
         "cssVar": "--semantic-typography-ui",
         "type": "typography",
-        "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
+        "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "14px",
+          "fontSize": "16px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "1.5",
@@ -12652,10 +12652,10 @@
         "path": "semantic.typography.caption",
         "cssVar": "--semantic-typography-caption",
         "type": "typography",
-        "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
+        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "12px",
+          "fontSize": "14px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "1.5"
@@ -12665,10 +12665,10 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
-          "fontSize": "13px",
+          "fontSize": "15px",
           "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "1.5",
@@ -12721,7 +12721,7 @@
         "description": "deprecated: use semantic.typography.caption",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "12px",
+          "fontSize": "14px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "1.5"
@@ -13174,9 +13174,9 @@
         "path": "component.tag.fontSize",
         "cssVar": "--component-tag-fontSize",
         "type": "dimension",
-        "description": "Tag type size.",
-        "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "12px"
+        "description": "Tag type size (the caption role, 14px).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.tag.fontWeight",
@@ -13262,9 +13262,9 @@
         "path": "component.badge.fontSize",
         "cssVar": "--component-badge-fontSize",
         "type": "dimension",
-        "description": "Badge type size.",
-        "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "12px"
+        "description": "Badge type size (the caption role, 14px).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.badge.fontWeight",
@@ -13498,9 +13498,9 @@
         "path": "component.button.size.sm.fontSize",
         "cssVar": "--component-button-size-sm-fontSize",
         "type": "dimension",
-        "description": "Small button label size (12px, hds#283: was 13px).",
-        "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "12px"
+        "description": "Small button label size (14px, the caption role; 12px before 2026-10-15).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.button.size.sm.iconSize",
@@ -13546,9 +13546,9 @@
         "path": "component.button.size.md.fontSize",
         "cssVar": "--component-button-size-md-fontSize",
         "type": "dimension",
-        "description": "Medium button label size (14px, hds#283: was 15px).",
-        "alias": "{primitive.typography.size.sm}",
-        "resolvedValue": "14px"
+        "description": "Medium button label size (16px, the ui role; 14px before 2026-10-15).",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.button.size.md.iconSize",
@@ -13594,9 +13594,9 @@
         "path": "component.button.size.lg.fontSize",
         "cssVar": "--component-button-size-lg-fontSize",
         "type": "dimension",
-        "description": "Large button label size (14px, the same hds-type-ui role as md).",
-        "alias": "{primitive.typography.size.sm}",
-        "resolvedValue": "14px"
+        "description": "Large button label size (16px, the same hds-type-ui role as md).",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.button.size.lg.iconSize",

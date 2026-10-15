@@ -177,7 +177,7 @@ export const tokenValues = {
         "4xl": "36px",
         "5xl": "48px",
         "6xl": "60px",
-        code: "13px"
+        code: "15px"
       },
       weight: {
         regular: "400",
