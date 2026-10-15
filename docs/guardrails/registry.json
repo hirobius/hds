@@ -5,16 +5,6 @@
   "precommitStructureHashUpdatedAt": "2026-10-14T04:31:42.037Z",
   "gates": [
     {
-      "id": "audit-batch-deliverables",
-      "description": "TODO: add description — audit-batch-deliverables.mjs JSDoc block is empty.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-batch-deliverables.mjs",
-      "fixturePath": "fixtures/audit-batch-deliverables",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual"
-    },
-    {
       "id": "audit-bundle",
       "description": "Generates a bundle composition report at docs/perf/bundle-report.html using vite-bundle-visualizer. Manual channel only — artifact, not gating.",
       "severity": "warn",
@@ -48,41 +38,6 @@
       "source": "human",
       "firingChannel": "on-demand",
       "supportsJson": true
-    },
-    {
-      "id": "audit-exceptions",
-      "description": "TODO: add description — audit-exceptions.mjs has no leading JSDoc block.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-exceptions.mjs",
-      "fixturePath": "fixtures/audit-exceptions",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "audit-gate-purity",
-      "description": "Static purity audit. Scans every registered gate's source for fs writes, Date.now / Math.random, network imports, and process.env access outside an allowlist. Produces docs/guardrails/purity-audit.md. Warn-only by default; --strict exits 1 on any IMPURE-without-exception gate.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-gate-purity.mjs",
-      "fixturePath": "fixtures/audit-gate-purity",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "supportsJson": true
-    },
-    {
-      "id": "audit-gates-supportjson",
-      "description": "Meta-gate ratchet for the --json rollout (per unit 13p-8). For each registered gate outside pnpm-meta, spawns `node <gateScript> --json` with a 30s timeout and verifies stdout parses as { violations: Array }. Reports compliance counters; emits Violation rows for non-compliant gates so they surface in the strict-gate inventory. Severity:warn initially; flip to error once 100% comply.",
-      "severity": "warn",
-      "gateScript": "scripts/audit-gates-supportjson.mjs",
-      "fixturePath": "fixtures/audit-gates-supportjson",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "manual",
-      "supportsJson": true,
-      "scope": "full-tree"
     },
     {
       "id": "audit-sbom",
@@ -699,18 +654,6 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "on-demand",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
-    },
-    {
-      "id": "check-registry",
-      "description": "Validates that hds-registry.json is complete and up-to-date. Checks that there are no stub summaries and no page files are missing a registry entry.",
-      "severity": "warn",
-      "gateScript": "scripts/check-registry.mjs",
-      "fixturePath": "fixtures/check-registry",
-      "owner": "Adrian",
-      "source": "human",
-      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },

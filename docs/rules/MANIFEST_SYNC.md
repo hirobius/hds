@@ -41,7 +41,6 @@ audit-tokens.mjs --forbidden → fails if theme.css has hardcoded overrides
 sync-hds-registry.mjs      → syncs component registry across the system
 build-handoff.mjs          → produces DESIGN-HANDOFF.md
 build-design-md.mjs        → produces DESIGN.md
-build-token-index.mjs      → index for fast agent lookups
 generate-llms-txt.mjs      → rebuilds public/llms.txt
 ```
 
