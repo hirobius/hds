@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.26.2
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Nothing in this release asks anything of you.
+
+### Patch Changes
+
+- eac814d: Box `sx` responsive values take an explicit `base` key: `{ flexDirection: { base: 'column', sm: 'row' } }` compiles `base` to a plain rule with no media query, so it applies at every width, including below the `xs` breakpoint (375px). `xs` keeps its existing meaning.
+
 ## 0.26.1
 
 ### Upgrade
