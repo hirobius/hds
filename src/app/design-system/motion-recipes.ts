@@ -82,7 +82,8 @@ export const MOTION_RECIPES = {
   },
   /** A short horizontal shake on an error. Key the element on the error so it replays. */
   shake: {
-    initial: false,
+    // not `initial: false`: that skips the mount animation, and a keyed error field remounts
+    initial: { x: 0 },
     animate: { x: [0, -6, 6, -4, 4, 0] },
     transition: { duration: m.spatial.duration, ease: 'easeOut' },
   },

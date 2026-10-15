@@ -46,6 +46,10 @@ describe('motion recipes', () => {
     expect(motionRecipe('arrive').transition).toMatchObject(hds.motion.springs.elastic);
   });
 
+  it('every recipe animates when its element mounts (no initial: false)', () => {
+    for (const name of NAMES) expect(MOTION_RECIPES[name].initial, name).not.toBe(false);
+  });
+
   it('closes faster than it opens, on the exit easing', () => {
     const exit = motionRecipe('openMenu').exit as { transition: { duration: number } };
     expect(exit.transition.duration).toBe(hds.motion.exit.duration);
