@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New motion tokens (springs, stagger, extended duration, enter scales, swap and reveal blur, nudge and slide travel) and hds.motion.springs/stagger/extended/scale; spring easings now compile to valid linear() CSS, so expressive transitions that silently did nothing now animate."
+}

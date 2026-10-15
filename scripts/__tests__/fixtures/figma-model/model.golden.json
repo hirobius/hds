@@ -1466,7 +1466,7 @@
     },
     {
       "id": "motion-distance",
-      "reason": "Figma prototyping derives travel distance from a layer's own frame position, not a bindable scalar variable — a translateY offset has nothing to bind to, same as duration/easing (hds#242).",
+      "reason": "Figma prototyping derives travel, scale and blur during a transition from the layers' own frames, not from bindable scalar variables — a translateY offset, an enter scale or a swap blur has nothing to bind to, same as duration/easing (hds#242, hds#751).",
       "tokens": []
     },
     {

@@ -509,6 +509,20 @@
       }
     },
     "blur": {
+      "2": {
+        "$value": {
+          "value": 2,
+          "unit": "px"
+        },
+        "$description": "Motion blur for in-place swaps of text and icons (hds#751)."
+      },
+      "4": {
+        "$value": {
+          "value": 4,
+          "unit": "px"
+        },
+        "$description": "Motion blur for content revealing into place (hds#751)."
+      },
       "8": {
         "$value": {
           "value": 8,
@@ -763,6 +777,20 @@
           "unit": "ms"
         },
         "$description": "Fixed elapsed time interval in milliseconds."
+      },
+      "stagger": {
+        "$value": {
+          "value": 40,
+          "unit": "ms"
+        },
+        "$description": "Offset between items that arrive one after another (lists, digits, menu items) (hds#751)."
+      },
+      "extended": {
+        "$value": {
+          "value": 600,
+          "unit": "ms"
+        },
+        "$description": "Long reveals: skeleton to content, page-level entrances (hds#751)."
       }
     },
     "easing": {
@@ -792,6 +820,102 @@
               "mass": 1
             },
             "bezierSource": "The cubicBezier is easeOutBack (easings.net), chosen as a stand-in for the spring, not fitted to it: both overshoot once, the curve by about 10% and spring(300, 20, 1) by about 11%."
+          }
+        }
+      },
+      "spatialFast": {
+        "$value": [0.2, 0, 0, 1],
+        "$description": "Spring for small moves: indicators, thumbs, chips (damping ratio 0.9).",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$type": "spring",
+            "$value": {
+              "type": "spring",
+              "stiffness": 1400,
+              "damping": 67.35,
+              "mass": 1
+            },
+            "bezierSource": "The cubicBezier is Material 3's standard curve, a stand-in for DTCG tools; CSS and Motion use the spring itself (hds#751). Stiffness and damping ratio follow Material 3's spring tokens (Apache-2.0)."
+          }
+        }
+      },
+      "spatialDefault": {
+        "$value": [0.2, 0, 0, 1],
+        "$description": "Spring for panels, menus and cards moving into place (damping ratio 0.9).",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$type": "spring",
+            "$value": {
+              "type": "spring",
+              "stiffness": 700,
+              "damping": 47.62,
+              "mass": 1
+            },
+            "bezierSource": "The cubicBezier is Material 3's standard curve, a stand-in for DTCG tools; CSS and Motion use the spring itself (hds#751). Stiffness and damping ratio follow Material 3's spring tokens (Apache-2.0)."
+          }
+        }
+      },
+      "spatialSlow": {
+        "$value": [0.2, 0, 0, 1],
+        "$description": "Spring for large travel: sheets, page-level moves (damping ratio 0.9).",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$type": "spring",
+            "$value": {
+              "type": "spring",
+              "stiffness": 300,
+              "damping": 31.18,
+              "mass": 1
+            },
+            "bezierSource": "The cubicBezier is Material 3's standard curve, a stand-in for DTCG tools; CSS and Motion use the spring itself (hds#751). Stiffness and damping ratio follow Material 3's spring tokens (Apache-2.0)."
+          }
+        }
+      },
+      "effectsFast": {
+        "$value": [0.2, 0, 0, 1],
+        "$description": "Critically damped spring for quick fades and colour changes; never overshoots.",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$type": "spring",
+            "$value": {
+              "type": "spring",
+              "stiffness": 3800,
+              "damping": 123.29,
+              "mass": 1
+            },
+            "bezierSource": "The cubicBezier is Material 3's standard curve, a stand-in for DTCG tools; CSS and Motion use the spring itself (hds#751). Stiffness and damping ratio follow Material 3's spring tokens (Apache-2.0)."
+          }
+        }
+      },
+      "effectsDefault": {
+        "$value": [0.2, 0, 0, 1],
+        "$description": "Critically damped spring for opacity and blur changes; never overshoots.",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$type": "spring",
+            "$value": {
+              "type": "spring",
+              "stiffness": 1600,
+              "damping": 80.0,
+              "mass": 1
+            },
+            "bezierSource": "The cubicBezier is Material 3's standard curve, a stand-in for DTCG tools; CSS and Motion use the spring itself (hds#751). Stiffness and damping ratio follow Material 3's spring tokens (Apache-2.0)."
+          }
+        }
+      },
+      "effectsSlow": {
+        "$value": [0.2, 0, 0, 1],
+        "$description": "Critically damped spring for slow reveals; never overshoots.",
+        "$extensions": {
+          "com.hirobius.hds": {
+            "$type": "spring",
+            "$value": {
+              "type": "spring",
+              "stiffness": 800,
+              "damping": 56.57,
+              "mass": 1
+            },
+            "bezierSource": "The cubicBezier is Material 3's standard curve, a stand-in for DTCG tools; CSS and Motion use the spring itself (hds#751). Stiffness and damping ratio follow Material 3's spring tokens (Apache-2.0)."
           }
         }
       }
@@ -1069,6 +1193,22 @@
           "unit": "px"
         }
       }
+    },
+    "scale": {
+      "$type": "number",
+      "$description": "Scale factors for motion: what an element grows from as it opens and shrinks to as it closes (hds#751).",
+      "96": {
+        "$value": 0.96,
+        "$description": "96% scale."
+      },
+      "97": {
+        "$value": 0.97,
+        "$description": "97% scale."
+      },
+      "98": {
+        "$value": 0.98,
+        "$description": "98% scale."
+      }
     }
   },
   "semantic": {
@@ -1127,6 +1267,41 @@
         "$type": "dimension",
         "$value": "{primitive.space.6}",
         "$description": "Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242)."
+      },
+      "nudge": {
+        "$type": "dimension",
+        "$value": "{primitive.space.1}",
+        "$description": "Small travel for text swaps and nudges (hds#751)."
+      },
+      "slide": {
+        "$type": "dimension",
+        "$value": "{primitive.space.2}",
+        "$description": "Travel for menus, toasts and items sliding in (hds#751)."
+      },
+      "blurSwap": {
+        "$type": "dimension",
+        "$value": "{primitive.blur.2}",
+        "$description": "Blur while text or an icon swaps in place (hds#751)."
+      },
+      "blurReveal": {
+        "$type": "dimension",
+        "$value": "{primitive.blur.4}",
+        "$description": "Blur while content reveals into place (hds#751)."
+      },
+      "scaleDialog": {
+        "$type": "number",
+        "$value": "{primitive.scale.96}",
+        "$description": "Scale a dialog opens from and closes to (hds#751)."
+      },
+      "scaleMenu": {
+        "$type": "number",
+        "$value": "{primitive.scale.97}",
+        "$description": "Scale a menu, popover or select opens from (hds#751)."
+      },
+      "scaleTooltip": {
+        "$type": "number",
+        "$value": "{primitive.scale.98}",
+        "$description": "Scale a tooltip opens from (hds#751)."
       }
     },
     "color": {

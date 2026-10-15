@@ -17,6 +17,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { writeGenerated } from './lib/write-generated.mjs';
+import { springToLinear } from './lib/spring-easing.mjs';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { readModes } from './lib/token-modes.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
@@ -134,11 +135,12 @@ export function valueToCSS(val, type, preserveAlias, root = null) {
       return cubicBezierToCSS(val);
     case 'motionEasing':
       if (val && typeof val === 'object' && val.type === 'spring') {
-        return `spring(${val.stiffness}, ${val.damping}, ${val.mass})`;
+        return springToLinear(val).easing;
       }
       return cubicBezierToCSS(val);
     case 'spring':
-      return `spring(${val.stiffness}, ${val.damping}, ${val.mass})`;
+      // CSS has no spring(): the spring becomes a linear() curve (hds#751)
+      return springToLinear(val).easing;
     case 'fontFamily':
       return fontFamilyToCSS(val);
     case 'fontWeight':

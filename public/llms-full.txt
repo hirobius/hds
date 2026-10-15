@@ -504,6 +504,8 @@ Motion (lift on hover, parallax) is the interaction-affordance layer; static dep
 | `primitive.duration.short` | `150ms` | Productive micro-interactions (default for hover/focus/press) |
 | `primitive.duration.medium` | `250ms` | Expressive entrances, teaching moments |
 | `primitive.duration.long` | `400ms` | Spatial movement, page travel, parallax |
+| `primitive.duration.stagger` | `40ms` | Offset between items that arrive one after another |
+| `primitive.duration.extended` | `600ms` | Long reveals: skeleton to content, page entrances |
 
 ### Semantic intents
 
@@ -521,6 +523,13 @@ Default most interactive feedback to `productive` (150ms, decelerate). Use `expr
 | Token | Value | Purpose |
 | --- | --- | --- |
 | `semantic.motion.distance` | `24px` | Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242). |
+| `semantic.motion.nudge` | `4px` | Small travel for text swaps and nudges (hds#751). |
+| `semantic.motion.slide` | `8px` | Travel for menus, toasts and items sliding in (hds#751). |
+| `semantic.motion.blurSwap` | `2px` | Blur while text or an icon swaps in place (hds#751). |
+| `semantic.motion.blurReveal` | `4px` | Blur while content reveals into place (hds#751). |
+| `semantic.motion.scaleDialog` | `0.96` | Scale a dialog opens from and closes to (hds#751). |
+| `semantic.motion.scaleMenu` | `0.97` | Scale a menu, popover or select opens from (hds#751). |
+| `semantic.motion.scaleTooltip` | `0.98` | Scale a tooltip opens from (hds#751). |
 <!-- auto:end:motion -->
 
 ## Components
@@ -619,7 +628,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (427 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (447 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 

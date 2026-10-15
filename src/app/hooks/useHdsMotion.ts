@@ -14,7 +14,8 @@
 import hds from '../design-system/tokens';
 import { useReducedMotion } from './useReducedMotion';
 
-export type HdsMotionCategory = keyof typeof hds.motion;
+/** The motion roles (duration + easing). `springs`, `stagger`, `extended` and `scale` are not roles. */
+export type HdsMotionCategory = 'productive' | 'expressive' | 'spatial' | 'exit';
 
 export function useHdsMotion<Category extends HdsMotionCategory>(
   category: Category,

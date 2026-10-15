@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-15T05:54:59.010Z",
+  "generated": "2026-10-15T18:18:38.667Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11252,6 +11252,20 @@
         "value": "10px"
       },
       {
+        "path": "primitive.blur.2",
+        "cssVar": "--primitive-blur-2",
+        "type": "dimension",
+        "description": "Motion blur for in-place swaps of text and icons (hds#751).",
+        "value": "2px"
+      },
+      {
+        "path": "primitive.blur.4",
+        "cssVar": "--primitive-blur-4",
+        "type": "dimension",
+        "description": "Motion blur for content revealing into place (hds#751).",
+        "value": "4px"
+      },
+      {
         "path": "primitive.blur.8",
         "cssVar": "--primitive-blur-8",
         "type": "dimension",
@@ -11510,6 +11524,20 @@
         "value": "400ms"
       },
       {
+        "path": "primitive.duration.stagger",
+        "cssVar": "--primitive-duration-stagger",
+        "type": "duration",
+        "description": "Offset between items that arrive one after another (lists, digits, menu items) (hds#751).",
+        "value": "40ms"
+      },
+      {
+        "path": "primitive.duration.extended",
+        "cssVar": "--primitive-duration-extended",
+        "type": "duration",
+        "description": "Long reveals: skeleton to content, page-level entrances (hds#751).",
+        "value": "600ms"
+      },
+      {
         "path": "primitive.easing.emphasized",
         "cssVar": "--primitive-easing-emphasized",
         "type": "cubicBezier",
@@ -11535,7 +11563,49 @@
         "cssVar": "--primitive-easing-elastic",
         "type": "spring",
         "description": "Spring response defined by stiffness, damping, and mass parameters.",
-        "value": "spring(300, 20, 1)"
+        "value": "linear(0, 0.0442, 0.1455, 0.2886, 0.4461, 0.6008, 0.7338, 0.8538, 0.9492, 1.0165, 1.0653, 1.094, 1.106, 1.1065, 1.0982, 1.0844, 1.0689, 1.0519, 1.0359, 1.0225, 1.0108, 1.0017, 0.9956, 0.9913, 0.9891, 0.9884, 0.9889, 0.9901, 0.9917, 0.9934, 0.9952, 0.9969, 0.9982, 0.9993, 1.0002, 1.0007, 1.0011, 1.0012, 1.0012, 1.0011, 1)"
+      },
+      {
+        "path": "primitive.easing.spatialFast",
+        "cssVar": "--primitive-easing-spatialFast",
+        "type": "spring",
+        "description": "Spring for small moves: indicators, thumbs, chips (damping ratio 0.9).",
+        "value": "linear(0, 0.0317, 0.0926, 0.185, 0.2723, 0.3752, 0.4597, 0.5508, 0.621, 0.6931, 0.7464, 0.7994, 0.8375, 0.8744, 0.9003, 0.9248, 0.9416, 0.9572, 0.9677, 0.9772, 0.9843, 0.989, 0.993, 0.9955, 0.9976, 0.9989, 0.9999, 1.0005, 1.0009, 1.001, 1.0011, 1.0011, 1.001, 1.001, 1.0009, 1.0008, 1.0006, 1.0006, 1.0005, 1.0004, 1)"
+      },
+      {
+        "path": "primitive.easing.spatialDefault",
+        "cssVar": "--primitive-easing-spatialDefault",
+        "type": "spring",
+        "description": "Spring for panels, menus and cards moving into place (damping ratio 0.9).",
+        "value": "linear(0, 0.0261, 0.0882, 0.1608, 0.2521, 0.3459, 0.437, 0.513, 0.5913, 0.6609, 0.7218, 0.7687, 0.8139, 0.8518, 0.8801, 0.9065, 0.9279, 0.9451, 0.9588, 0.9686, 0.9772, 0.9839, 0.9889, 0.9923, 0.9952, 0.9973, 0.9988, 0.9997, 1.0004, 1.0009, 1.0011, 1.0012, 1.0012, 1.0012, 1.0011, 1.001, 1.0009, 1.0008, 1.0007, 1.0006, 1)"
+      },
+      {
+        "path": "primitive.easing.spatialSlow",
+        "cssVar": "--primitive-easing-spatialSlow",
+        "type": "spring",
+        "description": "Spring for large travel: sheets, page-level moves (damping ratio 0.9).",
+        "value": "linear(0, 0.02, 0.0691, 0.1364, 0.2138, 0.2884, 0.3699, 0.4486, 0.5225, 0.5904, 0.6518, 0.7065, 0.7546, 0.7932, 0.8297, 0.861, 0.8874, 0.9096, 0.9281, 0.9434, 0.9559, 0.9653, 0.9737, 0.9804, 0.9857, 0.9898, 0.993, 0.9955, 0.9973, 0.9986, 0.9996, 1.0003, 1.0008, 1.0011, 1.0012, 1.0013, 1.0013, 1.0013, 1.0012, 1.0011, 1)"
+      },
+      {
+        "path": "primitive.easing.effectsFast",
+        "cssVar": "--primitive-easing-effectsFast",
+        "type": "spring",
+        "description": "Critically damped spring for quick fades and colour changes; never overshoots.",
+        "value": "linear(0, 0.0433, 0.1145, 0.2232, 0.3366, 0.4236, 0.523, 0.6099, 0.6702, 0.7345, 0.7876, 0.823, 0.8597, 0.8892, 0.9085, 0.9282, 0.9437, 0.9538, 0.9639, 0.9719, 0.9781, 0.9821, 0.9861, 0.9892, 0.9912, 0.9932, 0.9947, 0.9957, 0.9967, 0.9974, 0.9979, 0.9984, 0.9988, 0.999, 0.9992, 0.9994, 0.9995, 0.9996, 0.9997, 0.9998, 1)"
+      },
+      {
+        "path": "primitive.easing.effectsDefault",
+        "cssVar": "--primitive-easing-effectsDefault",
+        "type": "spring",
+        "description": "Critically damped spring for opacity and blur changes; never overshoots.",
+        "value": "linear(0, 0.0353, 0.1136, 0.197, 0.2999, 0.4004, 0.4934, 0.5766, 0.6395, 0.7032, 0.7572, 0.8023, 0.8398, 0.8666, 0.8926, 0.9138, 0.931, 0.9448, 0.9546, 0.9638, 0.9713, 0.9772, 0.9819, 0.9852, 0.9883, 0.9907, 0.9927, 0.9942, 0.9953, 0.9963, 0.9971, 0.9977, 0.9982, 0.9985, 0.9988, 0.9991, 0.9993, 0.9994, 0.9995, 0.9996, 1)"
+      },
+      {
+        "path": "primitive.easing.effectsSlow",
+        "cssVar": "--primitive-easing-effectsSlow",
+        "type": "spring",
+        "description": "Critically damped spring for slow reveals; never overshoots.",
+        "value": "linear(0, 0.0291, 0.0961, 0.1924, 0.2857, 0.3779, 0.4647, 0.5438, 0.6215, 0.6823, 0.7348, 0.7797, 0.8177, 0.8529, 0.8791, 0.901, 0.919, 0.9339, 0.9474, 0.9573, 0.9653, 0.9719, 0.9773, 0.9821, 0.9855, 0.9883, 0.9906, 0.9924, 0.994, 0.9952, 0.9962, 0.9969, 0.9975, 0.9981, 0.9984, 0.9988, 0.999, 0.9992, 0.9994, 0.9995, 1)"
       },
       {
         "path": "primitive.shadow.color",
@@ -11774,6 +11844,27 @@
         "cssVar": "--primitive-borderWidth-md",
         "type": "dimension",
         "value": "4px"
+      },
+      {
+        "path": "primitive.scale.96",
+        "cssVar": "--primitive-scale-96",
+        "type": "number",
+        "description": "96% scale.",
+        "value": "0.96"
+      },
+      {
+        "path": "primitive.scale.97",
+        "cssVar": "--primitive-scale-97",
+        "type": "number",
+        "description": "97% scale.",
+        "value": "0.97"
+      },
+      {
+        "path": "primitive.scale.98",
+        "cssVar": "--primitive-scale-98",
+        "type": "number",
+        "description": "98% scale.",
+        "value": "0.98"
       }
     ],
     "semantic": [
@@ -11794,7 +11885,7 @@
         "description": "For teaching moments and significant UI entries. Includes physics-based squish.",
         "composite": {
           "duration": "250ms",
-          "easing": "spring(300, 20, 1)"
+          "easing": "linear(0, 0.0442, 0.1455, 0.2886, 0.4461, 0.6008, 0.7338, 0.8538, 0.9492, 1.0165, 1.0653, 1.094, 1.106, 1.1065, 1.0982, 1.0844, 1.0689, 1.0519, 1.0359, 1.0225, 1.0108, 1.0017, 0.9956, 0.9913, 0.9891, 0.9884, 0.9889, 0.9901, 0.9917, 0.9934, 0.9952, 0.9969, 0.9982, 0.9993, 1.0002, 1.0007, 1.0011, 1.0012, 1.0012, 1.0011, 1)"
         }
       },
       {
@@ -11824,6 +11915,62 @@
         "description": "Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242).",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
+      },
+      {
+        "path": "semantic.motion.nudge",
+        "cssVar": "--semantic-motion-nudge",
+        "type": "dimension",
+        "description": "Small travel for text swaps and nudges (hds#751).",
+        "alias": "{primitive.space.1}",
+        "resolvedValue": "4px"
+      },
+      {
+        "path": "semantic.motion.slide",
+        "cssVar": "--semantic-motion-slide",
+        "type": "dimension",
+        "description": "Travel for menus, toasts and items sliding in (hds#751).",
+        "alias": "{primitive.space.2}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.motion.blurSwap",
+        "cssVar": "--semantic-motion-blurSwap",
+        "type": "dimension",
+        "description": "Blur while text or an icon swaps in place (hds#751).",
+        "alias": "{primitive.blur.2}",
+        "resolvedValue": "2px"
+      },
+      {
+        "path": "semantic.motion.blurReveal",
+        "cssVar": "--semantic-motion-blurReveal",
+        "type": "dimension",
+        "description": "Blur while content reveals into place (hds#751).",
+        "alias": "{primitive.blur.4}",
+        "resolvedValue": "4px"
+      },
+      {
+        "path": "semantic.motion.scaleDialog",
+        "cssVar": "--semantic-motion-scaleDialog",
+        "type": "number",
+        "description": "Scale a dialog opens from and closes to (hds#751).",
+        "alias": "{primitive.scale.96}",
+        "resolvedValue": "0.96"
+      },
+      {
+        "path": "semantic.motion.scaleMenu",
+        "cssVar": "--semantic-motion-scaleMenu",
+        "type": "number",
+        "description": "Scale a menu, popover or select opens from (hds#751).",
+        "alias": "{primitive.scale.97}",
+        "resolvedValue": "0.97"
+      },
+      {
+        "path": "semantic.motion.scaleTooltip",
+        "cssVar": "--semantic-motion-scaleTooltip",
+        "type": "number",
+        "description": "Scale a tooltip opens from (hds#751).",
+        "alias": "{primitive.scale.98}",
+        "resolvedValue": "0.98"
       },
       {
         "path": "semantic.color.surface.page",

@@ -307,6 +307,8 @@ export function buildMotion(raw) {
     short: 'Productive micro-interactions (default for hover/focus/press)',
     medium: 'Expressive entrances, teaching moments',
     long: 'Spatial movement, page travel, parallax',
+    stagger: 'Offset between items that arrive one after another',
+    extended: 'Long reveals: skeleton to content, page entrances',
   };
 
   const durLines = [header('Tier', 'Value', 'When to use')];

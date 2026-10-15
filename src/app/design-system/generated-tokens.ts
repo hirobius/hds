@@ -140,6 +140,8 @@ export const tokens = {
       px10: "var(--primitive-space-px10)"
     },
     blur: {
+      "2": "var(--primitive-blur-2)",
+      "4": "var(--primitive-blur-4)",
       "8": "var(--primitive-blur-8)",
       "16": "var(--primitive-blur-16)"
     },
@@ -194,13 +196,21 @@ export const tokens = {
       instant: "var(--primitive-duration-instant)",
       short: "var(--primitive-duration-short)",
       medium: "var(--primitive-duration-medium)",
-      long: "var(--primitive-duration-long)"
+      long: "var(--primitive-duration-long)",
+      stagger: "var(--primitive-duration-stagger)",
+      extended: "var(--primitive-duration-extended)"
     },
     easing: {
       emphasized: "var(--primitive-easing-emphasized)",
       decelerate: "var(--primitive-easing-decelerate)",
       accelerate: "var(--primitive-easing-accelerate)",
-      elastic: "var(--primitive-easing-elastic)"
+      elastic: "var(--primitive-easing-elastic)",
+      spatialFast: "var(--primitive-easing-spatialFast)",
+      spatialDefault: "var(--primitive-easing-spatialDefault)",
+      spatialSlow: "var(--primitive-easing-spatialSlow)",
+      effectsFast: "var(--primitive-easing-effectsFast)",
+      effectsDefault: "var(--primitive-easing-effectsDefault)",
+      effectsSlow: "var(--primitive-easing-effectsSlow)"
     },
     shadow: {
       color: "var(--primitive-shadow-color)"
@@ -255,11 +265,23 @@ export const tokens = {
       xs: "var(--primitive-borderWidth-xs)",
       sm: "var(--primitive-borderWidth-sm)",
       md: "var(--primitive-borderWidth-md)"
+    },
+    scale: {
+      "96": "var(--primitive-scale-96)",
+      "97": "var(--primitive-scale-97)",
+      "98": "var(--primitive-scale-98)"
     }
   },
   semantic: {
     motion: {
-      distance: "var(--semantic-motion-distance)"
+      distance: "var(--semantic-motion-distance)",
+      nudge: "var(--semantic-motion-nudge)",
+      slide: "var(--semantic-motion-slide)",
+      blurSwap: "var(--semantic-motion-blurSwap)",
+      blurReveal: "var(--semantic-motion-blurReveal)",
+      scaleDialog: "var(--semantic-motion-scaleDialog)",
+      scaleMenu: "var(--semantic-motion-scaleMenu)",
+      scaleTooltip: "var(--semantic-motion-scaleTooltip)"
     },
     color: {
       surface: {

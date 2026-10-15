@@ -16,14 +16,46 @@ const FONT_FAMILY_PRIMARY = 'var(--primitive-typography-family-primary)';
 const FONT_FAMILY_MONO = 'var(--primitive-typography-family-mono)';
 const msToSeconds = (value: string) => parseFloat(value) / 1000;
 
+/**
+ * Springs for Motion (JS). The same stiffness, damping and mass become CSS
+ * `linear()` curves in tokens.css; motion-springs.test.ts fails if these drift
+ * from hirobius.tokens.json (hds#751).
+ */
+const spring = (stiffness: number, damping: number) =>
+  ({ type: 'spring', stiffness, damping, mass: 1 }) as const;
+
+const springs = {
+  /** Lively arrival: one ~11% overshoot. Confirmations, things landing. */
+  elastic: spring(300, 20),
+  /** Small moves: indicators, thumbs, chips. */
+  spatialFast: spring(1400, 67.35),
+  /** Panels, menus and cards moving into place. */
+  spatialDefault: spring(700, 47.62),
+  /** Large travel: sheets, page-level moves. */
+  spatialSlow: spring(300, 31.18),
+  /** Quick fades and colour changes; never overshoots. */
+  effectsFast: spring(3800, 123.29),
+  /** Opacity and blur changes; never overshoots. */
+  effectsDefault: spring(1600, 80),
+  /** Slow reveals; never overshoots. */
+  effectsSlow: spring(800, 56.57),
+} as const;
+
 const motion = {
+  springs,
+  /** Seconds between items that arrive one after another. */
+  stagger: msToSeconds(tokenValues.primitive.duration.stagger),
+  /** Seconds for long reveals (skeleton to content, page entrances). */
+  extended: msToSeconds(tokenValues.primitive.duration.extended),
+  /** Scale an element opens from and closes to. */
+  scale: { dialog: 0.96, menu: 0.97, tooltip: 0.98 },
   productive: {
     duration: msToSeconds(tokenValues.primitive.duration.short),
     easing: [0, 0, 0.2, 1] as [number, number, number, number],
   },
   expressive: {
     duration: msToSeconds(tokenValues.primitive.duration.medium),
-    easing: { type: 'spring', stiffness: 300, damping: 20, mass: 1 } as const,
+    easing: springs.elastic,
   },
   spatial: {
     duration: msToSeconds(tokenValues.primitive.duration.long),

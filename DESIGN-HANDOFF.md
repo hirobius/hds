@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 475 tokens, aliases, and TS refs in one shot.
+Checks all 495 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -463,16 +463,24 @@ Or via `useTheme().setDensity('compact')`
 
 ### Primitive motion base
 
-| Token                         | Value                          | Use                                                                    |
-| ----------------------------- | ------------------------------ | ---------------------------------------------------------------------- |
-| `primitive.duration.instant`  | `100ms`                        | Immediate state changes and rapid dismissals                           |
-| `primitive.duration.short`    | `150ms`                        | Productive micro-interactions                                          |
-| `primitive.duration.medium`   | `250ms`                        | Expressive entrances and teaching moments                              |
-| `primitive.duration.long`     | `400ms`                        | Spatial movement and page travel                                       |
-| `primitive.easing.emphasized` | `cubic-bezier(0.4, 0, 0.2, 1)` | Cubic bezier with balanced input and output tangents.                  |
-| `primitive.easing.decelerate` | `cubic-bezier(0, 0, 0.2, 1)`   | Cubic bezier with steep initial gain and constrained tail velocity.    |
-| `primitive.easing.accelerate` | `cubic-bezier(0.4, 0, 1, 1)`   | Cubic bezier with restrained initial gain and steep terminal velocity. |
-| `primitive.easing.elastic`    | `spring(300, 20, 1)`           | Spring response defined by stiffness, damping, and mass parameters.    |
+| Token                             | Value                          | Use                                                                            |
+| --------------------------------- | ------------------------------ | ------------------------------------------------------------------------------ |
+| `primitive.duration.instant`      | `100ms`                        | Immediate state changes and rapid dismissals                                   |
+| `primitive.duration.short`        | `150ms`                        | Productive micro-interactions                                                  |
+| `primitive.duration.medium`       | `250ms`                        | Expressive entrances and teaching moments                                      |
+| `primitive.duration.long`         | `400ms`                        | Spatial movement and page travel                                               |
+| `primitive.duration.stagger`      | `40ms`                         |                                                                                |
+| `primitive.duration.extended`     | `600ms`                        |                                                                                |
+| `primitive.easing.emphasized`     | `cubic-bezier(0.4, 0, 0.2, 1)` | Cubic bezier with balanced input and output tangents.                          |
+| `primitive.easing.decelerate`     | `cubic-bezier(0, 0, 0.2, 1)`   | Cubic bezier with steep initial gain and constrained tail velocity.            |
+| `primitive.easing.accelerate`     | `cubic-bezier(0.4, 0, 1, 1)`   | Cubic bezier with restrained initial gain and steep terminal velocity.         |
+| `primitive.easing.elastic`        | `spring(300, 20, 1)`           | Spring response defined by stiffness, damping, and mass parameters.            |
+| `primitive.easing.spatialFast`    | `spring(1400, 67.35, 1)`       | Spring for small moves: indicators, thumbs, chips (damping ratio 0.9).         |
+| `primitive.easing.spatialDefault` | `spring(700, 47.62, 1)`        | Spring for panels, menus and cards moving into place (damping ratio 0.9).      |
+| `primitive.easing.spatialSlow`    | `spring(300, 31.18, 1)`        | Spring for large travel: sheets, page-level moves (damping ratio 0.9).         |
+| `primitive.easing.effectsFast`    | `spring(3800, 123.29, 1)`      | Critically damped spring for quick fades and colour changes; never overshoots. |
+| `primitive.easing.effectsDefault` | `spring(1600, 80, 1)`          | Critically damped spring for opacity and blur changes; never overshoots.       |
+| `primitive.easing.effectsSlow`    | `spring(800, 56.57, 1)`        | Critically damped spring for slow reveals; never overshoots.                   |
 
 ### Semantic motion intents
 
@@ -485,9 +493,16 @@ Or via `useTheme().setDensity('compact')`
 
 ### Other semantic motion tokens
 
-| Token                      | Value  | Purpose                                                                                                                                |
-| -------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.motion.distance` | `24px` | Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242). |
+| Token                          | Value  | Purpose                                                                                                                                |
+| ------------------------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.motion.distance`     | `24px` | Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242). |
+| `semantic.motion.nudge`        | `4px`  | Small travel for text swaps and nudges (hds#751).                                                                                      |
+| `semantic.motion.slide`        | `8px`  | Travel for menus, toasts and items sliding in (hds#751).                                                                               |
+| `semantic.motion.blurSwap`     | `2px`  | Blur while text or an icon swaps in place (hds#751).                                                                                   |
+| `semantic.motion.blurReveal`   | `4px`  | Blur while content reveals into place (hds#751).                                                                                       |
+| `semantic.motion.scaleDialog`  | `0.96` | Scale a dialog opens from and closes to (hds#751).                                                                                     |
+| `semantic.motion.scaleMenu`    | `0.97` | Scale a menu, popover or select opens from (hds#751).                                                                                  |
+| `semantic.motion.scaleTooltip` | `0.98` | Scale a tooltip opens from (hds#751).                                                                                                  |
 
 <!-- auto:end:motion -->
 

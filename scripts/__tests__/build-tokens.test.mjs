@@ -1204,3 +1204,21 @@ describe('buildManifest', () => {
     expect(readJson('public/hds-manifest.json')).not.toHaveProperty('health');
   });
 });
+
+describe('valueToCSS spring (hds#751)', () => {
+  it('emits a linear() curve, never the invalid spring() function', () => {
+    const css = valueToCSS(
+      { type: 'spring', stiffness: 300, damping: 20, mass: 1 },
+      'spring',
+      false,
+    );
+    expect(css).toMatch(/^linear\(0, /);
+    expect(css).not.toMatch(/spring\(/);
+    const { code } = transform({
+      filename: 'x.css',
+      code: Buffer.from(`a{transition-timing-function:${css}}`),
+      minify: true,
+    });
+    expect(code.toString()).toContain('linear(');
+  });
+});
