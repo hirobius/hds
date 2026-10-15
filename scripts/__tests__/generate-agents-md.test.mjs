@@ -122,9 +122,50 @@ describe('buildAgentsMd', () => {
   });
 });
 
+describe('needsMarkdown', () => {
+  it('appends import line to every need whose use has a patterns-subpath name, and no other need', () => {
+    const api = readJson('src/app/data/component-api.json').components;
+    const patternNames = readJson('codemods/patterns-subpath.names.json').names;
+    const md = needsMarkdown(api, patternNames);
+    const patternSet = new Set(patternNames);
+    const blocks = md.split(/(?:^|\n)- \*\*/).filter(Boolean);
+
+    for (const intent of INTENTS) {
+      const pats = intent.use.filter((n) => patternSet.has(n));
+      const sectionMatch = blocks.find((block) => block.startsWith(`${intent.need}**`));
+      expect(sectionMatch, intent.need).toBeDefined();
+
+      if (pats.length > 0) {
+        expect(sectionMatch).toContain('Import: `import {');
+        expect(sectionMatch).toContain("@hirobius/design-system/patterns';");
+        for (const p of pats) {
+          expect(sectionMatch).toContain(p);
+        }
+      } else {
+        expect(sectionMatch).not.toContain('Import:');
+      }
+    }
+  });
+
+  it('names both Form and FormActions and the /patterns subpath for the form need', () => {
+    const api = readJson('src/app/data/component-api.json').components;
+    const patternNames = readJson('codemods/patterns-subpath.names.json').names;
+    const md = needsMarkdown(api, patternNames);
+    const blocks = md.split(/(?:^|\n)- \*\*/).filter(Boolean);
+    const formSection = blocks.find((block) => block.startsWith('Form with fields'));
+    expect(formSection).toContain(
+      "Import: `import { Form, FormActions } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.",
+    );
+  });
+});
+
 describe('AGENTS.md and llms.txt agree', () => {
   it('both carry the same pick-by-need list, rendered from mcp/guide.mjs', () => {
-    const needs = needsMarkdown(readJson('src/app/data/component-api.json').components);
+    const patternNames = readJson('codemods/patterns-subpath.names.json').names;
+    const needs = needsMarkdown(
+      readJson('src/app/data/component-api.json').components,
+      patternNames,
+    );
     for (const file of ['AGENTS.md', 'public/llms-full.txt']) {
       expect(readFileSync(join(ROOT, file), 'utf8'), file).toContain(needs);
     }

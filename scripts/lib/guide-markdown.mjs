@@ -18,7 +18,7 @@ const code = (name) => `\`${name}\``;
  * @param {Record<string, unknown>} components component-api.json `components`
  * @returns {string}
  */
-export function needsMarkdown(components) {
+export function needsMarkdown(components, patternNames = []) {
   for (const intent of INTENTS) {
     for (const name of intent.use) {
       if (!components[name] && !HOOKS[name]) {
@@ -28,12 +28,23 @@ export function needsMarkdown(components) {
       }
     }
   }
-  return INTENTS.map(
-    (i) =>
-      `- **${i.need}** → ${i.use.map(code).join(', ')}. Not: ${i.avoid
-        .map((a) => (/^[A-Z][A-Za-z]+$/.test(a) ? code(a) : a))
-        .join(', ')}.\n  ${i.how}`,
-  ).join('\n');
+  const patternSet = new Set(patternNames);
+  return INTENTS.map((i) => {
+    const patternComps = i.use.filter((name) => patternSet.has(name));
+    const rootComps = i.use.filter((name) => !patternSet.has(name));
+
+    let importLine = '';
+    if (patternComps.length > 0) {
+      const patsStr = patternComps.join(', ');
+      const restStr =
+        rootComps.length > 0 ? "';` the rest from `@hirobius/design-system`." : "';`";
+      importLine = `\n  Import: \`import { ${patsStr} } from '@hirobius/design-system/patterns${restStr}`;
+    }
+
+    return `- **${i.need}** → ${i.use.map(code).join(', ')}. Not: ${i.avoid
+      .map((a) => (/^[A-Z][A-Za-z]+$/.test(a) ? code(a) : a))
+      .join(', ')}.\n  ${i.how}${importLine}`;
+  }).join('\n');
 }
 
 export const NEEDS_INTRO =
