@@ -26,7 +26,11 @@ import { dirname, join } from 'path';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { layoutRecipeSteps, layoutNegativeRules } from './lib/layout-recipe.mjs';
 import { fileURLToPath } from 'url';
-import { writeManifest as writeComponentApiManifest } from './generate-component-api.mjs';
+import {
+  buildManifest as buildComponentApi,
+  stripObservedTokens,
+  writeManifest as writeComponentApiManifest,
+} from './generate-component-api.mjs';
 import { buildTokenQuickReference } from './build-token-quick-reference.mjs';
 import { buildWhichOneWhen } from './lib/which-one-when.mjs';
 import { coreByCategory, renderCoreSetLines } from './lib/core-set.mjs';
@@ -39,7 +43,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = rootFromArgv(join(__dirname, '..'));
 
 const manifestPath = join(ROOT, 'public', 'hds-manifest.json');
-const componentApiPath = join(ROOT, 'src', 'app', 'data', 'component-api.json');
 
 const scrollRecipeSteps = [
   '`Reveal` (CSS `animation-timeline: view()`) for fade/slide/scale-in-on-enter — zero JS, zero deps. Pick `animation` from `fade | fade-up | fade-down | scale`. Content is visible by DEFAULT; the effect applies only where `animation-timeline` is supported and the user has not requested reduced motion — never gate visibility behind either.',
@@ -125,9 +128,12 @@ function buildPropsDigest(api, specs = {}) {
 export function generateLlmsTxt({ write = true } = {}) {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
   const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
-  if (write) writeComponentApiManifest();
-  // Keep as an existence check (and to ensure the generated artifact is present).
-  const componentApi = JSON.parse(readFileSync(componentApiPath, 'utf8'));
+  // Never read src/app/data/component-api.json: it is gitignored, so after a
+  // branch switch it describes another branch (hds#716). Derive the same data
+  // from the committed sources; a write also refreshes the file for consumers.
+  const componentApi = stripObservedTokens(
+    write ? writeComponentApiManifest() : buildComponentApi(),
+  );
 
   const tokensPath = join(ROOT, 'hirobius.tokens.json');
   const quickTokenReference = buildTokenQuickReference(tokensPath);
