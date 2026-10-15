@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.26.3
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Nothing in this release asks anything of you.
+
+### Patch Changes
+
+- f4bab19: `HdsFieldRenderProps` types `ref` as `React.Ref<never>` and `value` as `any` (were `Ref<unknown>` and `unknown`), so the render props spread onto `<input>`, `<select>` and `<textarea>` as docs/CONSUMING.md section 8.5 shows, instead of failing `tsc` with TS2322.
+
 ## 0.26.2
 
 ### Upgrade
