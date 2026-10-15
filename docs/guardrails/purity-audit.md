@@ -138,7 +138,6 @@ No impurity patterns detected. Deterministic by static analysis.
 - `check-public-api`
 - `check-reduced-motion`
 - `check-ref-forwarding`
-- `check-registry`
 - `check-route-coverage`
 - `check-route-links`
 - `check-security-baseline`
