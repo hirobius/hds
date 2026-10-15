@@ -109,16 +109,25 @@ describe('darkAliasReemissions — what it must NOT re-emit', () => {
     expect(darkAliasReemissions(root, dark)).toEqual([]);
   });
 
-  it('skips a composite value that merely CONTAINS a var()', () => {
-    // `0 1px 2px var(--shadow-color)` is substituted at use, not copied as a
-    // finished value, so it does not have this defect. Re-emitting it would be
-    // noise at best.
+  it('re-emits a composite value that contains a theme-sensitive var() (hds#751)', () => {
+    // A var() anywhere in a custom property's value is substituted where the
+    // property is declared, not where it is used. Measured in Chromium with
+    // data-theme="dark" on a descendant: --semantic-shadow-overlay
+    // (`… hsl(var(--primitive-shadow-color) / …)`) stayed rgba(40, 44, 52, .08)
+    // instead of rgba(0, 0, 0, .24). So a composite is as stuck as a bare alias.
     const root = [
       decl('--semantic-x', 'var(--p-1)'),
       decl('--role-shadow', '0 1px 2px var(--semantic-x)'),
     ];
     const dark = [decl('--semantic-x', 'var(--p-2)')];
-    expect(darkAliasReemissions(root, dark)).toEqual([]);
+    expect(darkAliasReemissions(root, dark)).toEqual([
+      decl('--role-shadow', '0 1px 2px var(--semantic-x)'),
+    ]);
+  });
+
+  it('skips a composite whose var()s are all theme-independent', () => {
+    const root = [decl('--p-1', '#000'), decl('--role-shadow', '0 1px 2px var(--p-1)')];
+    expect(darkAliasReemissions(root, [decl('--semantic-x', '#fff')])).toEqual([]);
   });
 
   it('returns nothing when there is no dark block at all', () => {

@@ -4,3 +4,4 @@ ADR-064 lively motion: DESIGN.md bounce rule replaced (hds#751 step 2).
 Motion tokens (hds#751 step 3): springs as linear() (fixes invalid spring() CSS), stagger/extended, scale, blur, nudge/slide; hds.motion.springs.
 Dark-mode shadow strength token (hds#751 step 4).
 Motion recipes + useMotionRecipe, rebuilt Motion docs page with live demo (hds#751 step 5).
+Scoped dark themes: composite tokens (shadows) re-declared in the dark block (hds#751).

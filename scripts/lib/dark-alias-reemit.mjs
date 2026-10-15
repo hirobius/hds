@@ -38,22 +38,24 @@ function parseDeclaration(line) {
 }
 
 /**
- * The single variable this value is a bare alias of, or null.
+ * Every variable this value references, anywhere in it.
  *
- * ONLY a whole-value `var(--x)` qualifies. A composite like
- * `0 1px 2px var(--shadow-color)` is substituted at use rather than copied as
- * a finished value, so it does not have this defect.
+ * A bare alias `var(--x)` and a composite like `0 1px 2px hsl(var(--c) / .1)`
+ * behave the same: a var() in a custom property is substituted where the
+ * property is DECLARED, so both compute against `:root` and inherit as finished
+ * values. (An earlier version skipped composites on the belief that they were
+ * substituted at use; measured in Chromium, the semantic shadows stayed light
+ * on a dark subtree. hds#751.)
  */
-function aliasTarget(value) {
-  const m = /^var\(\s*(--[\w-]+)\s*\)$/.exec(value);
-  return m ? m[1] : null;
+function references(value) {
+  return [...value.matchAll(/var\(\s*(--[\w-]+)/g)].map((m) => m[1]);
 }
 
 /**
  * Declarations to append to the dark block.
  *
- * A variable is theme-sensitive if the dark block overrides it, or if it is a
- * bare alias of something theme-sensitive — computed to a fixpoint. One hop
+ * A variable is theme-sensitive if the dark block overrides it, or if its value
+ * references something theme-sensitive — computed to a fixpoint. One hop
  * would be enough for today's token file (every affected chain is alias →
  * semantic → primitive, and every semantic is already overridden), but a
  * deeper chain added later would silently reintroduce a defect nothing else
@@ -78,8 +80,7 @@ export function darkAliasReemissions(rootLines, darkLines) {
     grew = false;
     for (const [name, value] of rootDecls) {
       if (sensitive.has(name)) continue;
-      const target = aliasTarget(value);
-      if (target && sensitive.has(target)) {
+      if (references(value).some((ref) => sensitive.has(ref))) {
         sensitive.add(name);
         grew = true;
       }
@@ -90,11 +91,10 @@ export function darkAliasReemissions(rootLines, darkLines) {
   return rootLines.filter((line) => {
     const decl = parseDeclaration(line);
     if (!decl) return false;
-    const [name, value] = decl;
+    const [name] = decl;
     // Already in the dark block: re-emitting would duplicate it and, being
     // later, silently override a deliberate dark-specific value.
     if (alreadyDark.has(name)) return false;
-    const target = aliasTarget(value);
-    return Boolean(target) && sensitive.has(name);
+    return sensitive.has(name);
   });
 }

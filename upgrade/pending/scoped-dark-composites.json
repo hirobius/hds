@@ -1,0 +1,90 @@
+{
+  "impact": "look",
+  "plain": "Shadows inside a dark-themed section (data-theme on an element, not <html>) now render dark; nothing to change.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-elevation-floating-shadow",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable is now also declared in the dark block, so it renders dark inside a dark-themed section; if you override it under [data-theme=\"dark\"], your override still wins.",
+      "detect": {
+        "cssVars": ["--semantic-elevation-floating-shadow"],
+        "cssVarWrites": ["--semantic-elevation-floating-shadow"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-elevation-floating-shadow:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-elevation-floating-shadow:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-elevation-overlay-shadow",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable is now also declared in the dark block, so it renders dark inside a dark-themed section; if you override it under [data-theme=\"dark\"], your override still wins.",
+      "detect": {
+        "cssVars": ["--semantic-elevation-overlay-shadow"],
+        "cssVarWrites": ["--semantic-elevation-overlay-shadow"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-elevation-overlay-shadow:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-elevation-overlay-shadow:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-elevation-raised-shadow",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable is now also declared in the dark block, so it renders dark inside a dark-themed section; if you override it under [data-theme=\"dark\"], your override still wins.",
+      "detect": {
+        "cssVars": ["--semantic-elevation-raised-shadow"],
+        "cssVarWrites": ["--semantic-elevation-raised-shadow"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-elevation-raised-shadow:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-elevation-raised-shadow:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-shadow-floating",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable is now also declared in the dark block, so it renders dark inside a dark-themed section; if you override it under [data-theme=\"dark\"], your override still wins.",
+      "detect": {
+        "cssVars": ["--semantic-shadow-floating"],
+        "cssVarWrites": ["--semantic-shadow-floating"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-shadow-floating:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-shadow-floating:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-shadow-overlay",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable is now also declared in the dark block, so it renders dark inside a dark-themed section; if you override it under [data-theme=\"dark\"], your override still wins.",
+      "detect": {
+        "cssVars": ["--semantic-shadow-overlay"],
+        "cssVarWrites": ["--semantic-shadow-overlay"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-shadow-overlay:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-shadow-overlay:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-shadow-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This variable is now also declared in the dark block, so it renders dark inside a dark-themed section; if you override it under [data-theme=\"dark\"], your override still wins.",
+      "detect": {
+        "cssVars": ["--semantic-shadow-subtle"],
+        "cssVarWrites": ["--semantic-shadow-subtle"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-shadow-subtle:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-shadow-subtle:[data-theme=dark]"
+      ]
+    }
+  ]
+}

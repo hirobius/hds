@@ -600,11 +600,17 @@
   --semantic-accent-contentHover: var(--primitive-color-graphite-200);
   --semantic-accent-subtle: var(--primitive-color-graphite-800);
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
+  --semantic-shadow-subtle: 0 1px 2px hsl(var(--primitive-shadow-color) / calc(0.04 * var(--primitive-shadow-strength))), 0 1px 1px hsl(var(--primitive-shadow-color) / calc(0.06 * var(--primitive-shadow-strength)));
+  --semantic-shadow-floating: 0 4px 6px hsl(var(--primitive-shadow-color) / calc(0.05 * var(--primitive-shadow-strength))), 0 10px 15px hsl(var(--primitive-shadow-color) / calc(0.08 * var(--primitive-shadow-strength)));
+  --semantic-shadow-overlay: 0 10px 15px hsl(var(--primitive-shadow-color) / calc(0.08 * var(--primitive-shadow-strength))), 0 25px 50px hsl(var(--primitive-shadow-color) / calc(0.12 * var(--primitive-shadow-strength)));
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
   --semantic-elevation-raised-surface: var(--semantic-color-surface-raised);
+  --semantic-elevation-raised-shadow: var(--semantic-shadow-subtle);
   --semantic-elevation-floating-surface: var(--semantic-color-surface-raised);
+  --semantic-elevation-floating-shadow: var(--semantic-shadow-floating);
   --semantic-elevation-overlay-surface: var(--semantic-color-surface-overlay);
+  --semantic-elevation-overlay-shadow: var(--semantic-shadow-overlay);
   --component-nav-bg: var(--semantic-color-surface-page);
   --component-nav-bgActive: var(--semantic-accent-subtle);
   --component-nav-borderActive: var(--semantic-color-surface-accent);
