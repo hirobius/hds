@@ -832,7 +832,7 @@ export function buildManifest() {
  * exists solely for the docs-site token table, which reads the full corpus
  * from FULL_OUTPUT_FILE instead.
  */
-function stripObservedTokens(manifest) {
+export function stripObservedTokens(manifest) {
   const components = {};
   for (const [name, entry] of Object.entries(manifest.components)) {
     const { observedTokens: _observedTokens, ...rest } = entry;

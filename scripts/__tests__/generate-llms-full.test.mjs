@@ -26,7 +26,8 @@ describe('committed llms output is fresh', () => {
       .filter(([rel, text]) => normalize(read(rel)) !== normalize(text))
       .map(([rel]) => rel);
     expect(stale, 'run pnpm llms:generate').toEqual([]);
-  });
+    // The prop data is built from source in-process (hds#716), a few seconds.
+  }, 60_000);
 });
 
 describe('llms-full.txt and slices', () => {

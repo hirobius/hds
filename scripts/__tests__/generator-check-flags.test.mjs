@@ -121,7 +121,6 @@ describe('build-handoff --check', () => {
 describe('generate-llms-txt --check', () => {
   const INPUTS = [
     'public/hds-manifest.json',
-    'src/app/data/component-api.json',
     'package.json',
     'hirobius.tokens.json',
     'content/docs/voice.mdx',
