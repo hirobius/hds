@@ -111,11 +111,13 @@ describe('findRemoved', () => {
       `import { Button, ActivityFeed } from '${ROOT}';`,
       `import { Page, SideNav as Nav } from '${SUB}';`,
       `import type { buttonVariants } from "${ROOT}";`,
+      `import { "ActivityFeed" as AF } from '${ROOT}';`,
     ].join('\n');
     expect(findRemoved(src)).toEqual([
       `ActivityFeed from '${ROOT}' (removed in 0.20.0, no replacement)`,
       `SideNav from '${SUB}' (removed in 0.20.0, no replacement)`,
       `buttonVariants from '${ROOT}' (removed in 0.20.0, no replacement)`,
+      `ActivityFeed from '${ROOT}' (removed in 0.20.0, no replacement)`,
     ]);
   });
 
