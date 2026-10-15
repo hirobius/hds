@@ -25,8 +25,11 @@
  *   - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys
  *     ('content.primary', 'surface.raised', 'border.subtle', 'accent',
  *     'accent.hover', 'feedback.success', …) to the matching semantic CSS var.
- *   - Responsive `{ xs, sm, md, lg, xl }` objects compile to `min-width` media
- *     queries off the HDS breakpoint scale.
+ *   - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value
+ *     that applies at every width — it compiles to a plain rule with no media
+ *     query, so it holds below the `xs` breakpoint (375px) too — and the
+ *     breakpoint keys compile to `min-width` media queries off the HDS
+ *     breakpoint scale. Use `base`, not `xs`, for the mobile-first value.
  *   - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a
  *     selector, composable with responsive values.
  *   - Everything else passes through as a plain camelCase→kebab-case CSS

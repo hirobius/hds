@@ -41,12 +41,19 @@ const BREAKPOINT_KEYS: Breakpoint[] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
 export type SxValue = string | number;
 
-export type ResponsiveValue<T> = T | Partial<Record<Breakpoint, T>>;
+/**
+ * A plain value, or a responsive map. `base` is the value that applies at
+ * every width: it compiles to a plain rule with no media query, so it holds
+ * below the `xs` breakpoint (375px) too. The breakpoint keys compile to
+ * `min-width` media queries. Use `base`, not `xs`, for the mobile-first value.
+ */
+export type ResponsiveValue<T> = T | Partial<Record<Breakpoint | 'base', T>>;
 
 /**
  * The `sx` object shape. Keys are either:
  *  - a CSS-property-ish key (camelCase, e.g. `p`, `color`, `marginTop`) whose
- *    value is a plain `SxValue` or a `{ xs, sm, md, lg, xl }` responsive map, or
+ *    value is a plain `SxValue` or a `{ base, xs, sm, md, lg, xl }` responsive
+ *    map, or
  *  - a `&`-prefixed nested-selector key (`'&:hover'`, `'& > *'`,
  *    `'&[data-state=open]'`) whose value is itself a nested `SxObject`.
  */
@@ -315,9 +322,13 @@ function buildDeclarations(key: string, value: SxValue): string[] {
   return [`${cssProp}:${resolved}`];
 }
 
-function isResponsiveObject(value: unknown): value is Partial<Record<Breakpoint, SxValue>> {
+function isResponsiveObject(
+  value: unknown,
+): value is Partial<Record<Breakpoint | 'base', SxValue>> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
-  return Object.keys(value).every((k) => BREAKPOINT_KEYS.includes(k as Breakpoint));
+  return Object.keys(value).every(
+    (k) => k === 'base' || BREAKPOINT_KEYS.includes(k as Breakpoint),
+  );
 }
 
 // ── Resolver ──────────────────────────────────────────────────────────────────
@@ -366,6 +377,9 @@ export function resolveSx(sx: SxObject, className: string): string[] {
       }
 
       if (isResponsiveObject(raw)) {
+        if (raw.base !== undefined) {
+          addBase(selectorSuffix, buildDeclarations(key, raw.base));
+        }
         for (const bp of BREAKPOINT_KEYS) {
           const v = raw[bp];
           if (v === undefined) continue;
