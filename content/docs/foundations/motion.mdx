@@ -1,24 +1,65 @@
 ---
 title: 'Motion'
-description: 'Three durations and their easing curves, for small feedback, entrances and longer moves.'
+description: 'Lively, intentional motion: durations, springs and named recipes for opening, arriving, swapping and confirming.'
 status: 'stable'
 since: '0.1.0'
 ---
 
 ## Principle
 
-- **Fast (150ms)** for hover, focus and press.
-- **Medium (250ms)** for things that appear: dialogs, menus, toasts.
-- **Slow (400ms)** for things that move across the screen.
+HDS feels lively (ADR-064). Every motion must look effective and intentional: it shows
+where something came from, what changed, or that an action worked.
+
+- **Open and close:** things grow from where they came from, and close faster than they open.
+- **Arrive:** a confirmation can land with a small spring overshoot.
+- **Swap:** a value that changes in place cross-fades with a slight blur.
+- **Reduced motion:** every recipe has a still version. Things appear and disappear, nothing moves.
+
+## Recipes
+
+Use a recipe instead of writing a timing. Spread it on a `motion` element:
+
+```tsx
+import { AnimatePresence, motion } from 'motion/react';
+import { useMotionRecipe } from '@hirobius/design-system';
+
+function Menu({ open }: { open: boolean }) {
+  const recipe = useMotionRecipe('openMenu');
+  return <AnimatePresence>{open && <motion.div {...recipe}>…</motion.div>}</AnimatePresence>;
+}
+```
+
+<MotionRecipesDemo />
+
+| Recipe        | Use it for                                                    |
+| ------------- | ------------------------------------------------------------- |
+| `openDialog`  | Dialogs and alert dialogs                                     |
+| `openMenu`    | Menus, popovers, selects, comboboxes                          |
+| `openTooltip` | Tooltips                                                      |
+| `toast`       | Toasts arriving in the stack                                  |
+| `reveal`      | Content replacing a skeleton (stagger with `staggerDelay(i)`) |
+| `swap`        | A label or icon changing in place (key it on the value)       |
+| `arrive`      | Saved, sent, done                                             |
+| `check`       | A tick drawing itself (an SVG path)                           |
+| `shake`       | A field with an error (key it on the error)                   |
+| `expand`      | Disclosures and sidebars growing                              |
+| `listItem`    | List items entering, leaving and moving                       |
+
+## Springs
+
+Springs come in two families, from Material 3's motion system: **spatial** for things that
+move (`spatialFast`, `spatialDefault`, `spatialSlow`) and **effects** for fades, colour and
+blur (`effectsFast`, `effectsDefault`, `effectsSlow`), which never overshoot. `elastic` is
+the lively one, for arrivals. In CSS each spring is a `linear()` curve
+(`--primitive-easing-spatialDefault`); in JS it is `hds.motion.springs.spatialDefault`.
 
 ## Best practices
 
-- Use the fast tokens for hover, focus and press feedback.
-- Turn motion off when the user asks for reduced motion.
-- Keep transitions short so the app feels quick.
-- Don't add bouncy springs to everyday controls.
-- Don't use medium or slow motion for simple toggles.
-- Don't write durations or easing curves by hand. Use the tokens.
+- Use a recipe; don't write durations, curves or offsets by hand.
+- Close faster than you open.
+- Save the overshoot for moments that confirm something; everyday controls settle without it.
+- Press feedback is colour and contrast, not a scale change.
+- Don't animate things the user did not act on, and don't loop.
 
 ## Tokens
 

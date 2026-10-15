@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New useMotionRecipe and friends give named, token-built motions (open, toast, reveal, swap, arrive, check, shake, expand, list item) that go still under reduced motion; nothing to change."
+}

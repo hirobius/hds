@@ -6,6 +6,7 @@ import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
 import { Mermaid } from './components/mermaid';
+import { MotionRecipesDemo } from './components/motion-recipes-demo';
 import { TokenTable } from './components/token-table';
 import {
   DeprecationLedger,
@@ -28,6 +29,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ComponentPreview,
     ComponentIndex,
     Mermaid,
+    MotionRecipesDemo,
     ReleaseLedger,
     DeprecationLedger,
     RemovalLedger,

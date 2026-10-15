@@ -134,6 +134,11 @@ import tokensJson from '../hirobius.tokens.json';
 /** Raw DTCG design tokens (the contents of `hirobius.tokens.json`). */
 export const tokens = tokensJson;
 
+// ── Motion recipes (hds#751): named motions built from hds.motion, reduced-motion aware ──
+export { MOTION_RECIPES, motionRecipe, staggerDelay } from './app/design-system/motion-recipes';
+export type { MotionRecipe, MotionRecipeName } from './app/design-system/motion-recipes';
+export { useMotionRecipe } from './app/hooks/useMotionRecipe';
+
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
 

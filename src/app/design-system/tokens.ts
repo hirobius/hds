@@ -49,6 +49,17 @@ const motion = {
   extended: msToSeconds(tokenValues.primitive.duration.extended),
   /** Scale an element opens from and closes to. */
   scale: { dialog: 0.96, menu: 0.97, tooltip: 0.98 },
+  /** Travel in px: semantic.motion.nudge, .slide and .distance. */
+  distance: {
+    nudge: parseFloat(tokenValues.primitive.space['1']),
+    slide: parseFloat(tokenValues.primitive.space['2']),
+    reveal: parseFloat(tokenValues.primitive.space['6']),
+  },
+  /** Blur in px while something swaps or reveals: semantic.motion.blurSwap, .blurReveal. */
+  blur: {
+    swap: parseFloat(tokenValues.primitive.blur['2']),
+    reveal: parseFloat(tokenValues.primitive.blur['4']),
+  },
   productive: {
     duration: msToSeconds(tokenValues.primitive.duration.short),
     easing: [0, 0, 0.2, 1] as [number, number, number, number],
