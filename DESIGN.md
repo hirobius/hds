@@ -128,7 +128,7 @@ Motion (lift on hover, parallax) is the interaction-affordance layer; static dep
 | `semantic.motion.spatial` | `400ms` | For elements traveling long distances across the viewport. |
 | `semantic.motion.exit` | `100ms` | For elements being removed from the DOM. |
 
-Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.
+Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for arrivals, confirmations and teaching moments, where the motion itself carries meaning (ADR-064). `spatial` (400ms) is for travel, not decoration.
 
 ### Other semantic motion tokens
 
@@ -222,7 +222,7 @@ Three more needs are props on an existing component, not components of their own
 - Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
 - Don't sticker badges onto the ends of prose lines. Status and progress should live in a predictable metadata slot, rail, header zone, table column, or progress surface; badges are reserved for compact state markers where their placement is intentional.
 - Don't add decorative illustration, ornamental icons, or trend-driven filler that lacks functional or structural purpose.
-- Don't make motion playful or bouncy by default; movement should feel controlled, precise, and intentional, with expressive motion used sparingly and only when it teaches or clarifies.
+- Don't ship motion that looks accidental: every animation must be effective and intentional. HDS is lively: springs, settles and small overshoots are welcome on arrivals, confirmations and state changes (ADR-064); motion that delays the user, loops for no reason, or moves things the user did not act on is not.
 - Don't add `whileTap` scale transforms for press feedback; use color, border, and state-contrast changes instead — transforms are reserved for spatial motion, not interaction acknowledgment.
 - Don't define a global disabled-state rule (opacity multiplier, saturation ramp, etc.); disabled presentation is governed per-component through its dedicated disabled tokens.
 

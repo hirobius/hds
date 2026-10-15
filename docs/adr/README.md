@@ -6,7 +6,7 @@ One file per decision, numbered in the order recorded ([ADR-009](009-adr-convent
 An Accepted ADR is not edited; a change is a new ADR that supersedes it through its
 Status line.
 
-62 records. 26 are **retroactive**: decisions made between June and
+63 records. 26 are **retroactive**: decisions made between June and
 October 2026 that shipped without an ADR, written up afterwards from the commit and PR
 history. Each one lists its evidence and says when the evidence does not record a reason.
 Their "Decided" date is when the decision landed, not when it was written up.
@@ -77,3 +77,4 @@ the bundle budget) predates this folder; see ADR-009.
 | [060](060-typeface-delivery-and-licensing.md) | Typefaces: how fonts ship, and only what the license allows | Accepted | 2026-10-10 | yes |
 | [061](061-code-wins-component-token-binding.md) | When a component token and the rendered component disagree, code wins | Accepted | 2026-10-11 | yes |
 | [062](062-state-is-derived.md) | Project state is derived, and every state surface is registered | Accepted | 2026-10-12 | yes |
+| [064](064-lively-motion.md) | HDS motion is lively, not restrained | Accepted | 2026-10-15 |  |

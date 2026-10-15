@@ -344,7 +344,7 @@ export function buildMotion(raw) {
     '',
     intentLines.join('\n'),
     '',
-    'Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.',
+    'Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for arrivals, confirmations and teaching moments, where the motion itself carries meaning (ADR-064). `spatial` (400ms) is for travel, not decoration.',
   ];
   if (otherLines.length > 1) {
     sections.push('', '### Other semantic motion tokens', '', otherLines.join('\n'));
