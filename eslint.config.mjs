@@ -323,14 +323,18 @@ export default [
   // Carve-out below: the primitives in src/app/components/** are what
   // hds/no-raw-controls and hds/prefer-hds-layout-primitive tell consumers to
   // reach for, so they have to render the raw <button>/<input> and display:flex
-  // themselves; tests mount raw controls as fixtures.
+  // themselves; tests and compile-only __fixtures__ mount raw controls.
   // scripts/__tests__/eslint-hds-self-lint.test.mjs pins this.
   ...hds.configs.recommended.map((config) => ({
     ...config,
     files: ['src/**/*.{js,jsx,ts,tsx}'],
   })),
   {
-    files: ['src/app/components/**/*.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
+    files: [
+      'src/app/components/**/*.{ts,tsx}',
+      'src/**/*.test.{ts,tsx}',
+      'src/**/__fixtures__/**/*.{ts,tsx}',
+    ],
     rules: {
       'hds/no-raw-controls': 'off',
       'hds/prefer-hds-layout-primitive': 'off',

@@ -2,8 +2,8 @@
  * HDS lints its own src/ with the rules it ships to consumers (hds/recommended).
  * This pins the repo's eslint.config.mjs: the three token-discipline rules must
  * stay on for src/ (and fire on a violation), so nobody quietly switches them
- * off. Primitive implementers (src/app/components/**) and tests are the one
- * carve-out, for the rules about raw controls and ad-hoc layout.
+ * off. Primitive implementers (src/app/components/**), tests and compile-only
+ * __fixtures__ are the one carve-out, for the rules about raw controls and ad-hoc layout.
  */
 import { ESLint } from 'eslint';
 import { describe, expect, it } from 'vitest';
@@ -48,6 +48,14 @@ describe('hds/* rules are enforced on src/', () => {
     const ids = await ruleIds(
       `export const A = () => <button>x</button>;\n`,
       'src/app/components/__fixture__.tsx',
+    );
+    expect(ids).not.toContain('hds/no-raw-controls');
+  });
+
+  it('a compile-only __fixtures__ file may render raw controls (hds#676)', async () => {
+    const ids = await ruleIds(
+      `export const A = () => <input />;\n`,
+      'src/form/__fixtures__/__fixture__.tsx',
     );
     expect(ids).not.toContain('hds/no-raw-controls');
   });
