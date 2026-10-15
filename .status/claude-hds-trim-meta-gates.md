@@ -1,0 +1,1 @@
+Deleted four unused meta-gate audits (audit-gate-purity, audit-gates-supportjson, audit-batch-deliverables, audit-exceptions) with their fixtures and generated reports; CLAUDE.md and SCHEMA.md no longer call the on-demand registry validators pre-commit gates (trim audit #1).
