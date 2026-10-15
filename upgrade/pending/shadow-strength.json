@@ -6,34 +6,46 @@
       "id": "value-changed/--semantic-shadow-floating",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "--semantic-shadow-floating now multiplies its opacity by --primitive-shadow-strength (3 in dark mode), so it is darker on dark surfaces; if you override it, keep the calc() or set the strength.",
+      "plain": "--semantic-shadow-floating now multiplies its opacity by --primitive-shadow-strength (3 in dark mode), so it is darker on dark surfaces; if you override it, keep the calc() or set the strength, and it now renders dark inside a dark-themed section as well.",
       "detect": {
         "cssVars": ["--semantic-shadow-floating"],
         "cssVarWrites": ["--semantic-shadow-floating"]
       },
-      "facts": ["css-var-changed:--semantic-shadow-floating::root"]
+      "facts": [
+        "css-var-changed:--semantic-shadow-floating::root",
+        "css-var-changed:--semantic-shadow-floating:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-shadow-floating:[data-theme=dark]"
+      ]
     },
     {
       "id": "value-changed/--semantic-shadow-overlay",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "--semantic-shadow-overlay now multiplies its opacity by --primitive-shadow-strength (3 in dark mode), so it is darker on dark surfaces; if you override it, keep the calc() or set the strength.",
+      "plain": "--semantic-shadow-overlay now multiplies its opacity by --primitive-shadow-strength (3 in dark mode), so it is darker on dark surfaces; if you override it, keep the calc() or set the strength, and it now renders dark inside a dark-themed section as well.",
       "detect": {
         "cssVars": ["--semantic-shadow-overlay"],
         "cssVarWrites": ["--semantic-shadow-overlay"]
       },
-      "facts": ["css-var-changed:--semantic-shadow-overlay::root"]
+      "facts": [
+        "css-var-changed:--semantic-shadow-overlay::root",
+        "css-var-changed:--semantic-shadow-overlay:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-shadow-overlay:[data-theme=dark]"
+      ]
     },
     {
       "id": "value-changed/--semantic-shadow-subtle",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "--semantic-shadow-subtle now multiplies its opacity by --primitive-shadow-strength (3 in dark mode), so it is darker on dark surfaces; if you override it, keep the calc() or set the strength.",
+      "plain": "--semantic-shadow-subtle now multiplies its opacity by --primitive-shadow-strength (3 in dark mode), so it is darker on dark surfaces; if you override it, keep the calc() or set the strength, and it now renders dark inside a dark-themed section as well.",
       "detect": {
         "cssVars": ["--semantic-shadow-subtle"],
         "cssVarWrites": ["--semantic-shadow-subtle"]
       },
-      "facts": ["css-var-changed:--semantic-shadow-subtle::root"]
+      "facts": [
+        "css-var-changed:--semantic-shadow-subtle::root",
+        "css-var-changed:--semantic-shadow-subtle:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-shadow-subtle:[data-theme=dark]"
+      ]
     }
   ]
 }
