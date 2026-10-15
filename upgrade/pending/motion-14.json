@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The motion dependency moves from 12.23.24 to 14.3.0 with no HDS API change; an app that imports motion itself should move to 14.x as well so only one copy ships."
+}
