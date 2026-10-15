@@ -139,7 +139,7 @@
   --primitive-typography-size-4xl: 36px;
   --primitive-typography-size-5xl: 48px;
   --primitive-typography-size-6xl: 60px;
-  --primitive-typography-size-code: 13px;
+  --primitive-typography-size-code: 15px;
   --primitive-typography-weight-regular: 400;
   --primitive-typography-weight-medium: 500;
   --primitive-typography-weight-bold: 700;
@@ -303,27 +303,27 @@
   --semantic-typography-title-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.titleSm */
   --semantic-typography-titleSm-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-titleSm-font-size: var(--primitive-typography-size-base);
+  --semantic-typography-titleSm-font-size: var(--primitive-typography-size-lg);
   --semantic-typography-titleSm-font-weight: var(--primitive-typography-weight-bold);
   --semantic-typography-titleSm-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-titleSm-line-height: var(--primitive-typography-lineHeight-snug);
   /* semantic.typography.body */
   --semantic-typography-body-font-family: var(--primitive-typography-family-primary);
-  --semantic-typography-body-font-size: var(--primitive-typography-size-base);
+  --semantic-typography-body-font-size: var(--primitive-typography-size-lg);
   --semantic-typography-body-font-weight: var(--primitive-typography-weight-regular);
   --semantic-typography-body-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-body-line-height: var(--primitive-typography-lineHeight-body);
   --semantic-typography-body-max-width: 60ch;
   /* semantic.typography.ui */
   --semantic-typography-ui-font-family: var(--primitive-typography-family-primary);
-  --semantic-typography-ui-font-size: var(--primitive-typography-size-sm);
+  --semantic-typography-ui-font-size: var(--primitive-typography-size-base);
   --semantic-typography-ui-font-weight: var(--primitive-typography-weight-medium);
   --semantic-typography-ui-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-ui-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-ui-max-width: 60ch;
   /* semantic.typography.caption */
   --semantic-typography-caption-font-family: var(--primitive-typography-family-primary);
-  --semantic-typography-caption-font-size: var(--primitive-typography-size-xs);
+  --semantic-typography-caption-font-size: var(--primitive-typography-size-sm);
   --semantic-typography-caption-font-weight: var(--primitive-typography-weight-medium);
   --semantic-typography-caption-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-caption-line-height: var(--primitive-typography-lineHeight-normal);
@@ -354,7 +354,7 @@
   --semantic-typography-h3-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.eyebrow */
   --semantic-typography-eyebrow-font-family: var(--primitive-typography-family-primary);
-  --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-xs);
+  --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-sm);
   --semantic-typography-eyebrow-font-weight: var(--primitive-typography-weight-medium);
   --semantic-typography-eyebrow-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-eyebrow-line-height: var(--primitive-typography-lineHeight-normal);
@@ -419,7 +419,7 @@
   --component-tag-text: var(--semantic-color-content-secondary);
   --component-tag-border: var(--semantic-color-border-default);
   --component-tag-radius: var(--primitive-radius-full);
-  --component-tag-fontSize: var(--primitive-typography-size-xs);
+  --component-tag-fontSize: var(--primitive-typography-size-sm);
   --component-tag-fontWeight: var(--primitive-typography-weight-medium);
   --component-tag-lineHeight: var(--primitive-typography-lineHeight-normal);
   --component-tag-minWidth: var(--primitive-size-48);
@@ -430,7 +430,7 @@
   --component-tag-activeBackground: var(--semantic-accent-rest);
   --component-tag-activeBorder: var(--semantic-accent-rest);
   --component-tag-activeHover: var(--semantic-accent-hover);
-  --component-badge-fontSize: var(--primitive-typography-size-xs);
+  --component-badge-fontSize: var(--primitive-typography-size-sm);
   --component-badge-fontWeight: var(--primitive-typography-weight-medium);
   --component-badge-text: var(--semantic-color-content-primary);
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
@@ -459,19 +459,19 @@
   --component-button-paddingY: var(--primitive-space-2);
   --component-button-size-sm-paddingX: var(--primitive-space-3);
   --component-button-size-sm-paddingY: var(--primitive-space-1);
-  --component-button-size-sm-fontSize: var(--primitive-typography-size-xs);
+  --component-button-size-sm-fontSize: var(--primitive-typography-size-sm);
   --component-button-size-sm-iconSize: var(--primitive-size-12);
   --component-button-size-sm-height: var(--primitive-size-32);
   --component-button-size-sm-itemSpacing: var(--primitive-space-2);
   --component-button-size-md-paddingX: var(--primitive-space-4);
   --component-button-size-md-paddingY: var(--primitive-space-2);
-  --component-button-size-md-fontSize: var(--primitive-typography-size-sm);
+  --component-button-size-md-fontSize: var(--primitive-typography-size-base);
   --component-button-size-md-iconSize: var(--primitive-size-16);
   --component-button-size-md-height: var(--primitive-size-40);
   --component-button-size-md-itemSpacing: var(--primitive-space-2);
   --component-button-size-lg-paddingX: var(--primitive-space-6);
   --component-button-size-lg-paddingY: var(--primitive-space-4);
-  --component-button-size-lg-fontSize: var(--primitive-typography-size-sm);
+  --component-button-size-lg-fontSize: var(--primitive-typography-size-base);
   --component-button-size-lg-iconSize: var(--primitive-size-20);
   --component-button-size-lg-height: var(--primitive-size-48);
   --component-button-size-lg-itemSpacing: var(--primitive-space-2);

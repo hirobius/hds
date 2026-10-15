@@ -260,15 +260,15 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | ----------------- | ---------- | ------ | ----------- | -------------- | -------------------------------------------------------------------------------- |
 | `display`         | 48px       | 700    | 1.05        | -0.01em        | One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.                         |
 | `title`           | 24px       | 700    | 1.25        | -0.01em        | Section and card headings. 24px / 1.25 / 700. Role 2 of 6.                       |
-| `titleSm`         | 16px       | 700    | 1.375       | 0em            | Small heading inside a card or section band. 16px / 1.375 / 700.                 |
-| `body`            | 16px       | 400    | 1.6         | 0em            | Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.                              |
-| `ui`              | 14px       | 500    | 1.5         | 0em            | Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.                |
-| `caption`         | 12px       | 500    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6. |
-| `mono`            | 13px       | 400    | 1.5         | 0em            | Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.                 |
+| `titleSm`         | 18px       | 700    | 1.375       | 0em            | Small heading inside a card or section band. 18px / 1.375 / 700.                 |
+| `body`            | 18px       | 400    | 1.6         | 0em            | Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.                              |
+| `ui`              | 16px       | 500    | 1.5         | 0em            | Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.                |
+| `caption`         | 14px       | 500    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6. |
+| `mono`            | 15px       | 400    | 1.5         | 0em            | Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6.                 |
 | `h1`              | 24px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
 | `h2`              | 24px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
 | `h3`              | 24px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
-| `eyebrow`         | 12px       | 500    | 1.5         | 0em            | deprecated: use semantic.typography.caption                                      |
+| `eyebrow`         | 14px       | 500    | 1.5         | 0em            | deprecated: use semantic.typography.caption                                      |
 | `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.               |
 
 > Token JSON stores static max sizes. Responsive `clamp()` overrides live in `theme.css`.
@@ -285,7 +285,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 - `primitive.typography.size.4xl` = **36px**
 - `primitive.typography.size.5xl` = **48px**
 - `primitive.typography.size.6xl` = **60px**
-- `primitive.typography.size.code` = **13px**
+- `primitive.typography.size.code` = **15px**
 <!-- auto:end:typography -->
 
 ---
