@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-15T18:18:38.667Z",
+  "generated": "2026-10-15T19:15:57.656Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11619,6 +11619,17 @@
         }
       },
       {
+        "path": "primitive.shadow.strength",
+        "cssVar": "--primitive-shadow-strength",
+        "type": "number",
+        "description": "Multiplier on every shadow's opacity. Dark surfaces need about 3x the opacity for the same depth, so dark mode raises it (hds#751; idea from Open Props, MIT).",
+        "value": "1",
+        "dark": {
+          "alias": 3,
+          "resolvedValue": "3"
+        }
+      },
+      {
         "path": "primitive.breakpoint.xs",
         "cssVar": "--primitive-breakpoint-xs",
         "type": "dimension",
@@ -13039,21 +13050,21 @@
         "cssVar": "--semantic-shadow-subtle",
         "type": "shadow",
         "description": "Resting elevation shadow for raised surfaces (cards, inline panels).",
-        "value": "0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06)"
+        "value": "0 1px 2px hsl(var(--primitive-shadow-color) / calc(0.04 * var(--primitive-shadow-strength))), 0 1px 1px hsl(var(--primitive-shadow-color) / calc(0.06 * var(--primitive-shadow-strength)))"
       },
       {
         "path": "semantic.shadow.floating",
         "cssVar": "--semantic-shadow-floating",
         "type": "shadow",
         "description": "Hover/floating elevation for menus, popovers, and tooltips.",
-        "value": "0 4px 6px hsl(var(--primitive-shadow-color) / 0.05), 0 10px 15px hsl(var(--primitive-shadow-color) / 0.08)"
+        "value": "0 4px 6px hsl(var(--primitive-shadow-color) / calc(0.05 * var(--primitive-shadow-strength))), 0 10px 15px hsl(var(--primitive-shadow-color) / calc(0.08 * var(--primitive-shadow-strength)))"
       },
       {
         "path": "semantic.shadow.overlay",
         "cssVar": "--semantic-shadow-overlay",
         "type": "shadow",
         "description": "Modal/dialog elevation for full-screen overlays.",
-        "value": "0 10px 15px hsl(var(--primitive-shadow-color) / 0.08), 0 25px 50px hsl(var(--primitive-shadow-color) / 0.12)"
+        "value": "0 10px 15px hsl(var(--primitive-shadow-color) / calc(0.08 * var(--primitive-shadow-strength))), 0 25px 50px hsl(var(--primitive-shadow-color) / calc(0.12 * var(--primitive-shadow-strength)))"
       },
       {
         "path": "semantic.elevation.flat",
@@ -13084,7 +13095,7 @@
           },
           "shadow": {
             "alias": "{semantic.shadow.subtle}",
-            "resolvedValue": "0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06)"
+            "resolvedValue": "0 1px 2px hsl(var(--primitive-shadow-color) / calc(0.04 * var(--primitive-shadow-strength))), 0 1px 1px hsl(var(--primitive-shadow-color) / calc(0.06 * var(--primitive-shadow-strength)))"
           },
           "border": null
         }
@@ -13101,7 +13112,7 @@
           },
           "shadow": {
             "alias": "{semantic.shadow.floating}",
-            "resolvedValue": "0 4px 6px hsl(var(--primitive-shadow-color) / 0.05), 0 10px 15px hsl(var(--primitive-shadow-color) / 0.08)"
+            "resolvedValue": "0 4px 6px hsl(var(--primitive-shadow-color) / calc(0.05 * var(--primitive-shadow-strength))), 0 10px 15px hsl(var(--primitive-shadow-color) / calc(0.08 * var(--primitive-shadow-strength)))"
           },
           "border": null
         }
@@ -13118,7 +13129,7 @@
           },
           "shadow": {
             "alias": "{semantic.shadow.overlay}",
-            "resolvedValue": "0 10px 15px hsl(var(--primitive-shadow-color) / 0.08), 0 25px 50px hsl(var(--primitive-shadow-color) / 0.12)"
+            "resolvedValue": "0 10px 15px hsl(var(--primitive-shadow-color) / calc(0.08 * var(--primitive-shadow-strength))), 0 25px 50px hsl(var(--primitive-shadow-color) / calc(0.12 * var(--primitive-shadow-strength)))"
           },
           "border": null
         }

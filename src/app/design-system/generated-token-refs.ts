@@ -221,7 +221,8 @@ export const tokenRefs = {
       effectsSlow: "var(--primitive-easing-effectsSlow)"
     },
     shadow: {
-      color: "var(--primitive-shadow-color)"
+      color: "var(--primitive-shadow-color)",
+      strength: "var(--primitive-shadow-strength)"
     },
     breakpoint: {
       xs: "var(--primitive-breakpoint-xs)",

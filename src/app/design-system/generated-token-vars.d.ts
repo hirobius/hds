@@ -171,6 +171,7 @@ declare module 'react' {
     '--primitive-easing-effectsDefault'?: string | undefined;
     '--primitive-easing-effectsSlow'?: string | undefined;
     '--primitive-shadow-color'?: string | undefined;
+    '--primitive-shadow-strength'?: string | undefined;
     '--primitive-breakpoint-xs'?: string | undefined;
     '--primitive-breakpoint-sm'?: string | undefined;
     '--primitive-breakpoint-md'?: string | undefined;

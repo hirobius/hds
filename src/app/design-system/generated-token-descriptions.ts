@@ -137,6 +137,7 @@ export const tokenDescriptions: Record<string, string> = {
   "primitive.easing.effectsDefault": "Critically damped spring for opacity and blur changes; never overshoots.",
   "primitive.easing.effectsSlow": "Critically damped spring for slow reveals; never overshoots.",
   "primitive.shadow.color": "HSL channels for shadow-color alpha compositing. Light: cool neutral; dark: black.",
+  "primitive.shadow.strength": "Multiplier on every shadow's opacity. Dark surfaces need about 3x the opacity for the same depth, so dark mode raises it (hds#751; idea from Open Props, MIT).",
   "primitive.size.8": "8px size step.",
   "primitive.size.10": "10px size step.",
   "primitive.size.12": "12px size step.",

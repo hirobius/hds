@@ -1,0 +1,39 @@
+{
+  "impact": "look",
+  "plain": "In dark mode the subtle, floating and overlay shadows are now three times as opaque, so raised surfaces read; set --primitive-shadow-strength yourself to tune it.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-shadow-floating",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-shadow-floating now multiplies its opacity by --primitive-shadow-strength (3 in dark mode), so it is darker on dark surfaces; if you override it, keep the calc() or set the strength.",
+      "detect": {
+        "cssVars": ["--semantic-shadow-floating"],
+        "cssVarWrites": ["--semantic-shadow-floating"]
+      },
+      "facts": ["css-var-changed:--semantic-shadow-floating::root"]
+    },
+    {
+      "id": "value-changed/--semantic-shadow-overlay",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-shadow-overlay now multiplies its opacity by --primitive-shadow-strength (3 in dark mode), so it is darker on dark surfaces; if you override it, keep the calc() or set the strength.",
+      "detect": {
+        "cssVars": ["--semantic-shadow-overlay"],
+        "cssVarWrites": ["--semantic-shadow-overlay"]
+      },
+      "facts": ["css-var-changed:--semantic-shadow-overlay::root"]
+    },
+    {
+      "id": "value-changed/--semantic-shadow-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-shadow-subtle now multiplies its opacity by --primitive-shadow-strength (3 in dark mode), so it is darker on dark surfaces; if you override it, keep the calc() or set the strength.",
+      "detect": {
+        "cssVars": ["--semantic-shadow-subtle"],
+        "cssVarWrites": ["--semantic-shadow-subtle"]
+      },
+      "facts": ["css-var-changed:--semantic-shadow-subtle::root"]
+    }
+  ]
+}

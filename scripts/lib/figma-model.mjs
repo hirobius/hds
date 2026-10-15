@@ -499,7 +499,9 @@ const LENGTH = String.raw`-?[0-9.]+(?:px)?`;
 const SHADOW_LAYER = new RegExp(
   `^(inset\\s+)?(${LENGTH})\\s+(${LENGTH})(?:\\s+(${LENGTH}))?(?:\\s+(${LENGTH}))?\\s+(.+)$`,
 );
-const HSL_VAR = /^hsl\(\s*var\((--[\w-]+)\)\s*(?:\/\s*([0-9.]+))?\s*\)$/;
+// hsl(var(--c) / 0.04) or hsl(var(--c) / calc(0.04 * var(--strength))) (hds#751)
+const HSL_VAR =
+  /^hsl\(\s*var\((--[\w-]+)\)\s*(?:\/\s*(?:([0-9.]+)|calc\(\s*([0-9.]+)\s*\*\s*var\((--[\w-]+)\)\s*\)))?\s*\)$/;
 
 /** Splits a CSS shadow list on the commas between layers, not inside hsl(…). */
 function splitLayers(css) {
@@ -571,7 +573,14 @@ function shadowEffects(graph, token) {
       mode: isThemed(colorToken) ? 'Light' : SINGLE_MODE,
     };
     const base = colorToFigma(graph.resolveRef(modeValue(colorToken, 'Light'), path));
-    return roundChannels({ ...base, a: base.a * parseFloat(hslVar[2] ?? '1') });
+    let alpha = parseFloat(hslVar[2] ?? '1');
+    if (hslVar[3]) {
+      // an opacity scaled by a strength token: Figma effect styles carry the Light value
+      const strength = graph.cssVarToToken.get(hslVar[4]);
+      if (!strength) fail(`${hslVar[4]} is not a token`);
+      alpha = parseFloat(hslVar[3]) * Number(graph.resolveRef(modeValue(strength, 'Light'), path));
+    }
+    return roundChannels({ ...base, a: base.a * alpha });
   };
 
   // HDS shadows are pre-composed CSS strings (see build-tokens V1); a
