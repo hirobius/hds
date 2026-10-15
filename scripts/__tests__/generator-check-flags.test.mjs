@@ -145,12 +145,13 @@ describe('generate-llms-txt --check', () => {
       readFileSync(join(root, 'public/llms', f), 'utf8'),
     );
     expect(after).toEqual(before);
-  });
+    // The check builds the component prop data from source (hds#716): seconds, not ms.
+  }, 90_000);
 
   it('passes on an untouched copy', () => {
     const res = run('generate-llms-txt.mjs', '--check', '--root', copyRoot(INPUTS));
     expect(res.status, res.stderr).toBe(0);
-  });
+  }, 90_000);
 });
 
 describe('README consumer-usage block', () => {
