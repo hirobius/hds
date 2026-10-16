@@ -209,6 +209,13 @@ for (const name of [...core, ...patterns, ...(rules.providerComponents ?? [])]) 
   if (page) routes.add(page.path);
 }
 if (utilities.size) routes.add(`/docs/components/${rules.utilityPage ?? 'utilities'}`);
+// The docs site renders a landing page for any folder with no index page, so
+// every ancestor folder of a page is a valid link target (/docs/components).
+for (const route of [...routes]) {
+  for (let i = route.indexOf('/', '/docs/'.length); i !== -1; i = route.indexOf('/', i + 1)) {
+    routes.add(route.slice(0, i));
+  }
+}
 
 function checkFrontmatter(file, fm) {
   const { data } = fm;
