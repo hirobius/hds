@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "92571c87f415927db488422dc69ac4fd2a7de71e8949f473ed455a083d8b7876",
-  "precommitStructureHashUpdatedAt": "2026-10-14T04:31:42.037Z",
+  "precommitStructureHash": "063089a0075516f9faca521ccb3b4d00661f19719135030f5de298073b5857b3",
+  "precommitStructureHashUpdatedAt": "2026-10-16T12:42:38.942Z",
   "gates": [
     {
       "id": "audit-bundle",
@@ -117,7 +117,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"]
+      "firingChannels": [
+        "pre-commit"
+      ]
     },
     {
       "id": "check-contrast",
@@ -128,7 +130,10 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit", "ralph-gate"]
+      "firingChannels": [
+        "pre-commit",
+        "ralph-gate"
+      ]
     },
     {
       "id": "check-css-integrity",
@@ -273,7 +278,10 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pnpm-meta",
-      "firingChannels": ["pnpm-meta", "ralph-gate"]
+      "firingChannels": [
+        "pnpm-meta",
+        "ralph-gate"
+      ]
     },
     {
       "id": "check-hardcoded-breakpoints",
@@ -296,7 +304,10 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "manual",
-      "firingChannels": ["manual", "ralph-gate"],
+      "firingChannels": [
+        "manual",
+        "ralph-gate"
+      ],
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
@@ -445,7 +456,9 @@
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"],
+      "firingChannels": [
+        "pre-commit"
+      ],
       "scope": "full-tree",
       "glob": "src/**/*.{ts,tsx}"
     },
@@ -458,7 +471,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"],
+      "firingChannels": [
+        "pre-commit"
+      ],
       "supportsJson": true
     },
     {
@@ -470,7 +485,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"],
+      "firingChannels": [
+        "pre-commit"
+      ],
       "supportsJson": true
     },
     {
@@ -482,7 +499,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"],
+      "firingChannels": [
+        "pre-commit"
+      ],
       "supportsJson": true
     },
     {
@@ -494,7 +513,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"],
+      "firingChannels": [
+        "pre-commit"
+      ],
       "supportsJson": true
     },
     {
@@ -506,7 +527,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"],
+      "firingChannels": [
+        "pre-commit"
+      ],
       "supportsJson": true
     },
     {
@@ -517,7 +540,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"]
+      "firingChannels": [
+        "pre-commit"
+      ]
     },
     {
       "id": "check-status-claims",
@@ -558,7 +583,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-push",
-      "firingChannels": ["pre-push"]
+      "firingChannels": [
+        "pre-push"
+      ]
     },
     {
       "id": "check-ralph-kit-drift",
@@ -569,7 +596,9 @@
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"],
+      "firingChannels": [
+        "pre-commit"
+      ],
       "glob": "ralph/**",
       "strictArgv": "--staged"
     },
@@ -582,7 +611,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-push",
-      "firingChannels": ["pre-push"]
+      "firingChannels": [
+        "pre-push"
+      ]
     },
     {
       "id": "check-layout-contract",
@@ -779,7 +810,9 @@
       "description": "Merged gate (13z-6): default mode enforces token description quality in hirobius.tokens.json (missing/blank/verbose descriptions). With --quality flag: also scans generated-token-descriptions.ts for empty, generic-fallback, or one-sided-theme-language descriptions. Merged from: check-token-descriptions + check-token-description-quality.",
       "severity": "warn",
       "gateScript": "scripts/check-token-descriptions.mjs",
-      "defaultArgs": ["--no-missing"],
+      "defaultArgs": [
+        "--no-missing"
+      ],
       "fixturePath": "fixtures/check-token-descriptions",
       "owner": "Adrian",
       "source": "human",
@@ -811,7 +844,11 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "manual",
-      "glob": ["hirobius.tokens.json", "src/styles/**", "src/app/data/**"],
+      "glob": [
+        "hirobius.tokens.json",
+        "src/styles/**",
+        "src/app/data/**"
+      ],
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -998,7 +1035,9 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": ["pre-commit"]
+      "firingChannels": [
+        "pre-commit"
+      ]
     },
     {
       "id": "build-stats-json",
