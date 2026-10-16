@@ -508,7 +508,7 @@ export const tokens = {
       height: "var(--component-badge-height)",
       minWidth: "var(--component-badge-minWidth)",
       paddingY: "var(--component-badge-paddingY)",
-      labelOffset: "var(--component-badge-labelOffset)",
+      opticalPaddingBottom: "var(--component-badge-opticalPaddingBottom)",
       paddingX: "var(--component-badge-paddingX)"
     },
     button: {

@@ -427,7 +427,7 @@ declare module 'react' {
     '--component-badge-height'?: string | undefined;
     '--component-badge-minWidth'?: string | undefined;
     '--component-badge-paddingY'?: string | undefined;
-    '--component-badge-labelOffset'?: string | undefined;
+    '--component-badge-opticalPaddingBottom'?: string | undefined;
     '--component-badge-paddingX'?: string | undefined;
     '--component-button-bg'?: string | undefined;
     '--component-button-bgHover'?: string | undefined;

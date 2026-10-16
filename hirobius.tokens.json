@@ -2491,7 +2491,7 @@
         "$value": "{primitive.space.px2}",
         "$description": "Vertical padding inside the badge."
       },
-      "labelOffset": {
+      "opticalPaddingBottom": {
         "$type": "dimension",
         "$value": "{primitive.space.px2}",
         "$description": "Extra bottom padding that lifts the label so cap height, not the line box, is centred (hds#757)."

@@ -23,8 +23,8 @@ import { isProduction } from '../../lib/env';
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing and per-tone color tokens have no Tailwind-theme utility; var()-based so still token-driven. the caption role matches component.badge.fontSize (14px).
 const badgeVariants = /* @__PURE__ */ cva(
   // Radius is component.badge.radius (one step under the action radius), so a tenant reshapes Badge by overriding that token.
-  // labelOffset adds bottom padding so the label sits optically centred (cap height, not the line box) (hds#757).
-  'inline-flex w-fit max-w-full items-center justify-center overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] pt-[var(--component-badge-paddingY)] pb-[calc(var(--component-badge-paddingY)+var(--component-badge-labelOffset))] rounded-[var(--component-badge-radius)]',
+  // opticalPaddingBottom adds bottom padding so the label sits optically centred (cap height, not the line box) (hds#757).
+  'inline-flex w-fit max-w-full items-center justify-center overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] pt-[var(--component-badge-paddingY)] pb-[calc(var(--component-badge-paddingY)+var(--component-badge-opticalPaddingBottom))] rounded-[var(--component-badge-radius)]',
   {
     variants: {
       tone: {

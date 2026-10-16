@@ -57,7 +57,7 @@ describe('Badge shape tokens (hds#757)', () => {
     expect(cls).toContain('rounded-[var(--component-badge-radius)]');
     expect(cls).toContain('h-[var(--component-badge-height)]');
     expect(cls).toContain(
-      'pb-[calc(var(--component-badge-paddingY)+var(--component-badge-labelOffset))]',
+      'pb-[calc(var(--component-badge-paddingY)+var(--component-badge-opticalPaddingBottom))]',
     );
     expect(cls).not.toContain('rounded-md');
   });

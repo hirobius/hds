@@ -54,7 +54,7 @@
   height: var(--component-badge-height);
   min-width: var(--component-badge-minWidth);
   padding: var(--component-badge-paddingY) var(--component-badge-paddingX)
-    calc(var(--component-badge-paddingY) + var(--component-badge-labelOffset));
+    calc(var(--component-badge-paddingY) + var(--component-badge-opticalPaddingBottom));
   border-radius: var(--component-badge-radius);
   /* neutral tone (default) */
   background-color: var(--component-badge-neutral-bg);

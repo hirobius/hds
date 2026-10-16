@@ -13430,8 +13430,8 @@
         "resolvedValue": "2px"
       },
       {
-        "path": "component.badge.labelOffset",
-        "cssVar": "--component-badge-labelOffset",
+        "path": "component.badge.opticalPaddingBottom",
+        "cssVar": "--component-badge-opticalPaddingBottom",
         "type": "dimension",
         "description": "Extra bottom padding that lifts the label so cap height, not the line box, is centred (hds#757).",
         "alias": "{primitive.space.px2}",
