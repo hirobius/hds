@@ -226,6 +226,7 @@ export const tokenRefs = {
       "12": "var(--primitive-size-12)",
       "16": "var(--primitive-size-16)",
       "20": "var(--primitive-size-20)",
+      "22": "var(--primitive-size-22)",
       "24": "var(--primitive-size-24)",
       "32": "var(--primitive-size-32)",
       "40": "var(--primitive-size-40)",
@@ -633,6 +634,7 @@ export const tokenRefs = {
       height: "var(--component-badge-height)",
       minWidth: "var(--component-badge-minWidth)",
       paddingY: "var(--component-badge-paddingY)",
+      labelOffset: "var(--component-badge-labelOffset)",
       paddingX: "var(--component-badge-paddingX)"
     },
     button: {

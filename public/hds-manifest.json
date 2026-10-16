@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-15T05:54:59.010Z",
+  "generated": "2026-10-16T12:26:17.068Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11614,6 +11614,13 @@
         "value": "20px"
       },
       {
+        "path": "primitive.size.22",
+        "cssVar": "--primitive-size-22",
+        "type": "dimension",
+        "description": "22px size step (Badge height, hds#757).",
+        "value": "22px"
+      },
+      {
         "path": "primitive.size.24",
         "cssVar": "--primitive-size-24",
         "type": "dimension",
@@ -13394,17 +13401,17 @@
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
-        "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
-        "alias": "{semantic.radius.action}",
-        "resolvedValue": "8px"
+        "description": "Badge corner radius, one step under the action radius (hds#757). A tenant reshapes Badge by overriding component.badge.radius.",
+        "alias": "{primitive.radius.4}",
+        "resolvedValue": "4px"
       },
       {
         "path": "component.badge.height",
         "cssVar": "--component-badge-height",
         "type": "dimension",
         "description": "Badge height.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "alias": "{primitive.size.22}",
+        "resolvedValue": "22px"
       },
       {
         "path": "component.badge.minWidth",
@@ -13419,6 +13426,14 @@
         "cssVar": "--component-badge-paddingY",
         "type": "dimension",
         "description": "Vertical padding inside the badge.",
+        "alias": "{primitive.space.px2}",
+        "resolvedValue": "2px"
+      },
+      {
+        "path": "component.badge.labelOffset",
+        "cssVar": "--component-badge-labelOffset",
+        "type": "dimension",
+        "description": "Extra bottom padding that lifts the label so cap height, not the line box, is centred (hds#757).",
         "alias": "{primitive.space.px2}",
         "resolvedValue": "2px"
       },

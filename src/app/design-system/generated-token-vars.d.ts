@@ -171,6 +171,7 @@ declare module 'react' {
     '--primitive-size-12'?: string | undefined;
     '--primitive-size-16'?: string | undefined;
     '--primitive-size-20'?: string | undefined;
+    '--primitive-size-22'?: string | undefined;
     '--primitive-size-24'?: string | undefined;
     '--primitive-size-32'?: string | undefined;
     '--primitive-size-40'?: string | undefined;
@@ -426,6 +427,7 @@ declare module 'react' {
     '--component-badge-height'?: string | undefined;
     '--component-badge-minWidth'?: string | undefined;
     '--component-badge-paddingY'?: string | undefined;
+    '--component-badge-labelOffset'?: string | undefined;
     '--component-badge-paddingX'?: string | undefined;
     '--component-button-bg'?: string | undefined;
     '--component-button-bgHover'?: string | undefined;

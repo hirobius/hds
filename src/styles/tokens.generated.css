@@ -172,6 +172,7 @@
   --primitive-size-12: 12px;
   --primitive-size-16: 16px;
   --primitive-size-20: 20px;
+  --primitive-size-22: 22px;
   --primitive-size-24: 24px;
   --primitive-size-32: 32px;
   --primitive-size-40: 40px;
@@ -446,10 +447,11 @@
   --component-badge-warning-text: var(--semantic-color-feedback-warning);
   --component-badge-inProgress-bg: var(--semantic-color-feedback-bg-inProgress);
   --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
-  --component-badge-radius: var(--semantic-radius-action);
-  --component-badge-height: var(--primitive-size-20);
+  --component-badge-radius: var(--primitive-radius-4);
+  --component-badge-height: var(--primitive-size-22);
   --component-badge-minWidth: var(--primitive-size-20);
   --component-badge-paddingY: var(--primitive-space-px2);
+  --component-badge-labelOffset: var(--primitive-space-px2);
   --component-badge-paddingX: var(--primitive-space-px6);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);

@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Badge is 22px tall (was 20px), its label is lifted to sit optically centred, and its corners are 4px (was 8px); a tenant that wants the old shape overrides --component-badge-radius."
+}

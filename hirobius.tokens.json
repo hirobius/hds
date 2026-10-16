@@ -882,6 +882,14 @@
         },
         "$description": "16px size step."
       },
+      "22": {
+        "$type": "dimension",
+        "$value": {
+          "value": 22,
+          "unit": "px"
+        },
+        "$description": "22px size step (Badge height, hds#757)."
+      },
       "20": {
         "$type": "dimension",
         "$value": {
@@ -2465,12 +2473,12 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{semantic.radius.action}",
-        "$description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius)."
+        "$value": "{primitive.radius.4}",
+        "$description": "Badge corner radius, one step under the action radius (hds#757). A tenant reshapes Badge by overriding component.badge.radius."
       },
       "height": {
         "$type": "dimension",
-        "$value": "{primitive.size.20}",
+        "$value": "{primitive.size.22}",
         "$description": "Badge height."
       },
       "minWidth": {
@@ -2482,6 +2490,11 @@
         "$type": "dimension",
         "$value": "{primitive.space.px2}",
         "$description": "Vertical padding inside the badge."
+      },
+      "labelOffset": {
+        "$type": "dimension",
+        "$value": "{primitive.space.px2}",
+        "$description": "Extra bottom padding that lifts the label so cap height, not the line box, is centred (hds#757)."
       },
       "paddingX": {
         "$type": "dimension",

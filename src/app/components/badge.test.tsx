@@ -49,3 +49,16 @@ describe('Badge dot (hds#393)', () => {
     expect(badge.hasAttribute('data-size')).toBe(false);
   });
 });
+
+describe('Badge shape tokens (hds#757)', () => {
+  it('binds radius, height and the optical label offset to component.badge tokens', () => {
+    const { container } = render(<Badge>New</Badge>);
+    const cls = (container.firstElementChild as HTMLElement).className;
+    expect(cls).toContain('rounded-[var(--component-badge-radius)]');
+    expect(cls).toContain('h-[var(--component-badge-height)]');
+    expect(cls).toContain(
+      'pb-[calc(var(--component-badge-paddingY)+var(--component-badge-labelOffset))]',
+    );
+    expect(cls).not.toContain('rounded-md');
+  });
+});
