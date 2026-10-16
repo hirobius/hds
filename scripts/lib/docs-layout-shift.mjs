@@ -51,13 +51,11 @@ export function evaluateLayout(scans, limit = CLS_LIMIT) {
     }
   }
   // Routes share chrome per layout: the landing page (/) is not the docs shell (/docs/**).
+  const groupOf = (route) => (route.split('/')[1] === 'docs' ? 'docs' : 'site');
   const refs = new Map();
+  for (const s of scans) if (!refs.has(groupOf(s.route))) refs.set(groupOf(s.route), s);
   for (const s of scans) {
-    const group = s.route.split('/')[1] === 'docs' ? 'docs' : 'site';
-    if (!refs.has(group)) refs.set(group, s);
-  }
-  for (const s of scans) {
-    const ref = refs.get(s.route.split('/')[1] === 'docs' ? 'docs' : 'site');
+    const ref = refs.get(groupOf(s.route));
     if (ref === s) continue;
     for (const region of Object.keys(REGIONS)) {
       if (!same(ref.boxes[region], s.boxes[region])) {
