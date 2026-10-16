@@ -1,1 +1,1 @@
-Layered utilities.css into @layer utilities; added utilities-layer gate test (Refs #698).
+Layered utilities.css into @layer utilities; mono element typography kept unlayered in mono-type.css (#754 QA: docs inline code 15px->13px); gates: utilities-layer unit test + tests/visual/docs-cascade.spec.ts (Refs #698).
