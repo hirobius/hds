@@ -16,6 +16,17 @@
         ]
       },
       "facts": ["removed:.:BoardColumnTone"]
+    },
+    {
+      "id": "removed/--hds-accent-bar",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Delete every var(--hds-accent-bar); status is shown in the content, not a coloured bar.",
+      "detect": {
+        "cssVars": ["--hds-accent-bar"],
+        "cssVarWrites": ["--hds-accent-bar"]
+      },
+      "facts": ["css-var-removed:--hds-accent-bar"]
     }
   ]
 }
