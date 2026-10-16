@@ -1,0 +1,1 @@
+- 2026-10-16: dark accent-pressed -> graphite-100 (AA onAccent), contrast gate covers accent rest/hover/pressed (#748)
