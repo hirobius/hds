@@ -67,16 +67,6 @@
         "cssVarWrites": ["--tracking-wider"]
       },
       "facts": ["css-var-removed:--tracking-wider"]
-    },
-    {
-      "id": "removed/.tracking-widest",
-      "kind": "removed",
-      "impact": "breaking",
-      "plain": "The .tracking-widest class is no longer shipped; use <Text variant> or a .hds-type-<role> class, which set tracking from the type tokens.",
-      "detect": {
-        "classes": ["tracking-widest"]
-      },
-      "facts": ["class-removed:tracking-widest"]
     }
   ]
 }
