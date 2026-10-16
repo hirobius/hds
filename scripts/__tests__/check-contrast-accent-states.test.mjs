@@ -26,8 +26,8 @@ describe('accent state contrast gate (hds#748)', () => {
   });
 });
 
-describe('accent pressed vs hover distinctness (hds#748)', () => {
-  it('keeps dark pressed at least 1.1:1 from dark hover', async () => {
+describe('dark accent state ordering (hds#748)', () => {
+  it('lightens step by step: hover > rest, pressed > hover, each at least 1.1:1 apart', async () => {
     const { readFileSync } = await import('node:fs');
     const t = JSON.parse(readFileSync(resolve(root, 'hirobius.tokens.json'), 'utf8'));
     const prim = t.primitive.color.graphite;
@@ -38,8 +38,12 @@ describe('accent pressed vs hover distinctness (hds#748)', () => {
         .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
       return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
     };
-    const d = (n) => hex(t.semantic.accent[n].$extensions['com.figma.variables'].modes.Dark);
-    const [a, b] = [lum(d('hover')), lum(d('pressed'))];
-    expect((Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)).toBeGreaterThanOrEqual(1.1);
+    const L = (n) => lum(hex(t.semantic.accent[n].$extensions['com.figma.variables'].modes.Dark));
+    const ratio = (a, b) => (a + 0.05) / (b + 0.05);
+    const [rest, hover, pressed] = [L('rest'), L('hover'), L('pressed')];
+    expect(hover).toBeGreaterThan(rest);
+    expect(pressed).toBeGreaterThan(hover);
+    expect(ratio(hover, rest)).toBeGreaterThanOrEqual(1.1);
+    expect(ratio(pressed, hover)).toBeGreaterThanOrEqual(1.1);
   });
 });

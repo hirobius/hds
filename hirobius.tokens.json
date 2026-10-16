@@ -1997,24 +1997,24 @@
       },
       "hover": {
         "$value": "{primitive.color.graphite.800}",
-        "$description": "Accent fill on pointer hover.",
+        "$description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
               "Light": "{primitive.color.graphite.800}",
-              "Dark": "{primitive.color.graphite.300}"
+              "Dark": "{primitive.color.graphite.100}"
             }
           }
         }
       },
       "pressed": {
         "$value": "{primitive.color.graphite.900}",
-        "$description": "Accent fill during active press. Dark steps lighter than hover (graphite.100 vs 300) so onAccent text stays AA (hds#748).",
+        "$description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
               "Light": "{primitive.color.graphite.900}",
-              "Dark": "{primitive.color.graphite.100}"
+              "Dark": "{primitive.color.graphite.50}"
             }
           }
         }

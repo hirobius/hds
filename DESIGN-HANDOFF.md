@@ -177,16 +177,16 @@ Checks all 475 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:start:semantic-accent -->
 
-| Token                          | Light                            | Dark                             | Role                                                                                                                      |
-| ------------------------------ | -------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.accent.rest`         | `{primitive.color.graphite.700}` | `{primitive.color.graphite.200}` | Default accent fill for interactive elements at rest                                                                      |
-| `semantic.accent.hover`        | `{primitive.color.graphite.800}` | `{primitive.color.graphite.300}` | Accent fill on pointer hover.                                                                                             |
-| `semantic.accent.pressed`      | `{primitive.color.graphite.900}` | `{primitive.color.graphite.100}` | Accent fill during active press. Dark steps lighter than hover (graphite.100 vs 300) so onAccent text stays AA (hds#748). |
-| `semantic.accent.inactive`     | `{primitive.color.neutral.400}`  | `{primitive.color.neutral.600}`  | Accent fill for inactive or unselected accent elements.                                                                   |
-| `semantic.accent.disabled`     | `{primitive.color.neutral.300}`  | `{primitive.color.neutral.700}`  | Accent fill for disabled accent elements.                                                                                 |
-| `semantic.accent.content`      | `{primitive.color.graphite.700}` | `{primitive.color.graphite.300}` | Accent-intent text/icon color on neutral surfaces (graphite)                                                              |
-| `semantic.accent.contentHover` | `{primitive.color.graphite.800}` | `{primitive.color.graphite.200}` | Accent content color on pointer hover.                                                                                    |
-| `semantic.accent.subtle`       | `{primitive.color.graphite.50}`  | `{primitive.color.graphite.800}` | Low-emphasis accent tint for hover backgrounds and selection highlights.                                                  |
+| Token                          | Light                            | Dark                             | Role                                                                                                                     |
+| ------------------------------ | -------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `semantic.accent.rest`         | `{primitive.color.graphite.700}` | `{primitive.color.graphite.200}` | Default accent fill for interactive elements at rest                                                                     |
+| `semantic.accent.hover`        | `{primitive.color.graphite.800}` | `{primitive.color.graphite.100}` | Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).    |
+| `semantic.accent.pressed`      | `{primitive.color.graphite.900}` | `{primitive.color.graphite.50}`  | Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748). |
+| `semantic.accent.inactive`     | `{primitive.color.neutral.400}`  | `{primitive.color.neutral.600}`  | Accent fill for inactive or unselected accent elements.                                                                  |
+| `semantic.accent.disabled`     | `{primitive.color.neutral.300}`  | `{primitive.color.neutral.700}`  | Accent fill for disabled accent elements.                                                                                |
+| `semantic.accent.content`      | `{primitive.color.graphite.700}` | `{primitive.color.graphite.300}` | Accent-intent text/icon color on neutral surfaces (graphite)                                                             |
+| `semantic.accent.contentHover` | `{primitive.color.graphite.800}` | `{primitive.color.graphite.200}` | Accent content color on pointer hover.                                                                                   |
+| `semantic.accent.subtle`       | `{primitive.color.graphite.50}`  | `{primitive.color.graphite.800}` | Low-emphasis accent tint for hover backgrounds and selection highlights.                                                 |
 
 <!-- auto:end:semantic-accent -->
 

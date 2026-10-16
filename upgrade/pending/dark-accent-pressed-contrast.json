@@ -1,12 +1,12 @@
 {
   "impact": "look",
-  "plain": "Dark-mode pressed accent fills are now lighter (graphite-100), so on-accent labels pass AA; drop any held contrast floor on this pair.",
+  "plain": "Dark-mode hover and pressed accent fills are now lighter (graphite-100 and graphite-50), so on-accent labels pass AA; drop any held contrast floor on this pair.",
   "steps": [
     {
       "id": "value-changed/--semantic-accent-pressed",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "Dark-mode pressed accent fills are now lighter (graphite-100), so on-accent labels pass AA; drop any held contrast floor on this pair.",
+      "plain": "Dark-mode hover and pressed accent fills are now lighter (graphite-100 and graphite-50), so on-accent labels pass AA; drop any held contrast floor on this pair.",
       "detect": {
         "cssVars": ["--semantic-accent-pressed"],
         "cssVarWrites": ["--semantic-accent-pressed"]
@@ -14,6 +14,20 @@
       "facts": [
         "css-var-changed:--semantic-accent-pressed:[data-theme=\"dark\"]",
         "css-var-changed:--semantic-accent-pressed:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark-mode hover and pressed accent fills are now lighter (graphite-100 and graphite-50), so on-accent labels pass AA; drop any held contrast floor on this pair.",
+      "detect": {
+        "cssVars": ["--semantic-accent-hover"],
+        "cssVarWrites": ["--semantic-accent-hover"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-hover:[data-theme=dark]"
       ]
     }
   ]

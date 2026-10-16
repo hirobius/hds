@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-16T05:07:06.442Z",
+  "generated": "2026-10-16T06:05:14.571Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12775,24 +12775,24 @@
         "path": "semantic.accent.hover",
         "cssVar": "--semantic-accent-hover",
         "type": "color",
-        "description": "Accent fill on pointer hover.",
+        "description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.800}",
         "resolvedValue": "#352e32",
         "dark": {
-          "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#b2abae"
+          "alias": "{primitive.color.graphite.100}",
+          "resolvedValue": "#e9e7e8"
         }
       },
       {
         "path": "semantic.accent.pressed",
         "cssVar": "--semantic-accent-pressed",
         "type": "color",
-        "description": "Accent fill during active press. Dark steps lighter than hover (graphite.100 vs 300) so onAccent text stays AA (hds#748).",
+        "description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.900}",
         "resolvedValue": "#2a2428",
         "dark": {
-          "alias": "{primitive.color.graphite.100}",
-          "resolvedValue": "#e9e7e8"
+          "alias": "{primitive.color.graphite.50}",
+          "resolvedValue": "#f5f4f4"
         }
       },
       {
