@@ -1,0 +1,1 @@
+- check-docs-coverage (hds#762): every documented component needs a docs page, a live demo and a Figma link; 9 Figma-link gaps ratcheted in scripts/docs-coverage-allowlist.json, wired into pretest.

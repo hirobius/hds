@@ -1,0 +1,14 @@
+{
+  "$comment": "hds#762 ratchet: current docs-coverage gaps. Entries may only be removed.",
+  "gaps": [
+    "Box:no-figma-link",
+    "Container:no-figma-link",
+    "Grid:no-figma-link",
+    "Stack:no-figma-link",
+    "HdsThemeProvider:no-figma-link",
+    "VisuallyHidden:no-figma-link",
+    "HdsRouterProvider:no-figma-link",
+    "Page:no-figma-link",
+    "Reveal:no-figma-link"
+  ]
+}
