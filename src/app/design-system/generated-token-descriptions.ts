@@ -219,7 +219,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.docs.space.inline": "8px inline cluster spacing — gap between metadata badges, inline icons, doc-page chips.",
   "semantic.accent.rest": "Default accent fill for interactive elements at rest — warm graphite. Inverts per theme; pair with content.onAccent.",
   "semantic.accent.hover": "Accent fill on pointer hover.",
-  "semantic.accent.pressed": "Accent fill during active press.",
+  "semantic.accent.pressed": "Accent fill during active press. Dark steps lighter than hover (graphite.100 vs 300) so onAccent text stays AA (hds#748).",
   "semantic.accent.inactive": "Accent fill for inactive or unselected accent elements.",
   "semantic.accent.disabled": "Accent fill for disabled accent elements.",
   "semantic.accent.content": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance.",

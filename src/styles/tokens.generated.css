@@ -571,7 +571,7 @@
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-white);
   --semantic-accent-rest: var(--primitive-color-graphite-200);
   --semantic-accent-hover: var(--primitive-color-graphite-300);
-  --semantic-accent-pressed: var(--primitive-color-graphite-400);
+  --semantic-accent-pressed: var(--primitive-color-graphite-100);
   --semantic-accent-inactive: var(--primitive-color-neutral-600);
   --semantic-accent-disabled: var(--primitive-color-neutral-700);
   --semantic-accent-content: var(--primitive-color-graphite-300);
