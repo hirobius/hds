@@ -1,6 +1,6 @@
 {
   "package": "@hirobius/design-system",
-  "latest": "0.26.2",
+  "latest": "0.26.3",
   "floor": "0.16.0",
   "versions": [
     {
@@ -110,6 +110,13 @@
     },
     {
       "version": "0.26.2",
+      "date": "2026-10-15",
+      "bump": "patch",
+      "breaking": 0,
+      "summary": "Nothing in this release asks anything of a consumer."
+    },
+    {
+      "version": "0.26.3",
       "date": "2026-10-15",
       "bump": "patch",
       "breaking": 0,
