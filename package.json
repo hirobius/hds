@@ -249,6 +249,7 @@
     "check:spacing-scale": "node scripts/check-tailwind-spacing-scale.mjs",
     "check:llms-txt": "node scripts/check-llms-txt.mjs",
     "check:docs-axe": "node scripts/check-docs-axe.mjs",
+    "check:docs-layout-shift": "node scripts/check-docs-layout-shift.mjs",
     "check:style-props": "node scripts/check-style-discipline.mjs --style-props-only",
     "check:state-surfaces": "node scripts/check-state-surfaces.mjs",
     "check:state-surfaces:strict": "node scripts/check-state-surfaces.mjs --strict-review",
