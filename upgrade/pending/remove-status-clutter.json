@@ -1,0 +1,21 @@
+{
+  "impact": "breaking",
+  "plain": "BoardColumn no longer takes a tone or paints a status dot, and the --hds-accent-bar variable is gone.",
+  "steps": [
+    {
+      "id": "removed/BoardColumnTone",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Delete the BoardColumnTone import and the tone prop from every BoardColumn, and drop any var(--hds-accent-bar); status lives in the column title and count.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["BoardColumnTone"]
+          }
+        ]
+      },
+      "facts": ["removed:.:BoardColumnTone"]
+    }
+  ]
+}
