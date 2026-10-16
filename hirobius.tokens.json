@@ -2500,6 +2500,11 @@
         "$value": "{semantic.accent.hover}",
         "$description": "Primary button hover fill."
       },
+      "bgPressed": {
+        "$type": "color",
+        "$value": "{semantic.accent.pressed}",
+        "$description": "Primary button pressed fill (hds#748)."
+      },
       "text": {
         "$type": "color",
         "$value": "{semantic.color.content.onAccent}",

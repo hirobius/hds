@@ -453,6 +453,7 @@
   --component-badge-paddingX: var(--primitive-space-px6);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
+  --component-button-bgPressed: var(--semantic-accent-pressed);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-radius: var(--semantic-radius-action);
   --component-button-paddingX: var(--primitive-space-4);
@@ -610,6 +611,7 @@
   --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
+  --component-button-bgPressed: var(--semantic-accent-pressed);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);

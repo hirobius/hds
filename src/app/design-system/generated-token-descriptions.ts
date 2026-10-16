@@ -294,6 +294,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.badge.paddingX": "Horizontal padding inside the badge.",
   "component.button.bg": "Primary button fill.",
   "component.button.bgHover": "Primary button hover fill.",
+  "component.button.bgPressed": "Primary button pressed fill (hds#748).",
   "component.button.text": "Primary button text color.",
   "component.button.radius": "Button corner radius.",
   "component.button.paddingX": "Horizontal button padding.",
