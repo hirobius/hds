@@ -188,6 +188,16 @@
       "firingChannel": "ci-pr"
     },
     {
+      "id": "check-docs-coverage",
+      "description": "Docs coverage gate (hds#762): every documented component has a docs page, a live demo and a Figma link. Current gaps sit in scripts/docs-coverage-allowlist.json, a ratchet that can only shrink (a new gap or a stale entry fails). Logic proven by scripts/__tests__/docs-coverage.test.mjs. Runs in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-docs-coverage.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta"
+    },
+    {
       "id": "check-docs.selftest",
       "description": "Self-test for check-docs (hds#497): plants each rule violation in a temp tree and asserts check-docs fails on it, so a rule cannot silently stop firing. Runs in the Docs guardrails workflow and in pretest.",
       "severity": "error",
