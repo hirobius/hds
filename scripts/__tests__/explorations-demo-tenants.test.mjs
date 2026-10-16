@@ -86,6 +86,12 @@ describe.each(SLUGS)('%s: files', (slug) => {
       if (path[0] !== 'role' && path[0] !== 'component') continue;
       const id = path.join('.');
       const baseLeaf = path.reduce((n, k) => n?.[k], base);
+      // component.badge.radius is its own token (hds#757, one step under the action radius); a tenant
+      // re-anchors it to the action radius so Badge keeps following the tenant's shape.
+      if (id === 'component.badge.radius') {
+        expect(value, id).toBe('{semantic.radius.action}');
+        continue;
+      }
       expect(baseLeaf?.$value, id).toBe(value);
       // A themed base alias re-declared in the tenant's light block would pin its light target in dark.
       expect(baseLeaf.$extensions?.['com.figma.variables']?.modes, id).toBeUndefined();
