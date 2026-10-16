@@ -486,6 +486,18 @@
       "supportsJson": true
     },
     {
+      "id": "check-no-custom-tracking",
+      "description": "hds#756 -- letter-spacing comes from the type tokens only (Adrian, 2026-10-16). Fails, in src/**/*.css, a `letter-spacing:` whose value is not var(--semantic-typography-*) (or the primitive letterSpacing scale), inherit, unset or initial, and `@apply tracking-*`. Skips src/styles/tokens.generated.css (the token output), comments, tests and fixtures. A line is exempt with /* tracking-ok: <reason> */ on the same line or either line above; the reason is required. The JSX side ships to consumers as the ESLint rule hds/no-custom-tracking. Error severity, run by .husky/pre-commit, and its vitest suite runs it over the repo in pnpm test.",
+      "severity": "error",
+      "gateScript": "scripts/check-no-custom-tracking.mjs",
+      "fixturePath": "fixtures/check-no-custom-tracking",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
       "id": "check-type-ramp",
       "description": "hds#486 -- keeps src/ on the type ramp of 5 roles plus mono (display, title, body, ui, caption, mono; epic hds#483). Fails a font size, weight or line height outside the roles: any Tailwind text-<size>, font-<weight> or leading-* utility, a text-[12px] arbitrary size, an inline or CSS font-size/font-weight/line-height whose value is a literal, and a raw rung of the primitive scale (--primitive-typography-size-*); and fails a deprecated composite (typeStyles.h1/heading1-3/technical/eyebrow/..., --semantic-typography-h1..h3/eyebrow, semantic.typography.h1..h3/eyebrow, Text variants heading1-3/technical/eyebrow/badge/doc*). A role var, inherit, unset and initial are fine. Also reads hirobius.tokens.json: exactly six live semantic.typography composites, and each deprecated alias (h1, h2, h3 to title; eyebrow to caption) equal to its role. Exempts tokens.ts and text.tsx (they define the deprecated names), generated CSS/TS, fonts.css and tests; a line is exempt with // type-ramp-ok: <reason> on the same line or either line above. Known limit: a value reached through an identifier or a class name assembled at runtime is not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over src/ in pnpm test.",
       "severity": "error",

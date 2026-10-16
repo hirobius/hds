@@ -55,6 +55,7 @@ export default [
     files: ['**/*.{ts,tsx,jsx}'],
     plugins: { hds },
     rules: {
+      'hds/no-custom-tracking': 'error',
       'hds/no-raw-controls': 'error',
       'hds/no-raw-hex': 'error',
       'hds/no-raw-px-spacing': 'error',
@@ -69,11 +70,25 @@ export default [
 
 | Rule                                                                 | Default | What it catches                                                                                       |
 | -------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------- |
+| [`hds/no-custom-tracking`](#hdsno-custom-tracking)                   | error   | Letter-spacing not from a type token: `tracking-*`, `[letter-spacing:…]`, inline `letterSpacing`.     |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.          |
 | [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                   |
 | [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.        |
 | [`hds/prefer-hds-layout-primitive`](#hdsprefer-hds-layout-primitive) | warn    | Ad-hoc `display: 'flex' \| 'grid'` in `style={{…}}` where a named primitive (Stack/Grid) likely fits. |
 | [`hds/sx-token-first`](#hdssx-token-first)                           | error   | Raw hex/px string values inside a `Box` `sx={{…}}` prop — `sx` must resolve through token keys.       |
+
+### `hds/no-custom-tracking`
+
+```tsx
+// ❌ error
+<p className="tracking-wide" />
+<p className="[letter-spacing:0.1em]" />
+<p style={{ letterSpacing: '0.05em' }} />
+
+// ✅ ok — the type role already sets tracking, or a type-token var
+<Text variant="caption">…</Text>
+<p style={{ letterSpacing: 'var(--semantic-typography-caption-letter-spacing)' }} />
+```
 
 ### `hds/no-raw-controls`
 

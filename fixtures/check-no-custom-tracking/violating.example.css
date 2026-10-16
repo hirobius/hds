@@ -1,0 +1,14 @@
+/* violating: each rule below sets letter-spacing by hand (Adrian, 2026-10-16). */
+.a {
+  letter-spacing: 0.08em;
+}
+.b {
+  letter-spacing: 1px;
+}
+.c {
+  @apply tracking-wide;
+}
+.d {
+  /* tracking-ok: */
+  letter-spacing: 0.1em;
+}

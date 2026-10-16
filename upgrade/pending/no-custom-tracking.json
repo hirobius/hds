@@ -1,0 +1,16 @@
+{
+  "impact": "breaking",
+  "plain": "The .tracking-wider and .tracking-widest classes are no longer shipped, and the ESLint plugin now errors on hand-set letter-spacing; use <Text variant> or a .hds-type-<role> class, which set tracking from the type tokens.",
+  "steps": [
+    {
+      "id": "removed/.tracking-wider-widest",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The .tracking-wider and .tracking-widest classes are no longer shipped; use <Text variant> or a .hds-type-<role> class, which set tracking from the type tokens, instead of adding your own letter-spacing.",
+      "detect": {
+        "classes": ["tracking-wider", "tracking-widest"]
+      },
+      "facts": ["class-removed:tracking-wider", "class-removed:tracking-widest"]
+    }
+  ]
+}

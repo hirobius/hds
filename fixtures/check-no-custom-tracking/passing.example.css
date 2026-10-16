@@ -1,0 +1,14 @@
+/* passing: tracking comes from the type tokens only. */
+.a {
+  letter-spacing: var(--semantic-typography-caption-letter-spacing);
+}
+.b {
+  letter-spacing: inherit;
+}
+.c {
+  --semantic-typography-x-letter-spacing: 0.1em;
+}
+.d {
+  /* tracking-ok: third-party widget ships its own tracking */
+  letter-spacing: 0.1em;
+}
