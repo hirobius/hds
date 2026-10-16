@@ -97,6 +97,7 @@
     "Kbd",
     "Menu",
     "MetadataList",
+    "MetaLine",
     "MetricTile",
     "MetricTiles",
     "Page",
@@ -10056,6 +10057,41 @@
           }
         ]
       }
+    },
+    "MetaLine": {
+      "category": "Typography",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/meta-line.tsx",
+      "description": "Secondary facts on one line (\"Acme Cloud · Remote\"). Max two items per line so long strings in other languages never wrap mid-line; more facts go in more rows.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "MetaLine",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/meta-line.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "items": {
+          "type": "MetaLineItems"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
     },
     "HdsPhosphor": {
       "category": "Compiler",

@@ -454,6 +454,10 @@ Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `d
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
+### MetaLine
+Secondary facts on one line ("Acme Cloud · Remote"). Max two items per line so long strings in other languages never wrap mid-line; more facts go in more rows.
+  - items: MetaLineItems
+
 ### MetadataList
 Renders object metadata as a semantic `<dl>` of term/description pairs.
   - footer: ReactNode

@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New MetaLine component and an hds/max-two-meta-items lint rule that errors on bullet lines with three or more items, so use MetaLine for two and one row per item beyond that."
+}
