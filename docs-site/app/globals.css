@@ -255,3 +255,81 @@ pre {
 .hds-nowrap {
   white-space: nowrap;
 }
+
+/*
+ * Docs preview switches (hds#794): Corners + Shadow. Docs-only scope, set on
+ * <html> by components/preview-switches.tsx; not a theming dial (ADR-023) and
+ * not in shipped styles.css. Default (attribute unset) is today's look.
+ */
+.hds-docs-switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-inline-start: auto;
+  font-size: 0.75rem;
+}
+.hds-docs-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.hds-docs-switch-label {
+  color: var(--semantic-color-content-secondary);
+  margin-inline-end: 0.25rem;
+}
+.hds-docs-switch button {
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--semantic-color-border-default);
+  border-radius: 9999px;
+  color: var(--semantic-color-content-secondary);
+  text-transform: capitalize;
+}
+.hds-docs-switch button[aria-pressed='true'] {
+  background: var(--semantic-color-surface-hover);
+  color: var(--semantic-color-content-primary);
+  border-color: var(--semantic-color-border-strong);
+}
+
+/* Corners: sharp. Every radius token to 0 (tag stays a pill). */
+html[data-docs-corners='sharp'] {
+  --semantic-radius-action: 0px;
+  --semantic-radius-control: 0px;
+  --role-radius: 0px;
+  --component-button-radius: 0px;
+  --component-input-radius: 0px;
+  --component-badge-radius: 0px;
+  --component-card-radius: 0px;
+}
+/* Tailwind's rounded-sm/md/lg derive from --role-radius with a +4px / -2px offset; zero them too. */
+html[data-docs-corners='sharp']
+  :is(.rounded, .rounded-sm, .rounded-md, .rounded-lg, .rounded-t-md, .rounded-b-md, .hds-card) {
+  border-radius: 0;
+}
+
+/* Shadow: hard. Zero-blur offsets in the full-strength shadow colour. */
+html[data-docs-shadow='hard'] {
+  --semantic-shadow-subtle: 4px 4px 0 hsl(var(--primitive-shadow-color));
+  --semantic-shadow-floating: 5px 5px 0 hsl(var(--primitive-shadow-color));
+  --semantic-shadow-overlay: 8px 8px 0 hsl(var(--primitive-shadow-color));
+}
+/* Buttons carry no shadow today: 3px rest, 5px + 2px lift on hover. Keeps Tailwind's ring/inset layers so focus and press still show. */
+html[data-docs-shadow='hard'] button[data-variant='primary'],
+html[data-docs-shadow='hard'] button[data-variant='secondary'] {
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000),
+    var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000),
+    3px 3px 0 hsl(var(--primitive-shadow-color));
+}
+html[data-docs-shadow='hard'] button[data-variant='primary']:hover:not(:disabled),
+html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabled) {
+  translate: -2px -2px;
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000),
+    var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000),
+    5px 5px 0 hsl(var(--primitive-shadow-color));
+}

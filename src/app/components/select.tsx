@@ -173,7 +173,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
             }}
             className={cn(
               'z-50 overflow-hidden rounded-md border',
-              'border-border bg-popover text-popover-foreground shadow-md',
+              'border-border bg-popover text-popover-foreground shadow-[var(--semantic-elevation-floating-shadow)]',
             )}
           >
             <RSelect.Viewport className="p-1">
