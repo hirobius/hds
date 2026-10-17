@@ -111,7 +111,7 @@ async function main() {
     console.error(`No pages in ${path.relative(ROOT, dir)}. Run \`pnpm docs:publish\` first.`);
     process.exit(2);
   }
-  if (filter) routes = routes.filter((r) => new RegExp(filter, 'i').test(r));
+  if (filter) routes = routes.filter((r) => r.toLowerCase().includes(filter.toLowerCase()));
   const { server, port } = await serveStatic(dir);
   const browser = await launch();
   const scans = [];

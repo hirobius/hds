@@ -1,2 +1,1 @@
-Added check:docs-layout-shift (CLS + chrome box check over every docs route), hds#761.
-Named the layout group helper in check-docs-layout-shift lib (hds#761).
+docs-layout-shift: --filter is now a case-insensitive substring (CodeQL regex-injection alert); browser fixture tests skip when no Chromium.

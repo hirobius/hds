@@ -1,5 +1,9 @@
 import { spawnSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { chromium } from 'playwright';
 import { describe, expect, it } from 'vitest';
+// @ts-expect-error plain .mjs helper
+import { chromiumPath } from '../scripts/lib/browser-host.mjs';
 // @ts-expect-error plain .mjs helper
 import { applyAllowlist, evaluateLayout } from '../scripts/lib/docs-layout-shift.mjs';
 
@@ -38,30 +42,38 @@ describe('applyAllowlist', () => {
   });
 });
 
-describe('check-docs-layout-shift script (fixtures)', () => {
-  const run = (d: string) =>
-    spawnSync(
-      'node',
-      [
-        'scripts/check-docs-layout-shift.mjs',
-        '--dir',
-        `fixtures/check-docs-layout-shift/${d}.example.d`,
-        '--allowlist',
-        'fixtures/check-docs-layout-shift/allowlist.empty.json',
-      ],
-      {
-        encoding: 'utf8',
-      },
-    );
-  it('passes the clean fixture', () => {
-    const r = run('passing');
-    expect(r.stdout + r.stderr).toContain('clean');
-    expect(r.status).toBe(0);
-  });
-  it('fails the late-banner fixture', () => {
-    const r = run('violating');
-    expect(r.status).toBe(1);
-    expect(r.stdout).toContain('[cls]');
-    expect(r.stdout).toContain('[box]');
-  });
-}, 60000);
+// The fixture runs drive a real browser; skip where none is installed (CI's lean gate has none).
+const browser: string | undefined = chromiumPath() ?? chromium.executablePath();
+const hasBrowser = Boolean(browser) && existsSync(browser as string);
+
+describe.skipIf(!hasBrowser)(
+  'check-docs-layout-shift script (fixtures)',
+  () => {
+    const run = (d: string) =>
+      spawnSync(
+        'node',
+        [
+          'scripts/check-docs-layout-shift.mjs',
+          '--dir',
+          `fixtures/check-docs-layout-shift/${d}.example.d`,
+          '--allowlist',
+          'fixtures/check-docs-layout-shift/allowlist.empty.json',
+        ],
+        {
+          encoding: 'utf8',
+        },
+      );
+    it('passes the clean fixture', () => {
+      const r = run('passing');
+      expect(r.stdout + r.stderr).toContain('clean');
+      expect(r.status).toBe(0);
+    });
+    it('fails the late-banner fixture', () => {
+      const r = run('violating');
+      expect(r.status).toBe(1);
+      expect(r.stdout).toContain('[cls]');
+      expect(r.stdout).toContain('[box]');
+    });
+  },
+  60000,
+);
