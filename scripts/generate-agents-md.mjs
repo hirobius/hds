@@ -147,7 +147,7 @@ export function buildDocsIndex(registry) {
 export function buildAgentsMd({ componentApi, patternNames, repoNotes, voice }) {
   const api = componentApi.components;
   const fromPatterns = new Set(patternNames);
-  const needs = needsMarkdown(api);
+  const needs = needsMarkdown(api, patternNames);
   const core = recommendedComponents().filter((n) => api[n]);
   const rootNames = [...core.filter((n) => !fromPatterns.has(n)), ...Object.keys(HOOKS)].sort();
   const patterns = core.filter((n) => fromPatterns.has(n));
