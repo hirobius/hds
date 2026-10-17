@@ -3263,6 +3263,7 @@
           }
         ]
       },
+      "aiRules": "Status is implied by content: no status dot and no coloured left accent bar on a card. Keep a label and its value together: do not put a heading over a card of supporting meta (a \"Status\" heading far from its \"Applied\" badge).",
       "core": true
     },
     "Text": {
@@ -9614,7 +9615,7 @@
       "a11yRules": [],
       "docsPage": null,
       "usage": {
-        "when": "Show work grouped by status as side-by-side columns, each with a title, a count and a tone, such as leads by pipeline stage.",
+        "when": "Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage.",
         "whenNot": "Rows of columns and cells that sort or filter, or a board people rearrange by dragging.",
         "useInstead": [
           {
@@ -9636,7 +9637,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/board.tsx",
-      "description": "One status column: a heading with the title, a count and a tone dot, then its items. The column is a labelled region and the count is part of the heading's name.",
+      "description": "One status column: a heading with the title and a count, then its items. The column is a labelled region and the count is part of the heading's name.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9662,17 +9663,6 @@
         },
         "title": {
           "type": "ReactNode"
-        },
-        "tone": {
-          "type": "enum",
-          "values": [
-            "success",
-            "danger",
-            "warning",
-            "info",
-            "neutral"
-          ],
-          "default": "neutral"
         }
       },
       "allowedChildren": [

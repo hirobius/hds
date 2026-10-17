@@ -260,7 +260,7 @@ function MetricTilesDemo() {
 function BoardDemo() {
   return (
     <Board aria-label="Lead pipeline">
-      <BoardColumn title="On fire" tone="danger">
+      <BoardColumn title="On fire">
         <Card padding="item" className="border-0">
           <Card.Row trailing={<Badge tone="danger">Today</Badge>}>
             <Card.RowTitle>Monroe Landscaping</Card.RowTitle>
@@ -274,7 +274,7 @@ function BoardDemo() {
           </Card.Row>
         </Card>
       </BoardColumn>
-      <BoardColumn title="Warm" tone="warning">
+      <BoardColumn title="Warm">
         <Card padding="item" className="border-0">
           <Card.Row>
             <Card.RowTitle>Northside Pressure Washing</Card.RowTitle>
@@ -282,7 +282,7 @@ function BoardDemo() {
           </Card.Row>
         </Card>
       </BoardColumn>
-      <BoardColumn title="Won" tone="success" count={0}>
+      <BoardColumn title="Won" count={0}>
         <EmptyState title="Nothing here yet" />
       </BoardColumn>
     </Board>
@@ -326,7 +326,6 @@ function BadgeDemo() {
       <Badge tone="success">Active</Badge>
       <Badge tone="warning">At risk</Badge>
       <Badge tone="danger">Blocked</Badge>
-      <Badge tone="success" dot label="Online" />
     </div>
   );
 }
