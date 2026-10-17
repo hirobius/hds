@@ -392,15 +392,13 @@
     },
     {
       "id": "check-motion",
-      "description": "Verifies that interactive components ship with motion feedback — the HDS standard that every user action has a visible, token-timed response.",
-      "severity": "warn",
+      "description": "Every interactive state change moves, on motion tokens: fails a raw duration or easing in a component or stylesheet transition/animation, a state change in MOTION_CONTRACT (press, open/close, indicator move, content swap, list enter/exit) with no motion, and an hds-motion-* class with no CSS behind it.",
+      "severity": "error",
       "gateScript": "scripts/check-motion.mjs",
       "fixturePath": "fixtures/check-motion",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-no-style-prop",

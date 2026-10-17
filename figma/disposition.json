@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-14",
+  "generatedAt": "2026-10-17",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,12 +22,12 @@
     }
   },
   "summary": {
-    "total": 106,
+    "total": 109,
     "byClass": {
       "library": 62,
-      "slot": 23,
+      "slot": 24,
       "layout": 9,
-      "internal": 12
+      "internal": 14
     },
     "libraryLinked": 59,
     "libraryMissing": 3,
@@ -641,6 +641,22 @@
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-32"
     },
     {
+      "name": "PresenceItem",
+      "class": "internal",
+      "parent": null,
+      "category": "Motion",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "PresenceList",
+      "class": "internal",
+      "parent": null,
+      "category": "Motion",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
       "name": "Progress",
       "class": "library",
       "parent": null,
@@ -695,6 +711,14 @@
       "category": "Feedback",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95"
+    },
+    {
+      "name": "SkeletonSwap",
+      "class": "slot",
+      "parent": "Skeleton",
+      "category": "Feedback",
+      "tier": "primitive",
+      "figmaUrl": null
     },
     {
       "name": "Slider",

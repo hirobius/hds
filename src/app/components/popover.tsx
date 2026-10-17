@@ -22,9 +22,6 @@
  * token) + shadow-overlay. Mirrors Dialog's surface treatment so overlays read
  * as one family.
  */
-// motion-ok: Radix Popover manages open/close mounting; the trigger is a styling
-// passthrough (asChild) and adds no interactive surface of its own.
-
 import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { cn } from '../../lib/utils';
@@ -98,7 +95,7 @@ const PopoverContent = /* @__PURE__ */ React.forwardRef<
         collisionPadding={8}
         className={cn(
           'z-50 w-72 rounded-md border border-border bg-popover p-4',
-          'text-popover-foreground shadow-overlay outline-none hds-focus',
+          'text-popover-foreground shadow-overlay outline-none hds-focus hds-motion-popover',
           className,
         )}
         {...props}

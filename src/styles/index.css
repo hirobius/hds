@@ -2,27 +2,22 @@
 @import './utilities.css';
 @import './xray.css';
 @import './scroll-motion.css';
+@import './component-motion.css';
 
 /* Smooth theme switching — scoped to the HDS subtree (:where keeps zero
  * specificity) so toggling theme never animates a host app's own elements.
  * The docs site carries data-hds on <html>, so this still covers the whole
- * page. See docs/adr/016-scoped-base-styles.md. */
-:where([data-hds]) *,
-:where([data-hds]) *::before,
-:where([data-hds]) *::after {
-  transition:
-    background-color 0.3s ease-out,
-    color 0.3s ease-out,
-    border-color 0.3s ease-out,
-    fill 0.3s ease-out,
-    stroke 0.3s ease-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
+ * page. See docs/adr/016-scoped-base-styles.md. In the base layer: unlayered,
+ * it outranked every component's own transition utility (Tailwind's utilities
+ * layer), so a Button's press scale snapped instead of easing. Durations are
+ * motion tokens, zeroed under reduced motion (theme.css). */
+@layer base {
   :where([data-hds]) *,
   :where([data-hds]) *::before,
   :where([data-hds]) *::after {
-    transition: none;
+    transition-property: background-color, color, border-color, fill, stroke;
+    transition-duration: var(--primitive-duration-medium);
+    transition-timing-function: var(--hds-motion-productive-easing);
   }
 }
 

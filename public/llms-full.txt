@@ -186,12 +186,14 @@ Page: Wrap a screen in the standard width and padding.
 PageHeader: Open a screen with its title, plus optional breadcrumb, status and actions.
 Pagination: [core] Move between pages of a long result set, with truncated page numbers. Use instead: Breadcrumb
 Popover: [core] Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open. Use instead: Tooltip, Menu, Dialog
+PresenceList: Show where a list changed when an item is added, duplicated or removed, such as a new card dropping into a board column. Use instead: Reveal
 Progress: [core] Show how far a task has got, as a bar or ring that is determinate or indeterminate. Use instead: Spinner, Skeleton
 Radio: [core] Choose exactly one option from a small set that should stay visible together. Use instead: Checkbox, Select, SegmentedControl
 Reveal: Fade content in as it scrolls into view.
 SegmentedControl: [core] Switch between two to five mutually exclusive views or modes in a compact row. Use instead: Radio, Tabs, Select
 Select: [core] Choose one value from a short list of options in a form field. Use instead: Menu, Combobox
 Skeleton: [core] Reserve the shape of content that is still loading, so the layout does not jump. Use instead: Progress, Spinner
+SkeletonSwap: Swap loading placeholders for the loaded content with a short fade, so it settles in instead of popping. Use instead: Skeleton
 Slider: [core] Pick a number within a known range by dragging, when the exact value matters less than the position. Use instead: Input
 Spinner: [core] Show that something is loading when the wait is short or has no measurable end. Use instead: Progress, Skeleton
 Stack: [core] Space items in a row or column with even gaps. Use instead: Grid, Surface
@@ -1111,6 +1113,15 @@ Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
+### PresenceItem
+One item. Give it a stable `key` so the list can tell an add from a re-render.
+  - as: "div" | "li" = div
+
+### PresenceList
+The list. Children must be PresenceItems with stable keys. Tagged here, not in the file block, so PresenceItem does not inherit the list's contract.
+  - as: "div" | "ol" | "ul" = div
+  - children: ReactNode
+
 ### Progress
 Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.
   - label: string = Progress
@@ -1172,10 +1183,16 @@ Sidebar — fixed-width rail beside fluid content, no media query. Every Layout 
   - style: CSSProperties
 
 ### Skeleton
-Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.
+Decorative loading placeholder. Tagged here rather than in the file block so SkeletonSwap, in this module, does not claim Skeleton's Figma node. Marked aria-hi…
   - height: string | number
   - variant: "text" | "circular" | "rectangular" | null = rectangular
   - width: string | number
+
+### SkeletonSwap
+Shows `skeleton` while `loading`, then fades the content in over the same footprint (.hds-motion-reveal), so loaded content settles in rather than popping. Con…
+  - children: ReactNode
+  - loading: boolean
+  - skeleton: ReactNode
 
 ### Slider
 Slider — range slider with label and value display.

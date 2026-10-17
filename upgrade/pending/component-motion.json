@@ -1,0 +1,28 @@
+{
+  "impact": "look",
+  "plain": "Components now animate on press, open, close and selection, and bare transition-* utilities time on the productive motion token (150ms) instead of Tailwind's default; re-take screenshots after interactions, and wait for overlay animations to finish in visual tests.",
+  "steps": [
+    {
+      "id": "value-changed/--default-transition-duration",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "A bare transition-* utility now lasts the productive motion token (150ms, 0 under reduced motion) instead of a fixed .15s; set your own duration-* class if you need a fixed time.",
+      "detect": {
+        "cssVars": ["--default-transition-duration"],
+        "cssVarWrites": ["--default-transition-duration"]
+      },
+      "facts": ["css-var-changed:--default-transition-duration:@layer theme :root,:host"]
+    },
+    {
+      "id": "value-changed/--default-transition-timing-function",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "A bare transition-* utility now eases on the productive motion token's curve instead of Tailwind's default curve; set your own ease-* class if you need the old curve.",
+      "detect": {
+        "cssVars": ["--default-transition-timing-function"],
+        "cssVarWrites": ["--default-transition-timing-function"]
+      },
+      "facts": ["css-var-changed:--default-transition-timing-function:@layer theme :root,:host"]
+    }
+  ]
+}

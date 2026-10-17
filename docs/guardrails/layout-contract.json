@@ -465,6 +465,20 @@
       "kind": "overlay",
       "probe": false
     },
+    "PresenceItem": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "PresenceList": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "Progress": {
       "width": "fill",
       "height": "hug",
@@ -509,6 +523,13 @@
       "probe": true
     },
     "Skeleton": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "SkeletonSwap": {
       "width": "hug",
       "height": "hug",
       "pads": false,

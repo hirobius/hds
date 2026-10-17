@@ -46,6 +46,13 @@
 @import 'tailwindcss';
 @config "../../tailwind.config.ts";
 
+/* Every bare transition utility (transition-colors, transition-[...]) times on
+   the productive motion token, so it follows reduced motion like the rest. */
+@theme {
+  --default-transition-duration: var(--hds-motion-productive-duration);
+  --default-transition-timing-function: var(--hds-motion-productive-easing);
+}
+
 /* hds#449: each release snapshot records every class its published stylesheets
    carried (css.bundles.*.classes). Scanned, they would compile those utilities
    back into the build, removed ones included, so Tailwind never reads them. */
@@ -64,6 +71,11 @@
    ./tokens.css as their only compiled Tailwind (ops: pt-1) still rely on them,
    so they stay emitted until 1.0 drops them in a minor with a migration note. */
 @source inline("pt-1 pb-8 p-16 max-w-2xl h-3.5 w-3.5 sm:inline-block group-hover:opacity-100 text-muted-foreground/70 transition-[transform,opacity] data-[highlighted]:text-foreground data-[state=checked]:text-foreground bg-[color:var(--semantic-color-feedback-bg-warning)] border-[color:var(--semantic-color-feedback-warning)]/40 text-[color:var(--semantic-color-feedback-warning)]");
+/* utilities.css once hand-wrote these byte-for-byte copies of Tailwind's own rules; the copies
+   are gone (styles.css budget), and this keeps the classes emitted for consumers. */
+@source inline("absolute relative z-50 align-middle flex-none flex-wrap items-baseline items-center items-start items-stretch w-full w-px h-full h-px overflow-hidden overflow-x-auto overflow-y-auto object-cover resize-none text-center text-left");
+/* type-ramp-ok: legacy utility kept for consumers until 1.0.0 */
+@source inline("text-[10px] text-[11px] text-[12px]");
 
 @import './tokens.generated.css';
 @import './tenants.css';

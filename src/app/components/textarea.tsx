@@ -1,4 +1,3 @@
-// motion-ok: textarea field — focus ring + transition via Tailwind utilities (gate accepts only hds.duration refs)
 /**
  * Textarea — multi-line text field primitive with label, helper, and error slots.
  * @category Inputs

@@ -253,7 +253,7 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
         // fade keeps working even though the colors themselves now live in cva —
         // same technique as checkbox.tsx's glyph.
         style={{
-          transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
+          transition: `background-color ${productiveMotion.duration}s var(--hds-motion-productive-easing), border-color ${productiveMotion.duration}s var(--hds-motion-productive-easing)`,
         }}
         className={toggleTrackVariants({ on: checked, disabled: isDisabled })}
       >

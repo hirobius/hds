@@ -1,9 +1,3 @@
-.absolute {
-  position: absolute;
-}
-.relative {
-  position: relative;
-}
 .inset-0 {
   inset: 0;
 }
@@ -25,9 +19,6 @@
 .z-30 {
   z-index: 30;
 }
-.z-50 {
-  z-index: 50;
-}
 
 .block {
   display: block;
@@ -44,36 +35,15 @@
 .grid {
   display: grid;
 }
-.align-middle {
-  vertical-align: middle;
-}
 
 .flex-1 {
   flex: 1 1 0%;
 }
-.flex-none {
-  flex: none;
-}
 .flex-col {
   flex-direction: column;
 }
-.flex-wrap {
-  flex-wrap: wrap;
-}
 .flex-shrink-0 {
   flex-shrink: 0;
-}
-.items-baseline {
-  align-items: baseline;
-}
-.items-center {
-  align-items: center;
-}
-.items-start {
-  align-items: flex-start;
-}
-.items-stretch {
-  align-items: stretch;
 }
 .justify-center {
   justify-content: center;
@@ -154,12 +124,6 @@
 .w-80 {
   width: 20rem;
 }
-.w-full {
-  width: 100%;
-}
-.w-px {
-  width: 1px;
-}
 .h-2 {
   height: 0.5rem;
 }
@@ -168,12 +132,6 @@
 }
 .h-48 {
   height: 12rem;
-}
-.h-full {
-  height: 100%;
-}
-.h-px {
-  height: 1px;
 }
 .min-h-0 {
   min-height: 0;
@@ -200,28 +158,13 @@
   max-height: calc(100vh - 10rem);
 }
 
-.overflow-hidden {
-  overflow: hidden;
-}
 .overflow-visible {
   overflow: visible;
-}
-.overflow-x-auto {
-  overflow-x: auto;
 }
 .overflow-x-hidden {
   overflow-x: hidden;
 }
-.overflow-y-auto {
-  overflow-y: auto;
-}
 
-.object-cover {
-  object-fit: cover;
-}
-.resize-none {
-  resize: none;
-}
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -450,24 +393,6 @@
 .text-white {
   color: var(--semantic-color-content-onAccent);
 }
-.text-center {
-  text-align: center;
-}
-.text-left {
-  text-align: left;
-}
-/* type-ramp-ok: legacy utility kept for consumers until 1.0.0 */
-.text-\[10px\] {
-  font-size: 10px;
-}
-/* type-ramp-ok: legacy utility kept for consumers until 1.0.0 */
-.text-\[11px\] {
-  font-size: 11px;
-}
-/* type-ramp-ok: legacy utility kept for consumers until 1.0.0 */
-.text-\[12px\] {
-  font-size: 12px;
-}
 /* type-ramp-ok: legacy utility kept for consumers until 1.0.0 */
 .text-\[14px\] {
   font-size: 14px;
@@ -546,34 +471,16 @@ samp {
   outline-offset: 2px;
 }
 
-.transition-all {
-  transition: all 150ms ease;
-}
-.transition-colors {
-  transition-property:
-    color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
-    outline-color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-.transition-transform {
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
+/* transition-all / -colors / -transform come from Tailwind, timed on the productive motion
+   token by theme.css's @theme defaults; the hand-written copies here duplicated them. */
 .duration-200 {
+  /* motion-token-ok: published fixed-time utility; its name is its value */
   transition-duration: 200ms;
 }
-.duration-300 {
-  transition-duration: 300ms;
-}
 .duration-500 {
+  /* motion-token-ok: published fixed-time utility; its name is its value */
   transition-duration: 500ms;
 }
-.ease-out {
-  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-}
-
 .origin-right {
   transform-origin: right;
 }
@@ -604,6 +511,7 @@ samp {
    Tailwind's layered motion-reduce:animate-none and spinners kept turning under reduce. */
 @media (prefers-reduced-motion: no-preference) {
   .animate-spin {
+    /* motion-token-ok: a spinner turns at constant speed; linear is the point */
     animation: hds-utility-spin 1s linear infinite;
   }
 }

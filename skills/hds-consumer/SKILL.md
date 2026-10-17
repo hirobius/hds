@@ -88,6 +88,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Callout` — Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback fill language as Alert, without Alert's icon or status role.
 - `Progress` — Linear bar or circular ring.
 - `Skeleton` — Decorative loading placeholder.
+- `SkeletonSwap` — Shows `skeleton` while `loading`, then fades the content in over the same footprint (.hds-motion-reveal), so loaded content settles in rather than popping.
 - `Spinner` — Indeterminate spinner.
 - `ToastProvider` — Provider + viewport for the toast system.
 
@@ -119,6 +120,11 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Stack` — Stack — one-dimensional layout primitive.
 - `Surface` — Surface — governed inset surface primitive.
 - `Switcher` — Switcher — flips a row to a column below a width threshold, no media query.
+
+### Motion
+
+- `PresenceItem` — One item.
+- `PresenceList` — The list.
 
 ### Navigation
 

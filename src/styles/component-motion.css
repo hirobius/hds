@@ -1,0 +1,98 @@
+/*
+ * component-motion.css — enter, exit, press and swap motion for HDS components.
+ *
+ * Every duration and easing below is a motion token. theme.css zeroes the
+ * duration tokens under prefers-reduced-motion, so each animation here lands
+ * on its end state at once for a reduced-motion visitor. Radix overlays (Menu,
+ * Popover, Select, Dialog, AlertDialog, HdsTooltip, Toast) keep a closing node
+ * mounted until its animation ends, so the exit plays before it unmounts.
+ * Gated by scripts/check-motion.mjs: a raw duration or easing here fails it.
+ */
+
+@keyframes hds-motion-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hds-motion-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes hds-motion-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes hds-motion-pop-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes hds-motion-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--semantic-motion-distance));
+  }
+}
+
+/* A list item that just arrived fades in under an accent wash that fades out. */
+@keyframes hds-motion-highlight {
+  from {
+    background-color: var(--semantic-color-surface-accentSubtle);
+  }
+}
+
+/* -- Enter on mount, exit on [data-state=closed] --------------------------------
+ * Popper overlays (Menu, Popover, Select, HdsTooltip) pop from their trigger
+ * side; Dialog and AlertDialog pop in a touch slower over a fading scrim; Toast
+ * slides in from the viewport edge. A toggle Button's new label pops in
+ * (.hds-motion-swap) and SkeletonSwap's loaded content fades in (.hds-motion-reveal). */
+.hds-motion-popover,
+.hds-motion-modal,
+.hds-motion-swap {
+  transform-origin: var(--radix-popper-transform-origin, center);
+  animation: hds-motion-pop-in var(--hds-motion-productive);
+}
+.hds-motion-scrim,
+.hds-motion-reveal {
+  animation: hds-motion-fade-in var(--hds-motion-productive);
+}
+.hds-motion-toast {
+  animation: hds-motion-toast-in var(--hds-motion-productive);
+}
+.hds-motion-modal,
+.hds-motion-toast,
+.hds-motion-reveal {
+  animation-duration: var(--hds-motion-expressive-duration);
+}
+:is(
+  .hds-motion-popover,
+  .hds-motion-modal,
+  .hds-motion-scrim,
+  .hds-motion-toast
+)[data-state='closed'] {
+  animation: hds-motion-pop-out var(--hds-motion-exit-duration) var(--hds-motion-exit-easing)
+    forwards;
+}
+.hds-motion-scrim[data-state='closed'] {
+  animation-name: hds-motion-fade-out;
+}
+
+/* -- List item enter (PresenceList) ------------------------------------------- */
+.hds-motion-item-enter {
+  animation:
+    hds-motion-fade-in var(--hds-motion-productive),
+    hds-motion-highlight var(--hds-motion-spatial-duration) var(--hds-motion-productive-easing);
+}
+
+/* -- Tabs: the trigger's own border steps aside once TabsList has placed its sliding bar -- */
+.hds-tabs-list[data-indicator] > [role='tab'] {
+  border-bottom-color: transparent;
+}

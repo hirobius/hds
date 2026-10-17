@@ -2,11 +2,6 @@
  * Skeleton - placeholder shimmer for content that is still loading.
  * @category Feedback
  * @tier primitive
- * @usage Reserve the shape of content that is still loading, so the layout does not jump.
- * @whenNot A task with measurable progress, or a wait with no layout to reserve.
- * @useInstead Progress a task with measurable progress
- * @useInstead Spinner a short wait with no layout to reserve
- * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95
  */
 
 import * as React from 'react';
@@ -43,7 +38,15 @@ export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement>, Ske
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /**
- * Decorative loading placeholder. Marked aria-hidden — announce the loading
+ * Decorative loading placeholder. Tagged here rather than in the file block so
+ * SkeletonSwap, in this module, does not claim Skeleton's Figma node.
+ * @usage Reserve the shape of content that is still loading, so the layout does not jump.
+ * @whenNot A task with measurable progress, or a wait with no layout to reserve.
+ * @useInstead Progress a task with measurable progress
+ * @useInstead Spinner a short wait with no layout to reserve
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95
+ *
+ * Marked aria-hidden — announce the loading
  * state on the surrounding region (e.g. aria-busy) rather than per skeleton.
  */
 export const Skeleton = /* @__PURE__ */ React.forwardRef<HTMLDivElement, SkeletonProps>(
@@ -59,6 +62,41 @@ export const Skeleton = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Skeleto
         style={{ width, height: resolvedHeight, ...style }}
         {...props}
       />
+    );
+  },
+);
+
+/** @public */
+export interface SkeletonSwapProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** True while the content is loading: the skeleton shows. */
+  loading: boolean;
+  /** The placeholder shown while loading, usually Skeletons in the content's shape. */
+  skeleton: React.ReactNode;
+  /** The loaded content. */
+  children?: React.ReactNode;
+}
+
+/**
+ * Shows `skeleton` while `loading`, then fades the content in over the same
+ * footprint (.hds-motion-reveal), so loaded content settles in rather than
+ * popping. Content that was never loading renders without the fade.
+ * @usage Swap loading placeholders for the loaded content with a short fade, so it settles in instead of popping.
+ * @whenNot Content that is ready on first render, or a placeholder that never resolves to content.
+ * @useInstead Skeleton a bare placeholder you swap out yourself
+ */
+export const SkeletonSwap = /* @__PURE__ */ React.forwardRef<HTMLDivElement, SkeletonSwapProps>(
+  function SkeletonSwap({ loading, skeleton, children, className, ...props }, ref) {
+    const wasLoading = React.useRef(loading);
+    if (loading) wasLoading.current = true;
+    return (
+      <div
+        ref={ref}
+        aria-busy={loading || undefined}
+        className={cn(!loading && wasLoading.current && 'hds-motion-reveal', className)}
+        {...props}
+      >
+        {loading ? skeleton : children}
+      </div>
     );
   },
 );

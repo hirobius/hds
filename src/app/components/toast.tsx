@@ -31,9 +31,6 @@
  *     return <Button onClick={() => toast({ title: 'Saved', tone: 'success' })}>Save</Button>;
  *   }
  */
-// motion-ok: Radix Toast manages enter/exit/swipe mounting and the auto-dismiss
-// lifecycle; this module renders its themed surface + live region only.
-
 import * as React from 'react';
 import * as ToastPrimitive from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -167,7 +164,7 @@ export function ToastProvider({
                 // the X at every width. Below sm the dismiss button grows to its 44px touch target
                 // (right-2 + 44px = 52px), so the text column steps in to 64px there (on the spacing grid).
                 'rounded-md border border-border bg-popover py-4 pl-4 pr-8 max-sm:pr-16',
-                'text-popover-foreground shadow-overlay hds-focus',
+                'text-popover-foreground shadow-overlay hds-focus hds-motion-toast',
               )}
             >
               <Icon

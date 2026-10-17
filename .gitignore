@@ -34,6 +34,8 @@ _tmp_*
 vite-actions-check.log
 *.patch
 test-results/
+# pnpm motion:record — component interaction videos for review, never committed
+motion-reel/
 
 # Claude Code worktrees (per-session sandboxes — not tracked)
 .claude/worktrees/

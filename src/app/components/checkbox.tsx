@@ -230,7 +230,7 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
           // transition (not a framer `animate` target) is left inline so the color
           // fade keeps working even though the colors themselves now live in cva.
           style={{
-            transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
+            transition: `background-color ${productiveMotion.duration}s var(--hds-motion-productive-easing), border-color ${productiveMotion.duration}s var(--hds-motion-productive-easing)`,
           }}
         >
           {indeterminate ? (

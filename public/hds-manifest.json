@@ -104,6 +104,8 @@
     "Pagination",
     "Pin",
     "Popover",
+    "PresenceItem",
+    "PresenceList",
     "Progress",
     "Radio",
     "Reveal",
@@ -111,6 +113,7 @@
     "Select",
     "Sidebar",
     "Skeleton",
+    "SkeletonSwap",
     "Slider",
     "Spinner",
     "Stack",
@@ -2623,6 +2626,7 @@
         "src/app/components/composer.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/pin.tsx",
+        "src/app/components/presence-list.tsx",
         "src/app/components/reveal.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/stack.tsx",
@@ -3391,6 +3395,7 @@
       "consumers": [
         "src/app/components/alert-dialog.test.tsx",
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/component-motion.test.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/dialog.test.tsx",
         "src/app/components/menu.tsx",
@@ -3701,6 +3706,7 @@
         "src/app/components/button.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/component-motion.test.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
@@ -4849,6 +4855,7 @@
       },
       "consumers": [
         "src/app/components/breadcrumb.tsx",
+        "src/app/components/component-motion.test.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/tabs.test.tsx"
@@ -4977,7 +4984,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Indicator: One bar (.hds-tabs-indicator) slides to the active trigger on the productive motion token. TabsList measures the active trigger and sets data-indicator once the bar is placed; until then (SSR, no JS) the trigger's own 2px border draws the line. The bar is styled inline, not in CSS, to keep the stylesheet inside its size budget. Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -4987,6 +4994,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/component-motion.test.tsx",
         "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
@@ -5030,6 +5038,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/component-motion.test.tsx",
         "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
@@ -5060,7 +5069,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Indicator: One bar (.hds-tabs-indicator) slides to the active trigger on the productive motion token. TabsList measures the active trigger and sets data-indicator once the bar is placed; until then (SSR, no JS) the trigger's own 2px border draws the line. The bar is styled inline, not in CSS, to keep the stylesheet inside its size budget. Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5070,6 +5079,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/component-motion.test.tsx",
         "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
@@ -5858,7 +5868,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/skeleton.tsx",
-      "description": "Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.",
+      "description": "Decorative loading placeholder. Tagged here rather than in the file block so SkeletonSwap, in this module, does not claim Skeleton's Figma node. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
@@ -5868,6 +5878,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/component-motion.test.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/progress.tsx",
         "src/app/components/skeleton.test.tsx",
@@ -7562,6 +7573,8 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/button.tsx",
+        "src/app/components/component-motion.test.tsx",
         "src/app/components/form-actions.tsx",
         "src/app/components/pin.test.tsx"
       ],
@@ -7616,6 +7629,7 @@
       },
       "consumers": [
         "src/app/components/pin.tsx",
+        "src/app/components/presence-list.tsx",
         "src/app/components/reveal.test.tsx"
       ],
       "tokenMapping": {},
@@ -8793,6 +8807,7 @@
       "consumers": [
         "src/app/components/combobox.test.tsx",
         "src/app/components/combobox.tsx",
+        "src/app/components/component-motion.test.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.test.tsx",
@@ -10053,6 +10068,153 @@
           {
             "component": "SegmentedControl",
             "reason": "for a labelled choice of several modes"
+          }
+        ]
+      }
+    },
+    "PresenceItem": {
+      "category": "Motion",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/presence-list.tsx",
+      "description": "One item. Give it a stable `key` so the list can tell an add from a re-render.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "PresenceItem",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/component-motion.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "enum",
+          "values": [
+            "div",
+            "li"
+          ],
+          "default": "div"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "PresenceList": {
+      "category": "Motion",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/presence-list.tsx",
+      "description": "The list. Children must be PresenceItems with stable keys. Tagged here, not in the file block, so PresenceItem does not inherit the list's contract.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "PresenceList",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/component-motion.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "as": {
+          "type": "enum",
+          "values": [
+            "div",
+            "ol",
+            "ul"
+          ],
+          "default": "div"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Show where a list changed when an item is added, duplicated or removed, such as a new card dropping into a board column.",
+        "whenNot": "A list that never changes after it renders, or content revealed on scroll.",
+        "useInstead": [
+          {
+            "component": "Reveal",
+            "reason": "content that fades in as it scrolls into view"
+          }
+        ]
+      }
+    },
+    "SkeletonSwap": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/skeleton.tsx",
+      "description": "Shows `skeleton` while `loading`, then fades the content in over the same footprint (.hds-motion-reveal), so loaded content settles in rather than popping. Content that was never loading renders without the fade.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SkeletonSwap",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/component-motion.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "loading": {
+          "type": "boolean"
+        },
+        "skeleton": {
+          "type": "ReactNode"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Swap loading placeholders for the loaded content with a short fade, so it settles in instead of popping.",
+        "whenNot": "Content that is ready on first render, or a placeholder that never resolves to content.",
+        "useInstead": [
+          {
+            "component": "Skeleton",
+            "reason": "a bare placeholder you swap out yourself"
           }
         ]
       }

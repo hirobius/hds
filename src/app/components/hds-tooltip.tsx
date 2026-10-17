@@ -59,7 +59,7 @@ const HdsTooltipContent = /* @__PURE__ */ React.forwardRef<
         sideOffset={sideOffset}
         collisionPadding={8}
         className={cn(
-          'z-50 max-w-xs select-none px-2 py-1 shadow-floating',
+          'z-50 max-w-xs select-none px-2 py-1 shadow-floating hds-motion-popover',
           'bg-[var(--semantic-color-surface-inverse)] rounded-[var(--primitive-radius-4)]', // tier-ok: 4px primitive radius, no semantic 4px token
           className,
         )}

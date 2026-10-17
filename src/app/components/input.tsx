@@ -1,4 +1,3 @@
-// motion-ok: input field — focus ring + transition via Tailwind utilities (gate accepts only hds.duration refs)
 /**
  * Input — text field primitive with label, helper, and error slots.
  * @category Inputs
