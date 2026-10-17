@@ -77,9 +77,9 @@ const IDENT_CHAIN = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*$/;
 
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\-]/g, '\\$&');
 
-/** One entry -> its [pattern, replacer] rules. A typography composite keeps its `-<prop>` suffix. */
+/** One entry -> its [pattern, replacer] rules. A composite keeps its `-<prop>` suffix. */
 function rulesFor(d) {
-  const composite = d.path.includes('.typography.') ? '(-[A-Za-z]+)?' : '()';
+  const composite = d.composite ? '((?:-[A-Za-z]+)*)' : '()';
   const rules = [
     [
       new RegExp(`(var\\(\\s*)${esc(d.cssVar)}${composite}(?![\\w-])`, 'g'),

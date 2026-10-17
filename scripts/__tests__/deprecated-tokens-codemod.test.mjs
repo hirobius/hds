@@ -24,6 +24,10 @@ describe('transformSource', () => {
     ['"{semantic.space.section.heroMax}"', '"{semantic.space.section.inset}"'],
     ['className="p-layout-tight md:-mt-layout-spacious"', 'className="p-scale-sm md:-mt-scale-xl"'],
     ['tokenRefs.semantic.typography.h1.fontSize', 'tokenRefs.semantic.typography.title.fontSize'],
+    [
+      'font-size: var(--semantic-typography-h1-font-size)',
+      'font-size: var(--semantic-typography-title-font-size)',
+    ],
   ])('%s -> %s', (before, after) => {
     expect(out(before)).toBe(after);
   });
