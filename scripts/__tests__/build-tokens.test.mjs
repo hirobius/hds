@@ -277,6 +277,8 @@ describe('deprecated tokens in the build outputs', () => {
     );
     expect(dts).toContain("\n    '--semantic-x'?: string | undefined;");
     expect(dts).not.toMatch(/@deprecated[^\n]*\n {4}'--semantic-x'/);
+    // a plain token's prefix does not tag a sibling var
+    expect(buildCSSVarDts(['--semantic-space-layout-tight-x'], notes)).not.toContain('@deprecated');
   });
 });
 

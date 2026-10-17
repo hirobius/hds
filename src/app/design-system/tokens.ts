@@ -152,6 +152,8 @@ const hds = {
         lg: 'var(--semantic-space-scale-lg)',
         xl: 'var(--semantic-space-scale-xl)',
       },
+      // The fixed steps between the scale rungs (4/12/16/24/32/48px); compact density does not move them.
+      fixed: tokenRefs.semantic.space.fixed,
       // hds#206 slice 3 — the overridable roles. surface.padding defaults to scale.md (28px, 24px compact);
       // tenants.css overrides surface.padding per brand/density and theme.css
       // sets region.gutter responsively (scale.lg / scale.sm).
@@ -200,6 +202,12 @@ const hds = {
         sectionGap: 'var(--semantic-space-sidebar-sectionGap)',
         railPadding: 'var(--semantic-space-sidebar-railPadding)',
       },
+    },
+    radius: {
+      action: tokenRefs.semantic.radius.action,
+      control: tokenRefs.semantic.radius.control,
+      // 8/12/16/24px and pill: the fixed surface ladder (rounded-scale-* in Tailwind).
+      scale: tokenRefs.semantic.radius.scale,
     },
     typography: {
       /** @deprecated hds#483 — use `typeStyles.ui`.

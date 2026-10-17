@@ -90,7 +90,7 @@ version it leaves in and the replacement:
 
 ```
 "--semantic-space-layout-tight" is a deprecated token (hds#206 — use semantic.space.scale.sm),
-removed in 1.0.0. Use --semantic-space-scale-sm. `npx @hirobius/design-system upgrade` rewrites it.
+removed in 1.0.0. Use --semantic-space-scale-sm.
 ```
 
 The list is `rules/deprecated-tokens.json`, which the token build writes, so a

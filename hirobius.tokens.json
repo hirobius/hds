@@ -22,13 +22,13 @@
           "$value": "#d4d4d4",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
-        "350": {
-          "$value": "#b4b4b4",
-          "$description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary)."
-        },
         "400": {
           "$value": "#a3a3a3",
           "$description": "Specific value within the neutral range at a defined lightness step."
+        },
+        "350": {
+          "$value": "#b4b4b4",
+          "$description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary)."
         },
         "450": {
           "$value": "#909090",
@@ -500,7 +500,7 @@
           "value": 6,
           "unit": "px"
         },
-        "$description": "6px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.2 or a semantic token.",
+        "$description": "6px, off the 4px grid. Deprecated, removed in 0.28.0: use semantic.space.scale.xs.",
         "$deprecated": "2026-10 spacing prune, removed in 0.28.0 — use semantic.space.scale.xs (8px)"
       },
       "px10": {
@@ -508,7 +508,7 @@
           "value": 10,
           "unit": "px"
         },
-        "$description": "10px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.3 or a semantic token.",
+        "$description": "10px, off the 4px grid. Deprecated, removed in 0.28.0: use semantic.space.fixed.xs.",
         "$deprecated": "2026-10 spacing prune, removed in 0.28.0 — use semantic.space.fixed.xs (12px)"
       }
     },

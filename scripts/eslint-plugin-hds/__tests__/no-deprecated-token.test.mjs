@@ -14,6 +14,8 @@ ruleTester.run('no-deprecated-token', rule, {
     'const x = <div className="p-scale-sm gap-fixed-xs rounded-scale-md" />;',
     // a longer var that merely starts with a deprecated name
     'const x = "var(--semantic-space-layout-tight-x)";',
+    // only a composite's sub-vars share its note
+    'const x = "var(--semantic-space-layout-tight-font-size)".length;',
     // the primitive px6/px10 steps belong to hds/no-primitive-spacing
     'const x = "var(--primitive-space-px6)";',
     // Tailwind-shaped text outside className / cn is not a class
@@ -59,6 +61,21 @@ ruleTester.run('no-deprecated-token', rule, {
     {
       code: 'const x = cn("gap-section-heroMax");',
       errors: [{ messageId: 'deprecated' }],
+    },
+    {
+      // a composite's sub-var names the replacement's sub-var
+      code: 'const x = "var(--semantic-typography-h1-font-size)";',
+      errors: [
+        {
+          messageId: 'deprecated',
+          data: {
+            text: '--semantic-typography-h1-font-size',
+            note: 'hds#483 — use semantic.typography.title',
+            removeIn: '1.0.0',
+            fix: ' Use --semantic-typography-title-font-size.',
+          },
+        },
+      ],
     },
     {
       // no single replacement: the note says what to do

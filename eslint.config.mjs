@@ -351,7 +351,8 @@ export default [
   // hds/no-deprecated-token: the generated token maps and the tokens.ts bridge
   // define the deprecated tokens, and Box sx keeps its deprecated names on
   // their vars until 1.0 (box-sx.ts BOX_SX_SPACING). table.tsx and board.tsx
-  // still read one each; moving them changes pixels (hds#789).
+  // still read one each; moving them changes pixels (hds#789). Drop those two
+  // entries when hds#789 closes.
   {
     files: [
       'src/app/design-system/**',

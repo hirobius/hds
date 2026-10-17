@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-17T08:19:40.953Z",
+  "generated": "2026-10-17T09:05:41.071Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11242,14 +11242,14 @@
         "path": "primitive.space.px6",
         "cssVar": "--primitive-space-px6",
         "type": "dimension",
-        "description": "6px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.2 or a semantic token.",
+        "description": "6px, off the 4px grid. Deprecated, removed in 0.28.0: use semantic.space.scale.xs.",
         "value": "6px"
       },
       {
         "path": "primitive.space.px10",
         "cssVar": "--primitive-space-px10",
         "type": "dimension",
-        "description": "10px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.3 or a semantic token.",
+        "description": "10px, off the 4px grid. Deprecated, removed in 0.28.0: use semantic.space.fixed.xs.",
         "value": "10px"
       },
       {

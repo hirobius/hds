@@ -36,6 +36,7 @@ describe('collectDeprecations', () => {
     expect(tight).toEqual({
       path: 'semantic.space.layout.tight',
       cssVar: '--semantic-space-layout-tight',
+      composite: false,
       tailwind: 'layout-tight',
       replacement: 'semantic.space.scale.sm',
       replacementCssVar: '--semantic-space-scale-sm',
