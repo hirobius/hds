@@ -29,6 +29,12 @@ import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { Icon } from './icon';
+import { Surface } from './surface';
+import {
+  measureScrollEdges,
+  scrollEdgeFadeStyle,
+  type ScrollEdgeOverflow,
+} from './scroll-edge-fade';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `density` is the variant contract's canonical density example (comfortable |
@@ -41,7 +47,7 @@ import { Icon } from './icon';
 // A column without its own `width` never narrows below one tile (size.tile) per cell,
 // so a wrapping link still reads in lines, not letters, on a phone; past that the
 // frame scrolls. A column with an explicit `width` is sized by that track alone.
-const COLUMN_FLOOR = { true: 'min-w-[var(--semantic-size-tile)]', false: 'min-w-0' } as const;
+const COLUMN_FLOOR = { true: 'min-w-[var(--semantic-size-tile)]', false: '' } as const;
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableHeaderCellVariants = /* @__PURE__ */ cva(
@@ -143,10 +149,10 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
   },
 );
 
-// The frame owns the border and the rounded corners; the scroll region inside it
-// owns the scrolling, so the edge fade below never fades the border.
+// The frame (a Surface with no fill) owns the border and the rounded corners; the
+// scroll region inside it owns the scrolling, so the edge fade never fades the border.
 const tableFrameClass =
-  'overflow-hidden rounded-lg text-[color:var(--semantic-color-content-primary)] [border:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]';
+  'bg-transparent border-solid border-[length:var(--semantic-borderWidth-default)] border-[color:var(--semantic-color-border-subdued)]';
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding token has no Tailwind-theme utility; var()-based so still token-driven
 const tableRegionVariants = /* @__PURE__ */ cva(
@@ -163,29 +169,6 @@ const tableRegionVariants = /* @__PURE__ */ cva(
 );
 
 // ── Types ──────────────────────────────────────────────────────────────────────
-
-/** Which edges of the scroll region have columns scrolled out of view. */
-type TableOverflow = 'start' | 'end' | 'both' | undefined;
-
-function measureOverflow(el: HTMLElement): TableOverflow {
-  const hiddenStart = el.scrollLeft > 1;
-  const hiddenEnd = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
-  if (hiddenStart && hiddenEnd) return 'both';
-  if (hiddenStart) return 'start';
-  if (hiddenEnd) return 'end';
-  return undefined;
-}
-
-const FADE = 'var(--semantic-space-scale-lg)';
-
-/** Mask that fades the edge(s) with hidden columns, one fade width (scale.lg) deep. Same cue as TabsList. */
-function fadeStyle(overflow: TableOverflow): CSSProperties | undefined {
-  if (!overflow) return undefined;
-  const start = overflow === 'end' ? '0px' : FADE;
-  const end = overflow === 'start' ? '0px' : FADE;
-  const mask = `linear-gradient(90deg,transparent,currentColor ${start},currentColor calc(100% - ${end}),transparent)`;
-  return { maskImage: mask, WebkitMaskImage: mask };
-}
 
 /** @public */
 export type TableColumnAlign = 'left' | 'center' | 'right';
@@ -334,10 +317,10 @@ export function Table({
   const hasCaption = Boolean(caption);
   const nameId = hasCaption ? captionId : labelledBy;
   const regionRef = useRef<HTMLDivElement | null>(null);
-  const [overflow, setOverflow] = useState<TableOverflow>(undefined);
+  const [overflow, setOverflow] = useState<ScrollEdgeOverflow>(undefined);
 
   const updateOverflow = useCallback(() => {
-    if (regionRef.current) setOverflow(measureOverflow(regionRef.current));
+    if (regionRef.current) setOverflow(measureScrollEdges(regionRef.current));
   }, []);
 
   useEffect(() => {
@@ -375,7 +358,7 @@ export function Table({
           ) : null}
         </div>
       ) : null}
-      <div className={tableFrameClass}>
+      <Surface padding="none" overflow="hidden" className={tableFrameClass}>
         <div
           ref={regionRef}
           id={regionId}
@@ -390,7 +373,7 @@ export function Table({
           data-overflow={overflow}
           onScroll={updateOverflow}
           className={tableRegionVariants({ flush })}
-          style={{ overflowX: 'auto', overflowY: 'visible', ...fadeStyle(overflow) }}
+          style={{ overflowX: 'auto', overflowY: 'visible', ...scrollEdgeFadeStyle(overflow) }}
         >
           <div
             role="table"
@@ -500,7 +483,7 @@ export function Table({
             ))}
           </div>
         </div>
-      </div>
+      </Surface>
     </div>
   );
 }

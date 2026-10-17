@@ -1,1 +1,2 @@
 - Table: columns floor at min-content (fixes desktop clipping), edge-fade scroll cue, mirrord-style restyle, `emphasizeFirstColumn` prop; regression spec tests/visual/table-clipping.spec.ts.
+- Table/TabsList share scroll-edge-fade.ts; Table frame is a no-fill Surface.
