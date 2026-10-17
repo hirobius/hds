@@ -185,6 +185,7 @@ export const EXEMPTION_MARKERS = [
   'aria-ok',
   'motion-ok',
   'grid-ok',
+  'status-clutter-ok',
   // check-layout-discipline honors this and tells users to reach for it; it was
   // once missing here, so the gate that validates markers rejected 7 real uses
   // of a marker another gate documents. Two gates disagreeing about one vocabulary.

@@ -108,7 +108,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Layout
 
 - `Board` — Status columns that sit side by side from tablet width and stack in order, first column on top, below it.
-- `BoardColumn` — One status column: a heading with the title, a count and a tone dot, then its items.
+- `BoardColumn` — One status column: a heading with the title and a count, then its items.
 - `Box` — Box — polymorphic layout primitive with a token-first `sx` engine.
 - `Container` — Container — semantic width-constrained layout.
 - `Disclosure` — Disclosure - compact disclosure surface for optional explanatory content.
