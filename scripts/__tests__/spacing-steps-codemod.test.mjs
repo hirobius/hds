@@ -32,7 +32,7 @@ describe('transformSource', () => {
     ['p-px6', 'p-2'],
     ['-mt-px10', '-mt-3'],
     ['md:gap-px6', 'md:gap-2'],
-    ['hover:!px-px10', 'hover:!px-3'],
+    ['hover:px-px10', 'hover:px-3'],
     ['gap-x-px6 gap-y-px10', 'gap-x-2 gap-y-3'],
     ['space-x-px6 space-y-px10', 'space-x-2 space-y-3'],
     ['py-px6 pt-px6 pr-px6 pb-px6 pl-px6 ps-px6 pe-px6', 'py-2 pt-2 pr-2 pb-2 pl-2 ps-2 pe-2'],
@@ -128,7 +128,7 @@ describe('runCodemod', () => {
       '.panel {\n  padding: var(--primitive-space-2);\n  margin: var(--primitive-space-3) var(--primitive-space-px1);\n}\n',
     );
     const tsx = readFileSync(join(dir, 'needs-rewrite/src/panel.tsx'), 'utf8');
-    expect(tsx).toContain('p-2 -mt-3 md:gap-2 hover:!px-3 space-y-2');
+    expect(tsx).toContain('p-2 -mt-3 md:gap-2 hover:px-3 space-y-2');
     expect(tsx).toContain('padding: hds.space.px8, margin: hds.space.px12');
     const json = readFileSync(join(dir, 'needs-rewrite/tokens.json'), 'utf8');
     expect(json).toContain('"{primitive.space.2}"');
