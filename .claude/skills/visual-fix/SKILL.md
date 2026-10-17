@@ -1,6 +1,6 @@
 ---
 name: visual-fix
-description: Fix a visual bug in HDS or a consumer app (Roleforge/job-hunt, ops) at its root, with a guard so it stays fixed. Use when a screen looks wrong, a visual bug comes back, or a page has grown ugly through patches.
+description: Visual bug fix in HDS or a consumer app (Roleforge/job-hunt, ops), at the root and guarded. Use when a screen looks wrong or a visual bug returns.
 ---
 
 **v0, meant to be tuned.** Each time you run it, append one line to the Tuning log at the bottom: what helped, or what was missing.
@@ -45,9 +45,9 @@ Walk down the ladder and stop at the first layer that owns the defect: **token â
 
 Add a check that goes red if the defect comes back: a lint rule, a unit test, a layout test (`test:layout` where the repo has one; in HDS the docs site plus Chromatic is the visual surface), an axe rule, or a layout-shift assertion. Prove it: run the check on the broken code first and watch it fail, then on the fix and watch it pass.
 
-Model it on the existing guards: the consumer apps' F1/F3/F4 guards, and in HDS `check-no-status-clutter` (decoration), `check-layout-discipline` (placement, raw), `check-hardcoded-spacing` (scale).
+Model it on the existing guards: job-hunt's F1/F3/F4 layout guards (in that repo; they are not in HDS), and in HDS `check-no-status-clutter` (decoration), `check-layout-discipline` (placement, raw), `check-hardcoded-spacing` (scale).
 
-Register it where the repo lists guardrails. In HDS: an entry in `docs/guardrails/registry.json` with its `firingChannel` (field reference: `docs/guardrails/SCHEMA.md`) and a fixture under `fixtures/`. In a consumer repo, follow that repo's guardrail list.
+Register it where the repo lists guardrails. In HDS: an entry in `docs/guardrails/registry.json` with its `firingChannel` (field reference: `docs/guardrails/SCHEMA.md`) and a `passing` plus a `violating` example under `fixtures/<check-id>/`. In a consumer repo, follow that repo's guardrail list.
 
 **Done** when the check was seen red on the bug, green on the fix, and is registered.
 
@@ -59,8 +59,8 @@ Re-shoot the same captures from step 1, same routes, widths and themes. Put befo
 
 ## Anti-patterns
 
-- **One-page patch**: fixing the page that was reported while the same defect lives on in the component. The next page shows it again.
-- **Raised budget**: lifting a size, layout-shift or snapshot threshold to get green. Fix the cause or report it.
+- **One-page patch**: the reported page is fixed while the defect lives on in the component, so the next page shows it again. Fix the component.
+- **Raised budget**: a size, layout-shift or snapshot threshold lifted to get green. Keep the budget; fix the cause or report it.
 - **Magic px**: a hand-tuned `13px` or `-2px` offset that makes one capture look right. Use a token, a gap or a layout primitive.
 
 ## When not to use it
