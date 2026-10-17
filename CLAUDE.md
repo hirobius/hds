@@ -188,6 +188,7 @@ may skip:
 - **A perf-budget failure (`pnpm size-limit` / `check:size`, Button probe) → `performance-optimization`** (Osmani; Pocock still owns build/test/review). The failure output now names it. Never raise a budget to get green.
 - **Charting a multi-decision lane → `/wayfinder`.**
 - **Design-touching UI → `/design-review`.**
+- **A visual bug (HDS or a consumer app) → `/visual-fix`**; `/design-review` scores a screen, `/visual-fix` fixes one.
 
 **Tracker config for `/to-tickets` + `/triage`** (they ask for it): the tracker
 is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
