@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The built-in utility classes now live in the utilities cascade layer, so your own unlayered CSS (and Tailwind state variants) override them as expected; no action needed unless you relied on them beating a layered rule."
+}
