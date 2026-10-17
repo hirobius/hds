@@ -26,9 +26,10 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 ## Typography
 
 <!-- auto:start:typography -->
-HDS ships two typefaces:
+HDS ships three typefaces — each with a distinct role:
 
-- **Text font**: Plus Jakarta Sans. Headings, prose, labels, captions, and UI copy; the type roles set size and weight.
+- **Display / Heading font**: Bricolage Grotesque. Bound to the `display` and `title` styles.
+- **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
 Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · title) use `700` bold; body, UI, and caption use `400` regular / `500` medium.

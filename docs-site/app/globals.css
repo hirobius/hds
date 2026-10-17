@@ -47,6 +47,15 @@ html {
   font-family: var(--primitive-typography-family-primary);
 }
 
+/* Headings take the HDS display face (Bricolage Grotesque, ADR-063), as the
+   display and title roles do; the body face stays on everything else. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--semantic-typography-title-font-family);
+}
+
 /*
  * Fumadocs sizes its sticky top bar via the --fd-header-height custom
  * property, toggled on by a `:has()` selector keyed to a marker class that

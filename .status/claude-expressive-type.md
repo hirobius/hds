@@ -1,0 +1,1 @@
+- ADR-063: display, title and title-sm set in self-hosted Bricolage Grotesque 700 (OFL-1.1); new display dial `--hds-font-family-display`; type ramp unchanged.

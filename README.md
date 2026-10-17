@@ -129,12 +129,12 @@ HDS theming is driven by root attributes + CSS variables, so it works with **zer
 JavaScript** — set them on any element (React, Astro, plain HTML) and every HDS
 descendant re-skins:
 
-| Dial    | Attribute / var                                | Values          | Default                           |
-| ------- | ---------------------------------------------- | --------------- | --------------------------------- |
-| theme   | `data-theme`                                   | `dark`          | light (unset)                     |
-| density | `data-density`                                 | `compact`       | comfortable (unset)               |
-| brand   | `data-brand` (+ `data-tenant` alias)           | overlay slug    | base (unset)                      |
-| font    | `--hds-font-family` / `--hds-font-family-mono` | any font-family | Plus Jakarta Sans / IBM Plex Mono |
+| Dial    | Attribute / var                                                              | Values          | Default                                                 |
+| ------- | ---------------------------------------------------------------------------- | --------------- | ------------------------------------------------------- |
+| theme   | `data-theme`                                                                 | `dark`          | light (unset)                                           |
+| density | `data-density`                                                               | `compact`       | comfortable (unset)                                     |
+| brand   | `data-brand` (+ `data-tenant` alias)                                         | overlay slug    | base (unset)                                            |
+| font    | `--hds-font-family` / `--hds-font-family-mono` / `--hds-font-family-display` | any font-family | Plus Jakarta Sans / IBM Plex Mono / Bricolage Grotesque |
 
 ```html
 <!-- zero-JS: static markup (e.g. an Astro layout) -->
@@ -308,4 +308,4 @@ public/             manifest, llms.txt
 
 ## License
 
-The HDS code is MIT ([LICENSE](LICENSE)). The package CSS also embeds the Plus Jakarta Sans and IBM Plex Mono fonts, which keep their own licenses and are not covered by MIT. See [NOTICE.md](NOTICE.md).
+The HDS code is MIT ([LICENSE](LICENSE)). The package CSS also ships the Plus Jakarta Sans, Bricolage Grotesque and IBM Plex Mono fonts (opt-in `fonts.css`), which keep their own licenses and are not covered by MIT. See [NOTICE.md](NOTICE.md).

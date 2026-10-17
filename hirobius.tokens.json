@@ -581,6 +581,7 @@
         },
         "display": {
           "$value": [
+            "Bricolage Grotesque",
             "Plus Jakarta Sans",
             "system-ui",
             "-apple-system",
@@ -588,7 +589,7 @@
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites."
+          "$description": "Display and title face: Bricolage Grotesque 700 (OFL, ADR-063); falls back to Plus Jakarta Sans."
         },
         "mono": {
           "$value": ["IBM Plex Mono", "Courier New", "monospace"],
@@ -1302,7 +1303,7 @@
         },
         "tertiary": {
           "$value": "{primitive.color.neutral.500}",
-          "$description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+          "$description": "Third text level for helper text, counts and form notes; meets 4.5:1 on page and raised surfaces in both themes.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1421,7 +1422,7 @@
         },
         "subdued": {
           "$value": "{primitive.color.neutral.200}",
-          "$description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
+          "$description": "Quiet divider border. DEPRECATED (2026-10-12): use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
           "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
           "$extensions": {
             "com.figma.variables": {
@@ -1828,7 +1829,7 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "5-role type ramp plus title-sm and mono (hds#483): display, title, titleSm, body, ui, caption, mono. h1, h2, h3 and eyebrow are deprecated aliases.",
+      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; h1-h3 and eyebrow are deprecated aliases.",
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",

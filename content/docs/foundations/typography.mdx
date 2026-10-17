@@ -1,30 +1,33 @@
 ---
 title: 'Typography'
-description: 'Two typefaces and six text styles, from page titles to code.'
+description: 'Three typefaces and six text styles, from page titles to code.'
 status: 'stable'
 since: '0.1.0'
 ---
 
 ## Principle
 
-Two typefaces, each with one job:
+Three typefaces, each with one job:
 
-- **Plus Jakarta Sans** sets everything people read: Bold (700) for display, titles and small titles, Regular (400) for body, Medium (500) for controls and captions.
+- **Bricolage Grotesque** sets headings: Bold (700) for display, titles and small titles. Its optical-size axis tightens the letterforms as the size grows.
+- **Plus Jakarta Sans** sets everything else people read: Regular (400) for body, Medium (500) for controls and captions.
 - **IBM Plex Mono** sets code, token names and ids.
+
+All three are self-hosted under the SIL Open Font License 1.1 and ship in the opt-in `fonts.css`. Without it, headings fall back to Plus Jakarta Sans, then the system sans. Change the heading face with `--hds-font-family-display` (or `fontFamilyDisplay` on `HdsThemeProvider`); see ADR-063.
 
 ## The ramp
 
 Six text styles plus mono. Set one with `<Text variant="…">`, `hds.typeStyles.<role>` or the `.hds-type-<role>` class.
 
-| Role      | Size / line-height | Weight | Use                                           |
-| --------- | ------------------ | ------ | --------------------------------------------- |
-| `display` | 48 / 1.05          | 700    | One per page, hero only                       |
-| `title`   | 24 / 1.25          | 700    | Section and card headings                     |
-| `titleSm` | 16 / 1.375         | 700    | Small heading inside a card or section band   |
-| `body`    | 16 / 1.6           | 400    | Prose                                         |
-| `ui`      | 14 / 1.5           | 500    | Controls, nav, table text, values             |
-| `caption` | 12 / 1.5           | 500    | Metadata, help text and labels, sentence case |
-| `mono`    | 13 / 1.5           | 400    | Code and ids                                  |
+| Role      | Face                | Size / line-height | Weight | Use                                           |
+| --------- | ------------------- | ------------------ | ------ | --------------------------------------------- |
+| `display` | Bricolage Grotesque | 48 / 1.05          | 700    | One per page, hero only                       |
+| `title`   | Bricolage Grotesque | 24 / 1.25          | 700    | Section and card headings                     |
+| `titleSm` | Bricolage Grotesque | 18 / 1.375         | 700    | Small heading inside a card or section band   |
+| `body`    | Plus Jakarta Sans   | 18 / 1.6           | 400    | Prose                                         |
+| `ui`      | Plus Jakarta Sans   | 16 / 1.5           | 500    | Controls, nav, table text, values             |
+| `caption` | Plus Jakarta Sans   | 14 / 1.5           | 500    | Metadata, help text and labels, sentence case |
+| `mono`    | IBM Plex Mono       | 15 / 1.5           | 400    | Code and ids                                  |
 
 ## Best practices
 
