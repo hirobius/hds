@@ -217,6 +217,7 @@ Three more needs are props on an existing component, not components of their own
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
+- Don't paint status dots or coloured left accent bars on cards and tiles; status is implied by content. Don't put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge); keep label and value together.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
 - Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
