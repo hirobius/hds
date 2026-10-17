@@ -23,12 +23,18 @@
  * and a deprecated step is never baselined. The baseline is the debt left from
  * before the guardrail; new code uses semantic spacing only.
  *
+ * `--dist <css>` checks a built stylesheet instead (check:size runs it on
+ * dist/styles.css): exit 1 if it ships any utility class using px6/px10, which a
+ * stray source mention can compile back in even when no component uses it.
+ *
  * Usage: node scripts/check-tailwind-spacing-scale.mjs [--strict] [--json]
  *        [--ratchet] [--update-baseline] [--dir <path>] [--only <file basename>]
+ *        [--dist <css file>]
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { cssBundleContract } from './lib/css-contract.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BASELINE = path.join(ROOT, 'scripts/tailwind-spacing-scale.baseline.json');
@@ -77,6 +83,13 @@ export function scanSource(src) {
   return out;
 }
 
+const DEPRECATED_CLASS = new RegExp(`(?:^|[^a-z0-9])(?:${DEPRECATED_STEPS.join('|')})(?![0-9])`);
+
+/** Utility classes in a built stylesheet that use a deprecated step. */
+export function scanBuiltCss(css) {
+  return cssBundleContract(css).classes.filter((c) => DEPRECATED_CLASS.test(c));
+}
+
 /**
  * Compare per-file finding counts with a baseline ({ file: count }).
  * @returns {{ failures: {file: string, baseline: number, count: number,
@@ -121,6 +134,16 @@ function main() {
   const arg = (n) => (argv.includes(`--${n}`) ? argv[argv.indexOf(`--${n}`) + 1] : undefined);
   const dir = path.resolve(ROOT, arg('dir') ?? 'src/app/components');
   const only = arg('only');
+
+  const dist = arg('dist');
+  if (dist) {
+    const bad = scanBuiltCss(fs.readFileSync(path.resolve(ROOT, dist), 'utf8'));
+    for (const c of bad) console.error(`${dist}: ships deprecated spacing utility .${c}`);
+    console.log(
+      bad.length ? `dist FAILED (${bad.length})` : `dist ok: ${dist} ships no px6/px10 utility`,
+    );
+    process.exit(bad.length ? 1 : 0);
+  }
 
   // Fixture mode (proof-of-firing harness): scan ONLY the single FIXTURE_FILE and
   // behave strictly — a finding is exit 1. Without this the gate is WARN-only and

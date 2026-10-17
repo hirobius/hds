@@ -243,7 +243,7 @@
     "check:secrets": "node scripts/check-secrets.mjs",
     "check:security": "node scripts/check-security-baseline.mjs",
     "check:semantic-report": "node scripts/audit-tokens.mjs --report-only",
-    "check:size": "pnpm build:lib && node scripts/build-button-probe.mjs && pnpm size-limit",
+    "check:size": "pnpm build:lib && node scripts/check-tailwind-spacing-scale.mjs --dist dist/styles.css && node scripts/build-button-probe.mjs && pnpm size-limit",
     "check:spacing": "node scripts/check-hardcoded-spacing.mjs",
     "check:spacing-vocabulary": "node scripts/check-spacing-vocabulary.mjs",
     "check:layout-contract": "node scripts/check-layout-contract.mjs",

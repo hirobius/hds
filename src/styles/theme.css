@@ -70,6 +70,13 @@
 @source not "../../scripts/tailwind-spacing-scale.baseline.json";
 @source not "../../scripts/__tests__/spacing-steps-codemod.test.mjs";
 @source not "../../scripts/__tests__/check-tailwind-spacing-scale.test.mjs";
+/* Same for the status-clutter guard (hds#759): it names the accent bars it
+   bans (border-l-8, border-l-[3px], ...), which shipped none of them. */
+@source not "../../fixtures/check-no-status-clutter";
+@source not "../../scripts/check-no-status-clutter.mjs";
+@source not "../../scripts/eslint-plugin-hds/rules/no-status-clutter.mjs";
+@source not "../../scripts/eslint-plugin-hds/__tests__/no-status-clutter.test.mjs";
+@source not "../../scripts/__tests__/check-no-status-clutter.test.mjs";
 /* 0.26.x shipped these four only because that test named them; kept emitted so
    excluding the test removes nothing a consumer could be using. */
 @source inline("inset-2 gap-0 hover:p-4 md:px-3");

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { scanSource, ratchet } from '../check-tailwind-spacing-scale.mjs';
+import { scanSource, ratchet, scanBuiltCss } from '../check-tailwind-spacing-scale.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -153,5 +153,19 @@ describe('check-tailwind-spacing-scale --ratchet on the real tree', () => {
     );
     expect(r.stdout + r.stderr).toMatch(/ratchet ok/);
     expect(r.status).toBe(0);
+  });
+});
+
+describe('tailwind spacing scale: scanBuiltCss (--dist)', () => {
+  it('flags px6/px10 spacing utilities a built stylesheet ships', () => {
+    const css = `.p-px6{padding:6px}.md\\:gap-px10{gap:10px}.mt-\\[var\\(--primitive-space-px6\\)\\]{margin-top:var(--primitive-space-px6)}`;
+    expect(scanBuiltCss(css).sort()).toEqual(
+      ['md:gap-px10', 'mt-[var(--primitive-space-px6)]', 'p-px6'].sort(),
+    );
+  });
+
+  it('ignores the deprecated vars themselves and other px steps', () => {
+    const css = `:root{--primitive-space-px6:6px;--hds-space-px10:10px}.p-px1{padding:1px}.gap-px100{gap:100px}.p-scale-md{padding:0}`;
+    expect(scanBuiltCss(css)).toEqual([]);
   });
 });
