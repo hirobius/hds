@@ -51,7 +51,7 @@ const COLUMN_FLOOR = { true: 'min-w-[var(--semantic-size-tile)]', false: '' } as
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableHeaderCellVariants = /* @__PURE__ */ cva(
-  'flex items-center bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-surface-padding)] [border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)] [overflow-wrap:break-word]',
+  'flex items-center bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-surface-padding)] [border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)] break-words',
   {
     variants: {
       align: {
@@ -72,7 +72,7 @@ const tableHeaderCellVariants = /* @__PURE__ */ cva(
       },
       // The column rules run up through the header band so each column reads as one strip.
       columnDivider: {
-        true: '[border-left:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',
+        true: 'border-l border-[color:var(--semantic-color-border-subdued)]',
         false: '',
       },
       floor: COLUMN_FLOOR,
@@ -131,7 +131,7 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
         false: '',
       },
       columnDivider: {
-        true: '[border-left:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',
+        true: 'border-l border-[color:var(--semantic-color-border-subdued)]',
         false: '',
       },
       // Text wraps between words and keeps every word whole, so a column is never
@@ -141,7 +141,7 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
       // slot: a date, a number, a token name) never wraps: `2026-10-05` split at its
       // hyphens reads as two values, so its column holds the whole literal.
       wrap: {
-        words: '[overflow-wrap:break-word]',
+        words: 'break-words',
         anywhere: '[overflow-wrap:anywhere]',
         none: 'whitespace-nowrap',
       },
@@ -160,7 +160,7 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
 // The frame (a Surface with no fill) owns the border and the rounded corners; the
 // scroll region inside it owns the scrolling, so the edge fade never fades the border.
 const tableFrameClass =
-  'bg-transparent border-solid border-[length:var(--semantic-borderWidth-default)] border-[color:var(--semantic-color-border-subdued)]';
+  'bg-transparent border border-solid border-[color:var(--semantic-color-border-subdued)]';
 
 // `relative` makes the region the containing block for absolutely positioned content
 // (a link's `sr-only` label): without it that content escapes the scroller and widens

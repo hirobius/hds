@@ -159,11 +159,13 @@ describe('Table — layout and restyle', () => {
     );
   });
 
-  it('draws a column divider before every body cell but the first', () => {
+  it('draws a column divider before every cell but the first, header included', () => {
     render(<Table columns={columnsWith({})} rows={rows} />);
-    const [first, second] = screen.getAllByRole('cell');
-    expect(first.className).not.toContain('border-left');
-    expect(second.className).toContain('border-left');
+    for (const role of ['cell', 'columnheader'] as const) {
+      const [first, second] = screen.getAllByRole(role);
+      expect(first.className.split(' ')).not.toContain('border-l');
+      expect(second.className.split(' ')).toContain('border-l');
+    }
   });
 
   it('sets the body in the regular weight and emphasises the first column only when asked', () => {
