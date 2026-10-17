@@ -209,7 +209,6 @@
   --hds-space-3xl: var(--primitive-space-16); /* 64px */
   --hds-space-4xl: var(--primitive-space-20); /* 80px */
 
-  --hds-accent-bar: var(--primitive-color-blue-300);
   --hds-text-on-image: var(--semantic-color-content-inverse);
 
   /* -- Semantic accent bridges (legacy) ---------------------------------------- */
@@ -353,7 +352,6 @@
   color-scheme: dark;
 
   /* Text colors: --semantic-color-content-* resolved via tokens.css (dark mode auto-switches) */
-  --hds-accent-bar: var(--primitive-color-blue-400);
   --hds-text-on-image: var(--semantic-color-content-inverse);
 
   /* Feedback — dark mode vars resolve automatically from tokens.css */
