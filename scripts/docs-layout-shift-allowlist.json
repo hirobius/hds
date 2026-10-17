@@ -1,0 +1,91 @@
+[
+  {
+    "route": "/docs/components/popover",
+    "kind": "cls",
+    "max": 0.02,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/components/utilities",
+    "kind": "cls",
+    "max": 0.025,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/engineering",
+    "kind": "cls",
+    "max": 0.35,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/foundations/typography",
+    "kind": "cls",
+    "max": 0.025,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/guides/deprecation",
+    "kind": "cls",
+    "max": 0.025,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/guides/getting-started",
+    "kind": "cls",
+    "max": 0.25,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/guides/tokens",
+    "kind": "cls",
+    "max": 0.2,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/patterns",
+    "kind": "cls",
+    "max": 0.02,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/patterns/asset-img",
+    "kind": "cls",
+    "max": 0.08,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/patterns/form-actions",
+    "kind": "cls",
+    "max": 0.02,
+    "reason": "content reflows on load",
+    "issue": 770
+  },
+  {
+    "route": "/docs/patterns/destructive-section",
+    "kind": "cls",
+    "max": 0.3,
+    "reason": "shifts on some loads only",
+    "issue": 770
+  },
+  {
+    "route": "/docs/engineering",
+    "kind": "box",
+    "reason": "header 744px wide vs 1012px on other docs routes",
+    "issue": 770
+  },
+  {
+    "route": "/docs/guides/getting-started",
+    "kind": "box",
+    "reason": "header 744px wide vs 1012px on other docs routes",
+    "issue": 770
+  }
+]
