@@ -40,7 +40,9 @@ import { isDevelopment } from '../../lib/env';
  * and its own `active:bg-…`, so a toned secondary presses exactly as before. A tone
  * also sets `disabled:border-transparent`, replacing secondary's disabled border
  * (`component.button.secondary.border.disabled`, lighter than the rest border).
- * Primary hover binds `component.button.bgHover`.
+ * Primary hover binds `component.button.bgHover` and pressed binds
+ * `component.button.bgPressed` (a solid fill, wash swapped out like secondary):
+ * the wash on the hover fill sat 1/255 off hover in dark (hds#748).
  *
  * Toggled on (`pressed`, hds#393) is a different state from that momentary
  * wash: `data-pressed="true"` fills with `role.accent` and its foreground,
@@ -65,7 +67,7 @@ const buttonVariants = /* @__PURE__ */ cva(
     variants: {
       variant: {
         primary:
-          'bg-primary text-primary-foreground hover:bg-[color:var(--component-button-bgHover)]',
+          'bg-primary text-primary-foreground hover:bg-[color:var(--component-button-bgHover)] active:bg-[color:var(--component-button-bgPressed)] active:inset-shadow-transparent',
         secondary:
           'border border-input bg-background text-foreground hover:bg-accent hover:border-ring active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent disabled:border-[color:var(--component-button-secondary-border-disabled)]',
         tertiary: 'text-foreground hover:bg-accent',

@@ -512,6 +512,7 @@ export const tokens = {
     button: {
       bg: "var(--component-button-bg)",
       bgHover: "var(--component-button-bgHover)",
+      bgPressed: "var(--component-button-bgPressed)",
       text: "var(--component-button-text)",
       radius: "var(--component-button-radius)",
       paddingX: "var(--component-button-paddingX)",

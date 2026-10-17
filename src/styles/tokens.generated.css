@@ -453,6 +453,7 @@
   --component-badge-paddingX: var(--primitive-space-px6);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
+  --component-button-bgPressed: var(--semantic-accent-pressed);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-radius: var(--semantic-radius-action);
   --component-button-paddingX: var(--primitive-space-4);
@@ -570,8 +571,8 @@
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-950);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-white);
   --semantic-accent-rest: var(--primitive-color-graphite-200);
-  --semantic-accent-hover: var(--primitive-color-graphite-300);
-  --semantic-accent-pressed: var(--primitive-color-graphite-400);
+  --semantic-accent-hover: var(--primitive-color-graphite-100);
+  --semantic-accent-pressed: var(--primitive-color-graphite-50);
   --semantic-accent-inactive: var(--primitive-color-neutral-600);
   --semantic-accent-disabled: var(--primitive-color-neutral-700);
   --semantic-accent-content: var(--primitive-color-graphite-300);
@@ -610,6 +611,7 @@
   --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
+  --component-button-bgPressed: var(--semantic-accent-pressed);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);

@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-15T05:54:59.010Z",
+  "generated": "2026-10-16T12:25:29.308Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -3728,6 +3728,7 @@
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/state-delta.test.tsx",
         "src/app/components/state-tokens.test.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
@@ -12774,24 +12775,24 @@
         "path": "semantic.accent.hover",
         "cssVar": "--semantic-accent-hover",
         "type": "color",
-        "description": "Accent fill on pointer hover.",
+        "description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.800}",
         "resolvedValue": "#352e32",
         "dark": {
-          "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#b2abae"
+          "alias": "{primitive.color.graphite.100}",
+          "resolvedValue": "#e9e7e8"
         }
       },
       {
         "path": "semantic.accent.pressed",
         "cssVar": "--semantic-accent-pressed",
         "type": "color",
-        "description": "Accent fill during active press.",
+        "description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.900}",
         "resolvedValue": "#2a2428",
         "dark": {
-          "alias": "{primitive.color.graphite.400}",
-          "resolvedValue": "#8b8488"
+          "alias": "{primitive.color.graphite.50}",
+          "resolvedValue": "#f5f4f4"
         }
       },
       {
@@ -13444,6 +13445,14 @@
         "description": "Primary button hover fill.",
         "alias": "{semantic.accent.hover}",
         "resolvedValue": "#352e32"
+      },
+      {
+        "path": "component.button.bgPressed",
+        "cssVar": "--component-button-bgPressed",
+        "type": "color",
+        "description": "Primary button pressed fill (hds#748).",
+        "alias": "{semantic.accent.pressed}",
+        "resolvedValue": "#2a2428"
       },
       {
         "path": "component.button.text",

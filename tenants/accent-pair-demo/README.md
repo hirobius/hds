@@ -34,9 +34,9 @@ so the neutral `onAccent` text stays correct in both (no `onAccent` override).
 
 Text on the fill clears AA in both modes (`tests/primitive-contracts/tenant-contrast.contract.test.ts`).
 The `role.*` entries (`primary`, `ring`, `accent`, `accent-foreground`) and the `component.*`
-entries (Button `bg`, `bgHover` and the secondary hover and pressed colours, Tag's three active
+entries (Button `bg`, `bgHover`, `bgPressed` and the secondary hover and pressed colours, Tag's three active
 colours, nav's two active colours) re-declare those aliases on the tenant element with the same
-alias as base. Without them Button's fill and hover, the focus ring, an active Tag and the
+alias as base. Without them Button's fill, hover and press, the focus ring, an active Tag and the
 active nav item stay on the default accent in light mode wherever `data-brand` is set below
 `<html>`, which is where the explorations harness sets it (Gaps 4).
 
@@ -100,7 +100,7 @@ subtle, content, on}` with Light and Dark modes, base values that alias an exist
 4. **Alias tokens are declared on `:root` (bug).** An override of `semantic.color.surface.accent`
    on a `[data-brand]` element below `<html>` does not reach `--role-primary`, `--role-ring` or
    `--component-button-bgHover` in light mode, so Button keeps the default accent. This tenant
-   re-declares all 14 `role.*` and `component.*` aliases of what it overrides (a test checks none
+   re-declares all 15 `role.*` and `component.*` aliases of what it overrides (a test checks none
    is missing); `accent-lilac` does not, and shows the default accent on its Buttons, Tags and nav
    in a nested light scope. The generator should re-anchor every alias of an overridden token, as
    it already does for `$deprecated` ones (hds#206).
