@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Callout, Alert, Popover, Menu, the Select listbox, Toast and CodeBlock now have the Card corner radius (12px by default, was 8px) and a light/dark switch no longer fades, so re-take screenshots; if you passed a rounded-md className to round one of these to 8px, drop it."
+}

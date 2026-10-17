@@ -445,12 +445,12 @@ describe('Overflow (item 15) and shape (item 16)', () => {
     expect(screen.getByText('b').className).toMatch(/max-w-full/);
     expect(screen.getByText('t').className).toMatch(/max-w-full/);
   });
-  it('Alert and Callout share padding and the action radius (rounded-md follows role.radius)', () => {
+  it('Alert and Callout share padding and the surface radius (rounded-lg, the Card radius, follows role.radius)', () => {
     const a = render(<Alert tone="info">x</Alert>).container.firstElementChild as HTMLElement;
     const c = render(<Callout tone="info">x</Callout>).container.firstElementChild as HTMLElement;
     for (const el of [a, c]) {
       expect(el.className).toMatch(/p-\[var\(--semantic-space-surface-padding\)\]/);
-      expect(el.className).toMatch(/\brounded-md\b/);
+      expect(el.className).toMatch(/\brounded-lg\b/);
       expect(el.className).not.toMatch(/primitive-radius-4/);
     }
   });

@@ -141,6 +141,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
           className={cn(
             // h-10 is the one md control height shared with Input, Combobox and Button;
             // the trigger had py-2 and rendered 38px (hds#522). bg-background matches Input.
+            // radius-ok: the trigger is a control (action radius); the listbox panel is the surface
             'hds-focus group flex h-10 w-full items-center justify-between gap-2 rounded-md border px-3 hds-type-ui',
             'bg-background text-foreground transition-colors',
             // aria-invalid (set by FormField or the caller) draws the same red border as Input.
@@ -172,7 +173,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
               maxHeight: 'var(--radix-select-content-available-height)',
             }}
             className={cn(
-              'z-50 overflow-hidden rounded-md border',
+              'z-50 overflow-hidden rounded-lg border',
               'border-border bg-popover text-popover-foreground shadow-md',
             )}
           >
@@ -182,7 +183,8 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
                   key={opt.value}
                   value={opt.value}
                   className={cn(
-                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none',
+                    // radius-ok: nested item, concentric with the panel (rounded-lg minus p-1 = rounded-md)
+                    'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-md px-2 py-1.5 hds-type-ui hds-touch-row outline-none',
                     'text-foreground data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)]',
                     'data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring',
                   )}

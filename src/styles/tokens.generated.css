@@ -372,6 +372,7 @@
   --semantic-accent-subtle: var(--primitive-color-graphite-50);
   --semantic-radius-action: var(--primitive-radius-8);
   --semantic-radius-control: var(--primitive-radius-4);
+  --semantic-radius-surface: var(--primitive-radius-12);
   --semantic-borderWidth-default: var(--primitive-borderWidth-xs);
   --semantic-borderWidth-emphasis: var(--primitive-borderWidth-sm);
   --semantic-shadow-subtle: 0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06);
@@ -494,7 +495,7 @@
   --component-input-paddingY: var(--primitive-space-3);
   --component-card-bg: var(--semantic-color-surface-raised);
   --component-card-border: var(--semantic-color-border-default);
-  --component-card-radius: var(--primitive-radius-12);
+  --component-card-radius: var(--semantic-radius-surface);
   --component-card-padding: var(--primitive-space-6);
   --component-card-gap: var(--semantic-space-scale-sm);
   --component-inlineCode-bg: var(--semantic-color-surface-overlay);

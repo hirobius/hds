@@ -534,6 +534,7 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
           style={{
             height: '4px',
             background: 'var(--semantic-color-border-default)',
+            // radius-ok: nested 4px progress track, not a surface
             borderRadius: hds.borderRadius[2],
             overflow: 'hidden',
           }}
@@ -548,6 +549,7 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
               transform: `scaleX(${pct / 100})`,
               transformOrigin: 'left',
               background: PROGRESS_TONE_FILL[tone],
+              // radius-ok: nested progress fill, concentric with its track
               borderRadius: hds.borderRadius[2],
               transition: `transform ${hds.motion.expressive.duration}s ease-out`,
             }}

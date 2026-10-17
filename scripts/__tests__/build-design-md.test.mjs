@@ -17,7 +17,7 @@ describe('buildRadius', () => {
   it('derives the container tier from the action radius plus 4px', () => {
     const containerRow = buildRadius(raw)
       .split('\n')
-      .find((l) => l.startsWith('| Container'));
+      .find((l) => l.startsWith('| Surface'));
     expect(containerRow).toBeDefined();
     expect(containerRow).toContain('`12px`');
     expect(containerRow).toContain('rounded-lg');
@@ -29,7 +29,7 @@ describe('buildRadius', () => {
     square.semantic.radius.action.$value = '{primitive.radius.4}';
     const containerRow = buildRadius(square)
       .split('\n')
-      .find((l) => l.startsWith('| Container'));
+      .find((l) => l.startsWith('| Surface'));
     expect(containerRow).toContain('`8px`');
   });
 });

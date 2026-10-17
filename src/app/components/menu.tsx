@@ -44,9 +44,10 @@ const MenuSub = MenuPrimitive.Sub;
 const MenuPortal = /* @__PURE__ */ withHdsPortal(MenuPrimitive.Portal);
 
 const SURFACE =
-  'z-50 min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-overlay';
+  'z-50 min-w-32 overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-overlay';
 const ITEM =
-  'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)] data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
+  // radius-ok: nested item, concentric with the panel (rounded-lg minus p-1 = rounded-md)
+  'relative flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-1.5 hds-type-ui hds-touch-row outline-none data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)] data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
 
 // ── Content ────────────────────────────────────────────────────────────────────
 

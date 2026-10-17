@@ -1,6 +1,7 @@
 /**
  * @category Feedback
  * @tier primitive
+ * @ai-rules Keep the surface radius: rounded-lg, the same as Card (DESIGN.md Corner-Radius Policy). Do NOT pass a tighter rounded-* or a raw border-radius through className or style.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-85
  */
 
@@ -24,7 +25,7 @@ type CalloutTone = 'accent' | 'info' | 'success' | 'warning' | 'danger';
 // feedback state, so it takes a neutral muted fill rather than a tinted one.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven padding/radius; var()-based, no Tailwind-theme utility
 const calloutVariants = /* @__PURE__ */ cva(
-  'rounded-md p-[var(--semantic-space-surface-padding)]', // rounded-md = the action radius, as on Alert
+  'rounded-lg p-[var(--semantic-space-surface-padding)]', // the surface radius, the same as Card and Alert
   {
     variants: {
       tone: {

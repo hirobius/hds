@@ -60,31 +60,56 @@ describe('routeToTier', () => {
 
 describe('formatQuote', () => {
   it('includes the scope verbatim in a blockquote', () => {
-    const md = formatQuote({ scope: 'Custom checkout flow', recommendedTier: '3', includesRetainer: false, signals: [] });
+    const md = formatQuote({
+      scope: 'Custom checkout flow',
+      recommendedTier: '3',
+      includesRetainer: false,
+      signals: [],
+    });
     expect(md).toMatch(/Custom checkout flow/);
     expect(md).toMatch(/^>/m); // blockquote marker
   });
 
   it('marks the recommended tier with bold in the table row', () => {
-    const md = formatQuote({ scope: 'X', recommendedTier: '2', includesRetainer: false, signals: ['blog'] });
+    const md = formatQuote({
+      scope: 'X',
+      recommendedTier: '2',
+      includesRetainer: false,
+      signals: ['blog'],
+    });
     expect(md).toMatch(/\*\*Tier 2[^|]*\*\*/);
   });
 
   it('emits a retainer line when includesRetainer=true', () => {
-    const md = formatQuote({ scope: 'X', recommendedTier: '2', includesRetainer: true, signals: [] });
+    const md = formatQuote({
+      scope: 'X',
+      recommendedTier: '2',
+      includesRetainer: true,
+      signals: [],
+    });
     expect(md.toLowerCase()).toMatch(/retainer/);
     expect(md).toMatch(TIERS.retainer.price);
   });
 
   it('lists detected signals when any matched', () => {
-    const md = formatQuote({ scope: 'X', recommendedTier: '3', includesRetainer: false, signals: ['cms', 'seo'] });
+    const md = formatQuote({
+      scope: 'X',
+      recommendedTier: '3',
+      includesRetainer: false,
+      signals: ['cms', 'seo'],
+    });
     expect(md.toLowerCase()).toMatch(/detected signals/);
     expect(md).toMatch(/cms/i);
     expect(md).toMatch(/seo/i);
   });
 
   it('omits the signals section when no signals matched (default-tier case)', () => {
-    const md = formatQuote({ scope: 'X', recommendedTier: '2', includesRetainer: false, signals: [] });
+    const md = formatQuote({
+      scope: 'X',
+      recommendedTier: '2',
+      includesRetainer: false,
+      signals: [],
+    });
     expect(md.toLowerCase()).not.toMatch(/detected signals/);
   });
 });

@@ -34,6 +34,11 @@
 
 import * as React from 'react';
 
+import { suppressThemeTransitions } from './theme-switch';
+
+const useIsomorphicLayoutEffect =
+  typeof window === 'undefined' ? React.useEffect : React.useLayoutEffect;
+
 /** @public */
 export type HdsTheme = 'light' | 'dark';
 /** @public */
@@ -109,6 +114,14 @@ export function HdsThemeProvider({
   // State-backed callback ref: the context value is an element once mounted, so
   // consumers re-render with it instead of reading a stale `null` from a ref object.
   const [scope, setScope] = React.useState<HTMLElement | null>(null);
+
+  // A theme change after mount swaps every colour at once, with no fade.
+  const prevTheme = React.useRef(theme);
+  useIsomorphicLayoutEffect(() => {
+    if (prevTheme.current === theme) return;
+    prevTheme.current = theme;
+    if (scope) suppressThemeTransitions(scope);
+  }, [theme, scope]);
 
   const fontVars: React.CSSProperties = {};
   if (fontFamily) (fontVars as Record<string, string>)['--hds-font-family'] = fontFamily;

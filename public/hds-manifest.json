@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-15T05:54:59.010Z",
+  "generated": "2026-10-17T03:01:51.429Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -419,7 +419,8 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/text.tsx",
         "src/app/components/timeline.tsx",
-        "src/app/components/toast.tsx"
+        "src/app/components/toast.tsx",
+        "src/app/design-system/generated-token-descriptions.ts"
       ],
       "tokenMapping": {
         "Success accent": "semantic.color.feedback.success",
@@ -562,6 +563,7 @@
           }
         ]
       },
+      "aiRules": "Keep the surface radius: rounded-lg, the same as Card (DESIGN.md Corner-Radius Policy). Do NOT pass a tighter rounded-* or a raw border-radius through className or style.",
       "core": true
     },
     "CodeBlock": {
@@ -578,7 +580,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/code-block.test.tsx"
+        "src/app/components/code-block.test.tsx",
+        "src/app/design-system/generated-token-descriptions.ts"
       ],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
@@ -2918,9 +2921,11 @@
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
+        "src/app/components/alert.tsx",
         "src/app/components/board.tsx",
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
+        "src/app/components/callout.tsx",
         "src/app/components/card-progress.test.tsx",
         "src/app/components/card-row.test.tsx",
         "src/app/components/card.test.tsx",
@@ -3398,6 +3403,7 @@
         "src/app/components/toast.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
+        "src/app/design-system/generated-token-descriptions.ts",
         "src/styles/__tests__/scrim-and-color-scheme.test.ts"
       ],
       "tokenMapping": {},
@@ -4003,7 +4009,8 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/destructive-section.test.tsx",
-        "src/app/components/destructive-section.tsx"
+        "src/app/components/destructive-section.tsx",
+        "src/app/design-system/generated-token-descriptions.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4050,7 +4057,8 @@
           "required": false
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "aiRules": "Keep the surface radius: rounded-lg, the same as Card (DESIGN.md Corner-Radius Policy). Do NOT pass a tighter rounded-* or a raw border-radius through className or style."
     },
     "EmptyState": {
       "category": "Display",
@@ -6819,6 +6827,7 @@
         "src/app/context/__tests__/context.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
         "src/app/context/__tests__/portal-scope.test.tsx",
+        "src/app/context/__tests__/theme-switch.test.tsx",
         "src/app/context/hds-portal.tsx",
         "src/app/context/RouterContext.tsx",
         "src/index.ts"
@@ -8581,7 +8590,8 @@
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx"
+        "src/app/context/__tests__/portal-scope.test.tsx",
+        "src/app/design-system/generated-token-descriptions.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -12872,6 +12882,14 @@
         "resolvedValue": "4px"
       },
       {
+        "path": "semantic.radius.surface",
+        "cssVar": "--semantic-radius-surface",
+        "type": "dimension",
+        "description": "Corner radius for surfaces (Card, Callout, Alert, Dialog, Popover, Menu, Toast, CodeBlock): one step above semantic.radius.action. Components render it as Tailwind rounded-lg (role.radius + 4px) so a tenant's shape knob reaches it; scripts/check-surface-radius.mjs gates it.",
+        "alias": "{primitive.radius.12}",
+        "resolvedValue": "12px"
+      },
+      {
         "path": "semantic.borderWidth.default",
         "cssVar": "--semantic-borderWidth-default",
         "type": "dimension",
@@ -13769,7 +13787,7 @@
         "path": "component.card.radius",
         "cssVar": "--component-card-radius",
         "type": "dimension",
-        "alias": "{primitive.radius.12}",
+        "alias": "{semantic.radius.surface}",
         "resolvedValue": "12px"
       },
       {

@@ -3,21 +3,20 @@
 @import './xray.css';
 @import './scroll-motion.css';
 
-/* Smooth theme switching — scoped to the HDS subtree (:where keeps zero
- * specificity) so toggling theme never animates a host app's own elements.
- * The docs site carries data-hds on <html>, so this still covers the whole
- * page. See docs/adr/016-scoped-base-styles.md. */
-:where([data-hds]) *,
-:where([data-hds]) *::before,
-:where([data-hds]) *::after {
-  transition:
-    background-color 0.3s ease-out,
-    color 0.3s ease-out,
-    border-color 0.3s ease-out,
-    fill 0.3s ease-out,
-    stroke 0.3s ease-out;
+/* Theme switches are instant. There is no universal colour transition, and
+ * ThemeProvider / HdsThemeProvider set data-theme-switching on the theme root
+ * for the frame a light/dark swap paints in, so an element's own colour
+ * transition (transition-colors, a hover fade) does not fade the swap either
+ * (src/app/context/theme-switch.ts). */
+[data-theme-switching],
+[data-theme-switching] *,
+[data-theme-switching] *::before,
+[data-theme-switching] *::after {
+  transition: none !important;
 }
 
+/* Reduced motion: no transitions anywhere in the HDS subtree (:where keeps zero
+ * specificity, so a host app's own elements are untouched; ADR-016). */
 @media (prefers-reduced-motion: reduce) {
   :where([data-hds]) *,
   :where([data-hds]) *::before,

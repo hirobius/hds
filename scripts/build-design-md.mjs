@@ -15,7 +15,7 @@
  *   colors       — primary + feedback + neutral role summary
  *   typography   — family, weights, type ramp roles
  *   spacing      — base + scale summary
- *   radius       — action / container / full usage table
+ *   radius       — control / action / surface / full usage table
  *   motion       — duration tiers + easing intents
  *   components   — ~8 visual atoms with radius + states + token refs
  *   build-meta   — generation timestamp + source files
@@ -250,7 +250,7 @@ export function buildSpacing(raw) {
 }
 
 /**
- * Radius — tiered usage table. Derives the action/container values from
+ * Radius — tiered usage table. Derives the control/action/surface values from
  * live tokens so the rule narrative in the template stays accurate.
  */
 export function buildRadius(raw) {
@@ -259,21 +259,31 @@ export function buildRadius(raw) {
   const full = resolveRef(raw.primitive?.radius?.full?.$value ?? '9999px', raw);
   const zero = resolveRef(raw.primitive?.radius?.[0]?.$value ?? '0px', raw);
 
+  const control = resolveRef(raw.semantic?.radius?.control?.$value ?? '{primitive.radius.4}', raw);
+
   const lines = [header('Tier', 'Value', 'Token', 'Applies to')];
   lines.push(
     row(
-      'Action',
-      `\`${action}\``,
-      '`semantic.radius.action`',
-      'Buttons, inputs, badges, alerts, disclosures, segmented control items',
+      'Control',
+      `\`${control}\``,
+      '`semantic.radius.control`',
+      'Small glyphs and nested chrome: checkbox box, Kbd, tooltip, a close button',
     ),
   );
   lines.push(
     row(
-      'Container',
+      'Action',
+      `\`${action}\``,
+      '`semantic.radius.action` (`rounded-md`)',
+      'Buttons, inputs, select trigger, badges, disclosures, segmented control items',
+    ),
+  );
+  lines.push(
+    row(
+      'Surface',
       `\`${container}\``,
-      '`role.radius` + 4px (`rounded-lg`)',
-      'Cards, surfaces, segmented control surface, modal/sheet containers',
+      '`semantic.radius.surface`: `role.radius` + 4px (`rounded-lg`)',
+      'Card, Surface, Callout, Alert, Dialog, Popover, Menu, listboxes, Toast, CodeBlock, segmented control surface',
     ),
   );
   lines.push(

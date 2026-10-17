@@ -354,6 +354,7 @@ declare module 'react' {
     '--semantic-accent-subtle'?: string | undefined;
     '--semantic-radius-action'?: string | undefined;
     '--semantic-radius-control'?: string | undefined;
+    '--semantic-radius-surface'?: string | undefined;
     '--semantic-borderWidth-default'?: string | undefined;
     '--semantic-borderWidth-emphasis'?: string | undefined;
     '--semantic-shadow-subtle'?: string | undefined;
