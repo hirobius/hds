@@ -1,1 +1,1 @@
-Added hds/no-custom-tracking ESLint rule and check-no-custom-tracking CSS gate; removed .tracking-wider/.tracking-widest (hds#756).
+no-custom-tracking: replaced the variant-prefix regex with a linear scan (CodeQL polynomial-regex alert).
