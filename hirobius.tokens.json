@@ -167,8 +167,8 @@
           "$description": "Graphite accent — very light warm tint."
         },
         "200": {
-          "$value": "#d4d0d2",
-          "$description": "Graphite accent — light warm-grey; dark-mode rest accent fill."
+          "$value": "#cbc6c9",
+          "$description": "Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill."
         },
         "300": {
           "$value": "#b2abae",
@@ -187,8 +187,8 @@
           "$description": "Graphite accent — mid-dark step."
         },
         "700": {
-          "$value": "#433a3f",
-          "$description": "Graphite accent rest — the warm charcoal brand accent; white text as a fill (AA)."
+          "$value": "#4a4146",
+          "$description": "Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA)."
         },
         "800": {
           "$value": "#352e32",
@@ -203,6 +203,78 @@
           "$description": "Graphite accent — near-black warm substrate."
         },
         "$description": "Graphite, the warm-charcoal brand accent scale. Feedback colors keep their own scales."
+      },
+      "cobalt": {
+        "50": {
+          "$value": "#eef0fe",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — faintest step; selected and subtle accent background."
+        },
+        "100": {
+          "$value": "#dce1fd",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 100."
+        },
+        "200": {
+          "$value": "#b4bbf4",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 200."
+        },
+        "300": {
+          "$value": "#8a97f8",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.86:1 on black)."
+        },
+        "400": {
+          "$value": "#5b71fa",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 400."
+        },
+        "500": {
+          "$value": "#2a5bf8",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 500."
+        },
+        "600": {
+          "$value": "#112de8",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode accent fill and accent text (white text 8.19:1)."
+        },
+        "700": {
+          "$value": "#1f17c4",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode hover and pressed accent fill."
+        },
+        "800": {
+          "$value": "#191c7d",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 800."
+        },
+        "900": {
+          "$value": "#0b0658",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — darkest step; dark-mode subtle accent background."
+        }
+      },
+      "lime": {
+        "50": {
+          "$value": "#f2fbd6",
+          "$description": "Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus."
+        },
+        "100": {
+          "$value": "#e3f6a8",
+          "$description": "Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus."
+        },
+        "200": {
+          "$value": "#cdee6a",
+          "$description": "Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus."
+        },
+        "300": {
+          "$value": "#b8e62e",
+          "$description": "Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus."
+        },
+        "400": {
+          "$value": "#93ba1c",
+          "$description": "Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus."
+        },
+        "600": {
+          "$value": "#6e8f0b",
+          "$description": "Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus."
+        },
+        "800": {
+          "$value": "#445807",
+          "$description": "Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus."
+        }
       },
       "mauve": {
         "50": {
@@ -2075,6 +2147,56 @@
             "modes": {
               "Light": "{primitive.color.graphite.50}",
               "Dark": "{primitive.color.graphite.800}"
+            }
+          }
+        }
+      },
+      "delight": {
+        "base": {
+          "$value": "{primitive.color.lime.300}",
+          "$description": "Delight accent fill (lime) for delight moments only: a streak or win badge, a \"new\" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.lime.300}",
+                "Dark": "{primitive.color.lime.300}"
+              }
+            }
+          }
+        },
+        "deep": {
+          "$value": "{primitive.color.lime.600}",
+          "$description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.lime.600}",
+                "Dark": "{primitive.color.lime.600}"
+              }
+            }
+          }
+        },
+        "pale": {
+          "$value": "{primitive.color.lime.50}",
+          "$description": "Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.lime.50}",
+                "Dark": "{primitive.color.lime.50}"
+              }
+            }
+          }
+        },
+        "onDelight": {
+          "$value": "{primitive.color.neutral.900}",
+          "$description": "Ink text and icons on any delight fill, in both modes (12.95:1 on delight.base). Never white.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.900}",
+                "Dark": "{primitive.color.neutral.900}"
+              }
             }
           }
         }

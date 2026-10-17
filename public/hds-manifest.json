@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-15T05:54:59.010Z",
+  "generated": "2026-10-17T08:18:53.687Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -28,7 +28,7 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#433a3f",
+    "primaryColor": "#4a4146",
     "primaryColorToken": "semantic.accent.rest",
     "font": "Plus Jakarta Sans variable 100–900, self-hosted",
     "spacingBase": "4px",
@@ -10790,8 +10790,8 @@
         "path": "primitive.color.graphite.200",
         "cssVar": "--primitive-color-graphite-200",
         "type": "color",
-        "description": "Graphite accent — light warm-grey; dark-mode rest accent fill.",
-        "value": "#d4d0d2"
+        "description": "Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill.",
+        "value": "#cbc6c9"
       },
       {
         "path": "primitive.color.graphite.300",
@@ -10825,8 +10825,8 @@
         "path": "primitive.color.graphite.700",
         "cssVar": "--primitive-color-graphite-700",
         "type": "color",
-        "description": "Graphite accent rest — the warm charcoal brand accent; white text as a fill (AA).",
-        "value": "#433a3f"
+        "description": "Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA).",
+        "value": "#4a4146"
       },
       {
         "path": "primitive.color.graphite.800",
@@ -10848,6 +10848,125 @@
         "type": "color",
         "description": "Graphite accent — near-black warm substrate.",
         "value": "#19161a"
+      },
+      {
+        "path": "primitive.color.cobalt.50",
+        "cssVar": "--primitive-color-cobalt-50",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — faintest step; selected and subtle accent background.",
+        "value": "#eef0fe"
+      },
+      {
+        "path": "primitive.color.cobalt.100",
+        "cssVar": "--primitive-color-cobalt-100",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 100.",
+        "value": "#dce1fd"
+      },
+      {
+        "path": "primitive.color.cobalt.200",
+        "cssVar": "--primitive-color-cobalt-200",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 200.",
+        "value": "#b4bbf4"
+      },
+      {
+        "path": "primitive.color.cobalt.300",
+        "cssVar": "--primitive-color-cobalt-300",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.86:1 on black).",
+        "value": "#8a97f8"
+      },
+      {
+        "path": "primitive.color.cobalt.400",
+        "cssVar": "--primitive-color-cobalt-400",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 400.",
+        "value": "#5b71fa"
+      },
+      {
+        "path": "primitive.color.cobalt.500",
+        "cssVar": "--primitive-color-cobalt-500",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 500.",
+        "value": "#2a5bf8"
+      },
+      {
+        "path": "primitive.color.cobalt.600",
+        "cssVar": "--primitive-color-cobalt-600",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode accent fill and accent text (white text 8.19:1).",
+        "value": "#112de8"
+      },
+      {
+        "path": "primitive.color.cobalt.700",
+        "cssVar": "--primitive-color-cobalt-700",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode hover and pressed accent fill.",
+        "value": "#1f17c4"
+      },
+      {
+        "path": "primitive.color.cobalt.800",
+        "cssVar": "--primitive-color-cobalt-800",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 800.",
+        "value": "#191c7d"
+      },
+      {
+        "path": "primitive.color.cobalt.900",
+        "cssVar": "--primitive-color-cobalt-900",
+        "type": "color",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — darkest step; dark-mode subtle accent background.",
+        "value": "#0b0658"
+      },
+      {
+        "path": "primitive.color.lime.50",
+        "cssVar": "--primitive-color-lime-50",
+        "type": "color",
+        "description": "Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.",
+        "value": "#f2fbd6"
+      },
+      {
+        "path": "primitive.color.lime.100",
+        "cssVar": "--primitive-color-lime-100",
+        "type": "color",
+        "description": "Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.",
+        "value": "#e3f6a8"
+      },
+      {
+        "path": "primitive.color.lime.200",
+        "cssVar": "--primitive-color-lime-200",
+        "type": "color",
+        "description": "Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.",
+        "value": "#cdee6a"
+      },
+      {
+        "path": "primitive.color.lime.300",
+        "cssVar": "--primitive-color-lime-300",
+        "type": "color",
+        "description": "Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.",
+        "value": "#b8e62e"
+      },
+      {
+        "path": "primitive.color.lime.400",
+        "cssVar": "--primitive-color-lime-400",
+        "type": "color",
+        "description": "Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.",
+        "value": "#93ba1c"
+      },
+      {
+        "path": "primitive.color.lime.600",
+        "cssVar": "--primitive-color-lime-600",
+        "type": "color",
+        "description": "Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus.",
+        "value": "#6e8f0b"
+      },
+      {
+        "path": "primitive.color.lime.800",
+        "cssVar": "--primitive-color-lime-800",
+        "type": "color",
+        "description": "Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.",
+        "value": "#445807"
       },
       {
         "path": "primitive.color.mauve.50",
@@ -11890,10 +12009,10 @@
         "type": "color",
         "description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#433a3f",
+        "resolvedValue": "#4a4146",
         "dark": {
           "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#d4d0d2"
+          "resolvedValue": "#cbc6c9"
         }
       },
       {
@@ -12030,7 +12149,7 @@
         "type": "color",
         "description": "Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#433a3f",
+        "resolvedValue": "#4a4146",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
           "resolvedValue": "#b2abae"
@@ -12148,7 +12267,7 @@
         "type": "color",
         "description": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#433a3f",
+        "resolvedValue": "#4a4146",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
           "resolvedValue": "#b2abae"
@@ -12764,10 +12883,10 @@
         "type": "color",
         "description": "Default accent fill for interactive elements at rest — warm graphite. Inverts per theme; pair with content.onAccent.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#433a3f",
+        "resolvedValue": "#4a4146",
         "dark": {
           "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#d4d0d2"
+          "resolvedValue": "#cbc6c9"
         }
       },
       {
@@ -12824,7 +12943,7 @@
         "type": "color",
         "description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#433a3f",
+        "resolvedValue": "#4a4146",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
           "resolvedValue": "#b2abae"
@@ -12839,7 +12958,7 @@
         "resolvedValue": "#352e32",
         "dark": {
           "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#d4d0d2"
+          "resolvedValue": "#cbc6c9"
         }
       },
       {
@@ -12852,6 +12971,54 @@
         "dark": {
           "alias": "{primitive.color.graphite.800}",
           "resolvedValue": "#352e32"
+        }
+      },
+      {
+        "path": "semantic.accent.delight.base",
+        "cssVar": "--semantic-accent-delight-base",
+        "type": "color",
+        "description": "Delight accent fill (lime) for delight moments only: a streak or win badge, a \"new\" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes.",
+        "alias": "{primitive.color.lime.300}",
+        "resolvedValue": "#b8e62e",
+        "dark": {
+          "alias": "{primitive.color.lime.300}",
+          "resolvedValue": "#b8e62e"
+        }
+      },
+      {
+        "path": "semantic.accent.delight.deep",
+        "cssVar": "--semantic-accent-delight-deep",
+        "type": "color",
+        "description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.",
+        "alias": "{primitive.color.lime.600}",
+        "resolvedValue": "#6e8f0b",
+        "dark": {
+          "alias": "{primitive.color.lime.600}",
+          "resolvedValue": "#6e8f0b"
+        }
+      },
+      {
+        "path": "semantic.accent.delight.pale",
+        "cssVar": "--semantic-accent-delight-pale",
+        "type": "color",
+        "description": "Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.",
+        "alias": "{primitive.color.lime.50}",
+        "resolvedValue": "#f2fbd6",
+        "dark": {
+          "alias": "{primitive.color.lime.50}",
+          "resolvedValue": "#f2fbd6"
+        }
+      },
+      {
+        "path": "semantic.accent.delight.onDelight",
+        "cssVar": "--semantic-accent-delight-onDelight",
+        "type": "color",
+        "description": "Ink text and icons on any delight fill, in both modes (12.95:1 on delight.base). Never white.",
+        "alias": "{primitive.color.neutral.900}",
+        "resolvedValue": "#111111",
+        "dark": {
+          "alias": "{primitive.color.neutral.900}",
+          "resolvedValue": "#111111"
         }
       },
       {
@@ -13095,7 +13262,7 @@
         "type": "color",
         "description": "Nav item border color when active or selected.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#433a3f"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.nav.text",
@@ -13239,7 +13406,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#433a3f"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.tag.activeBorder",
@@ -13247,7 +13414,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#433a3f"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.tag.activeHover",
@@ -13435,7 +13602,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#433a3f"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.button.bgHover",
@@ -13675,7 +13842,7 @@
         "type": "color",
         "description": "Secondary button hover border.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#433a3f"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.button.secondary.border.pressed",
@@ -13683,7 +13850,7 @@
         "type": "color",
         "description": "Secondary button pressed border (the hover border still applies while pressed).",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#433a3f"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.button.secondary.border.disabled",
@@ -13873,7 +14040,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#433a3f"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "role.primary-foreground",
@@ -13929,7 +14096,7 @@
         "type": "color",
         "description": "Text on accent surface. shadcn role: accent-foreground.",
         "alias": "{semantic.color.content.accent}",
-        "resolvedValue": "#433a3f"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "role.destructive",
@@ -13969,7 +14136,7 @@
         "type": "color",
         "description": "Focus ring color. shadcn role: ring.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#433a3f"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "role.radius",

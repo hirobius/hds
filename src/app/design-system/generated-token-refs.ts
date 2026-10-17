@@ -70,6 +70,27 @@ export const tokenRefs = {
         "900": "var(--primitive-color-graphite-900)",
         "950": "var(--primitive-color-graphite-950)"
       },
+      cobalt: {
+        "50": "var(--primitive-color-cobalt-50)",
+        "100": "var(--primitive-color-cobalt-100)",
+        "200": "var(--primitive-color-cobalt-200)",
+        "300": "var(--primitive-color-cobalt-300)",
+        "400": "var(--primitive-color-cobalt-400)",
+        "500": "var(--primitive-color-cobalt-500)",
+        "600": "var(--primitive-color-cobalt-600)",
+        "700": "var(--primitive-color-cobalt-700)",
+        "800": "var(--primitive-color-cobalt-800)",
+        "900": "var(--primitive-color-cobalt-900)"
+      },
+      lime: {
+        "50": "var(--primitive-color-lime-50)",
+        "100": "var(--primitive-color-lime-100)",
+        "200": "var(--primitive-color-lime-200)",
+        "300": "var(--primitive-color-lime-300)",
+        "400": "var(--primitive-color-lime-400)",
+        "600": "var(--primitive-color-lime-600)",
+        "800": "var(--primitive-color-lime-800)"
+      },
       mauve: {
         "50": "var(--primitive-color-mauve-50)",
         "100": "var(--primitive-color-mauve-100)",
@@ -512,7 +533,13 @@ export const tokenRefs = {
       disabled: "var(--semantic-accent-disabled)",
       content: "var(--semantic-accent-content)",
       contentHover: "var(--semantic-accent-contentHover)",
-      subtle: "var(--semantic-accent-subtle)"
+      subtle: "var(--semantic-accent-subtle)",
+      delight: {
+        base: "var(--semantic-accent-delight-base)",
+        deep: "var(--semantic-accent-delight-deep)",
+        pale: "var(--semantic-accent-delight-pale)",
+        onDelight: "var(--semantic-accent-delight-onDelight)"
+      }
     },
     radius: {
       action: "var(--semantic-radius-action)",
