@@ -77,3 +77,4 @@ the bundle budget) predates this folder; see ADR-009.
 | [060](060-typeface-delivery-and-licensing.md) | Typefaces: how fonts ship, and only what the license allows | Accepted | 2026-10-10 | yes |
 | [061](061-code-wins-component-token-binding.md) | When a component token and the rendered component disagree, code wins | Accepted | 2026-10-11 | yes |
 | [062](062-state-is-derived.md) | Project state is derived, and every state surface is registered | Accepted | 2026-10-12 | yes |
+| [063](063-no-client-names-in-public-repo.md) | Keep client names out of the public repo | Accepted | 2026-09-29 | yes |
