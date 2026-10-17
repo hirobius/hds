@@ -55,6 +55,7 @@ export default [
     files: ['**/*.{ts,tsx,jsx}'],
     plugins: { hds },
     rules: {
+      'hds/no-deprecated-token': 'error',
       'hds/no-primitive-spacing': 'error',
       'hds/no-raw-controls': 'error',
       'hds/no-raw-hex': 'error',
@@ -70,6 +71,7 @@ export default [
 
 | Rule                                                                 | Default | What it catches                                                                                        |
 | -------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
+| [`hds/no-deprecated-token`](#hdsno-deprecated-token)                 | error   | A `$deprecated` token as a CSS var, `hds.*` member or Tailwind key; the message names the replacement. |
 | [`hds/no-primitive-spacing`](#hdsno-primitive-spacing)               | error   | Primitive spacing steps (`--primitive-space-*`, `hds.space.pxN`, Tailwind `p-4`); use semantic tokens. |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
 | [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                    |
@@ -77,6 +79,23 @@ export default [
 | [`hds/no-status-clutter`](#hdsno-status-clutter)                     | error   | `<Badge dot>` and a coloured left-border accent bar (`border-l-2`..`8` plus a tone colour).            |
 | [`hds/prefer-hds-layout-primitive`](#hdsprefer-hds-layout-primitive) | warn    | Ad-hoc `display: 'flex' \| 'grid'` in `style={{…}}` where a named primitive (Stack/Grid) likely fits.  |
 | [`hds/sx-token-first`](#hdssx-token-first)                           | error   | Raw hex/px string values inside a `Box` `sx={{…}}` prop — `sx` must resolve through token keys.        |
+
+### `hds/no-deprecated-token`
+
+Fails any token marked `$deprecated` in `hirobius.tokens.json`, in three
+spellings: a CSS var (`var(--semantic-space-layout-tight)`), a member chain
+(`hds.semantic.space.layout.tight`) and a Tailwind key in `className` /
+`cn()` (`p-layout-tight`). The message quotes the deprecation note, the
+version it leaves in and the replacement:
+
+```
+"--semantic-space-layout-tight" is a deprecated token (hds#206 — use semantic.space.scale.sm),
+removed in 1.0.0. Use --semantic-space-scale-sm.
+```
+
+The list is `rules/deprecated-tokens.json`, which the token build writes, so a
+newly deprecated token fails with no rule change. `primitive.space.px6` /
+`px10` are left to `hds/no-primitive-spacing`.
 
 ### `hds/no-primitive-spacing`
 

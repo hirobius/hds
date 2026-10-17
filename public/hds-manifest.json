@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-17T05:56:08.856Z",
+  "generated": "2026-10-17T09:05:41.071Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11242,14 +11242,14 @@
         "path": "primitive.space.px6",
         "cssVar": "--primitive-space-px6",
         "type": "dimension",
-        "description": "6px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.2 or a semantic token.",
+        "description": "6px, off the 4px grid. Deprecated, removed in 0.28.0: use semantic.space.scale.xs.",
         "value": "6px"
       },
       {
         "path": "primitive.space.px10",
         "cssVar": "--primitive-space-px10",
         "type": "dimension",
-        "description": "10px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.3 or a semantic token.",
+        "description": "10px, off the 4px grid. Deprecated, removed in 0.28.0: use semantic.space.fixed.xs.",
         "value": "10px"
       },
       {
@@ -11295,6 +11295,18 @@
         "cssVar": "--primitive-radius-12",
         "type": "dimension",
         "value": "12px"
+      },
+      {
+        "path": "primitive.radius.16",
+        "cssVar": "--primitive-radius-16",
+        "type": "dimension",
+        "value": "16px"
+      },
+      {
+        "path": "primitive.radius.24",
+        "cssVar": "--primitive-radius-24",
+        "type": "dimension",
+        "value": "24px"
       },
       {
         "path": "primitive.radius.full",
@@ -12343,6 +12355,54 @@
         "resolvedValue": "64px"
       },
       {
+        "path": "semantic.space.fixed.2xs",
+        "cssVar": "--semantic-space-fixed-2xs",
+        "type": "dimension",
+        "description": "4px: hairline gaps inside a control (icon to its badge, stacked meta lines).",
+        "alias": "{primitive.space.1}",
+        "resolvedValue": "4px"
+      },
+      {
+        "path": "semantic.space.fixed.xs",
+        "cssVar": "--semantic-space-fixed-xs",
+        "type": "dimension",
+        "description": "12px: adjacent form fields and medium gaps inside a component.",
+        "alias": "{primitive.space.3}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "semantic.space.fixed.sm",
+        "cssVar": "--semantic-space-fixed-sm",
+        "type": "dimension",
+        "description": "16px: list-item padding and toolbar gaps that must not move with density.",
+        "alias": "{primitive.space.4}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "semantic.space.fixed.md",
+        "cssVar": "--semantic-space-fixed-md",
+        "type": "dimension",
+        "description": "24px: panel padding and grouped-field gaps that must not move with density.",
+        "alias": "{primitive.space.6}",
+        "resolvedValue": "24px"
+      },
+      {
+        "path": "semantic.space.fixed.lg",
+        "cssVar": "--semantic-space-fixed-lg",
+        "type": "dimension",
+        "description": "32px: gap between grouped blocks that must not move with density.",
+        "alias": "{primitive.space.8}",
+        "resolvedValue": "32px"
+      },
+      {
+        "path": "semantic.space.fixed.xl",
+        "cssVar": "--semantic-space-fixed-xl",
+        "type": "dimension",
+        "description": "48px: gap between page bands that must not move with density.",
+        "alias": "{primitive.space.12}",
+        "resolvedValue": "48px"
+      },
+      {
         "path": "semantic.space.surface.padding",
         "cssVar": "--semantic-space-surface-padding",
         "type": "dimension",
@@ -12871,6 +12931,46 @@
         "description": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242).",
         "alias": "{primitive.radius.4}",
         "resolvedValue": "4px"
+      },
+      {
+        "path": "semantic.radius.scale.sm",
+        "cssVar": "--semantic-radius-scale-sm",
+        "type": "dimension",
+        "description": "8px: chips, menu items and small surfaces.",
+        "alias": "{primitive.radius.8}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.radius.scale.md",
+        "cssVar": "--semantic-radius-scale-md",
+        "type": "dimension",
+        "description": "12px: cards, popovers and panels.",
+        "alias": "{primitive.radius.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "semantic.radius.scale.lg",
+        "cssVar": "--semantic-radius-scale-lg",
+        "type": "dimension",
+        "description": "16px: dialogs, sheets and large media frames.",
+        "alias": "{primitive.radius.16}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "semantic.radius.scale.xl",
+        "cssVar": "--semantic-radius-scale-xl",
+        "type": "dimension",
+        "description": "24px: hero media and feature panels.",
+        "alias": "{primitive.radius.24}",
+        "resolvedValue": "24px"
+      },
+      {
+        "path": "semantic.radius.scale.pill",
+        "cssVar": "--semantic-radius-scale-pill",
+        "type": "dimension",
+        "description": "Fully round ends: pills, tags and avatar chips.",
+        "alias": "{primitive.radius.full}",
+        "resolvedValue": "9999px"
       },
       {
         "path": "semantic.borderWidth.default",

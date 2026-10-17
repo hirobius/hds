@@ -144,15 +144,20 @@ function dimensionSteps(tokens: Json, path: string, sort: boolean): DimensionSte
   return sort ? steps.sort((a, b) => a.px - b.px) : steps;
 }
 
-/** Spacing: the semantic t-shirt scale, then every primitive step by size. */
+/** Spacing: the semantic t-shirt scale, the fixed steps between it, then every primitive step by size. */
 export const spaceScales = (tokens: Json) => [
   { title: 'Scale', steps: dimensionSteps(tokens, 'semantic.space.scale', false) },
+  { title: 'Fixed', steps: dimensionSteps(tokens, 'semantic.space.fixed', false) },
   { title: 'Primitive steps', steps: dimensionSteps(tokens, 'primitive.space', true) },
 ];
 
-/** Radius: the semantic roles, then the primitive steps by size. */
+/** Radius: the semantic roles, the fixed scale, then the primitive steps by size. */
 export const radiusScales = (tokens: Json) => [
-  { title: 'Roles', steps: dimensionSteps(tokens, 'semantic.radius', false) },
+  {
+    title: 'Roles',
+    steps: dimensionSteps(tokens, 'semantic.radius', false).filter((s) => !s.name.includes('.')),
+  },
+  { title: 'Scale', steps: dimensionSteps(tokens, 'semantic.radius.scale', false) },
   { title: 'Primitive steps', steps: dimensionSteps(tokens, 'primitive.radius', true) },
 ];
 

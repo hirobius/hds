@@ -71,16 +71,18 @@ describe('typeSpecimens', () => {
 
 describe('dimension scales', () => {
   it('draws the semantic spacing scale in source order and primitives by size', () => {
-    const [scale, primitive] = spaceScales(tokens);
+    const [scale, fixed, primitive] = spaceScales(tokens);
     expect(scale!.steps.map((s) => s.name)).toEqual(['xs', 'sm', 'md', 'lg', 'xl']);
+    expect(fixed!.steps.map((s) => s.px)).toEqual([4, 12, 16, 24, 32, 48]);
     const px = primitive!.steps.map((s) => s.px);
     expect(px).toEqual([...px].sort((a, b) => a - b));
     expect(scale!.steps[0]!.cssVar).toBe('--semantic-space-scale-xs');
   });
 
   it('draws radius roles and primitive steps', () => {
-    const [roles, primitive] = radiusScales(tokens);
+    const [roles, scale, primitive] = radiusScales(tokens);
     expect(roles!.steps.map((s) => s.name)).toEqual(['action', 'control']);
+    expect(scale!.steps.map((s) => s.name)).toEqual(['sm', 'md', 'lg', 'xl', 'pill']);
     expect(primitive!.steps.at(-1)!.name).toBe('full');
   });
 });
