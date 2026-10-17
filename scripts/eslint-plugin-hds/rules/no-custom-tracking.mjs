@@ -14,8 +14,21 @@ import { attrName, jsxObjectExpression, propName, stringLiteralValue } from './u
 const TOKEN_VAR_RE = /^var\(\s*--semantic-typography-[\w-]+\s*\)$/;
 const RESET_RE = /^(?:inherit|unset|initial)$/;
 // `md:hover:!-tracking-[...]`; the class may also be negative or important.
-const TRACKING_CLASS_RE = /^(?:[\w-]+:)*!?-?tracking-(.+)$/;
-const ARBITRARY_PROP_RE = /^(?:[\w-]+:)*!?\[letter-spacing:(.+)\]$/;
+const TRACKING_CLASS_RE = /^!?-?tracking-(.+)$/;
+const ARBITRARY_PROP_RE = /^!?\[letter-spacing:(.+)\]$/;
+
+/** Drop variant prefixes (`md:hover:`): cut at the last `:` outside `[...]`. A scan, not a regex, so it stays linear. */
+function stripVariants(token) {
+  let depth = 0;
+  let cut = 0;
+  for (let i = 0; i < token.length; i++) {
+    const c = token[i];
+    if (c === '[') depth++;
+    else if (c === ']') depth = Math.max(0, depth - 1);
+    else if (c === ':' && depth === 0) cut = i + 1;
+  }
+  return token.slice(cut);
+}
 
 const isTokenValue = (v) => TOKEN_VAR_RE.test(v.trim()) || RESET_RE.test(v.trim());
 
@@ -23,12 +36,13 @@ const isTokenValue = (v) => TOKEN_VAR_RE.test(v.trim()) || RESET_RE.test(v.trim(
 function badClasses(value) {
   const out = [];
   for (const token of value.split(/\s+/).filter(Boolean)) {
-    const arbitrary = token.match(ARBITRARY_PROP_RE);
+    const base = stripVariants(token);
+    const arbitrary = base.match(ARBITRARY_PROP_RE);
     if (arbitrary) {
       if (!isTokenValue(arbitrary[1])) out.push(token);
       continue;
     }
-    const tracking = token.match(TRACKING_CLASS_RE);
+    const tracking = base.match(TRACKING_CLASS_RE);
     if (!tracking) continue;
     const bracket = tracking[1].match(/^\[(.+)\]$/);
     if (bracket && isTokenValue(bracket[1])) continue;
