@@ -334,11 +334,14 @@ export function buildTokenRefsTree(tokens) {
  */
 export function buildDeprecationNotes(tokens) {
   const notes = new Map();
-  for (const { path, deprecated } of tokens) {
+  for (const { path, type, deprecated } of tokens) {
     if (!deprecated) continue;
+    const text = String(deprecated).replaceAll('*/', '*\\/');
     notes.set(path.join('.'), {
       cssVar: pathToCSSVar(path),
-      jsdoc: `/** @deprecated ${deprecated} @removeIn ${removeInOf(deprecated)} */`,
+      composite: ['typography', 'motion', 'transition', 'elevation'].includes(type),
+      note: `@deprecated ${text} @removeIn ${removeInOf(deprecated)}`,
+      jsdoc: `/** @deprecated ${text} @removeIn ${removeInOf(deprecated)} */`,
     });
   }
   return notes;
@@ -359,8 +362,7 @@ export function serialize(obj, depth = 1, notes = null, prefix = []) {
 /** Puts a `// @deprecated` line above each Tailwind key whose var is a deprecated token. */
 export function tagDeprecatedTailwindKeys(json, notes) {
   let out = json;
-  for (const { cssVar, jsdoc } of notes.values()) {
-    const note = jsdoc.slice(4, -3);
+  for (const { cssVar, note } of notes.values()) {
     out = out.replace(
       new RegExp(`^(\\s*)(".+": "var\\(${cssVar}\\)",?)$`, 'gm'),
       (m, pad, entry) => `${pad}// ${note}\n${pad}${entry}`,
@@ -371,10 +373,12 @@ export function tagDeprecatedTailwindKeys(json, notes) {
 
 /** The CSSProperties augmentation body: one optional prop per var, deprecated ones tagged. */
 export function buildCSSVarDts(cssVarNames, notes = new Map()) {
-  const byVar = [...notes.values()];
+  const byVar = new Map([...notes.values()].map((n) => [n.cssVar, n]));
+  const composites = [...notes.values()].filter((n) => n.composite);
   return cssVarNames
     .map((v) => {
-      const note = byVar.find((n) => v === n.cssVar || v.startsWith(`${n.cssVar}-`));
+      // A composite's sub-vars (`-font-size`) share its note; a plain var matches exactly.
+      const note = byVar.get(v) ?? composites.find((n) => v.startsWith(`${n.cssVar}-`));
       return `${note ? `    ${note.jsdoc}\n` : ''}    '${v}'?: string | undefined;`;
     })
     .join('\n');
@@ -1864,8 +1868,8 @@ module.exports = config;
   // comparison meaningful.
   await writeGenerated(join(ROOT, 'tailwind.config.tokens.cjs'), tailwindConfigCjs);
 
-  // The deprecation table the hds/no-deprecated-token rule and the
-  // hds-deprecated-tokens codemod read (both ship; neither reads the token file).
+  // The deprecation table the hds/no-deprecated-token rule reads (it ships;
+  // the token file is not read at lint time).
   await writeGenerated(
     join(ROOT, 'scripts', 'eslint-plugin-hds', 'rules', 'deprecated-tokens.json'),
     `${JSON.stringify(

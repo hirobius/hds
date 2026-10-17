@@ -314,27 +314,27 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 
 <!-- auto:start:spacing -->
 
-| Token                  | Value   | Notes                                                                                             |
-| ---------------------- | ------- | ------------------------------------------------------------------------------------------------- |
-| `primitive.space.0`    | `0px`   |                                                                                                   |
-| `primitive.space.1`    | `4px`   |                                                                                                   |
-| `primitive.space.2`    | `8px`   |                                                                                                   |
-| `primitive.space.3`    | `12px`  |                                                                                                   |
-| `primitive.space.4`    | `16px`  |                                                                                                   |
-| `primitive.space.5`    | `20px`  |                                                                                                   |
-| `primitive.space.6`    | `24px`  |                                                                                                   |
-| `primitive.space.7`    | `28px`  |                                                                                                   |
-| `primitive.space.8`    | `32px`  |                                                                                                   |
-| `primitive.space.10`   | `40px`  |                                                                                                   |
-| `primitive.space.12`   | `48px`  |                                                                                                   |
-| `primitive.space.16`   | `64px`  |                                                                                                   |
-| `primitive.space.20`   | `80px`  |                                                                                                   |
-| `primitive.space.24`   | `96px`  |                                                                                                   |
-| `primitive.space.32`   | `128px` |                                                                                                   |
-| `primitive.space.px1`  | `1px`   |                                                                                                   |
-| `primitive.space.px2`  | `2px`   |                                                                                                   |
-| `primitive.space.px6`  | `6px`   | 6px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.2 or a semantic token.  |
-| `primitive.space.px10` | `10px`  | 10px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.3 or a semantic token. |
+| Token                  | Value   | Notes                                                                               |
+| ---------------------- | ------- | ----------------------------------------------------------------------------------- |
+| `primitive.space.0`    | `0px`   |                                                                                     |
+| `primitive.space.1`    | `4px`   |                                                                                     |
+| `primitive.space.2`    | `8px`   |                                                                                     |
+| `primitive.space.3`    | `12px`  |                                                                                     |
+| `primitive.space.4`    | `16px`  |                                                                                     |
+| `primitive.space.5`    | `20px`  |                                                                                     |
+| `primitive.space.6`    | `24px`  |                                                                                     |
+| `primitive.space.7`    | `28px`  |                                                                                     |
+| `primitive.space.8`    | `32px`  |                                                                                     |
+| `primitive.space.10`   | `40px`  |                                                                                     |
+| `primitive.space.12`   | `48px`  |                                                                                     |
+| `primitive.space.16`   | `64px`  |                                                                                     |
+| `primitive.space.20`   | `80px`  |                                                                                     |
+| `primitive.space.24`   | `96px`  |                                                                                     |
+| `primitive.space.32`   | `128px` |                                                                                     |
+| `primitive.space.px1`  | `1px`   |                                                                                     |
+| `primitive.space.px2`  | `2px`   |                                                                                     |
+| `primitive.space.px6`  | `6px`   | 6px, off the 4px grid. Deprecated, removed in 0.28.0: use semantic.space.scale.xs.  |
+| `primitive.space.px10` | `10px`  | 10px, off the 4px grid. Deprecated, removed in 0.28.0: use semantic.space.fixed.xs. |
 
 <!-- auto:end:spacing -->
 

@@ -7,6 +7,7 @@
  * deprecated token is caught with no edit here. Three forms, one report each:
  *
  *   CSS var   `--semantic-space-layout-tight` in any string / template quasi
+ *             (a composite's sub-vars too: `--semantic-typography-h1-font-size`)
  *   member    `<x>.semantic.space.layout.tight` (also `.h1.fontSize` below it)
  *   Tailwind  `p-layout-tight`, `md:-mt-layout-inset`, `rounded-<key>` in
  *             `className` or `cn()` / `clsx()` / `cva()` arguments
@@ -28,6 +29,7 @@ const RADIUS_UTILS = 'rounded-(?:t|r|b|l|s|e|tl|tr|bl|br|ss|se|es|ee)|rounded';
 const CLASS_CALLEES = new Set(['cn', 'clsx', 'cva']);
 
 const byVar = new Map(DEPRECATED.map((d) => [d.cssVar, d]));
+const COMPOSITES = DEPRECATED.filter((d) => d.composite);
 const byPath = new Map(DEPRECATED.map((d) => [d.path, d]));
 const byTailwind = new Map(DEPRECATED.filter((d) => d.tailwind).map((d) => [d.tailwind, d]));
 const VAR_RE = /--[A-Za-z0-9-]+/g;
@@ -100,8 +102,7 @@ export default {
     },
     schema: [],
     messages: {
-      deprecated:
-        '"{{text}}" is a deprecated token ({{note}}), removed in {{removeIn}}.{{fix}} `npx @hirobius/design-system upgrade` rewrites it.',
+      deprecated: '"{{text}}" is a deprecated token ({{note}}), removed in {{removeIn}}.{{fix}}',
     },
   },
   create(context) {
@@ -119,10 +120,11 @@ export default {
       if (!text.includes('--')) return;
       const seen = new Set();
       for (const [v] of text.matchAll(VAR_RE)) {
-        const d = byVar.get(v);
+        const d = byVar.get(v) ?? COMPOSITES.find((c) => v.startsWith(`${c.cssVar}-`));
         if (!d || seen.has(v)) continue;
         seen.add(v);
-        report(node, v, d, d.replacementCssVar);
+        const suffix = v.slice(d.cssVar.length);
+        report(node, v, d, d.replacementCssVar && `${d.replacementCssVar}${suffix}`);
       }
     }
 
