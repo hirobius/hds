@@ -502,6 +502,15 @@ Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
+### PresenceItem
+One item. Give it a stable `key` so the list can tell an add from a re-render.
+  - as: "div" | "li" = div
+
+### PresenceList
+The list. Children must be PresenceItems with stable keys. Tagged here, not in the file block, so PresenceItem does not inherit the list's contract.
+  - as: "div" | "ol" | "ul" = div
+  - children: ReactNode
+
 ### Progress
 Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.
   - label: string = Progress
@@ -563,10 +572,16 @@ Sidebar — fixed-width rail beside fluid content, no media query. Every Layout 
   - style: CSSProperties
 
 ### Skeleton
-Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.
+Decorative loading placeholder. Tagged here rather than in the file block so SkeletonSwap, in this module, does not claim Skeleton's Figma node. Marked aria-hi…
   - height: string | number
   - variant: "text" | "circular" | "rectangular" | null = rectangular
   - width: string | number
+
+### SkeletonSwap
+Shows `skeleton` while `loading`, then fades the content in over the same footprint (.hds-motion-reveal), so loaded content settles in rather than popping. Con…
+  - children: ReactNode
+  - loading: boolean
+  - skeleton: ReactNode
 
 ### Slider
 Slider — range slider with label and value display.

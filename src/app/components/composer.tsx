@@ -1,3 +1,4 @@
+// motion-ok: its controls are HDS Button, Tag and Dialog, which carry their own press, hover and open motion.
 /**
  * Composer — prompt and capture box that grows with its text and folds long pastes into cards.
  * @category Inputs

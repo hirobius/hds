@@ -26,8 +26,7 @@
  * @a11y component required gate:check-reduced-motion The indicator slide goes through useHdsMotion, so it stops under prefers-reduced-motion.
  * @a11y consumer required Give the control a label or an aria-label so the group has a name.
  */
-// motion-ok: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
-import { forwardRef, useRef, useState } from 'react';
+import { forwardRef, useId, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -367,6 +366,9 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
     const demoState = frozenState as 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled' | null;
     const isDisabled = demoState === 'disabled';
     const productiveMotion = useHdsMotion('productive');
+    // The active segment's indicator shares one layoutId, so on a change it
+    // slides from the old segment to the new one instead of jumping.
+    const indicatorId = `hds-segmented-${useId()}`;
     const isSecondary = variant === 'secondary';
     const resolvedAriaLabel = ariaLabel ?? label;
     // Arrow/Home/End focus moves select, like a native radio group (WAI-ARIA radio pattern); Tab does not.
@@ -478,8 +480,13 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                       : { paddingLeft: segmentPaddingX, paddingRight: segmentPaddingX }
                   }
                 >
-                  <span
+                  <motion.span
                     aria-hidden="true"
+                    layoutId={active ? indicatorId : undefined}
+                    transition={{
+                      duration: productiveMotion.duration,
+                      ease: productiveMotion.easing,
+                    }}
                     // #225: cva only concatenates base + compound class strings — it
                     // does not dedupe conflicting Tailwind utilities. The base here
                     // always carries `bg-transparent`, so without a twMerge pass the

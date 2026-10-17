@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Components now animate on press, open, close and selection, and bare transition-* utilities time on the productive motion token (150ms) instead of Tailwind's default; re-take screenshots after interactions, and wait for overlay animations to finish in visual tests."
+}

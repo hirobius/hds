@@ -101,6 +101,8 @@ export * from './app/components/sidebar';
 export * from './app/components/switcher';
 // Scroll-motion primitives — CSS scroll-driven, zero JS/deps (#116).
 export * from './app/components/pin';
+// Component motion — list items that animate in and out (motion/react).
+export * from './app/components/presence-list';
 export * from './app/components/timeline';
 
 // ── app-shell + layout primitives consumed by product apps ──

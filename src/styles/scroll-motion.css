@@ -13,6 +13,7 @@
 @supports (animation-timeline: view()) {
   @media not (prefers-reduced-motion: reduce) {
     .hds-reveal {
+      /* motion-token-ok: a scroll-driven animation runs on scroll position, not time; linear maps it 1:1 */
       animation: hds-reveal-fade linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 60%;

@@ -1,4 +1,3 @@
-// motion-ok: motion delivered via Tailwind transition-[colors,filter] (colours + the tone hover:brightness filter); the pressed overlay is a token-bound inset shadow that snaps on :active; gate accepts only hds.duration refs
 /**
  * @category Actions
  * @tier primitive
@@ -29,9 +28,10 @@ import { isDevelopment } from '../../lib/env';
  * `inset-shadow-[0_0_0_9999px]` spread fills the padding box, so it works on
  * a transparent tertiary fill and respects the radius. `disabled:pointer-events-none`
  * keeps a disabled control from ever matching `:active`. The wash snaps on
- * and off (`transition-[colors,filter]` is unchanged: the tone variants still
- * hover through the brightness filter), which is also how the Figma Pressed
- * variant behaves. Without `color-mix()` support the fallback is the opaque
+ * and off, as the Figma Pressed variant does, while the control eases down to
+ * 97% (`active:scale-97`; under reduced motion it steps there with no easing)
+ * so a tap reads as a press. Colour, the tone hover filter and the scale ease on the productive
+ * motion token (the bare transition utility's default, theme.css). Without `color-mix()` support the fallback is the opaque
  * token, the same fallback Tailwind emits for `bg-scrim/60`.
  *
  * Secondary is the exception (hds#595): its pressed state is a solid fill bound to
@@ -58,9 +58,9 @@ import { isDevelopment } from '../../lib/env';
 // `disabled:` class on a variant would become a "must-replace" class every tone
 // would have to drop.
 // Icon sizes bind `component.button.size.<s>.iconSize` so code cannot drift from the token (hds#539).
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for transition-[colors,filter]), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for colours + filter + scale), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[color,background-color,border-color,box-shadow,filter,scale] active:scale-97 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -222,6 +222,13 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       pressedProp !== undefined || defaultPressed !== undefined || onPressedChange !== undefined;
     const [ownPressed, setOwnPressed] = React.useState(defaultPressed ?? false);
     const isPressed = pressedProp ?? ownPressed;
+    // A toggle's label and icon usually change with it ("Pin" to "Pinned"). Once
+    // it has flipped, the content remounts on every flip and settles in
+    // (.hds-motion-swap), so the new state does not just appear. The first
+    // render never animates.
+    const initialPressed = React.useRef(isPressed);
+    const hasFlipped = React.useRef(false);
+    if (isToggle && isPressed !== initialPressed.current) hasFlipped.current = true;
     const toggleProps = isToggle
       ? {
           'aria-pressed': isPressed,
@@ -300,10 +307,22 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // overrides them). Spread only when set, so an aria-label from props keeps its old position.
     // When label is the only content it already is the name, so no redundant aria-label.
     const nameProps = label && (iconOnly || children != null) ? { 'aria-label': label } : {};
+    const body = (
+      <>
+        {loading ? (
+          <Loader2 className="animate-spin motion-reduce:animate-none" aria-hidden="true" />
+        ) : (
+          iconLeft
+        )}
+        {!iconOnly && content}
+        {!loading && !iconOnly && iconRight}
+      </>
+    );
 
     return (
       <button
         ref={ref}
+        // focus-visible: the ring comes from buttonVariants, in `classes`
         type={type}
         disabled={isDisabled}
         aria-busy={loading || undefined}
@@ -316,13 +335,13 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         {...toggleProps}
         {...props}
       >
-        {loading ? (
-          <Loader2 className="animate-spin motion-reduce:animate-none" aria-hidden="true" />
+        {hasFlipped.current ? (
+          <span key={String(isPressed)} className="hds-motion-swap inline-flex items-center gap-2">
+            {body}
+          </span>
         ) : (
-          iconLeft
+          body
         )}
-        {!iconOnly && content}
-        {!loading && !iconOnly && iconRight}
       </button>
     );
   },

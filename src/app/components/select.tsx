@@ -1,5 +1,3 @@
-// motion-ok: interaction feedback (open/close, chevron rotate, item highlight) is
-// provided by Radix Select + CSS transitions, not motion/react.
 /**
  * Select — dropdown selector built on Radix Select.
  * @category Inputs
@@ -173,7 +171,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
             }}
             className={cn(
               'z-50 overflow-hidden rounded-md border',
-              'border-border bg-popover text-popover-foreground shadow-md',
+              'border-border bg-popover text-popover-foreground shadow-md hds-motion-popover',
             )}
           >
             <RSelect.Viewport className="p-1">

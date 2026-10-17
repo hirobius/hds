@@ -12,6 +12,13 @@
  *     extends down into TabsContent — the active tab visually "claims" its
  *     content panel (folder-tab affordance, modern-soft).
  *
+ * Indicator:
+ *   One bar (.hds-tabs-indicator) slides to the active trigger on the
+ *   productive motion token. TabsList measures the active trigger and sets
+ *   data-indicator once the bar is placed; until then (SSR, no JS) the
+ *   trigger's own 2px border draws the line. The bar is styled inline, not in
+ *   CSS, to keep the stylesheet inside its size budget.
+ *
  * Overflow:
  *   TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`)
  *   for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar
@@ -63,6 +70,17 @@ function measureOverflow(el: HTMLElement): TabsOverflow {
 
 const FADE = 'var(--semantic-space-scale-lg)';
 
+// Hidden until measured, so the first placement does not slide in from the left edge.
+const BAR_STYLE: React.CSSProperties = {
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  height: 'var(--semantic-borderWidth-emphasis)',
+  background: 'var(--semantic-color-content-primary)',
+  pointerEvents: 'none',
+  opacity: 0,
+};
+
 /** Mask that fades the edge(s) with hidden tabs, one fade width (scale.lg) deep. Inline, so it costs no CSS. */
 function fadeStyle(overflow: TabsOverflow): React.CSSProperties | undefined {
   if (!overflow) return undefined;
@@ -80,8 +98,9 @@ function fadeStyle(overflow: TabsOverflow): React.CSSProperties | undefined {
 export const TabsList = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentProps<typeof TabsPrimitive.List>
->(function TabsList({ className, onScroll, style, ...props }, forwardedRef) {
+>(function TabsList({ className, onScroll, style, children, ...props }, forwardedRef) {
   const innerRef = React.useRef<HTMLDivElement | null>(null);
+  const barRef = React.useRef<HTMLSpanElement | null>(null);
   const [overflow, setOverflow] = React.useState<TabsOverflow>(undefined);
 
   const setRefs = React.useCallback(
@@ -93,9 +112,39 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
     [forwardedRef],
   );
 
+  const placeBar = React.useCallback(() => {
+    const list = innerRef.current;
+    const bar = barRef.current;
+    if (!list || !bar) return;
+    const active = list.querySelector<HTMLElement>(':scope > [role="tab"][data-state="active"]');
+    if (!active) {
+      list.removeAttribute('data-indicator');
+      return;
+    }
+    bar.style.translate = `${active.offsetLeft}px 0`;
+    bar.style.width = `${active.offsetWidth}px`;
+    if (!list.hasAttribute('data-indicator')) {
+      // First placement lands without sliding in from 0: commit it, then turn the transition on.
+      bar.getBoundingClientRect();
+      bar.style.opacity = '1';
+      bar.style.transition =
+        'translate var(--hds-motion-productive), width var(--hds-motion-productive)';
+      list.setAttribute('data-indicator', '');
+    }
+  }, []);
+
   const update = React.useCallback(() => {
     if (innerRef.current) setOverflow(measureOverflow(innerRef.current));
-  }, []);
+    placeBar();
+  }, [placeBar]);
+
+  React.useEffect(() => {
+    const el = innerRef.current;
+    if (!el || typeof MutationObserver === 'undefined') return;
+    const mo = new MutationObserver(placeBar);
+    mo.observe(el, { attributes: true, attributeFilter: ['data-state'], subtree: true });
+    return () => mo.disconnect();
+  }, [placeBar]);
 
   React.useEffect(() => {
     update();
@@ -116,13 +165,16 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
         onScroll?.(event);
       }}
       className={cn(
-        'flex h-10 items-center gap-6 overflow-x-auto whitespace-nowrap',
+        'hds-tabs-list relative flex h-10 items-center gap-6 overflow-x-auto whitespace-nowrap',
         'border-b border-border/40 mb-6',
         '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]',
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+      <span ref={barRef} aria-hidden="true" className="hds-tabs-indicator" style={BAR_STYLE} />
+    </TabsPrimitive.List>
   );
 });
 

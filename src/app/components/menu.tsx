@@ -20,9 +20,6 @@
  *     </Menu.Content>
  *   </Menu>
  */
-// motion-ok: Radix DropdownMenu manages open/close mounting + item highlight;
-// triggers/items are styling passthroughs over the primitive's a11y contract.
-
 import * as React from 'react';
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { Check, ChevronRight, Circle } from 'lucide-react';
@@ -44,9 +41,9 @@ const MenuSub = MenuPrimitive.Sub;
 const MenuPortal = /* @__PURE__ */ withHdsPortal(MenuPrimitive.Portal);
 
 const SURFACE =
-  'z-50 min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-overlay';
+  'z-50 min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-overlay hds-motion-popover';
 const ITEM =
-  'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)] data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
+  'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)] data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
 
 // ── Content ────────────────────────────────────────────────────────────────────
 

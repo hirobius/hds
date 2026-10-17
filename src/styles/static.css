@@ -328,9 +328,9 @@
   background-color: var(--semantic-color-surface-raised);
   color: var(--semantic-color-content-secondary);
   transition:
-    color 0.15s ease,
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+    color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing),
+    background-color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing),
+    border-color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -11,7 +11,7 @@
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3
  */
 // motion-ok: composition only. The one control is a danger Button, which owns
-// its hover/press transition (transition-[colors,filter]); the AlertDialog it
+// its hover/press transition and press scale; the AlertDialog it
 // opens owns open/close. The section has no hover, press or open state of its
 // own, so there is nothing here to animate.
 
