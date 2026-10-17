@@ -1,2 +1,3 @@
-- Table: columns floor at min-content (fixes desktop clipping), edge-fade scroll cue, mirrord-style restyle, `emphasizeFirstColumn` prop; regression spec tests/visual/table-clipping.spec.ts.
+- Table: columns floor at min-content (fixes desktop clipping), edge-fade scroll cue, quieter default look (no fill, thin row and column rules, raised header band), `emphasizeFirstColumn` prop; regression spec tests/visual/table-clipping.spec.ts.
 - Table/TabsList share scroll-edge-fade.ts; Table frame is a no-fill Surface.
+- Table: value/token cells never wrap (a date stays whole); column rules run through the header; the scroll region contains absolutely positioned content so it can't widen the page.

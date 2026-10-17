@@ -191,14 +191,15 @@ function MenuDemo() {
   );
 }
 
-// Wide on purpose: a long role, a bare link and an action row are what used to shear
-// a table on desktop (tests/visual/table-clipping.spec.ts guards it).
+// A link, prose and an action row are what used to shear a table on desktop
+// (tests/visual/table-clipping.spec.ts guards it). The literal columns (status, date,
+// actions) size to their content, so Summary takes the spare width.
 const TABLE_DEMO_ROWS = [
   {
     key: 'portfolio',
     name: 'Portfolio redesign',
     summary: 'Case studies, about page and the new design-system section',
-    href: 'https://hirobius.com/work/portfolio-redesign-2026',
+    href: 'https://hirobius.com/work/portfolio',
     status: 'Active',
     updated: '2026-10-05',
   },
@@ -206,7 +207,7 @@ const TABLE_DEMO_ROWS = [
     key: 'tokens',
     name: 'Token audit',
     summary: 'Contrast and naming review across the light and dark themes',
-    href: 'https://hirobius.com/work/token-audit',
+    href: 'https://hirobius.com/work/tokens',
     status: 'Review',
     updated: '2026-10-02',
   },
@@ -220,17 +221,15 @@ function TableDemo() {
       columns={[
         { key: 'name', label: 'Project' },
         { key: 'summary', label: 'Summary' },
-        { key: 'link', label: 'Link' },
-        { key: 'status', label: 'Status' },
-        { key: 'updated', label: 'Updated', align: 'right' },
-        { key: 'actions', label: 'Actions', align: 'right' },
+        { key: 'status', label: 'Status', width: 'max-content' },
+        { key: 'updated', label: 'Updated', align: 'right', width: 'max-content' },
+        { key: 'actions', label: 'Actions', align: 'right', width: 'max-content' },
       ]}
       rows={TABLE_DEMO_ROWS.map((row) => ({
         key: row.key,
         cells: [
-          { slot: 'label', content: row.name },
+          { slot: 'label', content: <InlineLink href={row.href}>{row.name}</InlineLink> },
           { slot: 'description', content: row.summary },
-          { slot: 'action', content: <InlineLink href={row.href}>{row.href}</InlineLink> },
           { slot: 'badge', content: <Badge>{row.status}</Badge> },
           { slot: 'value', content: row.updated, align: 'right' },
           {

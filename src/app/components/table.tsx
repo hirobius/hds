@@ -70,9 +70,14 @@ const tableHeaderCellVariants = /* @__PURE__ */ cva(
         true: 'sticky top-0 z-[var(--semantic-zIndex-sticky)]',
         false: '',
       },
+      // The column rules run up through the header band so each column reads as one strip.
+      columnDivider: {
+        true: '[border-left:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',
+        false: '',
+      },
       floor: COLUMN_FLOOR,
     },
-    defaultVariants: { align: 'left', sticky: false, floor: true },
+    defaultVariants: { align: 'left', sticky: false, columnDivider: false, floor: true },
   },
 );
 
@@ -132,10 +137,13 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
       // Text wraps between words and keeps every word whole, so a column is never
       // narrower than its longest word and the frame scrolls before a word splits.
       // An action cell (a bare link, a URL) may break anywhere, so a long link wraps
-      // inside its column instead of pushing the table wide.
+      // inside its column instead of pushing the table wide. A literal (value or token
+      // slot: a date, a number, a token name) never wraps: `2026-10-05` split at its
+      // hyphens reads as two values, so its column holds the whole literal.
       wrap: {
         words: '[overflow-wrap:break-word]',
         anywhere: '[overflow-wrap:anywhere]',
+        none: 'whitespace-nowrap',
       },
       floor: COLUMN_FLOOR,
     },
@@ -154,9 +162,12 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
 const tableFrameClass =
   'bg-transparent border-solid border-[length:var(--semantic-borderWidth-default)] border-[color:var(--semantic-color-border-subdued)]';
 
+// `relative` makes the region the containing block for absolutely positioned content
+// (a link's `sr-only` label): without it that content escapes the scroller and widens
+// the page when a column runs past the frame.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding token has no Tailwind-theme utility; var()-based so still token-driven
 const tableRegionVariants = /* @__PURE__ */ cva(
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+  'relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
   {
     variants: {
       flush: {
@@ -195,6 +206,8 @@ export type TableColumn = {
   /**
    * Grid track for this column; defaults to `minmax(min-content, 1fr)`, so a column
    * never squeezes below its content (prose wraps, literals and controls hold).
+   * Give a column of literals (dates, bare URLs) `max-content` so it sizes to them and
+   * the prose columns take the spare width.
    */
   width?: TableColumnWidth;
   align?: TableColumnAlign;
@@ -255,6 +268,9 @@ const BODY_TEXT: CSSProperties = {
 };
 const HEADER_TEXT: CSSProperties = hds.typeStyles.ui;
 const EMPHASIS: CSSProperties = { fontWeight: 'var(--semantic-typography-ui-font-weight)' };
+
+// Slots whose content is one literal value: kept on one line (see `wrap` above).
+const LITERAL_SLOTS: ReadonlySet<TableCellSlot> = new Set(['value', 'token']);
 
 const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
   label: BODY_TEXT,
@@ -398,7 +414,7 @@ export function Table({
              * which axe flags as aria-required-parent (critical).
              */}
             <div role="row" style={{ display: 'contents' }}>
-              {columns.map((column) => {
+              {columns.map((column, columnIndex) => {
                 if (!column.sortable) {
                   return (
                     <div
@@ -409,6 +425,7 @@ export function Table({
                           align: column.align ?? 'left',
                           density: density ?? 'follow',
                           sticky: Boolean(stickyHeader),
+                          columnDivider: columnIndex > 0,
                           floor: !column.width,
                         }),
                       )}
@@ -437,6 +454,7 @@ export function Table({
                         align: column.align ?? 'left',
                         density: density ?? 'follow',
                         sticky: Boolean(stickyHeader),
+                        columnDivider: columnIndex > 0,
                         floor: !column.width,
                       }),
                     )}
@@ -460,13 +478,18 @@ export function Table({
                   <div
                     key={`${row.key ?? rowIndex}-${cellIndex}`}
                     role="cell"
+                    data-slot={cell.slot}
                     className={cn(
                       tableDataCellVariants({
                         align: cell.align ?? 'left',
                         density: density ?? 'follow',
                         divider: rowIndex < rows.length - 1,
                         columnDivider: cellIndex > 0,
-                        wrap: cell.slot === 'action' ? 'anywhere' : 'words',
+                        wrap: LITERAL_SLOTS.has(cell.slot)
+                          ? 'none'
+                          : cell.slot === 'action'
+                            ? 'anywhere'
+                            : 'words',
                         floor: !columns[cellIndex]?.width,
                       }),
                     )}
