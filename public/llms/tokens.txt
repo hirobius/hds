@@ -19,7 +19,7 @@ See `public/llms.txt` for the index. Generated from the same sections as llms-fu
 | Spacing (semantic tiers) | `semantic.space.scale.xs`, `semantic.space.fixed.2xs`, `semantic.space.surface.padding` | use semantic tokens or `--hds-space-px12` style vars |
 | Radius | `semantic.radius.action` | `--semantic-radius-action` |
 | Motion | `semantic.motion.productive`, `semantic.motion.expressive`, `semantic.motion.exit` | use token refs; values are structured (duration/easing) |
-| Typography | `semantic.typography.body`, `semantic.typography.h2`, `semantic.typography.caption` | use token refs; values are structured (family/size/weight/etc) |
+| Typography | `semantic.typography.body`, `semantic.typography.title`, `semantic.typography.caption` | use token refs; values are structured (family/size/weight/etc) |
 
 ## Token Rules
 

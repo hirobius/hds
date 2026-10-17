@@ -12,6 +12,7 @@
  * config array, the standard pattern for ESLint 9/10 plugins.
  */
 import { readFileSync } from 'node:fs';
+import noDeprecatedToken from './rules/no-deprecated-token.mjs';
 import noPrimitiveSpacing from './rules/no-primitive-spacing.mjs';
 import noRawControls from './rules/no-raw-controls.mjs';
 import noRawHex from './rules/no-raw-hex.mjs';
@@ -30,6 +31,7 @@ const packageMeta = { name, version };
 const plugin = {
   meta: packageMeta,
   rules: {
+    'no-deprecated-token': noDeprecatedToken,
     'no-primitive-spacing': noPrimitiveSpacing,
     'no-raw-controls': noRawControls,
     'no-raw-hex': noRawHex,
@@ -46,6 +48,7 @@ plugin.configs = {
       name: 'hds/recommended',
       plugins: { hds: plugin },
       rules: {
+        'hds/no-deprecated-token': 'error',
         'hds/no-primitive-spacing': 'error',
         'hds/no-raw-controls': 'error',
         'hds/no-raw-hex': 'error',

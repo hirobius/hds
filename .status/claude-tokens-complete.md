@@ -1,1 +1,2 @@
 Every spacing value (4–64px) and radius (8/12/16/24/pill) has a semantic token: new semantic.space.fixed.{2xs..xl} and semantic.radius.scale.{sm..xl,pill}, wired to CSS vars, hds.semantic, Tailwind (p-fixed-_, rounded-scale-_), Figma model and Box sx.
+Deprecation system: build tags $deprecated tokens (CSS comment, JSDoc @deprecated/@removeIn, Tailwind comment), keeps them out of llms/skill docs (test), hds/no-deprecated-token lint rule, hds-deprecated-tokens codemod in upgrade; 4 zero-use spacing tokens deprecated (removed in 1.0.0); hds#789 tracks table.tsx/board.tsx.

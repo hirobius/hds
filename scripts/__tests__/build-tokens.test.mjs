@@ -27,6 +27,9 @@ import {
   validateTenantOverlay,
   buildTenantCSS,
   buildManifest,
+  buildCSSSection,
+  buildDeprecationNotes,
+  buildCSSVarDts,
 } from '../build-tokens.mjs';
 
 // ── pathToCSSVar ──────────────────────────────────────────────────────────────
@@ -239,6 +242,43 @@ describe('valueToCSS', () => {
 });
 
 // ── serialize ─────────────────────────────────────────────────────────────────
+
+describe('deprecated tokens in the build outputs', () => {
+  const dep = {
+    path: ['semantic', 'space', 'layout', 'tight'],
+    type: 'dimension',
+    value: '{semantic.space.scale.sm}',
+    deprecated: 'hds#206 — use semantic.space.scale.sm',
+  };
+  const notes = buildDeprecationNotes([
+    dep,
+    { ...dep, path: ['semantic', 'x'], deprecated: undefined },
+  ]);
+
+  it('the CSS var carries a comment naming the replacement', () => {
+    const { rootLines } = buildCSSSection([dep], 'Semantic');
+    const i = rootLines.findIndex((l) => l.includes('--semantic-space-layout-tight:'));
+    expect(rootLines[i - 1]).toBe(
+      '  /* @deprecated hds#206 — use semantic.space.scale.sm (removed in 1.0.0) */',
+    );
+  });
+
+  it('the TS tree tags the leaf @deprecated with @removeIn', () => {
+    const out = serialize({ semantic: { space: { layout: { tight: 'var(--x)' } } } }, 1, notes);
+    expect(out).toContain(
+      '/** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */\n        tight: "var(--x)"',
+    );
+  });
+
+  it('the CSSProperties augmentation tags the var @deprecated', () => {
+    const dts = buildCSSVarDts(['--semantic-space-layout-tight', '--semantic-x'], notes);
+    expect(dts).toContain(
+      "    /** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */\n    '--semantic-space-layout-tight'?: string | undefined;",
+    );
+    expect(dts).toContain("\n    '--semantic-x'?: string | undefined;");
+    expect(dts).not.toMatch(/@deprecated[^\n]*\n {4}'--semantic-x'/);
+  });
+});
 
 describe('serialize', () => {
   it('serializes a flat object as TypeScript literal properties', () => {

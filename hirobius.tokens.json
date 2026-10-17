@@ -501,7 +501,7 @@
           "unit": "px"
         },
         "$description": "6px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.2 or a semantic token.",
-        "$deprecated": "2026-10 spacing prune, removed in 0.28.0 — use primitive.space.2 (8px) or a semantic spacing token"
+        "$deprecated": "2026-10 spacing prune, removed in 0.28.0 — use semantic.space.scale.xs (8px)"
       },
       "px10": {
         "$value": {
@@ -509,7 +509,7 @@
           "unit": "px"
         },
         "$description": "10px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.3 or a semantic token.",
-        "$deprecated": "2026-10 spacing prune, removed in 0.28.0 — use primitive.space.3 (12px) or a semantic spacing token"
+        "$deprecated": "2026-10 spacing prune, removed in 0.28.0 — use semantic.space.fixed.xs (12px)"
       }
     },
     "blur": {
@@ -1784,7 +1784,8 @@
         },
         "heroMax": {
           "$value": "{primitive.space.32}",
-          "$description": "128px maximum hero region padding for extra-large displays."
+          "$description": "128px maximum hero region padding for extra-large displays.",
+          "$deprecated": "2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)"
         }
       },
       "sidebar": {
@@ -1807,7 +1808,8 @@
         "railWidth": {
           "$type": "dimension",
           "$value": "{primitive.size.width.280}",
-          "$description": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell)."
+          "$description": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).",
+          "$deprecated": "2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280"
         }
       }
     },
@@ -2016,11 +2018,13 @@
         },
         "paragraph": {
           "$value": "{primitive.space.7}",
-          "$description": "28px between paragraphs (24px before 2026-10) — comfortable prose rhythm for the 18px body role."
+          "$description": "28px between paragraphs (24px before 2026-10) — comfortable prose rhythm for the 18px body role.",
+          "$deprecated": "2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact)"
         },
         "inline": {
           "$value": "{primitive.space.2}",
-          "$description": "8px inline cluster spacing — gap between metadata badges, inline icons, doc-page chips."
+          "$description": "8px inline cluster spacing — gap between metadata badges, inline icons, doc-page chips.",
+          "$deprecated": "2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs"
         }
       }
     },
