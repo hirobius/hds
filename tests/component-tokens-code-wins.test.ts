@@ -47,7 +47,7 @@ const PX: Array<[string, string, string]> = [
   ['--component-button-size-lg-fontSize', '16px', 'hds-type-ui'],
   ['--component-input-paddingX', '12px', 'pl-3 pr-3'],
   ['--component-card-radius', '12px', 'rounded-lg (role.radius + 4px)'],
-  ['--component-card-gap', '16px', "gap='tight' = semantic.space.scale.sm"],
+  ['--component-card-gap', '20px', "gap='tight' = semantic.space.scale.sm"],
 ];
 
 const COLOR: Array<[string, string, string]> = [

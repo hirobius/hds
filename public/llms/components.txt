@@ -603,7 +603,7 @@ Status dot + title row with optional muted notes and trailing slot (e.g. badge).
   - trailing: ReactNode
 
 ### Surface
-Surface — governed inset surface primitive. Enforces the "Surface Inset" rule: backgrounds MUST have internal padding. - Default padding: px24 (cards) | px16 (…
+Surface — governed inset surface primitive. Enforces the "Surface Inset" rule: backgrounds MUST have internal padding. - Default padding: surface.padding (card…
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - className: string

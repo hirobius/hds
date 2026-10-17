@@ -1,0 +1,7 @@
+---
+'@hirobius/design-system': minor
+---
+
+Roomier spacing, in rhythm with the 2026-10-15 type ramp bump (Adrian, 2026-10-17). The semantic scale's comfortable default moves one rung up: `xs` 8px (unchanged), `sm` 16→20px, `md` 24→28px, `lg` 32→40px, `xl` 48→64px. Compact stays the one opt-in tighter mode and moves up too, to the old comfortable values (8/16/24/32/48px; it was 6/12/20/24/40px). So `surface.padding` (Card, Dialog, panels) is 28px (24px compact), `region.gutter` (page gutter) is 40px on desktop and 20px below 640px (32/16px compact), `section.stack` 96px (64px below 640px), Card `padding="item"` list rows 20px, and the Card parts, Dialog, AlertDialog, Popover, StatusTile, Form, MetadataList, Tooltip and Page now read semantic steps instead of fixed pixels. Control heights are unchanged, so touch targets stay 40px. The deprecated `layout.*` aliases stay density-fixed at the new comfortable values.
+
+The primitive scale drops its two off-grid steps: `primitive.space.px6` (6px) and `primitive.space.px10` (10px), with `hds.space.px6`/`px10` and the Tailwind `*-px6`/`*-px10` keys, are deprecated aliases for this minor and are removed in 0.28.0. `npx @hirobius/design-system upgrade` runs the new `hds-spacing-steps` codemod, which rewrites them to 8px and 12px. New guardrail: `hds/no-primitive-spacing` in `hds/recommended` fails a `--primitive-space-*` var, `hds.space.px*`, a numeric Tailwind spacing class or a deprecated step in consumer code.

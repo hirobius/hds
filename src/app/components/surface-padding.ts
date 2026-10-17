@@ -17,7 +17,7 @@ export type PaddingOption = 'component' | 'item' | 'px16' | 'px24' | 'none';
 /** Resolved CSS padding value for each option (inline-style form, used by Card). */
 export const PADDING_VALUES: Record<PaddingOption, string> = {
   component: 'var(--semantic-space-surface-padding)',
-  item: '16px',
+  item: 'var(--semantic-space-scale-sm)',
   px16: '16px',
   px24: '24px',
   none: '0',

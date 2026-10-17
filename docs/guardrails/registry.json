@@ -596,13 +596,13 @@
     },
     {
       "id": "check-tailwind-spacing-scale",
-      "description": "Flags raw numeric Tailwind spacing utilities (gap-2, p-5, px-3, mb-6, -mt-6, space-y-1.5) in src/app/components/**, which ignore density and sit outside the xs..xl scale and the gates that read only style and sx. WARN mode (exit 0); --strict exits 1. Companion to check-layout-contract.",
-      "severity": "warn",
+      "description": "Flags primitive and raw spacing in src/app/components/**: numeric Tailwind spacing utilities (gap-2, p-5, px-3, -mt-6, space-y-1.5), --primitive-space-* vars and hds.space.px* members, which ignore density and sit outside the semantic scale; and the deprecated off-grid px6/px10 steps in any spelling (2026-10 spacing prune). pretest runs --ratchet: per-file counts may not grow past scripts/tailwind-spacing-scale.baseline.json, a file not in it may have none, a stale (lower) count fails until --update-baseline lowers it, and a deprecated step always fails. --strict exits 1 on any finding. --dist <css> (run by check:size on dist/styles.css) fails if the built stylesheet ships any px6/px10 utility class. Consumers get the same policy from hds/no-primitive-spacing in hds/recommended.",
+      "severity": "error",
       "gateScript": "scripts/check-tailwind-spacing-scale.mjs",
       "fixturePath": "fixtures/check-tailwind-spacing-scale",
       "owner": "Adrian",
       "source": "agent",
-      "firingChannel": "on-demand"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-docs-axe",

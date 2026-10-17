@@ -65,12 +65,12 @@ describe('Card.Row renders a StatusTile’s content (hds#622)', () => {
     expect(off.row.children).toHaveLength(1);
   });
 
-  it('wraps it in the same surface: raised background, container radius, 16px inset', () => {
+  it('wraps it in the same surface: raised background, container radius, scale.sm inset', () => {
     const { tile, card } = renderBoth({ title: 'Figma sync' });
     // StatusTile paints its surface with these three classes.
     expect(tile.className).toContain('bg-[var(--semantic-color-surface-raised)]');
     expect(tile.className).toContain('rounded-lg');
-    expect(tile.className).toContain('p-4');
+    expect(tile.className).toContain('p-scale-sm');
     // Card paints the same three: bg-card resolves to the same raised token...
     expect(card.classList.contains('bg-card')).toBe(true);
     expect(read('tailwind.config.tokens.cjs')).toMatch(
@@ -80,12 +80,11 @@ describe('Card.Row renders a StatusTile’s content (hds#622)', () => {
       '--role-card: var(--semantic-color-surface-raised);',
       '--role-card: var(--semantic-color-surface-raised);',
     ]);
-    // ...the same container radius, and padding="item" is p-4's 16px.
+    // ...the same container radius, and padding="item" is scale.sm, as p-scale-sm is.
     expect(card.classList.contains('rounded-lg')).toBe(true);
-    expect(card.style.padding).toBe('16px');
-    expect(read('src/styles/tokens.generated.css')).toMatch(/--primitive-space-4:\s*16px;/);
+    expect(card.style.padding).toBe('var(--semantic-space-scale-sm)');
     // ...and no border: `border-0` cancels Card's resting 1px transparent
-    // border, so the box is 0px border + 16px padding, StatusTile's own.
+    // border, so the box is 0px border + scale.sm padding, StatusTile's own.
     const widths = [...card.classList].filter((c) => /^border(-\d+)?$/.test(c));
     expect(widths).toEqual(['border-0']);
     expect(tile.className).not.toMatch(/\bborder\b/);
@@ -97,7 +96,7 @@ describe('Card.Row renders a StatusTile’s content (hds#622)', () => {
     const { tile } = renderBoth({ title: 'Figma sync' });
     expect(tile.getAttribute('data-hds-component')).toBe('StatusTile');
     expect(tile.className).toBe(
-      'flex items-start gap-3 rounded-lg bg-[var(--semantic-color-surface-raised)] p-4',
+      'flex items-start gap-3 rounded-lg bg-[var(--semantic-color-surface-raised)] p-scale-sm',
     );
   });
 

@@ -21,7 +21,7 @@ const metadataListVariants = /* @__PURE__ */ cva('', {
     orientation: {
       vertical: 'flex flex-col gap-3',
       // The term column hugs its longest term; it was half the list (146px at 1280, hds#522).
-      horizontal: 'grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2',
+      horizontal: 'grid grid-cols-[max-content_minmax(0,1fr)] gap-x-scale-sm gap-y-scale-xs',
     },
   },
   defaultVariants: { orientation: 'vertical' },

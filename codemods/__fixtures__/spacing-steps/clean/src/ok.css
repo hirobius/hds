@@ -1,0 +1,4 @@
+.ok {
+  padding: var(--primitive-space-2);
+  margin: var(--primitive-space-px1) var(--primitive-space-px60);
+}

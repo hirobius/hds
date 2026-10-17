@@ -229,7 +229,9 @@ export function buildSpacing(raw) {
   const base = resolveRef(space['1']?.$value ?? '4px', raw);
   const keys = Object.keys(space).filter((k) => !k.startsWith('$'));
 
+  const deprecated = keys.filter((k) => space[k].$deprecated);
   const scale = keys
+    .filter((k) => !space[k].$deprecated)
     .map((k) => ({ key: k, val: resolveRef(space[k].$value, raw) }))
     .filter(({ val }) => /^\d+px$/.test(val))
     .sort((a, b) => parseInt(a.val, 10) - parseInt(b.val, 10))
@@ -242,9 +244,23 @@ export function buildSpacing(raw) {
   );
   lines.push('');
   lines.push(`Scale: ${scale}`);
+  if (deprecated.length) {
+    lines.push('');
+    lines.push(
+      `Deprecated (off the 4px grid, never use): ${deprecated.map((k) => `\`primitive.space.${k}\``).join(', ')}. \`npx @hirobius/design-system upgrade\` rewrites them to the nearest on-grid step.`,
+    );
+  }
+  const steps = raw.semantic?.space?.scale ?? {};
+  const stepKeys = Object.keys(steps).filter((k) => !k.startsWith('$'));
+  if (stepKeys.length) {
+    lines.push('');
+    lines.push(
+      `Semantic scale (comfortable, the default): ${stepKeys.map((k) => `\`${k}\` ${resolveRef(steps[k].$value, raw)}`).join(' · ')}.`,
+    );
+  }
   lines.push('');
   lines.push(
-    'Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
+    'Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it steps `semantic.space.scale.sm…xl` one rung down (16/24/32/48px; `xs` stays 8px), and `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
   );
   return lines.join('\n');
 }

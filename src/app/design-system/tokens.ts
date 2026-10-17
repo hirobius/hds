@@ -152,7 +152,7 @@ const hds = {
         lg: 'var(--semantic-space-scale-lg)',
         xl: 'var(--semantic-space-scale-xl)',
       },
-      // hds#206 slice 3 — the overridable roles. Default scale.md (24px);
+      // hds#206 slice 3 — the overridable roles. surface.padding defaults to scale.md (28px, 24px compact);
       // tenants.css overrides surface.padding per brand/density and theme.css
       // sets region.gutter responsively (scale.lg / scale.sm).
       surface: {
@@ -384,7 +384,7 @@ const hds = {
    */
   density: {
     xs: 'var(--hds-space-xs)', // 4px comfortable / 2px compact
-    sm: 'var(--hds-space-sm)', // 8px comfortable / 6px compact
+    sm: 'var(--hds-space-sm)', // 8px in both densities (the 6px compact step was cut 2026-10)
     md: 'var(--hds-space-md)', // 16px comfortable / 12px compact
     lg: 'var(--hds-space-lg)', // 24px comfortable / 20px compact
     xl: 'var(--hds-space-xl)', // 32px comfortable / 24px compact
@@ -402,8 +402,16 @@ const hds = {
     px1: 'var(--primitive-space-px1)',
     px2: 'var(--primitive-space-px2)',
     px4: 'var(--primitive-space-1)',
+    /**
+     * @deprecated 6px is off the 4px grid (2026-10 spacing prune). Use px8 or a semantic step.
+     * @removeIn 0.28.0
+     */
     px6: 'var(--primitive-space-px6)',
     px8: 'var(--primitive-space-2)',
+    /**
+     * @deprecated 10px is off the 4px grid (2026-10 spacing prune). Use px12 or a semantic step.
+     * @removeIn 0.28.0
+     */
     px10: 'var(--primitive-space-px10)',
     px12: 'var(--primitive-space-3)',
     px16: 'var(--primitive-space-4)',

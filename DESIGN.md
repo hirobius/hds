@@ -60,14 +60,25 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 <!-- auto:start:spacing -->
 **Base unit: 4px.** All spacing snaps to the primitive scale; never introduce half-steps or arbitrary px values.
 
-Scale: `0px` (`primitive.space.0`) · `1px` (`primitive.space.px1`) · `2px` (`primitive.space.px2`) · `4px` (`primitive.space.1`) · `6px` (`primitive.space.px6`) · `8px` (`primitive.space.2`) · `10px` (`primitive.space.px10`) · `12px` (`primitive.space.3`) · `16px` (`primitive.space.4`) · `20px` (`primitive.space.5`) · `24px` (`primitive.space.6`) · `28px` (`primitive.space.7`) · `32px` (`primitive.space.8`) · `40px` (`primitive.space.10`) · `48px` (`primitive.space.12`) · `64px` (`primitive.space.16`) · `80px` (`primitive.space.20`) · `96px` (`primitive.space.24`) · `128px` (`primitive.space.32`)
+Scale: `0px` (`primitive.space.0`) · `1px` (`primitive.space.px1`) · `2px` (`primitive.space.px2`) · `4px` (`primitive.space.1`) · `8px` (`primitive.space.2`) · `12px` (`primitive.space.3`) · `16px` (`primitive.space.4`) · `20px` (`primitive.space.5`) · `24px` (`primitive.space.6`) · `28px` (`primitive.space.7`) · `32px` (`primitive.space.8`) · `40px` (`primitive.space.10`) · `48px` (`primitive.space.12`) · `64px` (`primitive.space.16`) · `80px` (`primitive.space.20`) · `96px` (`primitive.space.24`) · `128px` (`primitive.space.32`)
 
-Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
+Deprecated (off the 4px grid, never use): `primitive.space.px6`, `primitive.space.px10`. `npx @hirobius/design-system upgrade` rewrites them to the nearest on-grid step.
+
+Semantic scale (comfortable, the default): `xs` 8px · `sm` 20px · `md` 28px · `lg` 40px · `xl` 64px.
+
+Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it steps `semantic.space.scale.sm…xl` one rung down (16/24/32/48px; `xs` stays 8px), and `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
 <!-- auto:end:spacing -->
+
+**Spacing rules of thumb** (2026-10, raised with the type ramp so padding, gaps and line height stay in rhythm):
+
+- **Inner padding ≤ outer gap.** A surface's padding is never larger than the gap around it: a 28px card sits in a grid gap of 28px or more, never 20px.
+- **Nested surfaces step down one level.** A surface inside a surface takes the next smaller step (surface.padding → `sm` → `xs`), or `padding="none"`.
+- **Never mix two paddings on sibling cards.** Cards in one row or list share one padding step.
+- **Semantic tokens only.** Components and consumers use `semantic.space.*` (or the `xs…xl` keys); never a `primitive.space.*` step, a numeric Tailwind class or raw px. `hds/no-primitive-spacing` (in `hds/recommended`) and `check-tailwind-spacing-scale --ratchet` (pretest) fail on them.
 
 ## Layout contract (v1)
 
-Approved 2026-10-07 as the **target**; adoption is in progress, so some components below (Container, Sidebar, Switcher) still ship until they fold in. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`).
+Approved 2026-10-07 as the **target**; adoption is in progress, so some components below (Container, Sidebar, Switcher) still ship until they fold in. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`) and `check-tailwind-spacing-scale --ratchet` (pretest; per-file baseline in `scripts/tailwind-spacing-scale.baseline.json`).
 
 1. **Sizing.** Every component declares `fill` or `hug` on each axis. Leaves hug. Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. One override prop, `width="hug|fill"`, on every component. Height always hugs; stretching is the parent's job (`align="stretch"`). No component sets `h-full`, `height: 100%` or `self-*` on its root.
 2. **Padding.** Only containers pad: Card, Surface, Alert, Callout, Dialog, Page. Compound parts (`Card.Header`, `Body`, `Footer`, `Metric`) have zero padding and the container's `gap` spaces them. Padding is `none | sm | md`, default `md`, density-aware. A padded container directly inside a padded container is an error unless the inner one is `padding="none"`.

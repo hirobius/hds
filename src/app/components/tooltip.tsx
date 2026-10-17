@@ -49,8 +49,8 @@ const PILL_SURFACE_STYLE: React.CSSProperties = {
   color: hds.color.content.onAccent,
   display: 'inline-flex',
   pointerEvents: 'none',
-  paddingBlock: hds.space.px6,
-  paddingInline: hds.space.px16,
+  paddingBlock: hds.semantic.space.scale.xs,
+  paddingInline: hds.semantic.space.scale.sm,
 };
 
 const PILL_TEXT_STYLE: React.CSSProperties = {
