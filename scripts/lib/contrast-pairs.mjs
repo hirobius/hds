@@ -59,6 +59,21 @@ export const PAIRS = [
     text: 'semantic.color.content.onAccent',
     bg: 'semantic.color.surface.accent',
   },
+  {
+    label: 'content.accent / surface.page',
+    text: 'semantic.color.content.accent',
+    bg: 'semantic.color.surface.page',
+  },
+  {
+    label: 'content.accent / surface.raised',
+    text: 'semantic.color.content.accent',
+    bg: 'semantic.color.surface.raised',
+  },
+  {
+    label: 'accent.delight.onDelight / accent.delight.base',
+    text: 'semantic.accent.delight.onDelight',
+    bg: 'semantic.accent.delight.base',
+  },
   // Semantic feedback text on both the page ("background") and raised ("card")
   // surfaces. Consumers theme status UI (Saved / Applied / Interviewing / …)
   // from these tokens, so each must clear AA for small text on both surfaces in

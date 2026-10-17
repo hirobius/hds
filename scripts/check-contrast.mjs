@@ -16,6 +16,7 @@
  * Exits 1 if any pair fails.
  */
 
+import { readdirSync, readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { readTokenSource } from './lib/token-source.mjs';
@@ -53,9 +54,10 @@ function getByPath(obj, path) {
  * Resolve a semantic color token to a concrete hex string for a given mode.
  * For light: uses $value (after alias resolution).
  * For dark:  uses $extensions['com.figma.variables'].modes.Dark, falls back to $value.
+ * With an `overlay` (an accent theme), its leaf wins over the base leaf.
  */
-function resolveSemanticHex(dotPath, mode) {
-  const node = getByPath(tokens, dotPath);
+function resolveSemanticHex(dotPath, mode, overlay = null) {
+  const node = (overlay && getByPath(overlay, dotPath)) || getByPath(tokens, dotPath);
   if (!node) throw new Error(`Semantic token not found: ${dotPath}`);
 
   let rawValue;
@@ -117,7 +119,7 @@ function passNonText(ratio) {
 
 // ── Main ──────────────────────────────────────────────────────
 
-const COL_PAIR = 34;
+const COL_PAIR = 50;
 const COL_RATIO = 8;
 
 function fmt(ratio) {
@@ -131,11 +133,34 @@ function _aaaGlyph(ratio) {
   return passAAA(ratio) ? '✓' : '✗';
 }
 
-const results = PAIRS.map(({ label, text, bg }) => {
-  const textLight = resolveSemanticHex(text, 'light');
-  const bgLight = resolveSemanticHex(bg, 'light');
-  const textDark = resolveSemanticHex(text, 'dark');
-  const bgDark = resolveSemanticHex(bg, 'dark');
+// Accent themes (accents/<name>/tokens.json, data-accent) re-run the accent pairs
+// with the overlay laid over the base, so an opt-in accent is held to the same bar.
+const accentsDir = resolve(__dirname, '../accents');
+const accentThemes = isFixtureMode
+  ? []
+  : readdirSync(accentsDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory() && !d.name.startsWith('_'))
+      .map((d) => ({
+        name: d.name,
+        overlay: JSON.parse(readFileSync(resolve(accentsDir, d.name, 'tokens.json'), 'utf8')),
+      }));
+const ACCENT_PAIR = /\.accent(?!\.delight)|onAccent|accentSubtle/;
+const allPairs = [
+  ...PAIRS,
+  ...accentThemes.flatMap(({ name, overlay }) =>
+    PAIRS.filter((p) => ACCENT_PAIR.test(p.text) || ACCENT_PAIR.test(p.bg)).map((p) => ({
+      ...p,
+      label: `${p.label} [${name}]`,
+      overlay,
+    })),
+  ),
+];
+
+const results = allPairs.map(({ label, text, bg, overlay }) => {
+  const textLight = resolveSemanticHex(text, 'light', overlay);
+  const bgLight = resolveSemanticHex(bg, 'light', overlay);
+  const textDark = resolveSemanticHex(text, 'dark', overlay);
+  const bgDark = resolveSemanticHex(bg, 'dark', overlay);
 
   const lightRatio = contrastRatio(textLight, bgLight);
   const darkRatio = contrastRatio(textDark, bgDark);
