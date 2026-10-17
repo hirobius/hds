@@ -40,6 +40,14 @@ import { join, dirname, extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
 import { scanSources, findMarker, maskComments, isSpecFile } from './lib/source-scan.mjs';
+import {
+  ROUND,
+  TONE_FILL,
+  WIDE,
+  STATUS_GLYPH,
+  isAccentBarClassList,
+  isDotClassList,
+} from './eslint-plugin-hds/rules/status-clutter-patterns.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -65,18 +73,8 @@ const SKIP_DIRS = [
 ];
 const COMMENT_LEADS = ' \t;,{(';
 
-const BAR = /^(?:[\w-]+:)*border-l-(?:[2-8]|\[[2-8]px\])$/;
-const TONE_COLOUR =
-  /^(?:[\w-]+:)*border-(?:l-)?(?:feedback-[\w-]+|accent[\w-]*|primary[\w-]*|info|success|warning|danger|blue-[\w-]+)$/;
-
-// A small round tone-coloured span (hds#759).
-const ROUND = /^(?:[\w-]+:)*rounded-full$/;
-const SMALL = /^(?:[\w-]+:)*(?:size|h|w)-(?:0\.5|1|1\.5|2|2\.5|3|\[(?:[1-9]|1[0-2])px\])$/;
-const TONE_FILL =
-  /^(?:[\w-]+:)*bg-(?:feedback-[\w-]+|(?:success|warning|danger|info|error|destructive)[\w-]*|(?:green|red|amber|yellow|emerald|lime|orange|rose)-\d+|\[(?:color:)?var\(--[^)]*(?:feedback|success|warning|danger|error|info)[^)]*\)\])$/;
-const DOT_CLASS = /^(?:[\w-]+:)*[\w-]+-dot$/;
 const DOT_SELECTOR = /\.(?:[\w-]+-)?dot(?![\w-])/;
-const STATUS_GLYPH = /[●⬤◉🟢🟡🔴🟠🔵🟣]/u;
+const CSS_EXTENSIONS = new Set(['.css', '.html']);
 const CSS_RULE = /([^{}]*)\{([^{}]*)\}/g;
 
 /**
@@ -114,7 +112,7 @@ function isToneDotRule(body) {
   if (!/border-radius\s*:\s*(?:50%|100%|9{3,}px)/.test(body)) return false;
   const w = /(?:^|[;\s])(?:width|inline-size)\s*:\s*(\d+(?:\.\d+)?)px/.exec(body);
   if (!w || Number(w[1]) > 12) return false;
-  return /background(?:-color)?\s*:[^;]*(?:feedback|success|warning|danger|error|info|green|red|amber)/.test(
+  return /background(?:-color)?\s*:[^;]*(?:var\(--[\w-]*(?:feedback|success|warning|danger|error|info)[\w-]*\)|(?<![\w-])(?:green|red|amber|orange|lime)(?![\w-]))/.test(
     body,
   );
 }
@@ -174,7 +172,12 @@ export function findViolationsInText(text, file) {
     const tokens = [...maskedText.slice(m.index, end).matchAll(STRING_LITERAL)].flatMap((s) =>
       (s[1] ?? s[2] ?? s[3] ?? '').split(/\s+/),
     );
-    if (tokens.some((t) => ROUND.test(t)) && tokens.some((t) => TONE_FILL.test(t))) {
+    // A pill (padded or full width) is a chip, not a dot.
+    if (
+      tokens.some((t) => ROUND.test(t)) &&
+      tokens.some((t) => TONE_FILL.test(t)) &&
+      !tokens.some((t) => WIDE.test(t))
+    ) {
       found.push([
         lineOf(m.index),
         0,
@@ -185,7 +188,9 @@ export function findViolationsInText(text, file) {
   }
 
   // CSS rules: a `*-dot` selector, or a small round tone-coloured block.
-  for (const m of maskedText.matchAll(CSS_RULE)) {
+  // Stylesheets only: in code, `if (props.dot) {` reads like a selector.
+  const cssRules = CSS_EXTENSIONS.has(extname(file)) ? maskedText.matchAll(CSS_RULE) : [];
+  for (const m of cssRules) {
     const selector = m[1].split(/[;}]/).pop();
     const at = lineOf(m.index + m[0].length - m[2].length - 1);
     if (DOT_SELECTOR.test(selector) && /^[\s\w.#:,>~+\-[\]="'()*]+$/.test(selector)) {
@@ -228,7 +233,7 @@ export function findViolationsInText(text, file) {
     }
     for (const m of line.matchAll(STRING_LITERAL)) {
       const tokens = (m[1] ?? m[2] ?? m[3] ?? '').split(/\s+/).filter(Boolean);
-      if (tokens.some((t) => BAR.test(t)) && tokens.some((t) => TONE_COLOUR.test(t))) {
+      if (isAccentBarClassList(tokens)) {
         found.push([
           i,
           m.index,
@@ -236,24 +241,8 @@ export function findViolationsInText(text, file) {
           'Coloured left-border bar: drop it, status is implied by content',
         ]);
       }
-      if (tokens.some((t) => DOT_CLASS.test(t))) {
-        found.push([
-          i,
-          m.index,
-          'no-dot-class',
-          '`*-dot` class: no status dots, write the status as text',
-        ]);
-      } else if (
-        tokens.some((t) => ROUND.test(t)) &&
-        tokens.some((t) => SMALL.test(t)) &&
-        tokens.some((t) => TONE_FILL.test(t))
-      ) {
-        found.push([
-          i,
-          m.index,
-          'no-tone-dot',
-          'Small round tone-coloured dot: write the status as text',
-        ]);
+      if (isDotClassList(tokens)) {
+        found.push([i, m.index, 'no-tone-dot', 'Status dot class: write the status as text']);
       }
     }
   });

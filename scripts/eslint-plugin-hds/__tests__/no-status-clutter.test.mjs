@@ -39,5 +39,9 @@ makeRuleTester().run('no-status-clutter', rule, {
       code: 'const x = <span>● Online</span>;',
       errors: [{ messageId: 'dot' }],
     },
+    {
+      code: 'const x = <span>{"●"} Online</span>;',
+      errors: [{ messageId: 'dot' }],
+    },
   ],
 });

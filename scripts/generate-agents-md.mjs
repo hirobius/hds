@@ -186,6 +186,7 @@ export function buildAgentsMd({ componentApi, patternNames, repoNotes, voice }) 
     '- No raw `<button>`, `<input>`, `<select>`, `<textarea>` or `<form>`: use `Button`, `Input`, `Select`, `Textarea`, `Form`.',
     '- Every control has an accessible name: fields take `label`, a repeated row action takes an `aria-label` naming its row.',
     '- Section headings come from the pattern that owns the section (`title` props). Do not add a `Text` heading the screen does not ask for.',
+    '- No status dots: never mark status with a small coloured circle, a `*-dot` class or a ● glyph. Write it as text in a `Badge` (`hds/no-status-clutter` flags a dot).',
     '',
     ...(voice ? ['## Voice', '', voiceMarkdown(voice), ''] : []),
     '## Finish with the lint plugin',

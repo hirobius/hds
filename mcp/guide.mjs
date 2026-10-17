@@ -91,8 +91,8 @@ export const INTENTS = [
     need: 'Status label in a header or table cell',
     keywords: ['status', 'state', 'label', 'chip', 'pill', 'badge'],
     use: ['Badge'],
-    avoid: ['Tag', 'Text'],
-    how: '`<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.',
+    avoid: ['Tag', 'Text', 'a status dot (a small coloured circle or ● glyph)'],
+    how: '`<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input. No status dots: the status is always words.',
   },
   {
     id: 'form',

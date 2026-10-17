@@ -76,6 +76,22 @@ describe('findViolationsInText', () => {
     expect(find("const v = cva('rounded-full bg-muted', { variants: {} });")).toHaveLength(0);
   });
 
+  it('does not misread code or non-tone backgrounds (review findings)', () => {
+    expect(find('if (props.dot) {\n  run();\n}')).toHaveLength(0);
+    expect(
+      find('.x { width: 8px; border-radius: 50%; background: url(shared.png); }', 'x.css'),
+    ).toHaveLength(0);
+    expect(
+      find(
+        "const pill = cva('rounded-full px-2', { variants: { t: { a: 'bg-feedback-info' } } });",
+      ),
+    ).toHaveLength(0);
+  });
+
+  it('catches a tone fill with an opacity suffix', () => {
+    expect(find('<span className="rounded-full size-2 bg-success/20" />')).toHaveLength(1);
+  });
+
   it('allows round shapes that are not status: avatars, spinners, neutral markers', () => {
     expect(find('<span className="size-10 rounded-full bg-muted" />')).toHaveLength(0);
     expect(find('<span className="size-2 rounded-full bg-current" />')).toHaveLength(0);

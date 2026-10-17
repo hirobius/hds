@@ -33,8 +33,8 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
   `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
 - **Switch between panels of related content** → `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. Not: `SegmentedControl`, Button rows.
   `<Tabs defaultValue="a"><TabsList><TabsTrigger value="a">A</TabsTrigger></TabsList><TabsContent value="a">…</TabsContent></Tabs>`.
-- **Status label in a header or table cell** → `Badge`. Not: `Tag`, `Text`.
-  `<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.
+- **Status label in a header or table cell** → `Badge`. Not: `Tag`, `Text`, a status dot (a small coloured circle or ● glyph).
+  `<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input. No status dots: the status is always words.
 - **Form with fields and a submit button** → `Form`, `Textarea`, `Input`, `FormActions`, `Button`. Not: a raw `<form>`, a Stack of Buttons as the footer.
   `<Form onSubmit={…}><Textarea label="Notes" … /><FormActions primary={<Button type="submit">Save note</Button>} /></Form>`; every field takes its own `label`.
 - **Confirm a destructive or irreversible action (delete, archive, remove)** → `AlertDialog`, `Button`. Not: `Dialog`, `window.confirm`.
@@ -78,6 +78,7 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 - No raw `<button>`, `<input>`, `<select>`, `<textarea>` or `<form>`: use `Button`, `Input`, `Select`, `Textarea`, `Form`.
 - Every control has an accessible name: fields take `label`, a repeated row action takes an `aria-label` naming its row.
 - Section headings come from the pattern that owns the section (`title` props). Do not add a `Text` heading the screen does not ask for.
+- No status dots: never mark status with a small coloured circle, a `*-dot` class or a ● glyph. Write it as text in a `Badge` (`hds/no-status-clutter` flags a dot).
 
 ## Voice
 
