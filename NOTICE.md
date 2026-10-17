@@ -7,4 +7,4 @@
 - **Bricolage Grotesque** (weight 700 with the optical-size axis, by Mathieu Triay, [source](https://github.com/ateliertriay/bricolage), Latin subset): SIL Open Font License 1.1.
 - **IBM Plex Mono** (weight 400, by IBM, [source](https://github.com/IBM/plex)): SIL Open Font License 1.1.
 
-Both fonts ship as woff2 files in `dist/fonts/`, declared by the opt-in `dist/fonts.css`; each font's license text ships beside it as `dist/fonts/<family>-LICENSE.txt`. The MIT license does not cover the fonts. `dist/tokens.css`, `dist/styles.css` and `dist/variables.css` embed no fonts.
+All three fonts ship as woff2 files in `dist/fonts/`, declared by the opt-in `dist/fonts.css`; each font's license text ships beside it as `dist/fonts/<family>-LICENSE.txt`. The MIT license does not cover the fonts. `dist/tokens.css`, `dist/styles.css` and `dist/variables.css` embed no fonts.

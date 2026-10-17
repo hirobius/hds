@@ -42,8 +42,9 @@ export const FONTS = [
 
 const banner =
   '/* @hirobius/design-system/fonts.css — OPTIONAL brand fonts: Plus Jakarta Sans 400/500/700,\n' +
-  ' * Bricolage Grotesque 700 (display and titles) and IBM Plex Mono 400. tokens.css and styles.css do not include them. Import this\n' +
-  ' * once at the app root for the HDS faces, or skip it and load your own; the\n' +
+  ' * Bricolage Grotesque 700 (display and titles) and IBM Plex Mono 400. tokens.css and\n' +
+  ' * styles.css do not include them. Import this once at the app root for the HDS\n' +
+  ' * faces, or skip it and load your own; the\n' +
   ' * font-family variables in tokens.css fall back to the family stack either way.\n' +
   ' * The woff2 URLs are relative to this file so your bundler resolves and hashes them. */\n';
 

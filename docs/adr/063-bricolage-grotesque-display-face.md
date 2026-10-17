@@ -59,9 +59,20 @@ copies it into `dist/fonts/`, NOTICE.md lists the face, and the package licence 
 - **Load from Google Fonts.** Rejected by ADR-060: consumers fall back silently when a
   remote request fails, and the docs app's CLS budget needs local, preloaded files.
 
+## Rationale
+
+Adrian chose the face from the explorations; the reasons recorded here are the
+engineering ones. Pointing the existing `family.display` token at the new face moves
+exactly the roles that should move and nothing else, so it is a token change with no
+component edits. The licence matches the faces already shipped, so ADR-060's rules
+hold unchanged. Keeping the optical-size axis is what makes one weight serve 18px
+titles and 48px display alike. The display dial keeps ADR-023's promise that every
+font a consumer sees can be set at any scope.
+
 ## Consequences
 
-- Without `fonts.css`, headings render in Plus Jakarta Sans Bold, as before.
+- Without `fonts.css`, headings fall down the stack, as every face does: Plus Jakarta
+  Sans if the consumer loads it, otherwise the system sans.
 - The opt-in font payload grows by about 34 KB.
 - A consumer that set `--hds-font-family` and expects its headings to match must also
   set `--hds-font-family-display`. The 0.x minor changeset and its upgrade note say so.

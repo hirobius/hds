@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-17T19:56:20.736Z",
+  "generated": "2026-10-17T20:15:56.506Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11999,7 +11999,7 @@
         "path": "semantic.color.content.tertiary",
         "cssVar": "--semantic-color-content-tertiary",
         "type": "color",
-        "description": "Third text level for helper text, counts and form notes; meets 4.5:1 on page and raised surfaces in both themes.",
+        "description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
         "alias": "{primitive.color.neutral.500}",
         "resolvedValue": "#737373",
         "dark": {
@@ -12116,7 +12116,7 @@
         "path": "semantic.color.border.subdued",
         "cssVar": "--semantic-color-border-subdued",
         "type": "color",
-        "description": "Quiet divider border. DEPRECATED (2026-10-12): use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
+        "description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {

@@ -1303,7 +1303,7 @@
         },
         "tertiary": {
           "$value": "{primitive.color.neutral.500}",
-          "$description": "Third text level for helper text, counts and form notes; meets 4.5:1 on page and raised surfaces in both themes.",
+          "$description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1422,7 +1422,7 @@
         },
         "subdued": {
           "$value": "{primitive.color.neutral.200}",
-          "$description": "Quiet divider border. DEPRECATED (2026-10-12): use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
+          "$description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
           "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
           "$extensions": {
             "com.figma.variables": {
