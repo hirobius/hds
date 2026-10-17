@@ -1,7 +1,7 @@
 /* Mono typography for code/pre/kbd/samp and `.font-mono`. Deliberately UNLAYERED, unlike
-   utilities.css (#698): these element rules must beat host-app layered styles (Fumadocs'
+   utilities.css (hds#698): these element rules must beat host-app layered styles (Fumadocs'
    prose `code` is 13px; this keeps HDS's mono size). Moving them into a layer silently
-   changed docs inline code 15px -> 13px (#754). Guarded by
+   changed docs inline code 15px -> 13px (hds#754). Guarded by
    __tests__/utilities-layer.test.ts and tests/visual/docs-cascade.spec.ts.
    The three type utilities below stay after the block (and unlayered) so they still override
    it, exactly as they did when all of this lived unlayered in utilities.css. */
