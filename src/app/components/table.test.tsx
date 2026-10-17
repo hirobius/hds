@@ -142,3 +142,45 @@ describe('Table — density follows the data-density dial (hds#336)', () => {
     }
   });
 });
+
+describe('Table — layout and restyle', () => {
+  it('gives a column without a width a min-content floor, so content cannot spill out of its cell', () => {
+    render(<Table columns={columnsWith({})} rows={rows} />);
+    const grid = screen.getByRole('table');
+    expect(grid.style.gridTemplateColumns).toBe(
+      'minmax(min-content, 1fr) minmax(min-content, 1fr)',
+    );
+  });
+
+  it('keeps an explicit column width as its track', () => {
+    render(<Table columns={columnsWith({ width: 'max-content' })} rows={rows} />);
+    expect(screen.getByRole('table').style.gridTemplateColumns).toBe(
+      'max-content minmax(min-content, 1fr)',
+    );
+  });
+
+  it('draws a column divider before every body cell but the first', () => {
+    render(<Table columns={columnsWith({})} rows={rows} />);
+    const [first, second] = screen.getAllByRole('cell');
+    expect(first.className).not.toContain('border-left');
+    expect(second.className).toContain('border-left');
+  });
+
+  it('sets the body in the regular weight and emphasises the first column only when asked', () => {
+    const { unmount } = render(<Table columns={columnsWith({})} rows={rows} />);
+    expect(screen.getAllByRole('cell')[0].style.fontWeight).toBe(
+      'var(--semantic-typography-body-font-weight)',
+    );
+    unmount();
+    render(<Table columns={columnsWith({})} rows={rows} emphasizeFirstColumn />);
+    const [first, second] = screen.getAllByRole('cell');
+    expect(first.style.fontWeight).toBe('var(--semantic-typography-ui-font-weight)');
+    expect(second.style.fontWeight).toBe('var(--semantic-typography-body-font-weight)');
+  });
+
+  it('a11y:table.scroll-region-focusable - keeps the scroll region a named tab stop', () => {
+    render(<Table caption="Projects" columns={columnsWith({})} rows={rows} />);
+    const region = screen.getByRole('region', { name: 'Projects' });
+    expect(region.tabIndex).toBe(0);
+  });
+});

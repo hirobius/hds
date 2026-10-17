@@ -191,33 +191,59 @@ function MenuDemo() {
   );
 }
 
+// Wide on purpose: a long role, a bare link and an action row are what used to shear
+// a table on desktop (tests/visual/table-clipping.spec.ts guards it).
+const TABLE_DEMO_ROWS = [
+  {
+    key: 'portfolio',
+    name: 'Portfolio redesign',
+    summary: 'Case studies, about page and the new design-system section',
+    href: 'https://hirobius.com/work/portfolio-redesign-2026',
+    status: 'Active',
+    updated: '2026-10-05',
+  },
+  {
+    key: 'tokens',
+    name: 'Token audit',
+    summary: 'Contrast and naming review across the light and dark themes',
+    href: 'https://hirobius.com/work/token-audit',
+    status: 'Review',
+    updated: '2026-10-02',
+  },
+];
+
 function TableDemo() {
   return (
     <Table
       caption="Recent projects"
+      emphasizeFirstColumn
       columns={[
         { key: 'name', label: 'Project' },
+        { key: 'summary', label: 'Summary' },
+        { key: 'link', label: 'Link' },
         { key: 'status', label: 'Status' },
         { key: 'updated', label: 'Updated', align: 'right' },
+        { key: 'actions', label: 'Actions', align: 'right' },
       ]}
-      rows={[
-        {
-          key: 'portfolio',
-          cells: [
-            { slot: 'label', content: 'Portfolio redesign' },
-            { slot: 'badge', content: 'Active' },
-            { slot: 'value', content: '2026-10-05', align: 'right' },
-          ],
-        },
-        {
-          key: 'tokens',
-          cells: [
-            { slot: 'label', content: 'Token audit' },
-            { slot: 'badge', content: 'Review' },
-            { slot: 'value', content: '2026-10-02', align: 'right' },
-          ],
-        },
-      ]}
+      rows={TABLE_DEMO_ROWS.map((row) => ({
+        key: row.key,
+        cells: [
+          { slot: 'label', content: row.name },
+          { slot: 'description', content: row.summary },
+          { slot: 'action', content: <InlineLink href={row.href}>{row.href}</InlineLink> },
+          { slot: 'badge', content: <Badge>{row.status}</Badge> },
+          { slot: 'value', content: row.updated, align: 'right' },
+          {
+            slot: 'action',
+            align: 'right',
+            content: (
+              <Button size="sm" variant="secondary">
+                Open brief
+              </Button>
+            ),
+          },
+        ],
+      }))}
     />
   );
 }

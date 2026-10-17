@@ -631,6 +631,7 @@ Table - structured data table primitive for documentation and compact UI matrice
   - columns: TableColumn[]
   - density: 'compact' | 'comfortable'
   - description: ReactNode
+  - emphasizeFirstColumn: boolean = false
   - flush: boolean = true
   - labelledBy: string
   - minWidth: string | number

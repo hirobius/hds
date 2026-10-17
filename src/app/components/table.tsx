@@ -15,13 +15,20 @@
  * @a11y consumer required Name the table with a caption or aria-labelledby when more than one is on the screen.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300
  */
-import { useId, type CSSProperties, type ReactNode } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import { cva } from 'class-variance-authority';
 import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { Icon } from './icon';
-import { Surface } from './surface';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `density` is the variant contract's canonical density example (comfortable |
@@ -31,9 +38,14 @@ import { Surface } from './surface';
 // header-pin and row-separator states. All four are cva axes bound to Tailwind
 // arbitrary-value classes over the same CSS custom properties the previous
 // inline styles referenced — same tokens, pixel-parity.
+// A column without its own `width` never narrows below one tile (size.tile) per cell,
+// so a wrapping link still reads in lines, not letters, on a phone; past that the
+// frame scrolls. A column with an explicit `width` is sized by that track alone.
+const COLUMN_FLOOR = { true: 'min-w-[var(--semantic-size-tile)]', false: 'min-w-0' } as const;
+
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableHeaderCellVariants = /* @__PURE__ */ cva(
-  'flex items-center bg-[var(--semantic-color-surface-overlay)] px-[var(--semantic-space-surface-padding)]',
+  'flex items-center bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-surface-padding)] [border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)] [overflow-wrap:break-word]',
   {
     variants: {
       align: {
@@ -52,8 +64,9 @@ const tableHeaderCellVariants = /* @__PURE__ */ cva(
         true: 'sticky top-0 z-[var(--semantic-zIndex-sticky)]',
         false: '',
       },
+      floor: COLUMN_FLOOR,
     },
-    defaultVariants: { align: 'left', sticky: false },
+    defaultVariants: { align: 'left', sticky: false, floor: true },
   },
 );
 
@@ -79,7 +92,10 @@ const tableSortButtonVariants = /* @__PURE__ */ cva(
   },
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row-divider border tokens have no Tailwind-theme utility; var()-based so still token-driven
+// Body rows breathe more than the header (scale.sm, 16px, where the header keeps
+// component.medium) and carry thin rules both ways: `divider` under every row but the
+// last, `columnDivider` before every cell but the first. No zebra fill.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row/column divider border tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableDataCellVariants = /* @__PURE__ */ cva(
   // items-center (not items-start) so mixed cell content lines up on a shared
   // vertical center — a badge/status slot no longer floats above its text
@@ -94,21 +110,82 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
       },
       density: {
         follow:
-          'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)] [[data-density=compact]_&]:min-h-[var(--semantic-size-row-compact)] [[data-density=compact]_&]:py-[var(--semantic-space-scale-xs)]',
+          'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-scale-sm)] [[data-density=compact]_&]:min-h-[var(--semantic-size-row-compact)] [[data-density=compact]_&]:py-[var(--semantic-space-scale-xs)]',
         comfortable:
-          'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-component-medium)]',
+          'min-h-[var(--semantic-size-row-comfortable)] py-[var(--semantic-space-scale-sm)]',
         compact: 'min-h-[var(--semantic-size-row-compact)] py-[var(--semantic-space-scale-xs)]',
       },
       divider: {
         true: '[border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',
         false: '',
       },
+      columnDivider: {
+        true: '[border-left:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]',
+        false: '',
+      },
+      // Text wraps between words and keeps every word whole, so a column is never
+      // narrower than its longest word and the frame scrolls before a word splits.
+      // An action cell (a bare link, a URL) may break anywhere, so a long link wraps
+      // inside its column instead of pushing the table wide.
+      wrap: {
+        words: '[overflow-wrap:break-word]',
+        anywhere: '[overflow-wrap:anywhere]',
+      },
+      floor: COLUMN_FLOOR,
     },
-    defaultVariants: { align: 'left', divider: true },
+    defaultVariants: {
+      align: 'left',
+      divider: true,
+      columnDivider: false,
+      wrap: 'words',
+      floor: true,
+    },
+  },
+);
+
+// The frame owns the border and the rounded corners; the scroll region inside it
+// owns the scrolling, so the edge fade below never fades the border.
+const tableFrameClass =
+  'overflow-hidden rounded-lg text-[color:var(--semantic-color-content-primary)] [border:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-subdued)]';
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding token has no Tailwind-theme utility; var()-based so still token-driven
+const tableRegionVariants = /* @__PURE__ */ cva(
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+  {
+    variants: {
+      flush: {
+        true: 'p-0',
+        false: 'p-[var(--semantic-space-surface-padding)]',
+      },
+    },
+    defaultVariants: { flush: true },
   },
 );
 
 // ── Types ──────────────────────────────────────────────────────────────────────
+
+/** Which edges of the scroll region have columns scrolled out of view. */
+type TableOverflow = 'start' | 'end' | 'both' | undefined;
+
+function measureOverflow(el: HTMLElement): TableOverflow {
+  const hiddenStart = el.scrollLeft > 1;
+  const hiddenEnd = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
+  if (hiddenStart && hiddenEnd) return 'both';
+  if (hiddenStart) return 'start';
+  if (hiddenEnd) return 'end';
+  return undefined;
+}
+
+const FADE = 'var(--semantic-space-scale-lg)';
+
+/** Mask that fades the edge(s) with hidden columns, one fade width (scale.lg) deep. Same cue as TabsList. */
+function fadeStyle(overflow: TableOverflow): CSSProperties | undefined {
+  if (!overflow) return undefined;
+  const start = overflow === 'end' ? '0px' : FADE;
+  const end = overflow === 'start' ? '0px' : FADE;
+  const mask = `linear-gradient(90deg,transparent,currentColor ${start},currentColor calc(100% - ${end}),transparent)`;
+  return { maskImage: mask, WebkitMaskImage: mask };
+}
 
 /** @public */
 export type TableColumnAlign = 'left' | 'center' | 'right';
@@ -132,7 +209,10 @@ export type TableColumnWidth =
 export type TableColumn = {
   key: string;
   label: ReactNode;
-  /** Grid track for this column; defaults to `minmax(0, 1fr)`. */
+  /**
+   * Grid track for this column; defaults to `minmax(min-content, 1fr)`, so a column
+   * never squeezes below its content (prose wraps, literals and controls hold).
+   */
   width?: TableColumnWidth;
   align?: TableColumnAlign;
   /** Renders the header as a button and sets `aria-sort` on the header cell. */
@@ -184,19 +264,28 @@ type TableDensity = 'compact' | 'comfortable';
 // (see Text primitive, src/app/components/text.tsx), so this mirrors the
 // established `style={hds.typeStyles.X}` pattern used by already-converted
 // cva components like Breadcrumb.
+// Body text is the ui size at the regular weight, so the medium-weight header and an
+// emphasised first column read as the stronger voices.
+const BODY_TEXT: CSSProperties = {
+  ...hds.typeStyles.ui,
+  fontWeight: 'var(--semantic-typography-body-font-weight)',
+};
+const HEADER_TEXT: CSSProperties = hds.typeStyles.ui;
+const EMPHASIS: CSSProperties = { fontWeight: 'var(--semantic-typography-ui-font-weight)' };
+
 const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
-  label: hds.typeStyles.ui,
-  value: hds.typeStyles.ui,
+  label: BODY_TEXT,
+  value: BODY_TEXT,
   description: {
     ...hds.typeStyles.caption,
     color: 'var(--semantic-color-content-secondary)',
   },
   token: hds.typeStyles.mono,
   code: hds.typeStyles.mono,
-  custom: hds.typeStyles.ui,
+  custom: BODY_TEXT,
   icon: hds.typeStyles.caption,
   badge: hds.typeStyles.caption,
-  action: hds.typeStyles.ui,
+  action: BODY_TEXT,
 };
 
 export function Table({
@@ -210,6 +299,7 @@ export function Table({
   density,
   flush = true,
   stickyHeader = false,
+  emphasizeFirstColumn = false,
 }: {
   columns: TableColumn[];
   rows: TableRow[];
@@ -236,11 +326,29 @@ export function Table({
    */
   flush?: boolean;
   stickyHeader?: boolean;
+  /** Set the first column's body cells in the medium weight, for a row-label column. */
+  emphasizeFirstColumn?: boolean;
 }) {
   const captionId = useId();
   const regionId = useId();
   const hasCaption = Boolean(caption);
   const nameId = hasCaption ? captionId : labelledBy;
+  const regionRef = useRef<HTMLDivElement | null>(null);
+  const [overflow, setOverflow] = useState<TableOverflow>(undefined);
+
+  const updateOverflow = useCallback(() => {
+    if (regionRef.current) setOverflow(measureOverflow(regionRef.current));
+  }, []);
+
+  useEffect(() => {
+    updateOverflow();
+    const el = regionRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(updateOverflow);
+    ro.observe(el);
+    if (el.firstElementChild) ro.observe(el.firstElementChild);
+    return () => ro.disconnect();
+  }, [updateOverflow]);
 
   return (
     <div className="min-w-0 max-w-full">
@@ -267,113 +375,132 @@ export function Table({
           ) : null}
         </div>
       ) : null}
-      <Surface
-        padding={flush ? 'none' : 'component'}
-        id={regionId}
-        role="region"
-        tabIndex={0}
-        aria-labelledby={
-          hasCaption ? captionId : labelledBy ? `${labelledBy} ${regionId}` : undefined
-        }
-        aria-label={hasCaption ? undefined : 'Scrollable table content'}
-        style={{ overflowX: 'auto', overflowY: 'visible' }}
-      >
+      <div className={tableFrameClass}>
         <div
-          role="table"
-          aria-labelledby={nameId}
-          className="grid"
-          style={{
-            minWidth,
-            gridTemplateColumns: columns
-              .map((column) => column.width ?? 'minmax(0, 1fr)')
-              .join(' '),
-          }}
+          ref={regionRef}
+          id={regionId}
+          role="region"
+          // a11y:table.scroll-region-focusable: a named region keyboard users can scroll (1.4.10).
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+          tabIndex={0}
+          aria-labelledby={
+            hasCaption ? captionId : labelledBy ? `${labelledBy} ${regionId}` : undefined
+          }
+          aria-label={hasCaption ? undefined : 'Scrollable table content'}
+          data-overflow={overflow}
+          onScroll={updateOverflow}
+          className={tableRegionVariants({ flush })}
+          style={{ overflowX: 'auto', overflowY: 'visible', ...fadeStyle(overflow) }}
         >
-          {/*
-           * `display: contents` keeps this wrapper out of the CSS Grid layout
-           * entirely — its children still lay out as direct grid items,
-           * pixel-identical to before — while giving ARIA a real row to hang
-           * columnheader/cell roles from. Without it, `role="columnheader"`
-           * on a header cell is an orphan (no row → no table ancestor chain),
-           * which axe flags as aria-required-parent (critical).
-           */}
-          <div role="row" style={{ display: 'contents' }}>
-            {columns.map((column) => {
-              if (!column.sortable) {
+          <div
+            role="table"
+            aria-labelledby={nameId}
+            className="grid"
+            style={{
+              minWidth,
+              // min-content floor, not 0: a `minmax(0, 1fr)` track let a link or a
+              // button row spill out of its cell and past the frame, where nothing
+              // could scroll to it (the desktop "sheared table" bug).
+              gridTemplateColumns: columns
+                .map((column) => column.width ?? 'minmax(min-content, 1fr)')
+                .join(' '),
+            }}
+          >
+            {/*
+             * `display: contents` keeps this wrapper out of the CSS Grid layout
+             * entirely — its children still lay out as direct grid items,
+             * pixel-identical to before — while giving ARIA a real row to hang
+             * columnheader/cell roles from. Without it, `role="columnheader"`
+             * on a header cell is an orphan (no row → no table ancestor chain),
+             * which axe flags as aria-required-parent (critical).
+             */}
+            <div role="row" style={{ display: 'contents' }}>
+              {columns.map((column) => {
+                if (!column.sortable) {
+                  return (
+                    <div
+                      key={column.key}
+                      role="columnheader"
+                      className={cn(
+                        tableHeaderCellVariants({
+                          align: column.align ?? 'left',
+                          density: density ?? 'follow',
+                          sticky: Boolean(stickyHeader),
+                          floor: !column.width,
+                        }),
+                      )}
+                      style={HEADER_TEXT}
+                    >
+                      {column.label}
+                    </div>
+                  );
+                }
+
+                const direction = column.sortDirection ?? 'none';
+                const DirectionIcon =
+                  direction === 'ascending'
+                    ? ArrowUp
+                    : direction === 'descending'
+                      ? ArrowDown
+                      : ArrowUpDown;
+
                 return (
                   <div
                     key={column.key}
                     role="columnheader"
+                    aria-sort={direction}
                     className={cn(
                       tableHeaderCellVariants({
                         align: column.align ?? 'left',
                         density: density ?? 'follow',
                         sticky: Boolean(stickyHeader),
+                        floor: !column.width,
                       }),
                     )}
-                    style={hds.typeStyles.caption}
+                    style={HEADER_TEXT}
                   >
-                    {column.label}
+                    <button
+                      type="button"
+                      onClick={column.onSort}
+                      className={cn(tableSortButtonVariants({ align: column.align ?? 'left' }))}
+                    >
+                      {column.label}
+                      <Icon icon={DirectionIcon} size="small" aria-hidden />
+                    </button>
                   </div>
                 );
-              }
-
-              const direction = column.sortDirection ?? 'none';
-              const DirectionIcon =
-                direction === 'ascending'
-                  ? ArrowUp
-                  : direction === 'descending'
-                    ? ArrowDown
-                    : ArrowUpDown;
-
-              return (
-                <div
-                  key={column.key}
-                  role="columnheader"
-                  aria-sort={direction}
-                  className={cn(
-                    tableHeaderCellVariants({
-                      align: column.align ?? 'left',
-                      density: density ?? 'follow',
-                      sticky: Boolean(stickyHeader),
-                    }),
-                  )}
-                  style={hds.typeStyles.caption}
-                >
-                  <button
-                    type="button"
-                    onClick={column.onSort}
-                    className={cn(tableSortButtonVariants({ align: column.align ?? 'left' }))}
-                  >
-                    {column.label}
-                    <Icon icon={DirectionIcon} size="small" aria-hidden />
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-          {rows.map((row, rowIndex) => (
-            <div key={row.key ?? rowIndex} role="row" style={{ display: 'contents' }}>
-              {row.cells.map((cell, cellIndex) => (
-                <div
-                  key={`${row.key ?? rowIndex}-${cellIndex}`}
-                  role="cell"
-                  className={cn(
-                    tableDataCellVariants({
-                      align: cell.align ?? 'left',
-                      density: density ?? 'follow',
-                      divider: rowIndex < rows.length - 1,
-                    }),
-                  )}
-                  style={SLOT_STYLES[cell.slot]}
-                >
-                  {cell.content}
-                </div>
-              ))}
+              })}
             </div>
-          ))}
+            {rows.map((row, rowIndex) => (
+              <div key={row.key ?? rowIndex} role="row" style={{ display: 'contents' }}>
+                {row.cells.map((cell, cellIndex) => (
+                  <div
+                    key={`${row.key ?? rowIndex}-${cellIndex}`}
+                    role="cell"
+                    className={cn(
+                      tableDataCellVariants({
+                        align: cell.align ?? 'left',
+                        density: density ?? 'follow',
+                        divider: rowIndex < rows.length - 1,
+                        columnDivider: cellIndex > 0,
+                        wrap: cell.slot === 'action' ? 'anywhere' : 'words',
+                        floor: !columns[cellIndex]?.width,
+                      }),
+                    )}
+                    style={
+                      emphasizeFirstColumn && cellIndex === 0
+                        ? { ...SLOT_STYLES[cell.slot], ...EMPHASIS }
+                        : SLOT_STYLES[cell.slot]
+                    }
+                  >
+                    {cell.content}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </Surface>
+      </div>
     </div>
   );
 }

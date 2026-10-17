@@ -1176,6 +1176,7 @@
         "src/app/components/segmented-control.test.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/stack.tsx",
+        "src/app/components/table-old.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
         "src/index.ts"
@@ -1358,6 +1359,7 @@
         "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/table-old.tsx",
         "src/app/components/table.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
@@ -2240,6 +2242,7 @@
         "src/app/components/stack.test.tsx",
         "src/app/components/surface.tsx",
         "src/app/components/switcher.tsx",
+        "src/app/components/table-old.tsx",
         "src/app/components/table.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/tooltip.tsx",
@@ -2466,6 +2469,7 @@
         "src/app/components/board.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/icon.test.tsx",
+        "src/app/components/table-old.tsx",
         "src/app/components/table.test.tsx",
         "src/app/data/manifest-types.ts"
       ],
@@ -2493,6 +2497,10 @@
         "description": {
           "type": "ReactNode",
           "optional": true
+        },
+        "emphasizeFirstColumn": {
+          "type": "boolean",
+          "default": false
         },
         "flush": {
           "type": "boolean",
@@ -2524,6 +2532,9 @@
             "compact",
             "comfortable"
           ]
+        },
+        "emphasizeFirstColumn": {
+          "type": "boolean"
         },
         "flush": {
           "type": "boolean"
@@ -2799,7 +2810,7 @@
         "src/app/components/slider.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/surface-padding.ts",
-        "src/app/components/table.tsx",
+        "src/app/components/table-old.tsx",
         "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
         "src/app/context/hds-theme.tsx",
@@ -3342,6 +3353,7 @@
         "src/app/components/kbd.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/table-old.tsx",
         "src/app/components/table.tsx",
         "src/app/components/text.test.tsx",
         "src/app/components/timeline.tsx",
@@ -4136,6 +4148,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
+        "src/app/components/table-old.tsx",
         "src/app/components/table.tsx",
         "src/app/components/textarea.tsx",
         "src/form/hds-form.tsx"
@@ -5030,6 +5043,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/table.tsx",
         "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
@@ -6000,6 +6014,7 @@
         "src/app/components/breadcrumb.test.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
+        "src/app/components/table-old.tsx",
         "src/app/components/table.tsx"
       ],
       "tokenMapping": {},

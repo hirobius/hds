@@ -1,0 +1,1 @@
+- Table: columns floor at min-content (fixes desktop clipping), edge-fade scroll cue, mirrord-style restyle, `emphasizeFirstColumn` prop; regression spec tests/visual/table-clipping.spec.ts.
