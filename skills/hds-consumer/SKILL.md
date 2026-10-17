@@ -150,6 +150,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Typography
 
 - `Blockquote` — A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
+- `MetaLine` — Secondary facts on one line ("Acme Cloud · Remote").
 - `Text` — Text — polymorphic typography primitive spanning the full HDS type ramp.
 
 ### Utility
