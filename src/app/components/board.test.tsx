@@ -5,7 +5,6 @@ import { Board, BoardColumn } from './board';
 
 afterEach(cleanup);
 
-const TONES = ['neutral', 'info', 'success', 'warning', 'danger'] as const;
 const DRAG_PROPS = [
   'draggable',
   'onDragStart',
@@ -19,7 +18,7 @@ const DRAG_PROPS = [
 function renderBoard() {
   return render(
     <Board aria-label="Pipeline">
-      <BoardColumn title="On fire" count={2} tone="danger">
+      <BoardColumn title="On fire" count={2}>
         <a className="hds-focus" href="/leads/1">
           Lead one
         </a>
@@ -27,12 +26,12 @@ function renderBoard() {
           Lead two
         </a>
       </BoardColumn>
-      <BoardColumn title="Warm" count={1} tone="warning">
+      <BoardColumn title="Warm" count={1}>
         <a className="hds-focus" href="/leads/3">
           Lead three
         </a>
       </BoardColumn>
-      <BoardColumn title="Cold" tone="neutral">
+      <BoardColumn title="Cold">
         <span>a</span>
         <span>b</span>
         <span>c</span>
@@ -67,32 +66,17 @@ describe('Board', () => {
   it('shows the count visually, hidden from the accessibility tree twice-over', () => {
     renderBoard();
     const heading = screen.getByRole('heading', { name: 'On fire, 2 items' });
-    const visible = heading.querySelector('span[aria-hidden="true"]:not([data-hds-board-dot])');
+    const visible = heading.querySelector('span[aria-hidden="true"]');
     expect(visible?.textContent).toBe('2');
   });
 
-  it('maps tone to data-tone and a feedback token class on the dot', () => {
-    for (const tone of TONES) {
-      const { container, unmount } = render(
-        <BoardColumn title="T" count={0} tone={tone}>
-          <i />
-        </BoardColumn>,
-      );
-      const column = container.firstElementChild as HTMLElement;
-      expect(column.getAttribute('data-tone')).toBe(tone);
-      const dot = column.querySelector('[data-hds-board-dot]') as HTMLElement;
-      expect(dot.className).toContain(tone === 'neutral' ? 'bg-border' : `bg-feedback-${tone}`);
-      unmount();
-    }
-  });
-
-  it('defaults tone to neutral', () => {
+  it('paints no status dot or tone', () => {
     const { container } = render(
       <BoardColumn title="T" count={0}>
         <i />
       </BoardColumn>,
     );
-    expect((container.firstElementChild as HTMLElement).getAttribute('data-tone')).toBe('neutral');
+    expect(container.querySelector('[data-hds-board-dot], [data-tone]')).toBeNull();
   });
 
   // jsdom has no layout engine and does not evaluate container queries, so these

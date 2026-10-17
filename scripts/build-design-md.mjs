@@ -344,7 +344,7 @@ export function buildMotion(raw) {
     '',
     intentLines.join('\n'),
     '',
-    'Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.',
+    'Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for entrances and moments where a little bounce adds delight. `spatial` (400ms) is for travel, not decoration.',
   ];
   if (otherLines.length > 1) {
     sections.push('', '### Other semantic motion tokens', '', otherLines.join('\n'));
@@ -413,7 +413,7 @@ export function buildComponents(raw, manifest) {
       radius: `\`${actionRad}\` (\`hds.borderRadius.action\`)`,
       states: 'collapsed · expanded · hover · focus',
       notes:
-        'Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`.',
+        'Accordion primitive. Expansion uses `semantic.motion.productive` by default; a spring is fine where it adds delight. Dividers follow `semantic.color.border.subtle`.',
     },
     {
       name: 'Toggles',
