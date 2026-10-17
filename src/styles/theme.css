@@ -58,6 +58,22 @@
 @source not "../../upgrade";
 @source not "../../.status";
 
+/* The spacing guards and codemod (codemods/, their fixtures, the lint rule, its
+   README and tests) name the utilities they ban or rewrite; scanned, they would
+   ship them (hds#781 review: +650 B gzip on each CSS bundle). */
+@source not "../../codemods";
+@source not "../../fixtures/check-tailwind-spacing-scale";
+@source not "../../scripts/eslint-plugin-hds/rules/no-primitive-spacing.mjs";
+@source not "../../scripts/eslint-plugin-hds/__tests__/no-primitive-spacing.test.mjs";
+@source not "../../scripts/eslint-plugin-hds/README.md";
+@source not "../../scripts/check-tailwind-spacing-scale.mjs";
+@source not "../../scripts/tailwind-spacing-scale.baseline.json";
+@source not "../../scripts/__tests__/spacing-steps-codemod.test.mjs";
+@source not "../../scripts/__tests__/check-tailwind-spacing-scale.test.mjs";
+/* 0.26.x shipped these four only because that test named them; kept emitted so
+   excluding the test removes nothing a consumer could be using. */
+@source inline("inset-2 gap-0 hover:p-4 md:px-3");
+
 /* Published utility surface kept after hds#391. Tailwind only emits the
    utilities it finds in scanned files, and these 16 lived only in the deleted
    docs-tooling, animated-label and editorial files. Consumers that use

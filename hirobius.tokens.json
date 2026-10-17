@@ -2489,8 +2489,8 @@
       },
       "paddingX": {
         "$type": "dimension",
-        "$value": "{primitive.space.px6}",
-        "$description": "Horizontal padding inside the badge."
+        "$value": "{primitive.space.2}",
+        "$description": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune)."
       }
     },
     "button": {

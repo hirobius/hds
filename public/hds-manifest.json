@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-17T03:33:10.175Z",
+  "generated": "2026-10-17T05:56:08.856Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -13428,9 +13428,9 @@
         "path": "component.badge.paddingX",
         "cssVar": "--component-badge-paddingX",
         "type": "dimension",
-        "description": "Horizontal padding inside the badge.",
-        "alias": "{primitive.space.px6}",
-        "resolvedValue": "6px"
+        "description": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune).",
+        "alias": "{primitive.space.2}",
+        "resolvedValue": "8px"
       },
       {
         "path": "component.button.bg",

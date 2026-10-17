@@ -293,7 +293,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.badge.height": "Badge height.",
   "component.badge.minWidth": "Badge minimum width.",
   "component.badge.paddingY": "Vertical padding inside the badge.",
-  "component.badge.paddingX": "Horizontal padding inside the badge.",
+  "component.badge.paddingX": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune).",
   "component.button.bg": "Primary button fill.",
   "component.button.bgHover": "Primary button hover fill.",
   "component.button.text": "Primary button text color.",
