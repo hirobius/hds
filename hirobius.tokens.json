@@ -22,13 +22,13 @@
           "$value": "#d4d4d4",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
-        "400": {
-          "$value": "#a3a3a3",
-          "$description": "Specific value within the neutral range at a defined lightness step."
-        },
         "350": {
           "$value": "#b4b4b4",
           "$description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary)."
+        },
+        "400": {
+          "$value": "#a3a3a3",
+          "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "450": {
           "$value": "#909090",
@@ -558,6 +558,18 @@
       "12": {
         "$value": {
           "value": 12,
+          "unit": "px"
+        }
+      },
+      "16": {
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      },
+      "24": {
+        "$value": {
+          "value": 24,
           "unit": "px"
         }
       },
@@ -1663,6 +1675,33 @@
           "$description": "64px (48px compact; was 48px before 2026-10). The gap between sections inside a page. layout.spacious (deprecated) aliases it."
         }
       },
+      "fixed": {
+        "$description": "Fixed steps between the scale rungs; compact density does not remap them. sm–xl equal compact scale sm–xl.",
+        "2xs": {
+          "$value": "{primitive.space.1}",
+          "$description": "4px: hairline gaps inside a control (icon to its badge, stacked meta lines)."
+        },
+        "xs": {
+          "$value": "{primitive.space.3}",
+          "$description": "12px: adjacent form fields and medium gaps inside a component."
+        },
+        "sm": {
+          "$value": "{primitive.space.4}",
+          "$description": "16px: list-item padding and toolbar gaps that must not move with density."
+        },
+        "md": {
+          "$value": "{primitive.space.6}",
+          "$description": "24px: panel padding and grouped-field gaps that must not move with density."
+        },
+        "lg": {
+          "$value": "{primitive.space.8}",
+          "$description": "32px: gap between grouped blocks that must not move with density."
+        },
+        "xl": {
+          "$value": "{primitive.space.12}",
+          "$description": "48px: gap between page bands that must not move with density."
+        }
+      },
       "surface": {
         "$description": "hds#206 surface inset role. Tenants override it per brand and density, always with a scale step.",
         "padding": {
@@ -2094,6 +2133,30 @@
         "$type": "dimension",
         "$value": "{primitive.radius.4}",
         "$description": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242)."
+      },
+      "scale": {
+        "$type": "dimension",
+        "$description": "Fixed corner-radius ladder for surfaces; actions keep semantic.radius.action, the reshaping knob.",
+        "sm": {
+          "$value": "{primitive.radius.8}",
+          "$description": "8px: chips, menu items and small surfaces."
+        },
+        "md": {
+          "$value": "{primitive.radius.12}",
+          "$description": "12px: cards, popovers and panels."
+        },
+        "lg": {
+          "$value": "{primitive.radius.16}",
+          "$description": "16px: dialogs, sheets and large media frames."
+        },
+        "xl": {
+          "$value": "{primitive.radius.24}",
+          "$description": "24px: hero media and feature panels."
+        },
+        "pill": {
+          "$value": "{primitive.radius.full}",
+          "$description": "Fully round ends: pills, tags and avatar chips."
+        }
       }
     },
     "borderWidth": {

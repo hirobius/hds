@@ -102,6 +102,29 @@ export const SPACE_SCALE = {
 } as const;
 
 /**
+ * The fixed steps between the scale rungs, `semantic.space.fixed.*`: 4, 12,
+ * 16, 24, 32 and 48px. Compact density does not remap them. Box `sx` takes
+ * them as `'fixed-<step>'`, the Tailwind key spelling (`p-fixed-sm`).
+ */
+export const SPACE_FIXED = {
+  'fixed-2xs': 'var(--semantic-space-fixed-2xs)',
+  'fixed-xs': 'var(--semantic-space-fixed-xs)',
+  'fixed-sm': 'var(--semantic-space-fixed-sm)',
+  'fixed-md': 'var(--semantic-space-fixed-md)',
+  'fixed-lg': 'var(--semantic-space-fixed-lg)',
+  'fixed-xl': 'var(--semantic-space-fixed-xl)',
+} as const;
+
+/** Box `sx` `borderRadius` steps, `semantic.radius.scale.*`; any other value passes through. */
+export const RADIUS_SCALE = {
+  sm: 'var(--semantic-radius-scale-sm)',
+  md: 'var(--semantic-radius-scale-md)',
+  lg: 'var(--semantic-radius-scale-lg)',
+  xl: 'var(--semantic-radius-scale-xl)',
+  pill: 'var(--semantic-radius-scale-pill)',
+} as const;
+
+/**
  * The names a spacing prop accepts, and what any other value means there.
  *
  * An open vocabulary passes any other string through ('auto', '1rem', a
@@ -173,6 +196,7 @@ export const LAYOUT_GAP = {
 const BOX_SX_SPACING = {
   names: {
     ...SPACE_SCALE,
+    ...SPACE_FIXED,
     tight: 'var(--semantic-space-layout-tight)',
     normal: 'var(--semantic-space-layout-normal)',
     inset: 'var(--semantic-space-layout-inset)',
@@ -309,6 +333,10 @@ function buildDeclarations(key: string, value: SxValue): string[] {
     return spacingProps.map((prop) => `${prop}:${resolved}`);
   }
 
+  if (key === 'borderRadius' && typeof value === 'string') {
+    return [`border-radius:${own(RADIUS_SCALE, value) ?? value}`];
+  }
+
   const colorProp = COLOR_PROP_MAP[key];
   if (colorProp) {
     const resolved =
@@ -326,9 +354,7 @@ function isResponsiveObject(
   value: unknown,
 ): value is Partial<Record<Breakpoint | 'base', SxValue>> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
-  return Object.keys(value).every(
-    (k) => k === 'base' || BREAKPOINT_KEYS.includes(k as Breakpoint),
-  );
+  return Object.keys(value).every((k) => k === 'base' || BREAKPOINT_KEYS.includes(k as Breakpoint));
 }
 
 // ── Resolver ──────────────────────────────────────────────────────────────────

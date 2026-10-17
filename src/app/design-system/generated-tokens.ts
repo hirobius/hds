@@ -149,6 +149,8 @@ export const tokens = {
       "4": "var(--primitive-radius-4)",
       "8": "var(--primitive-radius-8)",
       "12": "var(--primitive-radius-12)",
+      "16": "var(--primitive-radius-16)",
+      "24": "var(--primitive-radius-24)",
       full: "var(--primitive-radius-full)"
     },
     typography: {
@@ -326,6 +328,14 @@ export const tokens = {
         lg: "var(--semantic-space-scale-lg)",
         xl: "var(--semantic-space-scale-xl)"
       },
+      fixed: {
+        "2xs": "var(--semantic-space-fixed-2xs)",
+        xs: "var(--semantic-space-fixed-xs)",
+        sm: "var(--semantic-space-fixed-sm)",
+        md: "var(--semantic-space-fixed-md)",
+        lg: "var(--semantic-space-fixed-lg)",
+        xl: "var(--semantic-space-fixed-xl)"
+      },
       surface: {
         padding: "var(--semantic-space-surface-padding)"
       },
@@ -412,7 +422,14 @@ export const tokens = {
     },
     radius: {
       action: "var(--semantic-radius-action)",
-      control: "var(--semantic-radius-control)"
+      control: "var(--semantic-radius-control)",
+      scale: {
+        sm: "var(--semantic-radius-scale-sm)",
+        md: "var(--semantic-radius-scale-md)",
+        lg: "var(--semantic-radius-scale-lg)",
+        xl: "var(--semantic-radius-scale-xl)",
+        pill: "var(--semantic-radius-scale-pill)"
+      }
     },
     borderWidth: {
       default: "var(--semantic-borderWidth-default)",

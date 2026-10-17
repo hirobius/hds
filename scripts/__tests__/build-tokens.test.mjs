@@ -424,6 +424,16 @@ describe('buildTailwindThemeExtend', () => {
     expect(ext.borderRadius.md).not.toMatch(/calc\(/);
   });
 
+  it('semantic.radius.scale leaves map to rounded-scale-<step>, beside the role steps', () => {
+    const scale = (name) => ({ path: ['semantic', 'radius', 'scale', name], type: 'dimension' });
+    const ext = buildTailwindThemeExtend([role('radius', 'dimension')], [], {
+      semanticRadius: [scale('md'), scale('pill')],
+    });
+    expect(ext.borderRadius['scale-md']).toBe('var(--semantic-radius-scale-md)');
+    expect(ext.borderRadius['scale-pill']).toBe('var(--semantic-radius-scale-pill)');
+    expect(ext.borderRadius.md).toBe('var(--role-radius)');
+  });
+
   it('semantic shadows map by leaf name into boxShadow', () => {
     const shadow = (name) => ({ path: ['semantic', 'shadow', name], type: 'shadow' });
     const ext = buildTailwindThemeExtend([], [shadow('subtle'), shadow('floating')]);

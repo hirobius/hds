@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 475 tokens, aliases, and TS refs in one shot.
+Checks all 488 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -351,6 +351,12 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `semantic.space.scale.md`            | `28px`                      | 28px (24px compact; was 24px before 2026-10). Default of surface.padding: card, dialog and panel insets. layout.normal (deprecated) aliases it.                        |
 | `semantic.space.scale.lg`            | `40px`                      | 40px (32px compact). Desktop page gutter and the gap between grouped blocks.                                                                                           |
 | `semantic.space.scale.xl`            | `64px`                      | 64px (48px compact; was 48px before 2026-10). The gap between sections inside a page. layout.spacious (deprecated) aliases it.                                         |
+| `semantic.space.fixed.2xs`           | `4px`                       | 4px: hairline gaps inside a control (icon to its badge, stacked meta lines).                                                                                           |
+| `semantic.space.fixed.xs`            | `12px`                      | 12px: adjacent form fields and medium gaps inside a component.                                                                                                         |
+| `semantic.space.fixed.sm`            | `16px`                      | 16px: list-item padding and toolbar gaps that must not move with density.                                                                                              |
+| `semantic.space.fixed.md`            | `24px`                      | 24px: panel padding and grouped-field gaps that must not move with density.                                                                                            |
+| `semantic.space.fixed.lg`            | `32px`                      | 32px: gap between grouped blocks that must not move with density.                                                                                                      |
+| `semantic.space.fixed.xl`            | `48px`                      | 48px: gap between page bands that must not move with density.                                                                                                          |
 | `semantic.space.surface.padding`     | `{primitive.space.7}`       | Card, dialog and panel inset: scale.md (28px, 24px compact). Tenants override it. Replaces component.padding.                                                          |
 | `semantic.space.region.gutter`       | `{primitive.space.10}`      | Page and region gutter: scale.lg (40px comfortable, 32px compact); theme.css sets scale.sm (20px, 16px compact) below 640px. Replaces layout.gutter.                   |
 | `semantic.space.subgrid.hairline`    | `1px`                       | 1px border offset and hairline spacing.                                                                                                                                |
@@ -451,6 +457,8 @@ Or via `useTheme().setDensity('compact')`
 | `primitive.radius.4`    | `4px`    |            |
 | `primitive.radius.8`    | `8px`    |            |
 | `primitive.radius.12`   | `12px`   |            |
+| `primitive.radius.16`   | `16px`   |            |
+| `primitive.radius.24`   | `24px`   |            |
 | `primitive.radius.full` | `9999px` | Pills only |
 
 <!-- auto:end:radius -->

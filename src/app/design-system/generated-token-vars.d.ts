@@ -124,6 +124,8 @@ declare module 'react' {
     '--primitive-radius-4'?: string | undefined;
     '--primitive-radius-8'?: string | undefined;
     '--primitive-radius-12'?: string | undefined;
+    '--primitive-radius-16'?: string | undefined;
+    '--primitive-radius-24'?: string | undefined;
     '--primitive-radius-full'?: string | undefined;
     '--primitive-typography-family-primary'?: string | undefined;
     '--primitive-typography-family-display'?: string | undefined;
@@ -251,6 +253,12 @@ declare module 'react' {
     '--semantic-space-scale-md'?: string | undefined;
     '--semantic-space-scale-lg'?: string | undefined;
     '--semantic-space-scale-xl'?: string | undefined;
+    '--semantic-space-fixed-2xs'?: string | undefined;
+    '--semantic-space-fixed-xs'?: string | undefined;
+    '--semantic-space-fixed-sm'?: string | undefined;
+    '--semantic-space-fixed-md'?: string | undefined;
+    '--semantic-space-fixed-lg'?: string | undefined;
+    '--semantic-space-fixed-xl'?: string | undefined;
     '--semantic-space-surface-padding'?: string | undefined;
     '--semantic-space-region-gutter'?: string | undefined;
     '--semantic-space-subgrid-hairline'?: string | undefined;
@@ -354,6 +362,11 @@ declare module 'react' {
     '--semantic-accent-subtle'?: string | undefined;
     '--semantic-radius-action'?: string | undefined;
     '--semantic-radius-control'?: string | undefined;
+    '--semantic-radius-scale-sm'?: string | undefined;
+    '--semantic-radius-scale-md'?: string | undefined;
+    '--semantic-radius-scale-lg'?: string | undefined;
+    '--semantic-radius-scale-xl'?: string | undefined;
+    '--semantic-radius-scale-pill'?: string | undefined;
     '--semantic-borderWidth-default'?: string | undefined;
     '--semantic-borderWidth-emphasis'?: string | undefined;
     '--semantic-shadow-subtle'?: string | undefined;

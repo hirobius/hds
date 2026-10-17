@@ -1,0 +1,1 @@
+Every spacing value (4–64px) and radius (8/12/16/24/pill) has a semantic token: new semantic.space.fixed.{2xs..xl} and semantic.radius.scale.{sm..xl,pill}, wired to CSS vars, hds.semantic, Tailwind (p-fixed-_, rounded-scale-_), Figma model and Box sx.

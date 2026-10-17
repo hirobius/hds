@@ -125,6 +125,8 @@
   --primitive-radius-4: 4px;
   --primitive-radius-8: 8px;
   --primitive-radius-12: 12px;
+  --primitive-radius-16: 16px;
+  --primitive-radius-24: 24px;
   --primitive-radius-full: 9999px;
   --primitive-typography-family-primary: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --primitive-typography-family-display: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -258,6 +260,12 @@
   --semantic-space-scale-md: var(--primitive-space-7);
   --semantic-space-scale-lg: var(--primitive-space-10);
   --semantic-space-scale-xl: var(--primitive-space-16);
+  --semantic-space-fixed-2xs: var(--primitive-space-1);
+  --semantic-space-fixed-xs: var(--primitive-space-3);
+  --semantic-space-fixed-sm: var(--primitive-space-4);
+  --semantic-space-fixed-md: var(--primitive-space-6);
+  --semantic-space-fixed-lg: var(--primitive-space-8);
+  --semantic-space-fixed-xl: var(--primitive-space-12);
   --semantic-space-surface-padding: var(--semantic-space-scale-md);
   --semantic-space-region-gutter: var(--semantic-space-scale-lg);
   --semantic-space-subgrid-hairline: var(--primitive-space-px1);
@@ -372,6 +380,11 @@
   --semantic-accent-subtle: var(--primitive-color-graphite-50);
   --semantic-radius-action: var(--primitive-radius-8);
   --semantic-radius-control: var(--primitive-radius-4);
+  --semantic-radius-scale-sm: var(--primitive-radius-8);
+  --semantic-radius-scale-md: var(--primitive-radius-12);
+  --semantic-radius-scale-lg: var(--primitive-radius-16);
+  --semantic-radius-scale-xl: var(--primitive-radius-24);
+  --semantic-radius-scale-pill: var(--primitive-radius-full);
   --semantic-borderWidth-default: var(--primitive-borderWidth-xs);
   --semantic-borderWidth-emphasis: var(--primitive-borderWidth-sm);
   --semantic-shadow-subtle: 0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06);

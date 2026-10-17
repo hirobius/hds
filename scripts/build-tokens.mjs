@@ -1118,6 +1118,7 @@ export function buildManifest(allTokens, raw, systemManifest = readSystemManifes
  * @param {Array} shadows - tokens with path[0]==='semantic' && path[1]==='shadow' && type==='shadow'
  * @param {object} [utilityTokens]
  * @param {Array} [utilityTokens.semanticSpace] - path[0]==='semantic' && path[1]==='space'
+ * @param {Array} [utilityTokens.semanticRadius] - path[0]==='semantic' && path[1]==='radius' (only `scale.*` is emitted)
  * @param {Array} [utilityTokens.primitiveSpace] - path[0]==='primitive' && path[1]==='space'
  * @param {Array} [utilityTokens.primitiveBreakpoint] - path[0]==='primitive' && path[1]==='breakpoint'
  * @param {Array} [utilityTokens.semanticBorderWidth] - path[0]==='semantic' && path[1]==='borderWidth'
@@ -1128,6 +1129,7 @@ export function buildManifest(allTokens, raw, systemManifest = readSystemManifes
 export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
   const {
     semanticSpace = [],
+    semanticRadius = [],
     primitiveSpace = [],
     primitiveBreakpoint = [],
     semanticBorderWidth = [],
@@ -1179,6 +1181,11 @@ export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
         sm: `calc(${radiusVar} - 2px)`,
       }
     : {};
+  // The fixed radius ladder rides beside the role steps as rounded-scale-<step>.
+  for (const t of semanticRadius) {
+    if (t.path[2] !== 'scale') continue;
+    borderRadius[t.path.slice(2).join('-')] = `var(${pathToCSSVar(t.path)})`;
+  }
 
   const boxShadow = {};
   for (const t of shadows) {
@@ -1764,6 +1771,7 @@ ${serialize(refsTree)}
   );
   const tailwindExtend = buildTailwindThemeExtend(roles, semanticShadows, {
     semanticSpace: allTokens.filter((t) => t.path[0] === 'semantic' && t.path[1] === 'space'),
+    semanticRadius: allTokens.filter((t) => t.path[0] === 'semantic' && t.path[1] === 'radius'),
     primitiveSpace: allTokens.filter((t) => t.path[0] === 'primitive' && t.path[1] === 'space'),
     primitiveBreakpoint: allTokens.filter(
       (t) => t.path[0] === 'primitive' && t.path[1] === 'breakpoint',
