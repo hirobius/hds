@@ -1,0 +1,28 @@
+{
+  "impact": "look",
+  "plain": "Badge is 22px tall (was 20px), its label is lifted to sit optically centred, and its corners are 4px (was 8px); a tenant that wants the old shape overrides --component-badge-radius.",
+  "steps": [
+    {
+      "id": "value-changed/--component-badge-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Badge height is now 22px (was 20px); check any layout that fixes a Badge row height.",
+      "detect": {
+        "cssVars": ["--component-badge-height"],
+        "cssVarWrites": ["--component-badge-height"]
+      },
+      "facts": ["css-var-changed:--component-badge-height::root"]
+    },
+    {
+      "id": "value-changed/--component-badge-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Badge corners are now 4px (was the 8px action radius); a tenant that wants the old shape sets --component-badge-radius.",
+      "detect": {
+        "cssVars": ["--component-badge-radius"],
+        "cssVarWrites": ["--component-badge-radius"]
+      },
+      "facts": ["css-var-changed:--component-badge-radius::root"]
+    }
+  ]
+}

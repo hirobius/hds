@@ -454,9 +454,9 @@ describe('Overflow (item 15) and shape (item 16)', () => {
       expect(el.className).not.toMatch(/primitive-radius-4/);
     }
   });
-  it('Badge, CodeBlock use the tenant-following radius, not a fixed value', () => {
+  it('Badge reads its radius from component.badge.radius (tenants re-anchor it, hds#757); CodeBlock uses the tenant-following radius', () => {
     expect(render(<Badge>b</Badge>).container.firstElementChild!.className).toMatch(
-      /\brounded-md\b/,
+      /rounded-\[var\(--component-badge-radius\)\]/,
     );
     expect(src('code-block.tsx')).not.toMatch(/rounded-\[var\(--semantic-radius-action\)\]/);
   });

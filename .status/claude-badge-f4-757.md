@@ -1,0 +1,1 @@
+- Badge (hds#757): 22px tall, label lifted via component.badge.opticalPaddingBottom, radius now component.badge.radius (4px). Adds primitive.size.22.
