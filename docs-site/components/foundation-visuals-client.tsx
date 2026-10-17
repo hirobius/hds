@@ -21,12 +21,15 @@ export function CopyCard({ copy, children }: { copy: string; children: ReactNode
     }
   };
   return (
-    <button type="button" className="hds-swatch" onClick={onClick} title={`Copy ${copy}`}>
-      {children}
+    <div className="hds-swatch-cell">
+      <button type="button" className="hds-swatch" onClick={onClick} title={`Copy ${copy}`}>
+        {children}
+      </button>
+      {/* A sibling, not a child: a live region inside the button is read as its name. */}
       <span className="hds-swatch-copied" role="status">
         {copied ? 'Copied' : ''}
       </span>
-    </button>
+    </div>
   );
 }
 

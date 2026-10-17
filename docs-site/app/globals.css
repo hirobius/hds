@@ -287,9 +287,14 @@ pre {
 .hds-swatch-grid--dense {
   grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
 }
-.hds-swatch {
+.hds-swatch-cell {
   position: relative;
   display: flex;
+  min-width: 0;
+}
+.hds-swatch {
+  display: flex;
+  flex: 1;
   flex-direction: column;
   min-width: 0;
   padding: 0;
@@ -348,6 +353,7 @@ pre {
   background: var(--semantic-color-surface-accent);
   border-radius: var(--semantic-radius-control);
   padding: 0 0.375rem;
+  pointer-events: none;
 }
 .hds-swatch-copied:empty {
   /* Stays in the DOM (a live region must exist before it speaks), just unseen. */
@@ -392,6 +398,7 @@ pre {
   background: none;
   font-size: 0.75rem;
   font-weight: 500;
+  overflow-wrap: anywhere;
 }
 .hds-step-value {
   font-family: var(--font-mono);
