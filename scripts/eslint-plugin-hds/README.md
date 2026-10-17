@@ -69,12 +69,17 @@ export default [
 
 | Rule                                                                 | Default | What it catches                                                                                       |
 | -------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------- |
+| [`hds/no-delight-on-actions`](#hdsno-delight-on-actions)             | error   | The lime delight accent (`semantic.accent.delight.*`) on a button, a link or a focus style.           |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.          |
 | [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                   |
 | [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.        |
 | [`hds/no-status-clutter`](#hdsno-status-clutter)                     | error   | `<Badge dot>` and a coloured left-border accent bar (`border-l-2`..`8` plus a tone colour).           |
 | [`hds/prefer-hds-layout-primitive`](#hdsprefer-hds-layout-primitive) | warn    | Ad-hoc `display: 'flex' \| 'grid'` in `style={{…}}` where a named primitive (Stack/Grid) likely fits. |
 | [`hds/sx-token-first`](#hdssx-token-first)                           | error   | Raw hex/px string values inside a `Box` `sx={{…}}` prop — `sx` must resolve through token keys.       |
+
+### `hds/no-delight-on-actions`
+
+The lime delight accent is for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Flags a delight reference (CSS var, token path or arbitrary Tailwind value) in the props of `<button>`, `<a>` or any `*Button` / `*Link` component, in a `focus:` / `focus-visible:` / `focus-within:` class, and anywhere in a button or link component file. Actions and focus take `semantic.accent.*`.
 
 ### `hds/no-status-clutter`
 

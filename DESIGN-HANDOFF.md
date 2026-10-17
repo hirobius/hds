@@ -600,6 +600,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 <!-- auto:start:agent-constraints -->
 
 - **One accent color:** `#4A4146` (`semantic.accent.rest`) only — no other hues
+- **Delight is not an accent:** lime `semantic.accent.delight.*` only for badges, "new" tags, best-fit highlights and illustration — never buttons, links or focus; ink text on it
 - **Body / UI typeface:** Plus Jakarta Sans — use Plus Jakarta Sans Bold (700) for headings and IBM Plex Mono for code; no other faces
 - **Action radius:** `8px` for interactive controls; `12px` containers (`rounded-lg`, one step above the action radius)
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale

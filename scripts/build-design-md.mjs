@@ -74,11 +74,23 @@ export function buildColors(raw) {
   const amber = resolveRef(fb.warning?.$value, raw);
   const info = resolveRef(fb.info?.$value, raw);
 
+  const prim = raw.primitive?.color ?? {};
+  const cobalt = String(resolveRef(prim.cobalt?.['600']?.$value, raw)).toUpperCase();
+  const delight = String(
+    resolveRef(raw.semantic?.accent?.delight?.base?.$value, raw),
+  ).toUpperCase();
+
   const lines = [];
-  lines.push('**One accent — one neutral system.**');
+  lines.push('**One accent — one neutral system — one delight hue.**');
   lines.push('');
   lines.push(
-    `- **Accent** (\`${accent}\`): CTAs, active states, selected focus rings, and the single brand accent. \`semantic.accent.rest\` — a per-tenant knob, not a fixed hue (#208).`,
+    `- **Accent** (\`${accent}\`, graphite): CTAs, active states, selected focus rings, and the single brand accent. \`semantic.accent.rest\` — a per-tenant knob, not a fixed hue (#208).`,
+  );
+  lines.push(
+    `- **Accent theme — Cobalt** (\`${cobalt}\`): opt-in swap of the accent tokens only. Set \`data-accent="cobalt"\` on \`<html>\` (source \`accents/cobalt/tokens.json\`); graphite stays the default. Still one accent per screen.`,
+  );
+  lines.push(
+    `- **Delight — Lime** (\`${delight}\`): \`semantic.accent.delight.*\`, for delight moments only — a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. **Never** buttons, links or focus (lint: \`hds/no-delight-on-actions\`). Text on it is always ink (\`semantic.accent.delight.onDelight\`), never white.`,
   );
   lines.push(
     '- **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.',

@@ -12,6 +12,7 @@
  * config array, the standard pattern for ESLint 9/10 plugins.
  */
 import { readFileSync } from 'node:fs';
+import noDelightOnActions from './rules/no-delight-on-actions.mjs';
 import noRawControls from './rules/no-raw-controls.mjs';
 import noRawHex from './rules/no-raw-hex.mjs';
 import noStatusClutter from './rules/no-status-clutter.mjs';
@@ -29,6 +30,7 @@ const packageMeta = { name, version };
 const plugin = {
   meta: packageMeta,
   rules: {
+    'no-delight-on-actions': noDelightOnActions,
     'no-raw-controls': noRawControls,
     'no-raw-hex': noRawHex,
     'no-raw-px-spacing': noRawPxSpacing,
@@ -44,6 +46,7 @@ plugin.configs = {
       name: 'hds/recommended',
       plugins: { hds: plugin },
       rules: {
+        'hds/no-delight-on-actions': 'error',
         'hds/no-raw-controls': 'error',
         'hds/no-raw-hex': 'error',
         'hds/no-raw-px-spacing': 'error',
