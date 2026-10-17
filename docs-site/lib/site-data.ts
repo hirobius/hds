@@ -18,6 +18,13 @@ function readJson(relative: string): unknown {
 }
 
 export const loadTokens = () => readJson('hirobius.tokens.json');
+/** Opt-in accent themes (`accents/<name>/tokens.json`), keyed by name. */
+export const loadAccentThemes = (): Record<string, unknown> =>
+  Object.fromEntries(
+    readdirSync(findUp('accents'), { withFileTypes: true })
+      .filter((d) => d.isDirectory() && !d.name.startsWith('_'))
+      .map((d) => [d.name, readJson(`accents/${d.name}/tokens.json`)]),
+  );
 
 interface ManifestSpec {
   category?: string;

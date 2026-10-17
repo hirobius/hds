@@ -11,9 +11,11 @@ Hirobius is a clean, structured visual language that bridges digital precision a
 ## Colors
 
 <!-- auto:start:colors -->
-**One accent — one neutral system.**
+**One accent — one neutral system — one delight hue.**
 
-- **Accent** (`#433A3F`): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent** (`#4A4146`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent theme — Cobalt** (`#112DE8`): opt-in swap of the accent tokens only. Set `data-accent="cobalt"` on `<html>` (source `accents/cobalt/tokens.json`); graphite stays the default. Still one accent per screen.
+- **Delight — Lime** (`#B8E62E`): `semantic.accent.delight.*`, for delight moments only — a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. **Never** buttons, links or focus (lint: `hds/no-delight-on-actions`). Text on it is always ink (`semantic.accent.delight.onDelight`), never white.
 - **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.
 - **Feedback — Success** (`#047857`): positive confirmations, completed states. `semantic.color.feedback.success`.
@@ -213,7 +215,8 @@ Three more needs are props on an existing component, not components of their own
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
+- Don't use the lime delight accent (`semantic.accent.delight.*`) for buttons, links, focus or any action. It is for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Text on it is always ink (`semantic.accent.delight.onDelight`), never white.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
@@ -234,6 +237,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (427 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (448 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

@@ -9,7 +9,7 @@ import {
   typeSpecimens,
   type DimensionStep,
 } from '../lib/foundation-visuals';
-import { loadTokens } from '../lib/site-data';
+import { loadAccentThemes, loadTokens } from '../lib/site-data';
 import { CopyCard, MotionDemo } from './foundation-visuals-client';
 
 /** Sample text per role: long enough to show the leading, short enough for a phone. */
@@ -35,7 +35,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 function ColorGallery() {
   return (
     <>
-      {colorGalleries(loadTokens()).map((gallery) => (
+      {colorGalleries(loadTokens(), loadAccentThemes()).map((gallery) => (
         <Section key={gallery.title} title={gallery.title}>
           {gallery.groups.map((group) => (
             <div key={group.title} className="hds-swatch-group">

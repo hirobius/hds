@@ -14,7 +14,7 @@
 
 | Attribute         | Value                                                        |
 | ----------------- | ------------------------------------------------------------ |
-| Brand accent      | `#433A3F` (`semantic.accent.rest`)                           |
+| Brand accent      | `#4A4146` (`semantic.accent.rest`)                           |
 | Font              | Plus Jakarta Sans (self-hosted) + IBM Plex Mono (monospace)  |
 | Neutral scale     | True monochromatic — equal RGB channels, no warm/cool tint   |
 | Spacing base      | 4px                                                          |
@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 475 tokens, aliases, and TS refs in one shot.
+Checks all 496 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -120,15 +120,32 @@ Checks all 475 tokens, aliases, and TS refs in one shot.
 | `primitive.color.green.950`                         | `#022c22`                   | Specific value within the green range at a defined lightness step.                                                            |
 | `primitive.color.graphite.50`                       | `#f5f4f4`                   | Graphite accent tint — faintest step.                                                                                         |
 | `primitive.color.graphite.100`                      | `#e9e7e8`                   | Graphite accent — very light warm tint.                                                                                       |
-| `primitive.color.graphite.200`                      | `#d4d0d2`                   | Graphite accent — light warm-grey; dark-mode rest accent fill.                                                                |
+| `primitive.color.graphite.200`                      | `#cbc6c9`                   | Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill.                                     |
 | `primitive.color.graphite.300`                      | `#b2abae`                   | Graphite accent — soft mid-light step; dark-mode hover/link.                                                                  |
 | `primitive.color.graphite.400`                      | `#8b8488`                   | Graphite accent — mid warm-grey step.                                                                                         |
 | `primitive.color.graphite.500`                      | `#655e62`                   | Graphite accent — mid step.                                                                                                   |
 | `primitive.color.graphite.600`                      | `#544d51`                   | Graphite accent — mid-dark step.                                                                                              |
-| `primitive.color.graphite.700`                      | `#433a3f`                   | Graphite accent rest — the warm charcoal brand accent; white text as a fill (AA).                                             |
+| `primitive.color.graphite.700`                      | `#4a4146`                   | Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA).                |
 | `primitive.color.graphite.800`                      | `#352e32`                   | Graphite accent — deep step; light-mode hover.                                                                                |
 | `primitive.color.graphite.900`                      | `#2a2428`                   | Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.                                          |
 | `primitive.color.graphite.950`                      | `#19161a`                   | Graphite accent — near-black warm substrate.                                                                                  |
+| `primitive.color.cobalt.50`                         | `#eef0fe`                   | Cobalt accent (opt-in, data-accent="cobalt") — faintest step; selected and subtle accent background.                          |
+| `primitive.color.cobalt.100`                        | `#dce1fd`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 100.                                                                 |
+| `primitive.color.cobalt.200`                        | `#b4bbf4`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 200.                                                                 |
+| `primitive.color.cobalt.300`                        | `#8a97f8`                   | Cobalt accent (opt-in, data-accent="cobalt") — dark-mode accent fill and accent text (7.86:1 on black).                       |
+| `primitive.color.cobalt.400`                        | `#5b71fa`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 400.                                                                 |
+| `primitive.color.cobalt.500`                        | `#2a5bf8`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 500.                                                                 |
+| `primitive.color.cobalt.600`                        | `#112de8`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode accent fill and accent text (white text 8.19:1).                    |
+| `primitive.color.cobalt.700`                        | `#1f17c4`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode hover and pressed accent fill.                                      |
+| `primitive.color.cobalt.800`                        | `#191c7d`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 800.                                                                 |
+| `primitive.color.cobalt.900`                        | `#0b0658`                   | Cobalt accent (opt-in, data-accent="cobalt") — darkest step; dark-mode subtle accent background.                              |
+| `primitive.color.lime.50`                           | `#f2fbd6`                   | Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.                     |
+| `primitive.color.lime.100`                          | `#e3f6a8`                   | Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.                                     |
+| `primitive.color.lime.200`                          | `#cdee6a`                   | Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.                                     |
+| `primitive.color.lime.300`                          | `#b8e62e`                   | Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.                   |
+| `primitive.color.lime.400`                          | `#93ba1c`                   | Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.                                     |
+| `primitive.color.lime.600`                          | `#6e8f0b`                   | Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus.   |
+| `primitive.color.lime.800`                          | `#445807`                   | Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.                                     |
 | `primitive.color.mauve.50`                          | `#fff0f6`                   | Mauve tint, faintest step.                                                                                                    |
 | `primitive.color.mauve.100`                         | `#f4e2ea`                   | Mauve step 100, lightness-matched to graphite 100.                                                                            |
 | `primitive.color.mauve.200`                         | `#e1cad4`                   | Mauve step 200, lightness-matched to graphite 200.                                                                            |
@@ -177,16 +194,20 @@ Checks all 475 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:start:semantic-accent -->
 
-| Token                          | Light                            | Dark                             | Role                                                                     |
-| ------------------------------ | -------------------------------- | -------------------------------- | ------------------------------------------------------------------------ |
-| `semantic.accent.rest`         | `{primitive.color.graphite.700}` | `{primitive.color.graphite.200}` | Default accent fill for interactive elements at rest                     |
-| `semantic.accent.hover`        | `{primitive.color.graphite.800}` | `{primitive.color.graphite.300}` | Accent fill on pointer hover.                                            |
-| `semantic.accent.pressed`      | `{primitive.color.graphite.900}` | `{primitive.color.graphite.400}` | Accent fill during active press.                                         |
-| `semantic.accent.inactive`     | `{primitive.color.neutral.400}`  | `{primitive.color.neutral.600}`  | Accent fill for inactive or unselected accent elements.                  |
-| `semantic.accent.disabled`     | `{primitive.color.neutral.300}`  | `{primitive.color.neutral.700}`  | Accent fill for disabled accent elements.                                |
-| `semantic.accent.content`      | `{primitive.color.graphite.700}` | `{primitive.color.graphite.300}` | Accent-intent text/icon color on neutral surfaces (graphite)             |
-| `semantic.accent.contentHover` | `{primitive.color.graphite.800}` | `{primitive.color.graphite.200}` | Accent content color on pointer hover.                                   |
-| `semantic.accent.subtle`       | `{primitive.color.graphite.50}`  | `{primitive.color.graphite.800}` | Low-emphasis accent tint for hover backgrounds and selection highlights. |
+| Token                               | Light                            | Dark                             | Role                                                                                                                                                                                                                                                       |
+| ----------------------------------- | -------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.accent.rest`              | `{primitive.color.graphite.700}` | `{primitive.color.graphite.200}` | Default accent fill for interactive elements at rest                                                                                                                                                                                                       |
+| `semantic.accent.hover`             | `{primitive.color.graphite.800}` | `{primitive.color.graphite.300}` | Accent fill on pointer hover.                                                                                                                                                                                                                              |
+| `semantic.accent.pressed`           | `{primitive.color.graphite.900}` | `{primitive.color.graphite.400}` | Accent fill during active press.                                                                                                                                                                                                                           |
+| `semantic.accent.inactive`          | `{primitive.color.neutral.400}`  | `{primitive.color.neutral.600}`  | Accent fill for inactive or unselected accent elements.                                                                                                                                                                                                    |
+| `semantic.accent.disabled`          | `{primitive.color.neutral.300}`  | `{primitive.color.neutral.700}`  | Accent fill for disabled accent elements.                                                                                                                                                                                                                  |
+| `semantic.accent.content`           | `{primitive.color.graphite.700}` | `{primitive.color.graphite.300}` | Accent-intent text/icon color on neutral surfaces (graphite)                                                                                                                                                                                               |
+| `semantic.accent.contentHover`      | `{primitive.color.graphite.800}` | `{primitive.color.graphite.200}` | Accent content color on pointer hover.                                                                                                                                                                                                                     |
+| `semantic.accent.subtle`            | `{primitive.color.graphite.50}`  | `{primitive.color.graphite.800}` | Low-emphasis accent tint for hover backgrounds and selection highlights.                                                                                                                                                                                   |
+| `semantic.accent.delight.base`      | `{primitive.color.lime.300}`     | `{primitive.color.lime.300}`     | Delight accent fill (lime) for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes. |
+| `semantic.accent.delight.deep`      | `{primitive.color.lime.600}`     | `{primitive.color.lime.600}`     | Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.                                                                                                                |
+| `semantic.accent.delight.pale`      | `{primitive.color.lime.50}`      | `{primitive.color.lime.50}`      | Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.                                                                                                                                       |
+| `semantic.accent.delight.onDelight` | `{primitive.color.neutral.900}`  | `{primitive.color.neutral.900}`  | Ink text and icons on any delight fill, in both modes (12.95:1 on delight.base). Never white.                                                                                                                                                              |
 
 <!-- auto:end:semantic-accent -->
 
@@ -578,7 +599,8 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 
 <!-- auto:start:agent-constraints -->
 
-- **One accent color:** `#433A3F` (`semantic.accent.rest`) only — no other hues
+- **One accent color:** `#4A4146` (`semantic.accent.rest`) only — no other hues
+- **Delight is not an accent:** lime `semantic.accent.delight.*` only for badges, "new" tags, best-fit highlights and illustration — never buttons, links or focus; ink text on it
 - **Body / UI typeface:** Plus Jakarta Sans — use Plus Jakarta Sans Bold (700) for headings and IBM Plex Mono for code; no other faces
 - **Action radius:** `8px` for interactive controls; `12px` containers (`rounded-lg`, one step above the action radius)
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale

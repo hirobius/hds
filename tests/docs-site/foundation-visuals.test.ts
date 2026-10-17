@@ -45,6 +45,37 @@ describe('colorGalleries', () => {
   });
 });
 
+describe('colorGalleries accent themes', () => {
+  const cobalt = JSON.parse(readFileSync('accents/cobalt/tokens.json', 'utf8'));
+  const galleries = colorGalleries(tokens, { cobalt });
+  const themes = galleries.find((g) => g.title === 'Accent themes')!;
+  const group = (title: string) => themes.groups.find((g) => g.title.startsWith(title))!;
+  const value = (title: string, token: string) =>
+    group(title).swatches.find((s) => s.token === token)!;
+
+  it('shows graphite, cobalt and the lime delight swatches side by side', () => {
+    expect(themes.groups.map((g) => g.title.split(' ')[0])).toEqual([
+      'Graphite',
+      'Cobalt',
+      'Delight',
+    ]);
+  });
+
+  it('resolves cobalt from its overlay, in light and dark', () => {
+    const rest = value('Cobalt', 'semantic.accent.rest');
+    expect(rest.value).toBe('#112de8');
+    expect(rest.darkValue).toBe('#8a97f8');
+    expect(value('Graphite', 'semantic.accent.rest').value).toBe('#4a4146');
+  });
+
+  it('keeps delight out of the semantic Accent group', () => {
+    const semantic = galleries.find((g) => g.title === 'Semantic & state')!;
+    const accent = semantic.groups.find((g) => g.title === 'Accent')!;
+    expect(accent.swatches.some((s) => s.token.includes('.delight.'))).toBe(false);
+    expect(value('Delight', 'semantic.accent.delight.base').value).toBe('#b8e62e');
+  });
+});
+
 describe('typeSpecimens', () => {
   const specimens = typeSpecimens(tokens);
 
