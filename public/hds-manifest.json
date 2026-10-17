@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-15T05:54:59.010Z",
+  "generated": "2026-10-17T03:33:10.175Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -2777,7 +2777,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/surface.tsx",
-      "description": "Surface — governed inset surface primitive. Enforces the \"Surface Inset\" rule: backgrounds MUST have internal padding. - Default padding: px24 (cards) | px16 (items) - Default border: none (elevation model — use shadow for lift) - Radius: `rounded-lg` (role radius + 4px), the one container radius shared with Card - shadow prop: applies a two-layer elevation shadow for card lift Usage: <Surface>Card content</Surface> <Surface padding=\"item\">Compact item</Surface> <Surface shadow>Lifted card with elevation shadow.</Surface>",
+      "description": "Surface — governed inset surface primitive. Enforces the \"Surface Inset\" rule: backgrounds MUST have internal padding. - Default padding: surface.padding (cards, 28px / 24px compact) | scale.sm (items, 20px / 16px compact) - Default border: none (elevation model — use shadow for lift) - Radius: `rounded-lg` (role radius + 4px), the one container radius shared with Card - shadow prop: applies a two-layer elevation shadow for card lift Usage: <Surface>Card content</Surface> <Surface padding=\"item\">Compact item</Surface> <Surface shadow>Lifted card with elevation shadow.</Surface>",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27",
       "figmaId": null,
       "preview": {
@@ -11243,12 +11243,14 @@
         "path": "primitive.space.px6",
         "cssVar": "--primitive-space-px6",
         "type": "dimension",
+        "description": "6px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.2 or a semantic token.",
         "value": "6px"
       },
       {
         "path": "primitive.space.px10",
         "cssVar": "--primitive-space-px10",
         "type": "dimension",
+        "description": "10px, off the 4px grid. Deprecated, removed in 0.28.0: use primitive.space.3 or a semantic token.",
         "value": "10px"
       },
       {
@@ -12305,7 +12307,7 @@
         "path": "semantic.space.scale.xs",
         "cssVar": "--semantic-space-scale-xs",
         "type": "dimension",
-        "description": "8px — smallest step. Same value as component.gap (deprecated alias).",
+        "description": "8px in both densities: control-internal gap (icon to label, chip padding).",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -12313,49 +12315,49 @@
         "path": "semantic.space.scale.sm",
         "cssVar": "--semantic-space-scale-sm",
         "type": "dimension",
-        "description": "16px — same value as layout.tight (deprecated alias).",
-        "alias": "{primitive.space.4}",
-        "resolvedValue": "16px"
+        "description": "20px (16px compact; was 16px before 2026-10). List-row padding and stacked-field gaps. layout.tight (deprecated) aliases it.",
+        "alias": "{primitive.space.5}",
+        "resolvedValue": "20px"
       },
       {
         "path": "semantic.space.scale.md",
         "cssVar": "--semantic-space-scale-md",
         "type": "dimension",
-        "description": "24px. Default of the overridable roles surface.padding and region.gutter. The deprecated layout.normal has the same value.",
-        "alias": "{primitive.space.6}",
-        "resolvedValue": "24px"
+        "description": "28px (24px compact; was 24px before 2026-10). Default of surface.padding: card, dialog and panel insets. layout.normal (deprecated) aliases it.",
+        "alias": "{primitive.space.7}",
+        "resolvedValue": "28px"
       },
       {
         "path": "semantic.space.scale.lg",
         "cssVar": "--semantic-space-scale-lg",
         "type": "dimension",
-        "description": "32px — same value as layout.inset (deprecated alias).",
-        "alias": "{primitive.space.8}",
-        "resolvedValue": "32px"
+        "description": "40px (32px compact). Desktop page gutter and the gap between grouped blocks.",
+        "alias": "{primitive.space.10}",
+        "resolvedValue": "40px"
       },
       {
         "path": "semantic.space.scale.xl",
         "cssVar": "--semantic-space-scale-xl",
         "type": "dimension",
-        "description": "48px — same value as layout.spacious (deprecated alias).",
-        "alias": "{primitive.space.12}",
-        "resolvedValue": "48px"
+        "description": "64px (48px compact; was 48px before 2026-10). The gap between sections inside a page. layout.spacious (deprecated) aliases it.",
+        "alias": "{primitive.space.16}",
+        "resolvedValue": "64px"
       },
       {
         "path": "semantic.space.surface.padding",
         "cssVar": "--semantic-space-surface-padding",
         "type": "dimension",
-        "description": "24px (scale.md) inset for cards, forms and panels. Tenants override it per brand and density. Replaces component.padding.",
+        "description": "Card, dialog and panel inset: scale.md (28px, 24px compact). Tenants override it. Replaces component.padding.",
         "alias": "{semantic.space.scale.md}",
-        "resolvedValue": "24px"
+        "resolvedValue": "28px"
       },
       {
         "path": "semantic.space.region.gutter",
         "cssVar": "--semantic-space-region-gutter",
         "type": "dimension",
-        "description": "24px (scale.md) column and region gutters; theme.css sets scale.lg (32px), and scale.sm (16px) below 640px. Replaces layout.gutter.",
-        "alias": "{semantic.space.scale.md}",
-        "resolvedValue": "24px"
+        "description": "Page and region gutter: scale.lg (40px comfortable, 32px compact); theme.css sets scale.sm (20px, 16px compact) below 640px. Replaces layout.gutter.",
+        "alias": "{semantic.space.scale.lg}",
+        "resolvedValue": "40px"
       },
       {
         "path": "semantic.space.subgrid.hairline",
@@ -12386,7 +12388,7 @@
         "cssVar": "--semantic-space-component-gap",
         "type": "dimension",
         "description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.",
-        "alias": "{primitive.space.2}",
+        "alias": "{semantic.space.scale.xs}",
         "resolvedValue": "8px"
       },
       {
@@ -12401,57 +12403,57 @@
         "path": "semantic.space.component.padding",
         "cssVar": "--semantic-space-component-padding",
         "type": "dimension",
-        "description": "24px inset for cards, forms and panels. DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
+        "description": "Inset for cards, forms and panels (follows surface.padding). DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
         "alias": "{semantic.space.surface.padding}",
-        "resolvedValue": "24px"
+        "resolvedValue": "28px"
       },
       {
         "path": "semantic.space.layout.tight",
         "cssVar": "--semantic-space-layout-tight",
         "type": "dimension",
-        "description": "16px default HdsStack gap and inter-component spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.sm; kept live, no removal yet.",
-        "alias": "{primitive.space.4}",
-        "resolvedValue": "16px"
+        "description": "20px fixed, no compact step. Deprecated alias (hds#206): use semantic.space.scale.sm.",
+        "alias": "{primitive.space.5}",
+        "resolvedValue": "20px"
       },
       {
         "path": "semantic.space.layout.normal",
         "cssVar": "--semantic-space-layout-normal",
         "type": "dimension",
-        "description": "24px column gutters and sidebar gutter spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
-        "alias": "{primitive.space.6}",
-        "resolvedValue": "24px"
+        "description": "28px fixed, no compact step. Deprecated alias (hds#206): use semantic.space.scale.md.",
+        "alias": "{primitive.space.7}",
+        "resolvedValue": "28px"
       },
       {
         "path": "semantic.space.layout.gutter",
         "cssVar": "--semantic-space-layout-gutter",
         "type": "dimension",
-        "description": "24px column and region gutters. DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
+        "description": "Column and region gutters (follows region.gutter). DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
         "alias": "{semantic.space.region.gutter}",
-        "resolvedValue": "24px"
+        "resolvedValue": "40px"
       },
       {
         "path": "semantic.space.layout.inset",
         "cssVar": "--semantic-space-layout-inset",
         "type": "dimension",
-        "description": "32px major block separation and inset inter-component gaps. DEPRECATED alias (hds#206) — use semantic.space.scale.lg; kept live, no removal yet.",
-        "alias": "{primitive.space.8}",
-        "resolvedValue": "32px"
+        "description": "40px fixed, no compact step. Deprecated alias (hds#206): use semantic.space.scale.lg.",
+        "alias": "{primitive.space.10}",
+        "resolvedValue": "40px"
       },
       {
         "path": "semantic.space.layout.spacious",
         "cssVar": "--semantic-space-layout-spacious",
         "type": "dimension",
-        "description": "48px break between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
-        "alias": "{primitive.space.12}",
-        "resolvedValue": "48px"
+        "description": "64px fixed, no compact step. Deprecated alias (hds#206): use semantic.space.scale.xl.",
+        "alias": "{primitive.space.16}",
+        "resolvedValue": "64px"
       },
       {
         "path": "semantic.space.section.stack",
         "cssVar": "--semantic-space-section-stack",
         "type": "dimension",
-        "description": "80px vertical rhythm between page sections and major editorial blocks.",
-        "alias": "{primitive.space.20}",
-        "resolvedValue": "80px"
+        "description": "96px vertical rhythm between page sections and major editorial blocks (80px before 2026-10); theme.css sets 64px below 640px.",
+        "alias": "{primitive.space.24}",
+        "resolvedValue": "96px"
       },
       {
         "path": "semantic.space.section.inset",
@@ -12550,15 +12552,15 @@
         "path": "semantic.layout.section.paddingY",
         "cssVar": "--semantic-layout-section-paddingY",
         "type": "dimension",
-        "alias": "{primitive.space.20}",
-        "resolvedValue": "80px"
+        "alias": "{primitive.space.24}",
+        "resolvedValue": "96px"
       },
       {
         "path": "semantic.layout.grid.gap",
         "cssVar": "--semantic-layout-grid-gap",
         "type": "dimension",
-        "alias": "{primitive.space.8}",
-        "resolvedValue": "32px"
+        "alias": "{semantic.space.scale.lg}",
+        "resolvedValue": "40px"
       },
       {
         "path": "semantic.layout.grid.columns.mobile",
@@ -12739,17 +12741,17 @@
         "path": "semantic.docs.space.section",
         "cssVar": "--semantic-docs-space-section",
         "type": "dimension",
-        "description": "48px between H2 sections — generous section break for doc pages.",
-        "alias": "{primitive.space.12}",
-        "resolvedValue": "48px"
+        "description": "64px (48px compact) between H2 sections — generous section break for doc pages.",
+        "alias": "{semantic.space.scale.xl}",
+        "resolvedValue": "64px"
       },
       {
         "path": "semantic.docs.space.paragraph",
         "cssVar": "--semantic-docs-space-paragraph",
         "type": "dimension",
-        "description": "24px between paragraphs — comfortable prose rhythm for long-form doc content.",
-        "alias": "{primitive.space.6}",
-        "resolvedValue": "24px"
+        "description": "28px between paragraphs (24px before 2026-10) — comfortable prose rhythm for the 18px body role.",
+        "alias": "{primitive.space.7}",
+        "resolvedValue": "28px"
       },
       {
         "path": "semantic.docs.space.inline",
@@ -13776,15 +13778,16 @@
         "path": "component.card.padding",
         "cssVar": "--component-card-padding",
         "type": "dimension",
-        "alias": "{primitive.space.6}",
-        "resolvedValue": "24px"
+        "description": "Card inset at the default density (28px). Card itself pads with semantic.space.surface.padding.",
+        "alias": "{primitive.space.7}",
+        "resolvedValue": "28px"
       },
       {
         "path": "component.card.gap",
         "cssVar": "--component-card-gap",
         "type": "dimension",
         "alias": "{semantic.space.scale.sm}",
-        "resolvedValue": "16px"
+        "resolvedValue": "20px"
       },
       {
         "path": "component.inlineCode.bg",

@@ -286,14 +286,14 @@ describe('Card inset (items 11, 18)', () => {
   it('parts add no second inset inside a padded Card', () => {
     const { container } = render(parts());
     const html = container.innerHTML;
-    for (const sel of ['p-6', 'px-6', 'pt-0', 'pb-2']) {
+    for (const sel of ['p-surface-padding', 'px-surface-padding', 'pt-0', 'pb-2']) {
       expect(html.split(/\s+/).join(' ')).not.toMatch(new RegExp(`class="[^"]*\\b${sel}\\b`));
     }
   });
   it('parts keep their own inset under padding="none" (the legacy composition)', () => {
     const { container } = render(parts('none'));
-    expect(container.querySelectorAll('.p-6').length).toBeGreaterThanOrEqual(2);
-    expect(container.querySelector('.px-6')).not.toBeNull();
+    expect(container.querySelectorAll('.p-surface-padding').length).toBeGreaterThanOrEqual(2);
+    expect(container.querySelector('.px-surface-padding')).not.toBeNull();
   });
   it('an accent Card gives the extra border pixel back from its padding', () => {
     render(

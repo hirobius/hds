@@ -340,6 +340,13 @@ export default [
       'hds/prefer-hds-layout-primitive': 'off',
     },
   },
+  {
+    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    rules: {
+      // repo src is gated by scripts/check-tailwind-spacing-scale.mjs (ratchet); this rule is for consumers
+      'hds/no-primitive-spacing': 'off',
+    },
+  },
 
   // --- Prettier compatibility (last — disables format-conflicting rules)
   prettierConfig,

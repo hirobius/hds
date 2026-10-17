@@ -55,6 +55,7 @@ export default [
     files: ['**/*.{ts,tsx,jsx}'],
     plugins: { hds },
     rules: {
+      'hds/no-primitive-spacing': 'error',
       'hds/no-raw-controls': 'error',
       'hds/no-raw-hex': 'error',
       'hds/no-raw-px-spacing': 'error',
@@ -67,13 +68,45 @@ export default [
 
 ## Rules
 
-| Rule                                                                 | Default | What it catches                                                                                       |
-| -------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------- |
-| [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.          |
-| [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                   |
-| [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.        |
-| [`hds/prefer-hds-layout-primitive`](#hdsprefer-hds-layout-primitive) | warn    | Ad-hoc `display: 'flex' \| 'grid'` in `style={{…}}` where a named primitive (Stack/Grid) likely fits. |
-| [`hds/sx-token-first`](#hdssx-token-first)                           | error   | Raw hex/px string values inside a `Box` `sx={{…}}` prop — `sx` must resolve through token keys.       |
+| Rule                                                                 | Default | What it catches                                                                                        |
+| -------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
+| [`hds/no-primitive-spacing`](#hdsno-primitive-spacing)               | error   | Primitive spacing steps (`--primitive-space-*`, `hds.space.pxN`, Tailwind `p-4`); use semantic tokens. |
+| [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
+| [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                    |
+| [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.         |
+| [`hds/prefer-hds-layout-primitive`](#hdsprefer-hds-layout-primitive) | warn    | Ad-hoc `display: 'flex' \| 'grid'` in `style={{…}}` where a named primitive (Stack/Grid) likely fits.  |
+| [`hds/sx-token-first`](#hdssx-token-first)                           | error   | Raw hex/px string values inside a `Box` `sx={{…}}` prop — `sx` must resolve through token keys.        |
+
+### `hds/no-primitive-spacing`
+
+Components and consumers use semantic spacing only. The primitive steps
+(`--primitive-space-4`, `hds.space.px16`, Tailwind `p-4`) are the scale's raw
+material; using one bypasses density and the scale. Reports, one per offending
+token:
+
+- `primitiveVar`: `--primitive-space-<step>` in any string or template literal.
+- `primitiveMember`: `<x>.space.pxN`, but not `hds.semantic.space.*`.
+- `primitiveTailwind`: a numeric or `pxN` spacing utility (`p-4`, `md:gap-x-2`,
+  `-mt-px12`) in a JSX `className` or a `cn()` / `clsx()` / `cva()` argument.
+  `p-0` and `p-px` are allowed; `w-4`, `h-6` and `inset-0` are not spacing.
+- `deprecatedStep`: `px6` and `px10` in any of the forms above. They are off the
+  4px grid and were removed in 0.28.0; run `npx @hirobius/design-system upgrade`
+  (codemod `hds-spacing-steps`) or use a semantic token. Wins over the other three.
+
+Option `tailwind: false` turns off the Tailwind check only (default `true`).
+
+```tsx
+// ❌ error
+<div style={{ padding: 'var(--primitive-space-4)' }} />
+<div style={{ gap: hds.space.px16 }} />
+<div className={cn('flex', 'p-4 md:gap-2')} />
+
+// ✅ ok
+<div style={{ padding: 'var(--semantic-space-scale-md)' }} />
+<div style={{ gap: hds.semantic.space.scale.md }} />
+<div className="p-surface-padding gap-scale-md px-region-gutter" />
+<Box sx={{ p: 'md' }} />
+```
 
 ### `hds/no-raw-controls`
 
@@ -130,7 +163,7 @@ so use the token there.
 // ✅ ok — a scale token, another token reference, or zero (a reset has no scale to violate)
 <div style={{ marginBottom: hds.semantic.space.scale.sm }} />
 <div style={{ paddingInline: 'var(--semantic-space-scale-xs)' }} />
-<div style={{ marginBottom: hds.space.px16 }} />
+<div style={{ marginBottom: hds.semantic.space.surface.padding }} />
 <div style={{ margin: 0 }} />
 
 // ✅ ok — the sx shorthand with a t-shirt step

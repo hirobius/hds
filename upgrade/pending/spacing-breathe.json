@@ -1,0 +1,331 @@
+{
+  "impact": "look",
+  "plain": "Spacing is roomier: the comfortable scale is 8/20/28/40/64px (was 8/16/24/32/48px) and compact moves up to 8/16/24/32/48px (was 6/12/20/24/40px); control heights are unchanged, so check fixed-height layouts and re-take screenshots.",
+  "steps": [
+    {
+      "id": "value-changed/--component-card-padding",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Card padding now follows surface.padding: 28px (24px compact), was a fixed 24px; check fixed-height cards.",
+      "detect": {
+        "cssVars": ["--component-card-padding"],
+        "cssVarWrites": ["--component-card-padding"]
+      },
+      "facts": ["css-var-changed:--component-card-padding::root"]
+    },
+    {
+      "id": "value-changed/--hds-space-2xl",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated --hds-space-2xl is now 64px (48px compact), tracking scale.xl; move to --semantic-space-scale-xl.",
+      "detect": {
+        "cssVars": ["--hds-space-2xl"],
+        "cssVarWrites": ["--hds-space-2xl"]
+      },
+      "facts": [
+        "css-var-changed:--hds-space-2xl::root",
+        "css-var-changed:--hds-space-2xl:[data-density=compact]"
+      ]
+    },
+    {
+      "id": "value-changed/--hds-space-lg",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated --hds-space-lg is now 28px (24px compact), tracking scale.md; move to --semantic-space-scale-md.",
+      "detect": {
+        "cssVars": ["--hds-space-lg"],
+        "cssVarWrites": ["--hds-space-lg"]
+      },
+      "facts": [
+        "css-var-changed:--hds-space-lg::root",
+        "css-var-changed:--hds-space-lg:[data-density=compact]"
+      ]
+    },
+    {
+      "id": "value-changed/--hds-space-md",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated --hds-space-md is now 20px (16px compact), tracking scale.sm; move to --semantic-space-scale-sm.",
+      "detect": {
+        "cssVars": ["--hds-space-md"],
+        "cssVarWrites": ["--hds-space-md"]
+      },
+      "facts": [
+        "css-var-changed:--hds-space-md::root",
+        "css-var-changed:--hds-space-md:[data-density=compact]"
+      ]
+    },
+    {
+      "id": "value-changed/--hds-space-sm",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated --hds-space-sm is 8px in both densities now (compact was 6px); move to --semantic-space-scale-xs.",
+      "detect": {
+        "cssVars": ["--hds-space-sm"],
+        "cssVarWrites": ["--hds-space-sm"]
+      },
+      "facts": ["css-var-changed:--hds-space-sm:[data-density=compact]"]
+    },
+    {
+      "id": "value-changed/--hds-space-xl",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated --hds-space-xl is now 40px (32px compact), tracking scale.lg; move to --semantic-space-scale-lg.",
+      "detect": {
+        "cssVars": ["--hds-space-xl"],
+        "cssVarWrites": ["--hds-space-xl"]
+      },
+      "facts": [
+        "css-var-changed:--hds-space-xl::root",
+        "css-var-changed:--hds-space-xl:[data-density=compact]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-docs-space-paragraph",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Doc paragraph spacing is 28px (was 24px); check long-form pages that read it.",
+      "detect": {
+        "cssVars": ["--semantic-docs-space-paragraph"],
+        "cssVarWrites": ["--semantic-docs-space-paragraph"]
+      },
+      "facts": ["css-var-changed:--semantic-docs-space-paragraph::root"]
+    },
+    {
+      "id": "value-changed/--semantic-docs-space-section",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Doc section breaks follow scale.xl: 64px (48px compact), was a fixed 48px.",
+      "detect": {
+        "cssVars": ["--semantic-docs-space-section"],
+        "cssVarWrites": ["--semantic-docs-space-section"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-docs-space-section::root",
+        "css-var-changed:--semantic-docs-space-section::where([data-density=compact])"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-layout-grid-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The layout grid gap follows scale.md (28px, 20px below 640px; 24/16px compact), was 24px and 16px.",
+      "detect": {
+        "cssVars": ["--semantic-layout-grid-gap"],
+        "cssVarWrites": ["--semantic-layout-grid-gap"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-layout-grid-gap::root",
+        "css-var-changed:--semantic-layout-grid-gap::where([data-density=compact])",
+        "css-var-changed:--semantic-layout-grid-gap:@media (max-width:639px) :root",
+        "css-var-changed:--semantic-layout-grid-gap:@media (max-width:639px) :where([data-density=compact])"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-layout-section-paddingY",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Section vertical padding is 96px (64px below 640px), was 80px and 48px; re-take screenshots of long pages.",
+      "detect": {
+        "cssVars": ["--semantic-layout-section-paddingY"],
+        "cssVarWrites": ["--semantic-layout-section-paddingY"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-layout-section-paddingY::root",
+        "css-var-changed:--semantic-layout-section-paddingY:@media (max-width:639px) :root"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-component-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated component.gap now aliases scale.xs (8px in both densities, as before); move to --semantic-space-scale-xs.",
+      "detect": {
+        "cssVars": ["--semantic-space-component-gap"],
+        "cssVarWrites": ["--semantic-space-component-gap"]
+      },
+      "facts": ["css-var-changed:--semantic-space-component-gap::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-layout-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The layout gap follows scale.md (28px, 20px below 640px; 24/16px compact), was 24px and 16px.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-gap"],
+        "cssVarWrites": ["--semantic-space-layout-gap"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-layout-gap::root",
+        "css-var-changed:--semantic-space-layout-gap::where([data-density=compact])",
+        "css-var-changed:--semantic-space-layout-gap:@media (max-width:639px) :root",
+        "css-var-changed:--semantic-space-layout-gap:@media (max-width:639px) :where([data-density=compact])"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-layout-inset",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated layout.inset is now 40px (was 32px), fixed in both densities; move to --semantic-space-scale-lg.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-inset"],
+        "cssVarWrites": ["--semantic-space-layout-inset"]
+      },
+      "facts": ["css-var-changed:--semantic-space-layout-inset::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-layout-normal",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated layout.normal is now 28px (was 24px), fixed in both densities; move to --semantic-space-scale-md.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-normal"],
+        "cssVarWrites": ["--semantic-space-layout-normal"]
+      },
+      "facts": ["css-var-changed:--semantic-space-layout-normal::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-layout-spacious",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated layout.spacious is now 64px (was 48px), fixed in both densities; move to --semantic-space-scale-xl.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-spacious"],
+        "cssVarWrites": ["--semantic-space-layout-spacious"]
+      },
+      "facts": ["css-var-changed:--semantic-space-layout-spacious::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-layout-tight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated layout.tight is now 20px (was 16px), fixed in both densities; move to --semantic-space-scale-sm.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-tight"],
+        "cssVarWrites": ["--semantic-space-layout-tight"]
+      },
+      "facts": ["css-var-changed:--semantic-space-layout-tight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-region-gutter",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The page gutter is 40px on desktop and 20px below 640px (32/16px compact), was 32/16px (24/12px compact); check full-bleed layouts at 390px.",
+      "detect": {
+        "cssVars": ["--semantic-space-region-gutter"],
+        "cssVarWrites": ["--semantic-space-region-gutter"]
+      },
+      "facts": ["css-var-changed:--semantic-space-region-gutter::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-scale-lg",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "scale.lg is 40px (32px compact), was 32px (24px compact); layouts that read it get roomier.",
+      "detect": {
+        "cssVars": ["--semantic-space-scale-lg"],
+        "cssVarWrites": ["--semantic-space-scale-lg"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-scale-lg::root",
+        "css-var-changed:--semantic-space-scale-lg:[data-density=compact]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-scale-md",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "scale.md is 28px (24px compact), was 24px (20px compact); card and dialog insets grow with it.",
+      "detect": {
+        "cssVars": ["--semantic-space-scale-md"],
+        "cssVarWrites": ["--semantic-space-scale-md"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-scale-md::root",
+        "css-var-changed:--semantic-space-scale-md:[data-density=compact]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-scale-sm",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "scale.sm is 20px (16px compact), was 16px (12px compact); list rows and field stacks grow with it.",
+      "detect": {
+        "cssVars": ["--semantic-space-scale-sm"],
+        "cssVarWrites": ["--semantic-space-scale-sm"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-scale-sm::root",
+        "css-var-changed:--semantic-space-scale-sm:[data-density=compact]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-scale-xl",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "scale.xl is 64px (48px compact), was 48px (40px compact); gaps between sections grow with it.",
+      "detect": {
+        "cssVars": ["--semantic-space-scale-xl"],
+        "cssVarWrites": ["--semantic-space-scale-xl"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-scale-xl::root",
+        "css-var-changed:--semantic-space-scale-xl:[data-density=compact]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-scale-xs",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "scale.xs is 8px in both densities now (compact was 6px).",
+      "detect": {
+        "cssVars": ["--semantic-space-scale-xs"],
+        "cssVarWrites": ["--semantic-space-scale-xs"]
+      },
+      "facts": ["css-var-changed:--semantic-space-scale-xs:[data-density=compact]"]
+    },
+    {
+      "id": "value-changed/--semantic-space-section-inset",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Hero inset below 640px is 80px (was 64px); 128px above it is unchanged.",
+      "detect": {
+        "cssVars": ["--semantic-space-section-inset"],
+        "cssVarWrites": ["--semantic-space-section-inset"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-section-inset::root",
+        "css-var-changed:--semantic-space-section-inset:@media (max-width:639px) :root"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-section-stack",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Space between page sections is 96px (64px below 640px), was 80px and 48px.",
+      "detect": {
+        "cssVars": ["--semantic-space-section-stack"],
+        "cssVarWrites": ["--semantic-space-section-stack"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-section-stack::root",
+        "css-var-changed:--semantic-space-section-stack:@media (max-width:639px) :root"
+      ]
+    },
+    {
+      "id": "deprecated/primitive.space.px6-px10",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind *-px6/*-px10) are deprecated and leave in 0.28.0; the codemod rewrites them to the 8px and 12px steps.",
+      "auto": {
+        "codemod": "hds-spacing-steps",
+        "args": []
+      },
+      "removeIn": "0.28.0",
+      "detect": {
+        "cssVars": ["--primitive-space-px6", "--primitive-space-px10"],
+        "regex": ["\\b(?:hds\\.space\\.px(?:6|10)|[a-z-]+-px(?:6|10))\\b"]
+      }
+    }
+  ]
+}

@@ -12,6 +12,7 @@
  * config array, the standard pattern for ESLint 9/10 plugins.
  */
 import { readFileSync } from 'node:fs';
+import noPrimitiveSpacing from './rules/no-primitive-spacing.mjs';
 import noRawControls from './rules/no-raw-controls.mjs';
 import noRawHex from './rules/no-raw-hex.mjs';
 import noRawPxSpacing from './rules/no-raw-px-spacing.mjs';
@@ -28,6 +29,7 @@ const packageMeta = { name, version };
 const plugin = {
   meta: packageMeta,
   rules: {
+    'no-primitive-spacing': noPrimitiveSpacing,
     'no-raw-controls': noRawControls,
     'no-raw-hex': noRawHex,
     'no-raw-px-spacing': noRawPxSpacing,
@@ -42,6 +44,7 @@ plugin.configs = {
       name: 'hds/recommended',
       plugins: { hds: plugin },
       rules: {
+        'hds/no-primitive-spacing': 'error',
         'hds/no-raw-controls': 'error',
         'hds/no-raw-hex': 'error',
         'hds/no-raw-px-spacing': 'error',
