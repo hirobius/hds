@@ -1,32 +1,4 @@
 {
   "impact": "none",
-  "plain": "New semantic spacing (semantic.space.fixed.*) and radius (semantic.radius.scale.*) tokens cover every px value; reach for them instead of a primitive step or a typed px.",
-  "steps": [
-    {
-      "id": "deprecated/token-sweep-2026-10",
-      "kind": "deprecated",
-      "impact": "none",
-      "plain": "Deprecated spacing, radius and type tokens (the hds#206 layout.* and component.gap/padding aliases, section.heroMax, docs.space.paragraph/inline, typography.h1-h3/eyebrow) leave in 1.0.0; the codemod rewrites each to the replacement it names, and hds/no-deprecated-token fails what is left.",
-      "auto": {
-        "codemod": "hds-deprecated-tokens",
-        "args": []
-      },
-      "removeIn": "1.0.0",
-      "detect": {
-        "cssVars": [
-          "--semantic-space-layout-tight",
-          "--semantic-space-layout-normal",
-          "--semantic-space-layout-gutter",
-          "--semantic-space-layout-inset",
-          "--semantic-space-layout-spacious",
-          "--semantic-space-component-gap",
-          "--semantic-space-component-padding",
-          "--semantic-space-section-heroMax",
-          "--semantic-space-sidebar-railWidth",
-          "--semantic-docs-space-paragraph",
-          "--semantic-docs-space-inline"
-        ]
-      }
-    }
-  ]
+  "plain": "New semantic spacing (semantic.space.fixed.*) and radius (semantic.radius.scale.*) tokens cover every px value; reach for them instead of a primitive step or a typed px."
 }
