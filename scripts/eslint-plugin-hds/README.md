@@ -90,7 +90,7 @@ token:
   `-mt-px12`) in a JSX `className` or a `cn()` / `clsx()` / `cva()` argument.
   `p-0` and `p-px` are allowed; `w-4`, `h-6` and `inset-0` are not spacing.
 - `deprecatedStep`: `px6` and `px10` in any of the forms above. They are off the
-  4px grid and were removed in 0.28.0; run `npx @hirobius/design-system upgrade`
+  4px grid, deprecated and removed in 0.28.0; run `npx @hirobius/design-system upgrade`
   (codemod `hds-spacing-steps`) or use a semantic token. Wins over the other three.
 
 Option `tailwind: false` turns off the Tailwind check only (default `true`).

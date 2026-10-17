@@ -102,7 +102,7 @@ export function transformSource(source) {
   for (const [re, fn] of RULES) {
     out = out.replace(re, (...a) => {
       sites++;
-      const key = a.find((x) => typeof x === 'string' && x in STEPS);
+      const key = a.find((x) => typeof x === 'string' && Object.hasOwn(STEPS, x));
       names.add(key);
       return fn(...a);
     });

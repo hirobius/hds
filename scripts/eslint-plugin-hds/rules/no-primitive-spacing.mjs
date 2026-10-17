@@ -97,7 +97,7 @@ export default {
       primitiveTailwind:
         'Tailwind class "{{cls}}" uses a primitive spacing step; primitive steps bypass density and the scale. Use a semantic spacing token (var(--semantic-space-scale-*) / surface-padding / region-gutter, Tailwind `p-surface-padding`, `gap-scale-md`, or Box sx \'md\').',
       deprecatedStep:
-        '"{{text}}" uses a deprecated spacing step: px6 and px10 are off the 4px grid and were removed in 0.28.0. Run `npx @hirobius/design-system upgrade` (codemod hds-spacing-steps) or use a semantic spacing token.',
+        '"{{text}}" uses a deprecated spacing step: px6 and px10 are off the 4px grid, deprecated and removed in 0.28.0. Run `npx @hirobius/design-system upgrade` (codemod hds-spacing-steps) or use a semantic spacing token.',
     },
   },
   create(context) {

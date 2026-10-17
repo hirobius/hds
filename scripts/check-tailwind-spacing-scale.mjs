@@ -38,7 +38,7 @@ const SCALE_PX = [8, 20, 28, 40, 64];
 const DEPRECATED_STEPS = ['px6', 'px10'];
 const UTIL = /^(!?)(-?)(p[xytrblse]?|m[xytrblse]?|gap(?:-[xy])?|space-[xy])-(\d+(?:\.\d+)?|px\d+)$/;
 const PRIMITIVE_VAR = /--primitive-space-([\w]+)/g;
-const PRIMITIVE_MEMBER = /\b(?<!semantic\.)hds\.space\.(px\d+)\b/g;
+const PRIMITIVE_MEMBER = /\bhds\.space\.(px\d+)\b/g;
 
 /**
  * @returns {{line: number, token: string, px?: number,
@@ -59,7 +59,7 @@ export function scanSource(src) {
         out.push({ line, token: raw, kind: 'deprecated-step' });
         continue;
       }
-      if (m[4].startsWith('px')) continue; // px1/px2 subgrid keys: hairlines, not rhythm
+      if (m[4] === 'px1' || m[4] === 'px2') continue; // px1/px2 subgrid keys: hairlines, not rhythm
       const n = parseFloat(m[4]);
       if (n === 0) continue;
       const px = n * 4;
