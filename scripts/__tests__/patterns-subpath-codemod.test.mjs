@@ -116,6 +116,23 @@ describe('transformSource', () => {
     expect(out.moved).toEqual(['Page', 'TopNav']);
   });
 
+  it('handles ES2022 string specifiers correctly', () => {
+    const src = `import { "Page" as P, "Button" as B } from '${ROOT}';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.changed).toBe(true);
+    expect(out.source).toBe(
+      `import { "Button" as B } from '${ROOT}';\nimport { "Page" as P } from '${SUB}';\n`,
+    );
+    expect(out.moved).toEqual(['Page']);
+  });
+
+  it('leaves string specifier that is not a pattern name alone', () => {
+    const src = `import { "Button" as B } from '${ROOT}';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.changed).toBe(false);
+    expect(out.moved).toEqual([]);
+  });
+
   it('drops the root import when nothing else is left, preserving aliases and multi-line layout', () => {
     const src = `import {\n  AppShell,\n  SideNav as Nav,\n} from '${ROOT}';\n`;
     const out = transformSource(src, NAMES);
@@ -285,6 +302,24 @@ describe('findUnrewritable', () => {
 // the statement, or a second statement on the line, left a pattern name on the
 // root import, and --check passed because a second run saw nothing to move.
 describe('transformSource: comments and same-line statements (hds#434)', () => {
+  it('preserves comments outside braces when statement moves entirely', () => {
+    const src1 = `import /* x */ { Page } from '@hirobius/design-system';\n`;
+    const out1 = transformSource(src1, NAMES);
+    expect(out1.source).toBe(`import /* x */ { Page } from '@hirobius/design-system/patterns';\n`);
+
+    const src2 = `import { Page } from /* x */ '@hirobius/design-system';\n`;
+    const out2 = transformSource(src2, NAMES);
+    expect(out2.source).toBe(`import { Page } from /* x */ '@hirobius/design-system/patterns';\n`);
+  });
+
+  it('keeps comments outside braces on root statement when statement splits', () => {
+    const src = `import /* x */ { Page, Button } from /* y */ '@hirobius/design-system';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.source).toBe(
+      `import /* x */ { Button } from /* y */ '@hirobius/design-system';\nimport { Page } from '@hirobius/design-system/patterns';\n`,
+    );
+  });
+
   it.each([
     [
       'a block comment after a specifier, before its comma',
@@ -326,6 +361,14 @@ describe('transformSource: comments and same-line statements (hds#434)', () => {
     expect(out.source).toBe(want);
     expect(out.moved).toEqual(['Page']);
     expect(transformSource(out.source, NAMES).changed).toBe(false);
+  });
+
+  it('reads indentation correctly when preceding line is inside a multi-line block comment', () => {
+    const src = `/* a\n b */ import { Page, Button } from '${ROOT}';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.source).toBe(
+      `/* a\n b */ import { Button } from '${ROOT}';\nimport { Page } from '${SUB}';\n`,
+    );
   });
 
   it('moves every pattern name of the hds#434 repro and keeps the group comments', () => {
@@ -383,7 +426,9 @@ describe('transformSource: comments and same-line statements (hds#434)', () => {
   it('moves a trailing comment to /patterns with the last specifier when multiple specifiers move', () => {
     const src = `import {\n  TopNav,\n  Page,\n  // trailing comment\n} from '${ROOT}';\n`;
     const out = transformSource(src, NAMES);
-    expect(out.source).toBe(`import {\n  TopNav,\n  Page,\n  // trailing comment\n} from '${SUB}';\n`);
+    expect(out.source).toBe(
+      `import {\n  TopNav,\n  Page,\n  // trailing comment\n} from '${SUB}';\n`,
+    );
     expect(out.moved).toEqual(['TopNav', 'Page']);
   });
 });
