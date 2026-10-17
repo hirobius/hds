@@ -6,8 +6,8 @@
  * Loads every built docs-site route (discovered from the build output, not a
  * hand list) and fails when (a) cumulative layout shift on load exceeds 0.01, or
  * (b) the header, sidebar or nav box (x, y, width, height) differs by any px from
- * the first route's. Run `pnpm docs:publish` first. Chromium comes from
- * PLAYWRIGHT_BROWSERS_PATH, falling back to /opt/pw-browsers.
+ * the first route of its layout (`/` on its own, `/docs/**` against the first docs route).
+ * Run `pnpm docs:publish` first. Chromium comes from scripts/lib/browser-host.mjs.
  *
  * Known failures live in scripts/docs-layout-shift-allowlist.json (route, kind, max CLS, reason, issue);
  * a worse reading or a stale entry fails. Pass --allowlist <path> to use another file.
@@ -18,7 +18,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from 'playwright';
 import {
   CLS_LIMIT,
   REGIONS,
@@ -28,6 +27,7 @@ import {
   validateAllowlist,
 } from './lib/docs-layout-shift.mjs';
 import { serveStatic } from './lib/docs-axe.mjs';
+import { launchChromium } from './lib/browser-host.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SETTLE_MS = 1200;
@@ -35,29 +35,6 @@ const SETTLE_MS = 1200;
 function arg(name, fallback) {
   const i = process.argv.indexOf(`--${name}`);
   return i > -1 ? process.argv[i + 1] : fallback;
-}
-
-async function launch() {
-  try {
-    return await chromium.launch();
-  } catch (err) {
-    const base = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';
-    const exes = [path.join(base, 'chromium')];
-    if (fs.existsSync(base)) {
-      for (const d of fs
-        .readdirSync(base)
-        .filter((n) => /^chromium-\d+$/.test(n))
-        .sort()
-        .reverse()) {
-        exes.push(path.join(base, d, 'chrome-linux', 'chrome'));
-      }
-    }
-    for (const exe of exes) {
-      if (fs.existsSync(exe) && fs.statSync(exe).isFile())
-        return chromium.launch({ executablePath: exe });
-    }
-    throw err;
-  }
 }
 
 async function scan(browser, base, route) {
@@ -113,7 +90,7 @@ async function main() {
   }
   if (filter) routes = routes.filter((r) => r.toLowerCase().includes(filter.toLowerCase()));
   const { server, port } = await serveStatic(dir);
-  const browser = await launch();
+  const browser = await launchChromium();
   const scans = [];
   let next = 0;
   await Promise.all(
