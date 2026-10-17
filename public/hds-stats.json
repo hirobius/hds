@@ -3,14 +3,14 @@
   "version": "0.26.2",
   "components": {
     "publicModules": 58,
-    "core": 43,
+    "core": 44,
     "patterns": 12
   },
   "tokens": {
-    "total": 427
+    "total": 428
   },
   "contrast": {
-    "textPairs": 24,
+    "textPairs": 27,
     "nonTextPairs": 1
   },
   "typography": {
@@ -22,5 +22,5 @@
     "source": "docs/data/consumer-usage.json",
     "confirmedAt": "2026-10-01"
   },
-  "generatedFrom": "d06a6d1081e6491fbd565acf2cb50cc47f3312a6"
+  "generatedFrom": "180f3e29712904f938a2c104cf9c23e27bdbaa34"
 }

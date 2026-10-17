@@ -2,6 +2,9 @@
  * MetaLine — one line of secondary facts, at most two, joined by a bullet.
  * @category Typography
  * @tier primitive
+ * @usage Show one or two secondary facts on a single line, joined by a bullet ("Acme Cloud · Remote").
+ * @whenNot Three or more facts, or labelled key-value pairs.
+ * @useInstead A second MetaLine row per extra fact, or MetadataList for labelled pairs
  */
 
 import * as React from 'react';
@@ -26,6 +29,9 @@ export interface MetaLineProps extends Omit<
 /**
  * Secondary facts on one line ("Acme Cloud · Remote"). Max two items per line so
  * long strings in other languages never wrap mid-line; more facts go in more rows.
+ * The `hds/max-two-meta-items` lint rule enforces the same limit on bullet-joined
+ * text in JSX; it cannot see chains built in code (`[a, b, c].join(' · ')`), so
+ * those rely on this type and review.
  */
 export const MetaLine = /* @__PURE__ */ React.forwardRef<HTMLParagraphElement, MetaLineProps>(
   function MetaLine({ items, className, ...props }, ref) {

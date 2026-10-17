@@ -33,7 +33,7 @@ Subpath exports:
 
 ## Core set
 
-The 43 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
+The 44 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
 
 - **Actions:** `Button`
 - **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
@@ -43,7 +43,7 @@ The 43 components of the ratified core set (`core: true` in the manifest): brand
 - **Navigation:** `Breadcrumb`, `InlineLink`, `Pagination`, `Tabs`
 - **Overlays:** `Dialog`, `Menu`, `Popover`, `Tooltip`
 - **Theming:** `HdsRouterProvider`, `HdsThemeProvider`
-- **Typography:** `Text`
+- **Typography:** `MetaLine`, `Text`
 - **Utility:** `VisuallyHidden`
 
 ## Allow-list: components you may import
