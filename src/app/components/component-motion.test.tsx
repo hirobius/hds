@@ -16,10 +16,12 @@ import { Popover } from './popover';
 afterEach(cleanup);
 
 describe('Button motion', () => {
-  it('eases down on press', () => {
+  it('eases the press wash in, with no scale (DESIGN.md keeps transforms spatial)', () => {
     render(<Button>Save</Button>);
-    const cls = screen.getByRole('button').className.split(/\s+/);
-    expect(cls).toContain('active:scale-97');
+    const cls = screen.getByRole('button').className;
+    expect(cls).toMatch(/transition-\[[^\]]*box-shadow/);
+    expect(cls).toContain('active:inset-shadow-');
+    expect(cls).not.toMatch(/active:scale-/);
   });
 
   it('settles a toggle’s new label in after it flips, never on first render', () => {

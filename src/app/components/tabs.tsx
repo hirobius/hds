@@ -152,6 +152,9 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
     if (!el || typeof ResizeObserver === 'undefined') return;
     const ro = new ResizeObserver(update);
     ro.observe(el);
+    // A tab can change width on its own (a web font lands, a badge count grows),
+    // and the bar must follow it, so each tab is watched too.
+    for (const tab of el.querySelectorAll(':scope > [role="tab"]')) ro.observe(tab);
     return () => ro.disconnect();
   }, [update]);
 

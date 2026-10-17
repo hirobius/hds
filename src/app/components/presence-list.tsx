@@ -7,6 +7,8 @@
  * wash (.hds-motion-item-enter, component-motion.css). A removed item fades
  * and collapses its height before it unmounts, so the items below close the
  * gap instead of jumping. Items present on the first render do not animate.
+ * Space items with their own margin, not a parent `gap`: a gap cannot collapse,
+ * so it would close in one step when the item unmounts.
  * Everything runs on motion tokens and lands at once under reduced motion.
  */
 
@@ -61,7 +63,6 @@ export const PresenceItem = /* @__PURE__ */ React.forwardRef<HTMLElement, Presen
     const listMounted = React.useContext(ListMounted);
     // Decided once, at mount: only an item that arrives after the list rendered animates in.
     const [isNew] = React.useState(() => listMounted?.current === true);
-    const productiveMotion = useHdsMotion('productive');
     const exitMotion = useHdsMotion('exit');
     const MotionTag: React.ElementType = as === 'li' ? motion.li : motion.div;
     return (
@@ -77,7 +78,7 @@ export const PresenceItem = /* @__PURE__ */ React.forwardRef<HTMLElement, Presen
           paddingBottom: 0,
           overflow: 'hidden',
         }}
-        transition={{ duration: productiveMotion.duration, ease: exitMotion.easing }}
+        transition={{ duration: exitMotion.duration, ease: exitMotion.easing }}
         {...props}
       />
     );

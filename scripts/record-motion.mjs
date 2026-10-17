@@ -6,7 +6,8 @@
  *
  *   pnpm motion:record                  # every scene, real speed
  *   pnpm motion:record tabs list        # just these scenes
- *   pnpm motion:record --rate=0.25      # quarter speed (CSS + Web Animations)
+ *   pnpm motion:record --rate=0.25      # quarter speed (CSS + Web Animations only;
+ *                                       # motion/react JS springs keep real speed)
  *   pnpm motion:record --reduced        # emulate prefers-reduced-motion
  *
  * Serves preview/motion.html (the motion stage) with the preview bench's Vite

@@ -27,10 +27,9 @@ import { isDevelopment } from '../../lib/env';
  * once with no `relative`/`after:` classes and no extra DOM; the
  * `inset-shadow-[0_0_0_9999px]` spread fills the padding box, so it works on
  * a transparent tertiary fill and respects the radius. `disabled:pointer-events-none`
- * keeps a disabled control from ever matching `:active`. The wash snaps on
- * and off, as the Figma Pressed variant does, while the control eases down to
- * 97% (`active:scale-97`; under reduced motion it steps there with no easing)
- * so a tap reads as a press. Colour, the tone hover filter and the scale ease on the productive
+ * keeps a disabled control from ever matching `:active`. The wash (the Figma
+ * Pressed variant) eases in, with no scale: DESIGN.md keeps transforms for
+ * spatial motion. Colour, the tone hover filter and the wash ease on the productive
  * motion token (the bare transition utility's default, theme.css). Without `color-mix()` support the fallback is the opaque
  * token, the same fallback Tailwind emits for `bg-scrim/60`.
  *
@@ -58,9 +57,9 @@ import { isDevelopment } from '../../lib/env';
 // `disabled:` class on a variant would become a "must-replace" class every tone
 // would have to drop.
 // Icon sizes bind `component.button.size.<s>.iconSize` so code cannot drift from the token (hds#539).
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for colours + filter + scale), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for colours + filter + the wash), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[color,background-color,border-color,box-shadow,filter,scale] active:scale-97 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[color,background-color,border-color,box-shadow,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {

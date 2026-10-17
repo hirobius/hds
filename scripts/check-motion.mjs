@@ -55,7 +55,7 @@ const MOTION_CSS = join(STYLE_DIR, 'component-motion.css');
 // transition utility (bare transition utilities time on the productive token
 // through theme.css's @theme defaults).
 export const MOTION_CONTRACT = [
-  { file: 'button.tsx', state: 'press', evidence: /active:scale-/ },
+  { file: 'button.tsx', state: 'press wash', evidence: /transition-\[[^\]]*box-shadow/ },
   { file: 'button.tsx', state: 'hover / focus colour', evidence: /transition-\[color,/ },
   { file: 'button.tsx', state: 'toggle content swap', evidence: /hds-motion-swap/ },
   { file: 'tabs.tsx', state: 'selected-indicator move', evidence: /hds-tabs-indicator/ },
@@ -84,6 +84,10 @@ export const MOTION_CONTRACT = [
   { file: 'card.tsx', state: 'interactive hover lift', evidence: /hover:scale-/ },
   { file: 'theme-toggle.tsx', state: 'sun / moon morph', evidence: /hds-theme-toggle__/ },
 ];
+
+// Evidence must be code: a comment that names a class or prop proves nothing moves.
+const stripComments = (text) =>
+  text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`\\])\/\/.*$/gm, '$1');
 
 const CONTRACTED = new Set(MOTION_CONTRACT.map((row) => row.file));
 
@@ -188,7 +192,8 @@ export function findContractGaps(sources, motionCss) {
   for (const { file, state, evidence } of MOTION_CONTRACT) {
     const text = sources[file];
     if (text === undefined) gaps.push({ file, reason: `listed in MOTION_CONTRACT but missing` });
-    else if (!evidence.test(text)) gaps.push({ file, reason: `${state}: no motion (${evidence})` });
+    else if (!evidence.test(stripComments(text)))
+      gaps.push({ file, reason: `${state}: no motion (${evidence})` });
   }
   for (const [file, text] of Object.entries(sources)) {
     for (const [cls] of text.matchAll(/(?<![-\w])hds-motion-[a-z-]+[a-z]/g)) {

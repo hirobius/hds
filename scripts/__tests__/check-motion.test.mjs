@@ -85,6 +85,12 @@ describe('state-change contract', () => {
     expect(gaps.some((g) => g.file === 'button.tsx' && /press/.test(g.reason))).toBe(true);
   });
 
+  it('does not take a comment as evidence', () => {
+    const sources = { 'tabs.tsx': '// the hds-tabs-indicator slides\n<div />' };
+    const gaps = findContractGaps(sources, css);
+    expect(gaps.some((g) => g.file === 'tabs.tsx' && /indicator/.test(g.reason))).toBe(true);
+  });
+
   it('fails a listed component that no longer exists', () => {
     expect(findContractGaps({}, css).some((g) => /missing/.test(g.reason))).toBe(true);
   });
