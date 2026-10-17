@@ -70,8 +70,8 @@ const FONT_LICENSES = {
     license: 'SIL Open Font License 1.1',
     spdx: 'OFL-1.1',
   },
-  'bricolage-grotesque': {
-    family: 'Bricolage Grotesque',
+  sora: {
+    family: 'Sora',
     license: 'SIL Open Font License 1.1',
     spdx: 'OFL-1.1',
   },

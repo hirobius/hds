@@ -94,8 +94,8 @@
   --hds-font-family-mono: 'IBM Plex Mono', 'Courier New', monospace;
   /* Display dial (ADR-063, hds#480): display, title and title-sm. */
   --hds-font-family-display:
-    'Bricolage Grotesque', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
+    'Sora', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
   /* -- Type metrics ----------------------------------------------------------- */
   /* The --hds-font-size-xs/sm/base/lg/xl block that was here held a SECOND,
      hand-authored ramp (11/13/16/20/28 as literal px, not var refs) that
@@ -195,7 +195,6 @@
   --hds-space-3xl: var(--primitive-space-16); /* 64px */
   --hds-space-4xl: var(--primitive-space-20); /* 80px */
 
-  --hds-accent-bar: var(--primitive-color-blue-300);
   --hds-text-on-image: var(--semantic-color-content-inverse);
 
   /* -- Semantic accent bridges (legacy) ---------------------------------------- */
@@ -339,7 +338,6 @@
   color-scheme: dark;
 
   /* Text colors: --semantic-color-content-* resolved via tokens.css (dark mode auto-switches) */
-  --hds-accent-bar: var(--primitive-color-blue-400);
   --hds-text-on-image: var(--semantic-color-content-inverse);
 
   /* Feedback — dark mode vars resolve automatically from tokens.css */

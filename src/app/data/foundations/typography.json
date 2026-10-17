@@ -10,7 +10,7 @@
   "rules": [
     {
       "id": "one-typeface",
-      "rule": "Use Plus Jakarta Sans for body and UI text. Bricolage Grotesque Bold (700) is used for the display, title and title-sm roles (ADR-063).",
+      "rule": "Use Plus Jakarta Sans for body and UI text. Sora ExtraBold (800) is used for the display, title and title-sm roles; body is 450 (ADR-063).",
       "enforceable": false,
       "valid": "fontFamily: hds.fontFamily",
       "invalid": "fontFamily: 'Georgia, serif'"

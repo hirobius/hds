@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 475 tokens, aliases, and TS refs in one shot.
+Checks all 476 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -258,17 +258,17 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 
 | Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                      |
 | ----------------- | ---------- | ------ | ----------- | -------------- | -------------------------------------------------------------------------------- |
-| `display`         | 48px       | 700    | 1.05        | -0.01em        | One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.                         |
-| `title`           | 24px       | 700    | 1.25        | -0.01em        | Section and card headings. 24px / 1.25 / 700. Role 2 of 6.                       |
-| `titleSm`         | 18px       | 700    | 1.375       | 0em            | Small heading inside a card or section band. 18px / 1.375 / 700.                 |
-| `body`            | 18px       | 400    | 1.6         | 0em            | Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.                              |
-| `ui`              | 16px       | 500    | 1.5         | 0em            | Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.                |
-| `caption`         | 14px       | 500    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6. |
-| `mono`            | 15px       | 400    | 1.5         | 0em            | Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6.                 |
-| `h1`              | 24px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
-| `h2`              | 24px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
-| `h3`              | 24px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
-| `eyebrow`         | 14px       | 500    | 1.5         | 0em            | deprecated: use semantic.typography.caption                                      |
+| `display`         | 48px       | 800    | 1.05        | -0.01em        | One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.                         |
+| `title`           | 24px       | 800    | 1.25        | -0.01em        | Section and card headings. 24px / 1.25 / 700. Role 2 of 6.                       |
+| `titleSm`         | 18px       | 800    | 1.375       | 0em            | Small heading inside a card or section band. 18px / 1.375 / 700.                 |
+| `body`            | 18px       | 450    | 1.6         | 0em            | Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.                              |
+| `ui`              | 16px       | 550    | 1.5         | 0em            | Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.                |
+| `caption`         | 14px       | 550    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6. |
+| `mono`            | 15px       | 450    | 1.5         | 0em            | Code and ids. 15px / 1.5 / 450. The mono companion, role 6 of 6.                 |
+| `h1`              | 24px       | 800    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
+| `h2`              | 24px       | 800    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
+| `h3`              | 24px       | 800    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                        |
+| `eyebrow`         | 14px       | 550    | 1.5         | 0em            | deprecated: use semantic.typography.caption                                      |
 | `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.               |
 
 > Token JSON stores static max sizes. Responsive `clamp()` overrides live in `theme.css`.
@@ -579,7 +579,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 <!-- auto:start:agent-constraints -->
 
 - **One accent color:** `#433A3F` (`semantic.accent.rest`) only — no other hues
-- **Body / UI typeface:** Plus Jakarta Sans — use Bricolage Grotesque Bold (700) for display and title headings and IBM Plex Mono for code; no other faces
+- **Body / UI typeface:** Plus Jakarta Sans — use Sora Bold (700) for display and title headings and IBM Plex Mono for code; no other faces
 - **Action radius:** `8px` for interactive controls; `12px` containers (`rounded-lg`, one step above the action radius)
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale
 - **True monochromatic neutrals:** No warm/cool tint in neutral scale

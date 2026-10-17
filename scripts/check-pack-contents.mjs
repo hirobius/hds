@@ -61,13 +61,11 @@ export const REQUIRED = [
   `${PLUGIN_DIR}/package.json`,
   ...PLUGIN_RULES,
   'dist/fonts.css',
-  'dist/fonts/plus-jakarta-sans-400.woff2',
-  'dist/fonts/plus-jakarta-sans-500.woff2',
-  'dist/fonts/plus-jakarta-sans-700.woff2',
-  'dist/fonts/bricolage-grotesque-700.woff2',
+  'dist/fonts/plus-jakarta-sans-variable.woff2',
+  'dist/fonts/sora-800.woff2',
   'dist/fonts/ibm-plex-mono-400.woff2',
   'dist/fonts/plus-jakarta-sans-LICENSE.txt',
-  'dist/fonts/bricolage-grotesque-LICENSE.txt',
+  'dist/fonts/sora-LICENSE.txt',
   'dist/fonts/ibm-plex-mono-LICENSE.txt',
   // The CSS contract (hds#449): what the release snapshot and the CSS upgrade
   // gate read, shipped so `snapshot.mjs --from-npm` reads the very bytes.

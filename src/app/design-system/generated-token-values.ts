@@ -163,7 +163,7 @@ export const tokenValues = {
     typography: {
       family: {
         primary: ["Plus Jakarta Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
-        display: ["Bricolage Grotesque", "Plus Jakarta Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
+        display: ["Sora", "Plus Jakarta Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] as const,
         mono: ["IBM Plex Mono", "Courier New", "monospace"] as const
       },
       size: {
@@ -180,9 +180,10 @@ export const tokenValues = {
         code: "15px"
       },
       weight: {
-        regular: "400",
-        medium: "500",
-        bold: "700"
+        regular: "450",
+        medium: "550",
+        bold: "650",
+        display: "800"
       },
       lineHeight: {
         compact: "0.95",

@@ -33,16 +33,14 @@ const PUBLIC = join(ROOT, 'public');
 
 // Keep in sync with the @font-face URLs in src/styles/fonts.css (checked below).
 export const FONTS = [
-  'fonts/plus-jakarta-sans/plus-jakarta-sans-400.woff2',
-  'fonts/plus-jakarta-sans/plus-jakarta-sans-500.woff2',
-  'fonts/plus-jakarta-sans/plus-jakarta-sans-700.woff2',
-  'fonts/bricolage-grotesque/bricolage-grotesque-700.woff2',
+  'fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2',
+  'fonts/sora/sora-800.woff2',
   'fonts/ibm-plex-mono/ibm-plex-mono-400.woff2',
 ];
 
 const banner =
-  '/* @hirobius/design-system/fonts.css — OPTIONAL brand fonts: Plus Jakarta Sans 400/500/700,\n' +
-  ' * Bricolage Grotesque 700 (display and titles) and IBM Plex Mono 400. tokens.css and\n' +
+  '/* @hirobius/design-system/fonts.css — OPTIONAL brand fonts: Plus Jakarta Sans (variable, 200-800),\n' +
+  ' * Sora 800 (display and titles) and IBM Plex Mono 400. tokens.css and\n' +
   ' * styles.css do not include them. Import this once at the app root for the HDS\n' +
   ' * faces, or skip it and load your own; the\n' +
   ' * font-family variables in tokens.css fall back to the family stack either way.\n' +

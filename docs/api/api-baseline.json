@@ -14,7 +14,7 @@
     "./icons": "src/icons.ts"
   },
   "version": "0.26.2",
-  "generatedAt": "2026-10-15",
+  "generatedAt": "2026-10-16",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -94,13 +94,7 @@
     "./app/components/popover": ["Popover", "PopoverContentProps"],
     "./app/components/hds-tooltip": ["HdsTooltipContentProps", "Tooltip"],
     "./app/components/grid": ["Grid", "GridItemProps", "GridProps"],
-    "./app/components/board": [
-      "Board",
-      "BoardColumn",
-      "BoardColumnProps",
-      "BoardColumnTone",
-      "BoardProps"
-    ],
+    "./app/components/board": ["Board", "BoardColumn", "BoardColumnProps", "BoardProps"],
     "./app/components/icon": ["Icon", "IconColor", "IconProps", "IconSize"],
     "./app/components/inline-code": ["InlineCode", "InlineCodeProps"],
     "./app/components/inline-link": ["InlineLink", "InlineLinkProps"],

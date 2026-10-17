@@ -114,7 +114,7 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     const sha = createHash('sha256').update(s.built.text).digest('hex');
     expect({ chars: s.built.chars, sha }).toEqual({
       chars: 31361,
-      sha: '6ac81b96dc6112d151fccaa429ce426169298e4fdf029e255f1eb7779eb212d0',
+      sha: '57051a2470cb17f952681956ad8e676d7630285edb8bfaff5a3cbb461b2573b7',
     });
   });
 });
@@ -249,7 +249,7 @@ const forged = (text, edit) => {
     );
 };
 
-describe('a type-ramp change too big for one delta.js (48,000 characters; 57,000 before Fix A)', () => {
+describe('a type-ramp change too big for one delta.js (about 50,000 characters; 57,000 before Fix A)', () => {
   let s;
   let single;
   beforeEach(async () => {
@@ -259,7 +259,7 @@ describe('a type-ramp change too big for one delta.js (48,000 characters; 57,000
 
   it('is more than one delta.js holds, and becomes ordered parts that each fit', () => {
     expect(single.built.chars, 'the one-script size of the scenario').toBeGreaterThan(45000);
-    expect(single.built.chars).toBeLessThan(50000);
+    expect(single.built.chars).toBeLessThan(52000);
     const { parts } = s.built;
     expect(s.built.text).toBeNull();
     // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 now.

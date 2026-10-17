@@ -581,7 +581,7 @@
         },
         "display": {
           "$value": [
-            "Bricolage Grotesque",
+            "Sora",
             "Plus Jakarta Sans",
             "system-ui",
             "-apple-system",
@@ -589,7 +589,7 @@
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display and title face: Bricolage Grotesque 700 (OFL, ADR-063); falls back to Plus Jakarta Sans."
+          "$description": "Display and title face: Sora 800 (OFL, ADR-063); falls back to Plus Jakarta Sans."
         },
         "mono": {
           "$value": ["IBM Plex Mono", "Courier New", "monospace"],
@@ -679,13 +679,20 @@
       "weight": {
         "$type": "fontWeight",
         "regular": {
-          "$value": 400
+          "$value": 450,
+          "$description": "Body weight. Plus Jakarta Sans ships as a variable font, so 450 renders as itself."
         },
         "medium": {
-          "$value": 500
+          "$value": 550,
+          "$description": "Controls, nav, table text and labels: one step above body."
         },
         "bold": {
-          "$value": 700
+          "$value": 650,
+          "$description": "Strong text inside body copy and bold labels: one step above medium."
+        },
+        "display": {
+          "$value": 800,
+          "$description": "Display, title and title-sm weight, set in Sora (ADR-063)."
         }
       },
       "lineHeight": {
@@ -1834,7 +1841,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.5xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.display}"
         },
@@ -1844,7 +1851,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1854,7 +1861,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.lg}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.snug}"
         },
@@ -1910,13 +1917,13 @@
             "unit": "ch"
           }
         },
-        "$description": "Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6."
+        "$description": "Code and ids. 15px / 1.5 / 450. The mono companion, role 6 of 6."
       },
       "h1": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1927,7 +1934,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1938,7 +1945,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },

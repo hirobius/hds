@@ -1,5 +1,5 @@
 {
-  "checksum": "e97f9be8",
+  "checksum": "2db2c1de",
   "snapshot": {
     "schemaVersion": 1,
     "takenAt": "2026-10-07T05:17:26.800Z",
@@ -8,7 +8,7 @@
       "key": null
     },
     "lastPush": {
-      "modelHash": "75e3838a",
+      "modelHash": "6573f2f1",
       "pushedAt": "2026-10-07T05:17:26.799Z",
       "scope": null
     },
@@ -214,7 +214,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 622.200012
+                "value": 618.799988
               }
             }
           },
@@ -350,7 +350,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 700
+                "value": 650
               }
             }
           },
@@ -367,7 +367,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 500
+                "value": 550
               }
             }
           },
@@ -384,7 +384,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 400
+                "value": 450
               }
             }
           }

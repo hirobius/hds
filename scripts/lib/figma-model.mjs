@@ -206,23 +206,21 @@ function isRelativeTypography(graph, token) {
 export const CH_BASIS = Object.freeze({
   style: 'semantic.typography.body',
   family: 'Plus Jakarta Sans',
-  weight: 400,
-  zeroAdvanceEm: 0.732,
+  weight: 450,
+  zeroAdvanceEm: 0.728,
   measuredFrom:
-    'public/fonts/plus-jakarta-sans/plus-jakarta-sans-400.woff2: hmtx advance of "0" / unitsPerEm = 732/1000 (500 face: 724, 700 face: 708), measured 2026-10-11',
+    'public/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2 instanced at wght 450: hmtx advance of "0" / unitsPerEm = 728/1000, measured 2026-10-17',
 });
 
 /**
- * The weight of the Plus Jakarta Sans face a requested weight renders on. The 400, 500
- * and 700 faces ship (src/styles/fonts.css); CSS font matching puts a weight
- * with no face of its own on the nearest shipped one.
+ * The weight of the Plus Jakarta Sans face a requested weight renders on. One variable
+ * file ships (src/styles/fonts.css, wght 200-800), so any weight in range renders as
+ * itself and one outside it clamps to the nearest end.
  */
-const BRAND_FACE_WEIGHTS = [400, 500, 700];
+const BRAND_WEIGHT_RANGE = [200, 800];
 function renderedWeight(family, weight) {
   if (family !== 'Plus Jakarta Sans' || typeof weight !== 'number') return weight;
-  if (BRAND_FACE_WEIGHTS.includes(weight)) return weight;
-  if (weight < 400) return 400;
-  return weight <= 500 ? 500 : 700;
+  return Math.min(BRAND_WEIGHT_RANGE[1], Math.max(BRAND_WEIGHT_RANGE[0], weight));
 }
 
 function chToPx(graph, count) {
@@ -394,6 +392,9 @@ const FONT_STYLE_BY_WEIGHT = {
   900: 'Black',
 };
 
+/** The named-instance weight a variable-font weight takes in a Figma text style. */
+const FIGMA_STYLE_WEIGHT = { 450: 400, 550: 500, 650: 700 };
+
 /** px value + variable entry for a length CSS may express relative to font size. */
 function typographicLength(graph, ref, where, fontSize) {
   const leaf = graph.resolveRef(ref, where);
@@ -465,7 +466,11 @@ function expandTypography(graph, token) {
     entryFor: () => resolved[key].entry,
   }));
 
-  const fontStyle = FONT_STYLE_BY_WEIGHT[weight];
+  // Figma text styles name a font instance, so the variable-font weights (450, 550, 650)
+  // take the Regular / Medium / Bold instance the library's Plus Jakarta Sans ships; the
+  // exact value stays in the variable.
+  const fontStyle =
+    FONT_STYLE_BY_WEIGHT[weight] ?? FONT_STYLE_BY_WEIGHT[FIGMA_STYLE_WEIGHT[weight]];
   const textCase = TEXT_CASE[v.textTransform ?? 'none'];
   if (!fontStyle)
     throw new Error(`No Figma font style for weight ${weight} at ${at('fontWeight')}`);
