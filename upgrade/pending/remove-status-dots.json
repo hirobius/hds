@@ -1,0 +1,40 @@
+{
+  "impact": "breaking",
+  "plain": "Status dots are gone: Badge has no dot, size or label, StatusListItem has no tone, and a plain Timeline dot is neutral, so write each status as text in a Badge.",
+  "steps": [
+    {
+      "id": "removed/Badge-dot",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace each <Badge dot> with a text Badge that says the status, such as <Badge tone=\"success\">Online</Badge>, and delete its size and label props.",
+      "detect": {
+        "regex": ["<Badge\\b[^>]*\\b(?:dot|size|label)\\b"]
+      }
+    },
+    {
+      "id": "removed/StatusListItemTone",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Delete the tone prop from every StatusListItem and the StatusListItemTone import, and put the status in a text Badge in trailing.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["StatusListItemTone"]
+          }
+        ],
+        "regex": ["<StatusListItem\\b[^>]*\\btone="]
+      },
+      "facts": ["removed:.:StatusListItemTone"]
+    },
+    {
+      "id": "look/Timeline-dot-neutral",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A TimelineItem with a tone and no icon now draws a neutral dot; pass an icon to keep a tone-coloured marker, or say the status in the title.",
+      "detect": {
+        "regex": ["<TimelineItem\\b[^>]*\\btone="]
+      }
+    }
+  ]
+}

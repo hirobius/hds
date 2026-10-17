@@ -27,7 +27,6 @@ export default function App() {
                   key={row.ref}
                   title={row.title}
                   notes={[row.why, row.ageLabel]}
-                  tone={key === 'fire' ? 'danger' : 'neutral'}
                   trailing={<Badge tone="neutral">{row.ref}</Badge>}
                 />
               ))}

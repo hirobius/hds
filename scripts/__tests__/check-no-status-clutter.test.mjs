@@ -33,6 +33,64 @@ describe('findViolationsInText', () => {
     expect(find('<span data-hds-board-dot="" />')).toHaveLength(1);
   });
 
+  it('flags a tone on StatusListItem, which no longer paints a dot', () => {
+    expect(find('<StatusListItem tone="success" title="Paid" />')).toHaveLength(1);
+    expect(find('<StatusListItem\n  title="Paid"\n  tone={t}\n/>')).toHaveLength(1);
+    expect(
+      find('<StatusListItem title="Paid" trailing={<Badge tone="success">Paid</Badge>} />'),
+    ).toHaveLength(0);
+  });
+
+  it('flags a *-dot status class in a class list or a CSS selector', () => {
+    expect(find('<span className="status-dot" />')).toHaveLength(1);
+    expect(find('<span className="hds-dot ml-2" />')).toHaveLength(1);
+    expect(find('.status-dot { width: 8px; }', 'x.css')).toHaveLength(1);
+    expect(find('<span className="dotted underline" />')).toHaveLength(0);
+  });
+
+  it('flags a small round tone-coloured span, in classes or CSS', () => {
+    expect(find('<span className="size-2 rounded-full bg-feedback-success" />')).toHaveLength(1);
+    expect(find('<span className="h-2 w-2 rounded-full bg-green-500" />')).toHaveLength(1);
+    expect(
+      find(
+        '<i className="inline-block size-[10px] rounded-full bg-[var(--semantic-color-feedback-error)]" />',
+      ),
+    ).toHaveLength(1);
+    expect(
+      find(
+        '.live { width: 8px; height: 8px; border-radius: 50%; background: var(--semantic-color-feedback-success); }',
+        'x.css',
+      ),
+    ).toHaveLength(1);
+  });
+
+  it('flags a cva whose round base takes a tone fill from its variants (the old dots)', () => {
+    const statusListItem = `const v = cva('mt-1.5 h-2 w-2 shrink-0 rounded-full', {
+  variants: { tone: { neutral: 'bg-border', success: 'bg-feedback-success' } },
+});`;
+    const badgeDot = `const v = cva('inline-block shrink-0 rounded-full', {
+  variants: { tone: { info: 'bg-feedback-info', danger: 'bg-feedback-danger' } },
+});`;
+    expect(find(statusListItem).map((v) => v.rule)).toEqual(['no-tone-dot']);
+    expect(find(badgeDot).map((v) => v.rule)).toEqual(['no-tone-dot']);
+    expect(find("const v = cva('rounded-full bg-muted', { variants: {} });")).toHaveLength(0);
+  });
+
+  it('allows round shapes that are not status: avatars, spinners, neutral markers', () => {
+    expect(find('<span className="size-10 rounded-full bg-muted" />')).toHaveLength(0);
+    expect(find('<span className="size-2 rounded-full bg-current" />')).toHaveLength(0);
+    expect(find('<span className="animate-spin rounded-full border-current" />')).toHaveLength(0);
+    expect(
+      find('.avatar { width: 40px; border-radius: 50%; background: var(--x-muted); }', 'x.css'),
+    ).toHaveLength(0);
+  });
+
+  it('flags a filled-circle glyph used as a status mark, not a bullet separator', () => {
+    expect(find('<span>● Online</span>')).toHaveLength(1);
+    expect(find("const mark = '🟢';")).toHaveLength(1);
+    expect(find('<span>Ada • 3 min</span>')).toHaveLength(0);
+  });
+
   it('skips comments and honours the marker, which needs a reason', () => {
     expect(find('// <Badge dot /> was removed')).toHaveLength(0);
     expect(find('// status-clutter-ok: legacy demo\n<Badge dot />')).toHaveLength(0);
@@ -68,7 +126,7 @@ describe('check-no-status-clutter: registry, pretest, fixtures and the repo', ()
       FIXTURE_FILE: 'fixtures/check-no-status-clutter/violating.example.tsx',
     });
     expect(bad.status).toBe(1);
-    expect(JSON.parse(bad.stdout).summary.total).toBeGreaterThanOrEqual(4);
+    expect(JSON.parse(bad.stdout).summary.total).toBeGreaterThanOrEqual(9);
     const ok = run({
       HDS_FIXTURE_MODE: '1',
       FIXTURE_FILE: 'fixtures/check-no-status-clutter/passing.example.tsx',

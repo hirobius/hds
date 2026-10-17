@@ -36,6 +36,8 @@ either file, also follows these rules:
   through Sync or `delta.js`. When a script binds a paint or effect to a colour
   variable it sets the raw colour to that variable's value in the same script
   (see the gotcha "A bound paint or effect keeps a raw colour").
+- No status dots: never draw a small coloured circle (or a ● glyph) to mark status,
+  in the library or in staging. Status is text, in a Badge (Adrian, 2026-10-16, hds#759).
 - Report the component, its library node ids and both screenshots to Adrian, who
   publishes.
 

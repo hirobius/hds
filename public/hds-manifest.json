@@ -4369,7 +4369,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/status-list-item.tsx",
-      "description": "Status dot + title row with optional muted notes and trailing slot (e.g. badge).",
+      "description": "Title row with optional muted notes and a trailing slot (e.g. a text Badge). Non-interactive. It had a tone-coloured leading dot until hds#759: status is carried by the text, so neither the dot nor `tone` remain.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350",
@@ -4379,6 +4379,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/status-list-item.test.tsx",
         "src/app/components/status-tile.tsx",
         "src/app/components/timeline.tsx"
       ],
@@ -4393,35 +4394,13 @@
         "title": {
           "type": "ReactNode"
         },
-        "tone": {
-          "type": "enum",
-          "values": [
-            "success",
-            "danger",
-            "warning",
-            "info",
-            "neutral"
-          ],
-          "optional": true
-        },
         "trailing": {
           "type": "ReactNode",
           "optional": true
         }
       },
       "allowedChildren": [],
-      "propConstraints": {
-        "tone": {
-          "type": "enum",
-          "values": [
-            "success",
-            "danger",
-            "warning",
-            "info",
-            "neutral"
-          ]
-        }
-      },
+      "propConstraints": {},
       "requiredProps": [
         "title"
       ],
@@ -4431,7 +4410,8 @@
           "required": true
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "aiRules": "No status dots: the row has no leading circle and no tone. Status lives in the title, the notes or a text Badge in `trailing`."
     },
     "StatusTile": {
       "category": "Display",
@@ -4532,23 +4512,6 @@
           "type": "ElementType<any, keyof IntrinsicElements>",
           "default": "span"
         },
-        "dot": {
-          "type": "boolean",
-          "default": false
-        },
-        "label": {
-          "type": "string",
-          "optional": true
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ],
-          "optional": true
-        },
         "tone": {
           "type": "enum",
           "values": [
@@ -4564,20 +4527,6 @@
       },
       "allowedChildren": [],
       "propConstraints": {
-        "dot": {
-          "type": "boolean"
-        },
-        "label": {
-          "type": "string"
-        },
-        "size": {
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ]
-        },
         "tone": {
           "type": "enum",
           "values": [
@@ -4615,6 +4564,8 @@
         "src/app/components/composer.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/state-tokens.test.tsx",
+        "src/app/components/status-list-item.test.tsx",
+        "src/app/components/status-list-item.tsx",
         "src/app/components/tag.tsx",
         "src/app/components/text.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
@@ -4623,7 +4574,7 @@
       "tokenMapping": {},
       "docsPage": "/docs/components/badge",
       "usage": {
-        "when": "Label a status, state or count with a compact neutral or semantic chip, or a dot.",
+        "when": "Label a status, state or count with a compact neutral or semantic text chip.",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
         "useInstead": [
           {
@@ -4636,6 +4587,7 @@
           }
         ]
       },
+      "aiRules": "No status dots: a Badge always carries text. Never draw a small coloured circle to mark status; write the status as the Badge's children.",
       "core": true
     },
     "AssetImg": {
@@ -9884,7 +9836,7 @@
           }
         ]
       },
-      "aiRules": "Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only."
+      "aiRules": "Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only and colours an icon marker; no status dots, so a plain dot stays neutral."
     },
     "TimelineItem": {
       "category": "Display",

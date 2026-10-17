@@ -1,0 +1,1 @@
+Removed every status dot left after #759: Badge dot/size/label, StatusListItem's tone dot and tone, Timeline's tone-coloured plain dot; check-no-status-clutter and hds/no-status-clutter now catch StatusListItem tone, \*-dot classes, small round tone spans and ● glyphs; exploration bends may not name hds/no-status-clutter.

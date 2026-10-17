@@ -324,10 +324,6 @@
       "kind": "queued",
       "reason": "Stat exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
     },
-    "src/app/components/status-list-item.tsx": {
-      "kind": "queued",
-      "reason": "StatusListItem exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
     "src/app/components/card.tsx": {
       "kind": "queued",
       "reason": "Card exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."

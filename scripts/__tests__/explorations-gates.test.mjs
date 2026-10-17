@@ -40,7 +40,7 @@ describe('validateBendLog', () => {
     change: 'rule: allow one token-driven gradient on a hero surface',
   };
 
-  it("knows the six scanner kinds, the lint plugin's error rules and design-rule", () => {
+  it("knows the six scanner kinds, the lint plugin's bendable error rules and design-rule", () => {
     expect(BEND_KINDS).toEqual([
       'hex',
       'colour-fn',
@@ -48,15 +48,25 @@ describe('validateBendLog', () => {
       'raw-control',
       'custom-css',
       'tailwind',
-      ...PLUGIN_KINDS,
+      ...PLUGIN_KINDS.filter((k) => k !== 'hds/no-status-clutter'),
       'design-rule',
     ]);
-    expect(PLUGIN_KINDS).toEqual(expect.arrayContaining(['hds/no-raw-controls']));
+    expect(PLUGIN_KINDS).toEqual(
+      expect.arrayContaining(['hds/no-raw-controls', 'hds/no-status-clutter']),
+    );
   });
 
   it('accepts a bend that names a lint plugin rule, shaped like a scanner bend', () => {
     const r = validateBendLog([{ ...scannerBend, kind: 'hds/no-raw-controls', match: 'form' }]);
     expect(r).toMatchObject({ ok: true, problems: [] });
+  });
+
+  it('refuses a bend of hds/no-status-clutter: no direction may add a status dot (hds#759)', () => {
+    const r = validateBendLog([{ ...scannerBend, kind: 'hds/no-status-clutter', match: 'dot' }]);
+    expect(r.ok).toBe(false);
+    expect(r.problems).toEqual([
+      'bend 1: hds/no-status-clutter cannot be bent: no status dots, write the status as text',
+    ]);
   });
 
   it('accepts an empty log, a scanner bend and a design-rule bend', () => {

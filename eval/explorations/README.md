@@ -165,11 +165,13 @@ on the board.
 
 - A scanner bend names a violation the code contains: `kind` (a scan kind, `hex`,
   `colour-fn`, `px`, `raw-control`, `custom-css` or `tailwind`, or a lint plugin rule,
-  `hds/no-raw-controls`, `hds/no-raw-hex`, `hds/no-raw-px-spacing`, `hds/no-status-clutter` or `hds/sx-token-first`),
+  `hds/no-raw-controls`, `hds/no-raw-hex`, `hds/no-raw-px-spacing` or `hds/sx-token-first`),
   `file` and the exact `match` text the gate prints, with `why` and `change`. A violation
   both tools report is printed once, under the scan's kind, and one bend covers it. One bend covers every occurrence of that text in that file,
   because lines move as a direction is edited. A bend with no matching violation is stale and
   fails the gate, so the log says what the code does.
+- `hds/no-status-clutter` is never a bend: no direction, C included, may add a status dot or a
+  coloured accent bar, and the gate refuses a bend that names it (hds#759).
 - A `design-rule` bend names a DESIGN.md rule the code bends that no scanner can see
   (gradients, glass and glow built from tokens, for one). It is never stale.
 - `change` is the token, component, pattern or rule change that would make the bend legal:

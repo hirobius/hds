@@ -75,7 +75,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `InlineCode` — InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
 - `Kbd` — Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
 - `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
-- `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
+- `StatusListItem` — Title row with optional muted notes and a trailing slot (e.g. a text Badge).
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
 - `Timeline` — The timeline itself.
 - `TimelineItem` — One event on a Timeline.

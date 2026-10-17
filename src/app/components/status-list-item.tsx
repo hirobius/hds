@@ -1,50 +1,17 @@
 /**
  * @category Display
  * @tier pattern
+ * @ai-rules No status dots: the row has no leading circle and no tone. Status lives in the title, the notes or a text Badge in `trailing`.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350
  */
 
 import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-
-// ── Variants ───────────────────────────────────────────────────────────────────
-// Non-interactive — no hover/active/focus states. Tone drives only the leading
-// dot color; title/notes stay neutral typography regardless. `neutral` and
-// `info` resolve to the same computed color as the pre-cva `border-default`/
-// `content-accent` values byte-for-byte (border/content-accent role tokens
-// mirror `bg-border`/`bg-feedback-info` in both themes), so this conversion
-// carries no visual change.
-const statusListItemDotVariants = /* @__PURE__ */ cva('mt-1.5 h-2 w-2 shrink-0 rounded-full', {
-  variants: {
-    tone: {
-      neutral: 'bg-border',
-      info: 'bg-feedback-info',
-      success: 'bg-feedback-success',
-      warning: 'bg-feedback-warning',
-      danger: 'bg-feedback-danger',
-    },
-  },
-  defaultVariants: { tone: 'neutral' },
-});
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-type StatusListItemVariantProps = VariantProps<typeof statusListItemDotVariants>;
-
-// vocab-ok: `NonNullable<StatusListItemVariantProps['tone']>` below is a
-// bracket-index type, not a vocabulary declaration — check-prop-vocabulary's
-// rule C regex treats the quoted `'tone'` property-access key as an off-vocab
-// tone *value*, a false positive (prettier's singleQuote:true also defeats a
-// double-quote workaround, so this must be a file exemption). The real,
-// gate-checked tone vocabulary lives in `statusListItemDotVariants`'s cva()
-// variants above.
 /** @public */
-export type StatusListItemTone = NonNullable<StatusListItemVariantProps['tone']>;
-
-/** @public */
-export interface StatusListItemProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>, StatusListItemVariantProps {
+export interface StatusListItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   title: React.ReactNode;
   notes?: React.ReactNode[];
   trailing?: React.ReactNode;
@@ -53,18 +20,14 @@ export interface StatusListItemProps
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /**
- * Status dot + title row with optional muted notes and trailing slot (e.g. badge).
+ * Title row with optional muted notes and a trailing slot (e.g. a text Badge).
+ * Non-interactive. It had a tone-coloured leading dot until hds#759: status is
+ * carried by the text, so neither the dot nor `tone` remain.
  */
 export const StatusListItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatusListItemProps>(
-  function StatusListItem({ tone, title, notes, trailing, className, ...props }, ref) {
+  function StatusListItem({ title, notes, trailing, className, ...props }, ref) {
     return (
-      <div
-        ref={ref}
-        data-tone={tone ?? 'neutral'}
-        className={cn('flex items-start gap-3', className)}
-        {...props}
-      >
-        <span aria-hidden="true" className={statusListItemDotVariants({ tone })} />
+      <div ref={ref} className={cn('flex items-start gap-3', className)} {...props}>
         <div className="min-w-0 flex-1">
           <p className="m-0 hds-type-ui text-foreground">{title}</p>
           {notes?.map((note, i) => (

@@ -3,7 +3,7 @@
  * pins the cause the bash measured (a class, a role, an attribute, a source rule);
  * the rendered sizes were re-measured in Chromium against the packed kit.
  */
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, beforeAll, afterEach } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { useState } from 'react';
@@ -29,7 +29,6 @@ import { FormField } from '../src/app/components/form';
 import { FormActions } from '../src/app/components/form-actions';
 import { Button } from '../src/app/components/button';
 import { Alert } from '../src/app/components/alert';
-import { Badge } from '../src/app/components/badge';
 import { AssetImg } from '../src/app/components/asset-img';
 import { ErrorPattern } from '../src/app/components/error-pattern';
 import { Stat } from '../src/app/components/stat';
@@ -348,12 +347,6 @@ describe('A11y / keyboard', () => {
     expect(screen.getByRole('switch', { name: 'Wi-Fi' })).toBeTruthy();
   });
 
-  it('a labelled dot Badge is an image, not a live region', () => {
-    render(<Badge dot label="Online" />);
-    expect(screen.getByRole('img', { name: 'Online' })).toBeTruthy();
-    expect(screen.queryByRole('status')).toBeNull();
-  });
-
   it('a pressed toggle Button fills with the accent surface, not the near-white accent role', () => {
     render(<Button label="Bold" pressed onPressedChange={() => {}} />);
     const cls = screen.getByRole('button').className;
@@ -378,14 +371,6 @@ describe('A11y / keyboard', () => {
 });
 
 describe('Visual polish / API traps', () => {
-  it('Badge label without dot warns in dev instead of silently rendering nothing', () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const { container } = render(<Badge label="Active" />);
-    expect(container.textContent).toBe('');
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('Badge `label`'));
-    warn.mockRestore();
-  });
-
   it('FormActions makes a bare Button in the primary slot primary', () => {
     render(
       <FormActions
