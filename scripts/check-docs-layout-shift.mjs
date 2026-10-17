@@ -12,7 +12,7 @@
  * Known failures live in scripts/docs-layout-shift-allowlist.json (route, kind, max CLS, reason, issue);
  * a worse reading or a stale entry fails. Pass --allowlist <path> to use another file.
  *
- * Usage: node scripts/check-docs-layout-shift.mjs [--dir <path>] [--filter <regex>] [--allowlist <path>]
+ * Usage: node scripts/check-docs-layout-shift.mjs [--dir <path>] [--filter <substring>] [--allowlist <path>]
  * Exit 0 pass, 1 violations, 2 setup error. Fixtures: fixtures/check-docs-layout-shift/.
  */
 import fs from 'node:fs';
