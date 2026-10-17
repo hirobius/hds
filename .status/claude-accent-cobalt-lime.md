@@ -1,0 +1,1 @@
+Accent options: graphite lightened a touch, opt-in cobalt accent theme (data-accent="cobalt", accents/cobalt/tokens.json → src/styles/accents.css), lime delight accent (semantic.accent.delight.\*) with a lint rule keeping it off buttons, links and focus.
