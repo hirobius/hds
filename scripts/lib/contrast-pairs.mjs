@@ -6,9 +6,13 @@
  * place that evaluates them.
  */
 
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 // ── Pairs to check ────────────────────────────────────────────
 
-export const PAIRS = [
+export const BASE_PAIRS = [
   {
     label: 'content.primary / surface.page',
     text: 'semantic.color.content.primary',
@@ -108,6 +112,27 @@ export const PAIRS = [
     },
   ]),
 ];
+
+// Accent themes (accents/<name>/tokens.json, set with data-accent) re-run the
+// accent pairs with the theme's overlay laid over the base, so an opt-in accent
+// is held to the same bar. Delight pairs are not accent-theme pairs.
+const ACCENTS_DIR = fileURLToPath(new URL('../../accents/', import.meta.url));
+const isAccentPair = (p) =>
+  [p.text, p.bg].some((t) => /\.(?:accent|onAccent|accentSubtle)(?:\.|$)/.test(t)) &&
+  ![p.text, p.bg].some((t) => t.startsWith('semantic.accent.delight.'));
+
+export const ACCENT_THEME_PAIRS = readdirSync(ACCENTS_DIR, { withFileTypes: true })
+  .filter((d) => d.isDirectory() && !d.name.startsWith('_'))
+  .flatMap((d) => {
+    const overlay = JSON.parse(readFileSync(join(ACCENTS_DIR, d.name, 'tokens.json'), 'utf8'));
+    return BASE_PAIRS.filter(isAccentPair).map((p) => ({
+      ...p,
+      label: `${p.label} [${d.name}]`,
+      overlay,
+    }));
+  });
+
+export const PAIRS = [...BASE_PAIRS, ...ACCENT_THEME_PAIRS];
 
 // ── Non-text pairs (WCAG 1.4.11, #230) ──────────────────────────
 

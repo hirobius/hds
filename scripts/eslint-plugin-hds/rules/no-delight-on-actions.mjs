@@ -12,7 +12,7 @@
  * button or link component file (button.tsx, icon-button.tsx, nav-link.tsx).
  */
 const DELIGHT = /accent[-.]delight|accentDelight/;
-const FOCUS_DELIGHT = /(?:^|\s)(?:[\w-]+:)*focus(?:-visible|-within)?:\S*(?:accent[-.]delight)/;
+const FOCUS_DELIGHT = /focus(?:-visible|-within)?:\S*accent[-.]delight/;
 const ACTION_TAG = /^(?:a|button|[A-Z]\w*(?:Button|Link)|Button|Link)$/;
 const ACTION_FILE = /(?:^|[-_.])(?:button|link)(?:[-_.][\w-]*)?\.[cm]?[jt]sx?$/i;
 

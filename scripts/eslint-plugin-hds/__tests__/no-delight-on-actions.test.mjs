@@ -32,6 +32,10 @@ makeRuleTester().run('no-delight-on-actions', rule, {
       errors: [{ messageId: 'focus' }],
     },
     {
+      code: 'const x = <div className="group-focus-visible:ring-[var(--semantic-accent-delight-base)]" />;',
+      errors: [{ messageId: 'focus' }],
+    },
+    {
       code: 'const bg = "var(--semantic-accent-delight-base)";',
       filename: 'src/app/components/icon-button.tsx',
       errors: [{ messageId: 'actionFile' }],

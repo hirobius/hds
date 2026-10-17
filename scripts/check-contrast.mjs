@@ -16,12 +16,11 @@
  * Exits 1 if any pair fails.
  */
 
-import { readdirSync, readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { readTokenSource } from './lib/token-source.mjs';
 import { resolveAlias } from './lib/token-tree.mjs';
-import { PAIRS, NONTEXT_PAIRS } from './lib/contrast-pairs.mjs';
+import { BASE_PAIRS, PAIRS, NONTEXT_PAIRS } from './lib/contrast-pairs.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const tokenPath = resolve(__dirname, '../hirobius.tokens.json');
@@ -56,8 +55,17 @@ function getByPath(obj, path) {
  * For dark:  uses $extensions['com.figma.variables'].modes.Dark, falls back to $value.
  * With an `overlay` (an accent theme), its leaf wins over the base leaf.
  */
+/** `base` with each `layer` leaf laid over it, so overlay aliases resolve through the overlay too. */
+function layered(base, layer) {
+  if (!layer || typeof layer !== 'object' || '$value' in layer) return layer;
+  const out = { ...base };
+  for (const [k, v] of Object.entries(layer)) out[k] = k in base ? layered(base[k], v) : v;
+  return out;
+}
+
 function resolveSemanticHex(dotPath, mode, overlay = null) {
-  const node = (overlay && getByPath(overlay, dotPath)) || getByPath(tokens, dotPath);
+  const tree = overlay ? layered(tokens, overlay) : tokens;
+  const node = getByPath(tree, dotPath);
   if (!node) throw new Error(`Semantic token not found: ${dotPath}`);
 
   let rawValue;
@@ -69,7 +77,7 @@ function resolveSemanticHex(dotPath, mode, overlay = null) {
     rawValue = node.$value;
   }
 
-  const hex = resolveAlias(rawValue, tokens, { maxDepth: 10 });
+  const hex = resolveAlias(rawValue, tree, { maxDepth: 10 });
   if (typeof hex !== 'string' || !/^#[0-9a-fA-F]{6}$/.test(hex)) {
     throw new Error(
       `Could not resolve ${dotPath} (${mode}) to a 6-digit hex. Got: ${JSON.stringify(hex)}`,
@@ -133,28 +141,8 @@ function _aaaGlyph(ratio) {
   return passAAA(ratio) ? '✓' : '✗';
 }
 
-// Accent themes (accents/<name>/tokens.json, data-accent) re-run the accent pairs
-// with the overlay laid over the base, so an opt-in accent is held to the same bar.
-const accentsDir = resolve(__dirname, '../accents');
-const accentThemes = isFixtureMode
-  ? []
-  : readdirSync(accentsDir, { withFileTypes: true })
-      .filter((d) => d.isDirectory() && !d.name.startsWith('_'))
-      .map((d) => ({
-        name: d.name,
-        overlay: JSON.parse(readFileSync(resolve(accentsDir, d.name, 'tokens.json'), 'utf8')),
-      }));
-const ACCENT_PAIR = /\.accent(?!\.delight)|onAccent|accentSubtle/;
-const allPairs = [
-  ...PAIRS,
-  ...accentThemes.flatMap(({ name, overlay }) =>
-    PAIRS.filter((p) => ACCENT_PAIR.test(p.text) || ACCENT_PAIR.test(p.bg)).map((p) => ({
-      ...p,
-      label: `${p.label} [${name}]`,
-      overlay,
-    })),
-  ),
-];
+// Fixture mode checks the single fixture file, so accent-theme pairs are left out.
+const allPairs = isFixtureMode ? BASE_PAIRS : PAIRS;
 
 const results = allPairs.map(({ label, text, bg, overlay }) => {
   const textLight = resolveSemanticHex(text, 'light', overlay);

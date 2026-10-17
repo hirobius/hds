@@ -10,7 +10,7 @@
     "total": 448
   },
   "contrast": {
-    "textPairs": 24,
+    "textPairs": 30,
     "nonTextPairs": 1
   },
   "typography": {
@@ -22,5 +22,5 @@
     "source": "docs/data/consumer-usage.json",
     "confirmedAt": "2026-10-01"
   },
-  "generatedFrom": "1df70db56b15c1872f3320af6526e3ba665b6802"
+  "generatedFrom": "064f1cd508118e2b00fddfaa6b90dbd627fba510"
 }
