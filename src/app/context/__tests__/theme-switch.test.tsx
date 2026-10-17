@@ -32,12 +32,17 @@ describe('theme swap suppresses transitions for one frame', () => {
   let container: HTMLDivElement;
   let root: Root;
   let frames: FrameRequestCallback[];
+  let next: number;
 
   beforeEach(() => {
     frames = [];
+    next = 0;
     vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
-      frames.push(cb);
-      return frames.length;
+      frames[next] = cb;
+      return ++next;
+    });
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => {
+      delete frames[id - 1];
     });
     container = document.createElement('div');
     document.body.appendChild(container);
@@ -53,7 +58,11 @@ describe('theme swap suppresses transitions for one frame', () => {
 
   function flushFrames() {
     // Two frames: the swap's style is committed, then the attribute comes off.
-    for (let i = 0; i < 2; i++) frames.splice(0).forEach((cb) => cb(0));
+    for (let i = 0; i < 2; i++) {
+      const due = frames;
+      frames = [];
+      due.forEach((cb) => cb?.(0));
+    }
   }
 
   it('ThemeProvider sets data-theme-switching on <html> during toggleDark, then clears it', async () => {
@@ -77,6 +86,23 @@ describe('theme swap suppresses transitions for one frame', () => {
     expect(document.documentElement.hasAttribute('data-theme-switching')).toBe(true);
     flushFrames();
     expect(document.documentElement.hasAttribute('data-theme-switching')).toBe(false);
+  });
+
+  it('a second swap inside the window keeps transitions off until its own frame', async () => {
+    const { suppressThemeTransitions } = await import('../theme-switch');
+    const el = document.createElement('div');
+    suppressThemeTransitions(el);
+    // One frame passes, then the theme flips back before the first restore runs.
+    const due = frames;
+    frames = [];
+    due.forEach((cb) => cb?.(0));
+    suppressThemeTransitions(el);
+    const second = frames;
+    frames = [];
+    second.forEach((cb) => cb?.(0));
+    expect(el.hasAttribute('data-theme-switching')).toBe(true);
+    flushFrames();
+    expect(el.hasAttribute('data-theme-switching')).toBe(false);
   });
 
   it('HdsThemeProvider sets data-theme-switching on its scope when theme changes, not on mount', async () => {

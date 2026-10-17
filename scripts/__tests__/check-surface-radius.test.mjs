@@ -47,6 +47,12 @@ describe('check-surface-radius', () => {
     expect(probe(`const a = 'border p-4';\n`).status).toBe(1);
   });
 
+  it('does not count a pill (rounded-full) as the surface radius', () => {
+    expect(
+      probe(`const a = 'rounded-md p-4'; // radius-ok: x\nconst dot = 'rounded-full';\n`).status,
+    ).toBe(1);
+  });
+
   it('fails an arbitrary px radius', () => {
     expect(probe(`const a = 'rounded-lg';\nconst b = 'rounded-[6px]';\n`).status).toBe(1);
   });

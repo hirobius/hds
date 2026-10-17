@@ -61,16 +61,18 @@ const ROUNDED = new RegExp(
 );
 const BORDER_RADIUS = /borderRadius:\s*([^,}\n]+)/g;
 
-const SURFACE_SIZES = new Set(['lg', 'xl', '2xl', '3xl', 'full']);
+const SURFACE_SIZES = new Set(['lg', 'xl', '2xl', '3xl']);
 const BELOW_SIZES = new Set([undefined, 'none', 'sm', 'md']);
 
-/** Classify one radius value: 'surface' | 'below' | 'raw'. */
+/** Classify one radius value: 'surface' | 'below' | 'pill' | 'raw'. */
 function classifyArbitrary(inner) {
   if (/^var\(--semantic-radius-(action|control)\)$/.test(inner)) return 'below';
   return 'raw';
 }
 
 function classifyClass(size) {
+  // A pill or dot is its own shape: neither a surface radius nor a step-down.
+  if (size === 'full') return 'pill';
   if (SURFACE_SIZES.has(size)) return 'surface';
   if (BELOW_SIZES.has(size)) return 'below';
   return classifyArbitrary(size.slice(1, -1));
@@ -78,7 +80,7 @@ function classifyClass(size) {
 
 function classifyStyle(value) {
   const v = value.trim();
-  if (/^hds\.borderRadius(\.full|\[['"]full['"]\])$/.test(v)) return 'surface';
+  if (/^hds\.borderRadius(\.full|\[['"]full['"]\])$/.test(v)) return 'pill';
   if (/^hds\.borderRadius/.test(v)) return 'below';
   const str = v.match(/^['"`](.*)['"`]$/);
   if (str) return classifyArbitrary(str[1]);
@@ -111,6 +113,7 @@ export function scanSurface(source, label) {
     }
 
     for (const [token, kind] of found) {
+      if (kind === 'pill') continue;
       if (kind === 'surface') hasSurface = true;
       else if (kind === 'raw') {
         violations.push(

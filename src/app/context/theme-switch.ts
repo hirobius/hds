@@ -1,3 +1,7 @@
+// The pending restore per theme root, so a second swap inside the window restarts it
+// instead of an earlier swap's frame turning transitions back on mid-swap.
+const pending = new WeakMap<HTMLElement, number>();
+
 /**
  * Theme swaps are instant: a light/dark change flips every colour token at once,
  * and any element with a colour transition (`transition-colors`, a hover fade)
@@ -9,8 +13,19 @@
  */
 export function suppressThemeTransitions(el: HTMLElement): void {
   if (typeof requestAnimationFrame !== 'function') return;
+  const prev = pending.get(el);
+  if (prev !== undefined) cancelAnimationFrame(prev);
   el.setAttribute('data-theme-switching', '');
-  requestAnimationFrame(() =>
-    requestAnimationFrame(() => el.removeAttribute('data-theme-switching')),
+  pending.set(
+    el,
+    requestAnimationFrame(() =>
+      pending.set(
+        el,
+        requestAnimationFrame(() => {
+          pending.delete(el);
+          el.removeAttribute('data-theme-switching');
+        }),
+      ),
+    ),
   );
 }
