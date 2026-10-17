@@ -2466,6 +2466,7 @@
         "src/app/components/board.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/icon.test.tsx",
+        "src/app/components/scroll-edge-fade.ts",
         "src/app/components/table.test.tsx",
         "src/app/data/manifest-types.ts"
       ],
@@ -2493,6 +2494,10 @@
         "description": {
           "type": "ReactNode",
           "optional": true
+        },
+        "emphasizeFirstColumn": {
+          "type": "boolean",
+          "default": false
         },
         "flush": {
           "type": "boolean",
@@ -2524,6 +2529,9 @@
             "compact",
             "comfortable"
           ]
+        },
+        "emphasizeFirstColumn": {
+          "type": "boolean"
         },
         "flush": {
           "type": "boolean"
@@ -5031,6 +5039,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/scroll-edge-fade.ts",
         "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},

@@ -191,33 +191,58 @@ function MenuDemo() {
   );
 }
 
+// A link, prose and an action row are what used to shear a table on desktop
+// (tests/visual/table-clipping.spec.ts guards it). The literal columns (status, date,
+// actions) size to their content, so Summary takes the spare width.
+const TABLE_DEMO_ROWS = [
+  {
+    key: 'portfolio',
+    name: 'Portfolio redesign',
+    summary: 'Case studies, about page and the new design-system section',
+    href: 'https://hirobius.com/work/portfolio',
+    status: 'Active',
+    updated: '2026-10-05',
+  },
+  {
+    key: 'tokens',
+    name: 'Token audit',
+    summary: 'Contrast and naming review across the light and dark themes',
+    href: 'https://hirobius.com/work/tokens',
+    status: 'Review',
+    updated: '2026-10-02',
+  },
+];
+
 function TableDemo() {
   return (
     <Table
       caption="Recent projects"
+      emphasizeFirstColumn
       columns={[
         { key: 'name', label: 'Project' },
-        { key: 'status', label: 'Status' },
-        { key: 'updated', label: 'Updated', align: 'right' },
+        { key: 'summary', label: 'Summary' },
+        { key: 'status', label: 'Status', width: 'max-content' },
+        { key: 'updated', label: 'Updated', align: 'right', width: 'max-content' },
+        { key: 'actions', label: 'Actions', align: 'right', width: 'max-content' },
       ]}
-      rows={[
-        {
-          key: 'portfolio',
-          cells: [
-            { slot: 'label', content: 'Portfolio redesign' },
-            { slot: 'badge', content: 'Active' },
-            { slot: 'value', content: '2026-10-05', align: 'right' },
-          ],
-        },
-        {
-          key: 'tokens',
-          cells: [
-            { slot: 'label', content: 'Token audit' },
-            { slot: 'badge', content: 'Review' },
-            { slot: 'value', content: '2026-10-02', align: 'right' },
-          ],
-        },
-      ]}
+      rows={TABLE_DEMO_ROWS.map((row) => ({
+        key: row.key,
+        cells: [
+          { slot: 'label', content: <InlineLink href={row.href}>{row.name}</InlineLink> },
+          { slot: 'description', content: row.summary },
+          { slot: 'badge', content: <Badge>{row.status}</Badge> },
+          { slot: 'value', content: row.updated, align: 'right' },
+          {
+            slot: 'action',
+            align: 'right',
+            content: (
+              <Button size="sm" variant="secondary">
+                Open brief
+              </Button>
+            ),
+          },
+        ],
+      }))}
     />
   );
 }
