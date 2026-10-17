@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Table now has a bordered frame, a tinted header, taller body rows with vertical rules and regular-weight body text, and wide content scrolls inside the table instead of spilling past it; re-take Table screenshots and drop any wrapper you added to stop clipping."
+}
