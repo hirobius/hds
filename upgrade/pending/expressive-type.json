@@ -93,6 +93,135 @@
       "facts": [
         "css-var-changed:--semantic-typography-titleSm-font-family::where([data-hds],[data-hds] *)"
       ]
+    },
+    {
+      "id": "value-changed/--primitive-typography-weight-bold",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The bold weight is now 650 (was 700); load fonts.css so the variable Plus Jakarta Sans renders it, or expect the nearest static cut.",
+      "detect": {
+        "cssVars": ["--primitive-typography-weight-bold"],
+        "cssVarWrites": ["--primitive-typography-weight-bold"]
+      },
+      "facts": ["css-var-changed:--primitive-typography-weight-bold::root"]
+    },
+    {
+      "id": "value-changed/--primitive-typography-weight-medium",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The medium weight is now 550 (was 500); load fonts.css so the variable Plus Jakarta Sans renders it, or expect the nearest static cut.",
+      "detect": {
+        "cssVars": ["--primitive-typography-weight-medium"],
+        "cssVarWrites": ["--primitive-typography-weight-medium"]
+      },
+      "facts": ["css-var-changed:--primitive-typography-weight-medium::root"]
+    },
+    {
+      "id": "value-changed/--primitive-typography-weight-regular",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Body weight is now 450 (was 400); if you read this variable for your own text it renders slightly heavier, and Plus Jakarta Sans must load as a variable font (fonts.css does this).",
+      "detect": {
+        "cssVars": ["--primitive-typography-weight-regular"],
+        "cssVarWrites": ["--primitive-typography-weight-regular"]
+      },
+      "facts": ["css-var-changed:--primitive-typography-weight-regular::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-display-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The display role now uses weight 800 in Sora; re-take hero heading screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-typography-display-font-weight"],
+        "cssVarWrites": ["--semantic-typography-display-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-display-font-weight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-h1-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated h1 style follows title to weight 800 in Sora; move to title.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h1-font-weight"],
+        "cssVarWrites": ["--semantic-typography-h1-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-h1-font-weight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-h2-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated h2 style follows title to weight 800 in Sora; move to title.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h2-font-weight"],
+        "cssVarWrites": ["--semantic-typography-h2-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-h2-font-weight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-h3-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated h3 style follows title to weight 800 in Sora; move to title.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h3-font-weight"],
+        "cssVarWrites": ["--semantic-typography-h3-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-h3-font-weight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-title-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Titles now use weight 800 in Sora; re-take heading screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-typography-title-font-weight"],
+        "cssVarWrites": ["--semantic-typography-title-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-title-font-weight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-titleSm-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Titles now use weight 800 in Sora; re-take heading screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-typography-titleSm-font-weight"],
+        "cssVarWrites": ["--semantic-typography-titleSm-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-titleSm-font-weight::root"]
+    },
+    {
+      "id": "look/font-face-Plus-Jakarta-Sans-400-normal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Plus Jakarta Sans now ships as one variable face (weights 200 to 800) in fonts.css; if you pointed at the old 400, 500 or 700 files, import fonts.css again or load your own.",
+      "detect": {
+        "regex": ["Plus Jakarta Sans"]
+      },
+      "facts": ["font-face-removed:Plus Jakarta Sans/400/normal"]
+    },
+    {
+      "id": "look/font-face-Plus-Jakarta-Sans-500-normal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "This static Plus Jakarta Sans face is folded into the variable face in fonts.css; import fonts.css again, or load your own file for this weight.",
+      "detect": {
+        "regex": ["Plus Jakarta Sans"]
+      },
+      "facts": ["font-face-removed:Plus Jakarta Sans/500/normal"]
+    },
+    {
+      "id": "look/font-face-Plus-Jakarta-Sans-700-normal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "This static Plus Jakarta Sans face is folded into the variable face in fonts.css; import fonts.css again, or load your own file for this weight.",
+      "detect": {
+        "regex": ["Plus Jakarta Sans"]
+      },
+      "facts": ["font-face-removed:Plus Jakarta Sans/700/normal"]
     }
   ]
 }
