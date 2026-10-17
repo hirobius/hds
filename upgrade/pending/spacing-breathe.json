@@ -326,6 +326,17 @@
         "cssVars": ["--primitive-space-px6", "--primitive-space-px10"],
         "regex": ["\\b(?:hds\\.space\\.px(?:6|10)|[a-z-]+-px(?:6|10))\\b"]
       }
+    },
+    {
+      "id": "value-changed/--component-badge-paddingX",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Badge horizontal padding is now 8px (was 6px); check badges in tight rows or fixed-width cells.",
+      "detect": {
+        "cssVars": ["--component-badge-paddingX"],
+        "cssVarWrites": ["--component-badge-paddingX"]
+      },
+      "facts": ["css-var-changed:--component-badge-paddingX::root"]
     }
   ]
 }
