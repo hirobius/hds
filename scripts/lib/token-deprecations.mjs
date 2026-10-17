@@ -2,12 +2,12 @@
 /**
  * One record per `$deprecated` token, shared by the build (which writes them to
  * scripts/eslint-plugin-hds/rules/deprecated-tokens.json), the
- * hds/no-deprecated-token lint rule.
+ * hds/no-deprecated-token lint rule and the hds-deprecated-tokens codemod.
  *
  * The `$deprecated` string stays the human source: "<why> — use <path>", and
  * optionally "removed in <semver>". The replacement is the first token path
  * after "use " that resolves to a live leaf; anything else ("one per tone")
- * leaves it null, so the lint quotes the note instead.
+ * leaves it null, so the lint quotes the note and the codemod leaves the site.
  *
  * Pure: no fs, no process.
  */

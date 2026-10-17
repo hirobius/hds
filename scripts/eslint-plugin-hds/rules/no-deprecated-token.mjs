@@ -33,6 +33,9 @@ const COMPOSITES = DEPRECATED.filter((d) => d.composite);
 const byPath = new Map(DEPRECATED.map((d) => [d.path, d]));
 const byTailwind = new Map(DEPRECATED.filter((d) => d.tailwind).map((d) => [d.tailwind, d]));
 const VAR_RE = /--[A-Za-z0-9-]+/g;
+const IDENT_CHAIN = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*$/;
+/** The hds-deprecated-tokens codemod rewrites every site that has a fix, bar a member chain to a non-identifier path. */
+const UPGRADE = ' `npx @hirobius/design-system upgrade` rewrites it.';
 
 /** `md:hover:!-mt-layout-tight` -> { util: 'mt', key: 'layout-tight', sign: '-' } */
 function parseClass(cls) {
@@ -108,11 +111,16 @@ export default {
   create(context) {
     const classChecked = new WeakSet();
 
-    function report(node, text, d, fix) {
+    function report(node, text, d, fix, rewrites = true) {
       context.report({
         node,
         messageId: 'deprecated',
-        data: { text, note: d.note, removeIn: d.removeIn, fix: fix ? ` Use ${fix}.` : '' },
+        data: {
+          text,
+          note: d.note,
+          removeIn: d.removeIn,
+          fix: fix ? ` Use ${fix}.${rewrites ? UPGRADE : ''}` : '',
+        },
       });
     }
 
@@ -167,7 +175,7 @@ export default {
         for (let start = 1; start < parts.length; start++) {
           for (let end = parts.length; end > start; end--) {
             const d = byPath.get(parts.slice(start, end).join('.'));
-            if (d) return report(node, text, d, d.replacement);
+            if (d) return report(node, text, d, d.replacement, IDENT_CHAIN.test(d.replacement));
           }
         }
       },

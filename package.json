@@ -128,6 +128,7 @@
     "codemods/not-found-pattern.mjs",
     "codemods/tile-grid.mjs",
     "codemods/spacing-steps.mjs",
+    "codemods/deprecated-tokens.mjs",
     "codemods/upgrade.mjs",
     "codemods/registry.mjs",
     "codemods/lib/atomic-write.mjs",
@@ -456,6 +457,7 @@
     "hds-not-found-pattern": "codemods/not-found-pattern.mjs",
     "hds-tile-grid": "codemods/tile-grid.mjs",
     "hds-spacing-steps": "codemods/spacing-steps.mjs",
+    "hds-deprecated-tokens": "codemods/deprecated-tokens.mjs",
     "hds-mcp": "mcp/hds-mcp.mjs",
     "design-system": "codemods/upgrade.mjs",
     "hds-upgrade": "codemods/upgrade.mjs"
