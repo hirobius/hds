@@ -11,6 +11,14 @@ type Node = Record<string, Json>;
 
 const isNode = (v: Json): v is Node => typeof v === 'object' && v !== null && !Array.isArray(v);
 const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const isColor = (value: string) => /^(#|rgb|hsl|oklch)/i.test(value);
+const describe = (node: Node) => (typeof node.$description === 'string' ? node.$description : '');
+
+/** `{semantic.shadow.subtle}` -> `semantic.shadow.subtle`; anything else -> null. */
+const aliasPath = (ref: Json) => {
+  const m = typeof ref === 'string' ? /^\{([^}]+)\}$/.exec(ref) : null;
+  return m ? m[1]! : null;
+};
 
 function lookup(tokens: Json, path: string): Node | null {
   let cur: Json = tokens;
@@ -49,7 +57,9 @@ export interface SwatchGroup {
  * accent tokens (one group per role). Tenant brand ramps (`projectBrand`) are
  * left out: they belong to one client, not the shared system.
  */
-export function colorGalleries(tokens: Json): { title: string; groups: SwatchGroup[] }[] {
+export function colorGalleries(
+  tokens: Json,
+): { title: string; dense: boolean; groups: SwatchGroup[] }[] {
   const groupsUnder = (path: string, skip: string[] = []): SwatchGroup[] => {
     const node = lookup(tokens, path);
     if (!node) return [];
@@ -57,7 +67,7 @@ export function colorGalleries(tokens: Json): { title: string; groups: SwatchGro
       .filter(([key]) => !skip.includes(key))
       .map(([key]) => ({
         title: titleCase(key),
-        swatches: leafRows(tokens, `${path}.${key}`).filter((r) => r.swatch || isColor(r.value)),
+        swatches: leafRows(tokens, `${path}.${key}`).filter((r) => isColor(r.value)),
       }))
       .filter((g) => g.swatches.length > 0);
   };
@@ -66,15 +76,14 @@ export function colorGalleries(tokens: Json): { title: string; groups: SwatchGro
     swatches: leafRows(tokens, 'semantic.accent').filter((r) => isColor(r.value)),
   };
   return [
-    { title: 'Primitives', groups: groupsUnder('primitive.color', ['projectBrand']) },
+    { title: 'Primitives', dense: true, groups: groupsUnder('primitive.color', ['projectBrand']) },
     {
       title: 'Semantic & state',
+      dense: false,
       groups: [...groupsUnder('semantic.color'), accent].filter((g) => g.swatches.length),
     },
   ];
 }
-
-const isColor = (value: string) => /^(#|rgb|hsl|oklch)/i.test(value);
 
 export interface TypeSpecimen {
   role: string;
@@ -87,7 +96,6 @@ export interface TypeSpecimen {
   fontSize: string;
   lineHeight: string;
   letterSpacing: string;
-  description: string;
 }
 
 /** One specimen per live text style in `semantic.typography`, in ramp order. */
@@ -109,7 +117,6 @@ export function typeSpecimens(tokens: Json): TypeSpecimen[] {
         fontSize: field('fontSize'),
         lineHeight: field('lineHeight'),
         letterSpacing: field('letterSpacing') || '0em',
-        description: tokenRow(tokens, `semantic.typography.${role}`)?.description ?? '',
       };
     });
 }
@@ -162,8 +169,8 @@ export interface ElevationLevel {
 }
 
 const aliasVar = (ref: Json) => {
-  const m = typeof ref === 'string' ? /^\{([^}]+)\}$/.exec(ref) : null;
-  return m ? `var(${cssVarFor(m[1]!)})` : null;
+  const path = aliasPath(ref);
+  return path ? `var(${cssVarFor(path)})` : null;
 };
 
 /** Elevation levels from the `semantic.elevation` composites (surface + shadow + border). */
@@ -175,16 +182,15 @@ export function elevationLevels(tokens: Json): ElevationLevel[] {
     const value =
       isNode(ext) && isNode(ext['com.hirobius.hds']) ? ext['com.hirobius.hds'].$value : null;
     if (!isNode(value)) return [];
-    const shadowRef = typeof value.shadow === 'string' ? /^\{([^}]+)\}$/.exec(value.shadow) : null;
     return [
       {
         name,
         token: `semantic.elevation.${name}`,
-        description: typeof node.$description === 'string' ? node.$description : '',
+        description: describe(node),
         surface: aliasVar(value.surface),
         shadow: aliasVar(value.shadow),
         border: aliasVar(value.border),
-        shadowToken: shadowRef ? shadowRef[1]! : null,
+        shadowToken: aliasPath(value.shadow),
       },
     ];
   });
@@ -211,19 +217,19 @@ export function motionTokens(tokens: Json): MotionToken[] {
     const v = node.$value;
     if (!isNode(v) || !('duration' in v)) return [];
     const curve = v.timingFunction ?? v.easing;
-    const curveRef = typeof curve === 'string' ? /^\{([^}]+)\}$/.exec(curve) : null;
-    const durRef = typeof v.duration === 'string' ? /^\{([^}]+)\}$/.exec(v.duration) : null;
+    const curvePath = aliasPath(curve);
+    const durationPath = aliasPath(v.duration);
     // The curve's control points, not its CSS var: a spring's var is not valid CSS.
     const points = resolveTokenValue(tokens, curve);
     return [
       {
         name,
         token: `semantic.motion.${name}`,
-        description: typeof node.$description === 'string' ? node.$description : '',
+        description: describe(node),
         duration: resolveTokenValue(tokens, v.duration),
-        durationVar: durRef ? cssVarFor(durRef[1]!) : null,
+        durationVar: durationPath ? cssVarFor(durationPath) : null,
         easing: /^[\d.\-]+(, [\d.\-]+){3}$/.test(points) ? `cubic-bezier(${points})` : points,
-        easingName: curveRef ? curveRef[1]!.split('.').pop()! : '',
+        easingName: curvePath ? curvePath.split('.').pop()! : '',
       },
     ];
   });

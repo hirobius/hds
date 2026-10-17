@@ -40,14 +40,12 @@ function ColorGallery() {
           {gallery.groups.map((group) => (
             <div key={group.title} className="hds-swatch-group">
               <p className="hds-visual-label">{group.title}</p>
-              <div
-                className={`hds-swatch-grid${gallery.title === 'Primitives' ? ' hds-swatch-grid--dense' : ''}`}
-              >
+              <div className={`hds-swatch-grid${gallery.dense ? ' hds-swatch-grid--dense' : ''}`}>
                 {group.swatches.map((s) => {
                   const dark = s.darkValue !== null && s.darkValue !== s.value ? s.darkValue : null;
                   const name = s.cssVar ?? s.token;
                   return (
-                    <CopyCard key={s.token} copy={name}>
+                    <CopyCard key={s.token} copy={s.token}>
                       <span className="hds-swatch-block" aria-hidden="true">
                         <span style={{ background: s.value }} />
                         {dark ? <span style={{ background: dark }} /> : null}
@@ -74,7 +72,7 @@ function ColorGallery() {
         </Section>
       ))}
       <p className="hds-visual-note">
-        Split blocks show light (left) and dark (right). Tap a card to copy its CSS variable.
+        Split blocks show light (left) and dark (right). Tap a card to copy its token name.
       </p>
     </>
   );

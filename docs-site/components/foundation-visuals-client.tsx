@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 /**
  * A swatch card that copies its token name on tap. The whole card is the
@@ -8,17 +8,20 @@ import { useState, type CSSProperties, type ReactNode } from 'react';
  */
 export function CopyCard({ copy, children }: { copy: string; children: ReactNode }) {
   const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
   const onClick = async () => {
     try {
       await navigator.clipboard.writeText(copy);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1200);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1200);
     } catch {
       // Clipboard blocked (insecure context, permissions): the name is on the card to select.
     }
   };
   return (
-    <button type="button" className="hds-swatch" onClick={onClick} aria-label={`Copy ${copy}`}>
+    <button type="button" className="hds-swatch" onClick={onClick} title={`Copy ${copy}`}>
       {children}
       <span className="hds-swatch-copied" role="status">
         {copied ? 'Copied' : ''}

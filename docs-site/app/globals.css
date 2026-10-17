@@ -256,8 +256,9 @@ pre {
   white-space: nowrap;
 }
 
-/* Foundations galleries (components/foundation-visuals.tsx): every value is a
-   token, drawn from hirobius.tokens.json at build time. */
+/* Foundations galleries (components/foundation-visuals.tsx): every swatch,
+   specimen, bar, box, card and demo is drawn from hirobius.tokens.json at build
+   time; only the gallery chrome below uses fixed sizes. */
 .hds-visuals {
   margin: var(--semantic-space-scale-md) 0 var(--semantic-space-scale-lg);
 }
@@ -349,7 +350,9 @@ pre {
   padding: 0 0.375rem;
 }
 .hds-swatch-copied:empty {
-  display: none;
+  /* Stays in the DOM (a live region must exist before it speaks), just unseen. */
+  padding: 0;
+  opacity: 0;
 }
 
 /* Type specimens and motion demos: open rows on hairlines, no boxes. */
