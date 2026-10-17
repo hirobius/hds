@@ -249,6 +249,14 @@ The gates are deterministic and need no browser or live site:
 Work in progress, shown as it stands. These are questions the system is still
 testing, not features it promises.
 
+### Delight directions
+
+Could HDS be more playful without losing its discipline? A static page renders
+three directions, subtle to bold, on the current tokens with page-scoped
+overrides, and measures token reach and AA contrast for each:
+[`docs/explorations/2026-10-delight/index.html`](docs/explorations/2026-10-delight/index.html).
+No token has changed.
+
 ### Agent consistency
 
 Can the public docs alone make different agents build the same screen? Three
