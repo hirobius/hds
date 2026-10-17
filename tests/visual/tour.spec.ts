@@ -50,7 +50,8 @@ test.describe('docs tour page', () => {
         await page.waitForTimeout(500);
 
         const { scrollWidth, clientWidth, cls } = await page.evaluate(() => ({
-          scrollWidth: document.documentElement.scrollWidth,
+          // body is overflow-x hidden in the docs shell, so html alone would hide a wide child.
+          scrollWidth: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth),
           clientWidth: document.documentElement.clientWidth,
           cls: (window as unknown as Probe).__cls,
         }));

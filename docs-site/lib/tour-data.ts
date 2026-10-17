@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { buildLinks, type Specs } from './tour-links';
 import { findUp, loadManifestSpecs, loadTokens, loadUpgradeIndex } from './site-data';
 
@@ -122,7 +123,9 @@ export function loadTourData(): TourData {
     count: countLeaves(tokens[group]),
   }));
   const changelog = readFileSync(findUp('CHANGELOG.md'), 'utf8');
-  const pkg = readJson('package.json') as { version: string };
+  // The root package's version; findUp('package.json') alone would stop at docs-site's own.
+  const root = dirname(findUp('hirobius.tokens.json'));
+  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')) as { version: string };
   const status = readJson('status.json') as { updatedAt: string };
   return {
     version: pkg.version,

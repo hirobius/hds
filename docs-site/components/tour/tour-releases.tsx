@@ -58,10 +58,7 @@ export function TourReleases({ data }: { data: TourData }) {
       {latest?.changes[0] && (
         <Blockquote attribution={`CHANGELOG ${latest.version}`}>{latest.changes[0]}</Blockquote>
       )}
-      <Callout tone="info">
-        Run <InlineCode copyable>npx @hirobius/design-system@latest upgrade</InlineCode> to apply
-        the steps below.
-      </Callout>
+      <Callout tone="info">Run the command below to apply the steps listed here.</Callout>
       <Stack gap="tight">
         {asks.length === 0 ? (
           <StatusListItem
@@ -91,6 +88,11 @@ export function TourReleases({ data }: { data: TourData }) {
           ))}
         </Stack>
       </Disclosure>
+      <CodeBlock
+        filename="terminal"
+        language="sh"
+        code="npx @hirobius/design-system@latest upgrade"
+      />
       <CodeBlock
         filename="package.json"
         language="json"
