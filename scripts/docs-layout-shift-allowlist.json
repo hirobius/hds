@@ -21,13 +21,6 @@
     "issue": 770
   },
   {
-    "route": "/docs/foundations/typography",
-    "kind": "cls",
-    "max": 0.025,
-    "reason": "content reflows on load",
-    "issue": 770
-  },
-  {
     "route": "/docs/guides/deprecation",
     "kind": "cls",
     "max": 0.025,
