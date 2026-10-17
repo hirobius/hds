@@ -496,12 +496,6 @@ samp {
 .font-normal {
   font-weight: var(--semantic-typography-mono-font-weight);
 }
-.tracking-wider {
-  letter-spacing: 0.08em;
-}
-.tracking-widest {
-  letter-spacing: 0.12em;
-}
 .no-underline {
   text-decoration: none;
 }

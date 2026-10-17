@@ -1,0 +1,72 @@
+{
+  "impact": "breaking",
+  "plain": "The .tracking-widest class and a few stray Tailwind CSS variables (including --tracking-wider) are no longer shipped, and the ESLint plugin now errors on hand-set letter-spacing; use <Text variant> or a .hds-type-<role> class.",
+  "steps": [
+    {
+      "id": "removed/--color-slate-200",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The stray CSS variable --color-slate-200 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it.",
+      "detect": {
+        "cssVars": ["--color-slate-200"],
+        "cssVarWrites": ["--color-slate-200"]
+      },
+      "facts": ["css-var-removed:--color-slate-200"]
+    },
+    {
+      "id": "removed/--color-slate-900",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The stray CSS variable --color-slate-900 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it.",
+      "detect": {
+        "cssVars": ["--color-slate-900"],
+        "cssVarWrites": ["--color-slate-900"]
+      },
+      "facts": ["css-var-removed:--color-slate-900"]
+    },
+    {
+      "id": "removed/--color-stone-50",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The stray CSS variable --color-stone-50 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it.",
+      "detect": {
+        "cssVars": ["--color-stone-50"],
+        "cssVarWrites": ["--color-stone-50"]
+      },
+      "facts": ["css-var-removed:--color-stone-50"]
+    },
+    {
+      "id": "removed/--container-5xl",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The stray CSS variable --container-5xl is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it.",
+      "detect": {
+        "cssVars": ["--container-5xl"],
+        "cssVarWrites": ["--container-5xl"]
+      },
+      "facts": ["css-var-removed:--container-5xl"]
+    },
+    {
+      "id": "removed/--font-serif",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The stray CSS variable --font-serif is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it.",
+      "detect": {
+        "cssVars": ["--font-serif"],
+        "cssVarWrites": ["--font-serif"]
+      },
+      "facts": ["css-var-removed:--font-serif"]
+    },
+    {
+      "id": "removed/--tracking-wider",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The stray CSS variable --tracking-wider is no longer shipped; type tracking comes from the --semantic-typography-*-letter-spacing tokens, so use a type role instead.",
+      "detect": {
+        "cssVars": ["--tracking-wider"],
+        "cssVarWrites": ["--tracking-wider"]
+      },
+      "facts": ["css-var-removed:--tracking-wider"]
+    }
+  ]
+}

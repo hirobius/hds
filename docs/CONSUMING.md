@@ -477,7 +477,8 @@ pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslin
 
 and import it as `@hirobius/eslint-plugin-hds`.
 
-Five rules ship in `recommended`: `no-raw-hex` (error), `no-raw-px-spacing`
+Six rules ship in `recommended`: `no-custom-tracking` (error — letter-spacing
+not from a type token), `no-raw-hex` (error), `no-raw-px-spacing`
 (error), `no-raw-controls` (error — raw `<button>`, `<input>`, `<select>`,
 `<textarea>` or `<form>` where an HDS component exists), `sx-token-first`
 (error — raw hex/px inside `Box` `sx`, where token keys are mandatory), and

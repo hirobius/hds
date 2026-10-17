@@ -165,7 +165,7 @@ on the board.
 
 - A scanner bend names a violation the code contains: `kind` (a scan kind, `hex`,
   `colour-fn`, `px`, `raw-control`, `custom-css` or `tailwind`, or a lint plugin rule,
-  `hds/no-raw-controls`, `hds/no-raw-hex`, `hds/no-raw-px-spacing` or `hds/sx-token-first`),
+  `hds/no-custom-tracking`, `hds/no-raw-controls`, `hds/no-raw-hex`, `hds/no-raw-px-spacing` or `hds/sx-token-first`),
   `file` and the exact `match` text the gate prints, with `why` and `change`. A violation
   both tools report is printed once, under the scan's kind, and one bend covers it. One bend covers every occurrence of that text in that file,
   because lines move as a direction is edited. A bend with no matching violation is stale and
