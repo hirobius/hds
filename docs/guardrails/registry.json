@@ -474,6 +474,18 @@
       "supportsJson": true
     },
     {
+      "id": "check-no-status-clutter",
+      "description": "hds#759 -- no status dots and no coloured left accent bars (Adrian, 2026-10-16): status is implied by content. Fails a `dot` prop on a <Badge> usage, a left-border bar (border-l-2..8 or border-l-[2..8px]) in a class list that also has a tone colour, the --hds-accent-bar variable and the Board column dot. Scans src/, docs-site/, preview/, starter-kit/, templates/, tenants/; skips comments, tests and fixtures. A line is exempt with // status-clutter-ok: <reason>. Does not see the guideline 'no heading over a card of supporting meta'; that one is in DESIGN.md. Error severity, runs in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-no-status-clutter.mjs",
+      "fixturePath": "fixtures/check-no-status-clutter",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "firingChannels": ["pnpm-meta"],
+      "supportsJson": true
+    },
+    {
       "id": "check-no-uppercase",
       "description": "The design system never produces ALL CAPS text (Adrian, 2026-10-12). Fails the Tailwind `uppercase` class (also variant-prefixed and @apply), CSS or arbitrary-property `text-transform: uppercase`, small caps (font-variant), `textTransform: 'uppercase'` in JS or JSON, `textCase: 'UPPER'` (also SMALL_CAPS) in tokens or the Figma model, and `.toUpperCase()` / `.toLocaleUpperCase()` in code except the first-letter idiom (charAt(0) or [0]). Scans src/, docs-site/, preview/, starter-kit/, tools/, templates/, tenants/, docs/*.html, hirobius.tokens.json and figma/model.json + snapshot.json; skips comments, tests and fixtures. A line is exempt with // uppercase-ok: <reason> on the same line or either line above; the reason is required (a bare marker fails). Known limit: a class assembled at runtime is not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over the repo in pnpm test.",
       "severity": "error",
