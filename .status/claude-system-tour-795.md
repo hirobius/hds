@@ -1,0 +1,1 @@
+- Docs: /tour "HDS Console" product screen using every public component, with a coverage test and the axe gate extended to it (#795).
