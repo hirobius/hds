@@ -14,7 +14,7 @@
     "./icons": "src/icons.ts"
   },
   "version": "0.26.2",
-  "generatedAt": "2026-10-16",
+  "generatedAt": "2026-10-17",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -49,11 +49,7 @@
     "./app/components/callout": ["Callout", "CalloutProps", "default"],
     "./app/components/field": ["Field", "FieldProps"],
     "./app/components/stat": ["Stat", "StatProps"],
-    "./app/components/status-list-item": [
-      "StatusListItem",
-      "StatusListItemProps",
-      "StatusListItemTone"
-    ],
+    "./app/components/status-list-item": ["StatusListItem", "StatusListItemProps"],
     "./app/components/card": [
       "Card",
       "CardBody",

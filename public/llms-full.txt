@@ -32,8 +32,8 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
   `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
 - **Switch between panels of related content** → `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. Not: `SegmentedControl`, Button rows.
   `<Tabs defaultValue="a"><TabsList><TabsTrigger value="a">A</TabsTrigger></TabsList><TabsContent value="a">…</TabsContent></Tabs>`.
-- **Status label in a header or table cell** → `Badge`. Not: `Tag`, `Text`.
-  `<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.
+- **Status label in a header or table cell** → `Badge`. Not: `Tag`, `Text`, a status dot (a small coloured circle or ● glyph).
+  `<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input. No status dots: the status is always words.
 - **Form with fields and a submit button** → `Form`, `Textarea`, `Input`, `FormActions`, `Button`. Not: a raw `<form>`, a Stack of Buttons as the footer.
   `<Form onSubmit={…}><Textarea label="Notes" … /><FormActions primary={<Button type="submit">Save note</Button>} /></Form>`; every field takes its own `label`.
 - **Confirm a destructive or irreversible action (delete, archive, remove)** → `AlertDialog`, `Button`. Not: `Dialog`, `window.confirm`.
@@ -151,7 +151,7 @@ Alert: [core] Show a persistent inline message with a severity, next to the cont
 AlertDialog: Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons. Use instead: Dialog, ToastProvider
 AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
 Avatar: [core] Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
-Badge: [core] Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
+Badge: [core] Label a status, state or count with a compact neutral or semantic text chip. Use instead: Tag, Alert
 Board: Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage. Use instead: Table, Grid
 BoardColumn: Hold the cards for one status inside a Board, with a heading that announces the count. Use instead: Stack
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
@@ -242,6 +242,7 @@ Negative rules (apply everywhere, checked by `scripts/audit-tokens.mjs --full`, 
 
 - No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Switcher/Sidebar) owns rhythm, not margin on the child.
 - No raw px or hex values in any layout or color prop — every spacing value comes from the semantic gap scale (`tight | normal | inset | spacious`, or a component/subgrid step) and every color comes from a `semantic.color.*` token.
+- No status dots: never mark status with a small coloured circle, a `*-dot` class or a ● glyph, and no coloured left accent bar on a card — write the status as text in a `Badge`.
 - No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.
 
 Density: put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
@@ -361,6 +362,7 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 - Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.
 - Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).
 - Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.
+- No status dots: never mark status with a small coloured circle, a `*-dot` class or a ● glyph (no `Badge dot`, no `StatusListItem` tone). Write the status as text in a `Badge`. Enforced by `scripts/check-no-status-clutter.mjs` and `hds/no-status-clutter`.
 - Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.
 
 ## Agent Workflow
@@ -603,7 +605,7 @@ Three more needs are props on an existing component, not components of their own
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
-- Don't paint status dots or coloured left accent bars on cards and tiles; status is implied by content. Don't put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge); keep label and value together.
+- No status dots: don't mark status with a small coloured circle anywhere (no `Badge dot`, no leading dot on a list row, no `*-dot` class, no ● or 🟢 glyph), and don't paint coloured left accent bars on cards and tiles. Status is implied by content; when it needs saying, write it as text in a `Badge`. Don't put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge); keep label and value together.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
 - Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
@@ -680,9 +682,6 @@ Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
 ### Badge
 Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
-  - dot: boolean = false
-  - label: string
-  - size: "sm" | "md" | "lg"
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | "inProgress" | null
 
 ### Blockquote
@@ -1206,10 +1205,9 @@ Stack — one-dimensional layout primitive.
   - wrap: FlexWrap
 
 ### StatusListItem
-Status dot + title row with optional muted notes and trailing slot (e.g. badge).
+Title row with optional muted notes and a trailing slot (e.g. a text Badge). Non-interactive. It had a tone-coloured leading dot until hds#759: status is carri…
   - notes: ReactNode[]
   - title: ReactNode
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - trailing: ReactNode
 
 ### Surface

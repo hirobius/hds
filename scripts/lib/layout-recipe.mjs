@@ -17,5 +17,6 @@ export const layoutRecipeSteps = [
 export const layoutNegativeRules = [
   'No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Switcher/Sidebar) owns rhythm, not margin on the child.',
   'No raw px or hex values in any layout or color prop — every spacing value comes from the semantic gap scale (`tight | normal | inset | spacious`, or a component/subgrid step) and every color comes from a `semantic.color.*` token.',
+  'No status dots: never mark status with a small coloured circle, a `*-dot` class or a ● glyph, and no coloured left accent bar on a card — write the status as text in a `Badge`.',
   'No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.',
 ];

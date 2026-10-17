@@ -1,6 +1,6 @@
 // violating: each line below paints status clutter (Adrian, 2026-10-16).
 import * as React from 'react';
-import { Badge } from '@hirobius/design-system';
+import { Badge, StatusListItem } from '@hirobius/design-system';
 
 export function Clutter() {
   return (
@@ -11,6 +11,10 @@ export function Clutter() {
         tile
       </div>
       <div className="border-l-[3px] border-primary">tile</div>
+      <StatusListItem tone="warning" title="Invoice overdue" />
+      <span className="status-dot" />
+      <span className="size-2 rounded-full bg-feedback-success" />
+      <span>● Online</span>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Check } from 'lucide-react';
 import { Timeline, TimelineItem } from './timeline';
 
 afterEach(cleanup);
@@ -54,13 +55,13 @@ describe('Timeline', () => {
     expect(times[0].getAttribute('dateTime')).toBe(at(4, 8).toISOString());
   });
 
-  it('maps tone to a feedback token on the marker, and neutral when absent', () => {
+  it('maps tone to a feedback token on an icon marker, and neutral when absent', () => {
     const { container } = render(
       <Timeline aria-label="t">
-        <TimelineItem date={at(1, 1)} title="a" tone="success" />
-        <TimelineItem date={at(1, 2)} title="b" tone="danger" />
-        <TimelineItem date={at(1, 3)} title="c" tone="warning" />
-        <TimelineItem date={at(1, 4)} title="d" tone="info" />
+        <TimelineItem date={at(1, 1)} title="a" tone="success" icon={Check} />
+        <TimelineItem date={at(1, 2)} title="b" tone="danger" icon={Check} />
+        <TimelineItem date={at(1, 3)} title="c" tone="warning" icon={Check} />
+        <TimelineItem date={at(1, 4)} title="d" tone="info" icon={Check} />
         <TimelineItem date={at(1, 5)} title="e" />
       </Timeline>,
     );
@@ -76,6 +77,19 @@ describe('Timeline', () => {
     expect(marker('e').getAttribute('data-tone')).toBe('neutral');
     expect(marker('e').className).not.toContain('feedback');
     expect(container.querySelector('[style*="#"]')).toBeNull();
+  });
+
+  it('keeps a plain dot marker neutral whatever the tone: no status dots (hds#759)', () => {
+    render(
+      <Timeline aria-label="t">
+        <TimelineItem date={at(1, 1)} title="a" tone="danger" />
+      </Timeline>,
+    );
+    const marker = (screen.getByText('a').closest('li') as HTMLElement).querySelector(
+      '[data-timeline-marker]',
+    ) as HTMLElement;
+    expect(marker.className).not.toContain('feedback');
+    expect(marker.className).toContain('text-muted-foreground');
   });
 
   it('draws an optional icon in the marker, hidden from assistive tech', () => {

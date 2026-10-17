@@ -14,6 +14,16 @@
  *     rule (a blockquote) is not a status bar.
  *   - the `--hds-accent-bar` CSS variable, in any use or declaration
  *   - the Board column dot (`data-hds-board-dot`)
+ *   - a `tone` prop on `<StatusListItem>` (its leading tone dot is gone, hds#759)
+ *   - a `*-dot` status class (`status-dot`, `hds-dot`) in a class list or a CSS selector
+ *   - a small round tone-coloured span: `rounded-full` + a size of 12px or less +
+ *     a feedback or hue fill in one class list, or the same in one CSS rule
+ *     (border-radius 50%, width up to 12px, a feedback/hue background). Avatars,
+ *     spinners and a neutral `bg-current` rail marker are not flagged.
+ *     A `cva()` whose base is `rounded-full` and whose variants add a tone fill
+ *     is the same dot split across strings (StatusListItem's and Badge's were).
+ *   - a filled-circle glyph or emoji used as a status mark (● ⬤ ◉ 🟢 🔴 …).
+ *     A `•` bullet separator ("Ada • 3 min") is not flagged.
  *
  * Guideline the check cannot see: no heading over a card of supporting meta
  * (a "Status" heading far from its "Applied" badge). Keep label and value together.
@@ -30,6 +40,14 @@ import { join, dirname, extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
 import { scanSources, findMarker, maskComments, isSpecFile } from './lib/source-scan.mjs';
+import {
+  ROUND,
+  TONE_FILL,
+  WIDE,
+  STATUS_GLYPH,
+  isAccentBarClassList,
+  isDotClassList,
+} from './eslint-plugin-hds/rules/status-clutter-patterns.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -55,9 +73,49 @@ const SKIP_DIRS = [
 ];
 const COMMENT_LEADS = ' \t;,{(';
 
-const BAR = /^(?:[\w-]+:)*border-l-(?:[2-8]|\[[2-8]px\])$/;
-const TONE_COLOUR =
-  /^(?:[\w-]+:)*border-(?:l-)?(?:feedback-[\w-]+|accent[\w-]*|primary[\w-]*|info|success|warning|danger|blue-[\w-]+)$/;
+const DOT_SELECTOR = /\.(?:[\w-]+-)?dot(?![\w-])/;
+const CSS_EXTENSIONS = new Set(['.css', '.html']);
+const CSS_RULE = /([^{}]*)\{([^{}]*)\}/g;
+
+/**
+ * A JSX tag's own attributes from `from` to its closing `>`, with every
+ * `{expression}` blanked so a nested element's props are not read as the tag's.
+ */
+function topLevelAttrs(text, from) {
+  let out = '';
+  let depth = 0;
+  let quote = null;
+  for (let i = from; i < text.length; i++) {
+    const c = text[i];
+    if (quote) {
+      if (c === quote) quote = null;
+      if (depth === 0) out += c;
+      continue;
+    }
+    if (c === '"' || c === "'" || c === '`') {
+      quote = c;
+      if (depth === 0) out += c;
+    } else if (c === '{') {
+      depth++;
+    } else if (c === '}') {
+      depth--;
+    } else if (depth === 0) {
+      if (c === '>') break;
+      out += c;
+    }
+  }
+  return out;
+}
+
+/** True when one CSS declaration block draws a small round tone-coloured dot. */
+function isToneDotRule(body) {
+  if (!/border-radius\s*:\s*(?:50%|100%|9{3,}px)/.test(body)) return false;
+  const w = /(?:^|[;\s])(?:width|inline-size)\s*:\s*(\d+(?:\.\d+)?)px/.exec(body);
+  if (!w || Number(w[1]) > 12) return false;
+  return /background(?:-color)?\s*:[^;]*(?:var\(--[\w-]*(?:feedback|success|warning|danger|error|info)[\w-]*\)|(?<![\w-])(?:green|red|amber|orange|lime)(?![\w-]))/.test(
+    body,
+  );
+}
 
 const STRING_LITERAL = /'([^'\n]*)'|"([^"\n]*)"|`([^`\n]*)`/g;
 
@@ -89,7 +147,74 @@ export function findViolationsInText(text, file) {
     }
   }
 
+  // A `tone` on StatusListItem: the leading dot it coloured is gone.
+  for (const m of maskedText.matchAll(/<StatusListItem\b/g)) {
+    const tone = /(?<![\w-])tone=/.exec(topLevelAttrs(maskedText, m.index + m[0].length));
+    if (tone) {
+      found.push([
+        lineOf(m.index),
+        0,
+        'no-status-list-item-tone',
+        'StatusListItem `tone` is removed with its dot: put the status in a text Badge in `trailing`',
+      ]);
+    }
+  }
+
+  // A cva() dot: the round base and the tone fill sit in different strings.
+  for (const m of maskedText.matchAll(/\bcva\(/g)) {
+    let depth = 1;
+    let end = m.index + m[0].length;
+    while (end < maskedText.length && depth > 0) {
+      if (maskedText[end] === '(') depth++;
+      else if (maskedText[end] === ')') depth--;
+      end++;
+    }
+    const tokens = [...maskedText.slice(m.index, end).matchAll(STRING_LITERAL)].flatMap((s) =>
+      (s[1] ?? s[2] ?? s[3] ?? '').split(/\s+/),
+    );
+    // A pill (padded or full width) is a chip, not a dot.
+    if (
+      tokens.some((t) => ROUND.test(t)) &&
+      tokens.some((t) => TONE_FILL.test(t)) &&
+      !tokens.some((t) => WIDE.test(t))
+    ) {
+      found.push([
+        lineOf(m.index),
+        0,
+        'no-tone-dot',
+        'Round cva with a tone fill: a status dot, write the status as text',
+      ]);
+    }
+  }
+
+  // CSS rules: a `*-dot` selector, or a small round tone-coloured block.
+  // Stylesheets only: in code, `if (props.dot) {` reads like a selector.
+  const cssRules = CSS_EXTENSIONS.has(extname(file)) ? maskedText.matchAll(CSS_RULE) : [];
+  for (const m of cssRules) {
+    const selector = m[1].split(/[;}]/).pop();
+    const at = lineOf(m.index + m[0].length - m[2].length - 1);
+    if (DOT_SELECTOR.test(selector) && /^[\s\w.#:,>~+\-[\]="'()*]+$/.test(selector)) {
+      found.push([
+        at,
+        0,
+        'no-dot-class',
+        '`*-dot` class: no status dots, write the status as text',
+      ]);
+    } else if (isToneDotRule(m[2])) {
+      found.push([at, 0, 'no-tone-dot', 'Small round tone-coloured dot: write the status as text']);
+    }
+  }
+
   masked.forEach((line, i) => {
+    const glyph = STATUS_GLYPH.exec(line);
+    if (glyph) {
+      found.push([
+        i,
+        glyph.index,
+        'no-status-glyph',
+        'Filled-circle glyph as a status mark: write the status as text',
+      ]);
+    }
     for (const m of line.matchAll(/--hds-accent-bar\b/g)) {
       found.push([
         i,
@@ -108,13 +233,16 @@ export function findViolationsInText(text, file) {
     }
     for (const m of line.matchAll(STRING_LITERAL)) {
       const tokens = (m[1] ?? m[2] ?? m[3] ?? '').split(/\s+/).filter(Boolean);
-      if (tokens.some((t) => BAR.test(t)) && tokens.some((t) => TONE_COLOUR.test(t))) {
+      if (isAccentBarClassList(tokens)) {
         found.push([
           i,
           m.index,
           'no-accent-bar',
           'Coloured left-border bar: drop it, status is implied by content',
         ]);
+      }
+      if (isDotClassList(tokens)) {
+        found.push([i, m.index, 'no-tone-dot', 'Status dot class: write the status as text']);
       }
     }
   });

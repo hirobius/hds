@@ -35,7 +35,7 @@ export interface TimelineItemProps {
   title: React.ReactNode;
   /** Optional Lucide glyph drawn in the marker; without one the marker is a dot. */
   icon?: LucideIcon;
-  /** Optional feedback tone for the marker. Omit for neutral. */
+  /** Optional feedback tone for an `icon` marker. A plain dot marker is always neutral (no status dots). */
   tone?: TimelineTone;
   /** Detail revealed by expanding the item. Omit it and the item is not expandable. */
   children?: React.ReactNode;
@@ -58,7 +58,8 @@ export const TimelineItem = /* @__PURE__ */ React.forwardRef<HTMLLIElement, Time
               data-tone={tone ?? 'neutral'}
               className={cn(
                 'inline-grid size-[var(--hds-icon-small)] place-items-center',
-                TONE_CLASS[tone ?? 'neutral'],
+                // No status dots (hds#759): tone colours an icon marker only; a plain dot stays neutral.
+                TONE_CLASS[icon ? (tone ?? 'neutral') : 'neutral'],
               )}
             >
               {icon ? (
@@ -151,7 +152,7 @@ function groupByDay(children: React.ReactNode, order: 'asc' | 'desc') {
  * @whenNot A list with no dates, or steps someone completes in order.
  * @useInstead MetadataList term and value pairs about one object
  * @useInstead StatusListItem a status list with no time axis
- * @ai-rules Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only.
+ * @ai-rules Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only and colours an icon marker; no status dots, so a plain dot stays neutral.
  */
 export const Timeline = /* @__PURE__ */ React.forwardRef<HTMLOListElement, TimelineProps>(
   function Timeline({ children, order = 'desc', locale, className, ...rest }, ref) {

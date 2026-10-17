@@ -1,5 +1,5 @@
 /**
- * Type-tests for the hds#393 b3c survivor APIs: Button pressed, Badge dot,
+ * Type-tests for the hds#393 b3c survivor APIs: Button pressed, Badge (its dot went in hds#759),
  * Progress circular, Card selectable. The prune (hds#389) folds ToggleButton,
  * StatusDot, CircularProgress and SelectableCard into these props.
  * Uses pure tsc --noEmit — no external test library needed.
@@ -28,10 +28,7 @@ const _iconOnly = createElement(Button, {
   iconLeft: createElement('svg'),
 });
 
-// <Badge dot size="sm" label="Online">
-const _dot = createElement(Badge, { dot: true, size: 'sm', label: 'Online' });
-// A dot keeps tone as its color axis.
-const _dotTone = createElement(Badge, { dot: true, tone: 'success' });
+// Badge `dot` (and its `size` and `label`) went in hds#759: no status dots.
 
 // <Progress variant="circular" tone="danger" max={12}>
 const _circular = createElement(Progress, { variant: 'circular', tone: 'danger', max: 12 });
@@ -53,8 +50,8 @@ const _badPressedChange: ButtonProps['onPressedChange'] = (pressed: string) => v
 // @ts-expect-error — a dot is not a Tone option; tone stays the color axis
 const _dotAsTone: BadgeProps['tone'] = 'dot';
 
-// @ts-expect-error — the dot sizes are sm | md | lg
-const _badDotSize: BadgeProps['size'] = 'xl';
+// @ts-expect-error — Badge has no size: the dot that took one went in hds#759
+const _badDotSize: BadgeProps['size'] = 'sm';
 
 // @ts-expect-error — the shapes are linear | circular
 const _badVariant: ProgressProps['variant'] = 'radial';
@@ -66,7 +63,6 @@ const _badTone: ProgressProps['tone'] = 'inProgress';
 const _badSelectedChange: CardProps['onSelectedChange'] = (selected: string) => void selected;
 
 (void _pressed, _defaultPressed, _iconOnly);
-(void _dot, _dotTone);
 (void _circular, _linearMax);
 void _selectable;
 (void _badPressedChange, _dotAsTone, _badDotSize);

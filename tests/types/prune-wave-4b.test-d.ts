@@ -131,8 +131,9 @@ const _frame = createElement(Box, {
 const _bleed = createElement(Box, { style: { marginInline: `calc(-1 * ${md})` } });
 const _aspect = createElement(Box, { style: { aspectRatio: '1' } });
 
-// StatusDot (removed in 0.21.0) tone size label -> Badge dot
-const _dot = createElement(Badge, { dot: true, tone: 'success', size: 'sm', label: 'Online' });
+// StatusDot (removed in 0.21.0) -> Badge dot, itself removed in hds#759: no status dots.
+// @ts-expect-error — Badge has no dot
+const _dot = createElement(Badge, { dot: true, tone: 'success' });
 
 // ── Negative assertions (deliberate type errors) ──────────────────────────────
 

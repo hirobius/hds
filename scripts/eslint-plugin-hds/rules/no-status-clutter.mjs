@@ -2,19 +2,22 @@
  * hds/no-status-clutter
  *
  * Errors on the status clutter HDS removed (hds#759): a `dot` prop on <Badge>,
- * and a coloured left-border bar (`border-l-2`..`border-l-8` plus a tone
- * colour) in a className. Status is implied by content: use a text Badge.
- * A neutral `border-border` rule (a blockquote) is not flagged.
+ * a `tone` on <StatusListItem> (its leading dot is gone), a coloured left-border
+ * bar (`border-l-2`..`border-l-8` plus a tone colour) in a className, a `*-dot`
+ * class, a small round tone-coloured span (`rounded-full` + 12px or less + a
+ * feedback or hue fill) and a filled-circle glyph (● 🟢 …) in JSX text. Status is
+ * implied by content: use a text Badge. A neutral `border-border` rule, an
+ * avatar, a spinner and a `•` bullet separator are not flagged.
+ * scripts/check-no-status-clutter.mjs is the repo-wide twin; both read
+ * ./status-clutter-patterns.mjs. The twin also sees CSS files, split cva()
+ * dots and glyphs outside JSX, which an AST rule over className cannot.
  */
-const BAR = /^(?:[\w-]+:)*border-l-(?:[2-8]|\[[2-8]px\])$/;
-const TONE_COLOUR =
-  /^(?:[\w-]+:)*border-(?:l-)?(?:feedback-[\w-]+|accent[\w-]*|primary[\w-]*|info|success|warning|danger|blue-[\w-]+)$/;
+import { STATUS_GLYPH, isAccentBarClassList, isDotClassList } from './status-clutter-patterns.mjs';
 
 function checkClassString(context, node, value) {
   const tokens = value.split(/\s+/).filter(Boolean);
-  if (tokens.some((t) => BAR.test(t)) && tokens.some((t) => TONE_COLOUR.test(t))) {
-    context.report({ node, messageId: 'accentBar' });
-  }
+  if (isAccentBarClassList(tokens)) context.report({ node, messageId: 'accentBar' });
+  if (isDotClassList(tokens)) context.report({ node, messageId: 'dot' });
 }
 
 export default {
@@ -22,21 +25,39 @@ export default {
     type: 'problem',
     docs: {
       description:
-        'Disallow the Badge `dot` prop and coloured left-border accent bars; status is implied by content.',
+        'Disallow status dots (Badge `dot`, StatusListItem `tone`, `*-dot` classes, small round tone-coloured spans, ● glyphs) and coloured left-border accent bars; status is implied by content.',
       recommended: true,
       url: 'https://github.com/hirobius/hds/blob/main/scripts/eslint-plugin-hds/README.md#hdsno-status-clutter',
     },
     schema: [],
     messages: {
       badgeDot: 'Badge `dot` is removed: show status as text in a Badge, not a dot.',
+      statusListItemTone:
+        'StatusListItem `tone` is removed with its dot: put the status in a text Badge in `trailing`.',
+      dot: 'No status dots: write the status as text (a text Badge), not a small coloured circle or ● glyph.',
       accentBar:
         'Coloured left-border accent bar: drop it. Status is implied by content; keep label and value together.',
     },
   },
   create(context) {
     return {
+      JSXText(node) {
+        if (STATUS_GLYPH.test(node.value)) context.report({ node, messageId: 'dot' });
+      },
+      'JSXExpressionContainer > Literal'(node) {
+        if (typeof node.value === 'string' && STATUS_GLYPH.test(node.value)) {
+          context.report({ node, messageId: 'dot' });
+        }
+      },
       JSXAttribute(node) {
         if (node.name.type !== 'JSXIdentifier') return;
+        if (node.name.name === 'tone') {
+          const tag = node.parent.name;
+          if (tag.type === 'JSXIdentifier' && tag.name === 'StatusListItem') {
+            context.report({ node, messageId: 'statusListItemTone' });
+          }
+          return;
+        }
         if (node.name.name === 'dot') {
           const tag = node.parent.name;
           if (tag.type === 'JSXIdentifier' && tag.name === 'Badge') {

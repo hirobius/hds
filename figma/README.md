@@ -57,7 +57,8 @@ The rules:
 
 ## New components: draft in staging, ingest to the library
 
-For a component the library does not have yet (ADR-026, A4). Restyling, fixing or copying
+For a component the library does not have yet (ADR-026, A4). No status dots, in staging or the
+library: never draw a small coloured circle to mark status; status is text in a Badge (hds#759). Restyling, fixing or copying
 one it has needs no draft: do that in the library. HDS Staging
 (https://www.figma.com/design/C85ZXnwtVc4AteeIOZfXRC) has the library enabled and no local
 variables, so tokens never go to staging: Sync, `delta.js` and the promote plugin refuse

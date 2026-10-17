@@ -66,6 +66,7 @@ Flat list. Each rule: leading word, then the test.
 - **alignment**: repeated items share left edges and baselines. Pass: in a list, row or grid of like items, the same field starts at the same x and the same text line sits on the same y.
 - **density**: repeated items use the same spacing and size. Pass: sibling rows, tiles and cards have equal padding and equal control size.
 - **color**: semantic tokens (`--semantic-*`), accent used once per view. Pass: no off-palette color, one accent focus of attention, and dark mode keeps surfaces distinct from the page (a `Surface` is visibly lifted from the background in both themes).
+- **no status dots**: status is text, never a small coloured circle (decision 2026-10-16, hds#759). Pass: no element of 12px or less with `border-radius: 50%` and a feedback or hue fill, no ● or 🟢 glyph, and no coloured left accent bar on a card or tile; each status reads as a word in a `Badge` or in the content.
 - **states**: hover, focus and disabled each look different from rest. Pass: press Tab to the control, hover it, and render it disabled; each state differs from rest (focus ring visible in both themes). A static screenshot with no state evidence scores `n/a`; a live page gets the Tab and hover captures.
 - **empty**: a list or table with no data shows an `EmptyState` with a next action.
 - **loading**: pending content shows `Skeleton` or `Spinner` with a visible size.

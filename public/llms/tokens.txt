@@ -30,4 +30,5 @@ See `public/llms.txt` for the index. Generated from the same sections as llms-fu
 - Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.
 - Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).
 - Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.
+- No status dots: never mark status with a small coloured circle, a `*-dot` class or a ● glyph (no `Badge dot`, no `StatusListItem` tone). Write the status as text in a `Badge`. Enforced by `scripts/check-no-status-clutter.mjs` and `hds/no-status-clutter`.
 - Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.

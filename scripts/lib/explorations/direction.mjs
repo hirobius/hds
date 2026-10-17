@@ -33,8 +33,15 @@ export const PLUGIN_KINDS = Object.entries(
   .map(([id]) => id)
   .sort();
 
+/** Rules no direction may bend, C included: no status dots (Adrian, 2026-10-16, hds#759). */
+export const UNBENDABLE_KINDS = ['hds/no-status-clutter'];
+
 /** Every violation a C bend may name, plus the DESIGN.md rules no tool can see. */
-export const BEND_KINDS = [...SCANNER_KINDS, ...PLUGIN_KINDS, 'design-rule'];
+export const BEND_KINDS = [
+  ...SCANNER_KINDS,
+  ...PLUGIN_KINDS.filter((k) => !UNBENDABLE_KINDS.includes(k)),
+  'design-rule',
+];
 
 const BEND_KEYS = {
   scanner: { required: ['kind', 'file', 'match', 'why', 'change'], optional: [] },
@@ -60,6 +67,10 @@ export function validateBendLog(log) {
     const at = `bend ${i + 1}`;
     if (!b || typeof b !== 'object' || Array.isArray(b)) {
       problems.push(`${at}: must be an object`);
+      return;
+    }
+    if (UNBENDABLE_KINDS.includes(b.kind)) {
+      problems.push(`${at}: ${b.kind} cannot be bent: no status dots, write the status as text`);
       return;
     }
     if (!BEND_KINDS.includes(b.kind)) {

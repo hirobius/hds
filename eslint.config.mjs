@@ -341,13 +341,6 @@ export default [
     },
   },
 
-  // Badge still defines and tests its `dot` prop; its removal lands in its own
-  // change (hds#759 follow-up). Drop this block with it.
-  {
-    files: ['src/app/components/badge.test.tsx'],
-    rules: { 'hds/no-status-clutter': 'off' },
-  },
-
   // --- Prettier compatibility (last — disables format-conflicting rules)
   prettierConfig,
 ];

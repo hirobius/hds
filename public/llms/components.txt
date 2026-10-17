@@ -70,9 +70,6 @@ Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
 ### Badge
 Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
-  - dot: boolean = false
-  - label: string
-  - size: "sm" | "md" | "lg"
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | "inProgress" | null
 
 ### Blockquote
@@ -596,10 +593,9 @@ Stack — one-dimensional layout primitive.
   - wrap: FlexWrap
 
 ### StatusListItem
-Status dot + title row with optional muted notes and trailing slot (e.g. badge).
+Title row with optional muted notes and a trailing slot (e.g. a text Badge). Non-interactive. It had a tone-coloured leading dot until hds#759: status is carri…
   - notes: ReactNode[]
   - title: ReactNode
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - trailing: ReactNode
 
 ### Surface

@@ -12,8 +12,8 @@
  * without its layout. `renderToStaticMarkup` below proves the style is in the
  * server HTML.
  *
- * StatusDot was removed later, in 0.21.0 (hds#465); the last block keeps the
- * Badge `dot` recipe it was replaced by true.
+ * StatusDot was removed later, in 0.21.0 (hds#465), and the Badge `dot` that
+ * replaced it went too (hds#759): status dots are out of HDS.
  */
 import { createRef } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -21,7 +21,6 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { Settings, Trash2 } from 'lucide-react';
 import hds from '../src/app/design-system/tokens';
-import { Badge } from '../src/app/components/badge';
 import { Box } from '../src/app/components/box';
 import { Button } from '../src/app/components/button';
 import { Card } from '../src/app/components/card';
@@ -375,25 +374,5 @@ describe('AspectRatio -> Box with style', () => {
       </Box>,
     );
     expect(html).toContain('aspect-ratio:2');
-  });
-});
-
-describe('Badge dot, the replacement for the removed StatusDot (tone, size, label)', () => {
-  it('renders the same dot for each tone and size, decorative without a label', () => {
-    const sizes = { sm: 'size-1.5', md: 'size-2', lg: 'size-2.5' } as const;
-    for (const [size, cls] of Object.entries(sizes)) {
-      const { container } = render(<Badge dot tone="success" size={size as keyof typeof sizes} />);
-      const dot = container.firstElementChild as HTMLElement;
-      expect(dot.getAttribute('data-tone')).toBe('success');
-      expect(dot.getAttribute('aria-hidden')).toBe('true');
-      expect(dot.className).toContain('bg-feedback-success');
-      expect(dot.className).toContain(cls);
-      cleanup();
-    }
-  });
-
-  it('exposes a labelled image role when label is set', () => {
-    render(<Badge dot tone="danger" label="Offline" />);
-    expect(screen.getByRole('img').getAttribute('aria-label')).toBe('Offline');
   });
 });

@@ -75,7 +75,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `InlineCode` — InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
 - `Kbd` — Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
 - `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
-- `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
+- `StatusListItem` — Title row with optional muted notes and a trailing slot (e.g. a text Badge).
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
 - `Timeline` — The timeline itself.
 - `TimelineItem` — One event on a Timeline.
@@ -203,6 +203,7 @@ Never:
 
 - No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Switcher/Sidebar) owns rhythm, not margin on the child.
 - No raw px or hex values in any layout or color prop — every spacing value comes from the semantic gap scale (`tight | normal | inset | spacious`, or a component/subgrid step) and every color comes from a `semantic.color.*` token.
+- No status dots: never mark status with a small coloured circle, a `*-dot` class or a ● glyph, and no coloured left accent bar on a card — write the status as text in a `Badge`.
 - No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.
 
 ## Do and don't
