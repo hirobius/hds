@@ -276,6 +276,16 @@
       "firingChannels": ["pnpm-meta", "ralph-gate"]
     },
     {
+      "id": "check-surface-radius",
+      "description": "Radius scales with the element: every surface component (Card, Callout, Alert, Dialog, Popover, Menu, Select listbox, Toast, CodeBlock) takes rounded-lg, the same as Card. Fails a surface below that radius, a nested step-down with no radius-ok note, or a raw radius value (DESIGN.md Corner-Radius Policy).",
+      "severity": "error",
+      "gateScript": "scripts/check-surface-radius.mjs",
+      "fixturePath": "fixtures/check-surface-radius",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta"
+    },
+    {
       "id": "check-hardcoded-breakpoints",
       "description": "Catches raw pixel comparisons against known breakpoint values in JS/TS. All JS/TS viewport comparisons must use hds.breakpoints.* — no raw px numbers that match a known breakpoint value.",
       "severity": "warn",

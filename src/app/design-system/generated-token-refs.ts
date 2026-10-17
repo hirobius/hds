@@ -516,7 +516,8 @@ export const tokenRefs = {
     },
     radius: {
       action: "var(--semantic-radius-action)",
-      control: "var(--semantic-radius-control)"
+      control: "var(--semantic-radius-control)",
+      surface: "var(--semantic-radius-surface)"
     },
     borderWidth: {
       default: "var(--semantic-borderWidth-default)",

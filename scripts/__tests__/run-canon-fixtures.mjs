@@ -185,7 +185,9 @@ for (const file of fixtureFiles) {
     console.log(`  PASS  ${file}  [${expectedCode}] fired`);
     passed++;
   } else {
-    console.error(`  FAIL  ${file}  expected [${expectedCode}] but got: [${codes.join(', ') || 'none'}]`);
+    console.error(
+      `  FAIL  ${file}  expected [${expectedCode}] but got: [${codes.join(', ') || 'none'}]`,
+    );
     failed++;
   }
 }
@@ -193,7 +195,9 @@ for (const file of fixtureFiles) {
 console.log(`\n${passed} passed, ${failed} failed (${fixtureFiles.length} fixtures)`);
 
 if (failed > 0) {
-  console.error(`\nFailed: ${failed} validator(s) silently no-op on their own fixture — rule is aspirational, not proven.`);
+  console.error(
+    `\nFailed: ${failed} validator(s) silently no-op on their own fixture — rule is aspirational, not proven.`,
+  );
   process.exit(1);
 }
 process.exit(0);

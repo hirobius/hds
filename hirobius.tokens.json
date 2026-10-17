@@ -2090,6 +2090,11 @@
         "$type": "dimension",
         "$value": "{primitive.radius.4}",
         "$description": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242)."
+      },
+      "surface": {
+        "$type": "dimension",
+        "$value": "{primitive.radius.12}",
+        "$description": "Corner radius for surfaces (Card, Callout, Alert, Dialog, Popover, Menu, Toast, CodeBlock): one step above semantic.radius.action. Components render it as Tailwind rounded-lg (role.radius + 4px) so a tenant's shape knob reaches it; scripts/check-surface-radius.mjs gates it."
       }
     },
     "borderWidth": {
@@ -2718,7 +2723,7 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{primitive.radius.12}"
+        "$value": "{semantic.radius.surface}"
       },
       "padding": {
         "$type": "dimension",

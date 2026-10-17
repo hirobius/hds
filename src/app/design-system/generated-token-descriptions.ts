@@ -227,6 +227,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.accent.subtle": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
   "semantic.radius.action": "Corner radius for action elements (buttons, inputs, badges); Tailwind rounded-md resolves here. Override role.radius to reshape the system.",
   "semantic.radius.control": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242).",
+  "semantic.radius.surface": "Corner radius for surfaces (Card, Callout, Alert, Dialog, Popover, Menu, Toast, CodeBlock): one step above semantic.radius.action. Components render it as Tailwind rounded-lg (role.radius + 4px) so a tenant's shape knob reaches it; scripts/check-surface-radius.mjs gates it.",
   "semantic.borderWidth.default": "Default hairline border weight for surfaces and inputs.",
   "semantic.borderWidth.emphasis": "Stronger border weight for focus rings and active indicators.",
   "semantic.shadow.subtle": "Resting elevation shadow for raised surfaces (cards, inline panels).",

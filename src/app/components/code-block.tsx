@@ -33,11 +33,12 @@ const TECHNICAL_TYPE_CLASSES =
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default/surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const blockContainerVariants = /* @__PURE__ */ cva(
-  'overflow-hidden rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)]',
+  'overflow-hidden rounded-lg border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const inlineWrapperVariants = /* @__PURE__ */ cva(
+  // radius-ok: the inline variant is one control-height row, so it takes the action radius
   'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
@@ -83,6 +84,7 @@ const copyButtonVariants = /* @__PURE__ */ cva(
       variant: {
         inline:
           'shrink-0 border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)] transition-[background-color,color,transform] duration-[var(--hds-motion-productive-duration)] ease',
+        // radius-ok: the copy button is a control (action radius) inside the block surface
         block:
           'absolute right-[var(--semantic-space-subgrid-gap)] top-[var(--semantic-space-subgrid-gap)] rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-scale-xs)] py-[var(--semantic-space-subgrid-gap)] transition-[background-color,color] duration-[var(--hds-motion-productive-duration)] ease',
       },

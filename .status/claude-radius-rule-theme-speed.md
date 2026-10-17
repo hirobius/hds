@@ -1,0 +1,1 @@
+- Radius rule (hds radius-rule-theme-speed): semantic.radius.surface; every surface takes rounded-lg like Card; scripts/check-surface-radius.mjs in pretest. Theme swap instant: universal 0.3s colour transition removed, data-theme-switching suppresses transitions for one frame.

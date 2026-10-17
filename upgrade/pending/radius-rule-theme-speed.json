@@ -1,0 +1,17 @@
+{
+  "impact": "look",
+  "plain": "Callout, Alert, Popover, Menu, the Select listbox, Toast and CodeBlock now have the Card corner radius (12px by default, was 8px) and a light/dark switch no longer fades, so re-take screenshots; if you passed a rounded-md className to round one of these to 8px, drop it.",
+  "steps": [
+    {
+      "id": "value-changed/--component-card-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-card-radius now reads var(--semantic-radius-surface) instead of var(--primitive-radius-12); the value is still 12px, so nothing looks different unless you override --primitive-radius-12, in which case override --semantic-radius-surface instead.",
+      "detect": {
+        "cssVars": ["--component-card-radius"],
+        "cssVarWrites": ["--component-card-radius"]
+      },
+      "facts": ["css-var-changed:--component-card-radius::root"]
+    }
+  ]
+}

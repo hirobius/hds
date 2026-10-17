@@ -28,9 +28,7 @@ describe('paginationRange', () => {
 
 describe('Pagination', () => {
   it('renders nothing for a single page', () => {
-    const { container } = render(
-      <Pagination page={1} count={1} onPageChange={() => {}} />,
-    );
+    const { container } = render(<Pagination page={1} count={1} onPageChange={() => {}} />);
     expect(container.firstChild).toBeNull();
   });
 
@@ -42,12 +40,10 @@ describe('Pagination', () => {
   });
 
   it('disables Previous on the first page and Next on the last', () => {
-    const { rerender } = render(
-      <Pagination page={1} count={5} onPageChange={() => {}} />,
-    );
-    expect((screen.getByRole('button', { name: 'Previous page' }) as HTMLButtonElement).disabled).toBe(
-      true,
-    );
+    const { rerender } = render(<Pagination page={1} count={5} onPageChange={() => {}} />);
+    expect(
+      (screen.getByRole('button', { name: 'Previous page' }) as HTMLButtonElement).disabled,
+    ).toBe(true);
     rerender(<Pagination page={5} count={5} onPageChange={() => {}} />);
     expect((screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement).disabled).toBe(
       true,

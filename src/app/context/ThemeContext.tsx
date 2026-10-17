@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 
+import { suppressThemeTransitions } from './theme-switch';
+
 type Density = 'comfortable' | 'compact';
 
 /** Three-way mode: follow OS, force light, or force dark. */
@@ -74,6 +76,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
     } catch {}
 
+    suppressThemeTransitions(document.documentElement);
     document.documentElement.setAttribute('data-theme', nextTheme);
     document.documentElement.classList.toggle('dark', nextIsDark);
   }, []);

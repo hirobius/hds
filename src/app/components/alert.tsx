@@ -6,6 +6,7 @@
  * @whenNot A brief confirmation that should disappear on its own, or a status label.
  * @useInstead ToastProvider a brief confirmation that fades away
  * @useInstead Badge a short status label
+ * @ai-rules Keep the surface radius: rounded-lg, the same as Card (DESIGN.md Corner-Radius Policy). Do NOT pass a tighter rounded-* or a raw border-radius through className or style.
  * @a11y component required a11y:alert.tone-roles Danger and warning use role=alert (assertive); info and success use role=status.
  * @a11y component required a11y:alert.read-order A rendered alert reads its role, then its title and message.
  * @a11y component required a11y:alert.live-insert An alert inserted after load is announced assertively.
@@ -32,8 +33,8 @@ type AlertTone = 'success' | 'danger' | 'warning' | 'info';
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap/padding/radius; var()-based, no Tailwind-theme utility exists
 const alertVariants = /* @__PURE__ */ cva(
   // Same padding and radius as Callout (they differ by role only, DESIGN.md): the surface padding, and the
-  // action radius via rounded-md so a tenant's shape setting reaches it.
-  'flex gap-[var(--semantic-space-scale-xs)] p-[var(--semantic-space-surface-padding)] rounded-md',
+  // surface radius via rounded-lg (the same as Card) so a tenant's shape setting reaches it.
+  'flex gap-[var(--semantic-space-scale-xs)] p-[var(--semantic-space-surface-padding)] rounded-lg',
   {
     variants: {
       tone: {

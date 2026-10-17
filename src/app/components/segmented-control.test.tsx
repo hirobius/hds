@@ -21,7 +21,9 @@ const OPTIONS = [
 
 describe('SegmentedControl', () => {
   it('renders a radiogroup with the active option checked', () => {
-    render(<SegmentedControl aria-label="View" value="list" onChange={() => {}} options={OPTIONS} />);
+    render(
+      <SegmentedControl aria-label="View" value="list" onChange={() => {}} options={OPTIONS} />,
+    );
     expect(screen.getByRole('radiogroup', { name: 'View' })).not.toBeNull();
     expect(screen.getByRole('radio', { name: 'List' }).getAttribute('aria-checked')).toBe('true');
     expect(screen.getByRole('radio', { name: 'Grid' }).getAttribute('aria-checked')).toBe('false');
@@ -29,7 +31,9 @@ describe('SegmentedControl', () => {
 
   it('fires onChange with the chosen value', () => {
     const onChange = vi.fn();
-    render(<SegmentedControl aria-label="View" value="list" onChange={onChange} options={OPTIONS} />);
+    render(
+      <SegmentedControl aria-label="View" value="list" onChange={onChange} options={OPTIONS} />,
+    );
     fireEvent.click(screen.getByRole('radio', { name: 'Grid' }));
     expect(onChange).toHaveBeenCalledWith('grid');
   });
