@@ -50,8 +50,12 @@ export function evaluateLayout(scans, limit = CLS_LIMIT) {
       });
     }
   }
-  // Routes share chrome per layout: the landing page (/) is not the docs shell (/docs/**).
-  const groupOf = (route) => (route.split('/')[1] === 'docs' ? 'docs' : 'site');
+  // Routes share chrome per layout: the landing page (/) is not the docs shell (/docs/**),
+  // and /tour is a standalone console with no site chrome of its own (hds#795).
+  const groupOf = (route) => {
+    const top = route.split('/')[1];
+    return top === 'docs' || top === 'tour' ? top : 'site';
+  };
   const refs = new Map();
   for (const s of scans) if (!refs.has(groupOf(s.route))) refs.set(groupOf(s.route), s);
   for (const s of scans) {

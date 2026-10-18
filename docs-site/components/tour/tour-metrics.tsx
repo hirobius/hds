@@ -11,6 +11,7 @@ import {
   Badge,
   Button,
   Grid,
+  MetaLine,
 } from '@hirobius/design-system';
 import { MetricTile, MetricTiles, StatusTile } from '@hirobius/design-system/patterns';
 import type { TourData } from '../../lib/tour-data';
@@ -37,6 +38,7 @@ export function TourMetrics({ data }: { data: TourData }) {
           tone={latest?.asks.length ? 'warning' : 'success'}
         />
       </MetricTiles>
+      <MetaLine items={[`v${data.version}`, `${data.components.length} components`]} />
       <Grid columns={2} gap="normal">
         <StatusTile
           title="Docs coverage"

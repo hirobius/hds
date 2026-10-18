@@ -68,6 +68,7 @@ export const TOUR_SECTIONS: readonly TourSection[] = [
       'Stat',
       'Progress',
       'Timestamp',
+      'MetaLine',
       'Card',
       'CardHeader',
       'CardTitle',
