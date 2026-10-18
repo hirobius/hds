@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-01-01T00:00:00.000Z",
+  "gates": [
+    {
+      "id": "fake-gate-exempted",
+      "description": "Fixture gate: reads process.env.MY_SECRET_TOKEN but declares it in pureExceptions — should be EXEMPTED (not IMPURE).",
+      "severity": "warn",
+      "gateScript": "scripts/fake-gate-exempted.mjs",
+      "firingChannel": "pre-commit",
+      "pureExceptions": [
+        "env: reads MY_SECRET_TOKEN for optional auth; absent in CI, gate still exits 0"
+      ]
+    }
+  ]
+}

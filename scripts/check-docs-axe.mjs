@@ -3,8 +3,7 @@
 /**
  * check-docs-axe.mjs
  *
- * Scans the live demo of every /docs/components/* and /docs/patterns/* page, and the
- * /tour product screen (hds#795), of
+ * Scans the live demo of every /docs/components/* and /docs/patterns/* page of
  * the built docs site (docs-site/out) in light and dark with axe-core
  * (wcag2a, wcag2aa, wcag21aa, wcag22aa), scoped to the demo frame
  * (.hds-demo-frame) so Fumadocs chrome does not count. Fails on
@@ -24,7 +23,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { AXE_TAGS, evaluateScan, loadAxeSource, validateAllowlist } from './lib/axe-gate.mjs';
-import { discoverAxeRoutes, selectorFor, serveStatic } from './lib/docs-axe.mjs';
+import { DEMO_SELECTOR, discoverPages, serveStatic } from './lib/docs-axe.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const AXE_SOURCE = loadAxeSource(ROOT);
@@ -59,7 +58,6 @@ async function launch() {
 
 async function scanOne(browser, base, route, theme) {
   const rec = { storyId: route, theme, violations: [], error: null };
-  const selector = selectorFor(route);
   // One context per scan: next-themes syncs the theme across same-origin tabs
   // through localStorage, so pages sharing a context would flip each other.
   const context = await browser.newContext({
@@ -87,7 +85,7 @@ async function scanOne(browser, base, route, theme) {
       el.style.colorScheme = t;
     }, theme);
     const hasDemo = await page
-      .waitForSelector(selector, { timeout: 8000, state: 'attached' })
+      .waitForSelector(DEMO_SELECTOR, { timeout: 8000, state: 'attached' })
       .then(() => true)
       .catch(() => false);
     if (!hasDemo) {
@@ -101,7 +99,7 @@ async function scanOne(browser, base, route, theme) {
     // Proof the theme took effect: the frame's resolved background, kept in the report.
     rec.frameBg = await page.evaluate(
       (sel) => getComputedStyle(document.querySelector(sel)).backgroundColor,
-      selector,
+      DEMO_SELECTOR,
     );
     await page.evaluate(AXE_SOURCE);
     const r = await page.evaluate(
@@ -110,7 +108,7 @@ async function scanOne(browser, base, route, theme) {
           runOnly: { type: 'tag', values: tags },
           resultTypes: ['violations'],
         }),
-      [selector, AXE_TAGS],
+      [DEMO_SELECTOR, AXE_TAGS],
     );
     rec.violations = r.violations.map((v) => ({
       id: v.id,
@@ -133,7 +131,7 @@ async function main() {
   const dir = path.resolve(ROOT, arg('dir', 'docs-site/out'));
   const filter = arg('filter');
   const allowPath = path.resolve(ROOT, arg('allowlist', 'scripts/docs-axe-allowlist.json'));
-  let routes = fs.existsSync(dir) ? discoverAxeRoutes(dir) : [];
+  let routes = fs.existsSync(dir) ? discoverPages(dir) : [];
   if (!routes.length) {
     console.error(
       `No /docs/components or /docs/patterns pages in ${path.relative(ROOT, dir)}. Run \`pnpm docs:publish\` first.`,

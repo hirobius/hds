@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-01-01T00:00:00.000Z",
+  "gates": [
+    {
+      "id": "fake-gate-compliant",
+      "description": "Fixture gate: emits valid --json output so audit-gates-supportjson passes.",
+      "severity": "warn",
+      "gateScript": "scripts/fake-gate-good.mjs",
+      "firingChannel": "pre-commit"
+    }
+  ]
+}

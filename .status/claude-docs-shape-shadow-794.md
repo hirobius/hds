@@ -1,1 +1,0 @@
-- Docs preview switches (Corners, Shadow) in the docs-site nav (#794); Select popover shadow now uses the floating elevation token.

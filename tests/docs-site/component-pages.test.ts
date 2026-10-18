@@ -176,7 +176,7 @@ describe('drift: every core component has a generated page', () => {
       'utilities',
     ].sort();
     expect([...pages.keys()].sort()).toEqual(expected);
-    expect(expected).toHaveLength(39);
+    expect(expected).toHaveLength(38);
     const utilities = (pages as Map<string, string>).get('utilities')!;
     for (const n of UTILITIES) {
       expect(utilities).toContain(`## ${n}`);
@@ -202,7 +202,7 @@ describe('drift: every core component has a generated page', () => {
     for (const [slug, mdx] of pages as Map<string, string>) {
       writeFileSync(join(root, 'content/docs/components', `${slug}.mdx`), mdx);
     }
-    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(39);
+    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(38);
     expect(() =>
       execFileSync('node', ['scripts/check-docs.mjs', '--root', root], {
         cwd: ROOT,

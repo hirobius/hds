@@ -1,0 +1,12 @@
+{
+  "units": [
+    {
+      "id": "fixture-p-1",
+      "name": "Fixture passing unit",
+      "status": "done",
+      "claimedBy": null,
+      "claimedAt": null,
+      "validationCmd": "echo ok"
+    }
+  ]
+}
