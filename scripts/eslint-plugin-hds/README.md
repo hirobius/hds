@@ -55,6 +55,7 @@ export default [
     files: ['**/*.{ts,tsx,jsx}'],
     plugins: { hds },
     rules: {
+      'hds/max-two-meta-items': 'error',
       'hds/no-deprecated-token': 'error',
       'hds/no-primitive-spacing': 'error',
       'hds/no-raw-controls': 'error',
@@ -71,6 +72,7 @@ export default [
 
 | Rule                                                                 | Default | What it catches                                                                                        |
 | -------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
+| [`hds/max-two-meta-items`](#hdsmax-two-meta-items)                   | error   | Bullet-separated lines (`A · B · C`) with three or more items; use `MetaLine`, one row per extra item. |
 | [`hds/no-deprecated-token`](#hdsno-deprecated-token)                 | error   | A `$deprecated` token as a CSS var, `hds.*` member or Tailwind key; the message names the replacement. |
 | [`hds/no-primitive-spacing`](#hdsno-primitive-spacing)               | error   | Primitive spacing steps (`--primitive-space-*`, `hds.space.pxN`, Tailwind `p-4`); use semantic tokens. |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
@@ -80,6 +82,15 @@ export default [
 | [`hds/prefer-hds-layout-primitive`](#hdsprefer-hds-layout-primitive) | warn    | Ad-hoc `display: 'flex' \| 'grid'` in `style={{…}}` where a named primitive (Stack/Grid) likely fits.  |
 | [`hds/sx-token-first`](#hdssx-token-first)                           | error   | Raw hex/px string values inside a `Box` `sx={{…}}` prop — `sx` must resolve through token keys.        |
 
+### `hds/max-two-meta-items`
+
+```tsx
+// ❌ error — three items on one bullet line wrap mid-line when translated
+<p>Acme Cloud · Remote · Applied 3 days ago</p>
+
+// ✅ ok
+<MetaLine items={['Acme Cloud', 'Remote']} />
+<MetaLine items={['Applied 3 days ago']} />
 ### `hds/no-deprecated-token`
 
 Fails any token marked `$deprecated` in `hirobius.tokens.json`, in three
@@ -89,9 +100,11 @@ spellings: a CSS var (`var(--semantic-space-layout-tight)`), a member chain
 version it leaves in and the replacement:
 
 ```
+
 "--semantic-space-layout-tight" is a deprecated token (hds#206 — use semantic.space.scale.sm),
 removed in 1.0.0. Use --semantic-space-scale-sm.
-```
+
+````
 
 The list is `rules/deprecated-tokens.json`, which the token build writes, so a
 newly deprecated token fails with no rule change. `primitive.space.px6` /
@@ -126,7 +139,7 @@ Option `tailwind: false` turns off the Tailwind check only (default `true`).
 <div style={{ gap: hds.semantic.space.scale.md }} />
 <div className="p-surface-padding gap-scale-md px-region-gutter" />
 <Box sx={{ p: 'md' }} />
-```
+````
 
 ### `hds/no-status-clutter`
 

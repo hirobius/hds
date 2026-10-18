@@ -1,0 +1,4 @@
+{
+  "impact": "behavior",
+  "plain": "Lint now errors on bullet lines with three or more items (new hds/max-two-meta-items rule): use MetaLine for two items, one row per item beyond that, or turn the rule off for that file."
+}

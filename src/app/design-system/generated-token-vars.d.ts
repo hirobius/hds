@@ -478,6 +478,7 @@ declare module 'react' {
     '--component-badge-paddingX'?: string | undefined;
     '--component-button-bg'?: string | undefined;
     '--component-button-bgHover'?: string | undefined;
+    '--component-button-bgPressed'?: string | undefined;
     '--component-button-text'?: string | undefined;
     '--component-button-radius'?: string | undefined;
     '--component-button-paddingX'?: string | undefined;

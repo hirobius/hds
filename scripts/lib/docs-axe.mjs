@@ -6,6 +6,21 @@ import path from 'node:path';
 /** The live-demo wrapper rendered by docs-site/components/component-demos.tsx (DemoFrame). */
 export const DEMO_SELECTOR = '.hds-demo-frame';
 export const PAGE_SECTIONS = ['components', 'patterns'];
+/** The /tour product screen (hds#795): scanned whole, scoped to its HdsThemeProvider root. */
+export const TOUR_ROUTE = '/tour';
+export const TOUR_SELECTOR = '.hds-tour';
+
+/** The element axe scans for a route: the demo frame, or the whole tour screen. */
+export const selectorFor = (route) => (route === TOUR_ROUTE ? TOUR_SELECTOR : DEMO_SELECTOR);
+
+/** discoverPages plus /tour when the build has it. The visual spec keeps discoverPages: it has no demo frame. */
+export function discoverAxeRoutes(outDir) {
+  const routes = discoverPages(outDir);
+  const hasTour = ['tour.html', path.join('tour', 'index.html')].some((f) =>
+    fs.existsSync(path.join(outDir, f)),
+  );
+  return hasTour ? [...routes, TOUR_ROUTE] : routes;
+}
 
 /**
  * Route paths (e.g. "/docs/components/button") for every built page under

@@ -12,6 +12,7 @@
  * config array, the standard pattern for ESLint 9/10 plugins.
  */
 import { readFileSync } from 'node:fs';
+import maxTwoMetaItems from './rules/max-two-meta-items.mjs';
 import noDeprecatedToken from './rules/no-deprecated-token.mjs';
 import noPrimitiveSpacing from './rules/no-primitive-spacing.mjs';
 import noRawControls from './rules/no-raw-controls.mjs';
@@ -31,6 +32,7 @@ const packageMeta = { name, version };
 const plugin = {
   meta: packageMeta,
   rules: {
+    'max-two-meta-items': maxTwoMetaItems,
     'no-deprecated-token': noDeprecatedToken,
     'no-primitive-spacing': noPrimitiveSpacing,
     'no-raw-controls': noRawControls,
@@ -48,6 +50,7 @@ plugin.configs = {
       name: 'hds/recommended',
       plugins: { hds: plugin },
       rules: {
+        'hds/max-two-meta-items': 'error',
         'hds/no-deprecated-token': 'error',
         'hds/no-primitive-spacing': 'error',
         'hds/no-raw-controls': 'error',

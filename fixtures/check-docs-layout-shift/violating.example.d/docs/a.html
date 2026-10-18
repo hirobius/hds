@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>docs/a</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px sans-serif;
+      }
+      header {
+        height: 56px;
+        background: #eee;
+      }
+      aside {
+        position: fixed;
+        top: 56px;
+        left: 0;
+        width: 240px;
+        height: 400px;
+        background: #ddd;
+      }
+      main {
+        margin-left: 240px;
+        padding: 16px;
+      }
+      nav {
+        height: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <header><nav>HDS docs</nav></header>
+    <aside><nav>Sidebar</nav></aside>
+    <main>
+      <p>docs/a page</p>
+      <p>Body text.</p>
+    </main>
+    <script>
+      setTimeout(function () {
+        var b = document.createElement('div');
+        b.style.cssText = 'height:80px;background:#fc0';
+        b.textContent = 'Late banner';
+        document.body.insertBefore(b, document.body.firstChild);
+      }, 300);
+    </script>
+  </body>
+</html>
