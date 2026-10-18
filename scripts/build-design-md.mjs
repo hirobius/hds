@@ -205,6 +205,7 @@ export function buildTypography(raw) {
   lines.push(header('Role', 'Size (desktop max)', 'Weight', 'Use'));
 
   for (const { path, node: t } of collect(semanticTypography)) {
+    if (t?.$deprecated) continue; // agent docs teach live roles only
     const v = t?.$value ?? {};
     const raw = t?.$description ?? '';
     const afterDash = raw.split(' — ')[1];
@@ -215,7 +216,7 @@ export function buildTypography(raw) {
   }
   lines.push('');
   lines.push(
-    '> The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.',
+    '> The ramp is static: tokens store the value every surface renders. Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.',
   );
   return lines.join('\n');
 }
@@ -229,7 +230,6 @@ export function buildSpacing(raw) {
   const base = resolveRef(space['1']?.$value ?? '4px', raw);
   const keys = Object.keys(space).filter((k) => !k.startsWith('$'));
 
-  const deprecated = keys.filter((k) => space[k].$deprecated);
   const scale = keys
     .filter((k) => !space[k].$deprecated)
     .map((k) => ({ key: k, val: resolveRef(space[k].$value, raw) }))
@@ -244,18 +244,20 @@ export function buildSpacing(raw) {
   );
   lines.push('');
   lines.push(`Scale: ${scale}`);
-  if (deprecated.length) {
-    lines.push('');
-    lines.push(
-      `Deprecated (off the 4px grid, never use): ${deprecated.map((k) => `\`primitive.space.${k}\``).join(', ')}. \`npx @hirobius/design-system upgrade\` rewrites them to the nearest on-grid step.`,
-    );
-  }
   const steps = raw.semantic?.space?.scale ?? {};
   const stepKeys = Object.keys(steps).filter((k) => !k.startsWith('$'));
   if (stepKeys.length) {
     lines.push('');
     lines.push(
       `Semantic scale (comfortable, the default): ${stepKeys.map((k) => `\`${k}\` ${resolveRef(steps[k].$value, raw)}`).join(' · ')}.`,
+    );
+  }
+  const fixed = raw.semantic?.space?.fixed ?? {};
+  const fixedKeys = Object.keys(fixed).filter((k) => !k.startsWith('$') && !fixed[k].$deprecated);
+  if (fixedKeys.length) {
+    lines.push('');
+    lines.push(
+      `Fixed steps between the rungs (density does not move them): ${fixedKeys.map((k) => `\`fixed.${k}\` ${resolveRef(fixed[k].$value, raw)}`).join(' · ')}. Every spacing value has a semantic token; never type a px value.`,
     );
   }
   lines.push('');
@@ -308,6 +310,17 @@ export function buildRadius(raw) {
       'Outer canvas / substrate boundaries only — never on everyday UI controls',
     ),
   );
+  const scale = raw.semantic?.radius?.scale ?? {};
+  for (const k of Object.keys(scale).filter((k) => !k.startsWith('$') && !scale[k].$deprecated)) {
+    lines.push(
+      row(
+        `Scale ${k}`,
+        `\`${resolveRef(scale[k].$value, raw)}\``,
+        `\`semantic.radius.scale.${k}\` (\`rounded-scale-${k}\`)`,
+        (scale[k].$description ?? '').replace(/^[^:]*:\s*/, ''),
+      ),
+    );
+  }
   return lines.join('\n');
 }
 

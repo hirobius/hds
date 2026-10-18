@@ -144,7 +144,9 @@ export const tokenRefs = {
       "32": "var(--primitive-space-32)",
       px1: "var(--primitive-space-px1)",
       px2: "var(--primitive-space-px2)",
+      /** @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.scale.xs (8px) @removeIn 0.28.0 */
       px6: "var(--primitive-space-px6)",
+      /** @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.fixed.xs (12px) @removeIn 0.28.0 */
       px10: "var(--primitive-space-px10)"
     },
     blur: {
@@ -157,6 +159,8 @@ export const tokenRefs = {
       "4": "var(--primitive-radius-4)",
       "8": "var(--primitive-radius-8)",
       "12": "var(--primitive-radius-12)",
+      "16": "var(--primitive-radius-16)",
+      "24": "var(--primitive-radius-24)",
       full: "var(--primitive-radius-full)"
     },
     typography: {
@@ -315,6 +319,7 @@ export const tokenRefs = {
       border: {
         default: "var(--semantic-color-border-default)",
         interactive: "var(--semantic-color-border-interactive)",
+        /** @deprecated border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) @removeIn 1.0.0 */
         subdued: "var(--semantic-color-border-subdued)",
         subtle: "var(--semantic-color-border-subtle)",
         strong: "var(--semantic-color-border-strong)",
@@ -350,6 +355,14 @@ export const tokenRefs = {
         lg: "var(--semantic-space-scale-lg)",
         xl: "var(--semantic-space-scale-xl)"
       },
+      fixed: {
+        "2xs": "var(--semantic-space-fixed-2xs)",
+        xs: "var(--semantic-space-fixed-xs)",
+        sm: "var(--semantic-space-fixed-sm)",
+        md: "var(--semantic-space-fixed-md)",
+        lg: "var(--semantic-space-fixed-lg)",
+        xl: "var(--semantic-space-fixed-xl)"
+      },
       surface: {
         padding: "var(--semantic-space-surface-padding)"
       },
@@ -362,20 +375,28 @@ export const tokenRefs = {
         gap: "var(--semantic-space-subgrid-gap)"
       },
       component: {
+        /** @deprecated hds#206 — use semantic.space.scale.xs @removeIn 1.0.0 */
         gap: "var(--semantic-space-component-gap)",
         medium: "var(--semantic-space-component-medium)",
+        /** @deprecated hds#206 — use semantic.space.surface.padding @removeIn 1.0.0 */
         padding: "var(--semantic-space-component-padding)"
       },
       layout: {
+        /** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */
         tight: "var(--semantic-space-layout-tight)",
+        /** @deprecated hds#206 — use semantic.space.scale.md @removeIn 1.0.0 */
         normal: "var(--semantic-space-layout-normal)",
+        /** @deprecated hds#206 — use semantic.space.region.gutter @removeIn 1.0.0 */
         gutter: "var(--semantic-space-layout-gutter)",
+        /** @deprecated hds#206 — use semantic.space.scale.lg @removeIn 1.0.0 */
         inset: "var(--semantic-space-layout-inset)",
+        /** @deprecated hds#206 — use semantic.space.scale.xl @removeIn 1.0.0 */
         spacious: "var(--semantic-space-layout-spacious)"
       },
       section: {
         stack: "var(--semantic-space-section-stack)",
         inset: "var(--semantic-space-section-inset)",
+        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) @removeIn 1.0.0 */
         heroMax: "var(--semantic-space-section-heroMax)"
       },
       sidebar: {
@@ -383,6 +404,7 @@ export const tokenRefs = {
         gap: "var(--semantic-space-sidebar-gap)",
         sectionGap: "var(--semantic-space-sidebar-sectionGap)",
         railPadding: "var(--semantic-space-sidebar-railPadding)",
+        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280 @removeIn 1.0.0 */
         railWidth: "var(--semantic-space-sidebar-railWidth)"
       }
     },
@@ -465,6 +487,7 @@ export const tokenRefs = {
         lineHeight: "var(--semantic-typography-mono-line-height)",
         maxWidth: "var(--semantic-typography-mono-max-width)"
       },
+      /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
       h1: {
         fontFamily: "var(--semantic-typography-h1-font-family)",
         fontSize: "var(--semantic-typography-h1-font-size)",
@@ -472,6 +495,7 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-h1-letter-spacing)",
         lineHeight: "var(--semantic-typography-h1-line-height)"
       },
+      /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
       h2: {
         fontFamily: "var(--semantic-typography-h2-font-family)",
         fontSize: "var(--semantic-typography-h2-font-size)",
@@ -479,6 +503,7 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-h2-letter-spacing)",
         lineHeight: "var(--semantic-typography-h2-line-height)"
       },
+      /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
       h3: {
         fontFamily: "var(--semantic-typography-h3-font-family)",
         fontSize: "var(--semantic-typography-h3-font-size)",
@@ -486,6 +511,7 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-h3-letter-spacing)",
         lineHeight: "var(--semantic-typography-h3-line-height)"
       },
+      /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
       eyebrow: {
         fontFamily: "var(--semantic-typography-eyebrow-font-family)",
         fontSize: "var(--semantic-typography-eyebrow-font-size)",
@@ -500,7 +526,9 @@ export const tokenRefs = {
     docs: {
       space: {
         section: "var(--semantic-docs-space-section)",
+        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) @removeIn 1.0.0 */
         paragraph: "var(--semantic-docs-space-paragraph)",
+        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs @removeIn 1.0.0 */
         inline: "var(--semantic-docs-space-inline)"
       }
     },
@@ -516,7 +544,14 @@ export const tokenRefs = {
     },
     radius: {
       action: "var(--semantic-radius-action)",
-      control: "var(--semantic-radius-control)"
+      control: "var(--semantic-radius-control)",
+      scale: {
+        sm: "var(--semantic-radius-scale-sm)",
+        md: "var(--semantic-radius-scale-md)",
+        lg: "var(--semantic-radius-scale-lg)",
+        xl: "var(--semantic-radius-scale-xl)",
+        pill: "var(--semantic-radius-scale-pill)"
+      }
     },
     borderWidth: {
       default: "var(--semantic-borderWidth-default)",
@@ -603,7 +638,9 @@ export const tokenRefs = {
     badge: {
       fontSize: "var(--component-badge-fontSize)",
       fontWeight: "var(--component-badge-fontWeight)",
+      /** @deprecated hds#595 — use component.badge.<tone>.text (one per tone) @removeIn 1.0.0 */
       text: "var(--component-badge-text)",
+      /** @deprecated hds#595 — use component.badge.<tone>.bg (one per tone) @removeIn 1.0.0 */
       bg: "var(--component-badge-bg)",
       neutral: {
         bg: "var(--component-badge-neutral-bg)",

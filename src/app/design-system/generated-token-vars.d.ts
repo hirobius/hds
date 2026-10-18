@@ -115,7 +115,9 @@ declare module 'react' {
     '--primitive-space-32'?: string | undefined;
     '--primitive-space-px1'?: string | undefined;
     '--primitive-space-px2'?: string | undefined;
+    /** @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.scale.xs (8px) @removeIn 0.28.0 */
     '--primitive-space-px6'?: string | undefined;
+    /** @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.fixed.xs (12px) @removeIn 0.28.0 */
     '--primitive-space-px10'?: string | undefined;
     '--primitive-blur-8'?: string | undefined;
     '--primitive-blur-16'?: string | undefined;
@@ -124,6 +126,8 @@ declare module 'react' {
     '--primitive-radius-4'?: string | undefined;
     '--primitive-radius-8'?: string | undefined;
     '--primitive-radius-12'?: string | undefined;
+    '--primitive-radius-16'?: string | undefined;
+    '--primitive-radius-24'?: string | undefined;
     '--primitive-radius-full'?: string | undefined;
     '--primitive-typography-family-primary'?: string | undefined;
     '--primitive-typography-family-display'?: string | undefined;
@@ -229,6 +233,7 @@ declare module 'react' {
     '--semantic-color-content-danger'?: string | undefined;
     '--semantic-color-border-default'?: string | undefined;
     '--semantic-color-border-interactive'?: string | undefined;
+    /** @deprecated border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) @removeIn 1.0.0 */
     '--semantic-color-border-subdued'?: string | undefined;
     '--semantic-color-border-subtle'?: string | undefined;
     '--semantic-color-border-strong'?: string | undefined;
@@ -251,26 +256,41 @@ declare module 'react' {
     '--semantic-space-scale-md'?: string | undefined;
     '--semantic-space-scale-lg'?: string | undefined;
     '--semantic-space-scale-xl'?: string | undefined;
+    '--semantic-space-fixed-2xs'?: string | undefined;
+    '--semantic-space-fixed-xs'?: string | undefined;
+    '--semantic-space-fixed-sm'?: string | undefined;
+    '--semantic-space-fixed-md'?: string | undefined;
+    '--semantic-space-fixed-lg'?: string | undefined;
+    '--semantic-space-fixed-xl'?: string | undefined;
     '--semantic-space-surface-padding'?: string | undefined;
     '--semantic-space-region-gutter'?: string | undefined;
     '--semantic-space-subgrid-hairline'?: string | undefined;
     '--semantic-space-subgrid-xs'?: string | undefined;
     '--semantic-space-subgrid-gap'?: string | undefined;
+    /** @deprecated hds#206 — use semantic.space.scale.xs @removeIn 1.0.0 */
     '--semantic-space-component-gap'?: string | undefined;
     '--semantic-space-component-medium'?: string | undefined;
+    /** @deprecated hds#206 — use semantic.space.surface.padding @removeIn 1.0.0 */
     '--semantic-space-component-padding'?: string | undefined;
+    /** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */
     '--semantic-space-layout-tight'?: string | undefined;
+    /** @deprecated hds#206 — use semantic.space.scale.md @removeIn 1.0.0 */
     '--semantic-space-layout-normal'?: string | undefined;
+    /** @deprecated hds#206 — use semantic.space.region.gutter @removeIn 1.0.0 */
     '--semantic-space-layout-gutter'?: string | undefined;
+    /** @deprecated hds#206 — use semantic.space.scale.lg @removeIn 1.0.0 */
     '--semantic-space-layout-inset'?: string | undefined;
+    /** @deprecated hds#206 — use semantic.space.scale.xl @removeIn 1.0.0 */
     '--semantic-space-layout-spacious'?: string | undefined;
     '--semantic-space-section-stack'?: string | undefined;
     '--semantic-space-section-inset'?: string | undefined;
+    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) @removeIn 1.0.0 */
     '--semantic-space-section-heroMax'?: string | undefined;
     '--semantic-space-sidebar-indent'?: string | undefined;
     '--semantic-space-sidebar-gap'?: string | undefined;
     '--semantic-space-sidebar-sectionGap'?: string | undefined;
     '--semantic-space-sidebar-railPadding'?: string | undefined;
+    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280 @removeIn 1.0.0 */
     '--semantic-space-sidebar-railWidth'?: string | undefined;
     '--semantic-layout-width-content'?: string | undefined;
     '--semantic-layout-width-max'?: string | undefined;
@@ -320,29 +340,51 @@ declare module 'react' {
     '--semantic-typography-mono-letter-spacing'?: string | undefined;
     '--semantic-typography-mono-line-height'?: string | undefined;
     '--semantic-typography-mono-max-width'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-font-family'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-font-size'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-font-weight'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-letter-spacing'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-line-height'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-font-family'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-font-size'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-font-weight'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-letter-spacing'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-line-height'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-font-family'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-font-size'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-font-weight'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-letter-spacing'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-line-height'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-font-family'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-font-size'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-font-weight'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-letter-spacing'?: string | undefined;
+    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-line-height'?: string | undefined;
     '--semantic-typography-lineHeight-none'?: string | undefined;
     '--semantic-docs-space-section'?: string | undefined;
+    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) @removeIn 1.0.0 */
     '--semantic-docs-space-paragraph'?: string | undefined;
+    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs @removeIn 1.0.0 */
     '--semantic-docs-space-inline'?: string | undefined;
     '--semantic-accent-rest'?: string | undefined;
     '--semantic-accent-hover'?: string | undefined;
@@ -354,6 +396,11 @@ declare module 'react' {
     '--semantic-accent-subtle'?: string | undefined;
     '--semantic-radius-action'?: string | undefined;
     '--semantic-radius-control'?: string | undefined;
+    '--semantic-radius-scale-sm'?: string | undefined;
+    '--semantic-radius-scale-md'?: string | undefined;
+    '--semantic-radius-scale-lg'?: string | undefined;
+    '--semantic-radius-scale-xl'?: string | undefined;
+    '--semantic-radius-scale-pill'?: string | undefined;
     '--semantic-borderWidth-default'?: string | undefined;
     '--semantic-borderWidth-emphasis'?: string | undefined;
     '--semantic-shadow-subtle'?: string | undefined;
@@ -408,7 +455,9 @@ declare module 'react' {
     '--component-tag-activeHover'?: string | undefined;
     '--component-badge-fontSize'?: string | undefined;
     '--component-badge-fontWeight'?: string | undefined;
+    /** @deprecated hds#595 — use component.badge.<tone>.text (one per tone) @removeIn 1.0.0 */
     '--component-badge-text'?: string | undefined;
+    /** @deprecated hds#595 — use component.badge.<tone>.bg (one per tone) @removeIn 1.0.0 */
     '--component-badge-bg'?: string | undefined;
     '--component-badge-neutral-bg'?: string | undefined;
     '--component-badge-neutral-text'?: string | undefined;

@@ -8,6 +8,7 @@ type RuleLevel = 'off' | 'warn' | 'error';
 interface HdsPlugin {
   meta: { name: string; version: string };
   rules: Record<
+    | 'no-deprecated-token'
     | 'no-primitive-spacing'
     | 'no-raw-controls'
     | 'no-raw-hex'

@@ -88,6 +88,22 @@ describe('resolveSx — spacing shorthands', () => {
     expect(resolveSx({ p: 'constructor' }, 'cls')).toEqual(['.cls{padding:constructor}']);
   });
 
+  it('resolves a fixed step (fixed-2xs … fixed-xl) to semantic.space.fixed', () => {
+    expect(resolveSx({ p: 'fixed-sm', gap: 'fixed-2xs' }, 'cls')).toEqual([
+      '.cls{padding:var(--semantic-space-fixed-sm);gap:var(--semantic-space-fixed-2xs)}',
+    ]);
+  });
+
+  it('resolves a borderRadius step to semantic.radius.scale', () => {
+    expect(resolveSx({ borderRadius: 'pill' }, 'cls')).toEqual([
+      '.cls{border-radius:var(--semantic-radius-scale-pill)}',
+    ]);
+    expect(resolveSx({ borderRadius: 'md' }, 'cls')).toEqual([
+      '.cls{border-radius:var(--semantic-radius-scale-md)}',
+    ]);
+    expect(resolveSx({ borderRadius: '50%' }, 'cls')).toEqual(['.cls{border-radius:50%}']);
+  });
+
   it('passes a raw string spacing value through unchanged', () => {
     const rules = resolveSx({ p: 'auto' }, 'cls');
     expect(rules).toEqual(['.cls{padding:auto}']);

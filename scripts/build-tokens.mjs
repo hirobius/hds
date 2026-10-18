@@ -17,6 +17,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { writeGenerated } from './lib/write-generated.mjs';
+import { collectDeprecations, removeInOf } from './lib/token-deprecations.mjs';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { readModes } from './lib/token-modes.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
@@ -215,9 +216,12 @@ export function buildCSSSection(tokens, label, root = null) {
   const rootLines = [`\n  /* ── ${label} ${'─'.repeat(Math.max(0, 68 - label.length))} */`];
   const darkLines = [];
 
-  for (const { path, type, value, extensions } of tokens) {
+  for (const { path, type, value, extensions, deprecated } of tokens) {
     const cssVar = pathToCSSVar(path);
     const preserveAlias = path[0] !== 'primitive';
+    if (deprecated) {
+      rootLines.push(`  /* @deprecated ${deprecated} (removed in ${removeInOf(deprecated)}) */`);
+    }
 
     if (type === 'typography') {
       rootLines.push(`  /* ${path.join('.')} */`);
@@ -322,14 +326,62 @@ export function buildTokenRefsTree(tokens) {
   return root;
 }
 
-export function serialize(obj, depth = 1) {
+// ── Deprecation notes ─────────────────────────────────────────────────────────
+/**
+ * Token path → the JSDoc text for its `$deprecated` note, with the CSS var it
+ * compiles to. serialize and buildCSSVarDts tag those leaves `@deprecated`,
+ * so editors strike them through and autocomplete ranks them last.
+ */
+export function buildDeprecationNotes(tokens) {
+  const notes = new Map();
+  for (const { path, type, deprecated } of tokens) {
+    if (!deprecated) continue;
+    const text = String(deprecated).replaceAll('*/', '*\\/');
+    notes.set(path.join('.'), {
+      cssVar: pathToCSSVar(path),
+      composite: ['typography', 'motion', 'transition', 'elevation'].includes(type),
+      note: `@deprecated ${text} @removeIn ${removeInOf(deprecated)}`,
+      jsdoc: `/** @deprecated ${text} @removeIn ${removeInOf(deprecated)} */`,
+    });
+  }
+  return notes;
+}
+
+export function serialize(obj, depth = 1, notes = null, prefix = []) {
   const pad = '  '.repeat(depth);
   const lines = Object.entries(obj).map(([k, v]) => {
     const key = /^[a-zA-Z_$][\w$]*$/.test(k) ? k : JSON.stringify(k);
-    if (typeof v === 'string') return `${pad}${key}: ${JSON.stringify(v)}`;
-    return `${pad}${key}: {\n${serialize(v, depth + 1)}\n${pad}}`;
+    const note = notes?.get([...prefix, k].join('.'));
+    const tag = note ? `${pad}${note.jsdoc}\n` : '';
+    if (typeof v === 'string') return `${tag}${pad}${key}: ${JSON.stringify(v)}`;
+    return `${tag}${pad}${key}: {\n${serialize(v, depth + 1, notes, [...prefix, k])}\n${pad}}`;
   });
   return lines.join(',\n');
+}
+
+/** Puts a `// @deprecated` line above each Tailwind key whose var is a deprecated token. */
+export function tagDeprecatedTailwindKeys(json, notes) {
+  let out = json;
+  for (const { cssVar, note } of notes.values()) {
+    out = out.replace(
+      new RegExp(`^(\\s*)(".+": "var\\(${cssVar}\\)",?)$`, 'gm'),
+      (m, pad, entry) => `${pad}// ${note}\n${pad}${entry}`,
+    );
+  }
+  return out;
+}
+
+/** The CSSProperties augmentation body: one optional prop per var, deprecated ones tagged. */
+export function buildCSSVarDts(cssVarNames, notes = new Map()) {
+  const byVar = new Map([...notes.values()].map((n) => [n.cssVar, n]));
+  const composites = [...notes.values()].filter((n) => n.composite);
+  return cssVarNames
+    .map((v) => {
+      // A composite's sub-vars (`-font-size`) share its note; a plain var matches exactly.
+      const note = byVar.get(v) ?? composites.find((n) => v.startsWith(`${n.cssVar}-`));
+      return `${note ? `    ${note.jsdoc}\n` : ''}    '${v}'?: string | undefined;`;
+    })
+    .join('\n');
 }
 
 // ── Raw values tree ───────────────────────────────────────────────────────────
@@ -1118,6 +1170,7 @@ export function buildManifest(allTokens, raw, systemManifest = readSystemManifes
  * @param {Array} shadows - tokens with path[0]==='semantic' && path[1]==='shadow' && type==='shadow'
  * @param {object} [utilityTokens]
  * @param {Array} [utilityTokens.semanticSpace] - path[0]==='semantic' && path[1]==='space'
+ * @param {Array} [utilityTokens.semanticRadius] - path[0]==='semantic' && path[1]==='radius' (only `scale.*` is emitted)
  * @param {Array} [utilityTokens.primitiveSpace] - path[0]==='primitive' && path[1]==='space'
  * @param {Array} [utilityTokens.primitiveBreakpoint] - path[0]==='primitive' && path[1]==='breakpoint'
  * @param {Array} [utilityTokens.semanticBorderWidth] - path[0]==='semantic' && path[1]==='borderWidth'
@@ -1128,6 +1181,7 @@ export function buildManifest(allTokens, raw, systemManifest = readSystemManifes
 export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
   const {
     semanticSpace = [],
+    semanticRadius = [],
     primitiveSpace = [],
     primitiveBreakpoint = [],
     semanticBorderWidth = [],
@@ -1179,6 +1233,11 @@ export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
         sm: `calc(${radiusVar} - 2px)`,
       }
     : {};
+  // The fixed radius ladder rides beside the role steps as rounded-scale-<step>.
+  for (const t of semanticRadius) {
+    if (t.path[2] !== 'scale') continue;
+    borderRadius[t.path.slice(2).join('-')] = `var(${pathToCSSVar(t.path)})`;
+  }
 
   const boxShadow = {};
   for (const t of shadows) {
@@ -1571,6 +1630,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   }
 
   const allTokens = [...walkTokens(raw)];
+  const deprecationNotes = buildDeprecationNotes(allTokens);
   const primitives = allTokens.filter((t) => t.path[0] === 'primitive');
   const semantics = allTokens.filter((t) => t.path[0] === 'semantic');
   const components = allTokens.filter((t) => t.path[0] === 'component');
@@ -1631,7 +1691,7 @@ ${allDarkLines.join('\n')}
  * Regenerate: node scripts/build-tokens.mjs
  */
 export const tokens = {
-${serialize(tsTree)}
+${serialize(tsTree, 1, deprecationNotes)}
 } as const;
 `;
 
@@ -1682,7 +1742,7 @@ ${descRows},
 
   // ── CSS var type declarations ─────────────────────────────────────────────
   const cssVarNames = buildCSSVarNames(allTokens);
-  const dtsProps = cssVarNames.map((v) => `    '${v}'?: string | undefined;`).join('\n');
+  const dtsProps = buildCSSVarDts(cssVarNames, deprecationNotes);
   const tokenVarsDts = `/**
  * Generated by scripts/build-tokens.mjs — do not edit manually.
  * Source: hirobius.tokens.json (W3C DTCG 2025.10)
@@ -1719,7 +1779,7 @@ ${dtsProps}
  *   tokenRefs.semantic.color.surface.page       // 'var(--semantic-color-surface-page)'
  */
 export const tokenRefs = {
-${serialize(refsTree)}
+${serialize(refsTree, 1, deprecationNotes)}
 } as const;
 `;
 
@@ -1764,6 +1824,7 @@ ${serialize(refsTree)}
   );
   const tailwindExtend = buildTailwindThemeExtend(roles, semanticShadows, {
     semanticSpace: allTokens.filter((t) => t.path[0] === 'semantic' && t.path[1] === 'space'),
+    semanticRadius: allTokens.filter((t) => t.path[0] === 'semantic' && t.path[1] === 'radius'),
     primitiveSpace: allTokens.filter((t) => t.path[0] === 'primitive' && t.path[1] === 'space'),
     primitiveBreakpoint: allTokens.filter(
       (t) => t.path[0] === 'primitive' && t.path[1] === 'breakpoint',
@@ -1791,7 +1852,7 @@ ${serialize(refsTree)}
 /** @type {{ theme: { extend: import('tailwindcss').Config['theme']['extend'] } }} */
 const config = {
   theme: {
-    extend: ${JSON.stringify(tailwindExtend, null, 6).replace(/\n/g, '\n    ')},
+    extend: ${tagDeprecatedTailwindKeys(JSON.stringify(tailwindExtend, null, 6), deprecationNotes).replace(/\n/g, '\n    ')},
   },
 };
 
@@ -1806,6 +1867,21 @@ module.exports = config;
   // output makes `pnpm tokens` produce a commit-ready file and the gate's
   // comparison meaningful.
   await writeGenerated(join(ROOT, 'tailwind.config.tokens.cjs'), tailwindConfigCjs);
+
+  // The deprecation table the hds/no-deprecated-token rule reads (it ships;
+  // the token file is not read at lint time).
+  await writeGenerated(
+    join(ROOT, 'scripts', 'eslint-plugin-hds', 'rules', 'deprecated-tokens.json'),
+    `${JSON.stringify(
+      {
+        $comment:
+          'Generated by scripts/build-tokens.mjs from the $deprecated tokens in hirobius.tokens.json. Do not edit.',
+        tokens: collectDeprecations(raw),
+      },
+      null,
+      2,
+    )}\n`,
+  );
 
   // ── Per-tenant CSS (ADR-0001: [data-tenant="slug"] selectors) ─────────────
   const tenantsDir = join(ROOT, 'tenants');
