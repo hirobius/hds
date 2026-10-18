@@ -27,6 +27,11 @@
 import * as React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cn } from '../../lib/utils';
+import {
+  measureScrollEdges,
+  scrollEdgeFadeStyle,
+  type ScrollEdgeOverflow,
+} from './scroll-edge-fade';
 
 /**
  * The tab set itself. Tagged here rather than in the file block because
@@ -49,29 +54,6 @@ import { cn } from '../../lib/utils';
  */
 export const Tabs = TabsPrimitive.Root;
 
-/** Which edges of the strip have tabs scrolled out of view. */
-type TabsOverflow = 'start' | 'end' | 'both' | undefined;
-
-function measureOverflow(el: HTMLElement): TabsOverflow {
-  const hiddenStart = el.scrollLeft > 1;
-  const hiddenEnd = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
-  if (hiddenStart && hiddenEnd) return 'both';
-  if (hiddenStart) return 'start';
-  if (hiddenEnd) return 'end';
-  return undefined;
-}
-
-const FADE = 'var(--semantic-space-scale-lg)';
-
-/** Mask that fades the edge(s) with hidden tabs, one fade width (scale.lg) deep. Inline, so it costs no CSS. */
-function fadeStyle(overflow: TabsOverflow): React.CSSProperties | undefined {
-  if (!overflow) return undefined;
-  const start = overflow === 'end' ? '0px' : FADE;
-  const end = overflow === 'start' ? '0px' : FADE;
-  const mask = `linear-gradient(90deg,transparent,currentColor ${start},currentColor calc(100% - ${end}),transparent)`;
-  return { maskImage: mask, WebkitMaskImage: mask };
-}
-
 /**
  * The tab strip. When tabs scroll out of view it fades the hidden edge
  * (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look
@@ -82,7 +64,7 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
   React.ComponentProps<typeof TabsPrimitive.List>
 >(function TabsList({ className, onScroll, style, ...props }, forwardedRef) {
   const innerRef = React.useRef<HTMLDivElement | null>(null);
-  const [overflow, setOverflow] = React.useState<TabsOverflow>(undefined);
+  const [overflow, setOverflow] = React.useState<ScrollEdgeOverflow>(undefined);
 
   const setRefs = React.useCallback(
     (node: HTMLDivElement | null) => {
@@ -94,7 +76,7 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
   );
 
   const update = React.useCallback(() => {
-    if (innerRef.current) setOverflow(measureOverflow(innerRef.current));
+    if (innerRef.current) setOverflow(measureScrollEdges(innerRef.current));
   }, []);
 
   React.useEffect(() => {
@@ -110,7 +92,7 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
     <TabsPrimitive.List
       ref={setRefs}
       data-overflow={overflow}
-      style={{ ...fadeStyle(overflow), ...style }}
+      style={{ ...scrollEdgeFadeStyle(overflow), ...style }}
       onScroll={(event) => {
         update();
         onScroll?.(event);
