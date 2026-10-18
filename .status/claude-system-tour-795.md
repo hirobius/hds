@@ -1,2 +1,3 @@
 - Docs: /tour "HDS Console" product screen using every public component, with a coverage test and the axe gate extended to it (#795).
-- /tour now places MetaLine (#771) and the layout-shift gate treats /tour as its own layout group.
+- /tour places MetaLine (#771) so every public component is on the tour.
+- 2026-10-18: /tour font-swap CLS fixed (docs font dial points at next/font); layout-shift check gives /tour its own chrome group (#795).

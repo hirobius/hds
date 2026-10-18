@@ -18,9 +18,6 @@ describe('evaluateLayout', () => {
   it('passes identical boxes and zero CLS', () => {
     expect(evaluateLayout([scan('/'), scan('/a')])).toEqual([]);
   });
-  it('does not compare the standalone /tour page with the landing page chrome', () => {
-    expect(evaluateLayout([scan('/'), scan('/tour', 0, null)])).toEqual([]);
-  });
   it('fails CLS above 0.01', () => {
     expect(evaluateLayout([scan('/', 0.02)])[0]).toMatchObject({ route: '/', kind: 'cls' });
   });
@@ -31,6 +28,11 @@ describe('evaluateLayout', () => {
       scan('/b', 0, null),
     ]);
     expect(p.map((x: { route: string }) => x.route)).toEqual(['/a', '/b']);
+  });
+  it('compares /tour against its own chrome, not the landing page', () => {
+    expect(evaluateLayout([scan('/'), scan('/tour', 0, null)])).toEqual([]);
+    const p = evaluateLayout([scan('/tour'), scan('/tour/x', 0, null)]);
+    expect(p).toHaveLength(1);
   });
 });
 
