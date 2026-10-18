@@ -1,1 +1,2 @@
 - Docs: /tour "HDS Console" product screen using every public component, with a coverage test and the axe gate extended to it (#795).
+- /tour now places MetaLine (#771) and the layout-shift gate treats /tour as its own layout group.
