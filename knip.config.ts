@@ -2,7 +2,21 @@ import type { KnipConfig } from 'knip';
 
 const config: KnipConfig = {
   entry: [
-    // src/index.ts is auto-detected as the package entry; explicit entry was redundant.
+    // The published library entries (vite.config.lib.ts `entry`, mirrored by
+    // package.json `exports`). knip reads `exports` as dist/ paths and cannot
+    // map them back to src/, so without these the package's own entry files
+    // (and what only they import) show up as unused (hds#442).
+    'src/index.ts', // .
+    'src/lib/utils.ts', // ./cn
+    'src/app/design-system/tokens.ts', // ./tokens
+    'src/lib/manifest-entry.ts', // ./manifest
+    'src/app/context/index.ts', // ./contexts
+    'src/form/index.ts', // ./form
+    'src/mui/index.ts', // ./mui
+    'src/brand/index.ts', // ./brand
+    'src/scroll/index.ts', // ./scroll
+    'src/patterns.ts', // ./patterns
+    'src/icons.ts', // ./icons
     // The portfolio app (App.tsx, routes.tsx, index.html, src/main.tsx) was
     // removed in the ADR-018 teardown (#49/#51) — this is a library-only
     // package now, so there is no app entry to declare.
@@ -13,6 +27,8 @@ const config: KnipConfig = {
     // Vitest + Playwright test files — entries so knip picks up
     // test-only imports (e.g. helpers/* in tests/*.spec.ts).
     'tests/**/*.{test,spec}.{ts,tsx}!',
+    // Compile-only type fixtures, read from disk by their *.test.ts (hds#676).
+    'src/**/__fixtures__/**/*.{ts,tsx}!',
   ],
   project: [
     'src/**/*.{ts,tsx}!',
@@ -21,9 +37,6 @@ const config: KnipConfig = {
     'tests/**/*.{ts,tsx}!',
   ],
   ignore: [
-    // Library subpath build entry — referenced by vite.config.lib.ts as a
-    // rollup entry, not via TS imports, so Knip can't trace it.
-    'src/lib/manifest-entry.ts',
     // Generated files — knip should not report these as orphans
     'src/app/design-system/generated-tokens.ts',
     // Generated token descriptions — read directly from disk by

@@ -4,7 +4,13 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { evaluateScan, validateAllowlist } from '../lib/axe-gate.mjs';
-import { DEMO_SELECTOR, discoverPages } from '../lib/docs-axe.mjs';
+import {
+  DEMO_SELECTOR,
+  TOUR_SELECTOR,
+  discoverAxeRoutes,
+  discoverPages,
+  selectorFor,
+} from '../lib/docs-axe.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -16,6 +22,18 @@ function site(files) {
   }
   return dir;
 }
+
+describe('docs axe gate: the /tour screen (hds#795)', () => {
+  it('adds /tour to the scanned routes only when the build has it, and scopes it to its own root', () => {
+    const without = site(['docs/components/button.html']);
+    expect(discoverAxeRoutes(without)).toEqual(['/docs/components/button']);
+    const withTour = site(['docs/components/button.html', 'tour.html']);
+    expect(discoverAxeRoutes(withTour)).toEqual(['/docs/components/button', '/tour']);
+    expect(discoverPages(withTour)).toEqual(['/docs/components/button']);
+    expect(selectorFor('/tour')).toBe(TOUR_SELECTOR);
+    expect(selectorFor('/docs/components/button')).toBe(DEMO_SELECTOR);
+  });
+});
 
 describe('docs axe gate: page discovery', () => {
   it('finds component and pattern pages in both static layouts, sorted', () => {

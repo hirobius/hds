@@ -115,7 +115,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
         <label
           id={labelId}
           htmlFor={triggerId}
-          // Same label as Input, Textarea and FormField: 14px ui, foreground (hds#522).
+          // Same label as Input, Textarea and FormField: 16px ui, foreground (hds#522).
           className="hds-type-ui text-foreground"
           style={{ marginBottom: hds.semantic.space.scale.xs }}
         >

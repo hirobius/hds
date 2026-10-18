@@ -39,21 +39,23 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 | --- | --- | --- | --- |
 | `semantic.typography.display` | 48px | 700 | One per page, hero only |
 | `semantic.typography.title` | 24px | 700 | Section and card headings |
-| `semantic.typography.titleSm` | 16px | 700 | Small heading inside a card or section band |
-| `semantic.typography.body` | 16px | 400 | Prose |
-| `semantic.typography.ui` | 14px | 500 | Controls, nav, table text, values |
-| `semantic.typography.caption` | 12px | 500 | Metadata, help text and labels, in sentence case |
-| `semantic.typography.mono` | 13px | 400 | Code and ids |
+| `semantic.typography.titleSm` | 18px | 700 | Small heading inside a card or section band |
+| `semantic.typography.body` | 18px | 400 | Prose |
+| `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
+| `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.mono` | 15px | 400 | Code and ids |
 | `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
 | `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
 | `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.eyebrow` | 12px | 500 | deprecated: use semantic.typography.caption |
+| `semantic.typography.eyebrow` | 14px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
 
 **Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
+
+**Meta lines.** A bullet-separated line holds at most two text items ("Acme Cloud · Remote"), because long translated strings wrap mid-line. More facts get one row each. Use `MetaLine` (`items` is a one- or two-item tuple, a third is a type error); `hds/max-two-meta-items` flags hand-rolled `A · B · C` chains.
 
 ## Spacing
 
@@ -128,7 +130,7 @@ Motion (lift on hover, parallax) is the interaction-affordance layer; static dep
 | `semantic.motion.spatial` | `400ms` | For elements traveling long distances across the viewport. |
 | `semantic.motion.exit` | `100ms` | For elements being removed from the DOM. |
 
-Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.
+Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for entrances and moments where a little bounce adds delight. `spatial` (400ms) is for travel, not decoration.
 
 ### Other semantic motion tokens
 
@@ -147,7 +149,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 | **Cards** (`Card`) | `12px` (`rounded-lg`, role radius + 4px) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (borderless by default; an opt-in 1px border via `bordered`/`tone`/`accent`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
 | **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
 | **Alerts** (`Alert`) | `8px` (via `hds.borderRadius.4`) | info · success · warning · error | Inline banner pattern with icon + message + optional action. Tone is carried by a tinted feedback fill (`bg-feedback-bg-*`, matching Badge), NOT a left-border stripe. Callout shares this fill language and differs only by role (no icon, no status role, optional italic). |
-| **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`. |
+| **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive` by default; a spring is fine where it adds delight. Dividers follow `semantic.color.border.subtle`. |
 | **Toggles** (`Toggle`) | `full` (pill track + circular thumb) | off · on · focus · disabled | Accent-filled track in the on state; neutral track otherwise. Track + thumb transitions share `semantic.motion.productive`. |
 | **Segmented Control** (`SegmentedControl`) | Outer `12px` · inner segments `8px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `Select`. |
 
@@ -217,13 +219,13 @@ Three more needs are props on an existing component, not components of their own
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
+- Don't paint status dots or coloured left accent bars on cards and tiles; status is implied by content. Don't put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge); keep label and value together.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
 - Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
 - Don't sticker badges onto the ends of prose lines. Status and progress should live in a predictable metadata slot, rail, header zone, table column, or progress surface; badges are reserved for compact state markers where their placement is intentional.
 - Don't add decorative illustration, ornamental icons, or trend-driven filler that lacks functional or structural purpose.
-- Don't make motion playful or bouncy by default; movement should feel controlled, precise, and intentional, with expressive motion used sparingly and only when it teaches or clarifies.
-- Don't add `whileTap` scale transforms for press feedback; use color, border, and state-contrast changes instead — transforms are reserved for spatial motion, not interaction acknowledgment.
+- Don't ship motion that ignores `prefers-reduced-motion`. Spring or expressive motion and a small press transform (such as a `whileTap` scale) are welcome where they add delight; under reduced motion, drop the transform and keep the color and state change.
 - Don't define a global disabled-state rule (opacity multiplier, saturation ramp, etc.); disabled presentation is governed per-component through its dedicated disabled tokens.
 
 ## Open Questions
@@ -233,6 +235,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (427 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (428 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

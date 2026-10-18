@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-14T21:18:58.897Z",
+  "generated": "2026-10-16T12:25:29.308Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -97,6 +97,7 @@
     "Kbd",
     "Menu",
     "MetadataList",
+    "MetaLine",
     "MetricTile",
     "MetricTiles",
     "Page",
@@ -2466,6 +2467,7 @@
         "src/app/components/board.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/icon.test.tsx",
+        "src/app/components/scroll-edge-fade.ts",
         "src/app/components/table.test.tsx",
         "src/app/data/manifest-types.ts"
       ],
@@ -2493,6 +2495,10 @@
         "description": {
           "type": "ReactNode",
           "optional": true
+        },
+        "emphasizeFirstColumn": {
+          "type": "boolean",
+          "default": false
         },
         "flush": {
           "type": "boolean",
@@ -2524,6 +2530,9 @@
             "compact",
             "comfortable"
           ]
+        },
+        "emphasizeFirstColumn": {
+          "type": "boolean"
         },
         "flush": {
           "type": "boolean"
@@ -3255,6 +3264,7 @@
           }
         ]
       },
+      "aiRules": "Status is implied by content: no status dot and no coloured left accent bar on a card. Keep a label and its value together: do not put a heading over a card of supporting meta (a \"Status\" heading far from its \"Applied\" badge).",
       "core": true
     },
     "Text": {
@@ -3719,6 +3729,7 @@
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/state-delta.test.tsx",
         "src/app/components/state-tokens.test.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
@@ -5030,6 +5041,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/scroll-edge-fade.ts",
         "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
@@ -7156,6 +7168,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/meta-line.tsx",
         "src/app/components/metadata-list.test.tsx",
         "src/app/components/timeline.tsx"
       ],
@@ -9605,7 +9618,7 @@
       "a11yRules": [],
       "docsPage": null,
       "usage": {
-        "when": "Show work grouped by status as side-by-side columns, each with a title, a count and a tone, such as leads by pipeline stage.",
+        "when": "Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage.",
         "whenNot": "Rows of columns and cells that sort or filter, or a board people rearrange by dragging.",
         "useInstead": [
           {
@@ -9627,7 +9640,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/board.tsx",
-      "description": "One status column: a heading with the title, a count and a tone dot, then its items. The column is a labelled region and the count is part of the heading's name.",
+      "description": "One status column: a heading with the title and a count, then its items. The column is a labelled region and the count is part of the heading's name.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -9653,17 +9666,6 @@
         },
         "title": {
           "type": "ReactNode"
-        },
-        "tone": {
-          "type": "enum",
-          "values": [
-            "success",
-            "danger",
-            "warning",
-            "info",
-            "neutral"
-          ],
-          "default": "neutral"
         }
       },
       "allowedChildren": [
@@ -10056,6 +10058,52 @@
           }
         ]
       }
+    },
+    "MetaLine": {
+      "category": "Typography",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/meta-line.tsx",
+      "description": "Secondary facts on one line (\"Acme Cloud · Remote\"). Max two items per line so long strings in other languages never wrap mid-line; more facts go in more rows. The `hds/max-two-meta-items` lint rule enforces the same limit on bullet-joined text in JSX; it cannot see chains built in code (`[a, b, c].join(' · ')`), so those rely on this type and review.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "MetaLine",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/meta-line.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "items": {
+          "type": "MetaLineItems"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": "/docs/components/meta-line",
+      "usage": {
+        "when": "Show one or two secondary facts on a single line, joined by a bullet (\"Acme Cloud · Remote\").",
+        "whenNot": "Three or more facts, or labelled key-value pairs.",
+        "useInstead": [
+          {
+            "component": "A",
+            "reason": "second MetaLine row per extra fact, or MetadataList for labelled pairs"
+          }
+        ]
+      },
+      "core": true
     },
     "HdsPhosphor": {
       "category": "Compiler",
@@ -11396,8 +11444,8 @@
         "path": "primitive.typography.size.code",
         "cssVar": "--primitive-typography-size-code",
         "type": "dimension",
-        "description": "13px code size. The mono role (hds#485): one px below ui so code sits level with 14px prose.",
-        "value": "13px"
+        "description": "15px code size. The mono role (hds#485): one px below ui so code sits level with 16px UI text.",
+        "value": "15px"
       },
       {
         "path": "primitive.typography.weight.regular",
@@ -12611,10 +12659,10 @@
         "path": "semantic.typography.titleSm",
         "cssVar": "--semantic-typography-titleSm",
         "type": "typography",
-        "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+        "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "16px",
+          "fontSize": "18px",
           "fontWeight": "700",
           "letterSpacing": "0em",
           "lineHeight": "1.375"
@@ -12624,10 +12672,10 @@
         "path": "semantic.typography.body",
         "cssVar": "--semantic-typography-body",
         "type": "typography",
-        "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+        "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "16px",
+          "fontSize": "18px",
           "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "1.6",
@@ -12638,10 +12686,10 @@
         "path": "semantic.typography.ui",
         "cssVar": "--semantic-typography-ui",
         "type": "typography",
-        "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
+        "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "14px",
+          "fontSize": "16px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "1.5",
@@ -12652,10 +12700,10 @@
         "path": "semantic.typography.caption",
         "cssVar": "--semantic-typography-caption",
         "type": "typography",
-        "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
+        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "12px",
+          "fontSize": "14px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "1.5"
@@ -12665,10 +12713,10 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
-          "fontSize": "13px",
+          "fontSize": "15px",
           "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "1.5",
@@ -12721,7 +12769,7 @@
         "description": "deprecated: use semantic.typography.caption",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "12px",
+          "fontSize": "14px",
           "fontWeight": "500",
           "letterSpacing": "0em",
           "lineHeight": "1.5"
@@ -12775,24 +12823,24 @@
         "path": "semantic.accent.hover",
         "cssVar": "--semantic-accent-hover",
         "type": "color",
-        "description": "Accent fill on pointer hover.",
+        "description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.800}",
         "resolvedValue": "#352e32",
         "dark": {
-          "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#b2abae"
+          "alias": "{primitive.color.graphite.100}",
+          "resolvedValue": "#e9e7e8"
         }
       },
       {
         "path": "semantic.accent.pressed",
         "cssVar": "--semantic-accent-pressed",
         "type": "color",
-        "description": "Accent fill during active press.",
+        "description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.900}",
         "resolvedValue": "#2a2428",
         "dark": {
-          "alias": "{primitive.color.graphite.400}",
-          "resolvedValue": "#8b8488"
+          "alias": "{primitive.color.graphite.50}",
+          "resolvedValue": "#f5f4f4"
         }
       },
       {
@@ -13174,9 +13222,9 @@
         "path": "component.tag.fontSize",
         "cssVar": "--component-tag-fontSize",
         "type": "dimension",
-        "description": "Tag type size.",
-        "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "12px"
+        "description": "Tag type size (the caption role, 14px).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.tag.fontWeight",
@@ -13262,9 +13310,9 @@
         "path": "component.badge.fontSize",
         "cssVar": "--component-badge-fontSize",
         "type": "dimension",
-        "description": "Badge type size.",
-        "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "12px"
+        "description": "Badge type size (the caption role, 14px).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.badge.fontWeight",
@@ -13447,6 +13495,14 @@
         "resolvedValue": "#352e32"
       },
       {
+        "path": "component.button.bgPressed",
+        "cssVar": "--component-button-bgPressed",
+        "type": "color",
+        "description": "Primary button pressed fill (hds#748).",
+        "alias": "{semantic.accent.pressed}",
+        "resolvedValue": "#2a2428"
+      },
+      {
         "path": "component.button.text",
         "cssVar": "--component-button-text",
         "type": "color",
@@ -13498,9 +13554,9 @@
         "path": "component.button.size.sm.fontSize",
         "cssVar": "--component-button-size-sm-fontSize",
         "type": "dimension",
-        "description": "Small button label size (12px, hds#283: was 13px).",
-        "alias": "{primitive.typography.size.xs}",
-        "resolvedValue": "12px"
+        "description": "Small button label size (14px, the caption role; 12px before 2026-10-15).",
+        "alias": "{primitive.typography.size.sm}",
+        "resolvedValue": "14px"
       },
       {
         "path": "component.button.size.sm.iconSize",
@@ -13546,9 +13602,9 @@
         "path": "component.button.size.md.fontSize",
         "cssVar": "--component-button-size-md-fontSize",
         "type": "dimension",
-        "description": "Medium button label size (14px, hds#283: was 15px).",
-        "alias": "{primitive.typography.size.sm}",
-        "resolvedValue": "14px"
+        "description": "Medium button label size (16px, the ui role; 14px before 2026-10-15).",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.button.size.md.iconSize",
@@ -13594,9 +13650,9 @@
         "path": "component.button.size.lg.fontSize",
         "cssVar": "--component-button-size-lg-fontSize",
         "type": "dimension",
-        "description": "Large button label size (14px, the same hds-type-ui role as md).",
-        "alias": "{primitive.typography.size.sm}",
-        "resolvedValue": "14px"
+        "description": "Large button label size (16px, the same hds-type-ui role as md).",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.button.size.lg.iconSize",

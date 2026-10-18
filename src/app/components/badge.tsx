@@ -20,7 +20,7 @@ import { isProduction } from '../../lib/env';
 // layer, so there is no `dark:` variant and no runtime useTheme branch. The flat
 // `component.badge.{bg,text}` are deprecated. Neutral's fill is `surface.overlay`
 // (it was a 4% black/white wash; the solid token is a few percent lighter in light mode).
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing and per-tone color tokens have no Tailwind-theme utility; var()-based so still token-driven. the caption role matches component.badge.fontSize (12px).
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing and per-tone color tokens have no Tailwind-theme utility; var()-based so still token-driven. the caption role matches component.badge.fontSize (14px).
 const badgeVariants = /* @__PURE__ */ cva(
   // rounded-md is the action radius (role.radius), so a tenant that reshapes the system reshapes Badge too.
   'inline-flex w-fit max-w-full items-center justify-center overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] py-[var(--component-badge-paddingY)] rounded-md',

@@ -1,0 +1,127 @@
+{
+  "impact": "look",
+  "plain": "The small end of the type ramp is larger: body 18px (was 16px), ui 16px (was 14px), caption 14px (was 12px), titleSm 18px and mono 15px, with matching line heights; display and title are unchanged, so check fixed-height and fixed-width layouts and re-take screenshots.",
+  "steps": [
+    {
+      "id": "value-changed/--component-badge-fontSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Badge labels are now 14px (were 12px); if you size a Badge container by hand, give it room for the larger label.",
+      "detect": {
+        "cssVars": ["--component-badge-fontSize"],
+        "cssVarWrites": ["--component-badge-fontSize"]
+      },
+      "facts": ["css-var-changed:--component-badge-fontSize::root"]
+    },
+    {
+      "id": "value-changed/--component-button-size-lg-fontSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Large Button labels are now 16px (were 14px); check any fixed-width Button.",
+      "detect": {
+        "cssVars": ["--component-button-size-lg-fontSize"],
+        "cssVarWrites": ["--component-button-size-lg-fontSize"]
+      },
+      "facts": ["css-var-changed:--component-button-size-lg-fontSize::root"]
+    },
+    {
+      "id": "value-changed/--component-button-size-md-fontSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Medium Button labels are now 16px (were 14px); check any fixed-width Button.",
+      "detect": {
+        "cssVars": ["--component-button-size-md-fontSize"],
+        "cssVarWrites": ["--component-button-size-md-fontSize"]
+      },
+      "facts": ["css-var-changed:--component-button-size-md-fontSize::root"]
+    },
+    {
+      "id": "value-changed/--component-button-size-sm-fontSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Small Button labels are now 14px (were 12px); check any fixed-width small Button.",
+      "detect": {
+        "cssVars": ["--component-button-size-sm-fontSize"],
+        "cssVarWrites": ["--component-button-size-sm-fontSize"]
+      },
+      "facts": ["css-var-changed:--component-button-size-sm-fontSize::root"]
+    },
+    {
+      "id": "value-changed/--component-tag-fontSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Tag labels are now 14px (were 12px); if you size a Tag container by hand, give it room for the larger label.",
+      "detect": {
+        "cssVars": ["--component-tag-fontSize"],
+        "cssVarWrites": ["--component-tag-fontSize"]
+      },
+      "facts": ["css-var-changed:--component-tag-fontSize::root"]
+    },
+    {
+      "id": "value-changed/--primitive-typography-size-code",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Code and ids (the mono role) are now 15px (were 13px); if you read this variable for your own code styling, expect text two pixels larger.",
+      "detect": {
+        "cssVars": ["--primitive-typography-size-code"],
+        "cssVarWrites": ["--primitive-typography-size-code"]
+      },
+      "facts": ["css-var-changed:--primitive-typography-size-code::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-body-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Body text is now 18px (was 16px); check where you read this variable for layout, such as fixed-height blocks or character-count widths.",
+      "detect": {
+        "cssVars": ["--semantic-typography-body-font-size"],
+        "cssVarWrites": ["--semantic-typography-body-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-body-font-size::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-caption-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Caption text (metadata and help text) is now 14px (was 12px); check tight metadata rows and badges you size by hand.",
+      "detect": {
+        "cssVars": ["--semantic-typography-caption-font-size"],
+        "cssVarWrites": ["--semantic-typography-caption-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-caption-font-size::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-eyebrow-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated eyebrow style follows caption and is now 14px (was 12px); move to caption.",
+      "detect": {
+        "cssVars": ["--semantic-typography-eyebrow-font-size"],
+        "cssVarWrites": ["--semantic-typography-eyebrow-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-eyebrow-font-size::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-titleSm-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Small headings are now 18px (were 16px); check where you read this variable for layout.",
+      "detect": {
+        "cssVars": ["--semantic-typography-titleSm-font-size"],
+        "cssVarWrites": ["--semantic-typography-titleSm-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-titleSm-font-size::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-ui-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "UI text (controls, nav, table text) is now 16px (was 14px); check where you read this variable for layout, such as fixed-height rows or toolbars.",
+      "detect": {
+        "cssVars": ["--semantic-typography-ui-font-size"],
+        "cssVarWrites": ["--semantic-typography-ui-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-ui-font-size::root"]
+    }
+  ]
+}

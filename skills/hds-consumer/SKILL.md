@@ -33,7 +33,7 @@ Subpath exports:
 
 ## Core set
 
-The 43 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
+The 44 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
 
 - **Actions:** `Button`
 - **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
@@ -43,7 +43,7 @@ The 43 components of the ratified core set (`core: true` in the manifest): brand
 - **Navigation:** `Breadcrumb`, `InlineLink`, `Pagination`, `Tabs`
 - **Overlays:** `Dialog`, `Menu`, `Popover`, `Tooltip`
 - **Theming:** `HdsRouterProvider`, `HdsThemeProvider`
-- **Typography:** `Text`
+- **Typography:** `MetaLine`, `Text`
 - **Utility:** `VisuallyHidden`
 
 ## Allow-list: components you may import
@@ -108,7 +108,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Layout
 
 - `Board` — Status columns that sit side by side from tablet width and stack in order, first column on top, below it.
-- `BoardColumn` — One status column: a heading with the title, a count and a tone dot, then its items.
+- `BoardColumn` — One status column: a heading with the title and a count, then its items.
 - `Box` — Box — polymorphic layout primitive with a token-first `sx` engine.
 - `Container` — Container — semantic width-constrained layout.
 - `Disclosure` — Disclosure - compact disclosure surface for optional explanatory content.
@@ -150,6 +150,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Typography
 
 - `Blockquote` — A quoted passage; pass `cite` for the source URL and `attribution` for a byline.
+- `MetaLine` — Secondary facts on one line ("Acme Cloud · Remote").
 - `Text` — Text — polymorphic typography primitive spanning the full HDS type ramp.
 
 ### Utility
