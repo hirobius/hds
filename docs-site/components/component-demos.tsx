@@ -191,33 +191,58 @@ function MenuDemo() {
   );
 }
 
+// A link, prose and an action row are what used to shear a table on desktop
+// (tests/visual/table-clipping.spec.ts guards it). The literal columns (status, date,
+// actions) size to their content, so Summary takes the spare width.
+const TABLE_DEMO_ROWS = [
+  {
+    key: 'portfolio',
+    name: 'Portfolio redesign',
+    summary: 'Case studies, about page and the new design-system section',
+    href: 'https://hirobius.com/work/portfolio',
+    status: 'Active',
+    updated: '2026-10-05',
+  },
+  {
+    key: 'tokens',
+    name: 'Token audit',
+    summary: 'Contrast and naming review across the light and dark themes',
+    href: 'https://hirobius.com/work/tokens',
+    status: 'Review',
+    updated: '2026-10-02',
+  },
+];
+
 function TableDemo() {
   return (
     <Table
       caption="Recent projects"
+      emphasizeFirstColumn
       columns={[
         { key: 'name', label: 'Project' },
-        { key: 'status', label: 'Status' },
-        { key: 'updated', label: 'Updated', align: 'right' },
+        { key: 'summary', label: 'Summary' },
+        { key: 'status', label: 'Status', width: 'max-content' },
+        { key: 'updated', label: 'Updated', align: 'right', width: 'max-content' },
+        { key: 'actions', label: 'Actions', align: 'right', width: 'max-content' },
       ]}
-      rows={[
-        {
-          key: 'portfolio',
-          cells: [
-            { slot: 'label', content: 'Portfolio redesign' },
-            { slot: 'badge', content: 'Active' },
-            { slot: 'value', content: '2026-10-05', align: 'right' },
-          ],
-        },
-        {
-          key: 'tokens',
-          cells: [
-            { slot: 'label', content: 'Token audit' },
-            { slot: 'badge', content: 'Review' },
-            { slot: 'value', content: '2026-10-02', align: 'right' },
-          ],
-        },
-      ]}
+      rows={TABLE_DEMO_ROWS.map((row) => ({
+        key: row.key,
+        cells: [
+          { slot: 'label', content: <InlineLink href={row.href}>{row.name}</InlineLink> },
+          { slot: 'description', content: row.summary },
+          { slot: 'badge', content: <Badge>{row.status}</Badge> },
+          { slot: 'value', content: row.updated, align: 'right' },
+          {
+            slot: 'action',
+            align: 'right',
+            content: (
+              <Button size="sm" variant="secondary">
+                Open brief
+              </Button>
+            ),
+          },
+        ],
+      }))}
     />
   );
 }
@@ -235,7 +260,7 @@ function MetricTilesDemo() {
 function BoardDemo() {
   return (
     <Board aria-label="Lead pipeline">
-      <BoardColumn title="On fire" tone="danger">
+      <BoardColumn title="On fire">
         <Card padding="item" className="border-0">
           <Card.Row trailing={<Badge tone="danger">Today</Badge>}>
             <Card.RowTitle>Monroe Landscaping</Card.RowTitle>
@@ -249,7 +274,7 @@ function BoardDemo() {
           </Card.Row>
         </Card>
       </BoardColumn>
-      <BoardColumn title="Warm" tone="warning">
+      <BoardColumn title="Warm">
         <Card padding="item" className="border-0">
           <Card.Row>
             <Card.RowTitle>Northside Pressure Washing</Card.RowTitle>
@@ -257,7 +282,7 @@ function BoardDemo() {
           </Card.Row>
         </Card>
       </BoardColumn>
-      <BoardColumn title="Won" tone="success" count={0}>
+      <BoardColumn title="Won" count={0}>
         <EmptyState title="Nothing here yet" />
       </BoardColumn>
     </Board>
@@ -301,7 +326,6 @@ function BadgeDemo() {
       <Badge tone="success">Active</Badge>
       <Badge tone="warning">At risk</Badge>
       <Badge tone="danger">Blocked</Badge>
-      <Badge tone="success" dot label="Online" />
     </div>
   );
 }

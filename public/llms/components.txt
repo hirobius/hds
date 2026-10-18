@@ -85,11 +85,10 @@ Status columns that sit side by side from tablet width and stack in order, first
   - children: ReactNode
 
 ### BoardColumn
-One status column: a heading with the title, a count and a tone dot, then its items. The column is a labelled region and the count is part of the heading's nam…
+One status column: a heading with the title and a count, then its items. The column is a labelled region and the count is part of the heading's name.
   - children: ReactNode
   - count: number
   - title: ReactNode
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" = neutral
 
 ### Box
 Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing short…
@@ -631,6 +630,7 @@ Table - structured data table primitive for documentation and compact UI matrice
   - columns: TableColumn[]
   - density: 'compact' | 'comfortable'
   - description: ReactNode
+  - emphasizeFirstColumn: boolean = false
   - flush: boolean = true
   - labelledBy: string
   - minWidth: string | number

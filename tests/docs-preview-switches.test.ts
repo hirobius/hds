@@ -67,3 +67,13 @@ describe('docs preview switches', () => {
     }
   });
 });
+
+describe('docs preview switches stay docs-only (hds#794)', () => {
+  it('no data-docs-* selector or attribute appears under src/ (shipped styles.css)', async () => {
+    const { execSync } = await import('node:child_process');
+    const hits = execSync("grep -rlE 'data-docs-(corners|shadow)|hds-docs-switches' src || true", {
+      encoding: 'utf8',
+    }).trim();
+    expect(hits).toBe('');
+  });
+});
