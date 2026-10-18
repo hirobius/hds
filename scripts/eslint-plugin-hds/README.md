@@ -55,7 +55,6 @@ export default [
     files: ['**/*.{ts,tsx,jsx}'],
     plugins: { hds },
     rules: {
-      'hds/max-two-meta-items': 'error',
       'hds/no-raw-controls': 'error',
       'hds/no-raw-hex': 'error',
       'hds/no-raw-px-spacing': 'error',
@@ -68,30 +67,13 @@ export default [
 
 ## Rules
 
-| Rule                                                                 | Default | What it catches                                                                                        |
-| -------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
-| [`hds/max-two-meta-items`](#hdsmax-two-meta-items)                   | error   | Bullet-separated lines (`A · B · C`) with three or more items; use `MetaLine`, one row per extra item. |
-| [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
-| [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                    |
-| [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.         |
-| [`hds/no-status-clutter`](#hdsno-status-clutter)                     | error   | `<Badge dot>` and a coloured left-border accent bar (`border-l-2`..`8` plus a tone colour).            |
-| [`hds/prefer-hds-layout-primitive`](#hdsprefer-hds-layout-primitive) | warn    | Ad-hoc `display: 'flex' \| 'grid'` in `style={{…}}` where a named primitive (Stack/Grid) likely fits.  |
-| [`hds/sx-token-first`](#hdssx-token-first)                           | error   | Raw hex/px string values inside a `Box` `sx={{…}}` prop — `sx` must resolve through token keys.        |
-
-### `hds/max-two-meta-items`
-
-```tsx
-// ❌ error — three items on one bullet line wrap mid-line when translated
-<p>Acme Cloud · Remote · Applied 3 days ago</p>
-
-// ✅ ok
-<MetaLine items={['Acme Cloud', 'Remote']} />
-<MetaLine items={['Applied 3 days ago']} />
-```
-
-### `hds/no-status-clutter`
-
-Status is implied by content (hds#759). Flags the `dot` prop on `<Badge>` and a coloured left-border accent bar in a `className`. A neutral `border-border` rule is fine.
+| Rule                                                                 | Default | What it catches                                                                                       |
+| -------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------- |
+| [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.          |
+| [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                   |
+| [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.        |
+| [`hds/prefer-hds-layout-primitive`](#hdsprefer-hds-layout-primitive) | warn    | Ad-hoc `display: 'flex' \| 'grid'` in `style={{…}}` where a named primitive (Stack/Grid) likely fits. |
+| [`hds/sx-token-first`](#hdssx-token-first)                           | error   | Raw hex/px string values inside a `Box` `sx={{…}}` prop — `sx` must resolve through token keys.       |
 
 ### `hds/no-raw-controls`
 
