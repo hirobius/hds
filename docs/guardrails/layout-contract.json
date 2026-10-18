@@ -409,6 +409,13 @@
       "kind": "overlay",
       "probe": false
     },
+    "MetaLine": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "MetadataList": {
       "width": "fill",
       "height": "hug",

@@ -97,6 +97,7 @@
     "Kbd",
     "Menu",
     "MetadataList",
+    "MetaLine",
     "MetricTile",
     "MetricTiles",
     "Page",
@@ -7167,6 +7168,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/meta-line.tsx",
         "src/app/components/metadata-list.test.tsx",
         "src/app/components/timeline.tsx"
       ],
@@ -10056,6 +10058,52 @@
           }
         ]
       }
+    },
+    "MetaLine": {
+      "category": "Typography",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/meta-line.tsx",
+      "description": "Secondary facts on one line (\"Acme Cloud · Remote\"). Max two items per line so long strings in other languages never wrap mid-line; more facts go in more rows. The `hds/max-two-meta-items` lint rule enforces the same limit on bullet-joined text in JSX; it cannot see chains built in code (`[a, b, c].join(' · ')`), so those rely on this type and review.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "MetaLine",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/meta-line.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "items": {
+          "type": "MetaLineItems"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": "/docs/components/meta-line",
+      "usage": {
+        "when": "Show one or two secondary facts on a single line, joined by a bullet (\"Acme Cloud · Remote\").",
+        "whenNot": "Three or more facts, or labelled key-value pairs.",
+        "useInstead": [
+          {
+            "component": "A",
+            "reason": "second MetaLine row per extra fact, or MetadataList for labelled pairs"
+          }
+        ]
+      },
+      "core": true
     },
     "HdsPhosphor": {
       "category": "Compiler",
