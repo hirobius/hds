@@ -683,12 +683,10 @@
           "$description": "Body weight. Plus Jakarta Sans ships as a variable font, so 450 renders as itself."
         },
         "medium": {
-          "$value": 550,
-          "$description": "Controls, nav, table text and labels: one step above body."
+          "$value": 500
         },
         "bold": {
-          "$value": 650,
-          "$description": "Strong text inside body copy and bold labels: one step above medium."
+          "$value": 700
         },
         "display": {
           "$value": 800,
@@ -1917,7 +1915,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Code and ids. 15px / 1.5 / 450. The mono companion, role 6 of 6."
+        "$description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so it renders at 400 whatever weight.regular is. The mono companion, role 6 of 6."
       },
       "h1": {
         "$value": {
@@ -2005,24 +2003,24 @@
       },
       "hover": {
         "$value": "{primitive.color.graphite.800}",
-        "$description": "Accent fill on pointer hover.",
+        "$description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
               "Light": "{primitive.color.graphite.800}",
-              "Dark": "{primitive.color.graphite.300}"
+              "Dark": "{primitive.color.graphite.100}"
             }
           }
         }
       },
       "pressed": {
         "$value": "{primitive.color.graphite.900}",
-        "$description": "Accent fill during active press.",
+        "$description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
               "Light": "{primitive.color.graphite.900}",
-              "Dark": "{primitive.color.graphite.400}"
+              "Dark": "{primitive.color.graphite.50}"
             }
           }
         }
@@ -2507,6 +2505,11 @@
         "$type": "color",
         "$value": "{semantic.accent.hover}",
         "$description": "Primary button hover fill."
+      },
+      "bgPressed": {
+        "$type": "color",
+        "$value": "{semantic.accent.pressed}",
+        "$description": "Primary button pressed fill (hds#748)."
       },
       "text": {
         "$type": "color",

@@ -222,7 +222,7 @@ A block that carries `@deprecated <notice>` also gives the spec `deprecated` (th
  */
 ```
 
-`node scripts/check-contract-coverage.mjs` lists the 43 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
+`node scripts/check-contract-coverage.mjs` lists the 44 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
 
 ## Component Inventory & Fallbacks
 

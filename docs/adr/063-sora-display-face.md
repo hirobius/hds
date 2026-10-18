@@ -24,10 +24,10 @@ replaces the first pick of Bricolage Grotesque 700, which was never released.
   `primitive.typography.weight.display` (800) is bound by `display`, `title` and
   `titleSm`; the deprecated `h1`-`h3` aliases follow `title`.
 - **Body weight 450.** Plus Jakarta Sans now ships as one variable file (wght 200-800),
-  so in-between weights render as themselves. The weight scale steps up with body:
-  `regular` 450 (body, mono), `medium` 550 (ui, caption, controls), `bold` 650 (strong
-  text inside body copy). Figma text styles name font instances, so the Figma model
-  maps 450/550/650 to Regular/Medium/SemiBold and keeps the exact value in the variable.
+  so in-between weights render as themselves. Only `regular` moves
+  (450, body); `medium` stays 500 and `bold` 700, the scope Adrian approved. Figma text
+  styles name font instances, so the Figma model maps 450 to Regular and keeps the exact
+  value in the variable.
 - **Sizes, line heights and letter spacing do not change** (the #747 ramp stays). Corners
   and shadows are untouched.
 - **Self-hosted, like the other faces (ADR-060).** `public/fonts/sora/sora-800.woff2`
@@ -51,7 +51,7 @@ Sora and Plus Jakarta Sans.
 ## Alternatives considered
 
 - **Bricolage Grotesque 700** (the first pick, superseded). Dropped by Adrian for Sora.
-- **Static Plus Jakarta files at 450/550/650.** Three more files for what one variable
+- **Static Plus Jakarta files at 450.** More files for what one variable
   file does, and each weight would be a separate cut to keep in step.
 - **Leave headings on the body dial.** A consumer setting the body face would silently
   drop the display face. A separate dial makes the two choices separate.
@@ -62,8 +62,8 @@ Sora and Plus Jakarta Sans.
 
 - Without `fonts.css`, headings fall down the stack, as every face does.
 - The opt-in font payload is smaller than before (three files instead of five).
-- Consumers that read `weight.regular`, `medium` or `bold` get 450, 550 and 650; a host
-  that loads its own static Plus Jakarta files at 400/500/700 sees the nearest cut.
+- Consumers that read `weight.regular` get 450 (was 400); a host that loads its own
+  static Plus Jakarta files at 400/500/700 sees the nearest cut for body text.
 - A consumer that set `--hds-font-family` and expects its headings to match must also
   set `--hds-font-family-display`. The 0.x minor changeset and its upgrade note say so.
 - The Figma library's display and title styles still name Plus Jakarta Sans until the

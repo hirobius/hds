@@ -32,7 +32,7 @@ HDS ships three typefaces — each with a distinct role:
 - **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `450` regular, `550` medium, `650` bold, `800` display. Heading styles (display · title) use `800` display; body, UI, and caption use `450` regular / `550` medium. Declared but unused by any semantic role: `650` bold.
+Weights declared: `450` regular, `500` medium, `700` bold, `800` display. Heading styles (display · title) use `800` display; body, UI, and caption use `450` regular / `500` medium. Declared but unused by any semantic role: `700` bold.
 
 ### Type ramp
 
@@ -42,19 +42,21 @@ Weights declared: `450` regular, `550` medium, `650` bold, `800` display. Headin
 | `semantic.typography.title` | 24px | 800 | Section and card headings |
 | `semantic.typography.titleSm` | 18px | 800 | Small heading inside a card or section band |
 | `semantic.typography.body` | 18px | 450 | Prose |
-| `semantic.typography.ui` | 16px | 550 | Controls, nav, table text, values |
-| `semantic.typography.caption` | 14px | 550 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
+| `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 15px | 450 | Code and ids |
 | `semantic.typography.h1` | 24px | 800 | deprecated: use semantic.typography.title |
 | `semantic.typography.h2` | 24px | 800 | deprecated: use semantic.typography.title |
 | `semantic.typography.h3` | 24px | 800 | deprecated: use semantic.typography.title |
-| `semantic.typography.eyebrow` | 14px | 550 | deprecated: use semantic.typography.caption |
+| `semantic.typography.eyebrow` | 14px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
 
 **Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
+
+**Meta lines.** A bullet-separated line holds at most two text items ("Acme Cloud · Remote"), because long translated strings wrap mid-line. More facts get one row each. Use `MetaLine` (`items` is a one- or two-item tuple, a third is a type error); `hds/max-two-meta-items` flags hand-rolled `A · B · C` chains.
 
 ## Spacing
 
@@ -234,6 +236,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (428 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (429 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

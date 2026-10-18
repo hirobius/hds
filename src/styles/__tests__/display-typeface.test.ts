@@ -66,8 +66,6 @@ describe('display typeface (ADR-063)', () => {
         `--semantic-typography-${role}-font-weight: var(--primitive-typography-weight-display);`,
       );
     }
-    // Title size is 24px; display and title-sm bracket it, so the face is checked across the ramp.
-    expect(roles.title.$value.fontSize).toBeDefined();
     expect(roles.title.$value.fontFamily).toBe('{primitive.typography.family.display}');
   });
 

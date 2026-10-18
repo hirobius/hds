@@ -181,8 +181,8 @@ export const tokenValues = {
       },
       weight: {
         regular: "450",
-        medium: "550",
-        bold: "650",
+        medium: "500",
+        bold: "700",
         display: "800"
       },
       lineHeight: {

@@ -466,7 +466,7 @@ function expandTypography(graph, token) {
     entryFor: () => resolved[key].entry,
   }));
 
-  // Figma text styles name a font instance, so the variable-font weights (450, 550, 650)
+  // Figma text styles name a font instance, so the variable-font weight 450
   // take the Regular / Medium / Bold instance the library's Plus Jakarta Sans ships; the
   // exact value stays in the variable.
   const fontStyle =

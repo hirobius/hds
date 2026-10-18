@@ -95,28 +95,6 @@
       ]
     },
     {
-      "id": "value-changed/--primitive-typography-weight-bold",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "The bold weight is now 650 (was 700); load fonts.css so the variable Plus Jakarta Sans renders it, or expect the nearest static cut.",
-      "detect": {
-        "cssVars": ["--primitive-typography-weight-bold"],
-        "cssVarWrites": ["--primitive-typography-weight-bold"]
-      },
-      "facts": ["css-var-changed:--primitive-typography-weight-bold::root"]
-    },
-    {
-      "id": "value-changed/--primitive-typography-weight-medium",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "The medium weight is now 550 (was 500); load fonts.css so the variable Plus Jakarta Sans renders it, or expect the nearest static cut.",
-      "detect": {
-        "cssVars": ["--primitive-typography-weight-medium"],
-        "cssVarWrites": ["--primitive-typography-weight-medium"]
-      },
-      "facts": ["css-var-changed:--primitive-typography-weight-medium::root"]
-    },
-    {
       "id": "value-changed/--primitive-typography-weight-regular",
       "kind": "value-changed",
       "impact": "look",

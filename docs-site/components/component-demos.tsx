@@ -35,6 +35,7 @@ import {
   InlineLink,
   Input,
   Kbd,
+  MetaLine,
   Menu,
   Pagination,
   Popover,
@@ -534,6 +535,15 @@ function KbdDemo() {
   );
 }
 
+function MetaLineDemo() {
+  return (
+    <div style={{ display: 'grid', gap: 4 }}>
+      <MetaLine items={['Acme Cloud', 'Remote']} />
+      <MetaLine items={['Posted 3 days ago']} />
+    </div>
+  );
+}
+
 function PaginationDemo() {
   const [page, setPage] = useState(3);
   return <Pagination count={10} page={page} onPageChange={setPage} />;
@@ -939,6 +949,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   InlineLink: InlineLinkDemo,
   Composer: ComposerDemo,
   Kbd: KbdDemo,
+  MetaLine: MetaLineDemo,
   Pagination: PaginationDemo,
   Popover: PopoverDemo,
   Progress: ProgressDemo,

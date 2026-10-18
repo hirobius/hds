@@ -1,7 +1,7 @@
 /* Hirobius Design System — font-face declarations.
  *
  * Faces (type ramp, Adrian 2026-10-07, hds#483):
- *   - Plus Jakarta Sans variable (200-800) — body 450, ui/caption 550, bold 650
+ *   - Plus Jakarta Sans variable (200-800) — body 450 (medium 500 and bold 700 unchanged)
  *   - Sora 800 — display, title, title-sm (ADR-063)
  *   - IBM Plex Mono 400 — mono
  *
@@ -10,8 +10,8 @@
  */
 
 /* Plus Jakarta Sans — Tokotype, SIL Open Font License 1.1 (LICENSE.txt alongside).
- * One variable file (wght 200-800, Latin subset): body sits at 450, ui and caption
- * at 550, bold at 650 (Adrian, 2026-10-17). */
+ * One variable file (wght 200-800, Latin subset): body sits at 450; medium (500) and
+ * bold (700) are unchanged (Adrian, 2026-10-17). */
 @font-face {
   font-family: 'Plus Jakarta Sans';
   src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2') format('woff2');
