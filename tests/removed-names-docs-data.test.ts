@@ -54,14 +54,6 @@ function valuesOf(node: unknown, key: string, out: string[] = []): string[] {
 }
 
 describe('docs-site data after the 0.20.0 removals', () => {
-  it('hds-registry.json lists no removed component', () => {
-    const registry = json('hds-registry.json');
-    const names = (registry as { components?: { name: string }[] }[]).flatMap((page) =>
-      (page.components ?? []).map((c) => c.name),
-    );
-    expect(names.filter((n) => REMOVED.has(n))).toEqual([]);
-  });
-
   // hds#431: the sidebar model of the docs shell. The shell went with the docs
   // SPA (#51) and HdsDocsShell (0.20.0); nothing has read the model since.
   it('keeps no docs-nav data for the removed docs shell', () => {

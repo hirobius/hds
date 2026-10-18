@@ -1,5 +1,6 @@
 import { buildTokenSections, type TokenRow } from '../lib/token-tables';
 import { loadTokens } from '../lib/site-data';
+import { FoundationVisual } from './foundation-visuals';
 
 function Value({ value, swatch }: { value: string; swatch: boolean }) {
   return (
@@ -71,10 +72,11 @@ export function TokenRows({
  */
 export function TokenTable({ page }: { page: string }) {
   const sections = buildTokenSections(loadTokens(), page);
-  // Each group folds: the page reads as principle + best practices, with the
-  // full reference one click away (and still in the page for search).
+  // The visual gallery leads; each table group folds under it, so the full
+  // reference is one click away (and still in the page for search).
   return (
     <div className="hds-token-tables">
+      <FoundationVisual page={page} />
       {sections.map((section) => (
         <details key={section.title} className="hds-fold">
           <summary>

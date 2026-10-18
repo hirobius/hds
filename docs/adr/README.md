@@ -6,7 +6,7 @@ One file per decision, numbered in the order recorded ([ADR-009](009-adr-convent
 An Accepted ADR is not edited; a change is a new ADR that supersedes it through its
 Status line.
 
-62 records. 26 are **retroactive**: decisions made between June and
+61 records. 25 are **retroactive**: decisions made between June and
 October 2026 that shipped without an ADR, written up afterwards from the commit and PR
 history. Each one lists its evidence and says when the evidence does not record a reason.
 Their "Decided" date is when the decision landed, not when it was written up.

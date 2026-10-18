@@ -26,12 +26,18 @@ describe('Button state tokens', () => {
     expect(c).not.toContain('active:inset-shadow-pressed-overlay/5');
   });
 
-  it('primary and tertiary keep the pressed wash (no pressed token)', () => {
-    for (const variant of ['primary', 'tertiary'] as const) {
-      const { getByRole, unmount } = render(<Button variant={variant}>Go</Button>);
-      expect(cls(getByRole('button'))).toContain('active:inset-shadow-pressed-overlay/5');
-      unmount();
-    }
+  it('primary pressed binds component.button.bgPressed and drops the wash (hds#748)', () => {
+    // The wash on top of the hover fill was 1/255 off hover in dark: the
+    // pressed token never reached the button.
+    const { getByRole } = render(<Button variant="primary">Go</Button>);
+    const c = cls(getByRole('button'));
+    expect(c).toContain('active:bg-[color:var(--component-button-bgPressed)]');
+    expect(c).toContain('active:inset-shadow-transparent');
+  });
+
+  it('tertiary keeps the pressed wash (no pressed token)', () => {
+    const { getByRole } = render(<Button variant="tertiary">Go</Button>);
+    expect(cls(getByRole('button'))).toContain('active:inset-shadow-pressed-overlay/5');
   });
 
   it('secondary disabled border binds component.button.secondary.border.disabled', () => {

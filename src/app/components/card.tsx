@@ -656,6 +656,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
  * @usage Group related content on a raised surface with header, body, footer and row slots, or as one selectable option.
  * @whenNot A bare padded background with no slot anatomy, or a single headline figure.
  * @useInstead Surface a padded background without slot anatomy
+ * @ai-rules Status is implied by content: no status dot and no coloured left accent bar on a card. Keep a label and its value together: do not put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge).
  * @a11y component required a11y:card.selectable-role A selectable card is a focusable checkbox that reports aria-checked; a plain card is neither.
  * @a11y component required a11y:card.space-toggles Space toggles a focused selectable card and Enter does not.
  * @a11y component required a11y:card.nested-controls A key or click inside a control in the card is left to that control.

@@ -294,7 +294,7 @@ describe('runGateCaptured', () => {
 });
 
 describe('selectProbeTargets', () => {
-  // Meta-gates (audit-gates-supportjson) spawn every registered gate. A gate
+  // Meta-gates spawn every registered gate. A gate
   // that drives a full toolchain run opts out with a non-empty reason string.
   const PROBE_REGISTRY = {
     gates: [

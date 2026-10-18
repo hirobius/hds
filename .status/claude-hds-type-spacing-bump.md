@@ -1,0 +1,1 @@
+- Type ramp bump (Adrian, 2026-10-15): body 16 to 18px, ui 14 to 16px, caption 12 to 14px, titleSm 16 to 18px, mono 13 to 15px; Button, Badge and Tag label sizes follow. Values only, minor changeset, upgrade note impact look. Spacing scale and density modes unchanged (spacing-computed-lock pins them); Figma library needs a push (figma-drift warns).
