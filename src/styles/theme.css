@@ -57,6 +57,10 @@
 @source not "../../.changeset";
 @source not "../../upgrade";
 @source not "../../.status";
+/* `changeset version` folds those notes into CHANGELOG.md before the release
+   build, so the changelog would recompile them too (the 0.27.0 cut failed on
+   --leading-relaxed coming back). */
+@source not "../../CHANGELOG.md";
 
 /* Published utility surface kept after hds#391. Tailwind only emits the
    utilities it finds in scanned files, and these 16 lived only in the deleted
