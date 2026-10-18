@@ -26,6 +26,10 @@
     BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --primitive-typography-family-mono:
     var(--hds-docs-font-mono), 'IBM Plex Mono', 'Courier New', monospace;
+  /* The font dial (ADR-023) re-points the type roles inside any HDS subtree (HdsThemeProvider,
+     /tour) at --hds-font-family, which would skip the next/font faces and swap late (CLS). */
+  --hds-font-family: var(--primitive-typography-family-primary);
+  --hds-font-family-mono: var(--primitive-typography-family-mono);
   /* Fumadocs reads --font-sans / --font-mono for its base typography. */
   --font-sans: var(--primitive-typography-family-primary);
   --font-mono: var(--primitive-typography-family-mono);
