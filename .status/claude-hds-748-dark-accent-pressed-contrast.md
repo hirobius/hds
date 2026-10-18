@@ -1,0 +1,1 @@
+Dark accent hover/pressed lighten step by step (graphite 100 / 50), Adrian picked B (2026-10-16); Primary pressed now binds component.button.bgPressed so the press reaches the button, plus a state-delta escape check (2026-10-16).
