@@ -114,7 +114,7 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     const sha = createHash('sha256').update(s.built.text).digest('hex');
     expect({ chars: s.built.chars, sha }).toEqual({
       chars: 31361,
-      sha: '57051a2470cb17f952681956ad8e676d7630285edb8bfaff5a3cbb461b2573b7',
+      sha: 'fbcfff276568ee1300b0f5116c5a835872c2ac2377b3d20122bb2b992348930e',
     });
   });
 });

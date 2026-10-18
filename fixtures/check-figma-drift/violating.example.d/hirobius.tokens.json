@@ -78,8 +78,8 @@
       "weight": {
         "$type": "fontWeight",
         "regular": { "$value": 450 },
-        "medium": { "$value": 550 },
-        "bold": { "$value": 650 }
+        "medium": { "$value": 500 },
+        "bold": { "$value": 700 }
       },
       "size": {
         "$type": "dimension",

@@ -156,7 +156,7 @@ describe('buildFigmaModel — values', () => {
     expect(space.unit).toBe('px');
     expect(space.valuesByMode.Default).toEqual({ value: 16 });
     expect(variable(model, 'primitive.typography.weight.bold').valuesByMode.Default).toEqual({
-      value: 650,
+      value: 700,
     });
     const family = variable(model, 'primitive.typography.family.primary');
     expect(family.resolvedType).toBe('STRING');
@@ -354,7 +354,7 @@ describe('buildFigmaModel — typography', () => {
       description: 'Page title.',
       fontFamily: 'Plus Jakarta Sans',
       fontStyle: 'Bold',
-      fontWeight: 650,
+      fontWeight: 700,
       fontSize: 48,
       lineHeight: { unit: 'PIXELS', value: 60 },
       letterSpacing: { unit: 'PIXELS', value: -0.48 },

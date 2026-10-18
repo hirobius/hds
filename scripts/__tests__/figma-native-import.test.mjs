@@ -66,7 +66,7 @@ describe('buildNativeImportFiles', () => {
     expect(leaf(primitives, 'size/width/50ch').$type).toBe('dimension');
     expect(leaf(primitives, 'typography/weight/bold')).toMatchObject({
       $type: 'number',
-      $value: 650,
+      $value: 700,
     });
     expect(leaf(primitives, 'typography/family/mono')).toMatchObject({
       $type: 'fontFamily',

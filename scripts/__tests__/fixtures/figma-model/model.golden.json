@@ -303,7 +303,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 550
+              "value": 500
             }
           }
         },
@@ -320,7 +320,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 650
+              "value": 700
             }
           }
         },
@@ -1239,7 +1239,7 @@
       "description": "Page title.",
       "fontFamily": "Plus Jakarta Sans",
       "fontStyle": "Bold",
-      "fontWeight": 650,
+      "fontWeight": 700,
       "fontSize": 48,
       "lineHeight": {
         "unit": "PIXELS",
@@ -1289,7 +1289,7 @@
       "description": "",
       "fontFamily": "IBM Plex Mono",
       "fontStyle": "Medium",
-      "fontWeight": 550,
+      "fontWeight": 500,
       "fontSize": 12,
       "lineHeight": {
         "unit": "PIXELS",
