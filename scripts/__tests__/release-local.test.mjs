@@ -5,7 +5,14 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { parseArgs, pendingChangesets, preflight, publishStep } from '../release-local.mjs';
+import {
+  parseArgs,
+  pendingChangesets,
+  preflight,
+  publishStep,
+  runSteps,
+  fetchMainOrThrow,
+} from '../release-local.mjs';
 
 const ready = {
   publish: true,
@@ -30,6 +37,14 @@ describe('parseArgs', () => {
   it('takes --ref in both spellings', () => {
     expect(parseArgs(['--ref', 'HEAD']).ref).toBe('HEAD');
     expect(parseArgs(['--ref=v1']).ref).toBe('v1');
+  });
+  it('rejects --ref with --publish, in any order and spelling', () => {
+    const msg = /--ref is for dry runs only; publish runs from origin\/main/;
+    expect(() => parseArgs(['--publish', '--ref', 'HEAD'])).toThrow(msg);
+    expect(() => parseArgs(['--ref=HEAD', '--publish'])).toThrow(msg);
+  });
+  it('keeps --ref for dry runs', () => {
+    expect(parseArgs(['--dry-run', '--ref', 'HEAD'])).toEqual({ publish: false, ref: 'HEAD' });
   });
   it('rejects unknown flags so a typo never publishes', () => {
     expect(() => parseArgs(['--publsh'])).toThrow(/Unknown option/);
@@ -80,6 +95,32 @@ describe('publishStep', () => {
   });
   it('real run uses changeset publish, like the Actions release', () => {
     expect(publishStep(true)).toEqual(['pnpm', ['exec', 'changeset', 'publish']]);
+  });
+});
+
+describe('runSteps', () => {
+  it('installs from the frozen lockfile before anything else', () => {
+    expect(runSteps(false)[0]).toEqual(['pnpm', ['install', '--frozen-lockfile']]);
+    expect(runSteps(true)[0]).toEqual(['pnpm', ['install', '--frozen-lockfile']]);
+  });
+  it('then builds, smokes, and ends with the publish step', () => {
+    const steps = runSteps(true);
+    expect(steps.slice(1, 3)).toEqual([
+      ['pnpm', ['build:lib']],
+      ['pnpm', ['smoke:consumer', '--skip-build']],
+    ]);
+    expect(steps[3]).toEqual(publishStep(true));
+  });
+});
+
+describe('fetchMainOrThrow', () => {
+  it('passes when the fetch worked', () => {
+    expect(() => fetchMainOrThrow({ ok: true, err: '' })).not.toThrow();
+  });
+  it('stops with an actionable message instead of using a stale ref', () => {
+    expect(() => fetchMainOrThrow({ ok: false, err: 'fatal: unable to access' })).toThrow(
+      /Could not fetch origin\/main; check your network and retry/,
+    );
   });
 });
 

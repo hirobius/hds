@@ -22,6 +22,9 @@
  * npm is always exactly what is on main. If the version on main is already on
  * npm, it says so and stops.
  *
+ * Provenance: local publishes carry no npm provenance (it came from OIDC in
+ * Actions); don't add --provenance, it fails outside a supported CI.
+ *
  * Auth: your own `npm login` session (an account with publish rights on the
  * package). No token is read from or written to any file by this script.
  * `changeset publish` tags the commit locally (v<version>); hds CLAUDE.md
@@ -38,15 +41,23 @@ const PKG = '@hirobius/design-system';
 
 export function parseArgs(argv) {
   const opts = { publish: false, ref: 'origin/main' };
+  let refGiven = false;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--publish') opts.publish = true;
     else if (a === '--dry-run') opts.publish = false;
-    else if (a === '--ref') opts.ref = argv[++i];
-    else if (a.startsWith('--ref=')) opts.ref = a.slice('--ref='.length);
-    else throw new Error(`Unknown option: ${a}`);
+    else if (a === '--ref') {
+      opts.ref = argv[++i];
+      refGiven = true;
+    } else if (a.startsWith('--ref=')) {
+      opts.ref = a.slice('--ref='.length);
+      refGiven = true;
+    } else throw new Error(`Unknown option: ${a}`);
   }
   if (!opts.ref) throw new Error('--ref needs a git ref');
+  if (refGiven && opts.publish) {
+    throw new Error('--ref is for dry runs only; publish runs from origin/main');
+  }
   return opts;
 }
 
@@ -91,6 +102,25 @@ export function publishStep(publish) {
     : ['pnpm', ['publish', '--dry-run', '--no-git-checks']];
 }
 
+/** Every command a go run executes, in order. */
+export function runSteps(publish) {
+  return [
+    ['pnpm', ['install', '--frozen-lockfile']],
+    ['pnpm', ['build:lib']],
+    ['pnpm', ['smoke:consumer', '--skip-build']],
+    publishStep(publish),
+  ];
+}
+
+/** A failed fetch means origin/main may be stale; stop rather than compare against it. */
+export function fetchMainOrThrow(result) {
+  if (!result.ok) {
+    throw new Error(
+      `Could not fetch origin/main; check your network and retry.${result.err ? ` (${result.err.split('\n')[0]})` : ''}`,
+    );
+  }
+}
+
 function short(sha) {
   return sha ? sha.slice(0, 7) : '(none)';
 }
@@ -112,7 +142,7 @@ function run(cmd, args) {
 }
 
 function readState(opts) {
-  capture('git', ['fetch', '--quiet', 'origin', 'main']);
+  fetchMainOrThrow(capture('git', ['fetch', '--quiet', 'origin', 'main']));
   const version = JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
   const view = capture('npm', ['view', PKG, 'versions', '--json']);
   let published = [];
@@ -153,9 +183,7 @@ function main() {
     return;
   }
 
-  run('pnpm', ['build:lib']);
-  run('pnpm', ['smoke:consumer', '--skip-build']);
-  run(...publishStep(opts.publish));
+  for (const [cmd, args] of runSteps(opts.publish)) run(cmd, args);
 
   if (!opts.publish) {
     console.log(
