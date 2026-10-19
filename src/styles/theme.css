@@ -63,6 +63,9 @@
    build, so the changelog would recompile them too (the 0.27.0 cut failed on
    --leading-relaxed coming back). */
 @source not "../../CHANGELOG.md";
+/* Same for UPGRADING.md: its "Do by hand" lines name removed utilities, which would compile
+   straight back in (check-upgrade-css rule 7 fails a build that carries one). */
+@source not "../../UPGRADING.md";
 
 /* Published utility surface kept after hds#391. Tailwind only emits the
    utilities it finds in scanned files, and these 16 lived only in the deleted
