@@ -639,3 +639,18 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabl
     height: 3.5rem;
   }
 }
+
+/* A linked inline-code chip is inline-flex, so the link's underline does not reach it
+   (text-decoration skips inline-flex children). Draw the cue on the chip itself. */
+a code[data-density] {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* In prose table cells a long type union wraps inside the chip (as it did before the HDS chip)
+   instead of overrunning it under the chip's max-width + nowrap. */
+.prose .hds-docs-table td code[data-density],
+.prose .hds-docs-table th code[data-density] {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

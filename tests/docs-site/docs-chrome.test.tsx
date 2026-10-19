@@ -1,5 +1,5 @@
 /**
- * Docs-site chrome follows the HDS Corners and Shadow switches (hds#806, slice 2 of the chrome):
+ * Docs-site chrome follows the HDS Corners and Shadow switches (hds#806, slice 1 of the chrome):
  * the theme switch, prose tables and inline code come from HDS, and the search dialog is
  * restyled from the HDS radius and shadow tokens, not Fumadocs' hard-coded ones.
  */
@@ -56,6 +56,22 @@ describe('prose', () => {
   it('renders inline code as the HDS InlineCode', () => {
     const { container } = render(<MdxCode>pnpm build</MdxCode>);
     expect(container.querySelector('code[data-density]')?.textContent).toBe('pnpm build');
+  });
+
+  it('keeps a link cue on a linked chip, and none on a plain one', () => {
+    const { container } = render(
+      <>
+        <a href="/x">
+          <MdxCode>linked</MdxCode>
+        </a>
+        <MdxCode>plain</MdxCode>
+      </>,
+    );
+    expect(container.querySelector('a code[data-density]')?.textContent).toBe('linked');
+    expect(container.querySelectorAll('code[data-density]').length).toBe(2);
+    expect(read('docs-site/app/globals.css')).toMatch(
+      /a code\[data-density\]\s*\{[^}]*text-decoration:\s*underline/,
+    );
   });
 
   it('leaves a fenced code element plain, and the fence still finds it', () => {
