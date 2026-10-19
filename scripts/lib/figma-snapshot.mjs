@@ -10,6 +10,9 @@
  * in Figma) is refused instead of trusted.
  */
 
+import { createHash } from 'crypto';
+import { existsSync, readFileSync } from 'fs';
+import { join } from 'path';
 import { hdsChecksum } from './figma-runtime.mjs';
 
 export const SNAPSHOT_SCHEMA_VERSION = 1;
@@ -17,16 +20,28 @@ export const SNAPSHOT_SCHEMA_VERSION = 1;
 /**
  * The committed text: stable two-space JSON with a trailing newline.
  * `bindingFallbacks` (the bound-colour fallback sweep, figma-fallbacks.mjs) is
- * a sibling of `snapshot`, not part of it (so is `matchesCommit`, the git commit
- * the snapshot was ingested at, which the release gate reads, hds#801): it has its own checksum and its own
+ * a sibling of `snapshot`, not part of it (so is `tokensHash`, the hash of
+ * hirobius.tokens.json at ingest, which the release gate reads, hds#801): it has its own checksum and its own
  * `takenAt`, so the snapshot's checksum, the base a receipt or diff names and
  * the delta codec are untouched by it.
  */
-export function serializeSnapshotFile({ checksum, snapshot, bindingFallbacks, matchesCommit }) {
+export function serializeSnapshotFile({ checksum, snapshot, bindingFallbacks, tokensHash }) {
   const file = { checksum, snapshot };
   if (bindingFallbacks) file.bindingFallbacks = bindingFallbacks;
-  if (matchesCommit) file.matchesCommit = matchesCommit;
+  if (tokensHash) file.tokensHash = tokensHash;
   return `${JSON.stringify(file, null, 2)}\n`;
+}
+
+/**
+ * `sha256:<hex>` of <root>/hirobius.tokens.json. Ingest records it and the
+ * release gate compares it, so the check needs no git history (a squash merge
+ * leaves a branch's commits unreachable from main). Undefined when the file is absent.
+ */
+export function tokensFileHash(root) {
+  const path = join(root, 'hirobius.tokens.json');
+  if (!existsSync(path)) return undefined;
+  const bytes = readFileSync(path);
+  return `sha256:${createHash('sha256').update(bytes).digest('hex')}`;
 }
 
 /** The kinds a bound-colour fallback mismatch can have. */
@@ -115,11 +130,11 @@ export function parseSnapshotFile(text) {
       'The snapshot checksum does not match its contents, so it was edited after it was taken (or copied incompletely). Take a new snapshot (pnpm figma:snapshot) instead of editing the JSON.',
     );
   }
-  const matchesCommit = typeof parsed.matchesCommit === 'string' ? parsed.matchesCommit : undefined;
+  const tokensHash = typeof parsed.tokensHash === 'string' ? parsed.tokensHash : undefined;
   const result = { checksum: parsed.checksum, snapshot };
   if (parsed.bindingFallbacks !== undefined) {
     result.bindingFallbacks = verifyBindingFallbacks(parsed.bindingFallbacks);
   }
-  if (matchesCommit) result.matchesCommit = matchesCommit;
+  if (tokensHash) result.tokensHash = tokensHash;
   return result;
 }

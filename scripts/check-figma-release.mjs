@@ -5,9 +5,9 @@
  *   1. the model built from hirobius.tokens.json differs from figma/snapshot.json
  *      (any drift, unlike `check-figma-drift --ci`, which only fails on
  *      drift a push cannot explain), or
- *   2. the snapshot's `matchesCommit` (HEAD when it was ingested) is missing,
- *      not in this checkout, or older than the last change to
- *      hirobius.tokens.json.
+ *   2. the snapshot's `tokensHash` (hirobius.tokens.json's sha256 when it was
+ *      ingested) is missing or differs from the file now. A hash, not a
+ *      commit: squash merges leave a branch's commits unreachable from main.
  *
  * `pnpm release` (the script release.yml publishes through) runs this first.
  * Exit 0 clean · 1 refuse to publish. Never talks to Figma.
@@ -18,36 +18,19 @@
 import { existsSync, readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { spawnSync } from 'child_process';
 import { runDriftCheck } from './check-figma-drift.mjs';
-import { parseSnapshotFile } from './lib/figma-snapshot.mjs';
+import { parseSnapshotFile, tokensFileHash } from './lib/figma-snapshot.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BEHIND = 'Figma is behind code';
 const FIX =
-  'Fix: run figma/push delta.js through use_figma, take a snapshot, then pnpm figma:snapshot --ingest <file> (commit the token change first, then ingest), and commit figma/snapshot.json. Runbook: figma/README.md.';
+  'Fix: run figma/push delta.js through use_figma, take a snapshot, then pnpm figma:snapshot --ingest <file> (after the token change), and commit figma/snapshot.json. Runbook: figma/README.md.';
 
 /**
- * Did hirobius.tokens.json change between `commit` and HEAD?
- *
- * @returns {{ known: boolean, changed: boolean }} known is false when git cannot resolve `commit`
- */
-export function gitTokensChangedSince(commit, root = ROOT) {
-  const git = (...args) => spawnSync('git', args, { cwd: root, encoding: 'utf8' });
-  if (git('cat-file', '-e', `${commit}^{commit}`).status !== 0)
-    return { known: false, changed: false };
-  const diff = git('diff', '--quiet', commit, 'HEAD', '--', 'hirobius.tokens.json');
-  return { known: true, changed: diff.status !== 0 };
-}
-
-/**
- * @param {{ root: string, tokensChangedSince?: (commit: string) => { known: boolean, changed: boolean } }} options
+ * @param {{ root: string }} options
  * @returns {{ exitCode: 0|1, output: string }}
  */
-export function runReleaseGate({
-  root,
-  tokensChangedSince = (c) => gitTokensChangedSince(c, root),
-}) {
+export function runReleaseGate({ root }) {
   const problems = [];
   const drift = runDriftCheck({ root });
   if (drift.exitCode === 2 || !existsSync(join(root, 'figma', 'snapshot.json'))) {
@@ -62,24 +45,15 @@ export function runReleaseGate({
   }
   if (existsSync(join(root, 'figma', 'snapshot.json'))) {
     try {
-      const { matchesCommit } = parseSnapshotFile(
+      const { tokensHash } = parseSnapshotFile(
         readFileSync(join(root, 'figma', 'snapshot.json'), 'utf8'),
       );
-      if (!matchesCommit) {
+      if (!tokensHash) {
         problems.push(
-          "the snapshot records no matchesCommit; re-ingest it with this repo's pnpm figma:snapshot --ingest.",
+          'the snapshot records no tokensHash (it predates the hash); re-run pnpm figma:snapshot --ingest.',
         );
-      } else {
-        const { known, changed } = tokensChangedSince(matchesCommit);
-        if (!known) {
-          problems.push(
-            `the snapshot's matchesCommit ${matchesCommit} is not in this checkout (shallow clone? fetch full history).`,
-          );
-        } else if (changed) {
-          problems.push(
-            `hirobius.tokens.json changed after ${matchesCommit}, the commit the snapshot matches.`,
-          );
-        }
+      } else if (tokensHash !== tokensFileHash(root)) {
+        problems.push('hirobius.tokens.json changed after the snapshot was ingested.');
       }
     } catch {
       /* no or unreadable snapshot: already reported above */
