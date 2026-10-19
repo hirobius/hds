@@ -10,8 +10,9 @@
  * The fix re-declares every font-family variable on each element of the HDS
  * subtree, pointing at the dial, so the dial resolves where it is set. This test
  * pins that every font-family variable the tokens declare is re-declared there
- * (a new type role without a dial mapping fails here), sans roles to
- * `--hds-font-family` and the mono role to `--hds-font-family-mono`.
+ * (a new type role without a dial mapping fails here): the display and title
+ * roles to `--hds-font-family-display` (ADR-063), the mono role to
+ * `--hds-font-family-mono`, and the rest to `--hds-font-family`.
  *
  * jsdom cannot resolve `var()` chains, so the rendered behaviour is verified in a
  * real browser separately; this test guards the wiring.
@@ -51,6 +52,15 @@ function blockBody(css: string, selector: string): string | null {
 }
 
 const isMono = (name: string) => /mono/.test(name);
+/** Display, title, title-sm and the deprecated h1-h3 aliases ride the display dial. */
+const isDisplay = (name: string) =>
+  /family-display$|semantic-typography-(display|title|titleSm|h[1-3])-font-family$/.test(name);
+const dialFor = (name: string) =>
+  isMono(name)
+    ? '--hds-font-family-mono'
+    : isDisplay(name)
+      ? '--hds-font-family-display'
+      : '--hds-font-family';
 
 describe('font dial (hds#478)', () => {
   it('finds the type-role font-family variables in the tokens', () => {
@@ -64,16 +74,17 @@ describe('font dial (hds#478)', () => {
     const body = blockBody(themeCss, DIAL_SELECTOR);
     expect(body, `theme.css has no ${DIAL_SELECTOR} block`).not.toBeNull();
     for (const name of fontFamilyVars(tokensCss)) {
-      const dial = isMono(name) ? '--hds-font-family-mono' : '--hds-font-family';
+      const dial = dialFor(name);
       const decl = body!.match(new RegExp(`${name}\\s*:\\s*([^;]+);`));
       // Whitespace-insensitive: Prettier may wrap a long declaration.
       expect(decl?.[1].replace(/\s+/g, ''), `${name} is not wired to ${dial}`).toBe(`var(${dial})`);
     }
   });
 
-  it('keeps a root default for both dials, so an unset dial still renders the brand fonts', () => {
+  it('keeps a root default for every dial, so an unset dial still renders the brand fonts', () => {
     // Which font leads the stack is pinned by check-css-integrity I12, not here.
     expect(themeCss).toMatch(/--hds-font-family:\s*['"][^;]+;/);
     expect(themeCss).toMatch(/--hds-font-family-mono:\s*['"][^;]+;/);
+    expect(themeCss).toMatch(/--hds-font-family-display:\s*['"][^;]+;/);
   });
 });

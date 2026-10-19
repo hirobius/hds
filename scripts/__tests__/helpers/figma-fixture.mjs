@@ -27,6 +27,7 @@ export const FIXTURE_FONTS = Object.freeze([
   { family: 'Plus Jakarta Sans', style: 'Regular' },
   { family: 'Plus Jakarta Sans', style: 'Medium' },
   { family: 'Plus Jakarta Sans', style: 'Bold' },
+  { family: 'Sora', style: 'ExtraBold' },
   { family: 'IBM Plex Mono', style: 'Medium' },
 ]);
 

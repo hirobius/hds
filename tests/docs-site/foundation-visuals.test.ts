@@ -93,9 +93,9 @@ describe('typeSpecimens', () => {
 
   it('resolves each composite to renderable CSS values', () => {
     const display = specimens[0]!;
-    expect(display.family).toBe('Plus Jakarta Sans');
+    expect(display.family).toBe('Sora');
     expect(display.fontSize).toMatch(/px$/);
-    expect(display.fontWeight).toBe('700');
+    expect(display.fontWeight).toBe('800');
     expect(display.letterSpacing).toMatch(/em$/);
   });
 });

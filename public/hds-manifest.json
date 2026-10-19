@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-18T21:31:35.511Z",
+  "generated": "2026-10-19T04:23:16.102Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -6866,6 +6866,10 @@
           "type": "string",
           "optional": true
         },
+        "fontFamilyDisplay": {
+          "type": "string",
+          "optional": true
+        },
         "fontFamilyMono": {
           "type": "string",
           "optional": true
@@ -11479,8 +11483,8 @@
         "path": "primitive.typography.family.display",
         "cssVar": "--primitive-typography-family-display",
         "type": "fontFamily",
-        "description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites.",
-        "value": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+        "description": "Display and title face: Sora 800 (OFL, ADR-063); falls back to Plus Jakarta Sans.",
+        "value": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
         "path": "primitive.typography.family.mono",
@@ -11570,7 +11574,8 @@
         "path": "primitive.typography.weight.regular",
         "cssVar": "--primitive-typography-weight-regular",
         "type": "fontWeight",
-        "value": "400"
+        "description": "Body weight. Plus Jakarta Sans ships as a variable font, so 450 renders as itself.",
+        "value": "450"
       },
       {
         "path": "primitive.typography.weight.medium",
@@ -11583,6 +11588,13 @@
         "cssVar": "--primitive-typography-weight-bold",
         "type": "fontWeight",
         "value": "700"
+      },
+      {
+        "path": "primitive.typography.weight.display",
+        "cssVar": "--primitive-typography-weight-display",
+        "type": "fontWeight",
+        "description": "Display, title and title-sm weight, set in Sora (ADR-063).",
+        "value": "800"
       },
       {
         "path": "primitive.typography.lineHeight.compact",
@@ -12162,7 +12174,7 @@
         "path": "semantic.color.content.tertiary",
         "cssVar": "--semantic-color-content-tertiary",
         "type": "color",
-        "description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+        "description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
         "alias": "{primitive.color.neutral.500}",
         "resolvedValue": "#737373",
         "dark": {
@@ -12279,7 +12291,7 @@
         "path": "semantic.color.border.subdued",
         "cssVar": "--semantic-color-border-subdued",
         "type": "color",
-        "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
+        "description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
@@ -12754,9 +12766,9 @@
         "type": "typography",
         "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "48px",
-          "fontWeight": "700",
+          "fontWeight": "800",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.05"
         }
@@ -12767,9 +12779,9 @@
         "type": "typography",
         "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
-          "fontWeight": "700",
+          "fontWeight": "800",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -12780,9 +12792,9 @@
         "type": "typography",
         "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "18px",
-          "fontWeight": "700",
+          "fontWeight": "800",
           "letterSpacing": "0em",
           "lineHeight": "1.375"
         }
@@ -12795,7 +12807,7 @@
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "18px",
-          "fontWeight": "400",
+          "fontWeight": "450",
           "letterSpacing": "0em",
           "lineHeight": "1.6",
           "maxWidth": "60ch"
@@ -12832,11 +12844,11 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so it renders at 400 whatever weight.regular is. The mono companion, role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
           "fontSize": "15px",
-          "fontWeight": "400",
+          "fontWeight": "450",
           "letterSpacing": "0em",
           "lineHeight": "1.5",
           "maxWidth": "60ch"
@@ -12848,9 +12860,9 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.title",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
-          "fontWeight": "700",
+          "fontWeight": "800",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -12861,9 +12873,9 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.title",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
-          "fontWeight": "700",
+          "fontWeight": "800",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -12874,9 +12886,9 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.title",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "24px",
-          "fontWeight": "700",
+          "fontWeight": "800",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }

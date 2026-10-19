@@ -21,6 +21,9 @@
   --primitive-typography-family-primary:
     var(--hds-docs-font-sans), 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', sans-serif;
+  --primitive-typography-family-display:
+    var(--hds-docs-font-display), 'Sora', 'Plus Jakarta Sans', system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --primitive-typography-family-mono:
     var(--hds-docs-font-mono), 'IBM Plex Mono', 'Courier New', monospace;
   /* The font dial (ADR-023) re-points the type roles inside any HDS subtree (HdsThemeProvider,
@@ -55,6 +58,15 @@
 
 html {
   font-family: var(--primitive-typography-family-primary);
+}
+
+/* Headings take the HDS display face (Sora 800, ADR-063), as the
+   display and title roles do; the body face stays on everything else. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--semantic-typography-title-font-family);
 }
 
 /*

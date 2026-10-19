@@ -1,0 +1,1 @@
+- ADR-063: display, title and title-sm set in self-hosted Sora 800 (OFL-1.1), body weight 450 on a variable Plus Jakarta Sans (Adrian, 2026-10-17); new display dial `--hds-font-family-display`; type sizes unchanged.
