@@ -20,7 +20,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { readTokenSource } from './lib/token-source.mjs';
 import { resolveAlias } from './lib/token-tree.mjs';
-import { PAIRS, NONTEXT_PAIRS } from './lib/contrast-pairs.mjs';
+import { BASE_PAIRS, PAIRS, NONTEXT_PAIRS } from './lib/contrast-pairs.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const tokenPath = resolve(__dirname, '../hirobius.tokens.json');
@@ -53,9 +53,19 @@ function getByPath(obj, path) {
  * Resolve a semantic color token to a concrete hex string for a given mode.
  * For light: uses $value (after alias resolution).
  * For dark:  uses $extensions['com.figma.variables'].modes.Dark, falls back to $value.
+ * With an `overlay` (an accent theme), its leaf wins over the base leaf.
  */
-function resolveSemanticHex(dotPath, mode) {
-  const node = getByPath(tokens, dotPath);
+/** `base` with each `layer` leaf laid over it, so overlay aliases resolve through the overlay too. */
+function layered(base, layer) {
+  if (!layer || typeof layer !== 'object' || '$value' in layer) return layer;
+  const out = { ...base };
+  for (const [k, v] of Object.entries(layer)) out[k] = k in base ? layered(base[k], v) : v;
+  return out;
+}
+
+function resolveSemanticHex(dotPath, mode, overlay = null) {
+  const tree = overlay ? layered(tokens, overlay) : tokens;
+  const node = getByPath(tree, dotPath);
   if (!node) throw new Error(`Semantic token not found: ${dotPath}`);
 
   let rawValue;
@@ -67,7 +77,7 @@ function resolveSemanticHex(dotPath, mode) {
     rawValue = node.$value;
   }
 
-  const hex = resolveAlias(rawValue, tokens, { maxDepth: 10 });
+  const hex = resolveAlias(rawValue, tree, { maxDepth: 10 });
   if (typeof hex !== 'string' || !/^#[0-9a-fA-F]{6}$/.test(hex)) {
     throw new Error(
       `Could not resolve ${dotPath} (${mode}) to a 6-digit hex. Got: ${JSON.stringify(hex)}`,
@@ -117,7 +127,7 @@ function passNonText(ratio) {
 
 // ── Main ──────────────────────────────────────────────────────
 
-const COL_PAIR = 34;
+const COL_PAIR = 50;
 const COL_RATIO = 8;
 
 function fmt(ratio) {
@@ -131,11 +141,14 @@ function _aaaGlyph(ratio) {
   return passAAA(ratio) ? '✓' : '✗';
 }
 
-const results = PAIRS.map(({ label, text, bg }) => {
-  const textLight = resolveSemanticHex(text, 'light');
-  const bgLight = resolveSemanticHex(bg, 'light');
-  const textDark = resolveSemanticHex(text, 'dark');
-  const bgDark = resolveSemanticHex(bg, 'dark');
+// Fixture mode checks the single fixture file, so accent-theme pairs are left out.
+const allPairs = isFixtureMode ? BASE_PAIRS : PAIRS;
+
+const results = allPairs.map(({ label, text, bg, overlay }) => {
+  const textLight = resolveSemanticHex(text, 'light', overlay);
+  const bgLight = resolveSemanticHex(bg, 'light', overlay);
+  const textDark = resolveSemanticHex(text, 'dark', overlay);
+  const bgDark = resolveSemanticHex(bg, 'dark', overlay);
 
   const lightRatio = contrastRatio(textLight, bgLight);
   const darkRatio = contrastRatio(textDark, bgDark);

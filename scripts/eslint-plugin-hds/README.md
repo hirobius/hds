@@ -71,6 +71,7 @@ export default [
 | Rule                                                                 | Default | What it catches                                                                                        |
 | -------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
 | [`hds/max-two-meta-items`](#hdsmax-two-meta-items)                   | error   | Bullet-separated lines (`A · B · C`) with three or more items; use `MetaLine`, one row per extra item. |
+| [`hds/no-delight-on-actions`](#hdsno-delight-on-actions)             | error   | The lime delight accent (`semantic.accent.delight.*`) on a button, a link or a focus style.            |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
 | [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                    |
 | [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.         |
@@ -88,6 +89,10 @@ export default [
 <MetaLine items={['Acme Cloud', 'Remote']} />
 <MetaLine items={['Applied 3 days ago']} />
 ```
+
+### `hds/no-delight-on-actions`
+
+The lime delight accent is for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Flags a delight reference (CSS var, token path or arbitrary Tailwind value) in the props of `<button>`, `<a>` or any `*Button` / `*Link` component, in a `focus:` / `focus-visible:` / `focus-within:` class, and anywhere in a button or link component file. Actions and focus take `semantic.accent.*`.
 
 ### `hds/no-status-clutter`
 

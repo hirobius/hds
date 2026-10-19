@@ -67,6 +67,7 @@ const tokenRules = [
   'Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.',
   'Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).',
   "Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.",
+  'Accent: graphite by default; `data-accent="cobalt"` on `<html>` swaps the accent tokens to cobalt. The lime delight accent (`semantic.accent.delight.*`) is for delight moments only (streak or win badge, "new" tag, best-fit highlight, confetti, illustration), never buttons, links or focus; text on it is always ink. Enforced by `hds/no-delight-on-actions`.',
   'Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.',
 ];
 
