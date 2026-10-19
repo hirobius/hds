@@ -108,8 +108,11 @@ function bestPractices(spec, isLinkable, section, description) {
   if (u?.when && !readerText(u.when).startsWith(description)) items.push(prose(u.when));
   if (u?.whenNot) {
     const not = prose(u.whenNot);
-    // "Not for navigating…", keeping a leading acronym or code span as written.
-    items.push(`Not for ${/^[A-Z][a-z]/.test(not) ? not[0].toLowerCase() + not.slice(1) : not}`);
+    // "Not for navigating…" / "Not for a chip…": lowercase a leading word, keeping an acronym
+    // (a second capital or digit) or code span as written.
+    items.push(
+      `Not for ${/^[A-Z](?![A-Z0-9])/.test(not) ? not[0].toLowerCase() + not.slice(1) : not}`,
+    );
   }
   for (const i of Array.isArray(u?.useInstead) ? u.useInstead : []) {
     const ref = isLinkable(i.component)

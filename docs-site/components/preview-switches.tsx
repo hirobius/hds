@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Button, Popover, SegmentedControl, Stack, Tooltip } from '@hirobius/design-system';
+import { Settings } from '@hirobius/design-system/icons';
 import {
   CORNERS,
   SHADOWS,
@@ -8,39 +10,19 @@ import {
   applySwitches,
   readSwitches,
   writeSwitches,
+  type Corners,
+  type Shadow,
   type Switches,
 } from '../lib/preview-switches';
 
-function Group<T extends string>({
-  label,
-  options,
-  value,
-  onChange,
-}: {
-  label: string;
-  options: readonly T[];
-  value: T;
-  onChange: (v: T) => void;
-}) {
-  return (
-    <div role="group" aria-label={label} className="hds-docs-switch">
-      <span className="hds-docs-switch-label">{label}</span>
-      {options.map((o) => (
-        <button
-          key={o}
-          type="button"
-          aria-pressed={value === o}
-          data-docs-switch={`${label.toLowerCase()}-${o}`}
-          onClick={() => onChange(o)}
-        >
-          {o}
-        </button>
-      ))}
-    </div>
-  );
-}
+const options = <T extends string>(values: readonly T[]) =>
+  values.map((v) => ({ value: v, label: v[0].toUpperCase() + v.slice(1) }));
 
-/** Corners + Shadow preview switches for the docs nav (hds#794). Persist per viewer. */
+/**
+ * Display settings for the docs nav (hds#794): one icon button beside the theme switcher that
+ * opens a Popover with the Corners + Shadow preview switches. Persists per viewer. The saved
+ * choice is applied on mount, so it holds whether or not the popover is ever opened.
+ */
 export function PreviewSwitches() {
   const [s, setS] = useState<Switches>(DEFAULT_SWITCHES);
 
@@ -58,19 +40,38 @@ export function PreviewSwitches() {
   };
 
   return (
-    <div className="hds-docs-switches">
-      <Group
-        label="Corners"
-        options={CORNERS}
-        value={s.corners}
-        onChange={(corners) => update({ corners })}
-      />
-      <Group
-        label="Shadow"
-        options={SHADOWS}
-        value={s.shadow}
-        onChange={(shadow) => update({ shadow })}
-      />
-    </div>
+    <Popover>
+      <Tooltip>
+        <Tooltip.Trigger asChild>
+          <Popover.Trigger asChild>
+            <Button
+              variant="secondary"
+              size="sm"
+              iconOnly
+              label="Display settings"
+              iconLeft={<Settings aria-hidden />}
+              data-docs-switch-trigger
+            />
+          </Popover.Trigger>
+        </Tooltip.Trigger>
+        <Tooltip.Content>Display settings</Tooltip.Content>
+      </Tooltip>
+      <Popover.Content align="end" aria-label="Display settings" className="w-auto">
+        <Stack gap="gap">
+          <SegmentedControl
+            label="Corners"
+            options={options(CORNERS)}
+            value={s.corners}
+            onChange={(v) => update({ corners: v as Corners })}
+          />
+          <SegmentedControl
+            label="Shadow"
+            options={options(SHADOWS)}
+            value={s.shadow}
+            onChange={(v) => update({ shadow: v as Shadow })}
+          />
+        </Stack>
+      </Popover.Content>
+    </Popover>
   );
 }
