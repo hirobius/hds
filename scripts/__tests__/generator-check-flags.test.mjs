@@ -124,6 +124,7 @@ describe('generate-llms-txt --check', () => {
     'package.json',
     'hirobius.tokens.json',
     'content/docs/voice.mdx',
+    'codemods/patterns-subpath.names.json',
     'DESIGN.md',
     'llms.txt',
     'public/llms.txt',

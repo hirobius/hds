@@ -134,6 +134,9 @@ export function generateLlmsTxt({ write = true } = {}) {
   const componentApi = stripObservedTokens(
     write ? writeComponentApiManifest() : buildComponentApi(),
   );
+  const patternNames = JSON.parse(
+    readFileSync(join(ROOT, 'codemods', 'patterns-subpath.names.json'), 'utf8'),
+  ).names;
 
   const tokensPath = join(ROOT, 'hirobius.tokens.json');
   const quickTokenReference = buildTokenQuickReference(tokensPath);
@@ -208,7 +211,7 @@ ${voiceMarkdown(readVoice(ROOT))}
 
 ${NEEDS_INTRO} Generated from \`mcp/guide.mjs\`, the same list as \`AGENTS.md\`.
 
-${needsMarkdown(componentApi.components ?? {})}
+${needsMarkdown(componentApi.components ?? {}, patternNames)}
 
 ## System Architecture
 
