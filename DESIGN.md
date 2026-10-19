@@ -26,27 +26,28 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 ## Typography
 
 <!-- auto:start:typography -->
-HDS ships two typefaces:
+HDS ships three typefaces — each with a distinct role:
 
-- **Text font**: Plus Jakarta Sans. Headings, prose, labels, captions, and UI copy; the type roles set size and weight.
+- **Display / Heading font**: Sora. Bound to the `display` and `title` styles.
+- **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · title) use `700` bold; body, UI, and caption use `400` regular / `500` medium.
+Weights declared: `450` regular, `500` medium, `700` bold, `800` display. Heading styles (display · title) use `800` display; body, UI, and caption use `450` regular / `500` medium. Declared but unused by any semantic role: `700` bold.
 
 ### Type ramp
 
 | Role | Size (desktop max) | Weight | Use |
 | --- | --- | --- | --- |
-| `semantic.typography.display` | 48px | 700 | One per page, hero only |
-| `semantic.typography.title` | 24px | 700 | Section and card headings |
-| `semantic.typography.titleSm` | 18px | 700 | Small heading inside a card or section band |
-| `semantic.typography.body` | 18px | 400 | Prose |
+| `semantic.typography.display` | 48px | 800 | One per page, hero only |
+| `semantic.typography.title` | 24px | 800 | Section and card headings |
+| `semantic.typography.titleSm` | 18px | 800 | Small heading inside a card or section band |
+| `semantic.typography.body` | 18px | 450 | Prose |
 | `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
-| `semantic.typography.mono` | 15px | 400 | Code and ids |
-| `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.mono` | 15px | 450 | Code and ids |
+| `semantic.typography.h1` | 24px | 800 | deprecated: use semantic.typography.title |
+| `semantic.typography.h2` | 24px | 800 | deprecated: use semantic.typography.title |
+| `semantic.typography.h3` | 24px | 800 | deprecated: use semantic.typography.title |
 | `semantic.typography.eyebrow` | 14px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
@@ -235,6 +236,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (428 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (429 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

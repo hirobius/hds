@@ -70,11 +70,11 @@ All three:
 ### Brand fonts (optional)
 
 ```ts
-import '@hirobius/design-system/fonts.css'; // Plus Jakarta Sans 400/500/700 + IBM Plex Mono 400
+import '@hirobius/design-system/fonts.css'; // Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400
 ```
 
-`fonts.css` declares the four `@font-face` blocks with `font-display: swap`. Its
-URLs are relative (`./fonts/plus-jakarta-sans-400.woff2`), and the woff2 files ship in the
+`fonts.css` declares the three `@font-face` blocks with `font-display: swap`. Its
+URLs are relative (`./fonts/plus-jakarta-sans-variable.woff2`), and the woff2 files ship in the
 package, so Vite, Next and webpack resolve and hash them; there is nothing to
 copy. Import it alongside one of the stylesheets above to keep the HDS fonts.
 Skip it to bring your own: set `--hds-font-family` (and `--hds-font-family-mono`
@@ -229,7 +229,7 @@ export function Example() {
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@hirobius/design-system`               | The 44-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns` |
 | `@hirobius/design-system/styles.css`    | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                                                                                                                                 |
-| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Plus Jakarta Sans 400/500/700 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                             |
+| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                   |
 | `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                                                                                                                             |
 | `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                                                                                                                            |
 | `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                                                                                                                                         |

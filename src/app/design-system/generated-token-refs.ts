@@ -181,7 +181,8 @@ export const tokenRefs = {
       weight: {
         regular: "var(--primitive-typography-weight-regular)",
         medium: "var(--primitive-typography-weight-medium)",
-        bold: "var(--primitive-typography-weight-bold)"
+        bold: "var(--primitive-typography-weight-bold)",
+        display: "var(--primitive-typography-weight-display)"
       },
       lineHeight: {
         compact: "var(--primitive-typography-lineHeight-compact)",

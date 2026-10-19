@@ -220,10 +220,10 @@ describe('buildFigmaModel — not in Figma', () => {
 describe('buildFigmaModel — ch widths', () => {
   it('converts ch to px with the measured "0" advance at the body text size', () => {
     const model = buildFigmaModel(fixture);
-    // 50ch × 0.732em (Plus Jakarta Sans 400 "0" advance) × 17px (body font size) = 622.2px
+    // 50ch × 0.728em (Plus Jakarta Sans 450 "0" advance) × 17px (body font size) = 618.8px
     expect(variable(model, 'primitive.size.width.50ch')).toMatchObject({
       unit: 'px',
-      valuesByMode: { Default: { value: 622.2 } },
+      valuesByMode: { Default: { value: 618.8 } },
     });
     expect(variable(model, 'semantic.layout.prose.maxWidth')).toMatchObject({
       unit: 'px',
@@ -235,7 +235,7 @@ describe('buildFigmaModel — ch widths', () => {
     const changed = structuredClone(fixture);
     changed.semantic.typography.body.$value.fontFamily = '{primitive.typography.family.mono}';
     expect(() => buildFigmaModel(changed)).toThrow(
-      /ch.*measured for Plus Jakarta Sans 400.*IBM Plex Mono 400.*re-measure/,
+      /ch.*measured for Plus Jakarta Sans 450.*IBM Plex Mono 450.*re-measure/,
     );
   });
 });

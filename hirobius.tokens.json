@@ -581,6 +581,7 @@
         },
         "display": {
           "$value": [
+            "Sora",
             "Plus Jakarta Sans",
             "system-ui",
             "-apple-system",
@@ -588,7 +589,7 @@
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites."
+          "$description": "Display and title face: Sora 800 (OFL, ADR-063); falls back to Plus Jakarta Sans."
         },
         "mono": {
           "$value": ["IBM Plex Mono", "Courier New", "monospace"],
@@ -678,13 +679,18 @@
       "weight": {
         "$type": "fontWeight",
         "regular": {
-          "$value": 400
+          "$value": 450,
+          "$description": "Body weight. Plus Jakarta Sans ships as a variable font, so 450 renders as itself."
         },
         "medium": {
           "$value": 500
         },
         "bold": {
           "$value": 700
+        },
+        "display": {
+          "$value": 800,
+          "$description": "Display, title and title-sm weight, set in Sora (ADR-063)."
         }
       },
       "lineHeight": {
@@ -1302,7 +1308,7 @@
         },
         "tertiary": {
           "$value": "{primitive.color.neutral.500}",
-          "$description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+          "$description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1421,7 +1427,7 @@
         },
         "subdued": {
           "$value": "{primitive.color.neutral.200}",
-          "$description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
+          "$description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
           "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
           "$extensions": {
             "com.figma.variables": {
@@ -1828,12 +1834,12 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "5-role type ramp plus title-sm and mono (hds#483): display, title, titleSm, body, ui, caption, mono. h1, h2, h3 and eyebrow are deprecated aliases.",
+      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; h1-h3 and eyebrow are deprecated aliases.",
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.5xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.display}"
         },
@@ -1843,7 +1849,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1853,7 +1859,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.lg}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.snug}"
         },
@@ -1909,13 +1915,13 @@
             "unit": "ch"
           }
         },
-        "$description": "Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6."
+        "$description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so it renders at 400 whatever weight.regular is. The mono companion, role 6 of 6."
       },
       "h1": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1926,7 +1932,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1937,7 +1943,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },

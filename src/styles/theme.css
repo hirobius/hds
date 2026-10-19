@@ -40,7 +40,7 @@
  *     • theme    → data-theme="dark"        (light = unset)
  *     • density  → data-density="compact"   (comfortable = unset)
  *     • brand    → data-brand="<slug>"      (+ data-tenant alias; base = unset)
- *     • font     → --hds-font-family / --hds-font-family-mono  (defaults below)
+ *     • font     → --hds-font-family / -mono / -display  (defaults below)
  */
 
 @import 'tailwindcss';
@@ -96,6 +96,10 @@
   --hds-font-family:
     'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --hds-font-family-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  /* Display dial (ADR-063, hds#480): display, title and title-sm. */
+  --hds-font-family-display:
+    'Sora', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
   /* -- Type metrics ----------------------------------------------------------- */
   /* The --hds-font-size-xs/sm/base/lg/xl block that was here held a SECOND,
      hand-authored ramp (11/13/16/20/28 as literal px, not var refs) that
@@ -250,21 +254,21 @@
  * keeps specificity at zero so tenant and component overrides still win. Both
  * layers are listed: CSS reads the semantic roles, the JS style objects read the
  * primitive families. src/styles/__tests__/font-dial.test.ts fails if a new
- * font-family token appears without a line here. Headings follow the body dial;
- * a separate display dial is hds#480. */
+ * font-family token appears without a line here. Display, title and title-sm
+ * follow the display dial (ADR-063); body, ui and caption the body dial. */
 :where([data-hds], [data-hds] *) {
   --primitive-typography-family-primary: var(--hds-font-family);
-  --primitive-typography-family-display: var(--hds-font-family);
+  --primitive-typography-family-display: var(--hds-font-family-display);
   --primitive-typography-family-mono: var(--hds-font-family-mono);
-  --semantic-typography-display-font-family: var(--hds-font-family);
-  --semantic-typography-title-font-family: var(--hds-font-family);
-  --semantic-typography-titleSm-font-family: var(--hds-font-family);
+  --semantic-typography-display-font-family: var(--hds-font-family-display);
+  --semantic-typography-title-font-family: var(--hds-font-family-display);
+  --semantic-typography-titleSm-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
-  --semantic-typography-h1-font-family: var(--hds-font-family);
+  --semantic-typography-h1-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
-  --semantic-typography-h2-font-family: var(--hds-font-family);
+  --semantic-typography-h2-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
-  --semantic-typography-h3-font-family: var(--hds-font-family);
+  --semantic-typography-h3-font-family: var(--hds-font-family-display);
   --semantic-typography-body-font-family: var(--hds-font-family);
   --semantic-typography-ui-font-family: var(--hds-font-family);
   --semantic-typography-caption-font-family: var(--hds-font-family);
