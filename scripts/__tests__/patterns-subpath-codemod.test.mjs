@@ -175,6 +175,11 @@ describe('transformSource: other import forms', () => {
     expect(out.source).toBe(`import HDS from '${ROOT}';\nimport { Page } from '${SUB}';\n`);
   });
 
+  it('keeps a valid default-only root when a comment sits before the moved braces', () => {
+    const out = transformSource(`import HDS, /* y */ { Page } from '${ROOT}';\n`, NAMES);
+    expect(out.source).toBe(`import HDS /* y */ from '${ROOT}';\nimport { Page } from '${SUB}';\n`);
+  });
+
   it('rewrites re-exports', () => {
     const out = transformSource(`export { Button, Page } from '${ROOT}';\n`, NAMES);
     expect(out.source).toBe(`export { Button } from '${ROOT}';\nexport { Page } from '${SUB}';\n`);

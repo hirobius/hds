@@ -244,7 +244,9 @@ function render(
   }
   const tail = `${tailMid ?? ' from '}${quote}${pkg}${quote}${semi}`;
   if (specs.length === 0) {
-    const h = headMid ? headMid.replace(/\s*,\s*$/, '') : `${kw}${typeKw ? ' type' : ''} ${def}`;
+    const h = headMid
+      ? headMid.replace(/\s*,(\s*(?:\/\*[\s\S]*?\*\/\s*)*)$/, '$1').trimEnd()
+      : `${kw}${typeKw ? ' type' : ''} ${def}`;
     return `${h}${tail}`;
   }
   const parts = [endComment, ...specs.flatMap((s) => [s.lead, s.text, s.tail])];
