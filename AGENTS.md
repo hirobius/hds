@@ -25,18 +25,23 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 
 - **Outermost wrapper of a screen** → `Page`, `Stack`. Not: `Container`, `Box`, a bare Stack as the root.
   `<Page><Stack gap="spacious">…one child per section…</Stack></Page>`. `Container` is for a full-bleed surface that is not a page.
+  Import: `import { Page } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Screen title with breadcrumb, status and actions** → `PageHeader`, `Breadcrumb`, `Badge`. Not: Text as the page title, a Stack row of Text and Badge.
   Exactly one per screen: `<PageHeader breadcrumb={<Breadcrumb items={[{ label, href }, { label }]} />} title="…" status={<Badge tone="success">Active</Badge>} />`.
+  Import: `import { PageHeader } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Row of headline numbers (stats, KPIs, counts, totals)** → `MetricTiles`, `MetricTile`. Not: `Stat`, `StatusTile`, `CardMetric`, Card with Text.
   `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, a `Card` with `Card.Row` for a state with notes (never a number; it replaces the deprecated `StatusTile`).
+  Import: `import { MetricTiles, MetricTile } from '@hirobius/design-system/patterns';`
 - **Table of records with row actions** → `DataTableSection`, `Badge`, `Button`. Not: Table on its own, Card around a Table.
   `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
+  Import: `import { DataTableSection } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Switch between panels of related content** → `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. Not: `SegmentedControl`, Button rows.
   `<Tabs defaultValue="a"><TabsList><TabsTrigger value="a">A</TabsTrigger></TabsList><TabsContent value="a">…</TabsContent></Tabs>`.
 - **Status label in a header or table cell** → `Badge`. Not: `Tag`, `Text`.
   `<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.
 - **Form with fields and a submit button** → `Form`, `Textarea`, `Input`, `FormActions`, `Button`. Not: a raw `<form>`, a Stack of Buttons as the footer.
   `<Form onSubmit={…}><Textarea label="Notes" … /><FormActions primary={<Button type="submit">Save note</Button>} /></Form>`; every field takes its own `label`.
+  Import: `import { Form, FormActions } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Confirm a destructive or irreversible action (delete, archive, remove)** → `AlertDialog`, `Button`. Not: `Dialog`, `window.confirm`.
   Trigger, title, description, Cancel and Action parts: `<AlertDialog><AlertDialog.Trigger asChild><Button …>Archive</Button></AlertDialog.Trigger><AlertDialog.Content><AlertDialog.Header><AlertDialog.Title>…</AlertDialog.Title><AlertDialog.Description>…</AlertDialog.Description></AlertDialog.Header><AlertDialog.Footer><AlertDialog.Cancel asChild><Button variant="secondary">Cancel</Button></AlertDialog.Cancel><AlertDialog.Action asChild><Button tone="danger" onClick={…}>Archive</Button></AlertDialog.Action></AlertDialog.Footer></AlertDialog.Content></AlertDialog>`. Focus moves in and returns to the trigger for you.
 - **Brief confirmation after an action (saved, archived, sent)** → `ToastProvider`, `useToast`. Not: `Badge`, `Alert`, `Text`.
@@ -57,6 +62,7 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
   `DataTableSection` shows its own through `emptyTitle`; use `EmptyState` elsewhere.
 - **The one irreversible action of a screen (delete the client, close the account)** → `DestructiveSection`. Not: a danger Button that acts without a confirm.
   Last on the screen: `<DestructiveSection title="Delete client" description="…" actionLabel="Delete" onConfirm={…} />`; it opens its own AlertDialog. A per-row destructive action uses AlertDialog directly.
+  Import: `import { DestructiveSection } from '@hirobius/design-system/patterns';`
 - **Read-only details as label and value pairs** → `MetadataList`, `Field`. Not: a Table with two columns, Text pairs in a Stack.
   `<MetadataList items={[{ term: "Owner", description: "Ada" }]} />` for a set; `Field` for one pair.
 - **A person, or a group of people** → `Avatar`, `AvatarGroup`. Not: an image in a rounded Box.

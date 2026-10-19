@@ -13,6 +13,7 @@
  */
 import { readFileSync } from 'node:fs';
 import maxTwoMetaItems from './rules/max-two-meta-items.mjs';
+import noDelightOnActions from './rules/no-delight-on-actions.mjs';
 import noRawControls from './rules/no-raw-controls.mjs';
 import noRawHex from './rules/no-raw-hex.mjs';
 import noStatusClutter from './rules/no-status-clutter.mjs';
@@ -31,6 +32,7 @@ const plugin = {
   meta: packageMeta,
   rules: {
     'max-two-meta-items': maxTwoMetaItems,
+    'no-delight-on-actions': noDelightOnActions,
     'no-raw-controls': noRawControls,
     'no-raw-hex': noRawHex,
     'no-raw-px-spacing': noRawPxSpacing,
@@ -47,6 +49,7 @@ plugin.configs = {
       plugins: { hds: plugin },
       rules: {
         'hds/max-two-meta-items': 'error',
+        'hds/no-delight-on-actions': 'error',
         'hds/no-raw-controls': 'error',
         'hds/no-raw-hex': 'error',
         'hds/no-raw-px-spacing': 'error',

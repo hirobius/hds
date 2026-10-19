@@ -384,6 +384,16 @@ describe('page trimming', () => {
     expect(md).toContain('- Not for other things.');
   });
 
+  it('lowercases a whenNot that opens with an article, keeps an acronym (Not for A chip…)', () => {
+    const notFor = (whenNot: string) =>
+      page({}, { description: 'X.', usage: { when: 'Y.', whenNot } });
+    expect(notFor('A chip people can toggle, or a message.')).toContain(
+      '- Not for a chip people can toggle, or a message.',
+    );
+    expect(notFor('An inline note.')).toContain('- Not for an inline note.');
+    expect(notFor('API keys or `code`.')).toContain('- Not for API keys or `code`.');
+  });
+
   it('leaves out deprecated props and an all-empty Default column', () => {
     const p = page({
       components: {

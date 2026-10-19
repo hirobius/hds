@@ -6,11 +6,18 @@ import { test, expect } from '@playwright/test';
  */
 const BUTTON = '/docs/components/button';
 
+/** The controls live in a Popover opened by the display-settings button beside the theme switch. */
+async function choose(page: import('@playwright/test').Page, option: string) {
+  await page.locator('[data-docs-switch-trigger]:visible').first().click();
+  await page.getByRole('radio', { name: option }).click();
+  await page.keyboard.press('Escape');
+}
+
 test.describe('docs preview switches', () => {
   test('sharp + hard renders a button with radius 0 and the offset shadow', async ({ page }) => {
     await page.goto(BUTTON);
-    await page.click('[data-docs-switch="corners-sharp"]');
-    await page.click('[data-docs-switch="shadow-hard"]');
+    await choose(page, 'Sharp');
+    await choose(page, 'Hard');
     const btn = page.locator('main button[data-variant="primary"]').first();
     await expect(btn).toBeVisible();
     const css = await btn.evaluate((el) => {
@@ -23,7 +30,7 @@ test.describe('docs preview switches', () => {
 
   test('choice persists across reloads', async ({ page }) => {
     await page.goto(BUTTON);
-    await page.click('[data-docs-switch="corners-sharp"]');
+    await choose(page, 'Sharp');
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('data-docs-corners', 'sharp');
   });
@@ -41,8 +48,8 @@ test.describe('docs preview switches', () => {
         }
       }).observe({ type: 'layout-shift', buffered: false });
     });
-    await page.click('[data-docs-switch="corners-sharp"]');
-    await page.click('[data-docs-switch="shadow-hard"]');
+    await choose(page, 'Sharp');
+    await choose(page, 'Hard');
     await page.waitForTimeout(300);
     const cls = await page.evaluate(() => (window as unknown as { __cls: number }).__cls);
     expect(cls).toBeLessThan(0.01);
