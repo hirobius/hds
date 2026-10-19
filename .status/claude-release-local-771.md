@@ -1,1 +1,1 @@
-- `pnpm release:local` publishes from a laptop without GitHub Actions (dry run by default; `--publish` for real), ops#771.
+release:local hardened: --ref rejected with --publish, fetch failure stops, frozen install first (ops#771).
