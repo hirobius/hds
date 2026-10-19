@@ -5,6 +5,7 @@ import type { MDXComponents } from 'mdx/types';
 import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
+import { MdxPre } from './components/mdx-code-block';
 import { Mermaid } from './components/mermaid';
 import { TokenTable } from './components/token-table';
 import {
@@ -23,6 +24,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     // per-heading copy-link button.
     h2: (props: HeadingProps) => <h2 {...props} />,
     h3: (props: HeadingProps) => <h3 {...props} />,
+    // Code fences are the HDS CodeBlock, not Fumadocs' (follows the Corners switch).
+    pre: MdxPre,
     TokenTable,
     ComponentTokens,
     ComponentPreview,
