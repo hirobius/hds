@@ -24,7 +24,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     // per-heading copy-link button.
     h2: (props: HeadingProps) => <h2 {...props} />,
     h3: (props: HeadingProps) => <h3 {...props} />,
-    // Code fences are the HDS CodeBlock, not Fumadocs' (follows the Corners/Shadow switches).
+    // Code fences are the HDS CodeBlock, not Fumadocs' (follows the Corners switch).
     pre: MdxPre,
     TokenTable,
     ComponentTokens,

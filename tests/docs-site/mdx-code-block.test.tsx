@@ -1,6 +1,6 @@
 /**
  * MDX code fences render through the HDS CodeBlock, not Fumadocs' own one, so
- * they take HDS radius tokens and follow the docs Corners/Shadow switches.
+ * they take HDS radius tokens and the docs Corners switch, and drop Fumadocs' shadow.
  * The fence's text is the copy source and HDS colours it by language.
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
