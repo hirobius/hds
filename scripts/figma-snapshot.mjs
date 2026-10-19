@@ -38,6 +38,7 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { spawnSync } from 'child_process';
 import { join, dirname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import {
@@ -58,17 +59,33 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
  * `bindingFallbacks` (a receipt, a diff, snapshot.js: none of them sweeps the
  * paints) keeps the committed file's record, which has its own `takenAt`.
  *
- * @param {{ root: string, from?: string, text?: string }} options  the file, or its text
+ * It records `matchesCommit`, HEAD at ingest: commit token changes first, then ingest.
+ *
+ * @param {{ root: string, from?: string, text?: string, commit?: string }} options  the file, or its text
  */
-export function ingestSnapshot({ root, from, text = readFileSync(from, 'utf8') }) {
+export function ingestSnapshot({
+  root,
+  from,
+  text = readFileSync(from, 'utf8'),
+  commit = headCommit(root),
+}) {
   const parsed = parseSnapshotFile(text);
   const outPath = join(root, 'figma', 'snapshot.json');
-  const verified = parsed.bindingFallbacks
+  const withFallbacks = parsed.bindingFallbacks
     ? parsed
     : { ...parsed, bindingFallbacks: committedFallbacks(outPath) };
+  // The commit this snapshot matches: the release gate fails when the tokens
+  // changed after it (scripts/check-figma-release.mjs, hds#801).
+  const verified = { ...withFallbacks, matchesCommit: commit };
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, serializeSnapshotFile(verified));
   return { ...verified, outPath };
+}
+
+/** The full hash of HEAD in `root`, or undefined outside a git checkout. */
+function headCommit(root) {
+  const out = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' });
+  return out.status === 0 ? out.stdout.trim() : undefined;
 }
 
 /** The bound-colour fallback record in the committed snapshot file, or undefined (none, or the file does not verify). */

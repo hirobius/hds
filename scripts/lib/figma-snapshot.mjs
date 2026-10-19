@@ -17,12 +17,15 @@ export const SNAPSHOT_SCHEMA_VERSION = 1;
 /**
  * The committed text: stable two-space JSON with a trailing newline.
  * `bindingFallbacks` (the bound-colour fallback sweep, figma-fallbacks.mjs) is
- * a sibling of `snapshot`, not part of it: it has its own checksum and its own
+ * a sibling of `snapshot`, not part of it (so is `matchesCommit`, the git commit
+ * the snapshot was ingested at, which the release gate reads, hds#801): it has its own checksum and its own
  * `takenAt`, so the snapshot's checksum, the base a receipt or diff names and
  * the delta codec are untouched by it.
  */
-export function serializeSnapshotFile({ checksum, snapshot, bindingFallbacks }) {
-  const file = bindingFallbacks ? { checksum, snapshot, bindingFallbacks } : { checksum, snapshot };
+export function serializeSnapshotFile({ checksum, snapshot, bindingFallbacks, matchesCommit }) {
+  const file = { checksum, snapshot };
+  if (bindingFallbacks) file.bindingFallbacks = bindingFallbacks;
+  if (matchesCommit) file.matchesCommit = matchesCommit;
   return `${JSON.stringify(file, null, 2)}\n`;
 }
 
@@ -112,10 +115,11 @@ export function parseSnapshotFile(text) {
       'The snapshot checksum does not match its contents, so it was edited after it was taken (or copied incompletely). Take a new snapshot (pnpm figma:snapshot) instead of editing the JSON.',
     );
   }
-  if (parsed.bindingFallbacks === undefined) return { checksum: parsed.checksum, snapshot };
-  return {
-    checksum: parsed.checksum,
-    snapshot,
-    bindingFallbacks: verifyBindingFallbacks(parsed.bindingFallbacks),
-  };
+  const matchesCommit = typeof parsed.matchesCommit === 'string' ? parsed.matchesCommit : undefined;
+  const result = { checksum: parsed.checksum, snapshot };
+  if (parsed.bindingFallbacks !== undefined) {
+    result.bindingFallbacks = verifyBindingFallbacks(parsed.bindingFallbacks);
+  }
+  if (matchesCommit) result.matchesCommit = matchesCommit;
+  return result;
 }
