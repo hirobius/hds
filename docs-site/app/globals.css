@@ -346,6 +346,14 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabl
     5px 5px 0 hsl(var(--primitive-shadow-color));
 }
 
+/* MDX code fences (components/mdx-code-block.tsx) are the HDS CodeBlock. It sits outside the
+   prose rules (not-prose), so it takes the spacing a prose <pre> had, and never widens the column. */
+.hds-docs-code {
+  margin-block: var(--semantic-space-scale-md);
+  min-width: 0;
+  max-width: 100%;
+}
+
 /* Foundations galleries (components/foundation-visuals.tsx): every swatch,
    specimen, bar, box, card and demo is drawn from hirobius.tokens.json at build
    time; only the gallery chrome below uses fixed sizes. */
