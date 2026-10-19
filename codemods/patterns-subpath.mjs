@@ -93,11 +93,17 @@ const namedRe = (pkg) =>
     `(?:^|(?<=;))([ \\t]*)(import|export)(\\s+type)?\\s*(?:(${ID})\\s*,\\s*)?\\{([^}]*)\\}\\s*from\\s*(['"]) {${pkg.length}}\\6(;?)`,
     'gm',
   );
-const specName = (spec) =>
-  spec
+const specName = (spec) => {
+  const clean = spec.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
+  const raw = clean
     .replace(/^type\s+/, '')
     .split(/\s+as\s+/)[0]
     .trim();
+  if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) {
+    return raw.slice(1, -1);
+  }
+  return raw;
+};
 
 /**
  * The specifiers of one `{ … }` body. The masked body (comments blank) says where
@@ -128,11 +134,12 @@ function parseSpecs(source, code, from, to) {
       const specStart = segStart + a;
       const specEnd = segStart + seg.trimEnd().length;
       const masked = code.slice(specStart, specEnd);
+      const unmaskedText = source.slice(specStart, specEnd);
       specs.push({
-        name: specName(masked),
+        name: specName(unmaskedText),
         key: masked.replace(/\s+/g, ' '),
         lead: source.slice(leadFrom, specStart).trim(),
-        text: source.slice(specStart, specEnd),
+        text: unmaskedText,
         tail: source.slice(specEnd, k).trim(),
       });
     }
@@ -146,7 +153,12 @@ function* statements(source, code, pkg) {
   for (const m of code.matchAll(namedRe(pkg))) {
     const to = m.index + m[0].length;
     if (!source.startsWith(pkg, to - m[7].length - pkg.length - 1)) continue;
-    const bodyAt = m.index + m[0].indexOf('{') + 1;
+    const openBrace = m[0].indexOf('{');
+    const bodyAt = m.index + openBrace + 1;
+    const closeBrace = openBrace + 1 + m[5].length;
+    const quoteIndex = m[0].indexOf(m[6], closeBrace + 1);
+    const quoteAt = m.index + quoteIndex;
+
     yield {
       from: m.index + m[1].length,
       to,
@@ -156,6 +168,8 @@ function* statements(source, code, pkg) {
       quote: m[6],
       semi: m[7],
       multiline: m[5].includes('\n'),
+      headMid: source.slice(m.index + m[1].length, bodyAt - 1),
+      tailMid: source.slice(m.index + closeBrace + 1, quoteAt),
       ...parseSpecs(source, code, bodyAt, bodyAt + m[5].length),
     };
   }
@@ -164,7 +178,8 @@ function* statements(source, code, pkg) {
 /** The leading whitespace of the line `at` is on. */
 function indentOf(source, at) {
   const lineStart = source.lastIndexOf('\n', at - 1) + 1;
-  return /^[ \t]*/.exec(source.slice(lineStart, at).replace(BOM, ''))[0];
+  const linePrefix = source.slice(lineStart, at).replace(BOM, '');
+  return /^[ \t]*$/.test(linePrefix) ? linePrefix : '';
 }
 
 /**
@@ -218,11 +233,20 @@ export function findRemoved(source, removed = loadRemovedNames(), use = loadRepl
  * `indent`. A list goes on one line when its source did and no comment in it
  * needs a line break.
  */
-function render({ kw, typeKw, def, quote, semi }, { specs, endComment, multiline, pkg, indent }) {
-  const head = `${kw}${typeKw ? ' type' : ''} `;
-  const tail = ` from ${quote}${pkg}${quote}${semi}`;
-  if (specs.length === 0) return `${head}${def}${tail}`;
-  const d = def ? `${def}, ` : '';
+function render(
+  { kw, typeKw, def, quote, semi },
+  { specs, endComment, multiline, pkg, indent, headMid, tailMid },
+) {
+  let head = headMid;
+  if (!head) {
+    head = `${kw}${typeKw ? ' type' : ''} `;
+    if (def) head += `${def}, `;
+  }
+  const tail = `${tailMid ?? ' from '}${quote}${pkg}${quote}${semi}`;
+  if (specs.length === 0) {
+    const h = headMid ? headMid.replace(/\s*,\s*$/, '') : `${kw}${typeKw ? ' type' : ''} ${def}`;
+    return `${h}${tail}`;
+  }
   const parts = [endComment, ...specs.flatMap((s) => [s.lead, s.text, s.tail])];
   if (multiline || parts.some((part) => /\n|\/\//.test(part))) {
     const pad = `${indent}  `;
@@ -231,10 +255,10 @@ function render({ kw, typeKw, def, quote, semi }, { specs, endComment, multiline
       `${pad}${s.text},${s.tail ? ` ${s.tail}` : ''}`,
     ]);
     if (endComment) lines.push(`${pad}${endComment}`);
-    return `${head}${d}{\n${lines.join('\n')}\n${indent}}${tail}`;
+    return `${head}{\n${lines.join('\n')}\n${indent}}${tail}`;
   }
   const items = specs.map((s) => [s.lead, s.text, s.tail].filter(Boolean).join(' '));
-  return `${head}${d}{ ${items.join(', ')}${endComment ? ` ${endComment}` : ''} }${tail}`;
+  return `${head}{ ${items.join(', ')}${endComment ? ` ${endComment}` : ''} }${tail}`;
 }
 
 /**
@@ -265,14 +289,35 @@ export function transformSource(source, names) {
     // A comment before the closing brace stays with the root list while it has names.
     const endComment = keep.length > 0 ? '' : st.endComment;
     const lines = [];
+    const movesEntirely = keep.length === 0 && !st.def;
     if (keep.length > 0 || st.def)
-      lines.push(render(st, { ...st, specs: keep, pkg: ROOT_PKG, indent }));
+      lines.push(
+        render(st, {
+          ...st,
+          specs: keep,
+          pkg: ROOT_PKG,
+          indent,
+          headMid: st.headMid,
+          tailMid: st.tailMid,
+        }),
+      );
     if (target) {
       target.add.push(...go);
       if (endComment) target.endComments.push(endComment);
     } else
       lines.push(
-        render({ ...st, def: undefined }, { ...st, specs: go, endComment, pkg: SUBPATH, indent }),
+        render(
+          { ...st, def: undefined },
+          {
+            ...st,
+            specs: go,
+            endComment,
+            pkg: SUBPATH,
+            indent,
+            headMid: movesEntirely ? st.headMid : undefined,
+            tailMid: movesEntirely ? st.tailMid : undefined,
+          },
+        ),
       );
     replacements.push({ from: st.from, to: st.to, indent, lines });
   }

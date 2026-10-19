@@ -191,7 +191,12 @@ function nullishness(code) {
   const coalesce = ops.filter((o) => o.op === '??').pop();
   if (coalesce) {
     const right = nullishness(m.slice(coalesce.at + 2));
-    return right && { nullish: right.nullish, chain: false };
+    if (!right) return null;
+    if (right.nullish === ALWAYS) {
+      const left = nullishness(m.slice(0, coalesce.at));
+      return left && { nullish: left.nullish, chain: false };
+    }
+    return { nullish: right.nullish, chain: false };
   }
   if (ops.some((o) => o.op === '||')) return { nullish: SOMETIMES, chain: false };
   if (/^(['"])\s*\1$/.test(m)) return { nullish: NEVER, chain: true };
@@ -249,7 +254,11 @@ export const RULE = Object.freeze({
           const first = width.valueStart + 1 + code.search(/\S/);
           const last = width.valueStart + 1 + code.trimEnd().length;
           const fallback = ` ?? '${TILE_WIDTH}'`;
-          if (kind.chain) edits.push({ start: last, end: last, text: fallback });
+          let trimmed = code.trim();
+          const isAlreadyParenthesized =
+            trimmed.startsWith('(') && closing(trimmed, 0) === trimmed.length - 1;
+          if (kind.chain || isAlreadyParenthesized)
+            edits.push({ start: last, end: last, text: fallback });
           else
             edits.push(
               { start: first, end: first, text: '(' },
