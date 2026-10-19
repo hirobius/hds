@@ -187,6 +187,30 @@ pre {
   overflow-x: auto;
 }
 
+/* Prose tables (components/mdx-prose.tsx): a frame from HDS tokens, so the Corners switch squares
+   it. Fumadocs' own wrapper hard-codes an 8px radius. */
+.hds-docs-table {
+  position: relative;
+  overflow: auto;
+  margin: var(--semantic-space-scale-lg) 0;
+  border: 1px solid var(--semantic-color-border-default);
+  border-radius: var(--semantic-radius-action);
+}
+/* The frame scrolls, so the table inside fills it instead of shrinking to its content. */
+.prose .hds-docs-table > table {
+  display: table;
+  width: 100%;
+  margin: 0;
+}
+
+/* Search dialog (the Cmd+K one): Fumadocs sets rounded-xl and shadow-2xl on it. Radius and shadow
+   come from HDS tokens, so Corners and Shadow both reach it. Keyed on the result list's id, the
+   one thing only this dialog holds. */
+[role='dialog']:has(#fd-search-list) {
+  border-radius: var(--semantic-radius-action);
+  box-shadow: var(--semantic-shadow-overlay);
+}
+
 /* Collapsed sections (generated pages and token tables): a hairline row with a
    chevron, the content one click away. Native <details>, so it works without JS
    and stays searchable. */
