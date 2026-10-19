@@ -316,6 +316,7 @@
     "promote": "node scripts/promote.mjs",
     "readme:counts": "node scripts/build-readme-counts.mjs",
     "release": "pnpm build:lib && pnpm smoke:consumer --skip-build && changeset publish",
+    "release:local": "node scripts/release-local.mjs",
     "scaffold:component": "node scripts/scaffold-component.mjs",
     "scaffold:tenant": "node scripts/scaffold-tenant.mjs",
     "size-limit": "node scripts/run-size-limit.mjs",

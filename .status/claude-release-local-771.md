@@ -1,0 +1,1 @@
+- `pnpm release:local` publishes from a laptop without GitHub Actions (dry run by default; `--publish` for real), ops#771.
