@@ -56,6 +56,7 @@ export default [
     plugins: { hds },
     rules: {
       'hds/max-two-meta-items': 'error',
+      'hds/no-custom-tracking': 'error',
       'hds/no-delight-on-actions': 'error',
       'hds/no-deprecated-token': 'error',
       'hds/no-primitive-spacing': 'error',
@@ -74,6 +75,7 @@ export default [
 | Rule                                                                 | Default | What it catches                                                                                        |
 | -------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
 | [`hds/max-two-meta-items`](#hdsmax-two-meta-items)                   | error   | Bullet-separated lines (`A · B · C`) with three or more items; use `MetaLine`, one row per extra item. |
+| [`hds/no-custom-tracking`](#hdsno-custom-tracking)                   | error   | Letter-spacing not from a type token: `tracking-*`, `[letter-spacing:…]`, inline `letterSpacing`.      |
 | [`hds/no-delight-on-actions`](#hdsno-delight-on-actions)             | error   | The lime delight accent (`semantic.accent.delight.*`) on a button, a link or a focus style.            |
 | [`hds/no-deprecated-token`](#hdsno-deprecated-token)                 | error   | A `$deprecated` token as a CSS var, `hds.*` member or Tailwind key; the message names the replacement. |
 | [`hds/no-primitive-spacing`](#hdsno-primitive-spacing)               | error   | Primitive spacing steps (`--primitive-space-*`, `hds.space.pxN`, Tailwind `p-4`); use semantic tokens. |
@@ -93,6 +95,19 @@ export default [
 // ✅ ok
 <MetaLine items={['Acme Cloud', 'Remote']} />
 <MetaLine items={['Applied 3 days ago']} />
+```
+
+### `hds/no-custom-tracking`
+
+```tsx
+// ❌ error
+<p className="tracking-wide" />
+<p className="[letter-spacing:0.1em]" />
+<p style={{ letterSpacing: '0.05em' }} />
+
+// ✅ ok — the type role already sets tracking, or a type-token var
+<Text variant="caption">…</Text>
+<p style={{ letterSpacing: 'var(--semantic-typography-caption-letter-spacing)' }} />
 ```
 
 ### `hds/no-delight-on-actions`

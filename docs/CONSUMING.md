@@ -495,7 +495,8 @@ pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslin
 
 and import it as `@hirobius/eslint-plugin-hds`.
 
-Six rules ship in `recommended`: `no-raw-hex` (error), `no-raw-px-spacing`
+Among the rules in `recommended`: `no-custom-tracking` (error — letter-spacing
+not from a type token), `no-raw-hex` (error), `no-raw-px-spacing`
 (error), `no-primitive-spacing` (error — a `--primitive-space-*` var, `hds.space.px*`,
 a numeric Tailwind spacing class such as `p-4`, or a deprecated off-grid step; use
 semantic spacing such as `p-surface-padding`, `gap-scale-md` or

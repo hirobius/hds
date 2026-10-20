@@ -214,6 +214,8 @@ export const EXEMPTION_MARKERS = [
   'uppercase-ok',
   // src/app/components/__tests__/no-css-var-in-motion-animate.test.ts (hds#372)
   'motion-animate-var-ok',
+  // check-no-custom-tracking.mjs (a reason is required)
+  'tracking-ok',
 ];
 
 function assertKnownMarker(marker) {

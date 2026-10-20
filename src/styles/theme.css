@@ -94,6 +94,14 @@
 /* 0.26.x shipped these four only because that test named them; kept emitted so
    excluding the test removes nothing a consumer could be using. */
 @source inline("inset-2 gap-0 hover:p-4 md:px-3");
+/* hds#756: the tracking-* rule's tests, docs and fixtures name the very utilities it bans;
+   scanned, they would compile stock tracking utilities into the build. */
+@source not "../../scripts/eslint-plugin-hds";
+@source not "../../scripts/check-no-custom-tracking.mjs";
+@source not "../../scripts/__tests__/check-no-custom-tracking.test.mjs";
+@source not "../../fixtures/check-no-custom-tracking";
+@source not "../../docs/CONSUMING.md";
+@source not "../../.claude/skills/improve-codebase-architecture";
 
 /* Published utility surface kept after hds#391. Tailwind only emits the
    utilities it finds in scanned files, and these 16 lived only in the deleted
