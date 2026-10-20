@@ -3372,7 +3372,9 @@
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/brand/overlay.ts"
+        "src/brand/overlay.ts",
+        "src/styles/__tests__/font-outlines.test.ts",
+        "src/styles/__tests__/glyph-outlines.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
