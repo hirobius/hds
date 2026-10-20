@@ -523,6 +523,42 @@ describe('figma:push when a font family variable changes', () => {
   });
 });
 
+describe('figma:push when text layers bound to a variable use other fonts', () => {
+  // 2026-10-20: delta.js stopped in setValueForMode on a weight variable,
+  // because text layers on the canvas bound to it use Satoshi and IBM Plex
+  // Mono, which no text style names, so the push never loaded them.
+  const newSize = (() => {
+    const tokens = JSON.parse(readFileSync(FIXTURE_TOKENS_PATH, 'utf8'));
+    tokens.primitive.typography.size['4xl'].$value = { value: 50, unit: 'px' };
+    return buildFigmaModel(tokens);
+  })();
+  const satoshi = { family: 'Satoshi', style: 'Medium' };
+
+  it('loads the fonts Figma names, writes the value, and converges', async () => {
+    const canvasFonts = {};
+    const figma = newFile({ fonts: [...FIXTURE_FONTS, satoshi], canvasFonts });
+    await push(figma);
+    canvasFonts['typography/size/4xl'] = [satoshi];
+
+    await push(figma, {}, newSize);
+
+    const state = await hdsReadState(figma);
+    expect(stateVariable(state, 'Hirobius/Primitives', 'typography/size/4xl').valuesByMode).toEqual(
+      { Default: { value: 50 } },
+    );
+    expect((await push(figma, {}, newSize)).line).toBe('updated 0 · created 0 · deleted 0');
+  });
+
+  it('names the font when the editor cannot load it, and writes nothing more', async () => {
+    const canvasFonts = {};
+    const figma = newFile({ fonts: FIXTURE_FONTS, canvasFonts });
+    await push(figma);
+    canvasFonts['typography/size/4xl'] = [satoshi];
+
+    await expect(push(figma, {}, newSize)).rejects.toThrow(/Satoshi Medium/);
+  });
+});
+
 describe('figma:push with the real hirobius.tokens.json', () => {
   it('pushes every variable and style, converges, and reads back with no drift', async () => {
     const real = buildFigmaModel(

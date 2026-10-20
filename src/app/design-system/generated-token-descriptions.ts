@@ -227,7 +227,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.typography.body": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
   "semantic.typography.ui": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
   "semantic.typography.caption": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
-  "semantic.typography.mono": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so it renders at 400 whatever weight.regular is. The mono companion, role 6 of 6.",
+  "semantic.typography.mono": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role is set at 400, not weight.regular (450 draws as Plex Mono Medium in Figma). The mono companion, role 6 of 6.",
   "semantic.typography.h1": "deprecated: use semantic.typography.title",
   "semantic.typography.h2": "deprecated: use semantic.typography.title",
   "semantic.typography.h3": "deprecated: use semantic.typography.title",

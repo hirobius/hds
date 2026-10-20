@@ -441,7 +441,7 @@ Weights declared: `450` regular, `500` medium, `700` bold, `800` display. Headin
 | `semantic.typography.body` | 18px | 450 | Prose |
 | `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
-| `semantic.typography.mono` | 15px | 450 | Code and ids |
+| `semantic.typography.mono` | 15px | 400 | Code and ids |
 | `semantic.typography.h1` | 24px | 800 | deprecated: use semantic.typography.title |
 | `semantic.typography.h2` | 24px | 800 | deprecated: use semantic.typography.title |
 | `semantic.typography.h3` | 24px | 800 | deprecated: use semantic.typography.title |

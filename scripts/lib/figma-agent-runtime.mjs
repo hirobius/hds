@@ -125,7 +125,10 @@ export function hdsAgentSlice(state, data) {
     byId.set(c.id, c);
     c.variables.forEach((v) => byId.set(v.id, v));
   });
+  // An alias names its target by the slice's path, else by the path HDS stamped
+  // on it: an earlier part created the target, so the slice has no id for it.
   const pathOf = new Map();
+  state.collections.forEach((c) => c.variables.forEach((v) => v.path && pathOf.set(v.id, v.path)));
   data.slice.forEach((c) => c[3].forEach((v) => v[1] && pathOf.set(v[1], v[0])));
   return {
     collections: data.slice.map((c) => {

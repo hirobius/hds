@@ -103,7 +103,7 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     vi.setSystemTime(new Date('2026-10-09T00:00:00.000Z'));
   });
 
-  it('builds the same delta.js, byte for byte (golden; re-captured for the transparent no-shadow effect)', async () => {
+  it('builds the same delta.js, byte for byte (golden; re-captured for aliases to a variable an earlier part created)', async () => {
     const s = await pending({
       edit: (model) => {
         variableOf(model, 'primitive.space.2').description = 'Two steps: tight gap and more.';
@@ -113,8 +113,8 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     });
     const sha = createHash('sha256').update(s.built.text).digest('hex');
     expect({ chars: s.built.chars, sha }).toEqual({
-      chars: 31361,
-      sha: 'fbcfff276568ee1300b0f5116c5a835872c2ac2377b3d20122bb2b992348930e',
+      chars: 31746,
+      sha: '60655fc41e8d963a2ce8b910a14a5b5fe26824817338caa24c23486569fd1715',
     });
   });
 });
@@ -518,6 +518,32 @@ describe('the parts of a run', () => {
 const collectionOf = (model, key) => model.collections.find((c) => c.key === key);
 const kinds = {
   'created variables with a role aliasing them': { edit: describeAndCreate },
+  // The live 0.26.1 push: part 1 created weight.display and pointed h1 at it;
+  // a later part held h1 only as the anchor of its style, with no id for the
+  // new primitive, and wrote an empty value (Figma: "Required value missing").
+  'a new primitive a style-bound token switches to, the style reworded in a later part': {
+    edit: (model) => {
+      collectionOf(model, 'primitive').variables.push(
+        newVariable(
+          model,
+          'primitive.typography.weight.bold',
+          'primitive.typography.weight.display',
+          'typography/weight/display',
+          {
+            Default: { value: 700 },
+          },
+        ),
+      );
+      const h1 = variableOf(model, 'semantic.typography.h1.font-weight');
+      h1.valuesByMode = {
+        Light: { alias: 'primitive.typography.weight.display' },
+        Dark: { alias: 'primitive.typography.weight.display' },
+      };
+      const style = model.textStyles.find((s) => s.path === 'semantic.typography.h1');
+      style.description = `${style.description} Set in the display weight.`;
+      return model;
+    },
+  },
   'a new mode on a collection': {
     edit: (model) => {
       const semantic = collectionOf(model, 'semantic');

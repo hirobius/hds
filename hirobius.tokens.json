@@ -1979,7 +1979,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.mono}",
           "fontSize": "{primitive.typography.size.code}",
-          "fontWeight": "{primitive.typography.weight.regular}",
+          "fontWeight": 400,
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.normal}",
           "maxWidth": {
@@ -1987,7 +1987,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so it renders at 400 whatever weight.regular is. The mono companion, role 6 of 6."
+        "$description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role is set at 400, not weight.regular (450 draws as Plex Mono Medium in Figma). The mono companion, role 6 of 6."
       },
       "h1": {
         "$value": {

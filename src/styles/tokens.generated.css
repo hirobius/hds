@@ -348,7 +348,7 @@
   /* semantic.typography.mono */
   --semantic-typography-mono-font-family: var(--primitive-typography-family-mono);
   --semantic-typography-mono-font-size: var(--primitive-typography-size-code);
-  --semantic-typography-mono-font-weight: var(--primitive-typography-weight-regular);
+  --semantic-typography-mono-font-weight: 400;
   --semantic-typography-mono-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-mono-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-mono-max-width: 60ch;
