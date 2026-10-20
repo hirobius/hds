@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 108,
+    "total": 110,
     "byClass": {
-      "library": 65,
-      "slot": 22,
+      "library": 66,
+      "slot": 23,
       "layout": 9,
       "internal": 12
     },
     "libraryLinked": 64,
-    "libraryMissing": 1,
+    "libraryMissing": 2,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -613,6 +613,22 @@
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
       "overriddenFrom": "slot",
       "overrideReason": "Drawn in the library on 2026-10-10: a row of MetricTile instances (2, 3 or 4), so Figma carries the headline-numbers row."
+    },
+    {
+      "name": "NavList",
+      "class": "library",
+      "parent": null,
+      "category": "Navigation",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "NavListItem",
+      "class": "slot",
+      "parent": "NavList",
+      "category": "Navigation",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Page",

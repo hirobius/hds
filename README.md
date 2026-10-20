@@ -17,7 +17,7 @@ Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. Fro
 
 <!-- auto:start:front-door-counts -->
 
-- **58** public component modules, exported from `src/index.ts`
+- **59** public component modules, exported from `src/index.ts`
 - **451** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 
 <!-- auto:end:front-door-counts -->
@@ -59,14 +59,14 @@ The numbers come from `pnpm consumer:usage --root <consumer checkout>`, which me
 
 <!-- auto:start:core-set -->
 
-**44** components are the core set: the brand-neutral, composable surface every HDS screen is built from, and the part of the system that has to be excellent. Import them from the package root; each carries `core: true` in `public/hds-manifest.json`.
+**45** components are the core set: the brand-neutral, composable surface every HDS screen is built from, and the part of the system that has to be excellent. Import them from the package root; each carries `core: true` in `public/hds-manifest.json`.
 
 - **Actions:** `Button`
 - **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
 - **Feedback:** `Alert`, `Badge`, `Progress`, `Skeleton`, `Spinner`, `ToastProvider`
 - **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
 - **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`
-- **Navigation:** `Breadcrumb`, `InlineLink`, `Pagination`, `Tabs`
+- **Navigation:** `Breadcrumb`, `InlineLink`, `NavList`, `Pagination`, `Tabs`
 - **Overlays:** `Dialog`, `Menu`, `Popover`, `Tooltip`
 - **Theming:** `HdsRouterProvider`, `HdsThemeProvider`
 - **Typography:** `MetaLine`, `Text`
