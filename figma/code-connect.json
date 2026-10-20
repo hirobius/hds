@@ -316,6 +316,10 @@
       "kind": "queued",
       "reason": "Tabs exists in the Figma library (node 86-89). TabsContent gained a cva variant (hds#819); its template waits for a verified property read. It is not in the flagship set."
     },
+    "src/app/components/menu.tsx": {
+      "kind": "queued",
+      "reason": "Menu is an overlay compound. Its item tone (neutral, danger) has no Figma property yet. The template waits for a verified property read (hds#822)."
+    },
     "src/app/components/callout.tsx": {
       "kind": "queued",
       "reason": "Callout exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
