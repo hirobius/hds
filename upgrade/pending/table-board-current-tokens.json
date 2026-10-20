@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Table borders are two steps lighter than before in Dark mode and the Board column gap is 32px (not 40px) in compact density; re-take Table and Board screenshots."
+}
