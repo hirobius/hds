@@ -1354,6 +1354,7 @@
         "src/app/components/code-block.tsx",
         "src/app/components/combobox.tsx",
         "src/app/components/disclosure.tsx",
+        "src/app/components/empty-state.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/icon.test.tsx",
         "src/app/components/inline-code.test.tsx",
@@ -3328,6 +3329,15 @@
             "docSmall",
             "docCode"
           ]
+        },
+        "weight": {
+          "type": "enum",
+          "values": [
+            "regular",
+            "medium",
+            "bold"
+          ],
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -4105,6 +4115,10 @@
         },
         "description": {
           "type": "ReactNode",
+          "optional": true
+        },
+        "icon": {
+          "type": "LucideIcon",
           "optional": true
         },
         "title": {
