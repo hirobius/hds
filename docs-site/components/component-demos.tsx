@@ -37,6 +37,7 @@ import {
   Kbd,
   MetaLine,
   Menu,
+  NavList,
   Pagination,
   Popover,
   Progress,
@@ -545,6 +546,27 @@ function MetaLineDemo() {
   );
 }
 
+function NavListDemo() {
+  return (
+    <div style={{ maxWidth: 320 }}>
+      <NavList aria-label="Saved jobs">
+        <NavList.Item href="#" current>
+          Design systems lead
+          <MetaLine items={['Acme Cloud', 'Remote']} />
+        </NavList.Item>
+        <NavList.Item href="#">
+          Staff front-end engineer
+          <MetaLine items={['Northwind', 'Hybrid']} />
+        </NavList.Item>
+        <NavList.Item href="#">
+          Product designer
+          <MetaLine items={['Globex', 'On-site']} />
+        </NavList.Item>
+      </NavList>
+    </div>
+  );
+}
+
 function PaginationDemo() {
   const [page, setPage] = useState(3);
   return <Pagination count={10} page={page} onPageChange={setPage} />;
@@ -962,6 +984,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Composer: ComposerDemo,
   Kbd: KbdDemo,
   MetaLine: MetaLineDemo,
+  NavList: NavListDemo,
   Pagination: PaginationDemo,
   Popover: PopoverDemo,
   Progress: ProgressDemo,

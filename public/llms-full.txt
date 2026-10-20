@@ -103,7 +103,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 44 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 45 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -138,6 +138,7 @@ The 44 components of the ratified core set: brand-neutral, composable, imported 
 - Surface (Layout)
 - Breadcrumb (Navigation)
 - InlineLink (Navigation)
+- NavList (Navigation)
 - Pagination (Navigation)
 - Tabs (Navigation)
 - Dialog (Overlays)
@@ -191,6 +192,8 @@ Input: [core] Collect a single line of text, a number, an email, a password, a d
 Kbd: [core] Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
 Menu: [core] Offer a list of actions from a trigger, closed until opened. Use instead: Select
 MetaLine: [core] Show one or two secondary facts on a single line, joined by a bullet ("Acme Cloud · Remote"). Use instead: A
+NavList: [core] List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records). Use instead: Tabs, Breadcrumb, Menu
+NavListItem: List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records). Use instead: Tabs, Breadcrumb, Menu
 Page: Wrap a screen in the standard width and padding.
 PageHeader: Open a screen with its title, plus optional breadcrumb, status and actions.
 Pagination: [core] Move between pages of a long result set, with truncated page numbers. Use instead: Breadcrumb
@@ -1113,6 +1116,16 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - items: MetadataListItem[]
   - orientation: "horizontal" | "vertical" | null = vertical
   - variant: "plain" | "divided" = plain
+
+### NavList
+A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected.
+  - children: ReactNode
+
+### NavListItem
+One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`.
+  - children: ReactNode
+  - current: boolean = false
+  - href: string
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…

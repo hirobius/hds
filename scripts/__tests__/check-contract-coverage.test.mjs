@@ -24,9 +24,9 @@ const run = (...args) =>
   });
 
 describe('core component list', () => {
-  it('has the 44 core names: the 43 of the hds#254 table adjusted by hds#394 and hds#393, plus MetaLine (hds#758)', () => {
-    expect(CORE_COMPONENTS).toHaveLength(44);
-    expect(new Set(CORE_COMPONENTS).size).toBe(44);
+  it('has the 45 core names: the 43 of the hds#254 table adjusted by hds#394 and hds#393, plus MetaLine (hds#758) and NavList (hds#817)', () => {
+    expect(CORE_COMPONENTS).toHaveLength(45);
+    expect(new Set(CORE_COMPONENTS).size).toBe(45);
   });
 
   it('the guardrail registry entry states no core count other than the list length', () => {
@@ -94,10 +94,10 @@ describe('check-contract-coverage CLI', () => {
     expect(findContractGaps(CORE_COMPONENTS, manifest.componentSpecs)).toEqual([]);
   });
 
-  it('--enforce exits 0 and reports 44/44 core components covered', () => {
+  it('--enforce exits 0 and reports 45/45 core components covered', () => {
     const out = run('--enforce');
     expect(out.status).toBe(0);
-    expect(out.stdout).toContain('44/44');
+    expect(out.stdout).toContain('45/45');
   });
 
   it('defaults to --report and exits 0', () => {
