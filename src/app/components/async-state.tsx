@@ -13,6 +13,7 @@
  * @a11y component required a11y:async-state.retry-keyboard Retry is a native button, reachable and operable by keyboard; when it unmounts, focus moves to the region instead of falling to the page.
  * @a11y consumer required Give the region a label that names what is loading ("Open roles"), not "Loading".
  * @a11y consumer required Make `empty` say what to do next, for example an EmptyState with an action.
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-96
  */
 // motion-ok: composition only. The Skeleton owns its shimmer (and zeroes it under
 // prefers-reduced-motion), the Alert owns its entrance and the Button its press

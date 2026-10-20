@@ -12,6 +12,7 @@
  * @a11y component required a11y:nav-list.current-page The current item is marked aria-current=page and the others carry no aria-current.
  * @a11y component required a11y:nav-list.keyboard-focus Tab visits each link in order and each shows the focus ring.
  * @a11y consumer required Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-26
  */
 
 import * as React from 'react';
