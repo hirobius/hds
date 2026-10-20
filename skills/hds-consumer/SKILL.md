@@ -104,6 +104,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Tag` — Tag — interactive filter and category chip.
 - `Textarea` — Textarea — multi-line text field primitive with label, helper, and error slots.
 - `Toggle` — Toggle — boolean on/off toggle with animated thumb.
+- `TokenField` — TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips.
 
 ### Layout
 

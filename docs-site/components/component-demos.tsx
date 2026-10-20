@@ -10,7 +10,7 @@
  * (Dialog, Menu, Select) portal into the nearest [data-hds] scope, which
  * <DemoFrame> provides so they inherit the page theme.
  */
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import {
   Alert,
   Avatar,
@@ -61,6 +61,8 @@ import {
   Timeline,
   TimelineItem,
   Toggle,
+  TokenField,
+  type TokenFieldHandle,
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
@@ -728,6 +730,34 @@ function TextareaDemo() {
   );
 }
 
+function TokenFieldDemo() {
+  const [value, setValue] = useState('Hi [Contact],\n\nI saw the [Role] opening at [Company].');
+  const field = useRef<TokenFieldHandle>(null);
+  return (
+    <div style={demoColumn}>
+      <TokenField
+        ref={field}
+        label="Message"
+        helperText="Each [Variable] is one chip: Backspace removes all of it."
+        value={value}
+        onChange={setValue}
+      />
+      <Menu modal={false}>
+        <Menu.Trigger asChild>
+          <Button variant="secondary">Insert variable</Button>
+        </Menu.Trigger>
+        <Menu.Content>
+          {['[Company]', '[Role]', '[Contact]'].map((token) => (
+            <Menu.Item key={token} onSelect={() => field.current?.insertAt(token)}>
+              {token.slice(1, -1)}
+            </Menu.Item>
+          ))}
+        </Menu.Content>
+      </Menu>
+    </div>
+  );
+}
+
 function TimelineDemo() {
   return (
     <Timeline aria-label="Recent activity">
@@ -1000,6 +1030,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Tag: TagDemo,
   Text: TextDemo,
   Textarea: TextareaDemo,
+  TokenField: TokenFieldDemo,
   Timeline: TimelineDemo,
   Toggle: ToggleDemo,
   Tooltip: TooltipDemo,

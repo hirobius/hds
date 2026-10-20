@@ -27,6 +27,7 @@ import { SegmentedControl } from '@/app/components/segmented-control';
 import { Tag } from '@/app/components/tag';
 import { Input } from '@/app/components/input';
 import { Textarea } from '@/app/components/textarea';
+import { TokenField } from '@/app/components/token-field';
 import { user } from './overlay-fixtures';
 
 afterEach(async () => {
@@ -459,5 +460,61 @@ describe('Textarea accessibility contract', () => {
     const log = await readAll(container);
     expect(log.some((p) => p.startsWith('textbox, Message') && p.includes('invalid'))).toBe(true);
     expect(log.some((p) => p.includes('Required'))).toBe(true);
+  });
+});
+
+describe('TokenField accessibility contract', () => {
+  it('a11y:token-field.textbox the field is a multi-line textbox named by its label', () => {
+    render(<TokenField label="Message" value="" onChange={() => {}} />);
+    const field = screen.getByRole('textbox', { name: 'Message' });
+    expect(field.getAttribute('aria-multiline')).toBe('true');
+  });
+
+  it('a11y:token-field.chip-unit a chip is announced as one unit: its label and the token noun', async () => {
+    const { container } = render(
+      <TokenField label="Message" value="Hi [Name]" onChange={() => {}} />,
+    );
+    expect(screen.getByRole('img', { name: 'Name variable' })).not.toBeNull();
+    const log = await readAll(container);
+    expect(log.some((p) => p.includes('Name variable'))).toBe(true);
+    expect(log.some((p) => p.includes('[Name]'))).toBe(false);
+  });
+
+  it('a11y:token-field.error-wiring an error sets aria-invalid, is described by the message, and is announced', () => {
+    render(
+      <TokenField label="Message" value="" onChange={() => {}} error errorMessage="Required" />,
+    );
+    const field = screen.getByRole('textbox', { name: 'Message' });
+    expect(field.getAttribute('aria-invalid')).toBe('true');
+    const alert = screen.getByRole('alert');
+    expect(field.getAttribute('aria-describedby')).toContain(alert.id);
+  });
+
+  it('a11y:token-field.keyboard Tab enters and leaves the field, and Backspace takes a chip whole', async () => {
+    function Harness() {
+      const [value, setValue] = useState('Hi [Name]');
+      return (
+        <>
+          <TokenField label="Message" value={value} onChange={setValue} />
+          <button type="button">After</button>
+        </>
+      );
+    }
+    const u = user();
+    render(<Harness />);
+    const field = screen.getByRole('textbox', { name: 'Message' });
+    await u.tab();
+    expect(document.activeElement).toBe(field);
+    await u.tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'After' }));
+    field.focus();
+    const r = document.createRange();
+    r.selectNodeContents(field);
+    r.collapse(false);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(r);
+    fireEvent.keyDown(field, { key: 'Backspace' });
+    expect(screen.queryByRole('img', { name: 'Name variable' })).toBeNull();
+    expect(field.textContent).toBe('Hi ');
   });
 });

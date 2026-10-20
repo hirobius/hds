@@ -137,6 +137,7 @@
     "Timestamp",
     "ToastProvider",
     "Toggle",
+    "TokenField",
     "Tooltip",
     "VisuallyHidden"
   ],
@@ -1715,6 +1716,7 @@
         "src/app/components/select.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/textarea.tsx",
+        "src/app/components/token-field.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/index.ts"
       ],
@@ -2646,6 +2648,7 @@
         "src/app/components/surface.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/text.tsx",
+        "src/app/components/token-field.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts"
       ],
@@ -3375,7 +3378,9 @@
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/brand/overlay.ts"
+        "src/brand/overlay.ts",
+        "src/styles/__tests__/font-outlines.test.ts",
+        "src/styles/__tests__/glyph-outlines.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4173,6 +4178,7 @@
         "src/app/components/input.tsx",
         "src/app/components/table.tsx",
         "src/app/components/textarea.tsx",
+        "src/app/components/token-field.tsx",
         "src/form/hds-form.tsx"
       ],
       "tokenMapping": {},
@@ -6635,6 +6641,7 @@
       "consumers": [
         "src/app/components/form-actions.tsx",
         "src/app/components/form.test.tsx",
+        "src/app/components/token-field.tsx",
         "src/form/hds-form.tsx",
         "src/form/index.ts",
         "src/form/use-hds-form.ts"
@@ -6693,6 +6700,7 @@
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
         "src/app/components/textarea.tsx",
+        "src/app/components/token-field.tsx",
         "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx"
       ],
@@ -7735,7 +7743,9 @@
         "src/app/components/form-control.ts",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
-        "src/app/components/textarea.test.tsx"
+        "src/app/components/textarea.test.tsx",
+        "src/app/components/token-field.test.tsx",
+        "src/app/components/token-field.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -10456,6 +10466,146 @@
           {
             "component": "Menu",
             "reason": "a list of actions rather than destinations"
+          }
+        ]
+      }
+    },
+    "TokenField": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/token-field.tsx",
+      "description": "TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips. The value stays a plain string. The field is a contenteditable textbox that draws each match of `tokenPattern` as a chip; every edit that could split a chip (Backspace or Delete beside one, the arrows, Enter, paste, drop) goes through the pure model in token-field-model.ts. A ref handle inserts at the caret and reads or sets the selection as string offsets (hds#826).",
+      "a11yRules": [
+        {
+          "rule": "The field is a multi-line textbox named by its label.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:token-field.textbox"
+        },
+        {
+          "rule": "Each chip is announced as one unit, its label and the token noun, never letter by letter.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:token-field.chip-unit"
+        },
+        {
+          "rule": "An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:token-field.error-wiring"
+        },
+        {
+          "rule": "Tab enters and leaves the field; Backspace, Delete and the arrows treat a chip as one character.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:token-field.keyboard"
+        },
+        {
+          "rule": "Pass a label, or an aria-label or aria-labelledby; a placeholder is not a name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "TokenField",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/token-field-model.test.ts",
+        "src/app/components/token-field-model.ts",
+        "src/app/components/token-field.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "error": {
+          "type": "boolean",
+          "optional": true
+        },
+        "errorMessage": {
+          "type": "string",
+          "optional": true
+        },
+        "fieldClassName": {
+          "type": "string",
+          "optional": true
+        },
+        "getTokenLabel": {
+          "type": "(token: string) => string",
+          "optional": true
+        },
+        "helperText": {
+          "type": "string",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "optional": true
+        },
+        "onChange": {
+          "type": "(value: string) => void"
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "required": {
+          "type": "boolean",
+          "optional": true
+        },
+        "rows": {
+          "type": "number",
+          "default": 4
+        },
+        "tokenNoun": {
+          "type": "string",
+          "default": "variable"
+        },
+        "tokenPattern": {
+          "type": "RegExp",
+          "default": "/\\[([^[\\]\\n]{1,40})\\]/g"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Edit a template or message in which placeholders such as [Name] must stay whole: each one is a chip that is stepped over and deleted as one unit.",
+        "whenNot": "Plain multi-line text with no placeholders, or a single line.",
+        "useInstead": [
+          {
+            "component": "Textarea",
+            "reason": "multi-line text with no tokens"
+          },
+          {
+            "component": "Input",
+            "reason": "a single line of text"
           }
         ]
       }

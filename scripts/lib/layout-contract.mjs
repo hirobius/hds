@@ -28,9 +28,18 @@ export const FORM_MAX_WIDTH = '40rem';
 // ── hand-set tables ──────────────────────────────────────────────────────────
 
 /** Contract rule 2: these leaves FILL width. */
-const LEAF_FILL = ['Input', 'Textarea', 'Select', 'Combobox', 'Table', 'Progress', 'Divider'];
+const LEAF_FILL = [
+  'Input',
+  'Textarea',
+  'TokenField',
+  'Select',
+  'Combobox',
+  'Table',
+  'Progress',
+  'Divider',
+];
 /** Form controls that carry the form max width. */
-const FORM_CONTROLS = ['Input', 'Textarea', 'Select', 'Combobox'];
+const FORM_CONTROLS = ['Input', 'Textarea', 'TokenField', 'Select', 'Combobox'];
 /**
  * Containers, primitives and block-flow text FILL width in normal flow. Judgment
  * calls beyond the approved list (Text, Blockquote, CodeBlock, Slider, Field,

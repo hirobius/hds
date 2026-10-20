@@ -137,6 +137,7 @@ export const TOUR_SECTIONS: readonly TourSection[] = [
       'Toggle',
       'Slider',
       'Textarea',
+      'TokenField',
       'Composer',
       'Alert',
       'AsyncState',
