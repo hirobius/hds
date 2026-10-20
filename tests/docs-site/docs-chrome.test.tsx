@@ -9,7 +9,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const { ThemeSegments } = await import('../../docs-site/components/theme-segments');
-const { MdxTable, MdxCode } = await import('../../docs-site/components/mdx-prose');
+const { MdxTable, MdxCode, MdxImg } = await import('../../docs-site/components/mdx-prose');
 const { MdxPre } = await import('../../docs-site/components/mdx-code-block');
 
 const ROOT = join(__dirname, '..', '..');
@@ -116,5 +116,43 @@ describe('wiring', () => {
     const css = read('docs-site/app/globals.css');
     const rule = /\.hds-docs-table\s*\{([^}]*)\}/.exec(css)?.[1] ?? '';
     expect(rule).toContain('var(--semantic-radius-action)');
+  });
+});
+
+describe('slice 2: sidebar, drawer, contents rail, images', () => {
+  const css = () => read('docs-site/app/globals.css');
+  const rule = (selector: RegExp) =>
+    new RegExp(selector.source + '\\s*\\{([^}]*)\\}').exec(css())?.[1] ?? '';
+
+  it('sidebar, collapse button, search trigger and nav controls take the HDS radius token', () => {
+    const body = rule(/#nd-docs-layout\s+:is\(\.rounded-md, \.rounded-lg, \.rounded-xl\)[^{]*/);
+    expect(body).toContain('border-radius: var(--semantic-radius-action)');
+  });
+
+  it('the mobile drawer shadow comes from the overlay shadow token', () => {
+    expect(rule(/#nd-sidebar-mobile/)).toContain('box-shadow: var(--semantic-shadow-overlay)');
+    // The generic shadow-lg rule is more specific than an id alone, so it must leave the drawer out.
+    expect(css()).toMatch(/\.shadow-lg:not\([^)]*#nd-sidebar-mobile[^)]*\)/);
+  });
+
+  it('other Fumadocs shadows (contents popover, collapsed sidebar) use the floating token', () => {
+    expect(rule(/#nd-docs-layout \.shadow-lg[^{]*/)).toContain(
+      'box-shadow: var(--semantic-shadow-floating)',
+    );
+  });
+
+  it('the Sharp override is down to the HDS classes not driven by --role-radius alone', () => {
+    const body = /data-docs-corners='sharp'\]\s*:is\(([^)]*)\)\s*\{/.exec(css())?.[1] ?? '';
+    // .rounded is the --hds-radius-4 primitive (Kbd, Skeleton text); .rounded-lg/.hds-card add 4px.
+    expect(body.split(',').map((c) => c.trim())).toEqual(['.rounded', '.rounded-lg', '.hds-card']);
+  });
+
+  it('renders MDX images with the HDS radius class, not rounded-lg', () => {
+    const { container } = render(<MdxImg src="/x.png" alt="x" width={10} height={10} />);
+    const img = container.querySelector('img');
+    expect(img?.className).toContain('hds-docs-img');
+    expect(img?.className).not.toContain('rounded');
+    expect(rule(/\.hds-docs-img/)).toContain('border-radius: var(--semantic-radius-action)');
+    expect(read('docs-site/mdx-components.tsx')).toMatch(/img:\s*MdxImg/);
   });
 });

@@ -6,7 +6,7 @@ import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
 import { MdxPre } from './components/mdx-code-block';
-import { MdxCode, MdxTable } from './components/mdx-prose';
+import { MdxCode, MdxImg, MdxTable } from './components/mdx-prose';
 import { Mermaid } from './components/mermaid';
 import { TokenTable } from './components/token-table';
 import {
@@ -27,9 +27,10 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     h3: (props: HeadingProps) => <h3 {...props} />,
     // Code fences are the HDS CodeBlock, not Fumadocs' (follows the Corners switch).
     pre: MdxPre,
-    // Prose tables and inline code take HDS radius tokens (follow the Corners switch).
+    // Prose tables, inline code and images take HDS radius tokens (follow the Corners switch).
     table: MdxTable,
     code: MdxCode,
+    img: MdxImg,
     TokenTable,
     ComponentTokens,
     ComponentPreview,
