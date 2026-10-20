@@ -18,6 +18,10 @@
  * hover/focus tracking (per-segment `string | null` cardinality) rather than
  * the shared `useInteractionState` single-element machine; only the class
  * composition changed, not the state machine feeding it.
+ *
+ * When the segments outgrow the rail (a phone), the rail scrolls: it fades the
+ * hidden edge (`data-overflow`, the same mask as the tab list) and keeps the selected
+ * segment in view on mount and on change (hds#823).
  * @a11y component required a11y:segmented-control.roving-focus The control is one Tab stop; arrow keys move focus between segments and select, like a native radio group.
  * @a11y component required a11y:segmented-control.group-and-radio-roles It is a radiogroup named by label or aria-label, and each segment is a radio with aria-checked.
  * @a11y component required a11y:segmented-control.sr-group A screen reader speaks the group name and each radio with its state, position and set size.
@@ -35,6 +39,7 @@ import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
+import { scrollEdgeFadeStyle, useKeepSelectedInView, useScrollEdgeFade } from './scroll-edge-fade';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -372,6 +377,10 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
     // Arrow/Home/End focus moves select, like a native radio group (WAI-ARIA radio pattern); Tab does not.
     // Radix moves focus in a timeout after the key, so remember when the navigation key was pressed.
     const lastNavKeyAt = useRef(-Infinity);
+    // The rail scrolls when segments outgrow it (a phone): fade the hidden edge like
+    // the tab list (hds#723) and keep the selected segment in view (hds#823).
+    const { ref: railRef, overflow, update: updateOverflow } = useScrollEdgeFade<HTMLDivElement>();
+    useKeepSelectedInView(railRef, '[role="radio"][aria-checked="true"]');
 
     return (
       <div ref={ref} className={segmentedControlWrapperVariants({ fullWidth })}>
@@ -386,6 +395,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
           </span>
         )}
         <ToggleGroup.Root
+          ref={railRef}
           type="single"
           // Radix emits role="radio" + aria-checked on items (canonical
           // mutually-exclusive semantics, upgrading the prior aria-pressed
@@ -406,9 +416,11 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
               lastNavKeyAt.current = performance.now();
             }
           }}
+          onScroll={updateOverflow}
+          data-overflow={overflow}
           className={segmentedControlRailVariants({ variant, fullWidth })}
-          // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
-          style={{ padding: railPadding ?? '4px' }}
+          // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class; the edge-fade mask is runtime too (scroll position)
+          style={{ padding: railPadding ?? '4px', ...scrollEdgeFadeStyle(overflow) }}
         >
           {options.map((option) => {
             const active = option.value === value;
