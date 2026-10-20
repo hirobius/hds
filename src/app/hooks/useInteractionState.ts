@@ -22,7 +22,7 @@ import { useState } from 'react';
 export type InteractionVisualState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
 
 /** Event-less setters; consumers compose their own forwarded handlers around these. */
-export interface InteractionHandlers {
+interface InteractionHandlers {
   onMouseEnter: () => void;
   onMouseLeave: () => void;
   onPointerDown: () => void;
@@ -38,7 +38,7 @@ export interface InteractionHandlers {
   onBlur: () => void;
 }
 
-export interface InteractionState {
+interface InteractionState {
   /** Resolved visual state — the frozen demo state wins when present. */
   visualState: InteractionVisualState;
   isHover: boolean;
@@ -48,7 +48,7 @@ export interface InteractionState {
   handlers: InteractionHandlers;
 }
 
-export interface UseInteractionStateOptions {
+interface UseInteractionStateOptions {
   /** The genuine `disabled` prop — forces `disabled` regardless of pointer/focus. */
   disabled?: boolean;
   /** Frozen demo state from `useFrozenState()`; when set it overrides live state. */
