@@ -21,16 +21,17 @@ import { useHdsRouter } from '../context/RouterContext';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `current` is a component-specific state flag (not one of the contract's four
-// axes), like Breadcrumb's: the open row keeps the hover fill. The weight stays
+// axes), like Breadcrumb's: hover is surface.hover and the open row is
+// surface.selected (one step deeper), so the two never read the same. The weight stays
 // on the ui role (medium): the type ramp has no heavier row weight, so the fill
 // and aria-current carry the state.
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- row padding and raised-surface fill are token-driven; var()-based, no Tailwind-theme utility exists
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- row padding and hover/selected fills are token-driven; var()-based, no Tailwind-theme utility exists
 const navListItemVariants = /* @__PURE__ */ cva(
-  'hds-focus hds-type-ui block rounded-md px-[var(--primitive-space-3)] py-[var(--semantic-space-scale-xs)] text-foreground no-underline transition-colors hover:bg-[var(--semantic-color-surface-raised)]',
+  'hds-focus hds-type-ui block rounded-md px-[var(--primitive-space-3)] py-[var(--semantic-space-scale-xs)] text-foreground no-underline transition-colors hover:bg-[var(--semantic-color-surface-hover)]',
   {
     variants: {
       current: {
-        true: 'bg-[var(--semantic-color-surface-raised)]',
+        true: 'bg-[var(--semantic-color-surface-selected)] hover:bg-[var(--semantic-color-surface-selected)]',
         false: '',
       },
     },
@@ -107,7 +108,7 @@ const NavListRoot = /* @__PURE__ */ React.forwardRef<HTMLUListElement, NavListPr
 
 /**
  * A vertical list of links, one marked current. Rows hold rich content; hover
- * and the current row share the raised surface fill.
+ * fills with surface.hover; the current row holds the deeper surface.selected.
  */
 export const NavList: NavListComponent = /* @__PURE__ */ Object.assign(NavListRoot, {
   Item: NavListItem,
