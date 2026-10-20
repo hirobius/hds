@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 107,
+    "total": 108,
     "byClass": {
-      "library": 64,
+      "library": 65,
       "slot": 22,
       "layout": 9,
       "internal": 12
     },
     "libraryLinked": 64,
-    "libraryMissing": 0,
+    "libraryMissing": 1,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -57,6 +57,14 @@
       "category": "Display",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67"
+    },
+    {
+      "name": "AsyncState",
+      "class": "library",
+      "parent": null,
+      "category": "Feedback",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Avatar",

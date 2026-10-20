@@ -56,6 +56,16 @@ Weights declared: `400` mono, `450` regular, `500` medium, `700` bold, `800` dis
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
 
+**Never for.** Each role has one job; reaching past it is how the ramp drifts.
+
+- `display`: never for a section heading, a card or anything twice on a page. It is the hero line only.
+- `title`: never for body copy or a label, and never skip a level to make a heading smaller; use `titleSm` for a heading inside a card or band.
+- `titleSm`: never for page-level headings, and never for emphasis inside prose (bold the words instead).
+- `body`: never for controls, table cells or metadata (those are `ui` and `caption`). A lead paragraph is `body` plus a quieter colour, not a bigger size.
+- `ui`: never for long prose, and never for a heading. It is the size of things you act on or scan.
+- `caption`: never for the only copy a user needs to act on, never uppercase, and never below the `caption` size to fit more in.
+- `mono`: never for ordinary emphasis or for whole paragraphs. Code, ids and metric readouts only.
+
 **Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
 
 **Meta lines.** A bullet-separated line holds at most two text items ("Acme Cloud · Remote"), because long translated strings wrap mid-line. More facts get one row each. Use `MetaLine` (`items` is a one- or two-item tuple, a third is a type error); `hds/max-two-meta-items` flags hand-rolled `A · B · C` chains.

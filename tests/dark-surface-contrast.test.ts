@@ -53,3 +53,25 @@ describe('dark-mode surface contrast', () => {
     );
   });
 });
+
+describe('Menu.Item tone="danger" contrast (hds#822)', () => {
+  // The danger item text is feedback.error, on the overlay at rest and on the
+  // danger tint (feedback.bg.error) that fills the highlighted item on hover/focus
+  // (surface.sunken is only 3.7:1 under it in dark mode). AA body text is 4.5:1.
+  for (const mode of ['Light', 'Dark'] as const) {
+    for (const surface of ['overlay', 'feedback.bg.error'] as const) {
+      it(`feedback.error reads on ${surface} at 4.5:1 or more (${mode})`, () => {
+        const ratio = contrastRatio(
+          hex('semantic.color.feedback.error', mode),
+          hex(
+            surface.includes('.')
+              ? `semantic.color.${surface}`
+              : `semantic.color.surface.${surface}`,
+            mode,
+          ),
+        );
+        expect(ratio).toBeGreaterThanOrEqual(4.5);
+      });
+    }
+  }
+});

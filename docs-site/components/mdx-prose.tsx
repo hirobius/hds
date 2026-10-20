@@ -35,3 +35,18 @@ export function MdxCode({ children, className, ...rest }: ComponentProps<'code'>
 }
 
 const hasNewline = (children: unknown) => typeof children === 'string' && children.includes('\n');
+
+/**
+ * MDX `img` -> a plain image whose corners come from the HDS radius token. Fumadocs' own `img`
+ * hard-codes `rounded-lg`, which skips the Corners switch.
+ */
+export function MdxImg({ className, alt = '', ...rest }: ComponentProps<'img'>) {
+  return (
+    <img
+      loading="lazy"
+      className={['hds-docs-img', className].filter(Boolean).join(' ')}
+      alt={alt}
+      {...rest}
+    />
+  );
+}

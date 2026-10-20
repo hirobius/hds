@@ -157,6 +157,7 @@ One line per component that declares when to use it (`@usage` / `@useInstead` in
 Alert: [core] Show a persistent inline message with a severity, next to the content it concerns. Use instead: ToastProvider, Badge
 AlertDialog: Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons. Use instead: Dialog, ToastProvider
 AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
+AsyncState: Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content. Use instead: Skeleton, Alert, EmptyState
 Avatar: [core] Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
 Badge: [core] Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
 Board: Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage. Use instead: Table, Grid
@@ -451,6 +452,16 @@ Weights declared: `400` mono, `450` regular, `500` medium, `700` bold, `800` dis
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
 
+**Never for.** Each role has one job; reaching past it is how the ramp drifts.
+
+- `display`: never for a section heading, a card or anything twice on a page. It is the hero line only.
+- `title`: never for body copy or a label, and never skip a level to make a heading smaller; use `titleSm` for a heading inside a card or band.
+- `titleSm`: never for page-level headings, and never for emphasis inside prose (bold the words instead).
+- `body`: never for controls, table cells or metadata (those are `ui` and `caption`). A lead paragraph is `body` plus a quieter colour, not a bigger size.
+- `ui`: never for long prose, and never for a heading. It is the size of things you act on or scan.
+- `caption`: never for the only copy a user needs to act on, never uppercase, and never below the `caption` size to fit more in.
+- `mono`: never for ordinary emphasis or for whole paragraphs. Code, ids and metric readouts only.
+
 **Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
 
 **Meta lines.** A bullet-separated line holds at most two text items ("Acme Cloud · Remote"), because long translated strings wrap mid-line. More facts get one row each. Use `MetaLine` (`items` is a one- or two-item tuple, a third is a type error); `hds/max-two-meta-items` flags hand-rolled `A · B · C` chains.
@@ -678,6 +689,20 @@ AssetImg - responsive asset frame with fallback placeholder handling. Contexts: 
   - style: CSSProperties = {}
   - title: string
 
+### AsyncState
+One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into "Still trying…" after `slowAfterMs`), `err…
+  - children: ReactNode
+  - empty: ReactNode
+  - error: string
+  - errorTitle: string = Something went wrong
+  - label: string = Content
+  - loadingLabel: string = Loading
+  - onRetry: (() => void)
+  - rows: number = 3
+  - slowAfterMs: number = 10000
+  - slowNote: string = Still trying…
+  - status: 'loading' | 'error' | 'empty' | 'ready'
+
 ### Avatar
 Circular avatar. Renders the image when available, else initials from `alt`.
   - alt: string
@@ -857,7 +882,7 @@ Section heading and toolbar over a `Table`. Row actions are consumer nodes in a 
   - columns: TableColumn[]
   - emptyDescription: ReactNode
   - emptyTitle: ReactNode = Nothing here yet
-  - level: 6 | 3 | 4 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - rows: DataTableSectionRow[]
   - title: ReactNode
   - toolbar: ReactNode
@@ -869,7 +894,7 @@ Titled danger zone, a danger `Callout` (the shared feedback fill, no border of i
   - confirmBody: ReactNode
   - confirmLabel: string
   - description: ReactNode
-  - level: 6 | 3 | 4 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - onConfirm: () => void
   - title: ReactNode
 
