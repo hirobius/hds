@@ -34,6 +34,7 @@
         "css-var-changed:--component-button-bgHover:[data-accent=cobalt]",
         "css-var-changed:--component-button-secondary-bg-hover:[data-accent=cobalt]",
         "css-var-changed:--component-button-secondary-border-hover:[data-accent=cobalt]",
+        "css-var-changed:--component-button-secondary-border-pressed:[data-accent=cobalt]",
         "css-var-changed:--component-nav-bgActive:[data-accent=cobalt]",
         "css-var-changed:--component-nav-borderActive:[data-accent=cobalt]",
         "css-var-changed:--component-tag-activeBackground:[data-accent=cobalt]",
