@@ -13,8 +13,8 @@
     "./patterns": "src/patterns.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.27.0",
-  "generatedAt": "2026-10-19",
+  "version": "0.28.0",
+  "generatedAt": "2026-10-20",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -31,6 +31,8 @@
       "cn",
       "hds",
       "tokens",
+      "useAtLeast",
+      "useBreakpoint",
       "useHdsRouter",
       "useHdsTheme"
     ],
@@ -129,11 +131,18 @@
       "TableSortDirection"
     ],
     "./app/components/tag": ["Tag", "TagProps"],
-    "./app/components/text": ["Text", "TextProps", "TextTone", "TextVariant"],
+    "./app/components/text": ["Text", "TextProps", "TextTone", "TextVariant", "TextWeight"],
     "./app/components/kbd": ["Kbd", "KbdProps"],
     "./app/components/timestamp": ["Timestamp", "TimestampFormat", "TimestampProps"],
     "./app/components/blockquote": ["Blockquote", "BlockquoteProps"],
     "./app/components/meta-line": ["MetaLine", "MetaLineItems", "MetaLineProps"],
+    "./app/components/nav-list": ["NavList", "NavListItem", "NavListItemProps", "NavListProps"],
+    "./app/components/token-field": [
+      "TokenField",
+      "TokenFieldHandle",
+      "TokenFieldProps",
+      "TokenFieldSelection"
+    ],
     "./app/components/visually-hidden": ["VisuallyHidden", "VisuallyHiddenProps"],
     "./app/components/avatar-group": ["AvatarGroup", "AvatarGroupProps"],
     "./app/components/alert-dialog": ["AlertDialog", "AlertDialogContentProps"],
@@ -149,7 +158,7 @@
       "TimelineTone"
     ],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
-    "./app/components/tabs": ["Tabs", "TabsContent", "TabsList", "TabsTrigger"],
+    "./app/components/tabs": ["Tabs", "TabsContent", "TabsContentProps", "TabsList", "TabsTrigger"],
     "./app/components/breadcrumb": ["Breadcrumb", "BreadcrumbItem", "BreadcrumbProps"],
     "./app/components/combobox": [
       "Combobox",
@@ -161,6 +170,7 @@
     "./app/components/disclosure": ["Disclosure", "DisclosureProps"],
     "./app/components/pagination": ["Pagination", "PaginationProps", "paginationRange"],
     "./app/components/toast": [
+      "ToastAction",
       "ToastOptions",
       "ToastProvider",
       "ToastProviderProps",
@@ -215,6 +225,9 @@
     "@subpath/patterns": [
       "AssetImg",
       "AssetImgProps",
+      "AsyncState",
+      "AsyncStateProps",
+      "AsyncStatus",
       "CodeBlock",
       "CodeBlockProps",
       "DataTableSection",

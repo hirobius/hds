@@ -1,5 +1,41 @@
 # Changelog
 
+## 0.28.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The secondary Button pressed border variable is gone, so delete any override of it, since the hover border now holds while pressed.
+- Looks different: The pressed secondary Button fill is now the pressed surface colour, a clearer step from hover, so re-check any screenshot of a pressed secondary Button.
+- Looks different: The pressed surface is now a mid light grey (was almost white) in light mode, so re-check pressed states you draw by hand.
+- Looks different: --semantic-typography-mono-font-weight now reads --primitive-typography-weight-mono (400); if your mono font has a heavier cut you want, set that primitive.
+- And 1 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0280).
+
+### Minor Changes
+
+- d53c25c: New `AsyncState` pattern (from `@hirobius/design-system/patterns`): one wrapper for the four states of async content. Loading shows skeleton rows (`rows`, default 3) with a polite status line that becomes "Still trying…" after `slowAfterMs` (default 10 s); error shows a danger `Alert` with the `error` message and a Retry `Button` (`onRetry`), worded as offline when the browser is offline; empty shows your `empty` node; ready shows the children. The wrapper is a labelled region with aria-busy while loading. Replaces the hand-rolled loading, error and empty panels in consumers (hds#818).
+- b5c4172: `EmptyState` takes an optional `icon` (a Lucide icon), shown above the title at the medium icon size and hidden from assistive tech. `Text` takes an optional `weight` (`regular`, `medium` or `bold`) that maps to the weight tokens; unset, the role's own weight applies as before (hds#825).
+- 6c61314: Menu: the content now caps its height to the room Radix measures (`max-height: var(--radix-dropdown-menu-content-available-height)`) and scrolls (`overflow-y: auto`), so a long menu of 44px phone rows no longer runs off a 390px screen while the page is scroll-locked (hds#821). New `Menu.Item tone="danger"` for destructive items: the feedback danger content colour at rest, hover and focus, with the danger tint as the highlight fill; the tone vocabulary is `neutral | danger | success | warning | info`, default `neutral`, and only `danger` changes the item (hds#822). Contrast is pinned for the danger text on the overlay and on the danger tint in light and dark.
+- 6eda923: New `NavList` pattern: a vertical list of links (`NavList.Item`, also exported as `NavListItem`) with one row marked current (`aria-current="page"`). Rows hold rich content, links route through the HDS router seam, and hover and the current row share the raised surface fill.
+- db79c31: Light-mode pressed states now read as a step from hover (hds#769). `semantic.color.surface.pressed` is `neutral.200` (was `neutral.50`, 1.04:1 from hover) and the secondary button pressed fill uses it (was `surface.overlay`, 1.007:1 from hover). The secondary button no longer has a pressed border: the fill alone carries the press and the hover border stays, so `--component-button-secondary-border-pressed` is removed.
+- 0583ca4: TabsList and SegmentedControl now keep the selected item in view: when the strip scrolls, the selected tab or segment is scrolled into view on mount and whenever the selection changes (only the strip scrolls, never the page; smooth, or instant under prefers-reduced-motion). SegmentedControl's rail also fades its hidden edge with the same `data-overflow` mask as TabsList. Consumers can drop local overflow-fade and scroll-into-view wrappers (hds#823).
+- 8a415f4: `TabsContent` takes `variant="bare"` for tabs that are an app's top-level nav or a page's sections: no tinted fill, no padding, no radius and no pull-up under the strip, so the panel sits on the page. The default `variant="panel"` is unchanged (hds#819). Replaces the inline style job-hunt put on every top-level panel.
+- b03746c: Toast takes one or two `actions` (a tuple type, so a third is a type error) (`{ label, onSelect, altText? }`): small secondary buttons under the message, such as Open and Undo. Choosing one runs `onSelect` and closes the toast. Each is a Radix `Toast.Action`, so screen readers hear its `altText` (defaults to the label) since a toast never takes focus. A toast without `actions` renders as before. Replaces the hand-built action toast job-hunt kept for "Saved to Pipeline · Open · Undo".
+- 177bd6f: New `TokenField`: a multi-line text field in which each token, such as `[Name]`, is an atomic chip, announced as one unit ("Name variable") and stepped over and deleted whole. The value stays a plain string (`value`, `onChange`). `tokenPattern`, `getTokenLabel` and `tokenNoun` set what a token is and how it reads. A ref handle (`insertAt`, `getSelection`, `setSelection`, `focus`) inserts at the caret. Same label, helper, error and disabled shell as `Textarea`, with its own undo (hds#826).
+- f93cec8: New `useAtLeast(bp)` and `useBreakpoint()` hooks read an HDS breakpoint in JS, for screens that render different markup per width (a Table at desktop, rows on a phone). They use the same values `sx` compiles (xs 375, sm 640, md 768, lg 1024, xl 1280), so a consumer writes no pixel width of its own. Narrow by default: on the server, in jsdom or without `matchMedia`, `useAtLeast` returns `false` and `useBreakpoint` returns `'base'`; both update live as the viewport crosses a breakpoint.
+
+### Patch Changes
+
+- ace0565: ThemeToggle, Timeline, Composer and MetaLine are now in the Figma library, and the manifest links each one (`figmaUrl`). TimelineItem maps through `figma/mapping-overrides.json`, as a slot of Timeline.
+- ace0565: New `--primitive-typography-weight-mono` (400). The mono role's font weight now follows it instead of `weight.regular` (450). With the shipped IBM Plex Mono (400 only) nothing renders differently. If you set `--hds-font-family-mono` to a mono font that has a 450 weight, mono text now renders at 400; set `--primitive-typography-weight-mono` to change it.
+- 3cd841f: Sora 800 (`fonts.css`, display and titles) now ships with its overlapping contours flattened. The Google Fonts static cut kept the variable master's overlaps, which macOS draws as a notch at the apex of the capital "A" (and seams in other glyphs). Glyph shapes and metrics are unchanged; the file is about 2 kB larger.
+- a689d32: Table dividers and borders now read `border.default` instead of the deprecated `border.subdued` (same in Light; two steps lighter than before in Dark: neutral.600 vs 800). Board columns gap now reads `scale.lg` instead of the deprecated `layout.inset` (24px in compact density, was 32px; unchanged at 32px by default). A new test fails if `src/` reads any token marked `$deprecated`.
+- 14e34b3: Tag's unselected background, border and text now read `--component-tag-background`, `--component-tag-border` and `--component-tag-text` instead of the semantic tokens they alias, in `tag.tsx` and the `.hds-tag__pill` mirror in `static.css`. The values are unchanged, so nothing looks different; Figma and code now follow the same token (hds#595).
+- 4a8f75d: DESIGN.md now says what each type role is never for (display, title, titleSm, body, ui, caption, mono), so the ramp stops drifting. Refs #483, closes #488.
+
 ## 0.27.0
 
 ### Upgrade
