@@ -2,7 +2,7 @@
  * Surface — governed inset surface primitive.
  *
  * Enforces the "Surface Inset" rule: backgrounds MUST have internal padding.
- * - Default padding: px24 (cards) | px16 (items)
+ * - Default padding: surface.padding (cards, 28px / 24px compact) | scale.sm (items, 20px / 16px compact)
  * - Default border: none (elevation model — use shadow for lift)
  * - Radius: `rounded-lg` (role radius + 4px), the one container radius shared with Card
  * - shadow prop: applies a two-layer elevation shadow for card lift
@@ -47,7 +47,7 @@ const surfaceVariants = /* @__PURE__ */ cva(
         component: 'p-[var(--semantic-space-surface-padding)]',
         // The surface's fixed inset contract (not layout spacing): the primitive
         // 16px/24px steps, so a tenant's semantic scale never moves them.
-        item: 'p-[var(--primitive-space-4)]',
+        item: 'p-[var(--semantic-space-scale-sm)]',
         px16: 'p-[var(--primitive-space-4)]',
         px24: 'p-[var(--primitive-space-6)]',
         none: 'p-0',
@@ -73,7 +73,7 @@ export interface SurfaceProps
     Omit<SurfaceVariantProps, 'shadow'> {
   /** Surface content. */
   children?: ReactNode;
-  /** Padding: 'component' (24px, default) | 'item' (16px) | primitive px values | 'none' (0px). */
+  /** Padding: 'component' (surface.padding, default) | 'item' (scale.sm) | fixed px values | 'none' (0px). */
   padding?: PaddingOption;
   /** Apply the two-layer card elevation shadow for lift. */
   shadow?: boolean;

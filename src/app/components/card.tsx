@@ -353,7 +353,7 @@ export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const CardHeader = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardHeaderProps>(
   function CardHeader({ className, metadata, children, ...props }, ref) {
-    const pad = usePartPadding('p-6');
+    const pad = usePartPadding('p-surface-padding');
     if (metadata !== undefined) {
       // Top-of-card metadata + stacked title/description below. Inline-flex
       // wrapper around the metadata keeps the badge sized to its content
@@ -404,7 +404,7 @@ const CardBody = /* @__PURE__ */ React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(function CardBody({ className, ...props }, ref) {
-  const pad = usePartPadding('p-6 pt-0');
+  const pad = usePartPadding('p-surface-padding pt-0');
   return <div ref={ref} className={cn(pad, className)} {...props} />;
 });
 
@@ -412,7 +412,7 @@ const CardFooter = /* @__PURE__ */ React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(function CardFooter({ className, ...props }, ref) {
-  const pad = usePartPadding('p-6 pt-0');
+  const pad = usePartPadding('p-surface-padding pt-0');
   return <div ref={ref} className={cn('flex items-center', pad, className)} {...props} />;
 });
 
@@ -511,7 +511,7 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
     { className, value, max = 100, label, tone = 'neutral', style, ...props },
     ref,
   ) {
-    const pad = usePartPadding('px-6 pb-2');
+    const pad = usePartPadding('px-surface-padding pb-2');
     const clamped = Math.max(0, Math.min(value, max));
     const pct = max > 0 ? (clamped / max) * 100 : 0;
     return (
@@ -607,7 +607,7 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricProps>(
   function CardMetric({ className, label, value, sub, tone = 'neutral', style, ...props }, ref) {
-    const pad = usePartPadding('px-6');
+    const pad = usePartPadding('px-surface-padding');
     return (
       <div ref={ref} className={cn('flex flex-col', pad, className)} style={style} {...props}>
         <p

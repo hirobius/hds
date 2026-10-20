@@ -367,6 +367,28 @@ describe.runIf(CAPTURE_LAYOUT)('capture the layout-gap lock fixture', () => {
 
 // ── The lock ──────────────────────────────────────────────────────────────────
 
+// The one deliberate move since the fixtures: the 2026-10 spacing bump raised the
+// t-shirt scale with the type ramp (comfortable 8/16/24/32/48 -> 8/20/28/40/64px;
+// compact 6/12/20/24/40 -> 8/16/24/32/48px). A probe that reads a semantic spacing
+// var (its emitted CSS names --semantic-space-*, subgrid aside) must compute the old
+// pixel moved through that map for its cell's density; every other probe (numbers,
+// hds.space.px*, rem) must still compute exactly what it did.
+// The deprecated layout.* names and section.stack never had a compact step: they
+// moved by the comfortable map in every cell.
+const SCALE_BUMP = {
+  comfortable: { '16px': '20px', '24px': '28px', '32px': '40px', '48px': '64px', '80px': '96px' },
+  compact: { '6px': '8px', '12px': '16px', '20px': '24px', '24px': '32px', '40px': '48px' },
+};
+const readsScale = (css) => /--semantic-space-(?!subgrid|component-medium)/.test(css ?? '');
+const fixedStep = (css) =>
+  /--semantic-space-(layout-(tight|normal|inset|spacious)|section-)/.test(css);
+/** The fixture's value for one cell, moved through the bump when the probe reads the scale. */
+const expected = (css, cell, value) => {
+  if (!readsScale(css)) return value;
+  const density = fixedStep(css) ? 'comfortable' : cell.split('|')[1];
+  return SCALE_BUMP[density][value] ?? value;
+};
+
 describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
   const fixture = existsSync(FIXTURE)
     ? JSON.parse(readFileSync(FIXTURE, 'utf8'))
@@ -402,7 +424,9 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
     it.each(PROBES.filter((p) => !ADDED.has(p.key)).map((p) => p.key))(
       '%s computes what it computed on c506c3b',
       (key) => {
-        const want = fixture.computed[key].split(' ');
+        const want = fixture.computed[key]
+          .split(' ')
+          .map((v, i) => expected(emitted[key], fixture.cells[i], v));
         const got = computed[key].split(' ');
         const diffs = fixture.cells
           .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))
@@ -427,6 +451,13 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
 
 // ── The layout-gap lock (hds#404) ─────────────────────────────────────────────
 
+/** The one declaration of a layout probe's inline style that drives what it measures. */
+function measuredDecl(key) {
+  const probe = LAYOUT_PROBES.find((p) => p.key === key);
+  const prop = probe.measure === 'paddingTop' ? 'padding' : 'gap';
+  return new RegExp(`(?:^|;)\\s*${prop}:([^;]*)`).exec(layoutEmitted[key])?.[1] ?? '';
+}
+
 describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a', () => {
   const fixture = existsSync(LAYOUT_FIXTURE)
     ? JSON.parse(readFileSync(LAYOUT_FIXTURE, 'utf8'))
@@ -446,7 +477,13 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a'
       // hug; `align="stretch"` opts in). That is not spacing, so the lock compares
       // everything else on the emitted style byte for byte.
       const withoutAlign = (style) => style?.replace(/align-items:[a-z-]+;/, '');
-      expect(withoutAlign(layoutEmitted[key])).toBe(withoutAlign(fixture.emitted[key]));
+      // 2026-10 spacing bump: Card padding="item" moved from a fixed 16px onto
+      // scale.sm, so it follows density like the other steps.
+      const bumped = (style) =>
+        key.startsWith('card padding item ')
+          ? style?.replace('padding:16px', 'padding:var(--semantic-space-scale-sm)')
+          : style;
+      expect(withoutAlign(layoutEmitted[key])).toBe(withoutAlign(bumped(fixture.emitted[key])));
     },
   );
 
@@ -457,7 +494,9 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a'
     }, 120_000);
 
     it.each(LAYOUT_PROBES.map((p) => p.key))('%s computes what it computed on 8e53a8a', (key) => {
-      const want = fixture.computed[key].split(' ');
+      const want = fixture.computed[key]
+        .split(' ')
+        .map((v, i) => expected(measuredDecl(key), fixture.cells[i], v));
       const got = computed[key].split(' ');
       const diffs = fixture.cells
         .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))

@@ -159,7 +159,7 @@ export function buildTokenQuickReference(tokensJsonPath) {
   // Typography
   rows.push([
     'Typography',
-    '`semantic.typography.body`, `semantic.typography.h2`, `semantic.typography.caption`',
+    '`semantic.typography.body`, `semantic.typography.title`, `semantic.typography.caption`',
     'use token refs; values are structured (family/size/weight/etc)',
   ]);
 

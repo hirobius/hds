@@ -25,9 +25,9 @@ import { useHdsRouter } from '../context/RouterContext';
 // surface.selected (one step deeper), so the two never read the same. The weight stays
 // on the ui role (medium): the type ramp has no heavier row weight, so the fill
 // and aria-current carry the state.
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- row padding and hover/selected fills are token-driven; var()-based, no Tailwind-theme utility exists
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- hover/selected fills are token-driven; var()-based, no Tailwind-theme utility exists
 const navListItemVariants = /* @__PURE__ */ cva(
-  'hds-focus hds-type-ui block rounded-md px-[var(--primitive-space-3)] py-[var(--semantic-space-scale-xs)] text-foreground no-underline transition-colors hover:bg-[var(--semantic-color-surface-hover)]',
+  'hds-focus hds-type-ui block rounded-md px-fixed-xs py-scale-xs text-foreground no-underline transition-colors hover:bg-[var(--semantic-color-surface-hover)]',
   {
     variants: {
       current: {

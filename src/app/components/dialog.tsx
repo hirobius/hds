@@ -89,7 +89,7 @@ const DialogContent = /* @__PURE__ */ React.forwardRef<
         ref={ref}
         className={cn(
           // 16px of page margin each side, so the panel never sits flush to a 390px viewport (hds#522)
-          'fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2*var(--semantic-space-scale-sm))] max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))] max-w-lg overflow-y-auto -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border border-border bg-popover p-6 text-popover-foreground shadow-overlay hds-focus',
+          'fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2*var(--semantic-space-scale-sm))] max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))] max-w-lg overflow-y-auto -translate-x-1/2 -translate-y-1/2 gap-scale-sm rounded-lg border border-border bg-popover p-surface-padding text-popover-foreground shadow-overlay hds-focus',
           // The close button sits in the top-right padding (up to 60px in at 390, where it is a 44px
           // target); the first child, the Title or Header, keeps 40px clear so a long title never runs
           // under the X.

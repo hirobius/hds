@@ -58,7 +58,9 @@ const comfortableScale = (step) => {
 describe('compact scope remaps the scale components consume', () => {
   const scaleBlock = compactRules.map((r) => r.body).join('\n');
 
-  for (const step of SCALE) {
+  // xs is the control-internal step (icon-label gaps, chip padding): it tracks the
+  // type, not the density, so it is the same 8px in both modes.
+  for (const step of SCALE.filter((s) => s !== 'xs')) {
     it(`redeclares --semantic-space-scale-${step} on a primitive step smaller than comfortable`, () => {
       const ref = declOf(scaleBlock, `--semantic-space-scale-${step}`);
       expect(ref, `compact block must redeclare scale-${step}`).toMatch(/^--primitive-space-/);
@@ -68,9 +70,23 @@ describe('compact scope remaps the scale components consume', () => {
     });
   }
 
-  it('lands on the documented compact steps (6/12/20/24/40px)', () => {
-    const got = SCALE.map((s) => px(generated, declOf(scaleBlock, `--semantic-space-scale-${s}`)));
-    expect(got).toEqual([6, 12, 20, 24, 40]);
+  it('comfortable (the default) is the roomier 2026-10 scale (8/20/28/40/64px)', () => {
+    expect(SCALE.map(comfortableScale)).toEqual([8, 20, 28, 40, 64]);
+  });
+
+  it('compact lands on the pre-2026-10 comfortable steps (8/16/24/32/48px)', () => {
+    const got = SCALE.map(
+      (s) =>
+        px(generated, declOf(scaleBlock, `--semantic-space-scale-${s}`)) ?? comfortableScale(s),
+    );
+    expect(got).toEqual([8, 16, 24, 32, 48]);
+  });
+
+  it('every compact step is on the 4px grid', () => {
+    for (const s of SCALE) {
+      const ref = declOf(scaleBlock, `--semantic-space-scale-${s}`);
+      if (ref) expect(px(generated, ref) % 4).toBe(0);
+    }
   });
 
   it('keeps the legacy --hds-space-* bridge, documented as legacy', () => {

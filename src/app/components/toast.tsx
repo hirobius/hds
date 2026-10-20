@@ -203,7 +203,7 @@ export function ToastProvider({
                   </ToastPrimitive.Description>
                 ) : null}
                 {t.actions?.length ? (
-                  <div className="flex flex-wrap gap-2 pt-1">
+                  <div className="flex flex-wrap gap-scale-xs pt-fixed-2xs">
                     {t.actions.map((a, i) => (
                       <ToastPrimitive.Action key={i} altText={a.altText ?? a.label} asChild>
                         <Button size="sm" variant="secondary" onClick={a.onSelect}>

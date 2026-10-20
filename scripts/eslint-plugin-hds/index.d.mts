@@ -9,6 +9,8 @@ interface HdsPlugin {
   meta: { name: string; version: string };
   rules: Record<
     | 'no-delight-on-actions'
+    | 'no-deprecated-token'
+    | 'no-primitive-spacing'
     | 'no-raw-controls'
     | 'no-raw-hex'
     | 'no-raw-px-spacing'

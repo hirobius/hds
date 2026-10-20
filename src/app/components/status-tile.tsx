@@ -39,7 +39,7 @@ export const StatusTile = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Statu
         data-hds-component="StatusTile"
         data-hds-metrics={`tone:${tone}`}
         className={cn(
-          'flex items-start gap-3 rounded-lg bg-[var(--semantic-color-surface-raised)] p-4',
+          'flex items-start gap-3 rounded-lg bg-[var(--semantic-color-surface-raised)] p-scale-sm',
           className,
         )}
         {...props}

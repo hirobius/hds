@@ -219,6 +219,7 @@ export function buildTypography(raw) {
   lines.push(header('Role', 'Size (desktop max)', 'Weight', 'Use'));
 
   for (const { path, node: t } of collect(semanticTypography)) {
+    if (t?.$deprecated) continue; // agent docs teach live roles only
     const v = t?.$value ?? {};
     const raw = t?.$description ?? '';
     const afterDash = raw.split(' — ')[1];
@@ -229,7 +230,7 @@ export function buildTypography(raw) {
   }
   lines.push('');
   lines.push(
-    '> The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.',
+    '> The ramp is static: tokens store the value every surface renders. Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.',
   );
   return lines.join('\n');
 }
@@ -244,6 +245,7 @@ export function buildSpacing(raw) {
   const keys = Object.keys(space).filter((k) => !k.startsWith('$'));
 
   const scale = keys
+    .filter((k) => !space[k].$deprecated)
     .map((k) => ({ key: k, val: resolveRef(space[k].$value, raw) }))
     .filter(({ val }) => /^\d+px$/.test(val))
     .sort((a, b) => parseInt(a.val, 10) - parseInt(b.val, 10))
@@ -256,9 +258,25 @@ export function buildSpacing(raw) {
   );
   lines.push('');
   lines.push(`Scale: ${scale}`);
+  const steps = raw.semantic?.space?.scale ?? {};
+  const stepKeys = Object.keys(steps).filter((k) => !k.startsWith('$'));
+  if (stepKeys.length) {
+    lines.push('');
+    lines.push(
+      `Semantic scale (comfortable, the default): ${stepKeys.map((k) => `\`${k}\` ${resolveRef(steps[k].$value, raw)}`).join(' · ')}.`,
+    );
+  }
+  const fixed = raw.semantic?.space?.fixed ?? {};
+  const fixedKeys = Object.keys(fixed).filter((k) => !k.startsWith('$') && !fixed[k].$deprecated);
+  if (fixedKeys.length) {
+    lines.push('');
+    lines.push(
+      `Fixed steps between the rungs (density does not move them): ${fixedKeys.map((k) => `\`fixed.${k}\` ${resolveRef(fixed[k].$value, raw)}`).join(' · ')}. Every spacing value has a semantic token; never type a px value.`,
+    );
+  }
   lines.push('');
   lines.push(
-    'Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
+    'Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it steps `semantic.space.scale.sm…xl` one rung down (16/24/32/48px; `xs` stays 8px), and `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
   );
   return lines.join('\n');
 }
@@ -306,6 +324,17 @@ export function buildRadius(raw) {
       'Outer canvas / substrate boundaries only — never on everyday UI controls',
     ),
   );
+  const scale = raw.semantic?.radius?.scale ?? {};
+  for (const k of Object.keys(scale).filter((k) => !k.startsWith('$') && !scale[k].$deprecated)) {
+    lines.push(
+      row(
+        `Scale ${k}`,
+        `\`${resolveRef(scale[k].$value, raw)}\``,
+        `\`semantic.radius.scale.${k}\` (\`rounded-scale-${k}\`)`,
+        (scale[k].$description ?? '').replace(/^[^:]*:\s*/, ''),
+      ),
+    );
+  }
   return lines.join('\n');
 }
 

@@ -56,6 +56,9 @@ export default [
     plugins: { hds },
     rules: {
       'hds/max-two-meta-items': 'error',
+      'hds/no-delight-on-actions': 'error',
+      'hds/no-deprecated-token': 'error',
+      'hds/no-primitive-spacing': 'error',
       'hds/no-raw-controls': 'error',
       'hds/no-raw-hex': 'error',
       'hds/no-raw-px-spacing': 'error',
@@ -72,6 +75,8 @@ export default [
 | -------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
 | [`hds/max-two-meta-items`](#hdsmax-two-meta-items)                   | error   | Bullet-separated lines (`A · B · C`) with three or more items; use `MetaLine`, one row per extra item. |
 | [`hds/no-delight-on-actions`](#hdsno-delight-on-actions)             | error   | The lime delight accent (`semantic.accent.delight.*`) on a button, a link or a focus style.            |
+| [`hds/no-deprecated-token`](#hdsno-deprecated-token)                 | error   | A `$deprecated` token as a CSS var, `hds.*` member or Tailwind key; the message names the replacement. |
+| [`hds/no-primitive-spacing`](#hdsno-primitive-spacing)               | error   | Primitive spacing steps (`--primitive-space-*`, `hds.space.pxN`, Tailwind `p-4`); use semantic tokens. |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
 | [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                    |
 | [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.         |
@@ -93,6 +98,54 @@ export default [
 ### `hds/no-delight-on-actions`
 
 The lime delight accent is for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Flags a delight reference (CSS var, token path or arbitrary Tailwind value) in the props of `<button>`, `<a>` or any `*Button` / `*Link` component, in a `focus:` / `focus-visible:` / `focus-within:` class, and anywhere in a button or link component file. Actions and focus take `semantic.accent.*`.
+
+### `hds/no-deprecated-token`
+
+Fails any token marked `$deprecated` in `hirobius.tokens.json`, in three
+spellings: a CSS var (`var(--semantic-space-layout-tight)`), a member chain
+(`hds.semantic.space.layout.tight`) and a Tailwind key in `className` /
+`cn()` (`p-layout-tight`). The message quotes the deprecation note, the
+version it leaves in and the replacement:
+
+```text
+"--semantic-space-layout-tight" is a deprecated token (hds#206 — use semantic.space.scale.sm),
+removed in 1.0.0. Use --semantic-space-scale-sm.
+```
+
+The list is `rules/deprecated-tokens.json`, which the token build writes, so a
+newly deprecated token fails with no rule change. `primitive.space.px6` /
+`px10` are left to `hds/no-primitive-spacing`.
+
+### `hds/no-primitive-spacing`
+
+Components and consumers use semantic spacing only. The primitive steps
+(`--primitive-space-4`, `hds.space.px16`, Tailwind `p-4`) are the scale's raw
+material; using one bypasses density and the scale. Reports, one per offending
+token:
+
+- `primitiveVar`: `--primitive-space-<step>` in any string or template literal.
+- `primitiveMember`: `<x>.space.pxN`, but not `hds.semantic.space.*`.
+- `primitiveTailwind`: a numeric or `pxN` spacing utility (`p-4`, `md:gap-x-2`,
+  `-mt-px12`) in a JSX `className` or a `cn()` / `clsx()` / `cva()` argument.
+  `p-0` and `p-px` are allowed; `w-4`, `h-6` and `inset-0` are not spacing.
+- `deprecatedStep`: `px6` and `px10` in any of the forms above. They are off the
+  4px grid, deprecated and removed in 0.30.0; run `npx @hirobius/design-system upgrade`
+  (codemod `hds-spacing-steps`) or use a semantic token. Wins over the other three.
+
+Option `tailwind: false` turns off the Tailwind check only (default `true`).
+
+```tsx
+// ❌ error
+<div style={{ padding: 'var(--primitive-space-4)' }} />
+<div style={{ gap: hds.space.px16 }} />
+<div className={cn('flex', 'p-4 md:gap-2')} />
+
+// ✅ ok
+<div style={{ padding: 'var(--semantic-space-scale-md)' }} />
+<div style={{ gap: hds.semantic.space.scale.md }} />
+<div className="p-surface-padding gap-scale-md px-region-gutter" />
+<Box sx={{ p: 'md' }} />
+```
 
 ### `hds/no-status-clutter`
 
@@ -153,7 +206,7 @@ so use the token there.
 // ✅ ok — a scale token, another token reference, or zero (a reset has no scale to violate)
 <div style={{ marginBottom: hds.semantic.space.scale.sm }} />
 <div style={{ paddingInline: 'var(--semantic-space-scale-xs)' }} />
-<div style={{ marginBottom: hds.space.px16 }} />
+<div style={{ marginBottom: hds.semantic.space.surface.padding }} />
 <div style={{ margin: 0 }} />
 
 // ✅ ok — the sx shorthand with a t-shirt step

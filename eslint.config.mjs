@@ -340,6 +340,29 @@ export default [
       'hds/prefer-hds-layout-primitive': 'off',
     },
   },
+  {
+    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    rules: {
+      // repo src is gated by scripts/check-tailwind-spacing-scale.mjs (ratchet); this rule is for consumers
+      'hds/no-primitive-spacing': 'off',
+    },
+  },
+
+  // hds/no-deprecated-token: the generated token maps and the tokens.ts bridge
+  // define the deprecated tokens, and Box sx keeps its deprecated names on
+  // their vars until 1.0 (box-sx.ts BOX_SX_SPACING). table.tsx and board.tsx
+  // still read one each; moving them changes pixels (hds#789). Drop those two
+  // entries when hds#789 closes.
+  {
+    files: [
+      'src/app/design-system/**',
+      'src/app/components/box-sx.ts',
+      'src/app/components/box-sx.test.ts',
+      'src/app/components/table.tsx',
+      'src/app/components/board.tsx',
+    ],
+    rules: { 'hds/no-deprecated-token': 'off' },
+  },
 
   // Badge still defines and tests its `dot` prop; its removal lands in its own
   // change (hds#759 follow-up). Drop this block with it.
