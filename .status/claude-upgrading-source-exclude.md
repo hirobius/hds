@@ -1,0 +1,2 @@
+- UPGRADING.md is out of Tailwind's scan, and check-upgrade-css rule 7 fails a build whose dist/\*.css still carries a name its own release lists as removed (unblocks #807).
+- text-6xl stays in the published utility surface (inline), so excluding UPGRADING.md drops no shipped utility.

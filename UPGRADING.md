@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.26.2. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.27.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,54 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.27.0
+
+Released 2026-10-19 (minor). 5 changes to make by hand (3 breaking) and 33 that look different.
+
+### Looks different
+
+- Badge labels are now 14px (were 12px); if you size a Badge container by hand, give it room for the larger label.
+- Large Button labels are now 16px (were 14px); check any fixed-width Button.
+- Medium Button labels are now 16px (were 14px); check any fixed-width Button.
+- Small Button labels are now 14px (were 12px); check any fixed-width small Button.
+- Tag labels are now 14px (were 12px); if you size a Tag container by hand, give it room for the larger label.
+- The dark-mode accent fill (graphite.200) is now #cbc6c9 (was #d4d0d2); its on-accent text is 9.02:1.
+- The light-mode accent fill and accent text (graphite.700) is now #4a4146 (was #433a3f); white text on it is 9.83:1.
+- The display family now leads with Sora, then Plus Jakarta Sans; if you read this variable for your own headings they change face, and if you set it to rebrand headings, set --hds-font-family-display instead.
+- Code and ids (the mono role) are now 15px (were 13px); if you read this variable for your own code styling, expect text two pixels larger.
+- Body weight is now 450 (was 400); if you read this variable for your own text it renders slightly heavier, and Plus Jakarta Sans must load as a variable font (fonts.css does this).
+- Dark-mode hover and pressed accent fills are now lighter (graphite-100 and graphite-50), so on-accent labels pass AA; drop any held contrast floor on this pair.
+- Dark-mode hover and pressed accent fills are now lighter (graphite-100 and graphite-50), so on-accent labels pass AA; drop any held contrast floor on this pair.
+- Body text is now 18px (was 16px); check where you read this variable for layout, such as fixed-height blocks or character-count widths.
+- Caption text (metadata and help text) is now 14px (was 12px); check tight metadata rows and badges you size by hand.
+- The display role now follows --hds-font-family-display (Sora by default), not the body dial; set that dial to change hero headings.
+- The display role now uses weight 800 in Sora; re-take hero heading screenshots.
+- The deprecated eyebrow style follows caption and is now 14px (was 12px); move to caption.
+- The deprecated h1 style follows title onto Sora; move to title.
+- The deprecated h1 style follows title to weight 800 in Sora; move to title.
+- The deprecated h2 style follows title onto Sora; move to title.
+- The deprecated h2 style follows title to weight 800 in Sora; move to title.
+- The deprecated h3 style follows title onto Sora; move to title.
+- The deprecated h3 style follows title to weight 800 in Sora; move to title.
+- Titles now follow --hds-font-family-display (Sora by default), not the body dial; set that dial to change section headings.
+- Titles now use weight 800 in Sora; re-take heading screenshots.
+- Small titles now follow --hds-font-family-display (Sora by default), not the body dial; set that dial to change them.
+- Small headings are now 18px (were 16px); check where you read this variable for layout.
+- Titles now use weight 800 in Sora; re-take heading screenshots.
+- UI text (controls, nav, table text) is now 16px (was 14px); check where you read this variable for layout, such as fixed-height rows or toolbars.
+- Plus Jakarta Sans now ships as one variable face (weights 200 to 800) in fonts.css; if you pointed at the old 400, 500 or 700 files, import fonts.css again or load your own.
+- This static Plus Jakarta Sans face is folded into the variable face in fonts.css; import fonts.css again, or load your own file for this weight.
+- This static Plus Jakarta Sans face is folded into the variable face in fonts.css; import fonts.css again, or load your own file for this weight.
+- Table now has a bordered frame, a tinted header, taller body rows with vertical rules and regular-weight body text, and wide content scrolls inside the table instead of spilling past it; re-take Table screenshots and drop any wrapper you added to stop clipping.
+
+### Do by hand
+
+- Delete every var(--hds-accent-bar); status is shown in the content, not a coloured bar.
+- The stray CSS variable --leading-relaxed and the .leading-relaxed class are no longer shipped; use --semantic-typography-body-line-height or set your own line-height instead.
+- Delete the BoardColumnTone import and the tone prop from every BoardColumn, and drop any var(--hds-accent-bar); status lives in the column title and count.
+- Lint now errors on bullet lines with three or more items (new hds/max-two-meta-items rule): use MetaLine for two items, one row per item beyond that, or turn the rule off for that file.
+- New opt-in cobalt accent theme: set data-accent="cobalt" on \<html> (or a wrapper) and the accent, on-accent and accent-bound role and component variables swap to the cobalt ramp; nothing changes unless you set the attribute.
 
 ## 0.26.2
 

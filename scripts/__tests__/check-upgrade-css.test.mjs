@@ -175,6 +175,63 @@ describe('checkUpgradeCss', () => {
   });
 });
 
+describe('checkUpgradeCss: a release does not ship what it removed', () => {
+  // #807's UPGRADING.md named a removed leading utility; scanned by Tailwind, it compiled the
+  // removed utility and its variable back into dist/*.css (the 0.27.0 cut).
+  const releaseRemoving = (root, facts) => {
+    editPkg(root, (pkg) => {
+      pkg.version = '0.21.0';
+    });
+    write(
+      root,
+      'upgrade/releases/0.21.0.json',
+      formatJson({
+        version: '0.21.0',
+        date: '2026-10-19',
+        bump: 'minor',
+        summary: 'Removes a type size.',
+        backfilled: false,
+        steps: [
+          {
+            id: '0.21.0/removed/leading',
+            kind: 'removed',
+            impact: 'breaking',
+            plain: 'Gone.',
+            facts,
+          },
+        ],
+      }),
+    );
+  };
+  // Built by concatenation so this file never names the utility Tailwind would scan.
+  const name = ['leading', 'relaxed'].join('-');
+  const facts = [`css-var-removed:--${name}`, `utility-removed:${name}`];
+
+  it('fails when dist/*.css still carries a variable or class the release lists as removed', () => {
+    const root = cssRepo();
+    releaseRemoving(root, facts);
+    buildCss(root, `${RELEASED_CSS}:root{--${name}:1.625}.${name}{line-height:var(--${name})}`);
+    const result = checkUpgradeCss(root);
+    expect(rules(result)).toContain('removed-still-shipped');
+    expect(messages(result)).toContain(`--${name}`);
+    expect(messages(result)).toContain('UPGRADING.md');
+  });
+
+  it('passes once the stylesheet no longer carries them', () => {
+    const root = cssRepo();
+    releaseRemoving(root, facts);
+    buildCss(root, RELEASED_CSS);
+    expect(rules(checkUpgradeCss(root))).not.toContain('removed-still-shipped');
+  });
+});
+
+describe('theme.css keeps release prose out of the Tailwind scan', () => {
+  it('excludes UPGRADING.md like CHANGELOG.md', () => {
+    const theme = readFileSync(join(REPO, 'src/styles/theme.css'), 'utf8');
+    expect(theme).toContain('@source not "../../UPGRADING.md";');
+  });
+});
+
 describe('check-upgrade-css.mjs CLI', () => {
   const run = (args) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8' });
 
