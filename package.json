@@ -271,6 +271,7 @@
     "check:tokens": "node scripts/check-hardcoded-colors.mjs && pnpm lint --rule '{\"tailwindcss/no-custom-classname\":\"error\"}' && node scripts/audit-tokens.mjs --forbidden && node scripts/check-tier-bypass.mjs && node scripts/check-hardcoded-spacing.mjs && node scripts/check-typography-discipline.mjs --fonts-only",
     "check:type-coverage": "pnpm exec type-coverage --at-least 99.9",
     "test:visual-docs": "playwright test",
+    "test:visual-docs:update": "playwright test tests/visual/button-states.spec.ts --update-snapshots",
     "closure:plan": "node scripts/run-gates.mjs --channel pre-commit --emit-inventory docs/guardrails/full-strictness-inventory.json && node scripts/generate-closure-plan.mjs",
     "closure:plan:check": "node scripts/generate-closure-plan.mjs --check",
     "docs:api": "node scripts/generate-component-api.mjs",

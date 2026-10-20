@@ -187,6 +187,30 @@ pre {
   overflow-x: auto;
 }
 
+/* Prose tables (components/mdx-prose.tsx): a frame from HDS tokens, so the Corners switch squares
+   it. Fumadocs' own wrapper hard-codes an 8px radius. */
+.hds-docs-table {
+  position: relative;
+  overflow: auto;
+  margin: var(--semantic-space-scale-lg) 0;
+  border: 1px solid var(--semantic-color-border-default);
+  border-radius: var(--semantic-radius-action);
+}
+/* The frame scrolls, so the table inside fills it instead of shrinking to its content. */
+.prose .hds-docs-table > table {
+  display: table;
+  width: 100%;
+  margin: 0;
+}
+
+/* Search dialog (the Cmd+K one): Fumadocs sets rounded-xl and shadow-2xl on it. Radius and shadow
+   come from HDS tokens, so Corners and Shadow both reach it. Keyed on the result list's id, the
+   one thing only this dialog holds. */
+[role='dialog']:has(#fd-search-list) {
+  border-radius: var(--semantic-radius-action);
+  box-shadow: var(--semantic-shadow-overlay);
+}
+
 /* Collapsed sections (generated pages and token tables): a hairline row with a
    chevron, the content one click away. Native <details>, so it works without JS
    and stays searchable. */
@@ -614,4 +638,19 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabl
   .hds-swatch-block {
     height: 3.5rem;
   }
+}
+
+/* A linked inline-code chip is inline-flex, so the link's underline does not reach it
+   (text-decoration skips inline-flex children). Draw the cue on the chip itself. */
+a code[data-density] {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* In prose table cells a long type union wraps inside the chip (as it did before the HDS chip)
+   instead of overrunning it under the chip's max-width + nowrap. */
+.prose .hds-docs-table td code[data-density],
+.prose .hds-docs-table th code[data-density] {
+  white-space: normal;
+  overflow-wrap: break-word;
 }
