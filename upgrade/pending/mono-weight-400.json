@@ -1,0 +1,17 @@
+{
+  "impact": "look",
+  "plain": "If you set --hds-font-family-mono to a font with a 450 weight, mono text now renders at 400; set --primitive-typography-weight-mono to change it.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-typography-mono-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-typography-mono-font-weight now reads --primitive-typography-weight-mono (400); if your mono font has a heavier cut you want, set that primitive.",
+      "detect": {
+        "cssVars": ["--semantic-typography-mono-font-weight"],
+        "cssVarWrites": ["--semantic-typography-mono-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-mono-font-weight::root"]
+    }
+  ]
+}

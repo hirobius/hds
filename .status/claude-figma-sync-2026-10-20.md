@@ -1,0 +1,1 @@
+Figma library synced with the model since 0.26.1 (agent delta, drift 0), the last 4 components drawn (ThemeToggle, Timeline, Composer, MetaLine), and 9 linked components brought in line with code (Card, Divider, Input, Skeleton, StatusListItem, StatusTile, Text, Toast, label text styles); push runtime fixes, mono role at weight.mono 400.

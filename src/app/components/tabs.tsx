@@ -27,6 +27,7 @@
 
 import * as React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { scrollEdgeFadeStyle, useKeepSelectedInView, useScrollEdgeFade } from './scroll-edge-fade';
 
@@ -114,14 +115,24 @@ export function TabsTrigger({
   );
 }
 
-export function TabsContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+// `panel` is the tinted surface pulled up under the strip (in-page tabs); `bare` sits on the page,
+// for tabs that are an app's top-level nav or a page's sections (hds#819).
+const tabsContentVariants = /* @__PURE__ */ cva('', {
+  variants: {
+    variant: {
+      panel: 'bg-accent/5 rounded-b-md p-6 -mt-6',
+      bare: '',
+    },
+  },
+  defaultVariants: { variant: 'panel' },
+});
+
+/** @public */
+export type TabsContentProps = React.ComponentProps<typeof TabsPrimitive.Content> &
+  VariantProps<typeof tabsContentVariants>;
+
+export function TabsContent({ className, variant, ...props }: TabsContentProps) {
   return (
-    <TabsPrimitive.Content
-      className={cn('bg-accent/5 rounded-b-md p-6 -mt-6', className)}
-      {...props}
-    />
+    <TabsPrimitive.Content className={cn(tabsContentVariants({ variant }), className)} {...props} />
   );
 }

@@ -103,7 +103,7 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     vi.setSystemTime(new Date('2026-10-09T00:00:00.000Z'));
   });
 
-  it('builds the same delta.js, byte for byte (golden; re-captured for the transparent no-shadow effect)', async () => {
+  it('builds the same delta.js, byte for byte (golden; re-captured for aliases to a variable an earlier part created)', async () => {
     const s = await pending({
       edit: (model) => {
         variableOf(model, 'primitive.space.2').description = 'Two steps: tight gap and more.';
@@ -113,8 +113,8 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     });
     const sha = createHash('sha256').update(s.built.text).digest('hex');
     expect({ chars: s.built.chars, sha }).toEqual({
-      chars: 31361,
-      sha: 'fbcfff276568ee1300b0f5116c5a835872c2ac2377b3d20122bb2b992348930e',
+      chars: 31842,
+      sha: '20c1c9fca192268fbd325a05a926850800bc2f5a57b0c0f11e9066f8d37e5c01',
     });
   });
 });
@@ -262,8 +262,9 @@ describe('a type-ramp change too big for one delta.js (about 50,000 characters; 
     expect(single.built.chars).toBeLessThan(52000);
     const { parts } = s.built;
     expect(s.built.text).toBeNull();
-    // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 now.
-    expect(parts.length).toBe(2);
+    // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 until the
+    // canvas-font retry and weight.mono (2026-10-20) grew the runtime and the ramp; 3 now.
+    expect(parts.length).toBe(3);
     expect(parts.map((p) => p.file)).toEqual(
       parts.map((_, i) => `delta-${i + 1}-of-${parts.length}.js`),
     );
@@ -518,6 +519,32 @@ describe('the parts of a run', () => {
 const collectionOf = (model, key) => model.collections.find((c) => c.key === key);
 const kinds = {
   'created variables with a role aliasing them': { edit: describeAndCreate },
+  // The live 0.26.1 push: part 1 created weight.display and pointed h1 at it;
+  // a later part held h1 only as the anchor of its style, with no id for the
+  // new primitive, and wrote an empty value (Figma: "Required value missing").
+  'a new primitive a style-bound token switches to, the style reworded in a later part': {
+    edit: (model) => {
+      collectionOf(model, 'primitive').variables.push(
+        newVariable(
+          model,
+          'primitive.typography.weight.bold',
+          'primitive.typography.weight.display',
+          'typography/weight/display',
+          {
+            Default: { value: 700 },
+          },
+        ),
+      );
+      const h1 = variableOf(model, 'semantic.typography.h1.font-weight');
+      h1.valuesByMode = {
+        Light: { alias: 'primitive.typography.weight.display' },
+        Dark: { alias: 'primitive.typography.weight.display' },
+      };
+      const style = model.textStyles.find((s) => s.path === 'semantic.typography.h1');
+      style.description = `${style.description} Set in the display weight.`;
+      return model;
+    },
+  },
   'a new mode on a collection': {
     edit: (model) => {
       const semantic = collectionOf(model, 'semantic');
