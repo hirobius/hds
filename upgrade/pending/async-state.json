@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New AsyncState pattern in @hirobius/design-system/patterns: wrap content that loads in it to get skeleton rows, an error with Retry, your empty state and the ready content, and delete any hand-rolled version of those four states."
+}
