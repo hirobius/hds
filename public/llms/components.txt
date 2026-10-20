@@ -466,7 +466,7 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - variant: "plain" | "divided" = plain
 
 ### NavList
-A vertical list of links, one marked current. Rows hold rich content; hover and the current row share the raised surface fill.
+A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected.
   - children: ReactNode
 
 ### NavListItem
