@@ -21,7 +21,14 @@
 }
 
 /* Sora — Sora Project Authors, SIL Open Font License 1.1 (LICENSE.txt alongside).
- * Display and title face (ADR-063): the 800 weight, Latin subset. */
+ * Display and title face (ADR-063): the 800 weight, Latin subset.
+ * The Google Fonts static cut keeps the variable master's overlapping contours,
+ * which Core Text on macOS draws as a notch in the capital A. The shipped file has
+ * them flattened and glyf left untransformed so font-outlines.test.ts can read it:
+ *   python3 -c "from fontTools.ttLib import TTFont; from fontTools.ttLib.woff2 import WOFF2FlavorData; \
+ *     from fontTools.ttLib.removeOverlaps import removeOverlaps; f = TTFont('sora-800.woff2'); \
+ *     removeOverlaps(f); f.flavorData = WOFF2FlavorData(transformedTables=()); f.save('sora-800.woff2')"
+ * (needs fonttools, brotli and skia-pathops). */
 @font-face {
   font-family: 'Sora';
   src: url('/fonts/sora/sora-800.woff2') format('woff2');
