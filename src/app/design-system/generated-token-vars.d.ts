@@ -155,9 +155,11 @@ declare module 'react' {
     '--primitive-typography-size-lg'?: string | undefined;
     '--primitive-typography-size-xl'?: string | undefined;
     '--primitive-typography-size-2xl'?: string | undefined;
+    '--primitive-typography-size-title'?: string | undefined;
     '--primitive-typography-size-3xl'?: string | undefined;
     '--primitive-typography-size-4xl'?: string | undefined;
     '--primitive-typography-size-5xl'?: string | undefined;
+    '--primitive-typography-size-display'?: string | undefined;
     '--primitive-typography-size-6xl'?: string | undefined;
     '--primitive-typography-size-code'?: string | undefined;
     '--primitive-typography-weight-regular'?: string | undefined;

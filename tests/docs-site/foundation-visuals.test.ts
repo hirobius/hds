@@ -95,7 +95,7 @@ describe('typeSpecimens', () => {
     const display = specimens[0]!;
     expect(display.family).toBe('Sora');
     expect(display.fontSize).toMatch(/px$/);
-    expect(display.fontWeight).toBe('800');
+    expect(display.fontWeight).toBe('700');
     expect(display.letterSpacing).toMatch(/em$/);
   });
 });

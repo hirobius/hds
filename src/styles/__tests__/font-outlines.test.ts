@@ -17,7 +17,7 @@ import { hasOverlap, readGlyphs, type Contour } from './glyph-outlines';
 const ROOT = resolve(__dirname, '../../..');
 // IBM Plex Mono 400 is static too and already overlap-free (checked when this
 // test landed); it stays on the smaller transformed encoding the reader cannot open.
-const STATIC_FACES = ['public/fonts/sora/sora-800.woff2'];
+const STATIC_FACES = ['public/fonts/sora/sora-700.woff2'];
 
 describe('static font outlines', () => {
   it('flags the self-crossing apex of the upstream Sora 800 "A"', () => {

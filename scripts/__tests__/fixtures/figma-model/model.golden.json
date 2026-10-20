@@ -218,7 +218,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 618.8
+              "value": 622.2
             }
           }
         },
@@ -286,7 +286,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 450
+              "value": 400
             }
           }
         },
@@ -1264,7 +1264,7 @@
       "description": "",
       "fontFamily": "Plus Jakarta Sans",
       "fontStyle": "Regular",
-      "fontWeight": 450,
+      "fontWeight": 400,
       "fontSize": 17,
       "lineHeight": {
         "unit": "PIXELS",

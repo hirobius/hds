@@ -206,10 +206,10 @@ function isRelativeTypography(graph, token) {
 export const CH_BASIS = Object.freeze({
   style: 'semantic.typography.body',
   family: 'Plus Jakarta Sans',
-  weight: 450,
-  zeroAdvanceEm: 0.728,
+  weight: 400,
+  zeroAdvanceEm: 0.732,
   measuredFrom:
-    'public/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2 instanced at wght 450: hmtx advance of "0" / unitsPerEm = 728/1000, measured 2026-10-17',
+    'public/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2 instanced at wght 400: hmtx advance of "0" / unitsPerEm = 732/1000, measured 2026-10-20 (hds#847)',
 });
 
 /**

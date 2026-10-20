@@ -2,6 +2,8 @@
 
 **Status:** Accepted (2026-10-17); amended 2026-10-17 (Adrian): Sora 800 replaces Bricolage Grotesque 700, body weight 450. Builds on ADR-060 (how fonts ship, licence first). Takes up the separate display dial left open in hds#480.
 
+**Amended 2026-10-20 (Adrian, hds#847):** two weights, not three. Display, title and title-sm move to Sora **700** (`weight.display` 700; `sora-700.woff2` replaces `sora-800.woff2`), body to **400** (`weight.regular`), and ui, labels and bold lead-ins stay at 500. Heading levels now differ by size: display 56px, title 28px, title-sm 20px (new `size.display` and `size.title`). The Alert title takes the title-sm role. The Decision below is the 2026-10-17 text.
+
 ## Context
 
 Since the Satoshi swap (ADR-060, PR #585), one face, Plus Jakarta Sans, set every

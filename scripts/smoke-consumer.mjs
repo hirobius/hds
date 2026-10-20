@@ -293,7 +293,7 @@ check('tokens.css ships tokens + [data-hds] scope and NO fonts', () => {
   assert.ok(css.includes('[data-hds]'), 'base styles not scoped to [data-hds] (P0.5 regression)');
 });
 
-// hds#479: fonts are an opt-in export. fonts.css must declare all three faces (ADR-063 added Sora 800)
+// hds#479: fonts are an opt-in export. fonts.css must declare all three faces (ADR-063 added Sora; 700 since hds#847)
 // with URLs relative to itself, and every woff2 it names must ship beside it.
 check('fonts.css ships 3 faces with relative URLs and the woff2 files', () => {
   const cssPath = fileURLToPath(import.meta.resolve(PKG + '/fonts.css'));
