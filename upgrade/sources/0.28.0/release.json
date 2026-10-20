@@ -1,0 +1,74 @@
+{
+  "$comment": "Frozen inputs of the 0.28.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.28.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.28.0",
+  "previous": "0.27.0",
+  "date": "2026-10-20",
+  "summary": "1 change to make by hand (1 breaking) and 4 that look different.",
+  "backfilled": false,
+  "notes": {
+    "async-state": {
+      "needle": "d53c25c: New `AsyncState` pattern (from `@hirobius/design-system/patterns`):",
+      "source": "CHANGELOG.md:19"
+    },
+    "emptystate-icon-text-weight": {
+      "needle": "b5c4172: `EmptyState` takes an optional `icon`",
+      "source": "CHANGELOG.md:20"
+    },
+    "figma-four-components": {
+      "needle": "ace0565: ThemeToggle, Timeline, Composer",
+      "source": "CHANGELOG.md:32"
+    },
+    "menu-cap-danger": {
+      "needle": "6c61314: Menu: the content now caps its height",
+      "source": "CHANGELOG.md:21"
+    },
+    "mono-weight-400": {
+      "needle": "ace0565: New `--primitive-typography-weight-mono`",
+      "source": "CHANGELOG.md:33"
+    },
+    "nav-list": {
+      "needle": "6eda923: New `NavList` pattern: a vertical",
+      "source": "CHANGELOG.md:22"
+    },
+    "pressed-fill-steps": {
+      "needle": "db79c31: Light-mode pressed states now read",
+      "source": "CHANGELOG.md:23"
+    },
+    "sora-a-overlaps": {
+      "needle": "3cd841f: Sora 800 (`fonts.css`, display and",
+      "source": "CHANGELOG.md:34"
+    },
+    "tab-scroll-fade": {
+      "needle": "0583ca4: TabsList and SegmentedControl now",
+      "source": "CHANGELOG.md:24"
+    },
+    "table-board-current-tokens": {
+      "needle": "a689d32: Table dividers and borders now read",
+      "source": "CHANGELOG.md:35"
+    },
+    "tabs-content-bare": {
+      "needle": "8a415f4: `TabsContent` takes `variant=\"bare\"`",
+      "source": "CHANGELOG.md:25"
+    },
+    "tag-own-tokens": {
+      "needle": "14e34b3: Tag's unselected background, border",
+      "source": "CHANGELOG.md:36"
+    },
+    "toast-actions": {
+      "needle": "b03746c: Toast takes one or two `actions`",
+      "source": "CHANGELOG.md:26"
+    },
+    "token-field": {
+      "needle": "177bd6f: New `TokenField`: a multi-line text",
+      "source": "CHANGELOG.md:27"
+    },
+    "type-role-never-for": {
+      "needle": "4a8f75d: DESIGN.md now says what each type",
+      "source": "CHANGELOG.md:37"
+    },
+    "use-breakpoint": {
+      "needle": "f93cec8: New `useAtLeast(bp)` and `useBreakpoint()`",
+      "source": "CHANGELOG.md:28"
+    }
+  }
+}
