@@ -20,6 +20,26 @@ export function selectorFor(route) {
   return DEMO_ROUTE.test(route) ? DEMO_SELECTOR : MAIN_SELECTOR;
 }
 
+export const SITE_NAME = 'Hirobius Design System';
+
+/**
+ * The home page says the full name once, as its H1; the chrome uses "HDS" and
+ * "Overview" (hds#845). Given the page's visible text (innerText of <body>), returns a
+ * violation in the axe shape when the name repeats on /docs, else null.
+ */
+export function siteNameRepeats(route, text) {
+  if (route !== '/docs') return null;
+  const count = text.split(SITE_NAME).length - 1;
+  return count > 1
+    ? {
+        id: 'site-name-repeated',
+        impact: 'serious',
+        nodes: count,
+        help: `"${SITE_NAME}" appears ${count} times in the home page's visible text; keep it to the H1`,
+      }
+    : null;
+}
+
 /**
  * Route paths for every built /docs page that is not a component or pattern leaf
  * (those are discoverPages): /docs itself, the section landings and all nested pages.

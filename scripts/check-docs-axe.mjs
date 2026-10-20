@@ -14,6 +14,9 @@
  * matches nothing also fails. A demo page with no demo frame is reported as rule
  * "no-demo" (a page with no <main> as "no-main") and fails unless allowlisted under that rule id.
  *
+ * The /docs home also fails as rule "site-name-repeated" when its visible text says
+ * "Hirobius Design System" more than once (hds#845).
+ *
  * Run `pnpm docs:publish` first. Chromium comes from PLAYWRIGHT_BROWSERS_PATH
  * (/opt/pw-browsers in remote sessions). Writes reports/axe/docs-latest.json.
  *
@@ -25,7 +28,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { AXE_TAGS, evaluateScan, loadAxeSource, validateAllowlist } from './lib/axe-gate.mjs';
-import { DEMO_SELECTOR, discoverAxeRoutes, selectorFor, serveStatic } from './lib/docs-axe.mjs';
+import {
+  DEMO_SELECTOR,
+  discoverAxeRoutes,
+  selectorFor,
+  serveStatic,
+  siteNameRepeats,
+} from './lib/docs-axe.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const AXE_SOURCE = loadAxeSource(ROOT);
@@ -122,6 +131,9 @@ async function scanOne(browser, base, route, theme) {
       help: v.help,
       sample: v.nodes.slice(0, 2).map((n) => n.html.slice(0, 160)),
     }));
+    // Not an axe rule: the home page names the system once (hds#845), checked in the same browser pass.
+    const repeated = siteNameRepeats(route, await page.evaluate(() => document.body.innerText));
+    if (repeated) rec.violations.push(repeated);
   } catch (e) {
     rec.error = String(e.message || e)
       .split('\n')[0]

@@ -1,0 +1,1 @@
+- Docs home names the system once (hds#845): sidebar header "HDS", home nav item "Overview", top bar shows the page title on inner pages and nothing on home; check-docs-axe fails if the home page repeats the full name.
