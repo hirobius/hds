@@ -152,7 +152,9 @@ const hds = {
         lg: 'var(--semantic-space-scale-lg)',
         xl: 'var(--semantic-space-scale-xl)',
       },
-      // hds#206 slice 3 — the overridable roles. Default scale.md (24px);
+      // The fixed steps between the scale rungs (4/12/16/24/32/48px); compact density does not move them.
+      fixed: tokenRefs.semantic.space.fixed,
+      // hds#206 slice 3 — the overridable roles. surface.padding defaults to scale.md (28px, 24px compact);
       // tenants.css overrides surface.padding per brand/density and theme.css
       // sets region.gutter responsively (scale.lg / scale.sm).
       surface: {
@@ -200,6 +202,12 @@ const hds = {
         sectionGap: 'var(--semantic-space-sidebar-sectionGap)',
         railPadding: 'var(--semantic-space-sidebar-railPadding)',
       },
+    },
+    radius: {
+      action: tokenRefs.semantic.radius.action,
+      control: tokenRefs.semantic.radius.control,
+      // 8/12/16/24px and pill: the fixed surface ladder (rounded-scale-* in Tailwind).
+      scale: tokenRefs.semantic.radius.scale,
     },
     typography: {
       /** @deprecated hds#483 — use `typeStyles.ui`.
@@ -352,15 +360,8 @@ const hds = {
   },
 
   // ── Icons ────────────────────────────────────────────────────────────────────
-  // Sized off primitive.size, NOT the type ramp. An icon is geometry: it sits
-  // beside text, it does not scale with it. These were pointed at
-  // typography.size.base/lg/xl, which happened to read 16/20/24 — so the
-  // coupling was invisible until the ramp moved. Rescaling the ramp (hds#283)
-  // would have silently shrunk every medium icon 20→18 and every large 24→20,
-  // for no typographic reason, and no gate would have said a word.
-  //
-  // component.button.size.*.iconSize already referenced primitive.size; this
-  // brings the global bridge in line with what the component tokens do.
+  // Sized off primitive.size, NOT the type ramp: an icon is geometry and does not
+  // scale with text (hds#283; component.button.size.*.iconSize does the same).
   iconSize: {
     small: 'var(--primitive-size-16)', // 16px — default icon size
     medium: 'var(--primitive-size-20)', // 20px — prominent icons
@@ -384,7 +385,7 @@ const hds = {
    */
   density: {
     xs: 'var(--hds-space-xs)', // 4px comfortable / 2px compact
-    sm: 'var(--hds-space-sm)', // 8px comfortable / 6px compact
+    sm: 'var(--hds-space-sm)', // 8px in both densities (the 6px compact step was cut 2026-10)
     md: 'var(--hds-space-md)', // 16px comfortable / 12px compact
     lg: 'var(--hds-space-lg)', // 24px comfortable / 20px compact
     xl: 'var(--hds-space-xl)', // 32px comfortable / 24px compact
@@ -402,8 +403,16 @@ const hds = {
     px1: 'var(--primitive-space-px1)',
     px2: 'var(--primitive-space-px2)',
     px4: 'var(--primitive-space-1)',
+    /**
+     * @deprecated 6px is off the 4px grid (2026-10 spacing prune). Use px8 or a semantic step.
+     * @removeIn 0.30.0
+     */
     px6: 'var(--primitive-space-px6)',
     px8: 'var(--primitive-space-2)',
+    /**
+     * @deprecated 10px is off the 4px grid (2026-10 spacing prune). Use px12 or a semantic step.
+     * @removeIn 0.30.0
+     */
     px10: 'var(--primitive-space-px10)',
     px12: 'var(--primitive-space-3)',
     px16: 'var(--primitive-space-4)',

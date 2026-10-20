@@ -47,13 +47,9 @@ Weights declared: `400` mono, `450` regular, `500` medium, `700` bold, `800` dis
 | `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 15px | 400 | Code and ids |
-| `semantic.typography.h1` | 24px | 800 | deprecated: use semantic.typography.title |
-| `semantic.typography.h2` | 24px | 800 | deprecated: use semantic.typography.title |
-| `semantic.typography.h3` | 24px | 800 | deprecated: use semantic.typography.title |
-| `semantic.typography.eyebrow` | 14px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
-> The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
+> The ramp is static: tokens store the value every surface renders. Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.
 <!-- auto:end:typography -->
 
 **Never for.** Each role has one job; reaching past it is how the ramp drifts.
@@ -75,14 +71,25 @@ Weights declared: `400` mono, `450` regular, `500` medium, `700` bold, `800` dis
 <!-- auto:start:spacing -->
 **Base unit: 4px.** All spacing snaps to the primitive scale; never introduce half-steps or arbitrary px values.
 
-Scale: `0px` (`primitive.space.0`) · `1px` (`primitive.space.px1`) · `2px` (`primitive.space.px2`) · `4px` (`primitive.space.1`) · `6px` (`primitive.space.px6`) · `8px` (`primitive.space.2`) · `10px` (`primitive.space.px10`) · `12px` (`primitive.space.3`) · `16px` (`primitive.space.4`) · `20px` (`primitive.space.5`) · `24px` (`primitive.space.6`) · `28px` (`primitive.space.7`) · `32px` (`primitive.space.8`) · `40px` (`primitive.space.10`) · `48px` (`primitive.space.12`) · `64px` (`primitive.space.16`) · `80px` (`primitive.space.20`) · `96px` (`primitive.space.24`) · `128px` (`primitive.space.32`)
+Scale: `0px` (`primitive.space.0`) · `1px` (`primitive.space.px1`) · `2px` (`primitive.space.px2`) · `4px` (`primitive.space.1`) · `8px` (`primitive.space.2`) · `12px` (`primitive.space.3`) · `16px` (`primitive.space.4`) · `20px` (`primitive.space.5`) · `24px` (`primitive.space.6`) · `28px` (`primitive.space.7`) · `32px` (`primitive.space.8`) · `40px` (`primitive.space.10`) · `48px` (`primitive.space.12`) · `64px` (`primitive.space.16`) · `80px` (`primitive.space.20`) · `96px` (`primitive.space.24`) · `128px` (`primitive.space.32`)
 
-Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
+Semantic scale (comfortable, the default): `xs` 8px · `sm` 20px · `md` 28px · `lg` 40px · `xl` 64px.
+
+Fixed steps between the rungs (density does not move them): `fixed.2xs` 4px · `fixed.xs` 12px · `fixed.sm` 16px · `fixed.md` 24px · `fixed.lg` 32px · `fixed.xl` 48px. Every spacing value has a semantic token; never type a px value.
+
+Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it steps `semantic.space.scale.sm…xl` one rung down (16/24/32/48px; `xs` stays 8px), and `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
 <!-- auto:end:spacing -->
+
+**Spacing rules of thumb** (2026-10, raised with the type ramp so padding, gaps and line height stay in rhythm):
+
+- **Inner padding ≤ outer gap.** A surface's padding is never larger than the gap around it: a 28px card sits in a grid gap of 28px or more, never 20px.
+- **Nested surfaces step down one level.** A surface inside a surface takes the next smaller step (surface.padding → `sm` → `xs`), or `padding="none"`.
+- **Never mix two paddings on sibling cards.** Cards in one row or list share one padding step.
+- **Semantic tokens only.** Components and consumers use `semantic.space.*` (or the `xs…xl` keys); never a `primitive.space.*` step, a numeric Tailwind class or raw px. `hds/no-primitive-spacing` (in `hds/recommended`) and `check-tailwind-spacing-scale --ratchet` (pretest) fail on them.
 
 ## Layout contract (v1)
 
-Approved 2026-10-07 as the **target**; adoption is in progress, so some components below (Container, Sidebar, Switcher) still ship until they fold in. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`).
+Approved 2026-10-07 as the **target**; adoption is in progress, so some components below (Container, Sidebar, Switcher) still ship until they fold in. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`) and `check-tailwind-spacing-scale --ratchet` (pretest; per-file baseline in `scripts/tailwind-spacing-scale.baseline.json`).
 
 1. **Sizing.** Every component declares `fill` or `hug` on each axis. Leaves hug. Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. One override prop, `width="hug|fill"`, on every component. Height always hugs; stretching is the parent's job (`align="stretch"`). No component sets `h-full`, `height: 100%` or `self-*` on its root.
 2. **Padding.** Only containers pad: Card, Surface, Alert, Callout, Dialog, Page. Compound parts (`Card.Header`, `Body`, `Footer`, `Metric`) have zero padding and the container's `gap` spaces them. Padding is `none | sm | md`, default `md`, density-aware. A padded container directly inside a padded container is an error unless the inner one is `padding="none"`.
@@ -101,6 +108,11 @@ Shape is one knob. `semantic.radius.action` is the system's single shape value �
 | Container | `12px` | `role.radius` + 4px (`rounded-lg`) | Cards, surfaces, segmented control surface, modal/sheet containers |
 | Full | `9999px` | `primitive.radius.full` | Pills, avatars, indicator dots, any intentionally circular form |
 | Zero | `0px` | `primitive.radius.0` | Outer canvas / substrate boundaries only — never on everyday UI controls |
+| Scale sm | `8px` | `semantic.radius.scale.sm` (`rounded-scale-sm`) | chips, menu items and small surfaces. |
+| Scale md | `12px` | `semantic.radius.scale.md` (`rounded-scale-md`) | cards, popovers and panels. |
+| Scale lg | `16px` | `semantic.radius.scale.lg` (`rounded-scale-lg`) | dialogs, sheets and large media frames. |
+| Scale xl | `24px` | `semantic.radius.scale.xl` (`rounded-scale-xl`) | hero media and feature panels. |
+| Scale pill | `9999px` | `semantic.radius.scale.pill` (`rounded-scale-pill`) | pills, tags and avatar chips. |
 <!-- auto:end:radius -->
 
 ## Elevation
@@ -180,7 +192,7 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Background               | `var(--semantic-color-surface-raised)`                                                                                                                                                    | Any gradient, tinted fill, or custom color                                                  |
 | Border                   | Default variant: **borderless**. Opt-in (`bordered`/`tone`/`accent`): 1px solid the matching token (`border.default` / feedback color / `border.accent`). Never border + shadow together. | `box-shadow` as an elevation substitute; a border on the default variant (use `bordered`)   |
 | Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                                                                                                 | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
-| Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                                                                                                           | Raw pixel values or ad hoc insets                                                           |
+| Padding                  | `var(--semantic-space-surface-padding)` or `<HdsSurface padding="component">`                                                                                                             | Raw pixel values or ad hoc insets                                                           |
 | Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`                                                                                  | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
 | Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                                                                                                         | Any other type style for the primary card heading                                           |
 | Subtitle / meta          | `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`)                                                                               | Primary content color or body size for secondary text                                       |
@@ -249,6 +261,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (450 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (463 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

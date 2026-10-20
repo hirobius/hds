@@ -133,7 +133,9 @@
   --primitive-space-32: 128px;
   --primitive-space-px1: 1px;
   --primitive-space-px2: 2px;
+  /* @deprecated 2026-10 spacing prune, removed in 0.30.0 — use semantic.space.scale.xs (8px) (removed in 0.30.0) */
   --primitive-space-px6: 6px;
+  /* @deprecated 2026-10 spacing prune, removed in 0.30.0 — use semantic.space.fixed.xs (12px) (removed in 0.30.0) */
   --primitive-space-px10: 10px;
   --primitive-blur-8: 8px;
   --primitive-blur-16: 16px;
@@ -142,6 +144,8 @@
   --primitive-radius-4: 4px;
   --primitive-radius-8: 8px;
   --primitive-radius-12: 12px;
+  --primitive-radius-16: 16px;
+  --primitive-radius-24: 24px;
   --primitive-radius-full: 9999px;
   --primitive-typography-family-primary: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --primitive-typography-family-display: Sora, "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -255,6 +259,7 @@
   --semantic-color-content-danger: var(--primitive-color-red-700);
   --semantic-color-border-default: var(--primitive-color-neutral-200);
   --semantic-color-border-interactive: var(--primitive-color-neutral-500);
+  /* @deprecated border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) (removed in 1.0.0) */
   --semantic-color-border-subdued: var(--primitive-color-neutral-200);
   --semantic-color-border-subtle: var(--primitive-color-neutral-100);
   --semantic-color-border-strong: var(--primitive-color-neutral-300);
@@ -273,38 +278,53 @@
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-50);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-black);
   --semantic-space-scale-xs: var(--primitive-space-2);
-  --semantic-space-scale-sm: var(--primitive-space-4);
-  --semantic-space-scale-md: var(--primitive-space-6);
-  --semantic-space-scale-lg: var(--primitive-space-8);
-  --semantic-space-scale-xl: var(--primitive-space-12);
+  --semantic-space-scale-sm: var(--primitive-space-5);
+  --semantic-space-scale-md: var(--primitive-space-7);
+  --semantic-space-scale-lg: var(--primitive-space-10);
+  --semantic-space-scale-xl: var(--primitive-space-16);
+  --semantic-space-fixed-2xs: var(--primitive-space-1);
+  --semantic-space-fixed-xs: var(--primitive-space-3);
+  --semantic-space-fixed-sm: var(--primitive-space-4);
+  --semantic-space-fixed-md: var(--primitive-space-6);
+  --semantic-space-fixed-lg: var(--primitive-space-8);
+  --semantic-space-fixed-xl: var(--primitive-space-12);
   --semantic-space-surface-padding: var(--semantic-space-scale-md);
-  --semantic-space-region-gutter: var(--semantic-space-scale-md);
+  --semantic-space-region-gutter: var(--semantic-space-scale-lg);
   --semantic-space-subgrid-hairline: var(--primitive-space-px1);
   --semantic-space-subgrid-xs: var(--primitive-space-px2);
   --semantic-space-subgrid-gap: var(--primitive-space-1);
-  --semantic-space-component-gap: var(--primitive-space-2);
+  /* @deprecated hds#206 — use semantic.space.scale.xs (removed in 1.0.0) */
+  --semantic-space-component-gap: var(--semantic-space-scale-xs);
   --semantic-space-component-medium: var(--primitive-space-3);
+  /* @deprecated hds#206 — use semantic.space.surface.padding (removed in 1.0.0) */
   --semantic-space-component-padding: var(--semantic-space-surface-padding);
-  --semantic-space-layout-tight: var(--primitive-space-4);
-  --semantic-space-layout-normal: var(--primitive-space-6);
+  /* @deprecated hds#206 — use semantic.space.scale.sm (removed in 1.0.0) */
+  --semantic-space-layout-tight: var(--primitive-space-5);
+  /* @deprecated hds#206 — use semantic.space.scale.md (removed in 1.0.0) */
+  --semantic-space-layout-normal: var(--primitive-space-7);
+  /* @deprecated hds#206 — use semantic.space.region.gutter (removed in 1.0.0) */
   --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
-  --semantic-space-layout-inset: var(--primitive-space-8);
-  --semantic-space-layout-spacious: var(--primitive-space-12);
-  --semantic-space-section-stack: var(--primitive-space-20);
+  /* @deprecated hds#206 — use semantic.space.scale.lg (removed in 1.0.0) */
+  --semantic-space-layout-inset: var(--primitive-space-10);
+  /* @deprecated hds#206 — use semantic.space.scale.xl (removed in 1.0.0) */
+  --semantic-space-layout-spacious: var(--primitive-space-16);
+  --semantic-space-section-stack: var(--primitive-space-24);
   --semantic-space-section-inset: var(--primitive-space-24);
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) (removed in 1.0.0) */
   --semantic-space-section-heroMax: var(--primitive-space-32);
   --semantic-space-sidebar-indent: var(--primitive-space-3);
   --semantic-space-sidebar-gap: var(--primitive-space-4);
   --semantic-space-sidebar-sectionGap: var(--primitive-space-3);
   --semantic-space-sidebar-railPadding: var(--primitive-space-5);
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280 (removed in 1.0.0) */
   --semantic-space-sidebar-railWidth: var(--primitive-size-width-280);
   --semantic-layout-width-content: var(--primitive-size-width-760);
   --semantic-layout-width-max: var(--primitive-size-width-1200);
   --semantic-layout-container-maxWidth: var(--primitive-size-width-1200);
   --semantic-layout-content-maxWidth: var(--primitive-size-width-760);
   --semantic-layout-prose-maxWidth: var(--primitive-size-width-50ch);
-  --semantic-layout-section-paddingY: var(--primitive-space-20);
-  --semantic-layout-grid-gap: var(--primitive-space-8);
+  --semantic-layout-section-paddingY: var(--primitive-space-24);
+  --semantic-layout-grid-gap: var(--semantic-space-scale-lg);
   --semantic-layout-grid-columns-mobile: var(--primitive-grid-columns-1);
   --semantic-layout-grid-columns-tablet: var(--primitive-grid-columns-2);
   --semantic-layout-grid-columns-desktop: var(--primitive-grid-columns-3);
@@ -353,24 +373,28 @@
   --semantic-typography-mono-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-mono-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-mono-max-width: 60ch;
+  /* @deprecated hds#483 — use semantic.typography.title (removed in 1.0.0) */
   /* semantic.typography.h1 */
   --semantic-typography-h1-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h1-font-size: var(--primitive-typography-size-2xl);
   --semantic-typography-h1-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h1-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h1-line-height: var(--primitive-typography-lineHeight-tight);
+  /* @deprecated hds#483 — use semantic.typography.title (removed in 1.0.0) */
   /* semantic.typography.h2 */
   --semantic-typography-h2-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h2-font-size: var(--primitive-typography-size-2xl);
   --semantic-typography-h2-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h2-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h2-line-height: var(--primitive-typography-lineHeight-tight);
+  /* @deprecated hds#483 — use semantic.typography.title (removed in 1.0.0) */
   /* semantic.typography.h3 */
   --semantic-typography-h3-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h3-font-size: var(--primitive-typography-size-2xl);
   --semantic-typography-h3-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h3-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h3-line-height: var(--primitive-typography-lineHeight-tight);
+  /* @deprecated hds#483 — use semantic.typography.caption (removed in 1.0.0) */
   /* semantic.typography.eyebrow */
   --semantic-typography-eyebrow-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-sm);
@@ -378,8 +402,10 @@
   --semantic-typography-eyebrow-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-eyebrow-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-lineHeight-none: var(--primitive-typography-lineHeight-none);
-  --semantic-docs-space-section: var(--primitive-space-12);
-  --semantic-docs-space-paragraph: var(--primitive-space-6);
+  --semantic-docs-space-section: var(--semantic-space-scale-xl);
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) (removed in 1.0.0) */
+  --semantic-docs-space-paragraph: var(--primitive-space-7);
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs (removed in 1.0.0) */
   --semantic-docs-space-inline: var(--primitive-space-2);
   --semantic-accent-rest: var(--primitive-color-graphite-700);
   --semantic-accent-hover: var(--primitive-color-graphite-800);
@@ -395,6 +421,11 @@
   --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
   --semantic-radius-action: var(--primitive-radius-8);
   --semantic-radius-control: var(--primitive-radius-4);
+  --semantic-radius-scale-sm: var(--primitive-radius-8);
+  --semantic-radius-scale-md: var(--primitive-radius-12);
+  --semantic-radius-scale-lg: var(--primitive-radius-16);
+  --semantic-radius-scale-xl: var(--primitive-radius-24);
+  --semantic-radius-scale-pill: var(--primitive-radius-full);
   --semantic-borderWidth-default: var(--primitive-borderWidth-xs);
   --semantic-borderWidth-emphasis: var(--primitive-borderWidth-sm);
   --semantic-shadow-subtle: 0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06);
@@ -455,7 +486,9 @@
   --component-tag-activeHover: var(--semantic-accent-hover);
   --component-badge-fontSize: var(--primitive-typography-size-sm);
   --component-badge-fontWeight: var(--primitive-typography-weight-medium);
+  /* @deprecated hds#595 — use component.badge.<tone>.text (one per tone) (removed in 1.0.0) */
   --component-badge-text: var(--semantic-color-content-primary);
+  /* @deprecated hds#595 — use component.badge.<tone>.bg (one per tone) (removed in 1.0.0) */
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
   --component-badge-neutral-bg: var(--semantic-color-surface-overlay);
   --component-badge-neutral-text: var(--semantic-color-content-secondary);
@@ -473,7 +506,7 @@
   --component-badge-height: var(--primitive-size-20);
   --component-badge-minWidth: var(--primitive-size-20);
   --component-badge-paddingY: var(--primitive-space-px2);
-  --component-badge-paddingX: var(--primitive-space-px6);
+  --component-badge-paddingX: var(--primitive-space-2);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
   --component-button-bgPressed: var(--semantic-accent-pressed);
@@ -518,7 +551,7 @@
   --component-card-bg: var(--semantic-color-surface-raised);
   --component-card-border: var(--semantic-color-border-default);
   --component-card-radius: var(--primitive-radius-12);
-  --component-card-padding: var(--primitive-space-6);
+  --component-card-padding: var(--primitive-space-7);
   --component-card-gap: var(--semantic-space-scale-sm);
   --component-inlineCode-bg: var(--semantic-color-surface-overlay);
   --component-lightbox-backdrop-blur: var(--primitive-blur-16);

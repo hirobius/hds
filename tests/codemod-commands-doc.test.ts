@@ -22,6 +22,7 @@ const FIRST_SHIPPED: Record<string, [number, number]> = {
   'hds-prefix': [0, 20],
   'hds-not-found-pattern': [0, 20],
   'hds-tile-grid': [0, 20],
+  'hds-spacing-steps': [0, 27],
   // Not a codemod, but a bin all the same: the hds MCP server (hds#515).
   'hds-mcp': [0, 21],
   // The upgrade command (hds#452): `design-system` is the bin npx runs for

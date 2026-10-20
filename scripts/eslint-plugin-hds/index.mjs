@@ -15,6 +15,8 @@ import { readFileSync } from 'node:fs';
 import maxTwoMetaItems from './rules/max-two-meta-items.mjs';
 import noCustomTracking from './rules/no-custom-tracking.mjs';
 import noDelightOnActions from './rules/no-delight-on-actions.mjs';
+import noDeprecatedToken from './rules/no-deprecated-token.mjs';
+import noPrimitiveSpacing from './rules/no-primitive-spacing.mjs';
 import noRawControls from './rules/no-raw-controls.mjs';
 import noRawHex from './rules/no-raw-hex.mjs';
 import noStatusClutter from './rules/no-status-clutter.mjs';
@@ -35,6 +37,8 @@ const plugin = {
     'max-two-meta-items': maxTwoMetaItems,
     'no-custom-tracking': noCustomTracking,
     'no-delight-on-actions': noDelightOnActions,
+    'no-deprecated-token': noDeprecatedToken,
+    'no-primitive-spacing': noPrimitiveSpacing,
     'no-raw-controls': noRawControls,
     'no-raw-hex': noRawHex,
     'no-raw-px-spacing': noRawPxSpacing,
@@ -53,6 +57,8 @@ plugin.configs = {
         'hds/max-two-meta-items': 'error',
         'hds/no-custom-tracking': 'error',
         'hds/no-delight-on-actions': 'error',
+        'hds/no-deprecated-token': 'error',
+        'hds/no-primitive-spacing': 'error',
         'hds/no-raw-controls': 'error',
         'hds/no-raw-hex': 'error',
         'hds/no-raw-px-spacing': 'error',

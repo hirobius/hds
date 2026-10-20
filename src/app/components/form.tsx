@@ -56,7 +56,7 @@ export const Form = /* @__PURE__ */ React.forwardRef<HTMLFormElement, FormProps>
   { className, ...props },
   ref,
 ) {
-  return <form ref={ref} className={cn('flex flex-col gap-4', className)} {...props} />;
+  return <form ref={ref} className={cn('flex flex-col gap-scale-sm', className)} {...props} />;
 });
 
 // ── Field wiring (shared) ─────────────────────────────────────────────────────

@@ -26,9 +26,9 @@ const tokens = JSON.parse(read('hirobius.tokens.json'));
 const space = tokens.semantic.space;
 
 describe('canonical overridable spacing tokens', () => {
-  it('surface.padding and region.gutter default to scale.md (24px, unchanged)', () => {
+  it('surface.padding defaults to scale.md and region.gutter to scale.lg (2026-10 bump)', () => {
     expect(space.surface.padding.$value).toBe('{semantic.space.scale.md}');
-    expect(space.region.gutter.$value).toBe('{semantic.space.scale.md}');
+    expect(space.region.gutter.$value).toBe('{semantic.space.scale.lg}');
   });
 
   it('keeps component.padding and layout.gutter as $deprecated aliases of the new names', () => {
@@ -90,19 +90,19 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
 const CHROMIUM = chromiumPath() ?? chromium.executablePath();
 const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
 
-/** Today's surface.padding in px per tenant, [comfortable, compact]. */
+/** Today's surface.padding in px per tenant, [comfortable, compact] (2026-10 bump: scale 8/20/28/40/64, compact 8/16/24/32/48). */
 const SURFACE_PX = {
-  base: [24, 20],
-  'accent-lilac': [24, 20],
-  'brutalist-demo': [16, 6],
-  'concrete-creations': [24, 20],
+  base: [28, 24],
+  'accent-lilac': [28, 24],
+  'brutalist-demo': [20, 8],
+  'concrete-creations': [28, 24],
   // Design-explorations demo tenants (hds#628): soft-demo opens surfaces up (scale.lg, scale.md
   // compact); accent-pair-demo changes colour only.
-  'soft-demo': [32, 20],
-  'accent-pair-demo': [24, 20],
+  'soft-demo': [40, 24],
+  'accent-pair-demo': [28, 24],
 };
 /** Today's region.gutter in px per viewport width, [comfortable, compact]. Same for every tenant. */
-const GUTTER_PX = { 1280: [32, 24], 640: [32, 24], 639: [16, 12], 400: [16, 12] };
+const GUTTER_PX = { 1280: [40, 32], 640: [40, 32], 639: [20, 16], 400: [20, 16] };
 
 // theme.css pulls in Tailwind first; the browser skips what it cannot parse, and the
 // custom properties this reads are plain CSS.
