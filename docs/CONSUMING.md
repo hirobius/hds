@@ -246,6 +246,24 @@ export function Example() {
 | `@hirobius/design-system/icons`         | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                                                                                                                                      |
 | `@hirobius/design-system/eslint-plugin` | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                                                                                                                             |
 
+### Different markup per width — `useAtLeast` / `useBreakpoint`
+
+Lay out with CSS first (`Sidebar`, `Switcher`, `Grid`, responsive `sx`). When a
+screen renders different markup per width — a `Table` at desktop, rows on a
+phone — read the breakpoint from the root instead of writing your own
+`matchMedia` hook:
+
+```tsx
+import { useAtLeast, useBreakpoint } from '@hirobius/design-system';
+
+const wide = useAtLeast('lg'); // true from the same min-width an `sx` `lg` key switches on
+const bp = useBreakpoint(); // 'base' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+```
+
+Both use the values `sx` compiles, so there is no pixel width in your code.
+They answer narrow (`false` / `'base'`) on the server, in jsdom and without
+`matchMedia`, and update live as the viewport crosses a breakpoint.
+
 ### Semantic feedback / status tokens
 
 For status UI (Saved / Applied / Interviewing / Offer / Rejected, or any
