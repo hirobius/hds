@@ -89,6 +89,9 @@ function pluginData({ supported = true, owner, log }) {
  * @param {Array<{family: string, style: string}>} [options.fonts]  Fonts available to the editor.
  * @param {number} [options.modeLimit]  Modes per collection (Professional: 10).
  * @param {boolean} [options.variablePluginData]  false makes plugin data on variables throw.
+ * @param {Record<string, Array<{family: string, style: string}>>} [options.canvasFonts]
+ *   Variable name → fonts of text layers on the canvas bound to it. Figma refuses
+ *   setValueForMode on such a variable until those fonts are loaded.
  */
 export function createFakeFigma({
   fileName = 'HDS scratch file',
@@ -100,6 +103,7 @@ export function createFakeFigma({
   ],
   modeLimit = 10,
   variablePluginData = true,
+  canvasFonts = {},
 } = {}) {
   let nextId = 1;
   let useFigmaReads = false;
@@ -237,6 +241,21 @@ export function createFakeFigma({
       setValueForMode(modeId, value) {
         if (!collection.modes.some((m) => m.modeId === modeId)) {
           throw new Error(`Mode ${modeId} is not in collection ${collection.name}`);
+        }
+        const unloaded = (canvasFonts[currentName] || []).filter(
+          (f) => !loadedFonts.has(fontKey(f)),
+        );
+        if (unloaded.length) {
+          // Figma's own wording (2026-10-20, a weight variable bound by Satoshi text layers).
+          throw new Error(
+            'in setValueForMode: ' +
+              unloaded
+                .map(
+                  (f) =>
+                    `unloaded font "${f.family} ${f.style}". Please call figma.loadFontAsync({ family: "${f.family}", style: "${f.style}" }) and await the returned promise first.`,
+                )
+                .join(' '),
+          );
         }
         if (resolvedType === 'STRING' && typeof value === 'string') {
           // Figma refuses a new family on a variable a text style's fontFamily

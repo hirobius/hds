@@ -23,6 +23,8 @@ const preinstalled = fs.existsSync(browsers)
 export default defineConfig({
   testDir: 'tests/visual',
   testMatch: '**/*.spec.ts',
+  // One Linux Chromium baseline set (remote container and CI render alike); no per-OS suffix.
+  snapshotPathTemplate: '{testDir}/{testFilePath}-snapshots/{arg}{ext}',
   fullyParallel: true,
   reporter: [['list']],
   use: {

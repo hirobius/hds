@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-20T03:24:06.143Z",
+  "generated": "2026-10-20T08:22:59.222Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -41,6 +41,7 @@
     "Alert",
     "AlertDialog",
     "AssetImg",
+    "AsyncState",
     "Avatar",
     "AvatarGroup",
     "Badge",
@@ -100,6 +101,8 @@
     "MetaLine",
     "MetricTile",
     "MetricTiles",
+    "NavList",
+    "NavListItem",
     "Page",
     "PageHeader",
     "Pagination",
@@ -134,6 +137,7 @@
     "Timestamp",
     "ToastProvider",
     "Toggle",
+    "TokenField",
     "Tooltip",
     "VisuallyHidden"
   ],
@@ -414,6 +418,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/async-state.tsx",
         "src/app/components/badge.tsx",
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
@@ -1179,6 +1184,7 @@
         "src/app/components/stack.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
+        "src/app/hooks/useBreakpoint.ts",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -1350,6 +1356,7 @@
         "src/app/components/code-block.tsx",
         "src/app/components/combobox.tsx",
         "src/app/components/disclosure.tsx",
+        "src/app/components/empty-state.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/icon.test.tsx",
         "src/app/components/inline-code.test.tsx",
@@ -1709,6 +1716,7 @@
         "src/app/components/select.tsx",
         "src/app/components/slider.tsx",
         "src/app/components/textarea.tsx",
+        "src/app/components/token-field.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
         "src/index.ts"
       ],
@@ -2037,7 +2045,7 @@
       "governedCategory": true,
       "hidden": false,
       "filePath": "src/app/components/segmented-control.tsx",
-      "description": "SegmentedControl \" segmented selection input for compact mutually-exclusive choices. The active×hover×pressed×disabled×secondary state matrix is expressed through `cva` compound variants keyed by `active` / `interaction` (the live-or-frozen-demo hover/pressed/rest sub-state) / `variant` / `disabled`, each resolving to the same `--semantic-*` custom properties the pre-Tailwind inline styles referenced — same tokens, same pixels, just Tailwind classes instead of a `style` object. Per ADR-015 this control keeps its own hover/focus tracking (per-segment `string | null` cardinality) rather than the shared `useInteractionState` single-element machine; only the class composition changed, not the state machine feeding it.",
+      "description": "SegmentedControl \" segmented selection input for compact mutually-exclusive choices. The active×hover×pressed×disabled×secondary state matrix is expressed through `cva` compound variants keyed by `active` / `interaction` (the live-or-frozen-demo hover/pressed/rest sub-state) / `variant` / `disabled`, each resolving to the same `--semantic-*` custom properties the pre-Tailwind inline styles referenced — same tokens, same pixels, just Tailwind classes instead of a `style` object. Per ADR-015 this control keeps its own hover/focus tracking (per-segment `string | null` cardinality) rather than the shared `useInteractionState` single-element machine; only the class composition changed, not the state machine feeding it. When the segments outgrow the rail (a phone), the rail scrolls: it fades the hidden edge (`data-overflow`, the same mask as the tab list) and keeps the selected segment in view on mount and on change (hds#823).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
       "figmaId": null,
       "preview": {
@@ -2223,6 +2231,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/async-state.tsx",
         "src/app/components/board.tsx",
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
@@ -2467,9 +2476,9 @@
         "src/app/components/board.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/icon.test.tsx",
-        "src/app/components/scroll-edge-fade.ts",
         "src/app/components/table.test.tsx",
-        "src/app/data/manifest-types.ts"
+        "src/app/data/manifest-types.ts",
+        "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
       "props": {
@@ -2638,6 +2647,7 @@
         "src/app/components/surface.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/text.tsx",
+        "src/app/components/token-field.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts"
       ],
@@ -3323,6 +3333,15 @@
             "docSmall",
             "docCode"
           ]
+        },
+        "weight": {
+          "type": "enum",
+          "values": [
+            "regular",
+            "medium",
+            "bold"
+          ],
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -3341,6 +3360,7 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/async-state.tsx",
         "src/app/components/card.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
@@ -3357,7 +3377,9 @@
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/generated-token-descriptions.ts",
-        "src/brand/overlay.ts"
+        "src/brand/overlay.ts",
+        "src/styles/__tests__/font-outlines.test.ts",
+        "src/styles/__tests__/glyph-outlines.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -3708,6 +3730,7 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/async-state.tsx",
         "src/app/components/button.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
@@ -4080,6 +4103,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/async-state.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/empty-state.test.tsx"
       ],
@@ -4097,6 +4121,10 @@
         },
         "description": {
           "type": "ReactNode",
+          "optional": true
+        },
+        "icon": {
+          "type": "LucideIcon",
           "optional": true
         },
         "title": {
@@ -4149,6 +4177,7 @@
         "src/app/components/input.tsx",
         "src/app/components/table.tsx",
         "src/app/components/textarea.tsx",
+        "src/app/components/token-field.tsx",
         "src/form/hds-form.tsx"
       ],
       "tokenMapping": {},
@@ -4861,6 +4890,7 @@
       "consumers": [
         "src/app/components/breadcrumb.tsx",
         "src/app/components/disclosure.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/tabs.test.tsx"
       ],
@@ -4988,7 +5018,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5014,6 +5044,14 @@
         },
         "value": {
           "type": "string"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "panel",
+            "bare"
+          ],
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -5031,7 +5069,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark.",
+      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark. The selected tab is kept in view: on mount, and on change (smooth unless the user prefers reduced motion), so a selected tab is never left past the edge.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5041,7 +5079,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/scroll-edge-fade.ts",
         "src/app/components/tabs.test.tsx"
       ],
       "tokenMapping": {},
@@ -5072,7 +5109,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5880,6 +5917,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/async-state.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/progress.tsx",
         "src/app/components/skeleton.test.tsx",
@@ -6010,6 +6048,7 @@
       },
       "consumers": [
         "src/app/components/breadcrumb.test.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/table.tsx"
@@ -6600,6 +6639,7 @@
       "consumers": [
         "src/app/components/form-actions.tsx",
         "src/app/components/form.test.tsx",
+        "src/app/components/token-field.tsx",
         "src/form/hds-form.tsx",
         "src/form/index.ts",
         "src/form/use-hds-form.ts"
@@ -6658,6 +6698,7 @@
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
         "src/app/components/textarea.tsx",
+        "src/app/components/token-field.tsx",
         "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx"
       ],
@@ -7437,7 +7478,8 @@
       "consumers": [
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/sidebar.test.tsx"
+        "src/app/components/sidebar.test.tsx",
+        "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7513,7 +7555,8 @@
       "consumers": [
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/switcher.test.tsx"
+        "src/app/components/switcher.test.tsx",
+        "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7698,7 +7741,9 @@
         "src/app/components/form-control.ts",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
-        "src/app/components/textarea.test.tsx"
+        "src/app/components/textarea.test.tsx",
+        "src/app/components/token-field.test.tsx",
+        "src/app/components/token-field.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8595,6 +8640,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/menu.test.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
@@ -9311,7 +9357,7 @@
           "default": "Nothing here yet"
         },
         "level": {
-          "type": "6 | 3 | 4 | 2 | 5",
+          "type": "3 | 6 | 4 | 2 | 5",
           "default": 2
         },
         "rows": {
@@ -9384,7 +9430,7 @@
           "type": "ReactNode"
         },
         "level": {
-          "type": "6 | 3 | 4 | 2 | 5",
+          "type": "3 | 6 | 4 | 2 | 5",
           "default": 2
         },
         "onConfirm": {
@@ -9452,6 +9498,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/nav-list.test.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -9698,9 +9745,9 @@
       "docExempt": true,
       "filePath": "src/app/components/composer.tsx",
       "description": "Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer than `pasteFoldThreshold` characters never enters the field: it becomes an attachment card (a Tag) that opens a Dialog to edit or remove the text. Cmd/Ctrl+Enter submits; plain Enter stays a newline. `text` and `attachments` can each be controlled or uncontrolled; an uncontrolled composer clears itself after a submit.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277",
       "tier": "pattern",
       "preview": {
         "exportName": "Composer",
@@ -9840,9 +9887,9 @@
       "docExempt": false,
       "filePath": "src/app/components/timeline.tsx",
       "description": "The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-133",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-133",
       "tier": "pattern",
       "preview": {
         "exportName": "Timeline",
@@ -10017,9 +10064,9 @@
           "owner": "consumer"
         }
       ],
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-51",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-51",
       "tier": "primitive",
       "preview": {
         "exportName": "ThemeToggle",
@@ -10071,9 +10118,9 @@
       "docExempt": false,
       "filePath": "src/app/components/meta-line.tsx",
       "description": "Secondary facts on one line (\"Acme Cloud · Remote\"). Max two items per line so long strings in other languages never wrap mid-line; more facts go in more rows. The `hds/max-two-meta-items` lint rule enforces the same limit on bullet-joined text in JSX; it cannot see chains built in code (`[a, b, c].join(' · ')`), so those rely on this type and review.",
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-12",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-12",
       "tier": "primitive",
       "preview": {
         "exportName": "MetaLine",
@@ -10108,6 +10155,458 @@
         ]
       },
       "core": true
+    },
+    "AsyncState": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/async-state.tsx",
+      "description": "One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into \"Still trying…\" after `slowAfterMs`), `error` (a danger `Alert` and a Retry `Button`, with offline wording when the browser reports no connection), `empty` (your node) and `ready` (children). The wrapper is a labelled region; while loading only the skeleton block is aria-busy. After Retry, focus moves to the region (tabIndex -1) once the button unmounts, so a keyboard user is not dropped on the page.",
+      "a11yRules": [
+        {
+          "rule": "The wrapper is a labelled region; only the skeleton block carries aria-busy, so the status note is never held back.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:async-state.busy-region"
+        },
+        {
+          "rule": "A long load adds a polite status note and never goes silent or spins forever.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:async-state.slow-note"
+        },
+        {
+          "rule": "The error is a danger alert, announced as soon as it appears.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:async-state.error-announced"
+        },
+        {
+          "rule": "Retry is a native button, reachable and operable by keyboard; when it unmounts, focus moves to the region instead of falling to the page.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:async-state.retry-keyboard"
+        },
+        {
+          "rule": "Give the region a label that names what is loading (\"Open roles\"), not \"Loading\".",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Make `empty` say what to do next, for example an EmptyState with an action.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "AsyncState",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/async-state.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "empty": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "error": {
+          "type": "string",
+          "optional": true
+        },
+        "errorTitle": {
+          "type": "string",
+          "default": "Something went wrong"
+        },
+        "label": {
+          "type": "string",
+          "default": "Content"
+        },
+        "loadingLabel": {
+          "type": "string",
+          "default": "Loading"
+        },
+        "onRetry": {
+          "type": "() => void",
+          "optional": true
+        },
+        "rows": {
+          "type": "number",
+          "default": 3
+        },
+        "slowAfterMs": {
+          "type": "number",
+          "default": 10000
+        },
+        "slowNote": {
+          "type": "string",
+          "default": "Still trying…"
+        },
+        "status": {
+          "type": "enum",
+          "values": [
+            "loading",
+            "error",
+            "empty",
+            "ready"
+          ]
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/patterns/async-state",
+      "usage": {
+        "when": "Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content.",
+        "whenNot": "Content that is always there, a task with measurable progress, or a full-page routed error.",
+        "useInstead": [
+          {
+            "component": "Skeleton",
+            "reason": "one placeholder shape you place yourself"
+          },
+          {
+            "component": "Alert",
+            "reason": "a message that is not tied to a load"
+          },
+          {
+            "component": "EmptyState",
+            "reason": "a list that is known to be empty, with no load around it"
+          }
+        ]
+      }
+    },
+    "NavList": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/nav-list.tsx",
+      "description": "A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected.",
+      "a11yRules": [
+        {
+          "rule": "The rows are links in an unordered list, so a screen reader announces the list and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.list-of-links"
+        },
+        {
+          "rule": "The current item is marked aria-current=page and the others carry no aria-current.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.current-page"
+        },
+        {
+          "rule": "Tab visits each link in order and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.keyboard-focus"
+        },
+        {
+          "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "item",
+          "description": "A NavList.Item: one link row holding any content.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "NavList",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/nav-list.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/components/nav-list",
+      "usage": {
+        "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
+        "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
+        "useInstead": [
+          {
+            "component": "Tabs",
+            "reason": "switching between views on the same page"
+          },
+          {
+            "component": "Breadcrumb",
+            "reason": "showing where the current page sits in a hierarchy"
+          },
+          {
+            "component": "Menu",
+            "reason": "a list of actions rather than destinations"
+          }
+        ]
+      },
+      "core": true
+    },
+    "NavListItem": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/nav-list.tsx",
+      "description": "One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current=\"page\" when `current`.",
+      "a11yRules": [
+        {
+          "rule": "The rows are links in an unordered list, so a screen reader announces the list and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.list-of-links"
+        },
+        {
+          "rule": "The current item is marked aria-current=page and the others carry no aria-current.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.current-page"
+        },
+        {
+          "rule": "Tab visits each link in order and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.keyboard-focus"
+        },
+        {
+          "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "item",
+          "description": "A NavList.Item: one link row holding any content.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "NavListItem",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/nav-list.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "current": {
+          "type": "boolean",
+          "default": false
+        },
+        "href": {
+          "type": "string"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
+        "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
+        "useInstead": [
+          {
+            "component": "Tabs",
+            "reason": "switching between views on the same page"
+          },
+          {
+            "component": "Breadcrumb",
+            "reason": "showing where the current page sits in a hierarchy"
+          },
+          {
+            "component": "Menu",
+            "reason": "a list of actions rather than destinations"
+          }
+        ]
+      }
+    },
+    "TokenField": {
+      "category": "Inputs",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/token-field.tsx",
+      "description": "TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips. The value stays a plain string. The field is a contenteditable textbox that draws each match of `tokenPattern` as a chip; every edit that could split a chip (Backspace or Delete beside one, the arrows, Enter, paste, drop) goes through the pure model in token-field-model.ts. A ref handle inserts at the caret and reads or sets the selection as string offsets (hds#826).",
+      "a11yRules": [
+        {
+          "rule": "The field is a multi-line textbox named by its label.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:token-field.textbox"
+        },
+        {
+          "rule": "Each chip is announced as one unit, its label and the token noun, never letter by letter.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:token-field.chip-unit"
+        },
+        {
+          "rule": "An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:token-field.error-wiring"
+        },
+        {
+          "rule": "Tab enters and leaves the field; Backspace, Delete and the arrows treat a chip as one character.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:token-field.keyboard"
+        },
+        {
+          "rule": "Pass a label, or an aria-label or aria-labelledby; a placeholder is not a name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "TokenField",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/token-field-model.test.ts",
+        "src/app/components/token-field-model.ts",
+        "src/app/components/token-field.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "error": {
+          "type": "boolean",
+          "optional": true
+        },
+        "errorMessage": {
+          "type": "string",
+          "optional": true
+        },
+        "fieldClassName": {
+          "type": "string",
+          "optional": true
+        },
+        "getTokenLabel": {
+          "type": "(token: string) => string",
+          "optional": true
+        },
+        "helperText": {
+          "type": "string",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "optional": true
+        },
+        "onChange": {
+          "type": "(value: string) => void"
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "required": {
+          "type": "boolean",
+          "optional": true
+        },
+        "rows": {
+          "type": "number",
+          "default": 4
+        },
+        "tokenNoun": {
+          "type": "string",
+          "default": "variable"
+        },
+        "tokenPattern": {
+          "type": "RegExp",
+          "default": "/\\[([^[\\]\\n]{1,40})\\]/g"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Edit a template or message in which placeholders such as [Name] must stay whole: each one is a chip that is stepped over and deleted as one unit.",
+        "whenNot": "Plain multi-line text with no placeholders, or a single line.",
+        "useInstead": [
+          {
+            "component": "Textarea",
+            "reason": "multi-line text with no tokens"
+          },
+          {
+            "component": "Input",
+            "reason": "a single line of text"
+          }
+        ]
+      }
     },
     "HdsPhosphor": {
       "category": "Compiler",
@@ -11597,6 +12096,13 @@
         "value": "800"
       },
       {
+        "path": "primitive.typography.weight.mono",
+        "cssVar": "--primitive-typography-weight-mono",
+        "type": "fontWeight",
+        "description": "Mono weight. IBM Plex Mono ships 400 only; Figma draws weight.regular (450) as Plex Mono Medium.",
+        "value": "400"
+      },
+      {
         "path": "primitive.typography.lineHeight.compact",
         "cssVar": "--primitive-typography-lineHeight-compact",
         "type": "number",
@@ -12844,11 +13350,11 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so it renders at 400 whatever weight.regular is. The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
           "fontSize": "15px",
-          "fontWeight": "450",
+          "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "1.5",
           "maxWidth": "60ch"

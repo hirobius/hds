@@ -50,7 +50,7 @@ const tagPillVariants = /* @__PURE__ */ cva(
       selected: {
         true: 'border-[var(--component-tag-activeBorder)] bg-[var(--component-tag-activeBackground)] text-[var(--component-tag-activeText)] group-hover:bg-[var(--component-tag-activeHover)]',
         false:
-          'border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] text-[var(--semantic-color-content-secondary)] group-hover:border-[var(--semantic-color-border-accent)] group-hover:bg-[var(--semantic-color-surface-accentSubtle)] group-hover:text-[var(--semantic-color-content-primary)] group-active:border-[var(--semantic-color-border-accent)]',
+          'border-[var(--component-tag-border)] bg-[var(--component-tag-background)] text-[var(--component-tag-text)] group-hover:border-[var(--semantic-color-border-accent)] group-hover:bg-[var(--semantic-color-surface-accentSubtle)] group-hover:text-[var(--semantic-color-content-primary)] group-active:border-[var(--semantic-color-border-accent)]',
       },
     },
     defaultVariants: { selected: false },

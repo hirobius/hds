@@ -33,14 +33,14 @@ Subpath exports:
 
 ## Core set
 
-The 44 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
+The 45 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
 
 - **Actions:** `Button`
 - **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
 - **Feedback:** `Alert`, `Badge`, `Progress`, `Skeleton`, `Spinner`, `ToastProvider`
 - **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
 - **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`
-- **Navigation:** `Breadcrumb`, `InlineLink`, `Pagination`, `Tabs`
+- **Navigation:** `Breadcrumb`, `InlineLink`, `NavList`, `Pagination`, `Tabs`
 - **Overlays:** `Dialog`, `Menu`, `Popover`, `Tooltip`
 - **Theming:** `HdsRouterProvider`, `HdsThemeProvider`
 - **Typography:** `MetaLine`, `Text`
@@ -104,6 +104,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Tag` — Tag — interactive filter and category chip.
 - `Textarea` — Textarea — multi-line text field primitive with label, helper, and error slots.
 - `Toggle` — Toggle — boolean on/off toggle with animated thumb.
+- `TokenField` — TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips.
 
 ### Layout
 
@@ -124,6 +125,8 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Breadcrumb` — Breadcrumb trail.
 - `InlineLink` — InlineLink ” inline navigation and external-link primitive for body copy.
+- `NavList` — A vertical list of links, one marked current.
+- `NavListItem` — One link row of a NavList.
 - `Pagination` — Paged navigation with first/last anchors, sibling pages, and ellipses.
 - `Tabs` — The tab set itself.
 - `TabsContent` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
@@ -174,6 +177,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 
 ### Feedback
 
+- `AsyncState` — One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into "Still trying…" after `slowAfterMs`), `error` (a danger `Alert` and a Retry `Button`, with offline wording when the browser reports no connection), `empty` (your node) and `ready` (children).
 - `ErrorPattern` — ErrorPattern - governed recovery surface for routed application errors.
 
 ### Inputs

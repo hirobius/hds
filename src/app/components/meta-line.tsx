@@ -2,6 +2,7 @@
  * MetaLine — one line of secondary facts, at most two, joined by a bullet.
  * @category Typography
  * @tier primitive
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-12
  * @usage Show one or two secondary facts on a single line, joined by a bullet ("Acme Cloud · Remote").
  * @whenNot Three or more facts, or labelled key-value pairs.
  * @useInstead A second MetaLine row per extra fact, or MetadataList for labelled pairs

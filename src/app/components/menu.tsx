@@ -25,6 +25,7 @@
 
 import * as React from 'react';
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { Check, ChevronRight, Circle } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
@@ -44,9 +45,32 @@ const MenuSub = MenuPrimitive.Sub;
 const MenuPortal = /* @__PURE__ */ withHdsPortal(MenuPrimitive.Portal);
 
 const SURFACE =
-  'z-50 min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-overlay';
-const ITEM =
-  'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:text-[var(--semantic-color-content-primary)] data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
+  'z-50 min-w-32 max-h-[var(--radix-dropdown-menu-content-available-height)] overflow-y-auto rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-overlay';
+// Max-height + overflow-y-auto (hds#821): Radix scroll-locks the page while a
+// menu is open and the 44px coarse-pointer rows make a long menu taller than a
+// phone, so the surface caps itself to the room Radix measured and scrolls.
+// Tone is the only styling axis (hds#822). Only neutral and danger change the
+// item today; the rest of the fixed vocabulary is accepted and renders neutral,
+// so a caller can pass any tone without a type error.
+const NEUTRAL_TONE = 'data-[highlighted]:text-[var(--semantic-color-content-primary)]';
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- the highlight fill is the semantic surface.sunken token (dark-surface-contrast.test.ts); it has no Tailwind-theme utility, and var() keeps it token-driven.
+const menuItemVariants = /* @__PURE__ */ cva(
+  'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 hds-type-ui hds-touch-row outline-none data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+  {
+    variants: {
+      tone: {
+        neutral: NEUTRAL_TONE,
+        danger:
+          'text-feedback-danger data-[highlighted]:bg-feedback-bg-danger data-[highlighted]:text-feedback-danger',
+        success: NEUTRAL_TONE,
+        warning: NEUTRAL_TONE,
+        info: NEUTRAL_TONE,
+      },
+    },
+    defaultVariants: { tone: 'neutral' },
+  },
+);
+const ITEM = menuItemVariants();
 
 // ── Content ────────────────────────────────────────────────────────────────────
 
@@ -77,9 +101,16 @@ const MenuContent = /* @__PURE__ */ React.forwardRef<
 
 const MenuItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Item>
->(function MenuItem({ className, ...props }, ref) {
-  return <MenuPrimitive.Item ref={ref} className={cn(ITEM, className)} {...props} />;
+  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Item> & VariantProps<typeof menuItemVariants>
+>(function MenuItem({ className, tone, ...props }, ref) {
+  return (
+    <MenuPrimitive.Item
+      ref={ref}
+      data-tone={tone ?? 'neutral'}
+      className={cn(menuItemVariants({ tone }), className)}
+      {...props}
+    />
+  );
 });
 
 const MenuCheckboxItem = /* @__PURE__ */ React.forwardRef<

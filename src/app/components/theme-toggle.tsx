@@ -2,6 +2,7 @@
  * ThemeToggle — one button that switches light and dark, with a sun that morphs into a moon (Actions).
  * @category Actions
  * @tier primitive
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-51
  * @usage A single header or menu control to switch between the light and dark theme.
  * @whenNot Choosing between three or more modes, or a setting that belongs in a form.
  * @useInstead SegmentedControl for a labelled choice of several modes

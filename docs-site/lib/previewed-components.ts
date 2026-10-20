@@ -32,6 +32,7 @@ export const PREVIEWED_COMPONENTS = [
   'InlineLink',
   'Kbd',
   'MetaLine',
+  'NavList',
   'Pagination',
   'Popover',
   'Progress',
@@ -49,6 +50,7 @@ export const PREVIEWED_COMPONENTS = [
   'ThemeToggle',
   'Timeline',
   'Toggle',
+  'TokenField',
   'Tooltip',
   'VisuallyHidden',
   // Patterns (@hirobius/design-system/patterns)
@@ -59,6 +61,7 @@ export const PREVIEWED_COMPONENTS = [
   'FormActions',
   'DataTableSection',
   'DestructiveSection',
+  'AsyncState',
   'ErrorPattern',
   'CodeBlock',
   'AssetImg',

@@ -1,4 +1,5 @@
 import { CodeBlock } from '@hirobius/design-system/patterns';
+import { MdxCode } from './mdx-prose';
 import { isValidElement, type ComponentProps, type ReactNode } from 'react';
 
 /**
@@ -21,7 +22,7 @@ export function MdxPre(props: ComponentProps<'pre'>) {
 
 function readFence(children: ReactNode): { code: string; language?: string } | null {
   if (!isValidElement<{ className?: string; children?: ReactNode }>(children)) return null;
-  if (children.type !== 'code') return null;
+  if (children.type !== 'code' && children.type !== MdxCode) return null;
   const text = children.props.children;
   if (typeof text !== 'string') return null;
   const language = /(?:^|\s)language-(\S+)/.exec(children.props.className ?? '')?.[1];

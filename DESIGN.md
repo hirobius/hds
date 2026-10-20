@@ -34,7 +34,7 @@ HDS ships three typefaces — each with a distinct role:
 - **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `450` regular, `500` medium, `700` bold, `800` display. Heading styles (display · title) use `800` display; body, UI, and caption use `450` regular / `500` medium. Declared but unused by any semantic role: `700` bold.
+Weights declared: `400` mono, `450` regular, `500` medium, `700` bold, `800` display. Heading styles (display · title) use `800` display; body, UI, and caption use `450` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `700` bold.
 
 ### Type ramp
 
@@ -46,7 +46,7 @@ Weights declared: `450` regular, `500` medium, `700` bold, `800` display. Headin
 | `semantic.typography.body` | 18px | 450 | Prose |
 | `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
-| `semantic.typography.mono` | 15px | 450 | Code and ids |
+| `semantic.typography.mono` | 15px | 400 | Code and ids |
 | `semantic.typography.h1` | 24px | 800 | deprecated: use semantic.typography.title |
 | `semantic.typography.h2` | 24px | 800 | deprecated: use semantic.typography.title |
 | `semantic.typography.h3` | 24px | 800 | deprecated: use semantic.typography.title |
@@ -55,6 +55,16 @@ Weights declared: `450` regular, `500` medium, `700` bold, `800` display. Headin
 
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
+
+**Never for.** Each role has one job; reaching past it is how the ramp drifts.
+
+- `display`: never for a section heading, a card or anything twice on a page. It is the hero line only.
+- `title`: never for body copy or a label, and never skip a level to make a heading smaller; use `titleSm` for a heading inside a card or band.
+- `titleSm`: never for page-level headings, and never for emphasis inside prose (bold the words instead).
+- `body`: never for controls, table cells or metadata (those are `ui` and `caption`). A lead paragraph is `body` plus a quieter colour, not a bigger size.
+- `ui`: never for long prose, and never for a heading. It is the size of things you act on or scan.
+- `caption`: never for the only copy a user needs to act on, never uppercase, and never below the `caption` size to fit more in.
+- `mono`: never for ordinary emphasis or for whole paragraphs. Code, ids and metric readouts only.
 
 **Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
 
@@ -239,6 +249,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (449 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (450 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

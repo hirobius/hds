@@ -7,7 +7,7 @@
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
-import { Text, type TextTone } from './text';
+import { Text, type TextProps, type TextTone } from './text';
 
 afterEach(cleanup);
 
@@ -58,5 +58,31 @@ describe('Text tone', () => {
     expect(colourClasses(screen.getByText('body'))).toEqual([
       'text-[var(--semantic-color-content-primary)]',
     ]);
+  });
+});
+
+// hds#825: `weight` steps a role's weight to one of the shipped weight tokens.
+const weightClasses = (el: HTMLElement) =>
+  [...el.classList].filter((c) => c.startsWith('[font-weight:'));
+
+describe('Text weight', () => {
+  const cases: Array<[NonNullable<TextProps['weight']>, string]> = [
+    ['regular', '[font-weight:var(--primitive-typography-weight-regular)]'],
+    ['medium', '[font-weight:var(--primitive-typography-weight-medium)]'],
+    ['bold', '[font-weight:var(--primitive-typography-weight-bold)]'],
+  ];
+
+  it.each(cases)('maps weight="%s" to its weight token', (weight, expected) => {
+    render(
+      <Text variant="body" weight={weight}>
+        name
+      </Text>,
+    );
+    expect(weightClasses(screen.getByText('name'))).toEqual([expected]);
+  });
+
+  it('keeps the role weight when no weight is set', () => {
+    render(<Text variant="body">name</Text>);
+    expect(weightClasses(screen.getByText('name'))).toEqual([]);
   });
 });
