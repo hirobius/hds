@@ -3,14 +3,12 @@
   "generated": "2026-10-20T04:27:34.355Z",
   "summary": {
     "components": 107,
-    "synced": 103,
-    "byGap": {
-      "no-figma-node": 4
-    },
+    "synced": 107,
+    "byGap": {},
     "byClass": {
-      "library": 63,
+      "library": 64,
       "layout": 9,
-      "slot": 23,
+      "slot": 22,
       "internal": 12
     },
     "docsCoverage": {
@@ -18,59 +16,11 @@
       "covered": 56
     },
     "figmaCoverage": {
-      "expected": 63,
-      "covered": 59
+      "expected": 64,
+      "covered": 64
     }
   },
   "rows": [
-    {
-      "name": "Composer",
-      "class": "library",
-      "filePath": "src/app/components/composer.tsx",
-      "docsPage": null,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": true,
-      "expectDocs": false,
-      "gaps": ["no-figma-node"],
-      "synced": false
-    },
-    {
-      "name": "MetaLine",
-      "class": "library",
-      "filePath": "src/app/components/meta-line.tsx",
-      "docsPage": "/docs/components/meta-line",
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": true,
-      "expectDocs": true,
-      "gaps": ["no-figma-node"],
-      "synced": false
-    },
-    {
-      "name": "ThemeToggle",
-      "class": "library",
-      "filePath": "src/app/components/theme-toggle.tsx",
-      "docsPage": null,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": true,
-      "expectDocs": false,
-      "gaps": ["no-figma-node"],
-      "synced": false
-    },
-    {
-      "name": "Timeline",
-      "class": "library",
-      "filePath": "src/app/components/timeline.tsx",
-      "docsPage": null,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": true,
-      "expectDocs": false,
-      "gaps": ["no-figma-node"],
-      "synced": false
-    },
     {
       "name": "Alert",
       "class": "library",
@@ -392,6 +342,18 @@
       "figmaVia": "manifest",
       "expectFigma": true,
       "expectDocs": true,
+      "gaps": [],
+      "synced": true
+    },
+    {
+      "name": "Composer",
+      "class": "library",
+      "filePath": "src/app/components/composer.tsx",
+      "docsPage": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectDocs": false,
       "gaps": [],
       "synced": true
     },
@@ -876,6 +838,18 @@
       "synced": true
     },
     {
+      "name": "MetaLine",
+      "class": "library",
+      "filePath": "src/app/components/meta-line.tsx",
+      "docsPage": "/docs/components/meta-line",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-12",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectDocs": true,
+      "gaps": [],
+      "synced": true
+    },
+    {
       "name": "MetricTile",
       "class": "library",
       "filePath": "src/app/components/metric-tiles.tsx",
@@ -1236,13 +1210,37 @@
       "synced": true
     },
     {
+      "name": "ThemeToggle",
+      "class": "library",
+      "filePath": "src/app/components/theme-toggle.tsx",
+      "docsPage": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-51",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectDocs": false,
+      "gaps": [],
+      "synced": true
+    },
+    {
+      "name": "Timeline",
+      "class": "library",
+      "filePath": "src/app/components/timeline.tsx",
+      "docsPage": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-133",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectDocs": false,
+      "gaps": [],
+      "synced": true
+    },
+    {
       "name": "TimelineItem",
-      "class": "slot",
+      "class": "library",
       "filePath": "src/app/components/timeline.tsx",
       "docsPage": null,
       "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
+      "figmaVia": "mapping-override",
+      "expectFigma": true,
       "expectDocs": false,
       "gaps": [],
       "synced": true

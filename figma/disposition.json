@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-16",
+  "generatedAt": "2026-10-20",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -24,13 +24,13 @@
   "summary": {
     "total": 107,
     "byClass": {
-      "library": 63,
-      "slot": 23,
+      "library": 64,
+      "slot": 22,
       "layout": 9,
       "internal": 12
     },
-    "libraryLinked": 59,
-    "libraryMissing": 4,
+    "libraryLinked": 64,
+    "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -256,7 +256,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277"
     },
     {
       "name": "Container",
@@ -586,7 +586,7 @@
       "parent": null,
       "category": "Typography",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-12"
     },
     {
       "name": "MetricTile",
@@ -838,7 +838,7 @@
       "parent": null,
       "category": "Actions",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-51"
     },
     {
       "name": "Timeline",
@@ -846,11 +846,11 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-133"
     },
     {
       "name": "TimelineItem",
-      "class": "slot",
+      "class": "library",
       "parent": "Timeline",
       "category": "Display",
       "tier": "pattern",

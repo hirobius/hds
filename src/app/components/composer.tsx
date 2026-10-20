@@ -2,6 +2,7 @@
  * Composer — prompt and capture box that grows with its text and folds long pastes into cards.
  * @category Inputs
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277
  * @usage Capture a prompt or a quick note where a long paste should not flood the field.
  * @whenNot A plain multi-line field with no submit action, or a form with several fields.
  * @useInstead Textarea a plain multi-line field
