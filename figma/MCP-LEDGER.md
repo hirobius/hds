@@ -540,3 +540,27 @@ Zero-click delta sync (hds#681, hds#733). Budget 2 calls (1 skill load, 1 write)
 | 2   | 23:19      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` unmodified (updated 5 · created 3 · deleted 0) |
 
 Results: #1 loaded. #2 delta.js unmodified: updated 5 · created 3 · deleted 0 (neutral.350, neutral.450, content.tertiary created; surface.sunken, content.secondary, border.default values, border.subdued and badge.radius descriptions/values updated); receipt post 2aa8b0e8 on base c70cefd6, snapshot rebuilt, drift 0, plan 0. Session total 2 calls. Nothing deleted or published.
+
+## 2026-10-20: agent sync, tokens and type ramp since 0.26.1 (branch claude/figma-sync-2026-10-20)
+
+Zero-click delta sync in 3 parts (drift showed 23 missing, 99 changed against snapshot 2aa8b0e8). Budget 4 calls (1 skill load, 3 writes), plus receipt reads if a part returns only a head. Rows are written before the call is made.
+
+| #   | Time (UTC) | Tool              | Kind  | Purpose                                                                                                                                      |
+| --- | ---------- | ----------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 03:33      | `get_figma_skill` | read  | Load skill://figma/figma-use/SKILL.md                                                                                                        |
+| 2   | 03:34      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-1-of-3.js` unmodified                                                                                 |
+| 3   | 03:35      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-2-of-3.js` unmodified (not made: #2 failed)                                                           |
+| 4   | 03:36      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-3-of-3.js` unmodified (not made: #2 failed)                                                           |
+| 5   | 03:41      | `use_figma`       | read  | Library: are Satoshi and IBM Plex Mono available to load, and what is the deltaRun marker (diagnose #2)                                      |
+| 6   | 03:50      | `use_figma`       | read  | Library: `snapshot-diff.js` unmodified, to re-base the snapshot on what #2 wrote before it stopped                                           |
+| 7   | 03:52      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-1-of-3.js` regenerated with the font fix, unmodified                                                  |
+| 8   | 03:53      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-2-of-3.js` unmodified                                                                                 |
+| 9   | 03:54      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-3-of-3.js` unmodified (not made: #8 failed)                                                           |
+| 10  | 04:02      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-2-of-3.js` regenerated with the alias fix, unmodified                                                 |
+| 11  | 04:03      | `use_figma`       | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta-3-of-3.js` regenerated with the alias fix, unmodified                                                 |
+| 12  | 04:12      | `use_figma`       | write | Library: part 3's runtime with a diagnostic tail (apply, re-plan, throw the residue so Figma rolls it all back), to find the 1 item #11 left |
+| 13  | 04:20      | `use_figma`       | write | Library: fresh `delta.js` unmodified (mono role at 400, the rest of part 3) on the snapshot re-based from the part 1 and 2 receipts          |
+
+Results: #1 loaded. #2 failed in `setValueForMode` (unloaded font "Satoshi Medium", "IBM Plex Mono Medium": text layers on the canvas bound to the variable) and Figma rolled the script back; #5 both fonts load; #6 empty diff, so nothing had stuck. Fix: `hdsApply` loads the fonts the error names and writes again. #7 part 1 landed (cobalt and lime primitives VariableID:2187:2–19, weight.display, display styles in Sora; post bc95b416 on base 2aa8b0e8). #8 failed ("Required value missing"): part 2 held display.font-weight as an anchor and could not name weight.display, which part 1 created; rolled back. Fix: `hdsAgentSlice` resolves such an alias by the path HDS stamped. #10 part 2 landed (delight tokens, button bgPressed, caption and type sizes; post 45b915bb). #11 applied, then refused: 1 item left. #12 (rolled back by design) named it: Figma draws typography/mono at weight.regular (450) as IBM Plex Mono Medium. Fix: the mono role sets fontWeight 400 (Plex Mono ships 400 only, so the web is unchanged). Snapshot re-based on the part 1 and 2 receipts (post checksums checked), then #13 fresh `delta.js`: updated 10 · created 0 · deleted 0; receipt post 244f02fe on base 45b915bb, snapshot rebuilt, drift 0, plan 0. Session total 10 calls (#3, #4 and #9 were not made). Nothing deleted or published.
+
+Calls logged for 2026-10-20: 10 of 200 (10).
