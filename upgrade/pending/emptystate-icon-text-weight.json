@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "EmptyState takes an icon and Text takes a weight (regular, medium or bold); a wrapper that adds an icon above an EmptyState, or a host class that bumps a Text's weight, can move onto these props."
+}
