@@ -469,11 +469,16 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabl
 }
 .hds-swatch-block {
   display: flex;
+  align-self: stretch;
   height: 4.5rem;
   border-bottom: 1px solid var(--semantic-color-border-subtle);
 }
-.hds-swatch-block > span {
-  flex: 1;
+/* An empty span has no intrinsic width: give each half its share explicitly so
+   the fill never collapses to nothing (hds#846). */
+.hds-swatch-fill {
+  display: block;
+  flex: 1 1 0;
+  min-width: 50%;
 }
 .hds-swatch-meta {
   display: flex;

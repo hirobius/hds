@@ -95,6 +95,8 @@ describe('buildTokenSections', () => {
       cssVar: '--semantic-color-surface-page',
       value: '#ffffff',
       darkValue: '#171717',
+      fill: 'var(--primitive-color-neutral-white)',
+      darkFill: 'var(--primitive-color-neutral-900)',
       description: 'Page background.',
       swatch: true,
     });
