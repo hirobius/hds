@@ -8,7 +8,12 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { buildRadius, buildComponents, renderDesignMd } from '../build-design-md.mjs';
+import {
+  buildRadius,
+  buildComponents,
+  buildTypography,
+  renderDesignMd,
+} from '../build-design-md.mjs';
 import { buildAgentConstraints } from '../build-handoff.mjs';
 
 const raw = JSON.parse(readFileSync(resolve(__dirname, '../../hirobius.tokens.json'), 'utf8'));
@@ -31,6 +36,16 @@ describe('buildRadius', () => {
       .split('\n')
       .find((l) => l.startsWith('| Container'));
     expect(containerRow).toContain('`8px`');
+  });
+});
+
+describe('buildTypography', () => {
+  it('counts the mono role, so its weight is never listed as unused', () => {
+    const line = buildTypography(raw)
+      .split('\n')
+      .find((l) => l.startsWith('Weights declared'));
+    expect(line).toContain('mono uses `400` mono');
+    expect(line).not.toMatch(/unused by any semantic role:[^.]*`400`/);
   });
 });
 

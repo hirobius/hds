@@ -204,7 +204,8 @@ export const tokenValues = {
         regular: "450",
         medium: "500",
         bold: "700",
-        display: "800"
+        display: "800",
+        mono: "400"
       },
       lineHeight: {
         compact: "0.95",

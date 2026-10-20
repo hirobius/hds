@@ -195,7 +195,8 @@ export const tokens = {
         regular: "var(--primitive-typography-weight-regular)",
         medium: "var(--primitive-typography-weight-medium)",
         bold: "var(--primitive-typography-weight-bold)",
-        display: "var(--primitive-typography-weight-display)"
+        display: "var(--primitive-typography-weight-display)",
+        mono: "var(--primitive-typography-weight-mono)"
       },
       lineHeight: {
         compact: "var(--primitive-typography-lineHeight-compact)",

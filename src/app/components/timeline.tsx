@@ -151,6 +151,7 @@ function groupByDay(children: React.ReactNode, order: 'asc' | 'desc') {
  * @whenNot A list with no dates, or steps someone completes in order.
  * @useInstead MetadataList term and value pairs about one object
  * @useInstead StatusListItem a status list with no time axis
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-133
  * @ai-rules Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only.
  */
 export const Timeline = /* @__PURE__ */ React.forwardRef<HTMLOListElement, TimelineProps>(

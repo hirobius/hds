@@ -958,7 +958,7 @@ export async function hdsApply(figma, plan) {
     });
   });
   for (const key of Object.keys(fonts)) await figma.loadFontAsync(fonts[key]);
-  const setValue = ({ pv, change }) => {
+  const setValue = async ({ pv, change }) => {
     const v = byPath[pv.path];
     const collection = collectionByKey[pv.collection];
     let value = change.to.value;
@@ -967,10 +967,31 @@ export async function hdsApply(figma, plan) {
       if (!target) throw new Error(`${pv.path} aliases ${change.to.alias}, which is not in Figma.`);
       value = figma.variables.createVariableAlias(target);
     }
-    v.setValueForMode(modeId(collection, change.mode), value);
+    // Figma also refuses the value while text layers on the canvas bound to the
+    // variable use a font that is not loaded, and no text style need name that
+    // font. Its error names each one: load those and write again, until it
+    // names no font not already loaded.
+    for (;;) {
+      try {
+        v.setValueForMode(modeId(collection, change.mode), value);
+        return;
+      } catch (err) {
+        const message = String((err && err.message) || err);
+        const pattern = /loadFontAsync\(\{ family: "([^"]+)", style: "([^"]+)" \}\)/g;
+        const named = [];
+        for (let m = pattern.exec(message); m; m = pattern.exec(message)) {
+          if (!fonts[m[1] + '|' + m[2]]) named.push({ family: m[1], style: m[2] });
+        }
+        if (!named.length) throw err;
+        for (const font of named) {
+          await figma.loadFontAsync(font);
+          addFont(font);
+        }
+      }
+    }
   };
-  valueChanges.filter((c) => c.change.to.alias === undefined).forEach(setValue);
-  valueChanges.filter((c) => c.change.to.alias !== undefined).forEach(setValue);
+  for (const c of valueChanges.filter((c) => c.change.to.alias === undefined)) await setValue(c);
+  for (const c of valueChanges.filter((c) => c.change.to.alias !== undefined)) await setValue(c);
 
   // 6. Text styles (fonts were loaded before step 5).
   for (const ps of pendingText) {
