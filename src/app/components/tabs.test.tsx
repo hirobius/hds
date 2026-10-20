@@ -65,3 +65,29 @@ describe('TabsList overflow cue (hds#723)', () => {
     expect(list().getAttribute('data-overflow')).toBe('start');
   });
 });
+
+describe('TabsContent variant (hds#819)', () => {
+  function Panel({ variant }: { variant?: 'panel' | 'bare' }) {
+    return (
+      <Tabs defaultValue="a">
+        <TabsList aria-label="Sections">
+          <TabsTrigger value="a">One</TabsTrigger>
+        </TabsList>
+        <TabsContent value="a" variant={variant}>
+          A
+        </TabsContent>
+      </Tabs>
+    );
+  }
+  const cls = () => screen.getByRole('tabpanel').className.split(/\s+/);
+
+  it('defaults to the tinted panel pulled up under the strip', () => {
+    render(<Panel />);
+    expect(cls()).toEqual(expect.arrayContaining(['bg-accent/5', 'rounded-b-md', 'p-6', '-mt-6']));
+  });
+
+  it('bare drops the fill, padding, radius and pull-up', () => {
+    render(<Panel variant="bare" />);
+    for (const c of ['bg-accent/5', 'rounded-b-md', 'p-6', '-mt-6']) expect(cls()).not.toContain(c);
+  });
+});
