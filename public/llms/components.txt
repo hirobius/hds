@@ -479,6 +479,16 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - orientation: "horizontal" | "vertical" | null = vertical
   - variant: "plain" | "divided" = plain
 
+### NavList
+A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected.
+  - children: ReactNode
+
+### NavListItem
+One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`.
+  - children: ReactNode
+  - current: boolean = false
+  - href: string
+
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
   - children: ReactNode

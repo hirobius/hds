@@ -24,6 +24,7 @@ import {
   Icon,
   InlineLink,
   Kbd,
+  NavList,
   Pin,
   Sidebar,
   Stack,
@@ -195,6 +196,12 @@ export function TourConsole({ data }: { data: TourData }) {
                           </Text>
                         </Surface>
                         <Surface padding="component">
+                          <NavList aria-label="Tour links">
+                            <NavList.Item href="/docs/components" current>
+                              Component index
+                            </NavList.Item>
+                            <NavList.Item href="/docs/components/nav-list">NavList</NavList.Item>
+                          </NavList>
                           <Text variant="ui">
                             Search the{' '}
                             <InlineLink href="/docs/components">component index</InlineLink>
