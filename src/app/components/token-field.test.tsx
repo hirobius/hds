@@ -183,4 +183,39 @@ describe('TokenField', () => {
     const input = container.querySelector<HTMLInputElement>('input[type="hidden"][name="body"]');
     expect(input?.value).toBe('Hi [Name]');
   });
+
+  it('commits IME text when the composition ends (Chromium sends the last input mid-composition)', () => {
+    const { field, onValue } = setup('Hi ');
+    field.append(document.createTextNode('日本'));
+    fireEvent.input(field, { isComposing: true });
+    expect(onValue).not.toHaveBeenCalled();
+    fireEvent.compositionEnd(field);
+    expect(onValue).toHaveBeenLastCalledWith('Hi 日本');
+  });
+
+  it('ignores a paste with no plain text, so the selection is kept', () => {
+    const { field, onValue, ref } = setup('Hi [Name]');
+    act(() => ref.current!.setSelection(0, 3));
+    fireEvent.paste(field, { clipboardData: { getData: () => '' } });
+    expect(onValue).not.toHaveBeenCalled();
+  });
+
+  it('drops text at the drop point, not at the old selection', () => {
+    const { field, onValue, caret } = setup('ab cd');
+    caret(0);
+    const text = field.firstChild!;
+    const doc = document as Document & { caretRangeFromPoint?: (x: number, y: number) => Range };
+    const original = doc.caretRangeFromPoint;
+    doc.caretRangeFromPoint = () => {
+      const r = document.createRange();
+      r.setStart(text, 3);
+      return r;
+    };
+    try {
+      fireEvent.drop(field, { clientX: 10, clientY: 10, dataTransfer: { getData: () => 'X' } });
+    } finally {
+      doc.caretRangeFromPoint = original;
+    }
+    expect(onValue).toHaveBeenLastCalledWith('ab Xcd');
+  });
 });

@@ -6,7 +6,11 @@
  * one unit. Ported from job-hunt's templateEditor helpers.
  */
 
-/** A short bracketed name on one line: `[Company]`, `[Hiring manager]`. */
+/**
+ * A short bracketed name on one line: `[Company]`, `[Hiring manager]`. Tighter than
+ * the spec's `/\[[^\]\n]+\]/g` on purpose: at most 40 characters and no `[` inside,
+ * so prose such as `[see [1]]` or a long bracketed aside stays text.
+ */
 export const DEFAULT_TOKEN_PATTERN = /\[([^[\]\n]{1,40})\]/g;
 
 /** One run of the value: plain text, or one token. Joined back, the runs are the value. */

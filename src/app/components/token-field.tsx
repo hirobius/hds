@@ -353,10 +353,10 @@ export const TokenField = /* @__PURE__ */ React.forwardRef<TokenFieldHandle, Tok
       focus: () => el.current?.focus(),
     }));
 
-    const onInput = (e: React.FormEvent<HTMLDivElement>) => {
+    // Read the DOM after the browser's own edit: redraw any chip it split or a typed token, then report.
+    const syncFromDom = () => {
       const node = el.current;
-      // Leave the DOM alone mid-composition (IME); the input that ends it commits the text.
-      if (!node || (e.nativeEvent as InputEvent).isComposing) return;
+      if (!node) return;
       const next = serialize(node);
       const { pattern, l } = model.current;
       if (!isCanonical(node, next, pattern)) {
@@ -375,6 +375,13 @@ export const TokenField = /* @__PURE__ */ React.forwardRef<TokenFieldHandle, Tok
         lastTyped.current = now;
         onChange(next);
       }
+    };
+
+    const onInput = (e: React.FormEvent<HTMLDivElement>) => {
+      // Leave the DOM alone mid-composition (IME). Chromium sends the last input of a
+      // composition still marked composing, so compositionend commits the text.
+      if ((e.nativeEvent as InputEvent).isComposing) return;
+      syncFromDom();
     };
 
     const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -424,13 +431,39 @@ export const TokenField = /* @__PURE__ */ React.forwardRef<TokenFieldHandle, Tok
       }
     };
 
-    const insertPlain = (data: DataTransfer | null) => {
-      const node = el.current;
-      const s = (node && readSelection(node)) ??
-        last.current ?? { start: value.length, end: value.length };
+    const insertPlain = (data: DataTransfer | null, at?: TokenFieldSelection | null) => {
       const text = (data?.getData('text/plain') ?? '').replace(/\r\n?/g, '\n');
+      // Nothing to put in (an image, an empty clipboard): keep the selection as it is.
+      if (!text) return;
+      const node = el.current;
+      const s = at ??
+        (node && readSelection(node)) ??
+        last.current ?? { start: value.length, end: value.length };
       const r = insertAt(value, s.start, s.end, text);
       edit(r.value, r.caret);
+    };
+
+    // The value offset under a drop point, or null where the browser can't say.
+    const offsetAtPoint = (x: number, y: number): TokenFieldSelection | null => {
+      const node = el.current;
+      if (!node) return null;
+      const doc = document as Document & {
+        caretPositionFromPoint?: (
+          x: number,
+          y: number,
+        ) => { offsetNode: Node; offset: number } | null;
+        caretRangeFromPoint?: (x: number, y: number) => Range | null;
+      };
+      const pos = doc.caretPositionFromPoint?.(x, y);
+      const range = pos ? null : doc.caretRangeFromPoint?.(x, y);
+      const [container, offset] = pos
+        ? [pos.offsetNode, pos.offset]
+        : range
+          ? [range.startContainer, range.startOffset]
+          : [null, 0];
+      if (!container || !node.contains(container)) return null;
+      const at = snapOutOfToken(value, offsetOf(node, container, offset), model.current.pattern);
+      return { start: at, end: at };
     };
 
     const hasError = Boolean(error);
@@ -492,8 +525,9 @@ export const TokenField = /* @__PURE__ */ React.forwardRef<TokenFieldHandle, Tok
           }}
           onDrop={(e) => {
             e.preventDefault();
-            insertPlain(e.dataTransfer);
+            insertPlain(e.dataTransfer, offsetAtPoint(e.clientX, e.clientY));
           }}
+          onCompositionEnd={syncFromDom}
         />
         {name && <input type="hidden" name={name} value={value} />}
         {helperTextId && (
