@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.27.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.28.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,21 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.28.0
+
+Released 2026-10-20 (minor). 1 change to make by hand (1 breaking) and 4 that look different.
+
+### Looks different
+
+- The pressed secondary Button fill is now the pressed surface colour, a clearer step from hover, so re-check any screenshot of a pressed secondary Button.
+- The pressed surface is now a mid light grey (was almost white) in light mode, so re-check pressed states you draw by hand.
+- --semantic-typography-mono-font-weight now reads --primitive-typography-weight-mono (400); if your mono font has a heavier cut you want, set that primitive.
+- Table borders are two steps lighter than before in Dark mode and the Board column gap is 24px in compact density (was 32px; unchanged at 32px by default); re-take Table and Board screenshots.
+
+### Do by hand
+
+- The secondary Button pressed border variable is gone, so delete any override of it, since the hover border now holds while pressed.
 
 ## 0.27.0
 
