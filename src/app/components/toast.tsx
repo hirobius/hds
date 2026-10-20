@@ -88,8 +88,8 @@ export interface ToastOptions {
   tone?: ToastTone;
   /** Auto-dismiss in ms. Falls back to the provider default. */
   duration?: number;
-  /** Up to two buttons under the message (Open, Undo). Choosing one closes the toast. */
-  actions?: readonly ToastAction[];
+  /** One or two buttons under the message (Open, Undo). Choosing one closes the toast. */
+  actions?: readonly [ToastAction] | readonly [ToastAction, ToastAction];
 }
 
 /** @public */
@@ -204,8 +204,8 @@ export function ToastProvider({
                 ) : null}
                 {t.actions?.length ? (
                   <div className="flex flex-wrap gap-2 pt-1">
-                    {t.actions.slice(0, 2).map((a) => (
-                      <ToastPrimitive.Action key={a.label} altText={a.altText ?? a.label} asChild>
+                    {t.actions.map((a, i) => (
+                      <ToastPrimitive.Action key={i} altText={a.altText ?? a.label} asChild>
                         <Button size="sm" variant="secondary" onClick={a.onSelect}>
                           {a.label}
                         </Button>

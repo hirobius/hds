@@ -92,7 +92,7 @@ describe('Toast actions (job-hunt ActionToast stand-in)', () => {
             title: 'Saved to Pipeline',
             actions: [
               { label: 'Open', onSelect: onOpen },
-              { label: 'Undo', onSelect: onUndo, altText: 'Undo with Ctrl+Z' },
+              { label: 'Undo', onSelect: onUndo, altText: 'Undo from Recently removed' },
             ],
           })
         }
@@ -147,7 +147,7 @@ describe('Toast actions (job-hunt ActionToast stand-in)', () => {
       undo
         .closest('[data-radix-toast-announce-alt]')
         ?.getAttribute('data-radix-toast-announce-alt'),
-    ).toBe('Undo with Ctrl+Z');
+    ).toBe('Undo from Recently removed');
   });
 
   it('a toast without actions renders no extra buttons', () => {
