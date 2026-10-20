@@ -2,11 +2,11 @@ import { buildTokenSections, type TokenRow } from '../lib/token-tables';
 import { loadTokens } from '../lib/site-data';
 import { FoundationVisual } from './foundation-visuals';
 
-function Value({ value, swatch }: { value: string; swatch: boolean }) {
+function Value({ value, fill }: { value: string; fill: string | null }) {
   return (
     <span className="hds-token-value">
-      {swatch ? (
-        <span className="hds-token-swatch" style={{ background: value }} aria-hidden="true" />
+      {fill ? (
+        <span className="hds-token-swatch" style={{ background: fill }} aria-hidden="true" />
       ) : null}
       <code>{value}</code>
     </span>
@@ -45,7 +45,7 @@ export function TokenRows({
                 <code>{row.cssVar ?? row.token}</code>
               </td>
               <td>
-                <Value value={row.value} swatch={row.swatch} />
+                <Value value={row.value} fill={row.swatch ? row.fill : null} />
               </td>
               {hasDark ? (
                 <td>
@@ -53,7 +53,7 @@ export function TokenRows({
                   {row.darkValue === null ? (
                     <span className="hds-token-same">Same</span>
                   ) : (
-                    <Value value={row.darkValue} swatch={row.swatch} />
+                    <Value value={row.darkValue} fill={row.swatch ? row.darkFill : null} />
                   )}
                 </td>
               ) : null}
