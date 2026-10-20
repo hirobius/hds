@@ -39,7 +39,7 @@ describe('docs axe gate: the /tour screen (hds#795)', () => {
 
 describe('docs axe gate: every other /docs page (hds#710)', () => {
   const files = [
-    'docs/index.html',
+    'docs.html',
     'docs/components/index.html',
     'docs/components/button.html',
     'docs/patterns/empty-state/index.html',

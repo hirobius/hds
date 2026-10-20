@@ -40,6 +40,12 @@ export function discoverMainPages(outDir) {
     }
   };
   walk(root, '/docs');
+  // The /docs landing is built as out/docs.html, a sibling of docs/ (cleanUrls), not docs/index.html.
+  if (
+    ['docs.html', path.join('docs', 'index.html')].some((f) => fs.existsSync(path.join(outDir, f)))
+  ) {
+    routes.add('/docs');
+  }
   return [...routes].filter((r) => !DEMO_ROUTE.test(r)).sort();
 }
 
