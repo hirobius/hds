@@ -49,6 +49,13 @@
       "mapsTo": "TimelineItem",
       "source": "src/app/components/timeline.tsx",
       "reason": "A slot of Timeline (figma/disposition.json), so it takes an override rather than a tag. The Timeline component 2201:133 is built from its instances, and the item needs its own set for the tone variants."
+    },
+    {
+      "nodeId": "2209:25",
+      "name": "NavListItem",
+      "mapsTo": "NavListItem",
+      "source": "src/app/components/nav-list.tsx",
+      "reason": "A compound part of NavList, mapped by override as TimelineItem is. The NavList component 2209:26 is built from its instances, and the item needs its own set for the Current and State variants."
     }
   ]
 }

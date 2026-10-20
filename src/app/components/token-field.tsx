@@ -18,6 +18,7 @@
  * chip (Backspace or Delete beside one, the arrows, Enter, paste, drop) goes
  * through the pure model in token-field-model.ts. A ref handle inserts at the
  * caret and reads or sets the selection as string offsets (hds#826).
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-141
  */
 import * as React from 'react';
 import { cn } from '../../lib/utils';

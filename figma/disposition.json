@@ -24,13 +24,13 @@
   "summary": {
     "total": 111,
     "byClass": {
-      "library": 67,
-      "slot": 23,
+      "library": 68,
+      "slot": 22,
       "layout": 9,
       "internal": 12
     },
-    "libraryLinked": 64,
-    "libraryMissing": 3,
+    "libraryLinked": 68,
+    "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -64,7 +64,7 @@
       "parent": null,
       "category": "Feedback",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-96"
     },
     {
       "name": "Avatar",
@@ -620,11 +620,11 @@
       "parent": null,
       "category": "Navigation",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-26"
     },
     {
       "name": "NavListItem",
-      "class": "slot",
+      "class": "library",
       "parent": "NavList",
       "category": "Navigation",
       "tier": "pattern",
@@ -910,7 +910,7 @@
       "parent": null,
       "category": "Inputs",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-141"
     },
     {
       "name": "Tooltip",
