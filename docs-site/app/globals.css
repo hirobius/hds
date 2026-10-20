@@ -332,12 +332,6 @@ html[data-docs-corners='sharp'] {
   --component-badge-radius: 0px;
   --component-card-radius: 0px;
 }
-/* Tailwind's rounded-sm/md/lg derive from --role-radius with a +4px / -2px offset; zero them too. */
-html[data-docs-corners='sharp']
-  :is(.rounded, .rounded-sm, .rounded-md, .rounded-lg, .rounded-t-md, .rounded-b-md, .hds-card) {
-  border-radius: 0;
-}
-
 /* Shadow: hard. Zero-blur offsets in the full-strength shadow colour. */
 html[data-docs-shadow='hard'] {
   --semantic-shadow-subtle: 4px 4px 0 hsl(var(--primitive-shadow-color));
@@ -653,4 +647,37 @@ a code[data-density] {
 .prose .hds-docs-table th code[data-density] {
   white-space: normal;
   overflow-wrap: break-word;
+}
+
+/* MDX images (components/mdx-prose.tsx): the radius is an HDS token, so the Corners switch reaches it. */
+.hds-docs-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--semantic-radius-action);
+}
+
+/* Fumadocs chrome (sidebar items and active item, search trigger, collapse button, nav controls,
+   contents rail) draws its corners with Tailwind rounded-md/lg/xl, which carry Fumadocs' own radii.
+   Inside the layout shell, outside the page body and the HDS controls, they take the HDS radius
+   token, so the Corners switch squares them. */
+#nd-docs-layout
+  :is(.rounded-md, .rounded-lg, .rounded-xl):not(
+    #nd-page *,
+    .hds-docs-display,
+    .hds-docs-display *
+  ) {
+  border-radius: var(--semantic-radius-action);
+}
+/* The collapse button gets its corners from its parent's `*:rounded-md`. */
+#nd-sidebar button[aria-label='Collapse Sidebar'] {
+  border-radius: var(--semantic-radius-action);
+}
+
+/* Fumadocs' Tailwind shadow-lg (collapsed sidebar, its reopen button, open contents popover)
+   takes the floating shadow token; the mobile drawer is an overlay. Both follow the Shadow switch. */
+#nd-docs-layout .shadow-lg:not(#nd-page *) {
+  box-shadow: var(--semantic-shadow-floating);
+}
+#nd-sidebar-mobile {
+  box-shadow: var(--semantic-shadow-overlay);
 }
