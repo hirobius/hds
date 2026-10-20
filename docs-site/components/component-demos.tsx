@@ -67,6 +67,7 @@ import {
 import { ArrowRight, CircleCheck, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
 import {
   AssetImg,
+  AsyncState,
   CodeBlock,
   DataTableSection,
   DestructiveSection,
@@ -906,6 +907,17 @@ function DestructiveSectionDemo() {
   );
 }
 
+function AsyncStateDemo() {
+  return (
+    <AsyncState
+      status="error"
+      label="Open roles"
+      error="The job board did not answer in time."
+      onRetry={() => {}}
+    />
+  );
+}
+
 function ErrorPatternDemo() {
   return <ErrorPattern displayText="404" message="That page moved or never existed." />;
 }
@@ -999,6 +1011,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   FormActions: FormActionsDemo,
   DataTableSection: DataTableSectionDemo,
   DestructiveSection: DestructiveSectionDemo,
+  AsyncState: AsyncStateDemo,
   ErrorPattern: ErrorPatternDemo,
   CodeBlock: CodeBlockDemo,
   AssetImg: AssetImgDemo,

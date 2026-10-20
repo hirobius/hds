@@ -60,6 +60,7 @@ export const PREVIEWED_COMPONENTS = [
   'FormActions',
   'DataTableSection',
   'DestructiveSection',
+  'AsyncState',
   'ErrorPattern',
   'CodeBlock',
   'AssetImg',

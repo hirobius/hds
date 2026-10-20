@@ -176,6 +176,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 
 ### Feedback
 
+- `AsyncState` — One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into "Still trying…" after `slowAfterMs`), `error` (a danger `Alert` and a Retry `Button`, with offline wording when the browser reports no connection), `empty` (your node) and `ready` (children).
 - `ErrorPattern` — ErrorPattern - governed recovery surface for routed application errors.
 
 ### Inputs

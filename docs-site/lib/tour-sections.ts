@@ -139,6 +139,7 @@ export const TOUR_SECTIONS: readonly TourSection[] = [
       'Textarea',
       'Composer',
       'Alert',
+      'AsyncState',
       'DestructiveSection',
     ],
   },

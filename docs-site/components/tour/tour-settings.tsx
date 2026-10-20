@@ -17,6 +17,7 @@ import {
   useToast,
 } from '@hirobius/design-system';
 import {
+  AsyncState,
   DestructiveSection,
   ErrorPattern,
   Form,
@@ -131,6 +132,12 @@ export function TourSettings({ version }: { version: string }) {
           {sent}
         </Alert>
       )}
+      <AsyncState
+        status="error"
+        label="Figma sync status"
+        error="The last Figma sync did not finish."
+        onRetry={() => toast({ title: 'Retrying sync' })}
+      />
       <DestructiveSection
         title="Reset console"
         level={3}

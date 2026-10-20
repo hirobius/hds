@@ -312,6 +312,10 @@
     }
   },
   "exempt": {
+    "src/app/components/menu.tsx": {
+      "kind": "queued",
+      "reason": "Menu is an overlay compound. Its item tone (neutral, danger) has no Figma property yet. The template waits for a verified property read (hds#822)."
+    },
     "src/app/components/callout.tsx": {
       "kind": "queued",
       "reason": "Callout exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
