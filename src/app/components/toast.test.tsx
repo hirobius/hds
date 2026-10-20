@@ -80,3 +80,83 @@ describe('Toast dismiss target vs text (bug bash 24 review)', () => {
     expect(root.className).not.toMatch(/(^|\s)p-4(\s|$)/);
   });
 });
+
+describe('Toast actions (job-hunt ActionToast stand-in)', () => {
+  function ActionTrigger({ onUndo, onOpen }: { onUndo: () => void; onOpen: () => void }) {
+    const { toast } = useToast();
+    return (
+      <button
+        className="hds-focus"
+        onClick={() =>
+          toast({
+            title: 'Saved to Pipeline',
+            actions: [
+              { label: 'Open', onSelect: onOpen },
+              { label: 'Undo', onSelect: onUndo, altText: 'Undo from Recently removed' },
+            ],
+          })
+        }
+      >
+        fire
+      </button>
+    );
+  }
+
+  it('renders each action as a named button in order', () => {
+    render(
+      <ToastProvider>
+        <ActionTrigger onUndo={() => {}} onOpen={() => {}} />
+      </ToastProvider>,
+    );
+    fireEvent.click(screen.getByText('fire'));
+    const names = screen
+      .getAllByRole('button')
+      .map((b) => b.textContent)
+      .filter((t) => t === 'Open' || t === 'Undo');
+    expect(names).toEqual(['Open', 'Undo']);
+  });
+
+  it('runs onSelect and closes the toast', () => {
+    const onUndo = vi.fn();
+    render(
+      <ToastProvider>
+        <ActionTrigger onUndo={onUndo} onOpen={() => {}} />
+      </ToastProvider>,
+    );
+    fireEvent.click(screen.getByText('fire'));
+    fireEvent.click(screen.getByRole('button', { name: 'Undo' }));
+    expect(onUndo).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText('Saved to Pipeline')).toBeNull();
+  });
+
+  it('gives each action the alt text Radix announces, defaulting to its label', () => {
+    render(
+      <ToastProvider>
+        <ActionTrigger onUndo={() => {}} onOpen={() => {}} />
+      </ToastProvider>,
+    );
+    fireEvent.click(screen.getByText('fire'));
+    const open = screen.getByRole('button', { name: 'Open' });
+    const undo = screen.getByRole('button', { name: 'Undo' });
+    expect(
+      open
+        .closest('[data-radix-toast-announce-alt]')
+        ?.getAttribute('data-radix-toast-announce-alt'),
+    ).toBe('Open');
+    expect(
+      undo
+        .closest('[data-radix-toast-announce-alt]')
+        ?.getAttribute('data-radix-toast-announce-alt'),
+    ).toBe('Undo from Recently removed');
+  });
+
+  it('a toast without actions renders no extra buttons', () => {
+    render(
+      <ToastProvider>
+        <Trigger />
+      </ToastProvider>,
+    );
+    fireEvent.click(screen.getByText('fire'));
+    expect(screen.getAllByRole('button').map((b) => b.textContent)).toEqual(['fire', '']);
+  });
+});
