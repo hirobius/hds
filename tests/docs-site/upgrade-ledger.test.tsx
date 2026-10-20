@@ -8,6 +8,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { renderToStaticMarkup } from 'react-dom/server';
 import {
   deprecationRows,
   releaseRows,
@@ -15,6 +16,11 @@ import {
   type LedgerIndex,
   type LedgerRelease,
 } from '../../docs-site/lib/upgrade-ledger';
+import {
+  DeprecationLedger,
+  ReleaseLedger,
+  RemovalLedger,
+} from '../../docs-site/components/upgrade-ledger';
 
 const ROOT = join(__dirname, '..', '..');
 const index = JSON.parse(readFileSync(join(ROOT, 'upgrade/index.json'), 'utf8')) as LedgerIndex;
@@ -46,6 +52,26 @@ describe('deprecationRows', () => {
     }
   });
 
+  // hds#855: the ledger stores `auto` as { codemod, args }; passed through
+  // raw, React throws "Objects are not valid as a React child" at build time.
+  it('gives the codemod as a command string, with its args', () => {
+    for (const row of rows) {
+      if (row.auto !== undefined) expect(typeof row.auto, row.step).toBe('string');
+    }
+    const step = {
+      id: '9.9.9/deprecated/X',
+      kind: 'deprecated',
+      impact: 'none',
+      plain: 'X goes.',
+      auto: { codemod: 'hds-x', args: ['--fix', 'all'] },
+    };
+    const [row] = deprecationRows(
+      { ...index, deprecated: [{ name: 'X', removeIn: '9.9.10', step: step.id }] },
+      [{ version: '9.9.9', date: '', bump: 'minor', summary: '', steps: [step] }],
+    );
+    expect(row!.auto).toBe('hds-x --fix all');
+  });
+
   it('fails loudly when a deprecation points at a step the ledger lacks', () => {
     const broken = {
       ...index,
@@ -65,5 +91,25 @@ describe('removalGroups', () => {
     expect(versions).toEqual(
       [...versions].sort((a, b) => b.localeCompare(a, undefined, { numeric: true })),
     );
+  });
+});
+
+// What the upgrade and deprecation guides render at build time (hds#855): a
+// ledger field that reaches JSX as an object crashes `next build`.
+describe('ledger tables', () => {
+  it.each([
+    ['ReleaseLedger', ReleaseLedger],
+    ['DeprecationLedger', DeprecationLedger],
+    ['RemovalLedger', RemovalLedger],
+  ])('%s server-renders the real ledger', (_, Table) => {
+    expect(() => renderToStaticMarkup(<Table />)).not.toThrow();
+  });
+
+  it('names each deprecation codemod as a command', () => {
+    const html = renderToStaticMarkup(<DeprecationLedger />);
+    for (const row of deprecationRows(index, releases).filter((r) => r.auto)) {
+      expect(html).toContain(`<code>${row.auto}</code>`);
+    }
+    expect(html).not.toContain('[object Object]');
   });
 });
