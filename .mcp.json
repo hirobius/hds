@@ -6,6 +6,10 @@
       "headers": {
         "x-api-key": "${API_KEY_21ST}"
       }
+    },
+    "aikido": {
+      "command": "npx",
+      "args": ["-y", "@aikidosec/mcp@1.0.27"]
     }
   }
 }
