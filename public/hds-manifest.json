@@ -100,6 +100,8 @@
     "MetaLine",
     "MetricTile",
     "MetricTiles",
+    "NavList",
+    "NavListItem",
     "Page",
     "PageHeader",
     "Pagination",
@@ -4861,6 +4863,7 @@
       "consumers": [
         "src/app/components/breadcrumb.tsx",
         "src/app/components/disclosure.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/tabs.test.tsx"
       ],
@@ -6010,6 +6013,7 @@
       },
       "consumers": [
         "src/app/components/breadcrumb.test.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/table.tsx"
@@ -8595,6 +8599,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/menu.test.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
@@ -9452,6 +9457,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/nav-list.test.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -10108,6 +10114,184 @@
         ]
       },
       "core": true
+    },
+    "NavList": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/nav-list.tsx",
+      "description": "A vertical list of links, one marked current. Rows hold rich content; hover and the current row share the raised surface fill.",
+      "a11yRules": [
+        {
+          "rule": "The rows are links in an unordered list, so a screen reader announces the list and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.list-of-links"
+        },
+        {
+          "rule": "The current item is marked aria-current=page and the others carry no aria-current.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.current-page"
+        },
+        {
+          "rule": "Tab visits each link in order and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.keyboard-focus"
+        },
+        {
+          "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "item",
+          "description": "A NavList.Item: one link row holding any content.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "NavList",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/nav-list.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/components/nav-list",
+      "usage": {
+        "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
+        "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
+        "useInstead": [
+          {
+            "component": "Tabs",
+            "reason": "switching between views on the same page"
+          },
+          {
+            "component": "Breadcrumb",
+            "reason": "showing where the current page sits in a hierarchy"
+          },
+          {
+            "component": "Menu",
+            "reason": "a list of actions rather than destinations"
+          }
+        ]
+      },
+      "core": true
+    },
+    "NavListItem": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/nav-list.tsx",
+      "description": "One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current=\"page\" when `current`.",
+      "a11yRules": [
+        {
+          "rule": "The rows are links in an unordered list, so a screen reader announces the list and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.list-of-links"
+        },
+        {
+          "rule": "The current item is marked aria-current=page and the others carry no aria-current.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.current-page"
+        },
+        {
+          "rule": "Tab visits each link in order and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.keyboard-focus"
+        },
+        {
+          "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "item",
+          "description": "A NavList.Item: one link row holding any content.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "NavListItem",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/nav-list.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "current": {
+          "type": "boolean",
+          "default": false
+        },
+        "href": {
+          "type": "string"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
+        "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
+        "useInstead": [
+          {
+            "component": "Tabs",
+            "reason": "switching between views on the same page"
+          },
+          {
+            "component": "Breadcrumb",
+            "reason": "showing where the current page sits in a hierarchy"
+          },
+          {
+            "component": "Menu",
+            "reason": "a list of actions rather than destinations"
+          }
+        ]
+      }
     },
     "HdsPhosphor": {
       "category": "Compiler",

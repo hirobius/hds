@@ -32,6 +32,7 @@ export const PREVIEWED_COMPONENTS = [
   'InlineLink',
   'Kbd',
   'MetaLine',
+  'NavList',
   'Pagination',
   'Popover',
   'Progress',

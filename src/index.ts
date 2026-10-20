@@ -86,6 +86,7 @@ export * from './app/components/kbd';
 export * from './app/components/timestamp';
 export * from './app/components/blockquote';
 export * from './app/components/meta-line';
+export * from './app/components/nav-list';
 export * from './app/components/visually-hidden';
 export * from './app/components/avatar-group';
 

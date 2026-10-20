@@ -437,6 +437,20 @@
       "kind": "container",
       "probe": true
     },
+    "NavList": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "NavListItem": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "Page": {
       "width": "fill",
       "height": "hug",
