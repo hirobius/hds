@@ -10,12 +10,42 @@ export const PAGE_SECTIONS = ['components', 'patterns'];
 export const TOUR_ROUTE = '/tour';
 export const TOUR_SELECTOR = '.hds-tour';
 
-/** The element axe scans for a route: the demo frame, or the whole tour screen. */
-export const selectorFor = (route) => (route === TOUR_ROUTE ? TOUR_SELECTOR : DEMO_SELECTOR);
+/** Every other /docs page (guides, engineering, section landings, foundations…): scanned across the whole <main> (hds#710). */
+export const MAIN_SELECTOR = 'main';
 
-/** discoverPages plus /tour when the build has it. The visual spec keeps discoverPages: it has no demo frame. */
+/** Demo pages (components/patterns leaves) scan their frame, the tour its root, every other page <main>. */
+const DEMO_ROUTE = new RegExp(`^/docs/(${PAGE_SECTIONS.join('|')})/[^/]+$`);
+export function selectorFor(route) {
+  if (route === TOUR_ROUTE) return TOUR_SELECTOR;
+  return DEMO_ROUTE.test(route) ? DEMO_SELECTOR : MAIN_SELECTOR;
+}
+
+/**
+ * Route paths for every built /docs page that is not a component or pattern leaf
+ * (those are discoverPages): /docs itself, the section landings and all nested pages.
+ */
+export function discoverMainPages(outDir) {
+  const root = path.join(outDir, 'docs');
+  const routes = new Set();
+  const walk = (dir, route) => {
+    if (!fs.existsSync(dir)) return;
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.isDirectory()) {
+        walk(path.join(dir, e.name), `${route}/${e.name}`);
+      } else if (e.name === 'index.html') {
+        routes.add(route);
+      } else if (e.name.endsWith('.html')) {
+        routes.add(`${route}/${e.name.slice(0, -5)}`);
+      }
+    }
+  };
+  walk(root, '/docs');
+  return [...routes].filter((r) => !DEMO_ROUTE.test(r)).sort();
+}
+
+/** Demo pages, every other /docs page, plus /tour when the build has it. The visual spec keeps discoverPages: it has no demo frame. */
 export function discoverAxeRoutes(outDir) {
-  const routes = discoverPages(outDir);
+  const routes = [...discoverPages(outDir), ...discoverMainPages(outDir)].sort();
   const hasTour = ['tour.html', path.join('tour', 'index.html')].some((f) =>
     fs.existsSync(path.join(outDir, f)),
   );

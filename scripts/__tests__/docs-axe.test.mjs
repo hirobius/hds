@@ -7,7 +7,9 @@ import { evaluateScan, validateAllowlist } from '../lib/axe-gate.mjs';
 import {
   DEMO_SELECTOR,
   TOUR_SELECTOR,
+  MAIN_SELECTOR,
   discoverAxeRoutes,
+  discoverMainPages,
   discoverPages,
   selectorFor,
 } from '../lib/docs-axe.mjs';
@@ -32,6 +34,44 @@ describe('docs axe gate: the /tour screen (hds#795)', () => {
     expect(discoverPages(withTour)).toEqual(['/docs/components/button']);
     expect(selectorFor('/tour')).toBe(TOUR_SELECTOR);
     expect(selectorFor('/docs/components/button')).toBe(DEMO_SELECTOR);
+  });
+});
+
+describe('docs axe gate: every other /docs page (hds#710)', () => {
+  const files = [
+    'docs/index.html',
+    'docs/components/index.html',
+    'docs/components/button.html',
+    'docs/patterns/empty-state/index.html',
+    'docs/engineering.html',
+    'docs/guides/index.html',
+    'docs/guides/getting-started/index.html',
+    'docs/foundations/color.html',
+    'docs/foundations/color.txt',
+    'tour.html',
+  ];
+
+  it('discovers every non-demo docs page, section landings included, sorted', () => {
+    expect(discoverMainPages(site(files))).toEqual([
+      '/docs',
+      '/docs/components',
+      '/docs/engineering',
+      '/docs/foundations/color',
+      '/docs/guides',
+      '/docs/guides/getting-started',
+    ]);
+  });
+
+  it('scans demo pages by frame and every other route by <main>', () => {
+    const routes = discoverAxeRoutes(site(files));
+    expect(routes).toContain('/docs/components/button');
+    expect(routes).toContain('/docs/engineering');
+    expect(routes).toContain('/tour');
+    expect(new Set(routes).size).toBe(routes.length);
+    expect(selectorFor('/docs/components/button')).toBe(DEMO_SELECTOR);
+    expect(selectorFor('/docs/components')).toBe(MAIN_SELECTOR);
+    expect(selectorFor('/docs/guides/getting-started')).toBe(MAIN_SELECTOR);
+    expect(MAIN_SELECTOR).toBe('main');
   });
 });
 
