@@ -324,9 +324,9 @@
   border-style: solid;
   border-width: 1px;
   padding: var(--component-tag-paddingY) var(--component-tag-paddingX);
-  border-color: var(--semantic-color-border-default);
-  background-color: var(--semantic-color-surface-raised);
-  color: var(--semantic-color-content-secondary);
+  border-color: var(--component-tag-border);
+  background-color: var(--component-tag-background);
+  color: var(--component-tag-text);
   transition:
     color 0.15s ease,
     background-color 0.15s ease,
