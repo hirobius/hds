@@ -333,9 +333,10 @@ html[data-docs-corners='sharp'] {
   --component-card-radius: 0px;
 }
 /* HDS's rounded-lg is calc(--role-radius + 4px) (and .hds-card the same), so Corners=Sharp still
-   leaves 4px on HDS Card, Alert and SegmentedControl. Square just those two, docs-only (hds#806).
-   The Fumadocs chrome and every other rounded-* class follow the tokens above. */
-html[data-docs-corners='sharp'] :is(.rounded-lg, .hds-card) {
+   leaves 4px on HDS Card, Alert and SegmentedControl; plain `rounded` is the --hds-radius-4
+   primitive (Kbd, Skeleton text). Square just those, docs-only (hds#806). The Fumadocs chrome and
+   every other rounded-* class follow the tokens above. */
+html[data-docs-corners='sharp'] :is(.rounded, .rounded-lg, .hds-card) {
   border-radius: 0;
 }
 
