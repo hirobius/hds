@@ -10297,7 +10297,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/nav-list.tsx",
-      "description": "A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected.",
+      "description": "A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected. Tagged here rather than in the file block because NavListItem shares this module and maps to its own Figma set through figma/mapping-overrides.json.",
       "a11yRules": [
         {
           "rule": "The rows are links in an unordered list, so a screen reader announces the list and its length.",
@@ -10416,9 +10416,9 @@
           "source": "jsdoc"
         }
       ],
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-26",
+      "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-26",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "NavListItem",
