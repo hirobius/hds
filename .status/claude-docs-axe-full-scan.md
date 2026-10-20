@@ -1,0 +1,2 @@
+- check-docs-axe also scans the full <main> of every other /docs page (guides, engineering, foundations, section landings) in light and dark (hds#710); 18 extra pages, no findings.
+- The /docs landing (built as out/docs.html) is scanned too, so 18 extra pages including /docs.

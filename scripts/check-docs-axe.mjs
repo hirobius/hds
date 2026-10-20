@@ -3,15 +3,16 @@
 /**
  * check-docs-axe.mjs
  *
- * Scans the live demo of every /docs/components/* and /docs/patterns/* page, and the
- * /tour product screen (hds#795), of
+ * Scans the live demo of every /docs/components/* and /docs/patterns/* page, the full
+ * <main> of every other /docs page (guides, engineering, section landings; hds#710),
+ * and the /tour product screen (hds#795), of
  * the built docs site (docs-site/out) in light and dark with axe-core
  * (wcag2a, wcag2aa, wcag21aa, wcag22aa), scoped to the demo frame
- * (.hds-demo-frame) so Fumadocs chrome does not count. Fails on
+ * (.hds-demo-frame) on demo pages so Fumadocs chrome does not count there. Fails on
  * serious/critical violations not in scripts/docs-axe-allowlist.json (entries
  * are { storyId: "<route>", ruleId, reason, addedOn }); an allowlist entry that
- * matches nothing also fails. A page with no demo frame is reported as rule
- * "no-demo" and fails unless allowlisted under that rule id.
+ * matches nothing also fails. A demo page with no demo frame is reported as rule
+ * "no-demo" (a page with no <main> as "no-main") and fails unless allowlisted under that rule id.
  *
  * Run `pnpm docs:publish` first. Chromium comes from PLAYWRIGHT_BROWSERS_PATH
  * (/opt/pw-browsers in remote sessions). Writes reports/axe/docs-latest.json.
@@ -24,7 +25,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { AXE_TAGS, evaluateScan, loadAxeSource, validateAllowlist } from './lib/axe-gate.mjs';
-import { discoverAxeRoutes, selectorFor, serveStatic } from './lib/docs-axe.mjs';
+import { DEMO_SELECTOR, discoverAxeRoutes, selectorFor, serveStatic } from './lib/docs-axe.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const AXE_SOURCE = loadAxeSource(ROOT);
@@ -91,7 +92,9 @@ async function scanOne(browser, base, route, theme) {
       .then(() => true)
       .catch(() => false);
     if (!hasDemo) {
-      rec.violations = [{ id: 'no-demo', impact: 'serious', nodes: 0 }];
+      rec.violations = [
+        { id: selector === DEMO_SELECTOR ? 'no-demo' : 'no-main', impact: 'serious', nodes: 0 },
+      ];
       return rec;
     }
     await page.evaluate(async () => {
@@ -136,7 +139,7 @@ async function main() {
   let routes = fs.existsSync(dir) ? discoverAxeRoutes(dir) : [];
   if (!routes.length) {
     console.error(
-      `No /docs/components or /docs/patterns pages in ${path.relative(ROOT, dir)}. Run \`pnpm docs:publish\` first.`,
+      `No /docs pages in ${path.relative(ROOT, dir)}. Run \`pnpm docs:publish\` first.`,
     );
     process.exit(2);
   }
