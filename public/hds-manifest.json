@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-19T04:23:16.102Z",
+  "generated": "2026-10-20T03:24:06.143Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12105,8 +12105,8 @@
         "cssVar": "--semantic-color-surface-pressed",
         "type": "color",
         "description": "Background for an actively pressed interactive surface.",
-        "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#fafafa",
+        "alias": "{primitive.color.neutral.200}",
+        "resolvedValue": "#e5e5e5",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
           "resolvedValue": "#000000"
@@ -13894,8 +13894,8 @@
         "cssVar": "--component-button-secondary-bg-pressed",
         "type": "color",
         "description": "Secondary button pressed fill.",
-        "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f5f5f5"
+        "alias": "{semantic.color.surface.pressed}",
+        "resolvedValue": "#e5e5e5"
       },
       {
         "path": "component.button.secondary.border.rest",
@@ -13910,14 +13910,6 @@
         "cssVar": "--component-button-secondary-border-hover",
         "type": "color",
         "description": "Secondary button hover border.",
-        "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#4a4146"
-      },
-      {
-        "path": "component.button.secondary.border.pressed",
-        "cssVar": "--component-button-secondary-border-pressed",
-        "type": "color",
-        "description": "Secondary button pressed border (the hover border still applies while pressed).",
         "alias": "{semantic.color.border.accent}",
         "resolvedValue": "#4a4146"
       },

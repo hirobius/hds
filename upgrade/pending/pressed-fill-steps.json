@@ -1,0 +1,28 @@
+{
+  "impact": "look",
+  "plain": "Pressed fills are a clearer step darker in light mode, and the secondary Button no longer has its own pressed border variable.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-color-surface-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The pressed surface is now a mid light grey (was almost white) in light mode, so re-check pressed states you draw by hand.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-pressed"],
+        "cssVarWrites": ["--semantic-color-surface-pressed"]
+      },
+      "facts": ["css-var-changed:--semantic-color-surface-pressed::root"]
+    },
+    {
+      "id": "removed/--component-button-secondary-border-pressed",
+      "kind": "removed",
+      "impact": "look",
+      "plain": "The secondary Button pressed border variable is gone; delete any override of it, since the hover border now holds while pressed.",
+      "detect": {
+        "cssVars": ["--component-button-secondary-border-pressed"],
+        "cssVarWrites": ["--component-button-secondary-border-pressed"]
+      },
+      "facts": ["css-var-removed:--component-button-secondary-border-pressed::root"]
+    }
+  ]
+}
