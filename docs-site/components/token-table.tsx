@@ -16,7 +16,8 @@ function Value({ value, swatch }: { value: string; swatch: boolean }) {
 /**
  * The shared table: token, light value, dark value, description. A column that
  * would say nothing (no token differs in dark, no token has a description) is
- * left out rather than filled with "Same as light" or blanks.
+ * left out rather than filled with blanks; a token with no Dark mode shows its one
+ * value in the Dark column too.
  */
 export function TokenRows({
   rows,
@@ -49,12 +50,8 @@ export function TokenRows({
               </td>
               {hasDark ? (
                 <td>
-                  {/* A token with no Dark mode is the same in both themes. */}
-                  {row.darkValue === null ? (
-                    <span className="hds-token-same">Same</span>
-                  ) : (
-                    <Value value={row.darkValue} swatch={row.swatch} />
-                  )}
+                  {/* A token with no Dark mode has the same value in both themes: show it. */}
+                  <Value value={row.darkValue ?? row.value} swatch={row.swatch} />
                 </td>
               ) : null}
               {hasDescription ? <td>{row.description}</td> : null}
