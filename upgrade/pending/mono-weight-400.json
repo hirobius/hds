@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "If you set --hds-font-family-mono to a font with a 450 weight, mono text now renders at 400; set --primitive-typography-weight-mono to change it."
+}

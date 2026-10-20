@@ -126,9 +126,14 @@ export function hdsAgentSlice(state, data) {
     c.variables.forEach((v) => byId.set(v.id, v));
   });
   // An alias names its target by the slice's path, else by the path HDS stamped
-  // on it: an earlier part created the target, so the slice has no id for it.
+  // on it (an earlier part created the target, so the slice has no id for it),
+  // when no other variable carries that stamp (a copy made in Figma keeps it).
+  const stamped = new Map();
+  state.collections.forEach((c) =>
+    c.variables.forEach((v) => v.path && stamped.set(v.path, stamped.has(v.path) ? null : v.id)),
+  );
   const pathOf = new Map();
-  state.collections.forEach((c) => c.variables.forEach((v) => v.path && pathOf.set(v.id, v.path)));
+  stamped.forEach((id, path) => id && pathOf.set(id, path));
   data.slice.forEach((c) => c[3].forEach((v) => v[1] && pathOf.set(v[1], v[0])));
   return {
     collections: data.slice.map((c) => {

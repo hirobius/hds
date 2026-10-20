@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-20T04:15:45.794Z",
+  "generated": "2026-10-20T04:27:34.355Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11597,6 +11597,13 @@
         "value": "800"
       },
       {
+        "path": "primitive.typography.weight.mono",
+        "cssVar": "--primitive-typography-weight-mono",
+        "type": "fontWeight",
+        "description": "Mono weight. IBM Plex Mono ships 400 only; Figma draws weight.regular (450) as Plex Mono Medium.",
+        "value": "400"
+      },
+      {
         "path": "primitive.typography.lineHeight.compact",
         "cssVar": "--primitive-typography-lineHeight-compact",
         "type": "number",
@@ -12844,7 +12851,7 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role is set at 400, not weight.regular (450 draws as Plex Mono Medium in Figma). The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
           "fontSize": "15px",

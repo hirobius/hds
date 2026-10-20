@@ -113,8 +113,8 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     });
     const sha = createHash('sha256').update(s.built.text).digest('hex');
     expect({ chars: s.built.chars, sha }).toEqual({
-      chars: 31746,
-      sha: '60655fc41e8d963a2ce8b910a14a5b5fe26824817338caa24c23486569fd1715',
+      chars: 31842,
+      sha: '20c1c9fca192268fbd325a05a926850800bc2f5a57b0c0f11e9066f8d37e5c01',
     });
   });
 });
@@ -262,8 +262,9 @@ describe('a type-ramp change too big for one delta.js (about 50,000 characters; 
     expect(single.built.chars).toBeLessThan(52000);
     const { parts } = s.built;
     expect(s.built.text).toBeNull();
-    // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 now.
-    expect(parts.length).toBe(2);
+    // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 until the
+    // canvas-font retry and weight.mono (2026-10-20) grew the runtime and the ramp; 3 now.
+    expect(parts.length).toBe(3);
     expect(parts.map((p) => p.file)).toEqual(
       parts.map((_, i) => `delta-${i + 1}-of-${parts.length}.js`),
     );

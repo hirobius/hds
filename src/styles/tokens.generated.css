@@ -161,6 +161,7 @@
   --primitive-typography-weight-medium: 500;
   --primitive-typography-weight-bold: 700;
   --primitive-typography-weight-display: 800;
+  --primitive-typography-weight-mono: 400;
   --primitive-typography-lineHeight-compact: 0.95;
   --primitive-typography-lineHeight-none: 1;
   --primitive-typography-lineHeight-tight: 1.25;
@@ -348,7 +349,7 @@
   /* semantic.typography.mono */
   --semantic-typography-mono-font-family: var(--primitive-typography-family-mono);
   --semantic-typography-mono-font-size: var(--primitive-typography-size-code);
-  --semantic-typography-mono-font-weight: 400;
+  --semantic-typography-mono-font-weight: var(--primitive-typography-weight-mono);
   --semantic-typography-mono-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-mono-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-mono-max-width: 60ch;

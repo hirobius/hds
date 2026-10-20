@@ -549,7 +549,7 @@ describe('figma:push when text layers bound to a variable use other fonts', () =
     expect((await push(figma, {}, newSize)).line).toBe('updated 0 · created 0 · deleted 0');
   });
 
-  it('names the font when the editor cannot load it, and writes nothing more', async () => {
+  it('names the font when the editor cannot load it', async () => {
     const canvasFonts = {};
     const figma = newFile({ fonts: FIXTURE_FONTS, canvasFonts });
     await push(figma);

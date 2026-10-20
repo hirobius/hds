@@ -969,22 +969,25 @@ export async function hdsApply(figma, plan) {
     }
     // Figma also refuses the value while text layers on the canvas bound to the
     // variable use a font that is not loaded, and no text style need name that
-    // font. Its error names each one: load those, then write again, once.
-    try {
-      v.setValueForMode(modeId(collection, change.mode), value);
-    } catch (err) {
-      const message = String((err && err.message) || err);
-      const named = [];
-      message.replace(
-        /loadFontAsync\(\{ family: "([^"]+)", style: "([^"]+)" \}\)/g,
-        (m, family, style) => {
-          named.push({ family, style });
-          return m;
-        },
-      );
-      if (!named.length) throw err;
-      for (const font of named) await figma.loadFontAsync(font);
-      v.setValueForMode(modeId(collection, change.mode), value);
+    // font. Its error names each one: load those and write again, until it
+    // names no font not already loaded.
+    for (;;) {
+      try {
+        v.setValueForMode(modeId(collection, change.mode), value);
+        return;
+      } catch (err) {
+        const message = String((err && err.message) || err);
+        const pattern = /loadFontAsync\(\{ family: "([^"]+)", style: "([^"]+)" \}\)/g;
+        const named = [];
+        for (let m = pattern.exec(message); m; m = pattern.exec(message)) {
+          if (!fonts[m[1] + '|' + m[2]]) named.push({ family: m[1], style: m[2] });
+        }
+        if (!named.length) throw err;
+        for (const font of named) {
+          await figma.loadFontAsync(font);
+          addFont(font);
+        }
+      }
     }
   };
   for (const c of valueChanges.filter((c) => c.change.to.alias === undefined)) await setValue(c);
