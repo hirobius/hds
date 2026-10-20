@@ -11,6 +11,8 @@ import { brotliDecompressSync } from 'zlib';
 
 type Point = [number, number];
 export type Contour = Point[];
+/** A raw TrueType point: x, y, on-curve. */
+type RawPoint = [number, number, boolean];
 
 // WOFF2 known-table index (spec §5.1); only these three are read by tag.
 const KNOWN = { 1: 'head', 10: 'glyf', 11: 'loca' } as Record<number, string>;
@@ -61,7 +63,7 @@ function readTables(woff2: Buffer): Record<string, Buffer> {
 }
 
 /** Decode one simple glyph into contours of [x, y, onCurve] points. */
-function decodeSimple(g: Buffer): [number, number, boolean][][] {
+function decodeSimple(g: Buffer): RawPoint[][] {
   const n = g.readInt16BE(0);
   const ends: number[] = [];
   for (let c = 0; c < n; c++) ends.push(g.readUInt16BE(10 + 2 * c));
@@ -89,10 +91,10 @@ function decodeSimple(g: Buffer): [number, number, boolean][][] {
   };
   const xs = coords(2, 16);
   const ys = coords(4, 32);
-  const contours: [number, number, boolean][][] = [];
+  const contours: RawPoint[][] = [];
   let start = 0;
   for (const end of ends) {
-    const c: [number, number, boolean][] = [];
+    const c: RawPoint[] = [];
     for (let p = start; p <= end; p++) c.push([xs[p], ys[p], !!(flags[p] & 1)]);
     contours.push(c);
     start = end + 1;
@@ -101,9 +103,9 @@ function decodeSimple(g: Buffer): [number, number, boolean][][] {
 }
 
 /** Flatten TrueType quadratic contours into closed polylines. */
-function flatten(raw: [number, number, boolean][]): Contour {
+function flatten(raw: RawPoint[]): Contour {
   // Normalise to on-curve start, inserting implied on-curve midpoints.
-  const pts: [number, number, boolean][] = [];
+  const pts: RawPoint[] = [];
   for (let k = 0; k < raw.length; k++) {
     const a = raw[k];
     const b = raw[(k + 1) % raw.length];
@@ -142,7 +144,7 @@ export function readGlyphs(woff2: Buffer): Map<number, Contour[]> {
   const glyphs = new Map<number, Contour[]>();
   for (let id = 0; id < n; id++) {
     const g = glyf.subarray(off(id), off(id + 1));
-    if (g.length === 0 || g.readInt16BE(0) < 0) continue;
+    if (g.length === 0 || g.readInt16BE(0) <= 0) continue; // empty or composite
     glyphs.set(id, decodeSimple(g).map(flatten));
   }
   return glyphs;

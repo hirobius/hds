@@ -12,7 +12,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
-import { hasOverlap, readGlyphs } from './glyph-outlines';
+import { hasOverlap, readGlyphs, type Contour } from './glyph-outlines';
 
 const ROOT = resolve(__dirname, '../../..');
 // IBM Plex Mono 400 is static too and already overlap-free (checked when this
@@ -20,6 +20,32 @@ const ROOT = resolve(__dirname, '../../..');
 const STATIC_FACES = ['public/fonts/sora/sora-800.woff2'];
 
 describe('static font outlines', () => {
+  it('flags the self-crossing apex of the upstream Sora 800 "A"', () => {
+    // Outer contour and crossbar of "A" in the Google Fonts static cut (fontsource 5.3.0).
+    const upstreamA: Contour[] = [
+      [
+        [8, 0],
+        [242, 730],
+        [540, 730],
+        [782, 0],
+        [590, 0],
+        [402, 600],
+        [455, 580],
+        [323, 580],
+        [377, 600],
+        [194, 0],
+      ],
+      [
+        [199, 169],
+        [255, 321],
+        [532, 321],
+        [588, 169],
+      ],
+    ];
+    expect(hasOverlap(upstreamA)).toBe(true);
+    expect(hasOverlap([upstreamA[1]])).toBe(false);
+  });
+
   for (const face of STATIC_FACES) {
     it(`${face} has no overlapping or self-crossing contours`, () => {
       const glyphs = readGlyphs(readFileSync(resolve(ROOT, face)));
