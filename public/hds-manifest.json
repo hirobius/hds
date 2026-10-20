@@ -5037,6 +5037,14 @@
         },
         "value": {
           "type": "string"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "panel",
+            "bare"
+          ],
+          "optional": true
         }
       },
       "allowedChildren": [
