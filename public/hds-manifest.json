@@ -1183,6 +1183,7 @@
         "src/app/components/stack.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tooltip.tsx",
+        "src/app/hooks/useBreakpoint.ts",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -2475,7 +2476,8 @@
         "src/app/components/icon.test.tsx",
         "src/app/components/scroll-edge-fade.ts",
         "src/app/components/table.test.tsx",
-        "src/app/data/manifest-types.ts"
+        "src/app/data/manifest-types.ts",
+        "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
       "props": {
@@ -7470,7 +7472,8 @@
       "consumers": [
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/sidebar.test.tsx"
+        "src/app/components/sidebar.test.tsx",
+        "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7546,7 +7549,8 @@
       "consumers": [
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/switcher.test.tsx"
+        "src/app/components/switcher.test.tsx",
+        "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],

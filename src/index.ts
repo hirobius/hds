@@ -139,6 +139,10 @@ export const tokens = tokensJson;
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
 
+// ── Responsive hooks (hds#824): read an HDS breakpoint in JS, narrow by default ──
+// `Breakpoint` (the key type) ships from Box with the `sx` types.
+export { useAtLeast, useBreakpoint } from './app/hooks/useBreakpoint';
+
 // ── Theming contract (framework-agnostic data-* dials; zero-JS compatible) ──
 export { HdsThemeProvider, useHdsTheme } from './app/context/hds-theme';
 export type {
