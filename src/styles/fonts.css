@@ -1,8 +1,8 @@
 /* Hirobius Design System — font-face declarations.
  *
  * Faces (type ramp, Adrian 2026-10-07, hds#483):
- *   - Plus Jakarta Sans variable (200-800) — body 450 (medium 500 and bold 700 unchanged)
- *   - Sora 800 — display, title, title-sm (ADR-063)
+ *   - Plus Jakarta Sans variable (200-800) — body 400, ui and labels 500, bold 700
+ *   - Sora 700 — display, title, title-sm (ADR-063, hds#847)
  *   - IBM Plex Mono 400 — mono
  *
  * Audit gate: scripts/audit-typography-overrides.mjs fails on inline
@@ -10,8 +10,8 @@
  */
 
 /* Plus Jakarta Sans — Tokotype, SIL Open Font License 1.1 (LICENSE.txt alongside).
- * One variable file (wght 200-800, Latin subset): body sits at 450; medium (500) and
- * bold (700) are unchanged (Adrian, 2026-10-17). */
+ * One variable file (wght 200-800, Latin subset): body 400, medium 500, bold 700
+ * (Adrian, 2026-10-20, hds#847). */
 @font-face {
   font-family: 'Plus Jakarta Sans';
   src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2') format('woff2');
@@ -21,18 +21,19 @@
 }
 
 /* Sora — Sora Project Authors, SIL Open Font License 1.1 (LICENSE.txt alongside).
- * Display and title face (ADR-063): the 800 weight, Latin subset.
+ * Display and title face (ADR-063): the 700 weight only (hds#847), Latin subset, from
+ * @fontsource/sora 5.3.0 (files/sora-latin-700-normal.woff2).
  * The Google Fonts static cut keeps the variable master's overlapping contours,
  * which Core Text on macOS draws as a notch in the capital A. The shipped file has
  * them flattened and glyf left untransformed so font-outlines.test.ts can read it:
  *   python3 -c "from fontTools.ttLib import TTFont; from fontTools.ttLib.woff2 import WOFF2FlavorData; \
- *     from fontTools.ttLib.removeOverlaps import removeOverlaps; f = TTFont('sora-800.woff2'); \
- *     removeOverlaps(f); f.flavorData = WOFF2FlavorData(transformedTables=()); f.save('sora-800.woff2')"
+ *     from fontTools.ttLib.removeOverlaps import removeOverlaps; f = TTFont('sora-700.woff2'); \
+ *     removeOverlaps(f); f.flavorData = WOFF2FlavorData(transformedTables=()); f.save('sora-700.woff2')"
  * (needs fonttools, brotli and skia-pathops). */
 @font-face {
   font-family: 'Sora';
-  src: url('/fonts/sora/sora-800.woff2') format('woff2');
-  font-weight: 800;
+  src: url('/fonts/sora/sora-700.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }

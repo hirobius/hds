@@ -196,17 +196,19 @@ export const tokenValues = {
         lg: "18px",
         xl: "20px",
         "2xl": "24px",
+        title: "28px",
         "3xl": "30px",
         "4xl": "36px",
         "5xl": "48px",
+        display: "56px",
         "6xl": "60px",
         code: "15px"
       },
       weight: {
-        regular: "450",
+        regular: "400",
         medium: "500",
         bold: "700",
-        display: "800",
+        display: "700",
         mono: "400"
       },
       lineHeight: {

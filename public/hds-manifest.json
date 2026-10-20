@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-20T15:39:57.772Z",
+  "generated": "2026-10-20T20:07:05.875Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -418,6 +418,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/alert.test.tsx",
         "src/app/components/async-state.tsx",
         "src/app/components/badge.tsx",
         "src/app/components/callout.tsx",
@@ -425,7 +426,8 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/text.tsx",
         "src/app/components/timeline.tsx",
-        "src/app/components/toast.tsx"
+        "src/app/components/toast.tsx",
+        "src/app/design-system/generated-token-descriptions.ts"
       ],
       "tokenMapping": {
         "Success accent": "semantic.color.feedback.success",
@@ -11996,7 +11998,7 @@
         "path": "primitive.typography.family.display",
         "cssVar": "--primitive-typography-family-display",
         "type": "fontFamily",
-        "description": "Display and title face: Sora 800 (OFL, ADR-063); falls back to Plus Jakarta Sans.",
+        "description": "Display and title face: Sora 700 (OFL, ADR-063, hds#847); falls back to Plus Jakarta Sans.",
         "value": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
@@ -12049,6 +12051,13 @@
         "value": "24px"
       },
       {
+        "path": "primitive.typography.size.title",
+        "cssVar": "--primitive-typography-size-title",
+        "type": "dimension",
+        "description": "Title role size (hds#847): one clear step under display.",
+        "value": "28px"
+      },
+      {
         "path": "primitive.typography.size.3xl",
         "cssVar": "--primitive-typography-size-3xl",
         "type": "dimension",
@@ -12070,6 +12079,13 @@
         "value": "48px"
       },
       {
+        "path": "primitive.typography.size.display",
+        "cssVar": "--primitive-typography-size-display",
+        "type": "dimension",
+        "description": "Display role size (hds#847): the page's one hero heading, a clear step above title.",
+        "value": "56px"
+      },
+      {
         "path": "primitive.typography.size.6xl",
         "cssVar": "--primitive-typography-size-6xl",
         "type": "dimension",
@@ -12087,13 +12103,14 @@
         "path": "primitive.typography.weight.regular",
         "cssVar": "--primitive-typography-weight-regular",
         "type": "fontWeight",
-        "description": "Body weight. Plus Jakarta Sans ships as a variable font, so 450 renders as itself.",
-        "value": "450"
+        "description": "Body weight (400, hds#847). Plus Jakarta Sans ships as a variable font.",
+        "value": "400"
       },
       {
         "path": "primitive.typography.weight.medium",
         "cssVar": "--primitive-typography-weight-medium",
         "type": "fontWeight",
+        "description": "UI, labels and bold lead-ins (hds#847).",
         "value": "500"
       },
       {
@@ -12106,14 +12123,14 @@
         "path": "primitive.typography.weight.display",
         "cssVar": "--primitive-typography-weight-display",
         "type": "fontWeight",
-        "description": "Display, title and title-sm weight, set in Sora (ADR-063).",
-        "value": "800"
+        "description": "Display, title and title-sm weight, set in Sora 700 (ADR-063, hds#847). Heading levels differ by size, not weight.",
+        "value": "700"
       },
       {
         "path": "primitive.typography.weight.mono",
         "cssVar": "--primitive-typography-weight-mono",
         "type": "fontWeight",
-        "description": "Mono weight. IBM Plex Mono ships 400 only; Figma draws weight.regular (450) as Plex Mono Medium.",
+        "description": "Mono weight. IBM Plex Mono ships 400 only.",
         "value": "400"
       },
       {
@@ -13332,11 +13349,11 @@
         "path": "semantic.typography.display",
         "cssVar": "--semantic-typography-display",
         "type": "typography",
-        "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
+        "description": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6.",
         "composite": {
           "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "48px",
-          "fontWeight": "800",
+          "fontSize": "56px",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.05"
         }
@@ -13345,11 +13362,11 @@
         "path": "semantic.typography.title",
         "cssVar": "--semantic-typography-title",
         "type": "typography",
-        "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+        "description": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6.",
         "composite": {
           "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "24px",
-          "fontWeight": "800",
+          "fontSize": "28px",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -13358,11 +13375,11 @@
         "path": "semantic.typography.titleSm",
         "cssVar": "--semantic-typography-titleSm",
         "type": "typography",
-        "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
+        "description": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.",
         "composite": {
           "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "18px",
-          "fontWeight": "800",
+          "fontSize": "20px",
+          "fontWeight": "700",
           "letterSpacing": "0em",
           "lineHeight": "1.375"
         }
@@ -13375,7 +13392,7 @@
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "18px",
-          "fontWeight": "450",
+          "fontWeight": "400",
           "letterSpacing": "0em",
           "lineHeight": "1.6",
           "maxWidth": "60ch"
@@ -13412,7 +13429,7 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role binds weight.mono (400). The mono companion, role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
           "fontSize": "15px",
@@ -13429,8 +13446,8 @@
         "description": "deprecated: use semantic.typography.title",
         "composite": {
           "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "24px",
-          "fontWeight": "800",
+          "fontSize": "28px",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -13442,8 +13459,8 @@
         "description": "deprecated: use semantic.typography.title",
         "composite": {
           "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "24px",
-          "fontWeight": "800",
+          "fontSize": "28px",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }
@@ -13455,8 +13472,8 @@
         "description": "deprecated: use semantic.typography.title",
         "composite": {
           "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-          "fontSize": "24px",
-          "fontWeight": "800",
+          "fontSize": "28px",
+          "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.25"
         }

@@ -677,7 +677,7 @@
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display and title face: Sora 800 (OFL, ADR-063); falls back to Plus Jakarta Sans."
+          "$description": "Display and title face: Sora 700 (OFL, ADR-063, hds#847); falls back to Plus Jakarta Sans."
         },
         "mono": {
           "$value": ["IBM Plex Mono", "Courier New", "monospace"],
@@ -728,6 +728,13 @@
           },
           "$description": "Tailwind 4 default text-2xl (hds#283 ramp)."
         },
+        "title": {
+          "$value": {
+            "value": 28,
+            "unit": "px"
+          },
+          "$description": "Title role size (hds#847): one clear step under display."
+        },
         "3xl": {
           "$value": {
             "value": 30,
@@ -749,6 +756,13 @@
           },
           "$description": "Tailwind 4 default text-5xl (hds#283 ramp)."
         },
+        "display": {
+          "$value": {
+            "value": 56,
+            "unit": "px"
+          },
+          "$description": "Display role size (hds#847): the page's one hero heading, a clear step above title."
+        },
         "6xl": {
           "$value": {
             "value": 60,
@@ -767,22 +781,23 @@
       "weight": {
         "$type": "fontWeight",
         "regular": {
-          "$value": 450,
-          "$description": "Body weight. Plus Jakarta Sans ships as a variable font, so 450 renders as itself."
+          "$value": 400,
+          "$description": "Body weight (400, hds#847). Plus Jakarta Sans ships as a variable font."
         },
         "medium": {
-          "$value": 500
+          "$value": 500,
+          "$description": "UI, labels and bold lead-ins (hds#847)."
         },
         "bold": {
           "$value": 700
         },
         "display": {
-          "$value": 800,
-          "$description": "Display, title and title-sm weight, set in Sora (ADR-063)."
+          "$value": 700,
+          "$description": "Display, title and title-sm weight, set in Sora 700 (ADR-063, hds#847). Heading levels differ by size, not weight."
         },
         "mono": {
           "$value": 400,
-          "$description": "Mono weight. IBM Plex Mono ships 400 only; Figma draws weight.regular (450) as Plex Mono Medium."
+          "$description": "Mono weight. IBM Plex Mono ships 400 only."
         }
       },
       "lineHeight": {
@@ -1959,32 +1974,32 @@
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.5xl}",
+          "fontSize": "{primitive.typography.size.display}",
           "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.display}"
         },
-        "$description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6."
+        "$description": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6."
       },
       "title": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.2xl}",
+          "fontSize": "{primitive.typography.size.title}",
           "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
-        "$description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6."
+        "$description": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6."
       },
       "titleSm": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.lg}",
+          "fontSize": "{primitive.typography.size.xl}",
           "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.snug}"
         },
-        "$description": "Small heading inside a card or section band. 18px / 1.375 / 700."
+        "$description": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700."
       },
       "body": {
         "$value": {
@@ -2036,12 +2051,12 @@
             "unit": "ch"
           }
         },
-        "$description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6."
+        "$description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role binds weight.mono (400). The mono companion, role 6 of 6."
       },
       "h1": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.2xl}",
+          "fontSize": "{primitive.typography.size.title}",
           "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
@@ -2052,7 +2067,7 @@
       "h2": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.2xl}",
+          "fontSize": "{primitive.typography.size.title}",
           "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
@@ -2063,7 +2078,7 @@
       "h3": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
-          "fontSize": "{primitive.typography.size.2xl}",
+          "fontSize": "{primitive.typography.size.title}",
           "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"

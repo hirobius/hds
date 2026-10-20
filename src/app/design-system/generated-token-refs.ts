@@ -197,9 +197,11 @@ export const tokenRefs = {
         lg: "var(--primitive-typography-size-lg)",
         xl: "var(--primitive-typography-size-xl)",
         "2xl": "var(--primitive-typography-size-2xl)",
+        title: "var(--primitive-typography-size-title)",
         "3xl": "var(--primitive-typography-size-3xl)",
         "4xl": "var(--primitive-typography-size-4xl)",
         "5xl": "var(--primitive-typography-size-5xl)",
+        display: "var(--primitive-typography-size-display)",
         "6xl": "var(--primitive-typography-size-6xl)",
         code: "var(--primitive-typography-size-code)"
       },

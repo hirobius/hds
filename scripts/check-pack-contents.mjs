@@ -62,7 +62,7 @@ export const REQUIRED = [
   ...PLUGIN_RULES,
   'dist/fonts.css',
   'dist/fonts/plus-jakarta-sans-variable.woff2',
-  'dist/fonts/sora-800.woff2',
+  'dist/fonts/sora-700.woff2',
   'dist/fonts/ibm-plex-mono-400.woff2',
   'dist/fonts/plus-jakarta-sans-LICENSE.txt',
   'dist/fonts/sora-LICENSE.txt',

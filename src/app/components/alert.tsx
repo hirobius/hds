@@ -92,7 +92,13 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
         size="small"
         color={colorVar}
         weight="light"
-        className={cn('shrink-0', hasTitle ? 'self-start mt-0.5' : 'self-center')}
+        className={cn(
+          'shrink-0',
+          // With a title, centre the 16px icon on the title's first line (titleSm size × leading, hds#847).
+          hasTitle
+            ? 'self-start mt-[calc((var(--semantic-typography-titleSm-font-size)*var(--semantic-typography-titleSm-line-height)-var(--primitive-size-16))/2)]'
+            : 'self-center',
+        )}
       />
 
       {hasTitle ? (
@@ -104,9 +110,10 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
         // spacing from a semantic token rather than a literal.
         // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic subgrid-hairline gap; var()-based, no Tailwind-theme utility exists
         <span className="flex flex-col gap-[var(--semantic-space-subgrid-hairline)]">
+          {/* The title is a heading: the titleSm role brings the Sora face and its 700 weight (hds#847). */}
           <span
             style={{
-              ...hds.typeStyles.ui,
+              ...hds.typeStyles.titleSm,
               color: 'var(--semantic-color-content-primary)',
               margin: 0,
             }}

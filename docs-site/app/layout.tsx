@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import localFont from 'next/font/local';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 
-// HDS brand fonts (Plus Jakarta Sans variable, Sora 800, IBM Plex Mono 400), the same opt-in
+// HDS brand fonts (Plus Jakarta Sans variable, Sora 700, IBM Plex Mono 400), the same opt-in
 // file consumers import, so the docs dogfood the package.
 import '@hirobius/design-system/fonts.css';
 import '@hirobius/design-system/tokens.css';
@@ -18,7 +18,7 @@ const sans = localFont({
   display: 'swap',
 });
 const display = localFont({
-  src: [{ path: '../../public/fonts/sora/sora-800.woff2', weight: '800' }],
+  src: [{ path: '../../public/fonts/sora/sora-700.woff2', weight: '700' }],
   variable: '--hds-docs-font-display',
   display: 'swap',
 });

@@ -60,7 +60,7 @@ html {
   font-family: var(--primitive-typography-family-primary);
 }
 
-/* Headings take the HDS display face (Sora 800, ADR-063), as the
+/* Headings take the HDS display face (Sora 700, ADR-063, hds#847), as the
    display and title roles do; the body face stays on everything else. */
 h1,
 h2,
@@ -766,4 +766,13 @@ a code[data-density] {
 }
 #nd-sidebar-mobile {
   box-shadow: var(--semantic-shadow-overlay);
+}
+
+/* Sidebar nav items (page links and folder toggles) set in the ui role, 16px at 500, so they
+   read at the same size and weight as the theme, Corners and Shadow segmented controls
+   (hds#847). Fumadocs gives them text-sm at the inherited weight; the search trigger and the
+   section labels keep theirs. */
+:is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button).wrap-anywhere {
+  font-size: var(--semantic-typography-ui-font-size);
+  font-weight: var(--semantic-typography-ui-font-weight);
 }
