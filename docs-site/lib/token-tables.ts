@@ -21,6 +21,14 @@ export interface TokenRow {
    * has no Dark mode and so is the same in both themes.
    */
   darkValue: string | null;
+  /**
+   * CSS fill for a colour swatch: `var(--…)` of the token the light value's alias
+   * chain ends at (a `--primitive-color-*` variable), or the token's own variable
+   * when it holds the literal. Null for a value that is not a colour.
+   */
+  fill: string | null;
+  /** The same for the dark value; null when the token has no Dark mode. */
+  darkFill: string | null;
   description: string;
   /** True when the value is a color and should render a swatch. */
   swatch: boolean;
@@ -87,6 +95,21 @@ export function resolveTokenValue(tokens: Json, value: Json, seen: string[] = []
   throw new Error(`Unsupported token value: ${JSON.stringify(value)}`);
 }
 
+/**
+ * The CSS var of the last token an alias chain reaches (the one that holds the
+ * literal), or null when `value` is not an alias. Swatches fill from it, so a
+ * swatch shows the shipped variable rather than a copied value (hds#846).
+ */
+function sourceVar(tokens: Json, value: Json): string | null {
+  const alias = typeof value === 'string' ? /^\{([^}]+)\}$/.exec(value) : null;
+  if (!alias) return null;
+  const path = alias[1]!;
+  const target = lookup(tokens, path);
+  return (isNode(target) ? sourceVar(tokens, target.$value) : null) ?? cssVarFor(path);
+}
+
+const isColor = (value: string) => /^(#|rgb|hsl|oklch)/i.test(value);
+
 const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 function darkRaw(node: Node): Json | undefined {
@@ -111,13 +134,16 @@ function rowFor(tokens: Json, path: string, node: Node): TokenRow {
   const raw = node.$value;
   const value = shortFamily(resolveTokenValue(tokens, raw));
   const dark = darkRaw(node);
+  const fill = (raw: Json) => `var(${sourceVar(tokens, raw) ?? cssVarFor(path)})`;
   return {
     token: path,
     cssVar: isNode(raw) && !('unit' in raw) ? null : cssVarFor(path),
     value,
     darkValue: dark === undefined ? null : shortFamily(resolveTokenValue(tokens, dark)),
+    fill: isColor(value) ? fill(raw) : null,
+    darkFill: isColor(value) && dark !== undefined ? fill(dark) : null,
     description: typeof node.$description === 'string' ? readerText(node.$description) : '',
-    swatch: path.startsWith('semantic.color.') && /^(#|rgb|hsl|oklch)/i.test(value),
+    swatch: path.startsWith('semantic.color.') && isColor(value),
   };
 }
 

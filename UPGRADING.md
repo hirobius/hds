@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.28.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.29.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,57 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.29.0
+
+Released 2026-10-20 (minor). 12 changes to make by hand (12 breaking), 34 that look different and 1 deprecation.
+
+### Looks different
+
+- Badge horizontal padding is now 8px (was 6px); check badges in tight rows or fixed-width cells.
+- Card padding now follows surface.padding: 28px (24px compact), was a fixed 24px; check fixed-height cards.
+- The deprecated --hds-space-2xl is now 64px (48px compact), tracking scale.xl; move to --semantic-space-scale-xl.
+- The deprecated --hds-space-lg is now 28px (24px compact), tracking scale.md; move to --semantic-space-scale-md.
+- The deprecated --hds-space-md is now 20px (16px compact), tracking scale.sm; move to --semantic-space-scale-sm.
+- The deprecated --hds-space-sm is 8px in both densities now (compact was 6px); move to --semantic-space-scale-xs.
+- The deprecated --hds-space-xl is now 40px (32px compact), tracking scale.lg; move to --semantic-space-scale-lg.
+- weight.display is 700 (was 800); display, title and titleSm read it, so headings are a step lighter.
+- Body weight is 400 (was 450); text that reads this variable renders slightly lighter.
+- Doc paragraph spacing is 28px (was 24px); check long-form pages that read it.
+- Doc section breaks follow scale.xl: 64px (48px compact), was a fixed 48px.
+- The layout grid gap follows scale.md (28px, 20px below 640px; 24/16px compact), was 24px and 16px.
+- Section vertical padding is 96px (64px below 640px), was 80px and 48px; re-take screenshots of long pages.
+- The deprecated component.gap now aliases scale.xs (8px in both densities, as before); move to --semantic-space-scale-xs.
+- The layout gap follows scale.md (28px, 20px below 640px; 24/16px compact), was 24px and 16px.
+- The deprecated layout.inset is now 40px (was 32px), fixed in both densities; move to --semantic-space-scale-lg.
+- The deprecated layout.normal is now 28px (was 24px), fixed in both densities; move to --semantic-space-scale-md.
+- The deprecated layout.spacious is now 64px (was 48px), fixed in both densities; move to --semantic-space-scale-xl.
+- The deprecated layout.tight is now 20px (was 16px), fixed in both densities; move to --semantic-space-scale-sm.
+- The page gutter is 40px on desktop and 20px below 640px (32/16px compact), was 32/16px (24/12px compact); check full-bleed layouts at 390px.
+- scale.lg is 40px (32px compact), was 32px (24px compact); layouts that read it get roomier.
+- scale.md is 28px (24px compact), was 24px (20px compact); card and dialog insets grow with it.
+- scale.sm is 20px (16px compact), was 16px (12px compact); list rows and field stacks grow with it.
+- scale.xl is 64px (48px compact), was 48px (40px compact); gaps between sections grow with it.
+- scale.xs is 8px in both densities now (compact was 6px).
+- Hero inset below 640px is 80px (was 64px); 128px above it is unchanged.
+- Space between page sections is 96px (64px below 640px), was 80px and 48px.
+- The display role is 56px (was 48px); check hero headings for wrapping at 390px.
+- The deprecated h1 style follows title to 28px (was 24px); move to title.
+- The deprecated h2 style follows title to 28px (was 24px); move to title.
+- The deprecated h3 style follows title to 28px (was 24px); move to title.
+- Titles are 28px (was 24px); page and section headings take more room, so check fixed-height headers.
+- Small titles are 20px (was 18px), one step above body; Alert titles now use this role too.
+- fonts.css declares Sora 700 (fonts/sora-700.woff2) in place of Sora 800; import fonts.css again, or load the 700 weight if you host Sora yourself.
+
+### Coming next
+
+- The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind \*-px6/\*-px10) are deprecated and leave in 0.30.0; the codemod rewrites them to the 8px and 12px steps. Removed in 0.30.0.
+
+### Do by hand
+
+- Each of these was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it: `--color-blue-500`, `--color-indigo-600`, `--color-purple-500`, `--color-red-500`, `--color-red-700` and `--ease-in-out`.
+- The stray CSS variable each of these is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it: `--color-slate-200`, `--color-slate-900`, `--color-stone-50`, `--container-5xl` and `--font-serif`.
+- The stray CSS variable --tracking-wider is no longer shipped; type tracking comes from the --semantic-typography-\*-letter-spacing tokens, so use a type role instead.
 
 ## 0.28.0
 

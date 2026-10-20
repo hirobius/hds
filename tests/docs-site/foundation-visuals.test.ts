@@ -95,7 +95,7 @@ describe('typeSpecimens', () => {
     const display = specimens[0]!;
     expect(display.family).toBe('Sora');
     expect(display.fontSize).toMatch(/px$/);
-    expect(display.fontWeight).toBe('800');
+    expect(display.fontWeight).toBe('700');
     expect(display.letterSpacing).toMatch(/em$/);
   });
 });
@@ -136,5 +136,33 @@ describe('motionTokens', () => {
     for (const m of motion) expect(m.easing).toMatch(/^cubic-bezier\(/);
     expect(motion[0]!.durationVar).toBe('--primitive-duration-short');
     expect(motion[0]!.duration).toBe('150ms');
+  });
+});
+
+describe('colorGalleries swatch fills (hds#846)', () => {
+  const cobalt = JSON.parse(readFileSync('accents/cobalt/tokens.json', 'utf8'));
+  const shipped = readFileSync('src/styles/tokens.generated.css', 'utf8');
+  const swatches = colorGalleries(tokens, { cobalt }).flatMap((g) =>
+    g.groups.flatMap((group) => group.swatches),
+  );
+  const varName = (fill: string | null) => /^var\((--[\w-]+)\)$/.exec(fill ?? '')?.[1];
+
+  it('fills every swatch from a shipped --primitive-color-* variable, not a copied value', () => {
+    expect(swatches.length).toBeGreaterThan(50);
+    for (const s of swatches) {
+      for (const fill of s.darkFill === null ? [s.fill] : [s.fill, s.darkFill]) {
+        const name = varName(fill);
+        expect(name, `${s.token} fill ${fill}`).toMatch(/^--primitive-color-/);
+        expect(shipped, `${name} is not in tokens.generated.css`).toContain(`${name}:`);
+      }
+    }
+  });
+
+  it('fills a primitive from its own variable and a semantic token from what it aliases', () => {
+    const find = (token: string) => swatches.find((s) => s.token === token)!;
+    expect(find('primitive.color.blue.500').fill).toBe('var(--primitive-color-blue-500)');
+    const page = find('semantic.color.surface.page');
+    expect(page.fill).toBe('var(--primitive-color-neutral-white)');
+    expect(page.darkFill).toBe('var(--primitive-color-neutral-black)');
   });
 });

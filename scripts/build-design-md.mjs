@@ -180,14 +180,18 @@ export function buildTypography(raw) {
   // directly above a token-derived table it contradicted (headings were
   // claimed 500 while the ramp resolved 700). Read the weights off the same
   // tokens the table uses so the two cannot drift apart again.
+  // Name each role's weight by the token it references, not by its value: two
+  // weight tokens can share a value (regular and mono are both 400, hds#847).
   const weightOf = (role) => {
     const node = semanticTypography?.[role];
-    const val = node?.$value?.fontWeight ?? node?.fontWeight;
-    return val === undefined ? undefined : lookup(val, weightMap);
+    const ref = node?.$value?.fontWeight ?? node?.fontWeight;
+    if (ref === undefined) return undefined;
+    const name = String(ref).match(/^\{primitive\.typography\.weight\.([\w-]+)\}$/)?.[1];
+    return { name: name ?? String(ref), value: String(lookup(ref, weightMap)) };
   };
-  const nameOfWeight = (w) =>
-    Object.keys(weightMap).find((k) => String(weightMap[k]) === String(w)) ?? String(w);
-  const uniq = (arr) => [...new Set(arr.filter((v) => v !== undefined).map(String))];
+  const uniq = (arr) => [
+    ...new Map(arr.filter((w) => w !== undefined).map((w) => [w.name, w])).values(),
+  ];
 
   const declared = Object.keys(weightMap)
     .sort((a, b) => Number(weightMap[a]) - Number(weightMap[b]))
@@ -195,13 +199,10 @@ export function buildTypography(raw) {
     .join(', ');
   const headingW = uniq(['display', 'title'].map(weightOf));
   const bodyW = uniq(['body', 'ui', 'caption'].map(weightOf));
-  const phrase = (ws) =>
-    ws.length === 1
-      ? `\`${ws[0]}\` ${nameOfWeight(ws[0])}`
-      : ws.map((w) => `\`${w}\` ${nameOfWeight(w)}`).join(' / ');
+  const phrase = (ws) => ws.map((w) => `\`${w.value}\` ${w.name}`).join(' / ');
   const monoW = uniq([weightOf('mono')]);
-  const usedWeights = new Set([...headingW, ...bodyW, ...monoW]);
-  const unused = Object.keys(weightMap).filter((k) => !usedWeights.has(String(weightMap[k])));
+  const usedWeights = new Set([...headingW, ...bodyW, ...monoW].map((w) => w.name));
+  const unused = Object.keys(weightMap).filter((k) => !usedWeights.has(k));
 
   lines.push(
     `Weights declared: ${declared}. Heading styles (display · title) use ` +

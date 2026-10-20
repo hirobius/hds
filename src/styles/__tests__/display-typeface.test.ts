@@ -1,5 +1,5 @@
 /**
- * Contract test: display and title set in Sora 800, body at 450 (ADR-063).
+ * Contract test: display and title set in Sora 700, body at 400 (ADR-063, hds#847).
  *
  * The expressive-type change moves only the display face. This pins the token,
  * the root default of the display dial, the self-hosted @font-face, and that
@@ -44,20 +44,29 @@ describe('display typeface (ADR-063)', () => {
     );
   });
 
-  it('sets display, title and title-sm at weight 800 and body at 450', () => {
+  it('sets display, title and title-sm at weight 700 and body at 400 (hds#847)', () => {
     const weight = tokens.primitive.typography.weight;
-    expect(weight.display.$value).toBe(800);
-    expect(weight.regular.$value).toBe(450);
+    expect(weight.display.$value).toBe(700);
+    expect(weight.regular.$value).toBe(400);
+    expect(weight.medium.$value).toBe(500);
     for (const role of ['display', 'title', 'titleSm']) {
       expect(roles[role].$value.fontWeight, role).toBe('{primitive.typography.weight.display}');
     }
     expect(roles.body.$value.fontWeight).toBe('{primitive.typography.weight.regular}');
   });
 
+  it('steps the heading sizes 56 / 28 / 20 so levels differ by size, not weight (hds#847)', () => {
+    const px = (role: string) => {
+      const ref = roles[role].$value.fontSize.match(/^\{primitive\.typography\.size\.(.+)\}$/)[1];
+      return tokens.primitive.typography.size[ref].$value.value;
+    };
+    expect([px('display'), px('title'), px('titleSm'), px('body')]).toEqual([56, 28, 20, 18]);
+  });
+
   it('renders display, title and title-sm in the display family at the title size, in the generated CSS', () => {
     const css = read('src/styles/tokens.generated.css');
     expect(css).toMatch(/--primitive-typography-family-display:\s*Sora,/);
-    expect(css).toMatch(/--primitive-typography-weight-display:\s*800;/);
+    expect(css).toMatch(/--primitive-typography-weight-display:\s*700;/);
     for (const role of ['display', 'title', 'titleSm']) {
       expect(css, role).toContain(
         `--semantic-typography-${role}-font-family: var(--primitive-typography-family-display);`,
@@ -72,14 +81,16 @@ describe('display typeface (ADR-063)', () => {
   it('self-hosts both faces with their OFL licences, no CDN', () => {
     const fonts = read('src/styles/fonts.css');
     expect(fonts).toMatch(
-      /font-family: 'Sora';\s*src: url\('\/fonts\/sora\/sora-800\.woff2'\) format\('woff2'\);\s*font-weight: 800;/,
+      /font-family: 'Sora';\s*src: url\('\/fonts\/sora\/sora-700\.woff2'\) format\('woff2'\);\s*font-weight: 700;/,
     );
     expect(fonts).toMatch(
       /font-family: 'Plus Jakarta Sans';\s*src: url\('\/fonts\/plus-jakarta-sans\/plus-jakarta-sans-variable\.woff2'\)[^;]*;\s*font-weight: 200 800;/,
     );
     expect(fonts).not.toMatch(/fonts\.(googleapis|gstatic)\.com/);
     expect(fonts).not.toMatch(/Bricolage/i);
-    for (const f of ['sora/sora-800.woff2', 'plus-jakarta-sans/plus-jakarta-sans-variable.woff2']) {
+    expect(fonts, 'vendor only the Sora weight in use').not.toMatch(/sora-800/);
+    expect(existsSync(resolve(ROOT, 'public/fonts/sora/sora-800.woff2'))).toBe(false);
+    for (const f of ['sora/sora-700.woff2', 'plus-jakarta-sans/plus-jakarta-sans-variable.woff2']) {
       expect(existsSync(resolve(ROOT, 'public/fonts', f)), f).toBe(true);
     }
     expect(read('public/fonts/sora/LICENSE.txt')).toMatch(/SIL Open Font License, Version 1\.1/);
