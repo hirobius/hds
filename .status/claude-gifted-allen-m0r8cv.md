@@ -1,0 +1,1 @@
+- Sora 800 woff2: merged overlapping contours (71 glyphs) so Apple renderers stop drawing hairline seams in A, E, H, T etc.
