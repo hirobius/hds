@@ -136,6 +136,8 @@ export function Example() {
 
 ### Template B: Foundation Page Template (`foundations/*.mdx`)
 
+The lead is the frontmatter `description`. Tokens come first; Principle and Best practices fold into one collapsed `<PrinciplesAndPractices>` block (an HDS Card + Disclosure) after them (hds#847). `tests/docs-site/foundation-page-order.test.ts` checks the order.
+
 ```mdx
 ---
 title: "<FoundationName>"
@@ -144,26 +146,22 @@ status: "stable"
 since: "0.1.0"
 ---
 
-
-<Editorial description of foundation principles and visual language.>
-
-## Principle
-
-<Design principles governing usage across themes and products.>
-
-## Token Reference
+## Tokens
 
 {/* generated: tokens */}
 
-## Usage Guidance
+<PrinciplesAndPractices>
 
-- Do <Best practice 1>.
-- Do <Best practice 2>.
+### Principle
 
-## Don'ts
+- <Design principle governing usage across themes and products.>
 
+### Best practices
+
+- <Best practice 1>.
 - Don't <Anti-pattern 1>.
-- Don't <Anti-pattern 2>.
+
+</PrinciplesAndPractices>
 ````
 
 ---

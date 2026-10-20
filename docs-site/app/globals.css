@@ -69,6 +69,50 @@ h4 {
   font-family: var(--semantic-typography-title-font-family);
 }
 
+/* Docs heading levels step down the type ramp (hds#847 A): the page title is
+   `display`, a section head `title`, a sub-head `titleSm`. Live demos keep
+   their own type. */
+#nd-page h1:not(.hds-demo-frame *),
+#nd-page .prose h2:not(.hds-demo-frame *),
+#nd-page .prose h3:not(.hds-demo-frame *) {
+  font-family: var(--hds-heading-family);
+  font-size: var(--hds-heading-size);
+  font-weight: var(--hds-heading-weight);
+  line-height: var(--hds-heading-line-height);
+  letter-spacing: var(--hds-heading-letter-spacing);
+  /* A long component name at display size breaks rather than scrolling a phone sideways. */
+  overflow-wrap: break-word;
+}
+#nd-page h1 {
+  --hds-heading-family: var(--semantic-typography-display-font-family);
+  --hds-heading-size: var(--semantic-typography-display-font-size);
+  --hds-heading-weight: var(--semantic-typography-display-font-weight);
+  --hds-heading-line-height: var(--semantic-typography-display-line-height);
+  --hds-heading-letter-spacing: var(--semantic-typography-display-letter-spacing);
+}
+#nd-page .prose h2 {
+  --hds-heading-family: var(--semantic-typography-title-font-family);
+  --hds-heading-size: var(--semantic-typography-title-font-size);
+  --hds-heading-weight: var(--semantic-typography-title-font-weight);
+  --hds-heading-line-height: var(--semantic-typography-title-line-height);
+  --hds-heading-letter-spacing: var(--semantic-typography-title-letter-spacing);
+}
+#nd-page .prose h3 {
+  --hds-heading-family: var(--semantic-typography-titleSm-font-family);
+  --hds-heading-size: var(--semantic-typography-titleSm-font-size);
+  --hds-heading-weight: var(--semantic-typography-titleSm-font-weight);
+  --hds-heading-line-height: var(--semantic-typography-titleSm-line-height);
+  --hds-heading-letter-spacing: var(--semantic-typography-titleSm-letter-spacing);
+}
+
+/* Foundation pages: Principle and Best practices fold below the tokens (hds#847 C). */
+.prose .hds-principles {
+  margin-top: var(--semantic-space-scale-lg);
+}
+.prose .hds-principles-body > :first-child {
+  margin-top: var(--semantic-space-scale-sm);
+}
+
 /*
  * Fumadocs sizes its sticky top bar via the --fd-header-height custom
  * property, toggled on by a `:has()` selector keyed to a marker class that
