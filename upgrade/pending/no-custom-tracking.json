@@ -1,6 +1,6 @@
 {
   "impact": "breaking",
-  "plain": "The .tracking-widest class and a few stray Tailwind CSS variables (including --tracking-wider) are no longer shipped, and the ESLint plugin now errors on hand-set letter-spacing; use <Text variant> or a .hds-type-<role> class.",
+  "plain": "The .tracking-wider and .tracking-widest classes and a few stray Tailwind CSS variables (including --tracking-wider) are no longer shipped, and the ESLint plugin now errors on hand-set letter-spacing; use <Text variant> or a .hds-type-<role> class.",
   "steps": [
     {
       "id": "removed/--color-slate-200",

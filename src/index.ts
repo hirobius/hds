@@ -85,6 +85,9 @@ export * from './app/components/text';
 export * from './app/components/kbd';
 export * from './app/components/timestamp';
 export * from './app/components/blockquote';
+export * from './app/components/meta-line';
+export * from './app/components/nav-list';
+export * from './app/components/token-field';
 export * from './app/components/visually-hidden';
 export * from './app/components/avatar-group';
 
@@ -136,6 +139,10 @@ export const tokens = tokensJson;
 
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
+
+// ── Responsive hooks (hds#824): read an HDS breakpoint in JS, narrow by default ──
+// `Breakpoint` (the key type) ships from Box with the `sx` types.
+export { useAtLeast, useBreakpoint } from './app/hooks/useBreakpoint';
 
 // ── Theming contract (framework-agnostic data-* dials; zero-JS compatible) ──
 export { HdsThemeProvider, useHdsTheme } from './app/context/hds-theme';

@@ -98,13 +98,13 @@
   --component-button-bgHover: var(
     --semantic-accent-hover
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-button-bgPressed: var(
+    --semantic-accent-pressed
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-button-secondary-bg-hover: var(
     --semantic-color-surface-accentSubtle
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-button-secondary-border-hover: var(
-    --semantic-color-border-accent
-  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --component-button-secondary-border-pressed: var(
     --semantic-color-border-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-tag-activeBackground: var(

@@ -1,0 +1,62 @@
+{
+  "$comment": "Frozen inputs of the 0.27.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.27.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.27.0",
+  "previous": "0.26.2",
+  "date": "2026-10-19",
+  "summary": "5 changes to make by hand (3 breaking) and 33 that look different.",
+  "backfilled": false,
+  "notes": {
+    "accent-cobalt-lime": {
+      "needle": "4f44dab: Accent options (Adrian, 2026-10-17).",
+      "source": "CHANGELOG.md:33"
+    },
+    "agents-pick-by-need-imports": {
+      "needle": "eb2df80: `AGENTS.md` and `public/llms-full.txt`",
+      "source": "CHANGELOG.md:34"
+    },
+    "codemod-edge-cases": {
+      "needle": "268be30: Fix codemod edge cases in patterns-subpath",
+      "source": "CHANGELOG.md:35"
+    },
+    "dark-accent-pressed-contrast": {
+      "needle": "1f7cf54: Dark accent states now lighten step",
+      "source": "CHANGELOG.md:36"
+    },
+    "expressive-type": {
+      "needle": "6de7585: Display and title type now set in",
+      "source": "CHANGELOG.md:19"
+    },
+    "formfield-render-props-spread": {
+      "needle": "a623113: `HdsFieldRenderProps` types `ref`",
+      "source": "CHANGELOG.md:37"
+    },
+    "layer-utilities-css": {
+      "needle": "25fef7f: `src/styles/utilities.css` now sits",
+      "source": "CHANGELOG.md:38"
+    },
+    "meta-line-max-two": {
+      "needle": "1057427: New `MetaLine` primitive: one or",
+      "source": "CHANGELOG.md:20"
+    },
+    "motion-delight-rules": {
+      "needle": "4645fbc: DESIGN.md drops the \"no playful",
+      "source": "CHANGELOG.md:39"
+    },
+    "remove-status-clutter": {
+      "needle": "b8ff404: Removes `BoardColumn`'s `tone` prop",
+      "source": "CHANGELOG.md:21"
+    },
+    "table-restyle-clipping": {
+      "needle": "1df70db: Table no longer shears its content",
+      "source": "CHANGELOG.md:22"
+    },
+    "trim-dead-data-registry": {
+      "needle": "208706a: `--leading-relaxed` and the `.leading-relaxed`",
+      "source": "CHANGELOG.md:28"
+    },
+    "type-ramp-bump": {
+      "needle": "78ad409: Bumps the small end of the type",
+      "source": "CHANGELOG.md:29"
+    }
+  }
+}

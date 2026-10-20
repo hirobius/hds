@@ -60,6 +60,24 @@ describe('transformSource', () => {
     expect(one('<TileGrid minTileWidth={a.b || c}><i /></TileGrid>;').source).toContain(
       `<Grid layout="auto-fill" minItemWidth={(a.b || c) ?? '260px'} gap="medium"><i /></Grid>;`,
     );
+    expect(one('<TileGrid minTileWidth={(a || b)}><i /></TileGrid>;').source).toContain(
+      `<Grid layout="auto-fill" minItemWidth={(a || b) ?? '260px'} gap="medium"><i /></Grid>;`,
+    );
+    expect(one('<TileGrid minTileWidth={(a ?? b)}><i /></TileGrid>;').source).toContain(
+      `<Grid layout="auto-fill" minItemWidth={(a ?? b) ?? '260px'} gap="medium"><i /></Grid>;`,
+    );
+    expect(one('<TileGrid minTileWidth={(c ? w : x)}><i /></TileGrid>;').source).toContain(
+      `<Grid layout="auto-fill" minItemWidth={(c ? w : x) ?? '260px'} gap="medium"><i /></Grid>;`,
+    );
+    expect(one('<TileGrid minTileWidth={w ?? undefined}><i /></TileGrid>;').source).toContain(
+      `<Grid layout="auto-fill" minItemWidth={(w ?? undefined) ?? '260px'} gap="medium"><i /></Grid>;`,
+    );
+    expect(one('<TileGrid minTileWidth={w ?? null}><i /></TileGrid>;').source).toContain(
+      `<Grid layout="auto-fill" minItemWidth={(w ?? null) ?? '260px'} gap="medium"><i /></Grid>;`,
+    );
+    expect(one('<TileGrid minTileWidth={(w ?? undefined)}><i /></TileGrid>;').source).toContain(
+      `<Grid layout="auto-fill" minItemWidth={(w ?? undefined) ?? '260px'} gap="medium"><i /></Grid>;`,
+    );
   });
 
   // TypeScript 6 rejects `x ?? y` when x can never be nullish (TS2869) or always

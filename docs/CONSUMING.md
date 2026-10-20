@@ -70,11 +70,11 @@ All three:
 ### Brand fonts (optional)
 
 ```ts
-import '@hirobius/design-system/fonts.css'; // Plus Jakarta Sans 400/500/700 + IBM Plex Mono 400
+import '@hirobius/design-system/fonts.css'; // Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400
 ```
 
-`fonts.css` declares the four `@font-face` blocks with `font-display: swap`. Its
-URLs are relative (`./fonts/plus-jakarta-sans-400.woff2`), and the woff2 files ship in the
+`fonts.css` declares the three `@font-face` blocks with `font-display: swap`. Its
+URLs are relative (`./fonts/plus-jakarta-sans-variable.woff2`), and the woff2 files ship in the
 package, so Vite, Next and webpack resolve and hash them; there is nothing to
 copy. Import it alongside one of the stylesheets above to keep the HDS fonts.
 Skip it to bring your own: set `--hds-font-family` (and `--hds-font-family-mono`
@@ -227,9 +227,9 @@ export function Example() {
 
 | Import                                  | What you get                                                                                                                                                                                                                            |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`               | The 43-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns` |
+| `@hirobius/design-system`               | The 45-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns` |
 | `@hirobius/design-system/styles.css`    | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                                                                                                                                 |
-| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Plus Jakarta Sans 400/500/700 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                             |
+| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                   |
 | `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                                                                                                                             |
 | `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                                                                                                                            |
 | `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                                                                                                                                         |
@@ -242,9 +242,27 @@ export function Example() {
 | `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                                                                                                                                   |
 | `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                                                                                                                            |
 | `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14)                                                                                                           |
-| `@hirobius/design-system/patterns`      | The 12 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                               |
+| `@hirobius/design-system/patterns`      | The 13 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                               |
 | `@hirobius/design-system/icons`         | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                                                                                                                                      |
 | `@hirobius/design-system/eslint-plugin` | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                                                                                                                             |
+
+### Different markup per width — `useAtLeast` / `useBreakpoint`
+
+Lay out with CSS first (`Sidebar`, `Switcher`, `Grid`, responsive `sx`). When a
+screen renders different markup per width — a `Table` at desktop, rows on a
+phone — read the breakpoint from the root instead of writing your own
+`matchMedia` hook:
+
+```tsx
+import { useAtLeast, useBreakpoint } from '@hirobius/design-system';
+
+const wide = useAtLeast('lg'); // true from the same min-width an `sx` `lg` key switches on
+const bp = useBreakpoint(); // 'base' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+```
+
+Both use the values `sx` compiles, so there is no pixel width in your code.
+They answer narrow (`false` / `'base'`) on the server, in jsdom and without
+`matchMedia`, and update live as the viewport crosses a breakpoint.
 
 ### Semantic feedback / status tokens
 

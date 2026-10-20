@@ -11,9 +11,11 @@ Hirobius is a clean, structured visual language that bridges digital precision a
 ## Colors
 
 <!-- auto:start:colors -->
-**One accent — one neutral system.**
+**One accent — one neutral system — one delight hue.**
 
-- **Accent** (`#433A3F`): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent** (`#4A4146`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent theme — Cobalt** (`#112DE8`): opt-in swap of the accent tokens only. Set `data-accent="cobalt"` on `<html>` (source `accents/cobalt/tokens.json`); graphite stays the default. Still one accent per screen.
+- **Delight — Lime** (`#B8E62E`): `semantic.accent.delight.*`, for delight moments only — a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. **Never** buttons, links or focus (lint: `hds/no-delight-on-actions`). Text on it is always ink (`semantic.accent.delight.onDelight`), never white.
 - **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.
 - **Feedback — Success** (`#047857`): positive confirmations, completed states. `semantic.color.feedback.success`.
@@ -26,34 +28,47 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 ## Typography
 
 <!-- auto:start:typography -->
-HDS ships two typefaces:
+HDS ships three typefaces — each with a distinct role:
 
-- **Text font**: Plus Jakarta Sans. Headings, prose, labels, captions, and UI copy; the type roles set size and weight.
+- **Display / Heading font**: Sora. Bound to the `display` and `title` styles.
+- **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · title) use `700` bold; body, UI, and caption use `400` regular / `500` medium.
+Weights declared: `400` mono, `450` regular, `500` medium, `700` bold, `800` display. Heading styles (display · title) use `800` display; body, UI, and caption use `450` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `700` bold.
 
 ### Type ramp
 
 | Role | Size (desktop max) | Weight | Use |
 | --- | --- | --- | --- |
-| `semantic.typography.display` | 48px | 700 | One per page, hero only |
-| `semantic.typography.title` | 24px | 700 | Section and card headings |
-| `semantic.typography.titleSm` | 18px | 700 | Small heading inside a card or section band |
-| `semantic.typography.body` | 18px | 400 | Prose |
+| `semantic.typography.display` | 48px | 800 | One per page, hero only |
+| `semantic.typography.title` | 24px | 800 | Section and card headings |
+| `semantic.typography.titleSm` | 18px | 800 | Small heading inside a card or section band |
+| `semantic.typography.body` | 18px | 450 | Prose |
 | `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 15px | 400 | Code and ids |
-| `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.h1` | 24px | 800 | deprecated: use semantic.typography.title |
+| `semantic.typography.h2` | 24px | 800 | deprecated: use semantic.typography.title |
+| `semantic.typography.h3` | 24px | 800 | deprecated: use semantic.typography.title |
 | `semantic.typography.eyebrow` | 14px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
 
+**Never for.** Each role has one job; reaching past it is how the ramp drifts.
+
+- `display`: never for a section heading, a card or anything twice on a page. It is the hero line only.
+- `title`: never for body copy or a label, and never skip a level to make a heading smaller; use `titleSm` for a heading inside a card or band.
+- `titleSm`: never for page-level headings, and never for emphasis inside prose (bold the words instead).
+- `body`: never for controls, table cells or metadata (those are `ui` and `caption`). A lead paragraph is `body` plus a quieter colour, not a bigger size.
+- `ui`: never for long prose, and never for a heading. It is the size of things you act on or scan.
+- `caption`: never for the only copy a user needs to act on, never uppercase, and never below the `caption` size to fit more in.
+- `mono`: never for ordinary emphasis or for whole paragraphs. Code, ids and metric readouts only.
+
 **Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
+
+**Meta lines.** A bullet-separated line holds at most two text items ("Acme Cloud · Remote"), because long translated strings wrap mid-line. More facts get one row each. Use `MetaLine` (`items` is a one- or two-item tuple, a third is a type error); `hds/max-two-meta-items` flags hand-rolled `A · B · C` chains.
 
 ## Spacing
 
@@ -128,7 +143,7 @@ Motion (lift on hover, parallax) is the interaction-affordance layer; static dep
 | `semantic.motion.spatial` | `400ms` | For elements traveling long distances across the viewport. |
 | `semantic.motion.exit` | `100ms` | For elements being removed from the DOM. |
 
-Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.
+Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for entrances and moments where a little bounce adds delight. `spatial` (400ms) is for travel, not decoration.
 
 ### Other semantic motion tokens
 
@@ -147,7 +162,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 | **Cards** (`Card`) | `12px` (`rounded-lg`, role radius + 4px) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (borderless by default; an opt-in 1px border via `bordered`/`tone`/`accent`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
 | **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
 | **Alerts** (`Alert`) | `8px` (via `hds.borderRadius.4`) | info · success · warning · error | Inline banner pattern with icon + message + optional action. Tone is carried by a tinted feedback fill (`bg-feedback-bg-*`, matching Badge), NOT a left-border stripe. Callout shares this fill language and differs only by role (no icon, no status role, optional italic). |
-| **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`. |
+| **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive` by default; a spring is fine where it adds delight. Dividers follow `semantic.color.border.subtle`. |
 | **Toggles** (`Toggle`) | `full` (pill track + circular thumb) | off · on · focus · disabled | Accent-filled track in the on state; neutral track otherwise. Track + thumb transitions share `semantic.motion.productive`. |
 | **Segmented Control** (`SegmentedControl`) | Outer `12px` · inner segments `8px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `Select`. |
 
@@ -213,17 +228,18 @@ Three more needs are props on an existing component, not components of their own
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
+- Don't use the lime delight accent (`semantic.accent.delight.*`) for buttons, links, focus or any action. It is for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Text on it is always ink (`semantic.accent.delight.onDelight`), never white.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
+- Don't paint status dots or coloured left accent bars on cards and tiles; status is implied by content. Don't put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge); keep label and value together.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
 - Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
 - Don't sticker badges onto the ends of prose lines. Status and progress should live in a predictable metadata slot, rail, header zone, table column, or progress surface; badges are reserved for compact state markers where their placement is intentional.
 - Don't add decorative illustration, ornamental icons, or trend-driven filler that lacks functional or structural purpose.
-- Don't make motion playful or bouncy by default; movement should feel controlled, precise, and intentional, with expressive motion used sparingly and only when it teaches or clarifies.
-- Don't add `whileTap` scale transforms for press feedback; use color, border, and state-contrast changes instead — transforms are reserved for spatial motion, not interaction acknowledgment.
+- Don't ship motion that ignores `prefers-reduced-motion`. Spring or expressive motion and a small press transform (such as a `whileTap` scale) are welcome where they add delight; under reduced motion, drop the transform and keep the color and state change.
 - Don't define a global disabled-state rule (opacity multiplier, saturation ramp, etc.); disabled presentation is governed per-component through its dedicated disabled tokens.
 
 ## Open Questions
@@ -233,6 +249,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (427 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (450 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

@@ -49,15 +49,32 @@
   --primitive-color-green-950: #022c22;
   --primitive-color-graphite-50: #f5f4f4;
   --primitive-color-graphite-100: #e9e7e8;
-  --primitive-color-graphite-200: #d4d0d2;
+  --primitive-color-graphite-200: #cbc6c9;
   --primitive-color-graphite-300: #b2abae;
   --primitive-color-graphite-400: #8b8488;
   --primitive-color-graphite-500: #655e62;
   --primitive-color-graphite-600: #544d51;
-  --primitive-color-graphite-700: #433a3f;
+  --primitive-color-graphite-700: #4a4146;
   --primitive-color-graphite-800: #352e32;
   --primitive-color-graphite-900: #2a2428;
   --primitive-color-graphite-950: #19161a;
+  --primitive-color-cobalt-50: #eef0fe;
+  --primitive-color-cobalt-100: #dce1fd;
+  --primitive-color-cobalt-200: #b4bbf4;
+  --primitive-color-cobalt-300: #8a97f8;
+  --primitive-color-cobalt-400: #5b71fa;
+  --primitive-color-cobalt-500: #2a5bf8;
+  --primitive-color-cobalt-600: #112de8;
+  --primitive-color-cobalt-700: #1f17c4;
+  --primitive-color-cobalt-800: #191c7d;
+  --primitive-color-cobalt-900: #0b0658;
+  --primitive-color-lime-50: #f2fbd6;
+  --primitive-color-lime-100: #e3f6a8;
+  --primitive-color-lime-200: #cdee6a;
+  --primitive-color-lime-300: #b8e62e;
+  --primitive-color-lime-400: #93ba1c;
+  --primitive-color-lime-600: #6e8f0b;
+  --primitive-color-lime-800: #445807;
   --primitive-color-mauve-50: #fff0f6;
   --primitive-color-mauve-100: #f4e2ea;
   --primitive-color-mauve-200: #e1cad4;
@@ -127,7 +144,7 @@
   --primitive-radius-12: 12px;
   --primitive-radius-full: 9999px;
   --primitive-typography-family-primary: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --primitive-typography-family-display: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --primitive-typography-family-display: Sora, "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --primitive-typography-family-mono: "IBM Plex Mono", "Courier New", monospace;
   --primitive-typography-size-xs: 12px;
   --primitive-typography-size-sm: 14px;
@@ -140,9 +157,11 @@
   --primitive-typography-size-5xl: 48px;
   --primitive-typography-size-6xl: 60px;
   --primitive-typography-size-code: 15px;
-  --primitive-typography-weight-regular: 400;
+  --primitive-typography-weight-regular: 450;
   --primitive-typography-weight-medium: 500;
   --primitive-typography-weight-bold: 700;
+  --primitive-typography-weight-display: 800;
+  --primitive-typography-weight-mono: 400;
   --primitive-typography-lineHeight-compact: 0.95;
   --primitive-typography-lineHeight-none: 1;
   --primitive-typography-lineHeight-tight: 1.25;
@@ -220,7 +239,7 @@
   --semantic-color-surface-accent: var(--primitive-color-graphite-700);
   --semantic-color-surface-accentSubtle: var(--primitive-color-graphite-50);
   --semantic-color-surface-hover: var(--primitive-color-neutral-100);
-  --semantic-color-surface-pressed: var(--primitive-color-neutral-50);
+  --semantic-color-surface-pressed: var(--primitive-color-neutral-200);
   --semantic-color-surface-selected: var(--primitive-color-neutral-200);
   --semantic-color-surface-muted: var(--primitive-color-neutral-100);
   --semantic-color-surface-sunken: var(--primitive-color-neutral-200);
@@ -292,19 +311,19 @@
   /* semantic.typography.display */
   --semantic-typography-display-font-family: var(--primitive-typography-family-display);
   --semantic-typography-display-font-size: var(--primitive-typography-size-5xl);
-  --semantic-typography-display-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-display-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-display-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-display-line-height: var(--primitive-typography-lineHeight-display);
   /* semantic.typography.title */
   --semantic-typography-title-font-family: var(--primitive-typography-family-display);
   --semantic-typography-title-font-size: var(--primitive-typography-size-2xl);
-  --semantic-typography-title-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-title-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-title-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-title-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.titleSm */
   --semantic-typography-titleSm-font-family: var(--primitive-typography-family-display);
   --semantic-typography-titleSm-font-size: var(--primitive-typography-size-lg);
-  --semantic-typography-titleSm-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-titleSm-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-titleSm-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-titleSm-line-height: var(--primitive-typography-lineHeight-snug);
   /* semantic.typography.body */
@@ -330,26 +349,26 @@
   /* semantic.typography.mono */
   --semantic-typography-mono-font-family: var(--primitive-typography-family-mono);
   --semantic-typography-mono-font-size: var(--primitive-typography-size-code);
-  --semantic-typography-mono-font-weight: var(--primitive-typography-weight-regular);
+  --semantic-typography-mono-font-weight: var(--primitive-typography-weight-mono);
   --semantic-typography-mono-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-mono-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-mono-max-width: 60ch;
   /* semantic.typography.h1 */
   --semantic-typography-h1-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h1-font-size: var(--primitive-typography-size-2xl);
-  --semantic-typography-h1-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-h1-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h1-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h1-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.h2 */
   --semantic-typography-h2-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h2-font-size: var(--primitive-typography-size-2xl);
-  --semantic-typography-h2-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-h2-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h2-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h2-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.h3 */
   --semantic-typography-h3-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h3-font-size: var(--primitive-typography-size-2xl);
-  --semantic-typography-h3-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-h3-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h3-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h3-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.eyebrow */
@@ -370,6 +389,10 @@
   --semantic-accent-content: var(--primitive-color-graphite-700);
   --semantic-accent-contentHover: var(--primitive-color-graphite-800);
   --semantic-accent-subtle: var(--primitive-color-graphite-50);
+  --semantic-accent-delight-base: var(--primitive-color-lime-300);
+  --semantic-accent-delight-deep: var(--primitive-color-lime-600);
+  --semantic-accent-delight-pale: var(--primitive-color-lime-50);
+  --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
   --semantic-radius-action: var(--primitive-radius-8);
   --semantic-radius-control: var(--primitive-radius-4);
   --semantic-borderWidth-default: var(--primitive-borderWidth-xs);
@@ -453,6 +476,7 @@
   --component-badge-paddingX: var(--primitive-space-px6);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
+  --component-button-bgPressed: var(--semantic-accent-pressed);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-radius: var(--semantic-radius-action);
   --component-button-paddingX: var(--primitive-space-4);
@@ -479,10 +503,9 @@
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
   --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
   --component-button-secondary-bg-hover: var(--semantic-color-surface-accentSubtle);
-  --component-button-secondary-bg-pressed: var(--semantic-color-surface-overlay);
+  --component-button-secondary-bg-pressed: var(--semantic-color-surface-pressed);
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
-  --component-button-secondary-border-pressed: var(--semantic-color-border-accent);
   --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
   --component-input-bg: var(--semantic-color-surface-page);
@@ -570,13 +593,17 @@
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-950);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-white);
   --semantic-accent-rest: var(--primitive-color-graphite-200);
-  --semantic-accent-hover: var(--primitive-color-graphite-300);
-  --semantic-accent-pressed: var(--primitive-color-graphite-400);
+  --semantic-accent-hover: var(--primitive-color-graphite-100);
+  --semantic-accent-pressed: var(--primitive-color-graphite-50);
   --semantic-accent-inactive: var(--primitive-color-neutral-600);
   --semantic-accent-disabled: var(--primitive-color-neutral-700);
   --semantic-accent-content: var(--primitive-color-graphite-300);
   --semantic-accent-contentHover: var(--primitive-color-graphite-200);
   --semantic-accent-subtle: var(--primitive-color-graphite-800);
+  --semantic-accent-delight-base: var(--primitive-color-lime-300);
+  --semantic-accent-delight-deep: var(--primitive-color-lime-600);
+  --semantic-accent-delight-pale: var(--primitive-color-lime-50);
+  --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
@@ -610,15 +637,15 @@
   --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
+  --component-button-bgPressed: var(--semantic-accent-pressed);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
   --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
   --component-button-secondary-bg-hover: var(--semantic-color-surface-accentSubtle);
-  --component-button-secondary-bg-pressed: var(--semantic-color-surface-overlay);
+  --component-button-secondary-bg-pressed: var(--semantic-color-surface-pressed);
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
-  --component-button-secondary-border-pressed: var(--semantic-color-border-accent);
   --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
   --component-input-bg: var(--semantic-color-surface-page);

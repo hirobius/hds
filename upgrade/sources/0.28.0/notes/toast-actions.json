@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Toast takes up to two actions ({ label, onSelect, altText? }); a hand-built toast with Open or Undo buttons can move onto useToast."
+}

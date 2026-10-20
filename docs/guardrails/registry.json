@@ -117,9 +117,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ]
+      "firingChannels": ["pre-commit"]
     },
     {
       "id": "check-contrast",
@@ -130,10 +128,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit",
-        "ralph-gate"
-      ]
+      "firingChannels": ["pre-commit", "ralph-gate"]
     },
     {
       "id": "check-css-integrity",
@@ -278,10 +273,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pnpm-meta",
-      "firingChannels": [
-        "pnpm-meta",
-        "ralph-gate"
-      ]
+      "firingChannels": ["pnpm-meta", "ralph-gate"]
     },
     {
       "id": "check-hardcoded-breakpoints",
@@ -304,10 +296,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "manual",
-      "firingChannels": [
-        "manual",
-        "ralph-gate"
-      ],
+      "firingChannels": ["manual", "ralph-gate"],
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
@@ -456,9 +445,7 @@
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ],
+      "firingChannels": ["pre-commit"],
       "scope": "full-tree",
       "glob": "src/**/*.{ts,tsx}"
     },
@@ -471,9 +458,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ],
+      "firingChannels": ["pre-commit"],
       "supportsJson": true
     },
     {
@@ -485,9 +470,19 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ],
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
+      "id": "check-no-status-clutter",
+      "description": "hds#759 -- no status dots and no coloured left accent bars (Adrian, 2026-10-16): status is implied by content. Fails a `dot` prop on a <Badge> usage, a left-border bar (border-l-2..8 or border-l-[2..8px]) in a class list that also has a tone colour, the --hds-accent-bar variable and the Board column dot. Scans src/, docs-site/, preview/, starter-kit/, templates/, tenants/; skips comments, tests and fixtures. A line is exempt with // status-clutter-ok: <reason>. Does not see the guideline 'no heading over a card of supporting meta'; that one is in DESIGN.md. Error severity, runs in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-no-status-clutter.mjs",
+      "fixturePath": "fixtures/check-no-status-clutter",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "firingChannels": ["pnpm-meta"],
       "supportsJson": true
     },
     {
@@ -499,9 +494,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ],
+      "firingChannels": ["pre-commit"],
       "supportsJson": true
     },
     {
@@ -513,9 +506,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ],
+      "firingChannels": ["pre-commit"],
       "supportsJson": true
     },
     {
@@ -527,9 +518,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ],
+      "firingChannels": ["pre-commit"],
       "supportsJson": true
     },
     {
@@ -540,9 +529,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ]
+      "firingChannels": ["pre-commit"]
     },
     {
       "id": "check-status-claims",
@@ -583,9 +570,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-push",
-      "firingChannels": [
-        "pre-push"
-      ]
+      "firingChannels": ["pre-push"]
     },
     {
       "id": "check-ralph-kit-drift",
@@ -596,9 +581,7 @@
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ],
+      "firingChannels": ["pre-commit"],
       "glob": "ralph/**",
       "strictArgv": "--staged"
     },
@@ -611,9 +594,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-push",
-      "firingChannels": [
-        "pre-push"
-      ]
+      "firingChannels": ["pre-push"]
     },
     {
       "id": "check-layout-contract",
@@ -644,6 +625,16 @@
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "ci-pr"
+    },
+    {
+      "id": "check-docs-layout-shift",
+      "description": "Loads every built docs-site route (discovered from docs-site/out, not a hand list) and fails when cumulative layout shift on load exceeds 0.01 or when the header, sidebar or nav box differs by any px from the first route of its layout (`/` alone; `/docs/**` against the first docs route) (hds#761). Needs `pnpm docs:publish` first. Fixtures: fixtures/check-docs-layout-shift/{passing,violating}.example.d, each a tiny built site passed with --dir (the violating one has a late-loading banner); tests/check-docs-layout-shift.test.ts proves the gate bites. Known failures are baselined in scripts/docs-layout-shift-allowlist.json (hds#770). CI wiring is a human-only follow-up (workflow edit).",
+      "severity": "error",
+      "gateScript": "scripts/check-docs-layout-shift.mjs",
+      "fixturePath": "fixtures/check-docs-layout-shift",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand"
     },
     {
       "id": "check-llms-txt",
@@ -810,9 +801,7 @@
       "description": "Merged gate (13z-6): default mode enforces token description quality in hirobius.tokens.json (missing/blank/verbose descriptions). With --quality flag: also scans generated-token-descriptions.ts for empty, generic-fallback, or one-sided-theme-language descriptions. Merged from: check-token-descriptions + check-token-description-quality.",
       "severity": "warn",
       "gateScript": "scripts/check-token-descriptions.mjs",
-      "defaultArgs": [
-        "--no-missing"
-      ],
+      "defaultArgs": ["--no-missing"],
       "fixturePath": "fixtures/check-token-descriptions",
       "owner": "Adrian",
       "source": "human",
@@ -844,11 +833,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "manual",
-      "glob": [
-        "hirobius.tokens.json",
-        "src/styles/**",
-        "src/app/data/**"
-      ],
+      "glob": ["hirobius.tokens.json", "src/styles/**", "src/app/data/**"],
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -1035,9 +1020,7 @@
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
-      "firingChannels": [
-        "pre-commit"
-      ]
+      "firingChannels": ["pre-commit"]
     },
     {
       "id": "build-stats-json",

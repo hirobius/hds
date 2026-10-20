@@ -16,7 +16,8 @@
  *   TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`)
  *   for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar
  *   chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the
- *   edge that has hidden tabs (`data-overflow`). The trigger's
+ *   edge that has hidden tabs (`data-overflow`), and the selected tab is
+ *   scrolled into view on mount and on change (Radix does not; hds#823). The trigger's
  *   focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn
  *   outside the list box (an outer ring was cut on the first/last tab).
  *
@@ -26,7 +27,9 @@
 
 import * as React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+import { scrollEdgeFadeStyle, useKeepSelectedInView, useScrollEdgeFade } from './scroll-edge-fade';
 
 /**
  * The tab set itself. Tagged here rather than in the file block because
@@ -49,40 +52,19 @@ import { cn } from '../../lib/utils';
  */
 export const Tabs = TabsPrimitive.Root;
 
-/** Which edges of the strip have tabs scrolled out of view. */
-type TabsOverflow = 'start' | 'end' | 'both' | undefined;
-
-function measureOverflow(el: HTMLElement): TabsOverflow {
-  const hiddenStart = el.scrollLeft > 1;
-  const hiddenEnd = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
-  if (hiddenStart && hiddenEnd) return 'both';
-  if (hiddenStart) return 'start';
-  if (hiddenEnd) return 'end';
-  return undefined;
-}
-
-const FADE = 'var(--semantic-space-scale-lg)';
-
-/** Mask that fades the edge(s) with hidden tabs, one fade width (scale.lg) deep. Inline, so it costs no CSS. */
-function fadeStyle(overflow: TabsOverflow): React.CSSProperties | undefined {
-  if (!overflow) return undefined;
-  const start = overflow === 'end' ? '0px' : FADE;
-  const end = overflow === 'start' ? '0px' : FADE;
-  const mask = `linear-gradient(90deg,transparent,currentColor ${start},currentColor calc(100% - ${end}),transparent)`;
-  return { maskImage: mask, WebkitMaskImage: mask };
-}
-
 /**
  * The tab strip. When tabs scroll out of view it fades the hidden edge
  * (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look
  * absent. The fade is a mask, so it needs no colour and holds in light and dark.
+ * The selected tab is kept in view: on mount, and on change (smooth unless the
+ * user prefers reduced motion), so a selected tab is never left past the edge.
  */
 export const TabsList = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentProps<typeof TabsPrimitive.List>
 >(function TabsList({ className, onScroll, style, ...props }, forwardedRef) {
-  const innerRef = React.useRef<HTMLDivElement | null>(null);
-  const [overflow, setOverflow] = React.useState<TabsOverflow>(undefined);
+  const { ref: innerRef, overflow, update } = useScrollEdgeFade<HTMLDivElement>();
+  useKeepSelectedInView(innerRef, '[role="tab"][data-state="active"]');
 
   const setRefs = React.useCallback(
     (node: HTMLDivElement | null) => {
@@ -90,27 +72,14 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
       if (typeof forwardedRef === 'function') forwardedRef(node);
       else if (forwardedRef) forwardedRef.current = node;
     },
-    [forwardedRef],
+    [forwardedRef, innerRef],
   );
-
-  const update = React.useCallback(() => {
-    if (innerRef.current) setOverflow(measureOverflow(innerRef.current));
-  }, []);
-
-  React.useEffect(() => {
-    update();
-    const el = innerRef.current;
-    if (!el || typeof ResizeObserver === 'undefined') return;
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [update]);
 
   return (
     <TabsPrimitive.List
       ref={setRefs}
       data-overflow={overflow}
-      style={{ ...fadeStyle(overflow), ...style }}
+      style={{ ...scrollEdgeFadeStyle(overflow), ...style }}
       onScroll={(event) => {
         update();
         onScroll?.(event);
@@ -146,14 +115,24 @@ export function TabsTrigger({
   );
 }
 
-export function TabsContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+// `panel` is the tinted surface pulled up under the strip (in-page tabs); `bare` sits on the page,
+// for tabs that are an app's top-level nav or a page's sections (hds#819).
+const tabsContentVariants = /* @__PURE__ */ cva('', {
+  variants: {
+    variant: {
+      panel: 'bg-accent/5 rounded-b-md p-6 -mt-6',
+      bare: '',
+    },
+  },
+  defaultVariants: { variant: 'panel' },
+});
+
+/** @public */
+export type TabsContentProps = React.ComponentProps<typeof TabsPrimitive.Content> &
+  VariantProps<typeof tabsContentVariants>;
+
+export function TabsContent({ className, variant, ...props }: TabsContentProps) {
   return (
-    <TabsPrimitive.Content
-      className={cn('bg-accent/5 rounded-b-md p-6 -mt-6', className)}
-      {...props}
-    />
+    <TabsPrimitive.Content className={cn(tabsContentVariants({ variant }), className)} {...props} />
   );
 }

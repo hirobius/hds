@@ -11,7 +11,6 @@
     "button.secondary.bg.hover": "LITERAL-MATCH",
     "button.secondary.bg.rest": "LITERAL-MATCH",
     "button.secondary.border.hover": "LITERAL-MATCH",
-    "button.secondary.border.pressed": "LITERAL-MATCH",
     "button.secondary.border.rest": "LITERAL-MATCH",
     "button.secondary.text": "LITERAL-MATCH",
     "button.size.lg.fontSize": "LITERAL-MATCH",
@@ -39,22 +38,16 @@
     "input.paddingX": "LITERAL-MATCH",
     "input.radius": "LITERAL-MATCH",
     "input.text": "LITERAL-MATCH",
-    "tag.background": "LITERAL-MATCH",
-    "tag.border": "LITERAL-MATCH",
     "tag.fontSize": "LITERAL-MATCH",
     "tag.fontWeight": "LITERAL-MATCH",
-    "tag.lineHeight": "LITERAL-MATCH",
-    "tag.text": "LITERAL-MATCH"
+    "tag.lineHeight": "LITERAL-MATCH"
   },
   "css": {
     "card.bg": "LITERAL-MATCH",
     "card.border": "LITERAL-MATCH",
     "card.gap": "LITERAL-MATCH",
     "card.padding": "LITERAL-MATCH",
-    "card.radius": "LITERAL-MATCH",
-    "tag.background": "LITERAL-MATCH",
-    "tag.border": "LITERAL-MATCH",
-    "tag.text": "LITERAL-MATCH"
+    "card.radius": "LITERAL-MATCH"
   },
   "findings": ["borrowed:src/app/components/disclosure.tsx->nav.paddingY"]
 }

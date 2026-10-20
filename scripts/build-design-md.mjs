@@ -74,11 +74,23 @@ export function buildColors(raw) {
   const amber = resolveRef(fb.warning?.$value, raw);
   const info = resolveRef(fb.info?.$value, raw);
 
+  const prim = raw.primitive?.color ?? {};
+  const cobalt = String(resolveRef(prim.cobalt?.['600']?.$value, raw)).toUpperCase();
+  const delight = String(
+    resolveRef(raw.semantic?.accent?.delight?.base?.$value, raw),
+  ).toUpperCase();
+
   const lines = [];
-  lines.push('**One accent — one neutral system.**');
+  lines.push('**One accent — one neutral system — one delight hue.**');
   lines.push('');
   lines.push(
-    `- **Accent** (\`${accent}\`): CTAs, active states, selected focus rings, and the single brand accent. \`semantic.accent.rest\` — a per-tenant knob, not a fixed hue (#208).`,
+    `- **Accent** (\`${accent}\`, graphite): CTAs, active states, selected focus rings, and the single brand accent. \`semantic.accent.rest\` — a per-tenant knob, not a fixed hue (#208).`,
+  );
+  lines.push(
+    `- **Accent theme — Cobalt** (\`${cobalt}\`): opt-in swap of the accent tokens only. Set \`data-accent="cobalt"\` on \`<html>\` (source \`accents/cobalt/tokens.json\`); graphite stays the default. Still one accent per screen.`,
+  );
+  lines.push(
+    `- **Delight — Lime** (\`${delight}\`): \`semantic.accent.delight.*\`, for delight moments only — a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. **Never** buttons, links or focus (lint: \`hds/no-delight-on-actions\`). Text on it is always ink (\`semantic.accent.delight.onDelight\`), never white.`,
   );
   lines.push(
     '- **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.',
@@ -187,12 +199,14 @@ export function buildTypography(raw) {
     ws.length === 1
       ? `\`${ws[0]}\` ${nameOfWeight(ws[0])}`
       : ws.map((w) => `\`${w}\` ${nameOfWeight(w)}`).join(' / ');
-  const usedWeights = new Set([...headingW, ...bodyW]);
+  const monoW = uniq([weightOf('mono')]);
+  const usedWeights = new Set([...headingW, ...bodyW, ...monoW]);
   const unused = Object.keys(weightMap).filter((k) => !usedWeights.has(String(weightMap[k])));
 
   lines.push(
     `Weights declared: ${declared}. Heading styles (display · title) use ` +
-      `${phrase(headingW)}; body, UI, and caption use ${phrase(bodyW)}.` +
+      `${phrase(headingW)}; body, UI, and caption use ${phrase(bodyW)}` +
+      (monoW.length ? `; mono uses ${phrase(monoW)}.` : '.') +
       (unused.length
         ? ` Declared but unused by any semantic role: ${unused
             .map((k) => `\`${weightMap[k]}\` ${k}`)
@@ -344,7 +358,7 @@ export function buildMotion(raw) {
     '',
     intentLines.join('\n'),
     '',
-    'Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.',
+    'Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for entrances and moments where a little bounce adds delight. `spatial` (400ms) is for travel, not decoration.',
   ];
   if (otherLines.length > 1) {
     sections.push('', '### Other semantic motion tokens', '', otherLines.join('\n'));
@@ -413,7 +427,7 @@ export function buildComponents(raw, manifest) {
       radius: `\`${actionRad}\` (\`hds.borderRadius.action\`)`,
       states: 'collapsed · expanded · hover · focus',
       notes:
-        'Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`.',
+        'Accordion primitive. Expansion uses `semantic.motion.productive` by default; a spring is fine where it adds delight. Dividers follow `semantic.color.border.subtle`.',
     },
     {
       name: 'Toggles',

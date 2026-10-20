@@ -63,4 +63,8 @@ export const CORE_COMPONENTS = [
   'Popover',
   'Tooltip',
   'HdsRouterProvider',
+  // hds#758
+  'MetaLine',
+  // hds#817
+  'NavList',
 ];

@@ -167,8 +167,8 @@
           "$description": "Graphite accent — very light warm tint."
         },
         "200": {
-          "$value": "#d4d0d2",
-          "$description": "Graphite accent — light warm-grey; dark-mode rest accent fill."
+          "$value": "#cbc6c9",
+          "$description": "Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill."
         },
         "300": {
           "$value": "#b2abae",
@@ -187,8 +187,8 @@
           "$description": "Graphite accent — mid-dark step."
         },
         "700": {
-          "$value": "#433a3f",
-          "$description": "Graphite accent rest — the warm charcoal brand accent; white text as a fill (AA)."
+          "$value": "#4a4146",
+          "$description": "Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA)."
         },
         "800": {
           "$value": "#352e32",
@@ -203,6 +203,78 @@
           "$description": "Graphite accent — near-black warm substrate."
         },
         "$description": "Graphite, the warm-charcoal brand accent scale. Feedback colors keep their own scales."
+      },
+      "cobalt": {
+        "50": {
+          "$value": "#eef0fe",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — faintest step; selected and subtle accent background."
+        },
+        "100": {
+          "$value": "#dce1fd",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 100."
+        },
+        "200": {
+          "$value": "#b4bbf4",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 200."
+        },
+        "300": {
+          "$value": "#8a97f8",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.86:1 on black)."
+        },
+        "400": {
+          "$value": "#5b71fa",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 400."
+        },
+        "500": {
+          "$value": "#2a5bf8",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 500."
+        },
+        "600": {
+          "$value": "#112de8",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode accent fill and accent text (white text 8.19:1)."
+        },
+        "700": {
+          "$value": "#1f17c4",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode hover and pressed accent fill."
+        },
+        "800": {
+          "$value": "#191c7d",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 800."
+        },
+        "900": {
+          "$value": "#0b0658",
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — darkest step; dark-mode subtle accent background."
+        }
+      },
+      "lime": {
+        "50": {
+          "$value": "#f2fbd6",
+          "$description": "Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus."
+        },
+        "100": {
+          "$value": "#e3f6a8",
+          "$description": "Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus."
+        },
+        "200": {
+          "$value": "#cdee6a",
+          "$description": "Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus."
+        },
+        "300": {
+          "$value": "#b8e62e",
+          "$description": "Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus."
+        },
+        "400": {
+          "$value": "#93ba1c",
+          "$description": "Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus."
+        },
+        "600": {
+          "$value": "#6e8f0b",
+          "$description": "Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus."
+        },
+        "800": {
+          "$value": "#445807",
+          "$description": "Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus."
+        }
       },
       "mauve": {
         "50": {
@@ -581,6 +653,7 @@
         },
         "display": {
           "$value": [
+            "Sora",
             "Plus Jakarta Sans",
             "system-ui",
             "-apple-system",
@@ -588,7 +661,7 @@
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites."
+          "$description": "Display and title face: Sora 800 (OFL, ADR-063); falls back to Plus Jakarta Sans."
         },
         "mono": {
           "$value": ["IBM Plex Mono", "Courier New", "monospace"],
@@ -678,13 +751,22 @@
       "weight": {
         "$type": "fontWeight",
         "regular": {
-          "$value": 400
+          "$value": 450,
+          "$description": "Body weight. Plus Jakarta Sans ships as a variable font, so 450 renders as itself."
         },
         "medium": {
           "$value": 500
         },
         "bold": {
           "$value": 700
+        },
+        "display": {
+          "$value": 800,
+          "$description": "Display, title and title-sm weight, set in Sora (ADR-063)."
+        },
+        "mono": {
+          "$value": 400,
+          "$description": "Mono weight. IBM Plex Mono ships 400 only; Figma draws weight.regular (450) as Plex Mono Medium."
         }
       },
       "lineHeight": {
@@ -1229,12 +1311,12 @@
           }
         },
         "pressed": {
-          "$value": "{primitive.color.neutral.50}",
+          "$value": "{primitive.color.neutral.200}",
           "$description": "Background for an actively pressed interactive surface.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.50}",
+                "Light": "{primitive.color.neutral.200}",
                 "Dark": "{primitive.color.neutral.black}"
               }
             }
@@ -1302,7 +1384,7 @@
         },
         "tertiary": {
           "$value": "{primitive.color.neutral.500}",
-          "$description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+          "$description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1421,7 +1503,7 @@
         },
         "subdued": {
           "$value": "{primitive.color.neutral.200}",
-          "$description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
+          "$description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
           "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
           "$extensions": {
             "com.figma.variables": {
@@ -1828,12 +1910,12 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "5-role type ramp plus title-sm and mono (hds#483): display, title, titleSm, body, ui, caption, mono. h1, h2, h3 and eyebrow are deprecated aliases.",
+      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; h1-h3 and eyebrow are deprecated aliases.",
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.5xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.display}"
         },
@@ -1843,7 +1925,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1853,7 +1935,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.lg}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.snug}"
         },
@@ -1901,7 +1983,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.mono}",
           "fontSize": "{primitive.typography.size.code}",
-          "fontWeight": "{primitive.typography.weight.regular}",
+          "fontWeight": "{primitive.typography.weight.mono}",
           "letterSpacing": "{primitive.typography.letterSpacing.normal}",
           "lineHeight": "{primitive.typography.lineHeight.normal}",
           "maxWidth": {
@@ -1909,13 +1991,13 @@
             "unit": "ch"
           }
         },
-        "$description": "Code and ids. 15px / 1.5 / 400. The mono companion, role 6 of 6."
+        "$description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6."
       },
       "h1": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1926,7 +2008,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1937,7 +2019,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.2xl}",
-          "fontWeight": "{primitive.typography.weight.bold}",
+          "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
@@ -1997,24 +2079,24 @@
       },
       "hover": {
         "$value": "{primitive.color.graphite.800}",
-        "$description": "Accent fill on pointer hover.",
+        "$description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
               "Light": "{primitive.color.graphite.800}",
-              "Dark": "{primitive.color.graphite.300}"
+              "Dark": "{primitive.color.graphite.100}"
             }
           }
         }
       },
       "pressed": {
         "$value": "{primitive.color.graphite.900}",
-        "$description": "Accent fill during active press.",
+        "$description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
               "Light": "{primitive.color.graphite.900}",
-              "Dark": "{primitive.color.graphite.400}"
+              "Dark": "{primitive.color.graphite.50}"
             }
           }
         }
@@ -2075,6 +2157,56 @@
             "modes": {
               "Light": "{primitive.color.graphite.50}",
               "Dark": "{primitive.color.graphite.800}"
+            }
+          }
+        }
+      },
+      "delight": {
+        "base": {
+          "$value": "{primitive.color.lime.300}",
+          "$description": "Delight accent fill (lime) for delight moments only: a streak or win badge, a \"new\" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.lime.300}",
+                "Dark": "{primitive.color.lime.300}"
+              }
+            }
+          }
+        },
+        "deep": {
+          "$value": "{primitive.color.lime.600}",
+          "$description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.lime.600}",
+                "Dark": "{primitive.color.lime.600}"
+              }
+            }
+          }
+        },
+        "pale": {
+          "$value": "{primitive.color.lime.50}",
+          "$description": "Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.lime.50}",
+                "Dark": "{primitive.color.lime.50}"
+              }
+            }
+          }
+        },
+        "onDelight": {
+          "$value": "{primitive.color.neutral.900}",
+          "$description": "Ink text and icons on any delight fill, in both modes (12.95:1 on delight.base). Never white.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.900}",
+                "Dark": "{primitive.color.neutral.900}"
+              }
             }
           }
         }
@@ -2500,6 +2632,11 @@
         "$value": "{semantic.accent.hover}",
         "$description": "Primary button hover fill."
       },
+      "bgPressed": {
+        "$type": "color",
+        "$value": "{semantic.accent.pressed}",
+        "$description": "Primary button pressed fill (hds#748)."
+      },
       "text": {
         "$type": "color",
         "$value": "{semantic.color.content.onAccent}",
@@ -2644,7 +2781,7 @@
           },
           "pressed": {
             "$type": "color",
-            "$value": "{semantic.color.surface.overlay}",
+            "$value": "{semantic.color.surface.pressed}",
             "$description": "Secondary button pressed fill."
           }
         },
@@ -2658,11 +2795,6 @@
             "$type": "color",
             "$value": "{semantic.color.border.accent}",
             "$description": "Secondary button hover border."
-          },
-          "pressed": {
-            "$type": "color",
-            "$value": "{semantic.color.border.accent}",
-            "$description": "Secondary button pressed border (the hover border still applies while pressed)."
           },
           "disabled": {
             "$type": "color",

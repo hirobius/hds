@@ -169,7 +169,7 @@ describe('diffSnapshots: CSS facts (hds#449)', () => {
     family: 'Plus Jakarta Sans',
     weight: '400',
     style: 'normal',
-    src: ['plus-jakarta-sans-400.woff2'],
+    src: ['plus-jakarta-sans-variable.woff2'],
   };
   const prev = snapshot({
     css: css(

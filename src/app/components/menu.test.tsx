@@ -130,4 +130,42 @@ describe('Menu compound assembly (hds#365)', () => {
     const trigger = screen.getByRole('button', { name: 'Actions', hidden: true });
     expect(trigger.getAttribute('data-state')).toBe('open');
   });
+
+  it('caps content height to the available space and scrolls (hds#821)', () => {
+    render(<Example />);
+    const menu = screen.getByRole('menu');
+    expect(menu.className).toContain('max-h-[var(--radix-dropdown-menu-content-available-height)]');
+    expect(menu.className).toContain('overflow-y-auto');
+    expect(menu.className).not.toContain('overflow-hidden');
+  });
+
+  it('tone="danger" colours the item with the danger content colour (hds#822)', () => {
+    render(
+      <Menu defaultOpen>
+        <Menu.Trigger>Actions</Menu.Trigger>
+        <Menu.Content>
+          <Menu.Item>Rename</Menu.Item>
+          <Menu.Item tone="danger">Remove</Menu.Item>
+        </Menu.Content>
+      </Menu>,
+    );
+    const remove = screen.getByRole('menuitem', { name: 'Remove' });
+    expect(remove.className).toContain('text-feedback-danger');
+    expect(remove.className).toContain('data-[highlighted]:text-feedback-danger');
+    expect(remove.className).not.toContain(
+      'data-[highlighted]:text-[var(--semantic-color-content-primary)]',
+    );
+    expect(remove.className).toContain('data-[highlighted]:bg-feedback-bg-danger');
+    expect(remove.getAttribute('data-tone')).toBe('danger');
+  });
+
+  it('keeps the neutral item unchanged by default', () => {
+    render(<Example />);
+    const profile = screen.getByRole('menuitem', { name: 'Profile' });
+    expect(profile.className).not.toContain('feedback-danger');
+    expect(profile.className).toContain(
+      'data-[highlighted]:text-[var(--semantic-color-content-primary)]',
+    );
+    expect(profile.getAttribute('data-tone')).toBe('neutral');
+  });
 });

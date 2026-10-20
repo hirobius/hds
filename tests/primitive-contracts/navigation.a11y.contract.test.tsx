@@ -1,13 +1,13 @@
 /**
  * Contract test: accessibility rules of the navigation primitives (hds#520):
- * InlineLink, Breadcrumb, Pagination and Tabs.
+ * InlineLink, Breadcrumb, NavList, Pagination and Tabs.
  *
  * Each `it` title carries the `a11y:<id>` the component's `@a11y component` tags
  * point at, so check-a11y-contracts can prove every rule has a test. Keyboard
  * cases drive a real keyboard (user-event). Class assertions are used only where
  * jsdom has no layout (focus ring, target size).
  *
- * @primitive InlineLink Breadcrumb Pagination Tabs
+ * @primitive InlineLink Breadcrumb NavList Pagination Tabs
  */
 import { useState } from 'react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
@@ -17,6 +17,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { InlineLink } from '@/app/components/inline-link';
 import { Breadcrumb } from '@/app/components/breadcrumb';
+import { NavList } from '@/app/components/nav-list';
 import { Pagination } from '@/app/components/pagination';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/app/components/tabs';
 
@@ -127,6 +128,52 @@ describe('Breadcrumb accessibility contract', () => {
     expect(document.activeElement?.textContent).toBe('Docs');
     await user.tab();
     expect(document.activeElement).toBe(document.body);
+  });
+});
+
+// ── NavList ───────────────────────────────────────────────────────────────────
+
+describe('NavList accessibility contract', () => {
+  it('a11y:nav-list.list-of-links - the rows are links in an unordered list', () => {
+    render(
+      <NavList aria-label="Jobs">
+        <NavList.Item href="/a">A</NavList.Item>
+        <NavList.Item href="/b">B</NavList.Item>
+      </NavList>,
+    );
+    const list = screen.getByRole('list', { name: 'Jobs' });
+    expect(list.tagName).toBe('UL');
+    expect(within(list).getAllByRole('listitem')).toHaveLength(2);
+    expect(within(list).getAllByRole('link')).toHaveLength(2);
+  });
+
+  it('a11y:nav-list.current-page - only the current item is aria-current=page', () => {
+    render(
+      <NavList>
+        <NavList.Item href="/a">A</NavList.Item>
+        <NavList.Item href="/b" current>
+          B
+        </NavList.Item>
+      </NavList>,
+    );
+    expect(screen.getByRole('link', { name: 'B' }).getAttribute('aria-current')).toBe('page');
+    expect(screen.getByRole('link', { name: 'A' }).hasAttribute('aria-current')).toBe(false);
+  });
+
+  it('a11y:nav-list.keyboard-focus - Tab visits each link in order and each draws the focus ring', async () => {
+    const user = userEvent.setup();
+    render(
+      <NavList>
+        <NavList.Item href="/a">A</NavList.Item>
+        <NavList.Item href="/b">B</NavList.Item>
+      </NavList>,
+    );
+    await user.tab();
+    expect(document.activeElement?.textContent).toBe('A');
+    expect(document.activeElement?.className).toContain('hds-focus');
+    await user.tab();
+    expect(document.activeElement?.textContent).toBe('B');
+    expect(document.activeElement?.className).toContain('hds-focus');
   });
 });
 

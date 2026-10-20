@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "TabsContent takes variant=\"bare\" for page-level tabs; replace any inline style that cancelled the panel's fill, padding and pull-up with it."
+}

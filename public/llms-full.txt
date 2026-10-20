@@ -24,18 +24,23 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 
 - **Outermost wrapper of a screen** → `Page`, `Stack`. Not: `Container`, `Box`, a bare Stack as the root.
   `<Page><Stack gap="spacious">…one child per section…</Stack></Page>`. `Container` is for a full-bleed surface that is not a page.
+  Import: `import { Page } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Screen title with breadcrumb, status and actions** → `PageHeader`, `Breadcrumb`, `Badge`. Not: Text as the page title, a Stack row of Text and Badge.
   Exactly one per screen: `<PageHeader breadcrumb={<Breadcrumb items={[{ label, href }, { label }]} />} title="…" status={<Badge tone="success">Active</Badge>} />`.
+  Import: `import { PageHeader } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Row of headline numbers (stats, KPIs, counts, totals)** → `MetricTiles`, `MetricTile`. Not: `Stat`, `StatusTile`, `CardMetric`, Card with Text.
   `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, a `Card` with `Card.Row` for a state with notes (never a number; it replaces the deprecated `StatusTile`).
+  Import: `import { MetricTiles, MetricTile } from '@hirobius/design-system/patterns';`
 - **Table of records with row actions** → `DataTableSection`, `Badge`, `Button`. Not: Table on its own, Card around a Table.
   `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
+  Import: `import { DataTableSection } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Switch between panels of related content** → `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. Not: `SegmentedControl`, Button rows.
   `<Tabs defaultValue="a"><TabsList><TabsTrigger value="a">A</TabsTrigger></TabsList><TabsContent value="a">…</TabsContent></Tabs>`.
 - **Status label in a header or table cell** → `Badge`. Not: `Tag`, `Text`.
   `<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.
 - **Form with fields and a submit button** → `Form`, `Textarea`, `Input`, `FormActions`, `Button`. Not: a raw `<form>`, a Stack of Buttons as the footer.
   `<Form onSubmit={…}><Textarea label="Notes" … /><FormActions primary={<Button type="submit">Save note</Button>} /></Form>`; every field takes its own `label`.
+  Import: `import { Form, FormActions } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Confirm a destructive or irreversible action (delete, archive, remove)** → `AlertDialog`, `Button`. Not: `Dialog`, `window.confirm`.
   Trigger, title, description, Cancel and Action parts: `<AlertDialog><AlertDialog.Trigger asChild><Button …>Archive</Button></AlertDialog.Trigger><AlertDialog.Content><AlertDialog.Header><AlertDialog.Title>…</AlertDialog.Title><AlertDialog.Description>…</AlertDialog.Description></AlertDialog.Header><AlertDialog.Footer><AlertDialog.Cancel asChild><Button variant="secondary">Cancel</Button></AlertDialog.Cancel><AlertDialog.Action asChild><Button tone="danger" onClick={…}>Archive</Button></AlertDialog.Action></AlertDialog.Footer></AlertDialog.Content></AlertDialog>`. Focus moves in and returns to the trigger for you.
 - **Brief confirmation after an action (saved, archived, sent)** → `ToastProvider`, `useToast`. Not: `Badge`, `Alert`, `Text`.
@@ -56,6 +61,7 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
   `DataTableSection` shows its own through `emptyTitle`; use `EmptyState` elsewhere.
 - **The one irreversible action of a screen (delete the client, close the account)** → `DestructiveSection`. Not: a danger Button that acts without a confirm.
   Last on the screen: `<DestructiveSection title="Delete client" description="…" actionLabel="Delete" onConfirm={…} />`; it opens its own AlertDialog. A per-row destructive action uses AlertDialog directly.
+  Import: `import { DestructiveSection } from '@hirobius/design-system/patterns';`
 - **Read-only details as label and value pairs** → `MetadataList`, `Field`. Not: a Table with two columns, Text pairs in a Stack.
   `<MetadataList items={[{ term: "Owner", description: "Ada" }]} />` for a set; `Field` for one pair.
 - **A person, or a group of people** → `Avatar`, `AvatarGroup`. Not: an image in a rounded Box.
@@ -97,7 +103,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 43 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 45 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -132,6 +138,7 @@ The 43 components of the ratified core set: brand-neutral, composable, imported 
 - Surface (Layout)
 - Breadcrumb (Navigation)
 - InlineLink (Navigation)
+- NavList (Navigation)
 - Pagination (Navigation)
 - Tabs (Navigation)
 - Dialog (Overlays)
@@ -140,6 +147,7 @@ The 43 components of the ratified core set: brand-neutral, composable, imported 
 - Tooltip (Overlays)
 - HdsRouterProvider (Theming)
 - HdsThemeProvider (Theming)
+- MetaLine (Typography)
 - Text (Typography)
 - VisuallyHidden (Utility)
 
@@ -150,9 +158,10 @@ One line per component that declares when to use it (`@usage` / `@useInstead` in
 Alert: [core] Show a persistent inline message with a severity, next to the content it concerns. Use instead: ToastProvider, Badge
 AlertDialog: Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons. Use instead: Dialog, ToastProvider
 AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
+AsyncState: Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content. Use instead: Skeleton, Alert, EmptyState
 Avatar: [core] Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
 Badge: [core] Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
-Board: Show work grouped by status as side-by-side columns, each with a title, a count and a tone, such as leads by pipeline stage. Use instead: Table, Grid
+Board: Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage. Use instead: Table, Grid
 BoardColumn: Hold the cards for one status inside a Board, with a heading that announces the count. Use instead: Stack
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
@@ -182,6 +191,9 @@ InlineLink: [core] Link to a route or external URL from inside body copy. Use in
 Input: [core] Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots. Use instead: Textarea, Select, Combobox
 Kbd: [core] Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
 Menu: [core] Offer a list of actions from a trigger, closed until opened. Use instead: Select
+MetaLine: [core] Show one or two secondary facts on a single line, joined by a bullet ("Acme Cloud · Remote"). Use instead: A
+NavList: [core] List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records). Use instead: Tabs, Breadcrumb, Menu
+NavListItem: List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records). Use instead: Tabs, Breadcrumb, Menu
 Page: Wrap a screen in the standard width and padding.
 PageHeader: Open a screen with its title, plus optional breadcrumb, status and actions.
 Pagination: [core] Move between pages of a long result set, with truncated page numbers. Use instead: Breadcrumb
@@ -205,6 +217,7 @@ ThemeToggle: A single header or menu control to switch between the light and dar
 Timeline: Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
+TokenField: Edit a template or message in which placeholders such as [Name] must stay whole: each one is a chip that is stepped over and deleted as one unit. Use instead: Textarea, Input
 Tooltip: [core] Name an icon-only control, or add a short hint that appears on hover and keyboard focus. Use instead: Popover, Text
 VisuallyHidden: [core] Give assistive technology a label or description that sighted people do not need to see. Use instead: Text
 
@@ -361,6 +374,7 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 - Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.
 - Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).
 - Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.
+- Accent: graphite by default; `data-accent="cobalt"` on `<html>` swaps the accent tokens to cobalt. The lime delight accent (`semantic.accent.delight.*`) is for delight moments only (streak or win badge, "new" tag, best-fit highlight, confetti, illustration), never buttons, links or focus; text on it is always ink. Enforced by `hds/no-delight-on-actions`.
 - Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.
 
 ## Agent Workflow
@@ -397,9 +411,11 @@ Hirobius is a clean, structured visual language that bridges digital precision a
 ## Colors
 
 <!-- auto:start:colors -->
-**One accent — one neutral system.**
+**One accent — one neutral system — one delight hue.**
 
-- **Accent** (`#433A3F`): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent** (`#4A4146`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent theme — Cobalt** (`#112DE8`): opt-in swap of the accent tokens only. Set `data-accent="cobalt"` on `<html>` (source `accents/cobalt/tokens.json`); graphite stays the default. Still one accent per screen.
+- **Delight — Lime** (`#B8E62E`): `semantic.accent.delight.*`, for delight moments only — a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. **Never** buttons, links or focus (lint: `hds/no-delight-on-actions`). Text on it is always ink (`semantic.accent.delight.onDelight`), never white.
 - **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.
 - **Feedback — Success** (`#047857`): positive confirmations, completed states. `semantic.color.feedback.success`.
@@ -412,34 +428,47 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 ## Typography
 
 <!-- auto:start:typography -->
-HDS ships two typefaces:
+HDS ships three typefaces — each with a distinct role:
 
-- **Text font**: Plus Jakarta Sans. Headings, prose, labels, captions, and UI copy; the type roles set size and weight.
+- **Display / Heading font**: Sora. Bound to the `display` and `title` styles.
+- **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · title) use `700` bold; body, UI, and caption use `400` regular / `500` medium.
+Weights declared: `400` mono, `450` regular, `500` medium, `700` bold, `800` display. Heading styles (display · title) use `800` display; body, UI, and caption use `450` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `700` bold.
 
 ### Type ramp
 
 | Role | Size (desktop max) | Weight | Use |
 | --- | --- | --- | --- |
-| `semantic.typography.display` | 48px | 700 | One per page, hero only |
-| `semantic.typography.title` | 24px | 700 | Section and card headings |
-| `semantic.typography.titleSm` | 18px | 700 | Small heading inside a card or section band |
-| `semantic.typography.body` | 18px | 400 | Prose |
+| `semantic.typography.display` | 48px | 800 | One per page, hero only |
+| `semantic.typography.title` | 24px | 800 | Section and card headings |
+| `semantic.typography.titleSm` | 18px | 800 | Small heading inside a card or section band |
+| `semantic.typography.body` | 18px | 450 | Prose |
 | `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 15px | 400 | Code and ids |
-| `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
+| `semantic.typography.h1` | 24px | 800 | deprecated: use semantic.typography.title |
+| `semantic.typography.h2` | 24px | 800 | deprecated: use semantic.typography.title |
+| `semantic.typography.h3` | 24px | 800 | deprecated: use semantic.typography.title |
 | `semantic.typography.eyebrow` | 14px | 500 | deprecated: use semantic.typography.caption |
 | `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
 
 > The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
 <!-- auto:end:typography -->
 
+**Never for.** Each role has one job; reaching past it is how the ramp drifts.
+
+- `display`: never for a section heading, a card or anything twice on a page. It is the hero line only.
+- `title`: never for body copy or a label, and never skip a level to make a heading smaller; use `titleSm` for a heading inside a card or band.
+- `titleSm`: never for page-level headings, and never for emphasis inside prose (bold the words instead).
+- `body`: never for controls, table cells or metadata (those are `ui` and `caption`). A lead paragraph is `body` plus a quieter colour, not a bigger size.
+- `ui`: never for long prose, and never for a heading. It is the size of things you act on or scan.
+- `caption`: never for the only copy a user needs to act on, never uppercase, and never below the `caption` size to fit more in.
+- `mono`: never for ordinary emphasis or for whole paragraphs. Code, ids and metric readouts only.
+
 **Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
+
+**Meta lines.** A bullet-separated line holds at most two text items ("Acme Cloud · Remote"), because long translated strings wrap mid-line. More facts get one row each. Use `MetaLine` (`items` is a one- or two-item tuple, a third is a type error); `hds/max-two-meta-items` flags hand-rolled `A · B · C` chains.
 
 ## Spacing
 
@@ -514,7 +543,7 @@ Motion (lift on hover, parallax) is the interaction-affordance layer; static dep
 | `semantic.motion.spatial` | `400ms` | For elements traveling long distances across the viewport. |
 | `semantic.motion.exit` | `100ms` | For elements being removed from the DOM. |
 
-Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.
+Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for entrances and moments where a little bounce adds delight. `spatial` (400ms) is for travel, not decoration.
 
 ### Other semantic motion tokens
 
@@ -533,7 +562,7 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 | **Cards** (`Card`) | `12px` (`rounded-lg`, role radius + 4px) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (borderless by default; an opt-in 1px border via `bordered`/`tone`/`accent`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
 | **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
 | **Alerts** (`Alert`) | `8px` (via `hds.borderRadius.4`) | info · success · warning · error | Inline banner pattern with icon + message + optional action. Tone is carried by a tinted feedback fill (`bg-feedback-bg-*`, matching Badge), NOT a left-border stripe. Callout shares this fill language and differs only by role (no icon, no status role, optional italic). |
-| **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`. |
+| **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive` by default; a spring is fine where it adds delight. Dividers follow `semantic.color.border.subtle`. |
 | **Toggles** (`Toggle`) | `full` (pill track + circular thumb) | off · on · focus · disabled | Accent-filled track in the on state; neutral track otherwise. Track + thumb transitions share `semantic.motion.productive`. |
 | **Segmented Control** (`SegmentedControl`) | Outer `12px` · inner segments `8px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `Select`. |
 
@@ -599,17 +628,18 @@ Three more needs are props on an existing component, not components of their own
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
+- Don't use the lime delight accent (`semantic.accent.delight.*`) for buttons, links, focus or any action. It is for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Text on it is always ink (`semantic.accent.delight.onDelight`), never white.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
 - Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
+- Don't paint status dots or coloured left accent bars on cards and tiles; status is implied by content. Don't put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge); keep label and value together.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
 - Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
 - Don't sticker badges onto the ends of prose lines. Status and progress should live in a predictable metadata slot, rail, header zone, table column, or progress surface; badges are reserved for compact state markers where their placement is intentional.
 - Don't add decorative illustration, ornamental icons, or trend-driven filler that lacks functional or structural purpose.
-- Don't make motion playful or bouncy by default; movement should feel controlled, precise, and intentional, with expressive motion used sparingly and only when it teaches or clarifies.
-- Don't add `whileTap` scale transforms for press feedback; use color, border, and state-contrast changes instead — transforms are reserved for spatial motion, not interaction acknowledgment.
+- Don't ship motion that ignores `prefers-reduced-motion`. Spring or expressive motion and a small press transform (such as a `whileTap` scale) are welcome where they add delight; under reduced motion, drop the transform and keep the color and state change.
 - Don't define a global disabled-state rule (opacity multiplier, saturation ramp, etc.); disabled presentation is governed per-component through its dedicated disabled tokens.
 
 ## Open Questions
@@ -619,7 +649,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (427 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (450 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -663,6 +693,20 @@ AssetImg - responsive asset frame with fallback placeholder handling. Contexts: 
   - style: CSSProperties = {}
   - title: string
 
+### AsyncState
+One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into "Still trying…" after `slowAfterMs`), `err…
+  - children: ReactNode
+  - empty: ReactNode
+  - error: string
+  - errorTitle: string = Something went wrong
+  - label: string = Content
+  - loadingLabel: string = Loading
+  - onRetry: (() => void)
+  - rows: number = 3
+  - slowAfterMs: number = 10000
+  - slowNote: string = Still trying…
+  - status: 'loading' | 'error' | 'empty' | 'ready'
+
 ### Avatar
 Circular avatar. Renders the image when available, else initials from `alt`.
   - alt: string
@@ -694,11 +738,10 @@ Status columns that sit side by side from tablet width and stack in order, first
   - children: ReactNode
 
 ### BoardColumn
-One status column: a heading with the title, a count and a tone dot, then its items. The column is a labelled region and the count is part of the heading's nam…
+One status column: a heading with the title and a count, then its items. The column is a labelled region and the count is part of the heading's name.
   - children: ReactNode
   - count: number
   - title: ReactNode
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" = neutral
 
 ### Box
 Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing short…
@@ -843,7 +886,7 @@ Section heading and toolbar over a `Table`. Row actions are consumer nodes in a 
   - columns: TableColumn[]
   - emptyDescription: ReactNode
   - emptyTitle: ReactNode = Nothing here yet
-  - level: 6 | 3 | 4 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - rows: DataTableSectionRow[]
   - title: ReactNode
   - toolbar: ReactNode
@@ -855,7 +898,7 @@ Titled danger zone, a danger `Callout` (the shared feedback fill, no border of i
   - confirmBody: ReactNode
   - confirmLabel: string
   - description: ReactNode
-  - level: 6 | 3 | 4 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - onConfirm: () => void
   - title: ReactNode
 
@@ -938,6 +981,7 @@ EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - action: ReactNode
   - className: string
   - description: ReactNode
+  - icon: LucideIcon
   - title: ReactNode
 
 ### Field
@@ -1004,6 +1048,7 @@ Renders a `data-hds` scope wrapper that carries the four theming dials as root a
   - className: string
   - density: 'comfortable' | 'compact'
   - fontFamily: string
+  - fontFamilyDisplay: string
   - fontFamilyMono: string
   - style: CSSProperties
   - theme: 'light' | 'dark'
@@ -1063,12 +1108,26 @@ Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `d
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
+### MetaLine
+Secondary facts on one line ("Acme Cloud · Remote"). Max two items per line so long strings in other languages never wrap mid-line; more facts go in more rows.…
+  - items: MetaLineItems
+
 ### MetadataList
 Renders object metadata as a semantic `<dl>` of term/description pairs.
   - footer: ReactNode
   - items: MetadataListItem[]
   - orientation: "horizontal" | "vertical" | null = vertical
   - variant: "plain" | "divided" = plain
+
+### NavList
+A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected.
+  - children: ReactNode
+
+### NavListItem
+One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`.
+  - children: ReactNode
+  - current: boolean = false
+  - href: string
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
@@ -1240,6 +1299,7 @@ Table - structured data table primitive for documentation and compact UI matrice
   - columns: TableColumn[]
   - density: 'compact' | 'comfortable'
   - description: ReactNode
+  - emphasizeFirstColumn: boolean = false
   - flush: boolean = true
   - labelledBy: string
   - minWidth: string | number
@@ -1261,6 +1321,7 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline p
   - asChild: boolean
   - forceMount: true
   - value: string
+  - variant: "panel" | "bare" | null
 
 ### TabsList
 The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look absent. The …
@@ -1285,6 +1346,7 @@ Text — polymorphic typography primitive spanning the full HDS type ramp.
   - style: CSSProperties
   - tone: 'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'dang…
   - variant: "display" | "title" | "titleSm" | "body" | "ui" | "caption" | "mono" | "heading…
+  - weight: 'regular' | 'medium' | 'bold'
 
 ### Textarea
 Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the …
@@ -1339,6 +1401,25 @@ Toggle — boolean on/off toggle with animated thumb.
   - checked: boolean
   - label: string
   - onChange: (v: boolean) => void
+
+### TokenField
+TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips. The value stays a plain string. The field is a contenteditable textbox t…
+  - className: string
+  - disabled: boolean
+  - error: boolean
+  - errorMessage: string
+  - fieldClassName: string
+  - getTokenLabel: ((token: string) => string)
+  - helperText: string
+  - label: string
+  - name: string
+  - onChange: (value: string) => void
+  - placeholder: string
+  - required: boolean
+  - rows: number = 4
+  - tokenNoun: string = variable
+  - tokenPattern: RegExp = /\[([^[\]\n]{1,40})\]/g
+  - value: string
 
 ### Tooltip
 Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or …

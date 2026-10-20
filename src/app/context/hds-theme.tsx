@@ -17,6 +17,7 @@
  *   density  data-density              "compact" (comfortable = unset) comfortable
  *   brand    data-brand + data-tenant  overlay slug (e.g. "acme")      base
  *   font     --hds-font-family(-mono)  any CSS font-family value       Plus Jakarta Sans / IBM Plex Mono
+ *            --hds-font-family-display any CSS font-family value       Sora
  *
  * This provider is a thin, typed convenience that renders a `data-hds` scope
  * wrapper carrying those attributes — it does NOT own state, storage, or a
@@ -51,6 +52,8 @@ export interface HdsThemeValue {
   fontFamily?: string;
   /** Monospace font-family override (`--hds-font-family-mono`). */
   fontFamilyMono?: string;
+  /** Display and title font-family override (`--hds-font-family-display`). */
+  fontFamilyDisplay?: string;
 }
 
 const HdsThemeContext = /* @__PURE__ */ React.createContext<HdsThemeValue>({});
@@ -96,14 +99,15 @@ export function HdsThemeProvider({
   brand,
   fontFamily,
   fontFamilyMono,
+  fontFamilyDisplay,
   as: Comp = 'div',
   className,
   style,
   children,
 }: HdsThemeProviderProps) {
   const value = React.useMemo<HdsThemeValue>(
-    () => ({ theme, density, brand, fontFamily, fontFamilyMono }),
-    [theme, density, brand, fontFamily, fontFamilyMono],
+    () => ({ theme, density, brand, fontFamily, fontFamilyMono, fontFamilyDisplay }),
+    [theme, density, brand, fontFamily, fontFamilyMono, fontFamilyDisplay],
   );
 
   // State-backed callback ref: the context value is an element once mounted, so
@@ -114,6 +118,8 @@ export function HdsThemeProvider({
   if (fontFamily) (fontVars as Record<string, string>)['--hds-font-family'] = fontFamily;
   if (fontFamilyMono)
     (fontVars as Record<string, string>)['--hds-font-family-mono'] = fontFamilyMono;
+  if (fontFamilyDisplay)
+    (fontVars as Record<string, string>)['--hds-font-family-display'] = fontFamilyDisplay;
 
   return (
     <HdsThemeContext.Provider value={value}>

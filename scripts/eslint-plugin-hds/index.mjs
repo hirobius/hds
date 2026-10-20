@@ -12,9 +12,12 @@
  * config array, the standard pattern for ESLint 9/10 plugins.
  */
 import { readFileSync } from 'node:fs';
+import maxTwoMetaItems from './rules/max-two-meta-items.mjs';
 import noCustomTracking from './rules/no-custom-tracking.mjs';
+import noDelightOnActions from './rules/no-delight-on-actions.mjs';
 import noRawControls from './rules/no-raw-controls.mjs';
 import noRawHex from './rules/no-raw-hex.mjs';
+import noStatusClutter from './rules/no-status-clutter.mjs';
 import noRawPxSpacing from './rules/no-raw-px-spacing.mjs';
 import preferHdsLayoutPrimitive from './rules/prefer-hds-layout-primitive.mjs';
 import sxTokenFirst from './rules/sx-token-first.mjs';
@@ -29,10 +32,13 @@ const packageMeta = { name, version };
 const plugin = {
   meta: packageMeta,
   rules: {
+    'max-two-meta-items': maxTwoMetaItems,
     'no-custom-tracking': noCustomTracking,
+    'no-delight-on-actions': noDelightOnActions,
     'no-raw-controls': noRawControls,
     'no-raw-hex': noRawHex,
     'no-raw-px-spacing': noRawPxSpacing,
+    'no-status-clutter': noStatusClutter,
     'prefer-hds-layout-primitive': preferHdsLayoutPrimitive,
     'sx-token-first': sxTokenFirst,
   },
@@ -44,10 +50,13 @@ plugin.configs = {
       name: 'hds/recommended',
       plugins: { hds: plugin },
       rules: {
+        'hds/max-two-meta-items': 'error',
         'hds/no-custom-tracking': 'error',
+        'hds/no-delight-on-actions': 'error',
         'hds/no-raw-controls': 'error',
         'hds/no-raw-hex': 'error',
         'hds/no-raw-px-spacing': 'error',
+        'hds/no-status-clutter': 'error',
         'hds/prefer-hds-layout-primitive': 'warn',
         'hds/sx-token-first': 'error',
       },
