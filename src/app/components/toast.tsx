@@ -30,6 +30,11 @@
  *     const { toast } = useToast();
  *     return <Button onClick={() => toast({ title: 'Saved', tone: 'success' })}>Save</Button>;
  *   }
+ *
+ * Actions: `toast({ title: 'Saved', actions: [{ label: 'Undo', onSelect: undo }] })` puts up to two
+ * small buttons under the message; choosing one runs `onSelect` and closes the toast. Each needs an
+ * `altText` (defaults to its label) that screen readers hear instead, since a toast never takes
+ * focus: say how else to do it ("Undo from Recently removed") when the label alone is not enough.
  */
 // motion-ok: Radix Toast manages enter/exit/swipe mounting and the auto-dismiss
 // lifecycle; this module renders its themed surface + live region only.
@@ -40,6 +45,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Info, CircleCheck, TriangleAlert, CircleX, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Icon } from './icon';
+import { Button } from './button';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Non-interactive — tone only drives the leading icon's color (via
@@ -82,6 +88,18 @@ export interface ToastOptions {
   tone?: ToastTone;
   /** Auto-dismiss in ms. Falls back to the provider default. */
   duration?: number;
+  /** Up to two buttons under the message (Open, Undo). Choosing one closes the toast. */
+  actions?: readonly ToastAction[];
+}
+
+/** @public */
+export interface ToastAction {
+  /** Button label, one or two words. */
+  label: string;
+  /** Runs when the action is chosen; the toast closes after it. */
+  onSelect: () => void;
+  /** What screen readers hear instead of the button (Radix `altText`); defaults to `label`. */
+  altText?: string;
 }
 
 interface ToastEntry extends ToastOptions {
@@ -183,6 +201,17 @@ export function ToastProvider({
                   <ToastPrimitive.Description className="hds-type-ui text-muted-foreground">
                     {t.description}
                   </ToastPrimitive.Description>
+                ) : null}
+                {t.actions?.length ? (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {t.actions.slice(0, 2).map((a) => (
+                      <ToastPrimitive.Action key={a.label} altText={a.altText ?? a.label} asChild>
+                        <Button size="sm" variant="secondary" onClick={a.onSelect}>
+                          {a.label}
+                        </Button>
+                      </ToastPrimitive.Action>
+                    ))}
+                  </div>
                 ) : null}
               </div>
               <ToastPrimitive.Close
