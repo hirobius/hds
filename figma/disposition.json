@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 110,
+    "total": 111,
     "byClass": {
-      "library": 66,
+      "library": 67,
       "slot": 23,
       "layout": 9,
       "internal": 12
     },
     "libraryLinked": 64,
-    "libraryMissing": 2,
+    "libraryMissing": 3,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -903,6 +903,14 @@
       "category": "Inputs",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19"
+    },
+    {
+      "name": "TokenField",
+      "class": "library",
+      "parent": null,
+      "category": "Inputs",
+      "tier": "primitive",
+      "figmaUrl": null
     },
     {
       "name": "Tooltip",

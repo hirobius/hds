@@ -31,6 +31,7 @@ export const INTERACTIVE = Object.freeze([
   'Tag',
   'Input',
   'Textarea',
+  'TokenField',
   'Form',
   'FormField',
   'FormFieldShell',

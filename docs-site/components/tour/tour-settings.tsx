@@ -13,6 +13,7 @@ import {
   Slider,
   Stack,
   Textarea,
+  TokenField,
   Toggle,
   useToast,
 } from '@hirobius/design-system';
@@ -36,6 +37,7 @@ export function TourSettings({ version }: { version: string }) {
   const [beta, setBeta] = useState(false);
   const [volume, setVolume] = useState(40);
   const [notes, setNotes] = useState('');
+  const [welcome, setWelcome] = useState('Welcome to [Workspace], [Name].');
   const [sent, setSent] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const nameError = submitted && !name.trim() ? 'Give the console a name.' : undefined;
@@ -94,6 +96,13 @@ export function TourSettings({ version }: { version: string }) {
           helperText="Markdown is supported."
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
+        />
+        <TokenField
+          label="Welcome message"
+          helperText="Each [Variable] is one chip."
+          rows={2}
+          value={welcome}
+          onChange={setWelcome}
         />
         <Field label="Package" value={`@hirobius/design-system@${version}`} mono />
         <FormActions

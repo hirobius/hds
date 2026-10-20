@@ -50,6 +50,7 @@ export const PREVIEWED_COMPONENTS = [
   'ThemeToggle',
   'Timeline',
   'Toggle',
+  'TokenField',
   'Tooltip',
   'VisuallyHidden',
   // Patterns (@hirobius/design-system/patterns)

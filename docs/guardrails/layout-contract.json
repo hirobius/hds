@@ -698,6 +698,14 @@
       "kind": "leaf",
       "probe": true
     },
+    "TokenField": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true,
+      "maxWidth": "40rem"
+    },
     "Tooltip": {
       "width": "hug",
       "height": "hug",

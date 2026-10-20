@@ -217,6 +217,7 @@ ThemeToggle: A single header or menu control to switch between the light and dar
 Timeline: Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
+TokenField: Edit a template or message in which placeholders such as [Name] must stay whole: each one is a chip that is stepped over and deleted as one unit. Use instead: Textarea, Input
 Tooltip: [core] Name an icon-only control, or add a short hint that appears on hover and keyboard focus. Use instead: Popover, Text
 VisuallyHidden: [core] Give assistive technology a label or description that sighted people do not need to see. Use instead: Text
 
@@ -1400,6 +1401,25 @@ Toggle — boolean on/off toggle with animated thumb.
   - checked: boolean
   - label: string
   - onChange: (v: boolean) => void
+
+### TokenField
+TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips. The value stays a plain string. The field is a contenteditable textbox t…
+  - className: string
+  - disabled: boolean
+  - error: boolean
+  - errorMessage: string
+  - fieldClassName: string
+  - getTokenLabel: ((token: string) => string)
+  - helperText: string
+  - label: string
+  - name: string
+  - onChange: (value: string) => void
+  - placeholder: string
+  - required: boolean
+  - rows: number = 4
+  - tokenNoun: string = variable
+  - tokenPattern: RegExp = /\[([^[\]\n]{1,40})\]/g
+  - value: string
 
 ### Tooltip
 Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or …

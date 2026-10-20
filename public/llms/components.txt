@@ -763,6 +763,25 @@ Toggle — boolean on/off toggle with animated thumb.
   - label: string
   - onChange: (v: boolean) => void
 
+### TokenField
+TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips. The value stays a plain string. The field is a contenteditable textbox t…
+  - className: string
+  - disabled: boolean
+  - error: boolean
+  - errorMessage: string
+  - fieldClassName: string
+  - getTokenLabel: ((token: string) => string)
+  - helperText: string
+  - label: string
+  - name: string
+  - onChange: (value: string) => void
+  - placeholder: string
+  - required: boolean
+  - rows: number = 4
+  - tokenNoun: string = variable
+  - tokenPattern: RegExp = /\[([^[\]\n]{1,40})\]/g
+  - value: string
+
 ### Tooltip
 Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or …
   - children: React.ReactNode
