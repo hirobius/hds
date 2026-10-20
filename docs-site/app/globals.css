@@ -105,6 +105,35 @@ body {
   letter-spacing: -0.01em;
 }
 
+/*
+ * The top bar names the current page; the full site name is only the home H1
+ * (hds#845). Beside the open sidebar its "HDS" mark would repeat the sidebar
+ * header, so it shows only on narrow screens, where the sidebar is a drawer.
+ * Fumadocs renders nav children in the sidebar header too; the title belongs
+ * to the top bar only.
+ */
+.hds-top-bar-title {
+  display: none;
+}
+
+#nd-subnav .hds-top-bar-title {
+  display: inline;
+  font-weight: 600;
+}
+
+@media (width >= 48rem) {
+  #nd-subnav > a[href='/'] {
+    display: none;
+  }
+}
+
+@media (width < 48rem) {
+  .hds-top-bar-title {
+    margin-inline-start: calc(var(--spacing) * 3);
+    color: var(--semantic-color-content-secondary);
+  }
+}
+
 /* Code font: the HDS mono token is IBM Plex Mono, loaded from the package's fonts.css. */
 :root,
 .dark {
