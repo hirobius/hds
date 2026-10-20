@@ -5,7 +5,19 @@ status: 'stable'
 since: '0.1.0'
 ---
 
-## Principle
+## Tokens
+
+{/* generated: tokens */}
+
+## The ramp
+
+Six text styles plus mono. Set one with `<Text variant="…">`, `hds.typeStyles.<role>` or the `.hds-type-<role>` class.
+
+The Tokens section above draws each step in its real font, size and leading, read straight from the tokens.
+
+<PrinciplesAndPractices>
+
+### Principle
 
 Three typefaces, each with one job:
 
@@ -13,13 +25,7 @@ Three typefaces, each with one job:
 - **Plus Jakarta Sans** sets everything people read: 450 for body, 500 for controls and captions, 700 for bold text. It ships as a variable font, so the 450 body weight renders as itself.
 - **IBM Plex Mono** sets code, token names and ids.
 
-## The ramp
-
-Six text styles plus mono. Set one with `<Text variant="…">`, `hds.typeStyles.<role>` or the `.hds-type-<role>` class.
-
-The Tokens section below draws each step in its real font, size and leading, read straight from the tokens.
-
-## Best practices
+### Best practices
 
 - Set text with the `Text` component so sizes stay on the ramp.
 - Use `title` for headings, `titleSm` for the heading of a small band such as a danger zone, `body` for prose and `ui` for controls and labels.
@@ -28,6 +34,4 @@ The Tokens section below draws each step in its real font, size and leading, rea
 - Don't set your own font sizes or line heights.
 - Don't mix weights within one set of controls.
 
-## Tokens
-
-{/* generated: tokens */}
+</PrinciplesAndPractices>

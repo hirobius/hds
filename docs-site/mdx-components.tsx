@@ -8,6 +8,7 @@ import { ComponentTokens } from './components/component-tokens';
 import { MdxPre } from './components/mdx-code-block';
 import { MdxCode, MdxImg, MdxTable } from './components/mdx-prose';
 import { Mermaid } from './components/mermaid';
+import { PrinciplesAndPractices } from './components/principles-and-practices';
 import { TokenTable } from './components/token-table';
 import {
   DeprecationLedger,
@@ -36,6 +37,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ComponentPreview,
     ComponentIndex,
     Mermaid,
+    PrinciplesAndPractices,
     ReleaseLedger,
     DeprecationLedger,
     RemovalLedger,
