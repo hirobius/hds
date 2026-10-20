@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 499 tokens, aliases, and TS refs in one shot.
+Checks all 498 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -227,7 +227,7 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.surface.accent`         | {primitive.color.graphite.700}  | {primitive.color.graphite.200}  | Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.                                   |
 | `semantic.color.surface.accentSubtle`   | {primitive.color.graphite.50}   | {primitive.color.graphite.800}  | Faint accent tint for hover states or highlights.                                                                                           |
 | `semantic.color.surface.hover`          | {primitive.color.neutral.100}   | {primitive.color.neutral.700}   | Background for a hovered interactive surface (menu items, chips, tertiary buttons).                                                         |
-| `semantic.color.surface.pressed`        | {primitive.color.neutral.50}    | {primitive.color.neutral.black} | Background for an actively pressed interactive surface.                                                                                     |
+| `semantic.color.surface.pressed`        | {primitive.color.neutral.200}   | {primitive.color.neutral.black} | Background for an actively pressed interactive surface.                                                                                     |
 | `semantic.color.surface.selected`       | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   | Background for a persistently selected item (active tab, checked row).                                                                      |
 | `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.800}   | Muted background for low-emphasis content blocks.                                                                                           |
 | `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   | Recessed background for inset wells (inputs, code blocks, nested panels).                                                                   |

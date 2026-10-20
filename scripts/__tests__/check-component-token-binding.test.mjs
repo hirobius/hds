@@ -402,18 +402,18 @@ describe('CLI modes', () => {
 // ── The repo itself (acceptance fixture: audit at origin/main 7895210) ───────
 
 describe('repo counts', () => {
-  it('counts after Tag binds its unselected surface (hds#595): 39 BOUND / 41 LITERAL-MATCH / 0 LITERAL-MISMATCH / 13 UNUSED of 93 (was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is the action radius through rounded-md, bug bash 24; button.bgPressed bound, hds#748)', () => {
+  it('counts after Tag binds its unselected surface (hds#595): 39 BOUND / 40 LITERAL-MATCH / 0 LITERAL-MISMATCH / 13 UNUSED of 92 (was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is the action radius through rounded-md, bug bash 24; button.bgPressed bound, hds#748)', () => {
     const r = cli(['--json']);
     expect(r.status).toBe(0);
     const { summary } = JSON.parse(r.out);
-    expect(summary.total).toBe(93);
+    expect(summary.total).toBe(92);
     expect(summary.counts).toMatchObject({
       BOUND: 39,
-      'LITERAL-MATCH': 41,
+      'LITERAL-MATCH': 40,
       'LITERAL-MISMATCH': 0,
       UNUSED: 13,
     });
-    expect(summary.matchKinds).toEqual({ alias: 20, 'type-role': 8, literal: 13 });
+    expect(summary.matchKinds).toEqual({ alias: 19, 'type-role': 8, literal: 13 });
   });
 
   it('--enforce passes on the committed baseline', () => {

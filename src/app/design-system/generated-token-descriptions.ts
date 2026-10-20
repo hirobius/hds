@@ -348,7 +348,6 @@ export const tokenDescriptions: Record<string, string> = {
   "component.button.secondary.bg.pressed": "Secondary button pressed fill.",
   "component.button.secondary.border.rest": "Secondary button border.",
   "component.button.secondary.border.hover": "Secondary button hover border.",
-  "component.button.secondary.border.pressed": "Secondary button pressed border (the hover border still applies while pressed).",
   "component.button.secondary.border.disabled": "Secondary button disabled border (lighter than rest so a disabled button reads disabled).",
   "component.button.secondary.text": "Secondary button text color.",
   "component.inlineCode.bg": "Inline code chip background.",

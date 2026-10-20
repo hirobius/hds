@@ -109,7 +109,7 @@ describe('dark state steps on the lighter raised surface', () => {
   it('leaves the light steps alone', () => {
     expect(hex(HOVER, 'Light')).toBe('#f5f5f5');
     expect(hex(MUTED, 'Light')).toBe('#f5f5f5');
-    expect(hex(PRESSED, 'Light')).toBe('#fafafa');
+    expect(hex(PRESSED, 'Light')).toBe('#e5e5e5');
     expect(hex(BORDER_SUBTLE, 'Light')).toBe('#f5f5f5');
   });
 });

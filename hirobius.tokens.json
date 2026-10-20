@@ -1311,12 +1311,12 @@
           }
         },
         "pressed": {
-          "$value": "{primitive.color.neutral.50}",
+          "$value": "{primitive.color.neutral.200}",
           "$description": "Background for an actively pressed interactive surface.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.50}",
+                "Light": "{primitive.color.neutral.200}",
                 "Dark": "{primitive.color.neutral.black}"
               }
             }
@@ -2781,7 +2781,7 @@
           },
           "pressed": {
             "$type": "color",
-            "$value": "{semantic.color.surface.overlay}",
+            "$value": "{semantic.color.surface.pressed}",
             "$description": "Secondary button pressed fill."
           }
         },
@@ -2795,11 +2795,6 @@
             "$type": "color",
             "$value": "{semantic.color.border.accent}",
             "$description": "Secondary button hover border."
-          },
-          "pressed": {
-            "$type": "color",
-            "$value": "{semantic.color.border.accent}",
-            "$description": "Secondary button pressed border (the hover border still applies while pressed)."
           },
           "disabled": {
             "$type": "color",

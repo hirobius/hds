@@ -585,7 +585,6 @@ export const tokens = {
         border: {
           rest: "var(--component-button-secondary-border-rest)",
           hover: "var(--component-button-secondary-border-hover)",
-          pressed: "var(--component-button-secondary-border-pressed)",
           disabled: "var(--component-button-secondary-border-disabled)"
         },
         text: "var(--component-button-secondary-text)"

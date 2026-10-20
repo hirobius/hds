@@ -482,7 +482,6 @@ declare module 'react' {
     '--component-button-secondary-bg-pressed'?: string | undefined;
     '--component-button-secondary-border-rest'?: string | undefined;
     '--component-button-secondary-border-hover'?: string | undefined;
-    '--component-button-secondary-border-pressed'?: string | undefined;
     '--component-button-secondary-border-disabled'?: string | undefined;
     '--component-button-secondary-text'?: string | undefined;
     '--component-input-bg'?: string | undefined;

@@ -239,7 +239,7 @@
   --semantic-color-surface-accent: var(--primitive-color-graphite-700);
   --semantic-color-surface-accentSubtle: var(--primitive-color-graphite-50);
   --semantic-color-surface-hover: var(--primitive-color-neutral-100);
-  --semantic-color-surface-pressed: var(--primitive-color-neutral-50);
+  --semantic-color-surface-pressed: var(--primitive-color-neutral-200);
   --semantic-color-surface-selected: var(--primitive-color-neutral-200);
   --semantic-color-surface-muted: var(--primitive-color-neutral-100);
   --semantic-color-surface-sunken: var(--primitive-color-neutral-200);
@@ -503,10 +503,9 @@
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
   --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
   --component-button-secondary-bg-hover: var(--semantic-color-surface-accentSubtle);
-  --component-button-secondary-bg-pressed: var(--semantic-color-surface-overlay);
+  --component-button-secondary-bg-pressed: var(--semantic-color-surface-pressed);
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
-  --component-button-secondary-border-pressed: var(--semantic-color-border-accent);
   --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
   --component-input-bg: var(--semantic-color-surface-page);
@@ -644,10 +643,9 @@
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
   --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
   --component-button-secondary-bg-hover: var(--semantic-color-surface-accentSubtle);
-  --component-button-secondary-bg-pressed: var(--semantic-color-surface-overlay);
+  --component-button-secondary-bg-pressed: var(--semantic-color-surface-pressed);
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
-  --component-button-secondary-border-pressed: var(--semantic-color-border-accent);
   --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
   --component-input-bg: var(--semantic-color-surface-page);
