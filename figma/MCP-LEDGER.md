@@ -563,4 +563,16 @@ Zero-click delta sync in 3 parts (drift showed 23 missing, 99 changed against sn
 
 Results: #1 loaded. #2 failed in `setValueForMode` (unloaded font "Satoshi Medium", "IBM Plex Mono Medium": text layers on the canvas bound to the variable) and Figma rolled the script back; #5 both fonts load; #6 empty diff, so nothing had stuck. Fix: `hdsApply` loads the fonts the error names and writes again. #7 part 1 landed (cobalt and lime primitives VariableID:2187:2–19, weight.display, display styles in Sora; post bc95b416 on base 2aa8b0e8). #8 failed ("Required value missing"): part 2 held display.font-weight as an anchor and could not name weight.display, which part 1 created; rolled back. Fix: `hdsAgentSlice` resolves such an alias by the path HDS stamped. #10 part 2 landed (delight tokens, button bgPressed, caption and type sizes; post 45b915bb). #11 applied, then refused: 1 item left. #12 (rolled back by design) named it: Figma draws typography/mono at weight.regular (450) as IBM Plex Mono Medium. Fix: the mono role sets fontWeight 400 (Plex Mono ships 400 only, so the web is unchanged). Snapshot re-based on the part 1 and 2 receipts (post checksums checked), then #13 fresh `delta.js`: updated 10 · created 0 · deleted 0; receipt post 244f02fe on base 45b915bb, snapshot rebuilt, drift 0, plan 0. Session total: 10 calls (#3, #4 and #9 were not made). Nothing deleted or published.
 
-Calls logged for 2026-10-20: 10 of 200 (10).
+## 2026-10-20 · mono weight primitive (branch claude/figma-sync-2026-10-20)
+
+Code review asked for `primitive.typography.weight.mono` (400) instead of a raw 400 on the mono role. Budget 1 write.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                               |
+| --- | ---------- | ----------- | ----- | ----------------------------------------------------- |
+| 1   | 04:34      | `use_figma` | write | Library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` unmodified |
+
+Results: row 1 pushed updated 6 · created 1 (receipt post 76fddaf5 on base 244f02fe); `--from-receipt` rebuilt the snapshot, drift 0, plan updated 0 · created 0 · deleted 0.
+
+Session total: 1 call
+
+Calls logged for 2026-10-20: 11 of 200 (10 and 1).

@@ -1,15 +1,15 @@
 {
-  "checksum": "244f02fe",
+  "checksum": "76fddaf5",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-20T04:22:09.234Z",
+    "takenAt": "2026-10-20T04:36:50.020Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "52c70011",
-      "pushedAt": "2026-10-20T04:22:09.194Z",
+      "modelHash": "3679404a",
+      "pushedAt": "2026-10-20T04:36:49.983Z",
       "scope": null
     },
     "collections": [
@@ -3498,6 +3498,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 500
+              }
+            }
+          },
+          {
+            "id": "VariableID:2197:2",
+            "name": "typography/weight/mono",
+            "path": "primitive.typography.weight.mono",
+            "resolvedType": "FLOAT",
+            "description": "Mono weight. IBM Plex Mono ships 400 only; Figma draws weight.regular (450) as Plex Mono Medium.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-weight-mono)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 400
               }
             }
           },
@@ -7004,7 +7021,7 @@
             "name": "typography/mono/font-family",
             "path": "semantic.typography.mono.font-family",
             "resolvedType": "STRING",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role is set at 400, not weight.regular (450 draws as Plex Mono Medium in Figma). The mono companion, role 6 of 6.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -7028,7 +7045,7 @@
             "name": "typography/mono/font-size",
             "path": "semantic.typography.mono.font-size",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role is set at 400, not weight.regular (450 draws as Plex Mono Medium in Figma). The mono companion, role 6 of 6.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7052,7 +7069,7 @@
             "name": "typography/mono/font-weight",
             "path": "semantic.typography.mono.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role is set at 400, not weight.regular (450 draws as Plex Mono Medium in Figma). The mono companion, role 6 of 6.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -7062,10 +7079,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 400
+                "alias": "VariableID:2197:2",
+                "to": "Hirobius/Primitives: typography/weight/mono"
               },
               "Dark": {
-                "value": 400
+                "alias": "VariableID:2197:2",
+                "to": "Hirobius/Primitives: typography/weight/mono"
               }
             }
           },
@@ -7074,7 +7093,7 @@
             "name": "typography/mono/letter-spacing",
             "path": "semantic.typography.mono.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role is set at 400, not weight.regular (450 draws as Plex Mono Medium in Figma). The mono companion, role 6 of 6. Converted from 0em at 15px.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6. Converted from 0em at 15px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -7096,7 +7115,7 @@
             "name": "typography/mono/line-height",
             "path": "semantic.typography.mono.line-height",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role is set at 400, not weight.regular (450 draws as Plex Mono Medium in Figma). The mono companion, role 6 of 6. Converted from 1.5 × 15px.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6. Converted from 1.5 × 15px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -10110,7 +10129,7 @@
         "id": "S:3152dfb215c24e851e1a06cc92bb552a9c58b7e5,",
         "name": "typography/mono",
         "path": "semantic.typography.mono",
-        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role is set at 400, not weight.regular (450 draws as Plex Mono Medium in Figma). The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
         "fontFamily": "IBM Plex Mono",
         "fontStyle": "Regular",
         "fontSize": 15,
