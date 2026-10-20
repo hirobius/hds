@@ -148,6 +148,7 @@ function runDocRefsCheck() {
       return true;
     if (token.startsWith('@')) return true; // scoped npm package specifier (e.g. @hirobius/design-system/tokens.css), not a local file
     if (token.startsWith('<!--')) return true;
+    if (/<[^>]*>/.test(token)) return true; // a placeholder such as .status/<branch>.md, not a path
     if (token.includes('://')) return true;
     if (token.includes('*')) return true;
     if (token.includes(' -> ')) return true;

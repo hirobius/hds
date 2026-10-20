@@ -40,6 +40,7 @@ import { HOOKS, recommendedComponents } from '../mcp/guide.mjs';
 import { NEEDS_INTRO, needsMarkdown } from './lib/guide-markdown.mjs';
 import { readVoice, voiceMarkdown } from './lib/voice.mjs';
 import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
+import { COMPONENT_API_REL, ensureComponentApi } from './lib/ensure-component-api.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const AGENTS_PATH = 'AGENTS.md';
@@ -217,13 +218,8 @@ async function main() {
   const readJson = (rel) => JSON.parse(readFileSync(join(root, rel), 'utf8'));
   const outPath = join(root, AGENTS_PATH);
   const current = existsSync(outPath) ? readFileSync(outPath, 'utf8') : null;
-  const apiPath = 'src/app/data/component-api.json';
-  if (!existsSync(join(root, apiPath))) {
-    console.error(
-      `✗ ${apiPath} is missing (it is generated). Run: node scripts/generate-component-api.mjs`,
-    );
-    process.exit(1);
-  }
+  const apiPath = COMPONENT_API_REL;
+  if (!ensureComponentApi(root)) process.exit(1);
   const registry = readJson(REGISTRY_PATH);
   const outputs = {
     [AGENTS_PATH]: buildAgentsMd({

@@ -20,12 +20,12 @@
  *   - node_modules
  */
 
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, readdirSync, existsSync } from 'fs';
 import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { homedir } from 'os';
 
-import { brandAccent, violationsInSource } from './lib/brand-truth.mjs';
+import { accentHexes, brandAccent, violationsInSource } from './lib/brand-truth.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -55,6 +55,14 @@ const raw = readTokenSource(join(ROOT, 'hirobius.tokens.json'));
 // semantic.accent.rest, resolved the same way the shipped CSS resolves it, and it
 // throws rather than falling back if that token is missing.
 const primaryColor = brandAccent(raw);
+// Opt-in accent themes (accents/<name>/tokens.json) document their own accent hex.
+const accentThemes = existsSync(join(ROOT, 'accents'))
+  ? readdirSync(join(ROOT, 'accents'))
+      .map((name) => join(ROOT, 'accents', name, 'tokens.json'))
+      .filter((file) => existsSync(file))
+      .map((file) => JSON.parse(readFileSync(file, 'utf8')))
+  : [];
+const documentedAccents = accentHexes(raw, accentThemes);
 
 // 12t-typography-truth-up: corrected token path. Was `raw.primitive.font.family.primary`,
 // which doesn't exist (tokens carry primitive.typography.family.primary). Empty fontName
@@ -122,7 +130,12 @@ for (const file of ACTIVE_DOCS) {
 
   // ── Color check ────────────────────────────────────────────────────────────
   // Whole-file, via the shared rule, so the gate and its tests cannot drift.
-  for (const v of violationsInSource(readFileSync(file, 'utf8'), rel, primaryColor)) {
+  for (const v of violationsInSource(
+    readFileSync(file, 'utf8'),
+    rel,
+    primaryColor,
+    documentedAccents,
+  )) {
     console.error(
       `✗ [${v.file}:${v.line}] claims ${v.found} is the brand accent; it is ${v.expected}`,
     );

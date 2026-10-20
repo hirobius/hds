@@ -87,7 +87,7 @@ describe('Disclosure accessibility contract', () => {
       );
       const cls = screen.getByRole('button', { name: 'Details' }).className;
       expect(cls, `${variant} trigger`).toContain(
-        'min-h-[var(--primitive-size-interactive-minCompact)]',
+        'min-h-[var(--primitive-size-interactive-minCompact)]', // tier-ok: asserts the rendered class
       );
       unmount();
     }

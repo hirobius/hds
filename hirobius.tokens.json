@@ -1987,7 +1987,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so it renders at 400 whatever weight.regular is. The mono companion, role 6 of 6."
+        "$description": "Code and ids. 15px/1.5/400; IBM Plex Mono ships 400 only, so every weight renders at 400. Role 6 of 6."
       },
       "h1": {
         "$value": {
@@ -2160,7 +2160,7 @@
       "delight": {
         "base": {
           "$value": "{primitive.color.lime.300}",
-          "$description": "Delight accent fill (lime) for delight moments only: a streak or win badge, a \"new\" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes.",
+          "$description": "Lime fill for delight moments only: streak badge, new tag, best-fit highlight. Text is onDelight ink. Never buttons, links, focus.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2172,7 +2172,7 @@
         },
         "deep": {
           "$value": "{primitive.color.lime.600}",
-          "$description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.",
+          "$description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text, buttons, links or focus.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2184,7 +2184,7 @@
         },
         "pale": {
           "$value": "{primitive.color.lime.50}",
-          "$description": "Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.",
+          "$description": "Pale lime tint behind a delight moment, like a best-fit row. Text on it is ink. Never buttons, links, focus.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {

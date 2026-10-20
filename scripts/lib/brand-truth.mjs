@@ -138,15 +138,53 @@ export function brandAccent(raw) {
 }
 
 /**
+ * Every hex the tokens define as an accent, lowercased: the brand accent plus the
+ * other accent families under `semantic.accent` (delight.* is lime by design) and
+ * each opt-in accent theme's `semantic.accent` (accents/<name>/tokens.json, cobalt).
+ *
+ * DESIGN.md documents those alongside the brand accent ("Delight — Lime
+ * (#B8E62E)", "Accent theme — Cobalt (#112DE8)"). Each line has the word
+ * "accent" and a hex that is not the brand accent, so the claim rule read both
+ * as stale and check:fast was red on main. Prose naming a hex the tokens
+ * themselves define as an accent describes the tokens; it does not contradict
+ * them. A hex that is no accent at all still fires.
+ *
+ * @param {object} raw        parsed hirobius.tokens.json
+ * @param {object[]} themes   parsed accent theme token files (may be empty)
+ * @returns {Set<string>}
+ */
+export function accentHexes(raw, themes = []) {
+  const hexes = new Set([brandAccent(raw)]);
+  const walk = (node, root) => {
+    if (!node || typeof node !== 'object') return;
+    if ('$value' in node) {
+      const resolved = resolveAlias(node.$value, root);
+      if (typeof resolved === 'string' && resolved.startsWith('#'))
+        hexes.add(resolved.toLowerCase());
+      return;
+    }
+    for (const child of Object.values(node)) walk(child, root);
+  };
+  walk(raw?.semantic?.accent, raw);
+  // A theme file carries its own semantic.accent and aliases the base primitives.
+  for (const theme of themes) walk(theme?.semantic?.accent, raw);
+  return hexes;
+}
+
+/**
  * Lines in `source` that claim a colour is the brand while naming a different one.
  *
  * @param {string} source   the document text
  * @param {string} file     path used in the report (not read from disk)
- * @param {string} accent   the resolved accent, lowercased
+ * @param {string} accent   the resolved brand accent, lowercased
+ * @param {Iterable<string>} [known]  every hex the tokens define as an accent
+ *                          (`accentHexes`); a line naming only these is correct prose
  * @returns {{file: string, line: number, found: string, expected: string, text: string}[]}
  */
-export function violationsInSource(source, file, accent) {
+export function violationsInSource(source, file, accent, known = [accent]) {
   const expected = accent.toLowerCase();
+  const documented = new Set([...known].map((h) => h.toLowerCase()));
+  documented.add(expected);
   const violations = [];
 
   source.split('\n').forEach((text, i) => {
@@ -169,10 +207,13 @@ export function violationsInSource(source, file, accent) {
     const hexes = (text.match(HEX) ?? []).map((h) => h.toLowerCase());
     if (hexes.length === 0) return;
     // A line naming the accent is describing it correctly, even if it also
-    // lists others alongside (a ramp anchored at the accent, say).
+    // lists others alongside (a ramp anchored at the accent, say). So is a line
+    // naming only hexes the tokens define as accents (delight, an accent theme).
     if (hexes.includes(expected)) return;
+    if (hexes.every((h) => documented.has(h))) return;
 
     for (const found of new Set(hexes)) {
+      if (documented.has(found)) continue;
       violations.push({ file, line: i + 1, found, expected, text: text.trim() });
     }
   });

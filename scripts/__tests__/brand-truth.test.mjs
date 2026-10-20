@@ -27,7 +27,7 @@
 
 import { describe, it, expect } from 'vitest';
 
-import { brandAccent, violationsInSource, BRAND_CLAIM } from '../lib/brand-truth.mjs';
+import { accentHexes, brandAccent, violationsInSource, BRAND_CLAIM } from '../lib/brand-truth.mjs';
 
 /** A token file shaped like ours: the accent aliases a neutral, info aliases blue. */
 const TOKENS = {
@@ -260,5 +260,59 @@ describe('BRAND_CLAIM — the vocabulary is explicit, not inferred', () => {
 
   it('does not treat an unrelated sentence as a claim', () => {
     expect(BRAND_CLAIM.test('the info colour is #1E2EFD')).toBe(false);
+  });
+});
+
+describe('accentHexes — the tokens define more than one accent', () => {
+  const WITH_FAMILIES = {
+    ...TOKENS,
+    primitive: {
+      ...TOKENS.primitive,
+      color: {
+        ...TOKENS.primitive.color,
+        lime: { 300: { $value: '#B8E62E' } },
+        cobalt: { 600: { $value: '#112DE8' } },
+      },
+    },
+    semantic: {
+      ...TOKENS.semantic,
+      accent: {
+        rest: { $value: '{primitive.color.neutral.900}' },
+        delight: { base: { $value: '{primitive.color.lime.300}' } },
+      },
+    },
+  };
+  const COBALT_THEME = {
+    semantic: { accent: { rest: { $value: '{primitive.color.cobalt.600}' } } },
+  };
+
+  it('collects the brand accent, every semantic.accent family and each accent theme', () => {
+    expect(accentHexes(WITH_FAMILIES, [COBALT_THEME])).toEqual(
+      new Set(['#111111', '#b8e62e', '#112de8']),
+    );
+  });
+
+  it('is just the brand accent when the tokens define nothing else', () => {
+    expect(accentHexes(TOKENS)).toEqual(new Set(['#111111']));
+  });
+
+  it('does not flag DESIGN.md documenting a delight or theme accent by its own hex', () => {
+    const known = accentHexes(WITH_FAMILIES, [COBALT_THEME]);
+    const src =
+      '- **Accent theme — Cobalt** (`#112DE8`): opt-in swap of the accent tokens only.\n' +
+      '- **Delight — Lime** (`#B8E62E`): `semantic.accent.delight.*`, for delight moments only.';
+    expect(violationsInSource(src, 'DESIGN.md', ACCENT, known)).toEqual([]);
+  });
+
+  it('STILL flags a hex that is no accent at all, with the known set passed', () => {
+    const known = accentHexes(WITH_FAMILIES, [COBALT_THEME]);
+    const found = violationsInSource('The brand accent is #1E2EFD.', 'DESIGN.md', ACCENT, known);
+    expect(found.map((v) => v.found)).toEqual(['#1e2efd']);
+  });
+
+  it('STILL flags a line mixing a documented accent with a stale one', () => {
+    const known = accentHexes(WITH_FAMILIES, [COBALT_THEME]);
+    const found = violationsInSource('Accent: #B8E62E and #1E2EFD.', 'DESIGN.md', ACCENT, known);
+    expect(found.map((v) => v.found)).toEqual(['#1e2efd']);
   });
 });

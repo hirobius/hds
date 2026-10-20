@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-19T04:23:16.102Z",
+  "generated": "2026-10-20T06:29:17.259Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12985,7 +12985,7 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so it renders at 400 whatever weight.regular is. The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px/1.5/400; IBM Plex Mono ships 400 only, so every weight renders at 400. Role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
           "fontSize": "15px",
@@ -13179,7 +13179,7 @@
         "path": "semantic.accent.delight.base",
         "cssVar": "--semantic-accent-delight-base",
         "type": "color",
-        "description": "Delight accent fill (lime) for delight moments only: a streak or win badge, a \"new\" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes.",
+        "description": "Lime fill for delight moments only: streak badge, new tag, best-fit highlight. Text is onDelight ink. Never buttons, links, focus.",
         "alias": "{primitive.color.lime.300}",
         "resolvedValue": "#b8e62e",
         "dark": {
@@ -13191,7 +13191,7 @@
         "path": "semantic.accent.delight.deep",
         "cssVar": "--semantic-accent-delight-deep",
         "type": "color",
-        "description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.",
+        "description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text, buttons, links or focus.",
         "alias": "{primitive.color.lime.600}",
         "resolvedValue": "#6e8f0b",
         "dark": {
@@ -13203,7 +13203,7 @@
         "path": "semantic.accent.delight.pale",
         "cssVar": "--semantic-accent-delight-pale",
         "type": "color",
-        "description": "Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.",
+        "description": "Pale lime tint behind a delight moment, like a best-fit row. Text on it is ink. Never buttons, links, focus.",
         "alias": "{primitive.color.lime.50}",
         "resolvedValue": "#f2fbd6",
         "dark": {

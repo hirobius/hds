@@ -1,0 +1,1 @@
+Gates that read the gitignored component-api.json now generate it when missing (check:docs, check:agents-md), so a fresh clone or worktree without the SessionStart hook is green; check:fast is green again (4 token descriptions trimmed to 20 words, 8 deliberate primitive reads marked tier-ok).

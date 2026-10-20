@@ -60,10 +60,10 @@ describe('display typeface (ADR-063)', () => {
     expect(css).toMatch(/--primitive-typography-weight-display:\s*800;/);
     for (const role of ['display', 'title', 'titleSm']) {
       expect(css, role).toContain(
-        `--semantic-typography-${role}-font-family: var(--primitive-typography-family-display);`,
+        `--semantic-typography-${role}-font-family: var(--primitive-typography-family-display);`, // tier-ok: asserts the semantic alias resolves to the primitive
       );
       expect(css, role).toContain(
-        `--semantic-typography-${role}-font-weight: var(--primitive-typography-weight-display);`,
+        `--semantic-typography-${role}-font-weight: var(--primitive-typography-weight-display);`, // tier-ok: asserts the semantic alias resolves to the primitive
       );
     }
     expect(roles.title.$value.fontFamily).toBe('{primitive.typography.family.display}');
