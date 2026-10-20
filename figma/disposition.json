@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-16",
+  "generatedAt": "2026-10-20",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 107,
+    "total": 110,
     "byClass": {
-      "library": 63,
-      "slot": 23,
+      "library": 65,
+      "slot": 24,
       "layout": 9,
       "internal": 12
     },
     "libraryLinked": 59,
-    "libraryMissing": 4,
+    "libraryMissing": 6,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -57,6 +57,14 @@
       "category": "Display",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67"
+    },
+    {
+      "name": "AsyncState",
+      "class": "library",
+      "parent": null,
+      "category": "Feedback",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Avatar",
@@ -605,6 +613,22 @@
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
       "overriddenFrom": "slot",
       "overrideReason": "Drawn in the library on 2026-10-10: a row of MetricTile instances (2, 3 or 4), so Figma carries the headline-numbers row."
+    },
+    {
+      "name": "NavList",
+      "class": "library",
+      "parent": null,
+      "category": "Navigation",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "NavListItem",
+      "class": "slot",
+      "parent": "NavList",
+      "category": "Navigation",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Page",

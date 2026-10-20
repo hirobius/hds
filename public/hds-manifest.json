@@ -41,6 +41,7 @@
     "Alert",
     "AlertDialog",
     "AssetImg",
+    "AsyncState",
     "Avatar",
     "AvatarGroup",
     "Badge",
@@ -100,6 +101,8 @@
     "MetaLine",
     "MetricTile",
     "MetricTiles",
+    "NavList",
+    "NavListItem",
     "Page",
     "PageHeader",
     "Pagination",
@@ -414,6 +417,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/async-state.tsx",
         "src/app/components/badge.tsx",
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
@@ -2223,6 +2227,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/async-state.tsx",
         "src/app/components/board.tsx",
         "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
@@ -3340,6 +3345,7 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/async-state.tsx",
         "src/app/components/card.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
@@ -3707,6 +3713,7 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/async-state.tsx",
         "src/app/components/button.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
@@ -4079,6 +4086,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/async-state.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/empty-state.test.tsx"
       ],
@@ -4860,6 +4868,7 @@
       "consumers": [
         "src/app/components/breadcrumb.tsx",
         "src/app/components/disclosure.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/tabs.test.tsx"
       ],
@@ -5878,6 +5887,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/async-state.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/progress.tsx",
         "src/app/components/skeleton.test.tsx",
@@ -6008,6 +6018,7 @@
       },
       "consumers": [
         "src/app/components/breadcrumb.test.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/table.tsx"
@@ -8593,6 +8604,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/menu.test.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
@@ -9309,7 +9321,7 @@
           "default": "Nothing here yet"
         },
         "level": {
-          "type": "6 | 3 | 4 | 2 | 5",
+          "type": "3 | 6 | 4 | 2 | 5",
           "default": 2
         },
         "rows": {
@@ -9382,7 +9394,7 @@
           "type": "ReactNode"
         },
         "level": {
-          "type": "6 | 3 | 4 | 2 | 5",
+          "type": "3 | 6 | 4 | 2 | 5",
           "default": 2
         },
         "onConfirm": {
@@ -9450,6 +9462,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/nav-list.test.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -10106,6 +10119,318 @@
         ]
       },
       "core": true
+    },
+    "AsyncState": {
+      "category": "Feedback",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/async-state.tsx",
+      "description": "One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into \"Still trying…\" after `slowAfterMs`), `error` (a danger `Alert` and a Retry `Button`, with offline wording when the browser reports no connection), `empty` (your node) and `ready` (children). The wrapper is a labelled region; while loading only the skeleton block is aria-busy. After Retry, focus moves to the region (tabIndex -1) once the button unmounts, so a keyboard user is not dropped on the page.",
+      "a11yRules": [
+        {
+          "rule": "The wrapper is a labelled region; only the skeleton block carries aria-busy, so the status note is never held back.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:async-state.busy-region"
+        },
+        {
+          "rule": "A long load adds a polite status note and never goes silent or spins forever.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:async-state.slow-note"
+        },
+        {
+          "rule": "The error is a danger alert, announced as soon as it appears.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:async-state.error-announced"
+        },
+        {
+          "rule": "Retry is a native button, reachable and operable by keyboard; when it unmounts, focus moves to the region instead of falling to the page.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:async-state.retry-keyboard"
+        },
+        {
+          "rule": "Give the region a label that names what is loading (\"Open roles\"), not \"Loading\".",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Make `empty` say what to do next, for example an EmptyState with an action.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "AsyncState",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/async-state.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "empty": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "error": {
+          "type": "string",
+          "optional": true
+        },
+        "errorTitle": {
+          "type": "string",
+          "default": "Something went wrong"
+        },
+        "label": {
+          "type": "string",
+          "default": "Content"
+        },
+        "loadingLabel": {
+          "type": "string",
+          "default": "Loading"
+        },
+        "onRetry": {
+          "type": "() => void",
+          "optional": true
+        },
+        "rows": {
+          "type": "number",
+          "default": 3
+        },
+        "slowAfterMs": {
+          "type": "number",
+          "default": 10000
+        },
+        "slowNote": {
+          "type": "string",
+          "default": "Still trying…"
+        },
+        "status": {
+          "type": "enum",
+          "values": [
+            "loading",
+            "error",
+            "empty",
+            "ready"
+          ]
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/patterns/async-state",
+      "usage": {
+        "when": "Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content.",
+        "whenNot": "Content that is always there, a task with measurable progress, or a full-page routed error.",
+        "useInstead": [
+          {
+            "component": "Skeleton",
+            "reason": "one placeholder shape you place yourself"
+          },
+          {
+            "component": "Alert",
+            "reason": "a message that is not tied to a load"
+          },
+          {
+            "component": "EmptyState",
+            "reason": "a list that is known to be empty, with no load around it"
+          }
+        ]
+      }
+    },
+    "NavList": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/nav-list.tsx",
+      "description": "A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected.",
+      "a11yRules": [
+        {
+          "rule": "The rows are links in an unordered list, so a screen reader announces the list and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.list-of-links"
+        },
+        {
+          "rule": "The current item is marked aria-current=page and the others carry no aria-current.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.current-page"
+        },
+        {
+          "rule": "Tab visits each link in order and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.keyboard-focus"
+        },
+        {
+          "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "item",
+          "description": "A NavList.Item: one link row holding any content.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "NavList",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/nav-list.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/components/nav-list",
+      "usage": {
+        "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
+        "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
+        "useInstead": [
+          {
+            "component": "Tabs",
+            "reason": "switching between views on the same page"
+          },
+          {
+            "component": "Breadcrumb",
+            "reason": "showing where the current page sits in a hierarchy"
+          },
+          {
+            "component": "Menu",
+            "reason": "a list of actions rather than destinations"
+          }
+        ]
+      },
+      "core": true
+    },
+    "NavListItem": {
+      "category": "Navigation",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/nav-list.tsx",
+      "description": "One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current=\"page\" when `current`.",
+      "a11yRules": [
+        {
+          "rule": "The rows are links in an unordered list, so a screen reader announces the list and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.list-of-links"
+        },
+        {
+          "rule": "The current item is marked aria-current=page and the others carry no aria-current.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.current-page"
+        },
+        {
+          "rule": "Tab visits each link in order and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.keyboard-focus"
+        },
+        {
+          "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "item",
+          "description": "A NavList.Item: one link row holding any content.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "NavListItem",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/nav-list.test.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "current": {
+          "type": "boolean",
+          "default": false
+        },
+        "href": {
+          "type": "string"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
+        "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
+        "useInstead": [
+          {
+            "component": "Tabs",
+            "reason": "switching between views on the same page"
+          },
+          {
+            "component": "Breadcrumb",
+            "reason": "showing where the current page sits in a hierarchy"
+          },
+          {
+            "component": "Menu",
+            "reason": "a list of actions rather than destinations"
+          }
+        ]
+      }
     },
     "HdsPhosphor": {
       "category": "Compiler",

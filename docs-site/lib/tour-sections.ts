@@ -48,6 +48,8 @@ export const TOUR_SECTIONS: readonly TourSection[] = [
     components: [
       'PageHeader',
       'Breadcrumb',
+      'NavList',
+      'NavListItem',
       'Badge',
       'Button',
       'Tabs',
@@ -137,6 +139,7 @@ export const TOUR_SECTIONS: readonly TourSection[] = [
       'Textarea',
       'Composer',
       'Alert',
+      'AsyncState',
       'DestructiveSection',
     ],
   },

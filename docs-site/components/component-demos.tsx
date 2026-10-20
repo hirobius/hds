@@ -37,6 +37,7 @@ import {
   Kbd,
   MetaLine,
   Menu,
+  NavList,
   Pagination,
   Popover,
   Progress,
@@ -66,6 +67,7 @@ import {
 import { ArrowRight, CircleCheck, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
 import {
   AssetImg,
+  AsyncState,
   CodeBlock,
   DataTableSection,
   DestructiveSection,
@@ -544,6 +546,27 @@ function MetaLineDemo() {
   );
 }
 
+function NavListDemo() {
+  return (
+    <div style={{ maxWidth: 320 }}>
+      <NavList aria-label="Saved jobs">
+        <NavList.Item href="#" current>
+          Design systems lead
+          <MetaLine items={['Acme Cloud', 'Remote']} />
+        </NavList.Item>
+        <NavList.Item href="#">
+          Staff front-end engineer
+          <MetaLine items={['Northwind', 'Hybrid']} />
+        </NavList.Item>
+        <NavList.Item href="#">
+          Product designer
+          <MetaLine items={['Globex', 'On-site']} />
+        </NavList.Item>
+      </NavList>
+    </div>
+  );
+}
+
 function PaginationDemo() {
   const [page, setPage] = useState(3);
   return <Pagination count={10} page={page} onPageChange={setPage} />;
@@ -884,6 +907,17 @@ function DestructiveSectionDemo() {
   );
 }
 
+function AsyncStateDemo() {
+  return (
+    <AsyncState
+      status="error"
+      label="Open roles"
+      error="The job board did not answer in time."
+      onRetry={() => {}}
+    />
+  );
+}
+
 function ErrorPatternDemo() {
   return <ErrorPattern displayText="404" message="That page moved or never existed." />;
 }
@@ -950,6 +984,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Composer: ComposerDemo,
   Kbd: KbdDemo,
   MetaLine: MetaLineDemo,
+  NavList: NavListDemo,
   Pagination: PaginationDemo,
   Popover: PopoverDemo,
   Progress: ProgressDemo,
@@ -976,6 +1011,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   FormActions: FormActionsDemo,
   DataTableSection: DataTableSectionDemo,
   DestructiveSection: DestructiveSectionDemo,
+  AsyncState: AsyncStateDemo,
   ErrorPattern: ErrorPatternDemo,
   CodeBlock: CodeBlockDemo,
   AssetImg: AssetImgDemo,

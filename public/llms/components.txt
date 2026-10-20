@@ -54,6 +54,20 @@ AssetImg - responsive asset frame with fallback placeholder handling. Contexts: 
   - style: CSSProperties = {}
   - title: string
 
+### AsyncState
+One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into "Still trying…" after `slowAfterMs`), `err…
+  - children: ReactNode
+  - empty: ReactNode
+  - error: string
+  - errorTitle: string = Something went wrong
+  - label: string = Content
+  - loadingLabel: string = Loading
+  - onRetry: (() => void)
+  - rows: number = 3
+  - slowAfterMs: number = 10000
+  - slowNote: string = Still trying…
+  - status: 'loading' | 'error' | 'empty' | 'ready'
+
 ### Avatar
 Circular avatar. Renders the image when available, else initials from `alt`.
   - alt: string
@@ -233,7 +247,7 @@ Section heading and toolbar over a `Table`. Row actions are consumer nodes in a 
   - columns: TableColumn[]
   - emptyDescription: ReactNode
   - emptyTitle: ReactNode = Nothing here yet
-  - level: 6 | 3 | 4 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - rows: DataTableSectionRow[]
   - title: ReactNode
   - toolbar: ReactNode
@@ -245,7 +259,7 @@ Titled danger zone, a danger `Callout` (the shared feedback fill, no border of i
   - confirmBody: ReactNode
   - confirmLabel: string
   - description: ReactNode
-  - level: 6 | 3 | 4 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - onConfirm: () => void
   - title: ReactNode
 
@@ -464,6 +478,16 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - items: MetadataListItem[]
   - orientation: "horizontal" | "vertical" | null = vertical
   - variant: "plain" | "divided" = plain
+
+### NavList
+A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected.
+  - children: ReactNode
+
+### NavListItem
+One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`.
+  - children: ReactNode
+  - current: boolean = false
+  - href: string
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
