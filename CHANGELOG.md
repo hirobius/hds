@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.29.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: Each of these was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it: `--color-blue-500`, `--color-indigo-600`, `--color-purple-500`, `--color-red-500`, `--color-red-700` and `--ease-in-out`.
+- Do by hand: The stray CSS variable each of these is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it: `--color-slate-200`, `--color-slate-900`, `--color-stone-50`, `--container-5xl` and `--font-serif`.
+- Do by hand: The stray CSS variable --tracking-wider is no longer shipped; type tracking comes from the --semantic-typography-\*-letter-spacing tokens, so use a type role instead.
+- Looks different: Badge horizontal padding is now 8px (was 6px); check badges in tight rows or fixed-width cells.
+- And 34 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0290).
+
+### Minor Changes
+
+- 8330e2a: Letter-spacing now comes from the type tokens only. The `.tracking-wider` and `.tracking-widest` utility classes are removed from `styles.css`, along with the stray Tailwind variables `--tracking-wider`, `--font-serif`, `--container-5xl`, `--color-slate-200`, `--color-slate-900` and `--color-stone-50` (generated as a side effect of scanning repo docs, never documented tokens). The ESLint plugin gains `hds/no-custom-tracking` (on in `recommended`, error): it flags Tailwind `tracking-*` classes, `[letter-spacing:...]` and inline `letterSpacing` that is not a `var(--semantic-typography-*)`. Use `<Text variant="...">` or a `.hds-type-<role>` class, which already set tracking.
+- dd58913: Roomier spacing, in rhythm with the 2026-10-15 type ramp bump (Adrian, 2026-10-17). The semantic scale's comfortable default moves one rung up: `xs` 8px (unchanged), `sm` 16→20px, `md` 24→28px, `lg` 32→40px, `xl` 48→64px. Compact stays the one opt-in tighter mode and moves up too, to the old comfortable values (8/16/24/32/48px; it was 6/12/20/24/40px). So `surface.padding` (Card, Dialog, panels) is 28px (24px compact), `region.gutter` (page gutter) is 40px on desktop and 20px below 640px (32/16px compact), `section.stack` 96px (64px below 640px), Card `padding="item"` list rows 20px, and the Card parts, Dialog, AlertDialog, Popover, StatusTile, Form, MetadataList, Tooltip and Page now read semantic steps instead of fixed pixels. Control heights are unchanged, so touch targets stay 40px. The deprecated `layout.*` aliases stay density-fixed at the new comfortable values.
+
+  The primitive scale drops its two off-grid steps: `primitive.space.px6` (6px) and `primitive.space.px10` (10px), with `hds.space.px6`/`px10` and the Tailwind `*-px6`/`*-px10` keys, are deprecated aliases for this minor and are removed in 0.30.0. `npx @hirobius/design-system upgrade` runs the new `hds-spacing-steps` codemod, which rewrites them to 8px and 12px. New guardrail: `hds/no-primitive-spacing` in `hds/recommended` fails a `--primitive-space-*` var, `hds.space.px*`, a numeric Tailwind spacing class or a deprecated step in consumer code.
+
+  The published CSS no longer carries utilities that only the repo's own script and lint-rule tests named (`bg-[#ff0000]`, `bg-purple-500`, `from-blue-500`, ...), and with them six Tailwind theme variables: `--color-blue-500`, `--color-indigo-600`, `--color-purple-500`, `--color-red-500`, `--color-red-700` and `--ease-in-out`. No HDS component used them; declare them in your own CSS if you read one.
+
+- dd58913: Every spacing and radius value now has a semantic token, so no design needs a typed px value or a primitive step. New `semantic.space.fixed.*` steps fill the gaps between the comfortable scale rungs and do not move with density: `2xs` 4px, `xs` 12px, `sm` 16px, `md` 24px, `lg` 32px, `xl` 48px (sm–xl equal the compact scale rungs of the same name). New `semantic.radius.scale.*`: `sm` 8px, `md` 12px, `lg` 16px, `xl` 24px, `pill` (fully round), on two new primitives `primitive.radius.16` and `primitive.radius.24`. Each ships as a CSS var (`--semantic-space-fixed-sm`, `--semantic-radius-scale-md`), in `hds.semantic.*`, as Tailwind keys (`p-fixed-sm`, `rounded-scale-md`), as Figma variables, and as Box `sx` values (`p: 'fixed-sm'`, `borderRadius: 'pill'`).
+
+  Deprecated tokens now stop tempting agents. The build tags each `$deprecated` token: a `/* @deprecated … */` comment in the CSS, `@deprecated … @removeIn` JSDoc in `hds.*`, `tokenRefs` and the `CSSProperties` var types (editors strike them through), a comment in the Tailwind preset, and they stay hidden from Figma publishing. They are left out of `llms.txt`, `llms-full.txt`, `public/llms/*` and the consumer skill. New `hds/no-deprecated-token` in `hds/recommended` fails a deprecated token as a CSS var, an `hds.*` member or a Tailwind key, and names its replacement. From a 2026-10-17 zero-use audit of `src/`, `semantic.space.section.heroMax`, `semantic.space.sidebar.railWidth`, `semantic.docs.space.paragraph` and `semantic.docs.space.inline` are deprecated. **Removal date:** these, along with the hds#206 `layout.*` / `component.gap` / `component.padding` aliases, are removed in 1.0.0. `primitive.space.px6` / `px10` are still removed in 0.30.0, and now point at `semantic.space.scale.xs` / `semantic.space.fixed.xs`.
+
+- b7c235e: Two-weight type ramp (Adrian, 2026-10-20, hds#847). Headings (`display`, `title`, `titleSm`, and the deprecated `h1`-`h3`) set in Sora 700, down from 800, and heading levels now differ by size: `display` 48→56px, `title` 24→28px, `titleSm` 18→20px. Two new size primitives carry them: `primitive.typography.size.display` (56px) and `primitive.typography.size.title` (28px); `titleSm` reads `size.xl`. `primitive.typography.weight.display` is 700. Body text goes from 450 to 400 (`primitive.typography.weight.regular`); ui, captions and labels stay at 500 and bold at 700.
+
+  The opt-in `fonts.css` now ships `fonts/sora-700.woff2` in place of `fonts/sora-800.woff2` (SIL OFL 1.1, licence alongside, overlaps flattened like before). If you load Sora yourself, load the 700 weight.
+
+  Alert titles now use the `titleSm` role (Sora 20px / 700) instead of `ui`, so they read as headings; the message stays in `caption`.
+
+### Patch Changes
+
+- e4eb607: AsyncState, NavList and TokenField are now in the Figma library, and the manifest links each one (`figmaUrl`). NavListItem maps to its own set through `figma/mapping-overrides.json`, as TimelineItem does.
+
 ## 0.28.0
 
 ### Upgrade

@@ -1,6 +1,6 @@
 {
   "package": "@hirobius/design-system",
-  "latest": "0.28.0",
+  "latest": "0.29.0",
   "floor": "0.16.0",
   "versions": [
     {
@@ -128,9 +128,21 @@
       "bump": "minor",
       "breaking": 1,
       "summary": "1 change to make by hand (1 breaking) and 4 that look different."
+    },
+    {
+      "version": "0.29.0",
+      "date": "2026-10-20",
+      "bump": "minor",
+      "breaking": 12,
+      "summary": "12 changes to make by hand (12 breaking), 34 that look different and 1 deprecation."
     }
   ],
   "deprecated": [
+    {
+      "name": "primitive.space.px6-px10",
+      "removeIn": "0.30.0",
+      "step": "0.29.0/deprecated/primitive.space.px6-px10"
+    },
     {
       "name": "Blockquote.size",
       "removeIn": "1.0.0",
