@@ -1,5 +1,0 @@
----
-'@hirobius/design-system': minor
----
-
-Display and title type now set in Sora 800 (SIL OFL 1.1, ADR-063), and body text moves to weight 450. `primitive.typography.family.display` leads with `Sora`, then falls back to Plus Jakarta Sans and the system sans stack, so the `display`, `title` and `titleSm` roles (and the deprecated `h1`-`h3`) change face. A new `primitive.typography.weight.display` (800) carries their weight. Plus Jakarta Sans body weight steps up: `regular` 400 to 450 (body, mono), `medium` and `bold` stay at 500 and 700 (ui, caption, controls, bold). Sizes, line heights and letter spacing are unchanged. The opt-in `fonts.css` now declares three faces: one variable Plus Jakarta Sans file (replacing the three static ones), `fonts/sora-800.woff2` and IBM Plex Mono, each with its licence beside it. A new display dial, `--hds-font-family-display` (`fontFamilyDisplay` on `HdsThemeProvider`), sets the heading face; headings no longer follow `--hds-font-family`, so a consumer that set only the body dial and wants its headings to match should set the display dial too.
