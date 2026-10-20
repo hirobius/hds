@@ -332,6 +332,13 @@ html[data-docs-corners='sharp'] {
   --component-badge-radius: 0px;
   --component-card-radius: 0px;
 }
+/* HDS's rounded-lg is calc(--role-radius + 4px) (and .hds-card the same), so Corners=Sharp still
+   leaves 4px on HDS Card, Alert and SegmentedControl. Square just those two, docs-only (hds#806).
+   The Fumadocs chrome and every other rounded-* class follow the tokens above. */
+html[data-docs-corners='sharp'] :is(.rounded-lg, .hds-card) {
+  border-radius: 0;
+}
+
 /* Shadow: hard. Zero-blur offsets in the full-strength shadow colour. */
 html[data-docs-shadow='hard'] {
   --semantic-shadow-subtle: 4px 4px 0 hsl(var(--primitive-shadow-color));
@@ -675,7 +682,7 @@ a code[data-density] {
 
 /* Fumadocs' Tailwind shadow-lg (collapsed sidebar, its reopen button, open contents popover)
    takes the floating shadow token; the mobile drawer is an overlay. Both follow the Shadow switch. */
-#nd-docs-layout .shadow-lg:not(#nd-page *) {
+#nd-docs-layout .shadow-lg:not(#nd-page *, #nd-sidebar-mobile) {
   box-shadow: var(--semantic-shadow-floating);
 }
 #nd-sidebar-mobile {

@@ -131,6 +131,8 @@ describe('slice 2: sidebar, drawer, contents rail, images', () => {
 
   it('the mobile drawer shadow comes from the overlay shadow token', () => {
     expect(rule(/#nd-sidebar-mobile/)).toContain('box-shadow: var(--semantic-shadow-overlay)');
+    // The generic shadow-lg rule is more specific than an id alone, so it must leave the drawer out.
+    expect(css()).toMatch(/\.shadow-lg:not\([^)]*#nd-sidebar-mobile[^)]*\)/);
   });
 
   it('other Fumadocs shadows (contents popover, collapsed sidebar) use the floating token', () => {
@@ -139,8 +141,9 @@ describe('slice 2: sidebar, drawer, contents rail, images', () => {
     );
   });
 
-  it('no longer zeroes .rounded-* / .hds-card classes to follow the Corners switch', () => {
-    expect(css()).not.toMatch(/data-docs-corners='sharp'\]\s*:is\(/);
+  it('the Sharp override is down to the one HDS class with a radius offset', () => {
+    const body = /data-docs-corners='sharp'\]\s*:is\(([^)]*)\)\s*\{/.exec(css())?.[1] ?? '';
+    expect(body.split(',').map((c) => c.trim())).toEqual(['.rounded-lg', '.hds-card']);
   });
 
   it('renders MDX images with the HDS radius class, not rounded-lg', () => {
