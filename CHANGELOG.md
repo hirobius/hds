@@ -1,5 +1,43 @@
 # Changelog
 
+## 0.27.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: Delete every var(--hds-accent-bar); status is shown in the content, not a coloured bar.
+- Do by hand: The stray CSS variable --leading-relaxed and the .leading-relaxed class are no longer shipped; use --semantic-typography-body-line-height or set your own line-height instead.
+- Do by hand: Delete the BoardColumnTone import and the tone prop from every BoardColumn, and drop any var(--hds-accent-bar); status lives in the column title and count.
+- Do by hand: Lint now errors on bullet lines with three or more items (new hds/max-two-meta-items rule): use MetaLine for two items, one row per item beyond that, or turn the rule off for that file.
+- And 34 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0270).
+
+### Minor Changes
+
+- 6de7585: Display and title type now set in Sora 800 (SIL OFL 1.1, ADR-063), and body text moves to weight 450. `primitive.typography.family.display` leads with `Sora`, then falls back to Plus Jakarta Sans and the system sans stack, so the `display`, `title` and `titleSm` roles (and the deprecated `h1`-`h3`) change face. A new `primitive.typography.weight.display` (800) carries their weight. Plus Jakarta Sans body weight steps up: `regular` 400 to 450 (body, mono), `medium` and `bold` stay at 500 and 700 (ui, caption, controls, bold). Sizes, line heights and letter spacing are unchanged. The opt-in `fonts.css` now declares three faces: one variable Plus Jakarta Sans file (replacing the three static ones), `fonts/sora-800.woff2` and IBM Plex Mono, each with its licence beside it. A new display dial, `--hds-font-family-display` (`fontFamilyDisplay` on `HdsThemeProvider`), sets the heading face; headings no longer follow `--hds-font-family`, so a consumer that set only the body dial and wants its headings to match should set the display dial too.
+- 1057427: New `MetaLine` primitive: one or two items joined by a bullet (a third is a type error). New `hds/max-two-meta-items` ESLint rule, in `hds.configs.recommended`, flags `A · B · C` chains. Max two items per bullet line, so translations never wrap mid-line; more facts get their own row.
+- b8ff404: Removes `BoardColumn`'s `tone` prop and its status dot, and the `--hds-accent-bar` CSS variable; adds the `hds/no-status-clutter` ESLint rule (flags `<Badge dot>` and coloured left-border accent bars). Status is implied by content: a column's title and count carry it. The `Badge` `dot` prop is removed in a separate change.
+- 1df70db: Table no longer shears its content on desktop, and its default look is restyled.
+
+  **Fix.** Every column used to be `minmax(0, 1fr)`, so a long link, a date or a row of buttons could not widen its column: it spilled out of its cell, under the next column, and past the table's edge where nothing could scroll to it. A column without its own `width` is now `minmax(min-content, 1fr)` with a one-tile floor (`semantic.size.tile`): text wraps between words, an `action` cell (a bare link) wraps anywhere, a `value` or `token` cell (a date, a number, a token name) never wraps, and when the columns cannot fit, the table scrolls inside its own frame with a faded edge on the side that has more columns.
+
+  **Restyle (before → after).** Before: a raised surface fill behind the whole table, a `surface.overlay` header in the 12px caption style, horizontal rules only, body text at medium weight. After: a thin `border.subdued` frame with rounded corners and no fill, a softly tinted `surface.raised` header in the ui style (medium weight, sentence case), taller body rows (`space.scale.sm` vertical padding), thin horizontal rules between rows and vertical rules between columns (header included), no zebra stripes, and body text at the regular weight. New opt-in `emphasizeFirstColumn` sets the first column in the medium weight for a row-label column.
+
+- 208706a: `--leading-relaxed` and the `.leading-relaxed` utility class are no longer in `styles.css` or `tokens.css`. It was never a documented token: a Tailwind scan of the unused `hds-registry.json` generated it as a side effect, and deleting that file drops it. No fleet repo reads it; if you do, set your own `line-height` or use the semantic body line-height token.
+- 78ad409: Bumps the small end of the type ramp (Adrian, 2026-10-15). `body` goes 16px to 18px (line height 1.6, so 25.6px to 28.8px), `ui` 14px to 16px (21px to 24px), `caption` 12px to 14px (18px to 21px), `titleSm` 16px to 18px and `mono` 13px to 15px (the `primitive.typography.size.code` value). `display` and `title` are unchanged. The deprecated `eyebrow` follows `caption`, and the Button (sm 14px, md and lg 16px), Badge and Tag label sizes follow their roles. Only values move: no token is added or removed, and the spacing scale and density modes are untouched. Text-bearing components get taller by the extra line height, so check fixed-width layouts and wrapping.
+
+### Patch Changes
+
+- 4f44dab: Accent options (Adrian, 2026-10-17). Graphite stays the default accent but is a touch lighter in light mode (`graphite.700` #433a3f → #4a4146, white text 9.83:1) and a touch softer in dark mode (`graphite.200` #d4d0d2 → #cbc6c9, on-accent text 9.02:1). New opt-in **cobalt** accent theme: set `data-accent="cobalt"` on `<html>` (or a wrapper) and only the accent tokens swap (accent `cobalt.600` #112de8 with white text 8.19:1, hover and pressed `cobalt.700`, subtle background `cobalt.50`, dark-mode accent `cobalt.300` #8a97f8 at 7.86:1 on black); the CSS ships in `accents.css`, already pulled in by the stylesheet. New **lime delight** accent `semantic.accent.delight.{base,deep,pale,onDelight}` (base #b8e62e, ink text 12.95:1) for delight moments only (streak or win badge, "new" tag, best-fit highlight, confetti), never buttons, links or focus. New primitives `primitive.color.cobalt.50–900` and `primitive.color.lime.*`.
+- eb2df80: `AGENTS.md` and `public/llms-full.txt` pick-by-need recipes now include explicit import lines for components that live on `@hirobius/design-system/patterns`.
+- 268be30: Fix codemod edge cases in patterns-subpath and tile-grid: preserve comments outside braces, handle ES2022 string specifiers, strip block comment indents, avoid doubling parentheses on expression widths, and fix nullishness classification for expressions like `w ?? undefined`.
+- 1f7cf54: Dark accent states now lighten step by step: `--semantic-accent-hover` moves from graphite-300 to graphite-100 and `--semantic-accent-pressed` from graphite-400 to graphite-50 (rest stays graphite-200). `content-onAccent` contrast is 10.0 rest, 12.3 hover, 13.8 pressed (pressed was 4.17:1, under AA). Primary Button pressed now binds a new `component.button.bgPressed` token (`--component-button-bgPressed` → `semantic.accent.pressed`) instead of a 5% wash on the hover fill, which sat 1/255 off hover in dark; light pressed is now graphite-900 (was graphite-800 plus a 5% black wash, about the same). A new test fails if any rest/hover/pressed step, or a Button's hover vs pressed fill, comes within 1.05:1. Contrast gate now covers onAccent on accent rest, hover and pressed. Consumers can drop any held floor on this pair (hds#748).
+- a623113: `HdsFieldRenderProps` types `ref` as `React.Ref<never>` and `value` as `any` (were `Ref<unknown>` and `unknown`), so the render props spread onto `<input>`, `<select>` and `<textarea>` as docs/CONSUMING.md section 8.5 shows, instead of failing `tsc` with TS2322.
+- 25fef7f: `src/styles/utilities.css` now sits inside `@layer utilities`. Its rules were unlayered, so they outranked Tailwind state variants of the same property (`cursor-pointer` beat `disabled:cursor-not-allowed` on Tag; `.flex` beat `empty:hidden`, so empty flex rows still took up their gap). The mono typography for `code`/`pre`/`kbd`/`samp` and `.font-mono` (plus `.font-normal`, `.tracking-wider`, `.tracking-widest`) moves to `mono-type.css` and stays unlayered, so code text keeps its HDS size over host-app layered styles. Consumers who override these classes with unlayered CSS keep winning.
+- 4645fbc: DESIGN.md drops the "no playful or bouncy motion" and "no `whileTap` scale" rules: spring or expressive motion and a small press transform are allowed where they add delight, and must respect `prefers-reduced-motion`. Docs only; no component changes.
+
 ## 0.26.2
 
 ### Upgrade
