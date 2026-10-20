@@ -7,10 +7,10 @@
  * @useInstead Skeleton one placeholder shape you place yourself
  * @useInstead Alert a message that is not tied to a load
  * @useInstead EmptyState a list that is known to be empty, with no load around it
- * @a11y component required a11y:async-state.busy-region The wrapper is a labelled region and carries aria-busy while loading.
+ * @a11y component required a11y:async-state.busy-region The wrapper is a labelled region; only the skeleton block carries aria-busy, so the status note is never held back.
  * @a11y component required a11y:async-state.slow-note A long load adds a polite status note and never goes silent or spins forever.
  * @a11y component required a11y:async-state.error-announced The error is a danger alert, announced as soon as it appears.
- * @a11y component required a11y:async-state.retry-keyboard Retry is a native button, reachable and operable by keyboard.
+ * @a11y component required a11y:async-state.retry-keyboard Retry is a native button, reachable and operable by keyboard; when it unmounts, focus moves to the region instead of falling to the page.
  * @a11y consumer required Give the region a label that names what is loading ("Open roles"), not "Loading".
  * @a11y consumer required Make `empty` say what to do next, for example an EmptyState with an action.
  */
@@ -56,12 +56,12 @@ export interface AsyncStateProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 
 /**
  * Placeholder rows shaped like a list item: a title line and a shorter meta line.
- * Decorative (the Skeleton is aria-hidden); the region's aria-busy and the
- * status line carry the meaning.
+ * Decorative (the Skeleton is aria-hidden). This block alone is aria-busy; the
+ * status line sits outside it so its polite updates are never held back.
  */
 function SkeletonRows({ rows }: { rows: number }) {
   return (
-    <Stack gap="normal">
+    <Stack gap="normal" aria-busy="true" data-slot="skeleton">
       {Array.from({ length: Math.max(0, rows) }, (_, i) => (
         <div key={i} data-slot="row">
           <Stack gap="tight">
@@ -120,7 +120,7 @@ function ErrorView({
         {offline ? 'Reconnect, then try again.' : error}
       </Alert>
       {onRetry && (
-        <Button variant="secondary" size="sm" onClick={onRetry}>
+        <Button variant="secondary" size="sm" onClick={onRetry} data-slot="retry">
           Retry
         </Button>
       )}
@@ -133,7 +133,9 @@ function ErrorView({
  * a polite status line that turns into "Still trying…" after `slowAfterMs`),
  * `error` (a danger `Alert` and a Retry `Button`, with offline wording when the
  * browser reports no connection), `empty` (your node) and `ready` (children).
- * The wrapper is a labelled region and is aria-busy only while loading.
+ * The wrapper is a labelled region; while loading only the skeleton block is
+ * aria-busy. After Retry, focus moves to the region (tabIndex -1) once the
+ * button unmounts, so a keyboard user is not dropped on the page.
  */
 export const AsyncState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AsyncStateProps>(
   function AsyncState(
@@ -153,14 +155,38 @@ export const AsyncState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Async
     },
     ref,
   ) {
+    const regionRef = React.useRef<HTMLDivElement | null>(null);
+    const setRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        regionRef.current = node;
+        if (typeof ref === 'function') ref(node);
+        else if (ref) ref.current = node;
+      },
+      [ref],
+    );
+    // Set when Retry is pressed; read after the next render, when the button
+    // may have unmounted and taken focus with it.
+    const retried = React.useRef(false);
+    const handleRetry = React.useCallback(() => {
+      retried.current = true;
+      onRetry?.();
+    }, [onRetry]);
+    React.useLayoutEffect(() => {
+      if (!retried.current) return;
+      retried.current = false;
+      const active = document.activeElement;
+      // Only rescue focus that fell to the page; never pull it from elsewhere.
+      if (active && active !== document.body) return;
+      regionRef.current?.focus();
+    }, [status]);
     return (
       <div
-        ref={ref}
+        ref={setRef}
+        tabIndex={-1}
         data-hds-component="AsyncState"
         data-status={status}
         role="region"
         aria-label={label}
-        aria-busy={status === 'loading' ? true : undefined}
         {...props}
       >
         {status === 'loading' && (
@@ -172,7 +198,11 @@ export const AsyncState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Async
           />
         )}
         {status === 'error' && (
-          <ErrorView error={error} errorTitle={errorTitle} onRetry={onRetry} />
+          <ErrorView
+            error={error}
+            errorTitle={errorTitle}
+            onRetry={onRetry ? handleRetry : undefined}
+          />
         )}
         {status === 'empty' && empty}
         {status === 'ready' && children}

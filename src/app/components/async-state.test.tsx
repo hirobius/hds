@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { act, render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { AsyncState } from './async-state';
@@ -9,13 +10,52 @@ afterEach(() => {
 });
 
 describe('AsyncState', () => {
-  it('a11y:async-state.busy-region - loading is a labelled region marked aria-busy, with skeleton rows', () => {
+  it('a11y:async-state.busy-region - loading is a labelled region whose skeleton block is aria-busy', () => {
     const { container } = render(<AsyncState status="loading" label="Openings" rows={4} />);
     const region = screen.getByRole('region', { name: 'Openings' });
-    expect(region.getAttribute('aria-busy')).toBe('true');
+    expect(region.getAttribute('aria-busy')).toBeNull();
+    const skeleton = container.querySelector('[data-slot="skeleton"]');
+    expect(skeleton?.getAttribute('aria-busy')).toBe('true');
     expect(container.querySelectorAll('[data-slot="row"]').length).toBe(4);
     expect(container.querySelectorAll('[data-variant]').length).toBeGreaterThan(0);
     expect(screen.queryByRole('progressbar')).toBeNull();
+  });
+
+  it('the polite status note has no aria-busy ancestor', () => {
+    render(<AsyncState status="loading" label="Openings" />);
+    const status = screen.getByRole('status');
+    expect(status.closest('[aria-busy="true"]')).toBeNull();
+  });
+
+  it('a11y:async-state.retry-keyboard - focus moves to the region when Retry unmounts', () => {
+    function Harness() {
+      const [status, setStatus] = React.useState<'error' | 'loading'>('error');
+      return <AsyncState status={status} label="Openings" onRetry={() => setStatus('loading')} />;
+    }
+    render(<Harness />);
+    const retry = screen.getByRole('button', { name: 'Retry' });
+    retry.focus();
+    fireEvent.click(retry);
+    expect(screen.queryByRole('button', { name: 'Retry' })).toBeNull();
+    expect(document.activeElement).toBe(screen.getByRole('region', { name: 'Openings' }));
+  });
+
+  it('does not pull focus from elsewhere after Retry', () => {
+    function Harness() {
+      const [status, setStatus] = React.useState<'error' | 'loading'>('error');
+      return (
+        <>
+          <input aria-label="Search" />
+          <AsyncState status={status} onRetry={() => setStatus('loading')} />
+        </>
+      );
+    }
+    render(<Harness />);
+    const search = screen.getByRole('textbox', { name: 'Search' });
+    search.focus();
+    // A pointer click that leaves focus where it was must not have it pulled away.
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+    expect(document.activeElement).toBe(search);
   });
 
   it('defaults to three skeleton rows', () => {

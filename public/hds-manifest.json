@@ -10123,28 +10123,10 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/async-state.tsx",
-      "description": "One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into \"Still trying…\" after `slowAfterMs`), `error` (a danger `Alert` and a Retry `Button`, with offline wording when the browser reports no connection), `empty` (your node) and `ready` (children). The wrapper is a labelled region and is aria-busy only while loading.",
-      "usage": {
-        "when": "Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content.",
-        "whenNot": "Content that is always there, a task with measurable progress, or a full-page routed error.",
-        "useInstead": [
-          {
-            "component": "Skeleton",
-            "reason": "one placeholder shape you place yourself"
-          },
-          {
-            "component": "Alert",
-            "reason": "a message that is not tied to a load"
-          },
-          {
-            "component": "EmptyState",
-            "reason": "a list that is known to be empty, with no load around it"
-          }
-        ]
-      },
+      "description": "One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into \"Still trying…\" after `slowAfterMs`), `error` (a danger `Alert` and a Retry `Button`, with offline wording when the browser reports no connection), `empty` (your node) and `ready` (children). The wrapper is a labelled region; while loading only the skeleton block is aria-busy. After Retry, focus moves to the region (tabIndex -1) once the button unmounts, so a keyboard user is not dropped on the page.",
       "a11yRules": [
         {
-          "rule": "The wrapper is a labelled region and carries aria-busy while loading.",
+          "rule": "The wrapper is a labelled region; only the skeleton block carries aria-busy, so the status note is never held back.",
           "required": true,
           "owner": "component",
           "testId": "a11y:async-state.busy-region"
@@ -10162,7 +10144,7 @@
           "testId": "a11y:async-state.error-announced"
         },
         {
-          "rule": "Retry is a native button, reachable and operable by keyboard.",
+          "rule": "Retry is a native button, reachable and operable by keyboard; when it unmounts, focus moves to the region instead of falling to the page.",
           "required": true,
           "owner": "component",
           "testId": "a11y:async-state.retry-keyboard"
@@ -10178,9 +10160,9 @@
           "owner": "consumer"
         }
       ],
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
+      "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "AsyncState",
@@ -10248,7 +10230,25 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "docsPage": "/docs/patterns/async-state"
+      "docsPage": "/docs/patterns/async-state",
+      "usage": {
+        "when": "Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content.",
+        "whenNot": "Content that is always there, a task with measurable progress, or a full-page routed error.",
+        "useInstead": [
+          {
+            "component": "Skeleton",
+            "reason": "one placeholder shape you place yourself"
+          },
+          {
+            "component": "Alert",
+            "reason": "a message that is not tied to a load"
+          },
+          {
+            "component": "EmptyState",
+            "reason": "a list that is known to be empty, with no load around it"
+          }
+        ]
+      }
     },
     "HdsPhosphor": {
       "category": "Compiler",
