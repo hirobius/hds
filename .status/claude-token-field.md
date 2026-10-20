@@ -1,1 +1,1 @@
-TokenField: a multi-line field with atomic [Variable] chips, a plain-string value and an insertAt ref handle (#826).
+TokenField: a multi-line field with atomic [Variable] chips, a plain-string value and an insertAt ref handle (#826). Review fixes: IME commits on compositionend, drop inserts at the drop point, an empty paste keeps the selection.
