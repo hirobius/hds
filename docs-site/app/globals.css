@@ -21,6 +21,9 @@
   --primitive-typography-family-primary:
     var(--hds-docs-font-sans), 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', sans-serif;
+  --primitive-typography-family-display:
+    var(--hds-docs-font-display), 'Sora', 'Plus Jakarta Sans', system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --primitive-typography-family-mono:
     var(--hds-docs-font-mono), 'IBM Plex Mono', 'Courier New', monospace;
   /* The font dial (ADR-023) re-points the type roles inside any HDS subtree (HdsThemeProvider,
@@ -55,6 +58,15 @@
 
 html {
   font-family: var(--primitive-typography-family-primary);
+}
+
+/* Headings take the HDS display face (Sora 800, ADR-063), as the
+   display and title roles do; the body face stays on everything else. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--semantic-typography-title-font-family);
 }
 
 /*
@@ -175,6 +187,30 @@ pre {
   overflow-x: auto;
 }
 
+/* Prose tables (components/mdx-prose.tsx): a frame from HDS tokens, so the Corners switch squares
+   it. Fumadocs' own wrapper hard-codes an 8px radius. */
+.hds-docs-table {
+  position: relative;
+  overflow: auto;
+  margin: var(--semantic-space-scale-lg) 0;
+  border: 1px solid var(--semantic-color-border-default);
+  border-radius: var(--semantic-radius-action);
+}
+/* The frame scrolls, so the table inside fills it instead of shrinking to its content. */
+.prose .hds-docs-table > table {
+  display: table;
+  width: 100%;
+  margin: 0;
+}
+
+/* Search dialog (the Cmd+K one): Fumadocs sets rounded-xl and shadow-2xl on it. Radius and shadow
+   come from HDS tokens, so Corners and Shadow both reach it. Keyed on the result list's id, the
+   one thing only this dialog holds. */
+[role='dialog']:has(#fd-search-list) {
+  border-radius: var(--semantic-radius-action);
+  box-shadow: var(--semantic-shadow-overlay);
+}
+
 /* Collapsed sections (generated pages and token tables): a hairline row with a
    chevron, the content one click away. Native <details>, so it works without JS
    and stays searchable. */
@@ -267,38 +303,23 @@ pre {
 }
 
 /*
- * Docs preview switches (hds#794): Corners + Shadow. Docs-only scope, set on
- * <html> by components/preview-switches.tsx; not a theming dial (ADR-023) and
- * not in shipped styles.css. Default (attribute unset) is today's look.
+ * Docs preview switches (hds#794): Corners + Shadow, opened from the display-settings button
+ * beside the theme switcher (components/preview-switches.tsx). Docs-only scope, set on <html>;
+ * not a theming dial (ADR-023) and not in shipped styles.css. Default (attribute unset) is
+ * today's look.
  */
-.hds-docs-switches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  align-items: center;
-  margin-inline-start: auto;
-  font-size: 0.75rem;
-}
-.hds-docs-switch {
+.hds-docs-display {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
-.hds-docs-switch-label {
-  color: var(--semantic-color-content-secondary);
-  margin-inline-end: 0.25rem;
-}
-.hds-docs-switch button {
-  padding: 0.125rem 0.5rem;
-  border: 1px solid var(--semantic-color-border-default);
-  border-radius: 9999px;
-  color: var(--semantic-color-content-secondary);
-  text-transform: capitalize;
-}
-.hds-docs-switch button[aria-pressed='true'] {
-  background: var(--semantic-color-surface-hover);
-  color: var(--semantic-color-content-primary);
-  border-color: var(--semantic-color-border-strong);
+/* Fumadocs wraps the theme-switch slot in a full-width bordered pill that sits empty beside a
+   lone toggle; drop that chrome so the switcher and the settings button sit together, compact. */
+div:has(> .hds-docs-display) {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: none;
 }
 
 /* Corners: sharp. Every radius token to 0 (tag stays a pill). */
@@ -311,9 +332,11 @@ html[data-docs-corners='sharp'] {
   --component-badge-radius: 0px;
   --component-card-radius: 0px;
 }
-/* Tailwind's rounded-sm/md/lg derive from --role-radius with a +4px / -2px offset; zero them too. */
-html[data-docs-corners='sharp']
-  :is(.rounded, .rounded-sm, .rounded-md, .rounded-lg, .rounded-t-md, .rounded-b-md, .hds-card) {
+/* HDS's rounded-lg is calc(--role-radius + 4px) (and .hds-card the same), so Corners=Sharp still
+   leaves 4px on HDS Card, Alert and SegmentedControl; plain `rounded` is the --hds-radius-4
+   primitive (Kbd, Skeleton text). Square just those, docs-only (hds#806). The Fumadocs chrome and
+   every other rounded-* class follow the tokens above. */
+html[data-docs-corners='sharp'] :is(.rounded, .rounded-lg, .hds-card) {
   border-radius: 0;
 }
 
@@ -347,6 +370,14 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabl
     var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000),
     5px 5px 0 hsl(var(--primitive-shadow-color));
+}
+
+/* MDX code fences (components/mdx-code-block.tsx) are the HDS CodeBlock. It sits outside the
+   prose rules (not-prose), so it takes the spacing a prose <pre> had, and never widens the column. */
+.hds-docs-code {
+  margin-block: var(--semantic-space-scale-md);
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* Foundations galleries (components/foundation-visuals.tsx): every swatch,
@@ -609,4 +640,52 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabl
   .hds-swatch-block {
     height: 3.5rem;
   }
+}
+
+/* A linked inline-code chip is inline-flex, so the link's underline does not reach it
+   (text-decoration skips inline-flex children). Draw the cue on the chip itself. */
+a code[data-density] {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* In prose table cells a long type union wraps inside the chip (as it did before the HDS chip)
+   instead of overrunning it under the chip's max-width + nowrap. */
+.prose .hds-docs-table td code[data-density],
+.prose .hds-docs-table th code[data-density] {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* MDX images (components/mdx-prose.tsx): the radius is an HDS token, so the Corners switch reaches it. */
+.hds-docs-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--semantic-radius-action);
+}
+
+/* Fumadocs chrome (sidebar items and active item, search trigger, collapse button, nav controls,
+   contents rail) draws its corners with Tailwind rounded-md/lg/xl, which carry Fumadocs' own radii.
+   Inside the layout shell, outside the page body and the HDS controls, they take the HDS radius
+   token, so the Corners switch squares them. */
+#nd-docs-layout
+  :is(.rounded-md, .rounded-lg, .rounded-xl):not(
+    #nd-page *,
+    .hds-docs-display,
+    .hds-docs-display *
+  ) {
+  border-radius: var(--semantic-radius-action);
+}
+/* The collapse button gets its corners from its parent's `*:rounded-md`. */
+#nd-sidebar button[aria-label='Collapse Sidebar'] {
+  border-radius: var(--semantic-radius-action);
+}
+
+/* Fumadocs' Tailwind shadow-lg (collapsed sidebar, its reopen button, open contents popover)
+   takes the floating shadow token; the mobile drawer is an overlay. Both follow the Shadow switch. */
+#nd-docs-layout .shadow-lg:not(#nd-page *, #nd-sidebar-mobile) {
+  box-shadow: var(--semantic-shadow-floating);
+}
+#nd-sidebar-mobile {
+  box-shadow: var(--semantic-shadow-overlay);
 }

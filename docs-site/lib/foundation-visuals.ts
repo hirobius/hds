@@ -52,13 +52,34 @@ export interface SwatchGroup {
   swatches: TokenRow[];
 }
 
+/** The accent roles an accent theme swaps, shown for each theme. */
+const ACCENT_ROLES = [
+  'semantic.accent.rest',
+  'semantic.accent.hover',
+  'semantic.accent.pressed',
+  'semantic.accent.subtle',
+  'semantic.color.content.accent',
+  'semantic.color.content.onAccent',
+];
+
+/** `base` with each `overlay` leaf laid over it (an accent theme is a token overlay). */
+function overlay(base: Json, layer: Json): Json {
+  if (!isNode(base) || !isNode(layer) || '$value' in layer) return layer;
+  const out: Node = { ...base };
+  for (const [k, v] of Object.entries(layer)) out[k] = k in base ? overlay(base[k], v) : v;
+  return out;
+}
+
 /**
- * Colour gallery: primitive ramps (one group per hue), then the semantic and
- * accent tokens (one group per role). Tenant brand ramps (`projectBrand`) are
- * left out: they belong to one client, not the shared system.
+ * Colour gallery: primitive ramps (one group per hue), the semantic and accent
+ * tokens (one group per role), then the accent themes side by side: graphite
+ * (the default), each opt-in theme in `accentThemes` (`accents/<name>/tokens.json`,
+ * set with `data-accent`), and the lime delight accent. Tenant brand ramps
+ * (`projectBrand`) are left out: they belong to one client, not the shared system.
  */
 export function colorGalleries(
   tokens: Json,
+  accentThemes: Record<string, Json> = {},
 ): { title: string; dense: boolean; groups: SwatchGroup[] }[] {
   const groupsUnder = (path: string, skip: string[] = []): SwatchGroup[] => {
     const node = lookup(tokens, path);
@@ -73,8 +94,23 @@ export function colorGalleries(
   };
   const accent: SwatchGroup = {
     title: 'Accent',
-    swatches: leafRows(tokens, 'semantic.accent').filter((r) => isColor(r.value)),
+    swatches: leafRows(tokens, 'semantic.accent').filter(
+      (r) => isColor(r.value) && !r.token.startsWith('semantic.accent.delight.'),
+    ),
   };
+  const roles = (source: Json) =>
+    ACCENT_ROLES.map((path) => tokenRow(source, path)).filter((r): r is TokenRow => r !== null);
+  const themes: SwatchGroup[] = [
+    { title: 'Graphite (default)', swatches: roles(tokens) },
+    ...Object.entries(accentThemes).map(([name, layer]) => ({
+      title: `${titleCase(name)} (data-accent="${name}")`,
+      swatches: roles(overlay(tokens, layer)),
+    })),
+    {
+      title: 'Delight (lime): badges, "new" tags, highlights; never buttons, links or focus',
+      swatches: leafRows(tokens, 'semantic.accent.delight').filter((r) => isColor(r.value)),
+    },
+  ];
   return [
     { title: 'Primitives', dense: true, groups: groupsUnder('primitive.color', ['projectBrand']) },
     {
@@ -82,6 +118,7 @@ export function colorGalleries(
       dense: false,
       groups: [...groupsUnder('semantic.color'), accent].filter((g) => g.swatches.length),
     },
+    { title: 'Accent themes', dense: false, groups: themes.filter((g) => g.swatches.length) },
   ];
 }
 

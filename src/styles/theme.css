@@ -10,7 +10,9 @@
  *   2. tailwind.config.ts (@config)
  *   3. tokens.generated.css (CSS vars for every token — generated from
  *      hirobius.tokens.json by scripts/build-tokens.mjs)
- *   4. tenants.css (per-tenant overrides, also generated from
+ *   4. accents.css (opt-in accent themes, data-accent="cobalt", generated
+ *      from accents/<name>/tokens.json)
+ *   5. tenants.css (per-tenant overrides, also generated from
  *      tenants/<slug>/tokens.json)
  *
  * Owns content that doesn't belong in the generated token layer:
@@ -40,7 +42,7 @@
  *     • theme    → data-theme="dark"        (light = unset)
  *     • density  → data-density="compact"   (comfortable = unset)
  *     • brand    → data-brand="<slug>"      (+ data-tenant alias; base = unset)
- *     • font     → --hds-font-family / --hds-font-family-mono  (defaults below)
+ *     • font     → --hds-font-family / -mono / -display  (defaults below)
  */
 
 @import 'tailwindcss';
@@ -57,26 +59,38 @@
 @source not "../../.changeset";
 @source not "../../upgrade";
 @source not "../../.status";
+/* `changeset version` folds those notes into CHANGELOG.md before the release
+   build, so the changelog would recompile them too (the 0.27.0 cut failed on
+   --leading-relaxed coming back). */
+@source not "../../CHANGELOG.md";
+/* Same for UPGRADING.md: its "Do by hand" lines name removed utilities, which would compile
+   straight back in (check-upgrade-css rule 7 fails a build that carries one). */
+@source not "../../UPGRADING.md";
 
 /* The spacing guards and codemod (codemods/, their fixtures, the lint rule, its
-   README and tests) name the utilities they ban or rewrite; scanned, they would
+   README) name the utilities they ban or rewrite; scanned, they would
    ship them (hds#781 review: +650 B gzip on each CSS bundle). */
 @source not "../../codemods";
 @source not "../../fixtures/check-tailwind-spacing-scale";
 @source not "../../scripts/eslint-plugin-hds/rules/no-primitive-spacing.mjs";
-@source not "../../scripts/eslint-plugin-hds/__tests__/no-primitive-spacing.test.mjs";
 @source not "../../scripts/eslint-plugin-hds/README.md";
 @source not "../../scripts/check-tailwind-spacing-scale.mjs";
 @source not "../../scripts/tailwind-spacing-scale.baseline.json";
-@source not "../../scripts/__tests__/spacing-steps-codemod.test.mjs";
-@source not "../../scripts/__tests__/check-tailwind-spacing-scale.test.mjs";
+/* Same for the deprecated-token rule (hds#787): it names the
+   deprecated utilities it flags (md:p-layout-tight, gap-section-heroMax, ...). */
+@source not "../../scripts/eslint-plugin-hds/rules/no-deprecated-token.mjs";
+@source not "../../scripts/eslint-plugin-hds/rules/deprecated-tokens.json";
+/* The script and lint-rule tests feed made-up class strings to the checks
+   (bg-[#ff0000], bg-[var(--c-d)], [test:phase1]...). Scanned, every one of them
+   shipped in the published CSS: 0.29.0 stops that (check-upgrade-css reports a
+   Tailwind utility that leaves, and no consumer should rely on HDS shipping one). */
+@source not "../../scripts/__tests__";
+@source not "../../scripts/eslint-plugin-hds/__tests__";
 /* Same for the status-clutter guard (hds#759): it names the accent bars it
    bans (border-l-8, border-l-[3px], ...), which shipped none of them. */
 @source not "../../fixtures/check-no-status-clutter";
 @source not "../../scripts/check-no-status-clutter.mjs";
 @source not "../../scripts/eslint-plugin-hds/rules/no-status-clutter.mjs";
-@source not "../../scripts/eslint-plugin-hds/__tests__/no-status-clutter.test.mjs";
-@source not "../../scripts/__tests__/check-no-status-clutter.test.mjs";
 /* 0.26.x shipped these four only because that test named them; kept emitted so
    excluding the test removes nothing a consumer could be using. */
 @source inline("inset-2 gap-0 hover:p-4 md:px-3");
@@ -85,10 +99,14 @@
    utilities it finds in scanned files, and these 16 lived only in the deleted
    docs-tooling, animated-label and editorial files. Consumers that use
    ./tokens.css as their only compiled Tailwind (ops: pt-1) still rely on them,
-   so they stay emitted until 1.0 drops them in a minor with a migration note. */
-@source inline("pt-1 pb-8 p-16 max-w-2xl h-3.5 w-3.5 sm:inline-block group-hover:opacity-100 text-muted-foreground/70 transition-[transform,opacity] data-[highlighted]:text-foreground data-[state=checked]:text-foreground bg-[color:var(--semantic-color-feedback-bg-warning)] border-[color:var(--semantic-color-feedback-warning)]/40 text-[color:var(--semantic-color-feedback-warning)]");
+   so they stay emitted until 1.0 drops them in a minor with a migration note.
+   text-6xl joins them: only UPGRADING.md's prose named it, and excluding that
+   file must not drop a utility the published stylesheets carry.
+   type-ramp-ok: a published utility kept for consumers, not a role in HDS code */
+@source inline("text-6xl pt-1 pb-8 p-16 max-w-2xl h-3.5 w-3.5 sm:inline-block group-hover:opacity-100 text-muted-foreground/70 transition-[transform,opacity] data-[highlighted]:text-foreground data-[state=checked]:text-foreground bg-[color:var(--semantic-color-feedback-bg-warning)] border-[color:var(--semantic-color-feedback-warning)]/40 text-[color:var(--semantic-color-feedback-warning)]");
 
 @import './tokens.generated.css';
+@import './accents.css';
 @import './tenants.css';
 
 :root {
@@ -117,6 +135,10 @@
   --hds-font-family:
     'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --hds-font-family-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  /* Display dial (ADR-063, hds#480): display, title and title-sm. */
+  --hds-font-family-display:
+    'Sora', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
   /* -- Type metrics ----------------------------------------------------------- */
   /* The --hds-font-size-xs/sm/base/lg/xl block that was here held a SECOND,
      hand-authored ramp (11/13/16/20/28 as literal px, not var refs) that
@@ -271,21 +293,21 @@
  * keeps specificity at zero so tenant and component overrides still win. Both
  * layers are listed: CSS reads the semantic roles, the JS style objects read the
  * primitive families. src/styles/__tests__/font-dial.test.ts fails if a new
- * font-family token appears without a line here. Headings follow the body dial;
- * a separate display dial is hds#480. */
+ * font-family token appears without a line here. Display, title and title-sm
+ * follow the display dial (ADR-063); body, ui and caption the body dial. */
 :where([data-hds], [data-hds] *) {
   --primitive-typography-family-primary: var(--hds-font-family);
-  --primitive-typography-family-display: var(--hds-font-family);
+  --primitive-typography-family-display: var(--hds-font-family-display);
   --primitive-typography-family-mono: var(--hds-font-family-mono);
-  --semantic-typography-display-font-family: var(--hds-font-family);
-  --semantic-typography-title-font-family: var(--hds-font-family);
-  --semantic-typography-titleSm-font-family: var(--hds-font-family);
+  --semantic-typography-display-font-family: var(--hds-font-family-display);
+  --semantic-typography-title-font-family: var(--hds-font-family-display);
+  --semantic-typography-titleSm-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
-  --semantic-typography-h1-font-family: var(--hds-font-family);
+  --semantic-typography-h1-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
-  --semantic-typography-h2-font-family: var(--hds-font-family);
+  --semantic-typography-h2-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
-  --semantic-typography-h3-font-family: var(--hds-font-family);
+  --semantic-typography-h3-font-family: var(--hds-font-family-display);
   --semantic-typography-body-font-family: var(--hds-font-family);
   --semantic-typography-ui-font-family: var(--hds-font-family);
   --semantic-typography-caption-font-family: var(--hds-font-family);

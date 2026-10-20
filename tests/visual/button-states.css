@@ -1,0 +1,12 @@
+/* hds#768: hide glyphs so button-states.spec.ts compares state fills only. */
+button,
+button * {
+  color: transparent !important;
+}
+button svg {
+  visibility: hidden !important;
+}
+button,
+button * {
+  transition: none !important;
+}

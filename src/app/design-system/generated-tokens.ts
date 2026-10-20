@@ -62,6 +62,27 @@ export const tokens = {
         "900": "var(--primitive-color-graphite-900)",
         "950": "var(--primitive-color-graphite-950)"
       },
+      cobalt: {
+        "50": "var(--primitive-color-cobalt-50)",
+        "100": "var(--primitive-color-cobalt-100)",
+        "200": "var(--primitive-color-cobalt-200)",
+        "300": "var(--primitive-color-cobalt-300)",
+        "400": "var(--primitive-color-cobalt-400)",
+        "500": "var(--primitive-color-cobalt-500)",
+        "600": "var(--primitive-color-cobalt-600)",
+        "700": "var(--primitive-color-cobalt-700)",
+        "800": "var(--primitive-color-cobalt-800)",
+        "900": "var(--primitive-color-cobalt-900)"
+      },
+      lime: {
+        "50": "var(--primitive-color-lime-50)",
+        "100": "var(--primitive-color-lime-100)",
+        "200": "var(--primitive-color-lime-200)",
+        "300": "var(--primitive-color-lime-300)",
+        "400": "var(--primitive-color-lime-400)",
+        "600": "var(--primitive-color-lime-600)",
+        "800": "var(--primitive-color-lime-800)"
+      },
       mauve: {
         "50": "var(--primitive-color-mauve-50)",
         "100": "var(--primitive-color-mauve-100)",
@@ -136,9 +157,9 @@ export const tokens = {
       "32": "var(--primitive-space-32)",
       px1: "var(--primitive-space-px1)",
       px2: "var(--primitive-space-px2)",
-      /** @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.scale.xs (8px) @removeIn 0.28.0 */
+      /** @deprecated 2026-10 spacing prune, removed in 0.30.0 — use semantic.space.scale.xs (8px) @removeIn 0.30.0 */
       px6: "var(--primitive-space-px6)",
-      /** @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.fixed.xs (12px) @removeIn 0.28.0 */
+      /** @deprecated 2026-10 spacing prune, removed in 0.30.0 — use semantic.space.fixed.xs (12px) @removeIn 0.30.0 */
       px10: "var(--primitive-space-px10)"
     },
     blur: {
@@ -177,7 +198,9 @@ export const tokens = {
       weight: {
         regular: "var(--primitive-typography-weight-regular)",
         medium: "var(--primitive-typography-weight-medium)",
-        bold: "var(--primitive-typography-weight-bold)"
+        bold: "var(--primitive-typography-weight-bold)",
+        display: "var(--primitive-typography-weight-display)",
+        mono: "var(--primitive-typography-weight-mono)"
       },
       lineHeight: {
         compact: "var(--primitive-typography-lineHeight-compact)",
@@ -432,7 +455,13 @@ export const tokens = {
       disabled: "var(--semantic-accent-disabled)",
       content: "var(--semantic-accent-content)",
       contentHover: "var(--semantic-accent-contentHover)",
-      subtle: "var(--semantic-accent-subtle)"
+      subtle: "var(--semantic-accent-subtle)",
+      delight: {
+        base: "var(--semantic-accent-delight-base)",
+        deep: "var(--semantic-accent-delight-deep)",
+        pale: "var(--semantic-accent-delight-pale)",
+        onDelight: "var(--semantic-accent-delight-onDelight)"
+      }
     },
     radius: {
       action: "var(--semantic-radius-action)",
@@ -589,7 +618,6 @@ export const tokens = {
         border: {
           rest: "var(--component-button-secondary-border-rest)",
           hover: "var(--component-button-secondary-border-hover)",
-          pressed: "var(--component-button-secondary-border-pressed)",
           disabled: "var(--component-button-secondary-border-disabled)"
         },
         text: "var(--component-button-secondary-text)"

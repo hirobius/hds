@@ -56,6 +56,7 @@ export default [
     plugins: { hds },
     rules: {
       'hds/max-two-meta-items': 'error',
+      'hds/no-delight-on-actions': 'error',
       'hds/no-deprecated-token': 'error',
       'hds/no-primitive-spacing': 'error',
       'hds/no-raw-controls': 'error',
@@ -73,6 +74,7 @@ export default [
 | Rule                                                                 | Default | What it catches                                                                                        |
 | -------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
 | [`hds/max-two-meta-items`](#hdsmax-two-meta-items)                   | error   | Bullet-separated lines (`A · B · C`) with three or more items; use `MetaLine`, one row per extra item. |
+| [`hds/no-delight-on-actions`](#hdsno-delight-on-actions)             | error   | The lime delight accent (`semantic.accent.delight.*`) on a button, a link or a focus style.            |
 | [`hds/no-deprecated-token`](#hdsno-deprecated-token)                 | error   | A `$deprecated` token as a CSS var, `hds.*` member or Tailwind key; the message names the replacement. |
 | [`hds/no-primitive-spacing`](#hdsno-primitive-spacing)               | error   | Primitive spacing steps (`--primitive-space-*`, `hds.space.pxN`, Tailwind `p-4`); use semantic tokens. |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
@@ -91,6 +93,12 @@ export default [
 // ✅ ok
 <MetaLine items={['Acme Cloud', 'Remote']} />
 <MetaLine items={['Applied 3 days ago']} />
+```
+
+### `hds/no-delight-on-actions`
+
+The lime delight accent is for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Flags a delight reference (CSS var, token path or arbitrary Tailwind value) in the props of `<button>`, `<a>` or any `*Button` / `*Link` component, in a `focus:` / `focus-visible:` / `focus-within:` class, and anywhere in a button or link component file. Actions and focus take `semantic.accent.*`.
+
 ### `hds/no-deprecated-token`
 
 Fails any token marked `$deprecated` in `hirobius.tokens.json`, in three
@@ -99,12 +107,10 @@ spellings: a CSS var (`var(--semantic-space-layout-tight)`), a member chain
 `cn()` (`p-layout-tight`). The message quotes the deprecation note, the
 version it leaves in and the replacement:
 
-```
-
+```text
 "--semantic-space-layout-tight" is a deprecated token (hds#206 — use semantic.space.scale.sm),
 removed in 1.0.0. Use --semantic-space-scale-sm.
-
-````
+```
 
 The list is `rules/deprecated-tokens.json`, which the token build writes, so a
 newly deprecated token fails with no rule change. `primitive.space.px6` /
@@ -123,7 +129,7 @@ token:
   `-mt-px12`) in a JSX `className` or a `cn()` / `clsx()` / `cva()` argument.
   `p-0` and `p-px` are allowed; `w-4`, `h-6` and `inset-0` are not spacing.
 - `deprecatedStep`: `px6` and `px10` in any of the forms above. They are off the
-  4px grid, deprecated and removed in 0.28.0; run `npx @hirobius/design-system upgrade`
+  4px grid, deprecated and removed in 0.30.0; run `npx @hirobius/design-system upgrade`
   (codemod `hds-spacing-steps`) or use a semantic token. Wins over the other three.
 
 Option `tailwind: false` turns off the Tailwind check only (default `true`).
@@ -139,7 +145,7 @@ Option `tailwind: false` turns off the Tailwind check only (default `true`).
 <div style={{ gap: hds.semantic.space.scale.md }} />
 <div className="p-surface-padding gap-scale-md px-region-gutter" />
 <Box sx={{ p: 'md' }} />
-````
+```
 
 ### `hds/no-status-clutter`
 

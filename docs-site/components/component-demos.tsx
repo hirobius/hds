@@ -10,7 +10,7 @@
  * (Dialog, Menu, Select) portal into the nearest [data-hds] scope, which
  * <DemoFrame> provides so they inherit the page theme.
  */
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import {
   Alert,
   Avatar,
@@ -37,6 +37,7 @@ import {
   Kbd,
   MetaLine,
   Menu,
+  NavList,
   Pagination,
   Popover,
   Progress,
@@ -60,12 +61,15 @@ import {
   Timeline,
   TimelineItem,
   Toggle,
+  TokenField,
+  type TokenFieldHandle,
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
 import { ArrowRight, CircleCheck, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
 import {
   AssetImg,
+  AsyncState,
   CodeBlock,
   DataTableSection,
   DestructiveSection,
@@ -433,7 +437,7 @@ function ContainerDemo() {
 function DisclosureDemo() {
   return (
     <Disclosure label="What ships in fonts.css?">
-      Plus Jakarta Sans 400, 500 and 700, plus IBM Plex Mono 400.
+      Plus Jakarta Sans (variable), Sora 800 and IBM Plex Mono 400.
     </Disclosure>
   );
 }
@@ -540,6 +544,27 @@ function MetaLineDemo() {
     <div style={{ display: 'grid', gap: 4 }}>
       <MetaLine items={['Acme Cloud', 'Remote']} />
       <MetaLine items={['Posted 3 days ago']} />
+    </div>
+  );
+}
+
+function NavListDemo() {
+  return (
+    <div style={{ maxWidth: 320 }}>
+      <NavList aria-label="Saved jobs">
+        <NavList.Item href="#" current>
+          Design systems lead
+          <MetaLine items={['Acme Cloud', 'Remote']} />
+        </NavList.Item>
+        <NavList.Item href="#">
+          Staff front-end engineer
+          <MetaLine items={['Northwind', 'Hybrid']} />
+        </NavList.Item>
+        <NavList.Item href="#">
+          Product designer
+          <MetaLine items={['Globex', 'On-site']} />
+        </NavList.Item>
+      </NavList>
     </div>
   );
 }
@@ -701,6 +726,34 @@ function TextareaDemo() {
   return (
     <div style={demoColumn}>
       <Textarea label="Notes" helperText="Markdown is supported." placeholder="Add a note…" />
+    </div>
+  );
+}
+
+function TokenFieldDemo() {
+  const [value, setValue] = useState('Hi [Contact],\n\nI saw the [Role] opening at [Company].');
+  const field = useRef<TokenFieldHandle>(null);
+  return (
+    <div style={demoColumn}>
+      <TokenField
+        ref={field}
+        label="Message"
+        helperText="Each [Variable] is one chip: Backspace removes all of it."
+        value={value}
+        onChange={setValue}
+      />
+      <Menu modal={false}>
+        <Menu.Trigger asChild>
+          <Button variant="secondary">Insert variable</Button>
+        </Menu.Trigger>
+        <Menu.Content>
+          {['[Company]', '[Role]', '[Contact]'].map((token) => (
+            <Menu.Item key={token} onSelect={() => field.current?.insertAt(token)}>
+              {token.slice(1, -1)}
+            </Menu.Item>
+          ))}
+        </Menu.Content>
+      </Menu>
     </div>
   );
 }
@@ -884,6 +937,17 @@ function DestructiveSectionDemo() {
   );
 }
 
+function AsyncStateDemo() {
+  return (
+    <AsyncState
+      status="error"
+      label="Open roles"
+      error="The job board did not answer in time."
+      onRetry={() => {}}
+    />
+  );
+}
+
 function ErrorPatternDemo() {
   return <ErrorPattern displayText="404" message="That page moved or never existed." />;
 }
@@ -950,6 +1014,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Composer: ComposerDemo,
   Kbd: KbdDemo,
   MetaLine: MetaLineDemo,
+  NavList: NavListDemo,
   Pagination: PaginationDemo,
   Popover: PopoverDemo,
   Progress: ProgressDemo,
@@ -965,6 +1030,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Tag: TagDemo,
   Text: TextDemo,
   Textarea: TextareaDemo,
+  TokenField: TokenFieldDemo,
   Timeline: TimelineDemo,
   Toggle: ToggleDemo,
   Tooltip: TooltipDemo,
@@ -976,6 +1042,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   FormActions: FormActionsDemo,
   DataTableSection: DataTableSectionDemo,
   DestructiveSection: DestructiveSectionDemo,
+  AsyncState: AsyncStateDemo,
   ErrorPattern: ErrorPatternDemo,
   CodeBlock: CodeBlockDemo,
   AssetImg: AssetImgDemo,

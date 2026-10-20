@@ -69,6 +69,14 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
       danger: 'text-[var(--semantic-color-feedback-error)]',
       info: 'text-[var(--semantic-color-feedback-info)]',
     },
+    // hds#825: one step off the role's weight (a name or a section head in
+    // body copy) from the shipped weight tokens. No weight keeps the role's own.
+    // These utilities sit in the utilities layer, so they beat .hds-type-*.
+    weight: {
+      regular: '[font-weight:var(--primitive-typography-weight-regular)]',
+      medium: '[font-weight:var(--primitive-typography-weight-medium)]',
+      bold: '[font-weight:var(--primitive-typography-weight-bold)]',
+    },
   },
 });
 
@@ -145,6 +153,9 @@ export type TextTone =
   | 'danger'
   | 'info';
 
+/** A weight from the shipped weight tokens. Unset, the role's weight applies. */
+export type TextWeight = 'regular' | 'medium' | 'bold';
+
 type TextTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'div';
 
 const defaultTagMap: Record<TextVariant, TextTag> = {
@@ -177,6 +188,11 @@ export type TextProps = {
    * `disabled` is only for the text of an inactive control.
    */
   tone?: TextTone;
+  /**
+   * Font weight from the weight tokens. Omit it to keep the role's weight;
+   * set it for the one word or line that needs a step up, such as a name.
+   */
+  weight?: TextWeight;
   as?: TextTag | ElementType;
   className?: string;
   style?: CSSProperties;
@@ -185,13 +201,13 @@ export type TextProps = {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export const Text = /* @__PURE__ */ forwardRef<HTMLElement, TextProps>(function Text(
-  { children, variant, tone, as: Tag = defaultTagMap[variant], className, style, ...rest },
+  { children, variant, tone, weight, as: Tag = defaultTagMap[variant], className, style, ...rest },
   ref,
 ) {
   return (
     <Tag
       ref={ref}
-      className={cn(textVariants({ variant, tone }), className)}
+      className={cn(textVariants({ variant, tone, weight }), className)}
       style={style}
       {...rest}
     >

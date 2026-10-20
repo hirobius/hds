@@ -360,15 +360,8 @@ const hds = {
   },
 
   // ── Icons ────────────────────────────────────────────────────────────────────
-  // Sized off primitive.size, NOT the type ramp. An icon is geometry: it sits
-  // beside text, it does not scale with it. These were pointed at
-  // typography.size.base/lg/xl, which happened to read 16/20/24 — so the
-  // coupling was invisible until the ramp moved. Rescaling the ramp (hds#283)
-  // would have silently shrunk every medium icon 20→18 and every large 24→20,
-  // for no typographic reason, and no gate would have said a word.
-  //
-  // component.button.size.*.iconSize already referenced primitive.size; this
-  // brings the global bridge in line with what the component tokens do.
+  // Sized off primitive.size, NOT the type ramp: an icon is geometry and does not
+  // scale with text (hds#283; component.button.size.*.iconSize does the same).
   iconSize: {
     small: 'var(--primitive-size-16)', // 16px — default icon size
     medium: 'var(--primitive-size-20)', // 20px — prominent icons
@@ -412,13 +405,13 @@ const hds = {
     px4: 'var(--primitive-space-1)',
     /**
      * @deprecated 6px is off the 4px grid (2026-10 spacing prune). Use px8 or a semantic step.
-     * @removeIn 0.28.0
+     * @removeIn 0.30.0
      */
     px6: 'var(--primitive-space-px6)',
     px8: 'var(--primitive-space-2)',
     /**
      * @deprecated 10px is off the 4px grid (2026-10 spacing prune). Use px12 or a semantic step.
-     * @removeIn 0.28.0
+     * @removeIn 0.30.0
      */
     px10: 'var(--primitive-space-px10)',
     px12: 'var(--primitive-space-3)',

@@ -1,0 +1,90 @@
+{
+  "version": "0.28.0",
+  "date": "2026-10-20",
+  "bump": "minor",
+  "summary": "1 change to make by hand (1 breaking) and 4 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.28.0/removed/--component-button-secondary-border-pressed",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The secondary Button pressed border variable is gone, so delete any override of it, since the hover border now holds while pressed.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-border-pressed"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-border-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-button-secondary-border-pressed"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.28.0/value-changed/--component-button-secondary-bg-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The pressed secondary Button fill is now the pressed surface colour, a clearer step from hover, so re-check any screenshot of a pressed secondary Button.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-pressed"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-pressed::root",
+        "css-var-changed:--component-button-secondary-bg-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-pressed:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.28.0/value-changed/--semantic-color-surface-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The pressed surface is now a mid light grey (was almost white) in light mode, so re-check pressed states you draw by hand.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-pressed"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-pressed::root"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.28.0/value-changed/--semantic-typography-mono-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-typography-mono-font-weight now reads --primitive-typography-weight-mono (400); if your mono font has a heavier cut you want, set that primitive.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-mono-font-weight"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-mono-font-weight"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-mono-font-weight::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.28.0/look/table-board-current-tokens",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Table borders are two steps lighter than before in Dark mode and the Board column gap is 24px in compact density (was 32px; unchanged at 32px by default); re-take Table and Board screenshots.",
+      "source": "CHANGELOG.md:35"
+    }
+  ]
+}

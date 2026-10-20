@@ -119,9 +119,9 @@ const config = {
         'sidebar-railWidth': 'var(--semantic-space-sidebar-railWidth)',
         px1: 'var(--primitive-space-px1)',
         px2: 'var(--primitive-space-px2)',
-        // @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.scale.xs (8px) @removeIn 0.28.0
+        // @deprecated 2026-10 spacing prune, removed in 0.30.0 — use semantic.space.scale.xs (8px) @removeIn 0.30.0
         px6: 'var(--primitive-space-px6)',
-        // @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.fixed.xs (12px) @removeIn 0.28.0
+        // @deprecated 2026-10 spacing prune, removed in 0.30.0 — use semantic.space.fixed.xs (12px) @removeIn 0.30.0
         px10: 'var(--primitive-space-px10)',
       },
       screens: {

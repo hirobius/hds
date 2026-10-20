@@ -107,9 +107,6 @@
   --component-button-secondary-border-hover: var(
     --semantic-color-border-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --component-button-secondary-border-pressed: var(
-    --semantic-color-border-accent
-  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-tag-activeBackground: var(
     --semantic-accent-rest
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */

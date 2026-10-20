@@ -148,7 +148,7 @@ describe('check-deprecations', () => {
       withCopy((dir) => {
         withVersion(dir, '1.0.0-rc.1');
         // A real deprecation due in a 0.x minor (the 2026-10 spacing prune's
-        // @removeIn 0.28.0) is rightly past-due at 1.0.0-rc.1, so this compares
+        // @removeIn 0.30.0) is rightly past-due at 1.0.0-rc.1, so this compares
         // against the copy without the probe: the probe adds no finding.
         const before = run(dir);
         edit(dir, 'src/patterns.ts', (src) => src + PROBE);

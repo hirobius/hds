@@ -1,5 +1,5 @@
 {
-  "impact": "look",
+  "impact": "breaking",
   "plain": "Spacing is roomier: the comfortable scale is 8/20/28/40/64px (was 8/16/24/32/48px) and compact moves up to 8/16/24/32/48px (was 6/12/20/24/40px); control heights are unchanged, so check fixed-height layouts and re-take screenshots.",
   "steps": [
     {
@@ -316,12 +316,12 @@
       "id": "deprecated/primitive.space.px6-px10",
       "kind": "deprecated",
       "impact": "none",
-      "plain": "The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind *-px6/*-px10) are deprecated and leave in 0.28.0; the codemod rewrites them to the 8px and 12px steps.",
+      "plain": "The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind *-px6/*-px10) are deprecated and leave in 0.30.0; the codemod rewrites them to the 8px and 12px steps.",
       "auto": {
         "codemod": "hds-spacing-steps",
         "args": []
       },
-      "removeIn": "0.28.0",
+      "removeIn": "0.30.0",
       "detect": {
         "cssVars": ["--primitive-space-px6", "--primitive-space-px10"],
         "regex": ["\\b(?:hds\\.space\\.px(?:6|10)|[a-z-]+-px(?:6|10))\\b"]
@@ -337,6 +337,72 @@
         "cssVarWrites": ["--component-badge-paddingX"]
       },
       "facts": ["css-var-changed:--component-badge-paddingX::root"]
+    },
+    {
+      "id": "removed/--color-blue-500",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--color-blue-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it.",
+      "detect": {
+        "cssVars": ["--color-blue-500"],
+        "cssVarWrites": ["--color-blue-500"]
+      },
+      "facts": ["css-var-removed:--color-blue-500"]
+    },
+    {
+      "id": "removed/--color-indigo-600",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--color-indigo-600 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it.",
+      "detect": {
+        "cssVars": ["--color-indigo-600"],
+        "cssVarWrites": ["--color-indigo-600"]
+      },
+      "facts": ["css-var-removed:--color-indigo-600"]
+    },
+    {
+      "id": "removed/--color-purple-500",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--color-purple-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it.",
+      "detect": {
+        "cssVars": ["--color-purple-500"],
+        "cssVarWrites": ["--color-purple-500"]
+      },
+      "facts": ["css-var-removed:--color-purple-500"]
+    },
+    {
+      "id": "removed/--color-red-500",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--color-red-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it.",
+      "detect": {
+        "cssVars": ["--color-red-500"],
+        "cssVarWrites": ["--color-red-500"]
+      },
+      "facts": ["css-var-removed:--color-red-500"]
+    },
+    {
+      "id": "removed/--color-red-700",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--color-red-700 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it.",
+      "detect": {
+        "cssVars": ["--color-red-700"],
+        "cssVarWrites": ["--color-red-700"]
+      },
+      "facts": ["css-var-removed:--color-red-700"]
+    },
+    {
+      "id": "removed/--ease-in-out",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--ease-in-out was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it.",
+      "detect": {
+        "cssVars": ["--ease-in-out"],
+        "cssVarWrites": ["--ease-in-out"]
+      },
+      "facts": ["css-var-removed:--ease-in-out"]
     }
   ]
 }

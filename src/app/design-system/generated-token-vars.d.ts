@@ -57,6 +57,23 @@ declare module 'react' {
     '--primitive-color-graphite-800'?: string | undefined;
     '--primitive-color-graphite-900'?: string | undefined;
     '--primitive-color-graphite-950'?: string | undefined;
+    '--primitive-color-cobalt-50'?: string | undefined;
+    '--primitive-color-cobalt-100'?: string | undefined;
+    '--primitive-color-cobalt-200'?: string | undefined;
+    '--primitive-color-cobalt-300'?: string | undefined;
+    '--primitive-color-cobalt-400'?: string | undefined;
+    '--primitive-color-cobalt-500'?: string | undefined;
+    '--primitive-color-cobalt-600'?: string | undefined;
+    '--primitive-color-cobalt-700'?: string | undefined;
+    '--primitive-color-cobalt-800'?: string | undefined;
+    '--primitive-color-cobalt-900'?: string | undefined;
+    '--primitive-color-lime-50'?: string | undefined;
+    '--primitive-color-lime-100'?: string | undefined;
+    '--primitive-color-lime-200'?: string | undefined;
+    '--primitive-color-lime-300'?: string | undefined;
+    '--primitive-color-lime-400'?: string | undefined;
+    '--primitive-color-lime-600'?: string | undefined;
+    '--primitive-color-lime-800'?: string | undefined;
     '--primitive-color-mauve-50'?: string | undefined;
     '--primitive-color-mauve-100'?: string | undefined;
     '--primitive-color-mauve-200'?: string | undefined;
@@ -115,9 +132,9 @@ declare module 'react' {
     '--primitive-space-32'?: string | undefined;
     '--primitive-space-px1'?: string | undefined;
     '--primitive-space-px2'?: string | undefined;
-    /** @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.scale.xs (8px) @removeIn 0.28.0 */
+    /** @deprecated 2026-10 spacing prune, removed in 0.30.0 — use semantic.space.scale.xs (8px) @removeIn 0.30.0 */
     '--primitive-space-px6'?: string | undefined;
-    /** @deprecated 2026-10 spacing prune, removed in 0.28.0 — use semantic.space.fixed.xs (12px) @removeIn 0.28.0 */
+    /** @deprecated 2026-10 spacing prune, removed in 0.30.0 — use semantic.space.fixed.xs (12px) @removeIn 0.30.0 */
     '--primitive-space-px10'?: string | undefined;
     '--primitive-blur-8'?: string | undefined;
     '--primitive-blur-16'?: string | undefined;
@@ -146,6 +163,8 @@ declare module 'react' {
     '--primitive-typography-weight-regular'?: string | undefined;
     '--primitive-typography-weight-medium'?: string | undefined;
     '--primitive-typography-weight-bold'?: string | undefined;
+    '--primitive-typography-weight-display'?: string | undefined;
+    '--primitive-typography-weight-mono'?: string | undefined;
     '--primitive-typography-lineHeight-compact'?: string | undefined;
     '--primitive-typography-lineHeight-none'?: string | undefined;
     '--primitive-typography-lineHeight-tight'?: string | undefined;
@@ -394,6 +413,10 @@ declare module 'react' {
     '--semantic-accent-content'?: string | undefined;
     '--semantic-accent-contentHover'?: string | undefined;
     '--semantic-accent-subtle'?: string | undefined;
+    '--semantic-accent-delight-base'?: string | undefined;
+    '--semantic-accent-delight-deep'?: string | undefined;
+    '--semantic-accent-delight-pale'?: string | undefined;
+    '--semantic-accent-delight-onDelight'?: string | undefined;
     '--semantic-radius-action'?: string | undefined;
     '--semantic-radius-control'?: string | undefined;
     '--semantic-radius-scale-sm'?: string | undefined;
@@ -508,7 +531,6 @@ declare module 'react' {
     '--component-button-secondary-bg-pressed'?: string | undefined;
     '--component-button-secondary-border-rest'?: string | undefined;
     '--component-button-secondary-border-hover'?: string | undefined;
-    '--component-button-secondary-border-pressed'?: string | undefined;
     '--component-button-secondary-border-disabled'?: string | undefined;
     '--component-button-secondary-text'?: string | undefined;
     '--component-input-bg'?: string | undefined;

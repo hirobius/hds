@@ -62,11 +62,6 @@ const COLOR: Array<[string, string, string]> = [
     'hover:border-ring',
   ],
   [
-    '--component-button-secondary-border-pressed',
-    '--semantic-color-border-accent',
-    'hover:border-ring (still applies while pressed)',
-  ],
-  [
     '--component-button-secondary-border-disabled',
     '--semantic-color-border-subdued',
     'disabled:border-[color:var(--component-button-secondary-border-disabled)] (hds#595 decision 4)',

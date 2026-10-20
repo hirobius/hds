@@ -19,7 +19,7 @@
   "author": "Adrian Milsap",
   "license": "MIT AND OFL-1.1",
   "private": false,
-  "version": "0.26.2",
+  "version": "0.28.0",
   "engines": {
     "node": ">=20",
     "pnpm": ">=8"
@@ -272,6 +272,7 @@
     "check:tokens": "node scripts/check-hardcoded-colors.mjs && pnpm lint --rule '{\"tailwindcss/no-custom-classname\":\"error\"}' && node scripts/audit-tokens.mjs --forbidden && node scripts/check-tier-bypass.mjs && node scripts/check-hardcoded-spacing.mjs && node scripts/check-typography-discipline.mjs --fonts-only",
     "check:type-coverage": "pnpm exec type-coverage --at-least 99.9",
     "test:visual-docs": "playwright test",
+    "test:visual-docs:update": "playwright test tests/visual/button-states.spec.ts --update-snapshots",
     "closure:plan": "node scripts/run-gates.mjs --channel pre-commit --emit-inventory docs/guardrails/full-strictness-inventory.json && node scripts/generate-closure-plan.mjs",
     "closure:plan:check": "node scripts/generate-closure-plan.mjs --check",
     "docs:api": "node scripts/generate-component-api.mjs",
@@ -317,6 +318,7 @@
     "promote": "node scripts/promote.mjs",
     "readme:counts": "node scripts/build-readme-counts.mjs",
     "release": "pnpm build:lib && pnpm smoke:consumer --skip-build && changeset publish",
+    "release:local": "node scripts/release-local.mjs",
     "scaffold:component": "node scripts/scaffold-component.mjs",
     "scaffold:tenant": "node scripts/scaffold-tenant.mjs",
     "size-limit": "node scripts/run-size-limit.mjs",

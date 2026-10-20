@@ -48,7 +48,7 @@ interface ResolvedPortal {
 }
 
 /** Resolve where a portalled part should mount. @internal */
-export function useHdsPortalContainer(explicit?: HTMLElement | null): ResolvedPortal {
+function useHdsPortalContainer(explicit?: HTMLElement | null): ResolvedPortal {
   const scope = useHdsScope();
   const anchorRef = React.useRef<HTMLSpanElement>(null);
   // undefined = not measured yet, null = measured and resolved to `body`.

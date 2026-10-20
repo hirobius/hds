@@ -70,6 +70,11 @@ const FONT_LICENSES = {
     license: 'SIL Open Font License 1.1',
     spdx: 'OFL-1.1',
   },
+  sora: {
+    family: 'Sora',
+    license: 'SIL Open Font License 1.1',
+    spdx: 'OFL-1.1',
+  },
   'ibm-plex-mono': {
     family: 'IBM Plex Mono',
     license: 'SIL Open Font License 1.1',

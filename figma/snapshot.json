@@ -1,15 +1,15 @@
 {
-  "checksum": "2aa8b0e8",
+  "checksum": "76fddaf5",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-14T23:19:55.760Z",
+    "takenAt": "2026-10-20T04:36:50.020Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "2ac6699a",
-      "pushedAt": "2026-10-14T23:19:55.681Z",
+      "modelHash": "3679404a",
+      "pushedAt": "2026-10-20T04:36:49.983Z",
       "scope": null
     },
     "collections": [
@@ -439,6 +439,226 @@
             }
           },
           {
+            "id": "VariableID:2187:3",
+            "name": "color/cobalt/100",
+            "path": "primitive.color.cobalt.100",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 100.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-100)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.862745,
+                  "g": 0.882353,
+                  "b": 0.992157,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:4",
+            "name": "color/cobalt/200",
+            "path": "primitive.color.cobalt.200",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 200.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-200)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.705882,
+                  "g": 0.733333,
+                  "b": 0.956863,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:5",
+            "name": "color/cobalt/300",
+            "path": "primitive.color.cobalt.300",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.86:1 on black).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-300)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.541176,
+                  "g": 0.592157,
+                  "b": 0.972549,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:6",
+            "name": "color/cobalt/400",
+            "path": "primitive.color.cobalt.400",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 400.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-400)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.356863,
+                  "g": 0.443137,
+                  "b": 0.980392,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:2",
+            "name": "color/cobalt/50",
+            "path": "primitive.color.cobalt.50",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — faintest step; selected and subtle accent background.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-50)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.933333,
+                  "g": 0.941176,
+                  "b": 0.996078,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:7",
+            "name": "color/cobalt/500",
+            "path": "primitive.color.cobalt.500",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 500.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-500)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.164706,
+                  "g": 0.356863,
+                  "b": 0.972549,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:8",
+            "name": "color/cobalt/600",
+            "path": "primitive.color.cobalt.600",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode accent fill and accent text (white text 8.19:1).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-600)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.066667,
+                  "g": 0.176471,
+                  "b": 0.909804,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:9",
+            "name": "color/cobalt/700",
+            "path": "primitive.color.cobalt.700",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode hover and pressed accent fill.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-700)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.121569,
+                  "g": 0.090196,
+                  "b": 0.768627,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:10",
+            "name": "color/cobalt/800",
+            "path": "primitive.color.cobalt.800",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — ramp step 800.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-800)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.098039,
+                  "g": 0.109804,
+                  "b": 0.490196,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:11",
+            "name": "color/cobalt/900",
+            "path": "primitive.color.cobalt.900",
+            "resolvedType": "COLOR",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — darkest step; dark-mode subtle accent background.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-cobalt-900)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.043137,
+                  "g": 0.023529,
+                  "b": 0.345098,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
             "id": "VariableID:2146:3",
             "name": "color/graphite/100",
             "path": "primitive.color.graphite.100",
@@ -465,7 +685,7 @@
             "name": "color/graphite/200",
             "path": "primitive.color.graphite.200",
             "resolvedType": "COLOR",
-            "description": "Graphite accent — light warm-grey; dark-mode rest accent fill.",
+            "description": "Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -474,9 +694,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.831373,
-                  "g": 0.815686,
-                  "b": 0.823529,
+                  "r": 0.796078,
+                  "g": 0.776471,
+                  "b": 0.788235,
                   "a": 1
                 }
               }
@@ -597,7 +817,7 @@
             "name": "color/graphite/700",
             "path": "primitive.color.graphite.700",
             "resolvedType": "COLOR",
-            "description": "Graphite accent rest — the warm charcoal brand accent; white text as a fill (AA).",
+            "description": "Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -606,9 +826,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.262745,
-                  "g": 0.227451,
-                  "b": 0.247059,
+                  "r": 0.290196,
+                  "g": 0.254902,
+                  "b": 0.27451,
                   "a": 1
                 }
               }
@@ -1005,6 +1225,160 @@
                   "r": 0.164706,
                   "g": 0.086275,
                   "b": 0.34902,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:13",
+            "name": "color/lime/100",
+            "path": "primitive.color.lime.100",
+            "resolvedType": "COLOR",
+            "description": "Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-lime-100)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.890196,
+                  "g": 0.964706,
+                  "b": 0.658824,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:14",
+            "name": "color/lime/200",
+            "path": "primitive.color.lime.200",
+            "resolvedType": "COLOR",
+            "description": "Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-lime-200)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.803922,
+                  "g": 0.933333,
+                  "b": 0.415686,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:15",
+            "name": "color/lime/300",
+            "path": "primitive.color.lime.300",
+            "resolvedType": "COLOR",
+            "description": "Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-lime-300)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.721569,
+                  "g": 0.901961,
+                  "b": 0.180392,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:16",
+            "name": "color/lime/400",
+            "path": "primitive.color.lime.400",
+            "resolvedType": "COLOR",
+            "description": "Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-lime-400)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.576471,
+                  "g": 0.729412,
+                  "b": 0.109804,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:12",
+            "name": "color/lime/50",
+            "path": "primitive.color.lime.50",
+            "resolvedType": "COLOR",
+            "description": "Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-lime-50)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.94902,
+                  "g": 0.984314,
+                  "b": 0.839216,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:17",
+            "name": "color/lime/600",
+            "path": "primitive.color.lime.600",
+            "resolvedType": "COLOR",
+            "description": "Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-lime-600)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.431373,
+                  "g": 0.560784,
+                  "b": 0.043137,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2187:18",
+            "name": "color/lime/800",
+            "path": "primitive.color.lime.800",
+            "resolvedType": "COLOR",
+            "description": "Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-lime-800)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.266667,
+                  "g": 0.345098,
+                  "b": 0.027451,
                   "a": 1
                 }
               }
@@ -2477,7 +2851,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 585.599976
+                "value": 655.200012
               }
             }
           },
@@ -2843,7 +3217,7 @@
             "name": "typography/family/display",
             "path": "primitive.typography.family.display",
             "resolvedType": "STRING",
-            "description": "Display face: Plus Jakarta Sans Bold (OFL), bound to the display and title composites.",
+            "description": "Display and title face: Sora 800 (OFL, ADR-063); falls back to Plus Jakarta Sans.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2851,7 +3225,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Plus Jakarta Sans"
+                "value": "Sora"
               }
             }
           },
@@ -2996,7 +3370,7 @@
             "name": "typography/size/code",
             "path": "primitive.typography.size.code",
             "resolvedType": "FLOAT",
-            "description": "13px code size. The mono role (hds#485): one px below ui so code sits level with 14px prose.",
+            "description": "15px code size. The mono role (hds#485): one px below ui so code sits level with 16px UI text.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3004,7 +3378,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 13
+                "value": 15
               }
             }
           },
@@ -3094,6 +3468,23 @@
             }
           },
           {
+            "id": "VariableID:2187:19",
+            "name": "typography/weight/display",
+            "path": "primitive.typography.weight.display",
+            "resolvedType": "FLOAT",
+            "description": "Display, title and title-sm weight, set in Sora (ADR-063).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-weight-display)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 800
+              }
+            }
+          },
+          {
             "id": "VariableID:5:47",
             "name": "typography/weight/medium",
             "path": "primitive.typography.weight.medium",
@@ -3111,11 +3502,28 @@
             }
           },
           {
+            "id": "VariableID:2197:2",
+            "name": "typography/weight/mono",
+            "path": "primitive.typography.weight.mono",
+            "resolvedType": "FLOAT",
+            "description": "Mono weight. IBM Plex Mono ships 400 only; Figma draws weight.regular (450) as Plex Mono Medium.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-weight-mono)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 400
+              }
+            }
+          },
+          {
             "id": "VariableID:5:46",
             "name": "typography/weight/regular",
             "path": "primitive.typography.weight.regular",
             "resolvedType": "FLOAT",
-            "description": "",
+            "description": "Body weight. Plus Jakarta Sans ships as a variable font, so 450 renders as itself.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3123,7 +3531,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 400
+                "value": 450
               }
             }
           }
@@ -3193,6 +3601,106 @@
             }
           },
           {
+            "id": "VariableID:2191:2",
+            "name": "accent/delight/base",
+            "path": "semantic.accent.delight.base",
+            "resolvedType": "COLOR",
+            "description": "Delight accent fill (lime) for delight moments only: a streak or win badge, a \"new\" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes.",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-accent-delight-base)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2187:15",
+                "to": "Hirobius/Primitives: color/lime/300"
+              },
+              "Dark": {
+                "alias": "VariableID:2187:15",
+                "to": "Hirobius/Primitives: color/lime/300"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2191:3",
+            "name": "accent/delight/deep",
+            "path": "semantic.accent.delight.deep",
+            "resolvedType": "COLOR",
+            "description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-accent-delight-deep)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2187:17",
+                "to": "Hirobius/Primitives: color/lime/600"
+              },
+              "Dark": {
+                "alias": "VariableID:2187:17",
+                "to": "Hirobius/Primitives: color/lime/600"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2191:5",
+            "name": "accent/delight/onDelight",
+            "path": "semantic.accent.delight.onDelight",
+            "resolvedType": "COLOR",
+            "description": "Ink text and icons on any delight fill, in both modes (12.95:1 on delight.base). Never white.",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-accent-delight-onDelight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:12",
+                "to": "Hirobius/Primitives: color/neutral/900"
+              },
+              "Dark": {
+                "alias": "VariableID:3:12",
+                "to": "Hirobius/Primitives: color/neutral/900"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2191:4",
+            "name": "accent/delight/pale",
+            "path": "semantic.accent.delight.pale",
+            "resolvedType": "COLOR",
+            "description": "Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-accent-delight-pale)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2187:12",
+                "to": "Hirobius/Primitives: color/lime/50"
+              },
+              "Dark": {
+                "alias": "VariableID:2187:12",
+                "to": "Hirobius/Primitives: color/lime/50"
+              }
+            }
+          },
+          {
             "id": "VariableID:12:25",
             "name": "accent/disabled",
             "path": "semantic.accent.disabled",
@@ -3222,7 +3730,7 @@
             "name": "accent/hover",
             "path": "semantic.accent.hover",
             "resolvedType": "COLOR",
-            "description": "Accent fill on pointer hover.",
+            "description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -3237,8 +3745,8 @@
                 "to": "Hirobius/Primitives: color/graphite/800"
               },
               "Dark": {
-                "alias": "VariableID:2146:5",
-                "to": "Hirobius/Primitives: color/graphite/300"
+                "alias": "VariableID:2146:3",
+                "to": "Hirobius/Primitives: color/graphite/100"
               }
             }
           },
@@ -3272,7 +3780,7 @@
             "name": "accent/pressed",
             "path": "semantic.accent.pressed",
             "resolvedType": "COLOR",
-            "description": "Accent fill during active press.",
+            "description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -3287,8 +3795,8 @@
                 "to": "Hirobius/Primitives: color/graphite/900"
               },
               "Dark": {
-                "alias": "VariableID:2146:6",
-                "to": "Hirobius/Primitives: color/graphite/400"
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
               }
             }
           },
@@ -3516,7 +4024,7 @@
             "name": "color/border/subdued",
             "path": "semantic.color.border.subdued",
             "resolvedType": "COLOR",
-            "description": "Quiet divider border (table row dividers, disabled secondary button). DEPRECATED (border consolidation, 2026-10-12) — use semantic.color.border.default (identical in Light; Dark is neutral.600, two steps lighter than 800); kept live, no removal yet.",
+            "description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -3820,7 +4328,7 @@
             "name": "color/content/tertiary",
             "path": "semantic.color.content.tertiary",
             "resolvedType": "COLOR",
-            "description": "Third text level for small helper text (item descriptions, counts, form notes). Between secondary and disabled; meets 4.5:1 on surface.page and surface.raised in both themes.",
+            "description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -5701,7 +6209,7 @@
             "name": "typography/body/font-family",
             "path": "semantic.typography.body.font-family",
             "resolvedType": "STRING",
-            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+            "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5725,7 +6233,7 @@
             "name": "typography/body/font-size",
             "path": "semantic.typography.body.font-size",
             "resolvedType": "FLOAT",
-            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+            "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -5735,12 +6243,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:37",
-                "to": "Hirobius/Primitives: typography/size/base"
+                "alias": "VariableID:5:38",
+                "to": "Hirobius/Primitives: typography/size/lg"
               },
               "Dark": {
-                "alias": "VariableID:5:37",
-                "to": "Hirobius/Primitives: typography/size/base"
+                "alias": "VariableID:5:38",
+                "to": "Hirobius/Primitives: typography/size/lg"
               }
             }
           },
@@ -5749,7 +6257,7 @@
             "name": "typography/body/font-weight",
             "path": "semantic.typography.body.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+            "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -5773,7 +6281,7 @@
             "name": "typography/body/letter-spacing",
             "path": "semantic.typography.body.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6. Converted from 0em at 16px.",
+            "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6. Converted from 0em at 18px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -5795,7 +6303,7 @@
             "name": "typography/body/line-height",
             "path": "semantic.typography.body.line-height",
             "resolvedType": "FLOAT",
-            "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6. Converted from 1.6 × 16px.",
+            "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6. Converted from 1.6 × 18px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -5805,10 +6313,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 25.6
+                "value": 28.799999
               },
               "Dark": {
-                "value": 25.6
+                "value": 28.799999
               }
             }
           },
@@ -5817,7 +6325,7 @@
             "name": "typography/caption/font-family",
             "path": "semantic.typography.caption.font-family",
             "resolvedType": "STRING",
-            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -5841,7 +6349,7 @@
             "name": "typography/caption/font-size",
             "path": "semantic.typography.caption.font-size",
             "resolvedType": "FLOAT",
-            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -5851,12 +6359,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:35",
-                "to": "Hirobius/Primitives: typography/size/xs"
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
               },
               "Dark": {
-                "alias": "VariableID:5:35",
-                "to": "Hirobius/Primitives: typography/size/xs"
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
               }
             }
           },
@@ -5865,7 +6373,7 @@
             "name": "typography/caption/font-weight",
             "path": "semantic.typography.caption.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -5889,7 +6397,7 @@
             "name": "typography/caption/letter-spacing",
             "path": "semantic.typography.caption.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6. Converted from 0em at 12px.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6. Converted from 0em at 14px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -5911,7 +6419,7 @@
             "name": "typography/caption/line-height",
             "path": "semantic.typography.caption.line-height",
             "resolvedType": "FLOAT",
-            "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6. Converted from 1.5 × 12px.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6. Converted from 1.5 × 14px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -5921,10 +6429,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 18
+                "value": 21
               },
               "Dark": {
-                "value": 18
+                "value": 21
               }
             }
           },
@@ -5991,12 +6499,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               },
               "Dark": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               }
             }
           },
@@ -6083,12 +6591,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:35",
-                "to": "Hirobius/Primitives: typography/size/xs"
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
               },
               "Dark": {
-                "alias": "VariableID:5:35",
-                "to": "Hirobius/Primitives: typography/size/xs"
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
               }
             }
           },
@@ -6121,7 +6629,7 @@
             "name": "typography/eyebrow/letter-spacing",
             "path": "semantic.typography.eyebrow.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.caption Converted from 0em at 12px.",
+            "description": "deprecated: use semantic.typography.caption Converted from 0em at 14px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6143,7 +6651,7 @@
             "name": "typography/eyebrow/line-height",
             "path": "semantic.typography.eyebrow.line-height",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.caption Converted from 1.5 × 12px.",
+            "description": "deprecated: use semantic.typography.caption Converted from 1.5 × 14px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -6153,10 +6661,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 18
+                "value": 21
               },
               "Dark": {
-                "value": 18
+                "value": 21
               }
             }
           },
@@ -6223,12 +6731,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               },
               "Dark": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               }
             }
           },
@@ -6339,12 +6847,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               },
               "Dark": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               }
             }
           },
@@ -6455,12 +6963,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               },
               "Dark": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               }
             }
           },
@@ -6513,7 +7021,7 @@
             "name": "typography/mono/font-family",
             "path": "semantic.typography.mono.font-family",
             "resolvedType": "STRING",
-            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -6537,7 +7045,7 @@
             "name": "typography/mono/font-size",
             "path": "semantic.typography.mono.font-size",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6561,7 +7069,7 @@
             "name": "typography/mono/font-weight",
             "path": "semantic.typography.mono.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -6571,12 +7079,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:46",
-                "to": "Hirobius/Primitives: typography/weight/regular"
+                "alias": "VariableID:2197:2",
+                "to": "Hirobius/Primitives: typography/weight/mono"
               },
               "Dark": {
-                "alias": "VariableID:5:46",
-                "to": "Hirobius/Primitives: typography/weight/regular"
+                "alias": "VariableID:2197:2",
+                "to": "Hirobius/Primitives: typography/weight/mono"
               }
             }
           },
@@ -6585,7 +7093,7 @@
             "name": "typography/mono/letter-spacing",
             "path": "semantic.typography.mono.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6. Converted from 0em at 13px.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6. Converted from 0em at 15px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6607,7 +7115,7 @@
             "name": "typography/mono/line-height",
             "path": "semantic.typography.mono.line-height",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6. Converted from 1.5 × 13px.",
+            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6. Converted from 1.5 × 15px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -6617,10 +7125,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 19.5
+                "value": 22.5
               },
               "Dark": {
-                "value": 19.5
+                "value": 22.5
               }
             }
           },
@@ -6687,12 +7195,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               },
               "Dark": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               }
             }
           },
@@ -6745,7 +7253,7 @@
             "name": "typography/titleSm/font-family",
             "path": "semantic.typography.titleSm.font-family",
             "resolvedType": "STRING",
-            "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+            "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -6769,7 +7277,7 @@
             "name": "typography/titleSm/font-size",
             "path": "semantic.typography.titleSm.font-size",
             "resolvedType": "FLOAT",
-            "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+            "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6779,12 +7287,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:37",
-                "to": "Hirobius/Primitives: typography/size/base"
+                "alias": "VariableID:5:38",
+                "to": "Hirobius/Primitives: typography/size/lg"
               },
               "Dark": {
-                "alias": "VariableID:5:37",
-                "to": "Hirobius/Primitives: typography/size/base"
+                "alias": "VariableID:5:38",
+                "to": "Hirobius/Primitives: typography/size/lg"
               }
             }
           },
@@ -6793,7 +7301,7 @@
             "name": "typography/titleSm/font-weight",
             "path": "semantic.typography.titleSm.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
+            "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -6803,12 +7311,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               },
               "Dark": {
-                "alias": "VariableID:5:49",
-                "to": "Hirobius/Primitives: typography/weight/bold"
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
               }
             }
           },
@@ -6817,7 +7325,7 @@
             "name": "typography/titleSm/letter-spacing",
             "path": "semantic.typography.titleSm.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Small heading inside a card or section band. 16px / 1.375 / 700. Converted from 0em at 16px.",
+            "description": "Small heading inside a card or section band. 18px / 1.375 / 700. Converted from 0em at 18px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6839,7 +7347,7 @@
             "name": "typography/titleSm/line-height",
             "path": "semantic.typography.titleSm.line-height",
             "resolvedType": "FLOAT",
-            "description": "Small heading inside a card or section band. 16px / 1.375 / 700. Converted from 1.375 × 16px.",
+            "description": "Small heading inside a card or section band. 18px / 1.375 / 700. Converted from 1.375 × 18px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -6849,10 +7357,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 22
+                "value": 24.75
               },
               "Dark": {
-                "value": 22
+                "value": 24.75
               }
             }
           },
@@ -6861,7 +7369,7 @@
             "name": "typography/ui/font-family",
             "path": "semantic.typography.ui.font-family",
             "resolvedType": "STRING",
-            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -6885,7 +7393,7 @@
             "name": "typography/ui/font-size",
             "path": "semantic.typography.ui.font-size",
             "resolvedType": "FLOAT",
-            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6895,12 +7403,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
               },
               "Dark": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
               }
             }
           },
@@ -6909,7 +7417,7 @@
             "name": "typography/ui/font-weight",
             "path": "semantic.typography.ui.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -6933,7 +7441,7 @@
             "name": "typography/ui/letter-spacing",
             "path": "semantic.typography.ui.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6. Converted from 0em at 14px.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6. Converted from 0em at 16px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6955,7 +7463,7 @@
             "name": "typography/ui/line-height",
             "path": "semantic.typography.ui.line-height",
             "resolvedType": "FLOAT",
-            "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6. Converted from 1.5 × 14px.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6. Converted from 1.5 × 16px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -6965,10 +7473,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 21
+                "value": 24
               },
               "Dark": {
-                "value": 21
+                "value": 24
               }
             }
           }
@@ -7032,7 +7540,7 @@
             "name": "badge/fontSize",
             "path": "component.badge.fontSize",
             "resolvedType": "FLOAT",
-            "description": "Badge type size.",
+            "description": "Badge type size (the caption role, 14px).",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7042,8 +7550,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:35",
-                "to": "Hirobius/Primitives: typography/size/xs"
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
               }
             }
           },
@@ -7447,6 +7955,27 @@
             }
           },
           {
+            "id": "VariableID:2191:6",
+            "name": "button/bgPressed",
+            "path": "component.button.bgPressed",
+            "resolvedType": "COLOR",
+            "description": "Primary button pressed fill (hds#748).",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-bgPressed)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:12:23",
+                "to": "Hirobius/Semantic: accent/pressed"
+              }
+            }
+          },
+          {
             "id": "VariableID:14:38",
             "name": "button/paddingX",
             "path": "component.button.paddingX",
@@ -7719,7 +8248,7 @@
             "name": "button/size/lg/fontSize",
             "path": "component.button.size.lg.fontSize",
             "resolvedType": "FLOAT",
-            "description": "Large button label size (14px, the same hds-type-ui role as md).",
+            "description": "Large button label size (16px, the same hds-type-ui role as md).",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7729,8 +8258,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
               }
             }
           },
@@ -7839,7 +8368,7 @@
             "name": "button/size/md/fontSize",
             "path": "component.button.size.md.fontSize",
             "resolvedType": "FLOAT",
-            "description": "Medium button label size (14px, hds#283: was 15px).",
+            "description": "Medium button label size (16px, the ui role; 14px before 2026-10-15).",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7849,8 +8378,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
               }
             }
           },
@@ -7959,7 +8488,7 @@
             "name": "button/size/sm/fontSize",
             "path": "component.button.size.sm.fontSize",
             "resolvedType": "FLOAT",
-            "description": "Small button label size (12px, hds#283: was 13px).",
+            "description": "Small button label size (14px, the caption role; 12px before 2026-10-15).",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7969,8 +8498,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:35",
-                "to": "Hirobius/Primitives: typography/size/xs"
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
               }
             }
           },
@@ -8677,7 +9206,7 @@
             "name": "tag/fontSize",
             "path": "component.tag.fontSize",
             "resolvedType": "FLOAT",
-            "description": "Tag type size.",
+            "description": "Tag type size (the caption role, 14px).",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -8687,8 +9216,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:35",
-                "to": "Hirobius/Primitives: typography/size/xs"
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
               }
             }
           },
@@ -9425,13 +9954,13 @@
         "id": "S:e9a1ab5bc267352eb0a2c98b719647dd35552d63,",
         "name": "typography/body",
         "path": "semantic.typography.body",
-        "description": "Prose. 16px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+        "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
         "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Regular",
-        "fontSize": 16,
+        "fontSize": 18,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 25.6
+          "value": 28.799999
         },
         "letterSpacing": {
           "unit": "PIXELS",
@@ -9450,13 +9979,13 @@
         "id": "S:13cc7b1dc5bb6d2099f8761089de4182291525de,",
         "name": "typography/caption",
         "path": "semantic.typography.caption",
-        "description": "Metadata, help text and labels, in sentence case. 12px / 1.5 / 500. Role 5 of 6.",
+        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
         "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Medium",
-        "fontSize": 12,
+        "fontSize": 14,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 18
+          "value": 21
         },
         "letterSpacing": {
           "unit": "PIXELS",
@@ -9476,8 +10005,8 @@
         "name": "typography/display",
         "path": "semantic.typography.display",
         "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Bold",
+        "fontFamily": "Sora",
+        "fontStyle": "ExtraBold",
         "fontSize": 48,
         "lineHeight": {
           "unit": "PIXELS",
@@ -9503,10 +10032,10 @@
         "description": "deprecated: use semantic.typography.caption",
         "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Medium",
-        "fontSize": 12,
+        "fontSize": 14,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 18
+          "value": 21
         },
         "letterSpacing": {
           "unit": "PIXELS",
@@ -9526,8 +10055,8 @@
         "name": "typography/h1",
         "path": "semantic.typography.h1",
         "description": "deprecated: use semantic.typography.title",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Bold",
+        "fontFamily": "Sora",
+        "fontStyle": "ExtraBold",
         "fontSize": 24,
         "lineHeight": {
           "unit": "PIXELS",
@@ -9551,8 +10080,8 @@
         "name": "typography/h2",
         "path": "semantic.typography.h2",
         "description": "deprecated: use semantic.typography.title",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Bold",
+        "fontFamily": "Sora",
+        "fontStyle": "ExtraBold",
         "fontSize": 24,
         "lineHeight": {
           "unit": "PIXELS",
@@ -9576,8 +10105,8 @@
         "name": "typography/h3",
         "path": "semantic.typography.h3",
         "description": "deprecated: use semantic.typography.title",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Bold",
+        "fontFamily": "Sora",
+        "fontStyle": "ExtraBold",
         "fontSize": 24,
         "lineHeight": {
           "unit": "PIXELS",
@@ -9600,13 +10129,13 @@
         "id": "S:3152dfb215c24e851e1a06cc92bb552a9c58b7e5,",
         "name": "typography/mono",
         "path": "semantic.typography.mono",
-        "description": "Code and ids. 13px / 1.5 / 400. The mono companion, role 6 of 6.",
+        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
         "fontFamily": "IBM Plex Mono",
         "fontStyle": "Regular",
-        "fontSize": 13,
+        "fontSize": 15,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 19.5
+          "value": 22.5
         },
         "letterSpacing": {
           "unit": "PIXELS",
@@ -9626,8 +10155,8 @@
         "name": "typography/title",
         "path": "semantic.typography.title",
         "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Bold",
+        "fontFamily": "Sora",
+        "fontStyle": "ExtraBold",
         "fontSize": 24,
         "lineHeight": {
           "unit": "PIXELS",
@@ -9650,13 +10179,13 @@
         "id": "S:ee33d604c391c50fa387dc3457b96affb95b842c,",
         "name": "typography/titleSm",
         "path": "semantic.typography.titleSm",
-        "description": "Small heading inside a card or section band. 16px / 1.375 / 700.",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Bold",
-        "fontSize": 16,
+        "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
+        "fontFamily": "Sora",
+        "fontStyle": "ExtraBold",
+        "fontSize": 18,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 22
+          "value": 24.75
         },
         "letterSpacing": {
           "unit": "PIXELS",
@@ -9675,13 +10204,13 @@
         "id": "S:d0d958d10e42931dc895aff494d4223b234b1514,",
         "name": "typography/ui",
         "path": "semantic.typography.ui",
-        "description": "Controls, nav, table text, values. 14px / 1.5 / 500. Role 4 of 6.",
+        "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
         "fontFamily": "Plus Jakarta Sans",
         "fontStyle": "Medium",
-        "fontSize": 14,
+        "fontSize": 16,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 21
+          "value": 24
         },
         "letterSpacing": {
           "unit": "PIXELS",

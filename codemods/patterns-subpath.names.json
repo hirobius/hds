@@ -3,6 +3,9 @@
   "names": [
     "AssetImg",
     "AssetImgProps",
+    "AsyncState",
+    "AsyncStateProps",
+    "AsyncStatus",
     "CodeBlock",
     "CodeBlockProps",
     "DataTableSection",

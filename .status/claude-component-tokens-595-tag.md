@@ -1,0 +1,1 @@
+Tag reads its own component tokens for the unselected pill (background, border, text), in tag.tsx and static.css; binding gate baseline tightened (BOUND 36 to 39); tests/tag-own-tokens.test.ts fails if Tag goes back to raw semantic colours (hds#595).

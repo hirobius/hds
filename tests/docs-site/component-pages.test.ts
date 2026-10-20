@@ -176,7 +176,7 @@ describe('drift: every core component has a generated page', () => {
       'utilities',
     ].sort();
     expect([...pages.keys()].sort()).toEqual(expected);
-    expect(expected).toHaveLength(39);
+    expect(expected).toHaveLength(40);
     const utilities = (pages as Map<string, string>).get('utilities')!;
     for (const n of UTILITIES) {
       expect(utilities).toContain(`## ${n}`);
@@ -202,7 +202,7 @@ describe('drift: every core component has a generated page', () => {
     for (const [slug, mdx] of pages as Map<string, string>) {
       writeFileSync(join(root, 'content/docs/components', `${slug}.mdx`), mdx);
     }
-    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(39);
+    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(40);
     expect(() =>
       execFileSync('node', ['scripts/check-docs.mjs', '--root', root], {
         cwd: ROOT,
@@ -382,6 +382,16 @@ describe('page trimming', () => {
     expect(md).toContain('description: "Do a thing."');
     expect(md).not.toContain('- Do a thing.');
     expect(md).toContain('- Not for other things.');
+  });
+
+  it('lowercases a whenNot that opens with an article, keeps an acronym (Not for A chip…)', () => {
+    const notFor = (whenNot: string) =>
+      page({}, { description: 'X.', usage: { when: 'Y.', whenNot } });
+    expect(notFor('A chip people can toggle, or a message.')).toContain(
+      '- Not for a chip people can toggle, or a message.',
+    );
+    expect(notFor('An inline note.')).toContain('- Not for an inline note.');
+    expect(notFor('API keys or `code`.')).toContain('- Not for API keys or `code`.');
   });
 
   it('leaves out deprecated props and an all-empty Default column', () => {

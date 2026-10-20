@@ -35,6 +35,12 @@
  *      an older release declared, comes back with a different value in a
  *      context both declare: the name means something else now, and a
  *      consumer's old override would apply to it. Pick a new name.
+ *   7. the release package.json names (upgrade/releases/<version>.json) lists
+ *      a variable or class as removed, and dist/*.css still carries it:
+ *      something the build scans (UPGRADING.md named a removed utility in
+ *      0.27.0) compiled the removed name back in, so the tarball would
+ *      contradict its own notes. Exclude that file with `@source not` in
+ *      src/styles/theme.css.
  *
  * The fix it names is `pnpm upgrade:note`, which pre-fills a removed step for
  * a removal and a value-changed step (impact look) for a value change, each
@@ -171,6 +177,35 @@ function reusedNames(root, state, contract) {
         CONTRACT_FILE,
         'css-name-reused',
         `${name} was removed after ${last.version} and is back with another value: ${was.get(at)} then, ${value} now (${bundle}, ${context}). A consumer's old override or fallback would now apply to something else, so give the new variable a new name.`,
+        { name },
+      ),
+    );
+  }
+  return out;
+}
+
+/** Rule 7: names the release's own `removed` facts list that the built CSS still has. */
+function stillShipped(root, version, contract) {
+  const file = join(root, 'upgrade/releases', `${version}.json`);
+  if (!existsSync(file)) return [];
+  const steps = JSON.parse(readFileSync(file, 'utf8')).steps ?? [];
+  const removed = steps
+    .flatMap((step) => (Array.isArray(step.facts) ? step.facts : []))
+    .map((id) => /^(css-var-removed|class-removed|utility-removed):(.+)$/.exec(id))
+    .filter(Boolean);
+  const bundles = Object.values(contract?.bundles ?? {});
+  const out = [];
+  for (const [, kind, name] of removed) {
+    const found =
+      kind === 'css-var-removed'
+        ? bundles.some((b) => name in (b.variables ?? {}))
+        : bundles.some((b) => (b.classes ?? []).includes(name));
+    if (!found) continue;
+    out.push(
+      violation(
+        CONTRACT_FILE,
+        'removed-still-shipped',
+        `${kind === 'css-var-removed' ? name : `.${name}`} is listed as removed in upgrade/releases/${version}.json but dist/*.css still carries it. Tailwind compiles any name it finds in a scanned file, so a file that names it (UPGRADING.md, a doc) is being scanned: add it to the @source not lines in src/styles/theme.css, then run ${BUILD}.`,
         { name },
       ),
     );
@@ -326,6 +361,7 @@ export function checkUpgradeCss(root = REPO) {
     ...out,
     ...bumpViolations(state, facts),
     ...reusedNames(root, state, contract),
+    ...stillShipped(root, state.version, contract),
   ];
   return {
     violations,

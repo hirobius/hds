@@ -22,6 +22,13 @@
       "kind": "leaf",
       "probe": true
     },
+    "AsyncState": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "Avatar": {
       "width": "hug",
       "height": "hug",
@@ -437,6 +444,20 @@
       "kind": "container",
       "probe": true
     },
+    "NavList": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "NavListItem": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "Page": {
       "width": "fill",
       "height": "hug",
@@ -676,6 +697,14 @@
       "pads": false,
       "kind": "leaf",
       "probe": true
+    },
+    "TokenField": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true,
+      "maxWidth": "40rem"
     },
     "Tooltip": {
       "width": "hug",
