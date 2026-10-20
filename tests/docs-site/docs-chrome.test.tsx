@@ -74,6 +74,13 @@ describe('prose', () => {
     );
   });
 
+  it('wraps long table chips at word edges, never mid-word', () => {
+    const css = read('docs-site/app/globals.css');
+    const rule = css.match(/\.hds-docs-table td code\[data-density\][^{]*\{([^}]*)\}/)?.[1] ?? '';
+    expect(rule).toMatch(/overflow-wrap:\s*break-word/);
+    expect(rule).not.toMatch(/anywhere/);
+  });
+
   it('leaves a fenced code element plain, and the fence still finds it', () => {
     const { container } = render(
       <MdxPre>

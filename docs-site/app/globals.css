@@ -652,5 +652,5 @@ a code[data-density] {
 .prose .hds-docs-table td code[data-density],
 .prose .hds-docs-table th code[data-density] {
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
