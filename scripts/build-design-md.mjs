@@ -199,12 +199,14 @@ export function buildTypography(raw) {
     ws.length === 1
       ? `\`${ws[0]}\` ${nameOfWeight(ws[0])}`
       : ws.map((w) => `\`${w}\` ${nameOfWeight(w)}`).join(' / ');
-  const usedWeights = new Set([...headingW, ...bodyW]);
+  const monoW = uniq([weightOf('mono')]);
+  const usedWeights = new Set([...headingW, ...bodyW, ...monoW]);
   const unused = Object.keys(weightMap).filter((k) => !usedWeights.has(String(weightMap[k])));
 
   lines.push(
     `Weights declared: ${declared}. Heading styles (display · title) use ` +
-      `${phrase(headingW)}; body, UI, and caption use ${phrase(bodyW)}.` +
+      `${phrase(headingW)}; body, UI, and caption use ${phrase(bodyW)}` +
+      (monoW.length ? `; mono uses ${phrase(monoW)}.` : '.') +
       (unused.length
         ? ` Declared but unused by any semantic role: ${unused
             .map((k) => `\`${weightMap[k]}\` ${k}`)
