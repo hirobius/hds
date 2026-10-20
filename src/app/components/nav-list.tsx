@@ -109,6 +109,9 @@ const NavListRoot = /* @__PURE__ */ React.forwardRef<HTMLUListElement, NavListPr
 /**
  * A vertical list of links, one marked current. Rows hold rich content; hover
  * fills with surface.hover; the current row holds the deeper surface.selected.
+ * Tagged here rather than in the file block because NavListItem shares this
+ * module and maps to its own Figma set through figma/mapping-overrides.json.
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-26
  */
 export const NavList: NavListComponent = /* @__PURE__ */ Object.assign(NavListRoot, {
   Item: NavListItem,
