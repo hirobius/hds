@@ -14,7 +14,7 @@
 import hds from '../design-system/tokens';
 import { useReducedMotion } from './useReducedMotion';
 
-export type HdsMotionCategory = keyof typeof hds.motion;
+type HdsMotionCategory = keyof typeof hds.motion;
 
 export function useHdsMotion<Category extends HdsMotionCategory>(
   category: Category,
