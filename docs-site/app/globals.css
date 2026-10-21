@@ -232,7 +232,6 @@ pre {
   min-width: 9.5rem;
 }
 
-.hds-token-same,
 .hds-preview-missing {
   color: var(--semantic-color-content-secondary);
   font-size: 0.8125rem;
