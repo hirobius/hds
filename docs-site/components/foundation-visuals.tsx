@@ -32,6 +32,19 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+/**
+ * A specimen's spec line. Mono is for code, token names and token values only, so the
+ * names (role, family, weight, easing) read in the caption face and only the copyable
+ * values stay mono.
+ */
+function SpecLine({ label, values }: { label: string; values: string }) {
+  return (
+    <p className="hds-specimen-meta">
+      {label} · <span className="hds-specimen-values">{values}</span>
+    </p>
+  );
+}
+
 function ColorGallery() {
   return (
     <>
@@ -91,11 +104,10 @@ function TypeSpecimens() {
       <div className="hds-specimens">
         {typeSpecimens(loadTokens()).map((t) => (
           <div key={t.role} className="hds-specimen">
-            <p className="hds-specimen-meta">
-              {[t.role, t.family, t.fontWeight, t.fontSize, t.lineHeight, t.letterSpacing].join(
-                ' · ',
-              )}
-            </p>
+            <SpecLine
+              label={`${t.role} · ${t.family} ${t.fontWeight}`}
+              values={[t.fontSize, t.lineHeight, t.letterSpacing].join(' / ')}
+            />
             <p
               className="hds-specimen-sample"
               style={{
@@ -188,7 +200,11 @@ function ElevationCards() {
           >
             <code className="hds-step-name">{e.name}</code>
             <span className="hds-elevation-desc">{e.description}</span>
-            <span className="hds-step-value">{e.shadowToken ?? 'No shadow, hairline border'}</span>
+            {e.shadowToken ? (
+              <span className="hds-step-value">{e.shadowToken}</span>
+            ) : (
+              <span className="hds-elevation-desc">No shadow, hairline border</span>
+            )}
           </div>
         ))}
       </div>
@@ -202,9 +218,10 @@ function MotionDemos() {
       <div className="hds-specimens">
         {motionTokens(loadTokens()).map((m) => (
           <div key={m.token} className="hds-specimen">
-            <p className="hds-specimen-meta">
-              {[m.name, m.duration, m.easingName, m.easing].filter(Boolean).join(' · ')}
-            </p>
+            <SpecLine
+              label={[m.name, m.easingName].filter(Boolean).join(' · ')}
+              values={[m.duration, m.easing].filter(Boolean).join(' · ')}
+            />
             <p className="hds-elevation-desc">{m.description}</p>
             <MotionDemo
               duration={m.durationVar ? `var(${m.durationVar})` : m.duration}
