@@ -91,4 +91,48 @@ describe('docs-site mono scope', () => {
       );
     expect(hits).toEqual([]);
   });
+  // One source for the mono face: the package's token + fonts.css (Adrian, 2026-10-21).
+  const bare = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const HDS_MONO_TOKEN =
+    /^var\(--(?:font-mono|primitive-typography-family-mono|semantic-typography-mono-font-family|hds-font-family-mono)\)$/;
+
+  it('every mono font-family is the HDS mono token, never a literal stack', () => {
+    const literal = rules.filter((r) => !HDS_MONO_TOKEN.test(r.family));
+    expect(literal).toEqual([]);
+  });
+
+  it("maps Fumadocs' --font-mono to the HDS mono token", () => {
+    const defs = [...bare.matchAll(/--font-mono\s*:\s*([^;]+);/g)].map((m) => m[1]!.trim());
+    expect(defs.length).toBeGreaterThan(0);
+    for (const value of defs) expect(value).toBe('var(--primitive-typography-family-mono)');
+  });
+
+  it('does not redefine the HDS mono tokens (they come from the package)', () => {
+    expect(bare).not.toMatch(
+      /--(?:primitive-typography-family-mono|semantic-typography-mono-font-family|hds-font-family-mono)\s*:/,
+    );
+  });
+
+  it('loads mono from the package fonts.css, not a next/font copy', () => {
+    const layout = readFileSync('docs-site/app/layout.tsx', 'utf8');
+    expect(layout).toMatch(/@hirobius\/design-system\/fonts\.css/);
+    expect(layout).not.toMatch(/ibm-plex-mono|font-mono|IBM_Plex_Mono/i);
+    expect(css).not.toMatch(/--hds-docs-font-mono/);
+  });
+
+  it('declares no @font-face or monospace stack in docs components or app code', () => {
+    const hits = [
+      ...files('docs-site/components', /\.tsx?$/),
+      ...files('docs-site/app', /\.(tsx?|css)$/),
+    ].flatMap((f) =>
+      readFileSync(f, 'utf8')
+        .split('\n')
+        .flatMap((line, k) =>
+          /@font-face|ui-monospace|monospace|Courier|Menlo|Consolas|SFMono/i.test(line)
+            ? [`${f}:${k + 1}`]
+            : [],
+        ),
+    );
+    expect(hits).toEqual([]);
+  });
 });
