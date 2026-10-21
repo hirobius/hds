@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.30.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Under data-density="compact", each of these is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only: `--component-card-gap`, `--semantic-docs-space-section`, `--semantic-layout-grid-gap`, `--semantic-space-component-padding`, `--semantic-space-layout-gutter`, `--semantic-space-layout-inset`, `--semantic-space-layout-normal`, `--semantic-space-layout-spacious`, `--semantic-space-layout-tight`, `--semantic-space-region-gutter`, `--semantic-space-scale-lg`, `--semantic-space-scale-md`, `--semantic-space-scale-sm`, `--semantic-space-scale-xl`, `--semantic-space-section-stack` and `--semantic-space-surface-padding`.
+- Looks different: Each of these is a legacy bridge that tracks its scale twin, so under data-density="compact" it is tighter too; move to --semantic-space-scale-\* and check compact screens: `--hds-space-2xl`, `--hds-space-lg`, `--hds-space-md` and `--hds-space-xl`.
+- Looks different: Under data-density="compact" below 640px, --semantic-space-layout-gap is now scale.sm (12px) instead of following the comfortable rule; check compact screens on phones.
+- Looks different: --semantic-space-scale-xs is 8px in both densities as before; the compact rule now comes from tokens.css instead of theme.css, so nothing moves.
+- And 10 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0300).
+
+### Minor Changes
+
+- 335aa9b: Avatar: `fallback="icon"` shows a neutral person icon (for a signed-out account), and `status` plus `statusLabel` put a Badge dot on the rim (for example `status="warning" statusLabel="Not synced"`). With no initials to derive, the icon now shows instead of an empty circle. The image is now clipped by an inner span, so the root no longer has `overflow-hidden`. The docs page shows the account-button recipe: Avatar as the `iconLeft` of a tertiary icon-only Button.
+- 1b15155: Badge: `count` shows a number in tabular numerals, neutral by default, with `max` to cap it (`max={99}` turns 120 into `99+`) and `label` to name it for screen readers ("12 roles"). `count` and `children` are exclusive; children are ignored when `count` is set. The docs page shows a heading plus count Badge row.
+- 6a60cf0: Card gains the entity card parts: `Card.Source` (an `Avatar` size `sm`, a name and a `Timestamp` on one row) and `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list). Use them with `Card.Header`, `Card.Title` and `Card.Footer` for a job, lead or listing card. `MapPin` and `Banknote` join `@hirobius/design-system/icons`.
+
+  Avatar: an empty `alt` now hides its initials from assistive tech (as its icon already did), so an avatar beside a visible name, as in `Card.Source`, is decorative instead of an unnamed image.
+
+- 6a60cf0: Combobox: `<Combobox multiple creatable onCreate={(text) => …} />` is a chip input. Chips sit inline in the field before the text input, suggestions filter as you type, Enter adds the typed text through `onCreate`, an "Add “text”" option offers it when nothing matches exactly, and Backspace in an empty field removes the last chip. A value with no matching option shows as a chip labelled with the value. `ComboboxMultipleProps` gains `creatable?: false` and the new `ComboboxCreatableProps` joins `ComboboxAnyProps`; `multiple` without `creatable` is unchanged.
+- 7825b6d: feat: compact density for apps. 0.29 loosened the default rhythm for sites; dense apps now opt back into a tighter one with `data-density="compact"` on `<html>` or any ancestor. The compact values are a `Compact` mode in `hirobius.tokens.json`, emitted by the token build into a `[data-density="compact"]` block in `tokens.css` (it was hand-written in `theme.css`): `semantic.space.scale` sm/md/lg/xl 12/16/24/32px (was 16/24/32/48px under compact), the deprecated `layout.*` steps 12/16/24/32px, `section.stack` 48px, and type body 15 · ui 14 · caption 13 · title 24px (display stays 56px). Adds `semantic.space.scale.2xs` (4px in both densities) and the `compactBody` / `compactCaption` type primitives. Figma gets the same values as Hirobius/Density variables. The docs display settings gain a Density switch.
+- 6a60cf0: Disclosure: `variant="row"` makes an expandable list row. `preview` shows one clamped line under the label while collapsed and is hidden once open; `actions` render beside the trigger, outside the button, so no control nests inside it. Docs page gains a three-row list with actions.
+- 6a60cf0: NavList select mode (hds#868): `<NavList.Item selected onSelect={…}>` renders a button marked `aria-current="true"` for a master-detail rail that selects in place with no routing. Same hover and selected fills as a link row; rich children unchanged. `href` and `onSelect` are exclusive. `NavListItemProps` is now a union of `NavListLinkItemProps` and `NavListSelectItemProps`.
+- 6a60cf0: PageHeader: new `metadata` slot, a wrapping row of facts (source, stage) as Badges above the title, mirroring `Card.Header`. The single state stays in `status`.
+- bf64e87: Pagination: `variant="compact"` shows icon-only Previous and Next around "1 of 4" (a polite live region) for a pager that moves one item at a time. Previous and Next disable at the ends and focus moves to the other arrow. The default variant is unchanged.
+
+### Patch Changes
+
+- af3e730: CodeBlock: the block copy button is now an icon-only HDS `Button` (secondary, sm), so its icon is centred, and it sits in its own column beside the code instead of over it, so long lines scroll under nothing (hds#857).
+- 56b9868: Lime / delight is hidden for now (hds#857): `semantic.accent.delight.*` and the `primitive.color.lime.*` ramp are `$deprecated` and left out of the docs, the manifest, llms.txt and DESIGN.md. The tokens and their CSS variables still ship, so they can come back; new code should not use them.
+- 70efe9f: SegmentedControl: the secondary selected segment now reads on the page and on a raised Card in light and dark. It uses the page fill with a 1px `border.interactive` edge, so its edge is 4.7:1 (light) and 4.4:1 (dark) against the track, up from 1.3:1 and 2.7:1. The primary variant is unchanged (hds#866).
+
 ## 0.29.0
 
 ### Upgrade

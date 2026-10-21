@@ -40,7 +40,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BASELINE = path.join(ROOT, 'scripts/tailwind-spacing-scale.baseline.json');
 /** The comfortable t-shirt scale (2026-10): xs..xl = 8/20/28/40/64px. */
 const SCALE_PX = [8, 20, 28, 40, 64];
-/** Off the 4px grid; deprecated by the 2026-10 spacing prune, removed in 0.30.0. */
+/** Off the 4px grid; deprecated by the 2026-10 spacing prune, removed in 0.31.0. */
 const DEPRECATED_STEPS = ['px6', 'px10'];
 const UTIL = /^(!?)(-?)(p[xytrblse]?|m[xytrblse]?|gap(?:-[xy])?|space-[xy])-(\d+(?:\.\d+)?|px\d+)$/;
 const PRIMITIVE_VAR = /--primitive-space-([\w]+)/g;

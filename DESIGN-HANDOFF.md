@@ -358,8 +358,8 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | `primitive.space.32`   | `128px` |                                                                                     |
 | `primitive.space.px1`  | `1px`   |                                                                                     |
 | `primitive.space.px2`  | `2px`   |                                                                                     |
-| `primitive.space.px6`  | `6px`   | 6px, off the 4px grid. Deprecated, removed in 0.30.0: use semantic.space.scale.xs.  |
-| `primitive.space.px10` | `10px`  | 10px, off the 4px grid. Deprecated, removed in 0.30.0: use semantic.space.fixed.xs. |
+| `primitive.space.px6`  | `6px`   | 6px, off the 4px grid. Deprecated, removed in 0.31.0: use semantic.space.scale.xs.  |
+| `primitive.space.px10` | `10px`  | 10px, off the 4px grid. Deprecated, removed in 0.31.0: use semantic.space.fixed.xs. |
 
 <!-- auto:end:spacing -->
 
