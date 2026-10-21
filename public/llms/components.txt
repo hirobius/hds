@@ -519,6 +519,7 @@ Paged navigation with first/last anchors, sibling pages, and ellipses.
   - onPageChange: (page: number) => void
   - page: number
   - siblingCount: number = 1
+  - variant: "default" | "compact" = default
 
 ### Pin
 Pin — sticky-pin an element within its scroll region.

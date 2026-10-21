@@ -28,9 +28,7 @@ describe('paginationRange', () => {
 
 describe('Pagination', () => {
   it('renders nothing for a single page', () => {
-    const { container } = render(
-      <Pagination page={1} count={1} onPageChange={() => {}} />,
-    );
+    const { container } = render(<Pagination page={1} count={1} onPageChange={() => {}} />);
     expect(container.firstChild).toBeNull();
   });
 
@@ -42,12 +40,10 @@ describe('Pagination', () => {
   });
 
   it('disables Previous on the first page and Next on the last', () => {
-    const { rerender } = render(
-      <Pagination page={1} count={5} onPageChange={() => {}} />,
-    );
-    expect((screen.getByRole('button', { name: 'Previous page' }) as HTMLButtonElement).disabled).toBe(
-      true,
-    );
+    const { rerender } = render(<Pagination page={1} count={5} onPageChange={() => {}} />);
+    expect(
+      (screen.getByRole('button', { name: 'Previous page' }) as HTMLButtonElement).disabled,
+    ).toBe(true);
     rerender(<Pagination page={5} count={5} onPageChange={() => {}} />);
     expect((screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement).disabled).toBe(
       true,
@@ -61,5 +57,60 @@ describe('Pagination', () => {
     expect(onPageChange).toHaveBeenCalledWith(4);
     fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
     expect(onPageChange).toHaveBeenCalledWith(3);
+  });
+});
+
+describe('Pagination variant="compact"', () => {
+  it('renders "n of m" between icon-only Previous and Next buttons', () => {
+    render(<Pagination variant="compact" page={1} count={4} onPageChange={() => {}} />);
+    expect(screen.getByText('1 of 4')).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Previous page' })).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Next page' })).not.toBeNull();
+    expect(screen.queryByRole('button', { name: 'Page 1' })).toBeNull();
+  });
+
+  it('disables Previous on the first page and Next on the last', () => {
+    const { rerender } = render(
+      <Pagination variant="compact" page={1} count={4} onPageChange={() => {}} />,
+    );
+    expect(
+      (screen.getByRole('button', { name: 'Previous page' }) as HTMLButtonElement).disabled,
+    ).toBe(true);
+    expect((screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement).disabled).toBe(
+      false,
+    );
+    rerender(<Pagination variant="compact" page={4} count={4} onPageChange={() => {}} />);
+    expect((screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement).disabled).toBe(
+      true,
+    );
+  });
+
+  it('fires onPageChange with the adjacent page', () => {
+    const onPageChange = vi.fn();
+    render(<Pagination variant="compact" page={2} count={4} onPageChange={onPageChange} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Previous page' }));
+    expect(onPageChange.mock.calls).toEqual([[3], [1]]);
+  });
+
+  it('announces the position politely', () => {
+    render(<Pagination variant="compact" page={2} count={4} onPageChange={() => {}} />);
+    expect(screen.getByText('2 of 4').getAttribute('aria-live')).toBe('polite');
+  });
+
+  it('keeps focus in the nav when the focused button disables', () => {
+    const { rerender } = render(
+      <Pagination variant="compact" page={2} count={4} onPageChange={() => {}} />,
+    );
+    const prev = screen.getByRole('button', { name: 'Previous page' });
+    prev.focus();
+    rerender(<Pagination variant="compact" page={1} count={4} onPageChange={() => {}} />);
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Next page' }));
+  });
+
+  it('leaves the default variant unchanged', () => {
+    render(<Pagination page={1} count={4} onPageChange={() => {}} />);
+    expect(screen.getByRole('button', { name: 'Page 1' })).not.toBeNull();
+    expect(screen.queryByText('1 of 4')).toBeNull();
   });
 });

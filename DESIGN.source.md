@@ -152,6 +152,8 @@ Three more needs are props on an existing component, not components of their own
 
 `MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `title`, the label in `caption` and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
 
+A pager for one item at a time ("‹ 1 of 4 ›") is `Pagination` with `variant="compact"`; the default variant is for pages of a long result set.
+
 ### Destructive and table sections
 
 `DestructiveSection` is a titled danger zone with one danger `Button` that opens an `AlertDialog`; it never runs the action from the button itself, only from the dialog's confirm. Put it last on the screen, below the form. `DataTableSection` puts a `Table` under a heading and a toolbar slot. Row actions are consumer nodes in a trailing column, an empty `rows` array shows an `EmptyState`, and the table scrolls horizontally inside the section on narrow widths, so a caller never sets `minWidth`.
