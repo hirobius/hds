@@ -49,3 +49,59 @@ describe('Badge dot (hds#393)', () => {
     expect(badge.hasAttribute('data-size')).toBe(false);
   });
 });
+
+describe('Badge count (hds#865)', () => {
+  it('renders the number', () => {
+    render(<Badge count={12} />);
+    expect(screen.getByText('12')).toBeTruthy();
+  });
+
+  it('caps at max and shows "<max>+"', () => {
+    render(<Badge count={120} max={99} />);
+    expect(screen.getByText('99+')).toBeTruthy();
+  });
+
+  it('shows the exact number at or below max', () => {
+    render(<Badge count={99} max={99} />);
+    expect(screen.getByText('99')).toBeTruthy();
+  });
+
+  it('has no cap without max', () => {
+    render(<Badge count={1204} />);
+    expect(screen.getByText('1204')).toBeTruthy();
+  });
+
+  it('renders 0', () => {
+    render(<Badge count={0} />);
+    expect(screen.getByText('0')).toBeTruthy();
+  });
+
+  it('is neutral by default and uses tabular numbers', () => {
+    const { container } = render(<Badge count={3} />);
+    const badge = container.firstElementChild as HTMLElement;
+    expect(badge.getAttribute('data-tone')).toBe('neutral');
+    expect(badge.className).toContain('tabular-nums');
+  });
+
+  it('label names the badge, even when the number is capped', () => {
+    render(<Badge count={120} max={99} label="120 roles" />);
+    const badge = screen.getByRole('img', { name: '120 roles' });
+    expect(badge.textContent).toBe('99+');
+  });
+
+  it('without a label the number is plain text, not an image', () => {
+    render(<Badge count={12} />);
+    expect(screen.queryByRole('img')).toBeNull();
+  });
+
+  it('ignores children when count is set', () => {
+    const { container } = render(<Badge count={5}>Ignored</Badge>);
+    expect(container.textContent).toBe('5');
+  });
+
+  it('a text badge keeps children and no tabular-nums', () => {
+    const { container } = render(<Badge>Draft</Badge>);
+    expect(container.textContent).toBe('Draft');
+    expect((container.firstElementChild as HTMLElement).className).not.toContain('tabular-nums');
+  });
+});

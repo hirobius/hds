@@ -75,6 +75,7 @@
     "Badge": {
       "source": "src/app/components/badge.tsx",
       "evidence": "hds#73",
+      "note": "Code adds a count mode (count, max, label; hds#865) that the Figma Badge master (31:15) does not draw yet: Figma-lane follow-up, so Code Connect maps the text badge only.",
       "properties": {
         "Tone": {
           "type": "VARIANT",
