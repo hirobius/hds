@@ -1,0 +1,1 @@
+SegmentedControl secondary selected segment: page fill + border.interactive edge + raised shadow, 3:1+ against the track on page and raised Card in both themes, pinned by segmented-control.contrast.test (#866).

@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "The secondary SegmentedControl's selected segment now has a darker 1px edge and a small shadow, so re-take screenshots of pages that use it."
+}
