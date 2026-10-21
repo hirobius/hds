@@ -183,9 +183,10 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
     },
     compoundVariants: [
       // Background.
-      // Secondary selected: the page fill with a border.interactive edge and the raised
-      // shadow, so it reads at 3:1+ against the track on the page and on a raised Card,
-      // light and dark (hds#866). border.strong is only 1.5:1 on white in light mode.
+      // Secondary selected: the page fill with a 1px border.interactive edge, which reads
+      // at 3:1+ against the track and a raised Card in light and dark (hds#866). Not
+      // border.strong (1.5:1 on white), and no raised shadow on top of the edge: depth is
+      // one mechanism, border or shadow (REACT_COMPONENTS.md, Elevation roles).
       {
         active: true,
         variant: 'secondary',
@@ -226,8 +227,7 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
       {
         active: true,
         variant: 'secondary',
-        className:
-          'shadow-[inset_0_0_0_1px_var(--semantic-color-border-interactive),var(--semantic-elevation-raised-shadow)]',
+        className: 'shadow-[inset_0_0_0_1px_var(--semantic-color-border-interactive)]',
       },
       {
         active: true,

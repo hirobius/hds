@@ -80,26 +80,22 @@ const SURFACES = ['--semantic-color-surface-page', '--semantic-color-surface-rai
 
 describe('SegmentedControl secondary selected segment contrast (hds#866)', () => {
   for (const theme of ['light', 'dark'] as const) {
+    // The rail paints its own fill, so the track is the same on the page and on a Card.
+    it(`the selected edge reads against the track at 3:1 or more (${theme})`, () => {
+      const { track, edge } = renderSecondary();
+      expect(contrastRatio(color(edge, theme), color(track, theme))).toBeGreaterThanOrEqual(3);
+    });
+
     for (const surface of SURFACES) {
       const on = surface.endsWith('raised') ? 'a raised Card' : 'the page';
-
-      it(`the selected edge reads against the track at 3:1 or more on ${on} (${theme})`, () => {
-        const { track, fill, edge } = renderSecondary();
-        // The rail paints its own fill, so the track is that fill whatever it sits on.
-        const trackHex = color(track, theme);
-        // The boundary that separates selected from track is the brighter-contrast of its
-        // 1px edge and its fill; both are measured against the track.
-        const ratio = Math.max(
-          contrastRatio(color(edge, theme), trackHex),
-          contrastRatio(color(fill, theme), trackHex),
-        );
-        expect(ratio).toBeGreaterThanOrEqual(3);
-        // And the selected edge still reads against the surface around the control.
+      it(`the selected edge reads against ${on} at 3:1 or more (${theme})`, () => {
+        const { edge } = renderSecondary();
         expect(contrastRatio(color(edge, theme), color(surface, theme))).toBeGreaterThanOrEqual(3);
       });
     }
 
-    it(`the weight-500 label reads on the selected fill at 4.5:1 or more (${theme})`, () => {
+    // The label is weight 500 (hds-type-ui), not bold, so it needs the 4.5:1 body-text bar.
+    it(`the label reads on the selected fill at 4.5:1 or more (${theme})`, () => {
       const { fill, label } = renderSecondary();
       expect(contrastRatio(color(label, theme), color(fill, theme))).toBeGreaterThanOrEqual(4.5);
     });
