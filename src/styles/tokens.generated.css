@@ -5,6 +5,7 @@
  *
  * Three-tier architecture: primitive → semantic → component
  * Dark mode via [data-theme="dark"] selector (Figma SDS convention).
+ * Compact density via [data-density="compact"] (the tokens' Compact mode).
  * The var() reference chain is preserved so dark-mode overrides cascade
  * automatically — no JavaScript re-renders needed for theme switching.
  */
@@ -158,8 +159,10 @@
   --primitive-typography-family-display: Sora, "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --primitive-typography-family-mono: "IBM Plex Mono", "Courier New", monospace;
   --primitive-typography-size-xs: 12px;
+  --primitive-typography-size-compactCaption: 13px;
   --primitive-typography-size-sm: 14px;
   --primitive-typography-size-base: 16px;
+  --primitive-typography-size-compactBody: 15px;
   --primitive-typography-size-lg: 18px;
   --primitive-typography-size-xl: 20px;
   --primitive-typography-size-2xl: 24px;
@@ -286,6 +289,7 @@
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-50);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-50);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-black);
+  --semantic-space-scale-2xs: var(--primitive-space-1);
   --semantic-space-scale-xs: var(--primitive-space-2);
   --semantic-space-scale-sm: var(--primitive-space-5);
   --semantic-space-scale-md: var(--primitive-space-7);
@@ -722,4 +726,32 @@
   --role-border: var(--semantic-color-border-default);
   --role-input: var(--semantic-color-border-interactive);
   --role-ring: var(--semantic-color-border-accent);
+}
+
+/* ── Compact density (apps) ─────────────────────────────────────────────────── */
+[data-density="compact"] {
+  --semantic-space-scale-sm: var(--primitive-space-3);
+  --semantic-space-scale-md: var(--primitive-space-4);
+  --semantic-space-scale-lg: var(--primitive-space-6);
+  --semantic-space-scale-xl: var(--primitive-space-8);
+  --semantic-space-layout-tight: var(--primitive-space-3);
+  --semantic-space-layout-normal: var(--primitive-space-4);
+  --semantic-space-layout-inset: var(--primitive-space-6);
+  --semantic-space-layout-spacious: var(--primitive-space-8);
+  --semantic-space-section-stack: var(--primitive-space-12);
+  --semantic-layout-grid-gap: var(--semantic-space-scale-md);
+  --semantic-typography-title-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-body-font-size: var(--primitive-typography-size-compactBody);
+  --semantic-typography-ui-font-size: var(--primitive-typography-size-sm);
+  --semantic-typography-caption-font-size: var(--primitive-typography-size-compactCaption);
+  --semantic-typography-h1-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-h2-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-h3-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-compactCaption);
+  --semantic-space-surface-padding: var(--semantic-space-scale-md);
+  --semantic-space-region-gutter: var(--semantic-space-scale-lg);
+  --semantic-space-component-padding: var(--semantic-space-surface-padding);
+  --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
+  --semantic-docs-space-section: var(--semantic-space-scale-xl);
+  --component-card-gap: var(--semantic-space-scale-sm);
 }

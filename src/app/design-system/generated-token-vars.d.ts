@@ -157,8 +157,10 @@ declare module 'react' {
     '--primitive-typography-family-display'?: string | undefined;
     '--primitive-typography-family-mono'?: string | undefined;
     '--primitive-typography-size-xs'?: string | undefined;
+    '--primitive-typography-size-compactCaption'?: string | undefined;
     '--primitive-typography-size-sm'?: string | undefined;
     '--primitive-typography-size-base'?: string | undefined;
+    '--primitive-typography-size-compactBody'?: string | undefined;
     '--primitive-typography-size-lg'?: string | undefined;
     '--primitive-typography-size-xl'?: string | undefined;
     '--primitive-typography-size-2xl'?: string | undefined;
@@ -279,6 +281,7 @@ declare module 'react' {
     '--semantic-color-feedback-bg-info'?: string | undefined;
     '--semantic-color-feedback-bg-inProgress'?: string | undefined;
     '--semantic-color-state-pressed-overlay'?: string | undefined;
+    '--semantic-space-scale-2xs'?: string | undefined;
     '--semantic-space-scale-xs'?: string | undefined;
     '--semantic-space-scale-sm'?: string | undefined;
     '--semantic-space-scale-md'?: string | undefined;

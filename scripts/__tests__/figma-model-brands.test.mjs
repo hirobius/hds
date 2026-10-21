@@ -379,17 +379,23 @@ describe('buildFigmaModel refuses brand overlays Figma cannot express', () => {
     ).toThrow(/odd-demo.*semantic\.color\.brand.*hirobius\.tokens\.json/);
   });
 
-  it('a base token with a Compact mode, which build-tokens never emits as CSS', () => {
-    const raw = fixture();
-    raw.semantic.space.component.gap.$extensions = modes({ Compact: '{primitive.space.2}' });
-    expect(() => buildFigmaModel(raw)).toThrow(/semantic\.space\.component\.gap.*Compact/);
-  });
-
   it('two tenants with one slug, or a slug equal to the base mode name', () => {
     expect(build(SHARP, SHARP)).toThrow(/sharp-demo.*twice/);
     expect(() =>
       buildFigmaModel(fixture(), { brands: { baseMode: 'sharp-demo', tenants: [SHARP] } }),
     ).toThrow(/sharp-demo.*base mode/);
+  });
+});
+
+describe('buildFigmaModel — a base token with its own Compact mode', () => {
+  it('gets a Hirobius/Density variable, emitted as [data-density="compact"] CSS by build-tokens', () => {
+    const raw = fixture();
+    raw.semantic.space.component.gap.$extensions = modes({ Compact: '{primitive.space.2}' });
+    const model = buildFigmaModel(raw);
+    const density = model.collections.find((c) => c.key === 'density');
+    expect(density.modes).toEqual(['Comfortable', 'Compact']);
+    const v = density.variables.find((x) => x.path === 'density.semantic.space.component.gap');
+    expect(v.valuesByMode.Compact).toEqual({ alias: 'primitive.space.2' });
   });
 });
 

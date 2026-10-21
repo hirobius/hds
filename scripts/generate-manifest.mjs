@@ -111,6 +111,9 @@ function findConsumers(componentName, filePath, sourceFiles) {
       .filter((candidate) => candidate !== filePath)
       .filter((candidate) => !candidate.startsWith(DOCS_PAGE_SEGMENT))
       .filter((candidate) => !/\.figma\.tsx?$/.test(candidate))
+      // generated-* files are build output (token descriptions etc.); their prose
+      // can name a component without using it, and regen must stay idempotent.
+      .filter((candidate) => !/(^|\/)generated-[^/]*$/.test(candidate))
       // src/icons.ts is a bare re-export; its doc comment and Lucide names
       // (Calendar, Menu) are not component usage.
       .filter((candidate) => candidate !== 'src/icons.ts')

@@ -291,11 +291,11 @@ describe.skipIf(!hasBrowser)('soft-demo: computed, light and dark, on <html> and
     },
   );
 
-  it.each(SCOPES)('surfaces get room: 40px comfortable, 24px compact (%s)', async (scope) => {
+  it.each(SCOPES)('surfaces get room: 40px comfortable, 16px compact (%s)', async (scope) => {
     const comfortable = await measure({ brand: 'soft-demo', scope });
     const compact = await measure({ brand: 'soft-demo', scope, density: 'compact' });
     expect([comfortable.surfacePadding, comfortable.surfacePaddingAlias]).toEqual(['40px', '40px']);
-    expect([compact.surfacePadding, compact.surfacePaddingAlias]).toEqual(['24px', '24px']);
+    expect([compact.surfacePadding, compact.surfacePaddingAlias]).toEqual(['16px', '16px']);
     expect((await measure({ scope })).surfacePadding).toBe('28px'); // default (scale.md)
   });
 

@@ -121,12 +121,13 @@
   /* -- Responsive layout rhythm ----------------------------------------------- */
   /* Keep shell rhythm adaptive without pushing breakpoint logic into components. */
   /* hds#206: region.gutter steps on the t-shirt scale (lg 40px, sm 20px below 640px;
-   * 32px and 16px under compact). Every value here is a scale step or a 4px-grid
+   * 24px and 12px under compact). Every value here is a scale step or a 4px-grid
    * primitive, raised 2026-10 with the type ramp bump. */
   /* The deprecated --semantic-space-layout-gutter follows via its tokens.css alias. */
   --semantic-space-region-gutter: var(--semantic-space-scale-lg);
   --semantic-space-layout-gap: var(--semantic-space-scale-md);
-  --semantic-space-section-stack: var(--primitive-space-24); /* 96px (was 80px) */
+  /* section.stack (96px, 48px compact) comes from tokens.generated.css: a copy here
+   * would out-rank its [data-density="compact"] rule on <html>. */
   --semantic-space-section-inset: var(--primitive-space-32); /* 128px */
   --semantic-layout-grid-gap: var(--semantic-space-scale-md);
   --semantic-layout-section-paddingY: var(--primitive-space-24); /* 96px (was 80px) */
@@ -939,52 +940,48 @@ input[data-search-input='true'] {
  * --------------------------------------------------------------------------- */
 
 /* -- Density: compact --------------------------------------------------------
- * Two modes only: comfortable (default, unset) and compact (opt-in). Compact steps
- * sm..xl one rung down the primitive scale, to the pre-2026-10 comfortable values;
- * xs (the control-internal step) is the same 8px in both. All on the 4px grid.
+ * Two modes only: comfortable (default, unset) and compact (opt-in, for dense
+ * apps). The real dial is generated: tokens.generated.css carries a
+ * [data-density="compact"] block built from the Compact modes in
+ * hirobius.tokens.json (scale sm-xl 12/16/24/32px, layout.* 12/16/24/32px,
+ * section.stack 48px, body 15 / ui 14 / caption 13 / title 24px), with every
+ * scale alias re-declared so nested scopes work. region.gutter (scale.lg, 24px)
+ * and grid.gap (scale.md, 16px) follow their steps.
+ * This file keeps only what has no token: the legacy --hds-space-* bridge, the
+ * theme.css-only layout-gap, and the viewport rules below.
  * Toggle: document.documentElement.dataset.density = 'compact' | 'comfortable'
  * Inspired by: IBM Carbon (condensed/extra-condensed density), Material Design 3,
  * Salesforce Lightning (comfy/compact), GitHub Primer (condensed/spacious).
  * --------------------------------------------------------------------------- */
 [data-density='compact'] {
-  /* The real dial: components read --semantic-space-scale-*, so compact remaps it one
-   * rung down (comfortable 8/20/28/40/64px -> compact 8/16/24/32/48px). The
-   * --hds-space-* set below is a legacy bridge that no component reads; only the
-   * deprecated hds.density.* does (hds#206: use semantic.space.scale.*). */
-  --semantic-space-scale-xs: var(--primitive-space-2); /* 8px, the same as comfortable */
-  --semantic-space-scale-sm: var(--primitive-space-4);
-  --semantic-space-scale-md: var(--primitive-space-6);
-  --semantic-space-scale-lg: var(--primitive-space-8);
-  --semantic-space-scale-xl: var(--primitive-space-12);
+  /* Legacy bridge (hds#206): no component reads it, only the deprecated
+   * hds.density.*. Each step tracks its scale twin's compact pixels. */
   --hds-space-xs: var(--primitive-space-px2); /* 2px  (was 4px)  */
-  --hds-space-sm: var(--primitive-space-2); /* 8px  (6px until the 2026-10 prune cut that step) */
-  --hds-space-md: var(--primitive-space-4); /* 16px */
-  --hds-space-lg: var(--primitive-space-6); /* 24px */
-  --hds-space-xl: var(--primitive-space-8); /* 32px */
-  --hds-space-2xl: var(--primitive-space-12); /* 48px */
+  --hds-space-sm: var(--primitive-space-2); /* 8px, scale.xs */
+  --hds-space-md: var(--primitive-space-3); /* 12px, scale.sm */
+  --hds-space-lg: var(--primitive-space-4); /* 16px, scale.md */
+  --hds-space-xl: var(--primitive-space-6); /* 24px, scale.lg */
+  --hds-space-2xl: var(--primitive-space-8); /* 32px, scale.xl */
   --hds-space-3xl: var(--primitive-space-12); /* 48px */
   --hds-space-4xl: var(--primitive-space-16); /* 64px */
 }
 
-/* A var() resolves where the property is declared, so on a nested compact scope
- * (<div data-hds data-density="compact">) the aliases must be declared again to pick
- * up the remapped scale. :where() keeps specificity at zero so a [data-brand] tenant
- * override of surface-padding still wins. On <html> the :root aliases already follow. */
+/* layout-gap has no token, so the generated block cannot re-declare it for a nested
+ * compact scope. (grid.gap has a Compact mode, scale.md, so it is generated.) */
 :where([data-density='compact']) {
-  --semantic-space-surface-padding: var(--semantic-space-scale-md);
-  --semantic-space-component-padding: var(--semantic-space-surface-padding);
-  --semantic-space-region-gutter: var(--semantic-space-scale-lg);
-  --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
   --semantic-space-layout-gap: var(--semantic-space-scale-md);
-  --semantic-layout-grid-gap: var(--semantic-space-scale-md);
-  --semantic-docs-space-section: var(--semantic-space-scale-xl);
 }
 
+/* Under 640px the :root rules above re-point the gutters at scale.sm and raise
+ * section.stack to 64px. Compact keeps the gutters on scale.sm (12px) and holds
+ * section.stack at 48px: a dense app never grows its rhythm on a phone. Declared
+ * after the :root rule with the same specificity, so it wins on <html> too. */
 @media (max-width: 639px) {
-  :where([data-density='compact']) {
+  [data-density='compact'] {
     --semantic-space-region-gutter: var(--semantic-space-scale-sm);
     --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
     --semantic-space-layout-gap: var(--semantic-space-scale-sm);
     --semantic-layout-grid-gap: var(--semantic-space-scale-sm);
+    --semantic-space-section-stack: var(--primitive-space-12);
   }
 }

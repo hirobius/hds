@@ -9,13 +9,26 @@ since: '0.1.0'
 
 {/* generated: tokens */}
 
+## Density
+
+The default rhythm is roomy, for sites. Dense apps opt into a tighter one by putting `data-density="compact"` on `<html>` or any ancestor (in React, `HdsThemeProvider density="compact"`). The values come from the tokens' Compact mode, so components follow without a prop. Try it with **Density** in the display settings, the gear beside the theme switcher.
+
+| Role (px)               | Default           | Compact           |
+| ----------------------- | ----------------- | ----------------- |
+| Scale sm · md · lg · xl | 20 · 28 · 40 · 64 | 12 · 16 · 24 · 32 |
+| Scale 2xs · xs          | 4 · 8             | 4 · 8             |
+| Section stack           | 96                | 48                |
+| Body · ui · caption     | 18 · 16 · 14      | 15 · 14 · 13      |
+| Title                   | 28                | 24                |
+| Display                 | 56                | 56                |
+
 <PrinciplesAndPractices>
 
 ### Principle
 
 - **4px grid.** Every step on the scale is a multiple of 4px. Skip half steps and one-off values.
 - **Space, not lines.** Separate sections with whitespace before reaching for borders.
-- **Density.** Compact mode tightens the whole scale at once, so layouts keep their proportions.
+- **Density.** Compact mode tightens the whole scale and the type at once, so app layouts keep their proportions.
 
 ### Best practices
 
