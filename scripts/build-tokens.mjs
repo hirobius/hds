@@ -683,7 +683,16 @@ export function validateTokens(raw) {
  * token system for AI agents and LLMs building with or on top of HDS.
  * Auto-generated on every `pnpm tokens` run alongside tokens.generated.css.
  */
+/**
+ * Token paths that stay in the package (CSS variables, types, `$deprecated` notes) but are left out
+ * of the manifest, as the docs leave out `$deprecated` tokens: lime / delight is hidden until it
+ * comes back (hds#857). Deprecated aliases with a replacement stay listed; these have none.
+ */
+export const HIDDEN_TOKEN_PREFIXES = ['semantic.accent.delight.', 'primitive.color.lime.'];
+const isHiddenToken = (t) => HIDDEN_TOKEN_PREFIXES.some((p) => t.path.join('.').startsWith(p));
+
 export function buildManifest(allTokens, raw, systemManifest = readSystemManifest()) {
+  const listedTokens = allTokens.filter((t) => !isHiddenToken(t));
   const resolveValue = (val, type) => {
     if (typeof val === 'string' && val.startsWith('{')) {
       try {
@@ -1119,10 +1128,10 @@ export function buildManifest(allTokens, raw, systemManifest = readSystemManifes
     // on every tokens rebuild.
     utilities: systemManifest.utilities ?? {},
     tokens: {
-      primitive: allTokens.filter((t) => t.path[0] === 'primitive').map(formatToken),
-      semantic: allTokens.filter((t) => t.path[0] === 'semantic').map(formatToken),
-      component: allTokens.filter((t) => t.path[0] === 'component').map(formatToken),
-      role: allTokens.filter((t) => t.path[0] === 'role').map(formatToken),
+      primitive: listedTokens.filter((t) => t.path[0] === 'primitive').map(formatToken),
+      semantic: listedTokens.filter((t) => t.path[0] === 'semantic').map(formatToken),
+      component: listedTokens.filter((t) => t.path[0] === 'component').map(formatToken),
+      role: listedTokens.filter((t) => t.path[0] === 'role').map(formatToken),
     },
     // hds#449: generate-manifest writes publicClasses (scripts/lib/public-classes.mjs);
     // forwarded verbatim, last, where that generator appends it.

@@ -73,8 +73,9 @@ function overlay(base: Json, layer: Json): Json {
 /**
  * Colour gallery: primitive ramps (one group per hue), the semantic and accent
  * tokens (one group per role), then the accent themes side by side: graphite
- * (the default), each opt-in theme in `accentThemes` (`accents/<name>/tokens.json`,
- * set with `data-accent`), and the lime delight accent. Tenant brand ramps
+ * (the default) and each opt-in theme in `accentThemes` (`accents/<name>/tokens.json`,
+ * set with `data-accent`). Lime / delight is `$deprecated` while hidden (hds#857), so
+ * `children` leaves it out like every deprecated token. Tenant brand ramps
  * (`projectBrand`) are left out: they belong to one client, not the shared system.
  */
 export function colorGalleries(
@@ -94,9 +95,7 @@ export function colorGalleries(
   };
   const accent: SwatchGroup = {
     title: 'Accent',
-    swatches: leafRows(tokens, 'semantic.accent').filter(
-      (r) => isColor(r.value) && !r.token.startsWith('semantic.accent.delight.'),
-    ),
+    swatches: leafRows(tokens, 'semantic.accent').filter((r) => isColor(r.value)),
   };
   const roles = (source: Json) =>
     ACCENT_ROLES.map((path) => tokenRow(source, path)).filter((r): r is TokenRow => r !== null);
@@ -106,10 +105,6 @@ export function colorGalleries(
       title: `${titleCase(name)} (data-accent="${name}")`,
       swatches: roles(overlay(tokens, layer)),
     })),
-    {
-      title: 'Delight (lime): badges, "new" tags, highlights; never buttons, links or focus',
-      swatches: leafRows(tokens, 'semantic.accent.delight').filter((r) => isColor(r.value)),
-    },
   ];
   return [
     { title: 'Primitives', dense: true, groups: groupsUnder('primitive.color', ['projectBrand']) },

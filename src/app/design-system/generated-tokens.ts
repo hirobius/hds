@@ -75,12 +75,19 @@ export const tokens = {
         "900": "var(--primitive-color-cobalt-900)"
       },
       lime: {
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
         "50": "var(--primitive-color-lime-50)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
         "100": "var(--primitive-color-lime-100)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
         "200": "var(--primitive-color-lime-200)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
         "300": "var(--primitive-color-lime-300)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
         "400": "var(--primitive-color-lime-400)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
         "600": "var(--primitive-color-lime-600)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
         "800": "var(--primitive-color-lime-800)"
       },
       mauve: {
@@ -459,9 +466,13 @@ export const tokens = {
       contentHover: "var(--semantic-accent-contentHover)",
       subtle: "var(--semantic-accent-subtle)",
       delight: {
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
         base: "var(--semantic-accent-delight-base)",
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
         deep: "var(--semantic-accent-delight-deep)",
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
         pale: "var(--semantic-accent-delight-pale)",
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
         onDelight: "var(--semantic-accent-delight-onDelight)"
       }
     },

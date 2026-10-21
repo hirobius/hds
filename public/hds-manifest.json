@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-20T20:07:05.875Z",
+  "generated": "2026-10-21T01:38:17.523Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11474,55 +11474,6 @@
         "value": "#0b0658"
       },
       {
-        "path": "primitive.color.lime.50",
-        "cssVar": "--primitive-color-lime-50",
-        "type": "color",
-        "description": "Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.",
-        "value": "#f2fbd6"
-      },
-      {
-        "path": "primitive.color.lime.100",
-        "cssVar": "--primitive-color-lime-100",
-        "type": "color",
-        "description": "Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.",
-        "value": "#e3f6a8"
-      },
-      {
-        "path": "primitive.color.lime.200",
-        "cssVar": "--primitive-color-lime-200",
-        "type": "color",
-        "description": "Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.",
-        "value": "#cdee6a"
-      },
-      {
-        "path": "primitive.color.lime.300",
-        "cssVar": "--primitive-color-lime-300",
-        "type": "color",
-        "description": "Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.",
-        "value": "#b8e62e"
-      },
-      {
-        "path": "primitive.color.lime.400",
-        "cssVar": "--primitive-color-lime-400",
-        "type": "color",
-        "description": "Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.",
-        "value": "#93ba1c"
-      },
-      {
-        "path": "primitive.color.lime.600",
-        "cssVar": "--primitive-color-lime-600",
-        "type": "color",
-        "description": "Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus.",
-        "value": "#6e8f0b"
-      },
-      {
-        "path": "primitive.color.lime.800",
-        "cssVar": "--primitive-color-lime-800",
-        "type": "color",
-        "description": "Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.",
-        "value": "#445807"
-      },
-      {
         "path": "primitive.color.mauve.50",
         "cssVar": "--primitive-color-mauve-50",
         "type": "color",
@@ -13617,54 +13568,6 @@
         "dark": {
           "alias": "{primitive.color.graphite.800}",
           "resolvedValue": "#352e32"
-        }
-      },
-      {
-        "path": "semantic.accent.delight.base",
-        "cssVar": "--semantic-accent-delight-base",
-        "type": "color",
-        "description": "Delight accent fill (lime) for delight moments only: a streak or win badge, a \"new\" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes.",
-        "alias": "{primitive.color.lime.300}",
-        "resolvedValue": "#b8e62e",
-        "dark": {
-          "alias": "{primitive.color.lime.300}",
-          "resolvedValue": "#b8e62e"
-        }
-      },
-      {
-        "path": "semantic.accent.delight.deep",
-        "cssVar": "--semantic-accent-delight-deep",
-        "type": "color",
-        "description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.",
-        "alias": "{primitive.color.lime.600}",
-        "resolvedValue": "#6e8f0b",
-        "dark": {
-          "alias": "{primitive.color.lime.600}",
-          "resolvedValue": "#6e8f0b"
-        }
-      },
-      {
-        "path": "semantic.accent.delight.pale",
-        "cssVar": "--semantic-accent-delight-pale",
-        "type": "color",
-        "description": "Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.",
-        "alias": "{primitive.color.lime.50}",
-        "resolvedValue": "#f2fbd6",
-        "dark": {
-          "alias": "{primitive.color.lime.50}",
-          "resolvedValue": "#f2fbd6"
-        }
-      },
-      {
-        "path": "semantic.accent.delight.onDelight",
-        "cssVar": "--semantic-accent-delight-onDelight",
-        "type": "color",
-        "description": "Ink text and icons on any delight fill, in both modes (12.95:1 on delight.base). Never white.",
-        "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
-        "dark": {
-          "alias": "{primitive.color.neutral.900}",
-          "resolvedValue": "#111111"
         }
       },
       {
