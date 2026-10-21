@@ -573,10 +573,17 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabl
 }
 .prose .hds-specimen-meta {
   margin: 0 0 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-family: var(--semantic-typography-caption-font-family);
+  font-size: var(--semantic-typography-caption-font-size);
+  font-weight: var(--semantic-typography-caption-font-weight);
+  line-height: var(--semantic-typography-caption-line-height);
   color: var(--semantic-color-content-secondary);
   overflow-wrap: anywhere;
+}
+/* Only the token values in a spec line are mono (mono = code, token names, token values). */
+.hds-specimen-values {
+  font-family: var(--font-mono);
+  font-weight: 400;
 }
 .prose .hds-specimen-sample {
   margin: 0;
