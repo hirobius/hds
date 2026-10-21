@@ -199,8 +199,10 @@ export const tokenRefs = {
       },
       size: {
         xs: "var(--primitive-typography-size-xs)",
+        compactCaption: "var(--primitive-typography-size-compactCaption)",
         sm: "var(--primitive-typography-size-sm)",
         base: "var(--primitive-typography-size-base)",
+        compactBody: "var(--primitive-typography-size-compactBody)",
         lg: "var(--primitive-typography-size-lg)",
         xl: "var(--primitive-typography-size-xl)",
         "2xl": "var(--primitive-typography-size-2xl)",
@@ -381,6 +383,7 @@ export const tokenRefs = {
     },
     space: {
       scale: {
+        "2xs": "var(--semantic-space-scale-2xs)",
         xs: "var(--semantic-space-scale-xs)",
         sm: "var(--semantic-space-scale-sm)",
         md: "var(--semantic-space-scale-md)",

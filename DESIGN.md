@@ -37,18 +37,18 @@ Weights declared: `400` regular, `400` mono, `500` medium, `700` bold, `700` dis
 
 ### Type ramp
 
-| Role | Size (desktop max) | Weight | Use |
-| --- | --- | --- | --- |
-| `semantic.typography.display` | 56px | 700 | One per page, hero only |
-| `semantic.typography.title` | 28px | 700 | Section and card headings |
-| `semantic.typography.titleSm` | 20px | 700 | Small heading inside a card or section band, and the Alert title |
-| `semantic.typography.body` | 18px | 400 | Prose |
-| `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
-| `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
-| `semantic.typography.mono` | 15px | 400 | Code and ids |
-| `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
+| Role | Size (desktop max) | Compact | Weight | Use |
+| --- | --- | --- | --- | --- |
+| `semantic.typography.display` | 56px | same | 700 | One per page, hero only |
+| `semantic.typography.title` | 28px | 24px | 700 | Section and card headings |
+| `semantic.typography.titleSm` | 20px | same | 700 | Small heading inside a card or section band, and the Alert title |
+| `semantic.typography.body` | 18px | 15px | 400 | Prose |
+| `semantic.typography.ui` | 16px | 14px | 500 | Controls, nav, table text, values |
+| `semantic.typography.caption` | 14px | 13px | 500 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.mono` | 15px | same | 400 | Code and ids |
+| `semantic.typography.lineHeight.none` |  | same |  | Semantic alias for leading-none (1) |
 
-> The ramp is static: tokens store the value every surface renders. Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.
+> The ramp is static: tokens store the value every surface renders. **Compact** is the size under `data-density="compact"` (dense apps). Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.
 <!-- auto:end:typography -->
 
 **Never for.** Each role has one job; reaching past it is how the ramp drifts.
@@ -72,11 +72,13 @@ Weights declared: `400` regular, `400` mono, `500` medium, `700` bold, `700` dis
 
 Scale: `0px` (`primitive.space.0`) · `1px` (`primitive.space.px1`) · `2px` (`primitive.space.px2`) · `4px` (`primitive.space.1`) · `8px` (`primitive.space.2`) · `12px` (`primitive.space.3`) · `16px` (`primitive.space.4`) · `20px` (`primitive.space.5`) · `24px` (`primitive.space.6`) · `28px` (`primitive.space.7`) · `32px` (`primitive.space.8`) · `40px` (`primitive.space.10`) · `48px` (`primitive.space.12`) · `64px` (`primitive.space.16`) · `80px` (`primitive.space.20`) · `96px` (`primitive.space.24`) · `128px` (`primitive.space.32`)
 
-Semantic scale (comfortable, the default): `xs` 8px · `sm` 20px · `md` 28px · `lg` 40px · `xl` 64px.
+Semantic scale (comfortable, the default): `2xs` 4px · `xs` 8px · `sm` 20px · `md` 28px · `lg` 40px · `xl` 64px.
+
+Compact (`data-density="compact"`, for dense apps): `2xs` 4px · `xs` 8px · `sm` 12px · `md` 16px · `lg` 24px · `xl` 32px.
 
 Fixed steps between the rungs (density does not move them): `fixed.2xs` 4px · `fixed.xs` 12px · `fixed.sm` 16px · `fixed.md` 24px · `fixed.lg` 32px · `fixed.xl` 48px. Every spacing value has a semantic token; never type a px value.
 
-Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it steps `semantic.space.scale.sm…xl` one rung down (16/24/32/48px; `xs` stays 8px), and `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
+Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it remaps `semantic.space.scale.sm…xl` to the app rhythm above (`2xs` and `xs` stay 4px and 8px), the deprecated `layout.*` steps and `section.stack` (48px) with it, and sets the compact type sizes in the ramp table; `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
 <!-- auto:end:spacing -->
 
 **Spacing rules of thumb** (2026-10, raised with the type ramp so padding, gaps and line height stay in rhythm):
@@ -259,6 +261,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (465 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (468 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

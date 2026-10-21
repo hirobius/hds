@@ -191,8 +191,10 @@ export const tokenValues = {
       },
       size: {
         xs: "12px",
+        compactCaption: "13px",
         sm: "14px",
         base: "16px",
+        compactBody: "15px",
         lg: "18px",
         xl: "20px",
         "2xl": "24px",

@@ -211,7 +211,7 @@ export function buildTypography(raw) {
   lines.push('');
   lines.push('### Type ramp');
   lines.push('');
-  lines.push(header('Role', 'Size (desktop max)', 'Weight', 'Use'));
+  lines.push(header('Role', 'Size (desktop max)', 'Compact', 'Weight', 'Use'));
 
   for (const { path, node: t } of collect(semanticTypography)) {
     if (t?.$deprecated) continue; // agent docs teach live roles only
@@ -220,12 +220,14 @@ export function buildTypography(raw) {
     const afterDash = raw.split(' — ')[1];
     const desc = ((afterDash ?? raw).split(/\.(?:\s|$)/)[0] ?? '').trim();
     const size = lookup(v.fontSize, sizeMap);
+    const compactSize = t?.$extensions?.['com.figma.variables']?.modes?.Compact?.fontSize;
+    const compact = compactSize ? lookup(compactSize, sizeMap) : 'same';
     const wgt = lookup(v.fontWeight, weightMap);
-    lines.push(row(`\`semantic.typography.${path.join('.')}\``, size, wgt, desc || '—'));
+    lines.push(row(`\`semantic.typography.${path.join('.')}\``, size, compact, wgt, desc || '—'));
   }
   lines.push('');
   lines.push(
-    '> The ramp is static: tokens store the value every surface renders. Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.',
+    '> The ramp is static: tokens store the value every surface renders. **Compact** is the size under `data-density="compact"` (dense apps). Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.',
   );
   return lines.join('\n');
 }
@@ -260,6 +262,12 @@ export function buildSpacing(raw) {
     lines.push(
       `Semantic scale (comfortable, the default): ${stepKeys.map((k) => `\`${k}\` ${resolveRef(steps[k].$value, raw)}`).join(' · ')}.`,
     );
+    const compactOf = (k) =>
+      steps[k].$extensions?.['com.figma.variables']?.modes?.Compact ?? steps[k].$value;
+    lines.push('');
+    lines.push(
+      `Compact (\`data-density="compact"\`, for dense apps): ${stepKeys.map((k) => `\`${k}\` ${resolveRef(compactOf(k), raw)}`).join(' · ')}.`,
+    );
   }
   const fixed = raw.semantic?.space?.fixed ?? {};
   const fixedKeys = Object.keys(fixed).filter((k) => !k.startsWith('$') && !fixed[k].$deprecated);
@@ -271,7 +279,7 @@ export function buildSpacing(raw) {
   }
   lines.push('');
   lines.push(
-    'Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it steps `semantic.space.scale.sm…xl` one rung down (16/24/32/48px; `xs` stays 8px), and `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
+    'Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it remaps `semantic.space.scale.sm…xl` to the app rhythm above (`2xs` and `xs` stay 4px and 8px), the deprecated `layout.*` steps and `section.stack` (48px) with it, and sets the compact type sizes in the ramp table; `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
   );
   return lines.join('\n');
 }

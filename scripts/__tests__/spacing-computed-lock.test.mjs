@@ -373,11 +373,15 @@ describe.runIf(CAPTURE_LAYOUT)('capture the layout-gap lock fixture', () => {
 // var (its emitted CSS names --semantic-space-*, subgrid aside) must compute the old
 // pixel moved through that map for its cell's density; every other probe (numbers,
 // hds.space.px*, rem) must still compute exactly what it did.
-// The deprecated layout.* names and section.stack never had a compact step: they
-// moved by the comfortable map in every cell.
+// The second deliberate move, compact density for apps: compact became the app
+// rhythm (scale 8/12/16/24/32px), and the deprecated layout.* names and
+// section.stack gained compact steps (12/16/24/32px, 48px). On c506c3b those had
+// no compact step, so a compact cell recorded the comfortable pixel; they move by
+// the compactFixed map, and stay on the comfortable map in comfortable cells.
 const SCALE_BUMP = {
   comfortable: { '16px': '20px', '24px': '28px', '32px': '40px', '48px': '64px', '80px': '96px' },
-  compact: { '6px': '8px', '12px': '16px', '20px': '24px', '24px': '32px', '40px': '48px' },
+  compact: { '6px': '8px', '12px': '12px', '20px': '16px', '24px': '24px', '40px': '32px' },
+  compactFixed: { '16px': '12px', '24px': '16px', '32px': '24px', '48px': '32px', '80px': '48px' },
 };
 const readsScale = (css) => /--semantic-space-(?!subgrid|component-medium)/.test(css ?? '');
 const fixedStep = (css) =>
@@ -385,8 +389,11 @@ const fixedStep = (css) =>
 /** The fixture's value for one cell, moved through the bump when the probe reads the scale. */
 const expected = (css, cell, value) => {
   if (!readsScale(css)) return value;
-  const density = fixedStep(css) ? 'comfortable' : cell.split('|')[1];
-  return SCALE_BUMP[density][value] ?? value;
+  const density = cell.split('|')[1];
+  // Compact holds section.stack at 48px at every width (it never grows on a phone).
+  if (density === 'compact' && /--semantic-space-section-stack/.test(css)) return '48px';
+  const map = fixedStep(css) ? (density === 'compact' ? 'compactFixed' : 'comfortable') : density;
+  return SCALE_BUMP[map][value] ?? value;
 };
 
 describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
@@ -494,9 +501,16 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a'
     }, 120_000);
 
     it.each(LAYOUT_PROBES.map((p) => p.key))('%s computes what it computed on 8e53a8a', (key) => {
+      // Card padding="item" was a fixed 16px on 8e53a8a in every cell; it reads scale.sm
+      // now (the bump above), which is 12px under compact density for apps.
+      const itemPad = key === 'card padding item paddingTop';
       const want = fixture.computed[key]
         .split(' ')
-        .map((v, i) => expected(measuredDecl(key), fixture.cells[i], v));
+        .map((v, i) =>
+          itemPad && fixture.cells[i].split('|')[1] === 'compact'
+            ? '12px'
+            : expected(measuredDecl(key), fixture.cells[i], v),
+        );
       const got = computed[key].split(' ');
       const diffs = fixture.cells
         .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))

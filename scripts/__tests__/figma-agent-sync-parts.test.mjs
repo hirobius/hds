@@ -249,7 +249,7 @@ const forged = (text, edit) => {
     );
 };
 
-describe('a type-ramp change too big for one delta.js (about 50,000 characters; 57,000 before Fix A)', () => {
+describe('a type-ramp change too big for one delta.js (about 53,000 characters with the compact Density variables; 57,000 before Fix A)', () => {
   let s;
   let single;
   beforeEach(async () => {
@@ -259,7 +259,7 @@ describe('a type-ramp change too big for one delta.js (about 50,000 characters; 
 
   it('is more than one delta.js holds, and becomes ordered parts that each fit', () => {
     expect(single.built.chars, 'the one-script size of the scenario').toBeGreaterThan(45000);
-    expect(single.built.chars).toBeLessThan(52000);
+    expect(single.built.chars).toBeLessThan(54000);
     const { parts } = s.built;
     expect(s.built.text).toBeNull();
     // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 until the

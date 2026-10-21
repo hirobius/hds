@@ -108,11 +108,11 @@ describe('typeSpecimens', () => {
 describe('dimension scales', () => {
   it('draws the semantic spacing scale in source order and primitives by size', () => {
     const [scale, fixed, primitive] = spaceScales(tokens);
-    expect(scale!.steps.map((s) => s.name)).toEqual(['xs', 'sm', 'md', 'lg', 'xl']);
+    expect(scale!.steps.map((s) => s.name)).toEqual(['2xs', 'xs', 'sm', 'md', 'lg', 'xl']);
     expect(fixed!.steps.map((s) => s.px)).toEqual([4, 12, 16, 24, 32, 48]);
     const px = primitive!.steps.map((s) => s.px);
     expect(px).toEqual([...px].sort((a, b) => a - b));
-    expect(scale!.steps[0]!.cssVar).toBe('--semantic-space-scale-xs');
+    expect(scale!.steps[0]!.cssVar).toBe('--semantic-space-scale-2xs');
   });
 
   it('draws radius roles and primitive steps', () => {

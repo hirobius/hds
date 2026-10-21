@@ -62,10 +62,10 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
     const css = read('src/styles/theme.css');
     expect(css).toContain('--semantic-space-region-gutter: var(--semantic-space-scale-lg);');
     expect(css).toContain('--semantic-space-region-gutter: var(--semantic-space-scale-sm);');
-    // The deprecated alias is only re-declared inside the zero-specificity compact
-    // scope (hds#336), so nested scopes resolve it against the remapped scale;
-    // everywhere else it follows region.gutter via its :root alias in tokens.generated.css.
-    const outsideCompact = css.replace(/:where\(\[data-density='compact'\]\)\s*\{[^}]*\}/g, '');
+    // The deprecated alias is only re-declared inside a compact scope (hds#336), so
+    // nested scopes resolve it against the remapped scale; everywhere else it follows
+    // region.gutter via its :root alias in tokens.generated.css.
+    const outsideCompact = css.replace(/(:where\()?\[data-density='compact'\]\)?\s*\{[^}]*\}/g, '');
     expect(outsideCompact).not.toMatch(/--semantic-space-layout-gutter\s*:/);
   });
 
@@ -90,19 +90,19 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
 const CHROMIUM = chromiumPath() ?? chromium.executablePath();
 const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
 
-/** Today's surface.padding in px per tenant, [comfortable, compact] (2026-10 bump: scale 8/20/28/40/64, compact 8/16/24/32/48). */
+/** Today's surface.padding in px per tenant, [comfortable, compact] (2026-10 bump: scale 8/20/28/40/64; compact density for apps 8/12/16/24/32). */
 const SURFACE_PX = {
-  base: [28, 24],
-  'accent-lilac': [28, 24],
+  base: [28, 16],
+  'accent-lilac': [28, 16],
   'brutalist-demo': [20, 8],
-  'concrete-creations': [28, 24],
+  'concrete-creations': [28, 16],
   // Design-explorations demo tenants (hds#628): soft-demo opens surfaces up (scale.lg, scale.md
   // compact); accent-pair-demo changes colour only.
-  'soft-demo': [40, 24],
-  'accent-pair-demo': [28, 24],
+  'soft-demo': [40, 16],
+  'accent-pair-demo': [28, 16],
 };
 /** Today's region.gutter in px per viewport width, [comfortable, compact]. Same for every tenant. */
-const GUTTER_PX = { 1280: [40, 32], 640: [40, 32], 639: [20, 16], 400: [20, 16] };
+const GUTTER_PX = { 1280: [40, 24], 640: [40, 24], 639: [20, 12], 400: [20, 12] };
 
 // theme.css pulls in Tailwind first; the browser skips what it cannot parse, and the
 // custom properties this reads are plain CSS.

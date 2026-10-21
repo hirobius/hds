@@ -6,6 +6,7 @@ import { Settings } from '@hirobius/design-system/icons';
 import {
   ACCENTS,
   CORNERS,
+  DENSITIES,
   SHADOWS,
   DEFAULT_SWITCHES,
   applySwitches,
@@ -13,6 +14,7 @@ import {
   writeSwitches,
   type Accent,
   type Corners,
+  type Density,
   type Shadow,
   type Switches,
 } from '../lib/preview-switches';
@@ -22,7 +24,7 @@ const options = <T extends string>(values: readonly T[]) =>
 
 /**
  * Display settings for the docs nav (hds#794): one icon button beside the theme switcher that
- * opens a Popover with the Corners, Shadow and Accent preview switches. Persists per viewer. The saved
+ * opens a Popover with the Corners, Shadow, Accent and Density preview switches. Persists per viewer. The saved
  * choice is applied on mount, so it holds whether or not the popover is ever opened.
  */
 export function PreviewSwitches() {
@@ -77,6 +79,12 @@ export function PreviewSwitches() {
             options={options(ACCENTS)}
             value={s.accent}
             onChange={(v) => update({ accent: v as Accent })}
+          />
+          <SegmentedControl
+            label="Density"
+            options={options(DENSITIES)}
+            value={s.density}
+            onChange={(v) => update({ density: v as Density })}
           />
         </Stack>
       </Popover.Content>

@@ -76,6 +76,7 @@ const config = {
         20: 'var(--primitive-space-20)',
         24: 'var(--primitive-space-24)',
         32: 'var(--primitive-space-32)',
+        'scale-2xs': 'var(--semantic-space-scale-2xs)',
         'scale-xs': 'var(--semantic-space-scale-xs)',
         'scale-sm': 'var(--semantic-space-scale-sm)',
         'scale-md': 'var(--semantic-space-scale-md)',
@@ -141,8 +142,10 @@ const config = {
       },
       fontSize: {
         xs: 'var(--primitive-typography-size-xs)',
+        compactCaption: 'var(--primitive-typography-size-compactCaption)',
         sm: 'var(--primitive-typography-size-sm)',
         base: 'var(--primitive-typography-size-base)',
+        compactBody: 'var(--primitive-typography-size-compactBody)',
         lg: 'var(--primitive-typography-size-lg)',
         xl: 'var(--primitive-typography-size-xl)',
         '2xl': 'var(--primitive-typography-size-2xl)',

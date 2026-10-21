@@ -668,9 +668,10 @@ function variantRef(source, variant) {
  * Tenant spacing overrides alias the t-shirt scale (hds#206), but Brand
  * imports before Semantic, so a tenant mode aliasing a Semantic variable
  * would be a forward alias the native import cannot keep. Stops at a
- * primitive, a raw value, or a token with its own Light/Dark/Compact modes.
+ * primitive, a raw value, or a token with its own Light/Dark modes; a Compact
+ * mode is followed in the Compact variant.
  */
-function tenantRef(graph, ref) {
+function tenantRef(graph, ref, variant = null) {
   const seen = new Set();
   let current = ref;
   while (isAlias(current)) {
@@ -678,8 +679,9 @@ function tenantRef(graph, ref) {
     if (target.startsWith('primitive.') || seen.has(target)) break;
     seen.add(target);
     const token = graph.byPath.get(target);
-    if (!token || readModes(token.extensions)) break;
-    current = token.value;
+    if (!token || isThemed(token)) break;
+    // A base Compact mode (compact density for apps) is followed in the Compact variant.
+    current = (variant === 'Compact' && readModes(token.extensions)?.Compact) || restValue(token);
   }
   return current;
 }
@@ -793,7 +795,10 @@ function buildBrandAxes(graph, brands, { excludedBy, pendingByPath }) {
             const source = bySlug.get(mode) ?? base;
             const ref = variantRef(source, variant);
             const tenantOwned = mode !== brands.baseMode && bySlug.has(mode);
-            return [mode, modeEntry(graph, tenantOwned ? tenantRef(graph, ref) : ref, base.type)];
+            return [
+              mode,
+              modeEntry(graph, tenantOwned ? tenantRef(graph, ref, variant) : ref, base.type),
+            ];
           }),
         ),
       });
@@ -838,6 +843,66 @@ function buildBrandAxes(graph, brands, { excludedBy, pendingByPath }) {
     });
   }
   return axes;
+}
+
+/** Follows a reference through semantic aliases to a primitive, reading `mode` at each hop. */
+function densityRef(graph, ref, mode) {
+  const seen = new Set();
+  let current = ref;
+  while (isAlias(current)) {
+    const target = aliasPath(current);
+    if (target.startsWith('primitive.') || seen.has(target)) break;
+    seen.add(target);
+    const token = graph.byPath.get(target);
+    if (!token) break;
+    current = (mode === 'Compact' && readModes(token.extensions)?.Compact) || restValue(token);
+  }
+  return current;
+}
+
+/**
+ * Base tokens with their own Compact mode (compact density for apps): each gets a
+ * Hirobius/Density variable, Comfortable the rest value and Compact the Compact
+ * value, both followed down to a primitive, and the token variable aliases it.
+ * A path a tenant also overrides already went through buildBrandAxes, whose
+ * Compact variant reads the base Compact mode, so it is skipped here.
+ */
+function addBaseDensityAxis(graph, pending, axes) {
+  const variables = [];
+  for (const item of pending) {
+    if (item.compact === undefined || item.axisNote) continue;
+    const path = item.segments.join('.');
+    variables.push({
+      path: `density.${path}`,
+      name: item.segments.join('/'),
+      resolvedType: FIGMA_TYPE[item.tokenType],
+      unit: item.unit,
+      description: `Density value of ${path}: Comfortable is the rest value, Compact applies under [data-density="compact"].`,
+      scopes: [],
+      hiddenFromPublishing: false,
+      codeSyntax: {},
+      valuesByMode: {
+        Comfortable: modeEntry(
+          graph,
+          densityRef(graph, item.restRef, 'Comfortable'),
+          item.tokenType,
+        ),
+        Compact: modeEntry(graph, densityRef(graph, item.compact, 'Compact'), item.tokenType),
+      },
+    });
+    item.entryFor = () => ({ alias: `density.${path}` });
+    item.axisNote = `Varies by density: its value comes from ${DENSITY_COLLECTION.name}.`;
+  }
+  if (variables.length === 0) return;
+  const existing = axes.find((c) => c.key === DENSITY_COLLECTION.key);
+  if (existing) existing.variables.push(...variables);
+  else
+    axes.push({
+      ...DENSITY_COLLECTION,
+      modes: [...DENSITY_MODES],
+      hiddenFromPublishing: false,
+      variables,
+    });
 }
 
 // ── Build ────────────────────────────────────────────────────────────────────
@@ -891,24 +956,32 @@ export function buildFigmaModel(raw, { brands = null } = {}) {
 
   for (const token of graph.tokens) {
     const path = token.path.join('.');
-    if (readModes(token.extensions)?.Compact !== undefined) {
-      throw new Error(
-        `${path} declares a Compact mode in hirobius.tokens.json, but build-tokens emits [data-density] CSS only for tenant overlays (ADR-022), so Figma would show a value the browser never applies. Move the Compact value into a tenant overlay, or teach build-tokens to emit it first.`,
-      );
-    }
     const exclusion = NOT_IN_FIGMA.find((e) => e.matches?.(token, graph));
     if (exclusion) {
       exclude(exclusion.id, path);
       excludedBy.set(path, exclusion.id);
     } else if (token.type === 'typography') {
       const { variables, textStyle, excluded } = expandTypography(graph, token);
-      pending.push(...variables);
+      // A composite's Compact mode names only the sub-properties that move (fontSize).
+      const compactSize = readModes(token.extensions)?.Compact?.fontSize;
+      for (const item of variables) {
+        if (
+          compactSize !== undefined &&
+          item.segments.at(-1) === TYPOGRAPHY_VARIABLES.fontSize[0]
+        ) {
+          pending.push({ ...item, compact: compactSize, restRef: token.value.fontSize });
+        } else pending.push(item);
+      }
       textStyles.push(textStyle);
       for (const [id, subPath] of excluded) exclude(id, subPath);
     } else if (token.type === 'shadow' || token.type === 'elevation') {
       effectStyles.push(effectStyleFor(graph, token));
     } else if (FIGMA_TYPE[token.type]) {
-      pending.push(tokenVariable(graph, token));
+      pending.push({
+        ...tokenVariable(graph, token),
+        compact: readModes(token.extensions)?.Compact,
+        restRef: restValue(token),
+      });
     } else {
       throw new Error(
         `No Figma mapping for ${path} (type ${token.type}) — map the type in scripts/lib/figma-model.mjs or declare it in NOT_IN_FIGMA with a reason.`,
@@ -924,6 +997,8 @@ export function buildFigmaModel(raw, { brands = null } = {}) {
         ),
       })
     : [];
+
+  addBaseDensityAxis(graph, pending, axes);
 
   const homeOf = (item) => (item.themed ? THEME_TIER : item.segments[0]);
   const tierCollections = TIERS.map(({ key, name }) => {
