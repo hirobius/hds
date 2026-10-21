@@ -93,7 +93,7 @@
     "Button": {
       "source": "src/app/components/button.tsx",
       "evidence": "hds#73",
-      "note": "Figma defaults Variant to Primary; code defaults to secondary (open decision, docs/architecture/variant-contract.md). The template emits variant whenever it differs from the code default, so either ruling renders correctly.",
+      "note": "Figma defaults Variant to Primary; code defaults to secondary (open decision, docs/architecture/variant-contract.md). The template emits variant whenever it differs from the code default, so either ruling renders correctly. Code also adds an opt-in hoverEffect=\"wipe\" (a CSS fill layer sliding in from the pointer's edge) that the Figma Button master does not draw: Figma-lane follow-up, so Code Connect maps the default (none) button only.",
       "properties": {
         "Variant": {
           "type": "VARIANT",

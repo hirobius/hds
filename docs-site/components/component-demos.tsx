@@ -121,6 +121,18 @@ function ButtonDemo() {
       <Button variant="secondary" pressed={pressed} onClick={() => setPressed((p) => !p)}>
         {pressed ? 'Pressed' : 'Toggle'}
       </Button>
+      <Button variant="primary" hoverEffect="wipe">
+        Wipe primary
+      </Button>
+      <Button variant="secondary" hoverEffect="wipe">
+        Wipe secondary
+      </Button>
+      <Button variant="tertiary" hoverEffect="wipe">
+        Wipe tertiary
+      </Button>
+      <Button variant="secondary" tone="danger" hoverEffect="wipe">
+        Wipe danger
+      </Button>
     </div>
   );
 }

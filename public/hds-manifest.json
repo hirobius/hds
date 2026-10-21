@@ -3781,6 +3781,8 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/async-state.tsx",
         "src/app/components/avatar.tsx",
+        "src/app/components/button-wipe.test.tsx",
+        "src/app/components/button-wipe.ts",
         "src/app/components/button.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
@@ -3860,6 +3862,14 @@
         "disabled": {
           "type": "boolean",
           "optional": true
+        },
+        "hoverEffect": {
+          "type": "enum",
+          "values": [
+            "none",
+            "wipe"
+          ],
+          "default": "none"
         },
         "iconLeft": {
           "type": "ReactNode",
@@ -4016,6 +4026,13 @@
         },
         "disabled": {
           "type": "boolean"
+        },
+        "hoverEffect": {
+          "type": "enum",
+          "values": [
+            "none",
+            "wipe"
+          ]
         },
         "iconOnly": {
           "type": "boolean"
@@ -9539,7 +9556,7 @@
           "default": "Nothing here yet"
         },
         "level": {
-          "type": "3 | 6 | 4 | 2 | 5",
+          "type": "3 | 4 | 6 | 2 | 5",
           "default": 2
         },
         "rows": {
@@ -9612,7 +9629,7 @@
           "type": "ReactNode"
         },
         "level": {
-          "type": "3 | 6 | 4 | 2 | 5",
+          "type": "3 | 4 | 6 | 2 | 5",
           "default": 2
         },
         "onConfirm": {

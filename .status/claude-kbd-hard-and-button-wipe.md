@@ -1,0 +1,1 @@
+Button `hoverEffect="wipe"` (opt-in directional hover fill) and Kbd key edge as `--semantic-shadow-key` so the docs hard-shadow preview carries Kbd. Figma Button has no wipe: Figma-lane follow-up (code-connect note added).

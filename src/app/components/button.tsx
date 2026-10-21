@@ -13,6 +13,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Loader2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { isDevelopment } from '../../lib/env';
+import { installWipeListeners } from './button-wipe';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -109,8 +110,39 @@ const buttonVariants = /* @__PURE__ */ cva(
         true: 'p-0',
         false: '',
       },
+      // Opt-in hover fill (default none, existing buttons unchanged). `wipe`: the
+      // variant's own hover fill (see the compoundVariants) is drawn by the
+      // `.hds-btn-wipe` layer in theme.css and wipes across from the edge the
+      // pointer crosses; the instant hover fill is swapped out here.
+      hoverEffect: {
+        none: '',
+        wipe: 'hds-btn-wipe',
+      },
     },
     compoundVariants: [
+      // wipe x variant: move the hover token from `hover:bg-…` to the layer's fill.
+      {
+        hoverEffect: 'wipe',
+        variant: 'primary',
+        className: 'hover:bg-primary [--hds-wipe-fill:var(--component-button-bgHover)]',
+      },
+      {
+        hoverEffect: 'wipe',
+        variant: 'secondary',
+        className: 'hover:bg-background [--hds-wipe-fill:var(--role-accent)]',
+      },
+      {
+        hoverEffect: 'wipe',
+        variant: 'tertiary',
+        className: 'hover:bg-transparent [--hds-wipe-fill:var(--role-accent)]',
+      },
+      // wipe x tone: a tone hovers through a brightness filter on its own fill;
+      // the layer takes the tone fill and carries the same filter (theme.css).
+      ...(['danger', 'success', 'warning', 'info'] as const).map((tone) => ({
+        hoverEffect: 'wipe' as const,
+        tone,
+        className: `hover:brightness-100 dark:hover:brightness-100 [--hds-wipe-fill:var(--semantic-color-feedback-bg-${tone})] [--hds-wipe-filter:brightness(0.95)] dark:[--hds-wipe-filter:brightness(1.1)]`,
+      })),
       { iconOnly: true, size: 'sm', className: 'w-8' },
       { iconOnly: true, size: 'md', className: 'w-10' },
       { iconOnly: true, size: 'lg', className: 'w-12' },
@@ -120,6 +152,7 @@ const buttonVariants = /* @__PURE__ */ cva(
       tone: 'neutral',
       size: 'md',
       iconOnly: false,
+      hoverEffect: 'none',
     },
   },
 );
@@ -138,9 +171,11 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 export interface ButtonProps
   extends
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
-    Omit<ButtonVariantProps, 'iconOnly'> {
+    Omit<ButtonVariantProps, 'iconOnly' | 'hoverEffect'> {
   /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (an outline), so pass `primary` for the main action. */
   variant?: ButtonVariantProps['variant'];
+  /** `wipe` slides the hover fill in from the pointer's edge. */
+  hoverEffect?: 'none' | 'wipe';
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
   /** Optional accessible label used when children are not suitable as the name. */
@@ -198,6 +233,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       tone,
       size,
       iconOnly = false,
+      hoverEffect = 'none',
       asChild = false,
       label,
       loading = false,
@@ -215,6 +251,11 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     ref,
   ) {
     const isDisabled = disabled || loading;
+    const wipe = hoverEffect === 'wipe';
+    React.useEffect(() => {
+      if (wipe) installWipeListeners();
+    }, [wipe]);
+    const wipeProps = wipe ? { 'data-hover-effect': 'wipe' } : {};
     const content = children ?? label;
 
     // A toggle (hds#393): any of the three pressed props makes this a toggle
@@ -244,7 +285,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // did (its important declarations hid them). aria-pressed still reports it.
     const hasStatusTone = tone != null && tone !== 'neutral';
     const classes = cn(
-      buttonVariants({ variant, tone, size, iconOnly }),
+      buttonVariants({ variant, tone, size, iconOnly, hoverEffect }),
       isToggle && !hasStatusTone && toggleOnClasses,
       className,
     );
@@ -268,6 +309,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
           data-variant={variant ?? undefined}
           data-tone={tone ?? undefined}
           data-size={size ?? undefined}
+          {...wipeProps}
           {...(toggleProps as React.HTMLAttributes<HTMLElement>)}
           {...(props as React.HTMLAttributes<HTMLElement>)}
         >
@@ -314,6 +356,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         data-variant={variant ?? undefined}
         data-tone={tone ?? undefined}
         data-size={size ?? undefined}
+        {...wipeProps}
         className={classes}
         {...toggleProps}
         {...props}

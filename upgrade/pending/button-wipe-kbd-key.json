@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Button gains an opt-in hoverEffect=\"wipe\" that slides the hover fill in from the pointer's edge, and nothing changes unless you pass it."
+}

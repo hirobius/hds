@@ -513,8 +513,65 @@
 /* Kbd raised key: a 2px solid drop edge under the key in the stronger border
  * token (no blur), so it reads as a physical key. box-shadow adds no layout size.
  * Figma mirrors it as a drop shadow y=2, blur 0, bound to color/border/strong. */
+/* The key edge is one custom property so a "hard shadow" theme re-points the Kbd with
+ * the Button shadow in one place (the docs Shadow preview does, docs-site globals.css). */
+:root {
+  --semantic-shadow-key: 0 2px 0 var(--semantic-color-border-strong);
+}
 .hds-kbd {
-  box-shadow: 0 2px 0 var(--semantic-color-border-strong);
+  box-shadow: var(--semantic-shadow-key);
+}
+
+/* Button hoverEffect="wipe" (opt-in): the variant's own hover fill is a scaled layer
+ * behind the label. button-wipe.ts stamps data-wipe-edge (the edge crossed) and data-wipe
+ * (idle | in | out) on the button; the layer's transform-origin is that edge, so it
+ * grows in from the edge the pointer entered and shrinks out through the one it left.
+ * Hard-edged (a scaled box, no gradient). Hover-capable pointers only, so a touch tap
+ * never sticks a fill; instant under reduced motion. --hds-wipe-fill (and, for tones,
+ * --hds-wipe-filter) come from the Button variant classes; disabled never paints. */
+.hds-btn-wipe {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+@media (hover: hover) {
+  .hds-btn-wipe::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--hds-wipe-fill);
+    filter: var(--hds-wipe-filter, none);
+    transform-origin: left center;
+    transform: scale(0, 1);
+    transition: transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+  }
+  .hds-btn-wipe[data-wipe-edge='right']::before {
+    transform-origin: right center;
+  }
+  .hds-btn-wipe[data-wipe-edge='top']::before {
+    transform-origin: center top;
+    transform: scale(1, 0);
+  }
+  .hds-btn-wipe[data-wipe-edge='bottom']::before {
+    transform-origin: center bottom;
+    transform: scale(1, 0);
+  }
+  .hds-btn-wipe[data-wipe='idle']::before {
+    transition: none;
+  }
+  .hds-btn-wipe[data-wipe='in']::before {
+    transform: scale(1, 1);
+  }
+  .hds-btn-wipe:is(:disabled, [aria-disabled='true'])::before {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hds-btn-wipe::before {
+    transition: none !important;
+  }
 }
 
 /* Inline accent links — color + underline opacity on hover. Shared by InlineLink

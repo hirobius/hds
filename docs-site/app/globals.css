@@ -415,6 +415,16 @@ html[data-docs-shadow='hard'] {
   --semantic-shadow-subtle: 4px 4px 0 hsl(var(--primitive-shadow-color));
   --semantic-shadow-floating: 5px 5px 0 hsl(var(--primitive-shadow-color));
   --semantic-shadow-overlay: 8px 8px 0 hsl(var(--primitive-shadow-color));
+  /* Kbd follows the Button light source: same shadow colour, smaller offset (hds-kbd in theme.css reads this). */
+  --semantic-shadow-key: 2px 2px 0 hsl(var(--primitive-shadow-color));
+}
+/* Kbd keeps its border-strong border; pressed sinks 1px along the shadow direction. */
+html[data-docs-shadow='hard'] .hds-kbd {
+  border-color: var(--semantic-color-border-strong);
+}
+html[data-docs-shadow='hard'] .hds-kbd:active {
+  box-shadow: 1px 1px 0 hsl(var(--primitive-shadow-color));
+  translate: 1px 1px;
 }
 /* Select popover: shipped as Tailwind shadow-md (--tw-shadow); docs-only override so the hard preview covers it without touching shipped styles. */
 html[data-docs-shadow='hard'] [role='listbox'][data-radix-select-content],
