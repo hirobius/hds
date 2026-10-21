@@ -427,8 +427,7 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/text.tsx",
         "src/app/components/timeline.tsx",
-        "src/app/components/toast.tsx",
-        "src/app/design-system/generated-token-descriptions.ts"
+        "src/app/components/toast.tsx"
       ],
       "tokenMapping": {
         "Success accent": "semantic.color.feedback.success",
@@ -1720,7 +1719,6 @@
         "src/app/components/slider.tsx",
         "src/app/components/textarea.tsx",
         "src/app/components/token-field.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
         "src/index.ts"
       ],
       "tokenMapping": {
@@ -2651,8 +2649,7 @@
         "src/app/components/switcher.tsx",
         "src/app/components/text.tsx",
         "src/app/components/token-field.tsx",
-        "src/app/components/visually-hidden.tsx",
-        "src/app/design-system/generated-token-descriptions.ts"
+        "src/app/components/visually-hidden.tsx"
       ],
       "tokenMapping": {
         "Surface fill": "component.tag.background",
@@ -2955,7 +2952,6 @@
         "src/app/components/status-tile.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
         "src/index.ts",
         "src/styles/__tests__/dark-surfaces.test.ts"
       ],
@@ -3379,7 +3375,6 @@
         "src/app/components/text.test.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts",
         "src/styles/__tests__/font-outlines.test.ts",
         "src/styles/__tests__/glyph-outlines.ts"
@@ -3761,7 +3756,6 @@
         "src/app/components/state-tokens.test.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
         "src/form/index.ts",
         "src/index.ts",
         "src/mui/index.ts",
@@ -4282,7 +4276,6 @@
         "src/app/components/pagination.tsx",
         "src/app/components/surface.tsx",
         "src/app/components/toast.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
         "src/brand/overlay.ts"
       ],
       "tokenMapping": {},
@@ -4661,7 +4654,6 @@
         "src/app/components/state-tokens.test.tsx",
         "src/app/components/tag.tsx",
         "src/app/components/text.tsx",
-        "src/app/design-system/generated-token-descriptions.ts",
         "src/mui/index.ts"
       ],
       "tokenMapping": {},
@@ -5759,8 +5751,7 @@
         "src/app/components/avatar-group.test.tsx",
         "src/app/components/avatar-group.tsx",
         "src/app/components/avatar.test.tsx",
-        "src/app/components/icon.tsx",
-        "src/app/design-system/generated-token-descriptions.ts"
+        "src/app/components/icon.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [
@@ -8865,8 +8856,7 @@
         "src/app/components/menu.tsx",
         "src/app/components/popover.test.tsx",
         "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/app/design-system/generated-token-descriptions.ts"
+        "src/app/context/__tests__/portal-scope.test.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
