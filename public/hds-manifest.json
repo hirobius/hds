@@ -3733,6 +3733,7 @@
       "consumers": [
         "src/app/components/alert-dialog.tsx",
         "src/app/components/async-state.tsx",
+        "src/app/components/avatar.tsx",
         "src/app/components/button.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
@@ -4651,6 +4652,7 @@
       },
       "consumers": [
         "src/app/components/alert.tsx",
+        "src/app/components/avatar.test.tsx",
         "src/app/components/avatar.tsx",
         "src/app/components/badge.test.tsx",
         "src/app/components/card-row.test.tsx",
@@ -5770,6 +5772,14 @@
         "alt": {
           "type": "string"
         },
+        "fallback": {
+          "type": "enum",
+          "values": [
+            "initials",
+            "icon"
+          ],
+          "default": "initials"
+        },
         "initials": {
           "type": "string",
           "optional": true
@@ -5786,6 +5796,21 @@
         "src": {
           "type": "string",
           "optional": true
+        },
+        "status": {
+          "type": "enum",
+          "values": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "danger"
+          ],
+          "optional": true
+        },
+        "statusLabel": {
+          "type": "string",
+          "optional": true
         }
       },
       "allowedChildren": [
@@ -5793,11 +5818,29 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The image, initials or icon is one image named by alt.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:avatar.named"
+        },
+        {
+          "rule": "A status dot with statusLabel is an image named by it; without one it is hidden.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:avatar.status-named"
+        },
+        {
+          "rule": "As a button, name the Button for the account and its status (\"Account, not synced\"): the Button label replaces the avatar's own name.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/avatar",
       "usage": {
-        "when": "Show a person or entity as an image with an initials fallback.",
-        "whenNot": "A generic pictogram, or a status marker.",
+        "when": "Show a person or entity as an image with an initials fallback, or a neutral person icon when nobody is signed in; add a status dot for a state such as unsynced. As an account button, pass it as the iconLeft of a tertiary iconOnly Button.",
+        "whenNot": "A generic pictogram, or a status marker on its own.",
         "useInstead": [
           {
             "component": "Icon",
@@ -5805,7 +5848,7 @@
           },
           {
             "component": "Badge",
-            "reason": "a status marker"
+            "reason": "a status marker on its own"
           }
         ]
       },

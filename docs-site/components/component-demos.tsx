@@ -313,12 +313,62 @@ function AlertDemo() {
   );
 }
 
+// The account button: initials when signed in, a person icon when signed out,
+// and a warning dot while changes are not synced. The Button label carries the
+// status, since it replaces the avatar's own name.
 function AvatarDemo() {
+  const [signedIn, setSignedIn] = useState(true);
+  const [synced, setSynced] = useState(false);
+  const accountLabel = signedIn
+    ? `Account, Ada Lovelace${synced ? '' : ', not synced'}`
+    : 'Sign in';
   return (
-    <div style={demoRow}>
-      <Avatar alt="Ada Lovelace" initials="AL" size="sm" />
-      <Avatar alt="Grace Hopper" initials="GH" size="md" />
-      <Avatar alt="Alan Kay" initials="AK" size="lg" />
+    <div style={demoStack}>
+      <div style={demoRow}>
+        <Avatar alt="Ada Lovelace" initials="AL" size="sm" />
+        <Avatar alt="Grace Hopper" initials="GH" size="md" />
+        <Avatar alt="Alan Kay" initials="AK" size="lg" />
+        <Avatar alt="Signed out" fallback="icon" />
+        <Avatar alt="Grace Hopper" status="success" statusLabel="Online" />
+        <Avatar alt="Alan Kay" status="warning" statusLabel="Not synced" />
+      </div>
+      <div style={demoRow}>
+        <Menu>
+          <Menu.Trigger asChild>
+            <Button
+              variant="tertiary"
+              iconOnly
+              label={accountLabel}
+              className="rounded-full"
+              iconLeft={
+                signedIn ? (
+                  <Avatar
+                    alt="Ada Lovelace"
+                    status={synced ? undefined : 'warning'}
+                    statusLabel={synced ? undefined : 'Not synced'}
+                  />
+                ) : (
+                  <Avatar alt="Signed out" fallback="icon" />
+                )
+              }
+            />
+          </Menu.Trigger>
+          <Menu.Content>
+            <Menu.Label>{signedIn ? 'Ada Lovelace' : 'Not signed in'}</Menu.Label>
+            {signedIn && (
+              <Menu.Item onSelect={() => setSynced((s) => !s)}>
+                {synced ? 'Mark as not synced' : 'Sync now'}
+              </Menu.Item>
+            )}
+            <Menu.Item onSelect={() => setSignedIn((s) => !s)}>
+              {signedIn ? 'Sign out' : 'Sign in'}
+            </Menu.Item>
+          </Menu.Content>
+        </Menu>
+        <Text variant="caption" tone="secondary">
+          Account button: open it to sign in or out, or to sync.
+        </Text>
+      </div>
     </div>
   );
 }

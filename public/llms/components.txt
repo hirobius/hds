@@ -71,9 +71,12 @@ One wrapper for the four states of async content: `loading` (skeleton rows plus 
 ### Avatar
 Circular avatar. Renders the image when available, else initials from `alt`.
   - alt: string
+  - fallback: "initials" | "icon" = initials
   - initials: string
   - size: "sm" | "md" | "lg" | null
   - src: string
+  - status: 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+  - statusLabel: string
 
 ### AvatarGroup
 Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
