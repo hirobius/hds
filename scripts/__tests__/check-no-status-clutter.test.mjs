@@ -3,9 +3,9 @@
 import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { findViolationsInText } from '../check-no-status-clutter.mjs';
+import { findViolationsInText, defaultFiles } from '../check-no-status-clutter.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const GATE = 'scripts/check-no-status-clutter.mjs';
@@ -78,5 +78,22 @@ describe('check-no-status-clutter: registry, pretest, fixtures and the repo', ()
 
   it('passes over the repo', () => {
     expect(run().status).toBe(0);
+  });
+});
+
+describe('the hds#759 exemption stays limited to the Avatar dot', () => {
+  it('has no status-clutter-ok marker outside src/app/components/avatar.tsx', () => {
+    const marked = defaultFiles()
+      .filter((f) => readFileSync(f, 'utf8').includes('status-clutter-ok'))
+      .map((f) => relative(ROOT, f).replace(/\\/g, '/'));
+    expect(marked).toEqual(['src/app/components/avatar.tsx']);
+  });
+
+  it('still flags the same Badge dot in another component without the marker', () => {
+    const dot = '<Badge dot tone="success" />';
+    expect(find(dot, 'src/app/components/other.tsx')).toHaveLength(1);
+    expect(
+      find(`// status-clutter-ok: attention dot\n${dot}`, 'src/app/components/avatar.tsx'),
+    ).toHaveLength(0);
   });
 });

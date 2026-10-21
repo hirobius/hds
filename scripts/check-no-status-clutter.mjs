@@ -135,7 +135,7 @@ export function findViolationsInText(text, file) {
   return out;
 }
 
-function defaultFiles() {
+export function defaultFiles() {
   return scanSources({
     root: ROOT,
     gate: 'check-no-status-clutter',
