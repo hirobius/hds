@@ -1,1 +1,2 @@
 Button `hoverEffect="wipe"` (opt-in directional hover fill) and Kbd key edge as `--semantic-shadow-key` so the docs hard-shadow preview carries Kbd. Figma Button has no wipe: Figma-lane follow-up (code-connect note added).
+New token `semantic.color.shadow.hard` (primitive `color.shadow.ink` in Light, `neutral.600` = border.strong in Dark) colours the hard-preview Button (3/5/1px) and Kbd (2px) shadows so they stay visible in dark mode; Figma variable is a figma:push follow-up. Manifest `consumers` no longer lists test files (kept it under the hds#413 gzip budget).

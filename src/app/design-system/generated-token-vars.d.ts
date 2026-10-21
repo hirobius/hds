@@ -122,6 +122,7 @@ declare module 'react' {
     '--primitive-color-projectBrand-microsoftGameDev-100'?: string | undefined;
     '--primitive-color-projectBrand-microsoftGameDev-500'?: string | undefined;
     '--primitive-color-projectBrand-microsoftGameDev-900'?: string | undefined;
+    '--primitive-color-shadow-ink'?: string | undefined;
     '--primitive-space-0'?: string | undefined;
     '--primitive-space-1'?: string | undefined;
     '--primitive-space-2'?: string | undefined;
@@ -270,6 +271,7 @@ declare module 'react' {
     '--semantic-color-border-accent'?: string | undefined;
     '--semantic-color-border-success'?: string | undefined;
     '--semantic-color-border-warning'?: string | undefined;
+    '--semantic-color-shadow-hard'?: string | undefined;
     '--semantic-color-feedback-error'?: string | undefined;
     '--semantic-color-feedback-success'?: string | undefined;
     '--semantic-color-feedback-warning'?: string | undefined;

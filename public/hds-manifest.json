@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-21T12:26:30.978Z",
+  "generated": "2026-10-21T19:27:11.053Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -423,7 +423,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/alert.test.tsx",
         "src/app/components/async-state.tsx",
         "src/app/components/badge.tsx",
         "src/app/components/callout.tsx",
@@ -589,9 +588,7 @@
         "exportName": "CodeBlock",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/code-block.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {
         "Surface fill": "semantic.color.surface.raised",
         "Border stroke": "semantic.color.border.default",
@@ -725,7 +722,6 @@
         "src/app/components/box.tsx",
         "src/app/components/page.tsx",
         "src/app/components/switcher.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -802,9 +798,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/disclosure.test.tsx",
         "src/app/components/tabs.tsx",
-        "src/app/components/timeline.test.tsx",
         "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {
@@ -1217,15 +1211,10 @@
       },
       "consumers": [
         "src/app/components/board.tsx",
-        "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
         "src/app/components/container.tsx",
-        "src/app/components/grid.test.tsx",
-        "src/app/components/metric-tiles.test.tsx",
         "src/app/components/metric-tiles.tsx",
-        "src/app/components/segmented-control.contrast.test.tsx",
-        "src/app/components/segmented-control.test.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/table.tsx",
@@ -1396,7 +1385,6 @@
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
         "src/app/components/breadcrumb.tsx",
-        "src/app/components/button.test.tsx",
         "src/app/components/button.tsx",
         "src/app/components/card.tsx",
         "src/app/components/checkbox.tsx",
@@ -1406,12 +1394,9 @@
         "src/app/components/disclosure.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/hds-tooltip.tsx",
-        "src/app/components/icon.test.tsx",
-        "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
-        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
@@ -1553,10 +1538,7 @@
         "exportName": "InlineCode",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/inline-code.test.tsx",
-        "src/app/components/state-tokens.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {
         "Font family": "primitive.typography.family.mono",
         "Label text": "semantic.color.content.primary",
@@ -1649,7 +1631,6 @@
       },
       "consumers": [
         "src/app/components/button.tsx",
-        "src/app/components/inline-link.test.tsx",
         "src/app/components/text.tsx"
       ],
       "tokenMapping": {
@@ -1759,7 +1740,6 @@
         "src/app/components/field.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
-        "src/app/components/input.test.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.tsx",
         "src/app/components/slider.tsx",
@@ -2101,8 +2081,6 @@
       },
       "consumers": [
         "src/app/components/radio.tsx",
-        "src/app/components/segmented-control.contrast.test.tsx",
-        "src/app/components/segmented-control.test.tsx",
         "src/app/components/tabs.tsx",
         "src/app/components/theme-toggle.tsx",
         "src/app/hooks/useInteractionState.ts"
@@ -2281,7 +2259,6 @@
       "consumers": [
         "src/app/components/async-state.tsx",
         "src/app/components/board.tsx",
-        "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
         "src/app/components/container.tsx",
@@ -2290,12 +2267,10 @@
         "src/app/components/disclosure.tsx",
         "src/app/components/divider.tsx",
         "src/app/components/error-pattern.tsx",
-        "src/app/components/form-actions.test.tsx",
         "src/app/components/form-actions.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/page.tsx",
-        "src/app/components/stack.test.tsx",
         "src/app/components/surface.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/table.tsx",
@@ -2523,8 +2498,6 @@
       "consumers": [
         "src/app/components/board.tsx",
         "src/app/components/data-table-section.tsx",
-        "src/app/components/icon.test.tsx",
-        "src/app/components/table.test.tsx",
         "src/app/data/manifest-types.ts",
         "src/app/hooks/useBreakpoint.ts"
       ],
@@ -2866,10 +2839,8 @@
         "src/app/components/stack.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/table.tsx",
-        "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx",
-        "src/app/context/hds-theme.tsx",
-        "src/styles/__tests__/dark-surfaces.test.ts"
+        "src/app/context/hds-theme.tsx"
       ],
       "tokenMapping": {},
       "props": {
@@ -2985,26 +2956,17 @@
       "figmaId": null,
       "consumers": [
         "src/app/components/board.tsx",
-        "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/card-entity.test.tsx",
-        "src/app/components/card-progress.test.tsx",
-        "src/app/components/card-row.test.tsx",
-        "src/app/components/card.test.tsx",
         "src/app/components/empty-state.tsx",
-        "src/app/components/focus-visible.test.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/page-header.tsx",
-        "src/app/components/radio.test.tsx",
-        "src/app/components/segmented-control.contrast.test.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/stat.tsx",
         "src/app/components/status-tile.tsx",
         "src/app/components/surface-padding.ts",
         "src/app/components/surface.tsx",
-        "src/index.ts",
-        "src/styles/__tests__/dark-surfaces.test.ts"
+        "src/index.ts"
       ],
       "tokenMapping": {
         "Surface fill": "role.card",
@@ -3423,11 +3385,9 @@
         "src/app/components/page-header.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
-        "src/app/components/text.test.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/brand/overlay.ts",
-        "src/styles/__tests__/font-outlines.test.ts",
         "src/styles/__tests__/glyph-outlines.ts"
       ],
       "tokenMapping": {},
@@ -3470,16 +3430,11 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/alert-dialog.test.tsx",
         "src/app/components/alert-dialog.tsx",
         "src/app/components/composer.tsx",
-        "src/app/components/dialog.test.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
-        "src/app/components/toast.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/styles/__tests__/scrim-and-color-scheme.test.ts"
+        "src/app/components/toast.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [
@@ -3781,12 +3736,8 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/async-state.tsx",
         "src/app/components/avatar.tsx",
-        "src/app/components/button-wipe.test.tsx",
         "src/app/components/button-wipe.ts",
-        "src/app/components/button.test.tsx",
-        "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/code-block.test.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
@@ -3797,23 +3748,18 @@
         "src/app/components/form.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/icon.tsx",
-        "src/app/components/inline-code.test.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/menu.tsx",
-        "src/app/components/pagination.markup.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.tsx",
-        "src/app/components/state-delta.test.tsx",
-        "src/app/components/state-tokens.test.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/form/index.ts",
         "src/index.ts",
-        "src/mui/index.ts",
-        "src/styles/__tests__/pressed-overlay-token.test.ts"
+        "src/mui/index.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [
@@ -4104,7 +4050,6 @@
       },
       "consumers": [
         "src/app/components/alert.tsx",
-        "src/app/components/destructive-section.test.tsx",
         "src/app/components/destructive-section.tsx"
       ],
       "tokenMapping": {},
@@ -4172,8 +4117,7 @@
       },
       "consumers": [
         "src/app/components/async-state.tsx",
-        "src/app/components/data-table-section.tsx",
-        "src/app/components/empty-state.test.tsx"
+        "src/app/components/data-table-section.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4340,8 +4284,6 @@
       },
       "consumers": [
         "src/app/components/container.tsx",
-        "src/app/components/pagination.markup.test.tsx",
-        "src/app/components/pagination.test.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/surface.tsx",
         "src/app/components/toast.tsx",
@@ -4556,12 +4498,10 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/card-row.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/index.ts",
-        "src/patterns.ts",
-        "src/styles/__tests__/dark-surfaces.test.ts"
+        "src/patterns.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4722,14 +4662,10 @@
       },
       "consumers": [
         "src/app/components/alert.tsx",
-        "src/app/components/avatar.test.tsx",
         "src/app/components/avatar.tsx",
-        "src/app/components/badge.test.tsx",
-        "src/app/components/card-row.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/page-header.tsx",
-        "src/app/components/state-tokens.test.tsx",
         "src/app/components/tag.tsx",
         "src/app/components/text.tsx",
         "src/mui/index.ts"
@@ -4769,9 +4705,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/asset-img.test.tsx",
         "src/app/components/hds-tooltip.tsx",
-        "src/app/components/tooltip.test.tsx",
         "src/app/components/tooltip.tsx"
       ],
       "tokenMapping": {},
@@ -4966,8 +4900,7 @@
         "src/app/components/breadcrumb.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/nav-list.tsx",
-        "src/app/components/segmented-control.tsx",
-        "src/app/components/tabs.test.tsx"
+        "src/app/components/segmented-control.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5102,9 +5035,7 @@
         "exportName": "TabsContent",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/tabs.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5153,9 +5084,7 @@
         "exportName": "TabsList",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/tabs.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5193,9 +5122,7 @@
         "exportName": "TabsTrigger",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/tabs.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -5231,11 +5158,8 @@
       },
       "consumers": [
         "src/app/components/checkbox.tsx",
-        "src/app/components/focus-visible.test.tsx",
-        "src/app/components/radio.test.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/toggle.tsx",
-        "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
@@ -5350,8 +5274,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/checkbox.test.tsx",
-        "src/app/components/combobox.test.tsx",
         "src/app/components/combobox.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
@@ -5359,10 +5281,7 @@
         "src/app/components/menu.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/radio.tsx",
-        "src/app/components/segmented-control.tsx",
-        "src/app/components/select.test.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx"
+        "src/app/components/segmented-control.tsx"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -5590,8 +5509,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/form-control.ts",
-        "src/styles/__tests__/slider-touch-target.test.ts"
+        "src/app/components/form-control.ts"
       ],
       "tokenMapping": {
         "label": "semantic.typography.small",
@@ -5711,10 +5629,7 @@
       },
       "consumers": [
         "src/app/components/checkbox.tsx",
-        "src/app/components/focus-visible.test.tsx",
         "src/app/components/radio.tsx",
-        "src/app/components/toggle.test.tsx",
-        "src/app/hooks/useInteractionState.test.ts",
         "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
@@ -5827,10 +5742,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/avatar-group.test.tsx",
         "src/app/components/avatar-group.tsx",
-        "src/app/components/avatar.test.tsx",
-        "src/app/components/card-entity.test.tsx",
         "src/app/components/card.tsx",
         "src/app/components/icon.tsx"
       ],
@@ -5942,10 +5854,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/card-progress.test.tsx",
-        "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/progress.test.tsx",
         "src/app/components/skeleton.tsx",
         "src/app/components/spinner.tsx",
         "src/index.ts"
@@ -6038,7 +5947,6 @@
         "src/app/components/async-state.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/progress.tsx",
-        "src/app/components/skeleton.test.tsx",
         "src/app/components/spinner.tsx"
       ],
       "tokenMapping": {},
@@ -6104,8 +6012,7 @@
       },
       "consumers": [
         "src/app/components/progress.tsx",
-        "src/app/components/skeleton.tsx",
-        "src/app/components/spinner.test.tsx"
+        "src/app/components/skeleton.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6165,7 +6072,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/breadcrumb.test.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
@@ -6259,9 +6165,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/breadcrumb.tsx",
-        "src/app/components/pagination.markup.test.tsx",
-        "src/app/components/pagination.test.tsx"
+        "src/app/components/breadcrumb.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6403,8 +6307,7 @@
       "consumers": [
         "src/app/components/alert-dialog.tsx",
         "src/app/components/alert.tsx",
-        "src/app/components/dialog.tsx",
-        "src/app/components/toast.test.tsx"
+        "src/app/components/dialog.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -6517,7 +6420,6 @@
       },
       "consumers": [
         "src/app/components/combobox-creatable.tsx",
-        "src/app/components/combobox.test.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
@@ -6830,7 +6732,6 @@
       },
       "consumers": [
         "src/app/components/form-actions.tsx",
-        "src/app/components/form.test.tsx",
         "src/app/components/token-field.tsx",
         "src/form/hds-form.tsx",
         "src/form/index.ts",
@@ -6886,12 +6787,10 @@
       },
       "consumers": [
         "src/app/components/combobox.tsx",
-        "src/app/components/form.test.tsx",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
         "src/app/components/textarea.tsx",
         "src/app/components/token-field.tsx",
-        "src/form/form-adapter.test.tsx",
         "src/form/hds-form.tsx"
       ],
       "tokenMapping": {},
@@ -7061,9 +6960,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/context/__tests__/context.test.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
         "src/app/context/hds-portal.tsx",
         "src/app/context/RouterContext.tsx",
         "src/index.ts"
@@ -7155,9 +7051,7 @@
         "exportName": "AvatarGroup",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/avatar-group.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -7203,9 +7097,7 @@
         "exportName": "Blockquote",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/blockquote.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -7250,7 +7142,6 @@
       },
       "consumers": [
         "src/app/components/composer.tsx",
-        "src/app/components/kbd.test.tsx",
         "src/app/components/text.tsx"
       ],
       "tokenMapping": {},
@@ -7303,10 +7194,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/card-entity.test.tsx",
         "src/app/components/card.tsx",
-        "src/app/components/timeline.tsx",
-        "src/app/components/timestamp.test.tsx"
+        "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7359,8 +7248,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/board.tsx",
-        "src/app/components/visually-hidden.test.tsx"
+        "src/app/components/board.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7409,7 +7297,6 @@
       "consumers": [
         "src/app/components/card.tsx",
         "src/app/components/meta-line.tsx",
-        "src/app/components/metadata-list.test.tsx",
         "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
@@ -7465,12 +7352,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/alert-dialog.test.tsx",
         "src/app/components/destructive-section.tsx",
-        "src/app/components/dialog.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx",
-        "src/styles/__tests__/scrim-and-color-scheme.test.ts"
+        "src/app/components/dialog.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7597,13 +7480,10 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/box.test.tsx",
         "src/app/components/container.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/sidebar.tsx",
-        "src/app/components/stack.test.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/switcher.tsx",
         "src/app/components/toggle.tsx",
@@ -7671,9 +7551,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/sidebar.test.tsx",
         "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
@@ -7748,9 +7626,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/box-sx.test.ts",
         "src/app/components/box-sx.ts",
-        "src/app/components/switcher.test.tsx",
         "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
@@ -7817,8 +7693,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/form-actions.tsx",
-        "src/app/components/pin.test.tsx"
+        "src/app/components/form-actions.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7870,8 +7745,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/pin.tsx",
-        "src/app/components/reveal.test.tsx"
+        "src/app/components/pin.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7936,8 +7810,6 @@
         "src/app/components/form-control.ts",
         "src/app/components/input.tsx",
         "src/app/components/select.tsx",
-        "src/app/components/textarea.test.tsx",
-        "src/app/components/token-field.test.tsx",
         "src/app/components/token-field.tsx"
       ],
       "tokenMapping": {},
@@ -8047,9 +7919,7 @@
         "exportName": "CardBody",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8078,9 +7948,7 @@
         "exportName": "CardDescription",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8109,9 +7977,7 @@
         "exportName": "CardFooter",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8140,9 +8006,7 @@
         "exportName": "CardHeader",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8176,9 +8040,7 @@
         "exportName": "CardMetric",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8235,9 +8097,7 @@
         "exportName": "CardProgress",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8289,9 +8149,7 @@
         "exportName": "CardTitle",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8320,9 +8178,7 @@
         "exportName": "DialogClose",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/dialog.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8356,9 +8212,7 @@
         "exportName": "DialogContent",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/dialog.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8428,9 +8282,7 @@
         "exportName": "DialogDescription",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/dialog.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8464,9 +8316,7 @@
         "exportName": "DialogFooter",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/dialog.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8495,9 +8345,7 @@
         "exportName": "DialogHeader",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/dialog.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8526,9 +8374,7 @@
         "exportName": "DialogOverlay",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/dialog.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8566,9 +8412,7 @@
         "exportName": "DialogPortal",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/dialog.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8610,9 +8454,7 @@
         "exportName": "DialogTitle",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/dialog.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8646,9 +8488,7 @@
         "exportName": "DialogTrigger",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/dialog.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8684,10 +8524,7 @@
       "consumers": [
         "src/app/components/asset-img.tsx",
         "src/app/components/dialog.tsx",
-        "src/app/components/hds-tooltip.test.tsx",
-        "src/app/components/popover.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx"
+        "src/app/components/popover.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -8834,12 +8671,9 @@
       "consumers": [
         "src/app/components/combobox.tsx",
         "src/app/components/data-table-section.tsx",
-        "src/app/components/menu.test.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/popover.tsx",
-        "src/app/components/select.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx"
+        "src/app/components/select.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -9050,13 +8884,9 @@
       },
       "consumers": [
         "src/app/components/combobox-creatable.tsx",
-        "src/app/components/combobox.test.tsx",
         "src/app/components/combobox.tsx",
         "src/app/components/hds-tooltip.tsx",
-        "src/app/components/menu.tsx",
-        "src/app/components/popover.test.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx"
+        "src/app/components/menu.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -9200,8 +9030,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/checkbox.test.tsx",
-        "src/app/components/focus-visible.test.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/toggle.tsx"
       ],
@@ -9310,9 +9138,7 @@
         "exportName": "FormActions",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/form-actions.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9372,10 +9198,7 @@
         "exportName": "MetricTile",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/metric-tiles.test.tsx",
-        "src/styles/__tests__/dark-surfaces.test.ts"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9431,9 +9254,7 @@
         "exportName": "MetricTiles",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/metric-tiles.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9471,9 +9292,7 @@
         "exportName": "PageHeader",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/page-header.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9533,9 +9352,7 @@
         "exportName": "DataTableSection",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/data-table-section.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9604,9 +9421,7 @@
         "exportName": "DestructiveSection",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/destructive-section.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9697,7 +9512,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/nav-list.test.tsx",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -9747,9 +9561,7 @@
         "exportName": "CardRow",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card-row.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9787,9 +9599,7 @@
         "exportName": "CardRowNote",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card-row.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9818,9 +9628,7 @@
         "exportName": "CardRowTitle",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card-row.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9849,9 +9657,7 @@
         "exportName": "Board",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/board.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9899,9 +9705,7 @@
         "exportName": "BoardColumn",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/board.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -9952,9 +9756,7 @@
         "exportName": "Composer",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/composer.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10094,9 +9896,7 @@
         "exportName": "Timeline",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/timeline.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10164,9 +9964,7 @@
         "exportName": "TimelineItem",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/timeline.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10272,7 +10070,6 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/theme-toggle.test.tsx",
         "src/app/context/ThemeContext.tsx"
       ],
       "tokenMapping": {},
@@ -10326,8 +10123,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/card.tsx",
-        "src/app/components/meta-line.test.tsx"
+        "src/app/components/card.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -10408,9 +10204,7 @@
         "exportName": "AsyncState",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/async-state.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10556,9 +10350,7 @@
         "exportName": "NavList",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/nav-list.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10660,9 +10452,7 @@
         "exportName": "NavListItem",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/nav-list.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10761,9 +10551,7 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/token-field-model.test.ts",
-        "src/app/components/token-field-model.ts",
-        "src/app/components/token-field.test.tsx"
+        "src/app/components/token-field-model.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -10869,9 +10657,7 @@
         "exportName": "CardFacts",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card-entity.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10920,9 +10706,7 @@
         "exportName": "CardSource",
         "sizing": "panel"
       },
-      "consumers": [
-        "src/app/components/card-entity.test.tsx"
-      ],
+      "consumers": [],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -11410,10 +11194,7 @@
       },
       "consumers": [
         "src/app/components/asset-img.tsx",
-        "src/app/components/hds-tooltip.tsx",
-        "src/app/components/tooltip.test.tsx",
-        "src/app/context/__tests__/portal-hydration.test.tsx",
-        "src/app/context/__tests__/portal-scope.test.tsx"
+        "src/app/components/hds-tooltip.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -12100,6 +11881,13 @@
         "type": "color",
         "description": "Dark support tone for the Microsoft Game Dev project brand.",
         "value": "oklch(0.22 0.16 304)"
+      },
+      {
+        "path": "primitive.color.shadow.ink",
+        "cssVar": "--primitive-color-shadow-ink",
+        "type": "color",
+        "description": "Shadow ink: hsl(220 13% 18%) as one solid colour.",
+        "value": "#282c34"
       },
       {
         "path": "primitive.space.0",
@@ -13199,6 +12987,18 @@
         "dark": {
           "alias": "{primitive.color.amber.400}",
           "resolvedValue": "#fbbf24"
+        }
+      },
+      {
+        "path": "semantic.color.shadow.hard",
+        "cssVar": "--semantic-color-shadow-hard",
+        "type": "color",
+        "description": "Hard (blur 0) shadow colour. Dark uses border.strong: black vanishes on dark surfaces.",
+        "alias": "{primitive.color.shadow.ink}",
+        "resolvedValue": "#282c34",
+        "dark": {
+          "alias": "{primitive.color.neutral.600}",
+          "resolvedValue": "#525252"
         }
       },
       {

@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 516 tokens, aliases, and TS refs in one shot.
+Checks all 518 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -187,6 +187,7 @@ Checks all 516 tokens, aliases, and TS refs in one shot.
 | `primitive.color.projectBrand.microsoftGameDev.100` | `#E5E5FC`                   | Light support tone for the Microsoft Game Dev project brand.                                                                  |
 | `primitive.color.projectBrand.microsoftGameDev.500` | `#6d31fb`                   | Primary accent tone for the Microsoft Game Dev project brand.                                                                 |
 | `primitive.color.projectBrand.microsoftGameDev.900` | `oklch(0.22 0.16 304)`      | Dark support tone for the Microsoft Game Dev project brand.                                                                   |
+| `primitive.color.shadow.ink`                        | `#282c34`                   | Shadow ink: hsl(220 13% 18%) as one solid colour.                                                                             |
 
 <!-- auto:end:primitives-color -->
 
@@ -249,6 +250,7 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.border.accent`          | {primitive.color.graphite.700}  | {primitive.color.graphite.300}  | Accent border — graphite, dark enough to read as a boundary on page and card surfaces.                                                      |
 | `semantic.color.border.success`         | {primitive.color.green.400}     | {primitive.color.green.400}     | Success-toned border for status outlines and success-state inputs.                                                                          |
 | `semantic.color.border.warning`         | {primitive.color.amber.400}     | {primitive.color.amber.400}     | Warning-toned border for status outlines and warning-state inputs.                                                                          |
+| `semantic.color.shadow.hard`            | {primitive.color.shadow.ink}    | {primitive.color.neutral.600}   | Hard (blur 0) shadow colour. Dark uses border.strong: black vanishes on dark surfaces.                                                      |
 | `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                                                                                             |
 | `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                                                                                             |
 | `semantic.color.feedback.warning`       | {primitive.color.amber.800}     | {primitive.color.amber.400}     |                                                                                                                                             |

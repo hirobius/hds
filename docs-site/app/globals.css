@@ -415,15 +415,16 @@ html[data-docs-shadow='hard'] {
   --semantic-shadow-subtle: 4px 4px 0 hsl(var(--primitive-shadow-color));
   --semantic-shadow-floating: 5px 5px 0 hsl(var(--primitive-shadow-color));
   --semantic-shadow-overlay: 8px 8px 0 hsl(var(--primitive-shadow-color));
-  /* Kbd follows the Button light source: same shadow colour, smaller offset (hds-kbd in theme.css reads this). */
-  --semantic-shadow-key: 2px 2px 0 hsl(var(--primitive-shadow-color));
+  /* Kbd follows the Button light source: one colour, semantic.color.shadow.hard (shadow ink in
+     Light, the border.strong stroke in Dark, where black would vanish), smaller offset. */
+  --semantic-shadow-key: 2px 2px 0 var(--semantic-color-shadow-hard);
 }
 /* Kbd keeps its border-strong border; pressed sinks 1px along the shadow direction. */
 html[data-docs-shadow='hard'] .hds-kbd {
   border-color: var(--semantic-color-border-strong);
 }
 html[data-docs-shadow='hard'] .hds-kbd:active {
-  box-shadow: 1px 1px 0 hsl(var(--primitive-shadow-color));
+  box-shadow: 1px 1px 0 var(--semantic-color-shadow-hard);
   translate: 1px 1px;
 }
 /* Select popover: shipped as Tailwind shadow-md (--tw-shadow); docs-only override so the hard preview covers it without touching shipped styles. */
@@ -431,7 +432,7 @@ html[data-docs-shadow='hard'] [role='listbox'][data-radix-select-content],
 html[data-docs-shadow='hard'] [data-radix-popper-content-wrapper] [role='listbox'] {
   box-shadow: var(--semantic-shadow-floating);
 }
-/* Buttons carry no shadow today: 3px rest, 5px + 2px lift on hover. Keeps Tailwind's ring/inset layers so focus and press still show. */
+/* Buttons carry no shadow today: 3px rest, 5px + 2px lift on hover, 1px + 2px sink on press. Keeps Tailwind's ring/inset layers so focus and press still show. */
 html[data-docs-shadow='hard'] button[data-variant='primary'],
 html[data-docs-shadow='hard'] button[data-variant='secondary'] {
   box-shadow:
@@ -439,7 +440,7 @@ html[data-docs-shadow='hard'] button[data-variant='secondary'] {
     var(--tw-inset-ring-shadow, 0 0 #0000),
     var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000),
-    3px 3px 0 hsl(var(--primitive-shadow-color));
+    3px 3px 0 var(--semantic-color-shadow-hard);
 }
 html[data-docs-shadow='hard'] button[data-variant='primary']:hover:not(:disabled),
 html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabled) {
@@ -449,7 +450,17 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabl
     var(--tw-inset-ring-shadow, 0 0 #0000),
     var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000),
-    5px 5px 0 hsl(var(--primitive-shadow-color));
+    5px 5px 0 var(--semantic-color-shadow-hard);
+}
+html[data-docs-shadow='hard'] button[data-variant='primary']:active:not(:disabled),
+html[data-docs-shadow='hard'] button[data-variant='secondary']:active:not(:disabled) {
+  translate: 2px 2px;
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000),
+    var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000),
+    1px 1px 0 var(--semantic-color-shadow-hard);
 }
 
 /* MDX code fences (components/mdx-code-block.tsx) are the HDS CodeBlock. It sits outside the

@@ -117,6 +117,8 @@ function findConsumers(componentName, filePath, sourceFiles) {
       // src/icons.ts is a bare re-export; its doc comment and Lucide names
       // (Calendar, Menu) are not component usage.
       .filter((candidate) => candidate !== 'src/icons.ts')
+      // Tests exercise a component; they are not consumers that ship with it.
+      .filter((candidate) => !/\.(test|spec)\.[cm]?[jt]sx?$/.test(candidate))
       .filter((candidate) => {
         const content = readFileSync(join(ROOT, candidate), 'utf8');
         return pattern.test(content);
