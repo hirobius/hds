@@ -621,7 +621,13 @@ function NavListDemo() {
 
 function PaginationDemo() {
   const [page, setPage] = useState(3);
-  return <Pagination count={10} page={page} onPageChange={setPage} />;
+  const [item, setItem] = useState(1);
+  return (
+    <div className="flex flex-col gap-6">
+      <Pagination count={10} page={page} onPageChange={setPage} />
+      <Pagination variant="compact" label="Item" count={4} page={item} onPageChange={setItem} />
+    </div>
+  );
 }
 
 function PopoverDemo() {

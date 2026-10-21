@@ -419,6 +419,10 @@
     "src/app/components/toast.tsx": {
       "kind": "queued",
       "reason": "Toast exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/pagination.tsx": {
+      "kind": "queued",
+      "reason": "Pagination exists in the Figma library (node 86-194). Its compact variant (hds#867) has no Figma Variant=Compact yet (Figma-lane follow-up, hds#540); the template waits for that property read."
     }
   }
 }

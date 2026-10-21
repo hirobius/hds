@@ -6208,6 +6208,14 @@
         "siblingCount": {
           "type": "number",
           "default": 1
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "default",
+            "compact"
+          ],
+          "default": "default"
         }
       },
       "allowedChildren": [
@@ -6263,6 +6271,24 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:pagination.target-size"
+        },
+        {
+          "rule": "The compact variant shows \"n of m\" in a polite live region, so a page change is announced.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.compact-position"
+        },
+        {
+          "rule": "The compact Previous and Next icon-only buttons are named Previous page and Next page.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.compact-control-names"
+        },
+        {
+          "rule": "Compact Previous is disabled on the first page and Next on the last; focus moves to the other button instead of being stranded.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:pagination.compact-disabled-ends"
         },
         {
           "rule": "After a page change, keep focus on the control or move it to the start of the results, and tell screen-reader users the results changed.",

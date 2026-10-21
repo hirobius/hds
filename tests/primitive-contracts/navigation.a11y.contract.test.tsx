@@ -277,6 +277,32 @@ describe('Pagination accessibility contract', () => {
     expect(document.activeElement?.getAttribute('aria-current')).toBe('page');
   });
 
+  it('a11y:pagination.compact-position - the compact variant shows "n of m" as a polite live region', () => {
+    render(<Pagination variant="compact" page={2} count={4} onPageChange={() => {}} />);
+    const status = screen.getByText('2 of 4');
+    expect(status.getAttribute('aria-live')).toBe('polite');
+    expect(screen.getByRole('navigation', { name: 'Pagination' })).not.toBeNull();
+  });
+
+  it('a11y:pagination.compact-control-names - the compact icon-only buttons are named Previous page and Next page', () => {
+    render(<Pagination variant="compact" page={2} count={4} onPageChange={() => {}} />);
+    expect(screen.getByRole('button', { name: 'Previous page' })).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Next page' })).not.toBeNull();
+  });
+
+  it('a11y:pagination.compact-disabled-ends - compact Previous is disabled on the first page and Next on the last', () => {
+    const { rerender } = render(
+      <Pagination variant="compact" page={1} count={4} onPageChange={() => {}} />,
+    );
+    expect(
+      (screen.getByRole('button', { name: 'Previous page' }) as HTMLButtonElement).disabled,
+    ).toBe(true);
+    rerender(<Pagination variant="compact" page={4} count={4} onPageChange={() => {}} />);
+    expect((screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement).disabled).toBe(
+      true,
+    );
+  });
+
   it('a11y:pagination.target-size - page buttons lift to the touch target and Previous/Next are at least 24px', () => {
     render(<Pagination page={3} count={10} onPageChange={() => {}} />);
     expect(screen.getByRole('button', { name: 'Page 3' }).className).toContain('hds-touch-target');
