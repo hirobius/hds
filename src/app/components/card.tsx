@@ -26,16 +26,8 @@
  *     </Card.Row>
  *   </Card>
  *
- * An entity card (a job, a lead, a listing) opens with its source and closes
- * with a facts row, the title and actions staying in Header and Footer:
- *
- *   <Card>
- *     <Card.Source avatar={<Avatar size="sm" initials="AC" alt="" />} name="Acme Corp"
- *       time={<Timestamp date={posted} format="relative" />} />
- *     <Card.Header><Card.Title>Senior product designer</Card.Title></Card.Header>
- *     <Card.Facts items={[{ icon: MapPin, label: 'Remote' }, { icon: Banknote, label: '$120k' }]} />
- *     <Card.Footer><Button>Apply</Button></Card.Footer>
- *   </Card>
+ * An entity card (a job, a lead, a listing) opens with Card.Source and closes
+ * with Card.Facts; the title and actions stay in Header and Footer.
  *
  * Slot reservations:
  * - Header: title (h3) + optional description (caption) + optional metadata
