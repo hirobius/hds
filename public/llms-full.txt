@@ -167,7 +167,9 @@ Box: [core] Build one-off layout that no named layout primitive covers, using to
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
 Button: [core] Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
 Card: [core] Group related content on a raised surface with header, body, footer and row slots, or as one selectable option. Use instead: Surface
+CardFacts: Show an entity's quick facts (location, salary, type) under its title.
 CardRow: Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lines, and a Badge in `trailing`.
+CardSource: Open an entity card (a job, a lead, a listing) with where it came from and when, above Card.Header.
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
@@ -361,7 +363,7 @@ import { Ellipsis } from '@hirobius/design-system/icons';
 
 Rule: icon-only actions (row menus, close, edit) use `Button iconOnly` with a `label` and an `Icon` in `iconLeft`; do not hand-roll a button with a glyph or text "...".
 
-Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Bell, Bookmark, Briefcase, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Images, Info, Link, Lock, LogIn, LogOut, Mail, Menu, Minus, Pencil, Phone, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, Users, Wrench, X
+Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Banknote, Bell, Bookmark, Briefcase, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Images, Info, Link, Lock, LogIn, LogOut, Mail, MapPin, Menu, Minus, Pencil, Phone, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, Users, Wrench, X
 
 Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.
 
@@ -601,6 +603,8 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Subtitle / meta          | `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`)                                                                               | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                                                                                                  | Background fill change, border color shift, or opacity fade on hover                        |
 
+An entity card (a job, a lead, a listing) fills four zones in this order: `Card.Source` (an `Avatar` size `sm`, the source name, a `Timestamp`), `Card.Header` with the `Card.Title`, `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list), and the actions in `Card.Footer`. Facts are icon + text only; term and description pairs stay in `MetadataList`, and a text-only line stays in `MetaLine`. Status goes in the header `metadata` slot, never in the facts row.
+
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
 
 ## Screen Patterns
@@ -818,6 +822,10 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
 ### CardDescription
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
+### CardFacts
+Card.Facts — a wrapping caption row of icon + label facts, as a list.
+  - items: CardFact[]
+
 ### CardFooter
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
@@ -841,6 +849,12 @@ Card.RowNote — one muted caption line under the row's title; repeat it for mor
 
 ### CardRowTitle
 Card.RowTitle — the row's title, at the ui role.
+
+### CardSource
+Card.Source — the entity's origin on one row: avatar, name and time.
+  - avatar: ReactNode
+  - name: ReactNode
+  - time: ReactNode
 
 ### CardTitle
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…

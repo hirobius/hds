@@ -60,13 +60,24 @@ import {
   Textarea,
   Timeline,
   TimelineItem,
+  Timestamp,
   Toggle,
   TokenField,
   type TokenFieldHandle,
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
-import { ArrowRight, CircleCheck, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
+import {
+  ArrowRight,
+  Banknote,
+  Briefcase,
+  CircleCheck,
+  Copy,
+  MapPin,
+  Search,
+  Star,
+  Users,
+} from '@hirobius/design-system/icons';
 import {
   AssetImg,
   AsyncState,
@@ -442,6 +453,33 @@ function CardDemo() {
           <Card.RowNote>Last run 2 hours ago</Card.RowNote>
         </Card.Row>
       </Card>
+      {/* The entity card: source row, title, facts row, actions (hds#872). */}
+      <Grid columns={1} gap="normal">
+        <Card>
+          <Card.Source
+            avatar={<Avatar size="sm" initials="NR" alt="" />}
+            name="Northwind Robotics"
+            time={
+              <Timestamp date="2026-10-21T10:00:00Z" now="2026-10-21T12:00:00Z" format="relative" />
+            }
+          />
+          <Card.Header>
+            <Card.Title>Senior product designer</Card.Title>
+          </Card.Header>
+          <Card.Facts
+            items={[
+              { icon: MapPin, label: 'Remote' },
+              { icon: Banknote, label: '$120k to $150k' },
+              { icon: Briefcase, label: 'Full time' },
+            ]}
+          />
+          <Card.Footer>
+            <Button variant="secondary" size="sm">
+              Save
+            </Button>
+          </Card.Footer>
+        </Card>
+      </Grid>
       {/* asChild: the whole card is one link, with the interactive hover. */}
       <Card asChild padding="item">
         <a href="#card">

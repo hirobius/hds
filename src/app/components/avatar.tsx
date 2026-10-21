@@ -6,7 +6,7 @@
  * @whenNot A generic pictogram, or a status marker on its own.
  * @useInstead Icon a generic pictogram
  * @useInstead Badge a status marker on its own
- * @a11y component required a11y:avatar.named The image, initials or icon is one image named by alt.
+ * @a11y component required a11y:avatar.named The image, initials or icon is one image named by alt; an empty alt makes initials or icon decorative, for use beside a visible name.
  * @a11y component required a11y:avatar.status-named A status dot with statusLabel is an image named by it; without one it is hidden.
  * @a11y consumer required As a button, name the Button for the account and its status ("Account, not synced"): the Button label replaces the avatar's own name.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18
@@ -116,7 +116,11 @@ export const Avatar = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, AvatarPr
               <Icon icon={User} size={ICON_SIZE[resolvedSize]} />
             </span>
           ) : (
-            <span aria-label={alt} role="img">
+            <span
+              aria-label={alt || undefined}
+              role={alt ? 'img' : undefined}
+              aria-hidden={alt ? undefined : true}
+            >
               {label}
             </span>
           )}

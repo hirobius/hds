@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "Card gains Card.Source and Card.Facts for job, lead and listing cards; nothing existing changes."
+}

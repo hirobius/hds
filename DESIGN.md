@@ -199,6 +199,8 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Subtitle / meta          | `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`)                                                                               | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                                                                                                  | Background fill change, border color shift, or opacity fade on hover                        |
 
+An entity card (a job, a lead, a listing) fills four zones in this order: `Card.Source` (an `Avatar` size `sm`, the source name, a `Timestamp`), `Card.Header` with the `Card.Title`, `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list), and the actions in `Card.Footer`. Facts are icon + text only; term and description pairs stay in `MetadataList`, and a text-only line stays in `MetaLine`. Status goes in the header `metadata` slot, never in the facts row.
+
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
 
 ## Screen Patterns

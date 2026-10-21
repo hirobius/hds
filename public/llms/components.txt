@@ -161,6 +161,10 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
 ### CardDescription
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
+### CardFacts
+Card.Facts — a wrapping caption row of icon + label facts, as a list.
+  - items: CardFact[]
+
 ### CardFooter
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
@@ -184,6 +188,12 @@ Card.RowNote — one muted caption line under the row's title; repeat it for mor
 
 ### CardRowTitle
 Card.RowTitle — the row's title, at the ui role.
+
+### CardSource
+Card.Source — the entity's origin on one row: avatar, name and time.
+  - avatar: ReactNode
+  - name: ReactNode
+  - time: ReactNode
 
 ### CardTitle
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
