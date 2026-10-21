@@ -1,0 +1,1 @@
+docs-site: every mono surface now renders the HDS mono token from the package's fonts.css (IBM Plex Mono); removed the next/font mono copy and the --primitive-typography-family-mono override; mono-scope guard extended. Docs-only, no changeset.

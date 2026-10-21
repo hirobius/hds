@@ -17,19 +17,17 @@
  */
 :root,
 .dark {
-  /* next/font faces (app/layout.tsx) lead each stack; the token family stays as the fallback. */
+  /* next/font faces (app/layout.tsx) lead the sans and display stacks; the token family stays as
+     the fallback. Mono is not overridden: --primitive-typography-family-mono comes from the package. */
   --primitive-typography-family-primary:
     var(--hds-docs-font-sans), 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', sans-serif;
   --primitive-typography-family-display:
     var(--hds-docs-font-display), 'Sora', 'Plus Jakarta Sans', system-ui, -apple-system,
     BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --primitive-typography-family-mono:
-    var(--hds-docs-font-mono), 'IBM Plex Mono', 'Courier New', monospace;
   /* The font dial (ADR-023) re-points the type roles inside any HDS subtree (HdsThemeProvider,
      /tour) at --hds-font-family, which would skip the next/font faces and swap late (CLS). */
   --hds-font-family: var(--primitive-typography-family-primary);
-  --hds-font-family-mono: var(--primitive-typography-family-mono);
   /* Fumadocs reads --font-sans / --font-mono for its base typography. */
   --font-sans: var(--primitive-typography-family-primary);
   --font-mono: var(--primitive-typography-family-mono);
