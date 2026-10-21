@@ -905,6 +905,12 @@ function PageHeaderDemo() {
       // The docs page owns the one h1; a demo heading sits below it.
       level={2}
       breadcrumb={<Breadcrumb items={[{ label: 'Clients', href: '#' }, { label: 'Acme Co' }]} />}
+      metadata={
+        <>
+          <Badge tone="neutral">Referral</Badge>
+          <Badge tone="info">Pitch</Badge>
+        </>
+      }
       title="Acme Co"
       description="Brand refresh and the spring campaign site."
       status={<Badge tone="success">Active</Badge>}
