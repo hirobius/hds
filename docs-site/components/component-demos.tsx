@@ -608,21 +608,25 @@ function MetaLineDemo() {
 }
 
 function NavListDemo() {
+  const jobs = [
+    { title: 'Design systems lead', meta: ['Acme Cloud', 'Remote'] as [string, string] },
+    { title: 'Staff front-end engineer', meta: ['Northwind', 'Hybrid'] as [string, string] },
+    { title: 'Product designer', meta: ['Globex', 'On-site'] as [string, string] },
+  ];
+  const [selected, setSelected] = useState(0);
   return (
     <div style={{ maxWidth: 320 }}>
       <NavList aria-label="Saved jobs">
-        <NavList.Item href="#" current>
-          Design systems lead
-          <MetaLine items={['Acme Cloud', 'Remote']} />
-        </NavList.Item>
-        <NavList.Item href="#">
-          Staff front-end engineer
-          <MetaLine items={['Northwind', 'Hybrid']} />
-        </NavList.Item>
-        <NavList.Item href="#">
-          Product designer
-          <MetaLine items={['Globex', 'On-site']} />
-        </NavList.Item>
+        {jobs.map((job, index) => (
+          <NavList.Item
+            key={job.title}
+            selected={index === selected}
+            onSelect={() => setSelected(index)}
+          >
+            {job.title}
+            <MetaLine items={job.meta} />
+          </NavList.Item>
+        ))}
       </NavList>
     </div>
   );

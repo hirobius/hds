@@ -177,6 +177,52 @@ describe('NavList accessibility contract', () => {
   });
 });
 
+describe('NavList select mode accessibility contract', () => {
+  it('a11y:nav-list.select-button - a selecting row is a button in the list, not a link', () => {
+    render(
+      <NavList aria-label="Jobs">
+        <NavList.Item onSelect={() => {}}>A</NavList.Item>
+        <NavList.Item onSelect={() => {}}>B</NavList.Item>
+      </NavList>,
+    );
+    const list = screen.getByRole('list', { name: 'Jobs' });
+    expect(within(list).getAllByRole('listitem')).toHaveLength(2);
+    expect(within(list).getAllByRole('button')).toHaveLength(2);
+    expect(within(list).queryAllByRole('link')).toHaveLength(0);
+  });
+
+  it('a11y:nav-list.select-current - only the selected row is aria-current=true', () => {
+    render(
+      <NavList>
+        <NavList.Item onSelect={() => {}}>A</NavList.Item>
+        <NavList.Item onSelect={() => {}} selected>
+          B
+        </NavList.Item>
+      </NavList>,
+    );
+    expect(screen.getByRole('button', { name: 'B' }).getAttribute('aria-current')).toBe('true');
+    expect(screen.getByRole('button', { name: 'A' }).hasAttribute('aria-current')).toBe(false);
+  });
+
+  it('a11y:nav-list.select-keyboard - Tab visits each row, Enter and Space select, each draws the focus ring', async () => {
+    const user = userEvent.setup();
+    const picked: string[] = [];
+    render(
+      <NavList>
+        <NavList.Item onSelect={() => picked.push('A')}>A</NavList.Item>
+        <NavList.Item onSelect={() => picked.push('B')}>B</NavList.Item>
+      </NavList>,
+    );
+    await user.tab();
+    expect(document.activeElement?.className).toContain('hds-focus');
+    await user.keyboard('{Enter}');
+    await user.tab();
+    expect(document.activeElement?.className).toContain('hds-focus');
+    await user.keyboard(' ');
+    expect(picked).toEqual(['A', 'B']);
+  });
+});
+
 // ── Pagination ────────────────────────────────────────────────────────────────
 
 function PagedFixture({ start = 3, count = 10 }: { start?: number; count?: number }) {

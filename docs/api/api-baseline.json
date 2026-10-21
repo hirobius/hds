@@ -14,7 +14,7 @@
     "./icons": "src/icons.ts"
   },
   "version": "0.29.0",
-  "generatedAt": "2026-10-20",
+  "generatedAt": "2026-10-21",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -37,7 +37,7 @@
       "useHdsTheme"
     ],
     "./app/components/alert": ["Alert", "AlertProps"],
-    "./app/components/avatar": ["Avatar", "AvatarProps"],
+    "./app/components/avatar": ["Avatar", "AvatarProps", "AvatarStatus"],
     "./app/components/badge": ["Badge", "BadgeProps"],
     "./app/components/box": [
       "Box",
@@ -136,7 +136,14 @@
     "./app/components/timestamp": ["Timestamp", "TimestampFormat", "TimestampProps"],
     "./app/components/blockquote": ["Blockquote", "BlockquoteProps"],
     "./app/components/meta-line": ["MetaLine", "MetaLineItems", "MetaLineProps"],
-    "./app/components/nav-list": ["NavList", "NavListItem", "NavListItemProps", "NavListProps"],
+    "./app/components/nav-list": [
+      "NavList",
+      "NavListItem",
+      "NavListItemProps",
+      "NavListLinkItemProps",
+      "NavListProps",
+      "NavListSelectItemProps"
+    ],
     "./app/components/token-field": [
       "TokenField",
       "TokenFieldHandle",

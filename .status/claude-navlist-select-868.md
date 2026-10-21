@@ -1,0 +1,1 @@
+NavList select mode: `NavList.Item` with `onSelect`/`selected` renders a button (`aria-current="true"`) for rails that select without routing (hds#868, epic #863). Retires Roleforge's RailList. Figma lane follow-up: a `Type=Button` variant on the NavListItem set is not drawn; the library file was not touched.

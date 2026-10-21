@@ -125,8 +125,8 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Breadcrumb` — Breadcrumb trail.
 - `InlineLink` — InlineLink ” inline navigation and external-link primitive for body copy.
-- `NavList` — A vertical list of links, one marked current.
-- `NavListItem` — One link row of a NavList.
+- `NavList` — A vertical list of rows (links, or buttons that select in place), one marked current.
+- `NavListItem` — One row of a NavList.
 - `Pagination` — Paged navigation with first/last anchors, sibling pages, and ellipses.
 - `Tabs` — The tab set itself.
 - `TabsContent` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
