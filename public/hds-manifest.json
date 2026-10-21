@@ -5747,7 +5747,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/avatar.tsx",
-      "description": "Circular avatar. Renders the image when available, else initials from `alt`.",
+      "description": "Circular avatar. Renders the image when available, else initials from `alt` or a person icon, with an optional status dot.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18",

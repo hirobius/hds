@@ -69,7 +69,7 @@ One wrapper for the four states of async content: `loading` (skeleton rows plus 
   - status: 'loading' | 'error' | 'empty' | 'ready'
 
 ### Avatar
-Circular avatar. Renders the image when available, else initials from `alt`.
+Circular avatar. Renders the image when available, else initials from `alt` or a person icon, with an optional status dot.
   - alt: string
   - fallback: "initials" | "icon" = initials
   - initials: string
