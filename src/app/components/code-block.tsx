@@ -19,6 +19,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } f
 import { cva } from 'class-variance-authority';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { Button } from './button';
 import { Icon } from './icon';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -75,7 +76,9 @@ const chevronVariants = /* @__PURE__ */ cva(
   },
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + radius-action + border-default/surface-raised tokens + motion.productive.duration have no matching Tailwind-theme utility; var()-based so still token-driven
+// The block copy button is an icon-only HDS Button, which centres its icon; these classes only place
+// it in its own column beside the code (hds#857).
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap/scale-xs spacing + motion.productive.duration have no matching Tailwind-theme utility; var()-based so still token-driven
 const copyButtonVariants = /* @__PURE__ */ cva(
   'hds-touch-target flex cursor-pointer items-center gap-[var(--semantic-space-subgrid-gap)]',
   {
@@ -83,8 +86,7 @@ const copyButtonVariants = /* @__PURE__ */ cva(
       variant: {
         inline:
           'shrink-0 border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)] transition-[background-color,color,transform] duration-[var(--hds-motion-productive-duration)] ease',
-        block:
-          'absolute right-[var(--semantic-space-subgrid-gap)] top-[var(--semantic-space-subgrid-gap)] rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-scale-xs)] py-[var(--semantic-space-subgrid-gap)] transition-[background-color,color] duration-[var(--hds-motion-productive-duration)] ease',
+        block: 'shrink-0 m-[var(--semantic-space-scale-xs)]',
       },
     },
     defaultVariants: { variant: 'block' },
@@ -110,10 +112,18 @@ const blockCodeTextVariants = /* @__PURE__ */ cva(
   `whitespace-pre text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing + semantic-size-control-lg + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
 const prePanelVariants = /* @__PURE__ */ cva(
   // 16px inset (scale-sm), not section-stack (80px): a 2-line snippet was 188px tall (hds#522).
-  'm-0 overflow-x-auto p-[var(--semantic-space-scale-sm)] pr-[calc(var(--semantic-space-scale-sm)_+_var(--semantic-size-control-lg))]',
+  // flex-1 + min-w-0: the <pre> scrolls inside its own column, so long lines stop at the copy button
+  // instead of running under it (hds#857).
+  'm-0 min-w-0 flex-1 overflow-x-auto p-[var(--semantic-space-scale-sm)]',
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+const codePanelVariants = /* @__PURE__ */ cva(
+  // The code column and the copy-button column, side by side.
+  'flex items-start',
   {
     variants: {
       panelBackground: {
@@ -134,15 +144,7 @@ const prePanelVariants = /* @__PURE__ */ cva(
 // where React 18 warns about useLayoutEffect and neither one runs.
 const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
-function CodePre({
-  panelBackground,
-  label,
-  children,
-}: {
-  panelBackground: boolean;
-  label: string;
-  children: ReactNode;
-}) {
+function CodePre({ label, children }: { label: string; children: ReactNode }) {
   const ref = useRef<HTMLPreElement>(null);
   const [overflows, setOverflows] = useState(false);
   useIsomorphicLayoutEffect(() => {
@@ -159,7 +161,7 @@ function CodePre({
     <pre
       ref={ref}
       {...(overflows ? { tabIndex: 0, role: 'group', 'aria-label': label } : {})}
-      className={prePanelVariants({ panelBackground })}
+      className={prePanelVariants()}
     >
       {children}
     </pre>
@@ -274,30 +276,21 @@ export function CodeBlock({
       </div>
     ) : null;
 
-  const copyBtn = (
-    <button
-      type="button"
-      onClick={handleCopy}
-      aria-label={copied ? 'Copied' : 'Copy code'}
-      className={cn('hds-focus', copyButtonVariants({ variant: 'block' }))}
-    >
-      {copied ? (
-        <Icon icon={Check} size="small" color="var(--semantic-color-content-primary)" />
-      ) : (
-        <Icon icon={Copy} size="small" color="var(--semantic-color-content-primary)" />
-      )}
-    </button>
-  );
-
-  const codePanel = (
-    <div className="relative">
-      <CodePre
-        panelBackground
-        label={filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample')}
-      >
+  const label = filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample');
+  const codePanel = (panelBackground: boolean) => (
+    <div className={codePanelVariants({ panelBackground })}>
+      <CodePre label={label}>
         <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
       </CodePre>
-      {copyBtn}
+      <Button
+        variant="secondary"
+        size="sm"
+        iconOnly
+        label={copied ? 'Copied' : 'Copy code'}
+        iconLeft={<Icon icon={copied ? Check : Copy} size="small" />}
+        onClick={handleCopy}
+        className={cn('hds-focus', copyButtonVariants({ variant: 'block' }))}
+      />
       <CopyStatus copied={copied} />
     </div>
   );
@@ -332,7 +325,7 @@ export function CodeBlock({
         </button>
         {expanded && (
           <div ref={panelRef} id={panelId} className={collapsiblePanelVariants()}>
-            {codePanel}
+            {codePanel(true)}
           </div>
         )}
       </div>
@@ -342,16 +335,7 @@ export function CodeBlock({
   return (
     <div className={cn(blockContainerVariants(), className)}>
       {headerEl}
-      <div className="relative">
-        <CodePre
-          panelBackground={false}
-          label={filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample')}
-        >
-          <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
-        </CodePre>
-        {copyBtn}
-        <CopyStatus copied={copied} />
-      </div>
+      {codePanel(false)}
     </div>
   );
 }

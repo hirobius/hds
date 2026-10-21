@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { readFileSync } from 'node:fs';
 import {
+  ACCENTS,
   CORNERS,
   SHADOWS,
   STORAGE_KEY,
@@ -15,38 +17,62 @@ describe('docs preview switches', () => {
     localStorage.clear();
     document.documentElement.removeAttribute('data-docs-corners');
     document.documentElement.removeAttribute('data-docs-shadow');
+    document.documentElement.removeAttribute('data-accent');
   });
 
   it('defaults to rounded + soft (today)', () => {
-    expect(parseSwitches(null)).toEqual({ corners: 'rounded', shadow: 'soft' });
+    expect(parseSwitches(null)).toEqual({ corners: 'rounded', shadow: 'soft', accent: 'graphite' });
   });
 
   it('ignores junk and keeps valid halves', () => {
     expect(parseSwitches('{"corners":"sharp","shadow":"neon"}')).toEqual({
       corners: 'sharp',
       shadow: 'soft',
+      accent: 'graphite',
     });
-    expect(parseSwitches('not json')).toEqual({ corners: 'rounded', shadow: 'soft' });
+    expect(parseSwitches('not json')).toEqual({
+      corners: 'rounded',
+      shadow: 'soft',
+      accent: 'graphite',
+    });
   });
 
   it('exposes the allowed values', () => {
     expect(CORNERS).toEqual(['rounded', 'sharp']);
     expect(SHADOWS).toEqual(['soft', 'hard']);
+    expect(ACCENTS).toEqual(['graphite', 'cobalt']);
+  });
+
+  it('Accent drives the package accent dial: data-accent on the root, graphite = unset (hds#857)', () => {
+    applySwitches({ corners: 'rounded', shadow: 'soft', accent: 'cobalt' });
+    expect(document.documentElement.getAttribute('data-accent')).toBe('cobalt');
+    applySwitches({ corners: 'rounded', shadow: 'soft', accent: 'graphite' });
+    expect(document.documentElement.hasAttribute('data-accent')).toBe(false);
+  });
+
+  it('every non-default accent is a shipped data-accent overlay that sets the content accent', () => {
+    const accents = readFileSync('src/styles/accents.css', 'utf8');
+    for (const a of ACCENTS.filter((x: string) => x !== 'graphite')) {
+      const rule = new RegExp(
+        `\\[data-accent='${a}'\\]\\s*\\{[^}]*--semantic-color-content-accent:`,
+      );
+      expect(accents).toMatch(rule);
+    }
   });
 
   it('applies to the root as docs-only attributes, unsetting defaults', () => {
-    applySwitches({ corners: 'sharp', shadow: 'hard' });
+    applySwitches({ corners: 'sharp', shadow: 'hard', accent: 'cobalt' });
     expect(document.documentElement.dataset.docsCorners).toBe('sharp');
     expect(document.documentElement.dataset.docsShadow).toBe('hard');
-    applySwitches({ corners: 'rounded', shadow: 'soft' });
+    applySwitches({ corners: 'rounded', shadow: 'soft', accent: 'graphite' });
     expect(document.documentElement.hasAttribute('data-docs-corners')).toBe(false);
     expect(document.documentElement.hasAttribute('data-docs-shadow')).toBe(false);
   });
 
   it('round-trips through localStorage', () => {
-    writeSwitches({ corners: 'sharp', shadow: 'hard' });
+    writeSwitches({ corners: 'sharp', shadow: 'hard', accent: 'cobalt' });
     expect(localStorage.getItem(STORAGE_KEY)).toContain('sharp');
-    expect(readSwitches()).toEqual({ corners: 'sharp', shadow: 'hard' });
+    expect(readSwitches()).toEqual({ corners: 'sharp', shadow: 'hard', accent: 'cobalt' });
   });
 
   it('survives blocked storage', () => {
@@ -59,8 +85,10 @@ describe('docs preview switches', () => {
       throw new Error('blocked');
     };
     try {
-      expect(readSwitches()).toEqual({ corners: 'rounded', shadow: 'soft' });
-      expect(() => writeSwitches({ corners: 'sharp', shadow: 'hard' })).not.toThrow();
+      expect(readSwitches()).toEqual({ corners: 'rounded', shadow: 'soft', accent: 'graphite' });
+      expect(() =>
+        writeSwitches({ corners: 'sharp', shadow: 'hard', accent: 'cobalt' }),
+      ).not.toThrow();
     } finally {
       Storage.prototype.getItem = orig;
       Storage.prototype.setItem = origSet;
