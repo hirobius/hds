@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.30.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Under data-density="compact", each of these is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only: `--component-card-gap`, `--semantic-docs-space-section`, `--semantic-layout-grid-gap`, `--semantic-space-component-padding`, `--semantic-space-layout-gutter`, `--semantic-space-layout-inset`, `--semantic-space-layout-normal`, `--semantic-space-layout-spacious`, `--semantic-space-layout-tight`, `--semantic-space-region-gutter`, `--semantic-space-scale-lg`, `--semantic-space-scale-md`, `--semantic-space-scale-sm`, `--semantic-space-scale-xl`, `--semantic-space-section-stack` and `--semantic-space-surface-padding`.
+- Looks different: Each of these is a legacy bridge that tracks its scale twin, so under data-density="compact" it is tighter too; move to --semantic-space-scale-\* and check compact screens: `--hds-space-2xl`, `--hds-space-lg`, `--hds-space-md` and `--hds-space-xl`.
+- Looks different: Under data-density="compact" below 640px, --semantic-space-layout-gap is now scale.sm (12px) instead of following the comfortable rule; check compact screens on phones.
+- Looks different: --semantic-space-scale-xs is 8px in both densities as before; the compact rule now comes from tokens.css instead of theme.css, so nothing moves.
+- And 5 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0300).
+
+### Minor Changes
+
+- 7825b6d: feat: compact density for apps. 0.29 loosened the default rhythm for sites; dense apps now opt back into a tighter one with `data-density="compact"` on `<html>` or any ancestor. The compact values are a `Compact` mode in `hirobius.tokens.json`, emitted by the token build into a `[data-density="compact"]` block in `tokens.css` (it was hand-written in `theme.css`): `semantic.space.scale` sm/md/lg/xl 12/16/24/32px (was 16/24/32/48px under compact), the deprecated `layout.*` steps 12/16/24/32px, `section.stack` 48px, and type body 15 · ui 14 · caption 13 · title 24px (display stays 56px). Adds `semantic.space.scale.2xs` (4px in both densities) and the `compactBody` / `compactCaption` type primitives. Figma gets the same values as Hirobius/Density variables. The docs display settings gain a Density switch.
+
+### Patch Changes
+
+- af3e730: CodeBlock: the block copy button is now an icon-only HDS `Button` (secondary, sm), so its icon is centred, and it sits in its own column beside the code instead of over it, so long lines scroll under nothing (hds#857).
+- 56b9868: Lime / delight is hidden for now (hds#857): `semantic.accent.delight.*` and the `primitive.color.lime.*` ramp are `$deprecated` and left out of the docs, the manifest, llms.txt and DESIGN.md. The tokens and their CSS variables still ship, so they can come back; new code should not use them.
+
 ## 0.29.0
 
 ### Upgrade

@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.29.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.30.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,25 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.30.0
+
+Released 2026-10-21 (minor). 31 that look different and 3 deprecations.
+
+### Looks different
+
+- Under data-density="compact", each of these is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only: `--component-card-gap`, `--semantic-docs-space-section`, `--semantic-layout-grid-gap`, `--semantic-space-component-padding`, `--semantic-space-layout-gutter`, `--semantic-space-layout-inset`, `--semantic-space-layout-normal`, `--semantic-space-layout-spacious`, `--semantic-space-layout-tight`, `--semantic-space-region-gutter`, `--semantic-space-scale-lg`, `--semantic-space-scale-md`, `--semantic-space-scale-sm`, `--semantic-space-scale-xl`, `--semantic-space-section-stack` and `--semantic-space-surface-padding`.
+- Each of these is a legacy bridge that tracks its scale twin, so under data-density="compact" it is tighter too; move to --semantic-space-scale-\* and check compact screens: `--hds-space-2xl`, `--hds-space-lg`, `--hds-space-md` and `--hds-space-xl`.
+- Under data-density="compact" below 640px, --semantic-space-layout-gap is now scale.sm (12px) instead of following the comfortable rule; check compact screens on phones.
+- --semantic-space-scale-xs is 8px in both densities as before; the compact rule now comes from tokens.css instead of theme.css, so nothing moves.
+- Under data-density="compact", each of these is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only: `--semantic-typography-body-font-size`, `--semantic-typography-caption-font-size`, `--semantic-typography-eyebrow-font-size`, `--semantic-typography-h1-font-size`, `--semantic-typography-h2-font-size`, `--semantic-typography-h3-font-size`, `--semantic-typography-title-font-size` and `--semantic-typography-ui-font-size`.
+- The CodeBlock copy button is now a 32px icon-only Button in its own column beside the code, so re-take screenshots of pages with code blocks.
+
+### Coming next
+
+- --primitive-color-lime-\* still resolve; the ramp only feeds the hidden delight accent, so add no new uses. Removed in 1.0.0.
+- The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind \*-px6/\*-px10) stay deprecated and now leave in 0.31.0, not 0.30.0; the codemod rewrites them to the 8px and 12px steps. Removed in 0.31.0.
+- --semantic-accent-delight-\* still resolve to the same lime; they are hidden while lime is parked (hds#857) and may come back, so keep existing uses and add none. Removed in 1.0.0.
 
 ## 0.29.0
 

@@ -1,6 +1,6 @@
 /**
  * Tests for codemods/spacing-steps.mjs: primitive.space.px6 / px10 (off the 4px
- * grid, removed in 0.30.0) become the next roomier on-grid step.
+ * grid, removed in 0.31.0) become the next roomier on-grid step.
  * Seams: `transformSource` (pure), `runCodemod`, the CLI, and the package wiring.
  */
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
@@ -199,5 +199,17 @@ describe('wiring', () => {
     expect(CODEMODS['hds-spacing-steps']).toEqual({ file: 'spacing-steps.mjs' });
     expect(pkg.bin['hds-spacing-steps']).toBe('codemods/spacing-steps.mjs');
     expect(pkg.files).toContain('codemods/spacing-steps.mjs');
+  });
+});
+
+describe('removal target', () => {
+  it('px6 / px10 stay deprecated until 0.31.0 in the token source and the public tokens', () => {
+    const tokens = JSON.parse(readFileSync(join(REPO, 'hirobius.tokens.json'), 'utf8'));
+    for (const step of ['px6', 'px10']) {
+      expect(tokens.primitive.space[step].$deprecated).toContain('removed in 0.31.0');
+    }
+    const src = readFileSync(join(REPO, 'src/app/design-system/tokens.ts'), 'utf8');
+    expect(src.match(/@removeIn 0\.31\.0/g)).toHaveLength(2);
+    expect(src).not.toContain('@removeIn 0.30.0');
   });
 });

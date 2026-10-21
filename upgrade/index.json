@@ -1,6 +1,6 @@
 {
   "package": "@hirobius/design-system",
-  "latest": "0.29.0",
+  "latest": "0.30.0",
   "floor": "0.16.0",
   "versions": [
     {
@@ -135,13 +135,20 @@
       "bump": "minor",
       "breaking": 12,
       "summary": "12 changes to make by hand (12 breaking), 34 that look different and 1 deprecation."
+    },
+    {
+      "version": "0.30.0",
+      "date": "2026-10-21",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "31 that look different and 3 deprecations."
     }
   ],
   "deprecated": [
     {
-      "name": "primitive.space.px6-px10",
-      "removeIn": "0.30.0",
-      "step": "0.29.0/deprecated/primitive.space.px6-px10"
+      "name": "primitive.space.px6-px10-0.31",
+      "removeIn": "0.31.0",
+      "step": "0.30.0/deprecated/primitive.space.px6-px10-0.31"
     },
     {
       "name": "Blockquote.size",
@@ -249,9 +256,19 @@
       "step": "0.20.0/deprecated/kept-utilities"
     },
     {
+      "name": "primitive-color-lime",
+      "removeIn": "1.0.0",
+      "step": "0.30.0/deprecated/primitive-color-lime"
+    },
+    {
       "name": "pt-1",
       "removeIn": "1.0.0",
       "step": "0.20.0/deprecated/kept-utilities"
+    },
+    {
+      "name": "semantic-accent-delight",
+      "removeIn": "1.0.0",
+      "step": "0.30.0/deprecated/semantic-accent-delight"
     },
     {
       "name": "semantic.space.component.gap",

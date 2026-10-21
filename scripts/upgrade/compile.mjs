@@ -440,8 +440,12 @@ const entryOf = (from) =>
 function deprecatedNow(ledgers) {
   const removals = deprecationRemovals(ledgers);
   const out = [];
+  const latest = ledgers.at(-1)?.version;
   for (const step of ledgers.flatMap((ledger) => ledger.steps)) {
     if (step.kind !== 'deprecated') continue;
+    // A step whose removeIn is already reached is overdue and restated by a later
+    // step (a deferral); the upgrade command's Coming next skips it too.
+    if (latest && step.removeIn && compareVersions(step.removeIn, latest) <= 0) continue;
     const { uses, removed } = removals.get(step.id);
     if (removed.size === uses.length) continue;
     const imports = (step.detect?.imports ?? []).flatMap((i) =>

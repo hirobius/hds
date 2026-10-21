@@ -86,8 +86,8 @@
       "replacement": "semantic.space.scale.xs",
       "replacementCssVar": "--semantic-space-scale-xs",
       "replacementTailwind": "scale-xs",
-      "removeIn": "0.30.0",
-      "note": "2026-10 spacing prune, removed in 0.30.0 — use semantic.space.scale.xs (8px)"
+      "removeIn": "0.31.0",
+      "note": "2026-10 spacing prune, removed in 0.31.0 — use semantic.space.scale.xs (8px)"
     },
     {
       "path": "primitive.space.px10",
@@ -97,8 +97,8 @@
       "replacement": "semantic.space.fixed.xs",
       "replacementCssVar": "--semantic-space-fixed-xs",
       "replacementTailwind": "fixed-xs",
-      "removeIn": "0.30.0",
-      "note": "2026-10 spacing prune, removed in 0.30.0 — use semantic.space.fixed.xs (12px)"
+      "removeIn": "0.31.0",
+      "note": "2026-10 spacing prune, removed in 0.31.0 — use semantic.space.fixed.xs (12px)"
     },
     {
       "path": "semantic.color.border.subdued",
