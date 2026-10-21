@@ -638,3 +638,15 @@ Daily release check found 0.28.0: 2 variable updates, 1 variable removed in code
 Session total: 12 calls
 
 Calls logged for 2026-10-20: 42 of 200 (10, 1, 11, 8 and 12).
+
+## 2026-10-21 · release sync 0.30.0 (branch claude/figma-release-sync-0.30.0)
+
+Daily release check found 0.30.0 (plan: updated 79 · created 36 · deleted 0 against the 2026-10-20 snapshot). delta.js refuses while the snapshot still lists component.button.secondary.border.pressed; check whether Adrian deleted it.
+
+| #   | Time (UTC) | Tool        | Kind | Purpose                                                                                                          | Result                                                             |
+| --- | ---------- | ----------- | ---- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 1   | 15:48      | `use_figma` | read | Library: does variable button/secondary/border/pressed still exist (delta.js refuses on the 2026-10-20 snapshot) | OK; still present in Hirobius/Component, so delta.js stays refused |
+
+Session total: 1 call
+
+Calls logged for 2026-10-21: 1 of 200 (1).
