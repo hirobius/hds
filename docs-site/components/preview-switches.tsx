@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { Button, Popover, SegmentedControl, Stack, Tooltip } from '@hirobius/design-system';
 import { Settings } from '@hirobius/design-system/icons';
 import {
+  ACCENTS,
   CORNERS,
   SHADOWS,
   DEFAULT_SWITCHES,
   applySwitches,
   readSwitches,
   writeSwitches,
+  type Accent,
   type Corners,
   type Shadow,
   type Switches,
@@ -20,7 +22,7 @@ const options = <T extends string>(values: readonly T[]) =>
 
 /**
  * Display settings for the docs nav (hds#794): one icon button beside the theme switcher that
- * opens a Popover with the Corners + Shadow preview switches. Persists per viewer. The saved
+ * opens a Popover with the Corners, Shadow and Accent preview switches. Persists per viewer. The saved
  * choice is applied on mount, so it holds whether or not the popover is ever opened.
  */
 export function PreviewSwitches() {
@@ -69,6 +71,12 @@ export function PreviewSwitches() {
             options={options(SHADOWS)}
             value={s.shadow}
             onChange={(v) => update({ shadow: v as Shadow })}
+          />
+          <SegmentedControl
+            label="Accent"
+            options={options(ACCENTS)}
+            value={s.accent}
+            onChange={(v) => update({ accent: v as Accent })}
           />
         </Stack>
       </Popover.Content>

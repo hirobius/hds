@@ -1,0 +1,1 @@
+Docs polish (hds#857): CodeBlock copy button is an icon-only HDS Button in its own column (centred, never over long lines); docs home drops the "built from the package" sentence; docs settings popover gains Accent (Graphite / Cobalt) on the shipped data-accent overlay.

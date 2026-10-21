@@ -103,15 +103,41 @@ describe('CodeBlock accessibility contract', () => {
     }
   });
 
+  it('the block copy button is an HDS icon-only Button, centred by the Button itself (hds#857)', () => {
+    render(<CodeBlock code="npm i" language="bash" />);
+    const copy = screen.getByRole('button', { name: 'Copy code' });
+    expect(copy.getAttribute('data-variant')).toBe('secondary');
+    expect(copy.getAttribute('data-size')).toBe('sm');
+    expect(copy.className).toContain('justify-center');
+    expect(copy.querySelector('svg')).not.toBeNull();
+  });
+
+  it('the block copy button sits beside the scrolling code, never over it, so long lines cannot run under it (hds#857)', () => {
+    render(<CodeBlock code={'x'.repeat(400)} language="ts" />);
+    const copy = screen.getByRole('button', { name: 'Copy code' });
+    const pre = document.querySelector('pre') as HTMLPreElement;
+    expect(pre.contains(copy)).toBe(false);
+    expect(copy.parentElement).toBe(pre.parentElement);
+    expect(copy.className).not.toMatch(/(^|\s)absolute(\s|$)/);
+    expect(pre.className).toContain('flex-1');
+    expect(pre.className).toContain('min-w-0');
+  });
+
   it.each(['block', 'inline'] as const)(
     'a11y:code-block.target-size - the copy button is 24px or more and lifts to the touch target on coarse pointers (%s)',
     (variant) => {
       render(<CodeBlock code="x" variant={variant} />);
       const copy = screen.getByRole('button', { name: 'Copy code' });
       expect(copy.className).toContain('hds-touch-target');
-      // 16px icon + 2 x the subgrid-gap padding (primitive space-1)
-      expect(16 + 2 * tokenPx('--primitive-space-1')).toBeGreaterThanOrEqual(24);
-      expect(copy.className).toContain('py-[var(--semantic-space-subgrid-gap)]');
+      if (variant === 'block') {
+        // the sm icon-only Button is a 32px square
+        expect(copy.className).toContain('h-8');
+        expect(copy.className).toContain('w-8');
+      } else {
+        // 16px icon + 2 x the subgrid-gap padding (primitive space-1)
+        expect(16 + 2 * tokenPx('--primitive-space-1')).toBeGreaterThanOrEqual(24);
+        expect(copy.className).toContain('py-[var(--semantic-space-subgrid-gap)]');
+      }
       expect(css('theme.css')).toMatch(
         /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--primitive-size-interactive-min\)/,
       );

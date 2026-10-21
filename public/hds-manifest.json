@@ -3736,6 +3736,8 @@
         "src/app/components/button.test.tsx",
         "src/app/components/card.test.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/code-block.test.tsx",
+        "src/app/components/code-block.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
