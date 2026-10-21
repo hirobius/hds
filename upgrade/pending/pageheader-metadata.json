@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "PageHeader gains an optional metadata row of badges above the title; screens that do not pass it are unchanged."
+}
