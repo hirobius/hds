@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "Combobox gains a chip-input mode (`multiple creatable`) where people type to filter and press Enter to add their own values; existing Combobox uses are unchanged."
+}

@@ -222,11 +222,13 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - aria-invalid: boolean
   - aria-label: string
   - className: string
+  - creatable: boolean
   - disabled: boolean = false
   - emptyMessage: string = No results
   - id: string
   - multiple: boolean
-  - onChange: ((value: string) => void) | ((value: string[]) => void)
+  - onChange: ((value: string) => void) | ((value: string[]) => void) | ((value: string[]) =>…
+  - onCreate: (text: string) => void
   - options: ComboboxOption[]
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…

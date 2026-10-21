@@ -11,6 +11,7 @@
  * @keyboard Character Filters the options to those matching the typed text.
  * @keyboard Enter Commits the active option and closes the list; with `multiple`, toggles it and keeps the list open.
  * @keyboard Escape Closes the list.
+ * @keyboard Backspace With `creatable` and an empty field, removes the last chip.
  * @keyboard Tab Stays inside the open list.
  * @a11y component required a11y:combobox.open-keys Enter and Space on the trigger open the list.
  * @a11y component required a11y:combobox.trigger-state The trigger is a combobox with a listbox popup that reports collapsed and expanded.
@@ -32,6 +33,12 @@
  * @a11y component required a11y:combobox.escape-keeps-selection With multiple, Escape closes the list and keeps the selection.
  * @a11y component required a11y:combobox.chips-named With multiple, each chip is a button named "Remove <option>".
  * @a11y component required a11y:combobox.chip-keyboard A chip removes its value from the keyboard and focus stays on the chips.
+ * @a11y component required a11y:combobox.creatable-input-combobox With `creatable` the text input is the combobox: a listbox popup that reports expanded, what it controls and the active option.
+ * @a11y component required a11y:combobox.creatable-enter-adds With `creatable`, Enter adds the typed text through onCreate and clears the field.
+ * @a11y component required a11y:combobox.creatable-add-option With `creatable`, an "Add “text”" option in the listbox offers the typed text when no option matches exactly.
+ * @a11y component required a11y:combobox.creatable-chips-inline With `creatable`, each chip is a "Remove <value>" button placed before the input inside the field group.
+ * @a11y component required a11y:combobox.creatable-backspace-removes With `creatable`, Backspace in an empty input removes the last chip.
+ * @a11y component required a11y:combobox.creatable-result-count-announced With `creatable`, the suggestion count is announced in a polite status as you type.
  * @a11y component required a11y:combobox.form-field-label Inside FormField the field label names the trigger.
  * @a11y component required a11y:combobox.form-field-error Inside FormField an error sets aria-invalid and describes the trigger by the message.
  * @a11y consumer required Pass label or aria-label; it names the trigger, the popover and the listbox.
@@ -41,6 +48,13 @@
  * A select-with-search built on the HDS Popover. The trigger shows the current
  * selection (with `multiple`, a count and a removable chip per value); opening
  * reveals a search field that filters the option list.
+ * `multiple creatable` is a chip input (a tag field): chips sit inline before the
+ * text input, suggestions open as you type, and Enter adds the typed text via
+ * `onCreate`.
+ *
+ *   <Combobox multiple creatable options={skills} value={picked}
+ *     onChange={setPicked} onCreate={(t) => setPicked((p) => [...p, t])} />
+ *
  * Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to
  * close) and listbox/option ARIA. Controlled via `value` + `onChange`.
  *
@@ -60,6 +74,7 @@ import { cn } from '../../lib/utils';
 import { Icon } from './icon';
 import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
+import { CreatableCombobox } from './combobox-creatable';
 
 /** @public */
 export interface ComboboxOption {
@@ -113,6 +128,8 @@ export interface ComboboxProps extends ComboboxBaseProps {
 export interface ComboboxMultipleProps extends ComboboxBaseProps {
   /** Pick any number of values. */
   multiple: true;
+  /** Leave unset (or false) for the fixed-list picker; see `ComboboxCreatableProps`. */
+  creatable?: false;
   /** Currently selected values, in the order they were picked. */
   value: readonly string[];
   /** Fired with the next selected values whenever one is added or removed. */
@@ -120,10 +137,31 @@ export interface ComboboxMultipleProps extends ComboboxBaseProps {
 }
 
 /**
- * Either arm: single-select `ComboboxProps` or `ComboboxMultipleProps`.
+ * Chip input (`multiple creatable`): chips sit inline before the text field,
+ * suggestions filter as you type, and Enter adds the typed text.
  * @public
  */
-export type ComboboxAnyProps = ComboboxProps | ComboboxMultipleProps;
+export interface ComboboxCreatableProps extends ComboboxBaseProps {
+  multiple: true;
+  /** Let people add values that are not in `options`. */
+  creatable: true;
+  /**
+   * Fired with the trimmed text when the person adds a value that is not an
+   * option (Enter, or the "Add “text”" row). Append it to `value` yourself; a
+   * value with no matching option shows as a chip labelled with the value.
+   */
+  onCreate: (text: string) => void;
+  /** Currently selected values, in the order they were picked or created. */
+  value: readonly string[];
+  /** Fired with the next selected values whenever one is added or removed. */
+  onChange: (value: string[]) => void;
+}
+
+/**
+ * Any arm: `ComboboxProps`, `ComboboxMultipleProps` or `ComboboxCreatableProps`.
+ * @public
+ */
+export type ComboboxAnyProps = ComboboxProps | ComboboxMultipleProps | ComboboxCreatableProps;
 
 /** Index of the first selectable option, or 0 when none is (nothing to land on). */
 function firstEnabledIndex(list: readonly ComboboxOption[]): number {
@@ -439,6 +477,24 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       </Popover>
     );
 
+    if (selection.multiple && selection.creatable) {
+      return (
+        <CreatableCombobox
+          options={options}
+          value={selection.value}
+          onChange={selection.onChange}
+          onCreate={selection.onCreate}
+          placeholder={placeholder}
+          emptyMessage={emptyMessage}
+          ariaLabel={ariaLabel}
+          id={id}
+          ariaDescribedBy={ariaDescribedBy}
+          ariaInvalid={ariaInvalid}
+          className={className}
+          disabled={disabled}
+        />
+      );
+    }
     if (!selection.multiple) return popover;
 
     // Chips sit beside the trigger, not in it: a button cannot hold buttons.

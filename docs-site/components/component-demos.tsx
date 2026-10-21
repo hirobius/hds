@@ -506,10 +506,18 @@ const COMPONENT_OPTIONS = [
   { value: 'table', label: 'Table' },
 ];
 
+const SKILL_OPTIONS = [
+  { value: 'react', label: 'React' },
+  { value: 'typescript', label: 'TypeScript' },
+  { value: 'figma', label: 'Figma' },
+  { value: 'sql', label: 'SQL' },
+];
+
 function ComboboxDemo() {
   const [value, setValue] = useState<string | null>(null);
+  const [skills, setSkills] = useState<string[]>(['react']);
   return (
-    <div style={{ width: 'min(100%, 280px)' }}>
+    <Stack gap="normal" style={{ width: 'min(100%, 360px)' }}>
       <Combobox
         options={COMPONENT_OPTIONS}
         value={value}
@@ -517,7 +525,18 @@ function ComboboxDemo() {
         placeholder="Select a component…"
         aria-label="Component"
       />
-    </div>
+      {/* Chip input: suggestions as you type; Enter adds free text. */}
+      <Combobox
+        multiple
+        creatable
+        options={SKILL_OPTIONS}
+        value={skills}
+        onChange={setSkills}
+        onCreate={(text) => setSkills((prev) => [...prev, text])}
+        placeholder="Add a skill…"
+        aria-label="Skills"
+      />
+    </Stack>
   );
 }
 
