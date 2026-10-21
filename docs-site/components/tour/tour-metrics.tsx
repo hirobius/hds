@@ -14,6 +14,7 @@ import {
   MetaLine,
 } from '@hirobius/design-system';
 import { MetricTile, MetricTiles, StatusTile } from '@hirobius/design-system/patterns';
+import { FileText, Clock } from '@hirobius/design-system/icons';
 import type { TourData } from '../../lib/tour-data';
 
 /** Counts come from the registry, the token file and the changelog, never typed in. */
@@ -57,10 +58,20 @@ export function TourMetrics({ data }: { data: TourData }) {
       </Grid>
       <Grid columns={2} gap="normal">
         <Card padding="none">
+          <Card.Source
+            name="hirobius.tokens.json"
+            time={<Timestamp date={data.updated} format="date" suppressHydrationWarning />}
+          />
           <Card.Header>
             <Card.Title>Token tiers</Card.Title>
             <Card.Description>Leaf tokens in hirobius.tokens.json.</Card.Description>
           </Card.Header>
+          <Card.Facts
+            items={[
+              { icon: FileText, label: `${tokens} tokens` },
+              { icon: Clock, label: `${data.tokenGroups.length} groups` },
+            ]}
+          />
           <Card.Body>
             <Stack gap="tight">
               {data.tokenGroups.map((g) => (

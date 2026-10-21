@@ -9,6 +9,12 @@ import { Avatar } from './avatar';
 afterEach(cleanup);
 
 describe('Avatar', () => {
+  it('hides initials from assistive tech when alt is empty (decorative beside a name)', () => {
+    const { container } = render(<Avatar initials="NR" alt="" />);
+    expect(container.querySelector('[role="img"]')).toBeNull();
+    expect(screen.getByText('NR').getAttribute('aria-hidden')).toBe('true');
+  });
+
   it('renders the image when src is provided', () => {
     const { container } = render(<Avatar src="/u.png" alt="Adrian Milsap" />);
     const img = container.querySelector('img');

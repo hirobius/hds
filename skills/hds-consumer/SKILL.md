@@ -62,12 +62,14 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Card` — Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
 - `CardBody` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardDescription` — Card — surface container with slot anatomy (12d-card-anatomy).
+- `CardFacts` — Card.Facts — a wrapping caption row of icon + label facts, as a list.
 - `CardFooter` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardHeader` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardProgress` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardRow` — Card.Row — a title with muted notes and a trailing slot, inside a Card.
 - `CardRowNote` — Card.RowNote — one muted caption line under the row's title; repeat it for more.
 - `CardRowTitle` — Card.RowTitle — the row's title, at the ui role.
+- `CardSource` — Card.Source — the entity's origin on one row: avatar, name and time.
 - `CardTitle` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `EmptyState` — EmptyState — consistent no-data placeholder for lists, grids, and sections.
 - `Field` — Caption label paired with a value — used in metadata grids and read-only forms.

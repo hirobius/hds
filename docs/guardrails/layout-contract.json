@@ -120,6 +120,13 @@
       "kind": "part",
       "probe": false
     },
+    "CardFacts": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "CardFooter": {
       "width": "hug",
       "height": "hug",
@@ -168,6 +175,13 @@
       "pads": false,
       "kind": "part",
       "probe": false
+    },
+    "CardSource": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
     },
     "CardTitle": {
       "width": "hug",
