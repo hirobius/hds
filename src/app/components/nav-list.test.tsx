@@ -101,4 +101,87 @@ describe('NavList', () => {
     expect(link.getAttribute('data-routed')).toBe('yes');
     expect(link.getAttribute('href')).toBe('/a');
   });
+
+  describe('select mode (onSelect)', () => {
+    it('renders a button, not a link, and calls onSelect on click', async () => {
+      const user = userEvent.setup();
+      const onSelect = vi.fn();
+      render(
+        <NavList>
+          <NavList.Item onSelect={onSelect}>Alpha</NavList.Item>
+        </NavList>,
+      );
+      expect(screen.queryByRole('link')).toBeNull();
+      const button = screen.getByRole('button', { name: 'Alpha' });
+      expect(button.getAttribute('type')).toBe('button');
+      await user.click(button);
+      expect(onSelect).toHaveBeenCalledTimes(1);
+    });
+
+    it('marks only the selected item with aria-current=true', () => {
+      render(
+        <NavList>
+          <NavList.Item onSelect={() => {}}>Alpha</NavList.Item>
+          <NavList.Item onSelect={() => {}} selected>
+            Beta
+          </NavList.Item>
+        </NavList>,
+      );
+      expect(screen.getByRole('button', { name: 'Beta' }).getAttribute('aria-current')).toBe(
+        'true',
+      );
+      expect(screen.getByRole('button', { name: 'Alpha' }).hasAttribute('aria-current')).toBe(
+        false,
+      );
+    });
+
+    it('uses the selected fill on the selected row and the hover fill on the rest', () => {
+      render(
+        <NavList>
+          <NavList.Item onSelect={() => {}}>Alpha</NavList.Item>
+          <NavList.Item onSelect={() => {}} selected>
+            Beta
+          </NavList.Item>
+        </NavList>,
+      );
+      expect(screen.getByRole('button', { name: 'Beta' }).className).toContain('surface-selected');
+      expect(screen.getByRole('button', { name: 'Alpha' }).className).toContain('surface-hover');
+    });
+
+    it('selects with Tab, Enter and Space', async () => {
+      const user = userEvent.setup();
+      const onSelect = vi.fn();
+      render(
+        <NavList>
+          <NavList.Item onSelect={() => onSelect('a')}>Alpha</NavList.Item>
+          <NavList.Item onSelect={() => onSelect('b')}>Beta</NavList.Item>
+        </NavList>,
+      );
+      await user.tab();
+      expect(document.activeElement?.textContent).toBe('Alpha');
+      expect(document.activeElement?.className).toContain('hds-focus');
+      await user.keyboard('{Enter}');
+      await user.tab();
+      await user.keyboard(' ');
+      expect(onSelect.mock.calls).toEqual([['a'], ['b']]);
+    });
+
+    it('holds rich children', () => {
+      render(
+        <NavList>
+          <NavList.Item onSelect={() => {}}>
+            <span>Title line</span>
+            <span>Meta line</span>
+          </NavList.Item>
+        </NavList>,
+      );
+      expect(screen.getByRole('button').textContent).toBe('Title lineMeta line');
+    });
+
+    it('rejects href together with onSelect at the type level', () => {
+      // @ts-expect-error href and onSelect are exclusive
+      const bad = <NavList.Item href="/a" onSelect={() => {}} />;
+      expect(bad).toBeTruthy();
+    });
+  });
 });

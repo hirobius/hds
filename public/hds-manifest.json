@@ -5285,6 +5285,7 @@
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/menu.tsx",
+        "src/app/components/nav-list.tsx",
         "src/app/components/radio.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.test.tsx",
@@ -10339,7 +10340,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/nav-list.tsx",
-      "description": "A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected. Tagged here rather than in the file block because NavListItem shares this module and maps to its own Figma set through figma/mapping-overrides.json.",
+      "description": "A vertical list of rows (links, or buttons that select in place), one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected. Tagged here rather than in the file block because NavListItem shares this module and maps to its own Figma set through figma/mapping-overrides.json.",
       "a11yRules": [
         {
           "rule": "The rows are links in an unordered list, so a screen reader announces the list and its length.",
@@ -10360,6 +10361,24 @@
           "testId": "a11y:nav-list.keyboard-focus"
         },
         {
+          "rule": "With onSelect a row is a button in the list, not a link, so a screen reader announces a button and Enter or Space selects it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.select-button"
+        },
+        {
+          "rule": "The selected row is marked aria-current=true and the others carry no aria-current.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.select-current"
+        },
+        {
+          "rule": "Tab visits each row, Enter and Space select it, and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.select-keyboard"
+        },
+        {
           "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
           "required": true,
           "owner": "consumer"
@@ -10368,7 +10387,7 @@
       "slots": [
         {
           "name": "item",
-          "description": "A NavList.Item: one link row holding any content.",
+          "description": "A NavList.Item: one row holding any content, a link (`href`) or a button that selects in place (`onSelect`).",
           "source": "jsdoc"
         }
       ],
@@ -10425,7 +10444,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/nav-list.tsx",
-      "description": "One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current=\"page\" when `current`.",
+      "description": "One row of a NavList. With `href` it is a link routed through the HDS router seam (a plain anchor with no router) and sets aria-current=\"page\" when `current`. With `onSelect` it is a button that selects in place and sets aria-current=\"true\" when `selected`. `href` and `onSelect` are exclusive.",
       "a11yRules": [
         {
           "rule": "The rows are links in an unordered list, so a screen reader announces the list and its length.",
@@ -10446,6 +10465,24 @@
           "testId": "a11y:nav-list.keyboard-focus"
         },
         {
+          "rule": "With onSelect a row is a button in the list, not a link, so a screen reader announces a button and Enter or Space selects it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.select-button"
+        },
+        {
+          "rule": "The selected row is marked aria-current=true and the others carry no aria-current.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.select-current"
+        },
+        {
+          "rule": "Tab visits each row, Enter and Space select it, and each shows the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.select-keyboard"
+        },
+        {
           "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
           "required": true,
           "owner": "consumer"
@@ -10454,7 +10491,7 @@
       "slots": [
         {
           "name": "item",
-          "description": "A NavList.Item: one link row holding any content.",
+          "description": "A NavList.Item: one row holding any content, a link (`href`) or a button that selects in place (`onSelect`).",
           "source": "jsdoc"
         }
       ],
@@ -10479,10 +10516,19 @@
         },
         "current": {
           "type": "boolean",
-          "default": false
+          "optional": true
         },
         "href": {
-          "type": "string"
+          "type": "string",
+          "optional": true
+        },
+        "onSelect": {
+          "type": "() => void",
+          "optional": true
+        },
+        "selected": {
+          "type": "boolean",
+          "optional": true
         }
       },
       "allowedChildren": [

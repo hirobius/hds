@@ -484,14 +484,16 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - variant: "plain" | "divided" = plain
 
 ### NavList
-A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected. Tagged…
+A vertical list of rows (links, or buttons that select in place), one marked current. Rows hold rich content; hover fills with surface.hover; the current row h…
   - children: ReactNode
 
 ### NavListItem
-One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`.
+One row of a NavList. With `href` it is a link routed through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`. …
   - children: ReactNode
-  - current: boolean = false
+  - current: boolean
   - href: string
+  - onSelect: (() => void)
+  - selected: boolean
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
