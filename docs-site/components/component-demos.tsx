@@ -494,10 +494,40 @@ function ContainerDemo() {
 }
 
 function DisclosureDemo() {
+  const rows = [
+    [
+      'Fonts',
+      'What ships in fonts.css',
+      'Plus Jakarta Sans (variable), Sora 800 and IBM Plex Mono 400.',
+    ],
+    [
+      'Tokens',
+      'Where the token files live',
+      'hirobius.tokens.json is the source; build output is generated from it.',
+    ],
+    [
+      'Figma',
+      'How the library stays in sync',
+      'Sync runs one way, from code to the Figma library.',
+    ],
+  ] as const;
   return (
-    <Disclosure label="What ships in fonts.css?">
-      Plus Jakarta Sans (variable), Sora 800 and IBM Plex Mono 400.
-    </Disclosure>
+    <div>
+      <Disclosure label="What ships in fonts.css?">
+        Plus Jakarta Sans (variable), Sora 800 and IBM Plex Mono 400.
+      </Disclosure>
+      {rows.map(([label, preview, body]) => (
+        <Disclosure
+          key={label}
+          variant="row"
+          label={label}
+          preview={preview}
+          actions={<Button variant="tertiary">Edit</Button>}
+        >
+          {body}
+        </Disclosure>
+      ))}
+    </div>
   );
 }
 

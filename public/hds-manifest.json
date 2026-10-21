@@ -818,6 +818,10 @@
           "type": "boolean",
           "default": false
         },
+        "actions": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "children": {
           "type": "ReactNode"
         },
@@ -844,6 +848,10 @@
           "type": "boolean",
           "optional": true
         },
+        "preview": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "triggerStyle": {
           "type": "CSSProperties",
           "optional": true
@@ -853,7 +861,8 @@
           "values": [
             "panel",
             "nav",
-            "card"
+            "card",
+            "row"
           ],
           "default": "panel"
         }
@@ -913,6 +922,36 @@
           "testId": "gate:check-reduced-motion"
         },
         {
+          "rule": "The row variant shows a one-line preview while collapsed and removes it once open, so the text is never read twice.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.row-preview"
+        },
+        {
+          "rule": "The row variant's actions sit beside the trigger, never inside it, so no interactive control is nested in the button.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.row-actions"
+        },
+        {
+          "rule": "The row trigger keeps aria-expanded and aria-controls like every variant.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.row-expanded-state"
+        },
+        {
+          "rule": "The row trigger is at least 24px tall (WCAG 2.5.8).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.row-target-size"
+        },
+        {
+          "rule": "Enter and Space toggle the row; Tab then reaches its actions.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:disclosure.row-keyboard"
+        },
+        {
           "rule": "Put the Disclosure under a heading of the right level when it introduces a section, so the section stays in the outline.",
           "required": false,
           "owner": "consumer"
@@ -954,7 +993,7 @@
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453",
       "docsPage": "/docs/components/disclosure",
       "usage": {
-        "when": "Hide optional explanatory content behind a heading that people can expand.",
+        "when": "Hide optional explanatory content behind a heading that people can expand. An expandable list row (one-line preview, actions beside the trigger) is variant=\"row\".",
         "whenNot": "Content people must see, or switching between panels.",
         "useInstead": [
           {

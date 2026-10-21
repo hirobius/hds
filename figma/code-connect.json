@@ -415,7 +415,7 @@
     },
     "src/app/components/disclosure.tsx": {
       "kind": "queued",
-      "reason": "Disclosure exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+      "reason": "Disclosure exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set. Code adds variant row (hds#873); the Figma Variant=Row is a Figma-lane follow-up."
     },
     "src/app/components/toast.tsx": {
       "kind": "queued",
