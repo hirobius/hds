@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Avatar gains a person-icon fallback and a status dot, and an Avatar with no initials to show now draws the icon instead of an empty circle."
+}

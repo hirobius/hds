@@ -51,3 +51,49 @@ describe('Avatar failed-state reset (hds#— bugfix)', () => {
     expect(container.querySelector('img')).not.toBeNull(); // recovered
   });
 });
+
+describe('Avatar icon fallback (Roleforge signed-out account)', () => {
+  it('a11y:avatar.named - fallback="icon" shows a neutral person icon named by alt, no initials', () => {
+    const { container } = render(<Avatar alt="Signed out" fallback="icon" />);
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('svg[data-hds-icon]')).not.toBeNull();
+    expect(screen.queryByText('SO')).toBeNull();
+    expect(screen.getByRole('img', { name: 'Signed out' })).not.toBeNull();
+  });
+
+  it('falls back to the icon when no initials can be derived', () => {
+    const { container } = render(<Avatar alt="" />);
+    expect(container.querySelector('svg[data-hds-icon]')).not.toBeNull();
+  });
+
+  it('still prefers a loaded image over the icon fallback', () => {
+    const { container } = render(<Avatar src="/u.png" alt="Adrian Milsap" fallback="icon" />);
+    expect(container.querySelector('img')).not.toBeNull();
+    expect(container.querySelector('svg[data-hds-icon]')).toBeNull();
+  });
+});
+
+describe('Avatar status dot', () => {
+  it('a11y:avatar.status-named - renders a Badge dot named by statusLabel', () => {
+    render(<Avatar alt="Adrian Milsap" status="warning" statusLabel="Not synced" />);
+    const dot = screen.getByRole('img', { name: 'Not synced' });
+    expect(dot.getAttribute('data-tone')).toBe('warning');
+  });
+
+  it('hides an unnamed dot from assistive technology', () => {
+    const { container } = render(<Avatar alt="Adrian Milsap" status="success" />);
+    const dot = container.querySelector('[data-tone="success"]');
+    expect(dot).not.toBeNull();
+    expect(dot?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('scales the dot with the avatar size', () => {
+    const { container } = render(<Avatar alt="A B" size="sm" status="info" />);
+    expect(container.querySelector('[data-tone="info"]')?.getAttribute('data-size')).toBe('sm');
+  });
+
+  it('renders no dot without status', () => {
+    const { container } = render(<Avatar alt="A B" />);
+    expect(container.querySelector('[data-tone]')).toBeNull();
+  });
+});

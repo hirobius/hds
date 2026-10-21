@@ -159,7 +159,7 @@ Alert: [core] Show a persistent inline message with a severity, next to the cont
 AlertDialog: Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons. Use instead: Dialog, ToastProvider
 AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
 AsyncState: Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content. Use instead: Skeleton, Alert, EmptyState
-Avatar: [core] Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
+Avatar: [core] Show a person or entity as an image with an initials fallback, or a neutral person icon when nobody is signed in; add a status dot for a state such as unsynced. As an account button, pass it as the iconLeft of a tertiary iconOnly Button. Use instead: Icon, Badge
 Badge: [core] Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
 Board: Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage. Use instead: Table, Grid
 BoardColumn: Hold the cards for one status inside a Board, with a heading that announces the count. Use instead: Stack
@@ -626,7 +626,7 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
 | `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                | `Table` alone when there is no heading, toolbar or empty state to show.      |
 
-Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state.
+Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state. An account button is an `Avatar` as the `iconLeft` of a `tertiary` `iconOnly` `Button` (`rounded-full`): initials when signed in, `fallback="icon"` when signed out, and `status="warning"` with a `statusLabel` while unsynced; the Button `label` names the account and its status. Never a hand-drawn icon in a bordered box.
 
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 
@@ -722,11 +722,14 @@ One wrapper for the four states of async content: `loading` (skeleton rows plus 
   - status: 'loading' | 'error' | 'empty' | 'ready'
 
 ### Avatar
-Circular avatar. Renders the image when available, else initials from `alt`.
+Circular avatar. Renders the image when available, else initials from `alt` or a person icon, with an optional status dot.
   - alt: string
+  - fallback: "initials" | "icon" = initials
   - initials: string
   - size: "sm" | "md" | "lg" | null
   - src: string
+  - status: 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+  - statusLabel: string
 
 ### AvatarGroup
 Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
