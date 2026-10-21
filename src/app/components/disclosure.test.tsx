@@ -101,3 +101,77 @@ describe('Disclosure accessibility contract', () => {
     expect(chevron?.querySelector('svg')).not.toBeNull();
   });
 });
+
+describe('Disclosure row variant', () => {
+  const row = (extra = {}) => (
+    <Disclosure
+      variant="row"
+      label="Row title"
+      preview="First line of the content"
+      actions={<button type="button">Archive</button>}
+      {...extra}
+    >
+      Full content
+    </Disclosure>
+  );
+
+  it('a11y:disclosure.row-preview - the preview shows collapsed and is removed when open', async () => {
+    const user = userEvent.setup();
+    render(row());
+    expect(screen.getByText('First line of the content')).not.toBeNull();
+    await user.click(screen.getByRole('button', { name: /Row title/ }));
+    expect(screen.queryByText('First line of the content')).toBeNull();
+    expect(screen.getByText('Full content')).not.toBeNull();
+  });
+
+  it('a11y:disclosure.row-preview - the preview is clamped to one line', () => {
+    render(row());
+    expect(screen.getByText('First line of the content').className).toContain('truncate');
+  });
+
+  it('a11y:disclosure.row-actions - actions sit beside the trigger, never inside it', () => {
+    render(row());
+    const trigger = screen.getByRole('button', { name: /Row title/ });
+    const action = screen.getByRole('button', { name: 'Archive' });
+    expect(trigger.contains(action)).toBe(false);
+    expect(trigger.querySelector('button, a, [role="button"]')).toBeNull();
+    expect(trigger.parentElement?.contains(action)).toBe(true);
+  });
+
+  it('a11y:disclosure.row-actions - actions stay available when the row is open', async () => {
+    const user = userEvent.setup();
+    render(row());
+    await user.click(screen.getByRole('button', { name: /Row title/ }));
+    expect(screen.getByRole('button', { name: 'Archive' })).not.toBeNull();
+  });
+
+  it('a11y:disclosure.row-expanded-state - aria-expanded follows the row and aria-controls names the panel', async () => {
+    const user = userEvent.setup();
+    render(row());
+    const trigger = screen.getByRole('button', { name: /Row title/ });
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    await user.click(trigger);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    const panel = document.getElementById(trigger.getAttribute('aria-controls') as string);
+    expect(panel?.textContent).toBe('Full content');
+  });
+
+  it('a11y:disclosure.row-target-size - the row trigger keeps the 24px minimum height', () => {
+    render(row());
+    expect(screen.getByRole('button', { name: /Row title/ }).className).toContain(
+      'min-h-[var(--primitive-size-interactive-minCompact)]',
+    );
+  });
+
+  it('a11y:disclosure.row-keyboard - Enter toggles the row and Tab reaches the action next', async () => {
+    const user = userEvent.setup();
+    render(row());
+    const trigger = screen.getByRole('button', { name: /Row title/ });
+    await user.tab();
+    expect(document.activeElement).toBe(trigger);
+    await user.keyboard('{Enter}');
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    await user.tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Archive' }));
+  });
+});

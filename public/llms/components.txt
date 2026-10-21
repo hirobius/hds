@@ -325,6 +325,7 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
 ### Disclosure
 Disclosure - compact disclosure surface for optional explanatory content.
   - accent: boolean = false
+  - actions: ReactNode
   - children: ReactNode
   - className: string
   - contentStyle: CSSProperties
@@ -332,8 +333,9 @@ Disclosure - compact disclosure surface for optional explanatory content.
   - label: ReactNode
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
+  - preview: ReactNode
   - triggerStyle: CSSProperties
-  - variant: 'panel' | 'nav' | 'card' = panel
+  - variant: 'panel' | 'nav' | 'card' | 'row' = panel
 
 ### Divider
 Divider — semantic separator between content regions.

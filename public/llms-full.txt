@@ -176,7 +176,7 @@ Container: [core] Constrain a page region to the content or maximum width and ce
 DataTableSection: Put a heading and toolbar above a Table.
 DestructiveSection: Put a dangerous action, such as delete, in its own section with a warning and a confirm step.
 Dialog: [core] Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider, AlertDialog
-Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. Use instead: Tabs
+Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. An expandable list row (one-line preview, actions beside the trigger) is variant="row". Use instead: Tabs
 Divider: [core] Separate two blocks of content with a thin line. Use instead: Stack, Surface
 EmptyState: [core] Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step. Use instead: Skeleton, Alert
 ErrorPattern: Show an error with a short message and a Back button, in place or as a full page.
@@ -642,6 +642,8 @@ A pager for one item at a time ("‹ 1 of 4 ›") is `Pagination` with `variant=
 
 `FormActions` puts the primary submit last in DOM order and right-most, with the secondary or cancel action immediately to its left. A destructive action goes on the far left, apart from the other two, and never to the right of the primary. The row is not sticky unless `sticky` is set.
 
+An expandable list row (one-line preview, actions beside the trigger) is `Disclosure variant="row"`; do not build one from `Card.Row` plus custom state.
+
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
@@ -980,6 +982,7 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
 ### Disclosure
 Disclosure - compact disclosure surface for optional explanatory content.
   - accent: boolean = false
+  - actions: ReactNode
   - children: ReactNode
   - className: string
   - contentStyle: CSSProperties
@@ -987,8 +990,9 @@ Disclosure - compact disclosure surface for optional explanatory content.
   - label: ReactNode
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
+  - preview: ReactNode
   - triggerStyle: CSSProperties
-  - variant: 'panel' | 'nav' | 'card' = panel
+  - variant: 'panel' | 'nav' | 'card' | 'row' = panel
 
 ### Divider
 Divider — semantic separator between content regions.
