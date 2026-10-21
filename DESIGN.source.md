@@ -104,6 +104,8 @@ Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the n
 <!-- auto:start:components -->
 <!-- auto:end:components -->
 
+A tag input is a creatable Combobox (`<Combobox multiple creatable>`): chips inline in the field, suggestions as you type, Enter adds the typed value. Do not build a second chip-input component.
+
 When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
 ### Card Anatomy (mandatory — all properties non-negotiable)
@@ -121,6 +123,8 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Subtitle / meta          | `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`)                                                                               | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                                                                                                  | Background fill change, border color shift, or opacity fade on hover                        |
 
+An entity card (a job, a lead, a listing) fills four zones in this order: `Card.Source` (an `Avatar` size `sm`, the source name, a `Timestamp`), `Card.Header` with the `Card.Title`, `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list), and the actions in `Card.Footer`. Facts are icon + text only; term and description pairs stay in `MetadataList`, and a text-only line stays in `MetaLine`. Status goes in the header `metadata` slot, never in the facts row.
+
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
 
 ## Screen Patterns
@@ -129,7 +133,7 @@ Five patterns sit above the primitives so that every screen is composed the same
 
 ### Page title rule
 
-Every screen has exactly one `PageHeader`. The page title is `title` (28px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` is reserved for marketing and landing surfaces and is never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
+Every screen has exactly one `PageHeader`. The page title is `title` (28px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` is reserved for marketing and landing surfaces and is never a screen title. Breadcrumb goes in the `breadcrumb` slot, facts (source, stage) as a `Badge` row in `metadata` above the title, the one state `Badge` in `status`, screen-level actions in `actions`.
 
 ### Which one, when
 
@@ -146,7 +150,7 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
 | `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                | `Table` alone when there is no heading, toolbar or empty state to show.      |
 
-Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A count beside a heading is a count `Badge`: `count`, `max` for a `99+` cap and a `label` such as "12 roles", in a `Stack direction="row" gap="xs"` with the heading. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state. An account button is an `Avatar` as the `iconLeft` of a `tertiary` `iconOnly` `Button` (`rounded-full`): initials when signed in, `fallback="icon"` when signed out, and `status="warning"` with a `statusLabel` while unsynced; the Button `label` names the account and its status. Never a hand-drawn icon in a bordered box.
+Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A count beside a heading is a count `Badge`: `count`, `max` for a `99+` cap and a `label` such as "12 roles", in a `Stack direction="row" gap="xs"` with the heading. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state. An account button is an `Avatar` as the `iconLeft` of a `tertiary` `iconOnly` `Button` (`rounded-full`): initials when signed in, `fallback="icon"` when signed out, and `status="warning"` with a `statusLabel` while unsynced; the Button `label` names the account and its status. Never a hand-drawn icon in a bordered box. A rail that selects in place (master-detail, no routing) is `NavList` with `onSelect` and `selected` on each `NavList.Item`, a button marked `aria-current="true"`; a rail that routes keeps `href` and `current`. The two are exclusive.
 
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 
@@ -161,6 +165,8 @@ A pager for one item at a time ("‹ 1 of 4 ›") is `Pagination` with `variant=
 ### Form actions rule
 
 `FormActions` puts the primary submit last in DOM order and right-most, with the secondary or cancel action immediately to its left. A destructive action goes on the far left, apart from the other two, and never to the right of the primary. The row is not sticky unless `sticky` is set.
+
+An expandable list row (one-line preview, actions beside the trigger) is `Disclosure variant="row"`; do not build one from `Card.Row` plus custom state.
 
 ## Do's and Don'ts
 

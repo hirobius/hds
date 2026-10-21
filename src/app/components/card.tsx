@@ -26,6 +26,9 @@
  *     </Card.Row>
  *   </Card>
  *
+ * An entity card (a job, a lead, a listing) opens with Card.Source and closes
+ * with Card.Facts; the title and actions stay in Header and Footer.
+ *
  * Slot reservations:
  * - Header: title (h3) + optional description (caption) + optional metadata
  *   zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans).
@@ -35,6 +38,10 @@
  *   Reserved vertical block. Use multiple side-by-side via flex/grid container.
  * - Body: prose, lists, structured content. NO inline status, progress, or
  *   thin colored bars. Group sections via separate <Card.Body> blocks.
+ * - Source: the entity's origin on one row, above the title: an Avatar (size
+ *   sm), a name and a Timestamp. No padding of its own inside a padded Card.
+ * - Facts: a wrapping caption row of icon + label pairs (location, salary,
+ *   type), rendered as a list. Icons are 16px and decorative.
  * - Footer: actions, secondary metadata, timestamps.
  * - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone
  *   for a <Badge> or one affordance. No padding of its own: pair it with
@@ -68,9 +75,11 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva } from 'class-variance-authority';
+import type { LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { Text } from './text';
+import { Icon } from './icon';
 import { resolvePaddingValue, type PaddingOption } from './surface-padding';
 import { LAYOUT_GAP_NAMES, resolveSpacingValue, type SpacingVocabulary } from './box-sx';
 
@@ -234,6 +243,8 @@ interface CardComponent extends React.ForwardRefExoticComponent<
   Description: typeof CardDescription;
   Body: typeof CardBody;
   Footer: typeof CardFooter;
+  Source: typeof CardSource;
+  Facts: typeof CardFacts;
   Row: typeof CardRow;
   RowTitle: typeof CardRowTitle;
   RowNote: typeof CardRowNote;
@@ -415,6 +426,91 @@ const CardFooter = /* @__PURE__ */ React.forwardRef<
   const pad = usePartPadding('p-surface-padding pt-0');
   return <div ref={ref} className={cn('flex items-center', pad, className)} {...props} />;
 });
+
+// ── Source and Facts slots (hds#872) ──────────────────────────────────────────
+
+/** @public */
+export interface CardSourceProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  /** The source's logo or initials: an <Avatar size="sm">. Give it `alt=""` when `name` is shown beside it. */
+  avatar?: React.ReactNode;
+  /** The source's name, such as a company or a feed. */
+  name: React.ReactNode;
+  /** When it was posted: a <Timestamp>, usually `format="relative"`. */
+  time?: React.ReactNode;
+}
+
+/**
+ * Card.Source — the entity's origin on one row: avatar, name and time.
+ * @usage Open an entity card (a job, a lead, a listing) with where it came from and when, above Card.Header.
+ * @whenNot A status or label for the card (use Card.Header `metadata`) or a person's byline in prose.
+ * @slot avatar An Avatar at size sm.
+ * @slot time A Timestamp, pushed to the row's end.
+ */
+const CardSource = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardSourceProps>(
+  function CardSource({ className, avatar, name, time, ...props }, ref) {
+    const pad = usePartPadding('p-surface-padding pb-0');
+    const hasTime = Boolean(time) || time === 0;
+    return (
+      <div
+        ref={ref}
+        data-slot="card-source"
+        className={cn('flex items-center gap-scale-xs min-w-0', pad, className)}
+        {...props}
+      >
+        {avatar}
+        <span className="min-w-0 truncate hds-type-ui text-foreground">{name}</span>
+        {hasTime && (
+          <span className="ml-auto shrink-0 hds-type-caption text-muted-foreground">{time}</span>
+        )}
+      </div>
+    );
+  },
+);
+
+/** One fact in Card.Facts. */
+export interface CardFact {
+  /** Lucide icon for the fact. Decorative: the label carries the meaning. */
+  icon: LucideIcon;
+  /** The fact as text, such as "Remote" or "$120k to $150k". */
+  label: string;
+}
+
+/** @public */
+export interface CardFactsProps extends Omit<React.HTMLAttributes<HTMLUListElement>, 'children'> {
+  /** The facts, in reading order. An empty list renders nothing. */
+  items: CardFact[];
+}
+
+/**
+ * Card.Facts — a wrapping caption row of icon + label facts, as a list.
+ * @usage Show an entity's quick facts (location, salary, type) under its title.
+ * @whenNot Term and description pairs (use MetadataList) or text with no icons (use MetaLine).
+ */
+const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsProps>(
+  function CardFacts({ className, items, ...props }, ref) {
+    const pad = usePartPadding('p-surface-padding pt-0');
+    if (items.length === 0) return null;
+    return (
+      <ul
+        ref={ref}
+        data-slot="card-facts"
+        className={cn(
+          'm-0 flex list-none flex-wrap items-center gap-x-scale-md gap-y-scale-xs hds-type-caption text-muted-foreground',
+          pad,
+          className,
+        )}
+        {...props}
+      >
+        {items.map(({ icon, label }) => (
+          <li key={label} className="inline-flex items-center gap-scale-xs">
+            <Icon icon={icon} size="small" />
+            {label}
+          </li>
+        ))}
+      </ul>
+    );
+  },
+);
 
 // ── Row slot (hds#622) ────────────────────────────────────────────────────────
 
@@ -673,6 +769,8 @@ export const Card: CardComponent = /* @__PURE__ */ Object.assign(CardRoot, {
   Description: CardDescription,
   Body: CardBody,
   Footer: CardFooter,
+  Source: CardSource,
+  Facts: CardFacts,
   Row: CardRow,
   RowTitle: CardRowTitle,
   RowNote: CardRowNote,
@@ -689,6 +787,8 @@ export {
   CardDescription,
   CardBody,
   CardFooter,
+  CardSource,
+  CardFacts,
   CardRow,
   CardRowTitle,
   CardRowNote,

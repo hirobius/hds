@@ -77,6 +77,8 @@ export const TOUR_SECTIONS: readonly TourSection[] = [
       'CardDescription',
       'CardBody',
       'CardFooter',
+      'CardSource',
+      'CardFacts',
       'CardMetric',
       'CardProgress',
       'CardRow',

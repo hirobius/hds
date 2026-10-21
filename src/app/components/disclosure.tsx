@@ -2,7 +2,7 @@
  * Disclosure - compact disclosure surface for optional explanatory content.
  * @category Layout
  * @tier pattern
- * @usage Hide optional explanatory content behind a heading that people can expand.
+ * @usage Hide optional explanatory content behind a heading that people can expand. An expandable list row (one-line preview, actions beside the trigger) is variant="row".
  * @whenNot Content people must see, or switching between panels.
  * @useInstead Tabs switching between panels of content
  * @a11y component required a11y:disclosure.expanded-state The trigger is a button whose aria-expanded follows the panel and whose aria-controls names it.
@@ -13,6 +13,11 @@
  * @a11y component required a11y:disclosure.target-size The trigger is at least 24px tall in every variant (WCAG 2.5.8).
  * @a11y component required a11y:disclosure.chevron-hidden The chevron is decorative and hidden from assistive technology.
  * @a11y component required gate:check-reduced-motion The height and chevron animation take their duration from useHdsMotion, which is zero under prefers-reduced-motion.
+ * @a11y component required a11y:disclosure.row-preview The row variant shows a one-line preview while collapsed and removes it once open, so the text is never read twice.
+ * @a11y component required a11y:disclosure.row-actions The row variant's actions sit beside the trigger, never inside it, so no interactive control is nested in the button.
+ * @a11y component required a11y:disclosure.row-expanded-state The row trigger keeps aria-expanded and aria-controls like every variant.
+ * @a11y component required a11y:disclosure.row-target-size The row trigger is at least 24px tall (WCAG 2.5.8).
+ * @a11y component required a11y:disclosure.row-keyboard Enter and Space toggle the row; Tab then reaches its actions.
  * @a11y consumer recommended Put the Disclosure under a heading of the right level when it introduces a section, so the section stays in the outline.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453
  */
@@ -27,7 +32,7 @@ import { Icon } from './icon';
 import { Stack } from './stack';
 import { Surface } from './surface';
 
-type DisclosureVariant = 'panel' | 'nav' | 'card';
+type DisclosureVariant = 'panel' | 'nav' | 'card' | 'row';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `variant` is the structural axis (panel | nav | card). Open/closed state is
@@ -46,6 +51,8 @@ const disclosureTriggerVariants = /* @__PURE__ */ cva(
       variant: {
         panel: 'min-w-0 justify-between',
         nav: 'justify-between rounded-[var(--semantic-radius-action)] border-0 px-0 py-[var(--component-nav-paddingY)] hover:bg-[var(--semantic-color-surface-raised)] data-[state=open]:bg-[var(--semantic-color-surface-raised)]',
+        // row: list row; the trigger holds label + preview + chevron, actions are a sibling
+        row: 'min-w-0 justify-between py-[var(--semantic-space-scale-xs)]',
         // grid-ok: label + caret row; minmax(0,1fr) lets label shrink to any viewport, caret is a small auto column
         card: 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-[var(--semantic-space-scale-xs)] gap-y-0 data-[state=open]:gap-y-[var(--semantic-space-scale-xs)]',
       },
@@ -58,6 +65,7 @@ const disclosureContainerGap: Record<DisclosureVariant, string> = {
   panel: hds.semantic.space.sidebar.gap,
   nav: hds.semantic.space.sidebar.sectionGap,
   card: hds.semantic.space.scale.xs,
+  row: hds.semantic.space.scale.xs,
 };
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -71,8 +79,12 @@ export type DisclosureProps = {
   open?: boolean;
   /** Called whenever the disclosure toggles. */
   onOpenChange?: (open: boolean) => void;
-  /** Visual treatment for docs panels, nav groups, or summary cards. */
+  /** Visual treatment for docs panels, nav groups, summary cards, or expandable list rows. */
   variant?: DisclosureVariant;
+  /** variant="row" only: one-line preview under the label, clamped to a single line and hidden while open. */
+  preview?: ReactNode;
+  /** variant="row" only: controls rendered beside the trigger (outside the button, so nothing interactive nests inside it). */
+  actions?: ReactNode;
   /** Keeps the disclosure visually highlighted even when closed. */
   accent?: boolean;
   /** Optional className passthrough for the trigger. */
@@ -96,6 +108,8 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
       open,
       onOpenChange,
       variant = 'panel',
+      preview,
+      actions,
       accent: _accent = false,
       className,
       triggerStyle,
@@ -146,38 +160,61 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
         label
       );
 
+    const isRow = variant === 'row';
+    const showPreview = isRow && !resolvedOpen && preview != null && preview !== false;
+
+    const triggerButton = (
+      <button // audit-ok: hds-focus applied via triggerClassName variable
+        ref={triggerRef}
+        type="button"
+        onClick={handleToggle}
+        aria-expanded={resolvedOpen}
+        aria-controls={panelId}
+        data-state={state}
+        className={triggerClassName}
+        style={triggerStyle}
+      >
+        {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven */}
+        <div className="grid min-w-0 flex-1 items-start gap-[var(--semantic-space-subgrid-gap)]">
+          {labelContent}
+          {showPreview && (
+            <span
+              className="block min-w-0 truncate text-muted-foreground"
+              style={hds.typeStyles.caption}
+            >
+              {preview}
+            </span>
+          )}
+        </div>
+        <motion.span
+          aria-hidden="true"
+          animate={{ rotate: resolvedOpen ? 0 : -90 }}
+          transition={{
+            duration: productiveMotion.duration,
+            ease: productiveMotion.easing,
+          }}
+          // Was --primitive-typography-size-base: a chevron BOX sized off the body
+          // type rung, so a ramp change would have resized it. Now the icon token.
+          // type-ramp-ok: leading-none on an icon box, not text
+          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven
+          className="inline-grid size-[var(--hds-icon-small)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
+        >
+          <Icon icon={ChevronDown} size="small" color="currentColor" />
+        </motion.span>
+      </button>
+    );
+
     const disclosureBody = (
       <>
-        <button // audit-ok: hds-focus applied via triggerClassName variable
-          ref={triggerRef}
-          type="button"
-          onClick={handleToggle}
-          aria-expanded={resolvedOpen}
-          aria-controls={panelId}
-          data-state={state}
-          className={triggerClassName}
-          style={triggerStyle}
-        >
-          {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven */}
-          <div className="grid min-w-0 flex-1 items-start gap-[var(--semantic-space-subgrid-gap)]">
-            {labelContent}
+        {isRow ? (
+          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale token has no Tailwind-theme utility; var()-based so still token-driven
+          <div className="flex min-w-0 items-center gap-[var(--semantic-space-scale-xs)]">
+            {triggerButton}
+            {actions != null && <div className="flex shrink-0 items-center">{actions}</div>}
           </div>
-          <motion.span
-            aria-hidden="true"
-            animate={{ rotate: resolvedOpen ? 0 : -90 }}
-            transition={{
-              duration: productiveMotion.duration,
-              ease: productiveMotion.easing,
-            }}
-            // Was --primitive-typography-size-base: a chevron BOX sized off the body
-            // type rung, so a ramp change would have resized it. Now the icon token.
-            // type-ramp-ok: leading-none on an icon box, not text
-            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- icon-size token has no Tailwind-theme utility; var()-based so still token-driven
-            className="inline-grid size-[var(--hds-icon-small)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
-          >
-            <Icon icon={ChevronDown} size="small" color="currentColor" />
-          </motion.span>
-        </button>
+        ) : (
+          triggerButton
+        )}
 
         <AnimatePresence initial={false}>
           {resolvedOpen && (
@@ -205,6 +242,14 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
         </AnimatePresence>
       </>
     );
+
+    if (isRow) {
+      return (
+        <Stack ref={ref} gap="tight" style={{ gap: containerGap }}>
+          {disclosureBody}
+        </Stack>
+      );
+    }
 
     if (variant === 'nav') {
       return (

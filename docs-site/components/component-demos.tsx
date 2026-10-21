@@ -60,13 +60,24 @@ import {
   Textarea,
   Timeline,
   TimelineItem,
+  Timestamp,
   Toggle,
   TokenField,
   type TokenFieldHandle,
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
-import { ArrowRight, CircleCheck, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
+import {
+  ArrowRight,
+  Banknote,
+  Briefcase,
+  CircleCheck,
+  Copy,
+  MapPin,
+  Search,
+  Star,
+  Users,
+} from '@hirobius/design-system/icons';
 import {
   AssetImg,
   AsyncState,
@@ -442,6 +453,33 @@ function CardDemo() {
           <Card.RowNote>Last run 2 hours ago</Card.RowNote>
         </Card.Row>
       </Card>
+      {/* The entity card: source row, title, facts row, actions (hds#872). */}
+      <Grid columns={1} gap="normal">
+        <Card>
+          <Card.Source
+            avatar={<Avatar size="sm" initials="NR" alt="" />}
+            name="Northwind Robotics"
+            time={
+              <Timestamp date="2026-10-21T10:00:00Z" now="2026-10-21T12:00:00Z" format="relative" />
+            }
+          />
+          <Card.Header>
+            <Card.Title>Senior product designer</Card.Title>
+          </Card.Header>
+          <Card.Facts
+            items={[
+              { icon: MapPin, label: 'Remote' },
+              { icon: Banknote, label: '$120k to $150k' },
+              { icon: Briefcase, label: 'Full time' },
+            ]}
+          />
+          <Card.Footer>
+            <Button variant="secondary" size="sm">
+              Save
+            </Button>
+          </Card.Footer>
+        </Card>
+      </Grid>
       {/* asChild: the whole card is one link, with the interactive hover. */}
       <Card asChild padding="item">
         <a href="#card">
@@ -468,10 +506,18 @@ const COMPONENT_OPTIONS = [
   { value: 'table', label: 'Table' },
 ];
 
+const SKILL_OPTIONS = [
+  { value: 'react', label: 'React' },
+  { value: 'typescript', label: 'TypeScript' },
+  { value: 'figma', label: 'Figma' },
+  { value: 'sql', label: 'SQL' },
+];
+
 function ComboboxDemo() {
   const [value, setValue] = useState<string | null>(null);
+  const [skills, setSkills] = useState<string[]>(['react']);
   return (
-    <div style={{ width: 'min(100%, 280px)' }}>
+    <Stack gap="normal" style={{ width: 'min(100%, 360px)' }}>
       <Combobox
         options={COMPONENT_OPTIONS}
         value={value}
@@ -479,7 +525,18 @@ function ComboboxDemo() {
         placeholder="Select a component…"
         aria-label="Component"
       />
-    </div>
+      {/* Chip input: suggestions as you type; Enter adds free text. */}
+      <Combobox
+        multiple
+        creatable
+        options={SKILL_OPTIONS}
+        value={skills}
+        onChange={setSkills}
+        onCreate={(text) => setSkills((prev) => [...prev, text])}
+        placeholder="Add a skill…"
+        aria-label="Skills"
+      />
+    </Stack>
   );
 }
 
@@ -494,10 +551,46 @@ function ContainerDemo() {
 }
 
 function DisclosureDemo() {
+  const rows = [
+    [
+      'Fonts',
+      'What ships in fonts.css',
+      'Plus Jakarta Sans (variable), Sora 700 and IBM Plex Mono 400.',
+    ],
+    [
+      'Tokens',
+      'Where the token files live',
+      'hirobius.tokens.json is the source; build output is generated from it.',
+    ],
+    [
+      'Figma',
+      'How the library stays in sync',
+      'Sync runs one way, from code to the Figma library.',
+    ],
+  ] as const;
   return (
-    <Disclosure label="What ships in fonts.css?">
-      Plus Jakarta Sans (variable), Sora 800 and IBM Plex Mono 400.
-    </Disclosure>
+    <div>
+      <div style={{ marginBottom: 16 }}>
+        <Disclosure label="What ships in fonts.css?">
+          Plus Jakarta Sans (variable), Sora 700 and IBM Plex Mono 400.
+        </Disclosure>
+      </div>
+      {rows.map(([label, preview, body]) => (
+        <Disclosure
+          key={label}
+          variant="row"
+          label={label}
+          preview={preview}
+          actions={
+            <Button variant="tertiary" aria-label={`Edit ${label}`}>
+              Edit
+            </Button>
+          }
+        >
+          {body}
+        </Disclosure>
+      ))}
+    </div>
   );
 }
 
@@ -608,9 +701,15 @@ function MetaLineDemo() {
 }
 
 function NavListDemo() {
+  const jobs = [
+    { title: 'Design systems lead', meta: ['Acme Cloud', 'Remote'] as [string, string] },
+    { title: 'Staff front-end engineer', meta: ['Northwind', 'Hybrid'] as [string, string] },
+    { title: 'Product designer', meta: ['Globex', 'On-site'] as [string, string] },
+  ];
+  const [selected, setSelected] = useState(0);
   return (
-    <div style={{ maxWidth: 320 }}>
-      <NavList aria-label="Saved jobs">
+    <div style={{ maxWidth: 320, display: 'grid', gap: 24 }}>
+      <NavList aria-label="Saved jobs (links)">
         <NavList.Item href="#" current>
           Design systems lead
           <MetaLine items={['Acme Cloud', 'Remote']} />
@@ -619,10 +718,18 @@ function NavListDemo() {
           Staff front-end engineer
           <MetaLine items={['Northwind', 'Hybrid']} />
         </NavList.Item>
-        <NavList.Item href="#">
-          Product designer
-          <MetaLine items={['Globex', 'On-site']} />
-        </NavList.Item>
+      </NavList>
+      <NavList aria-label="Saved jobs">
+        {jobs.map((job, index) => (
+          <NavList.Item
+            key={job.title}
+            selected={index === selected}
+            onSelect={() => setSelected(index)}
+          >
+            {job.title}
+            <MetaLine items={job.meta} />
+          </NavList.Item>
+        ))}
       </NavList>
     </div>
   );
@@ -911,6 +1018,12 @@ function PageHeaderDemo() {
       // The docs page owns the one h1; a demo heading sits below it.
       level={2}
       breadcrumb={<Breadcrumb items={[{ label: 'Clients', href: '#' }, { label: 'Acme Co' }]} />}
+      metadata={
+        <>
+          <Badge tone="neutral">Referral</Badge>
+          <Badge tone="info">Pitch</Badge>
+        </>
+      }
       title="Acme Co"
       description="Brand refresh and the spring campaign site."
       status={<Badge tone="success">Active</Badge>}

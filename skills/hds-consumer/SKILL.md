@@ -62,12 +62,14 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Card` — Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
 - `CardBody` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardDescription` — Card — surface container with slot anatomy (12d-card-anatomy).
+- `CardFacts` — Card.Facts — a wrapping caption row of icon + label facts, as a list.
 - `CardFooter` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardHeader` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardProgress` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardRow` — Card.Row — a title with muted notes and a trailing slot, inside a Card.
 - `CardRowNote` — Card.RowNote — one muted caption line under the row's title; repeat it for more.
 - `CardRowTitle` — Card.RowTitle — the row's title, at the ui role.
+- `CardSource` — Card.Source — the entity's origin on one row: avatar, name and time.
 - `CardTitle` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `EmptyState` — EmptyState — consistent no-data placeholder for lists, grids, and sections.
 - `Field` — Caption label paired with a value — used in metadata grids and read-only forms.
@@ -125,8 +127,8 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 
 - `Breadcrumb` — Breadcrumb trail.
 - `InlineLink` — InlineLink ” inline navigation and external-link primitive for body copy.
-- `NavList` — A vertical list of links, one marked current.
-- `NavListItem` — One link row of a NavList.
+- `NavList` — A vertical list of rows (links, or buttons that select in place), one marked current.
+- `NavListItem` — One row of a NavList.
 - `Pagination` — Paged navigation with first/last anchors, sibling pages, and ellipses.
 - `Tabs` — The tab set itself.
 - `TabsContent` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
@@ -189,7 +191,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 ### Layout
 
 - `Page` — Page — standard page shell.
-- `PageHeader` — Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot.
+- `PageHeader` — Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot.
 
 ### Motion
 

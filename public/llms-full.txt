@@ -167,7 +167,9 @@ Box: [core] Build one-off layout that no named layout primitive covers, using to
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
 Button: [core] Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
 Card: [core] Group related content on a raised surface with header, body, footer and row slots, or as one selectable option. Use instead: Surface
+CardFacts: Show an entity's quick facts (location, salary, type) under its title.
 CardRow: Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lines, and a Badge in `trailing`.
+CardSource: Open an entity card (a job, a lead, a listing) with where it came from and when, above Card.Header.
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
@@ -176,7 +178,7 @@ Container: [core] Constrain a page region to the content or maximum width and ce
 DataTableSection: Put a heading and toolbar above a Table.
 DestructiveSection: Put a dangerous action, such as delete, in its own section with a warning and a confirm step.
 Dialog: [core] Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider, AlertDialog
-Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. Use instead: Tabs
+Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. An expandable list row (one-line preview, actions beside the trigger) is variant="row". Use instead: Tabs
 Divider: [core] Separate two blocks of content with a thin line. Use instead: Stack, Surface
 EmptyState: [core] Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step. Use instead: Skeleton, Alert
 ErrorPattern: Show an error with a short message and a Back button, in place or as a full page.
@@ -361,7 +363,7 @@ import { Ellipsis } from '@hirobius/design-system/icons';
 
 Rule: icon-only actions (row menus, close, edit) use `Button iconOnly` with a `label` and an `Icon` in `iconLeft`; do not hand-roll a button with a glyph or text "...".
 
-Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Bell, Bookmark, Briefcase, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Images, Info, Link, Lock, LogIn, LogOut, Mail, Menu, Minus, Pencil, Phone, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, Users, Wrench, X
+Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Banknote, Bell, Bookmark, Briefcase, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Images, Info, Link, Lock, LogIn, LogOut, Mail, MapPin, Menu, Minus, Pencil, Phone, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, Users, Wrench, X
 
 Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.
 
@@ -584,6 +586,8 @@ Default most interactive feedback to `productive` (150ms, decelerate). Use `expr
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->
 
+A tag input is a creatable Combobox (`<Combobox multiple creatable>`): chips inline in the field, suggestions as you type, Enter adds the typed value. Do not build a second chip-input component.
+
 When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
 ### Card Anatomy (mandatory — all properties non-negotiable)
@@ -601,6 +605,8 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Subtitle / meta          | `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`)                                                                               | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                                                                                                  | Background fill change, border color shift, or opacity fade on hover                        |
 
+An entity card (a job, a lead, a listing) fills four zones in this order: `Card.Source` (an `Avatar` size `sm`, the source name, a `Timestamp`), `Card.Header` with the `Card.Title`, `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list), and the actions in `Card.Footer`. Facts are icon + text only; term and description pairs stay in `MetadataList`, and a text-only line stays in `MetaLine`. Status goes in the header `metadata` slot, never in the facts row.
+
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
 
 ## Screen Patterns
@@ -609,7 +615,7 @@ Five patterns sit above the primitives so that every screen is composed the same
 
 ### Page title rule
 
-Every screen has exactly one `PageHeader`. The page title is `title` (28px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` is reserved for marketing and landing surfaces and is never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
+Every screen has exactly one `PageHeader`. The page title is `title` (28px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` is reserved for marketing and landing surfaces and is never a screen title. Breadcrumb goes in the `breadcrumb` slot, facts (source, stage) as a `Badge` row in `metadata` above the title, the one state `Badge` in `status`, screen-level actions in `actions`.
 
 ### Which one, when
 
@@ -626,7 +632,7 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
 | `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                | `Table` alone when there is no heading, toolbar or empty state to show.      |
 
-Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A count beside a heading is a count `Badge`: `count`, `max` for a `99+` cap and a `label` such as "12 roles", in a `Stack direction="row" gap="xs"` with the heading. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state. An account button is an `Avatar` as the `iconLeft` of a `tertiary` `iconOnly` `Button` (`rounded-full`): initials when signed in, `fallback="icon"` when signed out, and `status="warning"` with a `statusLabel` while unsynced; the Button `label` names the account and its status. Never a hand-drawn icon in a bordered box.
+Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A count beside a heading is a count `Badge`: `count`, `max` for a `99+` cap and a `label` such as "12 roles", in a `Stack direction="row" gap="xs"` with the heading. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state. An account button is an `Avatar` as the `iconLeft` of a `tertiary` `iconOnly` `Button` (`rounded-full`): initials when signed in, `fallback="icon"` when signed out, and `status="warning"` with a `statusLabel` while unsynced; the Button `label` names the account and its status. Never a hand-drawn icon in a bordered box. A rail that selects in place (master-detail, no routing) is `NavList` with `onSelect` and `selected` on each `NavList.Item`, a button marked `aria-current="true"`; a rail that routes keeps `href` and `current`. The two are exclusive.
 
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 
@@ -641,6 +647,8 @@ A pager for one item at a time ("‹ 1 of 4 ›") is `Pagination` with `variant=
 ### Form actions rule
 
 `FormActions` puts the primary submit last in DOM order and right-most, with the secondary or cancel action immediately to its left. A destructive action goes on the far left, apart from the other two, and never to the right of the primary. The row is not sticky unless `sticky` is set.
+
+An expandable list row (one-line preview, actions beside the trigger) is `Disclosure variant="row"`; do not build one from `Card.Row` plus custom state.
 
 ## Do's and Don'ts
 
@@ -816,6 +824,10 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
 ### CardDescription
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
+### CardFacts
+Card.Facts — a wrapping caption row of icon + label facts, as a list.
+  - items: CardFact[]
+
 ### CardFooter
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
@@ -839,6 +851,12 @@ Card.RowNote — one muted caption line under the row's title; repeat it for mor
 
 ### CardRowTitle
 Card.RowTitle — the row's title, at the ui role.
+
+### CardSource
+Card.Source — the entity's origin on one row: avatar, name and time.
+  - avatar: ReactNode
+  - name: ReactNode
+  - time: ReactNode
 
 ### CardTitle
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
@@ -867,11 +885,13 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - aria-invalid: boolean
   - aria-label: string
   - className: string
+  - creatable: boolean
   - disabled: boolean = false
   - emptyMessage: string = No results
   - id: string
   - multiple: boolean
-  - onChange: ((value: string) => void) | ((value: string[]) => void)
+  - onChange: ((value: string) => void) | ((value: string[]) => void) | ((value: string[]) =>…
+  - onCreate: (text: string) => void
   - options: ComboboxOption[]
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
@@ -980,6 +1000,7 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
 ### Disclosure
 Disclosure - compact disclosure surface for optional explanatory content.
   - accent: boolean = false
+  - actions: ReactNode
   - children: ReactNode
   - className: string
   - contentStyle: CSSProperties
@@ -987,8 +1008,9 @@ Disclosure - compact disclosure surface for optional explanatory content.
   - label: ReactNode
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
+  - preview: ReactNode
   - triggerStyle: CSSProperties
-  - variant: 'panel' | 'nav' | 'card' = panel
+  - variant: 'panel' | 'nav' | 'card' | 'row' = panel
 
 ### Divider
 Divider — semantic separator between content regions.
@@ -1141,14 +1163,16 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - variant: "plain" | "divided" = plain
 
 ### NavList
-A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected. Tagged…
+A vertical list of rows (links, or buttons that select in place), one marked current. Rows hold rich content; hover fills with surface.hover; the current row h…
   - children: ReactNode
 
 ### NavListItem
-One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`.
+One row of a NavList. With `href` it is a link routed through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`. …
   - children: ReactNode
-  - current: boolean = false
+  - current: boolean
   - href: string
+  - onSelect: (() => void)
+  - selected: boolean
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
@@ -1159,11 +1183,12 @@ Page — standard page shell. Wraps page content in Container (width constraint)
   - style: CSSProperties
 
 ### PageHeader
-Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `…
+Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot.…
   - actions: ReactNode
   - breadcrumb: ReactNode
   - description: ReactNode
   - level: PageHeaderLevel = 1
+  - metadata: ReactNode
   - status: ReactNode
   - title: ReactNode
 

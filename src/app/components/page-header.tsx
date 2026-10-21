@@ -23,6 +23,10 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
   /** One supporting line under the title, in secondary body text. Only when it
    *  adds information; longer context belongs in the page body. */
   description?: React.ReactNode;
+  /** Facts about the screen's subject (source, stage), as a wrapping row of
+   *  `Badge`s above the title; mirrors `Card.Header`'s `metadata`. Facts only:
+   *  the single state belongs in `status`. */
+  metadata?: React.ReactNode;
   /** Status marker beside the title (a `Badge`). One marker, not a row of them. */
   status?: React.ReactNode;
   /** Screen-level actions, right-aligned; they wrap below the title on narrow widths. */
@@ -37,14 +41,14 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
 
 /**
  * Screen header: breadcrumb slot, the title at the one canonical page-title size
- * (`heading2`), a status slot and an actions slot. Every screen has exactly one.
+ * (`heading2`), a metadata row above the title, a status slot and an actions slot. Every screen has exactly one.
  * `display` and `h1` type are reserved for marketing and landing surfaces.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3
  * @screenPattern
  */
 export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHeaderProps>(
   function PageHeader(
-    { breadcrumb, title, description, status, actions, level = 1, className, ...props },
+    { breadcrumb, title, description, metadata, status, actions, level = 1, className, ...props },
     ref,
   ) {
     const Heading = `h${level}` as const;
@@ -57,6 +61,13 @@ export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHead
       >
         <Stack gap="tight">
           {breadcrumb ? <div data-slot="breadcrumb">{breadcrumb}</div> : null}
+          {metadata ? (
+            <div data-slot="metadata">
+              <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="start">
+                {metadata}
+              </Stack>
+            </div>
+          ) : null}
           <Stack direction="row" wrap="wrap" gap="normal" align="start" justify="space-between">
             <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="start">
               <Heading

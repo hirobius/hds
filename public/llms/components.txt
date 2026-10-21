@@ -161,6 +161,10 @@ Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (D
 ### CardDescription
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
+### CardFacts
+Card.Facts — a wrapping caption row of icon + label facts, as a list.
+  - items: CardFact[]
+
 ### CardFooter
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
 
@@ -184,6 +188,12 @@ Card.RowNote — one muted caption line under the row's title; repeat it for mor
 
 ### CardRowTitle
 Card.RowTitle — the row's title, at the ui role.
+
+### CardSource
+Card.Source — the entity's origin on one row: avatar, name and time.
+  - avatar: ReactNode
+  - name: ReactNode
+  - time: ReactNode
 
 ### CardTitle
 Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
@@ -212,11 +222,13 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - aria-invalid: boolean
   - aria-label: string
   - className: string
+  - creatable: boolean
   - disabled: boolean = false
   - emptyMessage: string = No results
   - id: string
   - multiple: boolean
-  - onChange: ((value: string) => void) | ((value: string[]) => void)
+  - onChange: ((value: string) => void) | ((value: string[]) => void) | ((value: string[]) =>…
+  - onCreate: (text: string) => void
   - options: ComboboxOption[]
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
@@ -325,6 +337,7 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
 ### Disclosure
 Disclosure - compact disclosure surface for optional explanatory content.
   - accent: boolean = false
+  - actions: ReactNode
   - children: ReactNode
   - className: string
   - contentStyle: CSSProperties
@@ -332,8 +345,9 @@ Disclosure - compact disclosure surface for optional explanatory content.
   - label: ReactNode
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
+  - preview: ReactNode
   - triggerStyle: CSSProperties
-  - variant: 'panel' | 'nav' | 'card' = panel
+  - variant: 'panel' | 'nav' | 'card' | 'row' = panel
 
 ### Divider
 Divider — semantic separator between content regions.
@@ -486,14 +500,16 @@ Renders object metadata as a semantic `<dl>` of term/description pairs.
   - variant: "plain" | "divided" = plain
 
 ### NavList
-A vertical list of links, one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected. Tagged…
+A vertical list of rows (links, or buttons that select in place), one marked current. Rows hold rich content; hover fills with surface.hover; the current row h…
   - children: ReactNode
 
 ### NavListItem
-One link row of a NavList. Routes through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`.
+One row of a NavList. With `href` it is a link routed through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`. …
   - children: ReactNode
-  - current: boolean = false
+  - current: boolean
   - href: string
+  - onSelect: (() => void)
+  - selected: boolean
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
@@ -504,11 +520,12 @@ Page — standard page shell. Wraps page content in Container (width constraint)
   - style: CSSProperties
 
 ### PageHeader
-Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `…
+Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot.…
   - actions: ReactNode
   - breadcrumb: ReactNode
   - description: ReactNode
   - level: PageHeaderLevel = 1
+  - metadata: ReactNode
   - status: ReactNode
   - title: ReactNode
 
