@@ -669,17 +669,42 @@ function RadioDemo() {
 
 function SegmentedControlDemo() {
   const [value, setValue] = useState('grid');
+  const [range, setRange] = useState('week');
+  const ranges = [
+    { value: 'day', label: 'Day' },
+    { value: 'week', label: 'Week' },
+    { value: 'month', label: 'Month' },
+  ];
   return (
-    <SegmentedControl
-      label="View"
-      value={value}
-      onChange={setValue}
-      options={[
-        { value: 'grid', label: 'Grid' },
-        { value: 'list', label: 'List' },
-        { value: 'board', label: 'Board' },
-      ]}
-    />
+    <div style={demoStack}>
+      <SegmentedControl
+        label="View"
+        value={value}
+        onChange={setValue}
+        options={[
+          { value: 'grid', label: 'Grid' },
+          { value: 'list', label: 'List' },
+          { value: 'board', label: 'Board' },
+        ]}
+      />
+      <SegmentedControl
+        label="Range"
+        variant="secondary"
+        value={range}
+        onChange={setRange}
+        options={ranges}
+      />
+      {/* The secondary selected segment must read on a raised surface too (hds#866). */}
+      <Card padding="item">
+        <SegmentedControl
+          label="Range on a card"
+          variant="secondary"
+          value={range}
+          onChange={setRange}
+          options={ranges}
+        />
+      </Card>
+    </div>
   );
 }
 
