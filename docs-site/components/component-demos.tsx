@@ -381,6 +381,15 @@ function BadgeDemo() {
       <Badge tone="success">Active</Badge>
       <Badge tone="warning">At risk</Badge>
       <Badge tone="danger">Blocked</Badge>
+      <Badge count={3} label="3 roles" />
+      <Badge count={42} label="42 roles" />
+      <Badge count={120} max={99} label="120 roles" />
+      <Stack direction="row" gap="xs" align="center">
+        <Text as="h3" variant="titleSm">
+          Open roles
+        </Text>
+        <Badge count={12} label="12 roles" />
+      </Stack>
     </div>
   );
 }

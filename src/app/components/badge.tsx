@@ -2,7 +2,7 @@
  * Badge - compact feedback badge for neutral and semantic states.
  * @category Feedback
  * @tier primitive
- * @usage Label a status, state or count with a compact neutral or semantic chip, or a dot.
+ * @usage Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).
  * @whenNot A chip people can toggle, or a message that needs a sentence.
  * @useInstead Tag an interactive filter or category chip
  * @useInstead Alert a message that needs a sentence
@@ -84,7 +84,11 @@ export interface BadgeProps
   dot?: boolean;
   /** Dot diameter; used only with `dot`. */
   size?: 'sm' | 'md' | 'lg';
-  /** Names a `dot` badge: role="img" with this aria-label. Without it the dot is aria-hidden. A text badge ignores it: put the text in `children`. */
+  /** A number shown in tabular numerals, neutral by default. Exclusive with `children` (children are ignored when `count` is set). Pair it with `max` to cap it. */
+  count?: number;
+  /** Cap for `count`: a count above it shows as `<max>+` (`max={99}` turns 120 into `99+`). Used only with `count`. */
+  max?: number;
+  /** Names a `dot` or `count` badge: role="img" with this aria-label ("12 roles"). Without it a dot is aria-hidden and a count is plain text. A text badge ignores it: put the text in `children`. */
   label?: string;
 }
 
@@ -104,10 +108,12 @@ function warnLabelWithoutDot() {
 
 /** Compact metadata/status chip. Tone is the only styling input. */
 export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-  { className, tone, as: Tag = 'span', dot = false, size, label, children, ...props },
+  { className, tone, as: Tag = 'span', dot = false, size, label, count, max, children, ...props },
   ref,
 ) {
-  if (label && !dot) {
+  const isCount = count !== undefined && !dot;
+
+  if (label && !dot && !isCount) {
     warnLabelWithoutDot();
   }
 
@@ -121,6 +127,21 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
         {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
         {...props}
       />
+    );
+  }
+
+  if (isCount) {
+    const shown = max !== undefined && count > max ? `${max}+` : String(count);
+    return (
+      <Tag
+        ref={ref}
+        data-tone={tone ?? 'neutral'}
+        className={cn(badgeVariants({ tone }), 'tabular-nums', className)}
+        {...(label ? { role: 'img', 'aria-label': label } : {})}
+        {...props}
+      >
+        {shown}
+      </Tag>
     );
   }
 

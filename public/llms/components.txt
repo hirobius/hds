@@ -87,8 +87,10 @@ Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
 ### Badge
 Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
+  - count: number
   - dot: boolean = false
   - label: string
+  - max: number
   - size: "sm" | "md" | "lg"
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | "inProgress" | null
 

@@ -4574,12 +4574,20 @@
           "type": "ElementType<any, keyof IntrinsicElements>",
           "default": "span"
         },
+        "count": {
+          "type": "number",
+          "optional": true
+        },
         "dot": {
           "type": "boolean",
           "default": false
         },
         "label": {
           "type": "string",
+          "optional": true
+        },
+        "max": {
+          "type": "number",
           "optional": true
         },
         "size": {
@@ -4665,7 +4673,7 @@
       "tokenMapping": {},
       "docsPage": "/docs/components/badge",
       "usage": {
-        "when": "Label a status, state or count with a compact neutral or semantic chip, or a dot.",
+        "when": "Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
         "useInstead": [
           {
