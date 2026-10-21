@@ -845,21 +845,6 @@ function buildBrandAxes(graph, brands, { excludedBy, pendingByPath }) {
   return axes;
 }
 
-/** Follows a reference through semantic aliases to a primitive, reading `mode` at each hop. */
-function densityRef(graph, ref, mode) {
-  const seen = new Set();
-  let current = ref;
-  while (isAlias(current)) {
-    const target = aliasPath(current);
-    if (target.startsWith('primitive.') || seen.has(target)) break;
-    seen.add(target);
-    const token = graph.byPath.get(target);
-    if (!token) break;
-    current = (mode === 'Compact' && readModes(token.extensions)?.Compact) || restValue(token);
-  }
-  return current;
-}
-
 /**
  * Base tokens with their own Compact mode (compact density for apps): each gets a
  * Hirobius/Density variable, Comfortable the rest value and Compact the Compact
@@ -882,12 +867,8 @@ function addBaseDensityAxis(graph, pending, axes) {
       hiddenFromPublishing: false,
       codeSyntax: {},
       valuesByMode: {
-        Comfortable: modeEntry(
-          graph,
-          densityRef(graph, item.restRef, 'Comfortable'),
-          item.tokenType,
-        ),
-        Compact: modeEntry(graph, densityRef(graph, item.compact, 'Compact'), item.tokenType),
+        Comfortable: modeEntry(graph, tenantRef(graph, item.restRef), item.tokenType),
+        Compact: modeEntry(graph, tenantRef(graph, item.compact, 'Compact'), item.tokenType),
       },
     });
     item.entryFor = () => ({ alias: `density.${path}` });

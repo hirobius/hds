@@ -946,7 +946,7 @@ input[data-search-input='true'] {
  * hirobius.tokens.json (scale sm-xl 12/16/24/32px, layout.* 12/16/24/32px,
  * section.stack 48px, body 15 / ui 14 / caption 13 / title 24px), with every
  * scale alias re-declared so nested scopes work. region.gutter (scale.lg, 24px)
- * and grid.gap (scale.md here, 16px) follow their steps.
+ * and grid.gap (scale.md, 16px) follow their steps.
  * This file keeps only what has no token: the legacy --hds-space-* bridge, the
  * theme.css-only layout-gap, and the viewport rules below.
  * Toggle: document.documentElement.dataset.density = 'compact' | 'comfortable'
@@ -966,12 +966,10 @@ input[data-search-input='true'] {
   --hds-space-4xl: var(--primitive-space-16); /* 64px */
 }
 
-/* The :root rhythm above points layout-gap (no token) and grid-gap (scale.md, not the
- * token's scale.lg) at scale steps. A nested compact scope must re-declare them to pick
- * up the remap; this rule comes after the generated one, so its grid-gap wins. */
-[data-density='compact'] {
+/* layout-gap has no token, so the generated block cannot re-declare it for a nested
+ * compact scope. (grid.gap has a Compact mode, scale.md, so it is generated.) */
+:where([data-density='compact']) {
   --semantic-space-layout-gap: var(--semantic-space-scale-md);
-  --semantic-layout-grid-gap: var(--semantic-space-scale-md);
 }
 
 /* Under 640px the :root rules above re-point the gutters at scale.sm and raise

@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-21T02:53:50.799Z",
+  "generated": "2026-10-21T03:07:57.302Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -13333,8 +13333,13 @@
         "path": "semantic.layout.grid.gap",
         "cssVar": "--semantic-layout-grid-gap",
         "type": "dimension",
+        "description": "Grid gap: scale.lg; theme.css points it at scale.md at runtime. Compact: scale.md (16px).",
         "alias": "{semantic.space.scale.lg}",
-        "resolvedValue": "40px"
+        "resolvedValue": "40px",
+        "compact": {
+          "alias": "{semantic.space.scale.md}",
+          "resolvedValue": "28px"
+        }
       },
       {
         "path": "semantic.layout.grid.columns.mobile",

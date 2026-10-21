@@ -2038,7 +2038,15 @@
       "grid": {
         "gap": {
           "$type": "dimension",
-          "$value": "{semantic.space.scale.lg}"
+          "$value": "{semantic.space.scale.lg}",
+          "$description": "Grid gap: scale.lg; theme.css points it at scale.md at runtime. Compact: scale.md (16px).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Compact": "{semantic.space.scale.md}"
+              }
+            }
+          }
         },
         "columns": {
           "mobile": {

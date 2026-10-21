@@ -108,22 +108,6 @@
       ]
     },
     {
-      "id": "value-changed/--semantic-space-layout-gap",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "Under data-density=\"compact\", --semantic-space-layout-gap is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
-      "detect": {
-        "cssVars": ["--semantic-space-layout-gap"],
-        "cssVarWrites": ["--semantic-space-layout-gap"]
-      },
-      "facts": [
-        "css-var-changed:--semantic-space-layout-gap::where([data-density=compact])",
-        "css-var-changed:--semantic-space-layout-gap:@media (max-width:639px) :where([data-density=compact])",
-        "css-var-changed:--semantic-space-layout-gap:@media (max-width:639px) [data-density=compact]",
-        "css-var-changed:--semantic-space-layout-gap:[data-density=compact]"
-      ]
-    },
-    {
       "id": "value-changed/--semantic-space-layout-gutter",
       "kind": "value-changed",
       "impact": "look",
@@ -420,6 +404,20 @@
       "facts": [
         "css-var-changed:--semantic-typography-ui-font-size:[data-density=\"compact\"]",
         "css-var-changed:--semantic-typography-ui-font-size:[data-density=compact]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-layout-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\" below 640px, --semantic-space-layout-gap is now scale.sm (12px) instead of following the comfortable rule; check compact screens on phones.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-gap"],
+        "cssVarWrites": ["--semantic-space-layout-gap"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-layout-gap:@media (max-width:639px) :where([data-density=compact])",
+        "css-var-changed:--semantic-space-layout-gap:@media (max-width:639px) [data-density=compact]"
       ]
     }
   ]

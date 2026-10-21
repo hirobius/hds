@@ -139,12 +139,14 @@ describe('compact scope re-declares the aliases so nested scopes resolve against
     );
   });
 
-  it('theme.css re-declares grid-gap and layout-gap on scale-md for nested compact scopes', () => {
+  it('grid-gap (generated, its Compact mode) and layout-gap (theme.css) sit on scale-md', () => {
     const desk = compactRules
       .filter((r) => !r.media)
       .map((r) => r.body)
       .join('\n');
-    expect(declOf(desk, '--semantic-layout-grid-gap')).toBe('--semantic-space-scale-md');
+    expect(declOf(generatedCompact, '--semantic-layout-grid-gap')).toBe(
+      '--semantic-space-scale-md',
+    );
     expect(declOf(desk, '--semantic-space-layout-gap')).toBe('--semantic-space-scale-md');
   });
 

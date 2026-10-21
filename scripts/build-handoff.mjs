@@ -491,7 +491,7 @@ export function buildDensity() {
   }
   lines.push('');
   lines.push(
-    '`[data-density="compact"]` remaps `--semantic-space-scale-*` and re-declares `surface.padding` and `region.gutter` (with their deprecated aliases). `Table` follows it unless given a `density` prop.',
+    '`[data-density="compact"]` (generated from the tokens\' Compact modes) remaps `--semantic-space-scale-*`, the deprecated `layout.*` steps, `section.stack` and the body, ui, caption and title type sizes, and re-declares every alias of them (`surface.padding`, `region.gutter`, `grid.gap` and the rest). `Table` follows it unless given a `density` prop.',
   );
   lines.push(
     'The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads; do not treat them as the dial.',

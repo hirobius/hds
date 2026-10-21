@@ -236,6 +236,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.space.sidebar.railWidth": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).",
   "semantic.layout.width.content": "Max width for prose/content (760px). Use with HdsContainer for centered text blocks.",
   "semantic.layout.width.max": "Max width for full-layout containers (1200px). Use with HdsContainer for page layouts.",
+  "semantic.layout.grid.gap": "Grid gap: scale.lg; theme.css points it at scale.md at runtime. Compact: scale.md (16px).",
   "semantic.typography.display": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6.",
   "semantic.typography.title": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6.",
   "semantic.typography.titleSm": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.",

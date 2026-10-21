@@ -739,6 +739,7 @@
   --semantic-space-layout-inset: var(--primitive-space-6);
   --semantic-space-layout-spacious: var(--primitive-space-8);
   --semantic-space-section-stack: var(--primitive-space-12);
+  --semantic-layout-grid-gap: var(--semantic-space-scale-md);
   --semantic-typography-title-font-size: var(--primitive-typography-size-2xl);
   --semantic-typography-body-font-size: var(--primitive-typography-size-compactBody);
   --semantic-typography-ui-font-size: var(--primitive-typography-size-sm);
@@ -751,7 +752,6 @@
   --semantic-space-region-gutter: var(--semantic-space-scale-lg);
   --semantic-space-component-padding: var(--semantic-space-surface-padding);
   --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
-  --semantic-layout-grid-gap: var(--semantic-space-scale-lg);
   --semantic-docs-space-section: var(--semantic-space-scale-xl);
   --component-card-gap: var(--semantic-space-scale-sm);
 }

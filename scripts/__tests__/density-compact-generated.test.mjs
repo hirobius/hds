@@ -103,6 +103,7 @@ describe('tokens.generated.css carries the compact block', () => {
     expect(px('--semantic-space-section-stack', false)).toBe(96);
     expect(px('--semantic-space-region-gutter', true)).toBe(24);
     expect(px('--semantic-space-region-gutter', false)).toBe(40);
+    expect(px('--semantic-layout-grid-gap', true)).toBe(16);
   });
 
   it('re-declares aliases so a nested compact scope resolves against the remap', () => {

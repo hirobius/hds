@@ -462,7 +462,7 @@ Comfortable (default) vs compact - toggled via `data-density` attribute or `useT
 | `--semantic-space-scale-lg` | 32px        | 24px    | Region gutter, between card groups            |
 | `--semantic-space-scale-xl` | 48px        | 40px    | Between page sections                         |
 
-`[data-density="compact"]` remaps `--semantic-space-scale-*` and re-declares `surface.padding` and `region.gutter` (with their deprecated aliases). `Table` follows it unless given a `density` prop.
+`[data-density="compact"]` (generated from the tokens' Compact modes) remaps `--semantic-space-scale-*`, the deprecated `layout.*` steps, `section.stack` and the body, ui, caption and title type sizes, and re-declares every alias of them (`surface.padding`, `region.gutter`, `grid.gap` and the rest). `Table` follows it unless given a `density` prop.
 The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads; do not treat them as the dial.
 
 Toggle: `document.documentElement.dataset.density = 'compact'`
