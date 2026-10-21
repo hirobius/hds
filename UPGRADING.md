@@ -77,7 +77,7 @@ Released 2026-10-20 (minor). 12 changes to make by hand (12 breaking), 34 that l
 
 ### Coming next
 
-- The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind \*-px6/\*-px10) are deprecated and leave in 0.30.0; the codemod rewrites them to the 8px and 12px steps. Removed in 0.30.0.
+- The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind \*-px6/\*-px10) are deprecated and leave in 0.31.0; the codemod rewrites them to the 8px and 12px steps. Removed in 0.31.0.
 
 ### Do by hand
 

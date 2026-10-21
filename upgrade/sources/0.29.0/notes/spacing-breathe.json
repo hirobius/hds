@@ -316,12 +316,12 @@
       "id": "deprecated/primitive.space.px6-px10",
       "kind": "deprecated",
       "impact": "none",
-      "plain": "The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind *-px6/*-px10) are deprecated and leave in 0.30.0; the codemod rewrites them to the 8px and 12px steps.",
+      "plain": "The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind *-px6/*-px10) are deprecated and leave in 0.31.0; the codemod rewrites them to the 8px and 12px steps.",
       "auto": {
         "codemod": "hds-spacing-steps",
         "args": []
       },
-      "removeIn": "0.30.0",
+      "removeIn": "0.31.0",
       "detect": {
         "cssVars": ["--primitive-space-px6", "--primitive-space-px10"],
         "regex": ["\\b(?:hds\\.space\\.px(?:6|10)|[a-z-]+-px(?:6|10))\\b"]
