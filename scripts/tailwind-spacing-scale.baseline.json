@@ -8,6 +8,7 @@
   "src/app/components/button.tsx": 5,
   "src/app/components/card.tsx": 7,
   "src/app/components/checkbox.tsx": 1,
+  "src/app/components/combobox-creatable.tsx": 14,
   "src/app/components/combobox.tsx": 16,
   "src/app/components/dialog.tsx": 3,
   "src/app/components/empty-state.tsx": 1,

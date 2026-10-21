@@ -182,6 +182,8 @@ Default most interactive feedback to `productive` (150ms, decelerate). Use `expr
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->
 
+A tag input is a creatable Combobox (`<Combobox multiple creatable>`): chips inline in the field, suggestions as you type, Enter adds the typed value. Do not build a second chip-input component.
+
 When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
 ### Card Anatomy (mandatory — all properties non-negotiable)

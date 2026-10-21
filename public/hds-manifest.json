@@ -1357,6 +1357,7 @@
         "src/app/components/button.tsx",
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
+        "src/app/components/combobox-creatable.tsx",
         "src/app/components/combobox.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/empty-state.tsx",
@@ -6413,7 +6414,7 @@
       "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/combobox.tsx",
-      "description": "Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection (with `multiple`, a count and a removable chip per value); opening reveals a search field that filters the option list. Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
+      "description": "Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection (with `multiple`, a count and a removable chip per value); opening reveals a search field that filters the option list. `multiple creatable` is a chip input (a tag field): chips sit inline before the text input, suggestions open as you type, and Enter adds the typed text via `onCreate`. <Combobox multiple creatable options={skills} value={picked} onChange={setPicked} onCreate={(t) => setPicked((p) => [...p, t])} /> Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237",
@@ -6423,6 +6424,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox-creatable.tsx",
         "src/app/components/combobox.test.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
@@ -6450,6 +6452,10 @@
           "type": "string",
           "optional": true
         },
+        "creatable": {
+          "type": "boolean",
+          "optional": true
+        },
         "disabled": {
           "type": "boolean",
           "default": false
@@ -6467,7 +6473,10 @@
           "optional": true
         },
         "onChange": {
-          "type": "((value: string) => void) | ((value: string[]) => void)"
+          "type": "((value: string) => void) | ((value: string[]) => void) | ((value: string[]) => void)"
+        },
+        "onCreate": {
+          "type": "(text: string) => void"
         },
         "options": {
           "type": "ComboboxOption[]"
@@ -6611,6 +6620,42 @@
           "testId": "a11y:combobox.chip-keyboard"
         },
         {
+          "rule": "With `creatable` the text input is the combobox: a listbox popup that reports expanded, what it controls and the active option.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.creatable-input-combobox"
+        },
+        {
+          "rule": "With `creatable`, Enter adds the typed text through onCreate and clears the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.creatable-enter-adds"
+        },
+        {
+          "rule": "With `creatable`, an \"Add “text”\" option in the listbox offers the typed text when no option matches exactly.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.creatable-add-option"
+        },
+        {
+          "rule": "With `creatable`, each chip is a \"Remove <value>\" button placed before the input inside the field group.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.creatable-chips-inline"
+        },
+        {
+          "rule": "With `creatable`, Backspace in an empty input removes the last chip.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.creatable-backspace-removes"
+        },
+        {
+          "rule": "With `creatable`, the suggestion count is announced in a polite status as you type.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.creatable-result-count-announced"
+        },
+        {
           "rule": "Inside FormField the field label names the trigger.",
           "required": true,
           "owner": "component",
@@ -6663,6 +6708,10 @@
         {
           "keys": "Escape",
           "effect": "Closes the list."
+        },
+        {
+          "keys": "Backspace",
+          "effect": "With `creatable` and an empty field, removes the last chip."
         },
         {
           "keys": "Tab",
@@ -8905,6 +8954,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/combobox-creatable.tsx",
         "src/app/components/combobox.test.tsx",
         "src/app/components/combobox.tsx",
         "src/app/components/hds-tooltip.tsx",
