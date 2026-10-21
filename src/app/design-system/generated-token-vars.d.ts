@@ -67,12 +67,19 @@ declare module 'react' {
     '--primitive-color-cobalt-700'?: string | undefined;
     '--primitive-color-cobalt-800'?: string | undefined;
     '--primitive-color-cobalt-900'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
     '--primitive-color-lime-50'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
     '--primitive-color-lime-100'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
     '--primitive-color-lime-200'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
     '--primitive-color-lime-300'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
     '--primitive-color-lime-400'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
     '--primitive-color-lime-600'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
     '--primitive-color-lime-800'?: string | undefined;
     '--primitive-color-mauve-50'?: string | undefined;
     '--primitive-color-mauve-100'?: string | undefined;
@@ -415,9 +422,13 @@ declare module 'react' {
     '--semantic-accent-content'?: string | undefined;
     '--semantic-accent-contentHover'?: string | undefined;
     '--semantic-accent-subtle'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
     '--semantic-accent-delight-base'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
     '--semantic-accent-delight-deep'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
     '--semantic-accent-delight-pale'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
     '--semantic-accent-delight-onDelight'?: string | undefined;
     '--semantic-radius-action'?: string | undefined;
     '--semantic-radius-control'?: string | undefined;

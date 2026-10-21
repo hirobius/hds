@@ -53,12 +53,18 @@ describe('colorGalleries accent themes', () => {
   const value = (title: string, token: string) =>
     group(title).swatches.find((s) => s.token === token)!;
 
-  it('shows graphite, cobalt and the lime delight swatches side by side', () => {
-    expect(themes.groups.map((g) => g.title.split(' ')[0])).toEqual([
-      'Graphite',
-      'Cobalt',
-      'Delight',
-    ]);
+  it('shows graphite and cobalt side by side; lime delight is hidden for now (hds#857)', () => {
+    expect(themes.groups.map((g) => g.title.split(' ')[0])).toEqual(['Graphite', 'Cobalt']);
+  });
+
+  it('shows no lime or delight swatch anywhere on the Color page (hds#857)', () => {
+    const all = galleries.flatMap((g) => g.groups);
+    expect(all.some((g) => /delight|lime/i.test(g.title))).toBe(false);
+    expect(
+      all
+        .flatMap((g) => g.swatches)
+        .some((s) => /\.delight\.|primitive\.color\.lime\./.test(s.token)),
+    ).toBe(false);
   });
 
   it('resolves cobalt from its overlay, in light and dark', () => {
@@ -72,7 +78,6 @@ describe('colorGalleries accent themes', () => {
     const semantic = galleries.find((g) => g.title === 'Semantic & state')!;
     const accent = semantic.groups.find((g) => g.title === 'Accent')!;
     expect(accent.swatches.some((s) => s.token.includes('.delight.'))).toBe(false);
-    expect(value('Delight', 'semantic.accent.delight.base').value).toBe('#b8e62e');
   });
 });
 
