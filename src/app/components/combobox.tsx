@@ -492,6 +492,8 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
           ariaInvalid={ariaInvalid}
           className={className}
           disabled={disabled}
+          // The creatable arm's combobox element is its text input.
+          ref={ref as unknown as React.Ref<HTMLInputElement>}
         />
       );
     }

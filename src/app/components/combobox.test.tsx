@@ -5,7 +5,7 @@
  * Built on Popover (Radix/Floating-UI) — polyfill the jsdom-missing APIs.
  */
 import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { Combobox, type ComboboxOption } from './combobox';
 
@@ -475,6 +475,92 @@ describe('Combobox creatable', () => {
     const status = screen.getByRole('status');
     expect(status.getAttribute('aria-live')).toBe('polite');
     expect(status.textContent).toBe('2 results');
+  });
+
+  it('Enter on an exact (case-insensitive) match picks it, not the first partial match', () => {
+    const onChange = vi.fn();
+    render(
+      <Combobox
+        multiple
+        creatable
+        aria-label="Skills"
+        options={[
+          { value: 'js', label: 'JavaScript' },
+          { value: 'java', label: 'Java' },
+        ]}
+        value={[]}
+        onChange={onChange}
+        onCreate={() => {}}
+      />,
+    );
+    type('java');
+    fireEvent.keyDown(input(), { key: 'Enter' });
+    expect(onChange).toHaveBeenCalledWith(['java']);
+  });
+
+  it('a second Enter on the emptied field does nothing instead of removing a chip', () => {
+    const onChange = vi.fn();
+    function Example() {
+      const [value, setValue] = useState<string[]>(['react']);
+      return (
+        <Combobox
+          multiple
+          creatable
+          aria-label="Skills"
+          options={SKILLS}
+          value={value}
+          onChange={(v) => {
+            onChange(v);
+            setValue(v);
+          }}
+          onCreate={(t) => setValue((x) => [...x, t])}
+        />
+      );
+    }
+    render(<Example />);
+    type('Zig');
+    fireEvent.keyDown(input(), { key: 'Enter' });
+    expect(screen.getByRole('button', { name: 'Remove Zig' })).not.toBeNull();
+    expect(input().getAttribute('aria-activedescendant')).toBeNull();
+    fireEvent.keyDown(input(), { key: 'Enter' });
+    expect(onChange).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: 'Remove React' })).not.toBeNull();
+    // An arrow key then highlights a row, and Enter acts on it.
+    fireEvent.keyDown(input(), { key: 'ArrowDown' });
+    expect(input().getAttribute('aria-activedescendant')).not.toBeNull();
+  });
+
+  it('forwards ref to the input in creatable mode', () => {
+    const ref = createRef<HTMLButtonElement>();
+    render(
+      <Combobox
+        ref={ref}
+        multiple
+        creatable
+        aria-label="Skills"
+        options={SKILLS}
+        value={[]}
+        onChange={() => {}}
+        onCreate={() => {}}
+      />,
+    );
+    expect(ref.current).toBe(input());
+  });
+
+  it('Enter after Escape still adds the typed text', () => {
+    const onCreate = vi.fn();
+    render(<CreatableExample onCreate={onCreate} />);
+    type('Figma');
+    fireEvent.keyDown(input(), { key: 'Escape' });
+    expect(screen.queryByRole('listbox')).toBeNull();
+    fireEvent.keyDown(input(), { key: 'Enter' });
+    expect(onCreate).toHaveBeenCalledWith('Figma');
+  });
+
+  it('announces the Add option instead of "0 results" when only that row shows', () => {
+    render(<CreatableExample />);
+    type('Figma');
+    expect(screen.getByRole('status').textContent).toBe('Add “Figma”');
   });
 
   it('does not change the existing multiple behaviour without creatable', () => {

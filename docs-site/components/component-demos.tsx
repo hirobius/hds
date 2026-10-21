@@ -555,7 +555,7 @@ function DisclosureDemo() {
     [
       'Fonts',
       'What ships in fonts.css',
-      'Plus Jakarta Sans (variable), Sora 800 and IBM Plex Mono 400.',
+      'Plus Jakarta Sans (variable), Sora 700 and IBM Plex Mono 400.',
     ],
     [
       'Tokens',
@@ -570,16 +570,22 @@ function DisclosureDemo() {
   ] as const;
   return (
     <div>
-      <Disclosure label="What ships in fonts.css?">
-        Plus Jakarta Sans (variable), Sora 800 and IBM Plex Mono 400.
-      </Disclosure>
+      <div style={{ marginBottom: 16 }}>
+        <Disclosure label="What ships in fonts.css?">
+          Plus Jakarta Sans (variable), Sora 700 and IBM Plex Mono 400.
+        </Disclosure>
+      </div>
       {rows.map(([label, preview, body]) => (
         <Disclosure
           key={label}
           variant="row"
           label={label}
           preview={preview}
-          actions={<Button variant="tertiary">Edit</Button>}
+          actions={
+            <Button variant="tertiary" aria-label={`Edit ${label}`}>
+              Edit
+            </Button>
+          }
         >
           {body}
         </Disclosure>
@@ -702,7 +708,17 @@ function NavListDemo() {
   ];
   const [selected, setSelected] = useState(0);
   return (
-    <div style={{ maxWidth: 320 }}>
+    <div style={{ maxWidth: 320, display: 'grid', gap: 24 }}>
+      <NavList aria-label="Saved jobs (links)">
+        <NavList.Item href="#" current>
+          Design systems lead
+          <MetaLine items={['Acme Cloud', 'Remote']} />
+        </NavList.Item>
+        <NavList.Item href="#">
+          Staff front-end engineer
+          <MetaLine items={['Northwind', 'Hybrid']} />
+        </NavList.Item>
+      </NavList>
       <NavList aria-label="Saved jobs">
         {jobs.map((job, index) => (
           <NavList.Item

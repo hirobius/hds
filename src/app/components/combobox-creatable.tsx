@@ -37,6 +37,8 @@ type Row = { kind: 'option'; option: ComboboxOption } | { kind: 'create'; text: 
 
 function nextEnabled(rows: readonly Row[], from: number, dir: 1 | -1): number {
   const n = rows.length;
+  // From "nothing highlighted" ArrowDown lands on the first row, ArrowUp on the last.
+  if (from === -1) from = dir === 1 ? -1 : 0;
   for (let step = 1; step <= n; step++) {
     const i = (((from + dir * step) % n) + n) % n;
     const row = rows[i];
@@ -45,26 +47,40 @@ function nextEnabled(rows: readonly Row[], from: number, dir: 1 | -1): number {
   return from;
 }
 
-export function CreatableCombobox({
-  options,
-  value,
-  onChange,
-  onCreate,
-  placeholder,
-  emptyMessage,
-  ariaLabel,
-  id,
-  ariaDescribedBy,
-  ariaInvalid,
-  className,
-  disabled,
-}: CreatableComboboxProps) {
+export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
+  HTMLInputElement,
+  CreatableComboboxProps
+>(function CreatableCombobox(
+  {
+    options,
+    value,
+    onChange,
+    onCreate,
+    placeholder,
+    emptyMessage,
+    ariaLabel,
+    id,
+    ariaDescribedBy,
+    ariaInvalid,
+    className,
+    disabled,
+  },
+  forwardedRef,
+) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState('');
   const [activeIndex, setActiveIndex] = React.useState(0);
   const baseId = React.useId();
   const listId = `${baseId}-list`;
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const setInputRef = React.useCallback(
+    (node: HTMLInputElement | null) => {
+      inputRef.current = node;
+      if (typeof forwardedRef === 'function') forwardedRef(node);
+      else if (forwardedRef) forwardedRef.current = node;
+    },
+    [forwardedRef],
+  );
   const popupName = ariaLabel || placeholder;
 
   // A created value has no option; its chip reads as the value itself.
@@ -84,9 +100,12 @@ export function CreatableCombobox({
     return list;
   }, [options, text, value]);
   const suggestionCount = rows.filter((r) => r.kind === 'option').length;
+  const addRow = rows.find((r) => r.kind === 'create');
 
-  // Typed text wins Enter: land on the Add row when there is one, else the first
-  // selectable suggestion. Adjusted during render, as Combobox does for its list.
+  // Typed text wins Enter: an exact (case-insensitive) match first, else the Add
+  // row, else the first selectable suggestion. With an empty field nothing is
+  // highlighted until an arrow key, so a stray Enter cannot toggle a chip.
+  // Adjusted during render, as Combobox does for its list.
   const rowsKey = `${open}|${rows
     .map((r) =>
       r.kind === 'create' ? `+${r.text}` : `${r.option.value}:${r.option.disabled ? 1 : 0}`,
@@ -95,9 +114,15 @@ export function CreatableCombobox({
   const [prevRowsKey, setPrevRowsKey] = React.useState(rowsKey);
   if (prevRowsKey !== rowsKey) {
     setPrevRowsKey(rowsKey);
+    const q = text.toLowerCase();
+    const exact = rows.findIndex(
+      (r) => r.kind === 'option' && !r.option.disabled && r.option.label.toLowerCase() === q,
+    );
     const create = rows.findIndex((r) => r.kind === 'create');
     const first = rows.findIndex((r) => r.kind === 'option' && !r.option.disabled);
-    setActiveIndex(create !== -1 ? create : first === -1 ? 0 : first);
+    setActiveIndex(
+      !q ? -1 : exact !== -1 ? exact : create !== -1 ? create : first === -1 ? -1 : first,
+    );
   }
 
   const scrollActiveIntoView = React.useRef(false);
@@ -146,7 +171,8 @@ export function CreatableCombobox({
       }
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      if (open) commit(rows[activeIndex]);
+      // Closed (after Escape) with text typed, Enter still adds it.
+      commit(rows[activeIndex]);
     } else if (e.key === 'Escape') {
       if (open) {
         e.preventDefault();
@@ -199,7 +225,7 @@ export function CreatableCombobox({
             </button>
           ))}
           <input
-            ref={inputRef}
+            ref={setInputRef}
             id={id}
             type="text"
             role="combobox"
@@ -293,9 +319,11 @@ export function CreatableCombobox({
           </p>
         ) : null}
         <div role="status" aria-live="polite" className="sr-only">
-          {`${suggestionCount} ${suggestionCount === 1 ? 'result' : 'results'}`}
+          {suggestionCount === 0 && addRow
+            ? `Add “${addRow.text}”`
+            : `${suggestionCount} ${suggestionCount === 1 ? 'result' : 'results'}`}
         </div>
       </Popover.Content>
     </Popover>
   );
-}
+});
