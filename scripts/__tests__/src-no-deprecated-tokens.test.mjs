@@ -22,7 +22,7 @@ function deprecatedVars(node, path = [], out = []) {
 
 // Files that still read a deprecated token on purpose: box-sx.ts keeps the deprecated
 // spacing aliases working for consumers, tenants.css overrides component.padding,
-// tokens.ts declares the deprecated hds.space.px6/px10 aliases until they leave in 0.30.0
+// tokens.ts declares the deprecated hds.space.px6/px10 aliases until they leave in 0.31.0
 // (drop it from this list with them). Shrink this list, never grow it (follow-up to hds#789).
 const KNOWN_READERS = [
   'src/app/components/box-sx.ts',

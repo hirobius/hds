@@ -1,0 +1,1 @@
+- Version Packages 0.30.0 (2026-10-21): changesets for Avatar, Badge count, Card.Source/Facts, Combobox creatable, compact density, Disclosure row, NavList select, PageHeader metadata, Pagination compact, SegmentedControl contrast, CodeBlock copy, lime hidden. px6/px10 removal deferred to 0.31.0 (#876): @removeIn bumped 0.30.0 -> 0.31.0 in tokens, ESLint rule data and docs.

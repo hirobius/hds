@@ -13,7 +13,7 @@
  *                     or `cn()` / `clsx()` / `cva()` arguments (option
  *                     `tailwind: false` turns this check, and only this one, off)
  *   deprecatedStep    px6 / px10 in any of the three forms: off the 4px grid,
- *                     removed in 0.30.0. Takes priority over the three above.
+ *                     removed in 0.31.0. Takes priority over the three above.
  *
  * Zero (`p-0`) and `p-px` are allowed: a reset and a hairline have no step.
  */
@@ -97,7 +97,7 @@ export default {
       primitiveTailwind:
         'Tailwind class "{{cls}}" uses a primitive spacing step; primitive steps bypass density and the scale. Use a semantic spacing token (var(--semantic-space-scale-*) / surface-padding / region-gutter, Tailwind `p-surface-padding`, `gap-scale-md`, or Box sx \'md\').',
       deprecatedStep:
-        '"{{text}}" uses a deprecated spacing step: px6 and px10 are off the 4px grid, deprecated and removed in 0.30.0. Run `npx @hirobius/design-system upgrade` (codemod hds-spacing-steps) or use a semantic spacing token.',
+        '"{{text}}" uses a deprecated spacing step: px6 and px10 are off the 4px grid, deprecated and removed in 0.31.0. Run `npx @hirobius/design-system upgrade` (codemod hds-spacing-steps) or use a semantic spacing token.',
     },
   },
   create(context) {
