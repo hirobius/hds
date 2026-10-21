@@ -8,9 +8,10 @@ import '@hirobius/design-system/fonts.css';
 import '@hirobius/design-system/tokens.css';
 import './globals.css';
 
-// Same woff2 files as fonts.css, but loaded through next/font: preloaded, with a
+// Sans and display use the same woff2 files as fonts.css, but load through next/font: preloaded, with a
 // metric-adjusted fallback face, so the webfont swap does not reflow the page
-// (hds#761 layout-shift gate; the typography page's prose was 0.275 CLS).
+// (hds#761 layout-shift gate; the typography page's prose was 0.275 CLS). Mono is deliberately
+// NOT here: code takes the package's own IBM Plex Mono face from fonts.css (one source).
 const sans = localFont({
   src: '../../public/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2',
   weight: '200 800',
@@ -22,12 +23,6 @@ const display = localFont({
   variable: '--hds-docs-font-display',
   display: 'swap',
 });
-const mono = localFont({
-  src: [{ path: '../../public/fonts/ibm-plex-mono/ibm-plex-mono-400.woff2', weight: '400' }],
-  variable: '--hds-docs-font-mono',
-  display: 'swap',
-  adjustFontFallback: false,
-});
 
 export const metadata = {
   title: 'Hirobius Design System',
@@ -37,11 +32,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${sans.variable} ${display.variable} ${mono.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={`${sans.variable} ${display.variable}`} suppressHydrationWarning>
       <body>
         <RootProvider
           theme={{
