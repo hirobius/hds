@@ -11,6 +11,7 @@ import { join } from 'node:path';
 const { ThemeSegments } = await import('../../docs-site/components/theme-segments');
 const { MdxTable, MdxCode, MdxImg } = await import('../../docs-site/components/mdx-prose');
 const { MdxPre } = await import('../../docs-site/components/mdx-code-block');
+const { SidebarGroupLabel } = await import('../../docs-site/components/sidebar-group-label');
 
 const ROOT = join(__dirname, '..', '..');
 const read = (p: string) => readFileSync(join(ROOT, p), 'utf8');
@@ -154,5 +155,53 @@ describe('slice 2: sidebar, drawer, contents rail, images', () => {
     expect(img?.className).not.toContain('rounded');
     expect(rule(/\.hds-docs-img/)).toContain('border-radius: var(--semantic-radius-action)');
     expect(read('docs-site/mdx-components.tsx')).toMatch(/img:\s*MdxImg/);
+  });
+});
+
+describe('sidebar group labels and drawer header (hds#860)', () => {
+  afterEach(cleanup);
+  const css = () => read('docs-site/app/globals.css');
+  const rule = (selector: string) => {
+    const at = css().indexOf(selector + ' {');
+    return at < 0 ? '' : css().slice(at, css().indexOf('}', at));
+  };
+
+  it('renders a group label as a caption-role section title in the secondary tone', () => {
+    const { container } = render(
+      <SidebarGroupLabel item={{ type: 'separator', name: 'Explore' }} />,
+    );
+    const label = container.querySelector('p.hds-docs-nav-label');
+    expect(label?.textContent).toBe('Explore');
+    expect(label?.className).toContain('hds-type-caption');
+    expect(label?.className).toContain('text-[var(--semantic-color-content-secondary)]');
+    expect(read('docs-site/app/docs/layout.tsx')).toMatch(/Separator:\s*SidebarGroupLabel/);
+  });
+
+  it('spaces each group from HDS tokens, in the desktop sidebar and the drawer alike', () => {
+    const body = rule(':is(#nd-sidebar, #nd-sidebar-mobile) .hds-docs-nav-label');
+    expect(body).toContain(
+      'margin: var(--semantic-space-scale-md) 0 var(--semantic-space-scale-xs)',
+    );
+    expect(body).not.toMatch(/\d+(px|rem)/);
+  });
+
+  it('labels every top-level group, the first one included', () => {
+    const pages = JSON.parse(read('content/docs/meta.json')).pages as string[];
+    expect(pages[0]).toMatch(/^---.+---$/);
+    expect(pages).toContain('---Explore---');
+  });
+
+  it('holds the drawer header controls at one touch height', () => {
+    const height = 'block-size: var(--primitive-size-interactive-min)';
+    expect(rule("#nd-sidebar-mobile .hds-docs-display [role='radiogroup']")).toContain(height);
+    const buttons = rule(
+      '#nd-sidebar-mobile [data-docs-switch-trigger],\n#nd-sidebar-mobile div:has(> .hds-docs-display) > button',
+    );
+    expect(buttons).toContain(height);
+    expect(buttons).toContain('inline-size: var(--primitive-size-interactive-min)');
+  });
+
+  it('gives the gear the tertiary variant, so it matches the toggle and takes no hard shadow', () => {
+    expect(read('docs-site/components/preview-switches.tsx')).toMatch(/variant="tertiary"/);
   });
 });

@@ -47,7 +47,7 @@ export function PreviewSwitches() {
         <Tooltip.Trigger asChild>
           <Popover.Trigger asChild>
             <Button
-              variant="secondary"
+              variant="tertiary"
               size="sm"
               iconOnly
               label="Display settings"

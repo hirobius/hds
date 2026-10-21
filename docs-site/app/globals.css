@@ -383,7 +383,7 @@ pre {
 .hds-docs-display {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--semantic-space-scale-xs);
 }
 /* Fumadocs wraps the theme-switch slot in a full-width bordered pill that sits empty beside a
    lone toggle; drop that chrome so the switcher and the settings button sit together, compact. */
@@ -765,6 +765,58 @@ a code[data-density] {
 }
 #nd-sidebar-mobile {
   box-shadow: var(--semantic-shadow-overlay);
+}
+
+/* The gear is a tertiary sm button, whose 12px icon reads too faint without a border. */
+.hds-docs-display [data-docs-switch-trigger] svg {
+  inline-size: var(--semantic-size-icon-sm);
+  block-size: var(--semantic-size-icon-sm);
+}
+
+/* Mobile drawer header (hds#860): theme switch, display settings and the close toggle share one
+   touch height and centre line, with room above the row and before the list. Below 640px HDS lifts
+   each segment to 44px, which grew the rail to 54px; the rail itself is the touch target here, so
+   its segments stretch to fill it instead. The Fumadocs toggle takes the gear's tertiary look. */
+#nd-sidebar-mobile > div:first-child {
+  padding-block: var(--semantic-space-scale-md) var(--semantic-space-scale-sm);
+}
+#nd-sidebar-mobile div:has(> .hds-docs-display) {
+  gap: var(--semantic-space-scale-xs);
+}
+#nd-sidebar-mobile .hds-docs-display [role='radiogroup'] {
+  block-size: var(--primitive-size-interactive-min);
+}
+#nd-sidebar-mobile .hds-docs-display [role='radio'] {
+  min-block-size: 0;
+}
+#nd-sidebar-mobile [data-docs-switch-trigger],
+#nd-sidebar-mobile div:has(> .hds-docs-display) > button {
+  inline-size: var(--primitive-size-interactive-min);
+  block-size: var(--primitive-size-interactive-min);
+  min-inline-size: 0;
+  min-block-size: 0;
+  padding: 0;
+  border-radius: var(--semantic-radius-action);
+  color: var(--semantic-color-content-primary);
+}
+#nd-sidebar-mobile [data-docs-switch-trigger] svg,
+#nd-sidebar-mobile div:has(> .hds-docs-display) > button svg {
+  inline-size: var(--semantic-size-icon-md);
+  block-size: var(--semantic-size-icon-md);
+}
+
+/* Sidebar group labels (components/sidebar-group-label.tsx): section titles, not nav items.
+   The caption role and secondary tone come from Text; this sets the space above each group and
+   lines the label up with the item text. */
+:is(#nd-sidebar, #nd-sidebar-mobile) .hds-docs-nav-label {
+  display: flex;
+  align-items: center;
+  gap: var(--semantic-space-scale-xs);
+  margin: var(--semantic-space-scale-md) 0 var(--semantic-space-scale-xs);
+  padding-inline: var(--semantic-space-scale-xs);
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) .hds-docs-nav-label:first-child {
+  margin-block-start: 0;
 }
 
 /* Sidebar nav items (page links and folder toggles) set in the ui role, 16px at 500, so they
