@@ -110,7 +110,13 @@ describe('Button pressed fill differs from its hover fill', () => {
 
   for (const variant of VARIANTS) {
     it(`${variant}: a hover fill token implies a distinct pressed fill token in both themes`, () => {
-      const { getByRole } = render(<Button variant={variant}>Go</Button>);
+      // hoverEffect="none": the instant hover fill this pairs with the pressed fill (the default
+      // wipe holds the rest fill on hover and paints bg.hover on its layer instead).
+      const { getByRole } = render(
+        <Button variant={variant} hoverEffect="none">
+          Go
+        </Button>,
+      );
       const classes = getByRole('button').className.split(/\s+/);
       const hover = fillVar(classes, 'hover');
       if (!hover) return; // hover is a utility class, not a bound token

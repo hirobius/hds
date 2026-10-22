@@ -18,8 +18,8 @@
  * Owns content that doesn't belong in the generated token layer:
  *   - Type ramp role classes (.hds-type-display/title/title-sm/body/ui/caption/mono)
  *   - Mobile breakpoint overrides (max-width: 639px)
- *   - Component utility classes (.hds-focus, .hds-tag-btn/.hds-tag-pill,
- *     .hds-skeleton, .hds-link, etc.)
+ *   - Component utility classes (.hds-focus, .hds-btn-hard,
+ *     .hds-btn-wipe, .hds-skeleton, .hds-link, etc.)
  *   - @layer base body/heading resets + cursor + focus-ring policy
  *   - @keyframes animations (skeleton shimmer, page-enter)
  *   - [data-density="compact"] overrides
@@ -512,20 +512,37 @@
  * Components must NOT set the same property inline if they also use these classes.
  * ------------------------------------------------------------------------------- */
 
-/* Kbd raised key: a 2px solid drop edge under the key in the stronger border
- * token (no blur), so it reads as a physical key. box-shadow adds no layout size.
- * Figma mirrors it as a drop shadow y=2, blur 0, bound to color/border/strong. */
-/* The key edge is one custom property (unset = the 2px default below) so a "hard shadow"
- * theme re-points the Kbd with the Button shadow in one place (the docs Shadow preview
- * does, docs-site globals.css). */
+/* Hard shadow (hds#888, the default since hds#891): one light source, top-left, zero blur,
+ * in semantic.color.shadow.hard (shadow ink in light, border.interactive in dark, where
+ * black would vanish). Kbd sits on a 2px key edge; the --semantic-shadow-key hook still
+ * re-points it in one place. box-shadow adds no layout size. */
 .hds-kbd {
-  box-shadow: var(--semantic-shadow-key, 0 2px 0 var(--semantic-color-border-strong));
+  box-shadow: var(--semantic-shadow-key, 2px 2px 0 var(--semantic-color-shadow-hard));
+}
+/* Button (shadow="hard", the default, primary and secondary): 3px at rest, lifts to 5px
+ * on hover and sinks to 1px on press. The offset rides --tw-shadow, so Tailwind's focus
+ * ring and the pressed inset wash still compose into the same box-shadow list. No
+ * transition on translate: it snaps, so reduced motion needs no override. */
+.hds-btn-hard:not(:disabled, [aria-disabled='true']) {
+  --tw-shadow: var(--hds-hs, 3px 3px) 0 var(--semantic-color-shadow-hard);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+}
+.hds-btn-hard:not(:disabled, [aria-disabled='true']):hover {
+  --hds-hs: 5px 5px;
+  translate: -2px -2px;
+}
+.hds-btn-hard:not(:disabled, [aria-disabled='true']):active {
+  --hds-hs: 1px 1px;
+  translate: 2px 2px;
 }
 
-/* Button hoverEffect="wipe" (opt-in): the variant's own hover fill is a scaled layer
+/* Button hoverEffect="wipe" (the default since hds#888; "none" opts out): the variant's own hover fill is a scaled layer
  * behind the label, contained by the button's `relative isolate overflow-hidden`. Every
  * per-variant and per-edge value is inline, so this ships two rules (size budget):
- *   --hds-wipe-fill  Button: role.accent, primary's component.button.bgHover, or a
+ *   --hds-wipe-fill  Button: secondary.bg.hover, primary's component.button.bgHover,
+ *                    tertiary's role.accent, or a
  *                    status tone's own fill.
  *   --hds-wipe-f     Button, tones only: the tone's hover brightness moved off the button
  *                    (filter: none inline) onto the layer, brightness(--hds-wipe-b):
@@ -576,47 +593,6 @@
 }
 .hds-text-hover:hover {
   color: var(--semantic-color-content-primary);
-}
-
-/* Tag button — interactive Tag hit target. The outer button stays compact
- * while the invisible overlay owns the 44px tap target and the inner pill
- * keeps the visible surface compact. */
-.hds-tag-btn {
-  background: transparent;
-  border: 0;
-  color: inherit;
-  transition: color var(--hds-motion-productive-duration);
-  min-width: var(--primitive-size-interactive-min);
-}
-.hds-tag-pill {
-  background: var(--semantic-color-surface-raised);
-  border-color: var(--semantic-color-border-default);
-  color: var(--semantic-color-content-secondary);
-  transition:
-    background-color var(--hds-motion-productive-duration),
-    border-color var(--hds-motion-productive-duration),
-    color var(--hds-motion-productive-duration);
-  box-sizing: border-box;
-}
-.hds-tag-btn[data-active='true'] {
-  color: var(--component-tag-activeText);
-}
-.hds-tag-btn[data-active='true'] .hds-tag-pill {
-  background: var(--component-tag-activeBackground);
-  border-color: var(--component-tag-activeBorder);
-  color: var(--component-tag-activeText);
-}
-.hds-tag-btn:not([data-active='true']):hover .hds-tag-pill {
-  background: var(--semantic-color-surface-hover);
-  border-color: var(--semantic-color-border-accent);
-  color: var(--semantic-color-content-primary);
-}
-.hds-tag-btn:not([data-active='true']):active .hds-tag-pill,
-.hds-tag-btn:not([data-active='true'])[data-pressed='true'] .hds-tag-pill {
-  border-color: var(--semantic-color-border-accent);
-}
-.hds-tag-btn[data-active='true']:hover .hds-tag-pill {
-  background: var(--component-tag-activeHover);
 }
 
 input[data-search-input='true']::-webkit-search-cancel-button,
