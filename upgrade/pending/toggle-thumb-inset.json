@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Toggle's thumb is now 12px with an even inset in the track; nothing to change unless a visual snapshot pins the old 16px thumb."
+}
