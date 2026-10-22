@@ -1,16 +1,4 @@
 {
   "impact": "none",
-  "plain": "The 6px and 10px spacing steps are kept: 0.29.0 deprecated them for removal in 0.31.0, and that removal is cancelled; nothing to change.",
-  "steps": [
-    {
-      "id": "behavior/primitive.space.px6-px10",
-      "kind": "behavior",
-      "impact": "none",
-      "plain": "The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind *-px6/*-px10) are no longer deprecated and stay; the 0.29.0 removal in 0.31.0 is cancelled, so code still using them keeps working and needs no codemod.",
-      "detect": {
-        "cssVars": ["--primitive-space-px6", "--primitive-space-px10"],
-        "regex": ["\\b(?:hds\\.space\\.px(?:6|10)|[a-z-]+-px(?:6|10))\\b"]
-      }
-    }
-  ]
+  "plain": "The 6px and 10px spacing steps are kept: 0.29.0 deprecated them for removal in 0.31.0, and that removal is cancelled; nothing to change."
 }
