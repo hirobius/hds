@@ -147,9 +147,11 @@ describe('theme.css hard shadow', () => {
   });
 
   it('Kbd follows the same light source by default: 2px straight-down key shadow, border.strong edge', () => {
-    expect(rule('.hds-kbd').replace(/\s+/g, ' ')).toContain(
-      'var( --semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)) )',
-    );
+    expect(
+      rule('.hds-kbd')
+        .replace(/\s+/g, ' ')
+        .replace(/\( | \)/g, (m) => m.trim()),
+    ).toContain('var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)))');
     render(<Kbd>K</Kbd>);
     expect(classes(screen.getByText('K'))).toContain(
       'border-[color:var(--semantic-color-border-strong)]',
