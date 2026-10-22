@@ -12,10 +12,9 @@
  * accents.css, tenants.css); tests/raised-edge.test.ts recomputes them from the fill tokens.
  */
 
-export const EDGE_STEPS = 2;
 export const EDGE_FLOOR = 1.5;
-const DL = 0.06 * EDGE_STEPS;
-const CK = 0.85 ** EDGE_STEPS;
+const DL = 0.06 * 2; // two steps of L −0.06
+const CK = 0.85 ** 2; // two steps of C ×0.85
 
 /** Where each raised item takes its fill, and the CSS hook name suffix it ships under. */
 export const EDGE_FILLS = {
@@ -117,7 +116,7 @@ export function edgeFor(fill, mode, grounds = []) {
     const lighter = oklchToHex({ l, c: f.c * CK, h: f.h });
     if (clears(lighter)) return lighter;
   }
-  return '#ffffff';
+  throw new Error(`raised-edge: no lighter rim of ${fill} clears ${EDGE_FLOOR}:1`);
 }
 
 // ── Token resolution ─────────────────────────────────────────────────────────
@@ -184,12 +183,10 @@ export function buildEdgeCSS(raw) {
  * dark edge is restated whenever it differs from whatever would otherwise be in force.
  */
 export function overlayEdgeVars(raw, overlay) {
-  let base;
-  try {
-    base = computeEdges(raw);
-  } catch {
-    return { light: [], dark: [] }; // a partial token tree (unit fixtures) has no edge fills
-  }
+  // A partial token tree (build-tokens unit fixtures) has no edge fills; a real one that
+  // fails to resolve still throws.
+  if (Object.values(EDGE_FILLS).some((p) => !at(raw, p))) return { light: [], dark: [] };
+  const base = computeEdges(raw);
   const mine = computeEdges(layered(raw, overlay));
   const keys = Object.keys(EDGE_FILLS);
   const light = keys.filter((k) => mine.Light[k] !== base.Light[k]);

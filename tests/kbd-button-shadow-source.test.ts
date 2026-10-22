@@ -7,7 +7,7 @@ import { resolve } from 'node:path';
 describe('Kbd shadow follows the Button light source', () => {
   const theme = readFileSync(resolve(__dirname, '../src/styles/theme.css'), 'utf8');
   const docs = readFileSync(resolve(__dirname, '../docs-site/app/globals.css'), 'utf8');
-  const colour = 'var(--hds-edge)';
+  const colour = 'var(--hds-edge, var(--hds-edge-secondary))';
 
   it('shipped Kbd takes a 2px straight-down key shadow in its own-colour edge, through --semantic-shadow-key', () => {
     expect(theme).toMatch(
@@ -16,7 +16,9 @@ describe('Kbd shadow follows the Button light source', () => {
   });
 
   it('shipped Button rests, grows and presses straight down in its own-colour edge', () => {
-    expect(theme).toContain(`0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, ${colour})`);
+    expect(theme.replace(/\s+/g, ' ')).toContain(
+      `0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, ${colour})`,
+    );
     expect(theme).toContain('--hds-hs: 5px;');
     expect(theme).toContain('--hds-hs: 1px;');
   });

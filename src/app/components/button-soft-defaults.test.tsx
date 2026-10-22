@@ -97,6 +97,21 @@ describe('Button own-colour edge (hds#896)', () => {
     expect(edge(screen.getByRole('button'))).toBe(`var(--hds-edge-${key})`);
   });
 
+  it('a pressed neutral toggle paints bg-primary, so it takes the primary edge', () => {
+    render(
+      <>
+        <Button defaultPressed>On</Button>
+        <Button defaultPressed={false}>Off</Button>
+        <Button defaultPressed tone="info">
+          Toned
+        </Button>
+      </>,
+    );
+    expect(edge(screen.getByText('On').closest('button')!)).toBe('var(--hds-edge-primary)');
+    expect(edge(screen.getByText('Off').closest('button')!)).toBe('var(--hds-edge-secondary)');
+    expect(edge(screen.getByText('Toned').closest('button')!)).toBe('var(--hds-edge-info)');
+  });
+
   it('sets no edge without the shadow (tertiary, shadow="none"), with or without the wipe', () => {
     render(
       <>
@@ -113,7 +128,9 @@ describe('Button own-colour edge (hds#896)', () => {
   it('a consumer style still wins, and --hds-btn-edge outranks the default in theme.css', () => {
     render(<Button style={{ '--hds-edge': 'red' } as React.CSSProperties}>Go</Button>);
     expect(edge(screen.getByRole('button'))).toBe('red');
-    expect(theme).toContain('var(--hds-btn-edge, var(--hds-edge))');
+    expect(theme.replace(/\s+/g, ' ')).toContain(
+      'var(--hds-btn-edge, var(--hds-edge, var(--hds-edge-secondary)))',
+    );
   });
 });
 
@@ -126,7 +143,9 @@ describe('theme.css hard shadow', () => {
 
   it('rests 3px straight down in --hds-btn-edge (default: own-colour edge), composing with ring + inset wash', () => {
     const r = rule(".hds-btn-hard:not(:disabled, [aria-disabled='true'])");
-    expect(r).toContain('--tw-shadow: 0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--hds-edge))');
+    expect(r.replace(/\s+/g, ' ')).toContain(
+      '--tw-shadow: 0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--hds-edge, var(--hds-edge-secondary)))',
+    );
     expect(r).toMatch(/box-shadow:[^;]*--tw-inset-shadow[^;]*--tw-ring-shadow[^;]*--tw-shadow/);
   });
 

@@ -117,7 +117,9 @@ describe('accent themes re-derive the primary edge', () => {
 
 describe('wiring', () => {
   it('Button and Kbd default their hooks to the own-colour edge; shadow.hard stays exported', () => {
-    expect(theme).toContain('0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--hds-edge))');
+    expect(theme.replace(/\s+/g, ' ')).toContain(
+      '0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--hds-edge, var(--hds-edge-secondary)))',
+    );
     expect(theme.replace(/\s+/g, ' ').replace(/\( | \)/g, (m) => m.trim())).toContain(
       'var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)))',
     );

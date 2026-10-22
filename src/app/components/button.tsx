@@ -268,14 +268,26 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // component.button.bgHover, secondary's component.button.secondary.bg.hover, or
     // tertiary's role.accent. Inline, so the shipped CSS has no
     // per-variant rules; a consumer `style` still wins.
+    // A toggle (hds#393): any of the three pressed props makes this a toggle
+    // button; `pressed` controls it, otherwise it keeps its own state. The
+    // state goes out as aria-pressed and data-pressed (data-state is loading's).
+    const isToggle =
+      pressedProp !== undefined || defaultPressed !== undefined || onPressedChange !== undefined;
+    const [ownPressed, setOwnPressed] = React.useState(defaultPressed ?? false);
+    const isPressed = pressedProp ?? ownPressed;
     const hasTone = tone != null && tone !== 'neutral';
-    // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#896): this variant's or tone's
-    // own fill stepped darker, precomputed as --hds-edge-*; --hds-btn-edge still overrides.
+    // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#896): the fill it sits under,
+    // stepped darker and precomputed as --hds-edge-<key>; the keys are the tone names plus
+    // primary and secondary (a pressed neutral toggle paints bg-primary, so it takes primary's
+    // edge). --hds-btn-edge still overrides.
+    const edgeKey = hasTone
+      ? tone
+      : variant === 'primary' || (isToggle && isPressed)
+        ? 'primary'
+        : 'secondary';
     const edge =
       shadow === 'hard' && variant !== 'tertiary'
-        ? {
-            '--hds-edge': `var(--hds-edge-${hasTone ? tone : variant === 'primary' ? 'primary' : 'secondary'})`,
-          }
+        ? { '--hds-edge': `var(--hds-edge-${edgeKey})` }
         : null;
     const wipeProps = wipe
       ? {
@@ -299,13 +311,6 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       : { style: edge ? ({ ...edge, ...style } as React.CSSProperties) : style };
     const content = children ?? label;
 
-    // A toggle (hds#393): any of the three pressed props makes this a toggle
-    // button; `pressed` controls it, otherwise it keeps its own state. The
-    // state goes out as aria-pressed and data-pressed (data-state is loading's).
-    const isToggle =
-      pressedProp !== undefined || defaultPressed !== undefined || onPressedChange !== undefined;
-    const [ownPressed, setOwnPressed] = React.useState(defaultPressed ?? false);
-    const isPressed = pressedProp ?? ownPressed;
     const toggleProps = isToggle
       ? {
           'aria-pressed': isPressed,
