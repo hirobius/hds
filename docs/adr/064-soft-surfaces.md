@@ -27,12 +27,12 @@ opt-in in #889). The soft-demo tenant (hds#505) was the earlier spike of the sam
    never moves, so a press cannot slide off the pointer. Kbd follows the same light source by default
    (`0 2px 0`). Colour comes from one hook per component, `--hds-btn-edge` / `--hds-kbd-edge`,
    defaulting to `semantic.color.shadow.hard`, so a later colour model is a token change.
-   **Amended 2026-10-22 (hds#896, Adrian's Visuals Lab pick "own colour, stepped")**: the hooks now
+   **Amended 2026-10-22 (hds#897, Adrian's Visuals Lab pick "own colour, stepped")**: the hooks now
    default to each item's own fill stepped two OKLCH steps darker (L −0.12, C ×0.7225, same hue);
    in dark, an edge under 1.5:1 on page/raised/overlay/muted steps lighter instead until it
    clears 1.5:1. `scripts/lib/raised-edge.mjs` computes them at token build time as
    `--hds-edge-*`; `tests/raised-edge.test.ts` pins them. `shadow.hard` stays exported.
-5. **The hard shadow is the soft button's 1.4.11 boundary** (superseded by the hds#896 amendment
+5. **The hard shadow is the soft button's 1.4.11 boundary** (superseded by the hds#897 amendment
    above: the own-colour edge trades the 3:1 boundary for a 1.5:1 floor in dark, and none in light), so `semantic.color.shadow.hard`
    in Dark moves from `neutral.600` (2.7:1 on black) to `neutral.500` (`border.interactive`,
    4.4:1 on page, 3.7:1 raised, 3.2:1 overlay). Light stays the shadow ink (12.8:1 or more).

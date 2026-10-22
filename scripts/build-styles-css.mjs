@@ -29,7 +29,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'dist', 'tokens.css');
 const OUT = path.join(ROOT, 'dist', 'styles.css');
 
-// One line (hds#896 size budget): the old four-line banner was ~200 B of the gzip budget.
+// One line (hds#897 size budget): the old four-line banner was ~200 B of the gzip budget.
 const banner =
   '/* @hirobius/design-system/styles.css: tokens.css with no global reset (scoped to [data-hds]) */\n';
 

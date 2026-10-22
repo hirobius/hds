@@ -1648,7 +1648,7 @@ export function buildTenantCSS(
       }
     }
 
-    // Raised edges (hds#896): an overlay that moves an edge fill re-derives its edge.
+    // Raised edges (hds#897): an overlay that moves an edge fill re-derives its edge.
     const edges = overlayEdgeVars(baseRaw, overlay);
     lightVars.push(...edges.light);
     darkVars.push(...edges.dark);

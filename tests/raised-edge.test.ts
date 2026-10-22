@@ -1,5 +1,5 @@
 /**
- * Raised edges (hds#896): every hard "raised" edge is its item's own fill stepped two steps
+ * Raised edges (hds#897): every hard "raised" edge is its item's own fill stepped two steps
  * darker (OKLCH L −0.12, C ×0.7225, same hue). In dark, an edge under 1.5:1 on the surface
  * it sits on steps lighter instead (L +0.12, then +0.01 until 1.5:1). The shipped
  * --hds-edge-* values in tokens.generated.css / accents.css must equal that rule applied

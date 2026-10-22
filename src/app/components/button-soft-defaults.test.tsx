@@ -78,7 +78,7 @@ describe('Button defaults (hds#888, hds#891)', () => {
   });
 });
 
-describe('Button own-colour edge (hds#896)', () => {
+describe('Button own-colour edge (hds#897)', () => {
   const edge = (el: HTMLElement) => el.style.getPropertyValue('--hds-edge');
 
   it.each([

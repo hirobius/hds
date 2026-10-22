@@ -276,7 +276,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     const [ownPressed, setOwnPressed] = React.useState(defaultPressed ?? false);
     const isPressed = pressedProp ?? ownPressed;
     const hasTone = tone != null && tone !== 'neutral';
-    // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#896): the fill it sits under,
+    // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#897): the fill it sits under,
     // stepped darker and precomputed as --hds-edge-<key>; the keys are the tone names plus
     // primary and secondary (a pressed neutral toggle paints bg-primary, so it takes primary's
     // edge). --hds-btn-edge still overrides.

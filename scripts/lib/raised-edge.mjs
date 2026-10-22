@@ -1,6 +1,6 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * Raised edge colours (hds#896): the hard "raised" ledge under a Button or Kbd is the item's
+ * Raised edge colours (hds#897): the hard "raised" ledge under a Button or Kbd is the item's
  * OWN fill, stepped two steps darker. One step = OKLCH lightness −0.06, chroma ×0.85, same
  * hue (so two = L −0.12, C ×0.7225), clamped into sRGB by reducing chroma.
  *
@@ -171,7 +171,7 @@ export function buildEdgeCSS(raw) {
   const keys = Object.keys(EDGE_FILLS);
   const dark = keys.filter((k) => e.Dark[k] !== e.Light[k]);
   return (
-    `/* Raised edges (hds#896): each fill stepped 2 darker; dark lightens below 1.5:1. scripts/lib/raised-edge.mjs */\n` +
+    `/* Raised edges (hds#897): each fill stepped 2 darker; dark lightens below 1.5:1. scripts/lib/raised-edge.mjs */\n` +
     `:root{${decls(e.Light, keys)}}\n[data-theme="dark"]{${decls(e.Dark, dark)}}\n`
   );
 }
@@ -193,6 +193,6 @@ export function overlayEdgeVars(raw, overlay) {
   const dark = keys.filter(
     (k) => mine.Dark[k] !== (light.includes(k) ? mine.Light[k] : base.Dark[k]),
   );
-  const line = (e) => (k) => `  --hds-edge-${k}: ${e[k]}; /* css-ok: raised edge (hds#896) */`;
+  const line = (e) => (k) => `  --hds-edge-${k}: ${e[k]}; /* css-ok: raised edge (hds#897) */`;
   return { light: light.map(line(mine.Light)), dark: dark.map(line(mine.Dark)) };
 }
