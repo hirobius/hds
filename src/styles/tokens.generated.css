@@ -142,9 +142,7 @@
   --primitive-space-32: 128px;
   --primitive-space-px1: 1px;
   --primitive-space-px2: 2px;
-  /* @deprecated 2026-10 spacing prune, removed in 0.31.0 — use semantic.space.scale.xs (8px) (removed in 0.31.0) */
   --primitive-space-px6: 6px;
-  /* @deprecated 2026-10 spacing prune, removed in 0.31.0 — use semantic.space.fixed.xs (12px) (removed in 0.31.0) */
   --primitive-space-px10: 10px;
   --primitive-blur-8: 8px;
   --primitive-blur-16: 16px;

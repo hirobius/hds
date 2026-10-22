@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { scanSource, ratchet, scanBuiltCss } from '../check-tailwind-spacing-scale.mjs';
+import { scanSource, ratchet } from '../check-tailwind-spacing-scale.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -99,13 +99,13 @@ describe('tailwind spacing scale: primitive and deprecated steps (2026-10 spacin
     ]);
   });
 
-  it('flags the deprecated off-grid steps in every spelling', () => {
+  it('treats the off-grid px6/px10 steps (kept in 0.31.0) like any primitive step', () => {
     const src = `x("p-px6 md:-mt-px10", "var(--primitive-space-px6)", hds.space.px10)`;
     expect(scanSource(src).map((f) => [f.token, f.kind])).toEqual([
-      ['p-px6', 'deprecated-step'],
-      ['md:-mt-px10', 'deprecated-step'],
-      ['--primitive-space-px6', 'deprecated-step'],
-      ['hds.space.px10', 'deprecated-step'],
+      ['p-px6', 'off-scale'],
+      ['md:-mt-px10', 'off-scale'],
+      ['--primitive-space-px6', 'primitive-var'],
+      ['hds.space.px10', 'primitive-member'],
     ]);
   });
 
@@ -135,10 +135,6 @@ describe('tailwind spacing scale: ratchet', () => {
     const r = ratchet([], { 'a.tsx': 3 });
     expect(r.failures).toEqual([{ file: 'a.tsx', baseline: 3, count: 0, reason: 'stale' }]);
   });
-  it('never baselines a deprecated step', () => {
-    const r = ratchet([f('a.tsx', 'deprecated-step')], { 'a.tsx': 5 });
-    expect(r.failures.map((x) => x.reason)).toContain('deprecated');
-  });
 });
 
 describe('check-tailwind-spacing-scale --ratchet on the real tree', () => {
@@ -153,19 +149,5 @@ describe('check-tailwind-spacing-scale --ratchet on the real tree', () => {
     );
     expect(r.stdout + r.stderr).toMatch(/ratchet ok/);
     expect(r.status).toBe(0);
-  });
-});
-
-describe('tailwind spacing scale: scanBuiltCss (--dist)', () => {
-  it('flags px6/px10 spacing utilities a built stylesheet ships', () => {
-    const css = `.p-px6{padding:6px}.md\\:gap-px10{gap:10px}.mt-\\[var\\(--primitive-space-px6\\)\\]{margin-top:var(--primitive-space-px6)}`;
-    expect(scanBuiltCss(css).sort()).toEqual(
-      ['md:gap-px10', 'mt-[var(--primitive-space-px6)]', 'p-px6'].sort(),
-    );
-  });
-
-  it('ignores the deprecated vars themselves and other px steps', () => {
-    const css = `:root{--primitive-space-px6:6px;--hds-space-px10:10px}.p-px1{padding:1px}.gap-px100{gap:100px}.p-scale-md{padding:0}`;
-    expect(scanBuiltCss(css)).toEqual([]);
   });
 });

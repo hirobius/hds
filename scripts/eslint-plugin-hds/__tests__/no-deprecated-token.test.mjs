@@ -16,7 +16,7 @@ ruleTester.run('no-deprecated-token', rule, {
     'const x = "var(--semantic-space-layout-tight-x)";',
     // only a composite's sub-vars share its note
     'const x = "var(--semantic-space-layout-tight-font-size)".length;',
-    // the primitive px6/px10 steps belong to hds/no-primitive-spacing
+    // px6/px10 are kept primitive steps, not deprecated ones (hds/no-primitive-spacing reports them)
     'const x = "var(--primitive-space-px6)";',
     // Tailwind-shaped text outside className / cn is not a class
     "const label = 'p-layout-tight';",

@@ -140,9 +140,7 @@ declare module 'react' {
     '--primitive-space-32'?: string | undefined;
     '--primitive-space-px1'?: string | undefined;
     '--primitive-space-px2'?: string | undefined;
-    /** @deprecated 2026-10 spacing prune, removed in 0.31.0 — use semantic.space.scale.xs (8px) @removeIn 0.31.0 */
     '--primitive-space-px6'?: string | undefined;
-    /** @deprecated 2026-10 spacing prune, removed in 0.31.0 — use semantic.space.fixed.xs (12px) @removeIn 0.31.0 */
     '--primitive-space-px10'?: string | undefined;
     '--primitive-blur-8'?: string | undefined;
     '--primitive-blur-16'?: string | undefined;

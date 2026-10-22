@@ -96,26 +96,18 @@ ruleTester.run('no-primitive-spacing', rule, {
       code: 'const x = <div className={`flex p-4 ${a}`} />;',
       errors: [{ messageId: 'primitiveTailwind' }],
     },
-    // 4. deprecatedStep takes priority
+    // 4. px6 / px10 are ordinary primitive steps (kept in 0.31.0)
     {
       code: "const x = 'var(--primitive-space-px6)';",
-      errors: [{ messageId: 'deprecatedStep' }],
-    },
-    {
-      code: "const x = 'var(--primitive-space-px10)';",
-      errors: [{ messageId: 'deprecatedStep' }],
-    },
-    {
-      code: 'const x = hds.space.px6;',
-      errors: [{ messageId: 'deprecatedStep' }],
+      errors: [{ messageId: 'primitiveVar' }],
     },
     {
       code: 'const x = hds.space.px10;',
-      errors: [{ messageId: 'deprecatedStep' }],
+      errors: [{ messageId: 'primitiveMember' }],
     },
     {
       code: 'const x = <div className="p-px6 gap-px10" />;',
-      errors: [{ messageId: 'deprecatedStep' }, { messageId: 'deprecatedStep' }],
+      errors: [{ messageId: 'primitiveTailwind' }, { messageId: 'primitiveTailwind' }],
     },
   ],
 });
