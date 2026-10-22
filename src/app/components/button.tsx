@@ -180,7 +180,7 @@ export interface ButtonProps
   variant?: ButtonVariantProps['variant'];
   /** `wipe` (default) slides the hover fill in from the pointer's edge; `none` changes it in place. */
   hoverEffect?: 'none' | 'wipe';
-  /** `hard` (default) draws the zero-blur shadow on primary and secondary; `none` opts out. Tertiary never has one. The shadow is a soft secondary's 3:1 edge: with `none`, the label alone identifies it. */
+  /** `hard` (default) draws the zero-blur shadow on primary and secondary; `none` opts out. Tertiary never has one. Its colour is the button's own fill stepped darker (`--hds-btn-edge` overrides it). */
   shadow?: 'hard' | 'none';
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;

@@ -7,7 +7,7 @@ since: '0.31.0'
 
 HDS separates things by **tone and space**, not by hairline outlines. A card, a panel, a
 popover or a list sits on its own surface step; controls are soft filled and carry a
-zero-blur **hard shadow** from one light source (top left). Borders are kept only where they
+zero-blur **hard shadow** from one light source (straight above), in the control's own colour. Borders are kept only where they
 carry meaning.
 
 ## Tokens
@@ -41,16 +41,23 @@ Card, pass `bordered`.
 ## Buttons: soft fill, hard shadow, wipe
 
 - Secondary is a soft tonal fill (`surface.soft`), no border.
-- Primary and secondary carry the hard shadow (`semantic.color.shadow.hard`): 3px at rest, 5px
-  on hover, 1px on press; the button itself never moves. Tertiary is quiet and never has one.
+- Primary and secondary carry the hard shadow: 3px at rest, 5px on hover, 1px on press; the
+  button itself never moves. Tertiary is quiet and never has one. Kbd carries a 2px one.
+- The edge is the item's **own fill, two steps darker** (OKLCH lightness −0.12, chroma ×0.7225,
+  same hue): primary from the accent, secondary from the soft fill, a tone from its tone fill,
+  Kbd from its key fill. In dark, where a darker edge would vanish on a near-black page, it
+  steps **lighter** instead (a lighter rim) until it reaches 1.5:1. The values ship as
+  `--hds-edge-*`; set `--hds-btn-edge` or `--hds-kbd-edge` to override one.
 - The hover fill wipes in from the edge the pointer enters.
 - Opt out per button: `shadow="none"`, `hoverEffect="none"`.
 
 ## Contrast
 
-- The hard shadow is the soft button's boundary (WCAG 1.4.11): at least 3:1 on page, raised,
-  overlay and muted, in light (shadow ink, 12.8:1 or more) and dark (`neutral.500`, 3.2:1 or more).
-- Text on every soft fill clears AA (4.5:1). `tests/soft-surfaces-contrast.test.ts` checks both.
+- In dark every edge reaches at least 1.5:1 on page, raised, overlay and muted; in light every
+  edge is darker than its fill. `tests/raised-edge.test.ts` recomputes each edge from its fill.
+- The own-colour edge is a depth cue, not a 3:1 boundary: a soft secondary is identified by its
+  label and fill. For a 3:1 edge, set `--hds-btn-edge: var(--semantic-color-shadow-hard)`.
+- Text on every soft fill clears AA (4.5:1). `tests/soft-surfaces-contrast.test.ts` checks it.
 
 <PrinciplesAndPractices>
 
@@ -58,7 +65,7 @@ Card, pass `bordered`.
 
 - **Tone and space separate.** A surface step and whitespace do what a hairline used to.
 - **A border is a signal.** Keep it for inputs, focus, selection, feedback and dense data.
-- **One light source.** Every hard shadow falls to the bottom right, in one colour.
+- **One light source.** Every hard shadow drops straight down, in its own colour stepped darker.
 
 ### Best practices
 
