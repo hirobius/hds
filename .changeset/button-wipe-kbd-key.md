@@ -1,5 +1,0 @@
----
-'@hirobius/design-system': minor
----
-
-Button: opt-in `hoverEffect="wipe"` (default `none`, existing buttons unchanged). The variant's own hover fill slides in from the edge the pointer enters and out the edge it leaves, hard-edged; keyboard focus fills left to right. A status `tone` wipes in its own hover colour, and pressing hides the fill so the pressed state shows. Hover-capable pointers only, instant under `prefers-reduced-motion`, nothing on a disabled button. Kbd: its key edge now reads the `--semantic-shadow-key` custom property (unset by default, falling back to the same 2px `border.strong` drop as before), so a hard-shadow theme can follow the Button light source in one place. New token `semantic.color.shadow.hard` (`--semantic-color-shadow-hard`, on new primitive `primitive.color.shadow.ink`): the colour for hard-edged offset shadows, the shadow ink (hsl 220 13% 18%) in Light and the `border.strong` stroke (neutral.600, #525252) in Dark so the shadow stays visible on dark surfaces. The docs hard-shadow preview uses it for Button (3px rest, 5px hover, 1px press) and Kbd (2px).

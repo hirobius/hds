@@ -1,5 +1,58 @@
 # Changelog
 
+## 0.31.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The unused CSS for each of these is gone (Tag has not rendered it since #60); use the Tag component instead: `hds-tag-btn` and `hds-tag-pill`.
+- Looks different: The secondary Button hover fill is now surface.softHover (neutral.300 light, neutral.600 dark); if you set this variable to theme the old outline hover, check it still reads on the soft fill.
+- Looks different: The secondary Button pressed fill is now surface.soft (the rest fill) while the hard shadow sinks; re-check any override of this variable.
+- Looks different: The secondary Button rest fill is now surface.soft (neutral.200 light, neutral.700 dark) instead of the page colour; set this variable to var(--semantic-color-surface-page) to get the old flat fill back.
+- And 15 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0310).
+
+### Minor Changes
+
+- 7b73bfb: Button: opt-in `hoverEffect="wipe"` (default `none`, existing buttons unchanged). The variant's own hover fill slides in from the edge the pointer enters and out the edge it leaves, hard-edged; keyboard focus fills left to right. A status `tone` wipes in its own hover colour, and pressing hides the fill so the pressed state shows. Hover-capable pointers only, instant under `prefers-reduced-motion`, nothing on a disabled button. Kbd: its key edge now reads the `--semantic-shadow-key` custom property (unset by default, falling back to the same 2px `border.strong` drop as before), so a hard-shadow theme can follow the Button light source in one place. New token `semantic.color.shadow.hard` (`--semantic-color-shadow-hard`, on new primitive `primitive.color.shadow.ink`): the colour for hard-edged offset shadows, the shadow ink (hsl 220 13% 18%) in Light and the `border.strong` stroke (neutral.600, #525252) in Dark so the shadow stays visible on dark surfaces. The docs hard-shadow preview uses it for Button (3px rest, 5px hover, 1px press) and Kbd (2px).
+- 8e2afa8: Overlays get a guaranteed edge (#893 review). Looks different, no code change needed.
+  - **Menu, Popover (and Combobox's listbox), Select listbox, Toast, Dialog, AlertDialog** draw a 1px `border.default` hairline (`border border-border`) on top of their shadow. Without it they had no edge over `surface.muted` (Tags, chips, the SegmentedControl track): the popover fill was the same colour (1.00:1) and a shadow cannot darken near-black in dark.
+  - **New `semantic.color.surface.floating`** (white in light, `neutral.800` in dark) is the overlay fill; `role.popover` (`bg-popover`, `--role-popover`) now points at it instead of `surface.overlay`, so overlays are white in light. `surface.overlay` itself is unchanged (badges, inline code, `bg-muted`).
+  - **Select listbox** uses `shadow-overlay` like Menu and Popover, not Tailwind's `shadow-md`.
+  - Separation floors, pinned by `overlay-edge.test.ts`: fill or hairline at least 1.15:1 against page, raised, muted and overlay surfaces in light (the soft shadow does the rest there) and 1.5:1 in dark (where the shadow cannot help).
+  - **`semantic.elevation.floating`** is described as tooltip and hover elevation; menus, popovers, listboxes, toasts and dialogs use `semantic.elevation.overlay`.
+
+- 0075992: Raised edges take their own colour (#897). The hard "raised" edge under a Button or Kbd is now the item's own fill stepped two OKLCH steps darker (lightness −0.12, chroma ×0.7225, same hue), instead of one `semantic.color.shadow.hard` for everything. In dark, where a darker edge would fall under 1.5:1 on the page, raised, overlay or muted surface, the fill steps lighter instead (a lighter rim) until it clears 1.5:1. Geometry is unchanged (`0 3px 0` / `0 5px 0` / `0 1px 0`, Kbd `0 2px 0`). Looks different, no code change needed.
+  - The edges are precomputed at token build time as new CSS variables `--hds-edge-primary`, `-secondary`, `-danger`, `-success`, `-warning`, `-info` and `-kbd` (accent themes and tenants that move the accent re-derive `--hds-edge-primary`). Button picks its variant's or tone's edge; `--hds-btn-edge` / `--hds-kbd-edge` still override it.
+  - `semantic.color.shadow.hard` stays exported but is no longer the default edge colour; set `--hds-btn-edge: var(--semantic-color-shadow-hard)` (and `--hds-kbd-edge`) to get the old single-colour edge back.
+
+- 37ad22d: Soft surfaces by default (#891) and the hard shadow + wipe by default (#888). Looks different, no code change needed.
+  - **Button**: `hoverEffect` now defaults to `"wipe"` and a new `shadow` prop defaults to `"hard"` (a zero-blur shadow straight down, no x offset, in `semantic.color.shadow.hard`: 3px at rest, 5px on hover, 1px on press, the box never moves; primary and secondary only, tertiary stays quiet, never on disabled or loading). The wipe adds `relative isolate overflow-hidden` to every Button, so anything a consumer positions outside the button box (a badge, a dot) is clipped; pass `hoverEffect="none"` there. Pagination's current page and CodeBlock's copy button opt out of the shadow. Opt out per button with `hoverEffect="none"` and/or `shadow="none"`. Secondary is now a soft tonal fill with no border (`component.button.secondary.bg.rest` → new `semantic.color.surface.soft`, hover → new `semantic.color.surface.softHover`, pressed → `surface.soft`); its 3:1 boundary is the hard shadow. The three `component.button.secondary.border.*` tokens stay defined but Button no longer draws them (`rest` and `disabled` are deprecated).
+  - **Kbd**: defaults to the same light source, a 2px straight-down hard key shadow in `semantic.color.shadow.hard` with a `border.strong` edge (`--semantic-shadow-key` still overrides it).
+  - **`semantic.color.shadow.hard`** in Dark is now `neutral.500` (`border.interactive`), not `neutral.600`, so the button boundary reaches 3:1 on page, raised and overlay surfaces.
+  - **No resting outline** on CodeBlock (raised fill; the header is a muted band), Table frame (row and column dividers stay), Tabs list divider, SegmentedControl track (now a `surface.muted` fill), Board column header, FormActions sticky bar (a raised band, now with horizontal `surface.padding`) and the selected chips of Combobox, ComboboxCreatable and TokenField (`surface.muted` fill).
+  - **Tag**: unselected pill is a soft `surface.muted` fill with no visible edge (`component.tag.background` and `component.tag.border` → `semantic.color.surface.muted`); hover, pressed and selected borders are unchanged.
+  - Card was already borderless by default; `<Card bordered>` still brings the 1px `border.default` edge back. Inputs, focus rings, selected states, feedback tones and table dividers keep their borders.
+  - Removed dead CSS: the unused `.hds-tag-btn` / `.hds-tag-pill` rules, and hand-written utilities nothing in HDS used: `.border-stroke`, `.border-stroke-accent`, `.bg-gray-100`, `.bg-fill`, `.bg-btn-fill`, `.text-white`, `.cursor-zoom-in`, `.grid-cols-[120px_1fr_1fr_1fr_1fr]`, and the `--hds-fill` / `--hds-hover` / `--hds-border` helpers (`border-[color:var(--hds-border)]`, `bg-[var(--hds-fill)]`, `hover:bg-[var(--hds-fill)]`, `hover:bg-[var(--hds-hover)]`, `active:bg-[var(--hds-border)]`, `active:bg-[var(--hds-hover)]`), which read variables HDS never defines. A consumer with Tailwind generates any of these itself.
+  - **Hard shadow drops straight down** (`0 3px 0` / `0 5px 0` / `0 1px 0`, Kbd `0 2px 0`), not at an angle. Its colour reads `--hds-btn-edge` on Button and `--hds-kbd-edge` on Kbd, both defaulting to `semantic.color.shadow.hard`; set either to recolour the edge.
+
+### Patch Changes
+
+- 08bad10: Light-mode dividers read again (Adrian, 2026-10-22). Looks different, no code change needed.
+  - **`semantic.color.border.default`** (and `role.border`, `border-border`) Light: `neutral.200` #e5e5e5 → `graphite.200` #cbc6c9, warm graphite at 1.54–1.69:1 on page, raised, overlay, muted, floating and accentSubtle (was 1.15–1.26:1). Divider, `.hds-divider`, Table rows, MenuSeparator and overlay hairlines all draw it.
+  - **`semantic.color.border.strong`** Light: `neutral.300` #d4d4d4 → `graphite.300` #b2abae (2.05–2.25:1), so `Divider variant="strong"` and Kbd stay firmer than the default rule.
+  - **`semantic.color.border.subdued`** (deprecated) Light follows `border.default`, as its description promises.
+  - **MetadataList** row dividers use `border.default` instead of `border.subtle` (1.00:1 on muted).
+  - **Also darker in light, by the same token:** overlay hairlines (Menu, Popover, Select, Toast, Dialog), `Card bordered`, the SegmentedControl secondary outline, disabled Checkbox/Radio/Toggle borders, and the Slider and Card progress tracks. No new outlines are added.
+  - Dark mode unchanged (already 1.9:1 or more). Input borders (`border.interactive`) unchanged.
+  - Floor pinned by `divider-contrast.test.ts`: 1.45:1 light, 1.4:1 dark, on every surface a divider sits on.
+
+- 98e0b22: Token descriptions: shortened `semantic.typography.mono` and the three `semantic.accent.delight.*` descriptions to 20 words or fewer. Values are unchanged.
+- 2811a6e: Spacing: the 6px and 10px steps stay. `primitive.space.px6` / `px10` (`--primitive-space-px6` / `-px10`, `hds.space.px6` / `px10`, Tailwind `*-px6` / `*-px10`) are no longer deprecated and are not removed in 0.31.0, as 0.29.0 announced: open layouts need 6px and 10px gaps the 4px grid cannot hit. `hds/no-primitive-spacing` now reports them like any other primitive step (use a semantic token in components) instead of as a removed step, and `hds/no-deprecated-token` no longer lists them.
+- c298767: Toggle: the "on" thumb no longer runs past the track's right end. The thumb's travel now counts the track's border, and the thumb is 12px so it sits with an equal inset on every side in both states.
+
 ## 0.30.0
 
 ### Upgrade

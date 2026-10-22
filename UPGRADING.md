@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.30.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.31.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,35 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.31.0
+
+Released 2026-10-22 (minor). 2 changes to make by hand (2 breaking) and 18 that look different.
+
+### Looks different
+
+- The secondary Button hover fill is now surface.softHover (neutral.300 light, neutral.600 dark); if you set this variable to theme the old outline hover, check it still reads on the soft fill.
+- The secondary Button pressed fill is now surface.soft (the rest fill) while the hard shadow sinks; re-check any override of this variable.
+- The secondary Button rest fill is now surface.soft (neutral.200 light, neutral.700 dark) instead of the page colour; set this variable to var(--semantic-color-surface-page) to get the old flat fill back.
+- The unselected Tag pill is now surface.muted instead of surface.raised; re-check any override of this variable.
+- The unselected Tag border now matches its fill, so the pill shows no resting edge; set this variable to var(--semantic-color-border-default) to bring the outline back.
+- --role-popover (bg-popover) now reads the new semantic.color.surface.floating (white light, neutral.800 dark) instead of surface.overlay; if you set this variable, check your overlays still separate from surface.muted.
+- --semantic-color-border-default (role.border, border-border) is now graphite.200 #cbc6c9 in light, up from #e5e5e5; if you override it, keep it at 1.45:1 or more on your surfaces.
+- --semantic-color-border-strong is now graphite.300 #b2abae in light, up from #d4d4d4, so strong dividers and Kbd edges stay firmer than border.default.
+- --semantic-color-border-subdued (deprecated) follows border.default in light at #cbc6c9; move to border.default.
+- --semantic-elevation-overlay-border is now border.default, not transparent; a surface that binds the overlay elevation bundle should draw it as a 1px border.
+- --semantic-elevation-overlay-surface is now surface.floating (white light, neutral.800 dark); a surface that binds it turns white in light.
+- Every primary and secondary Button now has a straight-down hard shadow (colour: --hds-btn-edge, default shadow.hard) and the hover wipe; pass shadow="none" and/or hoverEffect="none" where a button must stay flat, for example inside a dense toolbar.
+- The default wipe makes every Button relative isolate overflow-hidden, so content you position outside the button box is clipped; pass hoverEffect="none" on that button.
+- The hard edge under Buttons and Kbd is now each item's own fill stepped darker (a lighter rim in dark) instead of semantic.color.shadow.hard; set --hds-btn-edge and --hds-kbd-edge to var(--semantic-color-shadow-hard) to keep the old single-colour edge.
+- In dark mode semantic.color.shadow.hard is now neutral.500 (lighter), so the hard shadow on Button and Kbd reads at 3:1; re-check any surface you drew with it.
+- CodeBlock, Table, Tabs, SegmentedControl, Board, FormActions and Combobox/TokenField chips lose their resting border; add className="border border-border" on an instance that needs the edge.
+- Toggle's thumb is now 12px with an even inset in the track; nothing to change unless a visual snapshot pins the old 16px thumb.
+- HDS no longer ships unused utilities (.border-stroke\*, .bg-gray-100, .bg-fill, .bg-btn-fill, .text-white, .cursor-zoom-in, the --hds-fill/hover/border helpers); without your own Tailwind build, use the token instead.
+
+### Do by hand
+
+- The unused CSS for each of these is gone (Tag has not rendered it since #60); use the Tag component instead: `hds-tag-btn` and `hds-tag-pill`.
 
 ## 0.30.0
 
