@@ -271,12 +271,12 @@
   --semantic-color-content-success: var(--primitive-color-green-700);
   --semantic-color-content-warning: var(--primitive-color-amber-800);
   --semantic-color-content-danger: var(--primitive-color-red-700);
-  --semantic-color-border-default: var(--primitive-color-neutral-200);
+  --semantic-color-border-default: var(--primitive-color-graphite-200);
   --semantic-color-border-interactive: var(--primitive-color-neutral-500);
   /* @deprecated border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) (removed in 1.0.0) */
-  --semantic-color-border-subdued: var(--primitive-color-neutral-200);
+  --semantic-color-border-subdued: var(--primitive-color-graphite-200);
   --semantic-color-border-subtle: var(--primitive-color-neutral-100);
-  --semantic-color-border-strong: var(--primitive-color-neutral-300);
+  --semantic-color-border-strong: var(--primitive-color-graphite-300);
   --semantic-color-border-accent: var(--primitive-color-graphite-700);
   --semantic-color-border-success: var(--primitive-color-green-400);
   --semantic-color-border-warning: var(--primitive-color-amber-400);

@@ -1,0 +1,1 @@
+Light divider contrast: border.default Light → graphite.200, border.strong Light → graphite.300, subdued follows; MetadataList rows on border.default; floor pinned by divider-contrast.test.ts (1.45:1 light).

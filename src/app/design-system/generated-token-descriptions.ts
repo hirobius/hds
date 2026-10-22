@@ -198,6 +198,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.color.content.success": "Success-toned text/icon color, independent of feedback banners.",
   "semantic.color.content.warning": "Warning-toned text/icon color, independent of feedback banners.",
   "semantic.color.content.danger": "Danger-toned text/icon color, independent of feedback banners.",
+  "semantic.color.border.default": "Hairline and divider border. Light is warm graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
   "semantic.color.border.interactive": "Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.",
   "semantic.color.border.subdued": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
   "semantic.color.border.subtle": "Lowest-contrast border for resting hairline edges on flat surfaces.",
