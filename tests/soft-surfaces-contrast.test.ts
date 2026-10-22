@@ -5,6 +5,10 @@
  * semantic.color.shadow.hard must reach 3:1 against every surface a button sits on. Text on
  * the new soft fills (button, tag, chip) must clear AA (4.5:1). Fills must step visibly
  * from the surface under them, or "separation by tone" separates nothing.
+ *
+ * Scope: a Button sits on page, raised, overlay or muted. In dark mode the hard shadow is
+ * under 3:1 on the state fills (surface.sunken/hover 2.2:1, accentSubtle 2.8:1); those are
+ * highlight fills for rows and items, not surfaces to place a Button on.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';

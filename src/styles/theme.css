@@ -519,27 +519,31 @@
 .hds-kbd {
   box-shadow: var(--semantic-shadow-key, 2px 2px 0 var(--semantic-color-shadow-hard));
 }
-/* Button (shadow="hard", the default, primary and secondary): 3px at rest, lifts to 5px
- * on hover and sinks to 1px on press. The offset rides --tw-shadow, so Tailwind's focus
- * ring and the pressed inset wash still compose into the same box-shadow list. No
- * transition on translate: it snaps, so reduced motion needs no override. */
-.hds-btn-hard:not(:disabled, [aria-disabled='true']) {
-  --tw-shadow: var(--hds-hs, 3px 3px) 0 var(--semantic-color-shadow-hard);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
-    var(--tw-ring-shadow), var(--tw-shadow);
-}
-.hds-btn-hard:not(:disabled, [aria-disabled='true']):hover {
-  --hds-hs: 5px 5px;
-  translate: -2px -2px;
-}
-.hds-btn-hard:not(:disabled, [aria-disabled='true']):active {
-  --hds-hs: 1px 1px;
-  translate: 2px 2px;
+/* Button (shadow="hard", the default, primary and secondary): 3px at rest, 5px on hover
+ * (hover-capable pointers only), 1px on press. Depth is the shadow offset alone: the box
+ * never moves, so a press can't slide off the pointer and lose its click, and an edge
+ * hover can't flicker. The offset rides --tw-shadow, so Tailwind's focus ring and the
+ * pressed inset wash compose into the same box-shadow list. In the components layer, so
+ * a consumer shadow utility still wins. */
+@layer components {
+  .hds-btn-hard:not(:disabled, [aria-disabled='true']) {
+    --tw-shadow: var(--hds-hs, 3px 3px) 0 var(--semantic-color-shadow-hard);
+    box-shadow:
+      var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+      var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  @media (hover: hover) {
+    .hds-btn-hard:hover {
+      --hds-hs: 5px 5px;
+    }
+  }
+  .hds-btn-hard:active {
+    --hds-hs: 1px 1px;
+  }
 }
 
-/* Button hoverEffect="wipe" (the default since hds#888; "none" opts out): the variant's own hover fill is a scaled layer
- * behind the label, contained by the button's `relative isolate overflow-hidden`. Every
+/* Button hoverEffect="wipe" (the default since hds#888; "none" opts out): the variant's
+ * own hover fill is a scaled layer behind the label, contained by the button's `relative isolate overflow-hidden`. Every
  * per-variant and per-edge value is inline, so this ships two rules (size budget):
  *   --hds-wipe-fill  Button: secondary.bg.hover, primary's component.button.bgHover,
  *                    tertiary's role.accent, or a

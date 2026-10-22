@@ -91,7 +91,7 @@ export const DestructiveSection = /* @__PURE__ */ React.forwardRef<
                 <Button
                   variant="secondary"
                   tone="danger"
-                  className="border-feedback-danger hover:border-feedback-danger bg-background hover:bg-background"
+                  className="border border-feedback-danger hover:border-feedback-danger bg-background hover:bg-background"
                 >
                   {actionLabel ?? confirmLabel}
                 </Button>

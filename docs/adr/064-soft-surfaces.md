@@ -22,7 +22,8 @@ opt-in in #889). The soft-demo tenant (hds#505) was the earlier spike of the sam
    tertiary stays a quiet ghost.
 4. **Hard shadow and wipe are the Button default**, with opt-outs: `shadow="hard" | "none"`
    (new prop) and `hoverEffect="wipe" | "none"`. Primary and secondary only; never tertiary
-   or a disabled button. Kbd follows the same light source by default.
+   or a disabled button. Depth is the shadow offset alone (3px rest, 5px hover, 1px press); the box
+   never moves, so a press cannot slide off the pointer. Kbd follows the same light source by default.
 5. **The hard shadow is the soft button's 1.4.11 boundary**, so `semantic.color.shadow.hard`
    in Dark moves from `neutral.600` (2.7:1 on black) to `neutral.500` (`border.interactive`,
    4.4:1 on page, 3.7:1 raised, 3.2:1 overlay). Light stays the shadow ink (12.8:1 or more).
@@ -95,7 +96,7 @@ Every element that drew a border, outline or resting ring in `src/app/components
 | Inputs (9)                     | Input, Textarea, Select trigger, Combobox trigger and its in-popover search field, ComboboxCreatable field, TokenField field, Checkbox box, Radio circle, Switch track (`toggle.tsx`); `component.input.border`, `.borderError`                          |
 | Focus (8)                      | `.hds-focus`, Checkbox, Radio, Switch and SegmentedControl outlines, every `focus-visible:ring`, docs focus outlines (4)                                                                                                                                 |
 | Selected / active / hover (14) | Card `selectable` ring, Combobox and ComboboxCreatable active option, Menu and Select highlighted item, SegmentedControl active and hover inset edges (4), Tabs active underline, Tag selected / hover / pressed (cva + static.css), `.hds-swatch:hover` |
-| Feedback and accent (8)        | Card tones (4) and `variant="accent"`, `.hds-card` tones and `--accent` (static.css), DestructiveSection confirm                                                                                                                                         |
+| Feedback and accent (8)        | Card tones (4) and `variant="accent"`, `.hds-card` tones and `--accent` (static.css), DestructiveSection confirm (explicit `border` width now)                                                                                                           |
 | Opt-in containment (4)         | Card `bordered`, `.hds-card--bordered`, `component.card.border`, MetadataList `divided`                                                                                                                                                                  |
 | Dense data and structure (12)  | Table header, row and column dividers (4), Divider and `.hds-divider--strong`, Menu separator, Timeline connector, Blockquote rail, docs token-table cells, ContainerDemo dashed bounds, Avatar status cut-out ring, Spinner arc                         |
 | Kbd and demos (5)              | Kbd border (now `border.strong`) and key shadow, docs `.hds-token-swatch` edge, `.hds-radius-box`, elevation demo border level                                                                                                                           |

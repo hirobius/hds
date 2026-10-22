@@ -112,7 +112,7 @@
       "id": "look/soft-surfaces-no-outline",
       "kind": "look",
       "impact": "look",
-      "plain": "Dialog, AlertDialog, Menu, Popover, Select, Toast, CodeBlock, Table, Tabs, SegmentedControl, Combobox chips and TokenField chips no longer draw a resting border; add a className such as border border-border on the instance if your layout relied on that edge.",
+      "plain": "Overlays (Dialog, Menu, Popover, Select, Toast), CodeBlock, Table, Tabs, SegmentedControl, Board, FormActions and Combobox/TokenField chips lose their resting border; add className=\"border border-border\" on an instance that needs the edge.",
       "detect": {
         "jsx": [
           "Dialog",
@@ -120,13 +120,42 @@
           "Menu",
           "Popover",
           "Select",
+          "Toast",
           "CodeBlock",
           "Table",
           "Tabs",
           "SegmentedControl",
-          "TokenField"
+          "Combobox",
+          "ComboboxCreatable",
+          "TokenField",
+          "Board",
+          "FormActions"
         ]
       }
+    },
+    {
+      "id": "look/button-wipe-overflow-hidden",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The default wipe makes every Button relative isolate overflow-hidden, so content you position outside the button box is clipped; pass hoverEffect=\"none\" on that button.",
+      "detect": {
+        "jsx": ["Button"]
+      }
+    },
+    {
+      "id": "look/shadow-hard-dark",
+      "kind": "look",
+      "impact": "look",
+      "plain": "In dark mode semantic.color.shadow.hard is now neutral.500 (lighter), so the hard shadow on Button and Kbd reads at 3:1; re-check any surface you drew with it.",
+      "detect": {
+        "cssVars": ["--semantic-color-shadow-hard"]
+      }
+    },
+    {
+      "id": "look/unused-utilities-removed",
+      "kind": "look",
+      "impact": "look",
+      "plain": "HDS no longer ships unused utilities (.border-stroke*, .bg-gray-100, .bg-fill, .bg-btn-fill, .text-white, .cursor-zoom-in, the --hds-fill/hover/border helpers); without your own Tailwind build, use the token instead."
     }
   ]
 }

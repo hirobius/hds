@@ -90,13 +90,20 @@ describe('theme.css hard shadow', () => {
     expect(r).toMatch(/box-shadow:[^;]*--tw-inset-shadow[^;]*--tw-ring-shadow[^;]*--tw-shadow/);
   });
 
-  it('lifts to 5px on hover and sinks to 1px on press; disabled never carries it', () => {
-    expect(rule(".hds-btn-hard:not(:disabled, [aria-disabled='true']):hover")).toMatch(
-      /--hds-hs: 5px 5px;\s*translate: -2px -2px/,
+  it('grows to 5px on hover (hover pointers only) and sinks to 1px on press, without moving the box', () => {
+    expect(rule('.hds-btn-hard:hover')).toContain('--hds-hs: 5px 5px');
+    const hoverAt = theme.indexOf('.hds-btn-hard:hover');
+    expect(theme.slice(hoverAt - 40, hoverAt)).toContain('(hover: hover)');
+    expect(rule('.hds-btn-hard:active')).toContain('--hds-hs: 1px 1px');
+    const start = theme.indexOf('.hds-btn-hard:not(');
+    expect(theme.slice(start, theme.indexOf('.hds-btn-hard:active', start))).not.toMatch(
+      /translate:/,
     );
-    expect(rule(".hds-btn-hard:not(:disabled, [aria-disabled='true']):active")).toMatch(
-      /--hds-hs: 1px 1px;\s*translate: 2px 2px/,
-    );
+  });
+
+  it('lives in the components layer, so a consumer shadow utility still wins', () => {
+    const at = theme.indexOf(".hds-btn-hard:not(:disabled, [aria-disabled='true'])");
+    expect(theme.slice(theme.lastIndexOf('*/', at), at)).toContain('@layer components {');
   });
 
   it('Kbd follows the same light source by default: 2px hard key shadow, border.strong edge', () => {
