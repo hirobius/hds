@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-22T03:24:55.866Z",
+  "generated": "2026-10-22T05:10:08.261Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -3815,7 +3815,7 @@
             "none",
             "wipe"
           ],
-          "default": "none"
+          "default": "wipe"
         },
         "iconLeft": {
           "type": "ReactNode",
@@ -3844,6 +3844,14 @@
         "pressed": {
           "type": "boolean",
           "optional": true
+        },
+        "shadow": {
+          "type": "enum",
+          "values": [
+            "none",
+            "hard"
+          ],
+          "default": "hard"
         },
         "size": {
           "type": "enum",
@@ -3991,6 +3999,13 @@
         },
         "pressed": {
           "type": "boolean"
+        },
+        "shadow": {
+          "type": "enum",
+          "values": [
+            "none",
+            "hard"
+          ]
         },
         "size": {
           "type": "enum",
@@ -5026,7 +5041,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below it (mb-6) separates the strip from its panel. - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px underline takes no extra height when it appears. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5113,7 +5128,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-strength so it anchors the strip without competing with content). - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest. The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits on top of the list divider; the active 2px bottom border visually REPLACES that 1px segment instead of stacking on it. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below it (mb-6) separates the strip from its panel. - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px underline takes no extra height when it appears. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -12780,6 +12795,30 @@
         }
       },
       {
+        "path": "semantic.color.surface.soft",
+        "cssVar": "--semantic-color-surface-soft",
+        "type": "color",
+        "description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
+        "alias": "{primitive.color.neutral.200}",
+        "resolvedValue": "#e5e5e5",
+        "dark": {
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#404040"
+        }
+      },
+      {
+        "path": "semantic.color.surface.softHover",
+        "cssVar": "--semantic-color-surface-softHover",
+        "type": "color",
+        "description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d4d4d4",
+        "dark": {
+          "alias": "{primitive.color.neutral.600}",
+          "resolvedValue": "#525252"
+        }
+      },
+      {
         "path": "semantic.color.content.primary",
         "cssVar": "--semantic-color-content-primary",
         "type": "color",
@@ -12993,12 +13032,12 @@
         "path": "semantic.color.shadow.hard",
         "cssVar": "--semantic-color-shadow-hard",
         "type": "color",
-        "description": "Hard (blur 0) shadow colour. Dark uses border.strong: black vanishes on dark surfaces.",
+        "description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).",
         "alias": "{primitive.color.shadow.ink}",
         "resolvedValue": "#282c34",
         "dark": {
-          "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "alias": "{primitive.color.neutral.500}",
+          "resolvedValue": "#737373"
         }
       },
       {
@@ -14150,8 +14189,8 @@
         "cssVar": "--component-tag-background",
         "type": "color",
         "description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
-        "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#fafafa"
+        "alias": "{semantic.color.surface.muted}",
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.tag.text",
@@ -14165,9 +14204,9 @@
         "path": "component.tag.border",
         "cssVar": "--component-tag-border",
         "type": "color",
-        "description": "Default tag border color.",
-        "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#e5e5e5"
+        "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
+        "alias": "{semantic.color.surface.muted}",
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.tag.radius",
@@ -14657,31 +14696,31 @@
         "path": "component.button.secondary.bg.rest",
         "cssVar": "--component-button-secondary-bg-rest",
         "type": "color",
-        "description": "Secondary button fill.",
-        "alias": "{semantic.color.surface.page}",
-        "resolvedValue": "#ffffff"
+        "description": "Secondary button fill: soft tonal, no border (hds#891).",
+        "alias": "{semantic.color.surface.soft}",
+        "resolvedValue": "#e5e5e5"
       },
       {
         "path": "component.button.secondary.bg.hover",
         "cssVar": "--component-button-secondary-bg-hover",
         "type": "color",
-        "description": "Secondary button hover fill.",
-        "alias": "{semantic.color.surface.accentSubtle}",
-        "resolvedValue": "#f5f4f4"
+        "description": "Secondary button hover fill (the wipe layer's colour).",
+        "alias": "{semantic.color.surface.softHover}",
+        "resolvedValue": "#d4d4d4"
       },
       {
         "path": "component.button.secondary.bg.pressed",
         "cssVar": "--component-button-secondary-bg-pressed",
         "type": "color",
-        "description": "Secondary button pressed fill.",
-        "alias": "{semantic.color.surface.pressed}",
+        "description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover.",
+        "alias": "{semantic.color.surface.soft}",
         "resolvedValue": "#e5e5e5"
       },
       {
         "path": "component.button.secondary.border.rest",
         "cssVar": "--component-button-secondary-border-rest",
         "type": "color",
-        "description": "Secondary button border.",
+        "description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.interactive}",
         "resolvedValue": "#737373"
       },
@@ -14689,7 +14728,7 @@
         "path": "component.button.secondary.border.hover",
         "cssVar": "--component-button-secondary-border-hover",
         "type": "color",
-        "description": "Secondary button hover border.",
+        "description": "Secondary button hover border. Unused by Button since hds#891 (soft fill, no border); kept for consumers.",
         "alias": "{semantic.color.border.accent}",
         "resolvedValue": "#4a4146"
       },
@@ -14697,7 +14736,7 @@
         "path": "component.button.secondary.border.disabled",
         "cssVar": "--component-button-secondary-border-disabled",
         "type": "color",
-        "description": "Secondary button disabled border (lighter than rest so a disabled button reads disabled).",
+        "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.subdued}",
         "resolvedValue": "#e5e5e5"
       },

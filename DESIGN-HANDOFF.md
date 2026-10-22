@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 518 tokens, aliases, and TS refs in one shot.
+Checks all 520 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -232,6 +232,8 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.surface.selected`       | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   | Background for a persistently selected item (active tab, checked row).                                                                      |
 | `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.800}   | Muted background for low-emphasis content blocks.                                                                                           |
 | `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   | Recessed background for inset wells (inputs, code blocks, nested panels).                                                                   |
+| `semantic.color.surface.soft`           | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   | Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.        |
+| `semantic.color.surface.softHover`      | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   | Hovered or pressed soft (tonal) control fill, one step past surface.soft.                                                                   |
 | `semantic.color.content.primary`        | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   |                                                                                                                                             |
 | `semantic.color.content.secondary`      | {primitive.color.neutral.600}   | {primitive.color.neutral.350}   |                                                                                                                                             |
 | `semantic.color.content.tertiary`       | {primitive.color.neutral.500}   | {primitive.color.neutral.450}   | Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.                           |
@@ -250,7 +252,7 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.border.accent`          | {primitive.color.graphite.700}  | {primitive.color.graphite.300}  | Accent border — graphite, dark enough to read as a boundary on page and card surfaces.                                                      |
 | `semantic.color.border.success`         | {primitive.color.green.400}     | {primitive.color.green.400}     | Success-toned border for status outlines and success-state inputs.                                                                          |
 | `semantic.color.border.warning`         | {primitive.color.amber.400}     | {primitive.color.amber.400}     | Warning-toned border for status outlines and warning-state inputs.                                                                          |
-| `semantic.color.shadow.hard`            | {primitive.color.shadow.ink}    | {primitive.color.neutral.600}   | Hard (blur 0) shadow colour. Dark uses border.strong: black vanishes on dark surfaces.                                                      |
+| `semantic.color.shadow.hard`            | {primitive.color.shadow.ink}    | {primitive.color.neutral.500}   | Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).                        |
 | `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                                                                                             |
 | `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                                                                                             |
 | `semantic.color.feedback.warning`       | {primitive.color.amber.800}     | {primitive.color.amber.400}     |                                                                                                                                             |

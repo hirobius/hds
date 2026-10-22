@@ -25,7 +25,7 @@ test.describe('docs preview switches', () => {
       return { radius: s.borderTopLeftRadius, shadow: s.boxShadow };
     });
     expect(css.radius).toBe('0px');
-    expect(css.shadow).toMatch(/3px 3px 0px/);
+    expect(css.shadow).toMatch(/0px 3px 0px/);
   });
 
   test('choice persists across reloads', async ({ page }) => {

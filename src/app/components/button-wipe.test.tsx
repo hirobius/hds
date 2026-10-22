@@ -1,5 +1,5 @@
 /**
- * Button `hoverEffect="wipe"` (opt-in): the variant's own hover fill wipes in
+ * Button `hoverEffect="wipe"` (the default since hds#888; `none` opts out): the variant's own hover fill wipes in
  * from the edge the pointer enters and out the edge it leaves. CSS draws it
  * (theme.css `.hds-btn-wipe`); one shared document listener only stamps
  * `data-wipe` / `data-wipe-edge`, so a hover never re-renders a Button.
@@ -40,11 +40,22 @@ describe('nearestEdge', () => {
 });
 
 describe('Button hoverEffect', () => {
-  it('is off by default: no wipe class or data attributes', () => {
+  it('is on by default (hds#888), including the default secondary variant', () => {
     render(<Button>Go</Button>);
+    const el = screen.getByRole('button');
+    expect(el.className).toContain('hds-btn-wipe');
+    expect(el.getAttribute('data-hover-effect')).toBe('wipe');
+    expect(el.style.getPropertyValue('--hds-wipe-fill')).toBe(
+      'var(--component-button-secondary-bg-hover)',
+    );
+  });
+
+  it('hoverEffect="none" opts out: no wipe class or data attributes, the instant hover fill', () => {
+    render(<Button hoverEffect="none">Go</Button>);
     const el = screen.getByRole('button');
     expect(el.className).not.toContain('hds-btn-wipe');
     expect(el.hasAttribute('data-hover-effect')).toBe(false);
+    expect(el.className).toContain('hover:bg-[color:var(--component-button-secondary-bg-hover)]');
   });
 
   it('wipe adds the layer class and holds the rest fill on hover', () => {
@@ -57,7 +68,7 @@ describe('Button hoverEffect', () => {
   });
 
   it.each([
-    ['secondary', 'hover:bg-background'],
+    ['secondary', 'hover:bg-[color:var(--component-button-secondary-bg-rest)]'],
     ['tertiary', 'hover:bg-transparent'],
   ] as const)('%s holds its rest fill on hover', (variant, cls) => {
     expect(mount({ variant }).className).toContain(cls);
@@ -69,7 +80,7 @@ describe('Button hoverEffect', () => {
 
   it.each([
     ['primary', 'var(--component-button-bgHover)'],
-    ['secondary', 'var(--role-accent)'],
+    ['secondary', 'var(--component-button-secondary-bg-hover)'],
     ['tertiary', 'var(--role-accent)'],
   ] as const)('%s wipes in its own hover fill', (variant, fill) => {
     const el = mount({ variant });
@@ -91,7 +102,9 @@ describe('Button hoverEffect', () => {
     const el = mount({ variant, tone });
     // the button holds the tone fill (no variant hover leak) ...
     expect(el.className).toContain('hover:bg-feedback-bg-' + tone);
-    expect(el.className).not.toMatch(/hover:bg-(background|primary|transparent)\b/);
+    expect(el.className).not.toMatch(
+      /hover:bg-(background|primary|transparent)\b|secondary-bg-rest/,
+    );
     // ... and the layer paints the same fill through the tone's hover brightness
     expect(el.style.getPropertyValue('--hds-wipe-fill')).toBe(
       'var(--semantic-color-feedback-bg-' + token + ')',

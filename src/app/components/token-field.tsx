@@ -99,7 +99,7 @@ export interface TokenFieldProps extends Omit<
 
 // A chip reads like a neutral Tag, from the same semantic tokens Tag's own tokens alias.
 const CHIP_CLASS =
-  'mx-px inline-block whitespace-nowrap rounded-[var(--semantic-radius-control)] border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-subgrid-gap)] text-[var(--semantic-color-content-primary)] cursor-default select-all';
+  'mx-px inline-block whitespace-nowrap rounded-[var(--semantic-radius-control)] bg-[var(--semantic-color-surface-muted)] px-[var(--semantic-space-subgrid-gap)] text-[var(--semantic-color-content-primary)] cursor-default select-all';
 
 type Labeller = { label: (token: string) => string; noun: string };
 

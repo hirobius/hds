@@ -341,6 +341,28 @@
       "replacementTailwind": null,
       "removeIn": "1.0.0",
       "note": "hds#595 — use component.badge.<tone>.bg (one per tone)"
+    },
+    {
+      "path": "component.button.secondary.border.rest",
+      "cssVar": "--component-button-secondary-border-rest",
+      "composite": false,
+      "tailwind": null,
+      "replacement": null,
+      "replacementCssVar": null,
+      "replacementTailwind": null,
+      "removeIn": "1.0.0",
+      "note": "hds#891 soft surfaces: secondary Button has no border"
+    },
+    {
+      "path": "component.button.secondary.border.disabled",
+      "cssVar": "--component-button-secondary-border-disabled",
+      "composite": false,
+      "tailwind": null,
+      "replacement": null,
+      "replacementCssVar": null,
+      "replacementTailwind": null,
+      "removeIn": "1.0.0",
+      "note": "hds#891 soft surfaces: secondary Button has no border"
     }
   ]
 }

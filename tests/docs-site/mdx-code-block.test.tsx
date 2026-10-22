@@ -27,10 +27,12 @@ describe('MDX code fences', () => {
     const { container } = render(fence('tsx', "import { Button } from 'x';"));
     expect(screen.getByRole('button', { name: 'Copy code' })).toBeTruthy();
     expect(screen.getByText('tsx')).toBeTruthy();
-    // HDS block chrome: token border and the radius class the Corners switch zeroes.
+    // HDS block chrome: the raised tonal fill (no outline, hds#891) and the radius class the
+    // Corners switch zeroes.
     const root = container.firstElementChild as HTMLElement;
     expect(root.className).toContain('rounded-md');
-    expect(root.className).toContain('border-[var(--semantic-color-border-default)]');
+    expect(root.className).toContain('bg-[var(--semantic-color-surface-raised)]');
+    expect(root.className).not.toContain('border-[var(--semantic-color-border-default)]');
     expect(container.querySelector('figure')).toBeNull();
   });
 

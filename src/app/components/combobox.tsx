@@ -513,7 +513,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                   disabled={disabled || option.disabled}
                   onClick={() => remove(option, i)}
                   className={cn(
-                    'hds-focus hds-touch-row inline-flex h-7 items-center gap-1 rounded-sm border border-border bg-muted pl-2 pr-1',
+                    'hds-focus hds-touch-row inline-flex h-7 items-center gap-1 rounded-sm bg-muted pl-2 pr-1',
                     'hds-type-caption text-foreground hover:bg-accent hover:text-accent-foreground',
                     'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                   )}

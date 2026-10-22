@@ -96,9 +96,6 @@
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
-  .grid-cols-\[120px_1fr_1fr_1fr_1fr\] {
-    grid-template-columns: 120px 1fr 1fr 1fr 1fr;
-  }
 
   .gap-\[inherit\] {
     gap: inherit;
@@ -369,15 +366,6 @@
   .border-transparent {
     border-color: transparent;
   }
-  .border-stroke {
-    border-color: var(--semantic-color-border-default);
-  }
-  .border-stroke-accent {
-    border-color: var(--semantic-color-border-accent);
-  }
-  .border-\[color\:var\(--hds-border\)\] {
-    border-color: var(--hds-border);
-  }
   .hover\:border-\[color\:var\(--semantic-color-content-primary\)\]:hover {
     border-color: var(--semantic-color-content-primary);
   }
@@ -388,9 +376,6 @@
   .bg-transparent {
     background: transparent;
   }
-  .bg-gray-100 {
-    background: var(--semantic-color-surface-raised);
-  }
   .bg-current {
     background: currentColor;
   }
@@ -400,38 +385,17 @@
   .bg-raised {
     background: var(--semantic-color-surface-raised);
   }
-  .bg-fill {
-    background: var(--hds-fill);
-  }
   .bg-surface {
     background: var(--semantic-color-surface-page);
   }
   .bg-surface-raised {
     background: var(--semantic-color-surface-raised);
   }
-  .bg-btn-fill {
-    background: var(--component-button-bg);
-  }
-  .bg-\[var\(--hds-fill\)\] {
-    background: var(--hds-fill);
-  }
   .bg-\[color\:var\(--semantic-color-feedback-error\)\] {
     background: var(--semantic-color-feedback-error);
   }
-  .hover\:bg-\[var\(--hds-fill\)\]:hover {
-    background: var(--hds-fill);
-  }
-  .hover\:bg-\[var\(--hds-hover\)\]:hover {
-    background: var(--hds-hover);
-  }
   .hover\:bg-\[color\:var\(--semantic-accent-hover\)\]:hover {
     background: var(--semantic-accent-hover);
-  }
-  .active\:bg-\[var\(--hds-border\)\]:active {
-    background: var(--hds-border);
-  }
-  .active\:bg-\[var\(--hds-hover\)\]:active {
-    background: var(--hds-hover);
   }
   .active\:bg-\[color\:var\(--semantic-accent-pressed\)\]:active {
     background: var(--semantic-accent-pressed);
@@ -451,9 +415,6 @@
   }
   .text-accent {
     color: var(--semantic-color-content-accent);
-  }
-  .text-white {
-    color: var(--semantic-color-content-onAccent);
   }
   .text-center {
     text-align: center;
@@ -492,9 +453,6 @@
 
   .cursor-pointer {
     cursor: pointer;
-  }
-  .cursor-zoom-in {
-    cursor: zoom-in;
   }
   .cursor-not-allowed {
     cursor: not-allowed;

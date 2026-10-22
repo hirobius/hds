@@ -69,8 +69,10 @@ const buttonVariants = /* @__PURE__ */ cva(
       variant: {
         primary:
           'bg-primary text-primary-foreground hover:bg-[color:var(--component-button-bgHover)] active:bg-[color:var(--component-button-bgPressed)] active:inset-shadow-transparent',
+        // Soft (tonal) fill, no border (hds#891): component.button.secondary.bg.*. Its 3:1 edge
+        // against the page is the hard shadow (shadow="hard", the default).
         secondary:
-          'border border-input bg-background text-foreground hover:bg-accent hover:border-ring active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent disabled:border-[color:var(--component-button-secondary-border-disabled)]',
+          'bg-[color:var(--component-button-secondary-bg-rest)] text-foreground hover:bg-[color:var(--component-button-secondary-bg-hover)] active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent',
         tertiary: 'text-foreground hover:bg-accent',
       },
       // Semantic action color. `neutral` (default) keeps the variant's own
@@ -110,13 +112,19 @@ const buttonVariants = /* @__PURE__ */ cva(
         true: 'p-0',
         false: '',
       },
-      // Opt-in hover fill (default none, existing buttons unchanged). `wipe`: the
-      // variant's own hover fill (see the compoundVariants) is drawn by the
-      // `.hds-btn-wipe` layer in theme.css and wipes across from the edge the
-      // pointer crosses; the instant hover fill is swapped out here.
+      // Hover fill. `wipe` (the default since hds#888): the variant's own hover fill
+      // (see the compoundVariants) is drawn by the `.hds-btn-wipe` layer in theme.css
+      // and wipes across from the edge the pointer crosses; the instant hover fill is
+      // swapped out here. `none` opts out: the fill changes in place.
       hoverEffect: {
         none: '',
         wipe: 'hds-btn-wipe relative isolate overflow-hidden',
+      },
+      // Hard (zero-blur) shadow, theme.css `.hds-btn-hard` (hds#888): 3px at rest, lifts on
+      // hover, sinks on press. `none` opts out. Tertiary is quiet and never takes it.
+      shadow: {
+        hard: 'hds-btn-hard',
+        none: '',
       },
     },
     compoundVariants: [
@@ -130,7 +138,7 @@ const buttonVariants = /* @__PURE__ */ cva(
         hoverEffect: 'wipe',
         tone: 'neutral',
         variant: 'secondary',
-        className: 'hover:bg-background',
+        className: 'hover:bg-[color:var(--component-button-secondary-bg-rest)]',
       },
       {
         hoverEffect: 'wipe',
@@ -147,7 +155,8 @@ const buttonVariants = /* @__PURE__ */ cva(
       tone: 'neutral',
       size: 'md',
       iconOnly: false,
-      hoverEffect: 'none',
+      hoverEffect: 'wipe',
+      shadow: 'hard',
     },
   },
 );
@@ -166,11 +175,13 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 export interface ButtonProps
   extends
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
-    Omit<ButtonVariantProps, 'iconOnly' | 'hoverEffect'> {
-  /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (an outline), so pass `primary` for the main action. */
+    Omit<ButtonVariantProps, 'iconOnly' | 'hoverEffect' | 'shadow'> {
+  /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (a soft tonal fill), so pass `primary` for the main action. */
   variant?: ButtonVariantProps['variant'];
-  /** `wipe` slides the hover fill in from the pointer's edge. */
+  /** `wipe` (default) slides the hover fill in from the pointer's edge; `none` changes it in place. */
   hoverEffect?: 'none' | 'wipe';
+  /** `hard` (default) draws the zero-blur shadow on primary and secondary; `none` opts out. Tertiary never has one. The shadow is a soft secondary's 3:1 edge: with `none`, the label alone identifies it. */
+  shadow?: 'hard' | 'none';
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
   /** Optional accessible label used when children are not suitable as the name. */
@@ -228,7 +239,8 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       tone,
       size,
       iconOnly = false,
-      hoverEffect = 'none',
+      hoverEffect = 'wipe',
+      shadow = 'hard',
       asChild = false,
       label,
       loading = false,
@@ -253,7 +265,8 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     }, [wipe]);
     // The wipe layer's fill (theme.css `.hds-btn-wipe`) is the variant's own hover fill:
     // a status tone's fill through its hover brightness (--hds-wipe-f), primary's
-    // component.button.bgHover, or role.accent. Inline, so the shipped CSS has no
+    // component.button.bgHover, secondary's component.button.secondary.bg.hover, or
+    // tertiary's role.accent. Inline, so the shipped CSS has no
     // per-variant rules; a consumer `style` still wins.
     const hasTone = tone != null && tone !== 'neutral';
     const wipeProps = wipe
@@ -264,7 +277,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
               ? `var(--semantic-color-feedback-bg-${tone === 'danger' ? 'error' : tone})`
               : variant === 'primary'
                 ? 'var(--component-button-bgHover)'
-                : 'var(--role-accent)',
+                : variant === 'tertiary'
+                  ? 'var(--role-accent)'
+                  : 'var(--component-button-secondary-bg-hover)',
             ...(hasTone && {
               filter: 'none',
               '--hds-wipe-f': 'brightness(var(--hds-wipe-b, 0.95))',
@@ -301,7 +316,14 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // toggle therefore leaves them out, which renders what the old `!` tone
     // did (its important declarations hid them). aria-pressed still reports it.
     const classes = cn(
-      buttonVariants({ variant, tone, size, iconOnly, hoverEffect }),
+      buttonVariants({
+        variant,
+        tone,
+        size,
+        iconOnly,
+        hoverEffect,
+        shadow: variant === 'tertiary' ? 'none' : shadow,
+      }),
       isToggle && !hasTone && toggleOnClasses,
       className,
     );

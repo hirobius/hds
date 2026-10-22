@@ -10,7 +10,7 @@ import {
   type DimensionStep,
 } from '../lib/foundation-visuals';
 import { loadAccentThemes, loadTokens } from '../lib/site-data';
-import { CopyCard, MotionDemo } from './foundation-visuals-client';
+import { CopyCard, MotionDemo, SoftSurfacesDemo } from './foundation-visuals-client';
 
 /** Sample text per role: long enough to show the leading, short enough for a phone. */
 const SAMPLES: Record<string, string> = {
@@ -244,6 +244,7 @@ const VISUALS: Record<string, () => ReactNode> = {
   radius: RadiusBoxes,
   elevation: ElevationCards,
   motion: MotionDemos,
+  'soft-surfaces': SoftSurfacesDemo,
 };
 
 /** The visual gallery for a Foundations page, or nothing for a page without one. */

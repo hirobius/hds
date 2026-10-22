@@ -1415,6 +1415,30 @@
               }
             }
           }
+        },
+        "soft": {
+          "$value": "{primitive.color.neutral.200}",
+          "$description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.200}",
+                "Dark": "{primitive.color.neutral.700}"
+              }
+            }
+          }
+        },
+        "softHover": {
+          "$value": "{primitive.color.neutral.300}",
+          "$description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.300}",
+                "Dark": "{primitive.color.neutral.600}"
+              }
+            }
+          }
         }
       },
       "content": {
@@ -1635,12 +1659,12 @@
       "shadow": {
         "hard": {
           "$value": "{primitive.color.shadow.ink}",
-          "$description": "Hard (blur 0) shadow colour. Dark uses border.strong: black vanishes on dark surfaces.",
+          "$description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.shadow.ink}",
-                "Dark": "{primitive.color.neutral.600}"
+                "Dark": "{primitive.color.neutral.500}"
               }
             }
           }
@@ -2696,7 +2720,7 @@
     "tag": {
       "background": {
         "$type": "color",
-        "$value": "{semantic.color.surface.raised}",
+        "$value": "{semantic.color.surface.muted}",
         "$description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground)."
       },
       "text": {
@@ -2706,8 +2730,8 @@
       },
       "border": {
         "$type": "color",
-        "$value": "{semantic.color.border.default}",
-        "$description": "Default tag border color."
+        "$value": "{semantic.color.surface.muted}",
+        "$description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891)."
       },
       "radius": {
         "$type": "dimension",
@@ -3049,35 +3073,37 @@
         "bg": {
           "rest": {
             "$type": "color",
-            "$value": "{semantic.color.surface.page}",
-            "$description": "Secondary button fill."
+            "$value": "{semantic.color.surface.soft}",
+            "$description": "Secondary button fill: soft tonal, no border (hds#891)."
           },
           "hover": {
             "$type": "color",
-            "$value": "{semantic.color.surface.accentSubtle}",
-            "$description": "Secondary button hover fill."
+            "$value": "{semantic.color.surface.softHover}",
+            "$description": "Secondary button hover fill (the wipe layer's colour)."
           },
           "pressed": {
             "$type": "color",
-            "$value": "{semantic.color.surface.pressed}",
-            "$description": "Secondary button pressed fill."
+            "$value": "{semantic.color.surface.soft}",
+            "$description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover."
           }
         },
         "border": {
           "rest": {
             "$type": "color",
             "$value": "{semantic.color.border.interactive}",
-            "$description": "Secondary button border."
+            "$description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
+            "$deprecated": "hds#891 soft surfaces: secondary Button has no border"
           },
           "hover": {
             "$type": "color",
             "$value": "{semantic.color.border.accent}",
-            "$description": "Secondary button hover border."
+            "$description": "Secondary button hover border. Unused by Button since hds#891 (soft fill, no border); kept for consumers."
           },
           "disabled": {
             "$type": "color",
             "$value": "{semantic.color.border.subdued}",
-            "$description": "Secondary button disabled border (lighter than rest so a disabled button reads disabled)."
+            "$description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
+            "$deprecated": "hds#891 soft surfaces: secondary Button has no border"
           }
         },
         "text": {

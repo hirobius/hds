@@ -28,10 +28,11 @@ describe('Button contract', () => {
     expect(el?.className).toContain('bg-primary');
   });
 
-  it('variant=secondary emits border class', () => {
+  it('variant=secondary is a soft fill with no border class (hds#891)', () => {
     const { container } = render(<Button variant="secondary">Label</Button>);
     const el = container.querySelector('button');
-    expect(el?.className).toContain('border');
+    expect(el?.className.split(' ')).not.toContain('border');
+    expect(el?.className).toContain('bg-[color:var(--component-button-secondary-bg-rest)]');
   });
 
   it('variant=tertiary does not emit bg-primary', () => {
@@ -212,8 +213,9 @@ describe('Button tone over variant', () => {
     expect(el?.getAttribute('data-pressed')).toBe('true');
   });
 
-  it('secondary keeps its 1px border width under a tone, so the box does not shift', () => {
-    expect(classesOf(renderButton('secondary', 'danger'))).toContain('border');
+  it('secondary has no border width with or without a tone, so the box never shifts (hds#891)', () => {
+    expect(classesOf(renderButton('secondary', 'danger'))).not.toContain('border');
+    expect(classesOf(renderButton('secondary', 'neutral'))).not.toContain('border');
   });
 
   it('tone=neutral keeps the variant colours (bg-primary for variant=primary)', () => {

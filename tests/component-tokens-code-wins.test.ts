@@ -51,26 +51,17 @@ const PX: Array<[string, string, string]> = [
 ];
 
 const COLOR: Array<[string, string, string]> = [
+  // Secondary binds its own bg tokens in code (hds#891); the border tokens are no longer drawn.
   [
     '--component-button-secondary-bg-hover',
-    '--semantic-color-surface-accentSubtle',
-    'hover:bg-accent',
-  ],
-  [
-    '--component-button-secondary-border-hover',
-    '--semantic-color-border-accent',
-    'hover:border-ring',
-  ],
-  [
-    '--component-button-secondary-border-disabled',
-    '--semantic-color-border-subdued',
-    'disabled:border-[color:var(--component-button-secondary-border-disabled)] (hds#595 decision 4)',
+    '--semantic-color-surface-softHover',
+    'hover:bg-[color:var(--component-button-secondary-bg-hover)]',
   ],
   ['--component-input-bg', '--semantic-color-surface-page', 'bg-background'],
   [
     '--component-tag-background',
-    '--semantic-color-surface-raised',
-    'bg-[var(--semantic-color-surface-raised)]',
+    '--semantic-color-surface-muted',
+    'bg-[var(--component-tag-background)] (soft pill, hds#891)',
   ],
   [
     '--component-tag-text',

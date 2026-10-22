@@ -172,8 +172,8 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
               maxHeight: 'var(--radix-select-content-available-height)',
             }}
             className={cn(
-              'z-50 overflow-hidden rounded-md border',
-              'border-border bg-popover text-popover-foreground shadow-md',
+              'z-50 overflow-hidden rounded-md',
+              'bg-popover text-popover-foreground shadow-md',
             )}
           >
             <RSelect.Viewport className="p-1">

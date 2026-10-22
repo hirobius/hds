@@ -1,13 +1,11 @@
 /**
  * Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
  *
- * Underline pattern math:
- *   - TabsList carries `border-b border-border/40` (the divider, half-strength
- *     so it anchors the strip without competing with content).
- *   - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest.
- *     The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits
- *     on top of the list divider; the active 2px bottom border visually
- *     REPLACES that 1px segment instead of stacking on it.
+ * Underline pattern (hds#891 soft surfaces):
+ *   - TabsList draws no divider at rest: space below it (mb-6) separates the
+ *     strip from its panel.
+ *   - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px
+ *     underline takes no extra height when it appears.
  *   - Active state pairs the underline with a soft `bg-accent/5` tint that
  *     extends down into TabsContent — the active tab visually "claims" its
  *     content panel (folder-tab affordance, modern-soft).
@@ -86,7 +84,7 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
       }}
       className={cn(
         'flex h-10 items-center gap-6 overflow-x-auto whitespace-nowrap',
-        'border-b border-border/40 mb-6',
+        'mb-6',
         '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]',
         className,
       )}
@@ -102,7 +100,7 @@ export function TabsTrigger({
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'relative -mb-px inline-flex items-center px-3 py-2 hds-type-ui hds-touch-row transition-colors',
+        'relative inline-flex items-center px-3 py-2 hds-type-ui hds-touch-row transition-colors',
         // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
         'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
         'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-accent/5',

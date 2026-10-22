@@ -59,12 +59,12 @@ const segmentedControlWrapperVariants = /* @__PURE__ */ cva(
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- rail border/radius/gap are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlRailVariants = /* @__PURE__ */ cva(
-  'flex max-w-full items-stretch gap-[var(--semantic-space-subgrid-gap)] overflow-x-auto overflow-y-hidden rounded-lg border border-solid border-[var(--semantic-color-border-default)] [scrollbar-width:thin]',
+  'flex max-w-full items-stretch gap-[var(--semantic-space-subgrid-gap)] overflow-x-auto overflow-y-hidden rounded-lg border border-solid border-[color:transparent] [scrollbar-width:thin]',
   {
     variants: {
       variant: {
-        primary: 'bg-[var(--semantic-color-surface-raised)]',
-        secondary: 'bg-[var(--semantic-color-surface-page)]',
+        primary: 'bg-[var(--semantic-color-surface-muted)]',
+        secondary: 'bg-[var(--semantic-color-surface-muted)]',
       },
       fullWidth: {
         true: 'w-full',

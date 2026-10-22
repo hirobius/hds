@@ -184,7 +184,7 @@ export function ToastProvider({
                 // Not `p-4 pr-8`: utilities.css ships an unlayered .p-4 that beat pr-8, so the text ran under
                 // the X at every width. Below sm the dismiss button grows to its 44px touch target
                 // (right-2 + 44px = 52px), so the text column steps in to 64px there (on the spacing grid).
-                'rounded-md border border-border bg-popover py-4 pl-4 pr-8 max-sm:pr-16',
+                'rounded-md bg-popover py-4 pl-4 pr-8 max-sm:pr-16',
                 'text-popover-foreground shadow-overlay hds-focus',
               )}
             >

@@ -1,0 +1,70 @@
+---
+title: 'Soft surfaces'
+description: 'Separate by tone and space, not by outlines: the surface steps, the soft control fill and the hard shadow.'
+status: 'stable'
+since: '0.31.0'
+---
+
+HDS separates things by **tone and space**, not by hairline outlines. A card, a panel, a
+popover or a list sits on its own surface step; controls are soft filled and carry a
+zero-blur **hard shadow** from one light source (top left). Borders are kept only where they
+carry meaning.
+
+## Tokens
+
+{/* generated: tokens */}
+
+## The surface steps
+
+| Step                | Light       | Dark        | Use                                                             |
+| ------------------- | ----------- | ----------- | --------------------------------------------------------------- |
+| `surface.page`      | white       | black       | The page.                                                       |
+| `surface.raised`    | neutral 50  | neutral 850 | Cards, panels, code blocks, prose tables.                       |
+| `surface.muted`     | neutral 100 | neutral 800 | Tracks, tags, selected chips, canvases a raised card sits on.   |
+| `surface.overlay`   | neutral 100 | neutral 800 | Popover, Menu, Select, Dialog, Toast (plus the overlay shadow). |
+| `surface.soft`      | neutral 200 | neutral 700 | The soft control fill: secondary Button.                        |
+| `surface.softHover` | neutral 300 | neutral 600 | Hovered soft control (the wipe colour).                         |
+| `surface.sunken`    | neutral 200 | neutral 700 | Inset wells and the highlighted menu item.                      |
+
+## Where borders stay
+
+- **Inputs**: Input, Textarea, Select and Combobox triggers, TokenField, Checkbox, Radio, Switch.
+- **Focus rings** and **selected or active states** (a selected Tag, a selected SegmentedControl segment, the active Tab underline, a selectable Card).
+- **Feedback tones**: a `tone` Card or Button, where the border is the signal; Card `variant="accent"`.
+- **Dense data**: row and column dividers inside Table; Divider; Timeline connectors.
+- **Kbd**: the key edge.
+
+Everything else (Card, Dialog, Menu, Popover, Toast, CodeBlock, the Table frame, the Tabs list,
+the SegmentedControl track, Tag pills and chips) has no resting outline. To bring one back on a
+Card, pass `bordered`.
+
+## Buttons: soft fill, hard shadow, wipe
+
+- Secondary is a soft tonal fill (`surface.soft`), no border.
+- Primary and secondary carry the hard shadow (`semantic.color.shadow.hard`): 3px at rest, 5px
+  on hover, 1px on press; the button itself never moves. Tertiary is quiet and never has one.
+- The hover fill wipes in from the edge the pointer enters.
+- Opt out per button: `shadow="none"`, `hoverEffect="none"`.
+
+## Contrast
+
+- The hard shadow is the soft button's boundary (WCAG 1.4.11): at least 3:1 on page, raised,
+  overlay and muted, in light (shadow ink, 12.8:1 or more) and dark (`neutral.500`, 3.2:1 or more).
+- Text on every soft fill clears AA (4.5:1). `tests/soft-surfaces-contrast.test.ts` checks both.
+
+<PrinciplesAndPractices>
+
+### Principle
+
+- **Tone and space separate.** A surface step and whitespace do what a hairline used to.
+- **A border is a signal.** Keep it for inputs, focus, selection, feedback and dense data.
+- **One light source.** Every hard shadow falls to the bottom right, in one colour.
+
+### Best practices
+
+- Put grouped content on `surface.raised`; put a canvas behind raised cards on `surface.muted`.
+- Use the secondary Button for most actions; it is the soft one.
+- Don't add `border` to a Card to group it; use space or a surface step.
+- Don't turn off the hard shadow on one button in a group and not the others.
+
+</PrinciplesAndPractices>

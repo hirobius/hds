@@ -103,9 +103,10 @@ const XS = 'var(--semantic-space-scale-xs)';
 const demoRow = { display: 'flex', gap: SM, flexWrap: 'wrap', alignItems: 'center' } as const;
 const demoStack = { display: 'grid', gap: SM } as const;
 const demoColumn = { ...demoStack, width: 'min(100%, 360px)' } as const;
+// A soft raised tile, no outline (hds#891).
 const demoTile = {
   padding: SM,
-  border: '1px solid var(--semantic-color-border-default)',
+  background: 'var(--semantic-color-surface-raised)',
   borderRadius: 'var(--semantic-radius-action)',
 } as const;
 
@@ -121,17 +122,12 @@ function ButtonDemo() {
       <Button variant="secondary" pressed={pressed} onClick={() => setPressed((p) => !p)}>
         {pressed ? 'Pressed' : 'Toggle'}
       </Button>
-      <Button variant="primary" hoverEffect="wipe">
-        Wipe primary
+      <Button variant="tertiary">Tertiary</Button>
+      <Button variant="secondary" tone="danger">
+        Danger
       </Button>
-      <Button variant="secondary" hoverEffect="wipe">
-        Wipe secondary
-      </Button>
-      <Button variant="tertiary" hoverEffect="wipe">
-        Wipe tertiary
-      </Button>
-      <Button variant="secondary" tone="danger" hoverEffect="wipe">
-        Wipe danger
+      <Button variant="secondary" shadow="none" hoverEffect="none">
+        Flat (opt-out)
       </Button>
     </div>
   );
@@ -560,7 +556,7 @@ function ComboboxDemo() {
 function ContainerDemo() {
   return (
     <Container maxWidth="content" padding="0">
-      <div style={{ ...demoTile, borderStyle: 'dashed' }}>
+      <div style={{ ...demoTile, border: '1px dashed var(--semantic-color-border-default)' }}>
         Content is centred and capped at the reading width.
       </div>
     </Container>
@@ -1275,10 +1271,10 @@ export function DemoFrame({ children }: { children: ReactNode }) {
       data-hds
       className="hds-demo-frame not-prose"
       style={{
+        // A muted canvas, no outline (hds#891): raised Cards and soft controls read on it.
         padding: 'var(--semantic-space-scale-md)',
-        border: '1px solid var(--semantic-color-border-default)',
         borderRadius: 'var(--semantic-radius-action)',
-        background: 'var(--semantic-color-surface-page)',
+        background: 'var(--semantic-color-surface-muted)',
         color: 'var(--semantic-color-content-primary)',
       }}
     >
