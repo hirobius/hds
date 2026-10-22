@@ -57,8 +57,21 @@ for (const width of [1440, 390]) {
       await page.goto(path);
       const rows = await headingStyles(page);
       expect(rows.some((r) => r.tag === 'h1')).toBe(true);
-      for (const r of rows)
+      for (const r of rows) {
+        if (r.tag === 'h1') {
+          // The title steps below the display size only when its widest word would not fit
+          // the column (docs-phone-fit.spec.ts); face and weight are always display's.
+          const [family, size, weight] = r.actual.split(' | ');
+          const [wantFamily, wantSize, wantWeight] = r.expected.split(' | ');
+          expect(`h1 "${r.text}": ${family} | ${weight}`).toBe(
+            `h1 "${r.text}": ${wantFamily} | ${wantWeight}`,
+          );
+          expect(parseFloat(size!)).toBeLessThanOrEqual(parseFloat(wantSize!));
+          if (width === 1440) expect(size).toBe(wantSize);
+          continue;
+        }
         expect(`${r.tag} "${r.text}": ${r.actual}`).toBe(`${r.tag} "${r.text}": ${r.expected}`);
+      }
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
       expect(overflow, 'page scrolls sideways').toBe(false);
     });

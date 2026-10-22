@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'fumadocs-core/link';
 import { DocsPage, DocsBody, DocsTitle, DocsDescription } from 'fumadocs-ui/page';
@@ -6,9 +7,16 @@ import { sectionLandings, type SectionLanding } from '@/lib/section-landings';
 import { getMDXComponents } from '@/mdx-components';
 import { ComponentIndex } from '@/components/component-index';
 import { PageLinks } from '@/components/page-links';
+import { titleWordEm } from '@/lib/title-fit';
 
 /** Frontmatter is loose (source.config.ts), so read the link fields defensively. */
 const str = (v: unknown) => (typeof v === 'string' ? v : undefined);
+
+/**
+ * The title's widest word, in em at the display size. globals.css sizes the title so that
+ * word fits the column (a phone steps the display size down): a title never breaks in a word.
+ */
+const titleFit = (title: string) => ({ '--hds-title-em': titleWordEm(title) }) as CSSProperties;
 
 /** Fewer headings than this and the "On this page" rail is noise. */
 const MIN_TOC_ITEMS = 5;
@@ -29,7 +37,7 @@ function SectionLandingPage({ landing }: { landing: SectionLanding }) {
   const grouped = landing.section === 'components' || landing.section === 'patterns';
   return (
     <DocsPage toc={[]} tableOfContent={{ enabled: false }} footer={{ enabled: false }}>
-      <DocsTitle>{landing.title}</DocsTitle>
+      <DocsTitle style={titleFit(landing.title)}>{landing.title}</DocsTitle>
       <DocsDescription>
         {LANDING_DESCRIPTIONS[landing.section] ?? `${landing.pages.length} pages in this section.`}
       </DocsDescription>
@@ -71,7 +79,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
       tableOfContentPopover={{ enabled: page.data.toc.length >= MIN_TOC_ITEMS }}
       footer={{ enabled: false }}
     >
-      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsTitle style={titleFit(page.data.title)}>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <PageLinks figma={str(page.data.figma)} source={str(page.data.source)} />
       <DocsBody>

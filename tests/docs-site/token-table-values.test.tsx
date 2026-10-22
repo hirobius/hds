@@ -11,7 +11,7 @@ import { ComponentTokens } from '../../docs-site/components/component-tokens';
 import { TOKEN_PAGES, type TokenRow } from '../../docs-site/lib/token-tables';
 import { loadManifestSpecs } from '../../docs-site/lib/site-data';
 
-const cells = (html: string) => [...html.matchAll(/<td>([\s\S]*?)<\/td>/g)].map((m) => m[1]!);
+const cells = (html: string) => [...html.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((m) => m[1]!);
 const text = (html: string) => html.replace(/<[^>]+>/g, '');
 
 describe('token tables', () => {

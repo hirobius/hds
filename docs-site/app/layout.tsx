@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import localFont from 'next/font/local';
 import { RootProvider } from 'fumadocs-ui/provider/next';
+import { DocsRouter } from '../components/docs-router';
 
 // HDS brand fonts (Plus Jakarta Sans variable, Sora 700, IBM Plex Mono 400), the same opt-in
 // file consumers import, so the docs dogfood the package.
@@ -45,7 +46,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }}
           search={{ options: { type: 'static' } }}
         >
-          {children}
+          <DocsRouter>{children}</DocsRouter>
         </RootProvider>
       </body>
     </html>

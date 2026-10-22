@@ -1104,7 +1104,9 @@ function DataTableSectionDemo() {
       toolbar={<Button variant="primary">New project</Button>}
       columns={[
         { key: 'name', label: 'Project' },
-        { key: 'status', label: 'Status' },
+        // A status badge is a short literal: it sizes to itself. One-word statuses keep all three
+        // columns inside a 390px phone (tests/visual/docs-phone-fit.spec.ts).
+        { key: 'status', label: 'Status', width: 'max-content' },
       ]}
       rows={[
         {
@@ -1112,7 +1114,7 @@ function DataTableSectionDemo() {
           cells: [
             'Portfolio redesign',
             <Badge key="s" tone="success">
-              Active
+              Live
             </Badge>,
           ],
           actions: (
@@ -1126,7 +1128,7 @@ function DataTableSectionDemo() {
           cells: [
             'Token audit',
             <Badge key="s" tone="warning">
-              Review
+              Draft
             </Badge>,
           ],
           actions: (
@@ -1275,7 +1277,8 @@ export function DemoFrame({ children }: { children: ReactNode }) {
         // Not surface.muted (muted Tags and SegmentedControl tracks vanish into it) and not
         // surface.raised (borderless Cards vanish into it). Pinned by
         // tests/docs-site/demo-frame-contrast.test.ts.
-        padding: 'var(--semantic-space-scale-md)',
+        // Narrower below sm (globals.css), where the frame's empty inset costs a phone's width.
+        padding: 'var(--hds-demo-frame-padding, var(--semantic-space-scale-md))',
         borderRadius: 'var(--semantic-radius-action)',
         background: 'var(--semantic-color-surface-page)',
         color: 'var(--semantic-color-content-primary)',
