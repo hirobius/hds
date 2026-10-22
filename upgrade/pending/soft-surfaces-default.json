@@ -83,7 +83,7 @@
       "id": "removed/hds-tag-btn",
       "kind": "removed",
       "impact": "breaking",
-      "plain": "The unused .hds-tag-btn rules are gone (Tag has not rendered them since #60); use the Tag component instead of the class.",
+      "plain": "The unused CSS for hds-tag-btn is gone (Tag has not rendered it since #60); use the Tag component instead.",
       "detect": {
         "classes": ["hds-tag-btn"]
       },
@@ -93,7 +93,7 @@
       "id": "removed/hds-tag-pill",
       "kind": "removed",
       "impact": "breaking",
-      "plain": "The unused .hds-tag-pill rules are gone (Tag has not rendered them since #60); use the Tag component instead of the class.",
+      "plain": "The unused CSS for hds-tag-pill is gone (Tag has not rendered it since #60); use the Tag component instead.",
       "detect": {
         "classes": ["hds-tag-pill"]
       },
