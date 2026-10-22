@@ -331,6 +331,7 @@ export const tokenRefs = {
         page: "var(--semantic-color-surface-page)",
         raised: "var(--semantic-color-surface-raised)",
         overlay: "var(--semantic-color-surface-overlay)",
+        floating: "var(--semantic-color-surface-floating)",
         scrim: "var(--semantic-color-surface-scrim)",
         inverse: "var(--semantic-color-surface-inverse)",
         accent: "var(--semantic-color-surface-accent)",

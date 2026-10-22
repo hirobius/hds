@@ -407,19 +407,14 @@ html[data-docs-corners='sharp'] :is(.rounded, .rounded-lg, .hds-card) {
   border-radius: 0;
 }
 
-/* Shadow: hard. Zero-blur offsets in the full-strength shadow colour. */
+/* Shadow: hard. Zero-blur, straight-down offsets (x = 0) in the full-strength shadow colour. */
 html[data-docs-shadow='hard'] {
-  --semantic-shadow-subtle: 4px 4px 0 hsl(var(--primitive-shadow-color));
-  --semantic-shadow-floating: 5px 5px 0 hsl(var(--primitive-shadow-color));
-  --semantic-shadow-overlay: 8px 8px 0 hsl(var(--primitive-shadow-color));
+  --semantic-shadow-subtle: 0 4px 0 hsl(var(--primitive-shadow-color));
+  --semantic-shadow-floating: 0 5px 0 hsl(var(--primitive-shadow-color));
+  --semantic-shadow-overlay: 0 8px 0 hsl(var(--primitive-shadow-color));
 }
 /* Button and Kbd hard shadows ship in the package now (hds#888, theme.css .hds-btn-hard /
    .hds-kbd); this preview only re-points the elevation tokens. */
-/* Select popover: shipped as Tailwind shadow-md (--tw-shadow); docs-only override so the hard preview covers it without touching shipped styles. */
-html[data-docs-shadow='hard'] [role='listbox'][data-radix-select-content],
-html[data-docs-shadow='hard'] [data-radix-popper-content-wrapper] [role='listbox'] {
-  box-shadow: var(--semantic-shadow-floating);
-}
 
 /* MDX code fences (components/mdx-code-block.tsx) are the HDS CodeBlock. It sits outside the
    prose rules (not-prose), so it takes the spacing a prose <pre> had, and never widens the column. */

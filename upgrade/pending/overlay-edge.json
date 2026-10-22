@@ -1,0 +1,51 @@
+{
+  "impact": "look",
+  "plain": "Menus, popovers, select listboxes, toasts and dialogs are now white in light and draw a 1px border.default hairline so they separate from muted surfaces; no code change needed.",
+  "steps": [
+    {
+      "id": "value-changed/--role-popover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--role-popover (bg-popover) now reads the new semantic.color.surface.floating (white light, neutral.800 dark) instead of surface.overlay; if you set this variable, check your overlays still separate from surface.muted.",
+      "detect": {
+        "cssVars": ["--role-popover"],
+        "cssVarWrites": ["--role-popover"]
+      },
+      "facts": [
+        "css-var-changed:--role-popover::root",
+        "css-var-changed:--role-popover:[data-theme=\"dark\"]",
+        "css-var-changed:--role-popover:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-elevation-overlay-border",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-elevation-overlay-border is now border.default, not transparent; a surface that binds the overlay elevation bundle should draw it as a 1px border.",
+      "detect": {
+        "cssVars": ["--semantic-elevation-overlay-border"],
+        "cssVarWrites": ["--semantic-elevation-overlay-border"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-elevation-overlay-border::root",
+        "css-var-changed:--semantic-elevation-overlay-border:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-elevation-overlay-border:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-elevation-overlay-surface",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-elevation-overlay-surface is now surface.floating (white light, neutral.800 dark); a surface that binds it turns white in light.",
+      "detect": {
+        "cssVars": ["--semantic-elevation-overlay-surface"],
+        "cssVarWrites": ["--semantic-elevation-overlay-surface"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-elevation-overlay-surface::root",
+        "css-var-changed:--semantic-elevation-overlay-surface:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-elevation-overlay-surface:[data-theme=dark]"
+      ]
+    }
+  ]
+}

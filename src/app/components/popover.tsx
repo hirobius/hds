@@ -18,8 +18,9 @@
  *     </Popover.Content>
  *   </Popover>
  *
- * Surface uses role.popover (semantic.color.surface.overlay via the `popover`
- * token) + shadow-overlay. Mirrors Dialog's surface treatment so overlays read
+ * Surface uses role.popover (semantic.color.surface.floating via the `popover`
+ * token) + a border.default hairline + shadow-overlay; the hairline is what
+ * separates it from surface.muted (overlay-edge.test.ts). Mirrors Dialog's surface treatment so overlays read
  * as one family.
  */
 // motion-ok: Radix Popover manages open/close mounting; the trigger is a styling
@@ -97,7 +98,7 @@ const PopoverContent = /* @__PURE__ */ React.forwardRef<
         sideOffset={sideOffset}
         collisionPadding={8}
         className={cn(
-          'z-50 w-72 rounded-md bg-popover p-scale-sm',
+          'z-50 w-72 rounded-md border border-border bg-popover p-scale-sm',
           'text-popover-foreground shadow-overlay outline-none hds-focus',
           className,
         )}

@@ -122,12 +122,12 @@ Depth is communicated through 4 elevation roles bundled by `semantic.elevation.*
 
 ### Elevation roles
 
-| Surface                                | Role token                    | Background        | Shadow            | Border                                                   |
-| -------------------------------------- | ----------------------------- | ----------------- | ----------------- | -------------------------------------------------------- |
-| Card / panel resting                   | `semantic.elevation.flat`     | `surface.page`    | none              | none by default; opt-in 1px (`bordered`/`tone`/`accent`) |
-| Card / panel lifted (interactive only) | `semantic.elevation.raised`   | `surface.raised`  | `shadow.subtle`   | none                                                     |
-| Popover / dropdown / tooltip           | `semantic.elevation.floating` | `surface.raised`  | `shadow.floating` | none                                                     |
-| Dialog / sheet / modal                 | `semantic.elevation.overlay`  | `surface.overlay` | `shadow.overlay`  | none                                                     |
+| Surface                                   | Role token                    | Background         | Shadow            | Border                                                          |
+| ----------------------------------------- | ----------------------------- | ------------------ | ----------------- | --------------------------------------------------------------- |
+| Card / panel resting                      | `semantic.elevation.flat`     | `surface.page`     | none              | none by default; opt-in 1px (`bordered`/`tone`/`accent`)        |
+| Card / panel lifted (interactive only)    | `semantic.elevation.raised`   | `surface.raised`   | `shadow.subtle`   | none                                                            |
+| Tooltip                                   | `semantic.elevation.floating` | `surface.inverse`  | `shadow.floating` | none                                                            |
+| Menu / popover / listbox / toast / dialog | `semantic.elevation.overlay`  | `surface.floating` | `shadow.overlay`  | `border.default` 1px: the edge over `surface.muted` and in dark |
 
 Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked. The default `Card` variant is **borderless** (12d-3 outline rule: repeated outlined cards crowd a layout, so the edge is not the default) — a resting 1px border is **opt-in** via `bordered`, a feedback `tone`, or the `accent` variant (`border.default` / feedback color / `border.accent` respectively). Rely on whitespace, dividers, and rails for grouping; reach for `bordered` only for a genuinely discrete standalone object.
 
@@ -255,7 +255,7 @@ An expandable list row (one-line preview, actions beside the trigger) is `Disclo
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
 - Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
 - Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
-- Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (no border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
+- Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (no border, no shadow). Tooltips use `floating`. Menus, popovers, listboxes, toasts and dialogs use `overlay`.
 - Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
 - Don't paint status dots or coloured left accent bars on cards and tiles; status is implied by content. Don't put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge); keep label and value together.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
@@ -273,6 +273,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (472 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (473 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

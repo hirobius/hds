@@ -92,6 +92,13 @@ Every element that drew a border, outline or resting ring in `src/app/components
 | tokens                       | `component.button.secondary.border.disabled`                                 | drawn                                   | deprecated, not drawn                                |
 | tokens                       | `component.tag.border`                                                       | `border.default`                        | `surface.muted` (= fill)                             |
 
+**Amended 2026-10-22 (overlay edge, #893 review).** The six overlay rows above are reverted: Dialog,
+AlertDialog, Menu, Popover, Select listbox and Toast draw the `border.default` hairline again, on a new
+`surface.floating` fill (white light, `neutral.800` dark). Without it an overlay over `surface.muted` (Tags,
+chips, the SegmentedControl track) had no edge: same fill (1.00:1), and a shadow cannot darken
+near-black. `src/styles/__tests__/overlay-edge.test.ts` pins fill-or-hairline separation at 1.15:1 in
+light (the soft shadow does the rest) and 1.5:1 in dark.
+
 ### Kept (the border carries meaning)
 
 | Kind                           | Where                                                                                                                                                                                                                                                    |

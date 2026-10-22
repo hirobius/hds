@@ -112,15 +112,9 @@
       "id": "look/soft-surfaces-no-outline",
       "kind": "look",
       "impact": "look",
-      "plain": "Overlays (Dialog, Menu, Popover, Select, Toast), CodeBlock, Table, Tabs, SegmentedControl, Board, FormActions and Combobox/TokenField chips lose their resting border; add className=\"border border-border\" on an instance that needs the edge.",
+      "plain": "CodeBlock, Table, Tabs, SegmentedControl, Board, FormActions and Combobox/TokenField chips lose their resting border; add className=\"border border-border\" on an instance that needs the edge.",
       "detect": {
         "jsx": [
-          "Dialog",
-          "AlertDialog",
-          "Menu",
-          "Popover",
-          "Select",
-          "Toast",
           "CodeBlock",
           "Table",
           "Tabs",
