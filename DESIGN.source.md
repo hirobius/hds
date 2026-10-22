@@ -83,12 +83,12 @@ Depth is communicated through 4 elevation roles bundled by `semantic.elevation.*
 
 ### Elevation roles
 
-| Surface                                | Role token                    | Background        | Shadow            | Border                                                   |
-| -------------------------------------- | ----------------------------- | ----------------- | ----------------- | -------------------------------------------------------- |
-| Card / panel resting                   | `semantic.elevation.flat`     | `surface.page`    | none              | none by default; opt-in 1px (`bordered`/`tone`/`accent`) |
-| Card / panel lifted (interactive only) | `semantic.elevation.raised`   | `surface.raised`  | `shadow.subtle`   | none                                                     |
-| Popover / dropdown / tooltip           | `semantic.elevation.floating` | `surface.raised`  | `shadow.floating` | none                                                     |
-| Dialog / sheet / modal                 | `semantic.elevation.overlay`  | `surface.overlay` | `shadow.overlay`  | none                                                     |
+| Surface                                   | Role token                    | Background         | Shadow            | Border                                                          |
+| ----------------------------------------- | ----------------------------- | ------------------ | ----------------- | --------------------------------------------------------------- |
+| Card / panel resting                      | `semantic.elevation.flat`     | `surface.page`     | none              | none by default; opt-in 1px (`bordered`/`tone`/`accent`)        |
+| Card / panel lifted (interactive only)    | `semantic.elevation.raised`   | `surface.raised`   | `shadow.subtle`   | none                                                            |
+| Tooltip                                   | `semantic.elevation.floating` | `surface.inverse`  | `shadow.floating` | none                                                            |
+| Menu / popover / listbox / toast / dialog | `semantic.elevation.overlay`  | `surface.floating` | `shadow.overlay`  | `border.default` 1px: the edge over `surface.muted` and in dark |
 
 Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked. The default `Card` variant is **borderless** (12d-3 outline rule: repeated outlined cards crowd a layout, so the edge is not the default) — a resting 1px border is **opt-in** via `bordered`, a feedback `tone`, or the `accent` variant (`border.default` / feedback color / `border.accent` respectively). Rely on whitespace, dividers, and rails for grouping; reach for `bordered` only for a genuinely discrete standalone object.
 

@@ -45,7 +45,7 @@ const MenuSub = MenuPrimitive.Sub;
 const MenuPortal = /* @__PURE__ */ withHdsPortal(MenuPrimitive.Portal);
 
 const SURFACE =
-  'z-50 min-w-32 max-h-[var(--radix-dropdown-menu-content-available-height)] overflow-y-auto rounded-md bg-popover p-1 text-popover-foreground shadow-overlay';
+  'z-50 min-w-32 max-h-[var(--radix-dropdown-menu-content-available-height)] overflow-y-auto rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-overlay';
 // Max-height + overflow-y-auto (hds#821): Radix scroll-locks the page while a
 // menu is open and the 44px coarse-pointer rows make a long menu taller than a
 // phone, so the surface caps itself to the room Radix measured and scrolls.

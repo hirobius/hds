@@ -297,8 +297,8 @@ When building any card component or card-like surface, ALL of the following rule
 | --- | --- | --- | --- | --- |
 | Card / panel resting | \`semantic.elevation.flat\` | \`surface.page\` | none | \`border.subtle\` 1px |
 | Card / panel lifted (interactive only) | \`semantic.elevation.raised\` | \`surface.raised\` | \`shadow.subtle\` | none |
-| Popover / dropdown / tooltip | \`semantic.elevation.floating\` | \`surface.raised\` | \`shadow.floating\` | none |
-| Dialog / sheet / modal | \`semantic.elevation.overlay\` | \`surface.overlay\` | \`shadow.overlay\` | none |
+| Tooltip | \`semantic.elevation.floating\` | \`surface.inverse\` | \`shadow.floating\` | none |
+| Menu / popover / listbox / toast / dialog | \`semantic.elevation.overlay\` | \`surface.floating\` | \`shadow.overlay\` | \`border.default\` 1px |
 
 Cards default to \`elevation.flat\`. Popovers/tooltips/dropdowns use \`elevation.floating\`. Dialogs/sheets use \`elevation.overlay\`. Interactive cards lift to \`elevation.raised\` on hover. Never combine \`raised\` with a border — depth is one mechanism (border OR shadow), not both stacked.
 

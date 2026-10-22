@@ -1271,10 +1271,11 @@ export function DemoFrame({ children }: { children: ReactNode }) {
       data-hds
       className="hds-demo-frame not-prose"
       style={{
-        // A muted canvas, no outline (hds#891): raised Cards and soft controls read on it.
+        // A raised canvas, no outline (hds#891). Not surface.muted: muted controls (the
+        // SegmentedControl track, Tags) sit on that colour and vanished into the frame.
         padding: 'var(--semantic-space-scale-md)',
         borderRadius: 'var(--semantic-radius-action)',
-        background: 'var(--semantic-color-surface-muted)',
+        background: 'var(--semantic-color-surface-raised)',
         color: 'var(--semantic-color-content-primary)',
       }}
     >

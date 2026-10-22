@@ -1308,6 +1308,18 @@
             }
           }
         },
+        "floating": {
+          "$value": "{primitive.color.neutral.white}",
+          "$description": "Overlay fill (menus, popovers, listboxes, toasts, dialogs). Pair with a border.default hairline to separate from surface.muted.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.white}",
+                "Dark": "{primitive.color.neutral.800}"
+              }
+            }
+          }
+        },
         "scrim": {
           "$value": "{primitive.color.neutral.900}",
           "$description": "Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.",
@@ -2596,13 +2608,13 @@
         }
       },
       "overlay": {
-        "$description": "Modal, dialog, and drawer elevation.",
+        "$description": "Menu, popover, listbox, toast, dialog and drawer elevation: the floating fill, overlay shadow and a border.default hairline.",
         "$extensions": {
           "com.hirobius.hds": {
             "$value": {
-              "surface": "{semantic.color.surface.overlay}",
+              "surface": "{semantic.color.surface.floating}",
               "shadow": "{semantic.shadow.overlay}",
-              "border": null
+              "border": "{semantic.color.border.default}"
             }
           }
         }
@@ -3207,7 +3219,7 @@
     },
     "popover": {
       "$type": "color",
-      "$value": "{semantic.color.surface.overlay}",
+      "$value": "{semantic.color.surface.floating}",
       "$description": "Popover/menu surface. shadcn role: popover."
     },
     "scrim": {

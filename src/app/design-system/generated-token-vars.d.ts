@@ -243,6 +243,7 @@ declare module 'react' {
     '--semantic-color-surface-page'?: string | undefined;
     '--semantic-color-surface-raised'?: string | undefined;
     '--semantic-color-surface-overlay'?: string | undefined;
+    '--semantic-color-surface-floating'?: string | undefined;
     '--semantic-color-surface-scrim'?: string | undefined;
     '--semantic-color-surface-inverse'?: string | undefined;
     '--semantic-color-surface-accent'?: string | undefined;

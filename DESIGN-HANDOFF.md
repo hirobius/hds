@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 520 tokens, aliases, and TS refs in one shot.
+Checks all 521 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -223,6 +223,7 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.surface.page`           | {primitive.color.neutral.white} | {primitive.color.neutral.black} | Main page background                                                                                                                        |
 | `semantic.color.surface.raised`         | {primitive.color.neutral.50}    | {primitive.color.neutral.850}   | Subtle elevated surface (cards, sections)                                                                                                   |
 | `semantic.color.surface.overlay`        | {primitive.color.neutral.100}   | {primitive.color.neutral.800}   | Deeper surface layer                                                                                                                        |
+| `semantic.color.surface.floating`       | {primitive.color.neutral.white} | {primitive.color.neutral.800}   | Overlay fill (menus, popovers, listboxes, toasts, dialogs). Pair with a border.default hairline to separate from surface.muted.             |
 | `semantic.color.surface.scrim`          | {primitive.color.neutral.900}   | {primitive.color.neutral.black} | Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.                                         |
 | `semantic.color.surface.inverse`        | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Inverted background for contrast sections                                                                                                   |
 | `semantic.color.surface.accent`         | {primitive.color.graphite.700}  | {primitive.color.graphite.200}  | Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.                                   |
