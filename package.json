@@ -117,6 +117,7 @@
     "CHANGELOG.md",
     "upgrade/schema.json",
     "upgrade/index.json",
+    "upgrade/kept.json",
     "upgrade/releases/",
     "src/app/data/component-api.json",
     "codemods/patterns-subpath.mjs",

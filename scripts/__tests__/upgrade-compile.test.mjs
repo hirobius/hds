@@ -185,6 +185,7 @@ const STATUS = { updatedAt: '2026-10-01T00:00:00Z', phase: 'active', headline: '
 function historyRepo({
   command = false,
   ledgers = [LEDGER_0_11, LEDGER_0_12, LEDGER_0_12_1],
+  kept = null,
 } = {}) {
   const root = mkdtempSync(join(tmpdir(), 'hds-compile-'));
   temps.push(root);
@@ -197,6 +198,7 @@ function historyRepo({
     write(root, `docs/api/releases/${ledger.version}.json`, '{}\n');
     write(root, `upgrade/releases/${ledger.version}.json`, json(ledger));
   }
+  if (kept) write(root, 'upgrade/kept.json', json({ kept }));
   write(root, 'status.json', json(STATUS));
   return root;
 }
@@ -524,7 +526,14 @@ describe('a deprecation its removeIn release keeps', () => {
       },
     ],
   };
-  const repo = () => historyRepo({ ledgers: [deprecations, LEDGER_0_12] });
+  const KEPT = {
+    '0.11.0/deprecated/old-space': {
+      in: '0.12.0',
+      plain:
+        'The --old-space variable was deprecated in 0.11.0; its removal in 0.12.0 was cancelled, so it stays.',
+    },
+  };
+  const repo = () => historyRepo({ ledgers: [deprecations, LEDGER_0_12], kept: KEPT });
 
   it('leaves it out of upgrade/index.json', () => {
     const { index } = compileOutputs({ repo: repo() });
@@ -533,9 +542,18 @@ describe('a deprecation its removeIn release keeps', () => {
     );
   });
 
-  it('says in Coming next that the release kept it, linked', () => {
+  it('says in Coming next that the removal was cancelled, in the words upgrade/kept.json gives', () => {
     expect(compileOutputs({ repo: repo() }).upgrading).toContain(
-      '- The --old-space variable still works but is deprecated; use --space-md. Kept: [0.12.0](#0120) did not remove it.',
+      '- The --old-space variable was deprecated in 0.11.0; its removal in 0.12.0 was cancelled, so it stays.',
+    );
+  });
+
+  it('does not infer a keep from a release that merely left it: only the record keeps it', () => {
+    const { index } = compileOutputs({
+      repo: historyRepo({ ledgers: [deprecations, LEDGER_0_12] }),
+    });
+    expect(JSON.parse(index).deprecated.map((d) => d.step)).toContain(
+      '0.11.0/deprecated/old-space',
     );
   });
 

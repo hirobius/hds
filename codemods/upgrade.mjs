@@ -488,7 +488,7 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
           matchDetect(s.detect, before).length > 0 &&
           !(s.done && matchDetect(s.done, before).length > 0),
       );
-    const steps = [
+    const crossed = [
       ...earlier,
       ...record.ledgers
         .filter(
@@ -496,6 +496,10 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
         )
         .flatMap((l) => l.steps),
     ];
+    // A deprecation whose removal was cancelled (upgrade/kept.json) has nothing
+    // to rewrite: its codemod would move code off a step that stays.
+    const keptSteps = crossed.filter((s) => s.kind === 'deprecated' && record.kept.has(s.id));
+    const steps = crossed.filter((s) => !keptSteps.includes(s));
 
     if (versions[i].noHistory) {
       const where = versions[i].source === 'node_modules' ? 'node_modules' : 'the lockfile';
@@ -517,6 +521,18 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
         plain: `The lockfile's git history says ${HDS_PACKAGE} was ${versions[i].belowFloor}, older than ${record.index.floor}, the oldest release this tool knows, so it checked from ${record.index.floor} on. For the releases before it, follow MIGRATIONS.md.`,
         importer: dir,
         files: [pkgRel],
+        blocking: false,
+      });
+    }
+
+    for (const step of keptSteps) {
+      const hits = step.detect ? matchDetect(step.detect, before) : [];
+      if (hits.length === 0) continue;
+      addItem(report, 'doByHand', {
+        id: `${step.id}/kept`,
+        plain: record.kept.get(step.id).plain,
+        importer: dir,
+        files: rel(hits),
         blocking: false,
       });
     }
@@ -628,7 +644,7 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
       });
     }
 
-    for (const step of comingNextSteps(record.ledgers, target)) {
+    for (const step of comingNextSteps(record.ledgers, target, record.kept)) {
       const hits = step.detect ? matchDetect(step.detect, now) : [];
       if (hits.length === 0) continue;
       if (step.done && matchDetect(step.done, now).length > 0) continue;

@@ -90,7 +90,7 @@ describe('check-tailwind-spacing-scale: fixture mode (proof-of-firing)', () => {
   });
 });
 
-describe('tailwind spacing scale: primitive and deprecated steps (2026-10 spacing prune)', () => {
+describe('tailwind spacing scale: primitive and off-grid px6/px10 steps (2026-10 spacing prune)', () => {
   it('flags primitive spacing vars and hds.space members, not semantic ones', () => {
     const src = `x("p-[var(--primitive-space-4)]", hds.space.px16, hds.semantic.space.scale.md, "var(--semantic-space-scale-sm)")`;
     expect(scanSource(src).map((f) => [f.token, f.kind])).toEqual([

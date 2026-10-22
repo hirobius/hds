@@ -18,7 +18,7 @@ const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'));
 
 /**
  * @param {string} pkgDir the package root (the directory holding package.json)
- * @returns {{ version: string, index: any, ledgers: any[] }}
+ * @returns {{ version: string, index: any, ledgers: any[], kept: Map<string, { in: string, plain: string }> }}
  */
 export function loadRecord(pkgDir) {
   const { version } = readJson(join(pkgDir, 'package.json'));
@@ -28,7 +28,19 @@ export function loadRecord(pkgDir) {
     .filter((file) => existsSync(file))
     .map(readJson)
     .sort((a, b) => compareVersions(a.version, b.version));
-  return { version, index, ledgers };
+  return { version, index, ledgers, kept: readKept(pkgDir) };
+}
+
+/**
+ * upgrade/kept.json: the deprecations whose removal was cancelled, by step id,
+ * each with the release that would have removed it. The one record both the
+ * upgrade command and scripts/upgrade/compile.mjs read.
+ * @param {string} root the package root
+ * @returns {Map<string, { in: string, plain: string }>}
+ */
+export function readKept(root) {
+  const file = join(root, 'upgrade/kept.json');
+  return new Map(existsSync(file) ? Object.entries(readJson(file).kept ?? {}) : []);
 }
 
 /** Step kinds that take something public away. */
@@ -62,14 +74,15 @@ const namedUses = (step) => [
  * release up to `target` took away.
  * @param {{ version: string, steps: any[] }[]} ledgers oldest first
  * @param {string} target
+ * @param {Map<string, { in: string, plain: string }>} [kept] readKept: those steps are not deprecated any more
  */
-export function comingNextSteps(ledgers, target) {
+export function comingNextSteps(ledgers, target, kept = new Map()) {
   const upTo = ledgers.filter((l) => compareVersions(l.version, target) <= 0);
   const out = [];
   for (const ledger of upTo) {
     const later = upTo.filter((l) => compareVersions(l.version, ledger.version) > 0);
     for (const step of ledger.steps) {
-      if (step.kind !== 'deprecated') continue;
+      if (step.kind !== 'deprecated' || kept.has(step.id)) continue;
       if (step.removeIn && compareVersions(step.removeIn, target) <= 0) continue;
       const named = namedUses(step);
       const uses = named.length > 0 ? named : [`subject:${subject(step)}`];
