@@ -5,12 +5,12 @@ import { Card, Disclosure, Text } from '@hirobius/design-system';
 
 /**
  * A foundation page's Principle and Best practices, folded into one collapsed
- * section below the tokens (hds#847 C). Built only from HDS parts: a bordered
- * Card around a Disclosure, which brings its own chevron and expanded state.
+ * section below the tokens (hds#847 C). Built only from HDS parts: a soft (raised,
+ * borderless) Card around a Disclosure, which brings its own chevron and expanded state.
  */
 export function PrinciplesAndPractices({ children }: { children: ReactNode }) {
   return (
-    <Card bordered padding="none" className="hds-principles">
+    <Card padding="none" className="hds-principles">
       <Disclosure
         label={
           <Text variant="titleSm" as="span">

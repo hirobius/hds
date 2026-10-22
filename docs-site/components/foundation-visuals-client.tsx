@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { Button, Kbd, Tag, Text } from '@hirobius/design-system';
 
 /**
  * A swatch card that copies its token name on tap. The whole card is the
@@ -48,6 +49,69 @@ export function MotionDemo({ duration, easing }: { duration: string; easing: str
       <button type="button" className="hds-motion-replay" onClick={() => setRun((n) => n + 1)}>
         {run ? 'Replay' : 'Play'}
       </button>
+    </div>
+  );
+}
+
+/**
+ * Soft surfaces (hds#891): one specimen per surface step, each holding the same
+ * controls, so the tonal separation, the soft secondary fill and the hard shadow
+ * read together in light and dark. Built only from HDS parts and tokens.
+ */
+export function SoftSurfacesDemo() {
+  const steps = [
+    ['page', 'semantic.color.surface.page'],
+    ['raised', 'semantic.color.surface.raised'],
+    ['muted', 'semantic.color.surface.muted'],
+  ] as const;
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gap: 'var(--semantic-space-scale-sm)',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 15rem), 1fr))',
+      }}
+    >
+      {steps.map(([name, path]) => (
+        <div
+          key={name}
+          data-hds
+          style={{
+            display: 'grid',
+            gap: 'var(--semantic-space-scale-xs)',
+            padding: 'var(--semantic-space-surface-padding)',
+            borderRadius: 'var(--semantic-radius-action)',
+            background: `var(--${path.replace(/\./g, '-')})`,
+            color: 'var(--semantic-color-content-primary)',
+          }}
+        >
+          <Text variant="caption" tone="secondary">
+            {path}
+          </Text>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 'var(--semantic-space-scale-xs)',
+              alignItems: 'center',
+            }}
+          >
+            <Button variant="primary" size="sm">
+              Save
+            </Button>
+            <Button size="sm">Cancel</Button>
+            <Button variant="tertiary" size="sm">
+              More
+            </Button>
+          </div>
+          <div
+            style={{ display: 'flex', gap: 'var(--semantic-space-scale-xs)', alignItems: 'center' }}
+          >
+            <Tag>Remote</Tag>
+            <Kbd>K</Kbd>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

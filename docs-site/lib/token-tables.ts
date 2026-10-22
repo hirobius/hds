@@ -50,6 +50,7 @@ const PAGE_GROUPS: Record<string, string> = {
   motion: 'semantic.motion',
   radius: 'semantic.radius',
   elevation: 'semantic.shadow',
+  'soft-surfaces': 'semantic.color.surface',
 };
 
 export const TOKEN_PAGES = Object.keys(PAGE_GROUPS);

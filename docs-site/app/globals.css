@@ -257,13 +257,13 @@ pre {
   overflow-x: auto;
 }
 
-/* Prose tables (components/mdx-prose.tsx): a frame from HDS tokens, so the Corners switch squares
-   it. Fumadocs' own wrapper hard-codes an 8px radius. */
+/* Prose tables (components/mdx-prose.tsx): a raised tonal frame from HDS tokens (no outline,
+   hds#891), so the Corners switch squares it. Fumadocs' own wrapper hard-codes an 8px radius. */
 .hds-docs-table {
   position: relative;
   overflow: auto;
   margin: var(--semantic-space-scale-lg) 0;
-  border: 1px solid var(--semantic-color-border-default);
+  background: var(--semantic-color-surface-raised);
   border-radius: var(--semantic-radius-action);
 }
 /* The frame scrolls, so the table inside fills it instead of shrinking to its content. */
@@ -281,16 +281,14 @@ pre {
   box-shadow: var(--semantic-shadow-overlay);
 }
 
-/* Collapsed sections (generated pages and token tables): a hairline row with a
-   chevron, the content one click away. Native <details>, so it works without JS
-   and stays searchable. */
+/* Collapsed sections (generated pages and token tables): a soft raised row with a
+   chevron (no hairlines, hds#891), the content one click away. Native <details>, so it
+   works without JS and stays searchable. */
 .hds-fold {
-  border-top: 1px solid var(--semantic-color-border-subtle);
-  margin: 0;
-}
-
-.hds-fold:last-of-type {
-  border-bottom: 1px solid var(--semantic-color-border-subtle);
+  margin: 0 0 var(--semantic-space-scale-xs);
+  padding: 0 var(--semantic-space-scale-sm);
+  background: var(--semantic-color-surface-raised);
+  border-radius: var(--semantic-radius-action);
 }
 
 .hds-fold > summary {
@@ -334,7 +332,6 @@ pre {
 
 /* "Show code" hangs off the example frame above it, like Geist's. */
 .hds-fold--code {
-  border-top: none;
   margin-top: -0.5rem;
 }
 
@@ -415,52 +412,13 @@ html[data-docs-shadow='hard'] {
   --semantic-shadow-subtle: 4px 4px 0 hsl(var(--primitive-shadow-color));
   --semantic-shadow-floating: 5px 5px 0 hsl(var(--primitive-shadow-color));
   --semantic-shadow-overlay: 8px 8px 0 hsl(var(--primitive-shadow-color));
-  /* Kbd follows the Button light source: one colour, semantic.color.shadow.hard (shadow ink in
-     Light, the border.strong stroke in Dark, where black would vanish), smaller offset. */
-  --semantic-shadow-key: 2px 2px 0 var(--semantic-color-shadow-hard);
 }
-/* Kbd keeps its border-strong border; pressed sinks 1px along the shadow direction. */
-html[data-docs-shadow='hard'] .hds-kbd {
-  border-color: var(--semantic-color-border-strong);
-}
-html[data-docs-shadow='hard'] .hds-kbd:active {
-  box-shadow: 1px 1px 0 var(--semantic-color-shadow-hard);
-  translate: 1px 1px;
-}
+/* Button and Kbd hard shadows ship in the package now (hds#888, theme.css .hds-btn-hard /
+   .hds-kbd); this preview only re-points the elevation tokens. */
 /* Select popover: shipped as Tailwind shadow-md (--tw-shadow); docs-only override so the hard preview covers it without touching shipped styles. */
 html[data-docs-shadow='hard'] [role='listbox'][data-radix-select-content],
 html[data-docs-shadow='hard'] [data-radix-popper-content-wrapper] [role='listbox'] {
   box-shadow: var(--semantic-shadow-floating);
-}
-/* Buttons carry no shadow today: 3px rest, 5px + 2px lift on hover, 1px + 2px sink on press. Keeps Tailwind's ring/inset layers so focus and press still show. */
-html[data-docs-shadow='hard'] button[data-variant='primary'],
-html[data-docs-shadow='hard'] button[data-variant='secondary'] {
-  box-shadow:
-    var(--tw-inset-shadow, 0 0 #0000),
-    var(--tw-inset-ring-shadow, 0 0 #0000),
-    var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000),
-    3px 3px 0 var(--semantic-color-shadow-hard);
-}
-html[data-docs-shadow='hard'] button[data-variant='primary']:hover:not(:disabled),
-html[data-docs-shadow='hard'] button[data-variant='secondary']:hover:not(:disabled) {
-  translate: -2px -2px;
-  box-shadow:
-    var(--tw-inset-shadow, 0 0 #0000),
-    var(--tw-inset-ring-shadow, 0 0 #0000),
-    var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000),
-    5px 5px 0 var(--semantic-color-shadow-hard);
-}
-html[data-docs-shadow='hard'] button[data-variant='primary']:active:not(:disabled),
-html[data-docs-shadow='hard'] button[data-variant='secondary']:active:not(:disabled) {
-  translate: 2px 2px;
-  box-shadow:
-    var(--tw-inset-shadow, 0 0 #0000),
-    var(--tw-inset-ring-shadow, 0 0 #0000),
-    var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000),
-    1px 1px 0 var(--semantic-color-shadow-hard);
 }
 
 /* MDX code fences (components/mdx-code-block.tsx) are the HDS CodeBlock. It sits outside the
@@ -516,14 +474,14 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:active:not(:disab
   text-align: left;
   font: inherit;
   color: inherit;
-  background: var(--semantic-color-surface-page);
-  border: 1px solid var(--semantic-color-border-subtle);
+  background: var(--semantic-color-surface-raised);
+  border: 0;
   border-radius: var(--semantic-radius-action);
   overflow: hidden;
   cursor: copy;
 }
 .hds-swatch:hover {
-  border-color: var(--semantic-color-border-default);
+  background: var(--semantic-color-surface-hover);
 }
 .hds-swatch:focus-visible {
   outline: 2px solid var(--semantic-color-border-accent);
@@ -533,7 +491,6 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:active:not(:disab
   display: flex;
   align-self: stretch;
   height: 4.5rem;
-  border-bottom: 1px solid var(--semantic-color-border-subtle);
 }
 /* An empty span has no intrinsic width: give each half its share explicitly so
    the fill never collapses to nothing (hds#846). */
@@ -581,13 +538,9 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:active:not(:disab
   opacity: 0;
 }
 
-/* Type specimens and motion demos: open rows on hairlines, no boxes. */
-.hds-specimens {
-  border-top: 1px solid var(--semantic-color-border-subtle);
-}
+/* Type specimens and motion demos: open rows separated by space, no boxes or hairlines. */
 .hds-specimen {
   padding: var(--semantic-space-scale-sm) 0;
-  border-bottom: 1px solid var(--semantic-color-border-subtle);
   min-width: 0;
 }
 .prose .hds-specimen-meta {
@@ -617,7 +570,6 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:active:not(:disab
   align-items: center;
   gap: var(--semantic-space-scale-xs);
   padding: 0.375rem 0;
-  border-bottom: 1px solid var(--semantic-color-border-subtle);
 }
 .prose .hds-step-name {
   padding: 0;
@@ -724,8 +676,8 @@ html[data-docs-shadow='hard'] button[data-variant='secondary']:active:not(:disab
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--semantic-color-content-primary);
-  background: var(--semantic-color-surface-page);
-  border: 1px solid var(--semantic-color-border-default);
+  background: var(--semantic-color-surface-soft);
+  border: 0;
   border-radius: var(--semantic-radius-action);
   cursor: pointer;
 }
