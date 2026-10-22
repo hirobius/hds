@@ -48,7 +48,9 @@ const surfaceVariants = /* @__PURE__ */ cva(
         // The surface's fixed inset contract (not layout spacing): the primitive
         // 16px/24px steps, so a tenant's semantic scale never moves them.
         item: 'p-[var(--semantic-space-scale-sm)]',
+        // tier-ok: fixed 16px inset contract, see comment above
         px16: 'p-[var(--primitive-space-4)]',
+        // tier-ok: fixed 24px inset contract, see comment above
         px24: 'p-[var(--primitive-space-6)]',
         none: 'p-0',
       },

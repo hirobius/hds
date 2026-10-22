@@ -124,7 +124,7 @@ describe('TabsList keeps the selected tab in view (hds#823)', () => {
     const { rerender } = render(<Many value="a" />);
     rerender(<Many value="d" />);
     await waitFor(() => expect(scrollTo).toHaveBeenCalledTimes(1));
-    expect(scrollTo.mock.calls[0][0]).toEqual({ left: 180, behavior: 'smooth' });
+    expect(scrollTo.mock.calls[0][0]).toEqual({ left: 180, behavior: 'smooth' }); // spacing-ok: asserted scrollTo offset, not layout
   });
 
   it('does not smooth-scroll under prefers-reduced-motion', async () => {
@@ -137,7 +137,7 @@ describe('TabsList keeps the selected tab in view (hds#823)', () => {
     const { rerender } = render(<Many value="a" />);
     rerender(<Many value="d" />);
     await waitFor(() => expect(scrollTo).toHaveBeenCalledTimes(1));
-    expect(scrollTo.mock.calls[0][0]).toEqual({ left: 180, behavior: 'auto' });
+    expect(scrollTo.mock.calls[0][0]).toEqual({ left: 180, behavior: 'auto' }); // spacing-ok: asserted scrollTo offset, not layout
   });
 });
 

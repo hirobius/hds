@@ -67,6 +67,7 @@ describe('EmptyState', () => {
     const svg = container.querySelector('svg');
     expect(svg).not.toBeNull();
     expect(svg?.getAttribute('aria-hidden')).toBe('true');
+    // tier-ok: asserts the emitted primitive
     expect(svg?.style.width).toBe('var(--primitive-size-20)');
     const title = screen.getByText('No snippets yet');
     expect(Boolean(svg!.compareDocumentPosition(title) & Node.DOCUMENT_POSITION_FOLLOWING)).toBe(

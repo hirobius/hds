@@ -117,6 +117,6 @@ describe('SegmentedControl overflow (hds#823)', () => {
     layout();
     rerender(<SegmentedControl aria-label="View" value="d" onChange={() => {}} options={MANY} />);
     await waitFor(() => expect(scrollTo).toHaveBeenCalledTimes(1));
-    expect(scrollTo.mock.calls[0][0]).toEqual({ left: 180, behavior: 'auto' });
+    expect(scrollTo.mock.calls[0][0]).toEqual({ left: 180, behavior: 'auto' }); // spacing-ok: asserted scrollTo offset, not layout
   });
 });

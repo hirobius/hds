@@ -31,6 +31,12 @@ node scripts/check-record-freshness.mjs
 echo "TDD gate (source changes ship with a test)…"
 node scripts/check-tests-with-code.mjs
 
+# The fast gate chain (manifest, tokens, typecheck, docs, tier/spacing/brand,
+# doc refs + routes). It was manual-only and drifted red unnoticed; running it
+# on every push keeps it green.
+echo "Fast gates (pnpm check:fast)…"
+pnpm check:fast
+
 echo "Unit + contract tests (pnpm test: pretest gates + vitest)…"
 pnpm test
 

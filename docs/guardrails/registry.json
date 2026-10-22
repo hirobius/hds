@@ -96,7 +96,7 @@
       "fixturePath": "fixtures/check-brand",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-code-connect",
@@ -138,7 +138,7 @@
       "fixturePath": "fixtures/check-css-integrity",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -173,7 +173,7 @@
       "fixturePath": "fixtures/check-dimensions",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -283,7 +283,7 @@
       "fixturePath": "fixtures/check-hardcoded-breakpoints",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -311,7 +311,7 @@
       "fixturePath": "fixtures/check-hardcoded-spacing",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
@@ -351,7 +351,7 @@
       "fixturePath": "fixtures/check-link-integrity",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "subModes": [
         {
           "flag": "--doc-refs-only",
@@ -687,7 +687,7 @@
       "fixturePath": "fixtures/check-ref-forwarding",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -747,7 +747,7 @@
       "fixturePath": "fixtures/check-style-discipline",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "supportsJson": true
     },
     {
@@ -769,7 +769,7 @@
       "fixturePath": "fixtures/check-template-source-of-truth",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
@@ -794,7 +794,7 @@
       "fixturePath": "fixtures/check-tier-bypass",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-token-descriptions",
@@ -805,7 +805,7 @@
       "fixturePath": "fixtures/check-token-descriptions",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "qualityFlag": "--quality"
     },
     {
@@ -865,7 +865,7 @@
       "fixturePath": "fixtures/check-typography-discipline",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",

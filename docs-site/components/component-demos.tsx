@@ -221,7 +221,8 @@ function MenuDemo() {
 
 // A link, prose and an action row are what used to shear a table on desktop
 // (tests/visual/table-clipping.spec.ts guards it). The literal columns (status, date,
-// actions) size to their content, so Summary takes the spare width.
+// actions) size to their content, so Summary takes the spare width. Summary floors at
+// two tiles: on a 390px phone the frame scrolls instead of squeezing it to ~100px.
 const TABLE_DEMO_ROWS = [
   {
     key: 'portfolio',
@@ -248,7 +249,11 @@ function TableDemo() {
       emphasizeFirstColumn
       columns={[
         { key: 'name', label: 'Project' },
-        { key: 'summary', label: 'Summary' },
+        {
+          key: 'summary',
+          label: 'Summary',
+          width: 'minmax(calc(var(--semantic-size-tile) * 2), 1fr)',
+        },
         { key: 'status', label: 'Status', width: 'max-content' },
         { key: 'updated', label: 'Updated', align: 'right', width: 'max-content' },
         { key: 'actions', label: 'Actions', align: 'right', width: 'max-content' },

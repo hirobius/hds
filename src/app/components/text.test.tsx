@@ -67,8 +67,11 @@ const weightClasses = (el: HTMLElement) =>
 
 describe('Text weight', () => {
   const cases: Array<[NonNullable<TextProps['weight']>, string]> = [
+    // tier-ok: asserts the emitted primitive
     ['regular', '[font-weight:var(--primitive-typography-weight-regular)]'],
+    // tier-ok: asserts the emitted primitive
     ['medium', '[font-weight:var(--primitive-typography-weight-medium)]'],
+    // tier-ok: asserts the emitted primitive
     ['bold', '[font-weight:var(--primitive-typography-weight-bold)]'],
   ];
 

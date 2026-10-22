@@ -39,6 +39,28 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 /**
+ * A line inside a JSDoc block (` * ...` or `/** ...`). Usage examples there show
+ * a consumer's markup, not a link this app renders, so the route gate skips them.
+ *
+ * @param {string} line
+ * @returns {boolean}
+ */
+export function isDocCommentLine(line) {
+  return /^\s*(\/\*\*|\*(?!\/))/.test(line);
+}
+
+/**
+ * A path with an angle-bracket placeholder (`.status/<branch>.md`) names a
+ * pattern, not a file, so there is nothing on disk to check.
+ *
+ * @param {string} token
+ * @returns {boolean}
+ */
+export function isPlaceholderPath(token) {
+  return /<[^<>]+>/.test(token);
+}
+
+/**
  * Which of `paths` .gitignore covers, asked of git in one call.
  *
  * Fails open: outside a git checkout, or if git is missing, every path comes
@@ -137,6 +159,7 @@ function runDocRefsCheck() {
     if (SKIP_EXACT.has(token)) return true;
     if (!looksLikeLocalFileRef(token)) return true;
     if (token.startsWith('~/')) return true;
+    if (isPlaceholderPath(token)) return true;
     if (token.startsWith('http://') || token.startsWith('https://')) return true;
     if (token.startsWith('/')) return true;
     if (
@@ -459,6 +482,7 @@ function runRouteLinksCheck() {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       if (line.includes('route-ok')) continue;
+      if (isDocCommentLine(line)) continue;
       for (const match of line.matchAll(ROUTE_RE)) {
         const route = match[1];
         if (!isAllowedRoute(route)) {

@@ -2203,7 +2203,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role binds weight.mono (400). The mono companion, role 6 of 6."
+        "$description": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6."
       },
       "h1": {
         "$value": {
@@ -2414,7 +2414,7 @@
       "delight": {
         "base": {
           "$value": "{primitive.color.lime.300}",
-          "$description": "Delight accent fill (lime) for delight moments only: a streak or win badge, a \"new\" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes.",
+          "$description": "Lime fill for delight moments only (win badge, \"new\" tag, confetti). Never buttons, links or focus. Text: accent.delight.onDelight.",
           "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code",
           "$extensions": {
             "com.figma.variables": {
@@ -2427,7 +2427,7 @@
         },
         "deep": {
           "$value": "{primitive.color.lime.600}",
-          "$description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.",
+          "$description": "Deep lime for delight line art and confetti. Decorative only: never text, buttons, links or focus.",
           "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code",
           "$extensions": {
             "com.figma.variables": {
@@ -2440,7 +2440,7 @@
         },
         "pale": {
           "$value": "{primitive.color.lime.50}",
-          "$description": "Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.",
+          "$description": "Pale lime tint behind a delight moment, such as a best-fit row. Text is ink. Never buttons, links, focus.",
           "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code",
           "$extensions": {
             "com.figma.variables": {
