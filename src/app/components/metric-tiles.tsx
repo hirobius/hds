@@ -20,10 +20,14 @@ const MAX_COLUMNS = 4;
 /** Widest a row of tiles gets at phone width (at or under `breakpoints.sm`), so tiles do not cramp. */
 const PHONE_MAX_COLUMNS = 2;
 
-/** True at or under the phone breakpoint; follows resizes, like Grid's own column clamp. */
+/**
+ * True at or under the phone breakpoint; follows resizes, like Grid's own column clamp.
+ * Starts false so the first client render matches the server's: reading the width in the initial
+ * state made hydration keep the server's column count on a phone, and the row overflowed.
+ */
 function useIsPhone(): boolean {
-  const read = () => typeof window !== 'undefined' && window.innerWidth <= hds.breakpoints.sm;
-  const [isPhone, setIsPhone] = React.useState(read);
+  const read = () => window.innerWidth <= hds.breakpoints.sm;
+  const [isPhone, setIsPhone] = React.useState(false);
   React.useEffect(() => {
     const update = () => setIsPhone(read());
     update();
