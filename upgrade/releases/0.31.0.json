@@ -1,0 +1,271 @@
+{
+  "version": "0.31.0",
+  "date": "2026-10-22",
+  "bump": "minor",
+  "summary": "2 changes to make by hand (2 breaking) and 14 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.31.0/removed/hds-tag-btn",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The unused CSS for hds-tag-btn is gone (Tag has not rendered it since #60); use the Tag component instead.",
+      "detect": {
+        "classes": [
+          "hds-tag-btn"
+        ]
+      },
+      "facts": [
+        "class-removed:hds-tag-btn"
+      ],
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/removed/hds-tag-pill",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The unused CSS for hds-tag-pill is gone (Tag has not rendered it since #60); use the Tag component instead.",
+      "detect": {
+        "classes": [
+          "hds-tag-pill"
+        ]
+      },
+      "facts": [
+        "class-removed:hds-tag-pill"
+      ],
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/value-changed/--component-button-secondary-bg-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button hover fill is now surface.softHover (neutral.300 light, neutral.600 dark); if you set this variable to theme the old outline hover, check it still reads on the soft fill.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-hover"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-hover::root",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/value-changed/--component-button-secondary-bg-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button pressed fill is now surface.soft (the rest fill) while the hard shadow sinks; re-check any override of this variable.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-pressed"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-pressed::root",
+        "css-var-changed:--component-button-secondary-bg-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-pressed:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/value-changed/--component-button-secondary-bg-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button rest fill is now surface.soft (neutral.200 light, neutral.700 dark) instead of the page colour; set this variable to var(--semantic-color-surface-page) to get the old flat fill back.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-rest"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-rest"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-rest::root",
+        "css-var-changed:--component-button-secondary-bg-rest:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-rest:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/value-changed/--component-tag-background",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The unselected Tag pill is now surface.muted instead of surface.raised; re-check any override of this variable.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-background"
+        ],
+        "cssVarWrites": [
+          "--component-tag-background"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-background::root",
+        "css-var-changed:--component-tag-background:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--component-tag-background:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-background:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/value-changed/--component-tag-border",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The unselected Tag border now matches its fill, so the pill shows no resting edge; set this variable to var(--semantic-color-border-default) to bring the outline back.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-border"
+        ],
+        "cssVarWrites": [
+          "--component-tag-border"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-border::root",
+        "css-var-changed:--component-tag-border:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-border:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/value-changed/--role-popover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--role-popover (bg-popover) now reads the new semantic.color.surface.floating (white light, neutral.800 dark) instead of surface.overlay; if you set this variable, check your overlays still separate from surface.muted.",
+      "detect": {
+        "cssVars": [
+          "--role-popover"
+        ],
+        "cssVarWrites": [
+          "--role-popover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-popover::root",
+        "css-var-changed:--role-popover:[data-theme=\"dark\"]",
+        "css-var-changed:--role-popover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.31.0/value-changed/--semantic-elevation-overlay-border",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-elevation-overlay-border is now border.default, not transparent; a surface that binds the overlay elevation bundle should draw it as a 1px border.",
+      "detect": {
+        "cssVars": [
+          "--semantic-elevation-overlay-border"
+        ],
+        "cssVarWrites": [
+          "--semantic-elevation-overlay-border"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-elevation-overlay-border::root",
+        "css-var-changed:--semantic-elevation-overlay-border:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-elevation-overlay-border:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.31.0/value-changed/--semantic-elevation-overlay-surface",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-elevation-overlay-surface is now surface.floating (white light, neutral.800 dark); a surface that binds it turns white in light.",
+      "detect": {
+        "cssVars": [
+          "--semantic-elevation-overlay-surface"
+        ],
+        "cssVarWrites": [
+          "--semantic-elevation-overlay-surface"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-elevation-overlay-surface::root",
+        "css-var-changed:--semantic-elevation-overlay-surface:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-elevation-overlay-surface:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.31.0/look/button-wipe-hard-shadow-default",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Every primary and secondary Button now has a straight-down hard shadow (colour: --hds-btn-edge, default shadow.hard) and the hover wipe; pass shadow=\"none\" and/or hoverEffect=\"none\" where a button must stay flat, for example inside a dense toolbar.",
+      "detect": {
+        "jsx": [
+          "Button"
+        ]
+      },
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/look/button-wipe-overflow-hidden",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The default wipe makes every Button relative isolate overflow-hidden, so content you position outside the button box is clipped; pass hoverEffect=\"none\" on that button.",
+      "detect": {
+        "jsx": [
+          "Button"
+        ]
+      },
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/look/shadow-hard-dark",
+      "kind": "look",
+      "impact": "look",
+      "plain": "In dark mode semantic.color.shadow.hard is now neutral.500 (lighter), so the hard shadow on Button and Kbd reads at 3:1; re-check any surface you drew with it.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-shadow-hard"
+        ]
+      },
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/look/soft-surfaces-no-outline",
+      "kind": "look",
+      "impact": "look",
+      "plain": "CodeBlock, Table, Tabs, SegmentedControl, Board, FormActions and Combobox/TokenField chips lose their resting border; add className=\"border border-border\" on an instance that needs the edge.",
+      "detect": {
+        "jsx": [
+          "CodeBlock",
+          "Table",
+          "Tabs",
+          "SegmentedControl",
+          "Combobox",
+          "ComboboxCreatable",
+          "TokenField",
+          "Board",
+          "FormActions"
+        ]
+      },
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.31.0/look/toggle-thumb-inset",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Toggle's thumb is now 12px with an even inset in the track; nothing to change unless a visual snapshot pins the old 16px thumb.",
+      "source": "CHANGELOG.md:41"
+    },
+    {
+      "id": "0.31.0/look/unused-utilities-removed",
+      "kind": "look",
+      "impact": "look",
+      "plain": "HDS no longer ships unused utilities (.border-stroke*, .bg-gray-100, .bg-fill, .bg-btn-fill, .text-white, .cursor-zoom-in, the --hds-fill/hover/border helpers); without your own Tailwind build, use the token instead.",
+      "source": "CHANGELOG.md:27"
+    }
+  ]
+}

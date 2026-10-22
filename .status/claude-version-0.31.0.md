@@ -1,0 +1,1 @@
+- Version Packages 0.31.0 (2026-10-22): changesets for Button wipe + shadow.hard + Kbd (#889), Toggle inset (#890), token descriptions (#892), soft surfaces + straight-down hard shadow (#893), overlay edge (#895), and px6/px10 kept (claude/keep-px6-px10).
