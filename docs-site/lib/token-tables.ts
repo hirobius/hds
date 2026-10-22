@@ -32,6 +32,15 @@ export interface TokenRow {
   description: string;
   /** True when the value is a color and should render a swatch. */
   swatch: boolean;
+  /**
+   * False when `value` is a readable summary of a composite ("150 ms · ease-out"), set in
+   * the UI font; true (or absent) when it is a raw value (hex, px) set as code.
+   */
+  literal?: boolean;
+  /** A composite's raw part, shown under the summary as code (a cubic-bezier). */
+  detail?: string | null;
+  /** The same for the dark value. */
+  darkDetail?: string | null;
 }
 
 export interface TokenSection {
@@ -131,10 +140,87 @@ const readerText = (text: string) =>
 /** A composite's font stack shows only the family it asks for, not the fallbacks. */
 const shortFamily = (value: string) => value.replace(/(fontFamily: )([^,;]+)[^;]*/, '$1$2');
 
+/** CSS keyword for an HDS easing curve, where one matches its intent; else the token's name. */
+const EASING_NAMES: Record<string, string> = {
+  decelerate: 'ease-out',
+  accelerate: 'ease-in',
+  emphasized: 'ease-in-out',
+};
+
+/** `{primitive.easing.decelerate}` -> `decelerate`; a literal curve -> null. */
+const aliasLeaf = (value: Json) =>
+  typeof value === 'string' ? (/^\{(?:[^}]*\.)?([^.}]+)\}$/.exec(value)?.[1] ?? null) : null;
+
+/** `150ms` -> `150 ms`; `0ms` -> `0 ms`. */
+const spacedUnit = (value: string) => value.replace(/^(-?[\d.]+)(ms|s)$/, '$1 $2');
+
+/**
+ * A readable summary of a composite token, or null when it is not one this knows. The raw
+ * object ("duration: 150ms; delay: 0ms; timingFunction: 0, 0, 0.2, 1") reads as a dump.
+ */
+function compositeDisplay(
+  tokens: Json,
+  type: unknown,
+  raw: Json,
+): { value: string; detail: string | null } | null {
+  if (!isNode(raw) || 'unit' in raw) return null;
+  const part = (key: string) => (key in raw ? resolveTokenValue(tokens, raw[key]) : '');
+  if (type === 'transition') {
+    const curve = part('timingFunction');
+    const leaf = aliasLeaf(raw.timingFunction);
+    const easing = (leaf && EASING_NAMES[leaf]) ?? leaf ?? `cubic-bezier(${curve})`;
+    const delay = part('delay');
+    const delayed = delay && !/^0(ms|s)?$/.test(delay) ? ` · ${spacedUnit(delay)} delay` : '';
+    return {
+      value: `${spacedUnit(part('duration'))} · ${easing}${delayed}`,
+      detail: curve ? `cubic-bezier(${curve})` : null,
+    };
+  }
+  if (type === 'typography') {
+    const family = part('fontFamily').split(',')[0]!.replace(/['"]/g, '').trim();
+    const tracking = part('letterSpacing');
+    return {
+      value: `${family} ${part('fontWeight')} · ${part('fontSize')} / ${part('lineHeight')}`,
+      detail: tracking && !/^0(px|em|rem)?$/.test(tracking) ? `tracking ${tracking}` : null,
+    };
+  }
+  return null;
+}
+
+/** The $type a token inherits from its own node or the nearest group that sets one. */
+function typeAt(tokens: Json, path: string): unknown {
+  let cur: Json = tokens;
+  let type: unknown;
+  for (const seg of path.split('.')) {
+    if (!isNode(cur)) break;
+    cur = cur[seg];
+    if (isNode(cur) && '$type' in cur) type = cur.$type;
+  }
+  return type;
+}
+
 function rowFor(tokens: Json, path: string, node: Node): TokenRow {
   const raw = node.$value;
-  const value = shortFamily(resolveTokenValue(tokens, raw));
   const dark = darkRaw(node);
+  const type = typeAt(tokens, path);
+  const composite = compositeDisplay(tokens, type, raw);
+  if (composite) {
+    const darkComposite = dark === undefined ? null : compositeDisplay(tokens, type, dark);
+    return {
+      token: path,
+      cssVar: null,
+      value: composite.value,
+      darkValue: darkComposite?.value ?? null,
+      fill: null,
+      darkFill: null,
+      description: typeof node.$description === 'string' ? readerText(node.$description) : '',
+      swatch: false,
+      literal: false,
+      detail: composite.detail,
+      darkDetail: darkComposite?.detail ?? null,
+    };
+  }
+  const value = shortFamily(resolveTokenValue(tokens, raw));
   const fill = (raw: Json) => `var(${sourceVar(tokens, raw) ?? cssVarFor(path)})`;
   return {
     token: path,

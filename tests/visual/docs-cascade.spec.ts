@@ -10,7 +10,8 @@ import { test, expect } from '@playwright/test';
  */
 test('inline code in docs props tables uses the HDS mono type token', async ({ page }) => {
   await page.goto('/docs/components/input');
-  const code = page.locator('td > code').first();
+  // The props table (a prose table), not the token table, whose code is set smaller on purpose.
+  const code = page.locator('.hds-docs-table td code').first();
   await expect(code).toBeAttached();
 
   const { actual, expected } = await code.evaluate((el) => {
