@@ -9,16 +9,23 @@ describe('Kbd shadow follows the Button light source', () => {
   const docs = readFileSync(resolve(__dirname, '../docs-site/app/globals.css'), 'utf8');
   const colour = 'var(--semantic-color-shadow-hard)';
 
-  it('shipped Kbd takes a 2px hard key shadow in the Button colour, through --semantic-shadow-key', () => {
+  it('shipped Kbd takes a 2px straight-down key shadow in the Button colour, through --semantic-shadow-key', () => {
     expect(theme).toMatch(
-      /\.hds-kbd\s*{[^}]*box-shadow:\s*var\(--semantic-shadow-key,\s*2px 2px 0 var\(--semantic-color-shadow-hard\)\)/,
+      /\.hds-kbd\s*{[^}]*box-shadow:\s*var\(\s*--semantic-shadow-key,\s*0 2px 0 var\(--hds-kbd-edge, var\(--semantic-color-shadow-hard\)\)\s*\)/,
     );
   });
 
-  it('shipped Button rests, lifts and presses in the same colour', () => {
-    expect(theme).toContain(`var(--hds-hs, 3px 3px) 0 ${colour}`);
-    expect(theme).toContain('--hds-hs: 5px 5px');
-    expect(theme).toContain('--hds-hs: 1px 1px');
+  it('shipped Button rests, grows and presses straight down in the same colour', () => {
+    expect(theme).toContain(`0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, ${colour})`);
+    expect(theme).toContain('--hds-hs: 5px;');
+    expect(theme).toContain('--hds-hs: 1px;');
+  });
+
+  it('every hard shadow drops straight down: no x offset anywhere', () => {
+    expect(theme).not.toMatch(/--hds-hs:\s*\d+px \d+px/);
+    expect(theme).not.toMatch(
+      /[1-9]px [1-9]px 0 var\(--(hds-(btn|kbd)-edge|semantic-color-shadow-hard)/,
+    );
   });
 
   it('the docs preview no longer re-declares Button or Kbd shadows', () => {

@@ -84,17 +84,19 @@ describe('theme.css hard shadow', () => {
     return theme.slice(at, theme.indexOf('}', at));
   };
 
-  it('rests at 3px in semantic.color.shadow.hard and composes with ring + inset wash', () => {
+  it('rests 3px straight down in --hds-btn-edge (default shadow.hard), composing with ring + inset wash', () => {
     const r = rule(".hds-btn-hard:not(:disabled, [aria-disabled='true'])");
-    expect(r).toContain('--tw-shadow: var(--hds-hs, 3px 3px) 0 var(--semantic-color-shadow-hard)');
+    expect(r).toContain(
+      '--tw-shadow: 0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--semantic-color-shadow-hard))',
+    );
     expect(r).toMatch(/box-shadow:[^;]*--tw-inset-shadow[^;]*--tw-ring-shadow[^;]*--tw-shadow/);
   });
 
   it('grows to 5px on hover (hover pointers only) and sinks to 1px on press, without moving the box', () => {
-    expect(rule('.hds-btn-hard:hover')).toContain('--hds-hs: 5px 5px');
+    expect(rule('.hds-btn-hard:hover')).toContain('--hds-hs: 5px;');
     const hoverAt = theme.indexOf('.hds-btn-hard:hover');
     expect(theme.slice(hoverAt - 40, hoverAt)).toContain('(hover: hover)');
-    expect(rule('.hds-btn-hard:active')).toContain('--hds-hs: 1px 1px');
+    expect(rule('.hds-btn-hard:active')).toContain('--hds-hs: 1px;');
     const start = theme.indexOf('.hds-btn-hard:not(');
     expect(theme.slice(start, theme.indexOf('.hds-btn-hard:active', start))).not.toMatch(
       /translate:/,
@@ -106,9 +108,9 @@ describe('theme.css hard shadow', () => {
     expect(theme.slice(theme.lastIndexOf('*/', at), at)).toContain('@layer components {');
   });
 
-  it('Kbd follows the same light source by default: 2px hard key shadow, border.strong edge', () => {
-    expect(rule('.hds-kbd')).toContain(
-      'var(--semantic-shadow-key, 2px 2px 0 var(--semantic-color-shadow-hard))',
+  it('Kbd follows the same light source by default: 2px straight-down key shadow, border.strong edge', () => {
+    expect(rule('.hds-kbd').replace(/\s+/g, ' ')).toContain(
+      'var( --semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--semantic-color-shadow-hard)) )',
     );
     render(<Kbd>K</Kbd>);
     expect(classes(screen.getByText('K'))).toContain(

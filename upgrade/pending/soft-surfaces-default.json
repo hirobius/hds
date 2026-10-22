@@ -103,7 +103,7 @@
       "id": "look/button-wipe-hard-shadow-default",
       "kind": "look",
       "impact": "look",
-      "plain": "Every primary and secondary Button now has the hard shadow and the hover wipe; pass shadow=\"none\" and/or hoverEffect=\"none\" where a button must stay flat, for example inside a dense toolbar.",
+      "plain": "Every primary and secondary Button now has a straight-down hard shadow (colour: --hds-btn-edge, default shadow.hard) and the hover wipe; pass shadow=\"none\" and/or hoverEffect=\"none\" where a button must stay flat, for example inside a dense toolbar.",
       "detect": {
         "jsx": ["Button"]
       }

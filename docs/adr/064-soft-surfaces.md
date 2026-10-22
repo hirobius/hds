@@ -22,8 +22,11 @@ opt-in in #889). The soft-demo tenant (hds#505) was the earlier spike of the sam
    tertiary stays a quiet ghost.
 4. **Hard shadow and wipe are the Button default**, with opt-outs: `shadow="hard" | "none"`
    (new prop) and `hoverEffect="wipe" | "none"`. Primary and secondary only; never tertiary
-   or a disabled button. Depth is the shadow offset alone (3px rest, 5px hover, 1px press); the box
-   never moves, so a press cannot slide off the pointer. Kbd follows the same light source by default.
+   or a disabled button. Depth is the shadow offset alone, straight down with no x offset (`0 3px 0` rest, `0 5px 0`
+   hover, `0 1px 0` press; Adrian, 2026-10-22, matching the Visuals Lab straight-down edge); the box
+   never moves, so a press cannot slide off the pointer. Kbd follows the same light source by default
+   (`0 2px 0`). Colour comes from one hook per component, `--hds-btn-edge` / `--hds-kbd-edge`,
+   defaulting to `semantic.color.shadow.hard`, so a later colour model is a token change.
 5. **The hard shadow is the soft button's 1.4.11 boundary**, so `semantic.color.shadow.hard`
    in Dark moves from `neutral.600` (2.7:1 on black) to `neutral.500` (`border.interactive`,
    4.4:1 on page, 3.7:1 raised, 3.2:1 overlay). Light stays the shadow ink (12.8:1 or more).

@@ -512,12 +512,17 @@
  * Components must NOT set the same property inline if they also use these classes.
  * ------------------------------------------------------------------------------- */
 
-/* Hard shadow (hds#888, the default since hds#891): one light source, top-left, zero blur,
- * in semantic.color.shadow.hard (shadow ink in light, border.interactive in dark, where
- * black would vanish). Kbd sits on a 2px key edge; the --semantic-shadow-key hook still
- * re-points it in one place. box-shadow adds no layout size. */
+/* Hard shadow (hds#888, the default since hds#891): light from straight above, zero blur,
+ * so every edge drops straight down (x = 0). Colour is one hook per component,
+ * --hds-kbd-edge / --hds-btn-edge, defaulting to semantic.color.shadow.hard (shadow ink in
+ * light, neutral.500 in dark, where black would vanish); a later colour model re-points
+ * the hook, not these rules. Kbd sits on a 2px key edge; --semantic-shadow-key still
+ * overrides it whole. box-shadow adds no layout size. */
 .hds-kbd {
-  box-shadow: var(--semantic-shadow-key, 2px 2px 0 var(--semantic-color-shadow-hard));
+  box-shadow: var(
+    --semantic-shadow-key,
+    0 2px 0 var(--hds-kbd-edge, var(--semantic-color-shadow-hard))
+  );
 }
 /* Button (shadow="hard", the default, primary and secondary): 3px at rest, 5px on hover
  * (hover-capable pointers only), 1px on press. Depth is the shadow offset alone: the box
@@ -527,18 +532,18 @@
  * a consumer shadow utility still wins. */
 @layer components {
   .hds-btn-hard:not(:disabled, [aria-disabled='true']) {
-    --tw-shadow: var(--hds-hs, 3px 3px) 0 var(--semantic-color-shadow-hard);
+    --tw-shadow: 0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--semantic-color-shadow-hard));
     box-shadow:
       var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
       var(--tw-ring-shadow), var(--tw-shadow);
   }
   @media (hover: hover) {
     .hds-btn-hard:hover {
-      --hds-hs: 5px 5px;
+      --hds-hs: 5px;
     }
   }
   .hds-btn-hard:active {
-    --hds-hs: 1px 1px;
+    --hds-hs: 1px;
   }
 }
 
