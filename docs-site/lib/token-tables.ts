@@ -179,9 +179,10 @@ function compositeDisplay(
   if (type === 'typography') {
     const family = part('fontFamily').split(',')[0]!.replace(/['"]/g, '').trim();
     const tracking = part('letterSpacing');
+    const tracked = tracking && !/^0(px|em|rem)?$/.test(tracking) ? ` · ${tracking} tracking` : '';
     return {
-      value: `${family} ${part('fontWeight')} · ${part('fontSize')} / ${part('lineHeight')}`,
-      detail: tracking && !/^0(px|em|rem)?$/.test(tracking) ? `tracking ${tracking}` : null,
+      value: `${family} ${part('fontWeight')} · ${part('fontSize')} / ${part('lineHeight')}${tracked}`,
+      detail: null,
     };
   }
   return null;

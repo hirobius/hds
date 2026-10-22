@@ -112,7 +112,8 @@ describe('3. token table typography', () => {
 
   it('shows a typography composite as family weight · size / line height', () => {
     const row = tokenRow(tokens, 'semantic.typography.display')!;
-    expect(row.value).toMatch(/^Sora 700 · \d+px \/ [\d.]+$/);
+    expect(row.value).toMatch(/^Sora 700 · \d+px \/ [\d.]+( · -?[\d.]+(px|em) tracking)?$/);
+    expect(row.detail).toBeNull();
     expect(row.literal).toBe(false);
   });
 

@@ -19,6 +19,7 @@ export function DocsRouter({ children }: { children: ReactNode }) {
   );
   return (
     <HdsRouterProvider adapter={adapter}>
+      {/* A fragment bridges the docs-site (React 19) and package (React 18) ReactNode types. */}
       <>{children}</>
     </HdsRouterProvider>
   );

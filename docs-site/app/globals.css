@@ -79,6 +79,12 @@ h4 {
   line-height: var(--hds-heading-line-height);
   letter-spacing: var(--hds-heading-letter-spacing);
 }
+/* A section head (a grouped page's component name) breaks rather than scrolling a phone
+   sideways; the page title instead steps its size down, below. */
+#nd-page .prose h2:not(.hds-demo-frame *),
+#nd-page .prose h3:not(.hds-demo-frame *) {
+  overflow-wrap: break-word;
+}
 /* The page title never breaks inside a word ("DataTableSe / ction"). The page sets
    --hds-title-em to the em width of the title's widest word (lib/title-fit.ts); the display
    size steps down fluidly until that word fits the column, and is the token size wherever it
@@ -298,6 +304,10 @@ pre {
   }
   .hds-token-table td > * {
     min-width: 0;
+  }
+  /* The curve wraps at its commas rather than running past a phone's edge. */
+  .hds-token-table .hds-token-detail {
+    white-space: normal;
   }
   /* The demo frame draws on the page canvas, so its side inset is empty space on a phone:
      give the demo (a table, a toolbar row) that width back. */
