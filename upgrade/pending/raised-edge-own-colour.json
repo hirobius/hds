@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "The hard edge under Buttons and Kbd is now each item's own fill stepped darker (a lighter rim in dark) instead of semantic.color.shadow.hard; set --hds-btn-edge and --hds-kbd-edge to var(--semantic-color-shadow-hard) to keep the old single-colour edge."
+}

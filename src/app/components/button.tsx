@@ -180,7 +180,7 @@ export interface ButtonProps
   variant?: ButtonVariantProps['variant'];
   /** `wipe` (default) slides the hover fill in from the pointer's edge; `none` changes it in place. */
   hoverEffect?: 'none' | 'wipe';
-  /** `hard` (default) draws the zero-blur shadow on primary and secondary; `none` opts out. Tertiary never has one. The shadow is a soft secondary's 3:1 edge: with `none`, the label alone identifies it. */
+  /** `hard` (default) draws the zero-blur shadow on primary and secondary; `none` opts out. Tertiary never has one. Its colour is the button's own fill stepped darker (`--hds-btn-edge` overrides it). */
   shadow?: 'hard' | 'none';
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
@@ -268,11 +268,32 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // component.button.bgHover, secondary's component.button.secondary.bg.hover, or
     // tertiary's role.accent. Inline, so the shipped CSS has no
     // per-variant rules; a consumer `style` still wins.
+    // A toggle (hds#393): any of the three pressed props makes this a toggle
+    // button; `pressed` controls it, otherwise it keeps its own state. The
+    // state goes out as aria-pressed and data-pressed (data-state is loading's).
+    const isToggle =
+      pressedProp !== undefined || defaultPressed !== undefined || onPressedChange !== undefined;
+    const [ownPressed, setOwnPressed] = React.useState(defaultPressed ?? false);
+    const isPressed = pressedProp ?? ownPressed;
     const hasTone = tone != null && tone !== 'neutral';
+    // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#897): the fill it sits under,
+    // stepped darker and precomputed as --hds-edge-<key>; the keys are the tone names plus
+    // primary and secondary (a pressed neutral toggle paints bg-primary, so it takes primary's
+    // edge). --hds-btn-edge still overrides.
+    const edgeKey = hasTone
+      ? tone
+      : variant === 'primary' || (isToggle && isPressed)
+        ? 'primary'
+        : 'secondary';
+    const edge =
+      shadow === 'hard' && variant !== 'tertiary'
+        ? { '--hds-edge': `var(--hds-edge-${edgeKey})` }
+        : null;
     const wipeProps = wipe
       ? {
           'data-hover-effect': 'wipe',
           style: {
+            ...edge,
             '--hds-wipe-fill': hasTone
               ? `var(--semantic-color-feedback-bg-${tone === 'danger' ? 'error' : tone})`
               : variant === 'primary'
@@ -287,16 +308,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
             ...style,
           } as React.CSSProperties,
         }
-      : { style };
+      : { style: edge ? ({ ...edge, ...style } as React.CSSProperties) : style };
     const content = children ?? label;
 
-    // A toggle (hds#393): any of the three pressed props makes this a toggle
-    // button; `pressed` controls it, otherwise it keeps its own state. The
-    // state goes out as aria-pressed and data-pressed (data-state is loading's).
-    const isToggle =
-      pressedProp !== undefined || defaultPressed !== undefined || onPressedChange !== undefined;
-    const [ownPressed, setOwnPressed] = React.useState(defaultPressed ?? false);
-    const isPressed = pressedProp ?? ownPressed;
     const toggleProps = isToggle
       ? {
           'aria-pressed': isPressed,

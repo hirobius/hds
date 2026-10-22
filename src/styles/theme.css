@@ -514,15 +514,13 @@
 
 /* Hard shadow (hds#888, the default since hds#891): light from straight above, zero blur,
  * so every edge drops straight down (x = 0). Colour is one hook per component,
- * --hds-kbd-edge / --hds-btn-edge, defaulting to semantic.color.shadow.hard (shadow ink in
- * light, neutral.500 in dark, where black would vanish); a later colour model re-points
- * the hook, not these rules. Kbd sits on a 2px key edge; --semantic-shadow-key still
- * overrides it whole. box-shadow adds no layout size. */
+ * --hds-kbd-edge / --hds-btn-edge. Since hds#897 each defaults to the item's own fill
+ * stepped two OKLCH steps darker (a lighter rim in dark where darker fails 1.5:1): the
+ * --hds-edge-* values build-tokens.mjs computes (scripts/lib/raised-edge.mjs). Button sets
+ * --hds-edge to its variant's or tone's edge inline (secondary's when unset). Kbd sits on a 2px key edge;
+ * --semantic-shadow-key still overrides it whole. box-shadow adds no layout size. */
 .hds-kbd {
-  box-shadow: var(
-    --semantic-shadow-key,
-    0 2px 0 var(--hds-kbd-edge, var(--semantic-color-shadow-hard))
-  );
+  box-shadow: var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)));
 }
 /* Button (shadow="hard", the default, primary and secondary): 3px at rest, 5px on hover
  * (hover-capable pointers only), 1px on press. Depth is the shadow offset alone: the box
@@ -532,7 +530,8 @@
  * a consumer shadow utility still wins. */
 @layer components {
   .hds-btn-hard:not(:disabled, [aria-disabled='true']) {
-    --tw-shadow: 0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--semantic-color-shadow-hard));
+    --tw-shadow: 0 var(--hds-hs, 3px) 0
+      var(--hds-btn-edge, var(--hds-edge, var(--hds-edge-secondary)));
     box-shadow:
       var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
       var(--tw-ring-shadow), var(--tw-shadow);

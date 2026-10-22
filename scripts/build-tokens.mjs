@@ -20,6 +20,7 @@ import { writeGenerated } from './lib/write-generated.mjs';
 import { collectDeprecations, removeInOf } from './lib/token-deprecations.mjs';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { readModes } from './lib/token-modes.mjs';
+import { buildEdgeCSS, overlayEdgeVars } from './lib/raised-edge.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
 import { darkAliasReemissions } from './lib/dark-alias-reemit.mjs';
@@ -1647,6 +1648,11 @@ export function buildTenantCSS(
       }
     }
 
+    // Raised edges (hds#897): an overlay that moves an edge fill re-derives its edge.
+    const edges = overlayEdgeVars(baseRaw, overlay);
+    lightVars.push(...edges.light);
+    darkVars.push(...edges.dark);
+
     if (lightVars.length === 0 && darkVars.length === 0 && densityVars.length === 0) continue;
 
     processedSlugs.push(slug);
@@ -1762,7 +1768,7 @@ ${allDarkLines.join('\n')}
 [data-density="compact"] {
 ${allCompactLines.join('\n')}
 }
-`;
+${buildEdgeCSS(raw)}`;
 
   const tsTree = buildTSTree(allTokens);
   const ts = `/**
