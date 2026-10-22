@@ -1,15 +1,15 @@
 {
-  "checksum": "76fddaf5",
+  "checksum": "6fb0af52",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-20T04:36:50.020Z",
+    "takenAt": "2026-10-22T19:56:39.340Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "3679404a",
-      "pushedAt": "2026-10-20T04:36:49.983Z",
+      "modelHash": "ab5db03c",
+      "pushedAt": "2026-10-22T19:56:39.312Z",
       "scope": null
     },
     "collections": [
@@ -2133,6 +2133,28 @@
             }
           },
           {
+            "id": "VariableID:2229:2",
+            "name": "color/shadow/ink",
+            "path": "primitive.color.shadow.ink",
+            "resolvedType": "COLOR",
+            "description": "Shadow ink: hsl(220 13% 18%) as one solid colour.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-shadow-ink)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.156863,
+                  "g": 0.172549,
+                  "b": 0.203922,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
             "id": "VariableID:3:43",
             "name": "color/stone/100",
             "path": "primitive.color.stone.100",
@@ -2482,6 +2504,23 @@
             }
           },
           {
+            "id": "VariableID:2229:3",
+            "name": "radius/16",
+            "path": "primitive.radius.16",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-radius-16)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 16
+              }
+            }
+          },
+          {
             "id": "VariableID:5:26",
             "name": "radius/2",
             "path": "primitive.radius.2",
@@ -2495,6 +2534,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 2
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:4",
+            "name": "radius/24",
+            "path": "primitive.radius.24",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-radius-24)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 24
               }
             }
           },
@@ -2851,7 +2907,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 655.200012
+                "value": 658.799988
               }
             }
           },
@@ -3166,7 +3222,7 @@
             "name": "space/px10",
             "path": "primitive.space.px10",
             "resolvedType": "FLOAT",
-            "description": "",
+            "description": "10px, off the 4px grid: a label or row gap the 4px steps cannot hit.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3200,7 +3256,7 @@
             "name": "space/px6",
             "path": "primitive.space.px6",
             "resolvedType": "FLOAT",
-            "description": "",
+            "description": "6px, off the 4px grid: a tight gap (pill, chip, title to description) the 4px steps cannot hit.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3217,7 +3273,7 @@
             "name": "typography/family/display",
             "path": "primitive.typography.family.display",
             "resolvedType": "STRING",
-            "description": "Display and title face: Sora 800 (OFL, ADR-063); falls back to Plus Jakarta Sans.",
+            "description": "Display and title face: Sora 700 (OFL, ADR-063, hds#847); falls back to Plus Jakarta Sans.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3383,6 +3439,57 @@
             }
           },
           {
+            "id": "VariableID:2229:6",
+            "name": "typography/size/compactBody",
+            "path": "primitive.typography.size.compactBody",
+            "resolvedType": "FLOAT",
+            "description": "Body size under compact density (apps): one pixel under text-base.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-size-compactBody)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 15
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:5",
+            "name": "typography/size/compactCaption",
+            "path": "primitive.typography.size.compactCaption",
+            "resolvedType": "FLOAT",
+            "description": "Caption size under compact density (apps): one pixel under text-sm.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-size-compactCaption)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 13
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:8",
+            "name": "typography/size/display",
+            "path": "primitive.typography.size.display",
+            "resolvedType": "FLOAT",
+            "description": "Display role size (hds#847): the page's one hero heading, a clear step above title.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-size-display)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 56
+              }
+            }
+          },
+          {
             "id": "VariableID:5:38",
             "name": "typography/size/lg",
             "path": "primitive.typography.size.lg",
@@ -3413,6 +3520,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 14
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:7",
+            "name": "typography/size/title",
+            "path": "primitive.typography.size.title",
+            "resolvedType": "FLOAT",
+            "description": "Title role size (hds#847): one clear step under display.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-size-title)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 28
               }
             }
           },
@@ -3472,7 +3596,7 @@
             "name": "typography/weight/display",
             "path": "primitive.typography.weight.display",
             "resolvedType": "FLOAT",
-            "description": "Display, title and title-sm weight, set in Sora (ADR-063).",
+            "description": "Display, title and title-sm weight, set in Sora 700 (ADR-063, hds#847). Heading levels differ by size, not weight.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3480,7 +3604,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 800
+                "value": 700
               }
             }
           },
@@ -3489,7 +3613,7 @@
             "name": "typography/weight/medium",
             "path": "primitive.typography.weight.medium",
             "resolvedType": "FLOAT",
-            "description": "",
+            "description": "UI, labels and bold lead-ins (hds#847).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3506,7 +3630,7 @@
             "name": "typography/weight/mono",
             "path": "primitive.typography.weight.mono",
             "resolvedType": "FLOAT",
-            "description": "Mono weight. IBM Plex Mono ships 400 only; Figma draws weight.regular (450) as Plex Mono Medium.",
+            "description": "Mono weight. IBM Plex Mono ships 400 only.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3523,7 +3647,7 @@
             "name": "typography/weight/regular",
             "path": "primitive.typography.weight.regular",
             "resolvedType": "FLOAT",
-            "description": "Body weight. Plus Jakarta Sans ships as a variable font, so 450 renders as itself.",
+            "description": "Body weight (400, hds#847). Plus Jakarta Sans ships as a variable font.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3531,7 +3655,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 450
+                "value": 400
               }
             }
           }
@@ -3605,12 +3729,12 @@
             "name": "accent/delight/base",
             "path": "semantic.accent.delight.base",
             "resolvedType": "COLOR",
-            "description": "Delight accent fill (lime) for delight moments only: a streak or win badge, a \"new\" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes.",
+            "description": "Lime fill for delight moments only (win badge, \"new\" tag, confetti). Never buttons, links or focus. Text: accent.delight.onDelight.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-accent-delight-base)"
             },
@@ -3630,12 +3754,12 @@
             "name": "accent/delight/deep",
             "path": "semantic.accent.delight.deep",
             "resolvedType": "COLOR",
-            "description": "Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.",
+            "description": "Deep lime for delight line art and confetti. Decorative only: never text, buttons, links or focus.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-accent-delight-deep)"
             },
@@ -3660,7 +3784,7 @@
               "ALL_FILLS",
               "STROKE_COLOR"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-accent-delight-onDelight)"
             },
@@ -3680,12 +3804,12 @@
             "name": "accent/delight/pale",
             "path": "semantic.accent.delight.pale",
             "resolvedType": "COLOR",
-            "description": "Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.",
+            "description": "Pale lime tint behind a delight moment, such as a best-fit row. Text is ink. Never buttons, links, focus.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-accent-delight-pale)"
             },
@@ -3952,7 +4076,7 @@
             "name": "color/border/default",
             "path": "semantic.color.border.default",
             "resolvedType": "COLOR",
-            "description": "",
+            "description": "Hairline and divider border. Light is warm graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -3962,8 +4086,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:4",
-                "to": "Hirobius/Primitives: color/neutral/200"
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
               },
               "Dark": {
                 "alias": "VariableID:3:8",
@@ -4010,8 +4134,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:5",
-                "to": "Hirobius/Primitives: color/neutral/300"
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
               },
               "Dark": {
                 "alias": "VariableID:3:8",
@@ -4034,8 +4158,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:4",
-                "to": "Hirobius/Primitives: color/neutral/200"
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
               },
               "Dark": {
                 "alias": "VariableID:3:10",
@@ -4626,6 +4750,31 @@
             }
           },
           {
+            "id": "VariableID:2229:12",
+            "name": "color/shadow/hard",
+            "path": "semantic.color.shadow.hard",
+            "resolvedType": "COLOR",
+            "description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-shadow-hard)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2229:2",
+                "to": "Hirobius/Primitives: color/shadow/ink"
+              },
+              "Dark": {
+                "alias": "VariableID:3:7",
+                "to": "Hirobius/Primitives: color/neutral/500"
+              }
+            }
+          },
+          {
             "id": "VariableID:2071:3",
             "name": "color/state/pressed/overlay",
             "path": "semantic.color.state.pressed.overlay",
@@ -4697,6 +4846,31 @@
               "Dark": {
                 "alias": "VariableID:2146:10",
                 "to": "Hirobius/Primitives: color/graphite/800"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:9",
+            "name": "color/surface/floating",
+            "path": "semantic.color.surface.floating",
+            "resolvedType": "COLOR",
+            "description": "Overlay fill (menus, popovers, listboxes, toasts, dialogs). Pair with a border.default hairline to separate from surface.muted.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-surface-floating)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:14",
+                "to": "Hirobius/Primitives: color/neutral/white"
+              },
+              "Dark": {
+                "alias": "VariableID:3:10",
+                "to": "Hirobius/Primitives: color/neutral/800"
               }
             }
           },
@@ -4841,8 +5015,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:2",
-                "to": "Hirobius/Primitives: color/neutral/50"
+                "alias": "VariableID:3:4",
+                "to": "Hirobius/Primitives: color/neutral/200"
               },
               "Dark": {
                 "alias": "VariableID:3:15",
@@ -4926,6 +5100,56 @@
             }
           },
           {
+            "id": "VariableID:2229:10",
+            "name": "color/surface/soft",
+            "path": "semantic.color.surface.soft",
+            "resolvedType": "COLOR",
+            "description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-surface-soft)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:4",
+                "to": "Hirobius/Primitives: color/neutral/200"
+              },
+              "Dark": {
+                "alias": "VariableID:3:9",
+                "to": "Hirobius/Primitives: color/neutral/700"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:11",
+            "name": "color/surface/softHover",
+            "path": "semantic.color.surface.softHover",
+            "resolvedType": "COLOR",
+            "description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-surface-softHover)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:5",
+                "to": "Hirobius/Primitives: color/neutral/300"
+              },
+              "Dark": {
+                "alias": "VariableID:3:8",
+                "to": "Hirobius/Primitives: color/neutral/600"
+              }
+            }
+          },
+          {
             "id": "VariableID:2018:732",
             "name": "color/surface/sunken",
             "path": "semantic.color.surface.sunken",
@@ -4959,7 +5183,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-docs-space-inline)"
             },
@@ -4979,22 +5203,22 @@
             "name": "docs/space/paragraph",
             "path": "semantic.docs.space.paragraph",
             "resolvedType": "FLOAT",
-            "description": "24px between paragraphs — comfortable prose rhythm for long-form doc content.",
+            "description": "28px between paragraphs (24px before 2026-10) — comfortable prose rhythm for the 18px body role.",
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-docs-space-paragraph)"
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:10",
-                "to": "Hirobius/Primitives: space/6"
+                "alias": "VariableID:5:11",
+                "to": "Hirobius/Primitives: space/7"
               },
               "Dark": {
-                "alias": "VariableID:5:10",
-                "to": "Hirobius/Primitives: space/6"
+                "alias": "VariableID:5:11",
+                "to": "Hirobius/Primitives: space/7"
               }
             }
           },
@@ -5003,7 +5227,7 @@
             "name": "docs/space/section",
             "path": "semantic.docs.space.section",
             "resolvedType": "FLOAT",
-            "description": "48px between H2 sections — generous section break for doc pages.",
+            "description": "64px (48px compact) between H2 sections — generous section break for doc pages.",
             "scopes": [
               "GAP"
             ],
@@ -5013,12 +5237,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:14",
-                "to": "Hirobius/Primitives: space/12"
+                "alias": "VariableID:2061:882",
+                "to": "Hirobius/Semantic: space/scale/xl"
               },
               "Dark": {
-                "alias": "VariableID:5:14",
-                "to": "Hirobius/Primitives: space/12"
+                "alias": "VariableID:2061:882",
+                "to": "Hirobius/Semantic: space/scale/xl"
               }
             }
           },
@@ -5147,7 +5371,7 @@
             "name": "layout/grid/gap",
             "path": "semantic.layout.grid.gap",
             "resolvedType": "FLOAT",
-            "description": "",
+            "description": "Grid gap: scale.lg; theme.css points it at scale.md at runtime. Compact: scale.md (16px). Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5157,12 +5381,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:12",
-                "to": "Hirobius/Primitives: space/8"
+                "alias": "VariableID:2230:10",
+                "to": "Hirobius/Density: semantic/layout/grid/gap"
               },
               "Dark": {
-                "alias": "VariableID:5:12",
-                "to": "Hirobius/Primitives: space/8"
+                "alias": "VariableID:2230:10",
+                "to": "Hirobius/Density: semantic/layout/grid/gap"
               }
             }
           },
@@ -5205,12 +5429,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:16",
-                "to": "Hirobius/Primitives: space/20"
+                "alias": "VariableID:5:17",
+                "to": "Hirobius/Primitives: space/24"
               },
               "Dark": {
-                "alias": "VariableID:5:16",
-                "to": "Hirobius/Primitives: space/20"
+                "alias": "VariableID:5:17",
+                "to": "Hirobius/Primitives: space/24"
               }
             }
           },
@@ -5307,6 +5531,126 @@
               "Dark": {
                 "alias": "VariableID:5:27",
                 "to": "Hirobius/Primitives: radius/4"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2232:4",
+            "name": "radius/scale/lg",
+            "path": "semantic.radius.scale.lg",
+            "resolvedType": "FLOAT",
+            "description": "16px: dialogs, sheets and large media frames.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-radius-scale-lg)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2229:3",
+                "to": "Hirobius/Primitives: radius/16"
+              },
+              "Dark": {
+                "alias": "VariableID:2229:3",
+                "to": "Hirobius/Primitives: radius/16"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2232:3",
+            "name": "radius/scale/md",
+            "path": "semantic.radius.scale.md",
+            "resolvedType": "FLOAT",
+            "description": "12px: cards, popovers and panels.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-radius-scale-md)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:29",
+                "to": "Hirobius/Primitives: radius/12"
+              },
+              "Dark": {
+                "alias": "VariableID:5:29",
+                "to": "Hirobius/Primitives: radius/12"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2232:6",
+            "name": "radius/scale/pill",
+            "path": "semantic.radius.scale.pill",
+            "resolvedType": "FLOAT",
+            "description": "Fully round ends: pills, tags and avatar chips.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-radius-scale-pill)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:30",
+                "to": "Hirobius/Primitives: radius/full"
+              },
+              "Dark": {
+                "alias": "VariableID:5:30",
+                "to": "Hirobius/Primitives: radius/full"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2232:2",
+            "name": "radius/scale/sm",
+            "path": "semantic.radius.scale.sm",
+            "resolvedType": "FLOAT",
+            "description": "8px: chips, menu items and small surfaces.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-radius-scale-sm)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:28",
+                "to": "Hirobius/Primitives: radius/8"
+              },
+              "Dark": {
+                "alias": "VariableID:5:28",
+                "to": "Hirobius/Primitives: radius/8"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2232:5",
+            "name": "radius/scale/xl",
+            "path": "semantic.radius.scale.xl",
+            "resolvedType": "FLOAT",
+            "description": "24px: hero media and feature panels.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-radius-scale-xl)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2229:4",
+                "to": "Hirobius/Primitives: radius/24"
+              },
+              "Dark": {
+                "alias": "VariableID:2229:4",
+                "to": "Hirobius/Primitives: radius/24"
               }
             }
           },
@@ -5595,12 +5939,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:6",
-                "to": "Hirobius/Primitives: space/2"
+                "alias": "VariableID:2061:878",
+                "to": "Hirobius/Semantic: space/scale/xs"
               },
               "Dark": {
-                "alias": "VariableID:5:6",
-                "to": "Hirobius/Primitives: space/2"
+                "alias": "VariableID:2061:878",
+                "to": "Hirobius/Semantic: space/scale/xs"
               }
             }
           },
@@ -5633,7 +5977,7 @@
             "name": "space/component/padding",
             "path": "semantic.space.component.padding",
             "resolvedType": "FLOAT",
-            "description": "24px inset for cards, forms and panels. DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
+            "description": "Inset for cards, forms and panels (follows surface.padding). DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
             "scopes": [
               "GAP"
             ],
@@ -5653,11 +5997,155 @@
             }
           },
           {
+            "id": "VariableID:2229:14",
+            "name": "space/fixed/2xs",
+            "path": "semantic.space.fixed.2xs",
+            "resolvedType": "FLOAT",
+            "description": "4px: hairline gaps inside a control (icon to its badge, stacked meta lines).",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-space-fixed-2xs)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:5",
+                "to": "Hirobius/Primitives: space/1"
+              },
+              "Dark": {
+                "alias": "VariableID:5:5",
+                "to": "Hirobius/Primitives: space/1"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2230:3",
+            "name": "space/fixed/lg",
+            "path": "semantic.space.fixed.lg",
+            "resolvedType": "FLOAT",
+            "description": "32px: gap between grouped blocks that must not move with density.",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-space-fixed-lg)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:12",
+                "to": "Hirobius/Primitives: space/8"
+              },
+              "Dark": {
+                "alias": "VariableID:5:12",
+                "to": "Hirobius/Primitives: space/8"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2230:2",
+            "name": "space/fixed/md",
+            "path": "semantic.space.fixed.md",
+            "resolvedType": "FLOAT",
+            "description": "24px: panel padding and grouped-field gaps that must not move with density.",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-space-fixed-md)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:10",
+                "to": "Hirobius/Primitives: space/6"
+              },
+              "Dark": {
+                "alias": "VariableID:5:10",
+                "to": "Hirobius/Primitives: space/6"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:16",
+            "name": "space/fixed/sm",
+            "path": "semantic.space.fixed.sm",
+            "resolvedType": "FLOAT",
+            "description": "16px: list-item padding and toolbar gaps that must not move with density.",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-space-fixed-sm)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:8",
+                "to": "Hirobius/Primitives: space/4"
+              },
+              "Dark": {
+                "alias": "VariableID:5:8",
+                "to": "Hirobius/Primitives: space/4"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2230:4",
+            "name": "space/fixed/xl",
+            "path": "semantic.space.fixed.xl",
+            "resolvedType": "FLOAT",
+            "description": "48px: gap between page bands that must not move with density.",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-space-fixed-xl)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:14",
+                "to": "Hirobius/Primitives: space/12"
+              },
+              "Dark": {
+                "alias": "VariableID:5:14",
+                "to": "Hirobius/Primitives: space/12"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:15",
+            "name": "space/fixed/xs",
+            "path": "semantic.space.fixed.xs",
+            "resolvedType": "FLOAT",
+            "description": "12px: adjacent form fields and medium gaps inside a component.",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-space-fixed-xs)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:7",
+                "to": "Hirobius/Primitives: space/3"
+              },
+              "Dark": {
+                "alias": "VariableID:5:7",
+                "to": "Hirobius/Primitives: space/3"
+              }
+            }
+          },
+          {
             "id": "VariableID:10:37",
             "name": "space/layout/gutter",
             "path": "semantic.space.layout.gutter",
             "resolvedType": "FLOAT",
-            "description": "24px column and region gutters. DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
+            "description": "Column and region gutters (follows region.gutter). DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
             "scopes": [
               "GAP"
             ],
@@ -5681,7 +6169,7 @@
             "name": "space/layout/inset",
             "path": "semantic.space.layout.inset",
             "resolvedType": "FLOAT",
-            "description": "32px major block separation and inset inter-component gaps. DEPRECATED alias (hds#206) — use semantic.space.scale.lg; kept live, no removal yet.",
+            "description": "40px (24px compact). Deprecated alias (hds#206): use semantic.space.scale.lg. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5691,12 +6179,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:12",
-                "to": "Hirobius/Primitives: space/8"
+                "alias": "VariableID:2230:7",
+                "to": "Hirobius/Density: semantic/space/layout/inset"
               },
               "Dark": {
-                "alias": "VariableID:5:12",
-                "to": "Hirobius/Primitives: space/8"
+                "alias": "VariableID:2230:7",
+                "to": "Hirobius/Density: semantic/space/layout/inset"
               }
             }
           },
@@ -5705,7 +6193,7 @@
             "name": "space/layout/normal",
             "path": "semantic.space.layout.normal",
             "resolvedType": "FLOAT",
-            "description": "24px column gutters and sidebar gutter spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.",
+            "description": "28px (16px compact). Deprecated alias (hds#206): use semantic.space.scale.md. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5715,12 +6203,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:10",
-                "to": "Hirobius/Primitives: space/6"
+                "alias": "VariableID:2230:6",
+                "to": "Hirobius/Density: semantic/space/layout/normal"
               },
               "Dark": {
-                "alias": "VariableID:5:10",
-                "to": "Hirobius/Primitives: space/6"
+                "alias": "VariableID:2230:6",
+                "to": "Hirobius/Density: semantic/space/layout/normal"
               }
             }
           },
@@ -5729,7 +6217,7 @@
             "name": "space/layout/spacious",
             "path": "semantic.space.layout.spacious",
             "resolvedType": "FLOAT",
-            "description": "48px break between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.",
+            "description": "64px (32px compact). Deprecated alias (hds#206): use semantic.space.scale.xl. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5739,12 +6227,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:14",
-                "to": "Hirobius/Primitives: space/12"
+                "alias": "VariableID:2230:8",
+                "to": "Hirobius/Density: semantic/space/layout/spacious"
               },
               "Dark": {
-                "alias": "VariableID:5:14",
-                "to": "Hirobius/Primitives: space/12"
+                "alias": "VariableID:2230:8",
+                "to": "Hirobius/Density: semantic/space/layout/spacious"
               }
             }
           },
@@ -5753,7 +6241,7 @@
             "name": "space/layout/tight",
             "path": "semantic.space.layout.tight",
             "resolvedType": "FLOAT",
-            "description": "16px default HdsStack gap and inter-component spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.sm; kept live, no removal yet.",
+            "description": "20px (12px compact). Deprecated alias (hds#206): use semantic.space.scale.sm. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5763,12 +6251,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:8",
-                "to": "Hirobius/Primitives: space/4"
+                "alias": "VariableID:2230:5",
+                "to": "Hirobius/Density: semantic/space/layout/tight"
               },
               "Dark": {
-                "alias": "VariableID:5:8",
-                "to": "Hirobius/Primitives: space/4"
+                "alias": "VariableID:2230:5",
+                "to": "Hirobius/Density: semantic/space/layout/tight"
               }
             }
           },
@@ -5777,7 +6265,7 @@
             "name": "space/region/gutter",
             "path": "semantic.space.region.gutter",
             "resolvedType": "FLOAT",
-            "description": "24px (scale.md) column and region gutters; theme.css sets scale.lg (32px), and scale.sm (16px) below 640px. Replaces layout.gutter.",
+            "description": "Page and region gutter: scale.lg (40px comfortable, 24px compact); theme.css sets scale.sm below 640px. Replaces layout.gutter.",
             "scopes": [
               "GAP"
             ],
@@ -5787,12 +6275,36 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2061:880",
-                "to": "Hirobius/Semantic: space/scale/md"
+                "alias": "VariableID:2061:881",
+                "to": "Hirobius/Semantic: space/scale/lg"
               },
               "Dark": {
-                "alias": "VariableID:2061:880",
-                "to": "Hirobius/Semantic: space/scale/md"
+                "alias": "VariableID:2061:881",
+                "to": "Hirobius/Semantic: space/scale/lg"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:13",
+            "name": "space/scale/2xs",
+            "path": "semantic.space.scale.2xs",
+            "resolvedType": "FLOAT",
+            "description": "4px in both densities: hairline gaps inside a control (icon to its badge, stacked meta lines).",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-space-scale-2xs)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:5",
+                "to": "Hirobius/Primitives: space/1"
+              },
+              "Dark": {
+                "alias": "VariableID:5:5",
+                "to": "Hirobius/Primitives: space/1"
               }
             }
           },
@@ -5801,7 +6313,7 @@
             "name": "space/scale/lg",
             "path": "semantic.space.scale.lg",
             "resolvedType": "FLOAT",
-            "description": "32px — same value as layout.inset (deprecated alias).",
+            "description": "40px (24px compact). Desktop page gutter and the gap between grouped blocks. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5811,12 +6323,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:12",
-                "to": "Hirobius/Primitives: space/8"
+                "alias": "VariableID:2229:19",
+                "to": "Hirobius/Density: semantic/space/scale/lg"
               },
               "Dark": {
-                "alias": "VariableID:5:12",
-                "to": "Hirobius/Primitives: space/8"
+                "alias": "VariableID:2229:19",
+                "to": "Hirobius/Density: semantic/space/scale/lg"
               }
             }
           },
@@ -5825,7 +6337,7 @@
             "name": "space/scale/md",
             "path": "semantic.space.scale.md",
             "resolvedType": "FLOAT",
-            "description": "24px. Default of the overridable roles surface.padding and region.gutter. The deprecated layout.normal has the same value.",
+            "description": "28px (16px compact). Default of surface.padding: card, dialog and panel insets. layout.normal (deprecated) aliases it. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5835,12 +6347,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:10",
-                "to": "Hirobius/Primitives: space/6"
+                "alias": "VariableID:2229:18",
+                "to": "Hirobius/Density: semantic/space/scale/md"
               },
               "Dark": {
-                "alias": "VariableID:5:10",
-                "to": "Hirobius/Primitives: space/6"
+                "alias": "VariableID:2229:18",
+                "to": "Hirobius/Density: semantic/space/scale/md"
               }
             }
           },
@@ -5849,7 +6361,7 @@
             "name": "space/scale/sm",
             "path": "semantic.space.scale.sm",
             "resolvedType": "FLOAT",
-            "description": "16px — same value as layout.tight (deprecated alias).",
+            "description": "20px (12px compact). List-row padding and stacked-field gaps. layout.tight (deprecated) aliases it. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5859,12 +6371,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:8",
-                "to": "Hirobius/Primitives: space/4"
+                "alias": "VariableID:2229:17",
+                "to": "Hirobius/Density: semantic/space/scale/sm"
               },
               "Dark": {
-                "alias": "VariableID:5:8",
-                "to": "Hirobius/Primitives: space/4"
+                "alias": "VariableID:2229:17",
+                "to": "Hirobius/Density: semantic/space/scale/sm"
               }
             }
           },
@@ -5873,7 +6385,7 @@
             "name": "space/scale/xl",
             "path": "semantic.space.scale.xl",
             "resolvedType": "FLOAT",
-            "description": "48px — same value as layout.spacious (deprecated alias).",
+            "description": "64px (32px compact). The gap between sections inside a page. layout.spacious (deprecated) aliases it. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5883,12 +6395,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:14",
-                "to": "Hirobius/Primitives: space/12"
+                "alias": "VariableID:2229:20",
+                "to": "Hirobius/Density: semantic/space/scale/xl"
               },
               "Dark": {
-                "alias": "VariableID:5:14",
-                "to": "Hirobius/Primitives: space/12"
+                "alias": "VariableID:2229:20",
+                "to": "Hirobius/Density: semantic/space/scale/xl"
               }
             }
           },
@@ -5897,7 +6409,7 @@
             "name": "space/scale/xs",
             "path": "semantic.space.scale.xs",
             "resolvedType": "FLOAT",
-            "description": "8px — smallest step. Same value as component.gap (deprecated alias).",
+            "description": "8px in both densities: control-internal gap (icon to label, chip padding).",
             "scopes": [
               "GAP"
             ],
@@ -5925,7 +6437,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-space-section-heroMax)"
             },
@@ -5969,7 +6481,7 @@
             "name": "space/section/stack",
             "path": "semantic.space.section.stack",
             "resolvedType": "FLOAT",
-            "description": "80px vertical rhythm between page sections and major editorial blocks.",
+            "description": "96px vertical rhythm between page sections and major editorial blocks (80px before 2026-10; 48px compact); theme.css sets 64px below 640px. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -5979,12 +6491,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:16",
-                "to": "Hirobius/Primitives: space/20"
+                "alias": "VariableID:2230:9",
+                "to": "Hirobius/Density: semantic/space/section/stack"
               },
               "Dark": {
-                "alias": "VariableID:5:16",
-                "to": "Hirobius/Primitives: space/20"
+                "alias": "VariableID:2230:9",
+                "to": "Hirobius/Density: semantic/space/section/stack"
               }
             }
           },
@@ -6069,7 +6581,7 @@
             "scopes": [
               "WIDTH_HEIGHT"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--semantic-space-sidebar-railWidth)"
             },
@@ -6185,7 +6697,7 @@
             "name": "space/surface/padding",
             "path": "semantic.space.surface.padding",
             "resolvedType": "FLOAT",
-            "description": "24px (scale.md) inset for cards, forms and panels. Tenants override it per brand and density. Replaces component.padding. Varies by brand and density: its value comes from Hirobius/Density.",
+            "description": "Card, dialog and panel inset: scale.md (28px, 16px compact). Tenants override it. Replaces component.padding. Varies by brand and density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -6233,7 +6745,7 @@
             "name": "typography/body/font-size",
             "path": "semantic.typography.body.font-size",
             "resolvedType": "FLOAT",
-            "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+            "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6243,12 +6755,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:38",
-                "to": "Hirobius/Primitives: typography/size/lg"
+                "alias": "VariableID:2231:2",
+                "to": "Hirobius/Density: semantic/typography/body/font-size"
               },
               "Dark": {
-                "alias": "VariableID:5:38",
-                "to": "Hirobius/Primitives: typography/size/lg"
+                "alias": "VariableID:2231:2",
+                "to": "Hirobius/Density: semantic/typography/body/font-size"
               }
             }
           },
@@ -6349,7 +6861,7 @@
             "name": "typography/caption/font-size",
             "path": "semantic.typography.caption.font-size",
             "resolvedType": "FLOAT",
-            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6359,12 +6871,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:2231:4",
+                "to": "Hirobius/Density: semantic/typography/caption/font-size"
               },
               "Dark": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:2231:4",
+                "to": "Hirobius/Density: semantic/typography/caption/font-size"
               }
             }
           },
@@ -6441,7 +6953,7 @@
             "name": "typography/display/font-family",
             "path": "semantic.typography.display.font-family",
             "resolvedType": "STRING",
-            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
+            "description": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -6465,7 +6977,7 @@
             "name": "typography/display/font-size",
             "path": "semantic.typography.display.font-size",
             "resolvedType": "FLOAT",
-            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
+            "description": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6475,12 +6987,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:43",
-                "to": "Hirobius/Primitives: typography/size/5xl"
+                "alias": "VariableID:2229:8",
+                "to": "Hirobius/Primitives: typography/size/display"
               },
               "Dark": {
-                "alias": "VariableID:5:43",
-                "to": "Hirobius/Primitives: typography/size/5xl"
+                "alias": "VariableID:2229:8",
+                "to": "Hirobius/Primitives: typography/size/display"
               }
             }
           },
@@ -6489,7 +7001,7 @@
             "name": "typography/display/font-weight",
             "path": "semantic.typography.display.font-weight",
             "resolvedType": "FLOAT",
-            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
+            "description": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -6513,7 +7025,7 @@
             "name": "typography/display/letter-spacing",
             "path": "semantic.typography.display.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6. Converted from -0.01em at 48px.",
+            "description": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6. Converted from -0.01em at 56px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6523,10 +7035,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": -0.48
+                "value": -0.56
               },
               "Dark": {
-                "value": -0.48
+                "value": -0.56
               }
             }
           },
@@ -6535,7 +7047,7 @@
             "name": "typography/display/line-height",
             "path": "semantic.typography.display.line-height",
             "resolvedType": "FLOAT",
-            "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6. Converted from 1.05 × 48px.",
+            "description": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6. Converted from 1.05 × 56px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -6545,10 +7057,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 50.400002
+                "value": 58.799999
               },
               "Dark": {
-                "value": 50.400002
+                "value": 58.799999
               }
             }
           },
@@ -6581,7 +7093,7 @@
             "name": "typography/eyebrow/font-size",
             "path": "semantic.typography.eyebrow.font-size",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.caption",
+            "description": "deprecated: use semantic.typography.caption Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6591,12 +7103,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:2231:8",
+                "to": "Hirobius/Density: semantic/typography/eyebrow/font-size"
               },
               "Dark": {
-                "alias": "VariableID:5:36",
-                "to": "Hirobius/Primitives: typography/size/sm"
+                "alias": "VariableID:2231:8",
+                "to": "Hirobius/Density: semantic/typography/eyebrow/font-size"
               }
             }
           },
@@ -6697,7 +7209,7 @@
             "name": "typography/h1/font-size",
             "path": "semantic.typography.h1.font-size",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.title",
+            "description": "deprecated: use semantic.typography.title Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6707,12 +7219,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:40",
-                "to": "Hirobius/Primitives: typography/size/2xl"
+                "alias": "VariableID:2231:5",
+                "to": "Hirobius/Density: semantic/typography/h1/font-size"
               },
               "Dark": {
-                "alias": "VariableID:5:40",
-                "to": "Hirobius/Primitives: typography/size/2xl"
+                "alias": "VariableID:2231:5",
+                "to": "Hirobius/Density: semantic/typography/h1/font-size"
               }
             }
           },
@@ -6745,7 +7257,7 @@
             "name": "typography/h1/letter-spacing",
             "path": "semantic.typography.h1.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.title Converted from -0.01em at 24px.",
+            "description": "deprecated: use semantic.typography.title Converted from -0.01em at 28px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6755,10 +7267,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": -0.24
+                "value": -0.28
               },
               "Dark": {
-                "value": -0.24
+                "value": -0.28
               }
             }
           },
@@ -6767,7 +7279,7 @@
             "name": "typography/h1/line-height",
             "path": "semantic.typography.h1.line-height",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.title Converted from 1.25 × 24px.",
+            "description": "deprecated: use semantic.typography.title Converted from 1.25 × 28px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -6777,10 +7289,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 30
+                "value": 35
               },
               "Dark": {
-                "value": 30
+                "value": 35
               }
             }
           },
@@ -6813,7 +7325,7 @@
             "name": "typography/h2/font-size",
             "path": "semantic.typography.h2.font-size",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.title",
+            "description": "deprecated: use semantic.typography.title Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6823,12 +7335,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:40",
-                "to": "Hirobius/Primitives: typography/size/2xl"
+                "alias": "VariableID:2231:6",
+                "to": "Hirobius/Density: semantic/typography/h2/font-size"
               },
               "Dark": {
-                "alias": "VariableID:5:40",
-                "to": "Hirobius/Primitives: typography/size/2xl"
+                "alias": "VariableID:2231:6",
+                "to": "Hirobius/Density: semantic/typography/h2/font-size"
               }
             }
           },
@@ -6861,7 +7373,7 @@
             "name": "typography/h2/letter-spacing",
             "path": "semantic.typography.h2.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.title Converted from -0.01em at 24px.",
+            "description": "deprecated: use semantic.typography.title Converted from -0.01em at 28px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6871,10 +7383,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": -0.24
+                "value": -0.28
               },
               "Dark": {
-                "value": -0.24
+                "value": -0.28
               }
             }
           },
@@ -6883,7 +7395,7 @@
             "name": "typography/h2/line-height",
             "path": "semantic.typography.h2.line-height",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.title Converted from 1.25 × 24px.",
+            "description": "deprecated: use semantic.typography.title Converted from 1.25 × 28px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -6893,10 +7405,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 30
+                "value": 35
               },
               "Dark": {
-                "value": 30
+                "value": 35
               }
             }
           },
@@ -6929,7 +7441,7 @@
             "name": "typography/h3/font-size",
             "path": "semantic.typography.h3.font-size",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.title",
+            "description": "deprecated: use semantic.typography.title Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -6939,12 +7451,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:40",
-                "to": "Hirobius/Primitives: typography/size/2xl"
+                "alias": "VariableID:2231:7",
+                "to": "Hirobius/Density: semantic/typography/h3/font-size"
               },
               "Dark": {
-                "alias": "VariableID:5:40",
-                "to": "Hirobius/Primitives: typography/size/2xl"
+                "alias": "VariableID:2231:7",
+                "to": "Hirobius/Density: semantic/typography/h3/font-size"
               }
             }
           },
@@ -6977,7 +7489,7 @@
             "name": "typography/h3/letter-spacing",
             "path": "semantic.typography.h3.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.title Converted from -0.01em at 24px.",
+            "description": "deprecated: use semantic.typography.title Converted from -0.01em at 28px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -6987,10 +7499,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": -0.24
+                "value": -0.28
               },
               "Dark": {
-                "value": -0.24
+                "value": -0.28
               }
             }
           },
@@ -6999,7 +7511,7 @@
             "name": "typography/h3/line-height",
             "path": "semantic.typography.h3.line-height",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.title Converted from 1.25 × 24px.",
+            "description": "deprecated: use semantic.typography.title Converted from 1.25 × 28px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -7009,10 +7521,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 30
+                "value": 35
               },
               "Dark": {
-                "value": 30
+                "value": 35
               }
             }
           },
@@ -7021,7 +7533,7 @@
             "name": "typography/mono/font-family",
             "path": "semantic.typography.mono.font-family",
             "resolvedType": "STRING",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
+            "description": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -7045,7 +7557,7 @@
             "name": "typography/mono/font-size",
             "path": "semantic.typography.mono.font-size",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
+            "description": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7069,7 +7581,7 @@
             "name": "typography/mono/font-weight",
             "path": "semantic.typography.mono.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
+            "description": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -7093,7 +7605,7 @@
             "name": "typography/mono/letter-spacing",
             "path": "semantic.typography.mono.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6. Converted from 0em at 15px.",
+            "description": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6. Converted from 0em at 15px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -7115,7 +7627,7 @@
             "name": "typography/mono/line-height",
             "path": "semantic.typography.mono.line-height",
             "resolvedType": "FLOAT",
-            "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6. Converted from 1.5 × 15px.",
+            "description": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6. Converted from 1.5 × 15px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -7137,7 +7649,7 @@
             "name": "typography/title/font-family",
             "path": "semantic.typography.title.font-family",
             "resolvedType": "STRING",
-            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+            "description": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -7161,7 +7673,7 @@
             "name": "typography/title/font-size",
             "path": "semantic.typography.title.font-size",
             "resolvedType": "FLOAT",
-            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+            "description": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7171,12 +7683,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:40",
-                "to": "Hirobius/Primitives: typography/size/2xl"
+                "alias": "VariableID:2230:11",
+                "to": "Hirobius/Density: semantic/typography/title/font-size"
               },
               "Dark": {
-                "alias": "VariableID:5:40",
-                "to": "Hirobius/Primitives: typography/size/2xl"
+                "alias": "VariableID:2230:11",
+                "to": "Hirobius/Density: semantic/typography/title/font-size"
               }
             }
           },
@@ -7185,7 +7697,7 @@
             "name": "typography/title/font-weight",
             "path": "semantic.typography.title.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+            "description": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -7209,7 +7721,7 @@
             "name": "typography/title/letter-spacing",
             "path": "semantic.typography.title.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6. Converted from -0.01em at 24px.",
+            "description": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6. Converted from -0.01em at 28px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -7219,10 +7731,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": -0.24
+                "value": -0.28
               },
               "Dark": {
-                "value": -0.24
+                "value": -0.28
               }
             }
           },
@@ -7231,7 +7743,7 @@
             "name": "typography/title/line-height",
             "path": "semantic.typography.title.line-height",
             "resolvedType": "FLOAT",
-            "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6. Converted from 1.25 × 24px.",
+            "description": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6. Converted from 1.25 × 28px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -7241,10 +7753,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 30
+                "value": 35
               },
               "Dark": {
-                "value": 30
+                "value": 35
               }
             }
           },
@@ -7253,7 +7765,7 @@
             "name": "typography/titleSm/font-family",
             "path": "semantic.typography.titleSm.font-family",
             "resolvedType": "STRING",
-            "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
+            "description": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -7277,7 +7789,7 @@
             "name": "typography/titleSm/font-size",
             "path": "semantic.typography.titleSm.font-size",
             "resolvedType": "FLOAT",
-            "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
+            "description": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7287,12 +7799,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:38",
-                "to": "Hirobius/Primitives: typography/size/lg"
+                "alias": "VariableID:5:39",
+                "to": "Hirobius/Primitives: typography/size/xl"
               },
               "Dark": {
-                "alias": "VariableID:5:38",
-                "to": "Hirobius/Primitives: typography/size/lg"
+                "alias": "VariableID:5:39",
+                "to": "Hirobius/Primitives: typography/size/xl"
               }
             }
           },
@@ -7301,7 +7813,7 @@
             "name": "typography/titleSm/font-weight",
             "path": "semantic.typography.titleSm.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
+            "description": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -7325,7 +7837,7 @@
             "name": "typography/titleSm/letter-spacing",
             "path": "semantic.typography.titleSm.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Small heading inside a card or section band. 18px / 1.375 / 700. Converted from 0em at 18px.",
+            "description": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700. Converted from 0em at 20px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -7347,7 +7859,7 @@
             "name": "typography/titleSm/line-height",
             "path": "semantic.typography.titleSm.line-height",
             "resolvedType": "FLOAT",
-            "description": "Small heading inside a card or section band. 18px / 1.375 / 700. Converted from 1.375 × 18px.",
+            "description": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700. Converted from 1.375 × 20px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -7357,10 +7869,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 24.75
+                "value": 27.5
               },
               "Dark": {
-                "value": 24.75
+                "value": 27.5
               }
             }
           },
@@ -7393,7 +7905,7 @@
             "name": "typography/ui/font-size",
             "path": "semantic.typography.ui.font-size",
             "resolvedType": "FLOAT",
-            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7403,12 +7915,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:37",
-                "to": "Hirobius/Primitives: typography/size/base"
+                "alias": "VariableID:2231:3",
+                "to": "Hirobius/Density: semantic/typography/ui/font-size"
               },
               "Dark": {
-                "alias": "VariableID:5:37",
-                "to": "Hirobius/Primitives: typography/size/base"
+                "alias": "VariableID:2231:3",
+                "to": "Hirobius/Density: semantic/typography/ui/font-size"
               }
             }
           },
@@ -7749,7 +8261,7 @@
             "name": "badge/paddingX",
             "path": "component.badge.paddingX",
             "resolvedType": "FLOAT",
-            "description": "Horizontal padding inside the badge.",
+            "description": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune).",
             "scopes": [
               "GAP"
             ],
@@ -7759,8 +8271,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:21",
-                "to": "Hirobius/Primitives: space/px6"
+                "alias": "VariableID:5:6",
+                "to": "Hirobius/Primitives: space/2"
               }
             }
           },
@@ -8083,7 +8595,7 @@
             "name": "button/secondary/bg/hover",
             "path": "component.button.secondary.bg.hover",
             "resolvedType": "COLOR",
-            "description": "Secondary button hover fill.",
+            "description": "Secondary button hover fill (the wipe layer's colour).",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -8094,8 +8606,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:7",
-                "to": "Hirobius/Semantic: color/surface/accentSubtle"
+                "alias": "VariableID:2229:11",
+                "to": "Hirobius/Semantic: color/surface/softHover"
               }
             }
           },
@@ -8104,7 +8616,7 @@
             "name": "button/secondary/bg/pressed",
             "path": "component.button.secondary.bg.pressed",
             "resolvedType": "COLOR",
-            "description": "Secondary button pressed fill.",
+            "description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -8115,8 +8627,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:4",
-                "to": "Hirobius/Semantic: color/surface/overlay"
+                "alias": "VariableID:2229:10",
+                "to": "Hirobius/Semantic: color/surface/soft"
               }
             }
           },
@@ -8125,7 +8637,7 @@
             "name": "button/secondary/bg/rest",
             "path": "component.button.secondary.bg.rest",
             "resolvedType": "COLOR",
-            "description": "Secondary button fill.",
+            "description": "Secondary button fill: soft tonal, no border (hds#891).",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -8136,8 +8648,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:2",
-                "to": "Hirobius/Semantic: color/surface/page"
+                "alias": "VariableID:2229:10",
+                "to": "Hirobius/Semantic: color/surface/soft"
               }
             }
           },
@@ -8146,11 +8658,11 @@
             "name": "button/secondary/border/disabled",
             "path": "component.button.secondary.border.disabled",
             "resolvedType": "COLOR",
-            "description": "Secondary button disabled border (lighter than rest so a disabled button reads disabled).",
+            "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
             "scopes": [
               "STROKE_COLOR"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--component-button-secondary-border-disabled)"
             },
@@ -8166,7 +8678,7 @@
             "name": "button/secondary/border/hover",
             "path": "component.button.secondary.border.hover",
             "resolvedType": "COLOR",
-            "description": "Secondary button hover border.",
+            "description": "Secondary button hover border. Unused by Button since hds#891 (soft fill, no border); kept for consumers.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -8182,35 +8694,15 @@
             }
           },
           {
-            "id": "VariableID:15:25",
-            "name": "button/secondary/border/pressed",
-            "path": "component.button.secondary.border.pressed",
-            "resolvedType": "COLOR",
-            "description": "Secondary button pressed border (the hover border still applies while pressed).",
-            "scopes": [
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-button-secondary-border-pressed)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:10:18",
-                "to": "Hirobius/Semantic: color/border/accent"
-              }
-            }
-          },
-          {
             "id": "VariableID:15:23",
             "name": "button/secondary/border/rest",
             "path": "component.button.secondary.border.rest",
             "resolvedType": "COLOR",
-            "description": "Secondary button border.",
+            "description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
             "scopes": [
               "STROKE_COLOR"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--component-button-secondary-border-rest)"
             },
@@ -8691,7 +9183,7 @@
             "name": "card/padding",
             "path": "component.card.padding",
             "resolvedType": "FLOAT",
-            "description": "",
+            "description": "Card inset at the default density (28px). Card itself pads with semantic.space.surface.padding.",
             "scopes": [
               "GAP"
             ],
@@ -8701,8 +9193,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:10",
-                "to": "Hirobius/Primitives: space/6"
+                "alias": "VariableID:5:11",
+                "to": "Hirobius/Primitives: space/7"
               }
             }
           },
@@ -9176,8 +9668,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:3",
-                "to": "Hirobius/Semantic: color/surface/raised"
+                "alias": "VariableID:2018:731",
+                "to": "Hirobius/Semantic: color/surface/muted"
               }
             }
           },
@@ -9186,7 +9678,7 @@
             "name": "tag/border",
             "path": "component.tag.border",
             "resolvedType": "COLOR",
-            "description": "Default tag border color.",
+            "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -9196,8 +9688,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:14",
-                "to": "Hirobius/Semantic: color/border/default"
+                "alias": "VariableID:2018:731",
+                "to": "Hirobius/Semantic: color/surface/muted"
               }
             }
           },
@@ -9646,8 +10138,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:4",
-                "to": "Hirobius/Semantic: color/surface/overlay"
+                "alias": "VariableID:2229:9",
+                "to": "Hirobius/Semantic: color/surface/floating"
               }
             }
           },
@@ -9888,8 +10380,8 @@
                 "to": "Hirobius/Semantic: space/scale/md"
               },
               "brutalist-demo": {
-                "alias": "VariableID:5:8",
-                "to": "Hirobius/Primitives: space/4"
+                "alias": "VariableID:5:9",
+                "to": "Hirobius/Primitives: space/5"
               }
             }
           },
@@ -9927,6 +10419,206 @@
         ],
         "variables": [
           {
+            "id": "VariableID:2230:10",
+            "name": "semantic/layout/grid/gap",
+            "path": "density.semantic.layout.grid.gap",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.layout.grid.gap: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:13",
+                "to": "Hirobius/Primitives: space/10"
+              },
+              "Compact": {
+                "alias": "VariableID:5:8",
+                "to": "Hirobius/Primitives: space/4"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2230:7",
+            "name": "semantic/space/layout/inset",
+            "path": "density.semantic.space.layout.inset",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.space.layout.inset: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:13",
+                "to": "Hirobius/Primitives: space/10"
+              },
+              "Compact": {
+                "alias": "VariableID:5:10",
+                "to": "Hirobius/Primitives: space/6"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2230:6",
+            "name": "semantic/space/layout/normal",
+            "path": "density.semantic.space.layout.normal",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.space.layout.normal: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:11",
+                "to": "Hirobius/Primitives: space/7"
+              },
+              "Compact": {
+                "alias": "VariableID:5:8",
+                "to": "Hirobius/Primitives: space/4"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2230:8",
+            "name": "semantic/space/layout/spacious",
+            "path": "density.semantic.space.layout.spacious",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.space.layout.spacious: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:15",
+                "to": "Hirobius/Primitives: space/16"
+              },
+              "Compact": {
+                "alias": "VariableID:5:12",
+                "to": "Hirobius/Primitives: space/8"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2230:5",
+            "name": "semantic/space/layout/tight",
+            "path": "density.semantic.space.layout.tight",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.space.layout.tight: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:9",
+                "to": "Hirobius/Primitives: space/5"
+              },
+              "Compact": {
+                "alias": "VariableID:5:7",
+                "to": "Hirobius/Primitives: space/3"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:19",
+            "name": "semantic/space/scale/lg",
+            "path": "density.semantic.space.scale.lg",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.space.scale.lg: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:13",
+                "to": "Hirobius/Primitives: space/10"
+              },
+              "Compact": {
+                "alias": "VariableID:5:10",
+                "to": "Hirobius/Primitives: space/6"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:18",
+            "name": "semantic/space/scale/md",
+            "path": "density.semantic.space.scale.md",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.space.scale.md: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:11",
+                "to": "Hirobius/Primitives: space/7"
+              },
+              "Compact": {
+                "alias": "VariableID:5:8",
+                "to": "Hirobius/Primitives: space/4"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:17",
+            "name": "semantic/space/scale/sm",
+            "path": "density.semantic.space.scale.sm",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.space.scale.sm: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:9",
+                "to": "Hirobius/Primitives: space/5"
+              },
+              "Compact": {
+                "alias": "VariableID:5:7",
+                "to": "Hirobius/Primitives: space/3"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2229:20",
+            "name": "semantic/space/scale/xl",
+            "path": "density.semantic.space.scale.xl",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.space.scale.xl: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:15",
+                "to": "Hirobius/Primitives: space/16"
+              },
+              "Compact": {
+                "alias": "VariableID:5:12",
+                "to": "Hirobius/Primitives: space/8"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2230:9",
+            "name": "semantic/space/section/stack",
+            "path": "density.semantic.space.section.stack",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.space.section.stack: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:17",
+                "to": "Hirobius/Primitives: space/24"
+              },
+              "Compact": {
+                "alias": "VariableID:5:14",
+                "to": "Hirobius/Primitives: space/12"
+              }
+            }
+          },
+          {
             "id": "VariableID:2061:899",
             "name": "semantic/space/surface/padding",
             "path": "density.semantic.space.surface.padding",
@@ -9943,6 +10635,166 @@
               "Compact": {
                 "alias": "VariableID:2061:898",
                 "to": "Hirobius/Brand: semantic/space/surface/padding/Compact"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2231:2",
+            "name": "semantic/typography/body/font-size",
+            "path": "density.semantic.typography.body.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.body.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:38",
+                "to": "Hirobius/Primitives: typography/size/lg"
+              },
+              "Compact": {
+                "alias": "VariableID:2229:6",
+                "to": "Hirobius/Primitives: typography/size/compactBody"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2231:4",
+            "name": "semantic/typography/caption/font-size",
+            "path": "density.semantic.typography.caption.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.caption.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
+              },
+              "Compact": {
+                "alias": "VariableID:2229:5",
+                "to": "Hirobius/Primitives: typography/size/compactCaption"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2231:8",
+            "name": "semantic/typography/eyebrow/font-size",
+            "path": "density.semantic.typography.eyebrow.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.eyebrow.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
+              },
+              "Compact": {
+                "alias": "VariableID:2229:5",
+                "to": "Hirobius/Primitives: typography/size/compactCaption"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2231:5",
+            "name": "semantic/typography/h1/font-size",
+            "path": "density.semantic.typography.h1.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.h1.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:2229:7",
+                "to": "Hirobius/Primitives: typography/size/title"
+              },
+              "Compact": {
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2231:6",
+            "name": "semantic/typography/h2/font-size",
+            "path": "density.semantic.typography.h2.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.h2.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:2229:7",
+                "to": "Hirobius/Primitives: typography/size/title"
+              },
+              "Compact": {
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2231:7",
+            "name": "semantic/typography/h3/font-size",
+            "path": "density.semantic.typography.h3.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.h3.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:2229:7",
+                "to": "Hirobius/Primitives: typography/size/title"
+              },
+              "Compact": {
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2230:11",
+            "name": "semantic/typography/title/font-size",
+            "path": "density.semantic.typography.title.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.title.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:2229:7",
+                "to": "Hirobius/Primitives: typography/size/title"
+              },
+              "Compact": {
+                "alias": "VariableID:5:40",
+                "to": "Hirobius/Primitives: typography/size/2xl"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2231:3",
+            "name": "semantic/typography/ui/font-size",
+            "path": "density.semantic.typography.ui.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.ui.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
+              },
+              "Compact": {
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
               }
             }
           }
@@ -10004,17 +10856,17 @@
         "id": "S:b58ab8d66881d8332fb5c8cc929381d532dca46e,",
         "name": "typography/display",
         "path": "semantic.typography.display",
-        "description": "One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.",
+        "description": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6.",
         "fontFamily": "Sora",
-        "fontStyle": "ExtraBold",
-        "fontSize": 48,
+        "fontStyle": "Bold",
+        "fontSize": 56,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 50.400002
+          "value": 58.799999
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": -0.48
+          "value": -0.56
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -10056,15 +10908,15 @@
         "path": "semantic.typography.h1",
         "description": "deprecated: use semantic.typography.title",
         "fontFamily": "Sora",
-        "fontStyle": "ExtraBold",
-        "fontSize": 24,
+        "fontStyle": "Bold",
+        "fontSize": 28,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 30
+          "value": 35
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": -0.24
+          "value": -0.28
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -10081,15 +10933,15 @@
         "path": "semantic.typography.h2",
         "description": "deprecated: use semantic.typography.title",
         "fontFamily": "Sora",
-        "fontStyle": "ExtraBold",
-        "fontSize": 24,
+        "fontStyle": "Bold",
+        "fontSize": 28,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 30
+          "value": 35
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": -0.24
+          "value": -0.28
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -10106,15 +10958,15 @@
         "path": "semantic.typography.h3",
         "description": "deprecated: use semantic.typography.title",
         "fontFamily": "Sora",
-        "fontStyle": "ExtraBold",
-        "fontSize": 24,
+        "fontStyle": "Bold",
+        "fontSize": 28,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 30
+          "value": 35
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": -0.24
+          "value": -0.28
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -10129,7 +10981,7 @@
         "id": "S:3152dfb215c24e851e1a06cc92bb552a9c58b7e5,",
         "name": "typography/mono",
         "path": "semantic.typography.mono",
-        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role uses weight.mono (400), not weight.regular. The mono companion, role 6 of 6.",
+        "description": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.",
         "fontFamily": "IBM Plex Mono",
         "fontStyle": "Regular",
         "fontSize": 15,
@@ -10154,17 +11006,17 @@
         "id": "S:99bef052035a9b41fd89f515a7caf26e5543b184,",
         "name": "typography/title",
         "path": "semantic.typography.title",
-        "description": "Section and card headings. 24px / 1.25 / 700. Role 2 of 6.",
+        "description": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6.",
         "fontFamily": "Sora",
-        "fontStyle": "ExtraBold",
-        "fontSize": 24,
+        "fontStyle": "Bold",
+        "fontSize": 28,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 30
+          "value": 35
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": -0.24
+          "value": -0.28
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -10179,13 +11031,13 @@
         "id": "S:ee33d604c391c50fa387dc3457b96affb95b842c,",
         "name": "typography/titleSm",
         "path": "semantic.typography.titleSm",
-        "description": "Small heading inside a card or section band. 18px / 1.375 / 700.",
+        "description": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.",
         "fontFamily": "Sora",
-        "fontStyle": "ExtraBold",
-        "fontSize": 18,
+        "fontStyle": "Bold",
+        "fontSize": 20,
         "lineHeight": {
           "unit": "PIXELS",
-          "value": 24.75
+          "value": 27.5
         },
         "letterSpacing": {
           "unit": "PIXELS",
@@ -10257,7 +11109,7 @@
         "id": "S:7cda3cf542a628a8f9711f774a7732f9e474a8d4,",
         "name": "elevation/floating",
         "path": "semantic.elevation.floating",
-        "description": "Hover, menu, and popover elevation.",
+        "description": "Tooltip and hover elevation. Menus, popovers, listboxes, toasts and dialogs use semantic.elevation.overlay.",
         "effects": [
           {
             "type": "DROP_SHADOW",
@@ -10301,7 +11153,7 @@
         "id": "S:2d0ee3432477206ab83d03914bf507cd511ce738,",
         "name": "elevation/overlay",
         "path": "semantic.elevation.overlay",
-        "description": "Modal, dialog, and drawer elevation.",
+        "description": "Menu, popover, listbox, toast, dialog and drawer elevation: the floating fill, overlay shadow and a border.default hairline.",
         "effects": [
           {
             "type": "DROP_SHADOW",
