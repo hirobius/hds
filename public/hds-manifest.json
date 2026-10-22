@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-21T19:27:11.053Z",
+  "generated": "2026-10-22T03:24:55.866Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -13608,7 +13608,7 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role binds weight.mono (400). The mono companion, role 6 of 6.",
+        "description": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
           "fontSize": "15px",

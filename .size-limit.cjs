@@ -139,6 +139,11 @@
  *   fonts.css + 4 woff2: 132.16 kB raw (130.27 kB woff2 + 1.88 kB css), budget 146 kB
  * Approved by Adrian 2026-10-07.
  *
+ * Tightened 2026-10-22, main entry only: measured 50.39 kB gzip, far under the
+ * 200 kB budget set before the observedTokens removal and the PURE/compound
+ * work above. A budget 4x the real size cannot catch a regression, so the new
+ * budget is 60 kB (~19% headroom, in line with the other entries).
+ *
  * Entries NOT tracked here (sub-1.5 kB gzip, trivial): cn.js, mui.js,
  * form.js, contexts.js. Add a budget for one of these if it grows to carry
  * real weight.
@@ -154,7 +159,7 @@ module.exports = [
   {
     name: 'main entry (hirobius-ui.js)',
     path: 'dist/hirobius-ui.js',
-    limit: '200 kB',
+    limit: '60 kB',
     gzip: true,
   },
   {

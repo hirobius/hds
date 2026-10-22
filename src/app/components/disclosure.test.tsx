@@ -87,6 +87,7 @@ describe('Disclosure accessibility contract', () => {
       );
       const cls = screen.getByRole('button', { name: 'Details' }).className;
       expect(cls, `${variant} trigger`).toContain(
+        // tier-ok: asserts the emitted primitive
         'min-h-[var(--primitive-size-interactive-minCompact)]',
       );
       unmount();
@@ -159,6 +160,7 @@ describe('Disclosure row variant', () => {
   it('a11y:disclosure.row-target-size - the row trigger keeps the 24px minimum height', () => {
     render(row());
     expect(screen.getByRole('button', { name: /Row title/ }).className).toContain(
+      // tier-ok: asserts the emitted primitive
       'min-h-[var(--primitive-size-interactive-minCompact)]',
     );
   });

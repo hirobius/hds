@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { PERF_BUDGET_HINT } from '../lib/perf-budget-hint.mjs';
 import { runSizeLimit } from '../run-size-limit.mjs';
 
+const FRESH = { needsBuild: () => false };
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 describe('PERF_BUDGET_HINT', () => {
@@ -27,7 +28,7 @@ describe('runSizeLimit', () => {
   it('passes the exit code through and prints nothing extra when size-limit passes', () => {
     const spawn = vi.fn().mockReturnValue({ status: 0 });
     const err = vi.fn();
-    expect(runSizeLimit(['--json'], { spawn, err })).toBe(0);
+    expect(runSizeLimit(['--json'], { spawn, err, probe: FRESH })).toBe(0);
     expect(spawn).toHaveBeenCalledWith(
       expect.stringMatching(/size-limit/),
       ['--config', '.size-limit.cjs', '--json'],
@@ -39,14 +40,39 @@ describe('runSizeLimit', () => {
   it('prints the skill hint and keeps the non-zero exit code when size-limit fails', () => {
     const spawn = vi.fn().mockReturnValue({ status: 1 });
     const err = vi.fn();
-    expect(runSizeLimit([], { spawn, err })).toBe(1);
+    expect(runSizeLimit([], { spawn, err, probe: FRESH })).toBe(1);
     expect(err.mock.calls.join('\n')).toContain('performance-optimization');
   });
 
   it('fails (non-zero) with the hint when size-limit cannot be spawned', () => {
     const spawn = vi.fn().mockReturnValue({ status: null, error: new Error('ENOENT') });
     const err = vi.fn();
-    expect(runSizeLimit([], { spawn, err })).not.toBe(0);
+    expect(runSizeLimit([], { spawn, err, probe: FRESH })).not.toBe(0);
+  });
+});
+
+describe('runSizeLimit — the Button probe', () => {
+  const ok = { status: 0 };
+  it('builds the probe first when it is missing, then runs size-limit', () => {
+    const spawn = vi.fn().mockReturnValue(ok);
+    const probe = { needsBuild: () => true };
+    expect(runSizeLimit([], { spawn, err: vi.fn(), probe })).toBe(0);
+    expect(spawn.mock.calls[0][1]).toEqual([expect.stringMatching(/build-button-probe\.mjs$/)]);
+    expect(spawn.mock.calls[1][1][0]).toBe('--config');
+  });
+
+  it('skips the probe build when the probe is fresh', () => {
+    const spawn = vi.fn().mockReturnValue(ok);
+    const probe = { needsBuild: () => false };
+    runSizeLimit([], { spawn, err: vi.fn(), probe });
+    expect(spawn).toHaveBeenCalledTimes(1);
+  });
+
+  it("stops with the probe build's exit code when the probe build fails", () => {
+    const spawn = vi.fn().mockReturnValue({ status: 2 });
+    const probe = { needsBuild: () => true };
+    expect(runSizeLimit([], { spawn, err: vi.fn(), probe })).toBe(2);
+    expect(spawn).toHaveBeenCalledTimes(1);
   });
 });
 

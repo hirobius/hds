@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <RootProvider
           theme={{
-            defaultTheme: 'light',
+            defaultTheme: 'system',
             // HDS's own dark-mode token values live under [data-theme="dark"]
             // (not a `.dark` class), so next-themes needs to write BOTH
             // attributes to <html> for Fumadocs' `.dark` chrome AND HDS's

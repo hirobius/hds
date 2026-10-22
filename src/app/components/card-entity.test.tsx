@@ -74,6 +74,7 @@ describe('Card.Facts', () => {
     expect(svgs).toHaveLength(3);
     svgs.forEach((svg) => {
       expect(svg.getAttribute('aria-hidden')).toBe('true');
+      // tier-ok: asserts the emitted primitive
       expect(svg.style.width).toBe('var(--primitive-size-16)');
     });
   });

@@ -73,8 +73,11 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
     // body copy) from the shipped weight tokens. No weight keeps the role's own.
     // These utilities sit in the utilities layer, so they beat .hds-type-*.
     weight: {
+      // tier-ok: shipped weight steps (hds#825)
       regular: '[font-weight:var(--primitive-typography-weight-regular)]',
+      // tier-ok: shipped weight steps (hds#825)
       medium: '[font-weight:var(--primitive-typography-weight-medium)]',
+      // tier-ok: shipped weight steps, no semantic weight tokens exist (hds#825)
       bold: '[font-weight:var(--primitive-typography-weight-bold)]',
     },
   },

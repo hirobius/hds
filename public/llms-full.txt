@@ -449,7 +449,7 @@ Weights declared: `400` regular, `400` mono, `500` medium, `700` bold, `700` dis
 | `semantic.typography.body` | 18px | 15px | 400 | Prose |
 | `semantic.typography.ui` | 16px | 14px | 500 | Controls, nav, table text, values |
 | `semantic.typography.caption` | 14px | 13px | 500 | Metadata, help text and labels, in sentence case |
-| `semantic.typography.mono` | 15px | same | 400 | Code and ids |
+| `semantic.typography.mono` | 15px | same | 400 | Code and ids, 15px / 1.5 / 400 |
 | `semantic.typography.lineHeight.none` |  | same |  | Semantic alias for leading-none (1) |
 
 > The ramp is static: tokens store the value every surface renders. **Compact** is the size under `data-density="compact"` (dense apps). Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.
