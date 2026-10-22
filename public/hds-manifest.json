@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-22T03:17:18.609Z",
+  "generated": "2026-10-22T05:10:08.261Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -13032,7 +13032,7 @@
         "path": "semantic.color.shadow.hard",
         "cssVar": "--semantic-color-shadow-hard",
         "type": "color",
-        "description": "Hard (blur 0) shadow colour: Button and Kbd. Dark uses border.interactive (neutral.500): black vanishes, and it keeps the soft button's 3:1 edge on page, raised and overlay (hds#891).",
+        "description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).",
         "alias": "{primitive.color.shadow.ink}",
         "resolvedValue": "#282c34",
         "dark": {
@@ -13647,7 +13647,7 @@
         "path": "semantic.typography.mono",
         "cssVar": "--semantic-typography-mono",
         "type": "typography",
-        "description": "Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so the role binds weight.mono (400). The mono companion, role 6 of 6.",
+        "description": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.",
         "composite": {
           "fontFamily": "\"IBM Plex Mono\", \"Courier New\", monospace",
           "fontSize": "15px",
@@ -14204,7 +14204,7 @@
         "path": "component.tag.border",
         "cssVar": "--component-tag-border",
         "type": "color",
-        "description": "Unselected tag border colour: the pill's own fill, so the rest edge disappears and the 1px box stays for the selected and hover borders (hds#891).",
+        "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
         "alias": "{semantic.color.surface.muted}",
         "resolvedValue": "#f5f5f5"
       },
@@ -14736,7 +14736,7 @@
         "path": "component.button.secondary.border.disabled",
         "cssVar": "--component-button-secondary-border-disabled",
         "type": "color",
-        "description": "Secondary button disabled border (lighter than rest so a disabled button reads disabled). DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
+        "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.subdued}",
         "resolvedValue": "#e5e5e5"
       },

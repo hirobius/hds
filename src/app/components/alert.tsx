@@ -96,7 +96,7 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
           'shrink-0',
           // With a title, centre the 16px icon on the title's first line (titleSm size × leading, hds#847).
           hasTitle
-            ? 'self-start mt-[calc((var(--semantic-typography-titleSm-font-size)*var(--semantic-typography-titleSm-line-height)-var(--primitive-size-16))/2)]'
+            ? 'self-start mt-[calc((var(--semantic-typography-titleSm-font-size)*var(--semantic-typography-titleSm-line-height)-var(--primitive-size-16))/2)]' // tier-ok: the 16px icon box the calc centres
             : 'self-center',
         )}
       />

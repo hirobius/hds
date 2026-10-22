@@ -45,6 +45,7 @@ type DisclosureVariant = 'panel' | 'nav' | 'card' | 'row';
 // min-h: the caption-size label is 18px tall, under the 24px WCAG 2.5.8 floor (hds#520).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
 const disclosureTriggerVariants = /* @__PURE__ */ cva(
+  // tier-ok: 24px WCAG 2.5.8 target floor, not tenant-scaled (hds#520)
   'flex min-h-[var(--primitive-size-interactive-minCompact)] w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-foreground transition-[border-color,box-shadow,color]',
   {
     variants: {
