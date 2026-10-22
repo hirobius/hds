@@ -13,6 +13,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Loader2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { isDevelopment } from '../../lib/env';
+import { installWipeListeners } from './button-wipe';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -109,8 +110,34 @@ const buttonVariants = /* @__PURE__ */ cva(
         true: 'p-0',
         false: '',
       },
+      // Opt-in hover fill (default none, existing buttons unchanged). `wipe`: the
+      // variant's own hover fill (see the compoundVariants) is drawn by the
+      // `.hds-btn-wipe` layer in theme.css and wipes across from the edge the
+      // pointer crosses; the instant hover fill is swapped out here.
+      hoverEffect: {
+        none: '',
+        wipe: 'hds-btn-wipe relative isolate overflow-hidden',
+      },
     },
     compoundVariants: [
+      // wipe x variant (neutral tone only): hold the rest fill on hover; theme.css
+      // `.hds-btn-wipe` paints the variant's hover fill as the wiping layer. A status
+      // tone keeps its own hover classes, and the layer takes the tone fill plus its
+      // hover brightness (theme.css). Tertiary rests transparent, so it restores its
+      // pressed fill here (the layer hides on :active so the press shows).
+      { hoverEffect: 'wipe', tone: 'neutral', variant: 'primary', className: 'hover:bg-primary' },
+      {
+        hoverEffect: 'wipe',
+        tone: 'neutral',
+        variant: 'secondary',
+        className: 'hover:bg-background',
+      },
+      {
+        hoverEffect: 'wipe',
+        tone: 'neutral',
+        variant: 'tertiary',
+        className: 'hover:bg-transparent active:bg-accent',
+      },
       { iconOnly: true, size: 'sm', className: 'w-8' },
       { iconOnly: true, size: 'md', className: 'w-10' },
       { iconOnly: true, size: 'lg', className: 'w-12' },
@@ -120,6 +147,7 @@ const buttonVariants = /* @__PURE__ */ cva(
       tone: 'neutral',
       size: 'md',
       iconOnly: false,
+      hoverEffect: 'none',
     },
   },
 );
@@ -138,9 +166,11 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 export interface ButtonProps
   extends
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
-    Omit<ButtonVariantProps, 'iconOnly'> {
+    Omit<ButtonVariantProps, 'iconOnly' | 'hoverEffect'> {
   /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (an outline), so pass `primary` for the main action. */
   variant?: ButtonVariantProps['variant'];
+  /** `wipe` slides the hover fill in from the pointer's edge. */
+  hoverEffect?: 'none' | 'wipe';
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
   /** Optional accessible label used when children are not suitable as the name. */
@@ -198,6 +228,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       tone,
       size,
       iconOnly = false,
+      hoverEffect = 'none',
       asChild = false,
       label,
       loading = false,
@@ -210,11 +241,38 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       defaultPressed,
       onPressedChange,
       onClick,
+      style,
       ...props
     },
     ref,
   ) {
     const isDisabled = disabled || loading;
+    const wipe = hoverEffect === 'wipe';
+    React.useEffect(() => {
+      if (wipe) installWipeListeners();
+    }, [wipe]);
+    // The wipe layer's fill (theme.css `.hds-btn-wipe`) is the variant's own hover fill:
+    // a status tone's fill through its hover brightness (--hds-wipe-f), primary's
+    // component.button.bgHover, or role.accent. Inline, so the shipped CSS has no
+    // per-variant rules; a consumer `style` still wins.
+    const hasTone = tone != null && tone !== 'neutral';
+    const wipeProps = wipe
+      ? {
+          'data-hover-effect': 'wipe',
+          style: {
+            '--hds-wipe-fill': hasTone
+              ? `var(--semantic-color-feedback-bg-${tone === 'danger' ? 'error' : tone})`
+              : variant === 'primary'
+                ? 'var(--component-button-bgHover)'
+                : 'var(--role-accent)',
+            ...(hasTone && {
+              filter: 'none',
+              '--hds-wipe-f': 'brightness(var(--hds-wipe-b, 0.95))',
+            }),
+            ...style,
+          } as React.CSSProperties,
+        }
+      : { style };
     const content = children ?? label;
 
     // A toggle (hds#393): any of the three pressed props makes this a toggle
@@ -242,10 +300,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // their attribute selector would outrank the tone on specificity; a toned
     // toggle therefore leaves them out, which renders what the old `!` tone
     // did (its important declarations hid them). aria-pressed still reports it.
-    const hasStatusTone = tone != null && tone !== 'neutral';
     const classes = cn(
-      buttonVariants({ variant, tone, size, iconOnly }),
-      isToggle && !hasStatusTone && toggleOnClasses,
+      buttonVariants({ variant, tone, size, iconOnly, hoverEffect }),
+      isToggle && !hasTone && toggleOnClasses,
       className,
     );
 
@@ -268,6 +325,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
           data-variant={variant ?? undefined}
           data-tone={tone ?? undefined}
           data-size={size ?? undefined}
+          {...wipeProps}
           {...(toggleProps as React.HTMLAttributes<HTMLElement>)}
           {...(props as React.HTMLAttributes<HTMLElement>)}
         >
@@ -314,6 +372,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         data-variant={variant ?? undefined}
         data-tone={tone ?? undefined}
         data-size={size ?? undefined}
+        {...wipeProps}
         className={classes}
         {...toggleProps}
         {...props}

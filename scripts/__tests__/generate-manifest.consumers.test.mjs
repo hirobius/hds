@@ -4,6 +4,8 @@
  * Consumer scan: `generated-*` files are build output, never consumers.
  * A token description such as "Grid gap: ..." names a component in prose and
  * used to land in `consumers`, so re-running `pnpm tokens` dirtied the manifest.
+ * Test files exercise a component; they do not ship with it, so they are not
+ * consumers either (and listing them cost the manifest gzip budget, hds#413).
  */
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { mkdtempSync, mkdirSync, cpSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
@@ -21,7 +23,7 @@ afterEach(() => {
 });
 
 describe('generate-manifest consumer scan', () => {
-  it('ignores generated-* files but keeps real consumers', () => {
+  it('ignores generated-* and test files but keeps real consumers', () => {
     mkdirSync(join(REPO, 'temp'), { recursive: true });
     const root = mkdtempSync(join(REPO, 'temp', 'manifest-consumers-'));
     roots.push(root);
@@ -43,6 +45,7 @@ describe('generate-manifest consumer scan', () => {
       '/**\n * Demo.\n *\n * @category Inputs\n * @tier primitive\n */\nexport const DemoWidget = () => null;\n',
     );
     writeFileSync(join(comps, 'uses-it.tsx'), 'export const X = () => DemoWidget;\n');
+    writeFileSync(join(comps, 'demo-widget.test.tsx'), 'DemoWidget;\n');
     const ds = join(root, 'src', 'app', 'design-system');
     mkdirSync(ds, { recursive: true });
     writeFileSync(

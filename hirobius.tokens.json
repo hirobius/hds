@@ -467,6 +467,12 @@
           "$description": "Project-specific brand colors used in portfolio contexts."
         },
         "$description": "Project-specific brand color families reserved for portfolio surfaces."
+      },
+      "shadow": {
+        "ink": {
+          "$value": "#282c34",
+          "$description": "Shadow ink: hsl(220 13% 18%) as one solid colour."
+        }
       }
     },
     "space": {
@@ -1621,6 +1627,20 @@
               "modes": {
                 "Light": "{primitive.color.amber.400}",
                 "Dark": "{primitive.color.amber.400}"
+              }
+            }
+          }
+        }
+      },
+      "shadow": {
+        "hard": {
+          "$value": "{primitive.color.shadow.ink}",
+          "$description": "Hard (blur 0) shadow colour. Dark uses border.strong: black vanishes on dark surfaces.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.shadow.ink}",
+                "Dark": "{primitive.color.neutral.600}"
               }
             }
           }

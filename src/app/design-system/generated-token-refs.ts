@@ -152,6 +152,9 @@ export const tokenRefs = {
           "500": "var(--primitive-color-projectBrand-microsoftGameDev-500)",
           "900": "var(--primitive-color-projectBrand-microsoftGameDev-900)"
         }
+      },
+      shadow: {
+        ink: "var(--primitive-color-shadow-ink)"
       }
     },
     space: {
@@ -360,6 +363,9 @@ export const tokenRefs = {
         accent: "var(--semantic-color-border-accent)",
         success: "var(--semantic-color-border-success)",
         warning: "var(--semantic-color-border-warning)"
+      },
+      shadow: {
+        hard: "var(--semantic-color-shadow-hard)"
       },
       feedback: {
         error: "var(--semantic-color-feedback-error)",

@@ -146,6 +146,9 @@ export const tokenValues = {
           "500": "#6d31fb",
           "900": "oklch(0.22 0.16 304)"
         }
+      },
+      shadow: {
+        ink: "#282c34"
       }
     },
     space: {

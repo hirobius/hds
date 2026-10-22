@@ -125,6 +125,7 @@ Triggers an action when activated.
   - asChild: boolean = false
   - defaultPressed: boolean
   - disabled: boolean
+  - hoverEffect: "none" | "wipe" = none
   - iconLeft: ReactNode
   - iconOnly: boolean = false
   - iconRight: ReactNode

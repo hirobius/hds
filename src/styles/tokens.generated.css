@@ -124,6 +124,7 @@
   --primitive-color-projectBrand-microsoftGameDev-100: #E5E5FC;
   --primitive-color-projectBrand-microsoftGameDev-500: #6d31fb;
   --primitive-color-projectBrand-microsoftGameDev-900: oklch(0.22 0.16 304);
+  --primitive-color-shadow-ink: #282c34;
   --primitive-space-0: 0px;
   --primitive-space-1: 4px;
   --primitive-space-2: 8px;
@@ -278,6 +279,7 @@
   --semantic-color-border-accent: var(--primitive-color-graphite-700);
   --semantic-color-border-success: var(--primitive-color-green-400);
   --semantic-color-border-warning: var(--primitive-color-amber-400);
+  --semantic-color-shadow-hard: var(--primitive-color-shadow-ink);
   --semantic-color-feedback-error: var(--primitive-color-red-700);
   --semantic-color-feedback-success: var(--primitive-color-green-700);
   --semantic-color-feedback-warning: var(--primitive-color-amber-800);
@@ -631,6 +633,7 @@
   --semantic-color-border-accent: var(--primitive-color-graphite-300);
   --semantic-color-border-success: var(--primitive-color-green-400);
   --semantic-color-border-warning: var(--primitive-color-amber-400);
+  --semantic-color-shadow-hard: var(--primitive-color-neutral-600);
   --semantic-color-feedback-error: var(--primitive-color-red-400);
   --semantic-color-feedback-success: var(--primitive-color-green-400);
   --semantic-color-feedback-warning: var(--primitive-color-amber-400);
