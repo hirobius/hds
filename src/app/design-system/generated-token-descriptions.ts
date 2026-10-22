@@ -283,7 +283,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.shadow.overlay": "Modal/dialog elevation for full-screen overlays.",
   "semantic.elevation.flat": "Flat surface (no shadow, hairline border) for embedded panels.",
   "semantic.elevation.raised": "Resting card / panel elevation.",
-  "semantic.elevation.floating": "Hover, menu, and popover elevation.",
+  "semantic.elevation.floating": "Tooltip and hover elevation. Menus, popovers, listboxes, toasts and dialogs use semantic.elevation.overlay.",
   "semantic.elevation.overlay": "Menu, popover, listbox, toast, dialog and drawer elevation: the floating fill, overlay shadow and a border.default hairline.",
   "semantic.size.control.sm": "Small control element — radio dot, slider fill bar height.",
   "semantic.size.control.md": "Medium control element — checkbox glyph box, slider track wrapper height.",

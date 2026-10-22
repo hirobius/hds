@@ -1271,11 +1271,13 @@ export function DemoFrame({ children }: { children: ReactNode }) {
       data-hds
       className="hds-demo-frame not-prose"
       style={{
-        // A raised canvas, no outline (hds#891). Not surface.muted: muted controls (the
-        // SegmentedControl track, Tags) sit on that colour and vanished into the frame.
+        // The page canvas, no outline (hds#891): the surface components sit on in apps.
+        // Not surface.muted (muted Tags and SegmentedControl tracks vanish into it) and not
+        // surface.raised (borderless Cards vanish into it). Pinned by
+        // tests/docs-site/demo-frame-contrast.test.ts.
         padding: 'var(--semantic-space-scale-md)',
         borderRadius: 'var(--semantic-radius-action)',
-        background: 'var(--semantic-color-surface-raised)',
+        background: 'var(--semantic-color-surface-page)',
         color: 'var(--semantic-color-content-primary)',
       }}
     >

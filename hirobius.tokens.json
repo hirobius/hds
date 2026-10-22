@@ -2596,7 +2596,7 @@
         }
       },
       "floating": {
-        "$description": "Hover, menu, and popover elevation.",
+        "$description": "Tooltip and hover elevation. Menus, popovers, listboxes, toasts and dialogs use semantic.elevation.overlay.",
         "$extensions": {
           "com.hirobius.hds": {
             "$value": {

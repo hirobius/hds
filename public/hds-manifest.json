@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-22T07:24:46.237Z",
+  "generated": "2026-10-22T08:52:02.045Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -14004,7 +14004,7 @@
         "path": "semantic.elevation.floating",
         "cssVar": "--semantic-elevation-floating",
         "type": "elevation",
-        "description": "Hover, menu, and popover elevation.",
+        "description": "Tooltip and hover elevation. Menus, popovers, listboxes, toasts and dialogs use semantic.elevation.overlay.",
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
