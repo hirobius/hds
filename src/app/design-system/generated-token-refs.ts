@@ -339,7 +339,9 @@ export const tokenRefs = {
         pressed: "var(--semantic-color-surface-pressed)",
         selected: "var(--semantic-color-surface-selected)",
         muted: "var(--semantic-color-surface-muted)",
-        sunken: "var(--semantic-color-surface-sunken)"
+        sunken: "var(--semantic-color-surface-sunken)",
+        soft: "var(--semantic-color-surface-soft)",
+        softHover: "var(--semantic-color-surface-softHover)"
       },
       content: {
         primary: "var(--semantic-color-content-primary)",
@@ -768,8 +770,10 @@ export const tokenRefs = {
           pressed: "var(--component-button-secondary-bg-pressed)"
         },
         border: {
+          /** @deprecated hds#891 soft surfaces: secondary Button has no border @removeIn 1.0.0 */
           rest: "var(--component-button-secondary-border-rest)",
           hover: "var(--component-button-secondary-border-hover)",
+          /** @deprecated hds#891 soft surfaces: secondary Button has no border @removeIn 1.0.0 */
           disabled: "var(--component-button-secondary-border-disabled)"
         },
         text: "var(--component-button-secondary-text)"

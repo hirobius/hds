@@ -1,0 +1,132 @@
+{
+  "impact": "breaking",
+  "plain": "Buttons now wipe on hover and carry a hard shadow by default, secondary buttons are a soft fill with no border, and overlays, code blocks, tabs, tags and chips lose their resting outline; pass hoverEffect=\"none\" or shadow=\"none\" to a Button to opt out, and <Card bordered> to keep a card edge.",
+  "steps": [
+    {
+      "id": "value-changed/--component-button-secondary-bg-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button hover fill is now surface.softHover (neutral.300 light, neutral.600 dark); if you set this variable to theme the old outline hover, check it still reads on the soft fill.",
+      "detect": {
+        "cssVars": ["--component-button-secondary-bg-hover"],
+        "cssVarWrites": ["--component-button-secondary-bg-hover"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-hover::root",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-button-secondary-bg-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button pressed fill is now surface.soft (the rest fill) while the hard shadow sinks; re-check any override of this variable.",
+      "detect": {
+        "cssVars": ["--component-button-secondary-bg-pressed"],
+        "cssVarWrites": ["--component-button-secondary-bg-pressed"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-pressed::root",
+        "css-var-changed:--component-button-secondary-bg-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-pressed:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-button-secondary-bg-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The secondary Button rest fill is now surface.soft (neutral.200 light, neutral.700 dark) instead of the page colour; set this variable to var(--semantic-color-surface-page) to get the old flat fill back.",
+      "detect": {
+        "cssVars": ["--component-button-secondary-bg-rest"],
+        "cssVarWrites": ["--component-button-secondary-bg-rest"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-rest::root",
+        "css-var-changed:--component-button-secondary-bg-rest:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-rest:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-tag-background",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The unselected Tag pill is now surface.muted instead of surface.raised; re-check any override of this variable.",
+      "detect": {
+        "cssVars": ["--component-tag-background"],
+        "cssVarWrites": ["--component-tag-background"]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-background::root",
+        "css-var-changed:--component-tag-background:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--component-tag-background:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-background:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-tag-border",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The unselected Tag border now matches its fill, so the pill shows no resting edge; set this variable to var(--semantic-color-border-default) to bring the outline back.",
+      "detect": {
+        "cssVars": ["--component-tag-border"],
+        "cssVarWrites": ["--component-tag-border"]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-border::root",
+        "css-var-changed:--component-tag-border:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-border:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "removed/hds-tag-btn",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The unused .hds-tag-btn rules are gone (Tag has not rendered them since #60); use the Tag component instead of the class.",
+      "detect": {
+        "classes": ["hds-tag-btn"]
+      },
+      "facts": ["class-removed:hds-tag-btn"]
+    },
+    {
+      "id": "removed/hds-tag-pill",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The unused .hds-tag-pill rules are gone (Tag has not rendered them since #60); use the Tag component instead of the class.",
+      "detect": {
+        "classes": ["hds-tag-pill"]
+      },
+      "facts": ["class-removed:hds-tag-pill"]
+    },
+    {
+      "id": "look/button-wipe-hard-shadow-default",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Every primary and secondary Button now has the hard shadow and the hover wipe; pass shadow=\"none\" and/or hoverEffect=\"none\" where a button must stay flat, for example inside a dense toolbar.",
+      "detect": {
+        "jsx": ["Button"]
+      }
+    },
+    {
+      "id": "look/soft-surfaces-no-outline",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Dialog, AlertDialog, Menu, Popover, Select, Toast, CodeBlock, Table, Tabs, SegmentedControl, Combobox chips and TokenField chips no longer draw a resting border; add a className such as border border-border on the instance if your layout relied on that edge.",
+      "detect": {
+        "jsx": [
+          "Dialog",
+          "AlertDialog",
+          "Menu",
+          "Popover",
+          "Select",
+          "CodeBlock",
+          "Table",
+          "Tabs",
+          "SegmentedControl",
+          "TokenField"
+        ]
+      }
+    }
+  ]
+}

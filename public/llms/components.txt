@@ -125,7 +125,7 @@ Triggers an action when activated.
   - asChild: boolean = false
   - defaultPressed: boolean
   - disabled: boolean
-  - hoverEffect: "none" | "wipe" = none
+  - hoverEffect: "none" | "wipe" = wipe
   - iconLeft: ReactNode
   - iconOnly: boolean = false
   - iconRight: ReactNode
@@ -133,6 +133,7 @@ Triggers an action when activated.
   - loading: boolean = false
   - onPressedChange: ((pressed: boolean) => void)
   - pressed: boolean
+  - shadow: "none" | "hard" = hard
   - size: "sm" | "md" | "lg" | null
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - variant: "primary" | "secondary" | "tertiary" | null
@@ -702,7 +703,7 @@ The tab set itself. Tagged here rather than in the file block because TabsList a
   - value: string
 
 ### TabsContent
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below …
   - asChild: boolean
   - forceMount: true
   - value: string
@@ -714,7 +715,7 @@ The tab strip. When tabs scroll out of view it fades the hidden edge (`data-over
   - loop: boolean
 
 ### TabsTrigger
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below …
   - asChild: boolean
   - value: string
 

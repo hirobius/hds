@@ -252,6 +252,8 @@ declare module 'react' {
     '--semantic-color-surface-selected'?: string | undefined;
     '--semantic-color-surface-muted'?: string | undefined;
     '--semantic-color-surface-sunken'?: string | undefined;
+    '--semantic-color-surface-soft'?: string | undefined;
+    '--semantic-color-surface-softHover'?: string | undefined;
     '--semantic-color-content-primary'?: string | undefined;
     '--semantic-color-content-secondary'?: string | undefined;
     '--semantic-color-content-tertiary'?: string | undefined;
@@ -547,8 +549,10 @@ declare module 'react' {
     '--component-button-secondary-bg-rest'?: string | undefined;
     '--component-button-secondary-bg-hover'?: string | undefined;
     '--component-button-secondary-bg-pressed'?: string | undefined;
+    /** @deprecated hds#891 soft surfaces: secondary Button has no border @removeIn 1.0.0 */
     '--component-button-secondary-border-rest'?: string | undefined;
     '--component-button-secondary-border-hover'?: string | undefined;
+    /** @deprecated hds#891 soft surfaces: secondary Button has no border @removeIn 1.0.0 */
     '--component-button-secondary-border-disabled'?: string | undefined;
     '--component-button-secondary-text'?: string | undefined;
     '--component-input-bg'?: string | undefined;
