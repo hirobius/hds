@@ -650,3 +650,16 @@ Daily release check found 0.30.0 (plan: updated 79 · created 36 · deleted 0 ag
 Session total: 1 call
 
 Calls logged for 2026-10-21: 1 of 200 (1).
+
+## 2026-10-22 · release check 0.30.0 (branch claude/figma-release-sync-0.30.0)
+
+Daily check: still 0.30.0; the delta push is held on one library deletion. Check whether it is done.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                            | Result                                   |
+| --- | ---------- | ---------------- | ---- | ------------------------------------------------------------------ | ---------------------------------------- |
+| 1   | 15:48      | `create_session` | read | Library: open a file session for the daily check                   | OK; session opened                       |
+| 2   | 15:48      | `use_figma`      | read | Library: does variable button/secondary/border/pressed still exist | OK; still present, delta push stays held |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-22: 2 of 200 (2).
