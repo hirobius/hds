@@ -185,7 +185,7 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
       // Background.
       // Secondary selected: the page fill with a 1px border.interactive edge, which reads
       // at 3:1+ against the track and a raised Card in light and dark (hds#866). Not
-      // border.strong (1.5:1 on white), and no raised shadow on top of the edge: depth is
+      // border.strong (2.3:1 on white), and no raised shadow on top of the edge: depth is
       // one mechanism, border or shadow (REACT_COMPONENTS.md, Elevation roles).
       {
         active: true,

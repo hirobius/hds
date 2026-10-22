@@ -1571,11 +1571,12 @@
       },
       "border": {
         "default": {
-          "$value": "{primitive.color.neutral.200}",
+          "$value": "{primitive.color.graphite.200}",
+          "$description": "Hairline and divider border. Light is warm graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.200}",
+                "Light": "{primitive.color.graphite.200}",
                 "Dark": "{primitive.color.neutral.600}"
               }
             }
@@ -1594,13 +1595,13 @@
           }
         },
         "subdued": {
-          "$value": "{primitive.color.neutral.200}",
+          "$value": "{primitive.color.graphite.200}",
           "$description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
           "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.200}",
+                "Light": "{primitive.color.graphite.200}",
                 "Dark": "{primitive.color.neutral.800}"
               }
             }
@@ -1619,11 +1620,11 @@
           }
         },
         "strong": {
-          "$value": "{primitive.color.neutral.300}",
+          "$value": "{primitive.color.graphite.300}",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.300}",
+                "Light": "{primitive.color.graphite.300}",
                 "Dark": "{primitive.color.neutral.600}"
               }
             }

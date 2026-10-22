@@ -45,8 +45,10 @@ describe('dark-mode surface contrast', () => {
   });
 
   it('leaves light mode as it was', () => {
+    // border.default Light moved to graphite.200 on purpose (divider contrast,
+    // 2026-10-22; floor pinned in src/styles/__tests__/divider-contrast.test.ts).
     expect(hex('semantic.color.border.default', 'Light')).toBe(
-      hex('primitive.color.neutral.200', 'Light'),
+      hex('primitive.color.graphite.200', 'Light'),
     );
     expect(hex('semantic.color.surface.sunken', 'Light')).toBe(
       hex('primitive.color.neutral.200', 'Light'),

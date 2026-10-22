@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-22T10:24:43.568Z",
+  "generated": "2026-10-22T17:52:34.859Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12950,8 +12950,9 @@
         "path": "semantic.color.border.default",
         "cssVar": "--semantic-color-border-default",
         "type": "color",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "description": "Hairline and divider border. Light is warm graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
+        "alias": "{primitive.color.graphite.200}",
+        "resolvedValue": "#cbc6c9",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#525252"
@@ -12974,8 +12975,8 @@
         "cssVar": "--semantic-color-border-subdued",
         "type": "color",
         "description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "alias": "{primitive.color.graphite.200}",
+        "resolvedValue": "#cbc6c9",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
           "resolvedValue": "#262626"
@@ -12997,8 +12998,8 @@
         "path": "semantic.color.border.strong",
         "cssVar": "--semantic-color-border-strong",
         "type": "color",
-        "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d4d4d4",
+        "alias": "{primitive.color.graphite.300}",
+        "resolvedValue": "#b2abae",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#525252"
@@ -14033,7 +14034,7 @@
           },
           "border": {
             "alias": "{semantic.color.border.default}",
-            "resolvedValue": "#e5e5e5"
+            "resolvedValue": "#cbc6c9"
           }
         }
       },
@@ -14753,7 +14754,7 @@
         "type": "color",
         "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.subdued}",
-        "resolvedValue": "#e5e5e5"
+        "resolvedValue": "#cbc6c9"
       },
       {
         "path": "component.button.secondary.text",
@@ -14824,7 +14825,7 @@
         "cssVar": "--component-card-border",
         "type": "color",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#e5e5e5"
+        "resolvedValue": "#cbc6c9"
       },
       {
         "path": "component.card.radius",
@@ -15016,7 +15017,7 @@
         "type": "color",
         "description": "Default border. shadcn role: border.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#e5e5e5"
+        "resolvedValue": "#cbc6c9"
       },
       {
         "path": "role.input",
