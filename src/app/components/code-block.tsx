@@ -32,19 +32,19 @@ import { Icon } from './icon';
 const TECHNICAL_TYPE_CLASSES =
   '[font-family:var(--semantic-typography-mono-font-family)] [font-size:var(--semantic-typography-mono-font-size)] [font-weight:var(--semantic-typography-mono-font-weight)] [letter-spacing:var(--semantic-typography-mono-letter-spacing)] [line-height:var(--semantic-typography-mono-line-height)] max-w-[var(--semantic-typography-mono-max-width)]';
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default/surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const blockContainerVariants = /* @__PURE__ */ cva(
-  'overflow-hidden rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)]',
+  'overflow-hidden rounded-md bg-[var(--semantic-color-surface-raised)]',
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const inlineWrapperVariants = /* @__PURE__ */ cva(
-  'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
+  'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-md bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding/subgrid-gap spacing + surface-muted token have no matching Tailwind-theme utility; var()-based so still token-driven
 const blockHeaderVariants = /* @__PURE__ */ cva(
-  'flex items-center justify-between border-b border-solid border-[var(--semantic-color-border-default)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-surface-padding)] pr-[var(--semantic-space-subgrid-gap)]',
+  'flex items-center justify-between bg-[var(--semantic-color-surface-muted)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-surface-padding)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
@@ -57,10 +57,8 @@ const collapsibleToggleVariants = /* @__PURE__ */ cva(
   `flex w-full cursor-pointer items-center justify-between border-0 bg-transparent px-[var(--semantic-space-surface-padding)] py-[var(--semantic-space-scale-xs)] text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default token has no matching Tailwind-theme utility; var()-based so still token-driven
-const collapsiblePanelVariants = /* @__PURE__ */ cva(
-  'border-t border-solid border-[var(--semantic-color-border-default)]',
-);
+// The panel sits on the block's raised fill; the toggle row above it is separated by space, not a rule (hds#891).
+const collapsiblePanelVariants = /* @__PURE__ */ cva('');
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- motion.productive.duration token has no matching Tailwind-theme utility; var()-based so still token-driven
 const chevronVariants = /* @__PURE__ */ cva(

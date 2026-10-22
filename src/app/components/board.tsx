@@ -25,7 +25,7 @@ const TRACK_CLASS =
   'grid grid-cols-1 gap-[var(--semantic-space-scale-lg)] @3xl:grid-flow-col @3xl:auto-cols-[minmax(16rem,1fr)]';
 
 const HEADING_CLASS =
-  'm-0 flex items-center gap-[var(--semantic-space-scale-xs)] border-b border-border pb-[var(--semantic-space-scale-xs)] hds-type-ui text-foreground';
+  'm-0 flex items-center gap-[var(--semantic-space-scale-xs)] pb-[var(--semantic-space-scale-xs)] hds-type-ui text-foreground';
 const ITEMS_CLASS = 'flex flex-col gap-[var(--semantic-space-scale-sm)]';
 
 /** Drag and drop is not part of the Board contract. */

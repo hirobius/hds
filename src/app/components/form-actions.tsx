@@ -52,7 +52,7 @@ export const FormActions = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Form
         ref={ref}
         data-hds-component="FormActions"
         data-sticky={sticky ? 'true' : undefined}
-        className={cn(sticky && 'border-t border-border bg-background py-3', className)}
+        className={cn(sticky && 'bg-card px-surface-padding py-3', className)}
         style={sticky ? { position: 'sticky', bottom: 0, ...style } : style}
         {...props}
       >

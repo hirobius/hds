@@ -157,10 +157,10 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
   },
 );
 
-// The frame (a Surface with no fill) owns the border and the rounded corners; the
-// scroll region inside it owns the scrolling, so the edge fade never fades the border.
-const tableFrameClass =
-  'bg-transparent border border-solid border-[color:var(--semantic-color-border-default)]';
+// The frame (a Surface with no fill) owns the rounded corners; the scroll region inside it
+// owns the scrolling. No outer border (hds#891 soft surfaces): the raised header and the row
+// dividers inside carry the structure.
+const tableFrameClass = 'bg-transparent';
 
 // `relative` makes the region the containing block for absolutely positioned content
 // (a link's `sr-only` label): without it that content escapes the scroller and widens
