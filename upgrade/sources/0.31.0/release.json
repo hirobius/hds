@@ -1,0 +1,38 @@
+{
+  "$comment": "Frozen inputs of the 0.31.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.31.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.31.0",
+  "previous": "0.30.0",
+  "date": "2026-10-22",
+  "summary": "2 changes to make by hand (2 breaking) and 15 that look different.",
+  "backfilled": false,
+  "notes": {
+    "button-wipe-kbd-key": {
+      "needle": "7b73bfb: Button: opt-in `hoverEffect=\"wipe\"`",
+      "source": "CHANGELOG.md:19"
+    },
+    "hygiene-token-descriptions": {
+      "needle": "98e0b22: Token descriptions: shortened `semantic.typography.mono`",
+      "source": "CHANGELOG.md:43"
+    },
+    "keep-px6-px10": {
+      "needle": "2811a6e: Spacing: the 6px and 10px steps",
+      "source": "CHANGELOG.md:44"
+    },
+    "overlay-edge": {
+      "needle": "8e2afa8: Overlays get a guaranteed edge (#893",
+      "source": "CHANGELOG.md:20"
+    },
+    "raised-edge-own-colour": {
+      "needle": "0075992: Raised edges take their own colour",
+      "source": "CHANGELOG.md:27"
+    },
+    "soft-surfaces-default": {
+      "needle": "37ad22d: Soft surfaces by default (#891)",
+      "source": "CHANGELOG.md:31"
+    },
+    "toggle-thumb-inset": {
+      "needle": "c298767: Toggle: the \"on\" thumb no longer",
+      "source": "CHANGELOG.md:45"
+    }
+  }
+}
