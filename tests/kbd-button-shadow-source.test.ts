@@ -7,8 +7,9 @@ describe('Kbd shadow follows the Button light source', () => {
   const docs = readFileSync(resolve(__dirname, '../docs-site/app/globals.css'), 'utf8');
 
   it('soft (shipped) Kbd keeps the 2px key edge through --semantic-shadow-key', () => {
-    expect(theme).toMatch(/--semantic-shadow-key:\s*0 2px 0 var\(--semantic-color-border-strong\)/);
-    expect(theme).toMatch(/\.hds-kbd\s*{[^}]*box-shadow:\s*var\(--semantic-shadow-key\)/);
+    expect(theme).toMatch(
+      /\.hds-kbd\s*{[^}]*box-shadow:\s*var\(--semantic-shadow-key,\s*0 2px 0 var\(--semantic-color-border-strong\)\)/,
+    );
   });
 
   it('hard preview re-points the key shadow at the same colour source as Button', () => {

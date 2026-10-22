@@ -928,7 +928,7 @@ Section heading and toolbar over a `Table`. Row actions are consumer nodes in a 
   - columns: TableColumn[]
   - emptyDescription: ReactNode
   - emptyTitle: ReactNode = Nothing here yet
-  - level: 3 | 4 | 6 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - rows: DataTableSectionRow[]
   - title: ReactNode
   - toolbar: ReactNode
@@ -940,7 +940,7 @@ Titled danger zone, a danger `Callout` (the shared feedback fill, no border of i
   - confirmBody: ReactNode
   - confirmLabel: string
   - description: ReactNode
-  - level: 3 | 4 | 6 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - onConfirm: () => void
   - title: ReactNode
 

@@ -116,33 +116,28 @@ const buttonVariants = /* @__PURE__ */ cva(
       // pointer crosses; the instant hover fill is swapped out here.
       hoverEffect: {
         none: '',
-        wipe: 'hds-btn-wipe',
+        wipe: 'hds-btn-wipe relative isolate overflow-hidden',
       },
     },
     compoundVariants: [
-      // wipe x variant: move the hover token from `hover:bg-…` to the layer's fill.
+      // wipe x variant (neutral tone only): hold the rest fill on hover; theme.css
+      // `.hds-btn-wipe` paints the variant's hover fill as the wiping layer. A status
+      // tone keeps its own hover classes, and the layer takes the tone fill plus its
+      // hover brightness (theme.css). Tertiary rests transparent, so it restores its
+      // pressed fill here (the layer hides on :active so the press shows).
+      { hoverEffect: 'wipe', tone: 'neutral', variant: 'primary', className: 'hover:bg-primary' },
       {
         hoverEffect: 'wipe',
-        variant: 'primary',
-        className: 'hover:bg-primary [--hds-wipe-fill:var(--component-button-bgHover)]',
-      },
-      {
-        hoverEffect: 'wipe',
+        tone: 'neutral',
         variant: 'secondary',
-        className: 'hover:bg-background [--hds-wipe-fill:var(--role-accent)]',
+        className: 'hover:bg-background',
       },
       {
         hoverEffect: 'wipe',
+        tone: 'neutral',
         variant: 'tertiary',
-        className: 'hover:bg-transparent [--hds-wipe-fill:var(--role-accent)]',
+        className: 'hover:bg-transparent active:bg-accent',
       },
-      // wipe x tone: a tone hovers through a brightness filter on its own fill;
-      // the layer takes the tone fill and carries the same filter (theme.css).
-      ...(['danger', 'success', 'warning', 'info'] as const).map((tone) => ({
-        hoverEffect: 'wipe' as const,
-        tone,
-        className: `hover:brightness-100 dark:hover:brightness-100 [--hds-wipe-fill:var(--semantic-color-feedback-bg-${tone})] [--hds-wipe-filter:brightness(0.95)] dark:[--hds-wipe-filter:brightness(1.1)]`,
-      })),
       { iconOnly: true, size: 'sm', className: 'w-8' },
       { iconOnly: true, size: 'md', className: 'w-10' },
       { iconOnly: true, size: 'lg', className: 'w-12' },
@@ -246,6 +241,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       defaultPressed,
       onPressedChange,
       onClick,
+      style,
       ...props
     },
     ref,
@@ -255,7 +251,28 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     React.useEffect(() => {
       if (wipe) installWipeListeners();
     }, [wipe]);
-    const wipeProps = wipe ? { 'data-hover-effect': 'wipe' } : {};
+    // The wipe layer's fill (theme.css `.hds-btn-wipe`) is the variant's own hover fill:
+    // a status tone's fill through its hover brightness (--hds-wipe-f), primary's
+    // component.button.bgHover, or role.accent. Inline, so the shipped CSS has no
+    // per-variant rules; a consumer `style` still wins.
+    const hasTone = tone != null && tone !== 'neutral';
+    const wipeProps = wipe
+      ? {
+          'data-hover-effect': 'wipe',
+          style: {
+            '--hds-wipe-fill': hasTone
+              ? `var(--semantic-color-feedback-bg-${tone === 'danger' ? 'error' : tone})`
+              : variant === 'primary'
+                ? 'var(--component-button-bgHover)'
+                : 'var(--role-accent)',
+            ...(hasTone && {
+              filter: 'none',
+              '--hds-wipe-f': 'brightness(var(--hds-wipe-b, 0.95))',
+            }),
+            ...style,
+          } as React.CSSProperties,
+        }
+      : { style };
     const content = children ?? label;
 
     // A toggle (hds#393): any of the three pressed props makes this a toggle
@@ -283,10 +300,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // their attribute selector would outrank the tone on specificity; a toned
     // toggle therefore leaves them out, which renders what the old `!` tone
     // did (its important declarations hid them). aria-pressed still reports it.
-    const hasStatusTone = tone != null && tone !== 'neutral';
     const classes = cn(
       buttonVariants({ variant, tone, size, iconOnly, hoverEffect }),
-      isToggle && !hasStatusTone && toggleOnClasses,
+      isToggle && !hasTone && toggleOnClasses,
       className,
     );
 
