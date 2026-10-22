@@ -1,0 +1,1 @@
+- Toggle thumb inset fix: travel counts the track border; thumb 12px (primitive.size.12); geometry pinned in toggle.test.tsx.

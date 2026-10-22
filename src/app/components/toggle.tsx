@@ -39,14 +39,15 @@ export type HdsToggleDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'dis
 // literals").
 const px = (value: string) => parseFloat(value);
 const TOGGLE_TRACK_WIDTH = px(tokenValues.primitive.size['40']); // 40
-const TOGGLE_TRACK_HEIGHT = px(tokenValues.primitive.size['20']); // 20
-const TOGGLE_THUMB_SIZE = px(tokenValues.primitive.size['16']); // 16
-// Equal to --semantic-space-subgrid-xs (the token the track's own padding
-// class below uses) — derived here, rather than re-parsed from the space
-// scale, so the JS travel distance is provably consistent with what's
-// actually painted: the thumb exactly fills the track's inner (padded) rail.
-const TOGGLE_TRACK_PADDING = (TOGGLE_TRACK_HEIGHT - TOGGLE_THUMB_SIZE) / 2; // 2
-const TOGGLE_THUMB_TRAVEL = TOGGLE_TRACK_WIDTH - TOGGLE_THUMB_SIZE - TOGGLE_TRACK_PADDING * 2; // 20
+// The track is border-box, so its border eats into the rail as much as its
+// padding does. Travel once left the border out and the "on" thumb ran 2px
+// past the track's right end; toggle.test.tsx now pins this math to the
+// tokens the track and thumb classes paint with.
+const TOGGLE_TRACK_BORDER = px(tokenValues.primitive.borderWidth.sm); // 2 (border-[length:--primitive-borderWidth-sm])
+const TOGGLE_TRACK_PADDING = px(tokenValues.primitive.space.px2); // 2 (p-[--semantic-space-subgrid-xs])
+const TOGGLE_TRACK_INSET = TOGGLE_TRACK_BORDER + TOGGLE_TRACK_PADDING; // 4
+const TOGGLE_THUMB_SIZE = px(tokenValues.primitive.size['12']); // 12 = 20 − 2 × 4
+const TOGGLE_THUMB_TRAVEL = TOGGLE_TRACK_WIDTH - TOGGLE_THUMB_SIZE - TOGGLE_TRACK_INSET * 2; // 20
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `state` mirrors InteractionVisualState (see checkbox.tsx for the rationale on
@@ -155,8 +156,8 @@ const toggleTrackVariants = /* @__PURE__ */ cva(
  * below (`TOGGLE_THUMB_TRAVEL`), not cva — it's a transform, not a class swap. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/color; var()-based, no Tailwind-theme utility exists
 const toggleThumbVariants = /* @__PURE__ */ cva(
-  // tier-ok: primitive.size.16 / primitive.radius.full — no semantic alias for toggle-thumb geometry yet
-  'pointer-events-none block w-[var(--primitive-size-16)] h-[var(--primitive-size-16)] rounded-[var(--primitive-radius-full)]',
+  // tier-ok: primitive.size.12 / primitive.radius.full — no semantic alias for toggle-thumb geometry yet
+  'pointer-events-none block w-[var(--primitive-size-12)] h-[var(--primitive-size-12)] rounded-[var(--primitive-radius-full)]',
   {
     variants: {
       on: { true: '', false: '' },
@@ -258,6 +259,7 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
         className={toggleTrackVariants({ on: checked, disabled: isDisabled })}
       >
         <motion.span
+          initial={false}
           animate={{ x: checked ? TOGGLE_THUMB_TRAVEL : 0 }}
           transition={{
             duration: productiveMotion.duration,
