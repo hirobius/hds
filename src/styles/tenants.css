@@ -51,6 +51,7 @@
   --semantic-color-content-onAccent: var(
     --primitive-color-neutral-white
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --hds-edge-primary: #4b2c90; /* css-ok: raised edge (hds#896) */
 }
 [data-brand='accent-lilac'][data-theme='dark'],
 [data-tenant='accent-lilac'][data-theme='dark'] {
@@ -75,6 +76,7 @@
   --semantic-color-content-accent: var(
     --primitive-color-lilac-300
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --hds-edge-primary: #8d75df; /* css-ok: raised edge (hds#896) */
 }
 
 /* ── accent-pair-demo ──────────────────────────────────────────────────── */
@@ -149,6 +151,7 @@
   --semantic-color-content-accent: var(
     --primitive-color-mauve-600
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --hds-edge-primary: #402733; /* css-ok: raised edge (hds#896) */
 }
 [data-brand='accent-pair-demo'][data-theme='dark'],
 [data-tenant='accent-pair-demo'][data-theme='dark'] {
@@ -182,6 +185,7 @@
   --semantic-color-content-accent: var(
     --primitive-color-mauve-300
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --hds-edge-primary: #95828b; /* css-ok: raised edge (hds#896) */
 }
 
 /* ── brutalist-demo ────────────────────────────────────────────────────── */
@@ -235,6 +239,7 @@
   --semantic-color-border-accent: var(
     --primitive-color-stone-600
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --hds-edge-primary: #624f34; /* css-ok: raised edge (hds#896) */
 }
 [data-brand='concrete-creations'][data-theme='dark'],
 [data-tenant='concrete-creations'][data-theme='dark'] {

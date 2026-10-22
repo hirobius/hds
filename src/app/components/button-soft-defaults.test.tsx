@@ -7,6 +7,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
+import type * as React from 'react';
 import { Button } from './button';
 import { Kbd } from './kbd';
 
@@ -77,6 +78,45 @@ describe('Button defaults (hds#888, hds#891)', () => {
   });
 });
 
+describe('Button own-colour edge (hds#896)', () => {
+  const edge = (el: HTMLElement) => el.style.getPropertyValue('--hds-edge');
+
+  it.each([
+    ['primary', undefined, 'primary'],
+    ['secondary', undefined, 'secondary'],
+    [undefined, undefined, 'secondary'],
+    ['primary', 'danger', 'danger'],
+    ['secondary', 'info', 'info'],
+    ['secondary', 'neutral', 'secondary'],
+  ] as const)('variant=%s tone=%s sets --hds-edge to --hds-edge-%s', (variant, tone, key) => {
+    render(
+      <Button variant={variant} tone={tone}>
+        Go
+      </Button>,
+    );
+    expect(edge(screen.getByRole('button'))).toBe(`var(--hds-edge-${key})`);
+  });
+
+  it('sets no edge without the shadow (tertiary, shadow="none"), with or without the wipe', () => {
+    render(
+      <>
+        <Button variant="tertiary">A</Button>
+        <Button shadow="none">B</Button>
+        <Button hoverEffect="none">C</Button>
+      </>,
+    );
+    expect(edge(screen.getByText('A').closest('button')!)).toBe('');
+    expect(edge(screen.getByText('B').closest('button')!)).toBe('');
+    expect(edge(screen.getByText('C').closest('button')!)).toBe('var(--hds-edge-secondary)');
+  });
+
+  it('a consumer style still wins, and --hds-btn-edge outranks the default in theme.css', () => {
+    render(<Button style={{ '--hds-edge': 'red' } as React.CSSProperties}>Go</Button>);
+    expect(edge(screen.getByRole('button'))).toBe('red');
+    expect(theme).toContain('var(--hds-btn-edge, var(--hds-edge))');
+  });
+});
+
 describe('theme.css hard shadow', () => {
   const rule = (sel: string) => {
     const at = theme.indexOf(sel + ' {');
@@ -84,11 +124,9 @@ describe('theme.css hard shadow', () => {
     return theme.slice(at, theme.indexOf('}', at));
   };
 
-  it('rests 3px straight down in --hds-btn-edge (default shadow.hard), composing with ring + inset wash', () => {
+  it('rests 3px straight down in --hds-btn-edge (default: own-colour edge), composing with ring + inset wash', () => {
     const r = rule(".hds-btn-hard:not(:disabled, [aria-disabled='true'])");
-    expect(r).toContain(
-      '--tw-shadow: 0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--semantic-color-shadow-hard))',
-    );
+    expect(r).toContain('--tw-shadow: 0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--hds-edge))');
     expect(r).toMatch(/box-shadow:[^;]*--tw-inset-shadow[^;]*--tw-ring-shadow[^;]*--tw-shadow/);
   });
 
@@ -110,7 +148,7 @@ describe('theme.css hard shadow', () => {
 
   it('Kbd follows the same light source by default: 2px straight-down key shadow, border.strong edge', () => {
     expect(rule('.hds-kbd').replace(/\s+/g, ' ')).toContain(
-      'var( --semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--semantic-color-shadow-hard)) )',
+      'var( --semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)) )',
     );
     render(<Kbd>K</Kbd>);
     expect(classes(screen.getByText('K'))).toContain(

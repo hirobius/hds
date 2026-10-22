@@ -767,3 +767,6 @@
   --semantic-docs-space-section: var(--semantic-space-scale-xl);
   --component-card-gap: var(--semantic-space-scale-sm);
 }
+/* Raised edges (hds#896): each fill stepped 2 darker; dark lightens below 1.5:1. scripts/lib/raised-edge.mjs */
+:root{--hds-edge-primary:#292427;--hds-edge-secondary:#bebebe;--hds-edge-danger:#d4cccc;--hds-edge-success:#c8d4ce;--hds-edge-warning:#d6d3c8;--hds-edge-info:#c4cbd9;--hds-edge-kbd:#cecece;}
+[data-theme="dark"]{--hds-edge-primary:#a4a1a3;--hds-edge-secondary:#616161;--hds-edge-danger:#623632;--hds-edge-success:#2f4941;--hds-edge-warning:#603e2f;--hds-edge-info:#394256;--hds-edge-kbd:#454545;}

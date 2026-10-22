@@ -29,11 +29,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'dist', 'tokens.css');
 const OUT = path.join(ROOT, 'dist', 'styles.css');
 
+// One line (hds#896 size budget): the old four-line banner was ~200 B of the gzip budget.
 const banner =
-  '/* @hirobius/design-system/styles.css — tokens + components + utilities +\n' +
-  ' * no fonts (see fonts.css), with NO global reset/preflight. HDS base styles are\n' +
-  ' * scoped to [data-hds]; importing this changes zero host-element styles.\n' +
-  ' * For the batteries-included bundle (adds a global reset) use tokens.css. */\n';
+  '/* @hirobius/design-system/styles.css: tokens.css with no global reset (scoped to [data-hds]) */\n';
 
 /**
  * Return [startIndex, endIndexExclusive) of a top-level `@layer <name>{ ... }`

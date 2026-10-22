@@ -269,10 +269,19 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // tertiary's role.accent. Inline, so the shipped CSS has no
     // per-variant rules; a consumer `style` still wins.
     const hasTone = tone != null && tone !== 'neutral';
+    // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#896): this variant's or tone's
+    // own fill stepped darker, precomputed as --hds-edge-*; --hds-btn-edge still overrides.
+    const edge =
+      shadow === 'hard' && variant !== 'tertiary'
+        ? {
+            '--hds-edge': `var(--hds-edge-${hasTone ? tone : variant === 'primary' ? 'primary' : 'secondary'})`,
+          }
+        : null;
     const wipeProps = wipe
       ? {
           'data-hover-effect': 'wipe',
           style: {
+            ...edge,
             '--hds-wipe-fill': hasTone
               ? `var(--semantic-color-feedback-bg-${tone === 'danger' ? 'error' : tone})`
               : variant === 'primary'
@@ -287,7 +296,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
             ...style,
           } as React.CSSProperties,
         }
-      : { style };
+      : { style: edge ? ({ ...edge, ...style } as React.CSSProperties) : style };
     const content = children ?? label;
 
     // A toggle (hds#393): any of the three pressed props makes this a toggle
