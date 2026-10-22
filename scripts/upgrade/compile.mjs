@@ -162,10 +162,13 @@ const useName = (use) => use.slice(use.lastIndexOf(':') + 1);
  * variables, classes) or, with none, its subject. A later step that removes,
  * moves, renames or folds takes each use it lists, or a subject use by its
  * subject; one with the deprecation's subject and no names of its own takes
- * all of it. Only the first release to take a use counts.
+ * all of it. Only the first release to take a use counts. A deprecation is
+ * kept when a release at or past its removeIn shipped and took none of it
+ * (0.31.0 kept primitive.space.px6 / px10, which 0.29.0 deprecated for it).
  * @param {{ version: string, steps: any[] }[]} ledgers
- * @returns {Map<string, { uses: string[], removed: Map<string, string> }>} by step id;
- *   `removed` maps each use taken to the version that took it
+ * @returns {Map<string, { uses: string[], removed: Map<string, string>, keptBy: string | null }>}
+ *   by step id; `removed` maps each use taken to the version that took it, and
+ *   `keptBy` is the first release at or past removeIn when it took none
  */
 export function deprecationRemovals(ledgers) {
   const out = new Map();
@@ -185,7 +188,14 @@ export function deprecationRemovals(ledgers) {
           for (const use of takes) if (!removed.has(use)) removed.set(use, version);
         }
       }
-      out.set(step.id, { uses, removed });
+      const keptBy =
+        removed.size === 0
+          ? (later
+              .map((l) => l.version)
+              .sort(compareVersions)
+              .find((v) => compareVersions(v, step.removeIn) >= 0) ?? null)
+          : null;
+      out.set(step.id, { uses, removed, keptBy });
     }
   }
   return out;
@@ -322,7 +332,8 @@ function says(plain, text) {
  * removed in that release and none of it went early or in part.
  */
 function removalTail(step, removals) {
-  const { uses = [], removed = new Map() } = removals?.get(step.id) ?? {};
+  const { uses = [], removed = new Map(), keptBy = null } = removals?.get(step.id) ?? {};
+  if (keptBy) return ` Kept: ${sectionLink(keptBy)} did not remove it.`;
   const versions = [...new Set(removed.values())].sort(compareVersions);
   const asPlanned =
     removed.size === 0 ||
@@ -442,8 +453,8 @@ function deprecatedNow(ledgers) {
   const out = [];
   for (const step of ledgers.flatMap((ledger) => ledger.steps)) {
     if (step.kind !== 'deprecated') continue;
-    const { uses, removed } = removals.get(step.id);
-    if (removed.size === uses.length) continue;
+    const { uses, removed, keptBy } = removals.get(step.id);
+    if (keptBy || removed.size === uses.length) continue;
     const imports = (step.detect?.imports ?? []).flatMap((i) =>
       i.names
         .filter((name) => !removed.has(`import:${i.from}:${name}`))

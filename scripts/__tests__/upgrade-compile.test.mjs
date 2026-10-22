@@ -508,6 +508,45 @@ describe('a deprecation a later release takes away completely', () => {
   });
 });
 
+describe('a deprecation its removeIn release keeps', () => {
+  // 0.12.0 ships, but takes none of old-space away: the removal was cancelled.
+  const deprecations = {
+    ...LEDGER_0_11,
+    steps: [
+      {
+        id: '0.11.0/deprecated/old-space',
+        kind: 'deprecated',
+        impact: 'none',
+        plain: 'The --old-space variable still works but is deprecated; use --space-md.',
+        detect: { cssVars: ['--old-space'] },
+        removeIn: '0.12.0',
+        source: 'x',
+      },
+    ],
+  };
+  const repo = () => historyRepo({ ledgers: [deprecations, LEDGER_0_12] });
+
+  it('leaves it out of upgrade/index.json', () => {
+    const { index } = compileOutputs({ repo: repo() });
+    expect(JSON.parse(index).deprecated.map((d) => d.step)).not.toContain(
+      '0.11.0/deprecated/old-space',
+    );
+  });
+
+  it('says in Coming next that the release kept it, linked', () => {
+    expect(compileOutputs({ repo: repo() }).upgrading).toContain(
+      '- The --old-space variable still works but is deprecated; use --space-md. Kept: [0.12.0](#0120) did not remove it.',
+    );
+  });
+
+  it('is still Coming next while its removeIn has not shipped', () => {
+    const { index } = compileOutputs({ repo: historyRepo({ ledgers: [deprecations] }) });
+    expect(JSON.parse(index).deprecated.map((d) => d.step)).toEqual([
+      '0.11.0/deprecated/old-space',
+    ]);
+  });
+});
+
 describe('a deprecation a later release takes away, use by use', () => {
   const PATTERNS = `${PKG}/patterns`;
   const deprecations = {
