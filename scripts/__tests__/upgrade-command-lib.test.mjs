@@ -160,7 +160,9 @@ describe('the shipped record', () => {
   });
 
   it('Coming next at the latest release is the deprecations index.json lists', () => {
-    const steps = comingNextSteps(record.ledgers, record.index.latest).map((s) => s.id);
+    const steps = comingNextSteps(record.ledgers, record.index.latest, record.kept).map(
+      (s) => s.id,
+    );
     const indexed = [...new Set(record.index.deprecated.map((d) => d.step))];
     expect(steps.sort()).toEqual(indexed.sort());
   });
@@ -259,5 +261,22 @@ describe('writeFileAtomic', () => {
     const upgrade = readFileSync(join(REPO, 'codemods/upgrade.mjs'), 'utf8');
     expect(upgrade).toContain('writeFileAtomic(options.report, json)');
     expect(upgrade).not.toMatch(/writeFileSync\((?:options\.report|tmp|file)\b/);
+  });
+});
+
+describe('a kept deprecation', () => {
+  const record = loadRecord(REPO);
+  const STEP = '0.29.0/deprecated/primitive.space.px6-px10';
+
+  it('is recorded explicitly, with the release that cancelled its removal', () => {
+    expect(record.kept.get(STEP)?.in).toBe('0.31.0');
+  });
+
+  it('is no longer Coming next at any target', () => {
+    const at = (target) => comingNextSteps(record.ledgers, target, record.kept).map((s) => s.id);
+    expect(at('0.30.0')).not.toContain(STEP);
+    expect(comingNextSteps(record.ledgers, '0.30.0')).toContainEqual(
+      expect.objectContaining({ id: STEP }),
+    );
   });
 });

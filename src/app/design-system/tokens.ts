@@ -403,16 +403,8 @@ const hds = {
     px1: 'var(--primitive-space-px1)',
     px2: 'var(--primitive-space-px2)',
     px4: 'var(--primitive-space-1)',
-    /**
-     * @deprecated 6px is off the 4px grid (2026-10 spacing prune). Use px8 or a semantic step.
-     * @removeIn 0.31.0
-     */
     px6: 'var(--primitive-space-px6)',
     px8: 'var(--primitive-space-2)',
-    /**
-     * @deprecated 10px is off the 4px grid (2026-10 spacing prune). Use px12 or a semantic step.
-     * @removeIn 0.31.0
-     */
     px10: 'var(--primitive-space-px10)',
     px12: 'var(--primitive-space-3)',
     px16: 'var(--primitive-space-4)',

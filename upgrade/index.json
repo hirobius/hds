@@ -146,11 +146,6 @@
   ],
   "deprecated": [
     {
-      "name": "primitive.space.px6-px10",
-      "removeIn": "0.31.0",
-      "step": "0.29.0/deprecated/primitive.space.px6-px10"
-    },
-    {
       "name": "Blockquote.size",
       "removeIn": "1.0.0",
       "step": "0.25.0/deprecated/Blockquote.size"

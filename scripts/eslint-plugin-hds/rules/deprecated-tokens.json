@@ -79,28 +79,6 @@
       "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
     },
     {
-      "path": "primitive.space.px6",
-      "cssVar": "--primitive-space-px6",
-      "composite": false,
-      "tailwind": "px6",
-      "replacement": "semantic.space.scale.xs",
-      "replacementCssVar": "--semantic-space-scale-xs",
-      "replacementTailwind": "scale-xs",
-      "removeIn": "0.31.0",
-      "note": "2026-10 spacing prune, removed in 0.31.0 — use semantic.space.scale.xs (8px)"
-    },
-    {
-      "path": "primitive.space.px10",
-      "cssVar": "--primitive-space-px10",
-      "composite": false,
-      "tailwind": "px10",
-      "replacement": "semantic.space.fixed.xs",
-      "replacementCssVar": "--semantic-space-fixed-xs",
-      "replacementTailwind": "fixed-xs",
-      "removeIn": "0.31.0",
-      "note": "2026-10 spacing prune, removed in 0.31.0 — use semantic.space.fixed.xs (12px)"
-    },
-    {
       "path": "semantic.color.border.subdued",
       "cssVar": "--semantic-color-border-subdued",
       "composite": false,

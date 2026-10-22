@@ -3,8 +3,9 @@
  * hds-spacing-steps codemod
  *
  * The primitive spacing steps `px6` (6px) and `px10` (10px) sit off the 4px grid.
- * They are deprecated and removed in 0.31.0. This rewrites each to the nearest
- * on-grid step, rounding toward roomier (6px -> 8px, 10px -> 12px):
+ * 0.29.0 deprecated them for removal in 0.31.0; 0.31.0 kept them, so this
+ * codemod is optional now. It rewrites each to the nearest on-grid step,
+ * rounding toward roomier (6px -> 8px, 10px -> 12px):
  *
  *   - CSS var   `--primitive-space-px6`  -> `--primitive-space-2`   (px10 -> -3)
  *   - JS token  `hds.space.px6`          -> `hds.space.px8`         (px10 -> px12);

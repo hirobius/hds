@@ -128,8 +128,7 @@ removed in 1.0.0. Use --semantic-space-scale-sm.
 ```
 
 The list is `rules/deprecated-tokens.json`, which the token build writes, so a
-newly deprecated token fails with no rule change. `primitive.space.px6` /
-`px10` are left to `hds/no-primitive-spacing`.
+newly deprecated token fails with no rule change.
 
 ### `hds/no-primitive-spacing`
 
@@ -143,9 +142,6 @@ token:
 - `primitiveTailwind`: a numeric or `pxN` spacing utility (`p-4`, `md:gap-x-2`,
   `-mt-px12`) in a JSX `className` or a `cn()` / `clsx()` / `cva()` argument.
   `p-0` and `p-px` are allowed; `w-4`, `h-6` and `inset-0` are not spacing.
-- `deprecatedStep`: `px6` and `px10` in any of the forms above. They are off the
-  4px grid, deprecated and removed in 0.31.0; run `npx @hirobius/design-system upgrade`
-  (codemod `hds-spacing-steps`) or use a semantic token. Wins over the other three.
 
 Option `tailwind: false` turns off the Tailwind check only (default `true`).
 

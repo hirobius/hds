@@ -585,16 +585,14 @@
           "value": 6,
           "unit": "px"
         },
-        "$description": "6px, off the 4px grid. Deprecated, removed in 0.31.0: use semantic.space.scale.xs.",
-        "$deprecated": "2026-10 spacing prune, removed in 0.31.0 — use semantic.space.scale.xs (8px)"
+        "$description": "6px, off the 4px grid: a tight gap (pill, chip, title to description) the 4px steps cannot hit."
       },
       "px10": {
         "$value": {
           "value": 10,
           "unit": "px"
         },
-        "$description": "10px, off the 4px grid. Deprecated, removed in 0.31.0: use semantic.space.fixed.xs.",
-        "$deprecated": "2026-10 spacing prune, removed in 0.31.0 — use semantic.space.fixed.xs (12px)"
+        "$description": "10px, off the 4px grid: a label or row gap the 4px steps cannot hit."
       }
     },
     "blur": {

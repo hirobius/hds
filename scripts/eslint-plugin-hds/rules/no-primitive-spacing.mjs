@@ -5,21 +5,18 @@
  * (`var(--semantic-space-*)`, `hds.semantic.space.*`, Tailwind semantic keys
  * such as `p-surface-padding` / `gap-scale-md`, Box `sx` t-shirt keys). The
  * primitive steps are the scale's raw material: using one bypasses density
- * and the scale. Four checks, one report per offending token:
+ * and the scale. Three checks, one report per offending token:
  *
  *   primitiveVar      `--primitive-space-<step>` in any string / template quasi
  *   primitiveMember   `<x>.space.pxN` (but not `<x>.semantic.space.pxN`)
  *   primitiveTailwind numeric / pxN Tailwind spacing utilities in `className`
  *                     or `cn()` / `clsx()` / `cva()` arguments (option
  *                     `tailwind: false` turns this check, and only this one, off)
- *   deprecatedStep    px6 / px10 in any of the three forms: off the 4px grid,
- *                     removed in 0.31.0. Takes priority over the three above.
  *
  * Zero (`p-0`) and `p-px` are allowed: a reset and a hairline have no step.
  */
 import { attrName } from './utils.mjs';
 
-const DEPRECATED_STEPS = new Set(['px6', 'px10']);
 const CLASS_CALLEES = new Set(['cn', 'clsx', 'cva']);
 const PRIMITIVE_VAR_RE = /--primitive-space-([a-z0-9]+)/gi;
 const PX_KEY_RE = /^px\d+$/;
@@ -96,8 +93,6 @@ export default {
         '"{{text}}" is a primitive spacing step; primitive steps bypass density and the scale. Use a semantic spacing token (hds.semantic.space.scale.* / surface-padding / region-gutter, Tailwind `p-surface-padding`, `gap-scale-md`, or Box sx \'md\').',
       primitiveTailwind:
         'Tailwind class "{{cls}}" uses a primitive spacing step; primitive steps bypass density and the scale. Use a semantic spacing token (var(--semantic-space-scale-*) / surface-padding / region-gutter, Tailwind `p-surface-padding`, `gap-scale-md`, or Box sx \'md\').',
-      deprecatedStep:
-        '"{{text}}" uses a deprecated spacing step: px6 and px10 are off the 4px grid, deprecated and removed in 0.31.0. Run `npx @hirobius/design-system upgrade` (codemod hds-spacing-steps) or use a semantic spacing token.',
     },
   },
   create(context) {
@@ -110,11 +105,7 @@ export default {
       for (const [full, step] of text.matchAll(PRIMITIVE_VAR_RE)) {
         if (seen.has(full)) continue;
         seen.add(full);
-        if (DEPRECATED_STEPS.has(step.toLowerCase())) {
-          context.report({ node, messageId: 'deprecatedStep', data: { text: full } });
-        } else {
-          context.report({ node, messageId: 'primitiveVar', data: { step } });
-        }
+        context.report({ node, messageId: 'primitiveVar', data: { step } });
       }
     }
 
@@ -132,11 +123,7 @@ export default {
           const step = match[2];
           if (!step.startsWith('px') && Number(step) === 0) continue;
           seen.add(raw);
-          if (DEPRECATED_STEPS.has(step)) {
-            context.report({ node, messageId: 'deprecatedStep', data: { text: raw } });
-          } else {
-            context.report({ node, messageId: 'primitiveTailwind', data: { cls: raw } });
-          }
+          context.report({ node, messageId: 'primitiveTailwind', data: { cls: raw } });
         }
       }
     }
@@ -159,11 +146,7 @@ export default {
         const root = spaceObj.object;
         if (root.type === 'MemberExpression' && propertyName(root) === 'semantic') return;
         const text = context.sourceCode.getText(node);
-        context.report({
-          node,
-          messageId: DEPRECATED_STEPS.has(step) ? 'deprecatedStep' : 'primitiveMember',
-          data: { text },
-        });
+        context.report({ node, messageId: 'primitiveMember', data: { text } });
       },
       JSXAttribute(node) {
         if (tailwind && attrName(node) === 'className') checkClasses(node.value);

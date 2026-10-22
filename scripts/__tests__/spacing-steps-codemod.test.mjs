@@ -1,6 +1,6 @@
 /**
  * Tests for codemods/spacing-steps.mjs: primitive.space.px6 / px10 (off the 4px
- * grid, removed in 0.31.0) become the next roomier on-grid step.
+ * grid; deprecated in 0.29.0, kept in 0.31.0) become the next roomier on-grid step.
  * Seams: `transformSource` (pure), `runCodemod`, the CLI, and the package wiring.
  */
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';

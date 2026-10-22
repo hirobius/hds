@@ -45,6 +45,7 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
+import { readKept } from '../../codemods/lib/record.mjs';
 import { fileURLToPath } from 'node:url';
 import { emitResult, hasJsonFlag } from '../lib/gate-output.mjs';
 import { ledgerFromSources } from './build-ledger.mjs';
@@ -102,6 +103,7 @@ function readHistory(repo, oneCommandFrom = ONE_COMMAND_FROM) {
   const bin = typeof pkg.bin === 'object' && pkg.bin ? pkg.bin : {};
   return {
     ledgers,
+    kept: readKept(repo),
     latest: ledgers.at(-1).version,
     floor: floor(join(repo, 'docs/api/releases')),
     bin,
@@ -162,12 +164,17 @@ const useName = (use) => use.slice(use.lastIndexOf(':') + 1);
  * variables, classes) or, with none, its subject. A later step that removes,
  * moves, renames or folds takes each use it lists, or a subject use by its
  * subject; one with the deprecation's subject and no names of its own takes
- * all of it. Only the first release to take a use counts.
+ * all of it. Only the first release to take a use counts. A deprecation is
+ * kept when upgrade/kept.json records it and no release took any of it
+ * (0.31.0 keeps primitive.space.px6 / px10, which 0.29.0 deprecated for it);
+ * the record is explicit, never inferred from a release that did not remove it.
  * @param {{ version: string, steps: any[] }[]} ledgers
- * @returns {Map<string, { uses: string[], removed: Map<string, string> }>} by step id;
- *   `removed` maps each use taken to the version that took it
+ * @param {Map<string, { in: string, plain: string }>} [kept] readKept (codemods/lib/record.mjs)
+ * @returns {Map<string, { uses: string[], removed: Map<string, string>, keptBy: string | null }>}
+ *   by step id; `removed` maps each use taken to the version that took it, and
+ *   `keptBy` is the release upgrade/kept.json records as keeping it, if none took any
  */
-export function deprecationRemovals(ledgers) {
+export function deprecationRemovals(ledgers, kept = new Map()) {
   const out = new Map();
   for (const ledger of ledgers) {
     const later = ledgers.filter((l) => compareVersions(l.version, ledger.version) > 0);
@@ -185,7 +192,8 @@ export function deprecationRemovals(ledgers) {
           for (const use of takes) if (!removed.has(use)) removed.set(use, version);
         }
       }
-      out.set(step.id, { uses, removed });
+      const keptBy = removed.size === 0 ? (kept.get(step.id)?.in ?? null) : null;
+      out.set(step.id, { uses, removed, keptBy });
     }
   }
   return out;
@@ -318,11 +326,13 @@ function says(plain, text) {
 /**
  * What follows a deprecation's plain line: the release that removes it, or,
  * once a later release took some or all of it away (deprecationRemovals),
- * which release did, linked. Nothing when the plain line already says it is
+ * which release did, linked. Nothing for a kept one (releaseSections swaps in
+ * the plain line upgrade/kept.json gives it), nor when the plain line already says it is
  * removed in that release and none of it went early or in part.
  */
 function removalTail(step, removals) {
-  const { uses = [], removed = new Map() } = removals?.get(step.id) ?? {};
+  const { uses = [], removed = new Map(), keptBy = null } = removals?.get(step.id) ?? {};
+  if (keptBy) return ''; // the plain line is upgrade/kept.json's, which says it
   const versions = [...new Set(removed.values())].sort(compareVersions);
   const asPlanned =
     removed.size === 0 ||
@@ -357,9 +367,15 @@ function tailOf(list, removals) {
  * @returns {{ ledger: any, lists: Record<string, { steps: any[], text: string }[]> }[]}
  */
 export function releaseSections(history) {
-  const removals = deprecationRemovals(history.ledgers);
+  const removals = deprecationRemovals(history.ledgers, history.kept);
   return [...history.ledgers].reverse().map((ledger) => {
-    const steps = listsOf(ledger);
+    // A kept deprecation reads as upgrade/kept.json words it, not as announced.
+    const steps = listsOf({
+      ...ledger,
+      steps: ledger.steps.map((step) =>
+        removals.get(step.id)?.keptBy ? { ...step, plain: history.kept.get(step.id).plain } : step,
+      ),
+    });
     const lists = Object.fromEntries(
       LISTS.map((list) => [list, bulletsOf(steps[list], tailOf(list, removals))]),
     );
@@ -437,13 +453,13 @@ const entryOf = (from) =>
  * a reader finds its uses by the detect of the step the entry names. Soonest
  * removal first.
  */
-function deprecatedNow(ledgers) {
-  const removals = deprecationRemovals(ledgers);
+function deprecatedNow(ledgers, kept) {
+  const removals = deprecationRemovals(ledgers, kept);
   const out = [];
   for (const step of ledgers.flatMap((ledger) => ledger.steps)) {
     if (step.kind !== 'deprecated') continue;
-    const { uses, removed } = removals.get(step.id);
-    if (removed.size === uses.length) continue;
+    const { uses, removed, keptBy } = removals.get(step.id);
+    if (keptBy || removed.size === uses.length) continue;
     const imports = (step.detect?.imports ?? []).flatMap((i) =>
       i.names
         .filter((name) => !removed.has(`import:${i.from}:${name}`))
@@ -482,7 +498,7 @@ function buildIndex(history) {
       breaking: ledger.steps.filter((step) => step.impact === 'breaking').length,
       summary: ledger.summary,
     })),
-    deprecated: deprecatedNow(history.ledgers),
+    deprecated: deprecatedNow(history.ledgers, history.kept),
   };
   const result = Index.safeParse(index);
   if (!result.success) {

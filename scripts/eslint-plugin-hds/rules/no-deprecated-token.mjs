@@ -11,17 +11,13 @@
  *   member    `<x>.semantic.space.layout.tight` (also `.h1.fontSize` below it)
  *   Tailwind  `p-layout-tight`, `md:-mt-layout-inset`, `rounded-<key>` in
  *             `className` or `cn()` / `clsx()` / `cva()` arguments
- *
- * The primitive px6 / px10 steps stay with hds/no-primitive-spacing, which
- * already reports them, so one site is not reported twice.
  */
 import { readFileSync } from 'node:fs';
 import { attrName } from './utils.mjs';
 
-const { tokens: ALL } = JSON.parse(
+const { tokens: DEPRECATED } = JSON.parse(
   readFileSync(new URL('./deprecated-tokens.json', import.meta.url), 'utf8'),
 );
-const DEPRECATED = ALL.filter((d) => !d.path.startsWith('primitive.space.'));
 
 const SPACING_UTILS =
   'gap-x|gap-y|gap|space-x|space-y|px|py|pt|pr|pb|pl|ps|pe|p|mx|my|mt|mr|mb|ml|ms|me|m|inset-x|inset-y|inset|top|right|bottom|left';

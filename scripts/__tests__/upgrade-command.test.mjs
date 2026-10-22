@@ -1150,3 +1150,31 @@ describe('the bins', () => {
     }
   });
 });
+
+describe('a deprecation whose removal was kept (upgrade/kept.json)', () => {
+  const STEP = '0.29.0/deprecated/primitive.space.px6-px10';
+  const SOURCES = {
+    'src/App.tsx': "export const a = 'gap-px6 p-px10';\nexport const t = hds.space.px6;\n",
+    'src/app.css': '.a { gap: var(--primitive-space-px10); }\n',
+  };
+  const project = () =>
+    makeProject({
+      'package.json': pkgJson('kept', { [PKG]: '^0.28.0' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.28.0' }),
+      ...SOURCES,
+    });
+
+  it('leaves px6 and px10 as written going to the latest release, and says they were kept', () => {
+    const root = project();
+    const res = runCli(['upgrade', '--root', root, '--to', '0.30.0', ...QUIET, '--json']);
+    const report = JSON.parse(res.stdout);
+    for (const [file, text] of Object.entries(SOURCES)) {
+      expect(readFileSync(join(root, file), 'utf8')).toBe(text);
+    }
+    expect(report.changedFiles).not.toContain('src/App.tsx');
+    const kept = report.doByHand.find((item) => item.id === `${STEP}/kept`);
+    expect(kept).toMatchObject({ blocking: false });
+    expect(kept.plain).toMatch(/cancelled/);
+    expect(ids(report.comingNext)).not.toContain(STEP);
+  });
+});
