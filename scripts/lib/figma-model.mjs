@@ -332,6 +332,7 @@ const FLOAT_SCOPE_RULES = [
   { all: ['letter', 'spacing'], scopes: ['LETTER_SPACING'] },
   { all: ['line', 'height'], scopes: ['LINE_HEIGHT'] },
   { all: ['border', 'width'], scopes: ['STROKE_FLOAT'] },
+  { any: ['thickness'], scopes: ['STROKE_FLOAT'] },
   { any: ['radius'], scopes: ['CORNER_RADIUS'] },
   { any: ['blur'], scopes: ['EFFECT_FLOAT'] },
   { any: ['width', 'height', 'size'], scopes: ['WIDTH_HEIGHT'] },

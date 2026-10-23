@@ -1187,6 +1187,15 @@
       },
       "$description": "Discrete stacking levels along the z axis."
     },
+    "underline": {
+      "$type": "dimension",
+      "offset": {
+        "$value": {
+          "value": 0.2,
+          "unit": "em"
+        }
+      }
+    },
     "borderWidth": {
       "$type": "dimension",
       "xs": {
@@ -2547,6 +2556,17 @@
         "$type": "dimension",
         "$value": "{primitive.borderWidth.sm}",
         "$description": "Stronger border weight for focus rings and active indicators."
+      }
+    },
+    "link": {
+      "$type": "dimension",
+      "underlineThickness": {
+        "$value": "{primitive.borderWidth.sm}",
+        "$description": "Text-link underline weight at body size (2px). Text links cap it at 0.125em, so small text keeps a proportionate line."
+      },
+      "underlineOffset": {
+        "$value": "{primitive.underline.offset}",
+        "$description": "Gap between a text link's baseline and its underline, in em so it follows the font size and clears descenders."
       }
     },
     "shadow": {

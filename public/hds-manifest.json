@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-22T17:52:34.859Z",
+  "generated": "2026-10-23T05:22:21.891Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12583,6 +12583,12 @@
         "value": "1000"
       },
       {
+        "path": "primitive.underline.offset",
+        "cssVar": "--primitive-underline-offset",
+        "type": "dimension",
+        "value": "0.2em"
+      },
+      {
         "path": "primitive.borderWidth.xs",
         "cssVar": "--primitive-borderWidth-xs",
         "type": "dimension",
@@ -13945,6 +13951,22 @@
         "description": "Stronger border weight for focus rings and active indicators.",
         "alias": "{primitive.borderWidth.sm}",
         "resolvedValue": "2px"
+      },
+      {
+        "path": "semantic.link.underlineThickness",
+        "cssVar": "--semantic-link-underlineThickness",
+        "type": "dimension",
+        "description": "Text-link underline weight at body size (2px). Text links cap it at 0.125em, so small text keeps a proportionate line.",
+        "alias": "{primitive.borderWidth.sm}",
+        "resolvedValue": "2px"
+      },
+      {
+        "path": "semantic.link.underlineOffset",
+        "cssVar": "--semantic-link-underlineOffset",
+        "type": "dimension",
+        "description": "Gap between a text link's baseline and its underline, in em so it follows the font size and clears descenders.",
+        "alias": "{primitive.underline.offset}",
+        "resolvedValue": "0.2em"
       },
       {
         "path": "semantic.shadow.subtle",

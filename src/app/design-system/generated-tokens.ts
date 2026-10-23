@@ -290,6 +290,9 @@ export const tokens = {
       "100": "var(--primitive-zIndex-100)",
       "1000": "var(--primitive-zIndex-1000)"
     },
+    underline: {
+      offset: "var(--primitive-underline-offset)"
+    },
     borderWidth: {
       xs: "var(--primitive-borderWidth-xs)",
       sm: "var(--primitive-borderWidth-sm)",
@@ -500,6 +503,10 @@ export const tokens = {
     borderWidth: {
       default: "var(--semantic-borderWidth-default)",
       emphasis: "var(--semantic-borderWidth-emphasis)"
+    },
+    link: {
+      underlineThickness: "var(--semantic-link-underlineThickness)",
+      underlineOffset: "var(--semantic-link-underlineOffset)"
     },
     shadow: {
       subtle: "var(--semantic-shadow-subtle)",
