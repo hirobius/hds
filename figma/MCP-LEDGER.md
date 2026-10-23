@@ -659,3 +659,16 @@ Results: `updated 92 · created 41 · deleted 0` is in the library (model ab5db0
 Session total: 8 calls
 
 Calls logged for 2026-10-22: 8 of 200 (8).
+
+## 2026-10-23 · release sync 0.31.1 (branch claude/figma-release-sync-0.31.1)
+
+Daily release check found 0.31.1. The 0.30.0/0.31.0 push already landed on 2026-10-22 (section above); plan against that snapshot: updated 0 · created 1 · deleted 0 (semantic.link.underlineThickness).
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                                                                                                 | Result                                                                                 |
+| --- | ---------- | ---------------- | ----- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 1   | 15:49      | `create_session` | read  | Library: open the MCP session for the 0.31.1 sync                                                                       | OK; session opened                                                                     |
+| 2   | 15:49      | `use_figma`      | write | Library: delta.js unmodified (snapshot 6fb0af52, model 06a31a3e, main 2e36c32): create semantic.link.underlineThickness | OK; created link/underlineThickness (VariableID:2239:2), post 560374a9, 1 receipt page |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-23: 2 of 200 (2).

@@ -1,15 +1,15 @@
 {
-  "checksum": "6fb0af52",
+  "checksum": "560374a9",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-22T19:56:39.340Z",
+    "takenAt": "2026-10-23T15:51:26.418Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "ab5db03c",
-      "pushedAt": "2026-10-22T19:56:39.312Z",
+      "modelHash": "06a31a3e",
+      "pushedAt": "2026-10-23T15:51:26.372Z",
       "scope": null
     },
     "collections": [
@@ -5483,6 +5483,30 @@
               "Dark": {
                 "alias": "VariableID:7:40",
                 "to": "Hirobius/Primitives: size/width/1200"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2239:2",
+            "name": "link/underlineThickness",
+            "path": "semantic.link.underlineThickness",
+            "resolvedType": "FLOAT",
+            "description": "Text-link underline weight at body size (2px). Text links cap it at 0.125em, so small text keeps a proportionate line.",
+            "scopes": [
+              "STROKE_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-link-underlineThickness)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:7:50",
+                "to": "Hirobius/Primitives: borderWidth/sm"
+              },
+              "Dark": {
+                "alias": "VariableID:7:50",
+                "to": "Hirobius/Primitives: borderWidth/sm"
               }
             }
           },
