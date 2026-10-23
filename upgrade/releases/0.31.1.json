@@ -1,0 +1,16 @@
+{
+  "version": "0.31.1",
+  "date": "2026-10-23",
+  "bump": "patch",
+  "summary": "1 that looks different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.31.1/look/link-underline-weight",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Text link underlines are thicker: 2px, 0.2em below the baseline, where they were the font's hairline default.",
+      "source": "CHANGELOG.md:16"
+    }
+  ]
+}
