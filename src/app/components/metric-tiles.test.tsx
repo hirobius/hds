@@ -2,7 +2,9 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import * as React from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, act } from '@testing-library/react';
+import { renderToString } from 'react-dom/server';
+import { hydrateRoot } from 'react-dom/client';
 import { MetricTile, MetricTiles } from './metric-tiles';
 
 afterEach(cleanup);
@@ -140,5 +142,26 @@ describe('MetricTiles at phone width (hds#724)', () => {
     );
     const grid = container.querySelector('[data-hds-component="Grid"]') as HTMLElement;
     expect(grid.style.gridTemplateColumns).toBe('repeat(2, minmax(0, 1fr))');
+  });
+
+  it('hydrates server markup to 2 columns at 390px (a hydration mismatch left 3, tour overflow)', async () => {
+    const tiles = (
+      <MetricTiles>
+        {['A', 'B', 'C'].map((l) => (
+          <MetricTile key={l} label={l} value="1" />
+        ))}
+      </MetricTiles>
+    );
+    const html = renderToString(tiles);
+    window.innerWidth = 390;
+    const host = document.createElement('div');
+    host.innerHTML = html;
+    document.body.appendChild(host);
+    await act(async () => {
+      hydrateRoot(host, tiles);
+    });
+    const grid = host.querySelector('[data-hds-component="Grid"]') as HTMLElement;
+    expect(grid.style.gridTemplateColumns).toBe('repeat(2, minmax(0, 1fr))');
+    host.remove();
   });
 });
