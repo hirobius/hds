@@ -279,6 +279,8 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.radius.scale.pill": "Fully round ends: pills, tags and avatar chips.",
   "semantic.borderWidth.default": "Default hairline border weight for surfaces and inputs.",
   "semantic.borderWidth.emphasis": "Stronger border weight for focus rings and active indicators.",
+  "semantic.link.underlineThickness": "Text-link underline weight at body size (2px). Text links cap it at 0.125em, so small text keeps a proportionate line.",
+  "semantic.link.underlineOffset": "Gap between a text link's baseline and its underline, in em so it follows the font size and clears descenders.",
   "semantic.shadow.subtle": "Resting elevation shadow for raised surfaces (cards, inline panels).",
   "semantic.shadow.floating": "Hover/floating elevation for menus, popovers, and tooltips.",
   "semantic.shadow.overlay": "Modal/dialog elevation for full-screen overlays.",

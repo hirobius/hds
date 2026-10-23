@@ -226,6 +226,7 @@ declare module 'react' {
     '--primitive-zIndex-10'?: string | undefined;
     '--primitive-zIndex-100'?: string | undefined;
     '--primitive-zIndex-1000'?: string | undefined;
+    '--primitive-underline-offset'?: string | undefined;
     '--primitive-borderWidth-xs'?: string | undefined;
     '--primitive-borderWidth-sm'?: string | undefined;
     '--primitive-borderWidth-md'?: string | undefined;
@@ -445,6 +446,8 @@ declare module 'react' {
     '--semantic-radius-scale-pill'?: string | undefined;
     '--semantic-borderWidth-default'?: string | undefined;
     '--semantic-borderWidth-emphasis'?: string | undefined;
+    '--semantic-link-underlineThickness'?: string | undefined;
+    '--semantic-link-underlineOffset'?: string | undefined;
     '--semantic-shadow-subtle'?: string | undefined;
     '--semantic-shadow-floating'?: string | undefined;
     '--semantic-shadow-overlay'?: string | undefined;

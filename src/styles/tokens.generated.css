@@ -228,6 +228,7 @@
   --primitive-zIndex-10: 10;
   --primitive-zIndex-100: 100;
   --primitive-zIndex-1000: 1000;
+  --primitive-underline-offset: 0.2em;
   --primitive-borderWidth-xs: 1px;
   --primitive-borderWidth-sm: 2px;
   --primitive-borderWidth-md: 4px;
@@ -448,6 +449,8 @@
   --semantic-radius-scale-pill: var(--primitive-radius-full);
   --semantic-borderWidth-default: var(--primitive-borderWidth-xs);
   --semantic-borderWidth-emphasis: var(--primitive-borderWidth-sm);
+  --semantic-link-underlineThickness: var(--primitive-borderWidth-sm);
+  --semantic-link-underlineOffset: var(--primitive-underline-offset);
   --semantic-shadow-subtle: 0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06);
   --semantic-shadow-floating: 0 4px 6px hsl(var(--primitive-shadow-color) / 0.05), 0 10px 15px hsl(var(--primitive-shadow-color) / 0.08);
   --semantic-shadow-overlay: 0 10px 15px hsl(var(--primitive-shadow-color) / 0.08), 0 25px 50px hsl(var(--primitive-shadow-color) / 0.12);

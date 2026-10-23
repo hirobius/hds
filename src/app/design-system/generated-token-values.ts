@@ -292,6 +292,9 @@ export const tokenValues = {
       "100": "100",
       "1000": "1000"
     },
+    underline: {
+      offset: "0.2em"
+    },
     borderWidth: {
       xs: "1px",
       sm: "2px",

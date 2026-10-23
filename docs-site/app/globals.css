@@ -822,7 +822,8 @@ html[data-docs-shadow='hard'] {
    (text-decoration skips inline-flex children). Draw the cue on the chip itself. */
 a code[data-density] {
   text-decoration: underline;
-  text-underline-offset: 0.2em;
+  text-decoration-thickness: min(var(--semantic-link-underlineThickness), 0.125em);
+  text-underline-offset: var(--semantic-link-underlineOffset);
 }
 
 /* In prose table cells a long type union wraps inside the chip (as it did before the HDS chip)

@@ -583,6 +583,11 @@
 .hds-link {
   color: var(--semantic-accent-content);
   text-decoration: underline;
+  /* Weight and gap from the link tokens; 0.125em keeps a 2px line at 16px and thins it on small text.
+   * skip-ink stays on so the line breaks around descenders (g, y, p). */
+  text-decoration-thickness: min(var(--semantic-link-underlineThickness), 0.125em);
+  text-underline-offset: var(--semantic-link-underlineOffset);
+  text-decoration-skip-ink: auto;
   text-decoration-color: color-mix(in oklch, var(--semantic-accent-content) 40%, transparent);
   transition:
     color var(--hds-motion-productive-duration),
