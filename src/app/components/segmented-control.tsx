@@ -229,10 +229,12 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
         variant: 'secondary',
         className: 'shadow-[inset_0_0_0_1px_var(--semantic-color-border-interactive)]',
       },
+      // Primary selected (C2): the primary fill with the primary hard edge, drawn inset at
+      // the bottom because the scrolling rail clips anything below the segment.
       {
         active: true,
         variant: 'primary',
-        className: 'shadow-[inset_0_0_0_1px_var(--semantic-color-border-accent)]',
+        className: 'shadow-[inset_0_-3px_0_var(--hds-edge-primary)]',
       },
       {
         active: false,

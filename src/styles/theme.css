@@ -515,19 +515,26 @@
 /* Hard shadow (hds#888, the default since hds#891): light from straight above, zero blur,
  * so every edge drops straight down (x = 0). Colour is one hook per component,
  * --hds-kbd-edge / --hds-btn-edge. Since hds#897 each defaults to the item's own fill
- * stepped two OKLCH steps darker (a lighter rim in dark where darker fails 1.5:1): the
+ * stepped darker in both themes (C2: two OKLCH steps in light, a third of the way to the card
+ * in dark; never a lighter rim): the
  * --hds-edge-* values build-tokens.mjs computes (scripts/lib/raised-edge.mjs). Button sets
  * --hds-edge to its variant's or tone's edge inline (secondary's when unset). Kbd sits on a 2px key edge;
  * --semantic-shadow-key still overrides it whole. box-shadow adds no layout size. */
 .hds-kbd {
   box-shadow: var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)));
 }
-/* Button (shadow="hard", the default, primary and secondary): 3px at rest, 5px on hover
- * (hover-capable pointers only), 1px on press. Depth is the shadow offset alone: the box
- * never moves, so a press can't slide off the pointer and lose its click, and an edge
- * hover can't flicker. The offset rides --tw-shadow, so Tailwind's focus ring and the
- * pressed inset wash compose into the same box-shadow list. In the components layer, so
- * a consumer shadow utility still wins. */
+/* Button (shadow="hard", the default, primary and secondary), C2 "fixed base": the face
+ * moves and the edge under it grows or shrinks by the same amount, so the bottom of the
+ * edge never moves. Rest translateY(0) on a 3px edge; hover (hover-capable pointers only)
+ * -1px on 4px; press 2px on 1px. The face moves, so a ::after hit band reaches 2px above
+ * it and over the edge below (it moves with the face, so it always spans the rest box): a
+ * pointer on the top or bottom row stays on the button when it lifts or sinks, so a press
+ * can't slide off and an edge hover can't flicker. The face moves with `translate` (it composes
+ * with any consumer transform), on the productive motion token, which reduced motion
+ * zeroes. Only the hard edge: no top highlight, no blurred drop shadow. The offset rides
+ * --tw-shadow, so Tailwind's focus ring and the pressed inset wash compose into the same
+ * box-shadow list. In the components layer, so a consumer shadow utility still wins; the
+ * transition property list is on Button itself (its utility outranks this layer). */
 @layer components {
   .hds-btn-hard:not(:disabled, [aria-disabled='true']) {
     --tw-shadow: 0 var(--hds-hs, 3px) 0
@@ -535,13 +542,25 @@
     box-shadow:
       var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
       var(--tw-ring-shadow), var(--tw-shadow);
+    position: relative; /* anchors the ::after hit band */
+    translate: 0 var(--hds-ty, 0px);
+    transition:
+      translate var(--hds-motion-productive),
+      box-shadow var(--hds-motion-productive);
+  }
+  .hds-btn-hard:not(:disabled, [aria-disabled='true'])::after {
+    content: '';
+    position: absolute;
+    inset: -2px 0 -4px;
   }
   @media (hover: hover) {
     .hds-btn-hard:hover {
-      --hds-hs: 5px;
+      --hds-ty: -1px;
+      --hds-hs: 4px;
     }
   }
   .hds-btn-hard:active {
+    --hds-ty: 2px;
     --hds-hs: 1px;
   }
 }
@@ -578,24 +597,50 @@
   }
 }
 
-/* Inline accent links — color + underline opacity on hover. Shared by InlineLink
- * and any text-link wrapper that composes the same class. */
+/* Inline text links (C2). Text and line are both content.primary and never change colour
+ * on hover. The line is a background layer, not text-decoration, so it can animate: on
+ * pointer enter and again on pointer leave, link-swipe.ts sets data-link-swipe and the line
+ * shrinks out to the right, then grows back in from the left (350ms, the emphasized curve,
+ * restarting if it is already running; none under reduced motion). A background (not a
+ * positioned ::after) so a link that wraps onto two lines keeps one line under each. Weight
+ * and gap from the link tokens: 0.125em keeps a 2px line at 16px and thins it on small text;
+ * the content box already ends about 0.2em under the baseline, so the offset token moves the
+ * line by its difference from that. Trade-off: a background line cannot skip ink, so it
+ * crosses descenders (g, y, p) that reach the content-box bottom. */
 .hds-link {
-  color: var(--semantic-accent-content);
-  text-decoration: underline;
-  /* Weight and gap from the link tokens; 0.125em keeps a 2px line at 16px and thins it on small text.
-   * skip-ink stays on so the line breaks around descenders (g, y, p). */
-  text-decoration-thickness: min(var(--semantic-link-underlineThickness), 0.125em);
-  text-underline-offset: var(--semantic-link-underlineOffset);
-  text-decoration-skip-ink: auto;
-  text-decoration-color: color-mix(in oklch, var(--semantic-accent-content) 40%, transparent);
-  transition:
-    color var(--hds-motion-productive-duration),
-    text-decoration-color var(--hds-motion-productive-duration);
+  --hds-link-t: min(var(--semantic-link-underlineThickness), 0.125em);
+  color: var(--semantic-color-content-primary);
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 100% var(--hds-link-t);
+  background-position: 0 calc(100% + var(--semantic-link-underlineOffset) - 0.2em);
 }
-.hds-link:hover {
-  color: var(--semantic-accent-contentHover);
-  text-decoration-color: var(--semantic-accent-contentHover);
+.hds-link[data-link-swipe] {
+  animation: hds-link-swipe 350ms var(--primitive-easing-emphasized);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hds-link[data-link-swipe] {
+    animation: none;
+  }
+}
+@keyframes hds-link-swipe {
+  0% {
+    background-size: 100% var(--hds-link-t);
+    background-position-x: 100%;
+  }
+  50% {
+    background-size: 0% var(--hds-link-t);
+    background-position-x: 100%;
+  }
+  50.01% {
+    background-size: 0% var(--hds-link-t);
+    background-position-x: 0%;
+  }
+  100% {
+    background-size: 100% var(--hds-link-t);
+    background-position-x: 0%;
+  }
 }
 
 /* Text-secondary ? text-primary on hover. Use on nav items, prev/next arrows,

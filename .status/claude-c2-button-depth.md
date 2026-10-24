@@ -1,0 +1,1 @@
+C2 button depth: fixed-base hard edge (hover -1px/4px, press 2px/1px), dark edges always darker (no lighter rim), dark soft fills neutral-600/new neutral-550, ghost tertiary, selected = primary fill + edge, link swipe underline; Figma Sync needed for neutral.550, soft/softHover dark and button.tertiary.bg.\*.

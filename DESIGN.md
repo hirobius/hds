@@ -133,7 +133,7 @@ Cards default to `flat`. They lift to `raised` only on interactive hover or when
 
 ### Soft surfaces (ADR-064, hds#891)
 
-Separate by **tone and space, not outlines**. Containers (Card, panels, Dialog, Menu, Popover, Select, Toast, CodeBlock, the Table frame, the Tabs list, the SegmentedControl track, Tag pills and chips) have no resting border: they sit on a surface step (`surface.page` → `raised` → `muted`/`overlay`). Borders stay only where they carry meaning: inputs, focus rings, selected or active states, feedback tones and the accent highlight, dividers inside dense tables, Divider and the Kbd edge. Controls are soft filled: the secondary Button is `surface.soft` with no border, and primary and secondary Buttons carry the **hard shadow** (zero blur, straight down: 3px rest, 5px hover, 1px press; its colour is the button's own fill stepped two OKLCH steps darker, or a lighter rim in dark where darker would fall under 1.5:1, hds#897) and the directional **wipe** hover by default; opt out per button with `shadow="none"` / `hoverEffect="none"`. Kbd follows the same light source (2px). Each edge is precomputed as `--hds-edge-*` (override per component with `--hds-btn-edge` / `--hds-kbd-edge`); `semantic.color.shadow.hard` stays exported but is no longer the default.
+Separate by **tone and space, not outlines**. Containers (Card, panels, Dialog, Menu, Popover, Select, Toast, CodeBlock, the Table frame, the Tabs list, the SegmentedControl track, Tag pills and chips) have no resting border: they sit on a surface step (`surface.page` → `raised` → `muted`/`overlay`). Borders stay only where they carry meaning: inputs, focus rings, selected or active states, feedback tones and the accent highlight, dividers inside dense tables, Divider and the Kbd edge. Controls are soft filled: the secondary Button is `surface.soft` with no border, and primary and secondary Buttons carry the **hard shadow** (zero blur, straight down on a fixed base: rest 3px, hover lifts 1px onto 4px, press sinks 2px onto 1px, so the bottom of the edge never moves; its colour is the button's own fill stepped darker in both themes, hds#897 and C2) and the directional **wipe** hover by default; opt out per button with `shadow="none"` / `hoverEffect="none"`. Kbd follows the same light source (2px). Each edge is precomputed as `--hds-edge-*` (override per component with `--hds-btn-edge` / `--hds-kbd-edge`); `semantic.color.shadow.hard` stays exported but is no longer the default.
 
 Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
 
@@ -273,6 +273,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (476 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (479 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

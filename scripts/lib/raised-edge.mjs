@@ -1,20 +1,22 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * Raised edge colours (hds#897): the hard "raised" ledge under a Button or Kbd is the item's
- * OWN fill, stepped two steps darker. One step = OKLCH lightness −0.06, chroma ×0.85, same
- * hue (so two = L −0.12, C ×0.7225), clamped into sRGB by reducing chroma.
+ * Raised edge colours (hds#897, C2): the hard "raised" ledge under a Button or Kbd is the
+ * item's OWN fill stepped DARKER in both themes, chroma ×0.7225 (two steps of ×0.85), same
+ * hue, clamped into sRGB by reducing chroma.
  *
- * Dark ("lighter rim"): a darker edge vanishes on a near-black page, so when the darker step
- * is under 1.5:1 against any surface the item sits on, the fill steps LIGHTER instead
- * (L +0.12, C ×0.7225) and then climbs in 0.01 L until it clears 1.5:1 on every one.
+ * Light: two steps of OKLCH lightness −0.06 (L −0.12).
+ * Dark: L drops a third of the way toward the card (surface.raised), never less than 0.03,
+ * so a light primary fill gets a deep edge and a dark tonal fill still gets a visible one.
+ * The old "lighter rim" (step lighter below 1.5:1) made dark buttons glow; C2 dropped it.
  *
  * build-tokens.mjs emits the results as --hds-edge-* custom properties (tokens.generated.css,
  * accents.css, tenants.css); tests/raised-edge.test.ts recomputes them from the fill tokens.
  */
 
-export const EDGE_FLOOR = 1.5;
-const DL = 0.06 * 2; // two steps of L −0.06
+const DL = 0.06 * 2; // light: two steps of L −0.06
 const CK = 0.85 ** 2; // two steps of C ×0.85
+const DARK_SHARE = 1 / 3; // dark: share of the fill→card lightness gap the edge drops
+const DARK_MIN = 0.03; // dark: smallest drop, for fills at or below the card
 
 /** Where each raised item takes its fill, and the CSS hook name suffix it ships under. */
 export const EDGE_FILLS = {
@@ -27,10 +29,8 @@ export const EDGE_FILLS = {
   kbd: 'semantic.color.surface.overlay', // role.muted (bg-muted)
 };
 
-/** The surfaces a Button or Kbd is placed on (the soft-surfaces contrast scope). */
-export const EDGE_GROUNDS = ['page', 'raised', 'overlay', 'muted'].map(
-  (s) => `semantic.color.surface.${s}`,
-);
+/** The card a Button or Kbd usually sits on: the dark step is measured toward it. */
+export const EDGE_CARD = 'semantic.color.surface.raised';
 
 // ── sRGB ↔ OKLCH ─────────────────────────────────────────────────────────────
 const lin = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
@@ -93,30 +93,14 @@ export function oklchToHex(lch) {
     .join('')}`;
 }
 
-// ── WCAG contrast ────────────────────────────────────────────────────────────
-export function luminance(hex) {
-  const [r, g, b] = [1, 3, 5].map((i) => lin(parseInt(hex.slice(i, i + 2), 16) / 255));
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-export function contrast(a, b) {
-  const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p);
-  return (x + 0.05) / (y + 0.05);
-}
-
 /**
- * The edge for one fill. `grounds` (dark only) are the surfaces it must clear 1.5:1 on.
+ * The edge for one fill. `card` (dark only) is the surface the step is measured toward.
  * @returns {string} lowercase #rrggbb
  */
-export function edgeFor(fill, mode, grounds = []) {
+export function edgeFor(fill, mode, card) {
   const f = toOklch(fill);
-  const darker = oklchToHex({ l: f.l - DL, c: f.c * CK, h: f.h });
-  const clears = (hex) => grounds.every((g) => contrast(hex, g) >= EDGE_FLOOR);
-  if (mode !== 'Dark' || clears(darker)) return darker;
-  for (let l = f.l + DL; l <= 1.0001; l += 0.01) {
-    const lighter = oklchToHex({ l, c: f.c * CK, h: f.h });
-    if (clears(lighter)) return lighter;
-  }
-  throw new Error(`raised-edge: no lighter rim of ${fill} clears ${EDGE_FLOOR}:1`);
+  const dl = mode === 'Dark' ? Math.max((f.l - toOklch(card).l) * DARK_SHARE, DARK_MIN) : DL;
+  return oklchToHex({ l: f.l - dl, c: f.c * CK, h: f.h });
 }
 
 // ── Token resolution ─────────────────────────────────────────────────────────
@@ -152,11 +136,11 @@ export const resolveHex = (tree, path, mode) => {
 export function computeEdges(tree) {
   const out = {};
   for (const mode of ['Light', 'Dark']) {
-    const grounds = mode === 'Dark' ? EDGE_GROUNDS.map((g) => resolveHex(tree, g, mode)) : [];
+    const card = mode === 'Dark' ? resolveHex(tree, EDGE_CARD, mode) : undefined;
     out[mode] = Object.fromEntries(
       Object.entries(EDGE_FILLS).map(([k, fill]) => [
         k,
-        edgeFor(resolveColor(tree, fill, mode), mode, grounds),
+        edgeFor(resolveColor(tree, fill, mode), mode, card),
       ]),
     );
   }
@@ -171,7 +155,7 @@ export function buildEdgeCSS(raw) {
   const keys = Object.keys(EDGE_FILLS);
   const dark = keys.filter((k) => e.Dark[k] !== e.Light[k]);
   return (
-    `/* Raised edges (hds#897): each fill stepped 2 darker; dark lightens below 1.5:1. scripts/lib/raised-edge.mjs */\n` +
+    `/* Raised edges (hds#897): each fill stepped darker in both themes (C2). scripts/lib/raised-edge.mjs */\n` +
     `:root{${decls(e.Light, keys)}}\n[data-theme="dark"]{${decls(e.Dark, dark)}}\n`
   );
 }

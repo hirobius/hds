@@ -19,7 +19,7 @@ describe('Kbd shadow follows the Button light source', () => {
     expect(theme.replace(/\s+/g, ' ')).toContain(
       `0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, ${colour})`,
     );
-    expect(theme).toContain('--hds-hs: 5px;');
+    expect(theme).toContain('--hds-hs: 4px;');
     expect(theme).toContain('--hds-hs: 1px;');
   });
 

@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 524 tokens, aliases, and TS refs in one shot.
+Checks all 527 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -91,6 +91,7 @@ Checks all 524 tokens, aliases, and TS refs in one shot.
 | `primitive.color.neutral.400`                       | `#a3a3a3`                   | Specific value within the neutral range at a defined lightness step.                                                          |
 | `primitive.color.neutral.450`                       | `#909090`                   | Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).               |
 | `primitive.color.neutral.500`                       | `#737373`                   | Specific value within the neutral range at a defined lightness step.                                                          |
+| `primitive.color.neutral.550`                       | `#626262`                   | Dark surface.softHover (C2).                                                                                                  |
 | `primitive.color.neutral.600`                       | `#525252`                   | Specific value within the neutral range at a defined lightness step.                                                          |
 | `primitive.color.neutral.700`                       | `#404040`                   | Specific value within the neutral range at a defined lightness step.                                                          |
 | `primitive.color.neutral.800`                       | `#262626`                   | Specific value within the neutral range at a defined lightness step.                                                          |
@@ -233,8 +234,8 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.surface.selected`       | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   | Background for a persistently selected item (active tab, checked row).                                                                      |
 | `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.800}   | Muted background for low-emphasis content blocks.                                                                                           |
 | `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   | Recessed background for inset wells (inputs, code blocks, nested panels).                                                                   |
-| `semantic.color.surface.soft`           | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   | Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.        |
-| `semantic.color.surface.softHover`      | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   | Hovered or pressed soft (tonal) control fill, one step past surface.soft.                                                                   |
+| `semantic.color.surface.soft`           | {primitive.color.neutral.200}   | {primitive.color.neutral.600}   | Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.        |
+| `semantic.color.surface.softHover`      | {primitive.color.neutral.300}   | {primitive.color.neutral.550}   | Hovered or pressed soft (tonal) control fill, one step past surface.soft.                                                                   |
 | `semantic.color.content.primary`        | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   |                                                                                                                                             |
 | `semantic.color.content.secondary`      | {primitive.color.neutral.600}   | {primitive.color.neutral.350}   |                                                                                                                                             |
 | `semantic.color.content.tertiary`       | {primitive.color.neutral.500}   | {primitive.color.neutral.450}   | Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.                           |

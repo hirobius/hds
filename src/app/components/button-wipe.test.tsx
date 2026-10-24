@@ -75,13 +75,15 @@ describe('Button hoverEffect', () => {
   });
 
   it('tertiary keeps a pressed fill (the layer hides on :active)', () => {
-    expect(mount({ variant: 'tertiary' }).className).toContain('active:bg-accent');
+    expect(mount({ variant: 'tertiary' }).className).toContain(
+      'active:bg-[color:var(--component-button-tertiary-bg-pressed)]',
+    );
   });
 
   it.each([
     ['primary', 'var(--component-button-bgHover)'],
     ['secondary', 'var(--component-button-secondary-bg-hover)'],
-    ['tertiary', 'var(--role-accent)'],
+    ['tertiary', 'var(--component-button-tertiary-bg-hover)'],
   ] as const)('%s wipes in its own hover fill', (variant, fill) => {
     const el = mount({ variant });
     expect(el.style.getPropertyValue('--hds-wipe-fill')).toBe(fill);
@@ -179,7 +181,7 @@ describe('Button hoverEffect', () => {
 describe('wipe CSS contract (theme.css)', () => {
   const block = theme.slice(
     theme.indexOf('.hds-btn-wipe::before'),
-    theme.indexOf('/* Inline accent links'),
+    theme.indexOf('/* Inline text links'),
   );
   const rule = (selector: string) => {
     const i = block.indexOf(selector + ' {');

@@ -80,7 +80,10 @@ describe('InlineLink accessibility contract', () => {
     expect(screen.getByRole('link').className).toContain('hds-link');
     const rule = themeCss.match(/\.hds-link\s*\{([^}]*)\}/);
     expect(rule, '.hds-link rule in theme.css').toBeTruthy();
-    expect(rule![1]).toMatch(/text-decoration(-line)?\s*:\s*[^;]*underline/);
+    // Since C2 the underline is a full-width background line (so it can swipe), not
+    // text-decoration: a currentColor layer, sized 100% wide at rest.
+    expect(rule![1]).toContain('background-image: linear-gradient(currentColor, currentColor);');
+    expect(rule![1]).toMatch(/background-size:\s*100% /);
   });
 });
 

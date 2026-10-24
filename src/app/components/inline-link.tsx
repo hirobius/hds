@@ -19,6 +19,7 @@ import { SquareArrowOutUpRight as ExternalLinkIcon } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { useHdsRouter } from '../context/RouterContext';
 import { Icon } from './icon';
+import { installLinkSwipeListeners } from './link-swipe';
 
 export interface InlineLinkProps {
   /** Destination route or URL. */
@@ -39,13 +40,13 @@ export interface InlineLinkProps {
 //                                         + optional small ExternalLink icon after the label
 //                                         + visually-hidden "(opens in new tab)"
 //
-// Visual contract: semantic accent-content token (mode-aware lightness), always underlined
-// (accessibility requirement — links must not rely on color alone), underline
-// fades to 40% tint at rest and steps up to full on hover.
+// Visual contract (C2): text and underline are both content.primary and never change
+// colour; always underlined (links must not rely on colour alone). On pointer enter and
+// leave the line swipes out right and back in from the left (link-swipe.ts restarts it,
+// theme.css draws it; no animation under reduced motion).
 //
 // To change link styling site-wide: edit .hds-link in theme.css.
-// Hover state handled by CSS .hds-link class — no JS state needed.
-// motion-ok: transitions handled by .hds-link CSS class (color + underline, primitive-duration-fast via CSS)
+// motion-ok: the swipe is a CSS keyframe animation on .hds-link[data-link-swipe] in theme.css
 
 type LinkKind = 'internal' | 'external' | 'plain';
 
@@ -67,6 +68,7 @@ function classifyHref(href: string): LinkKind {
 export function InlineLink({ href, children, externalIcon = true }: InlineLinkProps) {
   const { LinkComponent } = useHdsRouter();
   const kind = classifyHref(href);
+  React.useEffect(installLinkSwipeListeners, []);
 
   if (kind === 'internal') {
     return (

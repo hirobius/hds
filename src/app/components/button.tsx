@@ -1,4 +1,4 @@
-// motion-ok: motion delivered via Tailwind transition-[colors,filter] (colours + the tone hover:brightness filter); the pressed overlay is a token-bound inset shadow that snaps on :active; gate accepts only hds.duration refs
+// motion-ok: motion delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs
 /**
  * @category Actions
  * @tier primitive
@@ -63,7 +63,7 @@ import { installWipeListeners } from './button-wipe';
 // Icon sizes bind `component.button.size.<s>.iconSize` so code cannot drift from the token (hds#539).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for transition-[colors,filter]), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[color,background-color,border-color,filter,box-shadow,translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -73,7 +73,11 @@ const buttonVariants = /* @__PURE__ */ cva(
         // against the page is the hard shadow (shadow="hard", the default).
         secondary:
           'bg-[color:var(--component-button-secondary-bg-rest)] text-foreground hover:bg-[color:var(--component-button-secondary-bg-hover)] active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent',
-        tertiary: 'text-foreground hover:bg-accent',
+        // Ghost (C2): transparent at rest, no edge and no movement (shadow is forced off
+        // below); component.button.tertiary.bg.hover (surface.hover) on hover and the
+        // deeper .pressed (surface.soft) on press, wash swapped out like secondary.
+        tertiary:
+          'text-foreground hover:bg-[color:var(--component-button-tertiary-bg-hover)] active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
       },
       // Semantic action color. `neutral` (default) keeps the variant's own
       // colors; the status tones apply a token-driven tonal fill (tinted
@@ -120,8 +124,9 @@ const buttonVariants = /* @__PURE__ */ cva(
         none: '',
         wipe: 'hds-btn-wipe relative isolate overflow-hidden',
       },
-      // Hard (zero-blur) shadow, theme.css `.hds-btn-hard` (hds#888): 3px at rest, lifts on
-      // hover, sinks on press. `none` opts out. Tertiary is quiet and never takes it.
+      // Hard (zero-blur) edge, theme.css `.hds-btn-hard` (hds#888, C2 fixed base): the face
+      // lifts 1px on hover and sinks 2px on press while the edge under it grows or shrinks
+      // by the same amount. `none` opts out. Tertiary (ghost) never takes it.
       shadow: {
         hard: 'hds-btn-hard',
         none: '',
@@ -131,8 +136,8 @@ const buttonVariants = /* @__PURE__ */ cva(
       // wipe x variant (neutral tone only): hold the rest fill on hover; theme.css
       // `.hds-btn-wipe` paints the variant's hover fill as the wiping layer. A status
       // tone keeps its own hover classes, and the layer takes the tone fill plus its
-      // hover brightness (theme.css). Tertiary rests transparent, so it restores its
-      // pressed fill here (the layer hides on :active so the press shows).
+      // hover brightness (theme.css). Tertiary rests transparent and keeps its
+      // own pressed fill (the layer hides on :active so the press shows).
       { hoverEffect: 'wipe', tone: 'neutral', variant: 'primary', className: 'hover:bg-primary' },
       {
         hoverEffect: 'wipe',
@@ -144,7 +149,7 @@ const buttonVariants = /* @__PURE__ */ cva(
         hoverEffect: 'wipe',
         tone: 'neutral',
         variant: 'tertiary',
-        className: 'hover:bg-transparent active:bg-accent',
+        className: 'hover:bg-transparent',
       },
       { iconOnly: true, size: 'sm', className: 'w-8' },
       { iconOnly: true, size: 'md', className: 'w-10' },
@@ -266,7 +271,8 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // The wipe layer's fill (theme.css `.hds-btn-wipe`) is the variant's own hover fill:
     // a status tone's fill through its hover brightness (--hds-wipe-f), primary's
     // component.button.bgHover, secondary's component.button.secondary.bg.hover, or
-    // tertiary's role.accent. Inline, so the shipped CSS has no
+    // tertiary's component.button.tertiary.bg.hover; a pressed neutral toggle paints
+    // bg-primary, so it takes primary's hover fill. Inline, so the shipped CSS has no
     // per-variant rules; a consumer `style` still wins.
     // A toggle (hds#393): any of the three pressed props makes this a toggle
     // button; `pressed` controls it, otherwise it keeps its own state. The
@@ -296,10 +302,10 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
             ...edge,
             '--hds-wipe-fill': hasTone
               ? `var(--semantic-color-feedback-bg-${tone === 'danger' ? 'error' : tone})`
-              : variant === 'primary'
+              : edgeKey === 'primary'
                 ? 'var(--component-button-bgHover)'
                 : variant === 'tertiary'
-                  ? 'var(--role-accent)'
+                  ? 'var(--component-button-tertiary-bg-hover)'
                   : 'var(--component-button-secondary-bg-hover)',
             ...(hasTone && {
               filter: 'none',
