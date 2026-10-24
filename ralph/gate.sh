@@ -4,9 +4,37 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# TEMPORARY step timing (remove 2026-10-31, hds#912):
+# each step prints "⏱ <step> <s>s"; on exit, green or red, a slowest-first
+# table prints and one JSON line lands in .gate-timings.jsonl.
+now_ms() {
+  if [ -n "${EPOCHREALTIME:-}" ]; then
+    local t="${EPOCHREALTIME/[.,]/}"
+    echo $((10#$t / 1000))
+  else
+    node -e 'process.stdout.write(String(Date.now()))' # bash < 5 (macOS)
+  fi
+}
+GATE_T0=$(now_ms)
+GATE_STEPS=$(mktemp)
+finish_timings() {
+  local code=$?
+  node scripts/gate-timings.mjs finish --runner gate --steps "$GATE_STEPS" \
+    --total-ms $(($(now_ms) - GATE_T0)) || true
+  rm -f "$GATE_STEPS"
+  exit "$code"
+}
+trap finish_timings EXIT
+
 run_step() {
   echo "── gate: $*"
-  if ! "$@"; then
+  local t0 ok=1
+  t0=$(now_ms)
+  "$@" || ok=0
+  local ms=$(($(now_ms) - t0))
+  printf '%s\t%s\t%s\n' "$*" "$ms" "$ok" >>"$GATE_STEPS"
+  echo "⏱ $* $(awk "BEGIN{printf \"%.1f\", $ms/1000}")s"
+  if [ "$ok" = 0 ]; then
     echo "── gate FAILED at: $* — no PR, no done. Fix the change until green." >&2
     exit 1
   fi

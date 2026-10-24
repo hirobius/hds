@@ -341,6 +341,7 @@
     "tokens": "node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/build-tokens.mjs && node scripts/audit-tokens.mjs --forbidden && node scripts/check-typography-discipline.mjs --overrides-only && node scripts/build-handoff.mjs && node scripts/build-design-md.mjs && node scripts/generate-llms-txt.mjs && node scripts/generate-consumer-skill.mjs && node scripts/generate-agents-md.mjs && node scripts/build-readme-counts.mjs && node scripts/build-stats-json.mjs",
     "tokens:audit": "node scripts/audit-component-integrity.mjs --tokens",
     "tokens:build": "node scripts/build-hds-tokens.mjs",
+    "timings:report": "node scripts/gate-timings.mjs report",
     "tokens:verify": "node scripts/build-tokens.mjs && node scripts/verify-tokens.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.typecheck.json && tsc --noEmit -p tsconfig.figma.json",
     "ui:lint": "node scripts/ui-lint.mjs",
