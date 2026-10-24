@@ -1648,6 +1648,10 @@
         },
         "href": {
           "type": "string"
+        },
+        "standalone": {
+          "type": "boolean",
+          "default": false
         }
       },
       "allowedChildren": [
@@ -1659,6 +1663,9 @@
         },
         "href": {
           "type": "string"
+        },
+        "standalone": {
+          "type": "boolean"
         }
       },
       "requiredProps": [],
@@ -3750,6 +3757,7 @@
         "src/app/components/icon.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
+        "src/app/components/link-swipe.ts",
         "src/app/components/menu.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",

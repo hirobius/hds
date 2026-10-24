@@ -150,7 +150,7 @@
       "id": "look/hds-link",
       "kind": "look",
       "impact": "look",
-      "plain": "The .hds-link underline is now a background line in content.primary that swipes on hover, with no hover colour change; drop any text-decoration overrides you set on it.",
+      "plain": "The .hds-link underline is now a background line in content.primary that swipes in the pointer's direction, with no hover colour change; drop any text-decoration overrides you set on it.",
       "detect": {
         "classes": ["hds-link"]
       }

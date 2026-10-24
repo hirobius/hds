@@ -53,7 +53,31 @@ describe('link underline weight', () => {
     expect(rule('.hds-link[data-link-swipe]')).toContain(
       'animation: hds-link-swipe 350ms var(--primitive-easing-emphasized);',
     );
+    // Moving left is the mirror image: out to the left, back in from the right.
+    expect(rule(".hds-link[data-link-swipe='left']")).toContain(
+      'animation-name: hds-link-swipe-left;',
+    );
+    const left = theme.match(/@keyframes hds-link-swipe-left\s*{([\s\S]*?)\n}/)?.[1] ?? '';
+    expect(left).toMatch(/0%\s*{[^}]*background-size: 100% [^}]*background-position-x: 0%/);
+    expect(left).toMatch(/50%\s*{[^}]*background-size: 0% [^}]*background-position-x: 0%/);
+    expect(left).toMatch(/100%\s*{[^}]*background-size: 100% [^}]*background-position-x: 100%/);
     expect(generated).toContain('--primitive-easing-emphasized: cubic-bezier(0.4, 0, 0.2, 1);');
+  });
+
+  it('the line is drawn in the content box, so padding never moves it off the text', () => {
+    expect(rule('.hds-link')).toContain('background-origin: content-box;');
+  });
+
+  it('a standalone link has a 24px hit area (44px on touch) without moving the layout', () => {
+    const r = rule('.hds-link-standalone');
+    expect(r).toContain('--hds-link-hit: var(--primitive-size-24);');
+    expect(r).toContain('display: inline-block;');
+    expect(r).toContain('min-width: var(--primitive-size-24);');
+    expect(r).toMatch(/padding-block: var\(--hds-link-pad\)/);
+    expect(r).toMatch(/margin-block: calc\(-1 \* var\(--hds-link-pad\)\)/);
+    expect(theme).toMatch(
+      /@media \(pointer: coarse\)\s*{\s*\.hds-link-standalone\s*{\s*--hds-link-hit: var\(--primitive-size-interactive-min\);/,
+    );
   });
 
   it('reduced motion: no swipe', () => {

@@ -78,3 +78,47 @@ describe.skipIf(!hasBrowser)('Button hard edge in Chromium', () => {
     await page.mouse.up();
   });
 });
+
+describe.skipIf(!hasBrowser)('standalone link hit area in Chromium', () => {
+  let browser;
+  afterAll(() => browser?.close());
+
+  const boxes = async (hasTouch) => {
+    browser ??= await chromium.launch({ executablePath: CHROMIUM });
+    const page = await browser.newPage({ hasTouch, isMobile: hasTouch });
+    await page.setContent(
+      `<html><head><style>${CSS}</style></head><body style="margin:40px;font:16px/24px sans-serif">` +
+        `<p id="before">Above</p><a class="hds-link hds-link-standalone" href="#">Go</a>` +
+        `<p id="after">Below</p></body></html>`,
+    );
+    const out = await page.evaluate(() => {
+      const r = (s) => document.querySelector(s).getBoundingClientRect();
+      const a = r('a');
+      const cs = getComputedStyle(document.querySelector('a'));
+      return {
+        width: a.width,
+        height: a.height,
+        gap: r('#after').top - r('#before').bottom,
+        contentBottom: a.bottom - parseFloat(cs.paddingBottom),
+        linePos: cs.backgroundPositionY,
+        origin: cs.backgroundOrigin,
+      };
+    });
+    await page.close();
+    return out;
+  };
+
+  it('is at least 24x24 with a pointer, and the layout does not move', async () => {
+    const b = await boxes(false);
+    expect(b.width).toBeGreaterThanOrEqual(24);
+    expect(b.height).toBeGreaterThanOrEqual(24);
+    expect(b.origin).toBe('content-box'); // the line stays under the text, not at the padding edge
+  });
+
+  it('is 44px tall on touch, still without moving the layout', async () => {
+    const mouse = await boxes(false);
+    const touch = await boxes(true);
+    expect(touch.height).toBeGreaterThanOrEqual(44);
+    expect(touch.gap).toBe(mouse.gap);
+  });
+});

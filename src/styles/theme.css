@@ -599,14 +599,16 @@
 
 /* Inline text links (C2). Text and line are both content.primary and never change colour
  * on hover. The line is a background layer, not text-decoration, so it can animate: on
- * pointer enter and again on pointer leave, link-swipe.ts sets data-link-swipe and the line
- * shrinks out to the right, then grows back in from the left (350ms, the emphasized curve,
- * restarting if it is already running; none under reduced motion). A background (not a
- * positioned ::after) so a link that wraps onto two lines keeps one line under each. Weight
- * and gap from the link tokens: 0.125em keeps a 2px line at 16px and thins it on small text;
- * the content box already ends about 0.2em under the baseline, so the offset token moves the
- * line by its difference from that. Trade-off: a background line cannot skip ink, so it
- * crosses descenders (g, y, p) that reach the content-box bottom. */
+ * pointer enter, on pointer leave and on keyboard focus, link-swipe.ts sets data-link-swipe
+ * to the way the pointer moves. Right: the line shrinks out to the right, then grows back in
+ * from the left; left is the mirror (350ms, the emphasized curve, restarting if it is already
+ * running; none under reduced motion). A background (not a positioned ::after) so a link that
+ * wraps onto two lines keeps one line under each. It is drawn in the content box, so the
+ * standalone hit-area padding below never moves it off the text. Weight and gap from the link
+ * tokens: 0.125em keeps a 2px line at 16px and thins it on small text; the content box already
+ * ends about 0.2em under the baseline, so the offset token moves the line by its difference
+ * from that. Trade-off: a background line cannot skip ink, so it crosses descenders (g, y, p)
+ * that reach the content-box bottom. */
 .hds-link {
   --hds-link-t: min(var(--semantic-link-underlineThickness), 0.125em);
   color: var(--semantic-color-content-primary);
@@ -615,9 +617,29 @@
   background-repeat: no-repeat;
   background-size: 100% var(--hds-link-t);
   background-position: 0 calc(100% + var(--semantic-link-underlineOffset) - 0.2em);
+  background-origin: content-box;
+}
+/* A link that stands on its own (outside running text, InlineLink standalone) gets a 24px hit
+ * area, 44px tall on touch: block padding with an equal negative margin, so the layout does
+ * not move. Links inside running text are exempt (WCAG 2.5.8) and stay inline. */
+.hds-link-standalone {
+  --hds-link-hit: var(--primitive-size-24);
+  --hds-link-pad: max(0px, calc((var(--hds-link-hit) - 1lh) / 2));
+  display: inline-block;
+  min-width: var(--primitive-size-24);
+  padding-block: var(--hds-link-pad);
+  margin-block: calc(-1 * var(--hds-link-pad));
+}
+@media (pointer: coarse) {
+  .hds-link-standalone {
+    --hds-link-hit: var(--primitive-size-interactive-min);
+  }
 }
 .hds-link[data-link-swipe] {
   animation: hds-link-swipe 350ms var(--primitive-easing-emphasized);
+}
+.hds-link[data-link-swipe='left'] {
+  animation-name: hds-link-swipe-left;
 }
 @media (prefers-reduced-motion: reduce) {
   .hds-link[data-link-swipe] {
@@ -640,6 +662,24 @@
   100% {
     background-size: 100% var(--hds-link-t);
     background-position-x: 0%;
+  }
+}
+@keyframes hds-link-swipe-left {
+  0% {
+    background-size: 100% var(--hds-link-t);
+    background-position-x: 0%;
+  }
+  50% {
+    background-size: 0% var(--hds-link-t);
+    background-position-x: 0%;
+  }
+  50.01% {
+    background-size: 0% var(--hds-link-t);
+    background-position-x: 100%;
+  }
+  100% {
+    background-size: 100% var(--hds-link-t);
+    background-position-x: 100%;
   }
 }
 

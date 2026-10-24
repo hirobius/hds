@@ -1125,6 +1125,7 @@ InlineLink ” inline navigation and external-link primitive for body copy.
   - children: ReactNode
   - externalIcon: boolean = true
   - href: string
+  - standalone: boolean = false
 
 ### Input
 Input — text field primitive with label, helper, and error slots.

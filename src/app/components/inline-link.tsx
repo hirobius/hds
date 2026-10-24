@@ -28,6 +28,8 @@ export interface InlineLinkProps {
   children: React.ReactNode;
   /** Append the external-link icon for non-internal URLs. */
   externalIcon?: boolean;
+  /** The link stands on its own, outside running text (such as "Back to companies"): it gets a 24px hit area, 44px tall on touch, without moving the layout. */
+  standalone?: boolean;
 }
 
 // ── InlineLink ─────────────────────────────────────────────────────────────────
@@ -65,14 +67,20 @@ function classifyHref(href: string): LinkKind {
 }
 
 /** @public */
-export function InlineLink({ href, children, externalIcon = true }: InlineLinkProps) {
+export function InlineLink({
+  href,
+  children,
+  externalIcon = true,
+  standalone = false,
+}: InlineLinkProps) {
   const { LinkComponent } = useHdsRouter();
   const kind = classifyHref(href);
   React.useEffect(installLinkSwipeListeners, []);
+  const standaloneClass = standalone ? ' hds-link-standalone' : '';
 
   if (kind === 'internal') {
     return (
-      <LinkComponent to={href} className="hds-focus hds-link">
+      <LinkComponent to={href} className={`hds-focus hds-link${standaloneClass}`}>
         {children}
       </LinkComponent>
     );
@@ -80,14 +88,19 @@ export function InlineLink({ href, children, externalIcon = true }: InlineLinkPr
 
   if (kind === 'plain') {
     return (
-      <a href={href} className="hds-focus hds-link">
+      <a href={href} className={`hds-focus hds-link${standaloneClass}`}>
         {children}
       </a>
     );
   }
 
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="hds-focus hds-link">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`hds-focus hds-link${standaloneClass}`}
+    >
       {children}
       <span className="sr-only"> (opens in new tab)</span>
       {externalIcon && (
