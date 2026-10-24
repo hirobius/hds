@@ -136,3 +136,11 @@ Loop mechanics (see `ralph/README.md` for the full contract):
   claim refs, or `ralph/{.lock,runs.jsonl,logs/}` — the harness owns those.
 - The engine is org-level: workflows are thin callers into
   `hirobius/ralph/.github/workflows/ralph-{run,gate}-reusable.yml@v1`.
+
+## PR previews: screenshots, not Vercel (Adrian 2026-10-24, all repos)
+
+Vercel preview builds are OFF (production only). Every PR carries its own preview:
+1. Run the production build locally (`pnpm build` / `npm run build`) and serve the built app (`pnpm preview` / `npm run preview`, or the repo's screenshot tooling).
+2. Attach screenshots of the affected routes only: 390x844, light AND dark, plus a desktop shot if the route is used on desktop. At most ~6 images, inline in the PR body or a PR comment. Adrian reviews on his phone: no zips, nothing he has to build.
+3. Backend/infra PRs with no visual change: write "no visual change" instead.
+4. Never re-enable Vercel preview builds (or add `[preview]`) to get screenshots.
