@@ -672,3 +672,16 @@ Daily release check found 0.31.1. The 0.30.0/0.31.0 push already landed on 2026-
 Session total: 2 calls
 
 Calls logged for 2026-10-23: 2 of 200 (2).
+
+## 2026-10-24 · release sync 0.32.0 (branch claude/figma-release-sync-0.32.0)
+
+Daily release check found 0.32.0. Branch merges the unmerged 0.31.1 sync (hds#908) so the snapshot is current. Plan: updated 2 · created 3 · deleted 0 (neutral.550, surface.soft/softHover dark, button tertiary bg hover/pressed).
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                              | Result                                                                                                                     |
+| --- | ---------- | ---------------- | ----- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 15:48      | `create_session` | read  | open file session for the 0.32.0 delta push          | OK; session opened                                                                                                         |
+| 2   | 15:48      | `use_figma`      | write | delta.js unmodified (model df1f4f37, commit b13042c) | OK; created neutral/550, button/tertiary/bg/hover + pressed, updated surface soft/softHover; post 08a86902, 1 receipt page |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-24: 2 of 200 (2).

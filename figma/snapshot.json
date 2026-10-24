@@ -1,15 +1,15 @@
 {
-  "checksum": "560374a9",
+  "checksum": "08a86902",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-23T15:51:26.418Z",
+    "takenAt": "2026-10-24T15:50:48.194Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "06a31a3e",
-      "pushedAt": "2026-10-23T15:51:26.372Z",
+      "modelHash": "df1f4f37",
+      "pushedAt": "2026-10-24T15:50:48.099Z",
       "scope": null
     },
     "collections": [
@@ -1797,6 +1797,28 @@
                   "r": 0.45098,
                   "g": 0.45098,
                   "b": 0.45098,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2240:2",
+            "name": "color/neutral/550",
+            "path": "primitive.color.neutral.550",
+            "resolvedType": "COLOR",
+            "description": "Dark surface.softHover (C2).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-550)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.384314,
+                  "g": 0.384314,
+                  "b": 0.384314,
                   "a": 1
                 }
               }
@@ -5119,8 +5141,8 @@
                 "to": "Hirobius/Primitives: color/neutral/200"
               },
               "Dark": {
-                "alias": "VariableID:3:9",
-                "to": "Hirobius/Primitives: color/neutral/700"
+                "alias": "VariableID:3:8",
+                "to": "Hirobius/Primitives: color/neutral/600"
               }
             }
           },
@@ -5144,8 +5166,8 @@
                 "to": "Hirobius/Primitives: color/neutral/300"
               },
               "Dark": {
-                "alias": "VariableID:3:8",
-                "to": "Hirobius/Primitives: color/neutral/600"
+                "alias": "VariableID:2240:2",
+                "to": "Hirobius/Primitives: color/neutral/550"
               }
             }
           },
@@ -9116,6 +9138,48 @@
               "Default": {
                 "alias": "VariableID:5:5",
                 "to": "Hirobius/Primitives: space/1"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2240:3",
+            "name": "button/tertiary/bg/hover",
+            "path": "component.button.tertiary.bg.hover",
+            "resolvedType": "COLOR",
+            "description": "Ghost button hover (wipe) fill.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-tertiary-bg-hover)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2018:728",
+                "to": "Hirobius/Semantic: color/surface/hover"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2240:4",
+            "name": "button/tertiary/bg/pressed",
+            "path": "component.button.tertiary.bg.pressed",
+            "resolvedType": "COLOR",
+            "description": "Ghost button pressed fill.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-tertiary-bg-pressed)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2229:10",
+                "to": "Hirobius/Semantic: color/surface/soft"
               }
             }
           },
