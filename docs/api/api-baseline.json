@@ -13,8 +13,8 @@
     "./patterns": "src/patterns.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.31.1",
-  "generatedAt": "2026-10-23",
+  "version": "0.32.0",
+  "generatedAt": "2026-10-24",
   "modules": {
     "(barrel)": [
       "HdsDensity",

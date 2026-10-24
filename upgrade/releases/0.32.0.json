@@ -1,0 +1,213 @@
+{
+  "version": "0.32.0",
+  "date": "2026-10-24",
+  "bump": "minor",
+  "summary": "11 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.32.0/value-changed/--hds-edge-danger",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark --hds-edge-danger now steps darker than its fill instead of a lighter rim; if you set your own edge, keep it darker than the fill.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-danger"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-danger"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-danger:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-danger:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/value-changed/--hds-edge-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark --hds-edge-info now steps darker than its fill instead of a lighter rim; if you set your own edge, keep it darker than the fill.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-info"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-info:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/value-changed/--hds-edge-kbd",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark --hds-edge-kbd now steps darker than the Kbd fill instead of a lighter rim; no change needed.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-kbd"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-kbd"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-kbd:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-kbd:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/value-changed/--hds-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark --hds-edge-primary is now darker than the primary fill (about graphite-400 #8b8488) instead of a lighter rim; if you set your own, keep it darker than the fill.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-lilac][data-theme=dark],[data-tenant=accent-lilac][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/value-changed/--hds-edge-secondary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark --hds-edge-secondary is now about neutral-700 #404040, darker than the secondary fill, so dark buttons no longer glow.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-secondary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-secondary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-secondary:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-secondary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/value-changed/--hds-edge-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark --hds-edge-success now steps darker than its fill instead of a lighter rim; if you set your own edge, keep it darker than the fill.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-success"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-success"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-success:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-success:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/value-changed/--hds-edge-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark --hds-edge-warning now steps darker than its fill instead of a lighter rim; if you set your own edge, keep it darker than the fill.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-warning"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-warning"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-warning:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/value-changed/--semantic-color-surface-soft",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark --semantic-color-surface-soft is now neutral-600 #525252 (was neutral-700), one step lighter so secondary buttons lift off dark cards.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-soft"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-soft"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-soft:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-soft:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/value-changed/--semantic-color-surface-softHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark --semantic-color-surface-softHover is now the new neutral.550 #626262 (was neutral-600), the secondary hover and wipe fill.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-softHover"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-softHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-softHover:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-softHover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/look/Button",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Button tertiary is a ghost (no edge, no movement, surface.hover fill on hover) and every raised Button moves its face over a fixed edge, so remove any custom translate you added to fake a press.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Button"
+            ]
+          }
+        ]
+      },
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.32.0/look/hds-link",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The .hds-link text and underline are content.primary and turn content.secondary on hover; if you restyled links to the accent colour, set your own colour on .hds-link.",
+      "detect": {
+        "classes": [
+          "hds-link"
+        ]
+      },
+      "source": "CHANGELOG.md:19"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.31.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.32.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -9,6 +9,21 @@ npx @hirobius/design-system@latest upgrade
 ```
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## 0.32.0
+
+Released 2026-10-24 (minor). 11 that look different.
+
+### Looks different
+
+- Dark each of these now steps darker than its fill instead of a lighter rim; if you set your own edge, keep it darker than the fill: `--hds-edge-danger`, `--hds-edge-info`, `--hds-edge-success` and `--hds-edge-warning`.
+- Dark --hds-edge-kbd now steps darker than the Kbd fill instead of a lighter rim; no change needed.
+- Dark --hds-edge-primary is now darker than the primary fill (about graphite-400 #8b8488) instead of a lighter rim; if you set your own, keep it darker than the fill.
+- Dark --hds-edge-secondary is now about neutral-700 #404040, darker than the secondary fill, so dark buttons no longer glow.
+- Dark --semantic-color-surface-soft is now neutral-600 #525252 (was neutral-700), one step lighter so secondary buttons lift off dark cards.
+- Dark --semantic-color-surface-softHover is now the new neutral.550 #626262 (was neutral-600), the secondary hover and wipe fill.
+- Button tertiary is a ghost (no edge, no movement, surface.hover fill on hover) and every raised Button moves its face over a fixed edge, so remove any custom translate you added to fake a press.
+- The .hds-link text and underline are content.primary and turn content.secondary on hover; if you restyled links to the accent colour, set your own colour on .hds-link.
 
 ## 0.31.1
 
