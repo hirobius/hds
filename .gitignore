@@ -188,3 +188,6 @@ content/docs/guides/providers.mdx
 # impeccable skill local critique snapshots (not part of the package)
 .impeccable/
 .vercel-redirect/
+
+# Gate step timings (TEMPORARY, remove 2026-10-31 — hds#912)
+.gate-timings.jsonl

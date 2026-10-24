@@ -24,6 +24,13 @@ import {
   stageLabel,
   summaryLine,
 } from './lib/hook-output.mjs';
+import {
+  TIMINGS_FILE,
+  appendRecord,
+  buildRecord,
+  formatTable,
+  stepLine,
+} from './lib/gate-timings.mjs';
 
 const hook = process.argv[2];
 if (!hook) {
@@ -64,18 +71,47 @@ let logFile = null;
   }
 }
 
+// TEMPORARY (remove 2026-10-31, hds#912): pre-push
+// prints per-stage "⏱" lines and a slowest-first table, and appends one JSON
+// line per run to .gate-timings.jsonl, green or red.
+const timed = hook === 'pre-push';
+const timings = [];
+function finishTimings() {
+  if (!timed) return;
+  const totalMs = performance.now() - t0;
+  console.log(formatTable(timings, totalMs));
+  let sha = null;
+  try {
+    sha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  } catch {
+    /* no HEAD */
+  }
+  try {
+    appendRecord(
+      path.join(root, TIMINGS_FILE),
+      buildRecord({ runner: 'pre-push', steps: timings, totalMs, sha }),
+    );
+  } catch {
+    /* timing must never block a push */
+  }
+}
+
 const t0 = performance.now();
 const labels = [];
 for (const { name, cmd } of stages) {
   const start = performance.now();
   const r = spawnSync('sh', ['-c', cmd], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
   const out = `${r.stdout ?? ''}${r.stderr ?? ''}`;
+  const ms = performance.now() - start;
+  if (timed) {
+    const step = name.replace(/…$/, '');
+    timings.push({ name: step, ms, ok: r.status === 0 });
+    console.log(stepLine(step, ms));
+  }
   if (logFile)
-    fs.appendFileSync(
-      logFile,
-      `\n===== ${name} :: ${cmd} (${formatDuration(performance.now() - start)}) =====\n${out}`,
-    );
+    fs.appendFileSync(logFile, `\n===== ${name} :: ${cmd} (${formatDuration(ms)}) =====\n${out}`);
   if (r.status !== 0) {
+    finishTimings();
     console.error(`✗ ${hook}: ${name} failed (exit ${r.status ?? 'signal'}) — ${cmd}`);
     console.error(failureExcerpt(out));
     if (logFile) console.error(`full log: ${logFile}  (HOOK_VERBOSE=1 for live output)`);
@@ -83,4 +119,5 @@ for (const { name, cmd } of stages) {
   }
   labels.push(stageLabel(name, out));
 }
+finishTimings();
 console.log(summaryLine(hook, labels, performance.now() - t0));
