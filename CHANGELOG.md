@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.32.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Dark each of these now steps darker than its fill instead of a lighter rim; if you set your own edge, keep it darker than the fill: `--hds-edge-danger`, `--hds-edge-info`, `--hds-edge-success` and `--hds-edge-warning`.
+- Looks different: Dark --hds-edge-kbd now steps darker than the Kbd fill instead of a lighter rim; no change needed.
+- Looks different: Dark --hds-edge-primary is now darker than the primary fill (about graphite-400 #8b8488) instead of a lighter rim; if you set your own, keep it darker than the fill.
+- Looks different: Dark --hds-edge-secondary is now about neutral-700 #404040, darker than the secondary fill, so dark buttons no longer glow.
+- And 4 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0320).
+
+### Minor Changes
+
+- a13f3ce: C2 button depth: every Button now has one fixed base. The face rises 1px on hover (edge 3px → 4px) and sinks 2px on press (edge → 1px), so the bottom of the hard edge never moves; the motion uses the productive token and stops under reduced motion. Dark edges now always step darker than their fill (the "lighter rim" that made dark buttons glow is gone): dark `--hds-edge-secondary` ≈ neutral-700, `--hds-edge-primary` ≈ graphite-400. Dark `surface.soft` moves to neutral-600 and `surface.softHover` to the new primitive `neutral.550` (#626262). Tertiary is the ghost: no edge and no movement, `component.button.tertiary.bg.hover` (surface.hover) on hover and `.pressed` (surface.soft) on press. Selected states (pressed toggle, primary SegmentedControl segment, active Tag) take the primary fill and the primary edge. `.hds-link` text and underline are content.primary at rest and turn content.secondary together on hover (a real text-decoration underline, skip-ink kept). New `InlineLink standalone` prop: a link outside running text gets a 24px hit area (44px tall on touch) without moving the layout. The wipe layer now clips itself (clip-path + the button radius) instead of relying on `overflow-hidden` on the button.
+
 ## 0.31.1
 
 ### Upgrade
