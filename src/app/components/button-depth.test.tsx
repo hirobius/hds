@@ -175,7 +175,10 @@ describe('wipe', () => {
   it('the layer is clipped by the button radius (overflow + isolate) and eases on the productive curve', () => {
     render(<Button>Go</Button>);
     const c = classes(screen.getByRole('button'));
-    expect(c).toEqual(expect.arrayContaining(['rounded-md', 'overflow-hidden', 'isolate']));
+    expect(c).toEqual(expect.arrayContaining(['rounded-md', 'isolate']));
+    // No overflow clip on the button: it would clip the .hds-btn-hard::after hit band.
+    expect(c).not.toContain('overflow-hidden');
+    expect(prop(rule('.hds-btn-wipe::before'), 'border-radius')).toBe('inherit');
     expect(prop(rule('.hds-btn-wipe::before'), 'transition')).toContain(
       'var(--hds-motion-productive)',
     );

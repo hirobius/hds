@@ -122,7 +122,7 @@ const buttonVariants = /* @__PURE__ */ cva(
       // swapped out here. `none` opts out: the fill changes in place.
       hoverEffect: {
         none: '',
-        wipe: 'hds-btn-wipe relative isolate overflow-hidden',
+        wipe: 'hds-btn-wipe relative isolate',
       },
       // Hard (zero-blur) edge, theme.css `.hds-btn-hard` (hds#888, C2 fixed base): the face
       // lifts 1px on hover and sinks 2px on press while the edge under it grows or shrinks

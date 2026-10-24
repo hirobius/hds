@@ -19,7 +19,6 @@ import { SquareArrowOutUpRight as ExternalLinkIcon } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { useHdsRouter } from '../context/RouterContext';
 import { Icon } from './icon';
-import { installLinkSwipeListeners } from './link-swipe';
 
 export interface InlineLinkProps {
   /** Destination route or URL. */
@@ -42,13 +41,12 @@ export interface InlineLinkProps {
 //                                         + optional small ExternalLink icon after the label
 //                                         + visually-hidden "(opens in new tab)"
 //
-// Visual contract (C2): text and underline are both content.primary and never change
-// colour; always underlined (links must not rely on colour alone). On pointer enter and
-// leave the line swipes out right and back in from the left (link-swipe.ts restarts it,
-// theme.css draws it; no animation under reduced motion).
+// Visual contract (C2): text and underline are both content.primary at rest and turn
+// content.secondary together on hover; always underlined (links must not rely on colour
+// alone). A standalone link gets a 24px hit area (44px tall on touch).
 //
 // To change link styling site-wide: edit .hds-link in theme.css.
-// motion-ok: the swipe is a CSS keyframe animation on .hds-link[data-link-swipe] in theme.css
+// motion-ok: the hover colour transition is on .hds-link in theme.css (productive motion token)
 
 type LinkKind = 'internal' | 'external' | 'plain';
 
@@ -75,7 +73,6 @@ export function InlineLink({
 }: InlineLinkProps) {
   const { LinkComponent } = useHdsRouter();
   const kind = classifyHref(href);
-  React.useEffect(installLinkSwipeListeners, []);
   const standaloneClass = standalone ? ' hds-link-standalone' : '';
 
   if (kind === 'internal') {

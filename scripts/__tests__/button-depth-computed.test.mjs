@@ -99,9 +99,7 @@ describe.skipIf(!hasBrowser)('standalone link hit area in Chromium', () => {
         width: a.width,
         height: a.height,
         gap: r('#after').top - r('#before').bottom,
-        contentBottom: a.bottom - parseFloat(cs.paddingBottom),
-        linePos: cs.backgroundPositionY,
-        origin: cs.backgroundOrigin,
+        decoration: cs.textDecorationLine,
       };
     });
     await page.close();
@@ -112,7 +110,7 @@ describe.skipIf(!hasBrowser)('standalone link hit area in Chromium', () => {
     const b = await boxes(false);
     expect(b.width).toBeGreaterThanOrEqual(24);
     expect(b.height).toBeGreaterThanOrEqual(24);
-    expect(b.origin).toBe('content-box'); // the line stays under the text, not at the padding edge
+    expect(b.decoration).toBe('underline'); // a text underline: it sits under the text, not the padding
   });
 
   it('is 44px tall on touch, still without moving the layout', async () => {
@@ -120,5 +118,42 @@ describe.skipIf(!hasBrowser)('standalone link hit area in Chromium', () => {
     const touch = await boxes(true);
     expect(touch.height).toBeGreaterThanOrEqual(44);
     expect(touch.gap).toBe(mouse.gap);
+  });
+});
+
+describe.skipIf(!hasBrowser)('the hit band on a real default Button (wipe + hard edge)', () => {
+  it('elementFromPoint finds the button in the 3px under its face, and during lift and press', async () => {
+    const { renderToStaticMarkup } = await import('react-dom/server');
+    const React = await import('react');
+    const { Button } = await import('../../src/app/components/button.tsx');
+    const markup = renderToStaticMarkup(React.createElement(Button, null, 'Go'));
+    // The utilities the default markup uses that matter for hit-testing; overflow-hidden is
+    // listed so the test would catch it coming back.
+    const UTIL = `.relative{position:relative}.isolate{isolation:isolate}.overflow-hidden{overflow:hidden}.rounded-md{border-radius:6px}.h-10{height:40px}.px-4{padding-inline:16px}.inline-flex{display:inline-flex}button{border:0}`; // + Tailwind preflight's border reset
+    const browser = await chromium.launch({ executablePath: CHROMIUM });
+    try {
+      const page = await browser.newPage();
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.setContent(
+        `<html><head><style>${CSS}</style><style>${TW}${UTIL} body{margin:40px}</style></head><body>${markup}</body></html>`,
+      );
+      const hitsBelow = () =>
+        page.$eval('button', (b) => {
+          const r = b.getBoundingClientRect();
+          const x = r.left + r.width / 2;
+          return [1, 2, 3].map((d) => document.elementFromPoint(x, r.bottom + d - 0.5) === b);
+        });
+      expect(await hitsBelow()).toEqual([true, true, true]);
+      const box = await page.$eval('button', (b) => b.getBoundingClientRect().toJSON());
+      await page.mouse.move(box.x + box.width / 2, box.bottom - 0.5);
+      expect(await page.$eval('button', (b) => getComputedStyle(b).translate)).toBe('0px -1px');
+      const lifted = await page.$eval('button', (b) => {
+        const x = b.getBoundingClientRect().left + 5;
+        return document.elementFromPoint(x, b.getBoundingClientRect().bottom + 0.5) === b;
+      });
+      expect(lifted).toBe(true); // the row the face rose off is still the button
+    } finally {
+      await browser.close();
+    }
   });
 });
