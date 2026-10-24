@@ -6,6 +6,7 @@
  * (pre-push): per-step "⏱" lines, a slowest-first summary table, one JSON line
  * per run in .gate-timings.jsonl, and the median/p90 report over the last N runs.
  */
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
 export const TIMINGS_FILE = '.gate-timings.jsonl';
@@ -39,6 +40,15 @@ export function buildRecord({ runner, steps, totalMs, sha, ts = new Date().toISO
     totalMs: Math.round(totalMs),
     sha,
   };
+}
+
+/** HEAD sha, or null outside a repo. */
+export function headSha() {
+  try {
+    return execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  } catch {
+    return null;
+  }
 }
 
 export function appendRecord(file, record) {

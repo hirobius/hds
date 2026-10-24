@@ -16,7 +16,6 @@
  *       Median and p90 per step over the last N runs (default 20).
  *       `pnpm timings:report` runs this.
  */
-import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import {
   TIMINGS_FILE,
@@ -24,6 +23,7 @@ import {
   buildRecord,
   formatReport,
   formatTable,
+  headSha,
   readRecords,
   summarize,
 } from './lib/gate-timings.mjs';
@@ -33,14 +33,6 @@ const flag = (name) => {
   const i = rest.indexOf(`--${name}`);
   return i === -1 ? undefined : rest[i + 1];
 };
-
-function headSha() {
-  try {
-    return execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-  } catch {
-    return null;
-  }
-}
 
 if (cmd === 'finish') {
   const steps = fs

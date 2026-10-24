@@ -11,6 +11,8 @@
  * Green: one summary line. Red: only the failing stage's excerpt, the full-log
  * path, and the stage's own exit code. HOOK_VERBOSE=1 runs the hook file
  * as-is with full streaming output. Same commands, same exit codes.
+ * TEMPORARY until 2026-10-31 (hds#912): pre-push also prints per-stage "⏱"
+ * lines and a timing table (not under HOOK_VERBOSE=1).
  */
 import { spawnSync, execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -29,6 +31,7 @@ import {
   appendRecord,
   buildRecord,
   formatTable,
+  headSha,
   stepLine,
 } from './lib/gate-timings.mjs';
 
@@ -80,16 +83,10 @@ function finishTimings() {
   if (!timed) return;
   const totalMs = performance.now() - t0;
   console.log(formatTable(timings, totalMs));
-  let sha = null;
-  try {
-    sha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-  } catch {
-    /* no HEAD */
-  }
   try {
     appendRecord(
       path.join(root, TIMINGS_FILE),
-      buildRecord({ runner: 'pre-push', steps: timings, totalMs, sha }),
+      buildRecord({ runner: 'pre-push', steps: timings, totalMs, sha: headSha() }),
     );
   } catch {
     /* timing must never block a push */
@@ -111,10 +108,10 @@ for (const { name, cmd } of stages) {
   if (logFile)
     fs.appendFileSync(logFile, `\n===== ${name} :: ${cmd} (${formatDuration(ms)}) =====\n${out}`);
   if (r.status !== 0) {
-    finishTimings();
     console.error(`✗ ${hook}: ${name} failed (exit ${r.status ?? 'signal'}) — ${cmd}`);
     console.error(failureExcerpt(out));
     if (logFile) console.error(`full log: ${logFile}  (HOOK_VERBOSE=1 for live output)`);
+    finishTimings();
     process.exit(r.status ?? 1);
   }
   labels.push(stageLabel(name, out));

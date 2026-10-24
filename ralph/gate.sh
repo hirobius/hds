@@ -12,7 +12,7 @@ now_ms() {
     local t="${EPOCHREALTIME/[.,]/}"
     echo $((10#$t / 1000))
   else
-    echo $(($(date +%s) * 1000))
+    node -e 'process.stdout.write(String(Date.now()))' # bash < 5 (macOS)
   fi
 }
 GATE_T0=$(now_ms)
