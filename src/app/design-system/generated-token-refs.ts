@@ -23,6 +23,7 @@ export const tokenRefs = {
         "400": "var(--primitive-color-neutral-400)",
         "450": "var(--primitive-color-neutral-450)",
         "500": "var(--primitive-color-neutral-500)",
+        "550": "var(--primitive-color-neutral-550)",
         "600": "var(--primitive-color-neutral-600)",
         "700": "var(--primitive-color-neutral-700)",
         "800": "var(--primitive-color-neutral-800)",
@@ -783,6 +784,12 @@ export const tokenRefs = {
           disabled: "var(--component-button-secondary-border-disabled)"
         },
         text: "var(--component-button-secondary-text)"
+      },
+      tertiary: {
+        bg: {
+          hover: "var(--component-button-tertiary-bg-hover)",
+          pressed: "var(--component-button-tertiary-bg-pressed)"
+        }
       }
     },
     input: {

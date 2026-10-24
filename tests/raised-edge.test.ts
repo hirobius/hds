@@ -1,17 +1,15 @@
 /**
- * Raised edges (hds#897): every hard "raised" edge is its item's own fill stepped two steps
- * darker (OKLCH L −0.12, C ×0.7225, same hue). In dark, an edge under 1.5:1 on the surface
- * it sits on steps lighter instead (L +0.12, then +0.01 until 1.5:1). The shipped
- * --hds-edge-* values in tokens.generated.css / accents.css must equal that rule applied
- * to today's fill tokens.
+ * Raised edges (hds#897, C2): every hard "raised" edge is its item's own fill stepped
+ * DARKER, same hue, C ×0.7225. Light: OKLCH L −0.12. Dark: L drops a third of the way to
+ * the card (surface.raised), at least 0.03, so a dark edge never glows lighter than its
+ * fill. The shipped --hds-edge-* values in tokens.generated.css / accents.css must equal
+ * that rule applied to today's fill tokens.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import {
   EDGE_FILLS,
-  EDGE_GROUNDS,
-  contrast,
   hexToOklch,
   layered,
   oklchToHex,
@@ -48,16 +46,19 @@ function shipped(mode: Mode): Record<string, string> {
 /** The rule, written out independently of the generator. */
 function expected(tree: object, key: string, mode: Mode): string {
   const f = toOklch(resolveColor(tree, EDGE_FILLS[key as keyof typeof EDGE_FILLS], mode));
-  const darker = oklchToHex({ l: f.l - 0.12, c: f.c * 0.7225, h: f.h });
-  if (mode === 'Light') return darker;
-  const grounds = EDGE_GROUNDS.map((g: string) => resolveHex(tree, g, mode));
-  const ok = (hex: string) => grounds.every((g: string) => contrast(hex, g) >= 1.5);
-  if (ok(darker)) return darker;
-  for (let i = 0; i <= 100; i += 1) {
-    const hex = oklchToHex({ l: f.l + 0.12 + i * 0.01, c: f.c * 0.7225, h: f.h });
-    if (ok(hex)) return hex;
-  }
-  throw new Error(`no lighter rim clears 1.5:1 for ${key}`);
+  if (mode === 'Light') return oklchToHex({ l: f.l - 0.12, c: f.c * 0.7225, h: f.h });
+  const card = hexToOklch(resolveHex(tree, 'semantic.color.surface.raised', mode));
+  const dl = Math.max((f.l - card.l) / 3, 0.03);
+  return oklchToHex({ l: f.l - dl, c: f.c * 0.7225, h: f.h });
+}
+
+/** Each sRGB channel within `tol` of the target (the C2 reference values are "≈"). */
+function near(hex: string, target: string, tol = 4) {
+  const ch = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const a = ch(hex);
+  ch(target).forEach((v, i) =>
+    expect(Math.abs(a[i] - v), `${hex} ≈ ${target}`).toBeLessThanOrEqual(tol),
+  );
 }
 
 describe('OKLCH maths', () => {
@@ -86,18 +87,23 @@ describe.each(MODES)('raised edges (%s)', (mode) => {
     expect(shipped(mode)[key]).toBe(expected(raw, key, mode));
   });
 
-  if (mode === 'Light')
-    it.each(KEYS)('%s: the edge is darker than its fill, same hue family', (key) => {
-      const fill = toOklch(resolveColor(raw, EDGE_FILLS[key as keyof typeof EDGE_FILLS], mode));
-      const edge = hexToOklch(shipped(mode)[key]);
-      expect(edge.l).toBeCloseTo(fill.l - 0.12, 2);
-    });
+  it.each(KEYS)('%s: the edge is darker than its fill (never a lighter rim)', (key) => {
+    const fill = toOklch(resolveColor(raw, EDGE_FILLS[key as keyof typeof EDGE_FILLS], mode));
+    const edge = hexToOklch(shipped(mode)[key]);
+    expect(edge.l).toBeLessThan(fill.l - 0.02);
+    if (mode === 'Light') expect(edge.l).toBeCloseTo(fill.l - 0.12, 2);
+  });
+});
 
-  if (mode === 'Dark')
-    it.each(KEYS)('%s: the edge reaches 1.5:1 on every surface it sits on', (key) => {
-      for (const g of EDGE_GROUNDS)
-        expect(contrast(shipped(mode)[key], resolveHex(raw, g, mode))).toBeGreaterThanOrEqual(1.5);
-    });
+describe('C2 reference edges (graphite defaults)', () => {
+  it('light: secondary ≈ #bebebe, primary ≈ #292427', () => {
+    near(shipped('Light').secondary, '#bebebe', 1);
+    near(shipped('Light').primary, '#292427', 1);
+  });
+  it('dark: secondary ≈ neutral-700 #404040, primary ≈ graphite-400 #8b8488', () => {
+    near(shipped('Dark').secondary, '#404040');
+    near(shipped('Dark').primary, '#8b8488');
+  });
 });
 
 describe('accent themes re-derive the primary edge', () => {

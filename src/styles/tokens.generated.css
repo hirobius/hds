@@ -21,6 +21,7 @@
   --primitive-color-neutral-400: #a3a3a3;
   --primitive-color-neutral-450: #909090;
   --primitive-color-neutral-500: #737373;
+  --primitive-color-neutral-550: #626262;
   --primitive-color-neutral-600: #525252;
   --primitive-color-neutral-700: #404040;
   --primitive-color-neutral-800: #262626;
@@ -566,6 +567,8 @@
   /* @deprecated hds#891 soft surfaces: secondary Button has no border (removed in 1.0.0) */
   --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
+  --component-button-tertiary-bg-hover: var(--semantic-color-surface-hover);
+  --component-button-tertiary-bg-pressed: var(--semantic-color-surface-soft);
   --component-input-bg: var(--semantic-color-surface-page);
   --component-input-text: var(--semantic-color-content-primary);
   --component-input-border: var(--semantic-color-border-interactive);
@@ -622,8 +625,8 @@
   --semantic-color-surface-selected: var(--primitive-color-neutral-800);
   --semantic-color-surface-muted: var(--primitive-color-neutral-800);
   --semantic-color-surface-sunken: var(--primitive-color-neutral-700);
-  --semantic-color-surface-soft: var(--primitive-color-neutral-700);
-  --semantic-color-surface-softHover: var(--primitive-color-neutral-600);
+  --semantic-color-surface-soft: var(--primitive-color-neutral-600);
+  --semantic-color-surface-softHover: var(--primitive-color-neutral-550);
   --semantic-color-content-primary: var(--primitive-color-neutral-100);
   --semantic-color-content-secondary: var(--primitive-color-neutral-350);
   --semantic-color-content-tertiary: var(--primitive-color-neutral-450);
@@ -711,6 +714,8 @@
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
   --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
+  --component-button-tertiary-bg-hover: var(--semantic-color-surface-hover);
+  --component-button-tertiary-bg-pressed: var(--semantic-color-surface-soft);
   --component-input-bg: var(--semantic-color-surface-page);
   --component-input-text: var(--semantic-color-content-primary);
   --component-input-border: var(--semantic-color-border-interactive);
@@ -768,6 +773,6 @@
   --semantic-docs-space-section: var(--semantic-space-scale-xl);
   --component-card-gap: var(--semantic-space-scale-sm);
 }
-/* Raised edges (hds#897): each fill stepped 2 darker; dark lightens below 1.5:1. scripts/lib/raised-edge.mjs */
+/* Raised edges (hds#897): each fill stepped darker in both themes (C2). scripts/lib/raised-edge.mjs */
 :root{--hds-edge-primary:#292427;--hds-edge-secondary:#bebebe;--hds-edge-danger:#d4cccc;--hds-edge-success:#c8d4ce;--hds-edge-warning:#d6d3c8;--hds-edge-info:#c4cbd9;--hds-edge-kbd:#cecece;}
-[data-theme="dark"]{--hds-edge-primary:#a4a1a3;--hds-edge-secondary:#616161;--hds-edge-danger:#623632;--hds-edge-success:#2f4941;--hds-edge-warning:#603e2f;--hds-edge-info:#394256;--hds-edge-kbd:#454545;}
+[data-theme="dark"]{--hds-edge-primary:#8a8789;--hds-edge-secondary:#3e3e3e;--hds-edge-danger:#350d0b;--hds-edge-success:#08231c;--hds-edge-warning:#361809;--hds-edge-info:#0c1324;--hds-edge-kbd:#1f1f1f;}

@@ -38,6 +38,10 @@
           "$value": "#737373",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
+        "550": {
+          "$value": "#626262",
+          "$description": "Dark surface.softHover (C2)."
+        },
         "600": {
           "$value": "#525252",
           "$description": "Specific value within the neutral range at a defined lightness step."
@@ -1442,7 +1446,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.200}",
-                "Dark": "{primitive.color.neutral.700}"
+                "Dark": "{primitive.color.neutral.600}"
               }
             }
           }
@@ -1454,7 +1458,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.300}",
-                "Dark": "{primitive.color.neutral.600}"
+                "Dark": "{primitive.color.neutral.550}"
               }
             }
           }
@@ -3141,6 +3145,20 @@
           "$type": "color",
           "$value": "{semantic.color.content.primary}",
           "$description": "Secondary button text color."
+        }
+      },
+      "tertiary": {
+        "bg": {
+          "hover": {
+            "$type": "color",
+            "$value": "{semantic.color.surface.hover}",
+            "$description": "Ghost button hover (wipe) fill."
+          },
+          "pressed": {
+            "$type": "color",
+            "$value": "{semantic.color.surface.soft}",
+            "$description": "Ghost button pressed fill."
+          }
         }
       }
     },

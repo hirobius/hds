@@ -75,13 +75,15 @@ describe('Button hoverEffect', () => {
   });
 
   it('tertiary keeps a pressed fill (the layer hides on :active)', () => {
-    expect(mount({ variant: 'tertiary' }).className).toContain('active:bg-accent');
+    expect(mount({ variant: 'tertiary' }).className).toContain(
+      'active:bg-[color:var(--component-button-tertiary-bg-pressed)]',
+    );
   });
 
   it.each([
     ['primary', 'var(--component-button-bgHover)'],
     ['secondary', 'var(--component-button-secondary-bg-hover)'],
-    ['tertiary', 'var(--role-accent)'],
+    ['tertiary', 'var(--component-button-tertiary-bg-hover)'],
   ] as const)('%s wipes in its own hover fill', (variant, fill) => {
     const el = mount({ variant });
     expect(el.style.getPropertyValue('--hds-wipe-fill')).toBe(fill);
@@ -124,8 +126,7 @@ describe('Button hoverEffect', () => {
     fireEvent.pointerOver(el, { clientX: 1, clientY: 20, pointerType: 'mouse' });
     expect(el.getAttribute('data-wipe-edge')).toBe('left');
     expect(el.getAttribute('data-wipe')).toBe('in');
-    expect(el.style.getPropertyValue('--hds-wipe-o')).toBe('left');
-    expect(el.style.getPropertyValue('--hds-wipe-s')).toBe('1');
+    expect(el.style.getPropertyValue('--hds-wipe-c')).toBe('inset(0)');
     expect(el.style.getPropertyValue('--hds-wipe-t')).toBe('');
     fireEvent.pointerOut(el, {
       clientX: 99,
@@ -135,8 +136,7 @@ describe('Button hoverEffect', () => {
     });
     expect(el.getAttribute('data-wipe-edge')).toBe('right');
     expect(el.getAttribute('data-wipe')).toBe('out');
-    expect(el.style.getPropertyValue('--hds-wipe-o')).toBe('right');
-    expect(el.style.getPropertyValue('--hds-wipe-s')).toBe('0 1');
+    expect(el.style.getPropertyValue('--hds-wipe-c')).toBe('inset(0 0 0 100%)');
   });
 
   it('a top or bottom edge collapses the layer vertically', () => {
@@ -148,8 +148,7 @@ describe('Button hoverEffect', () => {
       pointerType: 'mouse',
       relatedTarget: document.body,
     });
-    expect(el.style.getPropertyValue('--hds-wipe-o')).toBe('bottom');
-    expect(el.style.getPropertyValue('--hds-wipe-s')).toBe('1 0');
+    expect(el.style.getPropertyValue('--hds-wipe-c')).toBe('inset(100% 0 0 0)');
   });
 
   it('ignores touch pointers (no stuck hover)', () => {
@@ -179,7 +178,7 @@ describe('Button hoverEffect', () => {
 describe('wipe CSS contract (theme.css)', () => {
   const block = theme.slice(
     theme.indexOf('.hds-btn-wipe::before'),
-    theme.indexOf('/* Inline accent links'),
+    theme.indexOf('/* Inline text links'),
   );
   const rule = (selector: string) => {
     const i = block.indexOf(selector + ' {');
@@ -195,8 +194,11 @@ describe('wipe CSS contract (theme.css)', () => {
       /prefers-reduced-motion: reduce\) \{\s*:root \{[^}]*--hds-motion-productive-duration: 0s/,
     );
   });
-  it('is hard-edged: a scaled layer, no gradient or feather', () => {
-    expect(rule('.hds-btn-wipe::before')).toContain('scale: var(--hds-wipe-s, 0)');
+  it('is hard-edged: a clipped layer with the button radius, no gradient or feather', () => {
+    expect(rule('.hds-btn-wipe::before')).toContain(
+      'clip-path: var(--hds-wipe-c, inset(0 100% 0 0))',
+    );
+    expect(rule('.hds-btn-wipe::before')).toContain('border-radius: inherit');
     expect(block).not.toMatch(/gradient|blur\(/);
   });
   it('paints the inline fill and tone filter', () => {

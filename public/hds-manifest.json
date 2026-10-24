@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-23T05:22:21.891Z",
+  "generated": "2026-10-24T04:14:09.174Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -1648,6 +1648,10 @@
         },
         "href": {
           "type": "string"
+        },
+        "standalone": {
+          "type": "boolean",
+          "default": false
         }
       },
       "allowedChildren": [
@@ -1659,6 +1663,9 @@
         },
         "href": {
           "type": "string"
+        },
+        "standalone": {
+          "type": "boolean"
         }
       },
       "requiredProps": [],
@@ -11275,6 +11282,13 @@
         "value": "#737373"
       },
       {
+        "path": "primitive.color.neutral.550",
+        "cssVar": "--primitive-color-neutral-550",
+        "type": "color",
+        "description": "Dark surface.softHover (C2).",
+        "value": "#626262"
+      },
+      {
         "path": "primitive.color.neutral.600",
         "cssVar": "--primitive-color-neutral-600",
         "type": "color",
@@ -12820,8 +12834,8 @@
         "alias": "{primitive.color.neutral.200}",
         "resolvedValue": "#e5e5e5",
         "dark": {
-          "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "alias": "{primitive.color.neutral.600}",
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -12832,8 +12846,8 @@
         "alias": "{primitive.color.neutral.300}",
         "resolvedValue": "#d4d4d4",
         "dark": {
-          "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "alias": "{primitive.color.neutral.550}",
+          "resolvedValue": "#626262"
         }
       },
       {
@@ -14785,6 +14799,22 @@
         "description": "Secondary button text color.",
         "alias": "{semantic.color.content.primary}",
         "resolvedValue": "#111111"
+      },
+      {
+        "path": "component.button.tertiary.bg.hover",
+        "cssVar": "--component-button-tertiary-bg-hover",
+        "type": "color",
+        "description": "Ghost button hover (wipe) fill.",
+        "alias": "{semantic.color.surface.hover}",
+        "resolvedValue": "#f5f5f5"
+      },
+      {
+        "path": "component.button.tertiary.bg.pressed",
+        "cssVar": "--component-button-tertiary-bg-pressed",
+        "type": "color",
+        "description": "Ghost button pressed fill.",
+        "alias": "{semantic.color.surface.soft}",
+        "resolvedValue": "#e5e5e5"
       },
       {
         "path": "component.input.bg",

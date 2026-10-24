@@ -39,9 +39,11 @@ describe('Button state tokens', () => {
     expect(c).toContain('active:inset-shadow-transparent');
   });
 
-  it('tertiary keeps the pressed wash (no pressed token)', () => {
+  it('tertiary (ghost, C2) presses to its own deeper fill, wash swapped out', () => {
     const { getByRole } = render(<Button variant="tertiary">Go</Button>);
-    expect(cls(getByRole('button'))).toContain('active:inset-shadow-pressed-overlay/5');
+    const c = cls(getByRole('button'));
+    expect(c).toContain('active:bg-[color:var(--component-button-tertiary-bg-pressed)]');
+    expect(c).toContain('active:inset-shadow-transparent');
   });
 
   it('secondary is soft and borderless (hds#891): bg.rest fill, bg.hover on hover, no border', () => {

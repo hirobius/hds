@@ -515,19 +515,26 @@
 /* Hard shadow (hds#888, the default since hds#891): light from straight above, zero blur,
  * so every edge drops straight down (x = 0). Colour is one hook per component,
  * --hds-kbd-edge / --hds-btn-edge. Since hds#897 each defaults to the item's own fill
- * stepped two OKLCH steps darker (a lighter rim in dark where darker fails 1.5:1): the
+ * stepped darker in both themes (C2: two OKLCH steps in light, a third of the way to the card
+ * in dark; never a lighter rim): the
  * --hds-edge-* values build-tokens.mjs computes (scripts/lib/raised-edge.mjs). Button sets
  * --hds-edge to its variant's or tone's edge inline (secondary's when unset). Kbd sits on a 2px key edge;
  * --semantic-shadow-key still overrides it whole. box-shadow adds no layout size. */
 .hds-kbd {
   box-shadow: var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)));
 }
-/* Button (shadow="hard", the default, primary and secondary): 3px at rest, 5px on hover
- * (hover-capable pointers only), 1px on press. Depth is the shadow offset alone: the box
- * never moves, so a press can't slide off the pointer and lose its click, and an edge
- * hover can't flicker. The offset rides --tw-shadow, so Tailwind's focus ring and the
- * pressed inset wash compose into the same box-shadow list. In the components layer, so
- * a consumer shadow utility still wins. */
+/* Button (shadow="hard", the default, primary and secondary), C2 "fixed base": the face
+ * moves and the edge under it grows or shrinks by the same amount, so the bottom of the
+ * edge never moves. Rest translateY(0) on a 3px edge; hover (hover-capable pointers only)
+ * -1px on 4px; press 2px on 1px. The face moves, so a ::after hit band reaches 2px above
+ * it and over the edge below (it moves with the face, so it always spans the rest box): a
+ * pointer on the top or bottom row stays on the button when it lifts or sinks, so a press
+ * can't slide off and an edge hover can't flicker. The face moves with `translate` (it composes
+ * with any consumer transform), on the productive motion token, which reduced motion
+ * zeroes. Only the hard edge: no top highlight, no blurred drop shadow. The offset rides
+ * --tw-shadow, so Tailwind's focus ring and the pressed inset wash compose into the same
+ * box-shadow list. In the components layer, so a consumer shadow utility still wins; the
+ * transition property list is on Button itself (its utility outranks this layer). */
 @layer components {
   .hds-btn-hard:not(:disabled, [aria-disabled='true']) {
     --tw-shadow: 0 var(--hds-hs, 3px) 0
@@ -535,30 +542,45 @@
     box-shadow:
       var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
       var(--tw-ring-shadow), var(--tw-shadow);
+    position: relative; /* anchors the ::after hit band */
+    translate: 0 var(--hds-ty, 0px);
+    transition:
+      translate var(--hds-motion-productive),
+      box-shadow var(--hds-motion-productive);
+  }
+  .hds-btn-hard:not(:disabled, [aria-disabled='true'])::after {
+    content: '';
+    position: absolute;
+    inset: -2px 0 -4px;
   }
   @media (hover: hover) {
     .hds-btn-hard:hover {
-      --hds-hs: 5px;
+      --hds-ty: -1px;
+      --hds-hs: 4px;
     }
   }
   .hds-btn-hard:active {
+    --hds-ty: 2px;
     --hds-hs: 1px;
   }
 }
 
 /* Button hoverEffect="wipe" (the default since hds#888; "none" opts out): the variant's
- * own hover fill is a scaled layer behind the label, contained by the button's `relative isolate overflow-hidden`. Every
- * per-variant and per-edge value is inline, so this ships two rules (size budget):
+ * own hover fill is a layer behind the label (`relative isolate` on the button). The layer
+ * takes the button's radius (border-radius: inherit) and wipes with clip-path, so its corners
+ * stay round mid-animation without an overflow clip on the button, which would also clip the
+ * .hds-btn-hard::after hit band. Every per-variant and per-edge value is inline, so this ships
+ * two rules (size budget):
  *   --hds-wipe-fill  Button: secondary.bg.hover, primary's component.button.bgHover,
- *                    tertiary's role.accent, or a
+ *                    tertiary's component.button.tertiary.bg.hover, or a
  *                    status tone's own fill.
  *   --hds-wipe-f     Button, tones only: the tone's hover brightness moved off the button
  *                    (filter: none inline) onto the layer, brightness(--hds-wipe-b):
  *                    0.95 light (inline fallback), 1.1 dark (the dark block above).
- *   --hds-wipe-o/-s  button-wipe.ts: origin = the edge the pointer crossed, scale =
- *                    collapsed on that edge or 1 when in (--hds-wipe-t: 0s while it
- *                    jumps edges), so it grows in from the entry edge and out the exit.
- * Hard-edged (a scaled box, no gradient). Hover-capable pointers only, so a touch tap
+ *   --hds-wipe-c     button-wipe.ts: the clip, collapsed onto the edge the pointer crossed
+ *                    or inset(0) when in (--hds-wipe-t: 0s while it jumps edges), so it
+ *                    grows in from the entry edge and out the exit, on the productive curve.
+ * Hard-edged (a straight clip edge, no gradient). Hover-capable pointers only, so a touch tap
  * never sticks a fill; instant under reduced motion (the motion token zeroes). The layer
  * hides while disabled and on :active, so the pressed fill / inset wash under it shows. */
 @media (hover: hover) {
@@ -569,33 +591,47 @@
     z-index: calc(var(--primitive-zIndex-0) - 1); /* one below the label */
     background: var(--hds-wipe-fill);
     filter: var(--hds-wipe-f);
-    transform-origin: var(--hds-wipe-o);
-    scale: var(--hds-wipe-s, 0);
-    transition: scale var(--hds-wipe-t, var(--hds-motion-productive));
+    border-radius: inherit;
+    clip-path: var(--hds-wipe-c, inset(0 100% 0 0));
+    transition: clip-path var(--hds-wipe-t, var(--hds-motion-productive));
   }
   .hds-btn-wipe:is(:active, :disabled)::before {
     display: none;
   }
 }
 
-/* Inline accent links — color + underline opacity on hover. Shared by InlineLink
- * and any text-link wrapper that composes the same class. */
+/* Inline text links (C2). Text and underline are both content.primary at rest and both turn
+ * content.secondary on hover, together, on the productive motion token. A real
+ * text-decoration underline, so skip-ink breaks it around descenders (g, y, p). Weight and gap
+ * from the link tokens: 0.125em keeps a 2px line at 16px and thins it on small text. */
 .hds-link {
-  color: var(--semantic-accent-content);
+  color: var(--semantic-color-content-primary);
   text-decoration: underline;
-  /* Weight and gap from the link tokens; 0.125em keeps a 2px line at 16px and thins it on small text.
-   * skip-ink stays on so the line breaks around descenders (g, y, p). */
   text-decoration-thickness: min(var(--semantic-link-underlineThickness), 0.125em);
   text-underline-offset: var(--semantic-link-underlineOffset);
   text-decoration-skip-ink: auto;
-  text-decoration-color: color-mix(in oklch, var(--semantic-accent-content) 40%, transparent);
-  transition:
-    color var(--hds-motion-productive-duration),
-    text-decoration-color var(--hds-motion-productive-duration);
+  text-decoration-color: currentColor;
+  transition: color var(--hds-motion-productive);
 }
 .hds-link:hover {
-  color: var(--semantic-accent-contentHover);
-  text-decoration-color: var(--semantic-accent-contentHover);
+  color: var(--semantic-color-content-secondary);
+}
+/* A link that stands on its own (outside running text, InlineLink standalone) gets a 24px hit
+ * area, 44px tall on touch: block padding with an equal negative margin, so the layout does
+ * not move; the underline stays under the text. Links inside running text are exempt
+ * (WCAG 2.5.8) and stay inline. */
+.hds-link-standalone {
+  --hds-link-hit: var(--primitive-size-24);
+  --hds-link-pad: max(0px, calc((var(--hds-link-hit) - 1lh) / 2));
+  display: inline-block;
+  min-width: var(--primitive-size-24);
+  padding-block: var(--hds-link-pad);
+  margin-block: calc(-1 * var(--hds-link-pad));
+}
+@media (pointer: coarse) {
+  .hds-link-standalone {
+    --hds-link-hit: var(--primitive-size-interactive-min);
+  }
 }
 
 /* Text-secondary ? text-primary on hover. Use on nav items, prev/next arrows,

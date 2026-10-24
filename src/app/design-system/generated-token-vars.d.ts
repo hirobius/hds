@@ -19,6 +19,7 @@ declare module 'react' {
     '--primitive-color-neutral-400'?: string | undefined;
     '--primitive-color-neutral-450'?: string | undefined;
     '--primitive-color-neutral-500'?: string | undefined;
+    '--primitive-color-neutral-550'?: string | undefined;
     '--primitive-color-neutral-600'?: string | undefined;
     '--primitive-color-neutral-700'?: string | undefined;
     '--primitive-color-neutral-800'?: string | undefined;
@@ -557,6 +558,8 @@ declare module 'react' {
     /** @deprecated hds#891 soft surfaces: secondary Button has no border @removeIn 1.0.0 */
     '--component-button-secondary-border-disabled'?: string | undefined;
     '--component-button-secondary-text'?: string | undefined;
+    '--component-button-tertiary-bg-hover'?: string | undefined;
+    '--component-button-tertiary-bg-pressed'?: string | undefined;
     '--component-input-bg'?: string | undefined;
     '--component-input-text'?: string | undefined;
     '--component-input-border'?: string | undefined;
