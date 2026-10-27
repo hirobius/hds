@@ -64,7 +64,8 @@ describe('./icons subpath', () => {
     });
     expect(read('vite.config.lib.ts')).toContain('src/icons.ts');
     expect(JSON.parse(read('tsconfig.dts.json')).include).toContain('src/icons.ts');
-    expect(read('scripts/smoke-consumer.mjs')).toContain("'./icons'");
+    // The smoke derives its subpath lists from exports (hds#458), so ./icons is in them.
+    expect(read('scripts/smoke-consumer.mjs')).toContain('smokeSubpaths(');
   });
 
   it('Button iconOnly renders an svg for an icon from the subpath through Icon', () => {

@@ -10,9 +10,12 @@
  *   2. Create a throwaway scratch app in a temp dir, install the tarball plus
  *      the declared peer dependencies (react, react-dom, react-router) from the
  *      registry — the package's own `dependencies` come along transitively.
- *   3. From inside that scratch app, RESOLVE every public subpath against the
- *      package `exports` map, and IMPORT every JS subpath, asserting the headline
- *      symbols are present.
+ *   3. From inside that scratch app, RESOLVE every key of the package `exports`
+ *      map and IMPORT every JS subpath in a clean Node process with no `window`
+ *      (lists derived from package.json, scripts/lib/smoke-surface.mjs), asserting
+ *      the headline symbols where listed. 3a audits the bare imports in dist: each
+ *      is a dependency or peer, and an optional peer is reachable only from its
+ *      own subpath (hds#458).
  *   3b. RENDER probe (jsdom): mount real components (Button, Spinner) via
  *      renderToStaticMarkup, exercise the router seam (anchor fallback with no
  *      provider + custom LinkComponent injection + window.location currentPath),
@@ -20,16 +23,12 @@
  *      embedded fonts, and fonts.css + its woff2 files resolve from the package. Catches the font/CSS/router-context regressions
  *      the resolve+import probe cannot see.
  *
- * Subpaths covered (must stay in sync with package.json#exports):
- *   '.'            → main barrel (Button, Card, …)
- *   './tokens'     → design-token bridge (default export)
- *   './tokens.css' → base stylesheet (resolve-only; Node can't import CSS)
- *   './cn'         → cn() class-merge helper
- *   './manifest'   → hds-manifest.json as ESM (default export)
- *   './contexts'   → React context providers (ThemeProvider, …)
- *   './eslint-plugin' → the consumer ESLint plugin (configs.recommended)
- * plus AGENTS.md and the hds-mcp bin (section 3f), and the upgrade command's
- * design-system bin run with --dry-run on a small project (section 3g).
+ * The probe, render probe and consumer typecheck run under React 18.3 and again
+ * under React 19 (3h), and the typecheck runs at the TypeScript floor (TS_FLOOR,
+ * stated in CONSUMING.md) and at the pinned devDependency TypeScript. Also
+ * checked: AGENTS.md and the hds-mcp bin (section 3f), and the upgrade command's
+ * design-system bin run with --dry-run on a small project (section 3g). Tool
+ * versions come from this repo's devDependencies, never `@latest`.
  *
  * Any unresolved subpath, missing symbol, or unresolvable bare import inside the
  * bundle (e.g. a phantom dependency that isn't declared) FAILS the run. This is
@@ -56,6 +55,12 @@ import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { extractTsxFences } from './lib/doc-fences.mjs';
+import {
+  TS_FLOOR,
+  auditDistImports,
+  importEverySubpath,
+  smokeSubpaths,
+} from './lib/smoke-surface.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -63,6 +68,10 @@ const PKG = '@hirobius/design-system';
 
 const KEEP = process.argv.includes('--keep');
 const SKIP_BUILD = process.argv.includes('--skip-build');
+const ROOT_PKG = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
+const SUBPATHS = smokeSubpaths(ROOT_PKG);
+// Smoke tools are pinned in devDependencies, so a tool release cannot turn the run red.
+const tool = (name) => `${name}@${ROOT_PKG.devDependencies[name]}`;
 
 function log(msg) {
   console.log(`[smoke-consumer] ${msg}`);
@@ -129,11 +138,18 @@ run(
     'react@^18.3',
     'react-dom@^18.3',
     'react-router@^7',
+    // The optional peers, so /form and /scroll import (and their doc fences resolve).
+    'react-hook-form@^7',
+    'zod@^3.23',
+    '@hookform/resolvers@^3.9',
+    'lenis@^1.3',
     // jsdom backs the render probe below (real browser globals so the router
     // fallback's window.location path executes as a consumer would hit it).
-    'jsdom@^25',
-    // Dev deps for the TypeScript consumer typecheck (section 3c).
-    'typescript@^5.7',
+    tool('jsdom'),
+    // Dev deps for the TypeScript consumer typecheck (section 3c): the pinned
+    // TypeScript and the floor consumers may use.
+    tool('typescript'),
+    `typescript-floor@npm:typescript@${TS_FLOOR}`,
     '@types/react@^18',
     '@types/react-dom@^18',
     '--no-audit',
@@ -152,9 +168,9 @@ import { strict as assert } from 'node:assert';
 const PKG = ${JSON.stringify(PKG)};
 const failures = [];
 
-// Subpaths that must RESOLVE against the exports map (incl. the CSS asset,
-// which Node cannot import but must still resolve to a real file).
-const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui', './icons', './eslint-plugin']
+// Every key of the exports map must RESOLVE (incl. the CSS assets, which Node
+// cannot import but must still resolve to a real file).
+const resolvable = ${JSON.stringify(SUBPATHS.resolve)}
   .map((s) => (s === '.' ? PKG : PKG + s.slice(1)));
 
 for (const spec of resolvable) {
@@ -168,7 +184,8 @@ for (const spec of resolvable) {
   }
 }
 
-// JS subpaths that must IMPORT and expose their headline symbols.
+// Headline symbols. Every JS subpath is also imported bare in a clean process
+// (importEverySubpath, run after this probe).
 const importChecks = [
   [PKG, (m) => assert.equal(typeof m.Button, 'object', 'Button missing') ||
                 assert.equal(typeof m.cn, 'function', 'cn missing') ||
@@ -187,6 +204,10 @@ const importChecks = [
     const opts = m.hdsMuiThemeOptions();
     assert.ok(opts.palette && opts.palette.error && String(opts.palette.error.main).startsWith('var(--'), 'mui palette not token-wired');
   }],
+  [PKG + '/patterns', (m) => assert.equal(typeof m.Page, 'function', 'Page missing')],
+  [PKG + '/form', (m) => assert.ok(Object.keys(m).length > 0, 'form exports nothing')],
+  [PKG + '/scroll', (m) => assert.ok(Object.keys(m).length > 0, 'scroll exports nothing')],
+  [PKG + '/brand', (m) => assert.ok(Object.keys(m).length > 0, 'brand exports nothing')],
 ];
 
 for (const [spec, check] of importChecks) {
@@ -353,20 +374,21 @@ console.log('\\n[render-probe] component mount + router-seam + CSS/font checks p
 
 writeFileSync(join(app, 'probe-render.mjs'), renderProbe);
 
-log('running consumer probe…');
 let ok = true;
-try {
-  run('node', ['probe.mjs'], { cwd: app, stdio: 'inherit' });
-} catch {
-  ok = false;
-}
 
-if (ok) {
-  log('running render probe (jsdom mount + router seam + CSS)…');
-  try {
-    run('node', ['probe-render.mjs'], { cwd: app, stdio: 'inherit' });
-  } catch {
+// ── 3a. Bare-import audit over the installed dist ────────────────────────────
+{
+  log('auditing bare imports in dist/*.js and dist/chunks/*.js…');
+  const pkgDir = join(app, 'node_modules', ...PKG.split('/'));
+  const installedPkg = JSON.parse(readFileSync(join(pkgDir, 'package.json'), 'utf8'));
+  const problems = auditDistImports(pkgDir, installedPkg);
+  if (problems.length) {
+    for (const p of problems) console.error(`  imports FAIL ${p}`);
     ok = false;
+  } else {
+    console.log(
+      '  imports ok   every bare import is declared; optional peers stay in their subpaths',
+    );
   }
 }
 
@@ -374,9 +396,8 @@ if (ok) {
 // A real consumer compiles with strict + skipLibCheck + bundler resolution
 // (the Vite/Next default). Types must resolve from the package's built dist/*.d.ts
 // — NOT from source — and importing a primitive from the root AND a subpath must
-// typecheck with only react/react-dom present (no router/form/zod peers).
-if (ok) {
-  log('running TypeScript consumer typecheck (tsc --noEmit, strict, bundler)…');
+// typecheck. Runs at the TypeScript floor and at the pinned TypeScript.
+{
   writeFileSync(
     join(app, 'tsconfig.consumer.json'),
     `${JSON.stringify(
@@ -415,13 +436,58 @@ if (ok) {
       '',
     ].join('\n'),
   );
-  try {
-    run('npx', ['tsc', '-p', 'tsconfig.consumer.json'], { cwd: app, stdio: 'inherit' });
-    console.log('  typecheck ok   consumer tsc --noEmit passed (types resolved from dist)');
-  } catch {
-    console.error('  typecheck FAIL consumer tsc --noEmit reported errors');
-    ok = false;
+}
+
+function typecheck(lane) {
+  let green = true;
+  for (const ts of ['typescript-floor', 'typescript']) {
+    const tscDir = join(app, 'node_modules', ts);
+    const { version } = JSON.parse(readFileSync(join(tscDir, 'package.json'), 'utf8'));
+    try {
+      run(process.execPath, [join(tscDir, 'bin', 'tsc'), '-p', 'tsconfig.consumer.json'], {
+        cwd: app,
+        stdio: 'inherit',
+      });
+      console.log(
+        `  typecheck ok   ${lane} · TS ${version} consumer tsc --noEmit (types from dist)`,
+      );
+    } catch {
+      console.error(
+        `  typecheck FAIL ${lane} · TS ${version} consumer tsc --noEmit reported errors`,
+      );
+      green = false;
+    }
   }
+  return green;
+}
+
+// One React lane: resolve + headline probe, bare import of every JS subpath with
+// no window, the jsdom render probe, and the consumer typecheck at both TS versions.
+function runLane(lane) {
+  log(`${lane}: running consumer probe…`);
+  try {
+    run('node', ['probe.mjs'], { cwd: app, stdio: 'inherit' });
+  } catch {
+    return false;
+  }
+  log(`${lane}: importing every JS subpath in a clean Node process (no window)…`);
+  const bare = importEverySubpath(app, PKG, SUBPATHS.imports);
+  for (const f of bare.failures) console.error(`  import  FAIL ${f}`);
+  if (bare.failures.length) return false;
+  console.log(`  import  ok   ${bare.passed.length} JS subpaths imported with no window`);
+  log(`${lane}: running render probe (jsdom mount + router seam + CSS)…`);
+  try {
+    run('node', ['probe-render.mjs'], { cwd: app, stdio: 'inherit' });
+  } catch {
+    return false;
+  }
+  return typecheck(lane);
+}
+
+const greenLanes = [];
+if (ok) {
+  ok = runLane('React 18.3');
+  if (ok) greenLanes.push('React 18.3');
 }
 
 // ── 3c2. Starter kit + doc samples compile against the packed build (hds#457) ──
@@ -453,23 +519,6 @@ const FIXTURE_NAME = 'fixture-removed-name';
 
 if (ok) {
   log('typechecking starter-kit and doc ```tsx fences against the packed build…');
-  // The optional peers the form/scroll docs import, so those fences resolve.
-  run(
-    'npm',
-    [
-      'install',
-      'react-hook-form@^7',
-      'zod@^3.23',
-      '@hookform/resolvers@^3.9',
-      'lenis@^1.3',
-      '--no-save',
-      '--no-audit',
-      '--no-fund',
-      '--loglevel',
-      'error',
-    ],
-    { cwd: app },
-  );
   const samples = join(app, 'doc-samples');
   mkdirSync(samples, { recursive: true });
   const origin = new Map(); // generated file name → "doc:line"
@@ -591,7 +640,7 @@ if (ok) {
 if (ok) {
   log('running publint (export/types correctness)…');
   try {
-    run('npx', ['--yes', 'publint@latest'], { cwd: ROOT, stdio: 'inherit' });
+    run('pnpm', ['exec', 'publint'], { cwd: ROOT, stdio: 'inherit' });
   } catch {
     console.error('  publint FAIL');
     ok = false;
@@ -636,8 +685,8 @@ if (ok) {
         tarballPath,
         'react@^18.3',
         'react-dom@^18.3',
-        'vite@^6',
-        '@vitejs/plugin-react@^4',
+        tool('vite'),
+        tool('@vitejs/plugin-react'),
         '--no-audit',
         '--no-fund',
         '--loglevel',
@@ -646,9 +695,20 @@ if (ok) {
       { cwd: viteApp, stdio: 'inherit' },
     );
     run('npx', ['vite', 'build'], { cwd: viteApp, stdio: 'inherit' });
-    console.log('  build ok   consumer vite build succeeded without router/form/zod');
-  } catch {
-    console.error('  build FAIL consumer vite build errored');
+    // sideEffects must keep the CSS import: the built CSS carries the tokens.
+    const assets = join(viteApp, 'dist', 'assets');
+    const css = readdirSync(assets)
+      .filter((f) => f.endsWith('.css'))
+      .map((f) => readFileSync(join(assets, f), 'utf8'))
+      .join('\n');
+    if (!css.includes('--semantic-color-surface-page')) {
+      throw new Error('built CSS has no --semantic-color-surface-page (tokens.css tree-shaken?)');
+    }
+    console.log('  build ok   consumer vite build succeeded without router/form/zod; CSS kept');
+  } catch (err) {
+    console.error(
+      `  build FAIL consumer vite build errored${err?.message ? `: ${err.message}` : ''}`,
+    );
     ok = false;
   }
 }
@@ -775,6 +835,36 @@ if (ok) {
   }
 }
 
+// ── 3h. React 19 lane — the peers allow ^19, so prove it ────────────────────
+if (ok) {
+  log('switching the scratch app to React 19…');
+  run(
+    'npm',
+    [
+      'install',
+      'react@^19',
+      'react-dom@^19',
+      '@types/react@^19',
+      '@types/react-dom@^19',
+      '--no-audit',
+      '--no-fund',
+      '--loglevel',
+      'error',
+    ],
+    { cwd: app, stdio: 'inherit' },
+  );
+  const { version } = JSON.parse(
+    readFileSync(join(app, 'node_modules', 'react', 'package.json'), 'utf8'),
+  );
+  if (!version.startsWith('19.')) {
+    console.error(`  react19 FAIL installed react is ${version}`);
+    ok = false;
+  } else {
+    ok = runLane(`React ${version}`);
+    if (ok) greenLanes.push(`React ${version}`);
+  }
+}
+
 // ── 4. Report + cleanup ──────────────────────────────────────────────────────
 
 // Outcome check: a green run must have actually run the 3g upgrade bin smoke,
@@ -787,9 +877,15 @@ if (ok && !ranUpgrade) {
   console.error('  upgrade FAIL upgrade bin smoke did not run');
   ok = false;
 }
+if (ok && greenLanes.length !== 2) {
+  console.error(
+    `  lanes FAIL want React 18.3 and 19 green, got: ${greenLanes.join(', ') || 'none'}`,
+  );
+  ok = false;
+}
 
 if (ok) {
-  log('PASS — every public subpath resolves and imports cleanly.');
+  log(`PASS — every public subpath resolves and imports cleanly (${greenLanes.join(' + ')}).`);
   if (!KEEP) rmSync(scratch, { recursive: true, force: true });
   process.exit(0);
 } else {
