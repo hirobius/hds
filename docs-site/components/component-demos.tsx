@@ -754,6 +754,7 @@ function PaginationDemo() {
   return (
     <div className="flex flex-col gap-6">
       <Pagination count={10} page={page} onPageChange={setPage} />
+      {/* Compact Previous and Next are outlined; the end you are on stays outlined, faded (hds#886). */}
       <Pagination variant="compact" label="Item" count={4} page={item} onPageChange={setItem} />
     </div>
   );
@@ -908,26 +909,58 @@ function TabsDemo() {
 
 function TagDemo() {
   const [active, setActive] = useState('tokens');
+  const [terms, setTerms] = useState(['design systems', 'tokens', 'contract']);
   return (
-    <div style={demoRow}>
-      {['tokens', 'components', 'patterns'].map((tag) => (
-        <Tag key={tag} active={active === tag} onClick={() => setActive(tag)}>
-          {tag}
-        </Tag>
-      ))}
+    <div style={{ display: 'grid', gap: XS }}>
+      <div style={demoRow}>
+        {['tokens', 'components', 'patterns'].map((tag) => (
+          <Tag key={tag} active={active === tag} onClick={() => setActive(tag)}>
+            {tag}
+          </Tag>
+        ))}
+      </div>
+      {/* Dismissible: a static label; only the X (40px hit area) removes it. */}
+      <div style={demoRow}>
+        {terms.map((term) => (
+          <Tag key={term} onDismiss={() => setTerms((t) => t.filter((x) => x !== term))}>
+            {term}
+          </Tag>
+        ))}
+      </div>
     </div>
   );
 }
 
 function TextDemo() {
+  // minmax(0, 1fr): a grid track sized to its content would grow to the full
+  // one-line width of the truncated row, so the track has to be allowed to shrink.
   return (
-    <div style={{ display: 'grid', gap: XS }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: XS }}>
       <Text variant="display">Display</Text>
       <Text variant="title">Title</Text>
       <Text variant="body">Body for flowing prose and paragraph copy.</Text>
       <Text variant="ui">UI for labels and control text.</Text>
       <Text variant="caption">Caption for supporting metadata.</Text>
       <Text variant="mono">semantic.typography.mono</Text>
+      {/* hds#916: truncate gives way to a neighbour in a flex row; lineClamp breaks between words. */}
+      <div style={{ display: 'flex', gap: SM, alignItems: 'center' }}>
+        <Text variant="ui" truncate>
+          Senior Design Systems Engineer, Component Platform and Tooling, Remote across the Americas
+        </Text>
+        <Badge>New</Badge>
+      </div>
+      <Text variant="body" lineClamp={2}>
+        A note under a card&apos;s facts stays at two lines at most: the rest of this sentence runs
+        on past the second line so the clamp has something to cut, and the last visible word ends in
+        an ellipsis instead of a half-cut letter.
+      </Text>
+      <Text variant="mono" lineClamp={4}>
+        (&quot;design system&quot; OR &quot;design systems&quot; OR &quot;component library&quot;)
+        AND (engineer OR technologist OR lead) site:boards.greenhouse.io OR site:jobs.lever.co OR
+        site:jobs.ashbyhq.com -intern -internship -contract -agency -recruiter -&quot;staffing&quot;
+        -&quot;talent partner&quot;
+        semantic.typography.mono.font-family.fallback-stack.with-no-spaces-anywhere-in-it
+      </Text>
     </div>
   );
 }

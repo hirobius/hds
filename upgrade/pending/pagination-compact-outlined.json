@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Compact Pagination's Previous and Next now draw an outline and a disabled end stays outlined and faded instead of grey-filled, so drop any local CSS that bordered them or cleared the disabled fill."
+}

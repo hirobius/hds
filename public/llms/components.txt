@@ -721,17 +721,21 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline p
   - value: string
 
 ### Tag
-Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visi…
+Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.
   - active: boolean = false
   - children: ReactNode
+  - dismissLabel: string
+  - onDismiss: (() => void)
 
 ### Text
 Text — polymorphic typography primitive spanning the full HDS type ramp.
   - as: "symbol" | "object" | "title" | "a" | "button" | "div" | "form" | "h2" | "h3" |… = defaultTagMap[variant]
   - children: ReactNode
   - className: string
+  - lineClamp: TextLineClamp
   - style: CSSProperties
   - tone: 'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'dang…
+  - truncate: boolean
   - variant: "display" | "title" | "titleSm" | "body" | "ui" | "caption" | "mono" | "heading…
   - weight: 'regular' | 'medium' | 'bold'
 
