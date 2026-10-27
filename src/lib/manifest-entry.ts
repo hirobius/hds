@@ -6,10 +6,11 @@
  *
  *     import manifest from '@hirobius/design-system/manifest';
  *
- * The library build (vite.config.lib.ts) inlines the JSON via the
- * `virtual:hds-manifest` plugin so this module produces a zero-runtime-fetch
- * ESM bundle. In dev (TypeScript path resolution), the import resolves to
- * the JSON file directly via `resolveJsonModule`.
+ * The library build (vite.config.lib.ts) inlines the JSON, so this module
+ * produces a zero-runtime-fetch ESM bundle, and leaves out the fields
+ * scripts/lib/manifest-bundle.mjs names (`figmaLink`, `consumers`,
+ * `a11yRules[].testId`; hds#413). In dev (TypeScript path resolution), the
+ * import resolves to the JSON file directly via `resolveJsonModule`.
  */
 import manifestJson from '../../public/hds-manifest.json';
 import type { SystemManifest } from '../app/data/manifest-types';
