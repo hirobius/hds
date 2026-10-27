@@ -100,6 +100,21 @@
         "cssVarWrites": ["--semantic-space-sidebar-railWidth"]
       },
       "facts": ["css-var-removed:--semantic-space-sidebar-railWidth"]
+    },
+    {
+      "id": "tenant/accent-pair-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-pair-demo brand (data-brand=\"accent-pair-demo\") no longer get its nav active colors, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-bgActive",
+        "css-var-removed:--component-nav-borderActive"
+      ]
     }
   ]
 }
