@@ -149,6 +149,23 @@ describe('standing issues', () => {
     for (const line of rollbackLines('0.32.0')) expect(plan.comment).toContain(line);
   });
 
+  it('a consumer already past the bad version (on a fix) has nothing pending: closed', () => {
+    const plan = planIssue(issue(4, '0.33.0'), consumer('hirobius/app', '0.34.0'), {
+      version: '0.33.0',
+      good: '0.32.0',
+    });
+    expect(plan.action).toBe('close');
+  });
+
+  it('retargets only the bad version, never a prerelease of it', () => {
+    const plan = planIssue(
+      { ...issue(4, '0.33.0'), body: `${MARKER}\n0.33.0, not 0.33.0-rc.1 or 10.33.0. Done.` },
+      consumer('hirobius/app', '0.31.0'),
+      { version: '0.33.0', good: '0.32.0' },
+    );
+    expect(plan.body).toBe(`${MARKER}\n0.32.0, not 0.33.0-rc.1 or 10.33.0. Done.`);
+  });
+
   it('an issue that targets another version is left alone', () => {
     const plan = planIssue(issue(4, '0.32.0'), consumer('hirobius/app', '0.31.0'), {
       version: '0.33.0',
@@ -221,6 +238,48 @@ describe('yank', () => {
     expect(text).toContain('npm deprecate');
     expect(text).toContain('HDS_FLEET_TOKEN');
     expect(text).toContain('DISCORD_WEBHOOK_URL');
+  });
+
+  it('pages through every open issue in a consumer repo', async () => {
+    const page1 = Array.from({ length: 100 }, (_, i) => ({ ...issue(100 + i, '0.31.0') }));
+    let page = 0;
+    const r = routes({ issues: { 'hirobius/app': [issue(4, '0.33.0')] } });
+    r[`GET ${API}/repos/hirobius/app/issues`] = () =>
+      page++ === 0 ? [200, page1] : [200, [issue(4, '0.33.0')]];
+    const gh = fakeFetch(r);
+    const out = [];
+    await yank(
+      base({
+        fetch: gh.fetch,
+        discover: async () => ({ consumers: [consumers[0]] }),
+        log: (l) => out.push(l),
+      }),
+    );
+    expect(out.join('\n')).toMatch(/hirobius\/app#4: edit/);
+    expect(
+      gh.calls.filter((c) => c.url.includes('/hirobius/app/issues?')).map((c) => c.url),
+    ).toEqual([
+      `${API}/repos/hirobius/app/issues?state=open&per_page=100&page=1`,
+      `${API}/repos/hirobius/app/issues?state=open&per_page=100&page=2`,
+    ]);
+  });
+
+  it('a write GitHub answers 404 to counts as failed', async () => {
+    const r = routes({ issues: { 'hirobius/app': [issue(4, '0.33.0')] } });
+    delete r[`PATCH ${API}/repos/hirobius/app/issues/4`];
+    const gh = fakeFetch(r);
+    const result = await yank(
+      base({ apply: true, fetch: gh.fetch, discover: async () => ({ consumers: [consumers[0]] }) }),
+    );
+    expect(result.exitCode).toBe(1);
+  });
+
+  it('refuses a --good that npm marks deprecated', async () => {
+    const gh = fakeFetch(routes());
+    const result = await yank(
+      base({ good: '0.32.0', deprecated: new Map([['0.32.0', 'Broken']]), fetch: gh.fetch }),
+    );
+    expect(result.exitCode).toBe(2);
   });
 
   it('refuses a version that was never published, or one with no good version before it', async () => {

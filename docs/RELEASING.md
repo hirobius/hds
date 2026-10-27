@@ -24,7 +24,7 @@ two commands need Adrian's own npm login (an owner of the package).
 2. Run the npm commands it printed, logged in as an owner (`npm login`):
 
    ```sh
-   npm deprecate @hirobius/design-system@<bad> "Broken: use <good>"
+   npm deprecate @hirobius/design-system@<bad> "Broken: use <good>. <what is broken>"
    npm dist-tag add @hirobius/design-system@<good> latest
    ```
 
@@ -47,7 +47,10 @@ two commands need Adrian's own npm login (an owner of the package).
      Issues read and write on the consumer repos).
 
    A missing variable skips its step and names the variable; run it again
-   with the variable set. A second run changes nothing it already changed.
+   with the variable set. A re-run leaves an already-yanked Release and
+   already-moved issues alone, but Discord posts again: leave
+   `DISCORD_WEBHOOK_URL` unset on a re-run. Without `HDS_FLEET_TOKEN` the dry
+   run cannot list the issue edits either.
 
 4. Ship the fix as a new release. The upgrade command
    (`npx @hirobius/design-system@latest upgrade`) skips versions npm marks

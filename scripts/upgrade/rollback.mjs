@@ -6,7 +6,7 @@
  * standing upgrade issue (yank.mjs). The upgrade command refuses downgrades
  * and codemods only run forward, so the way back is git, not the tool.
  */
-const PACKAGE = '@hirobius/design-system';
+import { HDS_PACKAGE as PACKAGE } from '../../codemods/lib/installed-version.mjs';
 
 /**
  * The numbered steps, as markdown lines.

@@ -36,11 +36,12 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readDeprecated } from '../../codemods/lib/deprecated.mjs';
+import { HDS_PACKAGE } from '../../codemods/lib/installed-version.mjs';
 import { compareVersions, isVersion } from '../../codemods/lib/semver.mjs';
 import { SELF_REPO, TOKEN_VAR, discoverConsumers, fleetToken } from './consumers.mjs';
 import { NO_BACKPORTS, rollbackLines } from './rollback.mjs';
 
-const PACKAGE = '@hirobius/design-system';
+const PACKAGE = HDS_PACKAGE;
 const API = 'https://api.github.com';
 const ACCESS_URL = `https://www.npmjs.com/package/${PACKAGE}/access`;
 const ROLLBACK_URL = 'https://github.com/hirobius/hds/blob/main/UPGRADING.md#if-a-release-is-bad';
@@ -113,20 +114,22 @@ export function targetOf(issue) {
   return /\bto v?(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)\b/.exec(issue.title)?.[1] ?? null;
 }
 
+/** `v` as a whole version: not inside 10.33.0, 0.33.01 or 0.33.0-rc.1 (a sentence's full stop is fine). */
 const versionPattern = (v) =>
-  new RegExp(`(?<![\\d.])${v.replace(/[.+-]/g, (c) => `\\${c}`)}(?![\\d])`, 'g');
+  new RegExp(`(?<![\\d.])${v.replace(/[.+-]/g, (c) => `\\${c}`)}(?!\\d|\\.\\d|-[0-9A-Za-z])`, 'g');
 
 /**
  * What to do with one standing issue: `skip` (it targets another version),
- * `close` (every importer is already at the good version or past it, and none
- * took the bad one) or `edit` (retarget title and body to the good version).
+ * `close` (no importer is on the bad version or below the good one: nothing
+ * is pending) or `edit` (retarget title and body to the good version; the
+ * comment carries the rollback steps for an importer that took the bad one).
  */
 export function planIssue(issue, consumer, { version, good, reason = '' }) {
   if (!isStanding(issue) || issue.state === 'closed' || targetOf(issue) !== version) {
     return { action: 'skip' };
   }
   const resolved = consumer.importers.map((i) => i.resolved).filter(Boolean);
-  const tookBad = resolved.some((v) => compareVersions(v, version) >= 0);
+  const tookBad = resolved.some((v) => compareVersions(v, version) === 0);
   const behind = resolved.length === 0 || resolved.some((v) => compareVersions(v, good) < 0);
   const why = `${PACKAGE} ${version} is deprecated${reason ? `: ${reason}` : ''}.`;
   if (!tookBad && !behind) {
@@ -172,7 +175,7 @@ function github(token, fetch) {
       },
       ...(body ? { body: JSON.stringify(body) } : {}),
     });
-    if (res.status === 404) return null;
+    if (res.status === 404 && method === 'GET') return null;
     if (!res.ok) throw new Error(`${method} ${url} answered ${res.status}`);
     return res.status === 204 ? {} : res.json().catch(() => ({}));
   };
@@ -209,6 +212,10 @@ export async function yank({
   good ??= lastGood(version, published, deprecated);
   if (!good || compareVersions(good, version) >= 0) {
     log(`No good version before ${version} to send people back to: pass --good <version>.`);
+    return { exitCode: 2 };
+  }
+  if (deprecated.has(good)) {
+    log(`${good} is deprecated on npm too (${deprecated.get(good)}): pass another --good.`);
     return { exitCode: 2 };
   }
   const mode = apply ? '' : ' (dry run: nothing is written; pass --apply to do it)';
@@ -261,8 +268,16 @@ export async function yank({
       const { consumers } = await discover({ token: fleet.value, tokenVar: fleet.name, fetch });
       for (const consumer of consumers) {
         if (consumer.skip?.length) continue;
-        const issues =
-          (await gh('GET', `${API}/repos/${consumer.repo}/issues?state=open&per_page=100`)) ?? [];
+        const issues = [];
+        for (let page = 1; ; page += 1) {
+          const batch =
+            (await gh(
+              'GET',
+              `${API}/repos/${consumer.repo}/issues?state=open&per_page=100&page=${page}`,
+            )) ?? [];
+          issues.push(...batch);
+          if (batch.length < 100) break;
+        }
         for (const issue of issues) {
           const plan = planIssue(issue, consumer, { version, good, reason });
           if (plan.action === 'skip') continue;
@@ -281,8 +296,9 @@ export async function yank({
             log(`   ${ref}: edit to "${plan.title}" and comment the rollback steps`);
             if (!apply) continue;
             await step(ref, async () => {
-              await gh('PATCH', url, { title: plan.title, body: plan.body });
+              // Comment first: once the title moves, a re-run no longer finds the issue.
               await gh('POST', `${url}/comments`, { body: plan.comment });
+              await gh('PATCH', url, { title: plan.title, body: plan.body });
             });
           }
         }

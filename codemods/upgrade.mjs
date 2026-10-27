@@ -466,7 +466,7 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
       );
     } else if (compareVersions(from, target) > 0) {
       problems.push(
-        `Installed ${from}${where} is newer than ${target}: this tool does not downgrade. Pass --to ${from} or newer.`,
+        `Installed ${from}${where} is newer than ${target}: this tool does not downgrade. Pass --to ${from} or newer.${report.skipped.length > 0 ? ` ${report.skipped[0].version} is deprecated on npm; to roll back, see "If a release is bad" in UPGRADING.md.` : ''}`,
       );
     }
   });
