@@ -66,13 +66,14 @@ const tagPillVariants = /* @__PURE__ */ cva(
 // can't remove it. The pill drops its end padding; the X's 40px hit area supplies
 // it (the 16px icon sits 12px from the edge, the pill's own paddingX). The X's
 // negative block margin makes it take one line box of height, so the 40px hit
-// area overhangs the pill instead of growing it.
+// area overhangs the pill instead of growing it. On touch, hds-touch-target lifts
+// it to semantic.size.touchTarget (44px, hds#750).
 const dismissPill =
   'box-border inline-flex min-h-[var(--component-tag-minHeight)] max-w-full items-center whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid border-[var(--component-tag-border)] bg-[var(--component-tag-background)] py-[var(--component-tag-paddingY)] pr-0 pl-[var(--component-tag-paddingX)] text-[var(--component-tag-text)] hds-type-caption';
 
 const dismissButton =
   // tier-ok: a 40px touch hit area is an a11y floor, not a design-scale choice (no semantic size; hds#750, hds#919)
-  'hds-focus inline-flex size-[var(--primitive-size-40)] my-[calc((1lh_-_var(--primitive-size-40))/2)] shrink-0 cursor-pointer items-center justify-center rounded-[var(--component-tag-radius)] border-0 bg-transparent p-0 text-inherit transition-colors hover:text-[var(--semantic-color-content-primary)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]';
+  'hds-focus hds-touch-target inline-flex size-[var(--primitive-size-40)] my-[calc((1lh_-_var(--primitive-size-40))/2)] shrink-0 cursor-pointer items-center justify-center rounded-[var(--component-tag-radius)] border-0 bg-transparent p-0 text-inherit transition-colors hover:text-[var(--semantic-color-content-primary)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 

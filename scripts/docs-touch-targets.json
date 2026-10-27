@@ -20,6 +20,11 @@
     "selector": ".hds-demo-frame button[aria-pressed]"
   },
   {
+    "route": "/docs/components/tag",
+    "name": "Tag dismiss",
+    "selector": ".hds-demo-frame [data-dismissible] button"
+  },
+  {
     "route": "/docs/components/disclosure",
     "name": "Disclosure trigger",
     "selector": ".hds-demo-frame button[aria-expanded]"

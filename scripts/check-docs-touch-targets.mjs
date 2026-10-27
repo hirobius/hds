@@ -4,7 +4,7 @@
  * check-docs-touch-targets.mjs (hds#750)
  *
  * Loads the built docs-site pages of the small controls (sm Button, Tabs and
- * SegmentedControl triggers, Tag, Disclosure trigger, Input clear) on a 390x844
+ * SegmentedControl triggers, Tag and its dismiss X, Disclosure trigger, Input clear) on a 390x844
  * touch phone and a 1024x768 touch tablet (wide, so only `pointer: coarse` can
  * lift it) and fails when any matched control's box is under
  * --semantic-size-touchTarget (44px) in either axis, or when a selector matches

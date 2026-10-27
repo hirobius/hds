@@ -96,6 +96,13 @@ describe('small controls carry a touch hook', () => {
     expect(screen.getByRole('tab', { name: 'Alpha' }).className).toContain('hds-touch-row');
   });
 
+  it('a dismissible Tag lifts its X in both axes', () => {
+    render(<Tag onDismiss={() => {}}>Design</Tag>);
+    expect(screen.getByRole('button', { name: 'Remove Design' }).className).toContain(
+      'hds-touch-target',
+    );
+  });
+
   it('Input clear button carries hds-touch-target', () => {
     render(<Input aria-label="Name" defaultValue="Ada" />);
     expect(screen.getByRole('button', { name: 'Clear input' }).className).toContain(
