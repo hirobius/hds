@@ -18,7 +18,7 @@
  * browser disagree.
  */
 import { chromium } from 'playwright';
-import { existsSync } from 'node:fs';
+import { chromiumPath } from './lib/browser-host.mjs';
 
 const ARCHETYPES = [
   ['button', 'button, a[class*="button" i], [class*="Button" i]'],
@@ -27,16 +27,6 @@ const ARCHETYPES = [
   ['card', '[class*="card" i], article'],
   ['badge', '[class*="badge" i], [class*="chip" i], [class*="tag" i]'],
 ];
-
-function resolveChromium() {
-  if (process.env.PLAYWRIGHT_CHROMIUM_PATH) return process.env.PLAYWRIGHT_CHROMIUM_PATH;
-  for (const p of [
-    '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
-    '/opt/pw-browsers/chromium/chrome-linux/chrome',
-  ])
-    if (existsSync(p)) return p;
-  return undefined;
-}
 
 const srgb = (c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
 const luminance = ([r, g, b]) =>
@@ -71,7 +61,7 @@ async function main() {
     process.exit(2);
   }
 
-  const browser = await chromium.launch({ executablePath: resolveChromium() });
+  const browser = await chromium.launch({ executablePath: chromiumPath() });
   try {
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     await page.goto(url, { waitUntil: 'networkidle', timeout: 45_000 });

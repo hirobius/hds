@@ -786,6 +786,9 @@ const today = () => new Date().toISOString().slice(0, 10);
  *   - the `### Upgrade` block at the top of the version's CHANGELOG section,
  *     before the citations are numbered, so they count its lines;
  *   - the version in upgrade/published.json;
+ *   - src/styles/utility-safelist.generated.css, when the tree has one, from
+ *     the new snapshot (scripts/build-utility-safelist.mjs, hds#449), so the
+ *     utilities this release shipped stay emitted after it;
  *
  * and deletes the merged notes (and upgrade/pending/summary.txt) from
  * upgrade/pending. The summary is that file's one line when main has one
@@ -936,6 +939,9 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
   }
   for (const n of pendingNotes) rmSync(join(repo, n.file));
   if (written) rmSync(join(repo, written.file));
+  // Lazy, like the imports above: --check never writes the safelist.
+  const { SAFELIST_FILE, writeUtilitySafelist } = await import('../build-utility-safelist.mjs');
+  if (existsSync(join(repo, SAFELIST_FILE))) await writeUtilitySafelist(repo);
   return { recorded: true, version, notes: Object.keys(cites), uncited };
 }
 

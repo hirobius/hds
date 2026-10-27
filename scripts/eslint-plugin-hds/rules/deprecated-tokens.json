@@ -178,17 +178,6 @@
       "note": "2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)"
     },
     {
-      "path": "semantic.space.sidebar.railWidth",
-      "cssVar": "--semantic-space-sidebar-railWidth",
-      "composite": false,
-      "tailwind": "sidebar-railWidth",
-      "replacement": "primitive.size.width.280",
-      "replacementCssVar": "--primitive-size-width-280",
-      "replacementTailwind": null,
-      "removeIn": "1.0.0",
-      "note": "2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280"
-    },
-    {
       "path": "semantic.typography.h1",
       "cssVar": "--semantic-typography-h1",
       "composite": true,

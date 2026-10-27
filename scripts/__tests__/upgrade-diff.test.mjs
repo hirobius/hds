@@ -11,6 +11,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { diffSnapshots, factId } from '../upgrade/diff.mjs';
 import { formatJson } from '../upgrade/format.mjs';
+import { factImpact } from '../upgrade/ledger.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CLI = join(REPO, 'scripts/upgrade/diff.mjs');
@@ -284,6 +285,59 @@ describe('diffSnapshots: CSS facts (hds#449)', () => {
   it('has no CSS facts unless both snapshots carry a css section', () => {
     expect(diffSnapshots(prev, snapshot())).toEqual([]);
     expect(diffSnapshots(snapshot(), next)).toEqual([]);
+  });
+
+  it('tags a change under a [data-brand], or to a base variable a tenant overrides, with the tenant slugs', () => {
+    const brand = '[data-brand=pilot],[data-tenant=pilot]';
+    const before = snapshot({
+      css: css({
+        './tokens.css': bundle({
+          variables: {
+            '--accent': { ':root': 'blue', [brand]: 'green' },
+            '--radius': { ':root': '4px', '[data-brand=soft][data-theme=dark]': '8px' },
+            '--plain': { ':root': '1px' },
+            '--pilot-only': { [brand]: '2px' },
+          },
+        }),
+      }),
+    });
+    const after = snapshot({
+      css: css({
+        './tokens.css': bundle({
+          variables: {
+            '--accent': { ':root': 'navy', [brand]: 'green' },
+            '--plain': { ':root': '2px' },
+            '--pilot-only': { [brand]: '3px' },
+          },
+        }),
+      }),
+    });
+    const tenantsOf = Object.fromEntries(
+      diffSnapshots(before, after).map((f) => [f.id, f.tenants ?? null]),
+    );
+    expect(tenantsOf).toEqual({
+      'css-var-removed:--radius': ['soft'],
+      'css-var-changed:--accent::root': ['pilot'],
+      'css-var-changed:--pilot-only:[data-brand=pilot],[data-tenant=pilot]': ['pilot'],
+      'css-var-changed:--plain::root': null,
+    });
+  });
+
+  it('lists a Tailwind preset key that left as breaking, only when both contracts record the preset', () => {
+    const withPreset = (keys) => snapshot({ css: { ...css({}), tailwindPreset: keys } });
+    const facts = diffSnapshots(
+      withPreset(['colors.card.DEFAULT', 'colors.primary.DEFAULT', 'spacing.4']),
+      withPreset(['colors.primary.DEFAULT', 'spacing.4', 'spacing.5']),
+    );
+    expect(facts).toEqual([
+      {
+        id: 'preset-key-removed:colors.card.DEFAULT',
+        kind: 'preset-key-removed',
+        name: 'colors.card.DEFAULT',
+      },
+    ]);
+    expect(factImpact(facts[0])).toBe('breaking');
+    expect(diffSnapshots(snapshot({ css: css({}) }), withPreset([]))).toEqual([]);
   });
 
   it('gives CSS facts stable ids', () => {

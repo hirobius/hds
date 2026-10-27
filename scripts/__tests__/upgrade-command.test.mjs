@@ -1179,6 +1179,42 @@ describe('a deprecation whose removal was kept (upgrade/kept.json)', () => {
   });
 });
 
+// hds#466: ops vendored tailwind.config.tokens.cjs (60 lines against 139), so its
+// utilities and lint vocabulary drifted from the preset the package installs.
+describe('a vendored copy of the Tailwind preset', () => {
+  const PRESET = readFileSync(join(REPO, 'tailwind.config.tokens.cjs'), 'utf8');
+  /** ops-shaped: a pnpm app at 0.20.0 that compiles its own Tailwind from a copied preset. */
+  const OPS_SHAPED = (preset) =>
+    makeProject({
+      'package.json': pkgJson('ops-shaped', { [PKG]: '^0.20.0', react: '^18.3.1' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.20.0' }),
+      'tailwind.config.tokens.cjs': preset,
+      'tailwind.config.ts':
+        "import tokens from './tailwind.config.tokens.cjs';\nexport default { theme: { extend: tokens.theme.extend } };\n",
+      'src/main.tsx': `import '${PKG}/styles.css';\nexport const App = () => null;\n`,
+    });
+
+  it('reports a copy whose keys differ from the installed preset as stale, naming the export to import', () => {
+    const stale = PRESET.replace(/\n\s*card: \{[^}]*\},/, '').replace(
+      "ring: 'var(--role-ring)',",
+      "ring: 'var(--role-ring)',\n        legacy: 'var(--legacy)',",
+    );
+    expect(stale).not.toBe(PRESET);
+    const { report } = json(OPS_SHAPED(stale));
+    const item = report.doByHand.find((i) => i.id === 'tool/vendored-preset');
+    expect(item).toMatchObject({ files: ['tailwind.config.tokens.cjs'], blocking: false });
+    expect(item.plain).toContain(`${PKG}/tailwind-preset`);
+    expect(item.plain).toContain('colors.card.DEFAULT');
+    expect(item.plain).toContain('colors.legacy');
+    expect(UpgradeReport.safeParse(report).success).toBe(true);
+  });
+
+  it('says nothing about a copy that matches the installed preset', () => {
+    const { report } = json(OPS_SHAPED(PRESET));
+    expect(ids(report.doByHand)).not.toContain('tool/vendored-preset');
+  });
+});
+
 describe('a version deprecated on npm (hds#472)', () => {
   const project = () =>
     makeProject({

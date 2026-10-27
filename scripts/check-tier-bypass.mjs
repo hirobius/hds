@@ -30,6 +30,8 @@ const SKIP_DIRS = new Set(['node_modules', '.git', 'dist']);
 // Resolved absolute paths of files that legitimately use --primitive-* vars
 const ALLOWLIST = new Set([
   join(ROOT, 'src', 'styles', 'tokens.generated.css'),
+  // hds#449: the generated utility safelist keeps already-shipped utilities emitted; it adds none.
+  join(ROOT, 'src', 'styles', 'utility-safelist.generated.css'),
   join(ROOT, 'src', 'styles', 'theme.css'),
   join(ROOT, 'src', 'app', 'design-system', 'generated-tokens.ts'),
   join(ROOT, 'src', 'app', 'design-system', 'generated-token-refs.ts'),
