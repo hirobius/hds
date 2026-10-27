@@ -1607,19 +1607,6 @@
             }
           }
         },
-        "subdued": {
-          "$value": "{primitive.color.graphite.200}",
-          "$description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
-          "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Light": "{primitive.color.graphite.200}",
-                "Dark": "{primitive.color.neutral.800}"
-              }
-            }
-          }
-        },
         "subtle": {
           "$value": "{primitive.color.neutral.100}",
           "$description": "Lowest-contrast border for resting hairline edges on flat surfaces.",
@@ -1949,74 +1936,9 @@
         }
       },
       "component": {
-        "gap": {
-          "$value": "{semantic.space.scale.xs}",
-          "$description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.",
-          "$deprecated": "hds#206 — use semantic.space.scale.xs"
-        },
         "medium": {
           "$value": "{primitive.space.3}",
           "$description": "12px adjacent form fields and medium intra-component gaps."
-        },
-        "padding": {
-          "$value": "{semantic.space.surface.padding}",
-          "$description": "Inset for cards, forms and panels (follows surface.padding). DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
-          "$deprecated": "hds#206 — use semantic.space.surface.padding"
-        }
-      },
-      "layout": {
-        "tight": {
-          "$value": "{primitive.space.5}",
-          "$description": "20px (12px compact). Deprecated alias (hds#206): use semantic.space.scale.sm.",
-          "$deprecated": "hds#206 — use semantic.space.scale.sm",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Compact": "{primitive.space.3}"
-              }
-            }
-          }
-        },
-        "normal": {
-          "$value": "{primitive.space.7}",
-          "$description": "28px (16px compact). Deprecated alias (hds#206): use semantic.space.scale.md.",
-          "$deprecated": "hds#206 — use semantic.space.scale.md",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Compact": "{primitive.space.4}"
-              }
-            }
-          }
-        },
-        "gutter": {
-          "$value": "{semantic.space.region.gutter}",
-          "$description": "Column and region gutters (follows region.gutter). DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
-          "$deprecated": "hds#206 — use semantic.space.region.gutter"
-        },
-        "inset": {
-          "$value": "{primitive.space.10}",
-          "$description": "40px (24px compact). Deprecated alias (hds#206): use semantic.space.scale.lg.",
-          "$deprecated": "hds#206 — use semantic.space.scale.lg",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Compact": "{primitive.space.6}"
-              }
-            }
-          }
-        },
-        "spacious": {
-          "$value": "{primitive.space.16}",
-          "$description": "64px (32px compact). Deprecated alias (hds#206): use semantic.space.scale.xl.",
-          "$deprecated": "hds#206 — use semantic.space.scale.xl",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Compact": "{primitive.space.8}"
-              }
-            }
-          }
         }
       },
       "section": {
@@ -3136,7 +3058,7 @@
           },
           "disabled": {
             "$type": "color",
-            "$value": "{semantic.color.border.subdued}",
+            "$value": "{semantic.color.border.default}",
             "$description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
             "$deprecated": "hds#891 soft surfaces: secondary Button has no border"
           }

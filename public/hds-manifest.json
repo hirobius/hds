@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-24T04:14:09.174Z",
+  "generated": "2026-10-27T05:25:26.973Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12991,18 +12991,6 @@
         }
       },
       {
-        "path": "semantic.color.border.subdued",
-        "cssVar": "--semantic-color-border-subdued",
-        "type": "color",
-        "description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
-        "alias": "{primitive.color.graphite.200}",
-        "resolvedValue": "#cbc6c9",
-        "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
-        }
-      },
-      {
         "path": "semantic.color.border.subtle",
         "cssVar": "--semantic-color-border-subtle",
         "type": "color",
@@ -13348,84 +13336,12 @@
         "resolvedValue": "4px"
       },
       {
-        "path": "semantic.space.component.gap",
-        "cssVar": "--semantic-space-component-gap",
-        "type": "dimension",
-        "description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.",
-        "alias": "{semantic.space.scale.xs}",
-        "resolvedValue": "8px"
-      },
-      {
         "path": "semantic.space.component.medium",
         "cssVar": "--semantic-space-component-medium",
         "type": "dimension",
         "description": "12px adjacent form fields and medium intra-component gaps.",
         "alias": "{primitive.space.3}",
         "resolvedValue": "12px"
-      },
-      {
-        "path": "semantic.space.component.padding",
-        "cssVar": "--semantic-space-component-padding",
-        "type": "dimension",
-        "description": "Inset for cards, forms and panels (follows surface.padding). DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
-        "alias": "{semantic.space.surface.padding}",
-        "resolvedValue": "28px"
-      },
-      {
-        "path": "semantic.space.layout.tight",
-        "cssVar": "--semantic-space-layout-tight",
-        "type": "dimension",
-        "description": "20px (12px compact). Deprecated alias (hds#206): use semantic.space.scale.sm.",
-        "alias": "{primitive.space.5}",
-        "resolvedValue": "20px",
-        "compact": {
-          "alias": "{primitive.space.3}",
-          "resolvedValue": "12px"
-        }
-      },
-      {
-        "path": "semantic.space.layout.normal",
-        "cssVar": "--semantic-space-layout-normal",
-        "type": "dimension",
-        "description": "28px (16px compact). Deprecated alias (hds#206): use semantic.space.scale.md.",
-        "alias": "{primitive.space.7}",
-        "resolvedValue": "28px",
-        "compact": {
-          "alias": "{primitive.space.4}",
-          "resolvedValue": "16px"
-        }
-      },
-      {
-        "path": "semantic.space.layout.gutter",
-        "cssVar": "--semantic-space-layout-gutter",
-        "type": "dimension",
-        "description": "Column and region gutters (follows region.gutter). DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
-        "alias": "{semantic.space.region.gutter}",
-        "resolvedValue": "40px"
-      },
-      {
-        "path": "semantic.space.layout.inset",
-        "cssVar": "--semantic-space-layout-inset",
-        "type": "dimension",
-        "description": "40px (24px compact). Deprecated alias (hds#206): use semantic.space.scale.lg.",
-        "alias": "{primitive.space.10}",
-        "resolvedValue": "40px",
-        "compact": {
-          "alias": "{primitive.space.6}",
-          "resolvedValue": "24px"
-        }
-      },
-      {
-        "path": "semantic.space.layout.spacious",
-        "cssVar": "--semantic-space-layout-spacious",
-        "type": "dimension",
-        "description": "64px (32px compact). Deprecated alias (hds#206): use semantic.space.scale.xl.",
-        "alias": "{primitive.space.16}",
-        "resolvedValue": "64px",
-        "compact": {
-          "alias": "{primitive.space.8}",
-          "resolvedValue": "32px"
-        }
       },
       {
         "path": "semantic.space.section.stack",
@@ -14789,7 +14705,7 @@
         "cssVar": "--component-button-secondary-border-disabled",
         "type": "color",
         "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
-        "alias": "{semantic.color.border.subdued}",
+        "alias": "{semantic.color.border.default}",
         "resolvedValue": "#cbc6c9"
       },
       {

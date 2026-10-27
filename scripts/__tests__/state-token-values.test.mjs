@@ -32,9 +32,9 @@ describe('button state tokens', () => {
       both('semantic.color.surface.softHover'),
     );
   });
-  it('secondary disabled border resolves to border.subdued, lighter than the rest border', () => {
+  it('secondary disabled border resolves to border.default (hds#625), lighter than the rest border', () => {
     expect(both('component.button.secondary.border.disabled')).toEqual(
-      both('semantic.color.border.subdued'),
+      both('semantic.color.border.default'),
     );
     expect(both('component.button.secondary.border.disabled')).not.toEqual(
       both('component.button.secondary.border.rest'),

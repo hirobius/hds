@@ -16,7 +16,7 @@ const theme = read('src/styles/theme.css');
 const generated = read('src/styles/tokens.generated.css');
 
 const SCALE = ['xs', 'sm', 'md', 'lg', 'xl'];
-const ALIASES = ['surface-padding', 'component-padding', 'region-gutter', 'layout-gutter'];
+const ALIASES = ['surface-padding', 'region-gutter'];
 
 /** Every top-level `selector { body }` rule (or rule inside one @media) as {selector, body, media}. */
 function rules(css) {
@@ -114,14 +114,13 @@ describe('compact scope re-declares the aliases so nested scopes resolve against
     });
   }
 
-  it('redeclares region-gutter (and layout-gutter) under 640px on scale-sm', () => {
+  it('redeclares region-gutter under 640px on scale-sm', () => {
     const mobile = compactRules.filter((r) => r.media && /max-width:\s*639px/.test(r.media));
     expect(
       mobile.some(
         (r) => declOf(r.body, '--semantic-space-region-gutter') === '--semantic-space-scale-sm',
       ),
     ).toBe(true);
-    expect(mobile.some((r) => r.body.includes('--semantic-space-layout-gutter:'))).toBe(true);
   });
 
   it('holds section.stack at 48px under 640px instead of the comfortable 64px', () => {

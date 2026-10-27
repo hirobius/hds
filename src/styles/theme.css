@@ -77,7 +77,7 @@
 @source not "../../scripts/check-tailwind-spacing-scale.mjs";
 @source not "../../scripts/tailwind-spacing-scale.baseline.json";
 /* Same for the deprecated-token rule (hds#787): it names the
-   deprecated utilities it flags (md:p-layout-tight, gap-section-heroMax, ...). */
+   deprecated utilities it flags (gap-section-heroMax, ...). */
 @source not "../../scripts/eslint-plugin-hds/rules/no-deprecated-token.mjs";
 @source not "../../scripts/eslint-plugin-hds/rules/deprecated-tokens.json";
 /* The script and lint-rule tests feed made-up class strings to the checks
@@ -123,7 +123,6 @@
   /* hds#206: region.gutter steps on the t-shirt scale (lg 40px, sm 20px below 640px;
    * 24px and 12px under compact). Every value here is a scale step or a 4px-grid
    * primitive, raised 2026-10 with the type ramp bump. */
-  /* The deprecated --semantic-space-layout-gutter follows via its tokens.css alias. */
   --semantic-space-region-gutter: var(--semantic-space-scale-lg);
   --semantic-space-layout-gap: var(--semantic-space-scale-md);
   /* section.stack (96px, 48px compact) comes from tokens.generated.css: a copy here
@@ -1040,7 +1039,6 @@ input[data-search-input='true'] {
 @media (max-width: 639px) {
   [data-density='compact'] {
     --semantic-space-region-gutter: var(--semantic-space-scale-sm);
-    --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
     --semantic-space-layout-gap: var(--semantic-space-scale-sm);
     --semantic-layout-grid-gap: var(--semantic-space-scale-sm);
     --semantic-space-section-stack: var(--primitive-space-12);

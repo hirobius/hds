@@ -45,10 +45,10 @@ describe('agent docs name no deprecated token', () => {
   });
 
   it('catches a planted leak (the guard is live)', () => {
-    expect(leaks('pad with `var(--semantic-space-layout-tight)`')).toEqual([
-      '--semantic-space-layout-tight',
+    expect(leaks('pad with `var(--semantic-space-section-heroMax)`')).toEqual([
+      '--semantic-space-section-heroMax',
     ]);
-    expect(leaks('`semantic.space.layout.tightish`')).toEqual([]);
+    expect(leaks('`semantic.space.section.heroMaxish`')).toEqual([]);
   });
 
   it.each(DOCS)('%s', (file) => {

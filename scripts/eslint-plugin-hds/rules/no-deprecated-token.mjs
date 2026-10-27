@@ -6,10 +6,10 @@
  * scripts/build-tokens.mjs writes from hirobius.tokens.json, so a newly
  * deprecated token is caught with no edit here. Three forms, one report each:
  *
- *   CSS var   `--semantic-space-layout-tight` in any string / template quasi
+ *   CSS var   `--semantic-space-section-heroMax` in any string / template quasi
  *             (a composite's sub-vars too: `--semantic-typography-h1-font-size`)
- *   member    `<x>.semantic.space.layout.tight` (also `.h1.fontSize` below it)
- *   Tailwind  `p-layout-tight`, `md:-mt-layout-inset`, `rounded-<key>` in
+ *   member    `<x>.semantic.space.section.heroMax` (also `.h1.fontSize` below it)
+ *   Tailwind  `py-section-heroMax`, `md:-mt-section-heroMax`, `rounded-<key>` in
  *             `className` or `cn()` / `clsx()` / `cva()` arguments
  */
 import { readFileSync } from 'node:fs';
@@ -30,7 +30,7 @@ const byPath = new Map(DEPRECATED.map((d) => [d.path, d]));
 const byTailwind = new Map(DEPRECATED.filter((d) => d.tailwind).map((d) => [d.tailwind, d]));
 const VAR_RE = /--[A-Za-z0-9-]+/g;
 
-/** `md:hover:!-mt-layout-tight` -> { util: 'mt', key: 'layout-tight', sign: '-' } */
+/** `md:hover:!-mt-section-heroMax` -> { util: 'mt', key: 'section-heroMax', sign: '-' } */
 function parseClass(cls) {
   const bare = cls.slice(cls.lastIndexOf(':') + 1).replace(/^!/, '');
   const m = new RegExp(`^(-?)(${SPACING_UTILS}|${RADIUS_UTILS})-(.+?)!?$`).exec(bare);

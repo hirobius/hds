@@ -10,7 +10,7 @@
         "stroke": "semantic.color.border.default",
         "layoutMode": "VERTICAL",
         "fill": "semantic.color.surface.page",
-        "itemSpacing": "semantic.space.layout.tight",
+        "itemSpacing": "semantic.space.scale.sm",
         "primaryAxisSizingMode": "AUTO",
         "counterAxisSizingMode": "AUTO"
       }

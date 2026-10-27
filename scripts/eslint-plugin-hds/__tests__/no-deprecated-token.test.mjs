@@ -10,34 +10,34 @@ ruleTester.run('no-deprecated-token', rule, {
   valid: [
     'const x = "var(--semantic-space-scale-sm)";',
     'const x = hds.semantic.space.scale.sm;',
-    'const x = hds.semantic.space.layout;',
+    'const x = hds.semantic.space.section;',
     'const x = <div className="p-scale-sm gap-fixed-xs rounded-scale-md" />;',
     // a longer var that merely starts with a deprecated name
-    'const x = "var(--semantic-space-layout-tight-x)";',
+    'const x = "var(--semantic-space-section-heroMax-x)";',
     // only a composite's sub-vars share its note
-    'const x = "var(--semantic-space-layout-tight-font-size)".length;',
+    'const x = "var(--semantic-space-section-heroMax-font-size)".length;',
     // px6/px10 are kept primitive steps, not deprecated ones (hds/no-primitive-spacing reports them)
     'const x = "var(--primitive-space-px6)";',
     // Tailwind-shaped text outside className / cn is not a class
-    "const label = 'p-layout-tight';",
+    "const label = 'p-section-heroMax';",
   ],
   invalid: [
     {
-      code: 'const x = "var(--semantic-space-layout-tight)";',
+      code: 'const x = "var(--semantic-space-section-heroMax)";',
       errors: [
         {
           messageId: 'deprecated',
           data: {
-            text: '--semantic-space-layout-tight',
-            note: 'hds#206 — use semantic.space.scale.sm',
+            text: '--semantic-space-section-heroMax',
+            note: '2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)',
             removeIn: '1.0.0',
-            fix: ' Use --semantic-space-scale-sm.',
+            fix: ' Use --semantic-space-section-inset.',
           },
         },
       ],
     },
     {
-      code: 'const x = <div style={{ gap: hds.semantic.space.layout.inset }} />;',
+      code: 'const x = <div style={{ gap: hds.semantic.space.section.heroMax }} />;',
       errors: [{ messageId: 'deprecated' }],
     },
     {
@@ -45,15 +45,15 @@ ruleTester.run('no-deprecated-token', rule, {
       errors: [{ messageId: 'deprecated' }],
     },
     {
-      code: 'const x = <div className="md:p-layout-tight rounded-scale-md" />;',
+      code: 'const x = <div className="md:py-section-heroMax rounded-scale-md" />;',
       errors: [
         {
           messageId: 'deprecated',
           data: {
-            text: 'p-layout-tight',
-            note: 'hds#206 — use semantic.space.scale.sm',
+            text: 'py-section-heroMax',
+            note: '2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)',
             removeIn: '1.0.0',
-            fix: ' Use p-scale-sm.',
+            fix: ' Use py-section-inset.',
           },
         },
       ],
