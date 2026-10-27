@@ -10,8 +10,9 @@
 /** @typedef {'no-page' | 'no-demo' | 'no-figma-link'} GapKind */
 
 /**
- * The components the gate measures. Hidden and docExempt components are out
- * (the same rule as the docs gate in audit-component-integrity). A component
+ * The components the gate measures. Hidden components are out. A docExempt
+ * component is out only when it has no page: `@doc-exempt` is a file-level tag
+ * and some are stale (Dialog, Menu have pages), so a paged one is measured. A component
  * without a page of its own whose source file has a paged component is a part
  * of that one (TabsList on the Tabs page, CardHeader on the Card page), so it
  * is covered there and is not a unit.
@@ -21,7 +22,9 @@
  * @returns {{ units: string[], parts: string[] }}
  */
 export function coverageUnits(specs, hasPage) {
-  const measured = Object.entries(specs ?? {}).filter(([, s]) => !s?.hidden && !s?.docExempt);
+  const measured = Object.entries(specs ?? {}).filter(
+    ([name, s]) => !s?.hidden && (!s?.docExempt || hasPage(name)),
+  );
   const pagedFiles = new Set(
     measured.filter(([name, s]) => s?.filePath && hasPage(name)).map(([, s]) => s.filePath),
   );
@@ -40,8 +43,10 @@ export function coverageUnits(specs, hasPage) {
  *           demos: Set<string>,
  *           figmaFor: (n: string) => string | null | undefined }} input
  *   pageFor: the component's docs page; `shared` when several components share
- *   it (the utilities page, the providers guide), so its header has no Figma
- *   slot for one of them.
+ *   it (the utilities page, the providers guide). A shared page's header has no
+ *   Figma slot for one of them, so no Figma link is asked of it (a gap there
+ *   could never be filled, and the baseline must be able to reach zero).
+ *   figmaFor: the component's Figma URL, or null when it has none (or no valid one).
  * @returns {{ name: string, gap: GapKind }[]}
  */
 export function findCoverageGaps({ units, pageFor, demos, figmaFor }) {
@@ -50,7 +55,8 @@ export function findCoverageGaps({ units, pageFor, demos, figmaFor }) {
     const page = pageFor(name);
     if (!page) gaps.push({ name, gap: 'no-page' });
     if (!demos.has(name)) gaps.push({ name, gap: 'no-demo' });
-    if (!figmaFor(name) || !page || page.shared) gaps.push({ name, gap: 'no-figma-link' });
+    if (page?.shared) continue;
+    if (!figmaFor(name)) gaps.push({ name, gap: 'no-figma-link' });
   }
   return gaps;
 }

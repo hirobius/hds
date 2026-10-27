@@ -3,12 +3,15 @@
 /**
  * check-docs-coverage.mjs — every component has a docs page, a live demo and a Figma link in its page header (hds#762).
  *
- * Joins three lists: the components in public/hds-manifest.json (not hidden or
- * docExempt; a part such as CardHeader is covered by its file's paged
- * component), the docs-site pages (scripts/lib/docs-routing.mjs) with their
- * demos (DEMOS ∩ PREVIEWED_COMPONENTS), and the Figma links (manifest
- * figmaUrl from each @figma tag, shown in a page header only on a page of the
- * component's own). The logic is scripts/lib/docs-coverage.mjs.
+ * Joins three lists: the components in public/hds-manifest.json (not hidden;
+ * docExempt only counts when the component has no page; a part such as
+ * CardHeader is covered by its file's paged component), the docs-site pages
+ * (scripts/lib/docs-routing.mjs) with their demos (DEMOS ∩
+ * PREVIEWED_COMPONENTS), and the Figma links (manifest figmaUrl from each
+ * @figma tag, a real Figma URL, shown in the page header). Components on a
+ * shared page (the utilities page, the providers guide) have no header slot of
+ * their own, so no Figma link is asked of them. The logic is
+ * scripts/lib/docs-coverage.mjs.
  *
  * Today's gaps sit in docs/guardrails/baselines/check-docs-coverage.json, a
  * ratchet that only shrinks: a new gap fails, and so does a baseline entry that
@@ -19,7 +22,10 @@
  *
  * Fixture mode: FIXTURE_DIR=<mini-root> reads the manifest, the two demo
  * registries, src/patterns.ts and the baseline from there
- * (fixtures/check-docs-coverage). See docs/guardrails/FIXTURE_DIR_HARNESS.md.
+ * (fixtures/check-docs-coverage). The routing rules (CORE_COMPONENTS,
+ * scripts/docs-rules.json) still come from this checkout, so a fixture's
+ * components use real core names (Button has a page because it is core).
+ * See docs/guardrails/FIXTURE_DIR_HARNESS.md.
  *
  * Exit codes: 0 clean (every gap baselined) · 1 a new gap or a stale entry.
  */
@@ -29,6 +35,7 @@ import { fileURLToPath } from 'node:url';
 import { documentedFromSources } from './lib/check-component-docs.mjs';
 import { applyRatchet, coverageUnits, findCoverageGaps } from './lib/docs-coverage.mjs';
 import { docsPagePath, loadDocsRouting } from './lib/docs-routing.mjs';
+import { resolveFigmaLink } from './lib/figma-link.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BASE = process.env.FIXTURE_DIR ? path.resolve(process.env.FIXTURE_DIR) : ROOT;
@@ -56,7 +63,12 @@ const pageFor = (name) => {
 };
 
 const { units, parts } = coverageUnits(specs, (n) => Boolean(docsPagePath(n, routing)));
-const gaps = findCoverageGaps({ units, pageFor, demos, figmaFor: (n) => specs[n]?.figmaUrl });
+const gaps = findCoverageGaps({
+  units,
+  pageFor,
+  demos,
+  figmaFor: (n) => resolveFigmaLink(specs[n]?.figmaUrl),
+});
 
 if (process.argv.includes('--list')) {
   for (const g of gaps) console.log(`${g.name}:${g.gap}`);

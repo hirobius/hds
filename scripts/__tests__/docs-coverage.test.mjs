@@ -45,11 +45,9 @@ describe('findCoverageGaps', () => {
       { name: 'A', gap: 'no-figma-link' },
     ]);
   });
-  it('flags a Figma link on a shared page: it has no header slot of its own to show in', () => {
+  it('asks no Figma link of a shared page: it has no header slot of its own to fill', () => {
     const shared = () => ({ path: '/docs/components/utilities', shared: true });
-    expect(findCoverageGaps({ ...base, pageFor: shared })).toEqual([
-      { name: 'A', gap: 'no-figma-link' },
-    ]);
+    expect(findCoverageGaps({ ...base, pageFor: shared, figmaFor: () => null })).toEqual([]);
   });
 });
 
@@ -62,9 +60,14 @@ describe('coverageUnits', () => {
     Exempt: { filePath: 'exempt.tsx', docExempt: true },
   };
   const hasPage = (n) => n === 'Card';
-  it('drops hidden and docExempt components', () => {
+  it('drops hidden components, and docExempt ones with no page', () => {
     expect(coverageUnits(specs, hasPage).units).not.toContain('Secret');
     expect(coverageUnits(specs, hasPage).units).not.toContain('Exempt');
+  });
+  it('measures a docExempt component that has a page (the tag is file-level and can go stale)', () => {
+    const withPage = { ...specs, Dialog: { filePath: 'dialog.tsx', docExempt: true } };
+    const paged = (n) => n === 'Card' || n === 'Dialog';
+    expect(coverageUnits(withPage, paged).units).toContain('Dialog');
   });
   it("covers a part through its file's page, and keeps an unpaged component", () => {
     const { units, parts } = coverageUnits(specs, hasPage);
@@ -141,6 +144,18 @@ describe('check-docs-coverage CLI (FIXTURE_DIR)', () => {
     const res = run(dir);
     expect(res.status).toBe(1);
     expect(res.stderr).toContain('no-demo: Button');
+  });
+
+  it('fails on a Figma link that is not a Figma URL', () => {
+    const dir = variant((d) =>
+      editJson(d, 'public/hds-manifest.json', (m) => {
+        m.componentSpecs.Button.figmaUrl = 'TODO:hds-master:Button';
+        return m;
+      }),
+    );
+    const res = run(dir);
+    expect(res.status).toBe(1);
+    expect(res.stderr).toContain('no-figma-link: Button');
   });
 
   it('fails on a component with no Figma link', () => {
