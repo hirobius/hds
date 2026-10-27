@@ -56,8 +56,8 @@ describe('buildManifest (lib/token-manifest.mjs)', () => {
   it('is what build-tokens re-exports when given the previous manifest', () => {
     const previous = { componentSpecs: { Button: { props: {} } } };
     const strip = (m) => ({ ...m, generated: null });
-    expect(strip(cliBuildManifest(all, raw, previous))).toEqual(
-      strip(buildManifest(all, raw, previous)),
+    expect(strip(cliBuildManifest(all, raw, previous, '1.2.3'))).toEqual(
+      strip(buildManifest(all, raw, previous, '1.2.3')),
     );
   });
 });

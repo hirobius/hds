@@ -2,11 +2,15 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-27T16:26:35.690Z",
+  "generated": "2026-10-27T14:11:14.017Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
-  "llmsTxt": "https://hirobius-hds-components.vercel.app/llms.txt",
+  "packageVersion": "0.32.0",
+  "upgrade": {
+    "command": "npx @hirobius/design-system@latest upgrade"
+  },
+  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.32.0/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
@@ -29,7 +33,7 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#19161a",
+    "primaryColor": "#4a4146",
     "primaryColorToken": "semantic.accent.rest",
     "font": "Plus Jakarta Sans variable 100–900, self-hosted",
     "spacingBase": "4px",
@@ -408,7 +412,6 @@
     "namespaceViolations": []
   },
   "agentEntrypoint": "llms.txt",
-  "breakingChangePolicy": "Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.",
   "componentSpecs": {
     "Alert": {
       "category": "Feedback",
@@ -12045,7 +12048,7 @@
         "path": "primitive.color.graphite.50",
         "cssVar": "--primitive-color-graphite-50",
         "type": "color",
-        "description": "Graphite accent tint — faintest step; dark rest fill.",
+        "description": "Graphite accent tint — faintest step.",
         "value": "#f5f4f4"
       },
       {
@@ -12059,7 +12062,7 @@
         "path": "primitive.color.graphite.200",
         "cssVar": "--primitive-color-graphite-200",
         "type": "color",
-        "description": "Graphite accent — light warm-grey.",
+        "description": "Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill.",
         "value": "#cbc6c9"
       },
       {
@@ -12094,7 +12097,7 @@
         "path": "primitive.color.graphite.700",
         "cssVar": "--primitive-color-graphite-700",
         "type": "color",
-        "description": "Graphite accent — warm charcoal; light-mode accent text.",
+        "description": "Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA).",
         "value": "#4a4146"
       },
       {
@@ -12115,7 +12118,7 @@
         "path": "primitive.color.graphite.950",
         "cssVar": "--primitive-color-graphite-950",
         "type": "color",
-        "description": "Graphite accent — near-black; light rest fill.",
+        "description": "Graphite accent — near-black warm substrate.",
         "value": "#19161a"
       },
       {
@@ -13323,12 +13326,12 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent fill, warm graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
-        "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#19161a",
+        "description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
+        "alias": "{primitive.color.graphite.700}",
+        "resolvedValue": "#4a4146",
         "dark": {
-          "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f5f4f4"
+          "alias": "{primitive.color.graphite.200}",
+          "resolvedValue": "#cbc6c9"
         }
       },
       {
@@ -14379,19 +14382,19 @@
         "path": "semantic.accent.rest",
         "cssVar": "--semantic-accent-rest",
         "type": "color",
-        "description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
-        "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#19161a",
+        "description": "Default accent fill for interactive elements at rest — warm graphite. Inverts per theme; pair with content.onAccent.",
+        "alias": "{primitive.color.graphite.700}",
+        "resolvedValue": "#4a4146",
         "dark": {
-          "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f5f4f4"
+          "alias": "{primitive.color.graphite.200}",
+          "resolvedValue": "#cbc6c9"
         }
       },
       {
         "path": "semantic.accent.hover",
         "cssVar": "--semantic-accent-hover",
         "type": "color",
-        "description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
+        "description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.800}",
         "resolvedValue": "#352e32",
         "dark": {
@@ -14403,12 +14406,12 @@
         "path": "semantic.accent.pressed",
         "cssVar": "--semantic-accent-pressed",
         "type": "color",
-        "description": "Accent fill on press (graphite.900 / 200).",
+        "description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.900}",
         "resolvedValue": "#2a2428",
         "dark": {
-          "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#cbc6c9"
+          "alias": "{primitive.color.graphite.50}",
+          "resolvedValue": "#f5f4f4"
         }
       },
       {
@@ -14771,7 +14774,7 @@
         "type": "color",
         "description": "Nav item border color when active or selected.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.nav.text",
@@ -14915,7 +14918,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.tag.activeBorder",
@@ -14923,7 +14926,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.tag.activeHover",
@@ -15119,7 +15122,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.button.bgHover",
@@ -15574,7 +15577,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "role.primary-foreground",

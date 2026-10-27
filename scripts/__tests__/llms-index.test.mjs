@@ -72,7 +72,9 @@ describe('llms.txt is a conformant index', () => {
   it('keeps the host in one constant', () => {
     const src = readFileSync(join(ROOT, 'scripts', 'generate-llms-txt.mjs'), 'utf8');
     expect(src).not.toMatch(/unpkg\.com|vercel\.app/);
-    expect(buildLlmsIndex({ summary: 'x'.repeat(30), slices: [] })).toContain(LLMS_BASE_URL);
+    expect(buildLlmsIndex({ summary: 'x'.repeat(30), slices: [], version: '1.2.3' })).toContain(
+      LLMS_BASE_URL,
+    );
   });
 });
 

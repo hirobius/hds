@@ -27,10 +27,12 @@
  *      code still uses (a hand bump that skipped it): runs their codemods, bumps the dependency range (keeping
  *      its operator), and adds back a dependency the package stopped
  *      installing that the code still imports;
- *   4. installs with the project's package manager and runs its typecheck
+ *   4. when the project has a .claude/skills/ folder, writes the hds-consumer
+ *      skill this package ships to .claude/skills/hds-consumer/ (hds#463);
+ *   5. installs with the project's package manager and runs its typecheck
  *      script (or tsc --noEmit); a lockfile still short of the target after
  *      that is Do by hand, so the command never says done before an install;
- *   5. prints four lists: Fixed for you, Looks different (only what the code
+ *   6. prints four lists: Fixed for you, Looks different (only what the code
  *      uses), Coming next (deprecations, with the release that removes them)
  *      and Do by hand (what the code still uses and has not changed yet).
  *
@@ -80,6 +82,11 @@ const readJson = (file) => {
 };
 
 const PKG_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+/** The consumer skill this package ships (hds#463), and the version its frontmatter names. */
+const SKILL_NAME = 'hds-consumer';
+const SKILL_FILE = `skills/${SKILL_NAME}/SKILL.md`;
+const skillVersion = (text) => /^\s+hds-version: "([^"]+)"$/m.exec(text)?.[1] ?? null;
 
 export const USAGE = `usage: npx ${HDS_PACKAGE}@latest upgrade [flags]
 
@@ -736,6 +743,37 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
         plain: `The lockfile holds two copies of HDS (${lock.versions.join(' and ')}): something other than your package.json pulls in ${extra.join(' and ')}, so find it with \`${WHY[manager] ?? WHY.npm}\` and update or dedupe it.`,
         files: [lockfile],
         impact: 'breaking',
+      });
+    }
+  }
+
+  // ── 3b. the consumer skill (hds#463): a project that keeps agent skills in
+  // .claude/skills/ gets the copy this package ships, so its agents read the
+  // text for the version installed. Only a copy that describes the target.
+  const skillDir = join(root, '.claude', 'skills');
+  const shipped = join(pkgDir, SKILL_FILE);
+  if (existsSync(skillDir) && statSync(skillDir).isDirectory() && existsSync(shipped)) {
+    const text = readFileSync(shipped, 'utf8');
+    const rel = `.claude/skills/${SKILL_NAME}/SKILL.md`;
+    const dest = join(root, rel);
+    const shippedFor = skillVersion(text);
+    if (shippedFor !== target) {
+      addItem(report, 'doByHand', {
+        id: 'tool/skill',
+        plain: `This copy of ${HDS_PACKAGE} ships the ${SKILL_NAME} skill for ${shippedFor ?? 'another version'}, not ${target}, so ${rel} was left as is: run npx ${HDS_PACKAGE}@${target} upgrade --to ${target} to write the skill for ${target}.`,
+        files: [rel],
+        blocking: false,
+      });
+    } else if (!existsSync(dest) || readFileSync(dest, 'utf8') !== text) {
+      if (apply) {
+        mkdirSync(dirname(dest), { recursive: true });
+        writeFileAtomic(dest, text);
+        changed.add(rel);
+      }
+      addItem(report, 'fixedForYou', {
+        id: 'tool/skill',
+        plain: `Wrote the ${SKILL_NAME} skill for ${target} to ${rel}, so agents in this project read the version installed.`,
+        files: [rel],
       });
     }
   }
