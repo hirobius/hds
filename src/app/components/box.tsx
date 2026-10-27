@@ -35,7 +35,9 @@
  *   - Everything else passes through as a plain camelCase→kebab-case CSS
  *     declaration (numbers get `px` unless in the unitless allowlist).
  *
- * See `box-sx.ts` for the pure resolver + hashing/injection engine.
+ * See `box-sx.ts` for the pure resolver + hashing/injection engine. On React 19 the
+ * rules render as a hoisted `<style href precedence>` (so they are in server HTML);
+ * on React 18 they inject into a managed sheet in the browser.
  */
 
 import React from 'react';
@@ -59,7 +61,9 @@ export interface BoxProps extends React.HTMLAttributes<HTMLElement> {
 // React 19 hoists and dedupes a `<style href precedence>` into <head> on the server and the
 // client alike, so sx rules ship in the server HTML and hydration adds no layout shift (hds#770).
 // React 18 has no style resources: there sx injects into a managed sheet in the browser.
-const STYLE_RESOURCES = Number.parseInt(React.version, 10) >= 19;
+const STYLE_RESOURCES = /* @__PURE__ */ Number.parseInt(React.version, 10) >= 19;
+/** Resolved CSS per sx class, so a re-render does not rebuild the string. */
+const sxCss = new Map<string, string>();
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
@@ -81,7 +85,12 @@ export const Box = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoxProps>(fu
       {children}
     </Tag>
   );
-  if (!sx || !STYLE_RESOURCES || !sxClass) return box;
+  if (!STYLE_RESOURCES || !sx || !sxClass) return box;
+  let css = sxCss.get(sxClass);
+  if (css === undefined) {
+    css = resolveSx(sx, sxClass).join('\n');
+    sxCss.set(sxClass, css);
+  }
   return (
     <>
       {/* href/precedence are React 19 props; the React 18 types this package builds against lack them. */}
@@ -91,7 +100,7 @@ export const Box = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoxProps>(fu
           precedence: 'hds-sx',
         } as React.StyleHTMLAttributes<HTMLStyleElement>)}
       >
-        {resolveSx(sx, sxClass).join('\n')}
+        {css}
       </style>
       {box}
     </>
