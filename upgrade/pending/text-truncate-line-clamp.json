@@ -1,4 +1,0 @@
-{
-  "impact": "additive",
-  "plain": "Text can now truncate to one line or clamp to 2, 3 or 4 lines, so swap local truncate and line-clamp CSS on Text for the `truncate` or `lineClamp` prop."
-}

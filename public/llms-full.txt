@@ -205,6 +205,7 @@ Radio: [core] Choose exactly one option from a small set that should stay visibl
 Reveal: Fade content in as it scrolls into view.
 SegmentedControl: [core] Switch between two to five mutually exclusive views or modes in a compact row. Use instead: Radio, Tabs, Select
 Select: [core] Choose one value from a short list of options in a form field. Use instead: Menu, Combobox
+Sheet: Open a short menu or form from the bottom edge on a phone (sort, row actions, status, a quick edit), centred like a Dialog on wider screens. Use instead: Dialog, AlertDialog, Menu
 Skeleton: [core] Reserve the shape of content that is still loading, so the layout does not jump. Use instead: Progress, Spinner
 Slider: [core] Pick a number within a known range by dragging, when the exact value matters less than the position. Use instead: Input
 Spinner: [core] Show that something is loading when the wait is short or has no measurable end. Use instead: Progress, Skeleton
@@ -1273,6 +1274,14 @@ Select — dropdown selector built on Radix Select (ADR-001 Radix convention). R
   - showLabel: boolean = true
   - value: string
 
+### Sheet
+Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+  - children: ReactNode
+  - defaultOpen: boolean
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+
 ### Sidebar
 Sidebar — fixed-width rail beside fluid content, no media query. Every Layout reference: https://every-layout.dev/layouts/sidebar/
   - as: ElementType<any, keyof IntrinsicElements> = div
@@ -1388,9 +1397,11 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline p
   - value: string
 
 ### Tag
-Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visi…
+Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.
   - active: boolean = false
   - children: ReactNode
+  - dismissLabel: string
+  - onDismiss: (() => void)
 
 ### Text
 Text — polymorphic typography primitive spanning the full HDS type ramp.

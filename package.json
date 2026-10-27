@@ -139,6 +139,7 @@
     "codemods/lib/semver.mjs",
     "AGENTS.md",
     "mcp/",
+    "bin/",
     "scripts/eslint-plugin-hds/index.mjs",
     "scripts/eslint-plugin-hds/index.d.mts",
     "scripts/eslint-plugin-hds/package.json",
@@ -272,8 +273,9 @@
     "check:token-structure": "node scripts/check-token-structure.mjs",
     "check:tokens": "node scripts/check-hardcoded-colors.mjs && pnpm lint --rule '{\"tailwindcss/no-custom-classname\":\"error\"}' && node scripts/audit-tokens.mjs --forbidden && node scripts/check-tier-bypass.mjs && node scripts/check-hardcoded-spacing.mjs && node scripts/check-typography-discipline.mjs --fonts-only",
     "check:type-coverage": "pnpm exec type-coverage --at-least 99.9",
-    "test:visual-docs": "playwright test",
-    "test:visual-docs:update": "playwright test tests/visual/button-states.spec.ts --update-snapshots",
+    "test:visual-docs": "playwright test --grep-invert @baseline",
+    "test:visual-baselines": "playwright test --grep @baseline",
+    "test:visual-baselines:update": "playwright test --grep @baseline --update-snapshots",
     "closure:plan": "node scripts/run-gates.mjs --channel pre-commit --emit-inventory docs/guardrails/full-strictness-inventory.json && node scripts/generate-closure-plan.mjs",
     "closure:plan:check": "node scripts/generate-closure-plan.mjs --check",
     "docs:api": "node scripts/generate-component-api.mjs",
@@ -462,6 +464,7 @@
     "hds-tile-grid": "codemods/tile-grid.mjs",
     "hds-spacing-steps": "codemods/spacing-steps.mjs",
     "hds-mcp": "mcp/hds-mcp.mjs",
+    "hds-tokens": "bin/hds-tokens.mjs",
     "design-system": "codemods/upgrade.mjs",
     "hds-upgrade": "codemods/upgrade.mjs"
   }

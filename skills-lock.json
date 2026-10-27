@@ -198,6 +198,26 @@
       "license": "MIT",
       "hashNote": "Installed under the id/dir vercel-composition-patterns (its SKILL.md name:); upstream directory is skills/composition-patterns/. rules/_sections.md, _template.md, README.md and metadata.json are authoring scaffolding and not vendored."
     },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "pinnedCommit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "hashAlgorithm": "sha256",
+      "computedHash": "f4647ca866a3accf763777f83e7682954f0187cd6bea7eea0399796652414e8f",
+      "license": "MIT",
+      "hashNote": "hds#764. Review skill, not a check: SKILL.md fetches its rules at run time from vercel-labs/web-interface-guidelines (main, unpinned), so only the wrapper is pinned."
+    },
+    "humanizer": {
+      "source": "blader/humanizer",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "pinnedCommit": "8c307f367c91bd974002f10f2be2965d642c13df",
+      "hashAlgorithm": "sha256",
+      "computedHash": "0612f1dfb1672b0ea9b97e139bf1f06cabe98d8b27424fe8ff01e1fb4cc99cad",
+      "license": "MIT",
+      "hashNote": "hds#765. SKILL.md only; agents/openai.yaml and scripts/validate-package.py are upstream packaging and not vendored."
+    },
     "wayfinder": {
       "source": "mattpocock/skills",
       "sourceType": "github",

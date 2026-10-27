@@ -424,6 +424,10 @@
     "src/app/components/pagination.tsx": {
       "kind": "queued",
       "reason": "Pagination exists in the Figma library (node 86-194). Its compact variant (hds#867) has no Figma Variant=Compact yet (Figma-lane follow-up, hds#540); the template waits for that property read."
+    },
+    "src/app/components/sheet.tsx": {
+      "kind": "no-figma-component",
+      "reason": "Sheet (hds#690) has no Figma component yet. Its action tone (neutral, danger) gets a template once one is drawn."
     }
   }
 }

@@ -80,15 +80,19 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
       // tier-ok: shipped weight steps, no semantic weight tokens exist (hds#825)
       bold: '[font-weight:var(--primitive-typography-weight-bold)]',
     },
-    // hds#916: overflow. `block` because ellipsis needs a block box (mono is a
-    // span); line-clamp sets its own -webkit-box display. whitespace-normal and
-    // break-words keep a clamp wrapping on words, mono included, and only break
-    // a word that cannot fit a line by itself.
-    overflow: {
-      truncate: 'block truncate',
-      2: 'line-clamp-2 whitespace-normal break-words',
-      3: 'line-clamp-3 whitespace-normal break-words',
-      4: 'line-clamp-4 whitespace-normal break-words',
+    // hds#916: one line with an ellipsis. `block` lets the ellipsis apply to a
+    // span (mono's default tag); the base `min-w-0` lets it shrink in a flex row.
+    truncate: {
+      true: 'block truncate',
+    },
+    // hds#916: N lines with an ellipsis. Lines break between words; a run too
+    // long for one line (a URL, a query) breaks inside itself only then.
+    // `anywhere`, not `break-word`: it also drops the min-content width, so a
+    // long run cannot widen the flex or grid track the text sits in.
+    lineClamp: {
+      2: 'line-clamp-2 wrap-anywhere',
+      3: 'line-clamp-3 wrap-anywhere',
+      4: 'line-clamp-4 wrap-anywhere',
     },
   },
 });
@@ -191,30 +195,38 @@ const defaultTagMap: Record<TextVariant, TextTag> = {
   docCode: 'span',
 };
 
-/** How many lines `lineClamp` allows before the ellipsis. */
+/** How many lines `lineClamp` keeps before the ellipsis. */
 export type TextLineClamp = 2 | 3 | 4;
 
-/** `truncate` and `lineClamp` are two answers to one question, so only one is allowed. */
+/** `truncate` and `lineClamp` cut overflow two ways; a Text takes one or neither. */
 type TextOverflowProps =
   | {
       /**
-       * One line with an ellipsis. Shrinks inside a flex row (`min-width: 0`),
-       * so a long title gives way to its siblings instead of pushing them out.
+       * Cut the text to one line with an ellipsis. The element can shrink below
+       * its content in a flex or grid row, so a long name gives way to its
+       * neighbours instead of pushing them out. A span is made a block for it.
+       * Its parent has to be able to shrink too (`min-width: 0` on a flex or grid
+       * item, `minmax(0, 1fr)` on a grid track), or the row grows to the full line.
+       * Not with `lineClamp`.
        */
       truncate?: boolean;
       lineClamp?: never;
     }
   | {
-      truncate?: never;
+      truncate?: false;
       /**
-       * Clamp to 2, 3 or 4 lines with an ellipsis on the last one. Wraps on
-       * word boundaries, the mono role included.
+       * Cut the text to 2, 3 or 4 lines with an ellipsis on the last. Lines
+       * break between words, `mono` included; a single run too long for a line
+       * breaks inside itself only then. In a container sized to its content
+       * (a `fit-content` box, an `auto` grid track) the clamp can get narrow: give
+       * it a width, or `min-width: 0` / `minmax(0, 1fr)` on the parent. Not with
+       * `truncate`.
        */
       lineClamp?: TextLineClamp;
     };
 
 /** @public */
-export type TextProps = {
+export type TextProps = TextOverflowProps & {
   children: ReactNode;
   variant: TextVariant;
   /**
@@ -231,8 +243,7 @@ export type TextProps = {
   as?: TextTag | ElementType;
   className?: string;
   style?: CSSProperties;
-} & TextOverflowProps &
-  HTMLAttributes<HTMLElement>;
+} & HTMLAttributes<HTMLElement>;
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
@@ -251,11 +262,15 @@ export const Text = /* @__PURE__ */ forwardRef<HTMLElement, TextProps>(function 
   },
   ref,
 ) {
-  const overflow = truncate ? 'truncate' : lineClamp;
+  // The types allow one of the two; a caller that passes both gets the one line.
+  const clamp = truncate ? undefined : lineClamp;
   return (
     <Tag
       ref={ref}
-      className={cn(textVariants({ variant, tone, weight, overflow }), className)}
+      className={cn(
+        textVariants({ variant, tone, weight, truncate: truncate || undefined, lineClamp: clamp }),
+        className,
+      )}
       style={style}
       {...rest}
     >
