@@ -1,0 +1,1 @@
+Local visual suite (hirobius/ops#726): `pnpm test:visual-baselines` compares every docs demo, light and dark, with committed PNGs; browser-host finds chrome-linux64 builds; Button state baselines re-taken on Chromium 1243.

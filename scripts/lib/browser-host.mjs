@@ -5,19 +5,24 @@
  * The path in particular is an image detail (/opt/pw-browsers/chromium-<build>)
  * that moves when the container image does, so it lives in one place.
  */
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 
 /**
  * Where a Chromium might be, most specific first. The env var wins so a
  * machine whose Playwright build disagrees with the installed browser can say
- * so; `undefined` at the end means "let Playwright use its own download".
+ * so; then the newest chromium-<build> under PLAYWRIGHT_BROWSERS_PATH (builds
+ * ship chrome-linux64/ or, older, chrome-linux/); `undefined` at the end means
+ * "let Playwright use its own download".
  */
 export function chromiumPath() {
-  const candidates = [
-    process.env.PLAYWRIGHT_CHROMIUM_PATH,
-    '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
-    '/opt/pw-browsers/chromium/chrome-linux/chrome',
-  ].filter(Boolean);
+  const root = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';
+  const builds = existsSync(root)
+    ? readdirSync(root)
+        .filter((d) => /^chromium-\d+$/.test(d))
+        .sort((a, b) => Number(b.slice(9)) - Number(a.slice(9)))
+        .flatMap((d) => [`${root}/${d}/chrome-linux64/chrome`, `${root}/${d}/chrome-linux/chrome`])
+    : [];
+  const candidates = [process.env.PLAYWRIGHT_CHROMIUM_PATH, ...builds].filter(Boolean);
   return candidates.find((p) => existsSync(p));
 }
 
