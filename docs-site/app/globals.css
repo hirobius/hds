@@ -140,6 +140,25 @@ h4 {
 }
 
 /*
+ * Fumadocs turns the sidebar column on with `#nd-docs-layout:has(<marker class>)`, which
+ * matches only once the browser has parsed the sidebar. A slow load can paint before that,
+ * so the column animated open from 0 and the page reflowed (CLS ~0.17, hds#770). Set the
+ * width on the layout itself, so the first paint already has it; collapsing still works
+ * through --fd-sidebar-col.
+ */
+@media (width >= 48rem) {
+  #nd-docs-layout {
+    --fd-sidebar-width: 268px;
+  }
+}
+/* Same for the "On this page" rail: Fumadocs keys its column to the rail, which is parsed last. */
+@media (width >= 80rem) {
+  #nd-docs-layout:has([data-hds-toc]) {
+    --fd-toc-width: 268px;
+  }
+}
+
+/*
  * Same container-query shim issue as above: below the `xl` breakpoint the
  * right-hand "On this page" TOC rail is supposed to collapse to 0 width
  * (replaced by the mobile popover trigger), but --fd-toc-width sticks at a
@@ -150,6 +169,19 @@ h4 {
   #nd-toc {
     display: none !important;
   }
+}
+
+/*
+ * Fumadocs' top bar sits in the content column only, so a page with an "On this page" rail
+ * got a header 268px narrower than one without, and the search and sidebar buttons jumped
+ * between pages (hds#770). Run the bar across the rail's column on every page, and start
+ * the rail below it.
+ */
+#nd-subnav {
+  grid-column: header-start / toc-end;
+}
+#nd-toc {
+  padding-top: calc(var(--fd-header-height) + var(--semantic-space-scale-md));
 }
 
 body {
@@ -399,8 +431,12 @@ pre {
 }
 .hds-docs-search-keys {
   display: inline-flex;
+  justify-content: flex-end;
   gap: var(--semantic-space-scale-xs);
   margin-inline-start: auto;
+  /* The hotkey reads "⌘ K" on the server and "Ctrl K" once the client knows the platform:
+     hold the wider one's width so the swap does not shift the trigger (hds#770). */
+  min-inline-size: 4.625rem;
 }
 
 /* Collapsed sections (generated pages and token tables): a soft raised row with a

@@ -40,7 +40,7 @@
 
 import React from 'react';
 import { cn } from '../../lib/utils';
-import { injectSx, type SxObject } from './box-sx';
+import { injectSx, resolveSx, sxClassName, type SxObject } from './box-sx';
 
 export type { SxObject, SxValue, ResponsiveValue, Breakpoint } from './box-sx';
 
@@ -56,6 +56,11 @@ export interface BoxProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
 }
 
+// React 19 hoists and dedupes a `<style href precedence>` into <head> on the server and the
+// client alike, so sx rules ship in the server HTML and hydration adds no layout shift (hds#770).
+// React 18 has no style resources: there sx injects into a managed sheet in the browser.
+const STYLE_RESOURCES = Number.parseInt(React.version, 10) >= 19;
+
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** @public */
@@ -63,9 +68,9 @@ export const Box = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoxProps>(fu
   { as: Tag = 'div', sx, className, children, ...rest },
   ref,
 ) {
-  const sxClass = sx ? injectSx(sx) : undefined;
+  const sxClass = sx ? (STYLE_RESOURCES ? sxClassName(sx) : injectSx(sx)) : undefined;
 
-  return (
+  const box = (
     <Tag
       ref={ref}
       className={cn(sxClass, className)}
@@ -75,5 +80,20 @@ export const Box = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoxProps>(fu
     >
       {children}
     </Tag>
+  );
+  if (!sx || !STYLE_RESOURCES || !sxClass) return box;
+  return (
+    <>
+      {/* href/precedence are React 19 props; the React 18 types this package builds against lack them. */}
+      <style
+        {...({
+          href: sxClass,
+          precedence: 'hds-sx',
+        } as React.StyleHTMLAttributes<HTMLStyleElement>)}
+      >
+        {resolveSx(sx, sxClass).join('\n')}
+      </style>
+      {box}
+    </>
   );
 });

@@ -5,7 +5,7 @@
  * The path in particular is an image detail (/opt/pw-browsers/chromium-<build>)
  * that moves when the container image does, so it lives in one place.
  */
-import { existsSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 
 /**
  * Where a Chromium might be, most specific first. The env var wins so a
@@ -17,8 +17,10 @@ export function chromiumPath() {
     process.env.PLAYWRIGHT_CHROMIUM_PATH,
     '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
     '/opt/pw-browsers/chromium/chrome-linux/chrome',
+    // Newer images ship /opt/pw-browsers/chromium as a symlink to the build's binary.
+    '/opt/pw-browsers/chromium',
   ].filter(Boolean);
-  return candidates.find((p) => existsSync(p));
+  return candidates.find((p) => existsSync(p) && !statSync(p).isDirectory());
 }
 
 /** Launch options for Playwright, empty when no pinned browser was found. */
