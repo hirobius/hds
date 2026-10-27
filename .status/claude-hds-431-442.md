@@ -1,1 +1,1 @@
-Removed the tokens the 0.20.0 removals orphaned (hds#431: component.lightbox._, component.nav._ but paddingY, semantic.space.sidebar.railWidth, the ./tokens lightboxBackdrop key) and the frozen manifest `phases` key (hds#442). Figma: Adrian prunes the 9 extra variables (check:figma-drift).
+- 2026-10-27: dropped removed sidebar-railWidth from SPACING_KEYS in src/lib/utils.ts (#925 review).
