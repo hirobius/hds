@@ -455,13 +455,14 @@ describe('Tag accessibility contract', () => {
   it('a11y:tag.dismiss-target-size the X has a 40px hit area that does not grow the pill', () => {
     render(<Tag onDismiss={noop}>systems</Tag>);
     const x = screen.getByRole('button', { name: 'Remove systems' });
-    expect(x.className).toContain('size-[var(--primitive-size-40)]');
+    expect(x.className).toContain('size-[var(--semantic-size-row-compact)]');
     // The hit area overhangs the pill: it adds one line box of height, not 40px.
-    expect(x.className).toContain('my-[calc((1lh_-_var(--primitive-size-40))/2)]');
+    expect(x.className).toContain('my-[calc((1lh_-_var(--semantic-size-row-compact))/2)]');
     const tokens = readFileSync(
       resolve(__dirname, '../../src/styles/tokens.generated.css'),
       'utf8',
     );
+    expect(tokens).toMatch(/--semantic-size-row-compact:\s*var\(--primitive-size-40\)/);
     expect(tokens).toMatch(/--primitive-size-40:\s*40px/);
   });
 
