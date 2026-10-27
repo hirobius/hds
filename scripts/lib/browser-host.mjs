@@ -31,8 +31,8 @@ export function chromiumPath() {
   const candidates = [
     process.env.PLAYWRIGHT_CHROMIUM_PATH,
     ...builds,
-    // Newer images ship /opt/pw-browsers/chromium as a symlink to the build's binary.
-    '/opt/pw-browsers/chromium',
+    // Newer images ship <root>/chromium as a symlink to the build's binary.
+    join(root, 'chromium'),
   ].filter(Boolean);
   return candidates.find((p) => existsSync(p) && !statSync(p).isDirectory());
 }
