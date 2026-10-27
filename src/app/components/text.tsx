@@ -205,6 +205,8 @@ type TextOverflowProps =
        * Cut the text to one line with an ellipsis. The element can shrink below
        * its content in a flex or grid row, so a long name gives way to its
        * neighbours instead of pushing them out. A span is made a block for it.
+       * Its parent has to be able to shrink too (`min-width: 0` on a flex or grid
+       * item, `minmax(0, 1fr)` on a grid track), or the row grows to the full line.
        * Not with `lineClamp`.
        */
       truncate?: boolean;
@@ -215,7 +217,10 @@ type TextOverflowProps =
       /**
        * Cut the text to 2, 3 or 4 lines with an ellipsis on the last. Lines
        * break between words, `mono` included; a single run too long for a line
-       * breaks inside itself only then. Not with `truncate`.
+       * breaks inside itself only then. In a container sized to its content
+       * (a `fit-content` box, an `auto` grid track) the clamp can get narrow: give
+       * it a width, or `min-width: 0` / `minmax(0, 1fr)` on the parent. Not with
+       * `truncate`.
        */
       lineClamp?: TextLineClamp;
     };
