@@ -108,6 +108,22 @@ describe('Pagination variant="compact"', () => {
     expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Next page' }));
   });
 
+  it('draws Previous and Next outlined, and a disabled end stays outlined, not grey-filled (hds#886)', () => {
+    render(<Pagination variant="compact" page={1} count={4} onPageChange={() => {}} />);
+    const prev = screen.getByRole('button', { name: 'Previous page' });
+    const next = screen.getByRole('button', { name: 'Next page' });
+    for (const button of [prev, next]) {
+      expect(button.className).toContain('border-[color:var(--semantic-color-border-default)]');
+      // Disabled: transparent, keeping the outline (the icon fades to content-disabled), never
+      // the primary's muted fill (the grey tile the compact pager drew before).
+      expect(button.className).toContain('disabled:bg-transparent');
+      expect(button.className).not.toContain('--component-button-primary-bgDisabled');
+      expect(button.className).toContain(
+        'disabled:text-[var(--component-button-primary-textDisabled)]',
+      );
+    }
+  });
+
   it('leaves the default variant unchanged', () => {
     render(<Pagination page={1} count={4} onPageChange={() => {}} />);
     expect(screen.getByRole('button', { name: 'Page 1' })).not.toBeNull();
