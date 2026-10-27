@@ -409,7 +409,15 @@ describe('the list a step lands in: kind, impact and auto alone', () => {
       'exports',
       'tenant',
     ];
-    const lookToHand = ['removed', 'moved', 'renamed', 'folded', 'manual'];
+    const lookToHand = [
+      'removed',
+      'moved',
+      'renamed',
+      'folded',
+      'prop-renamed',
+      'prop-value-mapped',
+      'manual',
+    ];
     expect([...lookKeepsNames, ...lookToHand, 'deprecated'].sort()).toEqual([...STEP_KINDS].sort());
     for (const kind of STEP_KINDS) {
       for (const impact of IMPACTS) {

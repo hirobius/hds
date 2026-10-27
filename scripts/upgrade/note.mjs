@@ -52,6 +52,15 @@ const specifier = (entry) => (entry === '.' ? PACKAGE : `${PACKAGE}/${entry.slic
 const escapeRegExp = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const moreSevere = (a, b) => (IMPACTS.indexOf(a) >= IMPACTS.indexOf(b) ? a : b);
 
+/** A regex for `<Component ... prop=` (with `value`, when given) in JSX. */
+const propUse = (fact, value) => ({
+  regex: [
+    `<${escapeRegExp(fact.component)}\\b[^>]*\\b${escapeRegExp(fact.prop)}=${
+      value === undefined ? '' : `[{'"\\s]*${escapeRegExp(value)}\\b`
+    }`,
+  ],
+});
+
 /** The step a fact asks for, before its plain line: id, kind, impact and how to detect it. */
 function draftFor(fact) {
   const impact = factImpact(fact);
@@ -110,6 +119,28 @@ function draftFor(fact) {
         impact,
         detect: { regex: [escapeRegExp(fact.family)] },
       };
+    // hds#461: prop facts, found where the component is rendered with the prop.
+    case 'prop-removed':
+      return { id: `removed/${fact.component}.${fact.prop}`, impact, detect: propUse(fact) };
+    case 'prop-required':
+      return {
+        id: `behavior/${fact.component}.${fact.prop}`,
+        impact,
+        detect: { jsx: [fact.component] },
+      };
+    case 'prop-value-removed':
+      return {
+        id: `prop-value-mapped/${fact.component}.${fact.prop}`,
+        impact,
+        detect: propUse(fact, fact.value),
+        prop: { component: fact.component, name: fact.prop, values: { [fact.value]: 'TODO' } },
+      };
+    case 'prop-default-changed':
+      return {
+        id: `look/${fact.component}.${fact.prop}`,
+        impact,
+        detect: { jsx: [fact.component] },
+      };
     default:
       throw new Error(`no step for a ${fact.kind} fact`);
   }
@@ -124,10 +155,12 @@ export function stepsForFacts(facts) {
     if (step) {
       step.facts.push(fact.id);
       for (const use of draft.detect?.imports ?? []) step.detect.imports.push(use);
+      for (const source of draft.detect?.regex ?? []) (step.detect.regex ??= []).push(source);
+      if (draft.prop?.values) Object.assign(step.prop.values, draft.prop.values);
       step.impact = moreSevere(step.impact, draft.impact);
       continue;
     }
-    // Schema field order: id, kind, impact, plain, detect, range, facts.
+    // Schema field order: id, kind, impact, plain, detect, range, prop, facts.
     steps.set(draft.id, {
       id: draft.id,
       kind: draft.id.split('/')[0],
@@ -135,6 +168,7 @@ export function stepsForFacts(facts) {
       plain: TODO_PLAIN,
       ...(draft.detect ? { detect: draft.detect } : {}),
       ...(draft.range ? { range: draft.range } : {}),
+      ...(draft.prop ? { prop: draft.prop } : {}),
       facts: [fact.id],
     });
   }
