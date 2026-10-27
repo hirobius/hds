@@ -1,5 +1,5 @@
 import { createRef } from 'react';
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import { Box } from './box';
 
@@ -61,5 +61,27 @@ describe('Box', () => {
       true,
     );
     expect(el.className).toMatch(/hds-sx-/);
+  });
+
+  it('server-renders its sx rules as a React 19 style resource (hds#770)', async () => {
+    vi.resetModules();
+    vi.doMock('react', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('react')>();
+      return { ...actual, default: { ...actual, version: '19.0.0' }, version: '19.0.0' };
+    });
+    try {
+      const { Box: Box19 } = await import('./box');
+      const { renderToStaticMarkup } = await import('react-dom/server');
+      const silence = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const html = renderToStaticMarkup(<Box19 sx={{ color: 'content.primary' }}>content</Box19>);
+      silence.mockRestore();
+      const cls = /class="(hds-sx-[^"\s]+)/.exec(html)?.[1];
+      expect(cls).toBeTruthy();
+      expect(html).toContain(`href="${cls}"`);
+      expect(html).toContain(`.${cls}{color:var(--semantic-color-content-primary)}`);
+    } finally {
+      vi.doUnmock('react');
+      vi.resetModules();
+    }
   });
 });

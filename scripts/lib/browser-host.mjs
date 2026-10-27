@@ -6,7 +6,7 @@
  * when the container image does, so it is resolved here and nowhere else
  * (hds#455).
  */
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
 
@@ -35,6 +35,14 @@ function newestInstalled(base) {
       const exe = join(base, dir, sub, 'chrome');
       if (existsSync(exe)) return exe;
     }
+  }
+  // Newer images ship <root>/chromium as a symlink to the build's binary. File
+  // only: older images leave an empty directory of that name.
+  const link = join(base, 'chromium');
+  try {
+    if (statSync(link).isFile()) return link;
+  } catch {
+    /* absent or dangling */
   }
   return undefined;
 }

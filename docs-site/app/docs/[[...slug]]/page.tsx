@@ -69,16 +69,20 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
   }
 
   const MDXContent = page.data.body;
+  // A short page doesn't need a contents rail; prev/next cards repeat the sidebar.
+  const hasToc = page.data.toc.length >= MIN_TOC_ITEMS;
 
   return (
     <DocsPage
       toc={page.data.toc}
       full={page.data.full}
-      // A short page doesn't need a contents rail; prev/next cards repeat the sidebar.
-      tableOfContent={{ enabled: page.data.toc.length >= MIN_TOC_ITEMS }}
-      tableOfContentPopover={{ enabled: page.data.toc.length >= MIN_TOC_ITEMS }}
+      tableOfContent={{ enabled: hasToc }}
+      tableOfContentPopover={{ enabled: hasToc }}
       footer={{ enabled: false }}
     >
+      {/* The rail renders after the page body, so globals.css reserves its column from this
+          early marker: the first paint already has it and the body does not reflow (hds#770). */}
+      {hasToc ? <span data-hds-toc hidden /> : null}
       <DocsTitle style={titleFit(page.data.title)}>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <PageLinks figma={str(page.data.figma)} source={str(page.data.source)} />

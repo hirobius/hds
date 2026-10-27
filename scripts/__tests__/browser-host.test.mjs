@@ -6,7 +6,7 @@
  * HDS_REQUIRE_BROWSER=1 a missing browser throws instead of skipping.
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'fs';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync, symlinkSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { chromiumPath, chromiumForTests } from '../lib/browser-host.mjs';
@@ -51,6 +51,27 @@ describe('chromiumPath', () => {
   it('then takes the newest chromium-<rev> under PLAYWRIGHT_BROWSERS_PATH', () => {
     const env = { PLAYWRIGHT_BROWSERS_PATH: root };
     expect(chromiumPath({ env, playwrightPath: nowhere })).toBe(exe(1243));
+  });
+
+  it('finds <root>/chromium when it is a symlink to the binary, ignoring a directory', () => {
+    const r = mkdtempSync(join(tmpdir(), 'browser-host-link-'));
+    try {
+      const env = { PLAYWRIGHT_BROWSERS_PATH: r };
+      mkdirSync(join(r, 'chromium'));
+      expect(chromiumPath({ env, playwrightPath: nowhere })).toBeUndefined();
+      rmSync(join(r, 'chromium'), { recursive: true });
+      const target = join(r, 'real-chrome');
+      writeFileSync(target, '');
+      symlinkSync(target, join(r, 'chromium'));
+      expect(chromiumPath({ env, playwrightPath: nowhere })).toBe(join(r, 'chromium'));
+      // a versioned build still wins over the symlink
+      touch(join(r, 'chromium-5', 'chrome-linux64', 'chrome'));
+      expect(chromiumPath({ env, playwrightPath: nowhere })).toBe(
+        join(r, 'chromium-5', 'chrome-linux64', 'chrome'),
+      );
+    } finally {
+      rmSync(r, { recursive: true, force: true });
+    }
   });
 
   it('returns undefined when nothing is installed', () => {

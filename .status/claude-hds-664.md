@@ -1,0 +1,1 @@
+hds-check bin (hds#664): consumer CLI for no-uppercase, fonts, shadows and raw-colors over HTML/CSS/JS; check-no-uppercase now imports its core from bin/lib/visual-rules.mjs (one source). Ships `bin/` like hds-tokens (#923).
