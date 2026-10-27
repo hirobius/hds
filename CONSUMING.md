@@ -103,6 +103,11 @@ and `Box` `sx` props so token discipline shows up in your editor, not just at
 review time. See [`docs/CONSUMING.md` §11](docs/CONSUMING.md#11-lint-discipline--the-consumer-eslint-plugin)
 and [`scripts/eslint-plugin-hds/README.md`](scripts/eslint-plugin-hds/README.md).
 
+For plain HTML/CSS/JS sites, `pnpm exec hds-check .` runs HDS's visual rules
+(no all caps, HDS fonts only, shadow and color tokens only) and exits 1 with
+file:line findings. In CI: `- run: pnpm exec hds-check .`. See
+[`docs/CONSUMING.md` §11](docs/CONSUMING.md#any-html-css-or-js-site-hds-check).
+
 ## 2.6. Agent context
 
 The package ships the docs written for agents, so an agent in your repo can read

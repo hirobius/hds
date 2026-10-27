@@ -212,6 +212,8 @@ export const EXEMPTION_MARKERS = [
   'type-ramp-ok',
   // check-no-uppercase.mjs (a reason is required)
   'uppercase-ok',
+  // bin/hds-check.mjs shadows rule (hds#664; a reason is required)
+  'shadow-ok',
   // src/app/components/__tests__/no-css-var-in-motion-animate.test.ts (hds#372)
   'motion-animate-var-ok',
   // check-no-custom-tracking.mjs (a reason is required)
@@ -290,15 +292,8 @@ export function suppressionFor(marker, { requireReason = false, lookback = 1 } =
  * @param {{leadChars?: string}} [options]  characters that may precede a `//`
  *   comment (default space and tab)
  */
-export function maskComments(text, { leadChars = ' \t' } = {}) {
-  const lead = leadChars.replace(/[\]\\^-]/g, '\\$&');
-  return text
-    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '))
-    .replace(
-      new RegExp(`(^|[${lead}])\\/\\/[^\\n]*`, 'gm'),
-      (m, l) => l + ' '.repeat(m.length - l.length),
-    );
-}
+// One copy, shipped with the consumer `hds-check` CLI (hds#664).
+export { maskComments } from '../../bin/lib/visual-rules.mjs';
 
 /** 1-based line number of a character index in `text`. */
 export function lineOf(text, index) {

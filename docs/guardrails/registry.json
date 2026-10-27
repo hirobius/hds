@@ -668,6 +668,17 @@
       "supportsJson": true
     },
     {
+      "id": "check-version-stamps",
+      "description": "Fails when an agent doc does not name package.json's version (hds#463): the Version: line of llms.txt, public/llms.txt, public/llms-full.txt and every public/llms/*.txt slice, metadata.hds-version in skills/hds-consumer/SKILL.md, and packageVersion in public/hds-manifest.json. They ship in the tarball as committed, so drift here is a tarball that lies about its version. pnpm changeset:version regenerates them; --root checks another tree, such as an unpacked tarball. Runs in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-version-stamps.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
       "id": "check-pack-contents",
       "description": "Runs npm pack --dry-run and fails when the tarball lacks the agent context (llms.txt, llms-full.txt and slices, DESIGN.md, CONSUMING.md, component-api.json, AGENTS.md), the hds-mcp server and the patterns name list it reads, the ESLint plugin entry, the manifest, tokens or dist entry, or contains .env*, repo src/ (other than component-api.json), repo scripts/ (other than the ESLint plugin). Consumers' agents read node_modules, so a file missing from the pack is a file they never see (#341).",
       "severity": "error",

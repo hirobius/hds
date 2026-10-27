@@ -1254,8 +1254,15 @@ const SAMPLE_IMAGE =
 
 function AssetImgDemo() {
   return (
-    <div style={{ width: 'min(100%, 360px)' }}>
-      <AssetImg src={SAMPLE_IMAGE} alt="Sample artwork" naturalWidth={640} naturalHeight={360} />
+    // The frame holds the image's ratio, so the page does not reflow when it decodes (hds#770).
+    <div style={{ width: 'min(100%, 360px)', aspectRatio: '640 / 360' }}>
+      <AssetImg
+        src={SAMPLE_IMAGE}
+        alt="Sample artwork"
+        naturalWidth={640}
+        naturalHeight={360}
+        style={{ display: 'block', width: '100%', height: '100%' }}
+      />
     </div>
   );
 }

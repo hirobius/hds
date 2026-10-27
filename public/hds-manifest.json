@@ -2,11 +2,15 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-27T14:05:05.164Z",
+  "generated": "2026-10-27T14:11:14.017Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
-  "llmsTxt": "https://hirobius-hds-components.vercel.app/llms.txt",
+  "packageVersion": "0.32.0",
+  "upgrade": {
+    "command": "npx @hirobius/design-system@latest upgrade"
+  },
+  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.32.0/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
@@ -408,7 +412,6 @@
     "namespaceViolations": []
   },
   "agentEntrypoint": "llms.txt",
-  "breakingChangePolicy": "Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.",
   "componentSpecs": {
     "Alert": {
       "category": "Feedback",
@@ -7534,7 +7537,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/box.tsx",
-      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine.",
+      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine. On React 19 the rules render as a hoisted `<style href precedence>` (so they are in server HTML); on React 18 they inject into a managed sheet in the browser.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -14706,14 +14709,6 @@
         "description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
         "alias": "{primitive.size.40}",
         "resolvedValue": "40px"
-      },
-      {
-        "path": "semantic.size.touchTarget",
-        "cssVar": "--semantic-size-touchTarget",
-        "type": "dimension",
-        "description": "Small-control minimum on a coarse pointer or narrow viewport (hds#750).",
-        "alias": "{primitive.size.interactive.min}",
-        "resolvedValue": "44px"
       },
       {
         "path": "semantic.size.tile",

@@ -45,6 +45,7 @@ import {
 import { renderTailwindConfig } from './lib/token-emit/tailwind.mjs';
 import { ACCENT_HEADER, buildTenantCSS } from './lib/token-emit/tenant.mjs';
 import { buildManifest as buildManifestFrom } from './lib/token-manifest.mjs';
+import { readPackageVersion } from './lib/version-stamp.mjs';
 
 // Re-exported for the importers of this module (one release; then import the lib module).
 export { DTCG_KEYS, resolveAlias, walkTokens } from './lib/token-tree.mjs';
@@ -63,8 +64,13 @@ const readSystemManifest = () =>
   JSON.parse(readFileSync(join(ROOT, 'public', 'hds-manifest.json'), 'utf8'));
 
 /** lib/token-manifest.mjs buildManifest, reading the previous manifest when none is passed. */
-export function buildManifest(allTokens, raw, systemManifest = readSystemManifest()) {
-  return buildManifestFrom(allTokens, raw, systemManifest);
+export function buildManifest(
+  allTokens,
+  raw,
+  systemManifest = readSystemManifest(),
+  packageVersion = readPackageVersion(ROOT),
+) {
+  return buildManifestFrom(allTokens, raw, systemManifest, packageVersion);
 }
 
 // ── CLI entry (runs only when invoked directly) ───────────────────────────────

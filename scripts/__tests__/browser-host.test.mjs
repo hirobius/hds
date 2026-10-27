@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -34,6 +34,16 @@ describe('chromiumPath', () => {
     expect(chromiumPath()).toBeUndefined();
     const chrome = fakeBuild(root, 1243, 'chrome-linux64');
     expect(chromiumPath()).toBe(chrome);
+  });
+
+  it('finds <root>/chromium when it is a symlink to the binary, ignoring a directory', () => {
+    mkdirSync(path.join(root, 'chromium'));
+    expect(chromiumPath()).toBeUndefined();
+    rmSync(path.join(root, 'chromium'), { recursive: true });
+    const target = path.join(root, 'real-chrome');
+    writeFileSync(target, '');
+    symlinkSync(target, path.join(root, 'chromium'));
+    expect(chromiumPath()).toBe(path.join(root, 'chromium'));
   });
 
   it('prefers the newest build by number, not by string order', () => {

@@ -78,6 +78,11 @@ export type ManifestComponentSpec = {
   description?: string;
   figmaUrl?: string | null;
   figmaId?: string | null;
+  /**
+   * @deprecated Same URL as `figmaUrl`; read that. Left out of the bundled
+   * `@hirobius/design-system/manifest` entry since 0.33 (hds#413), kept in
+   * public/hds-manifest.json for the repo's tooling.
+   */
   figmaLink?: string | null;
   filePath?: string;
   hidden?: boolean;
@@ -86,6 +91,7 @@ export type ManifestComponentSpec = {
   /** In the ratified core set (hds#254, ADR-031). Present only as `true`; independent of `tier`. */
   core?: true;
   stability?: 'stable' | 'beta';
+  /** HDS repo files that import the component. Not in the bundled `./manifest` entry (hds#413). */
   consumers?: string[];
   tokenMapping?: Record<string, string>;
   preview?: {

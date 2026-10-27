@@ -1,0 +1,9 @@
+.card {
+  box-shadow: var(--semantic-shadow-subtle);
+}
+.panel {
+  box-shadow: var(--shadow);
+}
+.flat {
+  box-shadow: none;
+}
