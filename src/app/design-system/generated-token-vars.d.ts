@@ -173,6 +173,7 @@ declare module 'react' {
     '--primitive-typography-size-code'?: string | undefined;
     '--primitive-typography-weight-regular'?: string | undefined;
     '--primitive-typography-weight-medium'?: string | undefined;
+    '--primitive-typography-weight-semibold'?: string | undefined;
     '--primitive-typography-weight-bold'?: string | undefined;
     '--primitive-typography-weight-display'?: string | undefined;
     '--primitive-typography-weight-mono'?: string | undefined;
@@ -207,8 +208,11 @@ declare module 'react' {
     '--primitive-size-20'?: string | undefined;
     '--primitive-size-24'?: string | undefined;
     '--primitive-size-32'?: string | undefined;
+    '--primitive-size-36'?: string | undefined;
     '--primitive-size-40'?: string | undefined;
+    '--primitive-size-44'?: string | undefined;
     '--primitive-size-48'?: string | undefined;
+    '--primitive-size-52'?: string | undefined;
     '--primitive-size-64'?: string | undefined;
     '--primitive-size-80'?: string | undefined;
     '--primitive-size-96'?: string | undefined;
@@ -529,6 +533,7 @@ declare module 'react' {
     '--component-button-radius'?: string | undefined;
     '--component-button-paddingX'?: string | undefined;
     '--component-button-paddingY'?: string | undefined;
+    '--component-button-fontWeight'?: string | undefined;
     '--component-button-size-sm-paddingX'?: string | undefined;
     '--component-button-size-sm-paddingY'?: string | undefined;
     '--component-button-size-sm-fontSize'?: string | undefined;

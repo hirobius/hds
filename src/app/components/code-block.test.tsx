@@ -12,8 +12,12 @@ import { CodeBlock } from './code-block';
 afterEach(cleanup);
 
 const css = (file: string) => readFileSync(resolve(__dirname, '../../styles', file), 'utf8');
-const tokenPx = (name: string) =>
-  Number(css('tokens.generated.css').match(new RegExp(`${name}:\\s*(\\d+)px`))?.[1]);
+/** A token's px value, following var() aliases (`--component-button-size-sm-height` -> 36). */
+const tokenPx = (name: string): number => {
+  const value = css('tokens.generated.css').match(new RegExp(`${name}:\\s*([^;]+);`))?.[1] ?? '';
+  const alias = value.match(/^var\((--[\w-]+)\)$/);
+  return alias ? tokenPx(alias[1]) : Number(value.match(/^(\d+)px$/)?.[1]);
+};
 
 describe('CodeBlock accessibility contract', () => {
   // jsdom does no layout, so fake an overflowing <pre> (scrollWidth past clientWidth).
@@ -130,9 +134,10 @@ describe('CodeBlock accessibility contract', () => {
       const copy = screen.getByRole('button', { name: 'Copy code' });
       expect(copy.className).toContain('hds-touch-target');
       if (variant === 'block') {
-        // the sm icon-only Button is a 32px square
-        expect(copy.className).toContain('h-8');
-        expect(copy.className).toContain('w-8');
+        // the sm icon-only Button is a square bound to the sm height token (36px)
+        expect(tokenPx('--component-button-size-sm-height')).toBeGreaterThanOrEqual(24);
+        expect(copy.className).toContain('h-[var(--component-button-size-sm-height)]');
+        expect(copy.className).toContain('w-[var(--component-button-size-sm-height)]');
       } else {
         // 16px icon + 2 x the subgrid-gap padding (primitive space-1)
         expect(16 + 2 * tokenPx('--primitive-space-1')).toBeGreaterThanOrEqual(24);

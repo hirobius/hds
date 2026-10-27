@@ -219,6 +219,7 @@ export const tokenRefs = {
       weight: {
         regular: "var(--primitive-typography-weight-regular)",
         medium: "var(--primitive-typography-weight-medium)",
+        semibold: "var(--primitive-typography-weight-semibold)",
         bold: "var(--primitive-typography-weight-bold)",
         display: "var(--primitive-typography-weight-display)",
         mono: "var(--primitive-typography-weight-mono)"
@@ -268,8 +269,11 @@ export const tokenRefs = {
       "20": "var(--primitive-size-20)",
       "24": "var(--primitive-size-24)",
       "32": "var(--primitive-size-32)",
+      "36": "var(--primitive-size-36)",
       "40": "var(--primitive-size-40)",
+      "44": "var(--primitive-size-44)",
       "48": "var(--primitive-size-48)",
+      "52": "var(--primitive-size-52)",
       "64": "var(--primitive-size-64)",
       "80": "var(--primitive-size-80)",
       "96": "var(--primitive-size-96)",
@@ -740,6 +744,7 @@ export const tokenRefs = {
       radius: "var(--component-button-radius)",
       paddingX: "var(--component-button-paddingX)",
       paddingY: "var(--component-button-paddingY)",
+      fontWeight: "var(--component-button-fontWeight)",
       size: {
         sm: {
           paddingX: "var(--component-button-size-sm-paddingX)",

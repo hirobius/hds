@@ -16,7 +16,11 @@ const preinstalled = fs.existsSync(browsers)
       .filter((d) => /^chromium-\d+$/.test(d))
       .sort()
       .reverse()
-      .map((d) => `${browsers}/${d}/chrome-linux/chrome`)
+      // chrome-linux64 since Chromium 1243 (remote containers), chrome-linux before.
+      .flatMap((d) => [
+        `${browsers}/${d}/chrome-linux64/chrome`,
+        `${browsers}/${d}/chrome-linux/chrome`,
+      ])
       .find((p) => fs.existsSync(p))
   : undefined;
 

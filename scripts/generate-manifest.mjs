@@ -211,6 +211,11 @@ for (const entry of activeDiscoveredComponents) {
     deprecated: _d,
     removeIn: _r,
     useInstead: _i,
+    // Rebuilt below, and only when true (hidden, docExempt) or not at all
+    // (figmaId: nothing ever set it), to keep the manifest under its gzip budget (hds#760).
+    hidden: _h,
+    docExempt: _e,
+    figmaId: _f,
     ...current
   } = manifest.componentSpecs[entry.name] ?? {};
   const contract = compactContract(entry);
@@ -240,8 +245,8 @@ for (const entry of activeDiscoveredComponents) {
     category,
     categorySource,
     governedCategory: categorySource === 'jsdoc' || categorySource === 'internal-jsdoc',
-    hidden,
-    docExempt: entry.docExempt,
+    ...(hidden ? { hidden } : {}),
+    ...(entry.docExempt ? { docExempt: true } : {}),
     filePath: entry.filePath,
     description: entry.description || current.description,
     ...(contract.usage ? { usage: contract.usage } : {}),
@@ -257,7 +262,6 @@ for (const entry of activeDiscoveredComponents) {
     // The component's `@figma` JSDoc tag is the only source: removing the tag
     // unmaps the component (and its Code Connect template) on the next regen.
     figmaUrl: entry.figmaUrl ?? null,
-    figmaId: current.figmaId ?? null,
     // figmaLink: explicit "View in Figma" target (10d-14). A real Figma URL or
     // null, never a placeholder. Legacy `TODO:hds-master:<Name>` markers are
     // dropped here so they cannot survive a regen; see scripts/lib/figma-link.mjs.

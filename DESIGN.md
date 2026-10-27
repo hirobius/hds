@@ -33,7 +33,7 @@ HDS ships three typefaces — each with a distinct role:
 - **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `400` mono, `500` medium, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `700` bold.
+Weights declared: `400` regular, `400` mono, `500` medium, `600` semibold, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `600` semibold, `700` bold.
 
 ### Type ramp
 
@@ -273,6 +273,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (479 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (484 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

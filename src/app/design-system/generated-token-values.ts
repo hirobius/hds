@@ -213,6 +213,7 @@ export const tokenValues = {
       weight: {
         regular: "400",
         medium: "500",
+        semibold: "600",
         bold: "700",
         display: "700",
         mono: "400"
@@ -262,8 +263,11 @@ export const tokenValues = {
       "20": "20px",
       "24": "24px",
       "32": "32px",
+      "36": "36px",
       "40": "40px",
+      "44": "44px",
       "48": "48px",
+      "52": "52px",
       "64": "64px",
       "80": "80px",
       "96": "96px",
