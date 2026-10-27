@@ -1,1 +1,2 @@
 Touch size for small controls (hds#750): `semantic.size.touchTarget` (44px); the `hds-touch-row` / `hds-touch-target` hooks now fire on `(pointer: coarse)` as well as under 640px, and sm Button, Tag, Disclosure trigger and SegmentedControl (both axes) carry them. New on-demand `pnpm check:docs-touch-targets` measures the docs demos on a 390px phone and a 1024px touch tablet. Minor.
+Tag's dismiss X (hds#919) also lifts to 44px on touch.
