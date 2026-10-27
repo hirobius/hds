@@ -486,10 +486,9 @@ export function buildManifest(allTokens, raw, systemManifest = {}, packageVersio
     patternInventory: systemManifest.patternInventory ?? [],
     // hds#342: forwarded verbatim from generate-manifest (build-tokens runs after it).
     ...(systemManifest.iconSet ? { iconSet: systemManifest.iconSet } : {}),
-    phases: systemManifest.phases ?? [],
-    // No `health` (hds#431): it was a frozen 2026-06-18 snapshot no script
-    // wrote, forwarded unchanged into ./manifest. Dropping the key here also
-    // drops it from public/hds-manifest.json on the next run.
+    // No `health` (hds#431) and no `phases` (hds#442): both were frozen
+    // snapshots no script wrote, forwarded unchanged into ./manifest. Dropping
+    // a key here also drops it from public/hds-manifest.json on the next run.
     inventory: systemManifest.inventory ?? {},
     agentEntrypoint: 'llms.txt',
     // hds#463: `upgrade` replaces the old free-text breakingChangePolicy.

@@ -1,0 +1,1 @@
+- 2026-10-27: dropped removed sidebar-railWidth from SPACING_KEYS in src/lib/utils.ts (#925 review).
