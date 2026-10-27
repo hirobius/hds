@@ -232,8 +232,8 @@ function readPublicClasses(dir) {
 export function presetKeys(dir) {
   const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
   const target = pkg.exports?.[PRESET_EXPORT];
-  const path = typeof target === 'string' ? target : (target?.require ?? target?.default);
-  if (typeof path !== 'string') return null;
+  if (typeof target !== 'string') return null;
+  const path = target;
   const file = join(dir, path);
   if (!existsSync(file)) {
     throw new Error(`exports["${PRESET_EXPORT}"] is ${path}, which is not in ${dir}`);

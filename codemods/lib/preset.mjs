@@ -10,8 +10,8 @@ import { createRequire } from 'node:module';
 /** The exports key of the Tailwind theme preset. */
 export const PRESET_EXPORT = './tailwind-preset';
 
-/** The file name a consumer vendors the preset as (ops did), any JS extension. */
-export const VENDORED_PRESET = /(?:^|\/)tailwind\.config\.tokens\.(?:c?js|mjs)$/;
+/** The file name a consumer vendors the preset as (ops did): CommonJS, which loadPreset reads. */
+export const VENDORED_PRESET = /(?:^|\/)tailwind\.config\.tokens\.c?js$/;
 
 const byCodeUnit = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 

@@ -923,6 +923,7 @@ export async function recordRelease({ repo = REPO, date = today() } = {}) {
   }
   for (const n of pendingNotes) rmSync(join(repo, n.file));
   if (written) rmSync(join(repo, written.file));
+  // Lazy, like the imports above: --check never writes the safelist.
   const { SAFELIST_FILE, writeUtilitySafelist } = await import('../build-utility-safelist.mjs');
   if (existsSync(join(repo, SAFELIST_FILE))) await writeUtilitySafelist(repo);
   return { recorded: true, version, notes: Object.keys(cites), uncited };
