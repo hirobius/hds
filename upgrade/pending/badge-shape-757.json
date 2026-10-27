@@ -1,4 +1,42 @@
 {
   "impact": "look",
-  "plain": "Badge is 2px taller (22px), its label sits 1px higher and its corner is a step under the action radius (6px by default); re-take screenshots and check fixed-height rows that hold badges."
+  "plain": "Badge is 2px taller (22px), its label sits 1px higher and its corner is a step under the action radius (6px by default); re-take screenshots and check fixed-height rows that hold badges.",
+  "steps": [
+    {
+      "id": "value-changed/--component-badge-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-badge-height is now 22px (was 20px); check fixed-height rows that hold badges.",
+      "detect": {
+        "cssVars": ["--component-badge-height"],
+        "cssVarWrites": ["--component-badge-height"]
+      },
+      "facts": ["css-var-changed:--component-badge-height::root"]
+    },
+    {
+      "id": "value-changed/--component-badge-minWidth",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-badge-minWidth is now 22px (was 20px), so a one-digit count badge is 2px wider.",
+      "detect": {
+        "cssVars": ["--component-badge-minWidth"],
+        "cssVarWrites": ["--component-badge-minWidth"]
+      },
+      "facts": ["css-var-changed:--component-badge-minWidth::root"]
+    },
+    {
+      "id": "value-changed/--component-badge-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-badge-radius is now a fixed 6px (was the action radius); Badge itself renders role.radius minus 2px, so read that instead if you matched its corner.",
+      "detect": {
+        "cssVars": ["--component-badge-radius"],
+        "cssVarWrites": ["--component-badge-radius"]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-radius::root",
+        "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ]
+    }
+  ]
 }
