@@ -612,7 +612,7 @@
           "value": 16,
           "unit": "px"
         },
-        "$description": "Fullscreen backdrop blur for portfolio lightbox overlays."
+        "$description": "Large backdrop blur for fullscreen overlays."
       },
       "$type": "dimension",
       "$description": "Backdrop blur strengths for frosted overlays and fullscreen media treatments."
@@ -2071,12 +2071,6 @@
         "railPadding": {
           "$value": "{primitive.space.5}",
           "$description": "20px outer padding for sidebar and TOC rails."
-        },
-        "railWidth": {
-          "$type": "dimension",
-          "$value": "{primitive.size.width.280}",
-          "$description": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).",
-          "$deprecated": "2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280"
         }
       }
     },
@@ -2729,41 +2723,6 @@
   },
   "component": {
     "nav": {
-      "bg": {
-        "$type": "color",
-        "$value": "{semantic.color.surface.page}",
-        "$description": "Nav bar background fill."
-      },
-      "bgActive": {
-        "$type": "color",
-        "$value": "{semantic.accent.subtle}",
-        "$description": "Nav item background fill when active or selected."
-      },
-      "borderActive": {
-        "$type": "color",
-        "$value": "{semantic.color.surface.accent}",
-        "$description": "Nav item border color when active or selected."
-      },
-      "text": {
-        "$type": "color",
-        "$value": "{semantic.color.content.secondary}",
-        "$description": "Nav item text color at rest."
-      },
-      "textActive": {
-        "$type": "color",
-        "$value": "{semantic.color.content.primary}",
-        "$description": "Nav item text color when active or selected."
-      },
-      "height": {
-        "$type": "dimension",
-        "$value": "{primitive.space.16}",
-        "$description": "Nav bar height."
-      },
-      "paddingX": {
-        "$type": "dimension",
-        "$value": "{primitive.space.6}",
-        "$description": "Horizontal padding inside nav items."
-      },
       "paddingY": {
         "$type": "dimension",
         "$value": "{primitive.space.2}",
@@ -3243,15 +3202,6 @@
         "$type": "color",
         "$value": "{semantic.color.surface.overlay}",
         "$description": "Inline code chip background."
-      }
-    },
-    "lightbox": {
-      "backdrop": {
-        "blur": {
-          "$type": "dimension",
-          "$value": "{primitive.blur.16}",
-          "$description": "Backdrop blur applied behind fullscreen image lightboxes."
-        }
       }
     }
   },

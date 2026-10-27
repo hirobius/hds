@@ -53,6 +53,8 @@ export const REQUIRED = [
   'docs/api/props-baseline.json',
   'public/hds-manifest.json',
   'hirobius.tokens.json',
+  // The Tailwind preset (hds#466), exported as ./tailwind-preset.
+  'tailwind.config.tokens.cjs',
   'dist/hirobius-ui.js',
   // Agent tooling (the after arm of eval/consistency/CONDITIONS.md): the packaged
   // AGENTS.md, the hds-mcp server and the data it reads, and the ESLint plugin.
@@ -95,6 +97,7 @@ export const REQUIRED = [
   'codemods/lib/atomic-write.mjs',
   'codemods/lib/deprecated.mjs',
   'codemods/lib/installed-version.mjs',
+  'codemods/lib/preset.mjs',
   'codemods/lib/project.mjs',
   'codemods/lib/record.mjs',
   'codemods/lib/scan.mjs',

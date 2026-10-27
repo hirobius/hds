@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +9,7 @@ import {
   summarize,
   validateContract,
 } from '../lib/layout-contract.mjs';
+import { chromiumForTests } from '../lib/browser-host.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const manifest = JSON.parse(readFileSync(path.join(ROOT, 'public/hds-manifest.json'), 'utf8'));
@@ -163,9 +164,7 @@ describe('check-layout-contract: canary', () => {
 });
 
 describe('check-layout-contract: browser canary', () => {
-  const hasChromium =
-    existsSync(process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers') ||
-    existsSync(`${process.env.HOME}/.cache/ms-playwright`);
+  const hasChromium = Boolean(chromiumForTests());
   it.skipIf(!hasChromium)(
     '--strict exits 1 on the canary HTML, exit 0 in warn mode',
     () => {

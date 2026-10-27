@@ -116,8 +116,6 @@ const config = {
         'sidebar-gap': 'var(--semantic-space-sidebar-gap)',
         'sidebar-sectionGap': 'var(--semantic-space-sidebar-sectionGap)',
         'sidebar-railPadding': 'var(--semantic-space-sidebar-railPadding)',
-        // @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280 @removeIn 1.0.0
-        'sidebar-railWidth': 'var(--semantic-space-sidebar-railWidth)',
         px1: 'var(--primitive-space-px1)',
         px2: 'var(--primitive-space-px2)',
         px6: 'var(--primitive-space-px6)',
