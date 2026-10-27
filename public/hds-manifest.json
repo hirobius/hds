@@ -3343,6 +3343,10 @@
           "type": "string",
           "optional": true
         },
+        "lineClamp": {
+          "type": "TextLineClamp",
+          "optional": true
+        },
         "style": {
           "type": "CSSProperties",
           "optional": true
@@ -3359,6 +3363,10 @@
             "danger",
             "info"
           ],
+          "optional": true
+        },
+        "truncate": {
+          "type": "boolean",
           "optional": true
         },
         "variant": {
