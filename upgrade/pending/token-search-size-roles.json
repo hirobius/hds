@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Run `pnpm exec hds-tokens search <name>` before writing a token variable to confirm it exists and see the nearest real names."
+}

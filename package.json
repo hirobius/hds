@@ -139,6 +139,7 @@
     "codemods/lib/semver.mjs",
     "AGENTS.md",
     "mcp/",
+    "bin/",
     "scripts/eslint-plugin-hds/index.mjs",
     "scripts/eslint-plugin-hds/index.d.mts",
     "scripts/eslint-plugin-hds/package.json",
@@ -462,6 +463,7 @@
     "hds-tile-grid": "codemods/tile-grid.mjs",
     "hds-spacing-steps": "codemods/spacing-steps.mjs",
     "hds-mcp": "mcp/hds-mcp.mjs",
+    "hds-tokens": "bin/hds-tokens.mjs",
     "design-system": "codemods/upgrade.mjs",
     "hds-upgrade": "codemods/upgrade.mjs"
   }

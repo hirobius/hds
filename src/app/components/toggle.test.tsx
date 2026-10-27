@@ -51,13 +51,13 @@ describe('Toggle geometry', () => {
     const ref = /^var\((--[\w-]+)\)$/.exec(v);
     return ref ? tokenPx(ref[1]) : parseFloat(v);
   };
-  /** Token behind a `prefix-[var(--x)]` / `prefix-[length:var(--x)]` class. */
+  /** Token behind a `prefix-[var(--x)]`, `prefix-[length:var(--x)]` or `prefix-[calc(var(--x)*N)]` class. */
   const classToken = (el: Element, prefix: string): number => {
-    const m = new RegExp(`(?:^|\\s)${prefix}-\\[(?:length:)?var\\((--[\\w-]+)\\)\\]`).exec(
-      el.className,
-    );
+    const m = new RegExp(
+      `(?:^|\\s)${prefix}-\\[(?:length:)?(?:calc\\()?var\\((--[\\w-]+)\\)(?:\\*(\\d+)\\))?\\]`,
+    ).exec(el.className);
     if (!m) throw new Error(`no ${prefix}-[var(...)] class on ${el.className}`);
-    return tokenPx(m[1]);
+    return tokenPx(m[1]) * Number(m[2] ?? 1);
   };
 
   const parts = (checked: boolean) => {
@@ -69,16 +69,20 @@ describe('Toggle geometry', () => {
       height: classToken(track, 'h'),
       border: classToken(track, 'border'),
       pad: classToken(track, 'p'),
-      thumbW: classToken(thumb, 'w'),
-      thumbH: classToken(thumb, 'h'),
     };
+    // The thumb has no size of its own: it fills the track's padded rail (h-full, square).
+    const thumbFillsRail =
+      /(?:^|\s)h-full(?:\s|$)/.test(thumb.className) && /\baspect-square\b/.test(thumb.className);
+    const thumbW = g.height - 2 * (g.pad + g.border);
     const x = parseFloat(/translateX\((-?[\d.]+)px\)/.exec(thumb.style.transform)?.[1] ?? '0');
-    return { g, x };
+    return { g: { ...g, thumbW, thumbFillsRail }, x };
   };
 
-  it('fits the thumb inside the padded track vertically (equal top/bottom inset)', () => {
+  it('sizes the thumb to the padded rail (equal top/bottom inset)', () => {
     const { g } = parts(false);
-    expect(g.thumbH + 2 * (g.pad + g.border)).toBe(g.height);
+    expect(g.thumbFillsRail).toBe(true);
+    expect(g.thumbW).toBe(12);
+    expect(g.width).toBe(2 * g.height);
   });
 
   it('slides the thumb so the on-state right inset equals the off-state left inset', () => {
