@@ -180,11 +180,11 @@ export function ToastProvider({
                 if (!open) remove(t.id);
               }}
               className={cn(
-                'pointer-events-auto relative flex w-full items-start gap-3',
+                'pointer-events-auto relative flex w-full items-start gap-fixed-xs',
                 // Not `p-4 pr-8`: utilities.css ships an unlayered .p-4 that beat pr-8, so the text ran under
                 // the X at every width. Below sm the dismiss button grows to its 44px touch target
                 // (right-2 + 44px = 52px), so the text column steps in to 64px there (on the spacing grid).
-                'rounded-md border border-border bg-popover py-4 pl-4 pr-8 max-sm:pr-16',
+                'rounded-md border border-border bg-popover py-fixed-sm pl-fixed-sm pr-fixed-lg max-sm:pr-16',
                 'text-popover-foreground shadow-overlay hds-focus',
               )}
             >
@@ -195,7 +195,7 @@ export function ToastProvider({
                 className={toastIconVariants({ tone })}
                 aria-hidden
               />
-              <div className="flex min-w-0 flex-col gap-1">
+              <div className="flex min-w-0 flex-col gap-fixed-2xs">
                 <ToastPrimitive.Title className="hds-type-ui">{t.title}</ToastPrimitive.Title>
                 {t.description ? (
                   <ToastPrimitive.Description className="hds-type-ui text-muted-foreground">
@@ -228,7 +228,7 @@ export function ToastProvider({
         })}
         <ToastPrimitive.Viewport
           className={cn(
-            'fixed bottom-0 right-0 z-50 m-0 flex w-full list-none flex-col gap-2 p-4',
+            'fixed bottom-0 right-0 z-50 m-0 flex w-full list-none flex-col gap-scale-xs p-fixed-sm',
             'sm:max-w-sm',
           )}
         />

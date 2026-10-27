@@ -148,6 +148,7 @@ declare module 'react' {
     '--primitive-radius-0'?: string | undefined;
     '--primitive-radius-2'?: string | undefined;
     '--primitive-radius-4'?: string | undefined;
+    '--primitive-radius-6'?: string | undefined;
     '--primitive-radius-8'?: string | undefined;
     '--primitive-radius-12'?: string | undefined;
     '--primitive-radius-16'?: string | undefined;
@@ -205,6 +206,7 @@ declare module 'react' {
     '--primitive-size-12'?: string | undefined;
     '--primitive-size-16'?: string | undefined;
     '--primitive-size-20'?: string | undefined;
+    '--primitive-size-22'?: string | undefined;
     '--primitive-size-24'?: string | undefined;
     '--primitive-size-32'?: string | undefined;
     '--primitive-size-40'?: string | undefined;
@@ -512,6 +514,7 @@ declare module 'react' {
     '--component-badge-height'?: string | undefined;
     '--component-badge-minWidth'?: string | undefined;
     '--component-badge-paddingY'?: string | undefined;
+    '--component-badge-paddingShift'?: string | undefined;
     '--component-badge-paddingX'?: string | undefined;
     '--component-button-bg'?: string | undefined;
     '--component-button-bgHover'?: string | undefined;

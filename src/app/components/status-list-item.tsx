@@ -61,7 +61,7 @@ export const StatusListItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, S
       <div
         ref={ref}
         data-tone={tone ?? 'neutral'}
-        className={cn('flex items-start gap-3', className)}
+        className={cn('flex items-start gap-fixed-xs', className)}
         {...props}
       >
         <span aria-hidden="true" className={statusListItemDotVariants({ tone })} />

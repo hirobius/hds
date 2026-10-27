@@ -1,0 +1,1 @@
+Bad-release path (hds#472): `pnpm release:yank <v> <reason>` (dry run unless `--apply`) prints the npm deprecate + dist-tag commands, edits the GitHub Release, posts to Discord and retargets or closes consumer standing upgrade issues; docs/RELEASING.md runbook; the upgrade command skips npm-deprecated versions; UPGRADING.md gains the rollback steps. No backports before 1.0.

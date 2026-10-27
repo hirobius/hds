@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 518 tokens, aliases, and TS refs in one shot.
+Checks all 521 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -414,10 +414,11 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 
 ## Filter
 
-| Token               | Value  | Use                                                            |
-| ------------------- | ------ | -------------------------------------------------------------- |
-| `primitive.blur.8`  | `8px`  | Compact frosted blur for slot badges and small overlay labels. |
-| `primitive.blur.16` | `16px` | Large backdrop blur for fullscreen overlays.                   |
+| Token                              | Value  | Use                                                            |
+| ---------------------------------- | ------ | -------------------------------------------------------------- |
+| `primitive.blur.8`                 | `8px`  | Compact frosted blur for slot badges and small overlay labels. |
+| `primitive.blur.16`                | `16px` | Fullscreen backdrop blur for portfolio lightboxes.             |
+| `component.lightbox.backdrop.blur` | `16px` | Shared blur strength for fullscreen portfolio image overlays.  |
 
 <!-- auto:start:size -->
 
@@ -428,6 +429,7 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `primitive.size.12`              | `12px`  | 12px size step.                            |
 | `primitive.size.16`              | `16px`  | 16px size step.                            |
 | `primitive.size.20`              | `20px`  | 20px size step.                            |
+| `primitive.size.22`              | `22px`  | 22px size step.                            |
 | `primitive.size.24`              | `24px`  | 24px size step.                            |
 | `primitive.size.32`              | `32px`  | 32px size step.                            |
 | `primitive.size.40`              | `40px`  | 40px size step.                            |
@@ -485,6 +487,7 @@ Or via `useTheme().setDensity('compact')`
 | `primitive.radius.0`    | `0px`    |            |
 | `primitive.radius.2`    | `2px`    |            |
 | `primitive.radius.4`    | `4px`    |            |
+| `primitive.radius.6`    | `6px`    |            |
 | `primitive.radius.8`    | `8px`    |            |
 | `primitive.radius.12`   | `12px`   |            |
 | `primitive.radius.16`   | `16px`   |            |
@@ -553,7 +556,8 @@ Or via `useTheme().setDensity('compact')`
 | Button    | `component.button.*` surface tokens, action radius for interactive corners, `min-width` 80, `padding-x/y` 16x12, `font-size` 14, `font-weight` 500, centered short labels, disabled primary text via `component.button.primary.textDisabled` -> Light `{semantic.color.content.onAccent}` / Dark `{semantic.color.content.disabled}` |
 | Badge     | `component.badge.bg` -> brand, `component.badge.radius` -> `4px` rounded corner, `height/min-width` 20                                                                                                                                                                                                                               |
 | Tag       | `component.tag.*` pill tokens, `padding-x/y` 12x8, `min-width` 48, `min-height` 24, transparent `primitive.size.interactive.min` hit target                                                                                                                                                                                          |
-| Nav       | `component.nav.paddingY` (8px), Disclosure's `nav` variant only                                                                                                                                                                                                                                                                      |
+| Nav       | `component.nav.paddingX` / `component.nav.paddingY` (24px / 12px), `color.brand` active indicator                                                                                                                                                                                                                                    |
+| Lightbox  | `component.lightbox.backdrop.blur` -> `primitive.blur.16` for fullscreen media overlays                                                                                                                                                                                                                                              |
 | Container | `semantic.layout.container.maxWidth` -> `primitive.size.width.1200` (1200px)                                                                                                                                                                                                                                                         |
 
 ### Definition of Done
