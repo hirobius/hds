@@ -72,7 +72,7 @@ const dismissPill =
 
 const dismissButton =
   // tier-ok: a 40px touch hit area is an a11y floor, not a design-scale choice (no semantic size; hds#750, hds#919)
-  'hds-focus inline-flex size-[var(--primitive-size-40)] my-[calc((1lh_-_var(--primitive-size-40))/2)] shrink-0 cursor-pointer items-center justify-center rounded-[var(--component-tag-radius)] border-0 bg-transparent p-0 text-inherit transition-colors hover:text-[var(--semantic-color-content-primary)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]';
+  'hds-focus inline-flex size-[var(--semantic-size-row-compact)] my-[calc((1lh_-_var(--semantic-size-row-compact))/2)] shrink-0 cursor-pointer items-center justify-center rounded-[var(--component-tag-radius)] border-0 bg-transparent p-0 text-inherit transition-colors hover:text-[var(--semantic-color-content-primary)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
