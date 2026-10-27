@@ -183,7 +183,9 @@ describe('codemod registry', () => {
     }
     const codemodBins = Object.keys(bins).filter((b) => /^hds-/.test(b));
     expect(Object.keys(CODEMODS).sort()).toEqual(
-      codemodBins.filter((b) => !['hds-check', 'hds-mcp', 'hds-tokens', 'hds-upgrade'].includes(b)).sort(),
+      codemodBins
+        .filter((b) => !['hds-check', 'hds-mcp', 'hds-tokens', 'hds-upgrade'].includes(b))
+        .sort(),
     );
   });
 

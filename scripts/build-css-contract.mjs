@@ -34,7 +34,11 @@
  *
  * Plus publicClasses: the classes the manifest (public/hds-manifest.json)
  * declares public beyond the hds-* prefix rule (empty for a package whose
- * manifest predates the field).
+ * manifest predates the field); and tailwindPreset (hds#466): every theme key
+ * of the preset the package exports as ./tailwind-preset, flattened and
+ * sorted (`colors.card.DEFAULT`), absent for a release that shipped none. A
+ * consumer that compiles its own Tailwind with the preset loses a utility
+ * when a key goes, so a removed key is a breaking fact.
  *
  * The values are the minified text of the built bundle, the same bytes on
  * every path that reads it: build:lib writes this file from dist/, and

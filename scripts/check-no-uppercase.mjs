@@ -66,9 +66,12 @@ const SKIP_DIRS = [
   'fixtures',
 ];
 
-/** Whether a repo-relative path is out of scope (tests prove translators). */
+/**
+ * Whether a repo-relative path is out of scope: tests prove translators, and
+ * the generated utility safelist (hds#449) only keeps already-shipped utilities emitted.
+ */
 export function isExempt(rel) {
-  return isSpecFile(rel);
+  return isSpecFile(rel) || rel === 'src/styles/utility-safelist.generated.css';
 }
 
 /**

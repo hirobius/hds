@@ -29,6 +29,9 @@ describe('generate-manifest consumer scan', () => {
     roots.push(root);
     mkdirSync(join(root, 'scripts'), { recursive: true });
     cpSync(join(REPO, 'scripts', 'lib'), join(root, 'scripts', 'lib'), { recursive: true });
+    // scripts/lib/css-contract.mjs reads the Tailwind preset with the upgrade command's helper.
+    mkdirSync(join(root, 'codemods', 'lib'), { recursive: true });
+    cpSync(join(REPO, 'codemods/lib/preset.mjs'), join(root, 'codemods/lib/preset.mjs'));
     mkdirSync(join(root, 'mcp'), { recursive: true });
     cpSync(join(REPO, 'mcp', 'core-set.mjs'), join(root, 'mcp', 'core-set.mjs'));
     for (const f of [
