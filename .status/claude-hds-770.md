@@ -1,1 +1,1 @@
-Docs site layout shifts fixed (hds#770): `check-docs-layout-shift` allowlist is empty. Box `sx` server-renders on React 19; the docs header spans the TOC column; sidebar and TOC widths no longer wait for `:has()`.
+Fix the browser-host symlink fallback to derive from the browsers root so the hermetic temp-root test passes (hds#770); the Box change's changeset box-sx-ssr-770 already covers shipping. skip-changeset
