@@ -36,6 +36,20 @@ describe('transformSource', () => {
     ['md:gap-component-gap', 'md:gap-scale-xs'],
     ['hover:!px-component-padding', 'hover:!px-surface-padding'],
     ['gap-x-layout-gutter space-y-layout-normal', 'gap-x-region-gutter space-y-scale-md'],
+    [
+      'w-layout-tight h-layout-gutter size-layout-normal',
+      'w-scale-sm h-region-gutter size-scale-md',
+    ],
+    [
+      'top-layout-inset inset-x-component-gap -translate-y-layout-tight',
+      'top-scale-lg inset-x-scale-xs -translate-y-scale-sm',
+    ],
+    [
+      'basis-layout-spacious scroll-mt-layout-tight max-w-layout-inset',
+      'basis-scale-xl scroll-mt-scale-sm max-w-scale-lg',
+    ],
+    ['padding: theme(spacing.layout-tight);', 'padding: theme(spacing.scale-sm);'],
+    ["theme('spacing.component-padding')", "theme('spacing.surface-padding')"],
     ["borderColor: 'border.subdued'", "borderColor: 'border.default'"],
     ['stroke: "border.subdued"', 'stroke: "border.default"'],
   ])('%s -> %s', (before, after) => {
@@ -57,7 +71,8 @@ describe('transformSource', () => {
     'space.layout.tight',
     'p-component-medium',
     'grid-p-layout-tight',
-    'w-layout-tight',
+    'card-layout-tight',
+    'spacing.layout-gap',
     "gap: 'tight'",
     'border.subdued.hover',
     'a subdued label',

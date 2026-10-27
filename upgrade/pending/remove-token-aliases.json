@@ -141,7 +141,7 @@
       "id": "removed/semantic.space-aliases-js-tailwind",
       "kind": "removed",
       "impact": "breaking",
-      "plain": "hds.semantic.space.component and hds.semantic.space.layout.gutter, the Tailwind *-component-gap/padding and *-layout-* spacing utilities, and Box sx 'border.subdued' are removed; the codemod rewrites them to the scale, surface.padding, region.gutter and border.default names.",
+      "plain": "hds.semantic.space.component and hds.semantic.space.layout.gutter, the Tailwind spacing keys component-gap/padding and layout-* (p-, m-, gap-, w-, inset- and every other spacing utility, and theme(spacing.*)), and Box sx 'border.subdued' are removed; the codemod rewrites them.",
       "auto": {
         "codemod": "hds-token-aliases",
         "args": []
@@ -150,7 +150,7 @@
         "regex": [
           "\\bsemantic\\.space\\.(?:component\\.(?:gap|padding)|layout\\.(?:gutter|tight|normal|inset|spacious))\\b",
           "\\bsemantic\\.color\\.border\\.subdued\\b",
-          "(?<![\\w-])-?(?:gap-x|gap-y|gap|space-x|space-y|p[xytrblse]?|m[xytrblse]?)-(?:component-(?:gap|padding)|layout-(?:gutter|tight|normal|inset|spacious))(?![\\w-])",
+          "[a-z](?:-|\\.)(?:component-(?:gap|padding)|layout-(?:gutter|tight|normal|inset|spacious))(?![\\w-])",
           "['\"`]border\\.subdued['\"`]"
         ]
       }

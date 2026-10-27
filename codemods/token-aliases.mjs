@@ -19,7 +19,9 @@
  *   - JS / DTCG `hds.semantic.space.component.gap` -> `hds.semantic.space.scale.xs`,
  *               also inside a `{semantic.color.border.subdued}` reference
  *   - Tailwind  `p-layout-tight` -> `p-scale-sm`, `md:gap-component-gap` ->
- *               `md:gap-scale-xs` on the padding, margin, gap and space-x/y utilities
+ *               `md:gap-scale-xs` on every utility that reads theme.spacing (padding,
+ *               margin, gap, space, inset, width, height, size, basis, translate,
+ *               scroll, indent, border-spacing), and `theme(spacing.layout-tight)`
  *   - Box sx    `'border.subdued'` -> `'border.default'` (a quoted color key)
  *
  * The scale steps are what the aliases already resolved to at the default
@@ -94,7 +96,16 @@ const keys = (table, sep) =>
 const withSep = (k, sep) => k.replace('.', sep);
 const unsep = (k) => k.replace('-', '.');
 
-const UTILS = 'gap-x|gap-y|gap|space-x|space-y|px|py|pt|pr|pb|pl|ps|pe|p|mx|my|mt|mr|mb|ml|ms|me|m';
+// Every Tailwind utility that reads theme.spacing, so each one a removed key drove.
+const UTILS = [
+  'gap-x|gap-y|gap|space-x|space-y',
+  'px|py|pt|pr|pb|pl|ps|pe|p|mx|my|mt|mr|mb|ml|ms|me|m',
+  'scroll-px|scroll-py|scroll-pt|scroll-pr|scroll-pb|scroll-pl|scroll-ps|scroll-pe|scroll-p',
+  'scroll-mx|scroll-my|scroll-mt|scroll-mr|scroll-mb|scroll-ml|scroll-ms|scroll-me|scroll-m',
+  'inset-x|inset-y|inset|top|right|bottom|left|start|end',
+  'min-w|min-h|max-w|max-h|size|w|h|basis|indent|translate-x|translate-y',
+  'border-spacing-x|border-spacing-y|border-spacing',
+].join('|');
 
 // Each rule: a pattern over one token, the table its alias indexes and the
 // separator the token uses. Group 1 is the text kept before the alias (a
@@ -114,15 +125,16 @@ const RULES = [
     COLOR,
     '.',
   ],
-  // p-layout-tight, -mt-component-gap, md:gap-layout-gutter, hover:!px-layout-inset
+  // p-layout-tight, -mt-component-gap, md:w-layout-gutter, hover:!px-layout-inset
   [new RegExp(`(?<![\\w-])([-!]*(?:${UTILS})-)(${keys(SPACE, '-')})(?![\\w-])`, 'g'), SPACE, '-'],
+  // theme(spacing.layout-tight) in CSS, theme('spacing.layout-tight') in a config
+  [new RegExp(`(?<![\\w-])(spacing\\.)(${keys(SPACE, '-')})(?![\\w-])`, 'g'), SPACE, '-'],
   // Box sx: borderColor: 'border.subdued', a quoted color key
   [/(?<=['"`])()(border\.subdued)(?=['"`])/g, COLOR, '.'],
 ];
 
-/** Cheap test before the rules run: every rule's match contains one of these. */
-const PREFILTER =
-  /component[.-](?:gap|padding)|layout[.-](?:gutter|tight|normal|inset|spacious)|subdued/;
+/** Cheap test before the rules run: every rule's match holds an alias, dotted or dashed. */
+const PREFILTER = new RegExp(`${keys(SPACE, '[.-]')}|${keys(COLOR, '[.-]')}`);
 
 /**
  * Pure transform of one file's source.
