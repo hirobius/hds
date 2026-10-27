@@ -26,7 +26,8 @@
  *      `.changeset/<name>.md`, which its own Version PR deletes (compile.mjs
  *      found no CHANGELOG entry for that changeset);
  *   3. something is breaking (a breaking fact, a note that says so, or a step
- *      that removes, moves, renames or folds something public) and the
+ *      that removes, moves, renames or folds something public, or renames a
+ *      prop or maps away its values) and the
  *      changesets bump @hirobius/design-system by less than minor below 1.0
  *      (major from 1.0). The ledger of package.json's version must not
  *      record a smaller bump than its breaking steps need. `pnpm
@@ -43,7 +44,14 @@
  *      recorded, so its notes stay the next release's;
  *   4. a changeset bumps major below 1.0, or the version crosses 1.0 (on the
  *      Version PR, or in the ledger compile.mjs recorded for it), without
- *      upgrade/ALLOW_1_0 (the 1.0 cut is a decision, #396).
+ *      upgrade/ALLOW_1_0 (the 1.0 cut is a decision, #396);
+ *   5. docs/api/props-baseline.json is not the props baseline the tree's
+ *      component-api.json gives (scripts/upgrade/props.mjs, hds#461).
+ *
+ * The facts include prop facts (hds#461) once the release snapshot has a
+ * props section: a prop removed or renamed, a prop now required and an
+ * allowed value removed are breaking; a default changed (cva defaultVariants
+ * included) is a look step.
  *
  * The fix it names is `pnpm upgrade:note`, which pre-fills the note from the
  * facts (scripts/upgrade/note.mjs).
@@ -77,6 +85,7 @@ import {
   readUpgradeState,
 } from './upgrade/pending.mjs';
 import { compareVersions } from './upgrade/schema.mjs';
+import { COMPONENT_API, PROPS_BASELINE, propsBaselineFresh } from './upgrade/props.mjs';
 import { PACKAGE } from './upgrade/snapshot.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -103,6 +112,14 @@ export function describeFact(fact) {
       return `engines.${fact.name} went from ${fact.from ?? 'absent'} to ${fact.to ?? 'absent'}`;
     case 'bin-removed':
       return `the ${fact.name} bin is gone`;
+    case 'prop-removed':
+      return `${fact.component} no longer takes the prop ${fact.prop} (removed or renamed)`;
+    case 'prop-required':
+      return `${fact.component}'s prop ${fact.prop} is now required`;
+    case 'prop-value-removed':
+      return `${fact.component}'s prop ${fact.prop} no longer allows ${JSON.stringify(fact.value)}`;
+    case 'prop-default-changed':
+      return `${fact.component}'s prop ${fact.prop} default changed from ${fact.from ?? 'none'} to ${fact.to ?? 'none'}`;
     default:
       return fact.id;
   }
@@ -158,6 +175,17 @@ function factViolations(state) {
     }
   }
   return [...uncovered, ...unknown];
+}
+
+/**
+ * hds#461: docs/api/props-baseline.json ships, and the next release snapshot
+ * takes its props section from the same source, so it must be the one
+ * component-api.json gives (CI regenerates that file before pretest).
+ */
+function propsBaselineViolations(root) {
+  if (propsBaselineFresh(root)) return [];
+  const message = `${PROPS_BASELINE} is not the props baseline ${COMPONENT_API} gives: run node scripts/upgrade/props.mjs (pnpm docs:api runs it after generate-component-api).`;
+  return [violation(PROPS_BASELINE, 'props-baseline-stale', message)];
 }
 
 function noteViolations(state, versionPr) {
@@ -448,6 +476,7 @@ export function checkUpgradeLedger(root = REPO) {
   const versionPr =
     state.changesets.length === 0 && compareVersions(state.version, state.previousVersion) > 0;
   const violations = [
+    ...propsBaselineViolations(root),
     ...factViolations(state),
     ...noteViolations(state, versionPr),
     ...bumpViolations(state, versionPr),

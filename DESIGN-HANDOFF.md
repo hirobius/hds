@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 519 tokens, aliases, and TS refs in one shot.
+Checks all 522 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -422,6 +422,7 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `primitive.size.12`              | `12px`  | 12px size step.                            |
 | `primitive.size.16`              | `16px`  | 16px size step.                            |
 | `primitive.size.20`              | `20px`  | 20px size step.                            |
+| `primitive.size.22`              | `22px`  | 22px size step.                            |
 | `primitive.size.24`              | `24px`  | 24px size step.                            |
 | `primitive.size.32`              | `32px`  | 32px size step.                            |
 | `primitive.size.40`              | `40px`  | 40px size step.                            |
@@ -479,6 +480,7 @@ Or via `useTheme().setDensity('compact')`
 | `primitive.radius.0`    | `0px`    |            |
 | `primitive.radius.2`    | `2px`    |            |
 | `primitive.radius.4`    | `4px`    |            |
+| `primitive.radius.6`    | `6px`    |            |
 | `primitive.radius.8`    | `8px`    |            |
 | `primitive.radius.12`   | `12px`   |            |
 | `primitive.radius.16`   | `16px`   |            |
@@ -579,15 +581,20 @@ Use tokenized values when a suitable primitive, semantic, or component token exi
 Primitive layout dimensions live in `primitive.breakpoint.*`, `primitive.size.*`, `primitive.size.width.*`, and `primitive.grid.columns.*`.
 Semantic layout tokens exist for layout decisions only: readable content widths, section rhythm, gutters, and grid spacing.
 
-| Token                              | Resolves to                        | Use                                                                |
-| ---------------------------------- | ---------------------------------- | ------------------------------------------------------------------ |
-| `semantic.layout.content.maxWidth` | `primitive.size.width.760` (760px) | Broader readable content width for long-form docs and case studies |
-| `semantic.layout.prose.maxWidth`   | `primitive.size.width.50ch` (50ch) | Canonical prose measure for body copy and narrative text           |
-| `semantic.layout.section.paddingY` | `primitive.space.20` (80px)        | Airier top-level page section spacing                              |
-| `semantic.layout.grid.gap`         | `primitive.space.8` (32px)         | Two-up and three-up editorial grid spacing                         |
-| `semantic.space.section.stack`     | `primitive.space.20` (80px)        | Vertical stack between top-level page sections                     |
-| `semantic.space.section.inset`     | `primitive.space.24` (96px)        | Outer section padding for overview headers and chrome blocks       |
-| `semantic.space.section.heroMax`   | `primitive.space.32` (128px)       | Maximum hero section padding                                       |
+| Token                              | Resolves to                        | Use                                                                                                                                                  |
+| ---------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.layout.content.maxWidth` | `primitive.size.width.760` (760px) | Broader readable content width for long-form docs and case studies                                                                                   |
+| `semantic.layout.prose.maxWidth`   | `primitive.size.width.50ch` (50ch) | Canonical prose measure for body copy and narrative text                                                                                             |
+| `semantic.layout.section.paddingY` | `primitive.space.20` (80px)        | Airier top-level page section spacing                                                                                                                |
+| `semantic.layout.grid.gap`         | `primitive.space.8` (32px)         | Two-up and three-up editorial grid spacing                                                                                                           |
+| `semantic.space.layout.tight`      | `primitive.space.4` (16px)         | Compact rhythm for dense lists and tight pairings                                                                                                    |
+| `semantic.space.layout.normal`     | `primitive.space.6` (24px)         | Default vertical rhythm between layout blocks and grids                                                                                              |
+| `semantic.space.layout.gutter`     | `primitive.space.6` (24px)         | Horizontal gutter for full-width page sections; `--semantic-space-region-gutter` steps to scale.lg (scale.sm below 640px) and follows `data-density` |
+| `semantic.space.layout.inset`      | `primitive.space.8` (32px)         | Block inset padding inside layout containers                                                                                                         |
+| `semantic.space.layout.spacious`   | `primitive.space.12` (48px)        | Generous rhythm for hero sections and split layouts                                                                                                  |
+| `semantic.space.section.stack`     | `primitive.space.20` (80px)        | Vertical stack between top-level page sections                                                                                                       |
+| `semantic.space.section.inset`     | `primitive.space.24` (96px)        | Outer section padding for overview headers and chrome blocks                                                                                         |
+| `semantic.space.section.heroMax`   | `primitive.space.32` (128px)       | Maximum hero section padding                                                                                                                         |
 
 ---
 

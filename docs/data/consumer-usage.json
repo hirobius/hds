@@ -50,5 +50,29 @@
     "files": ["scripts/page-clone.mjs", "scripts/video-clone.mjs"],
     "components": ["Button", "Card", "Grid", "Stack", "Surface", "Text"]
   },
-  "scope": "src"
+  "scope": "src",
+  "history": [],
+  "deprecationCycle": {
+    "change": "Pattern components moved to the `/patterns` subpath (0.20)",
+    "consumer": "hirobius/ops",
+    "appliedAt": "2026-10-05",
+    "commit": "39a68bc",
+    "trackedIn": "ops #460"
+  },
+  "consistency": {
+    "date": "2026-10-14",
+    "packageVersion": "0.25.0",
+    "commit": "a38670c9e4bb44649693005e40996bcd5bb31eba",
+    "measured": {
+      "builds": {
+        "passing": 2,
+        "of": 3
+      },
+      "violations": 0,
+      "axe": 0,
+      "jaccardMin": 0.95,
+      "lightDiffMax": null
+    },
+    "pass": false
+  }
 }

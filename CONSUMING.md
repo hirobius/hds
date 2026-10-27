@@ -61,6 +61,8 @@ Available subpaths:
 The package is **ESM-only**, so consume it with a modern bundler (Vite, Next.js,
 Remix, Webpack 5+) or a Node ≥ 20 ESM runtime. Built `.d.ts` declarations ship in
 `dist/types`, so TypeScript consumers get full types with no extra config.
+The floor is **TypeScript 5.6**: `pnpm smoke:consumer` typechecks a consumer at
+5.6 and at the newest TypeScript the repo pins, under React 18.3 and React 19.
 
 Every component's props type is exported under its own name — `AlertProps`,
 `ButtonProps`, `GridProps`, and so on — so wrapping one needs no
@@ -86,6 +88,13 @@ references when you use them on the server (`tokens.color.primary` in a layout,
 `brand` at the edge). Import those from server code freely.
 
 **Density.** Put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
+
+### Token names and size vs space
+
+Never guess a token name: `pnpm exec hds-tokens search content tertiary` says whether
+a name exists and lists the nearest real ones. Size vs space: `semantic.size.*`
+is an element's own width or height, `semantic.space.*` is the gap or padding
+between and inside elements. Details: [`docs/CONSUMING.md`](docs/CONSUMING.md) §7.
 
 ## 2.5. Lint discipline (optional)
 
@@ -147,6 +156,9 @@ pnpm changeset:version    # apply bumps, regenerate CHANGELOG.md, record the rel
 ```
 
 CI (`.github/workflows/release.yml`) automates steps 2–3 on merge to `main`.
+
+A bad release is deprecated, not unpublished: [docs/RELEASING.md](docs/RELEASING.md),
+"If a release is bad", has the commands and `pnpm release:yank`.
 
 Publishing to npm uses **Trusted Publishing (OIDC)**: no npm token exists. The
 package's Trusted Publisher entry on npmjs.com (org `hirobius`, repo `hds`,

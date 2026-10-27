@@ -455,13 +455,14 @@ describe('Tag accessibility contract', () => {
   it('a11y:tag.dismiss-target-size the X has a 40px hit area that does not grow the pill', () => {
     render(<Tag onDismiss={noop}>systems</Tag>);
     const x = screen.getByRole('button', { name: 'Remove systems' });
-    expect(x.className).toContain('size-[var(--primitive-size-40)]');
+    expect(x.className).toContain('size-[var(--semantic-size-row-compact)]');
     // The hit area overhangs the pill: it adds one line box of height, not 40px.
-    expect(x.className).toContain('my-[calc((1lh_-_var(--primitive-size-40))/2)]');
+    expect(x.className).toContain('my-[calc((1lh_-_var(--semantic-size-row-compact))/2)]');
     const tokens = readFileSync(
       resolve(__dirname, '../../src/styles/tokens.generated.css'),
       'utf8',
     );
+    expect(tokens).toMatch(/--semantic-size-row-compact:\s*var\(--primitive-size-40\)/);
     expect(tokens).toMatch(/--primitive-size-40:\s*40px/);
   });
 
@@ -511,9 +512,9 @@ describe('Input accessibility contract', () => {
   it('a11y:input.clear-target-size the clear button spans the field height and is 24px or wider', () => {
     render(<Input label="Search" type="search" defaultValue="abc" size="sm" />);
     const clear = screen.getByRole('button', { name: 'Clear search' });
-    // inset-y-0 = the whole field height (>= 32px); px-2 + a 14px glyph = 30px wide.
+    // inset-y-0 = the whole field height (>= 32px); px-scale-xs (8px) + a 14px glyph = 30px wide.
     expect(clear.className).toContain('inset-y-0');
-    expect(clear.className).toContain('px-2');
+    expect(clear.className).toContain('px-scale-xs');
   });
 });
 

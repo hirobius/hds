@@ -659,7 +659,6 @@ describe("this repo: a generated surface's check actually runs somewhere", () =>
 // shrink; a script leaves it the day it uses the runner.
 const NOT_YET_ON_RUNNER = {
   'scripts/build-readme-counts.mjs': 'checks through runCheck, but writes on its own path',
-  'scripts/count-consumer-usage.mjs': 'checks through runCheck, but writes on its own path',
   'scripts/generate-agents-md.mjs': 'checks through runCheck, but writes on its own path',
   'scripts/generate-llms-txt.mjs': 'checks through runCheck, but writes on its own path',
   'scripts/build-design-md.mjs': 'checks through runCheck, but writes on its own path',

@@ -93,6 +93,8 @@ const PADS = [
   'Dialog',
   'DialogContent',
   'Page',
+  'Sheet',
+  'SheetContent',
   'Surface',
 ];
 /** Compound parts: zero padding, the container's gap spaces them. */
@@ -120,6 +122,15 @@ const PARTS = [
   'FormField',
   'FormFieldShell',
   'MetricTile',
+  'SheetAction',
+  'SheetActions',
+  'SheetClose',
+  'SheetContent',
+  'SheetDescription',
+  'SheetFooter',
+  'SheetHeader',
+  'SheetTitle',
+  'SheetTrigger',
   'TabsContent',
   'TabsList',
   'TabsTrigger',
@@ -132,7 +143,7 @@ const PROVIDERS = [
   'Reveal',
   'VisuallyHidden',
 ];
-const OVERLAYS = ['AlertDialog', 'Dialog', 'Menu', 'Popover', 'Tooltip'];
+const OVERLAYS = ['AlertDialog', 'Dialog', 'Menu', 'Popover', 'Sheet', 'Tooltip'];
 const PRIMITIVES = [
   'Stack',
   'Grid',

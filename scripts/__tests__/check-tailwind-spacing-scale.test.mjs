@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { scanSource, ratchet } from '../check-tailwind-spacing-scale.mjs';
+import { scanSource, ratchet, scanFiles } from '../check-tailwind-spacing-scale.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -137,8 +137,23 @@ describe('tailwind spacing scale: ratchet', () => {
   });
 });
 
+describe('check-tailwind-spacing-scale scope (hds#778)', () => {
+  const files = scanFiles().map((f) => path.relative(ROOT, f));
+
+  it('covers all of src/ and docs-site/, not just src/app/components', () => {
+    expect(files).toContain('src/app/components/button.tsx');
+    expect(files.some((f) => f.startsWith('src/form/'))).toBe(true);
+    expect(files.some((f) => f.startsWith('docs-site/components/'))).toBe(true);
+  });
+
+  it('skips the token layer that defines the primitives, and build output', () => {
+    expect(files.filter((f) => f.startsWith('src/app/design-system/'))).toEqual([]);
+    expect(files.filter((f) => /(^|\/)(node_modules|\.next|\.source)\//.test(f))).toEqual([]);
+  });
+});
+
 describe('check-tailwind-spacing-scale --ratchet on the real tree', () => {
-  it('src/app/components matches the committed baseline (pretest runs this)', () => {
+  it('src and docs-site match the committed baseline (pretest runs this)', () => {
     const r = spawnSync(
       process.execPath,
       ['scripts/check-tailwind-spacing-scale.mjs', '--ratchet'],
