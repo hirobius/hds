@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Anything using --primitive-easing-elastic, --hds-motion-expressive-easing or the --hds-anim-appear, --hds-anim-entrance and --hds-anim-spin presets now animates with a small spring overshoot instead of being dropped as invalid CSS; check those animations look right."
+}

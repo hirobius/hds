@@ -242,7 +242,7 @@ export const tokenValues = {
       emphasized: "cubic-bezier(0.4, 0, 0.2, 1)",
       decelerate: "cubic-bezier(0, 0, 0.2, 1)",
       accelerate: "cubic-bezier(0.4, 0, 1, 1)",
-      elastic: "spring(300, 20, 1)"
+      elastic: "linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)"
     },
     shadow: {
       color: "220 13% 18%"

@@ -240,8 +240,10 @@ for (const entry of activeDiscoveredComponents) {
     category,
     categorySource,
     governedCategory: categorySource === 'jsdoc' || categorySource === 'internal-jsdoc',
-    hidden,
-    docExempt: entry.docExempt,
+    // Written only when true (hds#784): `false` on every spec cost ~95 B of
+    // the manifest's gzip budget, and every reader treats a missing flag as false.
+    hidden: hidden || undefined,
+    docExempt: entry.docExempt || undefined,
     filePath: entry.filePath,
     description: entry.description || current.description,
     ...(contract.usage ? { usage: contract.usage } : {}),

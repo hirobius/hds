@@ -1,0 +1,1 @@
+Motion (hds#784): the elastic easing token ships as a valid `linear()` spring curve instead of `spring()`; easing tokens are checked as CSS. check-motion ignores comments, needs a reasoned `// motion-ok:` line, and fails hard-coded arbitrary motion values; it is green on main again.
