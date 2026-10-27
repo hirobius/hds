@@ -909,13 +909,24 @@ function TabsDemo() {
 
 function TagDemo() {
   const [active, setActive] = useState('tokens');
+  const [terms, setTerms] = useState(['design systems', 'tokens', 'contract']);
   return (
-    <div style={demoRow}>
-      {['tokens', 'components', 'patterns'].map((tag) => (
-        <Tag key={tag} active={active === tag} onClick={() => setActive(tag)}>
-          {tag}
-        </Tag>
-      ))}
+    <div style={{ display: 'grid', gap: XS }}>
+      <div style={demoRow}>
+        {['tokens', 'components', 'patterns'].map((tag) => (
+          <Tag key={tag} active={active === tag} onClick={() => setActive(tag)}>
+            {tag}
+          </Tag>
+        ))}
+      </div>
+      {/* Dismissible: a static label; only the X (40px hit area) removes it. */}
+      <div style={demoRow}>
+        {terms.map((term) => (
+          <Tag key={term} onDismiss={() => setTerms((t) => t.filter((x) => x !== term))}>
+            {term}
+          </Tag>
+        ))}
+      </div>
     </div>
   );
 }
