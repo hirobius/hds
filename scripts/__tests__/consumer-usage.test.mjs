@@ -188,10 +188,15 @@ describe('README "In use" names no private repository (hds#545)', () => {
     expect(out).not.toMatch(/measured at commit/);
   });
 
-  it('keeps the counts, the consumer table and the screenshots', () => {
+  it('keeps the counts, the consumer table and the screenshot', () => {
     expect(out).toMatch(/\*\*35\*\* of its source files/);
     expect(out).toMatch(/\| Product apps\s+\| 1 /);
-    expect(out).toMatch(/docs\/images\/product-app-library\.png/);
+    expect(out).toMatch(/docs\/images\/product-app-audit\.png/);
+  });
+
+  it('shows no page the product app has removed (hds#708: ops dropped Library on 2026-10-12)', () => {
+    expect(out).not.toMatch(/product-app-library/);
+    expect(out).toMatch(/The screenshot below is a page of that app/);
   });
 
   it('the committed README follows suit', () => {

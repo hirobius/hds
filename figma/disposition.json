@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-21",
+  "generatedAt": "2026-10-27",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 113,
+    "total": 123,
     "byClass": {
-      "library": 68,
-      "slot": 24,
+      "library": 73,
+      "slot": 29,
       "layout": 9,
       "internal": 12
     },
     "libraryLinked": 68,
-    "libraryMissing": 0,
+    "libraryMissing": 5,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -333,7 +333,7 @@
     {
       "name": "DialogDescription",
       "class": "slot",
-      "parent": "Dialog",
+      "parent": "Sheet",
       "category": "Overlays",
       "tier": "primitive",
       "figmaUrl": null
@@ -373,7 +373,7 @@
     {
       "name": "DialogTitle",
       "class": "slot",
-      "parent": "Dialog",
+      "parent": "Sheet",
       "category": "Overlays",
       "tier": "primitive",
       "figmaUrl": null
@@ -727,6 +727,86 @@
       "category": "Inputs",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49"
+    },
+    {
+      "name": "Sheet",
+      "class": "library",
+      "parent": null,
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "SheetAction",
+      "class": "slot",
+      "parent": "Sheet",
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "SheetActions",
+      "class": "slot",
+      "parent": "Sheet",
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "SheetClose",
+      "class": "library",
+      "parent": null,
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "SheetContent",
+      "class": "slot",
+      "parent": "Sheet",
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "SheetDescription",
+      "class": "library",
+      "parent": null,
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "SheetFooter",
+      "class": "slot",
+      "parent": "Sheet",
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "SheetHeader",
+      "class": "slot",
+      "parent": "Sheet",
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "SheetTitle",
+      "class": "library",
+      "parent": null,
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
+    },
+    {
+      "name": "SheetTrigger",
+      "class": "library",
+      "parent": null,
+      "category": "Overlays",
+      "tier": "primitive",
+      "figmaUrl": null
     },
     {
       "name": "Sidebar",

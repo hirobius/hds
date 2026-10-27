@@ -183,13 +183,11 @@ function alignTable(rows) {
 /** Markdown placed between the generated-block markers (starts and ends with a blank line). */
 export function renderInUseBlock(s) {
   const shots = [
-    '[![Library page of the product app](docs/images/product-app-library.png)](docs/images/product-app-library.png)',
-    '',
     '[![Audit page of the product app](docs/images/product-app-audit.png)](docs/images/product-app-audit.png)',
     '',
     '',
   ];
-  const measured = `**${s.files}** of its source files import from \`@hirobius/design-system\`, using **${s.components}** distinct components. The two screenshots below are pages of that app, rendered from its \`main\` branch.`;
+  const measured = `**${s.files}** of its source files import from \`@hirobius/design-system\`, using **${s.components}** distinct components. The screenshot below is a page of that app, rendered from its \`main\` branch.`;
   if (!s.consumersConfirmed) {
     return [
       '',

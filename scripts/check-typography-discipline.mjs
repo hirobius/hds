@@ -80,6 +80,8 @@ if (RUN_ALL || FONTS_ONLY) {
     'scripts',
     'src/styles',
     'test-results',
+    '.next', // Next.js build cache (docs-site/.next)
+    'docs-site/out', // built docs site, needed by the visual suite
     'fixtures',
     'tools', // standalone tools not governed by HDS token system
   ]);
