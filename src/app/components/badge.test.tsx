@@ -113,19 +113,19 @@ describe('Badge shape tokens (hds#757)', () => {
     return (container.firstElementChild as HTMLElement).className;
   };
 
-  it('takes its corner from component.badge.radius, not the shared action radius', () => {
+  it('sits its corner a step under the action radius, still following role.radius', () => {
     const cls = textBadge();
-    expect(cls).toContain('rounded-[var(--component-badge-radius)]');
+    expect(cls).toMatch(/\brounded-sm\b/);
     expect(cls).not.toMatch(/\brounded-md\b/);
   });
 
-  it('nudges the label up by component.badge.labelOffset (optical centring)', () => {
+  it('moves component.badge.paddingShift from top to bottom padding (optical centring)', () => {
     const cls = textBadge();
     expect(cls).toContain(
-      'pt-[calc(var(--component-badge-paddingY)-var(--component-badge-labelOffset))]',
+      'pt-[calc(var(--component-badge-paddingY)-var(--component-badge-paddingShift))]',
     );
     expect(cls).toContain(
-      'pb-[calc(var(--component-badge-paddingY)+var(--component-badge-labelOffset))]',
+      'pb-[calc(var(--component-badge-paddingY)+var(--component-badge-paddingShift))]',
     );
   });
 
@@ -149,6 +149,6 @@ describe('Badge shape token values (hds#757)', () => {
   });
 
   it('lifts the label 1px', () => {
-    expect(badge.labelOffset.$value).toBe('{primitive.space.px1}');
+    expect(badge.paddingShift.$value).toBe('{primitive.space.px1}');
   });
 });

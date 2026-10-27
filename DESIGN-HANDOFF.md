@@ -423,23 +423,23 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 
 <!-- auto:start:size -->
 
-| Token                            | Value   | Notes                                                   |
-| -------------------------------- | ------- | ------------------------------------------------------- |
-| `primitive.size.8`               | `8px`   | 8px size step.                                          |
-| `primitive.size.10`              | `10px`  | 10px size step.                                         |
-| `primitive.size.12`              | `12px`  | 12px size step.                                         |
-| `primitive.size.16`              | `16px`  | 16px size step.                                         |
-| `primitive.size.20`              | `20px`  | 20px size step.                                         |
-| `primitive.size.22`              | `22px`  | 22px size step. Backs component.badge.height (hds#757). |
-| `primitive.size.24`              | `24px`  | 24px size step.                                         |
-| `primitive.size.32`              | `32px`  | 32px size step.                                         |
-| `primitive.size.40`              | `40px`  | 40px size step.                                         |
-| `primitive.size.48`              | `48px`  | 48px size step.                                         |
-| `primitive.size.64`              | `64px`  | 64px size step.                                         |
-| `primitive.size.80`              | `80px`  | 80px size step.                                         |
-| `primitive.size.96`              | `96px`  | 96px size step.                                         |
-| `primitive.size.120`             | `120px` | 120px size step. Backs semantic.size.tile.              |
-| `primitive.size.interactive.min` | `44px`  | Compact touch target / hit-area width                   |
+| Token                            | Value   | Notes                                      |
+| -------------------------------- | ------- | ------------------------------------------ |
+| `primitive.size.8`               | `8px`   | 8px size step.                             |
+| `primitive.size.10`              | `10px`  | 10px size step.                            |
+| `primitive.size.12`              | `12px`  | 12px size step.                            |
+| `primitive.size.16`              | `16px`  | 16px size step.                            |
+| `primitive.size.20`              | `20px`  | 20px size step.                            |
+| `primitive.size.22`              | `22px`  | 22px size step.                            |
+| `primitive.size.24`              | `24px`  | 24px size step.                            |
+| `primitive.size.32`              | `32px`  | 32px size step.                            |
+| `primitive.size.40`              | `40px`  | 40px size step.                            |
+| `primitive.size.48`              | `48px`  | 48px size step.                            |
+| `primitive.size.64`              | `64px`  | 64px size step.                            |
+| `primitive.size.80`              | `80px`  | 80px size step.                            |
+| `primitive.size.96`              | `96px`  | 96px size step.                            |
+| `primitive.size.120`             | `120px` | 120px size step. Backs semantic.size.tile. |
+| `primitive.size.interactive.min` | `44px`  | Compact touch target / hit-area width      |
 
 Use `primitive.size.*` for explicit widths and heights. Keep `primitive.space.*` for layout rhythm, padding, and gaps.
 

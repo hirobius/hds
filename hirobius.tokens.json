@@ -640,8 +640,7 @@
         "$value": {
           "value": 6,
           "unit": "px"
-        },
-        "$description": "6px corner, one step under the 8px action radius. Backs component.badge.radius (hds#757)."
+        }
       },
       "8": {
         "$value": {
@@ -1045,7 +1044,7 @@
           "value": 22,
           "unit": "px"
         },
-        "$description": "22px size step. Backs component.badge.height (hds#757)."
+        "$description": "22px size step."
       },
       "24": {
         "$type": "dimension",
@@ -2950,32 +2949,32 @@
       "radius": {
         "$type": "dimension",
         "$value": "{primitive.radius.6}",
-        "$description": "Badge corner, one step under the action radius (hds#757); tenants override it to reshape Badge."
+        "$description": "Badge corner (rounded-sm), a step under action."
       },
       "height": {
         "$type": "dimension",
         "$value": "{primitive.size.22}",
-        "$description": "Badge height (22px; 20px until hds#757)."
+        "$description": "Badge height."
       },
       "minWidth": {
         "$type": "dimension",
         "$value": "{primitive.size.22}",
-        "$description": "Badge minimum width, equal to the height so a one-digit count is square."
+        "$description": "Badge minimum width."
       },
       "paddingY": {
         "$type": "dimension",
         "$value": "{primitive.space.px2}",
-        "$description": "Vertical padding inside the badge, before the labelOffset nudge."
+        "$description": "Vertical padding inside the badge."
       },
-      "labelOffset": {
+      "paddingShift": {
         "$type": "dimension",
         "$value": "{primitive.space.px1}",
-        "$description": "Lifts the badge label this much so it sits optically centred (hds#757)."
+        "$description": "Label lift, taken from top padding to bottom."
       },
       "paddingX": {
         "$type": "dimension",
         "$value": "{primitive.space.2}",
-        "$description": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune)."
+        "$description": "Horizontal padding inside the badge."
       }
     },
     "button": {

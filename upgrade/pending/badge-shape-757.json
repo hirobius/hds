@@ -1,4 +1,4 @@
 {
   "impact": "look",
-  "plain": "Badge is 2px taller (22px), its label sits 1px higher and its corner is 6px instead of the 8px action radius; re-take screenshots, and a tenant that squares corners with role.radius should also set component.badge.radius to 0."
+  "plain": "Badge is 2px taller (22px), its label sits 1px higher and its corner is a step under the action radius (6px by default); re-take screenshots and check fixed-height rows that hold badges."
 }
