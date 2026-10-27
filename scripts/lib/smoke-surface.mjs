@@ -61,18 +61,22 @@ export function bareSpecifiers(source) {
 }
 
 const BUILTINS = new Set(builtinModules);
-const isBuiltin = (s) => s.startsWith('node:') || BUILTINS.has(packageNameOf(s));
+// Exact names only: a dependency called like a builtin's prefix is still audited.
+const isBuiltin = (s) => s.startsWith('node:') || BUILTINS.has(s);
+
+// Every .js under dist, except the declaration tree.
+function distFiles(dir) {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const p = join(dir, e.name);
+    if (e.isDirectory()) return e.name === 'types' ? [] : distFiles(p);
+    return e.name.endsWith('.js') ? [p] : [];
+  });
+}
 
 /** Problems (strings) with the bare imports of a built package at `root`. */
 export function auditDistImports(root, pkg, peerSubpaths = OPTIONAL_PEER_SUBPATHS) {
-  const dist = join(root, 'dist');
-  const files = [dist, join(dist, 'chunks')]
-    .filter((d) => existsSync(d))
-    .flatMap((d) =>
-      readdirSync(d)
-        .filter((f) => f.endsWith('.js'))
-        .map((f) => join(d, f)),
-    );
+  const files = distFiles(join(root, 'dist'));
   const source = new Map(files.map((f) => [f, readFileSync(f, 'utf8')]));
   const declared = new Set([
     ...Object.keys(pkg.dependencies ?? {}),
@@ -140,8 +144,12 @@ if (typeof window !== 'undefined' || typeof document !== 'undefined') {
   out.failures.push('the probe process has browser globals');
 }
 for (const spec of ${JSON.stringify(specs)}) {
-  try { await import(spec); out.passed.push(spec); }
-  catch (err) { out.failures.push(spec + ': ' + (err && err.message)); }
+  try {
+    await import(spec);
+    // A subpath that defines browser globals would hide the next one's access.
+    if (typeof window !== 'undefined') throw new Error('importing it defined window');
+    out.passed.push(spec);
+  } catch (err) { out.failures.push(spec + ': ' + (err && err.message)); }
 }
 console.log(JSON.stringify(out));
 `;

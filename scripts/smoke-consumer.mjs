@@ -71,7 +71,11 @@ const SKIP_BUILD = process.argv.includes('--skip-build');
 const ROOT_PKG = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 const SUBPATHS = smokeSubpaths(ROOT_PKG);
 // Smoke tools are pinned in devDependencies, so a tool release cannot turn the run red.
-const tool = (name) => `${name}@${ROOT_PKG.devDependencies[name]}`;
+function tool(name) {
+  const version = ROOT_PKG.devDependencies[name];
+  if (!version) throw new Error(`smoke tool ${name} is not in devDependencies`);
+  return `${name}@${version}`;
+}
 
 function log(msg) {
   console.log(`[smoke-consumer] ${msg}`);
