@@ -60,10 +60,12 @@ import { installWipeListeners } from './button-wipe';
 // not on a variant, is what the tone-over-variant contract requires: a
 // `disabled:` class on a variant would become a "must-replace" class every tone
 // would have to drop.
-// Icon sizes bind `component.button.size.<s>.iconSize` so code cannot drift from the token (hds#539).
+// Icon sizes bind `component.button.size.<s>.iconSize` so code cannot drift from the token (hds#539);
+// heights (and the icon-only width) bind `size.<s>.height`, and the label weight binds
+// `component.button.fontWeight`, which beats the hds-type-* role's weight (utilities layer, hds#760).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for transition-[colors,filter]), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-scale-xs whitespace-nowrap rounded-md [font-weight:var(--component-button-fontWeight)] transition-[color,background-color,border-color,filter,box-shadow,translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-scale-xs whitespace-nowrap rounded-md [font-weight:var(--component-button-fontWeight)] transition-[color,background-color,border-color,filter,box-shadow,translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0', // type-ramp-ok: component.button.fontWeight (600) is the button's own label weight over its type role (hds#760)
   {
     variants: {
       variant: {
@@ -151,9 +153,9 @@ const buttonVariants = /* @__PURE__ */ cva(
         variant: 'tertiary',
         className: 'hover:bg-transparent',
       },
-      { iconOnly: true, size: 'sm', className: 'w-8' },
-      { iconOnly: true, size: 'md', className: 'w-10' },
-      { iconOnly: true, size: 'lg', className: 'w-12' },
+      { iconOnly: true, size: 'sm', className: 'w-[var(--component-button-size-sm-height)]' },
+      { iconOnly: true, size: 'md', className: 'w-[var(--component-button-size-md-height)]' },
+      { iconOnly: true, size: 'lg', className: 'w-[var(--component-button-size-lg-height)]' },
     ],
     defaultVariants: {
       variant: 'secondary',

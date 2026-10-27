@@ -426,7 +426,7 @@ describe('repo counts', () => {
       'LITERAL-MISMATCH': 0,
       UNUSED: 16,
     });
-    expect(summary.matchKinds).toEqual({ alias: 15, 'type-role': 8, literal: 13 });
+    expect(summary.matchKinds).toEqual({ alias: 15, 'type-role': 8, literal: 10 });
   });
 
   it('--enforce passes on the committed baseline', () => {
