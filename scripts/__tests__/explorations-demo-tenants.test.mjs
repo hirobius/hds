@@ -30,7 +30,7 @@ import { createRequire } from 'module';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
-import { chromiumPath } from '../lib/browser-host.mjs';
+import { chromiumForTests } from '../lib/browser-host.mjs';
 import {
   buildTenantCSS,
   pathToCSSVar,
@@ -143,8 +143,8 @@ describe('accent-pair-demo: the supporting accent is an overlay, not a token', (
 
 // ── The computed values, in Chromium ─────────────────────────────────────────
 
-const CHROMIUM = chromiumPath() ?? chromium.executablePath();
-const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
+const CHROMIUM = chromiumForTests();
+const hasBrowser = Boolean(CHROMIUM);
 
 // theme.css pulls in Tailwind first; the browser skips what it cannot parse and
 // the custom properties this reads are plain CSS. The overlay is loaded the way

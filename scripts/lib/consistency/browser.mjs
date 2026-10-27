@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import { chromium } from 'playwright';
+import { chromiumPath } from '../browser-host.mjs';
 
 // Same freeze as scripts/check-docs-axe.mjs: with reduced motion, this makes
 // a capture or a scan independent of where an animation happens to be.
@@ -51,28 +52,15 @@ export function serve(dir) {
   });
 }
 
-/** Playwright's pinned revision may differ from the preinstalled Chromium, so fall back to that. */
+/** Chromium from browser-host (one resolver for every caller, hds#455). */
 export async function launch() {
-  try {
-    return await chromium.launch();
-  } catch (err) {
-    const base = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';
-    const dirs = fs.existsSync(base)
-      ? fs
-          .readdirSync(base)
-          .filter((d) => /^chromium-\d+$/.test(d))
-          .sort()
-          .reverse()
-      : [];
-    for (const d of dirs) {
-      const exe = path.join(base, d, 'chrome-linux', 'chrome');
-      if (fs.existsSync(exe)) return chromium.launch({ executablePath: exe });
-    }
+  const executablePath = chromiumPath();
+  if (!executablePath) {
     throw new Error(
-      `no Chromium found (${String(err.message).split('\n')[0]}). ` +
-        'Set PLAYWRIGHT_BROWSERS_PATH to a directory holding chromium-<rev>/ (/opt/pw-browsers in remote sessions).',
+      'no Chromium found. Set PLAYWRIGHT_BROWSERS_PATH to a directory holding chromium-<rev>/ (/opt/pw-browsers in remote sessions).',
     );
   }
+  return chromium.launch({ executablePath });
 }
 
 /**

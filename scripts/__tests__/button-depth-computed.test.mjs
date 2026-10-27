@@ -7,11 +7,11 @@
  * values here. Skips where Playwright has no Chromium.
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { existsSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
-import { chromiumPath } from '../lib/browser-host.mjs';
+import { chromiumForTests } from '../lib/browser-host.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
@@ -20,8 +20,8 @@ const CSS = [
   read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
 ].join('\n');
 const TW = `*{--tw-inset-shadow:0 0 #0000;--tw-inset-ring-shadow:0 0 #0000;--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;}`;
-const CHROMIUM = chromiumPath() ?? chromium.executablePath();
-const hasBrowser = existsSync(CHROMIUM);
+const CHROMIUM = chromiumForTests();
+const hasBrowser = Boolean(CHROMIUM);
 
 describe.skipIf(!hasBrowser)('Button hard edge in Chromium', () => {
   let browser;

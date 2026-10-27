@@ -1,9 +1,7 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
-import { chromium } from 'playwright';
 import { describe, expect, it } from 'vitest';
 // @ts-expect-error plain .mjs helper
-import { chromiumPath } from '../scripts/lib/browser-host.mjs';
+import { chromiumForTests } from '../scripts/lib/browser-host.mjs';
 // @ts-expect-error plain .mjs helper
 import { applyAllowlist, evaluateLayout } from '../scripts/lib/docs-layout-shift.mjs';
 
@@ -48,8 +46,8 @@ describe('applyAllowlist', () => {
 });
 
 // The fixture runs drive a real browser; skip where none is installed (CI's lean gate has none).
-const browser: string | undefined = chromiumPath() ?? chromium.executablePath();
-const hasBrowser = Boolean(browser) && existsSync(browser as string);
+const browser: string | undefined = chromiumForTests();
+const hasBrowser = Boolean(browser);
 
 describe.skipIf(!hasBrowser)(
   'check-docs-layout-shift script (fixtures)',
