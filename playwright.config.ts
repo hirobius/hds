@@ -16,7 +16,7 @@ const preinstalled: string | undefined = chromiumPath();
 export default defineConfig({
   testDir: 'tests/visual',
   testMatch: '**/*.spec.ts',
-  // One Linux Chromium baseline set (remote container and CI render alike); no per-OS suffix.
+  // One Linux Chromium baseline set (the remote container); no per-OS suffix.
   snapshotPathTemplate: '{testDir}/{testFilePath}-snapshots/{arg}{ext}',
   fullyParallel: true,
   reporter: [['list']],

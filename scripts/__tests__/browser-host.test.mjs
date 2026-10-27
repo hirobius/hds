@@ -14,7 +14,8 @@ function fakeBuild(root, build, dir) {
 
 describe('chromiumPath', () => {
   let root;
-  const saved = { ...process.env };
+  const keys = ['PLAYWRIGHT_BROWSERS_PATH', 'PLAYWRIGHT_CHROMIUM_PATH'];
+  const saved = Object.fromEntries(keys.map((k) => [k, process.env[k]]));
 
   beforeEach(() => {
     root = mkdtempSync(path.join(tmpdir(), 'pw-browsers-'));
@@ -23,7 +24,10 @@ describe('chromiumPath', () => {
   });
   afterEach(() => {
     rmSync(root, { recursive: true, force: true });
-    process.env = { ...saved };
+    for (const k of keys) {
+      if (saved[k] === undefined) delete process.env[k];
+      else process.env[k] = saved[k];
+    }
   });
 
   it('finds a chrome-linux64 build (newer image layout)', () => {
