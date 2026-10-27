@@ -730,8 +730,10 @@ Text — polymorphic typography primitive spanning the full HDS type ramp.
   - as: "symbol" | "object" | "title" | "a" | "button" | "div" | "form" | "h2" | "h3" |… = defaultTagMap[variant]
   - children: ReactNode
   - className: string
+  - lineClamp: TextLineClamp
   - style: CSSProperties
   - tone: 'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'dang…
+  - truncate: boolean
   - variant: "display" | "title" | "titleSm" | "body" | "ui" | "caption" | "mono" | "heading…
   - weight: 'regular' | 'medium' | 'bold'
 
