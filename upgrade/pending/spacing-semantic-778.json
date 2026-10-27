@@ -1,1 +1,4 @@
-{ "impact": "none" }
+{
+  "impact": "behavior",
+  "plain": "`cn()` now treats named spacing classes like `p-surface-padding` or `px-fixed-sm` as spacing, so a later `p-4` or `px-6` replaces them instead of both staying; check any className that relied on both applying."
+}
