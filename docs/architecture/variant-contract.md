@@ -85,7 +85,7 @@ valid if it binds to a prop the component really accepts, so design and code
 cannot drift apart silently. The machine-readable record is the component's
 manifest entry (`public/hds-manifest.json` → `componentSpecs.<Name>`: the
 `variantAxes`, `componentProperties` and `figmaPropertyMapping` fields, seeded
-in `scripts/build-tokens.mjs`). `scripts/check-figma-mapping.mjs`
+in `scripts/lib/token-manifest.mjs`). `scripts/check-figma-mapping.mjs`
 (`pnpm check:figma-mapping`, also run by `pnpm test`) checks that record against
 the source through the TypeScript checker, so a prop is real only if the
 component's props type accepts it.

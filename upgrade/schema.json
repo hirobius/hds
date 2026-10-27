@@ -388,7 +388,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^(?:removed|moved|renamed|folded|deprecated|value-changed|look|behavior|dependency|peer|engines|exports|tenant|manual)\\/\\S+$",
+          "pattern": "^(?:removed|moved|renamed|folded|prop-renamed|prop-value-mapped|deprecated|value-changed|look|behavior|dependency|peer|engines|exports|tenant|manual)\\/\\S+$",
           "description": "<kind>/<subject>, a release step id without its version: the compiler (hds#451) prefixes the version when it merges the note into upgrade/releases/<version>.json."
         },
         "kind": {
@@ -398,6 +398,8 @@
             "moved",
             "renamed",
             "folded",
+            "prop-renamed",
+            "prop-value-mapped",
             "deprecated",
             "value-changed",
             "look",
@@ -448,6 +450,42 @@
           "description": "For a dependency or peer step: the range this package declared before the release, so a consumer that still imports it can add it back.",
           "type": "string",
           "minLength": 1
+        },
+        "prop": {
+          "type": "object",
+          "properties": {
+            "component": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The component, as exported, such as Button."
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The prop, as it was before the release."
+            },
+            "to": {
+              "description": "For prop-renamed: the prop it is called now.",
+              "type": "string",
+              "minLength": 1
+            },
+            "values": {
+              "description": "For prop-value-mapped: each removed value, mapped to the value to pass instead.",
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "component",
+            "name"
+          ],
+          "additionalProperties": false,
+          "description": "The component prop a prop step is about (hds#461), with what the prop-map codemod rewrites it to."
         },
         "facts": {
           "description": "The ids of the snapshot-diff facts this step accounts for (scripts/upgrade/diff.mjs), such as removed:.:IconButton.",
@@ -643,7 +681,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?\\/(?:removed|moved|renamed|folded|deprecated|value-changed|look|behavior|dependency|peer|engines|exports|tenant|manual)\\/\\S+$",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?\\/(?:removed|moved|renamed|folded|prop-renamed|prop-value-mapped|deprecated|value-changed|look|behavior|dependency|peer|engines|exports|tenant|manual)\\/\\S+$",
           "description": "Stable id, <version>/<kind>/<subject>: the subject is the export, package, component or variable the step is about."
         },
         "kind": {
@@ -653,6 +691,8 @@
             "moved",
             "renamed",
             "folded",
+            "prop-renamed",
+            "prop-value-mapped",
             "deprecated",
             "value-changed",
             "look",
@@ -703,6 +743,42 @@
           "description": "For a dependency or peer step: the range this package declared before the release, so a consumer that still imports it can add it back.",
           "type": "string",
           "minLength": 1
+        },
+        "prop": {
+          "type": "object",
+          "properties": {
+            "component": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The component, as exported, such as Button."
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The prop, as it was before the release."
+            },
+            "to": {
+              "description": "For prop-renamed: the prop it is called now.",
+              "type": "string",
+              "minLength": 1
+            },
+            "values": {
+              "description": "For prop-value-mapped: each removed value, mapped to the value to pass instead.",
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "component",
+            "name"
+          ],
+          "additionalProperties": false,
+          "description": "The component prop a prop step is about (hds#461), with what the prop-map codemod rewrites it to."
         },
         "facts": {
           "description": "The ids of the snapshot-diff facts this step accounts for (scripts/upgrade/diff.mjs), such as removed:.:IconButton.",
@@ -1057,6 +1133,28 @@
           },
           "description": "Files written, relative to the project root."
         },
+        "skipped": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$",
+                "description": "A semver version, such as 0.20.0."
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "version",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Versions npm marks deprecated (a yanked release, hds#472) that the default target skipped, with the deprecation message."
+        },
         "refused": {
           "anyOf": [
             {
@@ -1100,6 +1198,7 @@
         "comingNext",
         "doByHand",
         "changedFiles",
+        "skipped",
         "refused",
         "exitCode"
       ],

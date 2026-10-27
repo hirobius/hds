@@ -1214,3 +1214,52 @@ describe('a vendored copy of the Tailwind preset', () => {
     expect(ids(report.doByHand)).not.toContain('tool/vendored-preset');
   });
 });
+
+describe('a version deprecated on npm (hds#472)', () => {
+  const project = () =>
+    makeProject({
+      'package.json': pkgJson('yanked', { [PKG]: '^0.28.0' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.28.0' }),
+      'src/App.tsx': `import { Button } from '${PKG}';\nexport const A = () => <Button>Go</Button>;\n`,
+    });
+  const registry = (deprecated) => {
+    const dir = makeProject({
+      'packument.json': JSON.stringify({
+        versions: Object.fromEntries(
+          Object.entries(deprecated).map(([v, deprecatedMessage]) => [
+            v,
+            { deprecated: deprecatedMessage },
+          ]),
+        ),
+      }),
+    });
+    return { ...process.env, HDS_UPGRADE_REGISTRY: join(dir, 'packument.json') };
+  };
+  const tool = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8')).version;
+  const known = JSON.parse(readFileSync(join(REPO, 'upgrade/index.json'), 'utf8')).versions.map(
+    (v) => v.version,
+  );
+  const before = known[known.indexOf(tool) - 1];
+
+  it('the default target skips a deprecated version and upgrades to the newest good one', () => {
+    const root = project();
+    const res = runCli(['upgrade', '--root', root, ...QUIET, '--dry-run', '--json'], {
+      env: registry({ [tool]: `Broken: use ${before}` }),
+    });
+    const report = JSON.parse(res.stdout);
+    expect(UpgradeReport.safeParse(report).success).toBe(true);
+    expect(report.target).toBe(before);
+    expect(report.skipped).toEqual([{ version: tool, reason: `Broken: use ${before}` }]);
+  });
+
+  it('--to a deprecated version refuses, changing nothing, and names the message', () => {
+    const root = project();
+    const tree = snapshotTree(root);
+    const res = runCli(['upgrade', '--root', root, '--to', '0.30.0', ...QUIET], {
+      env: registry({ '0.30.0': 'Broken: use 0.29.0' }),
+    });
+    expect(res.code).toBe(2);
+    expect(res.stderr).toContain('0.30.0 is deprecated on npm (Broken: use 0.29.0)');
+    expect(snapshotTree(root)).toEqual(tree);
+  });
+});

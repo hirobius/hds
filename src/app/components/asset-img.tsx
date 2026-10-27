@@ -285,7 +285,7 @@ export function AssetImg({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        gap: hds.space.px4,
+        gap: hds.semantic.space.fixed['2xs'],
         overflow: 'hidden',
         cursor: onClick ? (context === 'lightbox' ? 'zoom-in' : 'pointer') : undefined,
       }}

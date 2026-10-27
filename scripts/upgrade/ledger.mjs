@@ -49,10 +49,15 @@ const BREAKING_FACTS = new Set([
   'class-removed',
   // hds#466: a utility a consumer's own Tailwind build derives from the preset stops existing.
   'preset-key-removed',
+  // hds#461: a prop, or a value of one, a consumer passes stops existing, or
+  // one a consumer leaves out is now required.
+  'prop-removed',
+  'prop-required',
+  'prop-value-removed',
 ]);
 
 /** CSS facts that change how a page looks while every name still resolves. */
-const LOOK_FACTS = new Set(['css-var-changed', 'font-face-removed']);
+const LOOK_FACTS = new Set(['css-var-changed', 'font-face-removed', 'prop-default-changed']);
 
 /**
  * What a fact does to a consumer that does nothing: breaking when it removes
@@ -92,7 +97,14 @@ export function factImpact(fact) {
  * forces the breaking bump whatever its impact says, because a consumer that
  * used the thing has to change.
  */
-const REMOVING_STEP_KINDS = new Set(['removed', 'moved', 'renamed', 'folded']);
+const REMOVING_STEP_KINDS = new Set([
+  'removed',
+  'moved',
+  'renamed',
+  'folded',
+  'prop-renamed',
+  'prop-value-mapped',
+]);
 
 /**
  * True when a step needs the breaking bump: its impact is breaking, or its
