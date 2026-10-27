@@ -1,0 +1,1 @@
+Sheet: a phone-first bottom drawer on the Dialog primitive, keyboard-aware through visualViewport, with a Sheet.Actions list (current, danger) (#690). Review: Sheet.Action tone narrowed to neutral | danger; the visualViewport listener cleanup is pinned by a test.

@@ -84,8 +84,8 @@ const radioRootVariants = /* @__PURE__ */ cva(
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border; var()-based, no Tailwind-theme utility exists
 const radioRingVariants = /* @__PURE__ */ cva(
-  // tier-ok: primitive.size.20 / primitive.radius.full mirror checkbox's glyph box model 1:1 — no semantic alias for either
-  'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)]',
+  // tier-ok: primitive.radius.full is the "fully round" constant; the 20px ring is semantic.size.control.md, checkbox's glyph box
+  'inline-flex shrink-0 items-center justify-center w-[var(--semantic-size-control-md)] h-[var(--semantic-size-control-md)] rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)]',
   {
     variants: {
       state: {

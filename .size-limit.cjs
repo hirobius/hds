@@ -100,6 +100,17 @@
  * duplicate `figmaLink` (same URL as `figmaUrl`), `consumers` (HDS repo
  * importer paths) and `a11yRules[].testId` (HDS's own test ids).
  *
+ * Re-baselined 2026-10-27, manifest entry only: main measured 64,995 B
+ * against the 65 kB budget (5 B of headroom), so any new component broke it.
+ * hds#690 adds Sheet and its compound parts (~1.7 kB gzip, 66.73 kB total).
+ * Content, not bloat: a documented public component. New budget 70 kB
+ * (~5% headroom, deliberately under the ~17% convention so the next real
+ * trim is still forced soon; the figmaUrl/figmaLink redundancy below is the
+ * obvious first cut). Adrian to confirm or tighten.
+ *
+ * The figmaUrl/figmaLink redundancy named above is now cut from the bundle
+ * (hds#413, see the note before this one); the 70 kB budget is unchanged.
+ *
  * Button-only root import (hds#315, 2026-09-29): `import { Button } from
  * '@hirobius/design-system'`, tree-shaken and minified with react/react-dom
  * external, built by scripts/build-button-probe.mjs (run by `pnpm check:size`
@@ -167,7 +178,7 @@ module.exports = [
   {
     name: 'manifest (hds-manifest.json ESM)',
     path: 'dist/manifest.js',
-    limit: '65 kB',
+    limit: '70 kB',
     gzip: true,
   },
   {

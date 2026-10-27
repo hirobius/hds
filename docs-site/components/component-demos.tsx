@@ -44,6 +44,7 @@ import {
   Radio,
   SegmentedControl,
   Select,
+  Sheet,
   Skeleton,
   Slider,
   Spinner,
@@ -192,6 +193,33 @@ function DialogDemo() {
         </Dialog.Footer>
       </Dialog.Content>
     </Dialog>
+  );
+}
+
+function SheetDemo() {
+  const [sort, setSort] = useState('Newest');
+  return (
+    <Sheet>
+      <Sheet.Trigger asChild>
+        <Button variant="secondary">Sort: {sort}</Button>
+      </Sheet.Trigger>
+      <Sheet.Content>
+        <Sheet.Header>
+          <Sheet.Title>Sort by</Sheet.Title>
+          <Sheet.Description>
+            A bottom sheet on a phone, a centred panel on wider screens.
+          </Sheet.Description>
+        </Sheet.Header>
+        <Sheet.Actions aria-label="Sort order">
+          {['Newest', 'Company', 'Best fit'].map((option) => (
+            <Sheet.Action key={option} current={sort === option} onClick={() => setSort(option)}>
+              {option}
+            </Sheet.Action>
+          ))}
+          <Sheet.Action tone="danger">Remove filters</Sheet.Action>
+        </Sheet.Actions>
+      </Sheet.Content>
+    </Sheet>
   );
 }
 
@@ -909,13 +937,24 @@ function TabsDemo() {
 
 function TagDemo() {
   const [active, setActive] = useState('tokens');
+  const [terms, setTerms] = useState(['design systems', 'tokens', 'contract']);
   return (
-    <div style={demoRow}>
-      {['tokens', 'components', 'patterns'].map((tag) => (
-        <Tag key={tag} active={active === tag} onClick={() => setActive(tag)}>
-          {tag}
-        </Tag>
-      ))}
+    <div style={{ display: 'grid', gap: XS }}>
+      <div style={demoRow}>
+        {['tokens', 'components', 'patterns'].map((tag) => (
+          <Tag key={tag} active={active === tag} onClick={() => setActive(tag)}>
+            {tag}
+          </Tag>
+        ))}
+      </div>
+      {/* Dismissible: a static label; only the X (40px hit area) removes it. */}
+      <div style={demoRow}>
+        {terms.map((term) => (
+          <Tag key={term} onDismiss={() => setTerms((t) => t.filter((x) => x !== term))}>
+            {term}
+          </Tag>
+        ))}
+      </div>
     </div>
   );
 }
@@ -1260,6 +1299,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Progress: ProgressDemo,
   Radio: RadioDemo,
   SegmentedControl: SegmentedControlDemo,
+  Sheet: SheetDemo,
   Skeleton: SkeletonDemo,
   Slider: SliderDemo,
   Spinner: SpinnerDemo,

@@ -1,6 +1,7 @@
 import { test, expect } from '@chromatic-com/playwright';
 // @ts-expect-error -- plain ESM helper shared with the axe gate; no type declarations.
 import { DEMO_SELECTOR, discoverPages } from '../../scripts/lib/docs-axe.mjs';
+import { openThemed } from './theme';
 
 /**
  * One snapshot per component/pattern demo of the docs site, light and dark.
@@ -20,24 +21,9 @@ test.describe('docs site demos', () => {
   for (const route of pages) {
     for (const theme of ['light', 'dark'] as const) {
       test(`${route} (${theme})`, async ({ page }) => {
-        await page.addInitScript((t: string) => {
-          try {
-            localStorage.setItem('theme', t);
-          } catch {
-            /* storage blocked: the attributes set below still apply */
-          }
-        }, theme);
-        await page.emulateMedia({ reducedMotion: 'reduce', colorScheme: theme });
-        await page.goto(route);
-        await page.evaluate((t: string) => {
-          const el = document.documentElement;
-          el.setAttribute('data-theme', t);
-          el.classList.toggle('dark', t === 'dark');
-          el.classList.toggle('light', t === 'light');
-        }, theme);
+        await openThemed(page, route, theme);
         const demo = page.locator(DEMO_SELECTOR).first();
         await expect(demo).toBeVisible();
-        await page.evaluate(() => document.fonts?.ready);
       });
     }
   }
