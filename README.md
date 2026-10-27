@@ -40,14 +40,12 @@ Agents: install the consumer skill with `npx skills add hirobius/hds --skill hds
 
 <!-- auto:start:consumer-usage -->
 
-An internal operations dashboard is one of 2 product apps that use components: **33** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are pages of that app, rendered from its `main` branch.
+An internal operations dashboard is one of 2 product apps that use components: **33** of its source files import from `@hirobius/design-system`, using **25** distinct components. The screenshot below is a page of that app, rendered from its `main` branch.
 
 | Consumer kind     | Count | How it uses HDS                           |
 | ----------------- | ----- | ----------------------------------------- |
 | Product apps      | 2     | Components and tokens                     |
 | Token-level sites | 4     | Tokens and CSS only, no component imports |
-
-[![Library page of the product app](docs/images/product-app-library.png)](docs/images/product-app-library.png)
 
 [![Audit page of the product app](docs/images/product-app-audit.png)](docs/images/product-app-audit.png)
 
