@@ -463,6 +463,7 @@
     "hds-tile-grid": "codemods/tile-grid.mjs",
     "hds-spacing-steps": "codemods/spacing-steps.mjs",
     "hds-mcp": "mcp/hds-mcp.mjs",
+    "hds-check": "bin/hds-check.mjs",
     "hds-tokens": "bin/hds-tokens.mjs",
     "design-system": "codemods/upgrade.mjs",
     "hds-upgrade": "codemods/upgrade.mjs"

@@ -35,12 +35,14 @@
  *   - Everything else passes through as a plain camelCase→kebab-case CSS
  *     declaration (numbers get `px` unless in the unitless allowlist).
  *
- * See `box-sx.ts` for the pure resolver + hashing/injection engine.
+ * See `box-sx.ts` for the pure resolver + hashing/injection engine. On React 19 the
+ * rules render as a hoisted `<style href precedence>` (so they are in server HTML);
+ * on React 18 they inject into a managed sheet in the browser.
  */
 
 import React from 'react';
 import { cn } from '../../lib/utils';
-import { injectSx, type SxObject } from './box-sx';
+import { injectSx, resolveSx, sxClassName, type SxObject } from './box-sx';
 
 export type { SxObject, SxValue, ResponsiveValue, Breakpoint } from './box-sx';
 
@@ -56,6 +58,13 @@ export interface BoxProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
 }
 
+// React 19 hoists and dedupes a `<style href precedence>` into <head> on the server and the
+// client alike, so sx rules ship in the server HTML and hydration adds no layout shift (hds#770).
+// React 18 has no style resources: there sx injects into a managed sheet in the browser.
+const STYLE_RESOURCES = /* @__PURE__ */ Number.parseInt(React.version, 10) >= 19;
+/** Resolved CSS per sx class, so a re-render does not rebuild the string. */
+const sxCss = new Map<string, string>();
+
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** @public */
@@ -63,9 +72,9 @@ export const Box = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoxProps>(fu
   { as: Tag = 'div', sx, className, children, ...rest },
   ref,
 ) {
-  const sxClass = sx ? injectSx(sx) : undefined;
+  const sxClass = sx ? (STYLE_RESOURCES ? sxClassName(sx) : injectSx(sx)) : undefined;
 
-  return (
+  const box = (
     <Tag
       ref={ref}
       className={cn(sxClass, className)}
@@ -75,5 +84,25 @@ export const Box = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoxProps>(fu
     >
       {children}
     </Tag>
+  );
+  if (!STYLE_RESOURCES || !sx || !sxClass) return box;
+  let css = sxCss.get(sxClass);
+  if (css === undefined) {
+    css = resolveSx(sx, sxClass).join('\n');
+    sxCss.set(sxClass, css);
+  }
+  return (
+    <>
+      {/* href/precedence are React 19 props; the React 18 types this package builds against lack them. */}
+      <style
+        {...({
+          href: sxClass,
+          precedence: 'hds-sx',
+        } as React.StyleHTMLAttributes<HTMLStyleElement>)}
+      >
+        {css}
+      </style>
+      {box}
+    </>
   );
 });
