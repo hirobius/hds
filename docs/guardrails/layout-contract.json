@@ -543,6 +543,13 @@
       "probe": true,
       "maxWidth": "40rem"
     },
+    "Sheet": {
+      "width": "hug",
+      "height": "hug",
+      "pads": true,
+      "kind": "overlay",
+      "probe": false
+    },
     "Sidebar": {
       "width": "fill",
       "height": "hug",
