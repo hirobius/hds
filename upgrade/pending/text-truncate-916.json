@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Text can now cut long text itself: replace a local one-line ellipsis class with `truncate` and a local line-clamp class with `lineClamp={2 | 3 | 4}`."
+}
