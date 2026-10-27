@@ -258,7 +258,7 @@ describe('Layout', () => {
   it('Stat aligns to the start and spaces label from value', () => {
     render(<Stat data-testid="st" label="MRR" value="$1" sub="up" />);
     expect(screen.getByTestId('st').className).toMatch(/\bself-start\b/);
-    expect(screen.getByTestId('st').className).toMatch(/\bgap-1\b/);
+    expect(screen.getByTestId('st').className).toMatch(/\bgap-fixed-2xs\b/);
   });
 
   it('MetadataList horizontal sizes the term column to its content', () => {

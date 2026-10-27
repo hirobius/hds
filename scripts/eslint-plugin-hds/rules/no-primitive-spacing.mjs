@@ -15,13 +15,12 @@
  *
  * Zero (`p-0`) and `p-px` are allowed: a reset and a hairline have no step.
  */
+import { SPACING_UTILITY_RE } from './spacing.mjs';
 import { attrName } from './utils.mjs';
 
 const CLASS_CALLEES = new Set(['cn', 'clsx', 'cva']);
 const PRIMITIVE_VAR_RE = /--primitive-space-([a-z0-9]+)/gi;
 const PX_KEY_RE = /^px\d+$/;
-const TAILWIND_SPACING_RE =
-  /^(p[xytrblse]?|m[xytrblse]?|gap(?:-[xy])?|space-[xy])-(\d+(?:\.\d+)?|px\d+)$/;
 
 /** `md:hover:[&>svg]:!-mt-4` -> `mt-4`. */
 function stripVariantsAndModifiers(cls) {
@@ -118,7 +117,7 @@ export default {
         const seen = new Set();
         for (const raw of text.split(/\s+/)) {
           if (!raw || seen.has(raw)) continue;
-          const match = TAILWIND_SPACING_RE.exec(stripVariantsAndModifiers(raw));
+          const match = SPACING_UTILITY_RE.exec(stripVariantsAndModifiers(raw));
           if (!match) continue;
           const step = match[2];
           if (!step.startsWith('px') && Number(step) === 0) continue;

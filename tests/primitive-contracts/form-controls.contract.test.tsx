@@ -406,6 +406,78 @@ describe('Tag accessibility contract', () => {
     expect(tokens).toMatch(/--component-tag-minHeight:\s*var\(--primitive-space-6\)/);
     expect(tokens).toMatch(/--primitive-space-6:\s*24px/);
   });
+
+  it('a11y:tag.dismiss-named a dismissible tag is a static label whose X is a button named "Remove <label>"', () => {
+    render(<Tag onDismiss={noop}>systems</Tag>);
+    const buttons = screen.getAllByRole('button');
+    expect(buttons).toHaveLength(1);
+    expect(buttons[0].getAttribute('aria-label')).toBe('Remove systems');
+    expect(buttons[0].hasAttribute('aria-pressed')).toBe(false);
+    expect(screen.getByText('systems').closest('button')).toBeNull();
+  });
+
+  it('a11y:tag.dismiss-named dismissLabel names the X when the label is not plain text', () => {
+    render(
+      <Tag onDismiss={noop} dismissLabel="Remove design systems">
+        <span>design systems</span>
+      </Tag>,
+    );
+    expect(screen.getByRole('button', { name: 'Remove design systems' })).not.toBeNull();
+  });
+
+  it('a11y:tag.dismiss-keyboard the X is in the tab order and Enter or Space dismisses', async () => {
+    let n = 0;
+    render(
+      <>
+        <Tag onDismiss={() => n++}>systems</Tag>
+        <Tag onDismiss={noop}>tokens</Tag>
+      </>,
+    );
+    await user().tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Remove systems' }));
+    await user().keyboard('{Enter}');
+    await user().keyboard(' ');
+    expect(n).toBe(2);
+    fireEvent.click(screen.getByRole('button', { name: 'Remove systems' }));
+    expect(n).toBe(3);
+    await user().tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Remove tokens' }));
+  });
+
+  it('a dismissible tag: a screen reader speaks the label, then the Remove button', async () => {
+    const { container } = render(<Tag onDismiss={noop}>systems</Tag>);
+    const log = await readAll(container);
+    expect(log).toContain('systems');
+    expect(log).toContain('button, Remove systems');
+    expect(log.join(' ')).not.toMatch(/pressed/);
+  });
+
+  it('a11y:tag.dismiss-target-size the X has a 40px hit area that does not grow the pill', () => {
+    render(<Tag onDismiss={noop}>systems</Tag>);
+    const x = screen.getByRole('button', { name: 'Remove systems' });
+    expect(x.className).toContain('size-[var(--semantic-size-row-compact)]');
+    // The hit area overhangs the pill: it adds one line box of height, not 40px.
+    expect(x.className).toContain('my-[calc((1lh_-_var(--semantic-size-row-compact))/2)]');
+    const tokens = readFileSync(
+      resolve(__dirname, '../../src/styles/tokens.generated.css'),
+      'utf8',
+    );
+    expect(tokens).toMatch(/--semantic-size-row-compact:\s*var\(--primitive-size-40\)/);
+    expect(tokens).toMatch(/--primitive-size-40:\s*40px/);
+  });
+
+  it('a11y:tag.dismiss-keyboard a disabled dismissible tag is skipped by Tab', async () => {
+    render(
+      <>
+        <Tag onDismiss={noop} disabled>
+          off
+        </Tag>
+        <Tag onDismiss={noop}>on</Tag>
+      </>,
+    );
+    await user().tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Remove on' }));
+  });
 });
 
 describe('Input accessibility contract', () => {
@@ -440,9 +512,9 @@ describe('Input accessibility contract', () => {
   it('a11y:input.clear-target-size the clear button spans the field height and is 24px or wider', () => {
     render(<Input label="Search" type="search" defaultValue="abc" size="sm" />);
     const clear = screen.getByRole('button', { name: 'Clear search' });
-    // inset-y-0 = the whole field height (>= 32px); px-2 + a 14px glyph = 30px wide.
+    // inset-y-0 = the whole field height (>= 32px); px-scale-xs (8px) + a 14px glyph = 30px wide.
     expect(clear.className).toContain('inset-y-0');
-    expect(clear.className).toContain('px-2');
+    expect(clear.className).toContain('px-scale-xs');
   });
 });
 

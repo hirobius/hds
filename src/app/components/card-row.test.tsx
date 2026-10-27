@@ -96,7 +96,7 @@ describe('Card.Row renders a StatusTile’s content (hds#622)', () => {
     const { tile } = renderBoth({ title: 'Figma sync' });
     expect(tile.getAttribute('data-hds-component')).toBe('StatusTile');
     expect(tile.className).toBe(
-      'flex items-start gap-3 rounded-lg bg-[var(--semantic-color-surface-raised)] p-scale-sm',
+      'flex items-start gap-fixed-xs rounded-lg bg-[var(--semantic-color-surface-raised)] p-scale-sm',
     );
   });
 
@@ -104,10 +104,10 @@ describe('Card.Row renders a StatusTile’s content (hds#622)', () => {
     // A literal, not StatusTile's output: if both drift together this fails.
     const { row } = renderBoth({ title: 'Ship v2', notes: ['Owner: Ana'], trailing: 'Done' });
     expect(row.outerHTML).toBe(
-      '<div class="flex items-start gap-3">' +
+      '<div class="flex items-start gap-fixed-xs">' +
         '<div class="min-w-0 flex-1">' +
         '<p class="m-0 hds-type-ui text-foreground">Ship v2</p>' +
-        '<p class="m-0 mt-1 hds-type-caption text-muted-foreground">Owner: Ana</p>' +
+        '<p class="m-0 mt-fixed-2xs hds-type-caption text-muted-foreground">Owner: Ana</p>' +
         '</div>' +
         '<div class="shrink-0">Done</div>' +
         '</div>',

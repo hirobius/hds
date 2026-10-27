@@ -29,6 +29,7 @@ import { readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { relative, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { OFF_GRID_STEPS, SPACING_UTILITY } from '../scripts/eslint-plugin-hds/rules/spacing.mjs';
 
 const EXTS = new Set([
   '.ts',
@@ -58,35 +59,27 @@ const SKIP_DIRS = new Set([
 ]);
 const SELF = fileURLToPath(import.meta.url);
 
-/** Old step key -> the on-grid step it becomes: `scale` (CSS var, DTCG) and `js` (hds.space key). */
-export const STEPS = Object.freeze({
-  px6: { scale: '2', js: 'px8' },
-  px10: { scale: '3', js: 'px12' },
-});
-
-const UTILS = 'gap-x|gap-y|gap|space-x|space-y|px|py|pt|pr|pb|pl|ps|pe|p|mx|my|mt|mr|mb|ml|ms|me|m';
-
 // Each rule: a pattern over one token, and the text for a matched step key.
 const RULES = [
   // --primitive-space-px6
   [
     /(?<![\w-])--primitive-space-(px6|px10)(?![\w-])/g,
-    (m, k) => `--primitive-space-${STEPS[k].scale}`,
+    (m, k) => `--primitive-space-${OFF_GRID_STEPS[k].scale}`,
   ],
   // primitive.space.px6, with or without braces (a DTCG path or reference)
   [
     /(?<![\w$.])primitive\.space\.(px6|px10)(?![\w$-])/g,
-    (m, k) => `primitive.space.${STEPS[k].scale}`,
+    (m, k) => `primitive.space.${OFF_GRID_STEPS[k].scale}`,
   ],
   // hds.space.px6, but not hds.semantic.space.px6
   [
     /(?<![\w$.])(?!semantic\.|primitive\.)([A-Za-z_$][\w$]*)\.space\.(px6|px10)(?![\w$-])/g,
-    (m, id, k) => `${id}.space.${STEPS[k].js}`,
+    (m, id, k) => `${id}.space.${OFF_GRID_STEPS[k].js}`,
   ],
   // p-px6, -mt-px10, md:gap-px6, hover:!px-px10
   [
-    new RegExp(`(?<![\\w-])([-!]*)(${UTILS})-(px6|px10)(?![\\w-])`, 'g'),
-    (m, sign, util, k) => `${sign}${util}-${STEPS[k].scale}`,
+    new RegExp(`(?<![\\w-])([-!]*)(${SPACING_UTILITY})-(px6|px10)(?![\\w-])`, 'g'),
+    (m, sign, util, k) => `${sign}${util}-${OFF_GRID_STEPS[k].scale}`,
   ],
 ];
 
@@ -103,7 +96,7 @@ export function transformSource(source) {
   for (const [re, fn] of RULES) {
     out = out.replace(re, (...a) => {
       sites++;
-      const key = a.find((x) => typeof x === 'string' && Object.hasOwn(STEPS, x));
+      const key = a.find((x) => typeof x === 'string' && Object.hasOwn(OFF_GRID_STEPS, x));
       names.add(key);
       return fn(...a);
     });
