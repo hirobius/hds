@@ -2949,7 +2949,7 @@
       "radius": {
         "$type": "dimension",
         "$value": "{primitive.radius.6}",
-        "$description": "Badge corner (rounded-sm), a step under action."
+        "$description": "Figma value; code renders rounded-sm (role.radius - 2px)."
       },
       "height": {
         "$type": "dimension",

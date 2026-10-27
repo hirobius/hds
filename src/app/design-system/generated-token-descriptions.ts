@@ -341,7 +341,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.badge.warning.text": "Warning badge text color.",
   "component.badge.inProgress.bg": "Inprogress badge fill.",
   "component.badge.inProgress.text": "Inprogress badge text color.",
-  "component.badge.radius": "Badge corner (rounded-sm), a step under action.",
+  "component.badge.radius": "Figma value; code renders rounded-sm (role.radius - 2px).",
   "component.badge.height": "Badge height.",
   "component.badge.minWidth": "Badge minimum width.",
   "component.badge.paddingY": "Vertical padding inside the badge.",

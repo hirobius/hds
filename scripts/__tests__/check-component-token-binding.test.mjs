@@ -331,6 +331,19 @@ describe('static.css mirror', () => {
     });
     expect(a.cssResults[0].class).toBe('BOUND');
   });
+
+  it('a binding-ok marker in the CSS comment allowlists the mirror (hds#757)', () => {
+    const a = run(component, 'rounded-[var(--component-widget-radius)]', {
+      map: map('.hds-widget'),
+      css: {
+        'static.css':
+          '.hds-widget { border-radius: 12px; /* binding-ok: widget.radius follows a tenant radius */ }',
+      },
+    });
+    expect(a.cssResults[0].class).toBe('LITERAL-MISMATCH');
+    expect(a.cssResults[0].allowed).toContain('follows a tenant');
+    expect(ratchet(a, { leaves: {}, css: {}, findings: [] }).fresh).toEqual([]);
+  });
 });
 
 // ── CLI ──────────────────────────────────────────────────────────────────────
