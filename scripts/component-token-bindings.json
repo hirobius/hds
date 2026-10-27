@@ -162,10 +162,7 @@
       ]
     },
     "nav": {
-      "orphan": "TopNav, NavItem and SideNav were removed in 0.20.0 (hds#394); the tokens were never retired. component.nav.paddingY is borrowed by Disclosure's nav variant."
-    },
-    "lightbox": {
-      "orphan": "Lightbox was removed in 0.20.0 (hds#394). The blur is exported only as hds.effect.blur.lightboxBackdrop; Dialog overlays use backdrop-blur-sm."
+      "orphan": "TopNav, NavItem and SideNav were removed in 0.20.0 (hds#394) and their tokens after 0.32.0 (hds#431). Only component.nav.paddingY stays: Disclosure's nav variant borrows it."
     }
   }
 }

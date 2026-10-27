@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-24T04:14:09.174Z",
+  "generated": "2026-10-27T03:32:18.215Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -301,107 +301,6 @@
       "X"
     ]
   },
-  "phases": [
-    {
-      "id": "foundation",
-      "label": "Foundations",
-      "description": "Token architecture, CSS pipeline, accessibility, and primitive scales.",
-      "criteria": [
-        {
-          "label": "W3C DTCG three-tier token architecture",
-          "done": true
-        },
-        {
-          "label": "CSS variable pipeline + token verify",
-          "done": true
-        },
-        {
-          "label": "Primitive scales complete (color, type, space)",
-          "done": false,
-          "partial": true
-        },
-        {
-          "label": "Token audit clean",
-          "done": false
-        }
-      ]
-    },
-    {
-      "id": "components",
-      "label": "Components",
-      "description": "Accessible React UI built from foundations and mapped toward Figma parity.",
-      "criteria": [
-        {
-          "label": "Component inventory with typed props",
-          "done": true
-        },
-        {
-          "label": "Action system architecture (buttons, links, groups)",
-          "done": true
-        },
-        {
-          "label": "Prop tables and API doc coverage",
-          "done": true
-        },
-        {
-          "label": "Figma parity mapping",
-          "done": false
-        }
-      ]
-    },
-    {
-      "id": "infrastructure-operations",
-      "label": "Architecture",
-      "description": "System delivery, Figma sync, automation, quality gates, and operational hygiene.",
-      "criteria": [
-        {
-          "label": "System manifest + llms.txt AI context",
-          "done": true
-        },
-        {
-          "label": "Release gate + full audit gate",
-          "done": true
-        },
-        {
-          "label": "Documentation automation (AST pipeline, LLMS sync)",
-          "done": true
-        },
-        {
-          "label": "Payload sweep + orphan cleanup",
-          "done": false,
-          "partial": true
-        },
-        {
-          "label": "Motion system foundations",
-          "done": false,
-          "partial": true
-        },
-        {
-          "label": "Figma library generated from tokens",
-          "done": false
-        },
-        {
-          "label": "Code Connect CI + reverse sync",
-          "done": false
-        },
-        {
-          "label": "AST gatekeeper + token schema validation",
-          "done": false,
-          "partial": true
-        },
-        {
-          "label": "A11y CI + visual regression pipeline",
-          "done": false,
-          "partial": true
-        },
-        {
-          "label": "Operational feedback loop + AI retrospective",
-          "done": false,
-          "partial": true
-        }
-      ]
-    }
-  ],
   "inventory": {
     "uncategorized": [],
     "namespaceViolations": []
@@ -12045,7 +11944,7 @@
         "path": "primitive.blur.16",
         "cssVar": "--primitive-blur-16",
         "type": "dimension",
-        "description": "Fullscreen backdrop blur for portfolio lightbox overlays.",
+        "description": "Large backdrop blur for fullscreen overlays.",
         "value": "16px"
       },
       {
@@ -13488,14 +13387,6 @@
         "resolvedValue": "20px"
       },
       {
-        "path": "semantic.space.sidebar.railWidth",
-        "cssVar": "--semantic-space-sidebar-railWidth",
-        "type": "dimension",
-        "description": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).",
-        "alias": "{primitive.size.width.280}",
-        "resolvedValue": "280px"
-      },
-      {
         "path": "semantic.layout.width.content",
         "cssVar": "--semantic-layout-width-content",
         "type": "dimension",
@@ -14172,62 +14063,6 @@
       }
     ],
     "component": [
-      {
-        "path": "component.nav.bg",
-        "cssVar": "--component-nav-bg",
-        "type": "color",
-        "description": "Nav bar background fill.",
-        "alias": "{semantic.color.surface.page}",
-        "resolvedValue": "#ffffff"
-      },
-      {
-        "path": "component.nav.bgActive",
-        "cssVar": "--component-nav-bgActive",
-        "type": "color",
-        "description": "Nav item background fill when active or selected.",
-        "alias": "{semantic.accent.subtle}",
-        "resolvedValue": "#f5f4f4"
-      },
-      {
-        "path": "component.nav.borderActive",
-        "cssVar": "--component-nav-borderActive",
-        "type": "color",
-        "description": "Nav item border color when active or selected.",
-        "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#4a4146"
-      },
-      {
-        "path": "component.nav.text",
-        "cssVar": "--component-nav-text",
-        "type": "color",
-        "description": "Nav item text color at rest.",
-        "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#525252"
-      },
-      {
-        "path": "component.nav.textActive",
-        "cssVar": "--component-nav-textActive",
-        "type": "color",
-        "description": "Nav item text color when active or selected.",
-        "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
-      },
-      {
-        "path": "component.nav.height",
-        "cssVar": "--component-nav-height",
-        "type": "dimension",
-        "description": "Nav bar height.",
-        "alias": "{primitive.space.16}",
-        "resolvedValue": "64px"
-      },
-      {
-        "path": "component.nav.paddingX",
-        "cssVar": "--component-nav-paddingX",
-        "type": "dimension",
-        "description": "Horizontal padding inside nav items.",
-        "alias": "{primitive.space.6}",
-        "resolvedValue": "24px"
-      },
       {
         "path": "component.nav.paddingY",
         "cssVar": "--component-nav-paddingY",
@@ -14908,14 +14743,6 @@
         "description": "Inline code chip background.",
         "alias": "{semantic.color.surface.overlay}",
         "resolvedValue": "#f5f5f5"
-      },
-      {
-        "path": "component.lightbox.backdrop.blur",
-        "cssVar": "--component-lightbox-backdrop-blur",
-        "type": "dimension",
-        "description": "Backdrop blur applied behind fullscreen image lightboxes.",
-        "alias": "{primitive.blur.16}",
-        "resolvedValue": "16px"
       }
     ],
     "role": [

@@ -402,16 +402,16 @@ describe('CLI modes', () => {
 // ── The repo itself (acceptance fixture: audit at origin/main 7895210) ───────
 
 describe('repo counts', () => {
-  it('counts after the C2 ghost (tertiary binds bg.hover/pressed): 42 BOUND / 36 LITERAL-MATCH / 0 LITERAL-MISMATCH / 16 UNUSED of 94 (was 40 BOUND of 92 after soft surfaces, hds#891: secondary Button binds bg.rest/hover/pressed, its three border tokens are no longer drawn; was 39/40/0/13 after Tag bound its unselected surface, hds#595; was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is the action radius through rounded-md, bug bash 24; button.bgPressed bound, hds#748)', () => {
+  it('counts after the 0.20.0 orphan tokens went (hds#431: lightbox and 7 nav tokens, all UNUSED): 42 BOUND / 36 LITERAL-MATCH / 0 LITERAL-MISMATCH / 8 UNUSED of 86 (was 16 UNUSED of 94 after the C2 ghost, tertiary binds bg.hover/pressed; was 40 BOUND of 92 after soft surfaces, hds#891: secondary Button binds bg.rest/hover/pressed, its three border tokens are no longer drawn; was 39/40/0/13 after Tag bound its unselected surface, hds#595; was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is the action radius through rounded-md, bug bash 24; button.bgPressed bound, hds#748)', () => {
     const r = cli(['--json']);
     expect(r.status).toBe(0);
     const { summary } = JSON.parse(r.out);
-    expect(summary.total).toBe(94);
+    expect(summary.total).toBe(86);
     expect(summary.counts).toMatchObject({
       BOUND: 42,
       'LITERAL-MATCH': 36,
       'LITERAL-MISMATCH': 0,
-      UNUSED: 16,
+      UNUSED: 8,
     });
     expect(summary.matchKinds).toEqual({ alias: 15, 'type-role': 8, literal: 13 });
   });
