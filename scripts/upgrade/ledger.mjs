@@ -47,6 +47,8 @@ const BREAKING_FACTS = new Set([
   // hds#449: a custom property or public class a consumer reads stops existing.
   'css-var-removed',
   'class-removed',
+  // hds#466: a utility a consumer's own Tailwind build derives from the preset stops existing.
+  'preset-key-removed',
 ]);
 
 /** CSS facts that change how a page looks while every name still resolves. */

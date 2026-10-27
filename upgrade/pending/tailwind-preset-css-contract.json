@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "If your app copies tailwind.config.tokens.cjs, import @hirobius/design-system/tailwind-preset as a Tailwind preset instead, so new and renamed keys reach you."
+}

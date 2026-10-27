@@ -63,6 +63,13 @@ import {
   nodeModulesVersion,
   readRootLockfile,
 } from './lib/project.mjs';
+import {
+  PRESET_EXPORT,
+  VENDORED_PRESET,
+  loadPreset,
+  presetDiff,
+  themeKeys,
+} from './lib/preset.mjs';
 import { comingNextSteps, listOf, loadRecord } from './lib/record.mjs';
 import { MAX_BYTES, collectFiles, fileMentions, matchDetect } from './lib/scan.mjs';
 import { bumpRange, compareVersions, isVersion } from './lib/semver.mjs';
@@ -92,6 +99,42 @@ export const USAGE = `usage: npx ${HDS_PACKAGE}@latest upgrade [flags]
   --help             print this
 
 Exit 0: done. 1: work left. 2: refused (nothing was changed) or an error.`;
+
+/** The theme keys of the preset the package at `pkgDir` exports, or null when it has none. */
+function installedPresetKeys(pkgDir) {
+  const target = readJson(join(pkgDir, 'package.json'))?.exports?.[PRESET_EXPORT];
+  if (typeof target !== 'string') return null;
+  try {
+    return themeKeys(loadPreset(join(pkgDir, target)));
+  } catch {
+    return null;
+  }
+}
+
+const someOf = (keys) =>
+  `${keys.slice(0, 5).join(', ')}${keys.length > 5 ? `, and ${keys.length - 5} more` : ''}`;
+
+/**
+ * The Do by hand item for a vendored copy of the preset (hds#466) whose keys
+ * differ from the installed one, or null when it matches. A copy goes stale
+ * silently: its utilities and lint vocabulary stop matching HDS.
+ */
+function vendoredPresetItem(file, rel, installed) {
+  const fix = `import ${HDS_PACKAGE}/tailwind-preset instead of keeping a copy`;
+  let keys;
+  try {
+    keys = themeKeys(loadPreset(file));
+  } catch (error) {
+    return `${rel} looks like a copy of the HDS Tailwind preset but could not be read (${String(error.message).split('\n')[0]}), so ${fix}.`;
+  }
+  const { missing, extra } = presetDiff(keys, installed);
+  if (missing.length === 0 && extra.length === 0) return null;
+  const parts = [
+    missing.length > 0 ? `it lacks ${someOf(missing)}` : null,
+    extra.length > 0 ? `it has ${someOf(extra)}, which HDS no longer does` : null,
+  ].filter(Boolean);
+  return `${rel} is a copy of the HDS Tailwind preset that has drifted from the installed one (${parts.join('; ')}), so ${fix}.`;
+}
 
 const LISTS = ['fixedForYou', 'looksDifferent', 'comingNext', 'doByHand'];
 const HEADINGS = {
@@ -455,6 +498,7 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
 
   // ── 2. each importer: codemods, range, dependencies, lists
   const changed = new Set();
+  const presetKeys = installedPresetKeys(pkgDir);
   for (const [i, importer] of importers.entries()) {
     const { from } = versions[i];
     const dir = importer.dir;
@@ -654,6 +698,22 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
         importer: dir,
         files: rel(hits),
         removeIn: step.removeIn,
+      });
+    }
+
+    for (const file of presetKeys ? now.filter((f) => VENDORED_PRESET.test(f.rel)) : []) {
+      const plain = vendoredPresetItem(
+        join(importer.abs, file.rel),
+        under(dir, file.rel),
+        presetKeys,
+      );
+      if (!plain) continue;
+      addItem(report, 'doByHand', {
+        id: 'tool/vendored-preset',
+        plain,
+        importer: dir,
+        files: [under(dir, file.rel)],
+        blocking: false,
       });
     }
 

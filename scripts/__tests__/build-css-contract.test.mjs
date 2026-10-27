@@ -14,6 +14,7 @@ import {
   CONTRACT_FILE,
   buildCssContract,
   cssBundleContract,
+  presetKeys,
   selectorClasses,
 } from '../lib/css-contract.mjs';
 
@@ -177,6 +178,35 @@ describe('buildCssContract', () => {
     expect(buildCssContract(packageDir({}))).toBeNull();
     const dir = packageDir({ 'dist/tokens.css': TOKENS });
     expect(() => buildCssContract(dir)).toThrow(/\.\/static\.css.*dist\/static\.css/);
+  });
+
+  // hds#466: the preset a consumer's own Tailwind build spreads; a key it loses is a utility gone.
+  it('records every theme key of the ./tailwind-preset export, flattened and sorted', () => {
+    const dir = packageDir({ 'dist/tokens.css': TOKENS, 'dist/static.css': '' });
+    const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
+    pkg.exports['./tailwind-preset'] = './tailwind.config.tokens.cjs';
+    writeFileSync(join(dir, 'package.json'), JSON.stringify(pkg));
+    writeFileSync(
+      join(dir, 'tailwind.config.tokens.cjs'),
+      `module.exports = { theme: { extend: {
+        colors: { card: { DEFAULT: 'var(--card)', foreground: 'var(--card-fg)' }, ring: 'var(--ring)' },
+        fontSize: { sm: ['14px', { lineHeight: '20px' }] },
+        spacing: { 4: 'var(--space-4)' },
+      } } };\n`,
+    );
+    const contract = buildCssContract(dir);
+    expect(Object.keys(contract)).toEqual(['format', 'bundles', 'publicClasses', 'tailwindPreset']);
+    expect(contract.tailwindPreset).toEqual([
+      'colors.card.DEFAULT',
+      'colors.card.foreground',
+      'colors.ring',
+      'fontSize.sm',
+      'spacing.4',
+    ]);
+  });
+
+  it("reads this repo's preset", () => {
+    expect(presetKeys(REPO)).toEqual(expect.arrayContaining(['colors.card.DEFAULT', 'spacing.4']));
   });
 
   it('has no publicClasses for a package whose manifest predates them', () => {

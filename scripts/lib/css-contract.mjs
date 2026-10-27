@@ -10,6 +10,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { parse as parseCss } from 'postcss';
+import { PRESET_EXPORT, loadPreset, themeKeys } from '../../codemods/lib/preset.mjs';
 
 export const CONTRACT_FILE = 'dist/css-contract.json';
 const CONTRACT_FORMAT = 1;
@@ -224,6 +225,23 @@ function readPublicClasses(dir) {
 }
 
 /**
+ * The theme keys of the preset a package exports as ./tailwind-preset, or
+ * null when it exports none (every release before hds#466).
+ * @param {string} dir
+ */
+export function presetKeys(dir) {
+  const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
+  const target = pkg.exports?.[PRESET_EXPORT];
+  const path = typeof target === 'string' ? target : (target?.require ?? target?.default);
+  if (typeof path !== 'string') return null;
+  const file = join(dir, path);
+  if (!existsSync(file)) {
+    throw new Error(`exports["${PRESET_EXPORT}"] is ${path}, which is not in ${dir}`);
+  }
+  return themeKeys(loadPreset(file));
+}
+
+/**
  * The CSS contract of a package directory (the repo after build:lib, or an
  * unpacked tarball), built from its stylesheets. Null when it ships none of
  * the stylesheets its exports name (a test fixture with no CSS); throws when
@@ -246,7 +264,13 @@ export function buildCssContract(dir) {
   for (const [key, path] of present) {
     bundles[key] = cssBundleContract(readFileSync(join(dir, path), 'utf8'));
   }
-  return { format: CONTRACT_FORMAT, bundles, publicClasses: readPublicClasses(dir) };
+  const preset = presetKeys(dir);
+  return {
+    format: CONTRACT_FORMAT,
+    bundles,
+    publicClasses: readPublicClasses(dir),
+    ...(preset ? { tailwindPreset: preset } : {}),
+  };
 }
 
 /** The bytes dist/css-contract.json holds: one line, so the tarball carries no indentation. */

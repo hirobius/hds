@@ -24,6 +24,12 @@
  *      context (:root, dark, compact, a [data-brand], an @media), and no step
  *      in upgrade/pending/*.json lists the fact (a Tailwind utility that left
  *      is reported, not failed: no consumer should rely on HDS shipping one);
+ *   3b. a variable fact a tenant sees (a change under its `[data-brand=<slug>]`,
+ *      or to a variable it overrides, hds#449) has no tenant/<slug> step
+ *      listing it: a pilot tenant's site re-themes, and only a consumer
+ *      themed with that tenant should read about it;
+ *   3c. a theme key of the Tailwind preset (./tailwind-preset, hds#466) left
+ *      and no step lists it; it is breaking like a removed variable;
  *   4. a removed variable or public class is covered only by a step that is
  *      not breaking (kind removed, moved, renamed or folded, or impact
  *      breaking), or the pending changesets bump by less than minor below
@@ -109,6 +115,8 @@ function describeCssFact(fact) {
       return `${fact.name} in ${fact.context} went from ${shown(fact.from)} to ${shown(fact.to)} (${where(fact)}). ${NOTE} adds a value-changed step (impact look); say what looks different in its plain line.`;
     case 'font-face-removed':
       return `the @font-face ${fact.family} ${fact.weight} ${fact.style} is no longer in ${where(fact)}. Run ${NOTE}: it adds a look step.`;
+    case 'preset-key-removed':
+      return `the Tailwind preset (./tailwind-preset) no longer has the theme key ${fact.name}, so a consumer's own Tailwind build loses its utilities. Run ${NOTE}: it adds a removed step (breaking, so the changeset is minor below 1.0).`;
     default:
       return fact.id;
   }
@@ -245,6 +253,21 @@ function factViolations(state) {
         ),
       );
     }
+  }
+  for (const fact of facts.filter((f) => needsStep(f) && (coveredBy.get(f.id) ?? []).length > 0)) {
+    const covering = coveredBy.get(fact.id);
+    const missing = (fact.tenants ?? []).filter(
+      (slug) => !covering.some((step) => step.kind === 'tenant' && step.id === `tenant/${slug}`),
+    );
+    if (missing.length === 0) continue;
+    out.push(
+      violation(
+        `${PENDING_DIR}/`,
+        'css-tenant-without-step',
+        `${fact.id} re-themes the ${missing.join(', ')} tenant${missing.length === 1 ? '' : 's'} (${fact.kind === 'css-var-removed' ? 'it overrode the variable' : 'it overrides the variable, or the change is under its [data-brand]'}), so add ${missing.map((slug) => `tenant/${slug}`).join(', ')} listing it: ${NOTE} writes ${missing.length === 1 ? 'it' : 'them'}.`,
+        { fact: fact.id },
+      ),
+    );
   }
   const known = new Set(facts.map((fact) => fact.id));
   for (const note of state.notes) {

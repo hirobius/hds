@@ -1236,6 +1236,35 @@ describe('compile.mjs --release, right after changeset version', () => {
     });
   });
 
+  // hds#449: the utilities a release shipped stay emitted after it.
+  it('rewrites the utility safelist from the snapshot it records, when the tree has one', () => {
+    const root = versionedRepo();
+    const contract = {
+      format: 1,
+      bundles: {
+        './styles.css': {
+          classes: ['hds-focus', 'pt-1'],
+          fontFaces: [],
+          layers: [],
+          variables: {},
+        },
+      },
+      publicClasses: [],
+    };
+    write(root, 'dist/css-contract.json', `${JSON.stringify(contract)}\n`);
+    write(root, 'src/styles/utility-safelist.generated.css', '/* before the release */\n');
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status, res.stderr).toBe(0);
+    const safelist = read(root, 'src/styles/utility-safelist.generated.css');
+    expect(safelist).toContain('docs/api/releases/0.21.0.json');
+    expect(safelist).toContain('@source inline("pt-1");');
+    expect(safelist).not.toContain('hds-focus');
+
+    const without = versionedRepo();
+    expect(run(['--release', '--date', '2026-10-08', '--repo', without]).status).toBe(0);
+    expect(existsSync(join(without, 'src/styles/utility-safelist.generated.css'))).toBe(false);
+  }, 30_000);
+
   it('refuses a note listing a CSS fact when dist/css-contract.json is missing, naming pnpm build:lib', () => {
     const root = versionedRepo();
     note(root, 'docs', {

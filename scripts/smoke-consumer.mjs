@@ -28,6 +28,7 @@
  *   './manifest'   → hds-manifest.json as ESM (default export)
  *   './contexts'   → React context providers (ThemeProvider, …)
  *   './eslint-plugin' → the consumer ESLint plugin (configs.recommended)
+ *   './tailwind-preset' → the Tailwind theme preset (CommonJS, theme.extend)
  * plus AGENTS.md and the hds-mcp bin (section 3f), and the upgrade command's
  * design-system bin run with --dry-run on a small project (section 3g).
  *
@@ -154,7 +155,7 @@ const failures = [];
 
 // Subpaths that must RESOLVE against the exports map (incl. the CSS asset,
 // which Node cannot import but must still resolve to a real file).
-const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui', './icons', './eslint-plugin']
+const resolvable = ['.', './tokens', './tokens.css', './styles.css', './variables.css', './static.css', './cn', './manifest', './contexts', './mui', './icons', './eslint-plugin', './tailwind-preset']
   .map((s) => (s === '.' ? PKG : PKG + s.slice(1)));
 
 for (const spec of resolvable) {
@@ -181,6 +182,10 @@ const importChecks = [
   [PKG + '/eslint-plugin', (m) => {
     assert.ok(Array.isArray(m.default?.configs?.recommended), 'eslint-plugin recommended config missing');
     assert.equal(typeof m.default.rules['no-raw-controls'], 'object', 'no-raw-controls rule missing');
+  }],
+  // hds#466: the Tailwind preset a consumer spreads instead of copying tailwind.config.tokens.cjs.
+  [PKG + '/tailwind-preset', (m) => {
+    assert.equal(typeof m.default?.theme?.extend?.colors, 'object', 'preset theme.extend.colors missing');
   }],
   [PKG + '/mui', (m) => {
     assert.equal(typeof m.hdsMuiThemeOptions, 'function', 'hdsMuiThemeOptions missing');

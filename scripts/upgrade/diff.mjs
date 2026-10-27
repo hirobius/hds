@@ -13,7 +13,8 @@
  *
  * CSS facts (hds#449) come from the snapshots' css sections when both have
  * one (cssFacts below): a variable removed or changed per context, a public
- * class or a utility removed, an @font-face removed.
+ * class or a utility removed, an @font-face removed, and a key the Tailwind
+ * preset (./tailwind-preset, hds#466) no longer has.
  *
  * Renames are not facts: a diff sees `HdsCheckbox` leave and nothing arrive.
  * The ledger names the survivor from the codemod's data.
@@ -38,6 +39,7 @@ const CSS_FACT_KINDS = [
   'class-removed',
   'utility-removed',
   'font-face-removed',
+  'preset-key-removed',
 ];
 
 /** True for the id of a CSS fact: only a snapshot with a `css` section can have it. */
@@ -159,6 +161,24 @@ const isTailwindInternal = (name) => name.startsWith('--tw-');
 
 const fontKey = (face) => `${face.family}/${face.weight}/${face.style}`;
 
+/** The tenant slug of a `[data-brand=<slug>]` context, or null for a base context. */
+function brandOf(context) {
+  const match = /\[data-brand=["']?([^\]"']+)["']?\]/.exec(context);
+  return match ? match[1] : null;
+}
+
+/** The tenants whose `[data-brand]` contexts declare a variable, from each contexts map given. */
+function overridingTenants(...contextMaps) {
+  const slugs = new Set();
+  for (const contexts of contextMaps) {
+    for (const context of Object.keys(contexts ?? {})) {
+      const slug = brandOf(context);
+      if (slug) slugs.add(slug);
+    }
+  }
+  return [...slugs].sort();
+}
+
 /**
  * The CSS facts between two `css` sections (scripts/build-css-contract.mjs),
  * stylesheet by stylesheet, for each stylesheet both releases ship (a
@@ -172,7 +192,14 @@ const fontKey = (face) => `${face.family}/${face.weight}/${face.style}`;
  *   - class-removed: an hds-* class, or one either manifest lists in
  *     publicClasses, that left a stylesheet; utility-removed: any other class
  *     (a Tailwind utility), which a consumer should not depend on;
- *   - font-face-removed: an @font-face (family, weight, style) that left.
+ *   - font-face-removed: an @font-face (family, weight, style) that left;
+ *   - preset-key-removed: a theme key of the Tailwind preset that left, when
+ *     both contracts record the preset (tailwindPreset, hds#466).
+ *
+ * A variable fact a tenant can see carries `tenants`, the slugs it touches:
+ * the slug of its `[data-brand=<slug>]` context, or, for a base context or a
+ * removal, every tenant that overrides the variable. A pilot tenant's site
+ * re-themes when either changes, so its upgrade needs a tenant step.
  *
  * `--tw-*` properties are Tailwind's internals and never a fact.
  */
@@ -186,11 +213,17 @@ function cssFacts(prev, next) {
   const isPublic = (name) => name.startsWith('hds-') || publicClasses.has(name);
   /** id -> fact, accumulating bundles in sorted order. */
   const found = new Map();
-  const note = (body, key) => {
+  const note = (body, key, tenants = []) => {
     const id = factId(body);
     const held = found.get(id);
-    if (held) held.bundles.push(key);
-    else found.set(id, { ...body, bundles: [key] });
+    if (held) {
+      held.bundles.push(key);
+      if (tenants.length > 0) {
+        held.tenants = [...new Set([...(held.tenants ?? []), ...tenants])].sort();
+      }
+    } else {
+      found.set(id, { ...body, bundles: [key], ...(tenants.length > 0 ? { tenants } : {}) });
+    }
   };
 
   for (const key of shared) {
@@ -198,17 +231,20 @@ function cssFacts(prev, next) {
     for (const name of Object.keys(was.variables ?? {})) {
       if (isTailwindInternal(name)) continue;
       const nowContexts = now.variables?.[name];
+      const wasContexts = was.variables[name];
       if (!nowContexts) {
-        note({ kind: 'css-var-removed', name }, key);
+        note({ kind: 'css-var-removed', name }, key, overridingTenants(wasContexts));
         continue;
       }
-      const wasContexts = was.variables[name];
+      const overriders = overridingTenants(wasContexts, nowContexts);
       const contexts = [
         ...new Set([...Object.keys(wasContexts), ...Object.keys(nowContexts)]),
       ].sort();
       for (const context of contexts) {
         const [from, to] = [wasContexts[context] ?? null, nowContexts[context] ?? null];
-        if (from !== to) note({ kind: 'css-var-changed', name, context, from, to }, key);
+        if (from === to) continue;
+        const slug = brandOf(context);
+        note({ kind: 'css-var-changed', name, context, from, to }, key, slug ? [slug] : overriders);
       }
     }
     const nowClasses = new Set(now.classes ?? []);
@@ -221,6 +257,13 @@ function cssFacts(prev, next) {
       if (nowFaces.has(fontKey(face))) continue;
       const { family, weight, style } = face;
       note({ kind: 'font-face-removed', family, weight, style }, key);
+    }
+  }
+  if (Array.isArray(prev.tailwindPreset) && Array.isArray(next.tailwindPreset)) {
+    const kept = new Set(next.tailwindPreset);
+    for (const name of prev.tailwindPreset) {
+      if (!kept.has(name))
+        found.set(`preset-key-removed:${name}`, { kind: 'preset-key-removed', name });
     }
   }
   return [...found].map(([id, body]) => ({ id, ...body }));

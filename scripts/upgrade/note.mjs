@@ -22,10 +22,16 @@
  * removed step for a removed variable or public class, a value-changed step
  * (impact look) per variable whose value changed, a look step per removed
  * @font-face, each detecting the variable or class in consumer code. Run
- * pnpm build:lib first, so it reads the CSS of this tree.
+ * pnpm build:lib first, so it reads the CSS of this tree. A variable fact a
+ * tenant sees (a change under its `[data-brand=<slug>]`, or to a variable it
+ * overrides) adds a tenant/<slug> step, detecting that slug, so only a
+ * consumer themed with the tenant reads it; a change under a `[data-brand]`
+ * alone gets that step only. A key the Tailwind preset lost (hds#466) is a
+ * removed step, detected where the preset is used.
  *
  * Every plain line it writes is a TODO the gate refuses, because only a person
- * can say what a consumer should do. With impact none and nothing to tell,
+ * can say what a consumer should do, but a tenant step's: what to check there
+ * is always the same. With impact none and nothing to tell,
  * delete the plain line instead.
  *
  * An existing note keeps what its author wrote: only steps for facts still
@@ -51,6 +57,34 @@ class UsageError extends Error {}
 const specifier = (entry) => (entry === '.' ? PACKAGE : `${PACKAGE}/${entry.slice(2)}`);
 const escapeRegExp = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const moreSevere = (a, b) => (IMPACTS.indexOf(a) >= IMPACTS.indexOf(b) ? a : b);
+
+/** A use of the Tailwind preset (hds#466): the export, or a vendored copy by its file name. */
+export const PRESET_USE = `${escapeRegExp(`${PACKAGE}/tailwind-preset`)}|tailwind\\.config\\.tokens`;
+
+/** A consumer themed with tenant `slug`: brand="slug", data-brand="slug" or data-tenant="slug". */
+export const tenantPattern = (slug) =>
+  `(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*["'\`]?${escapeRegExp(slug)}(?![\\w-])`;
+
+/** The plain line of a tenant step: what to check is the same for every tenant. */
+export const tenantPlain = (slug) =>
+  `Pages themed with the ${slug} brand (data-brand="${slug}") may look different, so check them after upgrading.`;
+
+/** The tenant step for `slug`: look, detected only where the consumer uses that tenant. */
+const tenantDraft = (slug) => ({
+  id: `tenant/${slug}`,
+  impact: 'look',
+  plain: tenantPlain(slug),
+  detect: { regex: [tenantPattern(slug)] },
+});
+
+/** True for a variable fact in a `[data-brand]` context: only that tenant sees it. */
+const tenantOnly = (fact) => fact.kind === 'css-var-changed' && /\[data-brand=/.test(fact.context);
+
+/** The steps a fact asks for: its own (none for a tenant-only change), then one per tenant it touches. */
+function draftsFor(fact) {
+  const tenants = (fact.tenants ?? []).map(tenantDraft);
+  return tenantOnly(fact) ? tenants : [draftFor(fact), ...tenants];
+}
 
 /** The step a fact asks for, before its plain line: id, kind, impact and how to detect it. */
 function draftFor(fact) {
@@ -110,6 +144,12 @@ function draftFor(fact) {
         impact,
         detect: { regex: [escapeRegExp(fact.family)] },
       };
+    case 'preset-key-removed':
+      return {
+        id: `removed/tailwind-preset/${fact.name}`,
+        impact,
+        detect: { regex: [PRESET_USE] },
+      };
     default:
       throw new Error(`no step for a ${fact.kind} fact`);
   }
@@ -119,24 +159,25 @@ function draftFor(fact) {
 export function stepsForFacts(facts) {
   const steps = new Map();
   for (const fact of facts) {
-    const draft = draftFor(fact);
-    const step = steps.get(draft.id);
-    if (step) {
-      step.facts.push(fact.id);
-      for (const use of draft.detect?.imports ?? []) step.detect.imports.push(use);
-      step.impact = moreSevere(step.impact, draft.impact);
-      continue;
+    for (const draft of draftsFor(fact)) {
+      const step = steps.get(draft.id);
+      if (step) {
+        if (!step.facts.includes(fact.id)) step.facts.push(fact.id);
+        for (const use of draft.detect?.imports ?? []) step.detect.imports.push(use);
+        step.impact = moreSevere(step.impact, draft.impact);
+        continue;
+      }
+      // Schema field order: id, kind, impact, plain, detect, range, facts.
+      steps.set(draft.id, {
+        id: draft.id,
+        kind: draft.id.split('/')[0],
+        impact: draft.impact,
+        plain: draft.plain ?? TODO_PLAIN,
+        ...(draft.detect ? { detect: draft.detect } : {}),
+        ...(draft.range ? { range: draft.range } : {}),
+        facts: [fact.id],
+      });
     }
-    // Schema field order: id, kind, impact, plain, detect, range, facts.
-    steps.set(draft.id, {
-      id: draft.id,
-      kind: draft.id.split('/')[0],
-      impact: draft.impact,
-      plain: TODO_PLAIN,
-      ...(draft.detect ? { detect: draft.detect } : {}),
-      ...(draft.range ? { range: draft.range } : {}),
-      facts: [fact.id],
-    });
   }
   return [...steps.values()];
 }
