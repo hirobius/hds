@@ -87,10 +87,12 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
     },
     // hds#916: N lines with an ellipsis. Lines break between words; a run too
     // long for one line (a URL, a query) breaks inside itself only then.
+    // `anywhere`, not `break-word`: it also drops the min-content width, so a
+    // long run cannot widen the flex or grid track the text sits in.
     lineClamp: {
-      2: 'line-clamp-2 wrap-break-word',
-      3: 'line-clamp-3 wrap-break-word',
-      4: 'line-clamp-4 wrap-break-word',
+      2: 'line-clamp-2 wrap-anywhere',
+      3: 'line-clamp-3 wrap-anywhere',
+      4: 'line-clamp-4 wrap-anywhere',
     },
   },
 });

@@ -920,8 +920,10 @@ function TagDemo() {
 }
 
 function TextDemo() {
+  // minmax(0, 1fr): a grid track sized to its content would grow to the full
+  // one-line width of the truncated row, so the track has to be allowed to shrink.
   return (
-    <div style={{ display: 'grid', gap: XS }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: XS }}>
       <Text variant="display">Display</Text>
       <Text variant="title">Title</Text>
       <Text variant="body">Body for flowing prose and paragraph copy.</Text>

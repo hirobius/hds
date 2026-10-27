@@ -138,20 +138,23 @@ describe('Text lineClamp', () => {
     );
     expect(overflowClasses(screen.getByText('para'))).toEqual([
       `line-clamp-${lines}`,
-      'wrap-break-word',
+      'wrap-anywhere',
     ]);
   });
 
-  it('wraps a mono run on word boundaries, never mid-word', () => {
+  // overflow-wrap: anywhere breaks between words first and inside a word only
+  // when that word alone is wider than the line; unlike break-word it also
+  // lets the min-content width shrink, so a long query never widens its
+  // flex or grid track. word-break: break-all would cut every word.
+  it('wraps a mono run on word boundaries, never cutting every word', () => {
     render(
       <Text variant="mono" lineClamp={4}>
         query
       </Text>,
     );
     const classes = overflowClasses(screen.getByText('query'));
-    expect(classes).toEqual(['line-clamp-4', 'wrap-break-word']);
+    expect(classes).toEqual(['line-clamp-4', 'wrap-anywhere']);
     expect(classes).not.toContain('break-all');
-    expect(classes).not.toContain('wrap-anywhere');
   });
 });
 
