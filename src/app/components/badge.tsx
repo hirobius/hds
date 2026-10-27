@@ -22,8 +22,11 @@ import { isProduction } from '../../lib/env';
 // (it was a 4% black/white wash; the solid token is a few percent lighter in light mode).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing and per-tone color tokens have no Tailwind-theme utility; var()-based so still token-driven. the caption role matches component.badge.fontSize (14px).
 const badgeVariants = /* @__PURE__ */ cva(
-  // rounded-md is the action radius (role.radius), so a tenant that reshapes the system reshapes Badge too.
-  'inline-flex w-fit max-w-full items-center justify-center overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] py-[var(--component-badge-paddingY)] rounded-md',
+  // rounded-sm is role.radius - 2px (component.badge.radius, 6px): a step under the action
+  // radius that still follows a tenant's role.radius (hds#757, bug bash 24). paddingShift moves
+  // paddingY from the top to the bottom so the label sits optically centred, not line-box centred.
+  // binding-ok: badge.radius rounded-sm is role.radius - 2px, so a tenant reshapes Badge
+  'inline-flex w-fit max-w-full items-center justify-center overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] pt-[calc(var(--component-badge-paddingY)-var(--component-badge-paddingShift))] pb-[calc(var(--component-badge-paddingY)+var(--component-badge-paddingShift))] rounded-sm',
   {
     variants: {
       tone: {
@@ -64,7 +67,7 @@ const badgeDotVariants = /* @__PURE__ */ cva('inline-block shrink-0 rounded-full
 // The dot diameter is a lookup, not a cva `size` axis: a cva contract axis must
 // be a Size property on the Figma Badge (check-figma-mapping), and that master
 // (31:15) has no dot yet. When the dot lands in Figma, move this into cva and
-// add `size` to Badge's variantAxes in scripts/build-tokens.mjs.
+// add `size` to Badge's variantAxes in scripts/lib/token-manifest.mjs.
 const BADGE_DOT_SIZE: Record<'sm' | 'md' | 'lg', string> = {
   sm: 'size-1.5',
   md: 'size-2',

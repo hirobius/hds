@@ -2,11 +2,15 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-27T05:37:10.259Z",
+  "generated": "2026-10-27T17:01:45.460Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
-  "llmsTxt": "https://hirobius-hds-components.vercel.app/llms.txt",
+  "packageVersion": "0.32.0",
+  "upgrade": {
+    "command": "npx @hirobius/design-system@latest upgrade"
+  },
+  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.32.0/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
@@ -116,6 +120,7 @@
     "Reveal",
     "SegmentedControl",
     "Select",
+    "Sheet",
     "Sidebar",
     "Skeleton",
     "Slider",
@@ -407,7 +412,6 @@
     "namespaceViolations": []
   },
   "agentEntrypoint": "llms.txt",
-  "breakingChangePolicy": "Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.",
   "componentSpecs": {
     "Alert": {
       "category": "Feedback",
@@ -1385,6 +1389,7 @@
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
+        "src/app/components/tag.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
       ],
@@ -2625,7 +2630,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/tag.tsx",
-      "description": "Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visible surface compact. Colors (background, border-color, color) live in the pill's cva variants, painted through `group-hover`/`group-active` so the pill reacts to interaction on the shared outer button (converted off the former .hds-tag-btn/.hds-tag-pill theme.css rules for #60 — same behavior, now token-driven Tailwind classes). The `active` prop (aria-pressed selected state) is not one of the variant contract's four axes — it's expressed as the pill's `selected` cva variant, carrying the same rest → hover → pressed → focus-visible state matrix the contract expects, just keyed by selection instead of tone/size/density.",
+      "description": "Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "figmaId": null,
       "preview": {
@@ -2673,12 +2678,23 @@
         },
         "children": {
           "type": "ReactNode"
+        },
+        "dismissLabel": {
+          "type": "string",
+          "optional": true
+        },
+        "onDismiss": {
+          "type": "() => void",
+          "optional": true
         }
       },
       "allowedChildren": [],
       "propConstraints": {
         "active": {
           "type": "boolean"
+        },
+        "dismissLabel": {
+          "type": "string"
         }
       },
       "requiredProps": [
@@ -2720,6 +2736,24 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:tag.target-size"
+        },
+        {
+          "rule": "With onDismiss only the X is a button, named \"Remove <label>\" or dismissLabel.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.dismiss-named"
+        },
+        {
+          "rule": "The X is tabbable (not when disabled); Enter and Space dismiss.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.dismiss-keyboard"
+        },
+        {
+          "rule": "The X's 40px hit area overhangs the pill.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.dismiss-target-size"
         },
         {
           "rule": "Name the tag by its text, or by an aria-label when the text is not enough; use Badge for a label that does nothing.",
@@ -3414,6 +3448,7 @@
         "src/app/components/composer.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
+        "src/app/components/sheet.tsx",
         "src/app/components/toast.tsx"
       ],
       "tokenMapping": {},
@@ -3733,6 +3768,7 @@
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/sheet.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/form/index.ts",
@@ -7281,7 +7317,8 @@
       },
       "consumers": [
         "src/app/components/destructive-section.tsx",
-        "src/app/components/dialog.tsx"
+        "src/app/components/dialog.tsx",
+        "src/app/components/sheet.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -7396,7 +7433,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/box.tsx",
-      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine.",
+      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine. On React 19 the rules render as a hoisted `<style href precedence>` (so they are in server HTML); on React 18 they inject into a managed sheet in the browser.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8181,7 +8218,9 @@
         "exportName": "DialogDescription",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/sheet.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8270,7 +8309,9 @@
         "exportName": "DialogOverlay",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/sheet.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8307,7 +8348,9 @@
         "exportName": "DialogPortal",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/sheet.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8348,7 +8391,9 @@
         "exportName": "DialogTitle",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/sheet.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -8564,7 +8609,8 @@
         "src/app/components/data-table-section.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/popover.tsx",
-        "src/app/components/select.tsx"
+        "src/app/components/select.tsx",
+        "src/app/components/sheet.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -10580,6 +10626,517 @@
         "whenNot": "A status or label for the card (use Card.Header `metadata`) or a person's byline in prose."
       }
     },
+    "Sheet": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).",
+      "a11yRules": [
+        {
+          "rule": "Enter and Space on the trigger open the sheet.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:sheet.open-keys"
+        },
+        {
+          "rule": "Escape closes the sheet and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:sheet.escape-returns-focus"
+        },
+        {
+          "rule": "Tab and Shift+Tab stay inside the open sheet.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:sheet.focus-trapped"
+        },
+        {
+          "rule": "The sheet is a dialog named by Sheet.Title.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:sheet.named-by-title"
+        },
+        {
+          "rule": "The current Sheet.Action carries aria-current=\"true\".",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:sheet.action-current"
+        },
+        {
+          "rule": "The entry slide reads the productive duration token, which prefers-reduced-motion zeroes.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
+          "rule": "Render a Sheet.Title in every Sheet.Content; it is the sheet's accessible name.",
+          "required": true,
+          "owner": "consumer"
+        },
+        {
+          "rule": "Render a Sheet.Description, or pass aria-describedby={undefined} on Sheet.Content when there is none.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "The element that opens the sheet (Sheet.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "surface",
+          "description": "The sheet panel, with its grab handle on phones (Sheet.Content).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "header",
+          "description": "Groups the title and description (Sheet.Header).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "title",
+          "description": "The heading that names the sheet (Sheet.Title).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "description",
+          "description": "Supporting text announced with the title (Sheet.Description).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "actions",
+          "description": "A full-width list of choices (Sheet.Actions of Sheet.Action).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "footer",
+          "description": "The row of buttons (Sheet.Footer).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "close",
+          "description": "The button that closes the sheet (Sheet.Close, or the X built into Sheet.Content).",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "Sheet",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "optional": true
+        },
+        "modal": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "optional": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Open a short menu or form from the bottom edge on a phone (sort, row actions, status, a quick edit), centred like a Dialog on wider screens.",
+        "whenNot": "A long or multi-step form, a confirmation of a destructive action, or a few actions on desktop only.",
+        "useInstead": [
+          {
+            "component": "Dialog",
+            "reason": "long content or a desktop-first modal"
+          },
+          {
+            "component": "AlertDialog",
+            "reason": "confirming a destructive or irreversible action"
+          },
+          {
+            "component": "Menu",
+            "reason": "a desktop dropdown of actions"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Enter/Space",
+          "effect": "Opens the sheet from the trigger and moves focus inside it."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the sheet and returns focus to the trigger."
+        },
+        {
+          "keys": "Tab",
+          "effect": "Cycles focus inside the open sheet."
+        }
+      ]
+    },
+    "SheetAction": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SheetAction",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "closeOnSelect": {
+          "type": "boolean",
+          "default": true
+        },
+        "current": {
+          "type": "boolean",
+          "default": false
+        },
+        "tone": {
+          "type": "enum",
+          "values": [
+            "success",
+            "danger",
+            "warning",
+            "info",
+            "neutral"
+          ],
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "SheetActions": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SheetActions",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "SheetClose": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SheetClose",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "SheetContent": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SheetContent",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "container": {
+          "type": "HTMLElement",
+          "optional": true
+        },
+        "forceMount": {
+          "type": "true",
+          "optional": true
+        },
+        "hideClose": {
+          "type": "boolean",
+          "default": false
+        },
+        "onCloseAutoFocus": {
+          "type": "(event: Event) => void",
+          "optional": true
+        },
+        "onEscapeKeyDown": {
+          "type": "(event: KeyboardEvent) => void",
+          "optional": true
+        },
+        "onFocusOutside": {
+          "type": "(event: CustomEvent<{ originalEvent: FocusEvent; }>) => void",
+          "optional": true
+        },
+        "onInteractOutside": {
+          "type": "(event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void",
+          "optional": true
+        },
+        "onOpenAutoFocus": {
+          "type": "(event: Event) => void",
+          "optional": true
+        },
+        "onPointerDownOutside": {
+          "type": "(event: CustomEvent<{ originalEvent: PointerEvent; }>) => void",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "SheetDescription": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SheetDescription",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "SheetFooter": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SheetFooter",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "SheetHeader": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SheetHeader",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "SheetTitle": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SheetTitle",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "SheetTrigger": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/sheet.tsx",
+      "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "SheetTrigger",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -11890,6 +12447,12 @@
         "value": "4px"
       },
       {
+        "path": "primitive.radius.6",
+        "cssVar": "--primitive-radius-6",
+        "type": "dimension",
+        "value": "6px"
+      },
+      {
         "path": "primitive.radius.8",
         "cssVar": "--primitive-radius-8",
         "type": "dimension",
@@ -12274,6 +12837,13 @@
         "type": "dimension",
         "description": "20px size step.",
         "value": "20px"
+      },
+      {
+        "path": "primitive.size.22",
+        "cssVar": "--primitive-size-22",
+        "type": "dimension",
+        "description": "22px size step.",
+        "value": "22px"
       },
       {
         "path": "primitive.size.24",
@@ -14315,25 +14885,25 @@
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
-        "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
-        "alias": "{semantic.radius.action}",
-        "resolvedValue": "8px"
+        "description": "Figma value; code renders rounded-sm (role.radius - 2px).",
+        "alias": "{primitive.radius.6}",
+        "resolvedValue": "6px"
       },
       {
         "path": "component.badge.height",
         "cssVar": "--component-badge-height",
         "type": "dimension",
         "description": "Badge height.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "alias": "{primitive.size.22}",
+        "resolvedValue": "22px"
       },
       {
         "path": "component.badge.minWidth",
         "cssVar": "--component-badge-minWidth",
         "type": "dimension",
         "description": "Badge minimum width.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "alias": "{primitive.size.22}",
+        "resolvedValue": "22px"
       },
       {
         "path": "component.badge.paddingY",
@@ -14344,10 +14914,18 @@
         "resolvedValue": "2px"
       },
       {
+        "path": "component.badge.paddingShift",
+        "cssVar": "--component-badge-paddingShift",
+        "type": "dimension",
+        "description": "Label lift, taken from top padding to bottom.",
+        "alias": "{primitive.space.px1}",
+        "resolvedValue": "1px"
+      },
+      {
         "path": "component.badge.paddingX",
         "cssVar": "--component-badge-paddingX",
         "type": "dimension",
-        "description": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune).",
+        "description": "Horizontal padding inside the badge.",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },

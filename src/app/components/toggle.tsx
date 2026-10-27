@@ -30,15 +30,15 @@ import { useInteractionState, type InteractionVisualState } from '../hooks/useIn
 export type HdsToggleDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
 
 // ── Geometry ───────────────────────────────────────────────────────────────────
-// DESIGN.md: "Toggles — full (pill track + circular thumb)". Track/thumb sizes
-// come from the primitive.size scale (no semantic alias exists yet for
-// toggle-track geometry — same gap as checkbox/radio's glyph sizing). The
-// thumb's travel distance is *derived* from those same token values rather
-// than hardcoded, so it can never drift out of sync with the track/thumb/
+// DESIGN.md: "Toggles — full (pill track + circular thumb)". The track is
+// semantic.size.control.md tall and twice that wide; the thumb fills the
+// track's padded rail (hds#482). The thumb's travel distance is *derived*
+// from those same token values rather than hardcoded, so it can never drift out of sync with the track/thumb/
 // padding it's computed from (#225 — "sizing must come from tokens, never
 // literals").
 const px = (value: string) => parseFloat(value);
-const TOGGLE_TRACK_WIDTH = px(tokenValues.primitive.size['40']); // 40
+const TOGGLE_TRACK_HEIGHT = px(tokenValues.primitive.size['20']); // 20, semantic.size.control.md
+const TOGGLE_TRACK_WIDTH = TOGGLE_TRACK_HEIGHT * 2; // 40 (w-[calc(control-md*2)])
 // The track is border-box, so its border eats into the rail as much as its
 // padding does. Travel once left the border out and the "on" thumb ran 2px
 // past the track's right end; toggle.test.tsx now pins this math to the
@@ -46,7 +46,7 @@ const TOGGLE_TRACK_WIDTH = px(tokenValues.primitive.size['40']); // 40
 const TOGGLE_TRACK_BORDER = px(tokenValues.primitive.borderWidth.sm); // 2 (border-[length:--primitive-borderWidth-sm])
 const TOGGLE_TRACK_PADDING = px(tokenValues.primitive.space.px2); // 2 (p-[--semantic-space-subgrid-xs])
 const TOGGLE_TRACK_INSET = TOGGLE_TRACK_BORDER + TOGGLE_TRACK_PADDING; // 4
-const TOGGLE_THUMB_SIZE = px(tokenValues.primitive.size['12']); // 12 = 20 − 2 × 4
+const TOGGLE_THUMB_SIZE = TOGGLE_TRACK_HEIGHT - TOGGLE_TRACK_INSET * 2; // 12 (h-full of the rail)
 const TOGGLE_THUMB_TRAVEL = TOGGLE_TRACK_WIDTH - TOGGLE_THUMB_SIZE - TOGGLE_TRACK_INSET * 2; // 20
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -104,13 +104,13 @@ const toggleInputVariants = /* @__PURE__ */ cva('absolute inset-0 m-0 opacity-0'
  * rendered directly and visibly (sized 16x16 via `accent-color`), which is a
  * native form-control affordance, not a drawn switch. Box model mirrors
  * checkbox.tsx's glyph (`inline-flex shrink-0`, border-solid, static — see
- * the input comment above for why "static" matters here); size/radius are
- * primitive tokens, on/off + disabled colors are semantic tokens.
+ * the input comment above for why "static" matters here); size is semantic.size.control.md, radius a
+ * primitive token, on/off + disabled colors are semantic tokens.
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border/padding; var()-based, no Tailwind-theme utility exists
 const toggleTrackVariants = /* @__PURE__ */ cva(
-  // tier-ok: primitive.size.40 / primitive.size.20 / primitive.radius.full — no semantic alias for toggle-track geometry yet (same gap as checkbox/radio's glyph sizing)
-  'inline-flex shrink-0 items-center rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)] p-[var(--semantic-space-subgrid-xs)] w-[var(--primitive-size-40)] h-[var(--primitive-size-20)]',
+  // tier-ok: primitive.radius.full is the "fully round" constant
+  'inline-flex shrink-0 items-center rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)] p-[var(--semantic-space-subgrid-xs)] h-[var(--semantic-size-control-md)] w-[calc(var(--semantic-size-control-md)*2)]',
   {
     variants: {
       on: { true: '', false: '' },
@@ -156,8 +156,8 @@ const toggleTrackVariants = /* @__PURE__ */ cva(
  * below (`TOGGLE_THUMB_TRAVEL`), not cva — it's a transform, not a class swap. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/color; var()-based, no Tailwind-theme utility exists
 const toggleThumbVariants = /* @__PURE__ */ cva(
-  // tier-ok: primitive.size.12 / primitive.radius.full — no semantic alias for toggle-thumb geometry yet
-  'pointer-events-none block w-[var(--primitive-size-12)] h-[var(--primitive-size-12)] rounded-[var(--primitive-radius-full)]',
+  // tier-ok: primitive.radius.full is the "fully round" constant; the thumb fills the track's padded rail
+  'pointer-events-none block h-full aspect-square rounded-[var(--primitive-radius-full)]',
   {
     variants: {
       on: { true: '', false: '' },
@@ -213,7 +213,7 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
       onPointerUp={handlers.onPointerUp}
       onPointerCancel={handlers.onPointerCancel}
       animate={{
-        y: isPressed ? hds.space.px1 : 0,
+        y: isPressed ? hds.semantic.space.subgrid.hairline : 0,
       }}
       className={toggleRootVariants({ state: visualState })}
     >
@@ -271,7 +271,7 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
       <motion.span
         className="text-muted-foreground"
         animate={{
-          x: isPressed ? hds.space.px1 : 0,
+          x: isPressed ? hds.semantic.space.subgrid.hairline : 0,
         }}
         transition={{
           duration: productiveMotion.duration,

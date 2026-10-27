@@ -19,16 +19,20 @@
  *      default branch wins (bumped by hand), and when the lockfile already
  *      says the target, its git history is read too (lib/project.mjs);
  *   2. refuses, changing nothing (exit 2), a version below the record's floor,
- *      a downgrade, or a target the record has no ledger for;
+ *      a downgrade, a target the record has no ledger for, or a --to that npm
+ *      marks deprecated (a yanked release, hds#472); with no --to, a
+ *      deprecated default target is skipped for the newest good one;
  *   3. applies the ledgers after the installed version up to the target,
  *      oldest first, plus any earlier step that takes a name away which the
  *      code still uses (a hand bump that skipped it): runs their codemods, bumps the dependency range (keeping
  *      its operator), and adds back a dependency the package stopped
  *      installing that the code still imports;
- *   4. installs with the project's package manager and runs its typecheck
+ *   4. when the project has a .claude/skills/ folder, writes the hds-consumer
+ *      skill this package ships to .claude/skills/hds-consumer/ (hds#463);
+ *   5. installs with the project's package manager and runs its typecheck
  *      script (or tsc --noEmit); a lockfile still short of the target after
  *      that is Do by hand, so the command never says done before an install;
- *   5. prints four lists: Fixed for you, Looks different (only what the code
+ *   6. prints four lists: Fixed for you, Looks different (only what the code
  *      uses), Coming next (deprecations, with the release that removes them)
  *      and Do by hand (what the code still uses and has not changed yet).
  *
@@ -54,6 +58,7 @@ import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isEntry } from './jsx-fold.mjs';
 import { writeFileAtomic } from './lib/atomic-write.mjs';
+import { readDeprecated } from './lib/deprecated.mjs';
 import { HDS_PACKAGE } from './lib/installed-version.mjs';
 import {
   detectManager,
@@ -78,6 +83,11 @@ const readJson = (file) => {
 
 const PKG_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
+/** The consumer skill this package ships (hds#463), and the version its frontmatter names. */
+const SKILL_NAME = 'hds-consumer';
+const SKILL_FILE = `skills/${SKILL_NAME}/SKILL.md`;
+const skillVersion = (text) => /^\s+hds-version: "([^"]+)"$/m.exec(text)?.[1] ?? null;
+
 export const USAGE = `usage: npx ${HDS_PACKAGE}@latest upgrade [flags]
 
   --root <dir>       the project to upgrade (default: the current directory)
@@ -101,7 +111,14 @@ const HEADINGS = {
   doByHand: 'Do by hand',
 };
 const SEVERITY = ['none', 'additive', 'look', 'behavior', 'breaking'];
-const REMOVING = new Set(['removed', 'moved', 'renamed', 'folded']);
+const REMOVING = new Set([
+  'removed',
+  'moved',
+  'renamed',
+  'folded',
+  'prop-renamed',
+  'prop-value-mapped',
+]);
 
 /** Kinds whose fix leaves what `detect` matches in place: a value or a behavior to check. */
 const CHECK_ONLY = new Set(['value-changed', 'behavior']);
@@ -224,6 +241,7 @@ function createReport(record, options) {
     comingNext: [],
     doByHand: [],
     changedFiles: [],
+    skipped: [],
     refused: null,
     exitCode: 0,
   };
@@ -356,17 +374,40 @@ const WHY = {
  * Upgrade one project. Never throws for a consumer problem: a refusal is a
  * report with exitCode 2 and `refused` set, and nothing written.
  * @param {ReturnType<typeof parseArgs>['options']} options
- * @param {{ pkgDir?: string }} [env]
+ * @param {{ pkgDir?: string, deprecated?: Map<string, string> }} [env]
+ *   `deprecated`: version -> npm deprecation message (lib/deprecated.mjs)
  */
-export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
+export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map() } = {}) {
   const record = loadRecord(pkgDir);
   const report = createReport(record, options);
+  const known = record.ledgers.map((l) => l.version);
+
+  // ── 0. a yanked target: refuse an explicit one, skip a default one
+  if (deprecated.has(report.target)) {
+    const message = deprecated.get(report.target);
+    if (options.to) {
+      return refuse(
+        report,
+        `${report.target} is deprecated on npm (${message}): pass --to with a version that is not, or run npx ${HDS_PACKAGE}@latest upgrade.`,
+      );
+    }
+    const good = known
+      .filter((v) => compareVersions(v, report.target) < 0 && !deprecated.has(v))
+      .at(-1);
+    if (!good) {
+      return refuse(
+        report,
+        `${report.target} is deprecated on npm (${message}) and this copy knows no good version before it: run npx ${HDS_PACKAGE}@latest upgrade.`,
+      );
+    }
+    report.skipped.push({ version: report.target, reason: message });
+    report.target = good;
+  }
   const { target } = report;
   const apply = options.mode === 'apply';
   const root = options.root;
 
   // ── 1. what is installed, and refusals (nothing written before this ends)
-  const known = record.ledgers.map((l) => l.version);
   if (!known.includes(target)) {
     return refuse(
       report,
@@ -439,7 +480,7 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
       );
     } else if (compareVersions(from, target) > 0) {
       problems.push(
-        `Installed ${from}${where} is newer than ${target}: this tool does not downgrade. Pass --to ${from} or newer.`,
+        `Installed ${from}${where} is newer than ${target}: this tool does not downgrade. Pass --to ${from} or newer.${report.skipped.length > 0 ? ` ${report.skipped[0].version} is deprecated on npm; to roll back, see "If a release is bad" in UPGRADING.md.` : ''}`,
       );
     }
   });
@@ -706,6 +747,37 @@ export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
     }
   }
 
+  // ── 3b. the consumer skill (hds#463): a project that keeps agent skills in
+  // .claude/skills/ gets the copy this package ships, so its agents read the
+  // text for the version installed. Only a copy that describes the target.
+  const skillDir = join(root, '.claude', 'skills');
+  const shipped = join(pkgDir, SKILL_FILE);
+  if (existsSync(skillDir) && statSync(skillDir).isDirectory() && existsSync(shipped)) {
+    const text = readFileSync(shipped, 'utf8');
+    const rel = `.claude/skills/${SKILL_NAME}/SKILL.md`;
+    const dest = join(root, rel);
+    const shippedFor = skillVersion(text);
+    if (shippedFor !== target) {
+      addItem(report, 'doByHand', {
+        id: 'tool/skill',
+        plain: `This copy of ${HDS_PACKAGE} ships the ${SKILL_NAME} skill for ${shippedFor ?? 'another version'}, not ${target}, so ${rel} was left as is: run npx ${HDS_PACKAGE}@${target} upgrade --to ${target} to write the skill for ${target}.`,
+        files: [rel],
+        blocking: false,
+      });
+    } else if (!existsSync(dest) || readFileSync(dest, 'utf8') !== text) {
+      if (apply) {
+        mkdirSync(dirname(dest), { recursive: true });
+        writeFileAtomic(dest, text);
+        changed.add(rel);
+      }
+      addItem(report, 'fixedForYou', {
+        id: 'tool/skill',
+        plain: `Wrote the ${SKILL_NAME} skill for ${target} to ${rel}, so agents in this project read the version installed.`,
+        files: [rel],
+      });
+    }
+  }
+
   // ── 4. install and typecheck
   const pm = manager ?? 'npm';
   let installed = false;
@@ -807,6 +879,9 @@ export function formatReport(report) {
       }[imp.source] ?? imp.source;
     out.push(`  ${imp.dir}  ${imp.from} -> ${report.target}  (installed version from ${where})`);
   }
+  for (const { version, reason } of report.skipped) {
+    out.push(`  Skipped ${version}: deprecated on npm (${reason}).`);
+  }
   if (report.split) {
     out.push(
       '  Workspace split: these importers start from different versions; each is upgraded from its own.',
@@ -893,7 +968,7 @@ export async function main(argv, invokedAs = '') {
   }
   let report;
   try {
-    report = await upgrade(options);
+    report = await upgrade(options, { deprecated: await readDeprecated() });
   } catch (error) {
     const changed =
       options.mode === 'apply'

@@ -27,7 +27,7 @@ import { FORM_CONTROL_WIDTH } from './form-control';
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-disabled has no named Tailwind-theme utility; var()-based so still token-driven (matches button/segmented disabled)
 const textareaVariants = /* @__PURE__ */ cva(
-  'flex w-full rounded-md border bg-background px-3 py-2 hds-type-ui text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
+  'flex w-full rounded-md border bg-background px-fixed-xs py-scale-xs hds-type-ui text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
   {
     variants: {
       resize: {
@@ -106,7 +106,7 @@ export const Textarea = /* @__PURE__ */ React.forwardRef<HTMLTextAreaElement, Te
     const state = disabled ? 'disabled' : hasError ? 'error' : 'default';
 
     return (
-      <div className={cn('flex flex-col gap-2', FORM_CONTROL_WIDTH, className)}>
+      <div className={cn('flex flex-col gap-scale-xs', FORM_CONTROL_WIDTH, className)}>
         {label && (
           <label htmlFor={id} className="hds-type-ui text-foreground">
             {label}

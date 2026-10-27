@@ -19,9 +19,9 @@ this README.
   backfilled release, the day npm published it.
 - **Steps,** one per change:
   - `id` is `<version>/<kind>/<subject>`, such as `0.20.0/moved/Page`.
-  - `kind` says what changed: removed, moved, renamed, folded, deprecated,
-    value-changed, look, behavior, dependency, peer, engines, exports, tenant or
-    manual.
+  - `kind` says what changed: removed, moved, renamed, folded, prop-renamed,
+    prop-value-mapped, deprecated, value-changed, look, behavior, dependency,
+    peer, engines, exports, tenant or manual.
   - `impact` says what happens to a consumer that does nothing: none, additive,
     look, behavior or breaking.
   - `plain` is one sentence a non-expert can act on.
@@ -32,6 +32,10 @@ this README.
   - `done`, in the same shape, says the consumer has already made the change:
     for a step that asks them to add something, such as an import.
   - `removeIn` is the release that removes a deprecated name.
+  - `prop` names the component prop a prop step is about: `component`,
+    `name`, and `to` (the new name) on a `prop-renamed` step or `values` (each
+    removed value mapped to the one to pass) on a `prop-value-mapped` step, for
+    the prop-map codemod (hds#460).
   - `facts` lists the snapshot-diff facts the step accounts for.
   - `source` is a CHANGELOG line (numbered as the file read when the release
     shipped), a codemod data file, or the snapshot diff.
@@ -146,6 +150,25 @@ from 13px to 12px, and the 23 `hds-*` classes 0.20.0 removed) are recorded in
 the snapshots and listed by `diff.mjs`, but no step is required for them
 (`LAST_RELEASE_WITHOUT_CSS_STEPS` in `scripts/upgrade/ledger.mjs`). Every
 later release needs one.
+
+### Prop facts (hds#461)
+
+`docs/api/props-baseline.json` (`node scripts/upgrade/props.mjs`, which `pnpm
+docs:api` and `pnpm manifest:generate` run) lists every component's props:
+`{ <Component>: { <prop>: { type, optional, values, default } } }`, read from
+`src/app/data/component-api.json` (literal aliases expanded by the
+TypeChecker, hds#406) plus each file's cva `defaultVariants` for a prop
+docgen gives no default. It ships, and a release snapshot's `props` section is
+that baseline (the source snapshot builds it from component-api.json, a
+tarball's from the file). The diff then adds prop facts between two snapshots
+that both have one: `prop-removed` (removed or renamed), `prop-required` and
+`prop-value-removed`, each breaking, and `prop-default-changed`, a look step.
+`pnpm upgrade:note` pre-fills a `removed`, `behavior`, `prop-value-mapped`
+(with a `prop.values` map whose TODOs the gate refuses) or `look` step;
+rewrite a removal as a `prop-renamed` step with `prop.to` when the prop was
+renamed. `check-upgrade-ledger` also fails a committed baseline that is not
+the one component-api.json gives. Releases up to 0.32.0 ship no baseline, so
+prop facts start with the first release recorded after it.
 
 ## At release time
 

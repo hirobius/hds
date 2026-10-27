@@ -1,0 +1,12 @@
+{
+  "componentSpecs": {
+    "Button": {
+      "filePath": "src/app/components/button.tsx",
+      "figmaUrl": "https://www.figma.com/design/KEY/File?node-id=1-2"
+    },
+    "Widget": {
+      "filePath": "src/app/components/widget.tsx",
+      "figmaUrl": "https://www.figma.com/design/KEY/File?node-id=3-4"
+    }
+  }
+}

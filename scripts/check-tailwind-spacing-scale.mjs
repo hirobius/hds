@@ -3,7 +3,8 @@
 /**
  * check-tailwind-spacing-scale.mjs — source-level companion to
  * check-layout-contract. Flags raw numeric Tailwind spacing utilities (`gap-2`,
- * `p-5`, `px-3`, `mb-6`, `-mt-6`, `space-y-1.5`) in src/app/components/**.
+ * `p-5`, `px-3`, `mb-6`, `-mt-6`, `space-y-1.5`) in src/** and docs-site/**,
+ * minus the token layer (src/app/design-system) that defines the primitives.
  * The spacing scale is xs..xl (+ none), density-aware; a numeric utility is a
  * fixed px count that ignores density, and the gate scripts that read `style`
  * and `sx` never see it. Use `gap-[var(--semantic-space-scale-md)]` instead.
@@ -27,12 +28,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SPACING_STEP, SPACING_UTILITY } from './eslint-plugin-hds/rules/spacing.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BASELINE = path.join(ROOT, 'scripts/tailwind-spacing-scale.baseline.json');
 /** The comfortable t-shirt scale (2026-10): xs..xl = 8/20/28/40/64px. */
 const SCALE_PX = [8, 20, 28, 40, 64];
-const UTIL = /^(!?)(-?)(p[xytrblse]?|m[xytrblse]?|gap(?:-[xy])?|space-[xy])-(\d+(?:\.\d+)?|px\d+)$/;
+const UTIL = new RegExp(`^(!?)(-?)(${SPACING_UTILITY})-(${SPACING_STEP})$`);
 const PRIMITIVE_VAR = /--primitive-space-([\w]+)/g;
 const PRIMITIVE_MEMBER = /\bhds\.space\.(px\d+)\b/g;
 
@@ -87,12 +89,17 @@ export function ratchet(findings, baseline) {
   return { failures };
 }
 
+/** Scanned by default: all app and docs code (hds#778). */
+const ROOTS = ['src', 'docs-site'];
+/** The token layer defines the primitives; build output is not source. */
+const SKIP_DIRS = new Set(['__tests__', 'node_modules', '.next', '.source', 'design-system']);
+
 function walk(dir) {
   const files = [];
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) {
-      if (e.name !== '__tests__' && e.name !== 'node_modules') files.push(...walk(p));
+      if (!SKIP_DIRS.has(e.name)) files.push(...walk(p));
     } else if (/\.tsx?$/.test(e.name) && !/\.(test|spec|figma)\.tsx?$/.test(e.name)) {
       files.push(p);
     }
@@ -100,20 +107,25 @@ function walk(dir) {
   return files;
 }
 
+/** Every file the scan reads: `dir` alone, or the default roots. */
+export function scanFiles(dir) {
+  return (dir ? [path.resolve(ROOT, dir)] : ROOTS.map((r) => path.join(ROOT, r))).flatMap(walk);
+}
+
 function main() {
   const argv = process.argv;
   const arg = (n) => (argv.includes(`--${n}`) ? argv[argv.indexOf(`--${n}`) + 1] : undefined);
-  const dir = path.resolve(ROOT, arg('dir') ?? 'src/app/components');
   const only = arg('only');
 
   // Fixture mode (proof-of-firing harness): scan ONLY the single FIXTURE_FILE and
   // behave strictly — a finding is exit 1. Without this the gate is WARN-only and
-  // scans src/app/components, so the fixture is never seen and the gate can never
+  // scans the real tree, so the fixture is never seen and the gate can never
   // prove it fires. The normal WARN-mode behavior on the real tree is unchanged.
   const isFixtureMode = argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
   const fixtureFile = process.env.FIXTURE_FILE;
 
-  const filesToScan = isFixtureMode && fixtureFile ? [path.resolve(fixtureFile)] : walk(dir);
+  const filesToScan =
+    isFixtureMode && fixtureFile ? [path.resolve(fixtureFile)] : scanFiles(arg('dir'));
 
   const findings = [];
   for (const f of filesToScan) {

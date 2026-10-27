@@ -264,6 +264,34 @@ Both use the values `sx` compiles, so there is no pixel width in your code.
 They answer narrow (`false` / `'base'`) on the server, in jsdom and without
 `matchMedia`, and update live as the viewport crosses a breakpoint.
 
+### Finding a token name — `hds-tokens search`
+
+Never guess a token name. Before you write a `var(--…)`, look it up:
+
+```sh
+pnpm exec hds-tokens search content tertiary
+# "content tertiary" is not a token. Nearest real names:
+#   --semantic-color-content-tertiary
+#     semantic.color.content.tertiary = {primitive.color.neutral.500}
+```
+
+The query can be a CSS variable, a token path or loose words. An exact name
+exits 0 and prints its value; anything else exits 1 with the five nearest real
+names. Add `--json` for machine-readable output. It reads the
+`hirobius.tokens.json` the package ships, offline.
+
+### Size vs space
+
+Two dimension scales, two jobs:
+
+- **`semantic.size.*`** sets an element's own fixed dimensions: width, height,
+  min-height (control glyphs, icons, avatars, tiles, table rows).
+- **`semantic.space.*`** sets gaps and padding, between and inside elements.
+
+If the value is a box's own width or height, it is `size`; if it is the
+distance between or inside boxes, it is `space`. Use the semantic roles, not
+`primitive.size.*` directly.
+
 ### Semantic feedback / status tokens
 
 For status UI (Saved / Applied / Interviewing / Offer / Rejected, or any
@@ -515,9 +543,45 @@ importable components, the screen layout recipe, the do/don't rules, and the lin
 step (§11) as its final required step. It is generated from the manifest by
 `pnpm skill:generate` and drift-checked by `pnpm check:consumer-skill`.
 
+The skill ships in the package (`skills/hds-consumer/SKILL.md`), and its
+`metadata.hds-version` names the release it describes. When your project has a
+`.claude/skills/` folder, `npx @hirobius/design-system@latest upgrade` writes
+it there (in an `hds-consumer` folder), so it always matches the installed
+version. Without one, copy it from `node_modules`, or install the copy on
+GitHub main (it can describe a newer release than the one you have):
+
 ```bash
 npx skills add hirobius/hds --skill hds-consumer
 ```
+
+### Any HTML, CSS or JS site: `hds-check`
+
+The ESLint plugin reads React/JSX. For plain HTML/CSS sites, and for CSS inside
+JS template strings, the package ships `hds-check` (hds#664). It runs the same
+rule core HDS gates itself with, over `.html`, `.css`, `.js`, `.mjs` and `.cjs`:
+
+| Rule           | Fails on                                                                        | Exempt a line with    |
+| -------------- | ------------------------------------------------------------------------------- | --------------------- |
+| `no-uppercase` | `text-transform: uppercase`, the Tailwind `uppercase` class, small caps         | `uppercase-ok: <why>` |
+| `fonts`        | any family but Plus Jakarta Sans, Sora, IBM Plex Mono and their token fallbacks | `font-ok: <why>`      |
+| `shadows`      | a `box-shadow` that is not `var(--semantic-shadow-*)` (or the kit's `--shadow`) | `shadow-ok: <why>`    |
+| `raw-colors`   | hex, `rgb()` or `hsl()` outside a `var(--token, fallback)`                      | `color-ok: <why>`     |
+
+```bash
+pnpm exec hds-check src public          # exit 1 with file:line:col findings, 0 when clean
+pnpm exec hds-check . --json            # machine-readable
+pnpm exec hds-check theme.css --rule fonts
+```
+
+One CI step in a consumer repo (after install):
+
+```yaml
+- run: pnpm exec hds-check .
+```
+
+The marker goes on the line or the one above it (two above for `uppercase-ok`),
+in any comment form, and needs a reason. `node_modules`, `.git` and build output
+are skipped.
 
 ## Troubleshooting
 
