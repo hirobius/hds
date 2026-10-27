@@ -324,7 +324,7 @@ Load only what the task needs. Same text as this file (`public/llms-full.txt`), 
 - `public/llms/tokens.txt` - token rules and the quick token reference
 - `public/llms/scroll.txt` - scroll-driven section recipe
 - `public/llms/components.txt` - component inventory pointer, API pointer, props digest
-- `public/llms/upgrade.txt` - the upgrade command, every removed or renamed name with its replacement, deprecations
+- `public/llms/upgrade.txt` - upgrade steps, removals, deprecations
 
 - `public/llms-full.txt` - the full bundle: this text + the full `DESIGN.md` + a compact props digest for every component.
 

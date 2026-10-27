@@ -83,11 +83,7 @@ export function buildLlmsIndex({ summary, slices, version }) {
       [
         link('DESIGN.md', 'DESIGN.md', 'the visual spec: surfaces, type, spacing, motion.'),
         link('CONSUMING.md', 'CONSUMING.md', 'install, set up and use the package in an app.'),
-        link(
-          'UPGRADING.md',
-          'UPGRADING.md',
-          'move between versions: what changed and what to run.',
-        ),
+        link('UPGRADING.md', 'UPGRADING.md', 'what changed per version and what to run.'),
       ],
     ],
     [

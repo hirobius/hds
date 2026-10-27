@@ -81,10 +81,7 @@ const SLICES = [
   { name: 'tokens', blurb: 'token rules and the quick token reference' },
   { name: 'scroll', blurb: 'scroll-driven section recipe' },
   { name: 'components', blurb: 'component inventory pointer, API pointer, props digest' },
-  {
-    name: 'upgrade',
-    blurb: 'the upgrade command, every removed or renamed name with its replacement, deprecations',
-  },
+  { name: 'upgrade', blurb: 'upgrade steps, removals, deprecations' },
 ];
 
 /** Split generated text into `## ` sections (heading line + body). */

@@ -20,7 +20,7 @@ Version: 0.32.0
 - [tokens.txt](https://unpkg.com/@hirobius/design-system/public/llms/tokens.txt): token rules and the quick token reference
 - [scroll.txt](https://unpkg.com/@hirobius/design-system/public/llms/scroll.txt): scroll-driven section recipe
 - [components.txt](https://unpkg.com/@hirobius/design-system/public/llms/components.txt): component inventory pointer, API pointer, props digest
-- [upgrade.txt](https://unpkg.com/@hirobius/design-system/public/llms/upgrade.txt): the upgrade command, every removed or renamed name with its replacement, deprecations
+- [upgrade.txt](https://unpkg.com/@hirobius/design-system/public/llms/upgrade.txt): upgrade steps, removals, deprecations
 
 ## Reference data
 
@@ -32,7 +32,7 @@ Version: 0.32.0
 
 - [DESIGN.md](https://unpkg.com/@hirobius/design-system/DESIGN.md): the visual spec: surfaces, type, spacing, motion.
 - [CONSUMING.md](https://unpkg.com/@hirobius/design-system/CONSUMING.md): install, set up and use the package in an app.
-- [UPGRADING.md](https://unpkg.com/@hirobius/design-system/UPGRADING.md): move between versions: what changed and what to run.
+- [UPGRADING.md](https://unpkg.com/@hirobius/design-system/UPGRADING.md): what changed per version and what to run.
 
 ## Optional
 
