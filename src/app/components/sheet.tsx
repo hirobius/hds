@@ -179,9 +179,6 @@ const sheetActionVariants = /* @__PURE__ */ cva(
       tone: {
         neutral: 'text-foreground',
         danger: 'text-feedback-danger hover:bg-feedback-bg-danger',
-        success: 'text-foreground',
-        warning: 'text-foreground',
-        info: 'text-foreground',
       },
     },
     defaultVariants: { tone: 'neutral' },
@@ -193,7 +190,7 @@ export interface SheetActionProps extends React.ButtonHTMLAttributes<HTMLButtonE
   /** Marks the current choice (sort order, status): a check and `aria-current="true"`. */
   current?: boolean;
   /** `danger` sets a destructive action in the danger colour. Default `neutral`. */
-  tone?: 'neutral' | 'danger' | 'success' | 'warning' | 'info';
+  tone?: 'neutral' | 'danger';
   /** Close the sheet after the click. Default true; `event.preventDefault()` in `onClick` keeps it open. */
   closeOnSelect?: boolean;
 }

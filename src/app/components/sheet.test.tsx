@@ -182,7 +182,7 @@ describe('Sheet', () => {
     };
     vi.stubGlobal('visualViewport', vv);
     vi.stubGlobal('innerHeight', 800);
-    render(
+    const { unmount } = render(
       <Sheet open>
         <Sheet.Content aria-describedby={undefined}>
           <Sheet.Title>Edit details</Sheet.Title>
@@ -198,6 +198,11 @@ describe('Sheet', () => {
     vv.height = 800;
     listeners.resize();
     expect(sheet.style.getPropertyValue(SHEET_KEYBOARD_INSET_VAR)).toBe('0px');
+
+    // Unmounting removes both listeners, the same functions that were added.
+    unmount();
+    expect(vv.removeEventListener).toHaveBeenCalledWith('resize', listeners.resize);
+    expect(vv.removeEventListener).toHaveBeenCalledWith('scroll', listeners.scroll);
   });
 
   it('forwards a ref to the content and keeps a consumer className', () => {
