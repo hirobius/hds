@@ -94,9 +94,11 @@
  * headroom convention over 55.71 kB. Raised by the wave-2 merge train;
  * Adrian to confirm or tighten.
  *
- * Known redundancy, not yet acted on: `figmaUrl` and `figmaLink` are
- * byte-identical on all 44 linked components. Dropping one would shrink this
- * entry, but it is a breaking change for manifest consumers.
+ * Measured again 2026-10-27 (hds#413), budget unchanged: 64.41 kB gzip on
+ * main (936620e) -> 60.17 kB. dist/manifest.js now leaves out three fields
+ * public/hds-manifest.json keeps (scripts/lib/manifest-bundle.mjs): the
+ * duplicate `figmaLink` (same URL as `figmaUrl`), `consumers` (HDS repo
+ * importer paths) and `a11yRules[].testId` (HDS's own test ids).
  *
  * Button-only root import (hds#315, 2026-09-29): `import { Button } from
  * '@hirobius/design-system'`, tree-shaken and minified with react/react-dom
