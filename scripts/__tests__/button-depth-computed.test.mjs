@@ -4,7 +4,7 @@
  * Button's hard edge (the face's bottom after translate, plus the edge offset) stays on the
  * same pixel, and the face moves 0 / -1 / +2px. Uses the shipped theme.css and tokens;
  * Tailwind is not compiled, so the box-shadow composition vars get Tailwind's initial
- * values here. Skips where Playwright has no Chromium.
+ * values here. Skips without Chromium (fails under HDS_REQUIRE_BROWSER=1).
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { readFileSync } from 'fs';

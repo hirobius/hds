@@ -45,7 +45,7 @@ describe('applyAllowlist', () => {
   });
 });
 
-// The fixture runs drive a real browser; skip where none is installed (CI's lean gate has none).
+// The fixture runs drive a real browser; skip where none is installed (fails under HDS_REQUIRE_BROWSER=1).
 const browser: string | undefined = chromiumForTests();
 const hasBrowser = Boolean(browser);
 
