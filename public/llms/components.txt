@@ -721,9 +721,11 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - value: string
 
 ### Tag
-Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visi…
+Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.
   - active: boolean = false
   - children: ReactNode
+  - dismissLabel: string
+  - onDismiss: (() => void)
 
 ### Text
 Text — polymorphic typography primitive spanning the full HDS type ramp.
