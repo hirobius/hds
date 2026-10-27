@@ -150,6 +150,16 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `DialogTrigger` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `Menu` — Menu root + parts.
 - `Popover` — Popover root + parts.
+- `Sheet` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetAction` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetActions` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetClose` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetContent` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetDescription` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetFooter` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetHeader` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetTitle` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetTrigger` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
 - `Tooltip` — Tooltip root.
 
 ### Typography
