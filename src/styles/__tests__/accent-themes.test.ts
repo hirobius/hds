@@ -8,7 +8,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 import { resolveAlias } from '../../../scripts/build-tokens.mjs';
-import { contrastRatio, hexToLuminance } from '../../app/utils/colorUtils';
+import { contrastRatio } from '../../app/utils/colorUtils';
 
 const ROOT = resolve(__dirname, '../../..');
 const TOKENS = JSON.parse(readFileSync(resolve(ROOT, 'hirobius.tokens.json'), 'utf8')) as Record<

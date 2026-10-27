@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-27T05:25:32.767Z",
+  "generated": "2026-10-27T05:31:39.504Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11481,21 +11481,21 @@
         "path": "primitive.color.graphite.50",
         "cssVar": "--primitive-color-graphite-50",
         "type": "color",
-        "description": "Graphite accent tint — faintest step; dark-mode rest accent fill (hds#887).",
+        "description": "Graphite accent tint — faintest step; dark rest fill.",
         "value": "#f5f4f4"
       },
       {
         "path": "primitive.color.graphite.100",
         "cssVar": "--primitive-color-graphite-100",
         "type": "color",
-        "description": "Graphite accent — very light warm tint; dark-mode hover.",
+        "description": "Graphite accent — very light warm tint.",
         "value": "#e9e7e8"
       },
       {
         "path": "primitive.color.graphite.200",
         "cssVar": "--primitive-color-graphite-200",
         "type": "color",
-        "description": "Graphite accent — light warm-grey; dark-mode pressed.",
+        "description": "Graphite accent — light warm-grey.",
         "value": "#cbc6c9"
       },
       {
@@ -11530,7 +11530,7 @@
         "path": "primitive.color.graphite.700",
         "cssVar": "--primitive-color-graphite-700",
         "type": "color",
-        "description": "Graphite accent — the warm charcoal step, a touch lighter since 0.27; light-mode accent text (white text as a fill is AAA).",
+        "description": "Graphite accent — warm charcoal; light-mode accent text.",
         "value": "#4a4146"
       },
       {
@@ -11551,7 +11551,7 @@
         "path": "primitive.color.graphite.950",
         "cssVar": "--primitive-color-graphite-950",
         "type": "color",
-        "description": "Graphite accent — near-black warm substrate; light-mode rest accent fill (hds#887).",
+        "description": "Graphite accent — near-black; light rest fill.",
         "value": "#19161a"
       },
       {
@@ -12746,7 +12746,7 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent fill, warm graphite. Near-black in light mode, near-white in dark mode so a primary Button never reads as disabled (hds#887); pair with content.onAccent.",
+        "description": "Accent fill, warm graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.950}",
         "resolvedValue": "#19161a",
         "dark": {
@@ -13802,7 +13802,7 @@
         "path": "semantic.accent.rest",
         "cssVar": "--semantic-accent-rest",
         "type": "color",
-        "description": "Default accent fill for interactive elements at rest — warm graphite, near-black in light and near-white in dark (hds#887). Inverts per theme; pair with content.onAccent.",
+        "description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.950}",
         "resolvedValue": "#19161a",
         "dark": {
@@ -13814,7 +13814,7 @@
         "path": "semantic.accent.hover",
         "cssVar": "--semantic-accent-hover",
         "type": "color",
-        "description": "Accent fill on pointer hover: one visible step back toward the surface from rest (graphite.800 light, 100 dark); onAccent text stays AAA (hds#887).",
+        "description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
         "alias": "{primitive.color.graphite.800}",
         "resolvedValue": "#352e32",
         "dark": {
@@ -13826,7 +13826,7 @@
         "path": "semantic.accent.pressed",
         "cssVar": "--semantic-accent-pressed",
         "type": "color",
-        "description": "Accent fill during active press: a further step from hover in dark (graphite.200), back toward rest in light (graphite.900); onAccent text stays AAA (hds#887).",
+        "description": "Accent fill on press (graphite.900 / 200).",
         "alias": "{primitive.color.graphite.900}",
         "resolvedValue": "#2a2428",
         "dark": {
