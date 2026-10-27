@@ -1,1 +1,1 @@
-hds#449 + hds#466: Tailwind preset shipped as ./tailwind-preset (keys recorded in the CSS contract, removed key = breaking fact; upgrade command flags a stale vendored copy); generated utility safelist replaces the hand list in theme.css; tenant steps for changes a [data-brand] tenant sees. check-published-types excludes the untyped ./tailwind-preset from attw.
+Merged main again; restored the tailwind-preset export and tailwindPreset schema field, added tenant/soft-demo to the badge-shape upgrade note (hds#449, hds#466).
