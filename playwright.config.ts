@@ -1,33 +1,22 @@
-import fs from 'node:fs';
 import { defineConfig } from '@playwright/test';
+// @ts-expect-error -- plain ESM helper; no type declarations.
+import { chromiumPath } from './scripts/lib/browser-host.mjs';
 
 /**
- * Visual-regression lane for the docs site: tests/visual/docs-demos.spec.ts
- * snapshots every component and pattern demo for Chromatic's Playwright
- * integration. Needs `pnpm docs:publish` first; serves docs-site/out.
- * Chromium comes from PLAYWRIGHT_BROWSERS_PATH when its revision differs from
- * the one Playwright pins (remote sessions: /opt/pw-browsers).
+ * Visual-regression lane for the docs site: tests/visual/docs-baselines.spec.ts
+ * compares every component and pattern demo with committed PNGs (local), and
+ * tests/visual/docs-demos.spec.ts feeds Chromatic's Playwright integration.
+ * Needs `pnpm docs:publish` first; serves docs-site/out.
+ * Chromium comes from scripts/lib/browser-host.mjs (the newest build under
+ * PLAYWRIGHT_BROWSERS_PATH, remote sessions: /opt/pw-browsers) when present.
  */
 const PORT = 4173;
-const browsers = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';
-const preinstalled = fs.existsSync(browsers)
-  ? fs
-      .readdirSync(browsers)
-      .filter((d) => /^chromium-\d+$/.test(d))
-      .sort()
-      .reverse()
-      // chrome-linux64 since Chromium 1243 (remote containers), chrome-linux before.
-      .flatMap((d) => [
-        `${browsers}/${d}/chrome-linux64/chrome`,
-        `${browsers}/${d}/chrome-linux/chrome`,
-      ])
-      .find((p) => fs.existsSync(p))
-  : undefined;
+const preinstalled: string | undefined = chromiumPath();
 
 export default defineConfig({
   testDir: 'tests/visual',
   testMatch: '**/*.spec.ts',
-  // One Linux Chromium baseline set (remote container and CI render alike); no per-OS suffix.
+  // One Linux Chromium baseline set (the remote container); no per-OS suffix.
   snapshotPathTemplate: '{testDir}/{testFilePath}-snapshots/{arg}{ext}',
   fullyParallel: true,
   reporter: [['list']],

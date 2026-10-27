@@ -1,0 +1,1 @@
+Text: `truncate` and `lineClamp={2|3|4}` props (hds#916, epic #863); clamps wrap with overflow-wrap anywhere so a long run never widens its track. TextProps becomes a union: minor, breaking for `interface extends TextProps`. Retires Roleforge `.rjb-truncate` / `.rjb-clamp-2/3/4`.
