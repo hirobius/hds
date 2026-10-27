@@ -81,6 +81,8 @@ light and dark, with the PNGs committed under `tests/visual/*-snapshots/`
 (hirobius/ops#726). After an intended visual change, run
 `pnpm test:visual-baselines:update`, look at the changed PNGs, and commit them
 with the change. Baselines are Linux Chromium (the remote container).
+The same run covers six primitives under each demo tenant × density × theme
+(hds#126); the axes and how to add one are in `tests/visual/tenant-matrix.ts`.
 
 ---
 
