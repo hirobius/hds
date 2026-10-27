@@ -1,1 +1,1 @@
-Taller, bolder buttons (hds#760): sm/md/lg heights 36/44/52 and label weight 600, bound to component.button.size.\*.height and the new component.button.fontWeight; manifest drops always-null figmaId and false hidden/docExempt to stay under its gzip budget; Figma Sync needed for size.36/44/52, weight.semibold and the Button re-bind.
+Button: taller, bolder buttons bound to size.<s>.height and fontWeight tokens (#760). Review: restored the icon-only width binding that a main merge dropped; refreshed pagination and inline-code markup snapshots.
