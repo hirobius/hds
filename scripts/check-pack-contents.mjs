@@ -58,6 +58,8 @@ export const REQUIRED = [
   'mcp/catalog.mjs',
   'mcp/server.mjs',
   'mcp/guide.mjs',
+  'bin/hds-check.mjs',
+  'bin/lib/visual-rules.mjs',
   'bin/hds-tokens.mjs',
   'codemods/patterns-subpath.names.json',
   `${PLUGIN_DIR}/index.mjs`,
