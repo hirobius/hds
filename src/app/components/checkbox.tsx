@@ -241,7 +241,7 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
         </motion.span>
         <motion.span
           className="text-muted-foreground"
-          animate={{ x: isPressed ? hds.space.px1 : 0 }}
+          animate={{ x: isPressed ? hds.semantic.space.subgrid.hairline : 0 }}
           transition={{
             duration: productiveMotion.duration,
             ease: productiveMotion.easing,
