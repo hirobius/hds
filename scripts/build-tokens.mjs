@@ -30,7 +30,7 @@ import { buildTailwindConfigCjs } from './lib/token-emit/tailwind.mjs';
 import { ACCENT_HEADER, buildTenantCSS } from './lib/token-emit/tenant.mjs';
 import { buildManifest as buildManifestFrom } from './lib/token-manifest.mjs';
 
-// Re-exported for the importers of this module (one release; then import the lib modules).
+// Re-exported for the importers of this module (one release; removal is hds#933).
 export { DTCG_KEYS, resolveAlias, walkTokens } from './lib/token-tree.mjs';
 export { validateTokens } from './lib/token-validate.mjs';
 export {

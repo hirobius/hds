@@ -287,13 +287,13 @@ export const COMPONENT_SPEC_SEEDS = {
 export function buildComponentSpecs(previous) {
   const specs = { ...(previous ?? {}) };
   for (const [name, seed] of Object.entries(COMPONENT_SPEC_SEEDS)) {
-    specs[name] = { ...(previous?.[name] ?? {}), ...seed };
+    specs[name] = { ...(previous?.[name] ?? {}), ...structuredClone(seed) };
   }
   return specs;
 }
 
 /** A token value → its resolved CSS string; an alias that does not resolve → null. */
-function aliasResolver(raw) {
+function cssValueResolver(raw) {
   return (val, type) => {
     if (typeof val === 'string' && val.startsWith('{')) {
       try {
@@ -307,7 +307,7 @@ function aliasResolver(raw) {
 }
 
 /** One token's manifest entry: path, cssVar, value or alias, and its dark / compact modes. */
-function formatToken(t, raw, resolveValue) {
+function toManifestEntry(t, raw, resolveValue) {
   const entry = {
     path: t.path.join('.'),
     cssVar: t.type === 'motion' ? `--hds-motion-${t.path[2]}` : `--${t.path.join('-')}`,
@@ -396,7 +396,7 @@ const isHiddenToken = (t) => HIDDEN_TOKEN_PREFIXES.some((p) => t.path.join('.').
  */
 export function buildManifest(allTokens, raw, systemManifest = {}) {
   const listedTokens = allTokens.filter((t) => !isHiddenToken(t));
-  const resolveValue = aliasResolver(raw);
+  const resolveValue = cssValueResolver(raw);
 
   // Brand values — derived from token file so manifest stays in sync automatically.
   // 12t-typography-truth-up: corrected path (was raw.primitive.font.family.primary —
@@ -407,7 +407,7 @@ export function buildManifest(allTokens, raw, systemManifest = {}) {
     ? fontFamRaw[0]
     : String(fontFamRaw ?? 'Plus Jakarta Sans');
   const componentSpecs = buildComponentSpecs(systemManifest.componentSpecs);
-  const format = (t) => formatToken(t, raw, resolveValue);
+  const format = (t) => toManifestEntry(t, raw, resolveValue);
 
   return {
     name: 'Hirobius Design System',
