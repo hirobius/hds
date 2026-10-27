@@ -37,7 +37,7 @@ const progressTrackVariants = /* @__PURE__ */ cva(
 // VARIANT on the Figma Progress set (88:91; docs/architecture/variant-contract.md
 // "Figma mapping"), and that set has no Tone or Variant yet. When Figma gains
 // them, move these into cva and list them in Progress's variantAxes in
-// scripts/build-tokens.mjs, like the dot-size lookup in badge.tsx.
+// scripts/lib/token-manifest.mjs, like the dot-size lookup in badge.tsx.
 const PROGRESS_TONES = {
   neutral: { bar: 'bg-primary', ring: 'text-foreground' },
   danger: { bar: 'bg-feedback-danger', ring: 'text-feedback-danger' },

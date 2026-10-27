@@ -1004,10 +1004,12 @@ export function analyze(input) {
         Dark: tokens.resolveToken(path, 'Dark'),
       };
       const same = code.Light !== null && code.Light === want.Light && code.Dark === want.Dark;
+      const marker = markers.get(id);
       cssResults.push({
         id,
         class: same ? 'LITERAL-MATCH' : 'LITERAL-MISMATCH',
         detail: `${selector} ${property}: ${value.replace(/\s+/g, ' ')} -> ${show(code.Light)}${code.Light !== code.Dark ? ` (Dark ${show(code.Dark)})` : ''}; token ${want.Light}${want.Light !== want.Dark ? ` (Dark ${want.Dark})` : ''}`,
+        ...(marker ? { allowed: marker.reason } : {}),
       });
     }
   }
@@ -1106,6 +1108,7 @@ export function ratchet(analysis, baseline) {
   for (const r of analysis.cssResults) {
     if (!ENFORCED.has(r.class)) continue;
     currentCss[r.id] = r.class;
+    if (r.allowed) continue;
     if (worse(r.class, knownCss[r.id]))
       fresh.push({ key: `css:${r.id}`, class: r.class, message: r.detail });
   }
