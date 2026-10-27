@@ -18,6 +18,14 @@ const playwrightOwn = () => {
   }
 };
 
+const isFile = (p) => {
+  try {
+    return statSync(p).isFile();
+  } catch {
+    return false;
+  }
+};
+
 /** The newest chromium-<rev>/chrome-linux{,64}/chrome under the browsers dir. */
 function newestInstalled(base) {
   let dirs;
@@ -39,24 +47,19 @@ function newestInstalled(base) {
   // Newer images ship <root>/chromium as a symlink to the build's binary. File
   // only: older images leave an empty directory of that name.
   const link = join(base, 'chromium');
-  try {
-    if (statSync(link).isFile()) return link;
-  } catch {
-    /* absent or dangling */
-  }
-  return undefined;
+  return isFile(link) ? link : undefined;
 }
 
 /**
  * Where Chromium is, or undefined. In order: PLAYWRIGHT_CHROMIUM_PATH (a pin
- * that does not exist is not overridden: it returns undefined, so a typo is
+ * that is not a file is not overridden: it returns undefined, so a typo is
  * not silently papered over); Playwright's own build; the newest
  * chromium-<rev> under PLAYWRIGHT_BROWSERS_PATH, default /opt/pw-browsers,
  * for an image whose browser build disagrees with Playwright's.
  */
 export function chromiumPath({ env = process.env, playwrightPath = playwrightOwn } = {}) {
   const pinned = env.PLAYWRIGHT_CHROMIUM_PATH;
-  if (pinned) return existsSync(pinned) ? pinned : undefined;
+  if (pinned) return isFile(pinned) ? pinned : undefined;
   const own = playwrightPath();
   if (own && existsSync(own)) return own;
   return newestInstalled(env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers');
