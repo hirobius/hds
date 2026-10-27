@@ -15,7 +15,8 @@
         "css-var-changed:--semantic-color-surface-accent::root",
         "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
         "css-var-changed:--semantic-accent-rest::root",
-        "css-var-changed:--semantic-accent-rest:[data-theme=dark]"
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=\"dark\"]"
       ]
     },
     {
@@ -27,7 +28,36 @@
         "cssVars": ["--semantic-accent-pressed"],
         "cssVarWrites": ["--semantic-accent-pressed"]
       },
-      "facts": ["css-var-changed:--semantic-accent-pressed:[data-theme=dark]"]
+      "facts": [
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=\"dark\"]"
+      ]
+    },
+    {
+      "id": "value-changed/--hds-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The primary edge (--hds-edge-primary) is now #020203 in light (was #292427) and #a4a4a4 in dark (was #8a8789), so primary borders read stronger; re-take border screenshots.",
+      "detect": {
+        "cssVars": ["--hds-edge-primary"],
+        "cssVarWrites": ["--hds-edge-primary"]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode the accent rest fill is now graphite.50 (was graphite.200), matching the accent fill above.",
+      "detect": {
+        "cssVars": ["--semantic-accent-rest"],
+        "cssVarWrites": ["--semantic-accent-rest"]
+      },
+      "facts": ["css-var-changed:--semantic-accent-rest:[data-theme=\"dark\"]"]
     }
   ]
 }
