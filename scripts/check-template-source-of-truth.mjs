@@ -14,14 +14,14 @@
  *   public/llms.txt               → scripts/generate-llms-txt.mjs
  *   DESIGN.md                     → scripts/build-design-md.mjs (template: DESIGN.source.md)
  *   DESIGN-HANDOFF.md             → scripts/build-handoff.mjs
- *   public/hds-manifest.json      → scripts/generate-manifest.mjs
- *   src/styles/tokens.generated.css → scripts/build-tokens.mjs
- *   src/app/design-system/generated-tokens.ts       → scripts/build-tokens.mjs
- *   src/app/design-system/generated-token-values.ts → scripts/build-tokens.mjs
- *   src/app/design-system/generated-token-descriptions.ts → scripts/build-tokens.mjs
- *   src/app/design-system/generated-token-vars.d.ts → scripts/build-tokens.mjs
- *   src/app/design-system/generated-token-refs.ts   → scripts/build-tokens.mjs
- *   tailwind.config.tokens.cjs                      → scripts/build-tokens.mjs
+ *   public/hds-manifest.json      → scripts/generate-manifest.mjs + scripts/lib/token-manifest.mjs
+ *   src/styles/tokens.generated.css → scripts/build-tokens.mjs + scripts/lib/token-emit/
+ *   src/app/design-system/generated-tokens.ts       → scripts/build-tokens.mjs + scripts/lib/token-emit/
+ *   src/app/design-system/generated-token-values.ts → scripts/build-tokens.mjs + scripts/lib/token-emit/
+ *   src/app/design-system/generated-token-descriptions.ts → scripts/build-tokens.mjs + scripts/lib/token-emit/
+ *   src/app/design-system/generated-token-vars.d.ts → scripts/build-tokens.mjs + scripts/lib/token-emit/
+ *   src/app/design-system/generated-token-refs.ts   → scripts/build-tokens.mjs + scripts/lib/token-emit/
+ *   tailwind.config.tokens.cjs                      → scripts/build-tokens.mjs + scripts/lib/token-emit/
  *
  * Bypass: add `regen-only` to the commit message OR the working-tree
  * change is accompanied by a generator-script change.
@@ -58,6 +58,12 @@ const WARN_ONLY = args.includes('--warn-only');
 const ALL_CHANGES = args.includes('--all');
 
 /**
+ * build-tokens.mjs is the CLI; the emitters it runs live in scripts/lib/token-emit/
+ * (hds#645). A generator ending in "/" is a directory: any changed file under it counts.
+ */
+const TOKEN_GENERATORS = ['scripts/build-tokens.mjs', 'scripts/lib/token-emit/'];
+
+/**
  * Map of auto-generated output files → their generator script(s).
  * Paths are relative to the repo root.
  */
@@ -68,14 +74,18 @@ const AUTO_GEN_MAP = {
   'public/llms/': ['scripts/generate-llms-txt.mjs'],
   'DESIGN.md': ['scripts/build-design-md.mjs', 'DESIGN.source.md'],
   'DESIGN-HANDOFF.md': ['scripts/build-handoff.mjs', 'hirobius.tokens.json'],
-  'public/hds-manifest.json': ['scripts/generate-manifest.mjs', 'scripts/build-tokens.mjs'],
-  'src/styles/tokens.generated.css': ['scripts/build-tokens.mjs', 'hirobius.tokens.json'],
-  'src/app/design-system/generated-tokens.ts': ['scripts/build-tokens.mjs'],
-  'src/app/design-system/generated-token-values.ts': ['scripts/build-tokens.mjs'],
-  'src/app/design-system/generated-token-descriptions.ts': ['scripts/build-tokens.mjs'],
-  'src/app/design-system/generated-token-vars.d.ts': ['scripts/build-tokens.mjs'],
-  'src/app/design-system/generated-token-refs.ts': ['scripts/build-tokens.mjs'],
-  'tailwind.config.tokens.cjs': ['scripts/build-tokens.mjs'],
+  'public/hds-manifest.json': [
+    'scripts/generate-manifest.mjs',
+    ...TOKEN_GENERATORS,
+    'scripts/lib/token-manifest.mjs',
+  ],
+  'src/styles/tokens.generated.css': [...TOKEN_GENERATORS, 'hirobius.tokens.json'],
+  'src/app/design-system/generated-tokens.ts': TOKEN_GENERATORS,
+  'src/app/design-system/generated-token-values.ts': TOKEN_GENERATORS,
+  'src/app/design-system/generated-token-descriptions.ts': TOKEN_GENERATORS,
+  'src/app/design-system/generated-token-vars.d.ts': TOKEN_GENERATORS,
+  'src/app/design-system/generated-token-refs.ts': TOKEN_GENERATORS,
+  'tailwind.config.tokens.cjs': TOKEN_GENERATORS,
 };
 
 /**
@@ -184,7 +194,9 @@ for (const [output, generators] of outputs) {
   if (!changedFiles.has(output)) continue;
 
   // Output file was changed. Check that at least one generator is also changed.
-  const generatorChanged = generators.some((g) => changedFiles.has(g));
+  const generatorChanged = generators.some((g) =>
+    g.endsWith('/') ? [...changedFiles].some((f) => f.startsWith(g)) : changedFiles.has(g),
+  );
   if (generatorChanged) continue;
 
   // Generator not changed. Check bypass.
