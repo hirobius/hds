@@ -1,5 +1,7 @@
 # Hirobius Design System - scroll slice
 
+Version: 0.32.0
+
 See `public/llms.txt` for the index. Generated from the same sections as llms-full.txt.
 
 ## How To Build A Scroll-Driven Section

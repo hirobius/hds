@@ -13,7 +13,10 @@
  *   - public/llms.txt (an llms.txt index: H1, > summary, absolute links; no body)
  *   - llms.txt (repo-root mirror of the index)
  *   - public/llms-full.txt (the body + full DESIGN.md + props digest)
- *   - public/llms/{layout,tokens,scroll,components}.txt (topic slices)
+ *   - public/llms/{layout,tokens,scroll,components,upgrade}.txt (topic slices)
+ *
+ * Every output carries a `Version: <package.json version>` line (hds#463,
+ * scripts/lib/version-stamp.mjs); the upgrade text comes from upgrade/.
  *
  * Every section is written once (as a `## ` block of the body template) and
  * the slices pick blocks by heading, so llms-full.txt and the slices share
@@ -37,6 +40,8 @@ import { coreByCategory, renderCoreSetLines } from './lib/core-set.mjs';
 import { readVoice, voiceMarkdown } from './lib/voice.mjs';
 import { buildLlmsIndex } from './lib/llms-index.mjs';
 import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
+import { versionLine } from './lib/version-stamp.mjs';
+import { upgradeMarkdown } from './lib/upgrade-digest.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // `--root <dir>` reads and writes under <dir> (tests).
@@ -76,6 +81,7 @@ const SLICES = [
   { name: 'tokens', blurb: 'token rules and the quick token reference' },
   { name: 'scroll', blurb: 'scroll-driven section recipe' },
   { name: 'components', blurb: 'component inventory pointer, API pointer, props digest' },
+  { name: 'upgrade', blurb: 'upgrade steps, removals, deprecations' },
 ];
 
 /** Split generated text into `## ` sections (heading line + body). */
@@ -194,7 +200,10 @@ Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> 
     '\n',
   );
 
+  const version = versionLine(pkg.version);
   const body = `# Hirobius Design System
+
+${version}
 
 Primary sources: \`public/hds-manifest.json\`, \`src/app/data/component-api.json\`, \`hirobius.tokens.json\`
 
@@ -341,6 +350,7 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 4. Use \`hirobius.tokens.json\` (and generated CSS vars) for styling decisions, never raw hex or ad hoc values.
 5. Run \`pnpm tokens:audit\` or \`pnpm build\` after changes that affect docs, tokens, or manifests.
 
+${upgradeMarkdown(ROOT, pkg.version)}
 ## Key Files
 
 - \`public/hds-manifest.json\` - canonical machine-readable system inventory, metadata, and token snapshot
@@ -372,14 +382,16 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
     tokens: pick(['Tokens (', 'Quick Token Reference', 'Token Rules']),
     scroll: pick(['How To Build A Scroll-Driven Section']),
     components: `${pick(['Component Inventory', 'Component API'])}\n\n${digestSection.trimEnd()}`,
+    upgrade: pick(['Upgrading', 'Deprecated: do not use in new code']),
   };
 
   const sliceHeader = (name) =>
-    `# Hirobius Design System - ${name} slice\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms-full.txt.\n\n`;
+    `# Hirobius Design System - ${name} slice\n\n${version}\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms-full.txt.\n\n`;
   const index = buildLlmsIndex({
     summary:
       'Token-first React design system for product UIs, with machine-readable context for AI agents: which component to use for each screen need, the tokens, and the rules.',
     slices: SLICES,
+    version: pkg.version,
   });
   const outputs = {
     'public/llms.txt': index,

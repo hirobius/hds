@@ -18,7 +18,8 @@
  *   src/index.ts       → dist/hirobius-ui.js              (main barrel)
  *   src/lib/utils.ts   → dist/cn.js                       (cn helper)
  *   tokens-bridge      → dist/tokens.js                   (TS token constants)
- *   tokens-virtual     → dist/manifest.js                 (manifest JSON ESM)
+ *   src/lib/manifest-entry.ts → dist/manifest.js          (manifest JSON ESM,
+ *                                                         slimmed, hds#413)
  *   src/styles/index.css → dist/hirobius-ui.css           (CSS bundle, aliased
  *                                                         to /tokens.css)
  *
@@ -33,28 +34,27 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
 
+import { slimManifestForBundle } from './scripts/lib/manifest-bundle.mjs';
 import { applyDirectives } from './scripts/lib/rsc-directive.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const hdsManifestModuleId = 'virtual:hds-manifest';
-const resolvedHdsManifestModuleId = `\0${hdsManifestModuleId}`;
+const hdsManifestPath = path.resolve(__dirname, 'public/hds-manifest.json');
 
 /**
- * @internal Vite plugin: maps `import x from 'virtual:hds-manifest'` to the
- * runtime-loaded `public/hds-manifest.json`. Mirrors the same plugin in
- * vite.config.mjs (app build) so primitives like HdsSpecimenBlock that
- * consume the manifest at runtime resolve cleanly in the library bundle.
+ * @internal Vite plugin: inline public/hds-manifest.json into dist/manifest.js
+ * without the fields slimManifestForBundle omits (hds#413). The file itself
+ * keeps them; only the bundled `./manifest` entry is slimmed, so it stays
+ * under its size budget (.size-limit.cjs). Vite's JSON plugin turns the
+ * returned text into ESM as before.
  */
-const hdsManifestVirtualPlugin = {
-  name: 'hds-manifest-virtual-module',
-  resolveId(id: string) {
-    return id === hdsManifestModuleId ? resolvedHdsManifestModuleId : null;
-  },
+const hdsManifestSlimPlugin = {
+  name: 'hds-manifest-slim',
+  enforce: 'pre' as const,
   load(id: string) {
-    if (id !== resolvedHdsManifestModuleId) return null;
-    const manifest = readFileSync(path.resolve(__dirname, 'public/hds-manifest.json'), 'utf8');
-    return `export default ${manifest};`;
+    if (id.split('?')[0] !== hdsManifestPath) return null;
+    const manifest = JSON.parse(readFileSync(hdsManifestPath, 'utf8'));
+    return JSON.stringify(slimManifestForBundle(manifest));
   },
 };
 
@@ -90,7 +90,7 @@ const rscDirectivePlugin = {
 };
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), hdsManifestVirtualPlugin, rscDirectivePlugin],
+  plugins: [react(), tailwindcss(), hdsManifestSlimPlugin, rscDirectivePlugin],
   // Do NOT copy the `public/` directory into the library output. The app build
   // (vite.config.mjs) serves portfolio assets, fonts, and manifests from
   // public/, but the published package must not carry ~47MB of portfolio PNGs
