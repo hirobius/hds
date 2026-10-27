@@ -208,7 +208,7 @@ type TextOverflowProps =
       truncate?: never;
       /**
        * Clamp to 2, 3 or 4 lines with an ellipsis on the last one. Wraps on
-       * word boundaries, `variant="mono"` included.
+       * word boundaries, the mono role included.
        */
       lineClamp?: TextLineClamp;
     };
