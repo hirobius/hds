@@ -188,6 +188,16 @@
       "firingChannel": "ci-pr"
     },
     {
+      "id": "check-docs-coverage",
+      "description": "Docs coverage gate (hds#762): every component in public/hds-manifest.json (not hidden; docExempt only when it has no page, since the tag is file-level and can go stale; a part such as CardHeader is covered by its file's paged component) has a docs page (scripts/lib/docs-routing.mjs), a live demo (DEMOS ∩ PREVIEWED_COMPONENTS) and a Figma link shown in its page header (manifest figmaUrl from the @figma tag, a real Figma URL; not asked of components on a shared page, the utilities page or providers guide, which has no header slot per component). Today's gaps sit in docs/guardrails/baselines/check-docs-coverage.json, a ratchet that only shrinks: a new gap or a stale entry fails. --list prints the gap list. Logic proven by scripts/__tests__/docs-coverage.test.mjs. Runs in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-docs-coverage.mjs",
+      "fixturePath": "fixtures/check-docs-coverage",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta"
+    },
+    {
       "id": "check-docs.selftest",
       "description": "Self-test for check-docs (hds#497): plants each rule violation in a temp tree and asserts check-docs fails on it, so a rule cannot silently stop firing. Runs in the Docs guardrails workflow and in pretest.",
       "severity": "error",

@@ -495,6 +495,79 @@
   background: var(--semantic-color-surface-sunken);
 }
 
+/* --- Sheet (hds#690) ----------------------------------------------------------
+ * Phone first: below sm (640) Sheet.Content docks to the bottom edge, full width,
+ * with the bottom safe-area inset under its padding. It sits on the on-screen
+ * keyboard: sheet.tsx mirrors window.visualViewport into
+ * --hds-local-sheet-inset-keyboard (the keyboard's reach over the layout viewport)
+ * and --hds-local-sheet-height-visible; without them it sits on the page bottom.
+ * Entry slides up on the productive motion token (zeroed under reduced motion,
+ * and the animation is dropped there too). From sm up it is the centred Dialog
+ * panel. Radius, border and the sm max width (max-w-lg, as Dialog) are utilities on
+ * the element.
+ * In @layer components so a consumer's utility className still wins. */
+@keyframes hds-sheet-enter {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@layer components {
+  .hds-sheet {
+    position: fixed;
+    inset-inline: 0;
+    bottom: var(--hds-local-sheet-inset-keyboard, 0);
+    max-height: calc(
+      var(--hds-local-sheet-height-visible, 100dvh) - var(--semantic-space-scale-xl)
+    );
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--semantic-space-surface-padding);
+    /* css-ok: 0px is the env() fallback inside calc, not spacing */
+    padding-bottom: calc(var(--semantic-space-surface-padding) + env(safe-area-inset-bottom, 0px));
+    animation: hds-sheet-enter var(--hds-motion-productive-duration)
+      var(--hds-motion-productive-easing);
+  }
+
+  .hds-sheet-handle {
+    position: absolute;
+    top: var(--semantic-space-scale-xs);
+    left: 50%;
+    width: var(--semantic-space-scale-xl);
+    height: var(--primitive-space-1);
+    transform: translateX(-50%);
+    border-radius: var(--primitive-radius-full);
+    background: var(--semantic-color-border-strong);
+  }
+
+  @media (min-width: 640px) {
+    .hds-sheet {
+      inset-inline: auto;
+      left: 50%;
+      top: 50%;
+      bottom: auto;
+      width: calc(100% - 2 * var(--semantic-space-scale-sm));
+      max-height: calc(100dvh - 2 * var(--semantic-space-scale-sm));
+      padding: var(--semantic-space-surface-padding);
+      transform: translate(-50%, -50%);
+      animation: none;
+    }
+
+    .hds-sheet-handle {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hds-sheet {
+      animation: none;
+    }
+  }
+}
+
 /* --- Audit overlay --------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   :root {
