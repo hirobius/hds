@@ -30,17 +30,17 @@ export function buildLlmsIndex({ summary, slices, version }) {
         link(
           'AGENTS.md',
           'AGENTS.md',
-          'which component to use for each screen need, the imports, and the rules. Read it first.',
+          'which component fits each screen need, the imports, the rules. Read it first.',
         ),
         link(
           'hds-mcp',
           'mcp/hds-mcp.mjs',
-          'MCP server over stdio: run `npx hds-mcp`. Tools `list_core`, `search_components`, `get_component`, `search_tokens`; each answer is under 2 KB.',
+          'MCP server (stdio): run `npx hds-mcp`. Tools `list_core`, `search_components`, `get_component`, `search_tokens`.',
         ),
         link(
           'ESLint plugin',
           'scripts/eslint-plugin-hds/index.mjs',
-          "lint before you finish: `import hds from '@hirobius/design-system/eslint-plugin'` and spread `hds.configs.recommended` into `eslint.config.mjs`.",
+          'lint before finishing: spread `hds.configs.recommended` (from `@hirobius/design-system/eslint-plugin`) into `eslint.config.mjs`.',
         ),
       ],
     ],
@@ -64,33 +64,33 @@ export function buildLlmsIndex({ summary, slices, version }) {
         link(
           'hds-manifest.json',
           'public/hds-manifest.json',
-          'component and pattern inventory, metadata and phase status.',
+          'component and pattern inventory, metadata, phase status.',
         ),
         link(
           'component-api.json',
           'src/app/data/component-api.json',
-          'prop types, unions, defaults and descriptions for every component.',
+          'prop types, unions, defaults, descriptions per component.',
         ),
         link(
           'hirobius.tokens.json',
           'hirobius.tokens.json',
-          'token source of truth (W3C DTCG). Prefer `semantic.*` and `component.*` over `primitive.*`.',
+          'token source of truth (W3C DTCG). Prefer `semantic.*`, `component.*` over `primitive.*`.',
         ),
       ],
     ],
     [
       'Docs',
       [
-        link('DESIGN.md', 'DESIGN.md', 'the visual spec: surfaces, type, spacing, motion.'),
-        link('CONSUMING.md', 'CONSUMING.md', 'install, set up and use the package in an app.'),
-        link('UPGRADING.md', 'UPGRADING.md', 'what changed per version and what to run.'),
+        link('DESIGN.md', 'DESIGN.md', 'visual spec: surfaces, type, spacing, motion.'),
+        link('CONSUMING.md', 'CONSUMING.md', 'install and use the package.'),
+        link('UPGRADING.md', 'UPGRADING.md', 'what changed and what to run.'),
       ],
     ],
     [
       'Optional',
       [
-        link('MIGRATIONS.md', 'MIGRATIONS.md', 'step-by-step notes for breaking changes.'),
-        link('CHANGELOG.md', 'CHANGELOG.md', 'release history.'),
+        link('MIGRATIONS.md', 'MIGRATIONS.md', 'breaking-change notes.'),
+        link('CHANGELOG.md', 'CHANGELOG.md', 'releases.'),
       ],
     ],
   ];

@@ -6,9 +6,9 @@ Version: 0.32.0
 
 ## Start here
 
-- [AGENTS.md](https://unpkg.com/@hirobius/design-system/AGENTS.md): which component to use for each screen need, the imports, and the rules. Read it first.
-- [hds-mcp](https://unpkg.com/@hirobius/design-system/mcp/hds-mcp.mjs): MCP server over stdio: run `npx hds-mcp`. Tools `list_core`, `search_components`, `get_component`, `search_tokens`; each answer is under 2 KB.
-- [ESLint plugin](https://unpkg.com/@hirobius/design-system/scripts/eslint-plugin-hds/index.mjs): lint before you finish: `import hds from '@hirobius/design-system/eslint-plugin'` and spread `hds.configs.recommended` into `eslint.config.mjs`.
+- [AGENTS.md](https://unpkg.com/@hirobius/design-system/AGENTS.md): which component fits each screen need, the imports, the rules. Read it first.
+- [hds-mcp](https://unpkg.com/@hirobius/design-system/mcp/hds-mcp.mjs): MCP server (stdio): run `npx hds-mcp`. Tools `list_core`, `search_components`, `get_component`, `search_tokens`.
+- [ESLint plugin](https://unpkg.com/@hirobius/design-system/scripts/eslint-plugin-hds/index.mjs): lint before finishing: spread `hds.configs.recommended` (from `@hirobius/design-system/eslint-plugin`) into `eslint.config.mjs`.
 
 ## Full bundle
 
@@ -24,17 +24,17 @@ Version: 0.32.0
 
 ## Reference data
 
-- [hds-manifest.json](https://unpkg.com/@hirobius/design-system/public/hds-manifest.json): component and pattern inventory, metadata and phase status.
-- [component-api.json](https://unpkg.com/@hirobius/design-system/src/app/data/component-api.json): prop types, unions, defaults and descriptions for every component.
-- [hirobius.tokens.json](https://unpkg.com/@hirobius/design-system/hirobius.tokens.json): token source of truth (W3C DTCG). Prefer `semantic.*` and `component.*` over `primitive.*`.
+- [hds-manifest.json](https://unpkg.com/@hirobius/design-system/public/hds-manifest.json): component and pattern inventory, metadata, phase status.
+- [component-api.json](https://unpkg.com/@hirobius/design-system/src/app/data/component-api.json): prop types, unions, defaults, descriptions per component.
+- [hirobius.tokens.json](https://unpkg.com/@hirobius/design-system/hirobius.tokens.json): token source of truth (W3C DTCG). Prefer `semantic.*`, `component.*` over `primitive.*`.
 
 ## Docs
 
-- [DESIGN.md](https://unpkg.com/@hirobius/design-system/DESIGN.md): the visual spec: surfaces, type, spacing, motion.
-- [CONSUMING.md](https://unpkg.com/@hirobius/design-system/CONSUMING.md): install, set up and use the package in an app.
-- [UPGRADING.md](https://unpkg.com/@hirobius/design-system/UPGRADING.md): what changed per version and what to run.
+- [DESIGN.md](https://unpkg.com/@hirobius/design-system/DESIGN.md): visual spec: surfaces, type, spacing, motion.
+- [CONSUMING.md](https://unpkg.com/@hirobius/design-system/CONSUMING.md): install and use the package.
+- [UPGRADING.md](https://unpkg.com/@hirobius/design-system/UPGRADING.md): what changed and what to run.
 
 ## Optional
 
-- [MIGRATIONS.md](https://unpkg.com/@hirobius/design-system/MIGRATIONS.md): step-by-step notes for breaking changes.
-- [CHANGELOG.md](https://unpkg.com/@hirobius/design-system/CHANGELOG.md): release history.
+- [MIGRATIONS.md](https://unpkg.com/@hirobius/design-system/MIGRATIONS.md): breaking-change notes.
+- [CHANGELOG.md](https://unpkg.com/@hirobius/design-system/CHANGELOG.md): releases.

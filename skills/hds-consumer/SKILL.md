@@ -179,6 +179,16 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `DialogTrigger` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `Menu` — Menu root + parts.
 - `Popover` — Popover root + parts.
+- `Sheet` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetAction` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetActions` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetClose` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetContent` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetDescription` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetFooter` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetHeader` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetTitle` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+- `SheetTrigger` — Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
 - `Tooltip` — Tooltip root.
 
 ### Typography
@@ -246,6 +256,8 @@ Never:
 ## Do and don't
 
 - Use tokens only. No raw hex or px in `style`, `className` or `Box` `sx`; the lint rules below enforce this.
+- Never guess a token name: run `pnpm exec hds-tokens search <name or words>` first; it says whether the name exists and lists the nearest real ones.
+- Size vs space: `semantic.size.*` is an element's own width or height; `semantic.space.*` is the gap or padding between and inside elements.
 - No inline margins on children to fake sibling spacing; the parent layout primitive owns the gap.
 - Use an allow-listed HDS component where one exists instead of hand-rolling it.
 - Keep app-local tokens and styles under your own `--<prefix>-*` prefix, never inside DS-owned namespaces (`--primitive-*`, `--semantic-*`, `--component-*`, `--role-*`, `--hds-*`; `data-hds`, `data-theme`, `data-tenant`).
