@@ -68,7 +68,6 @@ describe('collectDeprecations', () => {
     expect(paths).toEqual(
       expect.arrayContaining([
         'semantic.space.section.heroMax',
-        'semantic.space.sidebar.railWidth',
         'semantic.docs.space.paragraph',
         'semantic.docs.space.inline',
       ]),

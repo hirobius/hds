@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 535 tokens, aliases, and TS refs in one shot.
+Checks all 521 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -409,7 +409,6 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `semantic.space.sidebar.gap`         | `16px`                      | 16px vertical spacing between items in sidebar and TOC stacks.                                                                                                         |
 | `semantic.space.sidebar.sectionGap`  | `12px`                      | 12px spacing between sidebar sections and grouped rail blocks.                                                                                                         |
 | `semantic.space.sidebar.railPadding` | `20px`                      | 20px outer padding for sidebar and TOC rails.                                                                                                                          |
-| `semantic.space.sidebar.railWidth`   | `280px`                     | Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).                                                    |
 
 <!-- auto:end:semantic-space -->
 
@@ -433,11 +432,8 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `primitive.size.22`              | `22px`  | 22px size step.                            |
 | `primitive.size.24`              | `24px`  | 24px size step.                            |
 | `primitive.size.32`              | `32px`  | 32px size step.                            |
-| `primitive.size.36`              | `36px`  | 36px size step.                            |
 | `primitive.size.40`              | `40px`  | 40px size step.                            |
-| `primitive.size.44`              | `44px`  | 44px size step.                            |
 | `primitive.size.48`              | `48px`  | 48px size step.                            |
-| `primitive.size.52`              | `52px`  | 52px size step.                            |
 | `primitive.size.64`              | `64px`  | 64px size step.                            |
 | `primitive.size.80`              | `80px`  | 80px size step.                            |
 | `primitive.size.96`              | `96px`  | 96px size step.                            |
