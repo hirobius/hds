@@ -15,6 +15,10 @@
  * Each rule has a `// <marker>: <reason>` exemption (also inside a CSS or HTML
  * comment): uppercase-ok (on the line or the two above), font-ok, shadow-ok and
  * color-ok (on the line or the one above). The reason is required.
+ *
+ * Known limits: a value is read on its own line, so one split across lines is
+ * not checked; a `${…}` interpolation, a class built at runtime and a named
+ * color (`red`) are not followed.
  */
 import { readFileSync } from 'node:fs';
 import { extname } from 'node:path';
@@ -69,7 +73,7 @@ function markerAt(lines, i, marker, lookback) {
 /** [regex, message] pairs applied to every line. */
 const UPPERCASE_PATTERNS = [
   [
-    /(?<![\w-])text-transform\s*:\s*uppercase\b/g,
+    /(?<![\w-])text-transform\s*:\s*uppercase\b/gi,
     'text-transform: uppercase (CSS or a Tailwind arbitrary property)',
   ],
   [/@apply\b[^;}\n]*(?<![\w-])uppercase(?![\w-])/g, '@apply uppercase'],
@@ -222,13 +226,15 @@ function splitTopLevel(value) {
 function scanDeclarations(text, file, { props, rule, marker, check }) {
   const raw = text.split('\n');
   const masked = maskedLines(text, file);
-  const re = new RegExp(`(?<![\\w-])(['"]?)(${props.join('|')})\\1\\s*:\\s*`, 'g');
+  // `prop: value` in CSS, a style attribute or a JS object; `el.style.prop = value` in JS.
+  const re = new RegExp(`(?<![\\w-])(['"]?)(${props.join('|')})\\1\\s*(?::|=(?!=))\\s*`, 'g');
   const out = [];
   masked.forEach((line, i) => {
     for (const m of line.matchAll(re)) {
       const name = m[2];
       const value = declValue(line, m.index + m[0].length, /[A-Z]/.test(name));
-      const problem = value && check(value, name);
+      // A `${…}` interpolation is checked where the code that fills it lives.
+      const problem = value && !value.includes('${') && check(value, name);
       if (!problem || markerAt(raw, i, marker, 1) === 'ok') continue;
       out.push({
         file,
@@ -304,7 +310,7 @@ function checkShadow(value) {
 /** box-shadow / boxShadow set to anything but HDS shadow tokens. */
 export function findShadows(text, file) {
   return scanDeclarations(text, file, {
-    props: ['box-shadow', 'boxShadow'],
+    props: ['box-shadow', '-webkit-box-shadow', 'boxShadow'],
     rule: 'shadows',
     marker: 'shadow-ok',
     check: checkShadow,
@@ -314,12 +320,13 @@ export function findShadows(text, file) {
 // ── raw colors ────────────────────────────────────────────────────────────────
 
 const HEX = /(?<![\w&#-])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![\w-])/g;
-const COLOR_FN = /(?<![\w-])(?:rgba?|hsla?)\(/g;
+const COLOR_FN = /(?<![\w-])(?:rgba?|hsla?)\(/gi;
 const URL_ATTR = /\b(?:href|src|action|xlink:href)\s*=\s*(["'])[^"'\n]*\1/g;
+const URL_TEXT = /\b[a-z][\w+.-]*:\/\/[^\s'"`)]*/gi;
 
 /** Blank every var(...) (its fallback is allowed to be raw) and URL attribute. */
 function maskAllowed(line) {
-  let out = line.replace(URL_ATTR, blank);
+  let out = line.replace(URL_ATTR, blank).replace(URL_TEXT, blank);
   for (let at = out.indexOf('var('); at !== -1; at = out.indexOf('var(', at + 1)) {
     let depth = 0;
     let end = at + 3;
@@ -340,10 +347,11 @@ export function findRawColors(text, file) {
     const scan = maskAllowed(line);
     for (const re of [HEX, COLOR_FN]) {
       for (const m of scan.matchAll(re)) {
-        // Only a declaration value is a color: a `prop:` precedes it in the same
-        // declaration. That keeps `#id` selectors and `'#anchor'` strings out.
+        // Only a declaration value is a color: a `prop:` (or `.prop =`) precedes
+        // it in the same declaration. That keeps `#id` selectors and `'#anchor'`
+        // strings out.
         const before = scan.slice(0, m.index);
-        if (!/:[^;{}]*$/.test(before)) continue;
+        if (!/:[^;{}]*$|\.\w+\s*=\s*['"`]?$/.test(before)) continue;
         if (markerAt(raw, i, 'color-ok', 1) === 'ok') continue;
         out.push({
           file,

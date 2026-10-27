@@ -14,7 +14,6 @@
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { checkText, RULES } from './lib/visual-rules.mjs';
 
 const EXTENSIONS = new Set(['.html', '.css', '.js', '.mjs', '.cjs']);
@@ -40,7 +39,7 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--json') args.json = true;
-    else if (a === '--rule') args.rules.push(argv[++i]);
+    else if (a === '--rule') args.rules.push(argv[++i] ?? '');
     else if (a.startsWith('--rule=')) args.rules.push(a.slice('--rule='.length));
     else if (a === '--help' || a === '-h') args.help = true;
     else args.paths.push(a);
@@ -108,6 +107,6 @@ function main(argv) {
   return violations.length === 0 ? 0 : 1;
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  process.exitCode = main(process.argv.slice(2));
-}
+// No "is this the main module" guard: npm and pnpm run a bin through a
+// node_modules/.bin symlink, so argv[1] never equals the module's real path.
+process.exitCode = main(process.argv.slice(2));
