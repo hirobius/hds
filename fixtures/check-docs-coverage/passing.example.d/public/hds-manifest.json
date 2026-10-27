@@ -1,0 +1,8 @@
+{
+  "componentSpecs": {
+    "Button": {
+      "filePath": "src/app/components/button.tsx",
+      "figmaUrl": "https://www.figma.com/design/KEY/File?node-id=1-2"
+    }
+  }
+}
