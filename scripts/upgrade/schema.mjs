@@ -504,6 +504,12 @@ export const CssContract = z
       .describe(
         'Classes the manifest declares public beyond the hds-* prefix (public/hds-manifest.json publicClasses).',
       ),
+    tailwindPreset: z
+      .array(z.string().min(1))
+      .optional()
+      .describe(
+        'Every theme key of the ./tailwind-preset export, dotted and sorted (colors.card.DEFAULT); absent for a release that shipped no preset (hds#466).',
+      ),
   })
   .strict()
   .describe(

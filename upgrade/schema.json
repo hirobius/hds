@@ -126,6 +126,14 @@
             "minLength": 1
           },
           "description": "Classes the manifest declares public beyond the hds-* prefix (public/hds-manifest.json publicClasses)."
+        },
+        "tailwindPreset": {
+          "description": "Every theme key of the ./tailwind-preset export, dotted and sorted (colors.card.DEFAULT); absent for a release that shipped no preset (hds#466).",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       },
       "required": [

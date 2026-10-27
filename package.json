@@ -97,12 +97,14 @@
       "default": "./scripts/eslint-plugin-hds/index.mjs"
     },
     "./stats.json": "./public/hds-stats.json",
+    "./tailwind-preset": "./tailwind.config.tokens.cjs",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
     "NOTICE.md",
     "hirobius.tokens.json",
+    "tailwind.config.tokens.cjs",
     "public/hds-manifest.json",
     "public/hds-stats.json",
     "llms.txt",
@@ -136,6 +138,7 @@
     "codemods/lib/atomic-write.mjs",
     "codemods/lib/deprecated.mjs",
     "codemods/lib/installed-version.mjs",
+    "codemods/lib/preset.mjs",
     "codemods/lib/project.mjs",
     "codemods/lib/record.mjs",
     "codemods/lib/scan.mjs",
