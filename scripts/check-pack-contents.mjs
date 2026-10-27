@@ -41,6 +41,9 @@ export const REQUIRED = [
   'public/llms/tokens.txt',
   'public/llms/scroll.txt',
   'public/llms/components.txt',
+  'public/llms/upgrade.txt',
+  // hds#463: the consumer skill ships, so it describes the installed version.
+  'skills/hds-consumer/SKILL.md',
   'DESIGN.md',
   'CONSUMING.md',
   'docs/CONSUMING.md',

@@ -7,6 +7,7 @@
  */
 
 import { readModes } from './token-modes.mjs';
+import { UPGRADE_COMMAND, cdnUrl } from './version-stamp.mjs';
 import { resolveAlias } from './token-tree.mjs';
 import { ELEVATION_SLOTS, TYPO_PROPS, valueToCSS } from './token-emit/css.mjs';
 
@@ -399,8 +400,9 @@ function formatTokenEntry(t, raw, resolveValue) {
  * @param {Array} allTokens        walkTokens(raw), spread
  * @param {object} raw             the token tree
  * @param {object} [systemManifest] the previous public/hds-manifest.json
+ * @param {string} [packageVersion] the release this manifest describes (hds#463)
  */
-export function buildManifest(allTokens, raw, systemManifest = {}) {
+export function buildManifest(allTokens, raw, systemManifest = {}, packageVersion = '0.0.0') {
   const listedTokens = allTokens.filter((t) => !isHiddenToken(t));
   const resolveValue = makeResolveValue(raw);
 
@@ -424,7 +426,14 @@ export function buildManifest(allTokens, raw, systemManifest = {}) {
     source: 'hirobius.tokens.json',
     format: 'W3C DTCG 2025.10',
     docs: 'https://hirobius-hds-components.vercel.app/',
-    llmsTxt: 'https://hirobius-hds-components.vercel.app/llms.txt',
+    // hds#463: the release this manifest describes, and how to move off it.
+    // llmsTxt is pinned to that release, so an installed copy never points at
+    // text written for a newer one.
+    packageVersion,
+    // Kept to the command: the entry is at its hds#413 size budget. The
+    // removed-name table is public/llms/upgrade.txt, the guide UPGRADING.md.
+    upgrade: { command: UPGRADE_COMMAND },
+    llmsTxt: cdnUrl(packageVersion, 'llms.txt'),
     systemSpecs: systemManifest.systemSpecs ?? {
       engine: 'React + TypeScript',
       icons: 'Phosphor (Bold)',
@@ -482,8 +491,7 @@ export function buildManifest(allTokens, raw, systemManifest = {}) {
     // a key here also drops it from public/hds-manifest.json on the next run.
     inventory: systemManifest.inventory ?? {},
     agentEntrypoint: 'llms.txt',
-    breakingChangePolicy:
-      'Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.',
+    // hds#463: `upgrade` replaces the old free-text breakingChangePolicy.
     componentSpecs,
     // utilities is produced by generate-manifest's tier-based section split
     // (8x-5). build-tokens runs after generate-manifest in `pnpm tokens`, so

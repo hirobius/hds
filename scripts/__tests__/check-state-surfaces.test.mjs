@@ -506,6 +506,23 @@ describe('derived facts in always-on agent files', () => {
     expect(checkStateSurfaces({ root, today: TODAY }).violations).toEqual([]);
   });
 
+  it('allows a line a gate keeps true (gatedFacts, hds#463), and only that line', () => {
+    const gated = {
+      gatedFacts: [{ path: 'CLAUDE.md', line: '^Version: ', check: 'node scripts/gen.mjs' }],
+    };
+    const root = always('Version: 0.32.0\n\nHDS is at 0.24.1 today.\n', gated);
+    const violations = checkStateSurfaces({ root, today: TODAY }).violations;
+    expect(violations.map((v) => [v.rule, v.line])).toEqual([['DERIVED_FACT', 3]]);
+  });
+
+  it('fails a gatedFacts entry whose check script does not exist', () => {
+    const root = always('Version: 0.32.0\n', {
+      gatedFacts: [{ path: 'CLAUDE.md', line: '^Version: ', check: 'node scripts/nope.mjs' }],
+    });
+    // The bad entry exempts nothing, so the version is flagged too.
+    expect(rules(root)).toEqual(['REGISTRY_INVALID', 'DERIVED_FACT']);
+  });
+
   it('fails an alwaysOn file that does not exist', () => {
     const root = repo({}, [], { alwaysOn: ['CLAUDE.md'] });
     expect(rules(root)).toEqual(['SURFACE_MISSING']);
