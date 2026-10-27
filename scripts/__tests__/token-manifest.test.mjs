@@ -42,11 +42,22 @@ describe('buildManifest (lib/token-manifest.mjs)', () => {
     expect(m.tokens.primitive.length).toBeGreaterThan(0);
   });
 
-  it('matches the build-tokens re-export given the same previous manifest', () => {
-    const previous = JSON.parse(readFileSync(join(ROOT, 'public', 'hds-manifest.json'), 'utf8'));
+  it('rebuilds the token-derived sections of the committed manifest exactly (golden)', () => {
+    // With no previous manifest, every forwarded section is empty, so what is left is
+    // what this module derives from the tokens alone. The committed
+    // public/hds-manifest.json is the golden copy (pnpm tokens rewrites it).
+    const committed = JSON.parse(readFileSync(join(ROOT, 'public', 'hds-manifest.json'), 'utf8'));
+    const built = buildManifest(all, raw, {});
+    for (const key of ['tokens', 'brand', 'architecture', 'name', 'version', 'format']) {
+      expect(built[key], key).toEqual(committed[key]);
+    }
+  });
+
+  it('is what build-tokens re-exports when given the previous manifest', () => {
+    const previous = { componentSpecs: { Button: { props: {} } } };
     const strip = (m) => ({ ...m, generated: null });
-    expect(strip(buildManifest(all, raw, previous))).toEqual(
-      strip(cliBuildManifest(all, raw, previous)),
+    expect(strip(cliBuildManifest(all, raw, previous))).toEqual(
+      strip(buildManifest(all, raw, previous)),
     );
   });
 });
