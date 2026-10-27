@@ -1,0 +1,32 @@
+[
+  {
+    "route": "/docs/components/button",
+    "name": "Button sm",
+    "selector": ".hds-demo-frame button[data-size=\"sm\"]"
+  },
+  {
+    "route": "/docs/components/tabs",
+    "name": "Tabs trigger",
+    "selector": ".hds-demo-frame [role=\"tab\"]"
+  },
+  {
+    "route": "/docs/components/segmented-control",
+    "name": "SegmentedControl option",
+    "selector": ".hds-demo-frame [role=\"radio\"]"
+  },
+  {
+    "route": "/docs/components/tag",
+    "name": "Tag",
+    "selector": ".hds-demo-frame button[aria-pressed]"
+  },
+  {
+    "route": "/docs/components/disclosure",
+    "name": "Disclosure trigger",
+    "selector": ".hds-demo-frame button[aria-expanded]"
+  },
+  {
+    "route": "/docs/components/input",
+    "name": "Input clear",
+    "selector": ".hds-demo-frame button[aria-label^=\"Clear\"]"
+  }
+]

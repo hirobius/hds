@@ -2680,6 +2680,10 @@
         "$value": "{primitive.size.40}",
         "$description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242)."
       },
+      "touchTarget": {
+        "$value": "{primitive.size.interactive.min}",
+        "$description": "Small-control minimum on a coarse pointer or narrow viewport (hds#750)."
+      },
       "tile": {
         "$value": "{primitive.size.120}",
         "$description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403)."

@@ -223,10 +223,10 @@ describe('SegmentedControl (items 6, 8, 15)', () => {
     await userEvent.tab();
     expect(screen.getByRole('radio', { name: 'Day' }).getAttribute('aria-checked')).toBe('true');
   });
-  it('segments carry the touch-row hook and a phone-sized default inline padding', () => {
+  it('segments carry the touch-target hook (both axes, hds#750) and a phone-sized default inline padding', () => {
     render(<Harness />);
     for (const r of screen.getAllByRole('radio')) {
-      expect(r.className).toMatch(/hds-touch-row/);
+      expect(r.className).toMatch(/hds-touch-target/);
       expect(r.className).toMatch(/px-\[var\(--semantic-space-scale-xs\)\]/);
       expect(r.style.paddingLeft).toBe('');
     }

@@ -49,11 +49,11 @@ function block(css: string, from: number): string {
   throw new Error('unbalanced block');
 }
 
-/** The declarations of `selector` inside theme.css's phone-width (<= 639px) block. */
+/** The declarations of `selector` inside theme.css's touch block (phone width or coarse pointer). */
 function phoneRule(selector: string): string {
-  const media = block(theme, theme.indexOf('@media (max-width: 639px)'));
+  const media = block(theme, theme.indexOf('@media (max-width: 639px), (pointer: coarse)'));
   const at = media.indexOf(`${selector} {`);
-  expect(at, `${selector} inside @media (max-width: 639px)`).toBeGreaterThan(-1);
+  expect(at, `${selector} inside @media (max-width: 639px), (pointer: coarse)`).toBeGreaterThan(-1);
   return block(media, at);
 }
 
@@ -121,9 +121,7 @@ describe('Checkbox accessibility contract', () => {
     render(<Checkbox label="Accept" checked={false} onChange={noop} />);
     const row = screen.getByRole('checkbox').parentElement as HTMLElement;
     expect(row.className).toContain('hds-touch-row');
-    expect(phoneRule('.hds-touch-row')).toMatch(
-      /min-height:\s*var\(--primitive-size-interactive-min\)/,
-    );
+    expect(phoneRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
   });
 });
 
@@ -187,9 +185,7 @@ describe('Radio accessibility contract', () => {
     expect((screen.getByRole('radio').parentElement as HTMLElement).className).toContain(
       'hds-touch-row',
     );
-    expect(phoneRule('.hds-touch-row')).toMatch(
-      /min-height:\s*var\(--primitive-size-interactive-min\)/,
-    );
+    expect(phoneRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
   });
 });
 
@@ -232,9 +228,7 @@ describe('Toggle accessibility contract', () => {
     expect((screen.getByRole('switch').parentElement as HTMLElement).className).toContain(
       'hds-touch-row',
     );
-    expect(phoneRule('.hds-touch-row')).toMatch(
-      /min-height:\s*var\(--primitive-size-interactive-min\)/,
-    );
+    expect(phoneRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
   });
 });
 

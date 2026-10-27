@@ -158,24 +158,24 @@ Card — a raised surface with slot anatomy: header, body, footer, and a row for
   - variant: 'default' | 'accent' = default
 
 ### CardBody
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardDescription
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardFacts
 Card.Facts — a wrapping caption row of icon + label facts, as a list.
   - items: CardFact[]
 
 ### CardFooter
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardHeader
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
   - metadata: ReactNode
 
 ### CardProgress
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
   - label: ReactNode
   - max: number = 100
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -198,7 +198,7 @@ Card.Source — the entity's origin on one row: avatar, name and time.
   - time: ReactNode
 
 ### CardTitle
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### Checkbox
 Checkbox — custom-drawn checkbox with check / indeterminate glyph.
@@ -291,11 +291,11 @@ Tagged per-export, not on the file block: this module exports ten components and
   - open: boolean
 
 ### DialogClose
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogContent
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
   - container: HTMLElement | null
   - forceMount: true
@@ -308,32 +308,32 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
   - onPointerDownOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)
 
 ### DialogDescription
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogFooter
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
 
 ### DialogHeader
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
 
 ### DialogOverlay
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
   - forceMount: true
 
 ### DialogPortal
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - children: React.ReactNode
   - container: Element | DocumentFragment | null
   - forceMount: true
 
 ### DialogTitle
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogTrigger
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### Disclosure
@@ -704,7 +704,7 @@ The tab set itself. Tagged here rather than in the file block because TabsList a
   - value: string
 
 ### TabsContent
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below …
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - forceMount: true
   - value: string
@@ -716,7 +716,7 @@ The tab strip. When tabs scroll out of view it fades the hidden edge (`data-over
   - loop: boolean
 
 ### TabsTrigger
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below …
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - value: string
 
