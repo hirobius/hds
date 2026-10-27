@@ -1,15 +1,15 @@
 {
-  "checksum": "08a86902",
+  "checksum": "04c1e4d2",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-24T15:50:48.194Z",
+    "takenAt": "2026-10-27T16:01:36.232Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "df1f4f37",
-      "pushedAt": "2026-10-24T15:50:48.099Z",
+      "modelHash": "56376cd8",
+      "pushedAt": "2026-10-27T16:01:36.150Z",
       "scope": null
     },
     "collections": [
@@ -2594,6 +2594,23 @@
             }
           },
           {
+            "id": "VariableID:2241:2",
+            "name": "radius/6",
+            "path": "primitive.radius.6",
+            "resolvedType": "FLOAT",
+            "description": "",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-radius-6)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 6
+              }
+            }
+          },
+          {
             "id": "VariableID:5:28",
             "name": "radius/8",
             "path": "primitive.radius.8",
@@ -2709,6 +2726,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 20
+              }
+            }
+          },
+          {
+            "id": "VariableID:2241:3",
+            "name": "size/22",
+            "path": "primitive.size.22",
+            "resolvedType": "FLOAT",
+            "description": "22px size step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-size-22)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 22
               }
             }
           },
@@ -8148,8 +8182,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:7:29",
-                "to": "Hirobius/Primitives: size/20"
+                "alias": "VariableID:2241:3",
+                "to": "Hirobius/Primitives: size/22"
               }
             }
           },
@@ -8254,8 +8288,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:7:29",
-                "to": "Hirobius/Primitives: size/20"
+                "alias": "VariableID:2241:3",
+                "to": "Hirobius/Primitives: size/22"
               }
             }
           },
@@ -8303,11 +8337,31 @@
             }
           },
           {
+            "id": "VariableID:2241:4",
+            "name": "badge/paddingShift",
+            "path": "component.badge.paddingShift",
+            "resolvedType": "FLOAT",
+            "description": "Label lift, taken from top padding to bottom.",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-badge-paddingShift)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:19",
+                "to": "Hirobius/Primitives: space/px1"
+              }
+            }
+          },
+          {
             "id": "VariableID:14:33",
             "name": "badge/paddingX",
             "path": "component.badge.paddingX",
             "resolvedType": "FLOAT",
-            "description": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune).",
+            "description": "Horizontal padding inside the badge.",
             "scopes": [
               "GAP"
             ],
@@ -8347,7 +8401,7 @@
             "name": "badge/radius",
             "path": "component.badge.radius",
             "resolvedType": "FLOAT",
-            "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
+            "description": "Figma value; code renders rounded-sm (role.radius - 2px).",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -8357,8 +8411,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:12:29",
-                "to": "Hirobius/Semantic: radius/action"
+                "alias": "VariableID:2241:2",
+                "to": "Hirobius/Primitives: radius/6"
               }
             }
           },

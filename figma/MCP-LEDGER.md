@@ -685,3 +685,16 @@ Daily release check found 0.32.0. Branch merges the unmerged 0.31.1 sync (hds#90
 Session total: 2 calls
 
 Calls logged for 2026-10-24: 2 of 200 (2).
+
+## 2026-10-27 · token sync on 0.32.0 main d6a34b0 (branch claude/figma-release-sync-0.32.0)
+
+Daily check: version still 0.32.0, but main changed tokens since the last sync (badge #927). Plan: updated 4 · created 3 · deleted 0 (radius.6, size.22, badge radius/height/minWidth/paddingShift/paddingX).
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                     | Result                                                                                                                          |
+| --- | ---------- | ---------------- | ----- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 15:59      | `create_session` | read  | open file session for the badge token delta | OK; session opened                                                                                                              |
+| 2   | 15:59      | `use_figma`      | write | delta.js unmodified (commit 85898a4)        | OK; created radius/6, size/22, badge/paddingShift; updated badge radius/height/minWidth/paddingX; post 04c1e4d2, 1 receipt page |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-27: 2 of 200 (2).
