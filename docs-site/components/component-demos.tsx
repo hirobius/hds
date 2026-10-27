@@ -929,6 +929,25 @@ function TextDemo() {
       <Text variant="ui">UI for labels and control text.</Text>
       <Text variant="caption">Caption for supporting metadata.</Text>
       <Text variant="mono">semantic.typography.mono</Text>
+      {/* minmax(0, 1fr): an auto track would grow to the unclipped text and nothing would clip. */}
+      <div style={{ ...demoColumn, gap: XS, gridTemplateColumns: 'minmax(0, 1fr)' }}>
+        <div style={{ display: 'flex', gap: SM, alignItems: 'baseline' }}>
+          <Text variant="ui" truncate>
+            truncate: Senior Product Designer, Design Systems and Platform Experience
+          </Text>
+          <Text variant="caption" tone="secondary">
+            2d
+          </Text>
+        </div>
+        <Text variant="titleSm" lineClamp={2}>
+          lineClamp=2: Staff Design Engineer for a growing component library across web and native
+        </Text>
+        <Text variant="mono" lineClamp={4} tone="secondary">
+          lineClamp=4: (title:"design systems" OR title:"design engineer") AND location:remote AND
+          salary:&gt;180000 AND NOT company:agency AND posted:&lt;14d AND level:(senior OR staff OR
+          principal)
+        </Text>
+      </div>
     </div>
   );
 }

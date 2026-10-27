@@ -89,3 +89,61 @@ describe('Text weight', () => {
     expect(weightClasses(screen.getByText('name'))).toEqual([]);
   });
 });
+
+// hds#916: `truncate` (one line + ellipsis) and `lineClamp` (N lines + ellipsis)
+// retire Roleforge's .rjb-truncate / .rjb-clamp-* workarounds.
+describe('Text truncate and lineClamp', () => {
+  it('truncate clips to one line with an ellipsis and can shrink in a flex row', () => {
+    render(
+      <Text variant="body" truncate>
+        long
+      </Text>,
+    );
+    const classes = [...screen.getByText('long').classList];
+    expect(classes).toEqual(expect.arrayContaining(['block', 'truncate', 'min-w-0']));
+  });
+
+  it.each([2, 3, 4] as const)('lineClamp={%i} clamps to that many lines', (n) => {
+    render(
+      <Text variant="body" lineClamp={n}>
+        long
+      </Text>,
+    );
+    expect(screen.getByText('long').classList).toContain(`line-clamp-${n}`);
+  });
+
+  it('mono lineClamp wraps on word boundaries, never mid-word', () => {
+    render(
+      <Text variant="mono" lineClamp={4}>
+        query
+      </Text>,
+    );
+    const classes = [...screen.getByText('query').classList];
+    expect(classes).toEqual(
+      expect.arrayContaining(['line-clamp-4', 'whitespace-normal', 'break-words']),
+    );
+    expect(classes).not.toContain('break-all');
+  });
+
+  it('adds nothing when neither prop is set', () => {
+    render(<Text variant="mono">plain</Text>);
+    const classes = [...screen.getByText('plain').classList];
+    expect(classes.filter((c) => /truncate|line-clamp|whitespace|break-/.test(c))).toEqual([]);
+  });
+
+  it('types truncate and lineClamp as mutually exclusive', () => {
+    // @ts-expect-error truncate and lineClamp cannot be combined
+    const both = (
+      <Text variant="body" truncate lineClamp={2}>
+        x
+      </Text>
+    );
+    // @ts-expect-error lineClamp takes 2, 3 or 4 only
+    const five = (
+      <Text variant="body" lineClamp={5}>
+        x
+      </Text>
+    );
+    expect(both && five).toBeTruthy();
+  });
+});

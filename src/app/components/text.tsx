@@ -80,6 +80,16 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
       // tier-ok: shipped weight steps, no semantic weight tokens exist (hds#825)
       bold: '[font-weight:var(--primitive-typography-weight-bold)]',
     },
+    // hds#916: overflow. `block` because ellipsis needs a block box (mono is a
+    // span); line-clamp sets its own -webkit-box display. whitespace-normal and
+    // break-words keep a clamp wrapping on words, mono included, and only break
+    // a word that cannot fit a line by itself.
+    overflow: {
+      truncate: 'block truncate',
+      2: 'line-clamp-2 whitespace-normal break-words',
+      3: 'line-clamp-3 whitespace-normal break-words',
+      4: 'line-clamp-4 whitespace-normal break-words',
+    },
   },
 });
 
@@ -181,6 +191,28 @@ const defaultTagMap: Record<TextVariant, TextTag> = {
   docCode: 'span',
 };
 
+/** How many lines `lineClamp` allows before the ellipsis. */
+export type TextLineClamp = 2 | 3 | 4;
+
+/** `truncate` and `lineClamp` are two answers to one question, so only one is allowed. */
+type TextOverflowProps =
+  | {
+      /**
+       * One line with an ellipsis. Shrinks inside a flex row (`min-width: 0`),
+       * so a long title gives way to its siblings instead of pushing them out.
+       */
+      truncate?: boolean;
+      lineClamp?: never;
+    }
+  | {
+      truncate?: never;
+      /**
+       * Clamp to 2, 3 or 4 lines with an ellipsis on the last one. Wraps on
+       * word boundaries, `variant="mono"` included.
+       */
+      lineClamp?: TextLineClamp;
+    };
+
 /** @public */
 export type TextProps = {
   children: ReactNode;
@@ -199,18 +231,31 @@ export type TextProps = {
   as?: TextTag | ElementType;
   className?: string;
   style?: CSSProperties;
-} & HTMLAttributes<HTMLElement>;
+} & TextOverflowProps &
+  HTMLAttributes<HTMLElement>;
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export const Text = /* @__PURE__ */ forwardRef<HTMLElement, TextProps>(function Text(
-  { children, variant, tone, weight, as: Tag = defaultTagMap[variant], className, style, ...rest },
+  {
+    children,
+    variant,
+    tone,
+    weight,
+    truncate,
+    lineClamp,
+    as: Tag = defaultTagMap[variant],
+    className,
+    style,
+    ...rest
+  },
   ref,
 ) {
+  const overflow = truncate ? 'truncate' : lineClamp;
   return (
     <Tag
       ref={ref}
-      className={cn(textVariants({ variant, tone, weight }), className)}
+      className={cn(textVariants({ variant, tone, weight, overflow }), className)}
       style={style}
       {...rest}
     >
