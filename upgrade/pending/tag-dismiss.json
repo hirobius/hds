@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Tag takes onDismiss for a removable label whose X alone removes it (named \"Remove <label>\", 40px hit area), so replace a hand-built pill plus icon Button with <Tag onDismiss={...}>."
+}
