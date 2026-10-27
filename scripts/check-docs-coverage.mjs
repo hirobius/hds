@@ -33,7 +33,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { documentedFromSources } from './lib/check-component-docs.mjs';
-import { applyRatchet, coverageUnits, findCoverageGaps } from './lib/docs-coverage.mjs';
+import { applyRatchet, coverageUnits, findCoverageGaps, pageLookup } from './lib/docs-coverage.mjs';
 import { docsPagePath, loadDocsRouting } from './lib/docs-routing.mjs';
 import { resolveFigmaLink } from './lib/figma-link.mjs';
 
@@ -54,13 +54,7 @@ const demos = documentedFromSources({
   providers: routing.providers,
 });
 
-const sharedPages = new Set(
-  [...routing.providers, ...routing.utilities].map((n) => docsPagePath(n, routing)),
-);
-const pageFor = (name) => {
-  const p = docsPagePath(name, routing);
-  return p ? { path: p, shared: sharedPages.has(p) } : null;
-};
+const pageFor = pageLookup(routing, docsPagePath);
 
 const { units, parts } = coverageUnits(specs, (n) => Boolean(docsPagePath(n, routing)));
 const gaps = findCoverageGaps({

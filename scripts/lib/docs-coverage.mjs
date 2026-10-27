@@ -62,6 +62,25 @@ export function findCoverageGaps({ units, pageFor, demos, figmaFor }) {
 }
 
 /**
+ * The pageFor that findCoverageGaps takes: a component's docs page, `shared`
+ * when it is the page the providers or the utilities share (the providers
+ * guide, the utilities page).
+ *
+ * @param {{ providers: string[], utilities: string[] }} routing  loadDocsRouting's result
+ * @param {(name: string, routing: any) => string | null} pagePath  docsPagePath
+ * @returns {(name: string) => { path: string, shared: boolean } | null}
+ */
+export function pageLookup(routing, pagePath) {
+  const sharedPages = new Set(
+    [...routing.providers, ...routing.utilities].map((n) => pagePath(n, routing)),
+  );
+  return (name) => {
+    const p = pagePath(name, routing);
+    return p ? { path: p, shared: sharedPages.has(p) } : null;
+  };
+}
+
+/**
  * Ratchet: the baseline may only shrink. A gap not in it is new; a baseline
  * entry that is no longer a gap is stale and must be removed.
  *

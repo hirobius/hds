@@ -8,7 +8,13 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it } from 'vitest';
-import { applyRatchet, coverageUnits, findCoverageGaps } from '../lib/docs-coverage.mjs';
+import {
+  applyRatchet,
+  coverageUnits,
+  findCoverageGaps,
+  pageLookup,
+} from '../lib/docs-coverage.mjs';
+import { docsPagePath, loadDocsRouting } from '../lib/docs-routing.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const SCRIPT = path.join(ROOT, 'scripts/check-docs-coverage.mjs');
@@ -73,6 +79,34 @@ describe('coverageUnits', () => {
     const { units, parts } = coverageUnits(specs, hasPage);
     expect(units).toEqual(['Card', 'Callout']);
     expect(parts).toEqual(['CardHeader']);
+  });
+});
+
+describe('pageLookup', () => {
+  it('exempts exactly the utilities and the providers from a Figma link (shared pages)', () => {
+    const routing = loadDocsRouting(ROOT);
+    const pageFor = pageLookup(routing, docsPagePath);
+    const specs = JSON.parse(
+      readFileSync(path.join(ROOT, 'public/hds-manifest.json'), 'utf8'),
+    ).componentSpecs;
+    const shared = Object.keys(specs)
+      .filter((n) => pageFor(n)?.shared)
+      .sort();
+    expect(shared).toEqual(
+      [
+        'Box',
+        'Container',
+        'VisuallyHidden',
+        'HdsRouterProvider',
+        'HdsThemeProvider',
+        'ToastProvider',
+      ].sort(),
+    );
+  });
+  it('gives a component on a page of its own a page that is not shared', () => {
+    const pageFor = pageLookup(loadDocsRouting(ROOT), docsPagePath);
+    expect(pageFor('Button')).toEqual({ path: '/docs/components/button', shared: false });
+    expect(pageFor('NoSuchComponent')).toBeNull();
   });
 });
 

@@ -1,1 +1,1 @@
-Docs coverage gate (hds#762): scripts/check-docs-coverage.mjs in pretest; every component needs a docs page, a live demo and a Figma link in its page header; 39 gaps baselined in docs/guardrails/baselines/check-docs-coverage.json (ratchet, only shrinks).
+Docs coverage gate (hds#762): scripts/check-docs-coverage.mjs in pretest; every component needs a docs page, a live demo and a Figma link in its page header; 68 gaps baselined (29 are Sheet and its parts, hds#690) in docs/guardrails/baselines/check-docs-coverage.json (ratchet, only shrinks).
