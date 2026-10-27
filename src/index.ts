@@ -93,6 +93,7 @@ export * from './app/components/avatar-group';
 
 // ── Astryx-gap coverage — Tier 1 Radix skins (0.12.0) ──
 export * from './app/components/alert-dialog';
+export * from './app/components/sheet';
 
 // ── Astryx-gap coverage — Tier 2 pattern layer (0.13.0) ──
 export * from './app/components/metadata-list';

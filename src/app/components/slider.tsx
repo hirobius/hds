@@ -69,7 +69,7 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
         <motion.span
           key={value}
           className="text-muted-foreground shrink-0"
-          initial={{ opacity: 0.72, y: hds.space.px2 }}
+          initial={{ opacity: 0.72, y: hds.semantic.space.subgrid.xs }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
             duration: productiveMotion.duration,

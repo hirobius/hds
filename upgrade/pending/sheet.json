@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New Sheet: a hand-built bottom sheet (a Dialog docked to the bottom edge below 640px, with a keyboard-aware visualViewport hook) can move onto it, and a list of action buttons inside one onto Sheet.Actions and Sheet.Action."
+}

@@ -36,3 +36,21 @@ describe('check-template-source-of-truth directory keys', () => {
     expect(r.status).toBe(0);
   });
 });
+
+describe('check-template-source-of-truth token generators (hds#645)', () => {
+  it('accepts a token output when only an emitter module under scripts/lib/token-emit/ changed', () => {
+    const r = run(['src/app/design-system/generated-tokens.ts', 'scripts/lib/token-emit/ts.mjs']);
+    expect(r.status).toBe(0);
+  });
+
+  it('accepts the manifest when only scripts/lib/token-manifest.mjs changed', () => {
+    const r = run(['public/hds-manifest.json', 'scripts/lib/token-manifest.mjs']);
+    expect(r.status).toBe(0);
+  });
+
+  it('still flags a token output edited with no generator change', () => {
+    const r = run(['tailwind.config.tokens.cjs', 'scripts/lib/unrelated.mjs']);
+    expect(r.status).toBe(1);
+    expect(r.stdout + r.stderr).toContain('scripts/lib/token-emit/');
+  });
+});

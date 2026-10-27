@@ -32,6 +32,13 @@
  * `consumersConfirmedAt` is the day they did. public/hds-stats.json (ops#681) repeats
  * the split with that file as its source and that day.
  *
+ * Monthly ledger (hds#658): `--root <clone> --history [--ref origin/main]
+ * [--consumer <id>]` samples the consumer once per UTC month from 2026-07
+ * (scripts/lib/consumer-history.mjs) and replaces that consumer's entry in the
+ * snapshot's `history[]`, copying in the latest consistency-harness ledger
+ * entry. docs/ADOPTION.md (hds#659) renders `history[]`; without `--history`
+ * the committed history is untouched.
+ *
  * Run: pnpm consumer:usage
  */
 import { execFileSync } from 'node:child_process';
@@ -39,9 +46,17 @@ import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from '
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RENAMES as HDS_PREFIX_RENAMES } from '../codemods/hds-prefix.mjs';
-import { runCheck } from './lib/generated-check.mjs';
+import {
+  assertTagsCurrent,
+  latestHarnessEntry,
+  measureHistory,
+  readHdsTags,
+  upsertHistory,
+} from './lib/consumer-history.mjs';
+import { runGenerator } from './lib/generated-check.mjs';
 
 export const IN_USE_BLOCK = 'consumer-usage';
+export const ADOPTION_BLOCK = 'adoption-history';
 const SKIP_DIRS = new Set([
   'node_modules',
   'dist',
@@ -168,13 +183,11 @@ function alignTable(rows) {
 /** Markdown placed between the generated-block markers (starts and ends with a blank line). */
 export function renderInUseBlock(s) {
   const shots = [
-    '[![Library page of the product app](docs/images/product-app-library.png)](docs/images/product-app-library.png)',
-    '',
     '[![Audit page of the product app](docs/images/product-app-audit.png)](docs/images/product-app-audit.png)',
     '',
     '',
   ];
-  const measured = `**${s.files}** of its source files import from \`@hirobius/design-system\`, using **${s.components}** distinct components. The two screenshots below are pages of that app, rendered from its \`main\` branch.`;
+  const measured = `**${s.files}** of its source files import from \`@hirobius/design-system\`, using **${s.components}** distinct components. The screenshot below is a page of that app, rendered from its \`main\` branch.`;
   if (!s.consumersConfirmed) {
     return [
       '',
@@ -203,59 +216,185 @@ export function renderInUseBlock(s) {
       ],
     ]),
     '',
+    'Month-by-month adoption in each product app, one row per measured commit: [docs/ADOPTION.md](docs/ADOPTION.md).',
+    '',
     ...shots,
   ].join('\n');
 }
 
 /** The README with its "In use" block rendered from `snapshot`: what `--check` compares. */
 export function readmeWithUsage(readme, snapshot) {
-  return replaceInUseBlock(readme, renderInUseBlock(snapshot));
+  return replaceBlock(readme, IN_USE_BLOCK, renderInUseBlock(snapshot), 'README.md');
 }
 
-export function replaceInUseBlock(readme, block) {
-  const start = `<!-- auto:start:${IN_USE_BLOCK} -->`;
-  const end = `<!-- auto:end:${IN_USE_BLOCK} -->`;
-  const from = readme.indexOf(start);
-  const to = readme.indexOf(end);
-  if (from === -1 || to === -1 || to < from)
-    throw new Error(`README.md is missing the ${start} … ${end} markers.`);
-  return `${readme.slice(0, from)}${start}\n${block}${readme.slice(to)}`;
+/** docs/ADOPTION.md with its ledger block rendered from `snapshot`. */
+export function adoptionWithHistory(doc, snapshot) {
+  return replaceBlock(doc, ADOPTION_BLOCK, renderAdoptionBlock(snapshot), 'docs/ADOPTION.md');
 }
+
+/** `text` (the contents of `file`) with its `auto:start/end:<name>` block replaced by `block`. */
+export function replaceBlock(text, name, block, file = 'the file') {
+  const start = `<!-- auto:start:${name} -->`;
+  const end = `<!-- auto:end:${name} -->`;
+  const from = text.indexOf(start);
+  const to = text.indexOf(end);
+  if (from === -1 || to === -1 || to < from)
+    throw new Error(`${file} is missing the ${start} … ${end} markers.`);
+  return `${text.slice(0, from)}${start}\n${block}${text.slice(to)}`;
+}
+
+const short = (sha) => `\`${sha.slice(0, 7)}\``;
+const cell = (v) => (v === null || v === undefined ? 'n/a' : String(v));
+const sumControls = (c) => (c ? Object.values(c).reduce((a, b) => a + b, 0) : null);
+
+/**
+ * The docs/ADOPTION.md ledger (hds#659): a pure function of the snapshot. It
+ * reads no clock, git or live ledger, so a new month or an eval commit never
+ * turns `--check` red. Apps appear by label, commits as short shas, private
+ * issue refs in code spans; no repository is named or linked.
+ */
+export function renderAdoptionBlock(s) {
+  const out = [
+    '',
+    'Numbers only. Each product app is measured from its `main` branch, one row per calendar month in UTC: the last first-parent commit before the month ended (the current month is the branch tip when it was measured). Files and components count `src/` imports of `@hirobius/design-system`, as in the README; raw controls are lowercase `<button>`, `<input>`, `<select>`, `<textarea>` and `<table>` tags in `src/**/*.tsx`; the HDS release is the highest one tagged by the month end. `n/a` means the commit had no `src/`.',
+    '',
+    'Re-measure from a full clone: `node scripts/count-consumer-usage.mjs --root <clone> --history --consumer <id>`.',
+    '',
+  ];
+  for (const app of s.consumers.apps) {
+    out.push(`### ${app.label}`, '');
+    const entry = (s.history ?? []).find((h) => h.consumer === app.id);
+    if (!entry || entry.rows.length === 0) {
+      out.push('Not measured yet.', '');
+      continue;
+    }
+    out.push(
+      ...alignTable([
+        ['Month', 'Commit', 'Files', 'Components', 'Raw controls', 'HDS range', 'HDS release'],
+        ...entry.rows.map((r) => [
+          r.month,
+          short(r.commit),
+          cell(r.files),
+          cell(r.components),
+          cell(sumControls(r.rawControls)),
+          cell(r.versionRange),
+          cell(r.hdsVersion),
+        ]),
+      ]),
+      '',
+    );
+  }
+  const d = s.deprecationCycle;
+  if (d) {
+    const app = s.consumers.apps.find((a) => a.id === d.consumer);
+    out.push(
+      '### Deprecation cycle',
+      '',
+      ...alignTable([
+        ['Change', 'App', 'Status', 'Commit', 'Tracked in'],
+        [
+          d.change,
+          app ? app.label : d.consumer,
+          d.appliedAt ? `applied ${d.appliedAt}` : 'not yet applied',
+          d.commit ? short(d.commit) : 'n/a',
+          d.trackedIn ? `\`${d.trackedIn}\`` : 'n/a',
+        ],
+      ]),
+      '',
+    );
+  }
+  const c = s.consistency;
+  if (c) {
+    const m = c.measured;
+    out.push(
+      '### Consistency harness',
+      '',
+      'The latest `source: "harness"` entry of `eval/consistency/ledger.json`, copied when the ledger was measured.',
+      '',
+      ...alignTable([
+        ['Date', 'Package', 'HDS commit', 'Builds', 'Violations', 'Axe', 'Min Jaccard', 'Pass'],
+        [
+          c.date,
+          c.packageVersion,
+          c.commit ? short(c.commit) : 'n/a',
+          `${m.builds.passing} of ${m.builds.of}`,
+          cell(m.violations),
+          cell(m.axe),
+          cell(m.jaccardMin),
+          c.pass ? 'yes' : 'no',
+        ],
+      ]),
+      '',
+    );
+  }
+  return `${out.join('\n')}\n`;
+}
+
+/** The fields of a harness ledger entry the adoption doc shows. */
+export function consistencySummary(entry) {
+  if (!entry) return null;
+  const { date, packageVersion, commit, measured, pass } = entry;
+  return { date, packageVersion, commit, measured, pass };
+}
+
+const argValue = (flag, fallback = null) =>
+  process.argv.includes(flag) ? process.argv[process.argv.indexOf(flag) + 1] : fallback;
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
   const snapshotPath = join(REPO, 'docs/data/consumer-usage.json');
-  if (process.argv.includes('--check')) {
-    // Writes nothing: exit 1 when the README block differs from the committed
-    // snapshot rendered today. (The snapshot itself is measured from the
-    // consumer repo, which `--root` does; that part cannot be checked here.)
-    await runCheck(
-      REPO,
-      {
-        'README.md': readmeWithUsage(
-          readFileSync(join(REPO, 'README.md'), 'utf8'),
-          JSON.parse(readFileSync(snapshotPath, 'utf8')),
-        ),
-      },
-      { label: 'count-consumer-usage --check', fix: 'pnpm consumer:usage' },
-    );
-  }
-  const argRoot = process.argv.includes('--root')
-    ? process.argv[process.argv.indexOf('--root') + 1]
-    : null;
-  const argCommit = process.argv.includes('--commit')
-    ? process.argv[process.argv.indexOf('--commit') + 1]
-    : null;
-  const root = [argRoot, process.env.OPS_ROOT].find((p) => p && existsSync(p));
   const snapshot = JSON.parse(readFileSync(snapshotPath, 'utf8'));
-  if (root) {
+  const check = process.argv.includes('--check');
+  // `--check` measures nothing and writes nothing: it compares README.md and
+  // docs/ADOPTION.md with the committed snapshot rendered today. (The snapshot
+  // itself is measured from the consumer repo, which `--root` does; that part
+  // cannot be checked here.)
+  const root = check
+    ? null
+    : [argValue('--root'), process.env.OPS_ROOT].find((p) => p && existsSync(p));
+  const manifest = () => JSON.parse(readFileSync(join(REPO, 'public/hds-manifest.json'), 'utf8'));
+  const aliases = () => consumerAliases(readFileSync(join(REPO, 'src/index.ts'), 'utf8'));
+  if (!check && process.argv.includes('--history') && !root)
+    throw new Error(
+      'consumer:usage --history needs --root <full clone of the consumer> (or OPS_ROOT).',
+    );
+  if (root && process.argv.includes('--history')) {
+    const consumer = argValue('--consumer', 'hirobius/ops');
+    if (!snapshot.consumers.apps.some((a) => a.id === consumer))
+      throw new Error(
+        `consumer:usage --history: '${consumer}' is not in consumers.apps of docs/data/consumer-usage.json.`,
+      );
+    const hdsTags = readHdsTags(REPO);
+    assertTagsCurrent(
+      hdsTags,
+      JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8')).version,
+    );
+    const names = new Set(Object.keys(manifest().componentSpecs));
+    const al = aliases();
+    const entry = measureHistory({
+      root,
+      ref: argValue('--ref', 'origin/main'),
+      consumer,
+      hdsTags,
+      measure: (dir) => measureConsumer(dir, names, al),
+    });
+    snapshot.history = upsertHistory(snapshot.history, entry);
+    // A ledger with no harness run keeps the last one copied, not a blank.
+    snapshot.consistency =
+      consistencySummary(
+        latestHarnessEntry(
+          JSON.parse(readFileSync(join(REPO, 'eval/consistency/ledger.json'), 'utf8')),
+        ),
+      ) ?? snapshot.consistency;
+    writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2) + '\n');
+    console.log(`consumer:usage --history measured ${consumer}: ${entry.rows.length} months`);
+  } else if (root) {
     const git = (...a) => execFileSync('git', ['-C', root, ...a], { encoding: 'utf8' }).trim();
-    const manifest = JSON.parse(readFileSync(join(REPO, 'public/hds-manifest.json'), 'utf8'));
-    const aliases = consumerAliases(readFileSync(join(REPO, 'src/index.ts'), 'utf8'));
     Object.assign(snapshot, {
-      ...measureConsumer(root, new Set(Object.keys(manifest.componentSpecs)), aliases),
+      ...measureConsumer(root, new Set(Object.keys(manifest().componentSpecs)), aliases()),
       scope: 'src',
     });
+    const argCommit = argValue('--commit');
     if (argCommit) {
       // A `git archive` export of the consumer's main has no .git to ask.
       if (!/^[0-9a-f]{40}$/.test(argCommit))
@@ -275,9 +414,17 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     console.log(
       `consumer:usage measured ${root}@${snapshot.commit.slice(0, 7)}: ${snapshot.files} files, ${snapshot.components} components`,
     );
-  } else {
+  } else if (!check) {
     console.log('consumer:usage: no --root or OPS_ROOT given, using the committed snapshot');
   }
-  const readmePath = join(REPO, 'README.md');
-  writeFileSync(readmePath, readmeWithUsage(readFileSync(readmePath, 'utf8'), snapshot));
+  const read = (rel) => readFileSync(join(REPO, rel), 'utf8');
+  await runGenerator({
+    root: REPO,
+    outputs: {
+      'README.md': readmeWithUsage(read('README.md'), snapshot),
+      'docs/ADOPTION.md': adoptionWithHistory(read('docs/ADOPTION.md'), snapshot),
+    },
+    label: 'count-consumer-usage',
+    fix: 'pnpm consumer:usage',
+  });
 }

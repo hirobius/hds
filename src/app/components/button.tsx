@@ -63,7 +63,7 @@ import { installWipeListeners } from './button-wipe';
 // Icon sizes bind `component.button.size.<s>.iconSize` so code cannot drift from the token (hds#539).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for transition-[colors,filter]), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[color,background-color,border-color,filter,box-shadow,translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-scale-xs whitespace-nowrap rounded-md transition-[color,background-color,border-color,filter,box-shadow,translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -108,9 +108,9 @@ const buttonVariants = /* @__PURE__ */ cva(
         info: 'border-transparent bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-info active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
       },
       size: {
-        sm: 'h-8 px-3 hds-type-caption [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
-        md: 'h-10 px-4 py-2 hds-type-ui [&_svg]:size-[var(--component-button-size-md-iconSize)]',
-        lg: 'h-12 px-6 hds-type-ui [&_svg]:size-[var(--component-button-size-lg-iconSize)]',
+        sm: 'h-8 px-fixed-xs hds-type-caption [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
+        md: 'h-10 px-fixed-sm py-scale-xs hds-type-ui [&_svg]:size-[var(--component-button-size-md-iconSize)]',
+        lg: 'h-12 px-fixed-md hds-type-ui [&_svg]:size-[var(--component-button-size-lg-iconSize)]',
       },
       iconOnly: {
         true: 'p-0',

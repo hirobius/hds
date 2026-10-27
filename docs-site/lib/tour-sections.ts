@@ -165,6 +165,7 @@ export const TOUR_SECTIONS: readonly TourSection[] = [
       'DialogPortal',
       'DialogOverlay',
       'AlertDialog',
+      'Sheet',
     ],
   },
 ];

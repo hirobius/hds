@@ -96,7 +96,11 @@ export function snapshotTree(dir) {
 }
 
 /** Run the command as a child, the way npx runs the bin. */
-export function runCli(args, { cwd = REPO, env = process.env } = {}) {
+/** The CLI asks npm which versions are deprecated; fixtures stay offline unless they pass a packument. */
+export function runCli(
+  args,
+  { cwd = REPO, env = { ...process.env, HDS_UPGRADE_REGISTRY: 'off' } } = {},
+) {
   const res = spawnSync(process.execPath, [UPGRADE, ...args], {
     cwd,
     env,

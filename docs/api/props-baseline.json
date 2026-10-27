@@ -1,0 +1,3729 @@
+{
+  "Alert": {
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "tone": {
+      "type": "'success' | 'danger' | 'warning' | 'info'",
+      "optional": true,
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info"
+      ],
+      "default": "info"
+    }
+  },
+  "AlertDialog": {
+    "children": {
+      "type": "React.ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "open": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "AssetImg": {
+    "alt": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "context": {
+      "type": "'default' | 'lightbox' | 'detail'",
+      "optional": true,
+      "values": [
+        "default",
+        "lightbox",
+        "detail"
+      ],
+      "default": "default"
+    },
+    "draggable": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "expandLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "expandable": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "true"
+    },
+    "isDark": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "loading": {
+      "type": "\"lazy\" | \"eager\"",
+      "optional": true,
+      "values": [
+        "lazy",
+        "eager"
+      ],
+      "default": "lazy"
+    },
+    "naturalHeight": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "naturalWidth": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onClick": {
+      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onMouseDown": {
+      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onMouseLeave": {
+      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onMouseMove": {
+      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onMouseUp": {
+      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "src": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": "{}"
+    },
+    "title": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "AsyncState": {
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "empty": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "error": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "errorTitle": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Something went wrong"
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Content"
+    },
+    "loadingLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Loading"
+    },
+    "onRetry": {
+      "type": "(() => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "rows": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "3"
+    },
+    "slowAfterMs": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "10000"
+    },
+    "slowNote": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Still trying…"
+    },
+    "status": {
+      "type": "'loading' | 'error' | 'empty' | 'ready'",
+      "optional": false,
+      "values": [
+        "loading",
+        "error",
+        "empty",
+        "ready"
+      ],
+      "default": null
+    }
+  },
+  "Avatar": {
+    "alt": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "fallback": {
+      "type": "\"initials\" | \"icon\"",
+      "optional": true,
+      "values": [
+        "initials",
+        "icon"
+      ],
+      "default": "initials"
+    },
+    "initials": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\" | null",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    "src": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "status": {
+      "type": "'neutral' | 'info' | 'success' | 'warning' | 'danger'",
+      "optional": true,
+      "values": [
+        "neutral",
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "default": null
+    },
+    "statusLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "AvatarGroup": {
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "max": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\" | null",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    }
+  },
+  "Badge": {
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "span"
+    },
+    "count": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "dot": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "max": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": null
+    },
+    "tone": {
+      "type": "\"success\" | \"danger\" | \"warning\" | \"info\" | \"neutral\" | \"inProgress\" | null",
+      "optional": true,
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral",
+        "inProgress"
+      ],
+      "default": "neutral"
+    }
+  },
+  "Blockquote": {
+    "attribution": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\" | null",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    }
+  },
+  "Board": {
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "BoardColumn": {
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "count": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Box": {
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "div"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "sx": {
+      "type": "SxObject",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Breadcrumb": {
+    "items": {
+      "type": "BreadcrumbItem[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Breadcrumb"
+    }
+  },
+  "Button": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "defaultPressed": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "disabled": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "hoverEffect": {
+      "type": "\"none\" | \"wipe\"",
+      "optional": true,
+      "values": [
+        "none",
+        "wipe"
+      ],
+      "default": "wipe"
+    },
+    "iconLeft": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "iconOnly": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "iconRight": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "loading": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "onPressedChange": {
+      "type": "((pressed: boolean) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "pressed": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "shadow": {
+      "type": "\"none\" | \"hard\"",
+      "optional": true,
+      "values": [
+        "none",
+        "hard"
+      ],
+      "default": "hard"
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\" | null",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    "tone": {
+      "type": "\"success\" | \"danger\" | \"warning\" | \"info\" | \"neutral\" | null",
+      "optional": true,
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral"
+      ],
+      "default": "neutral"
+    },
+    "variant": {
+      "type": "\"primary\" | \"secondary\" | \"tertiary\" | null",
+      "optional": true,
+      "values": [
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "default": "secondary"
+    }
+  },
+  "Callout": {
+    "italic": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "tone": {
+      "type": "'accent' | 'info' | 'success' | 'warning' | 'danger'",
+      "optional": true,
+      "values": [
+        "accent",
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "default": "info"
+    }
+  },
+  "Card": {
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "bordered": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "gap": {
+      "type": "\"tight\" | \"normal\" | \"inset\" | \"spacious\" | \"px1\" | \"px2\" | \"px4\" | \"px6\" | \"px8\" | \"px10\" | \"px12\" | \"px16\" | \"px20\" | \"px24\" | \"px28\" | \"px32\" | \"px40\" | \"px48\" | \"px64\" | \"px80\" | \"px96\" | \"px128\"",
+      "optional": true,
+      "values": [
+        "tight",
+        "normal",
+        "inset",
+        "spacious",
+        "px1",
+        "px2",
+        "px4",
+        "px6",
+        "px8",
+        "px10",
+        "px12",
+        "px16",
+        "px20",
+        "px24",
+        "px28",
+        "px32",
+        "px40",
+        "px48",
+        "px64",
+        "px80",
+        "px96",
+        "px128"
+      ],
+      "default": "tight"
+    },
+    "noPadding": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "onSelectedChange": {
+      "type": "((selected: boolean) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "padding": {
+      "type": "\"component\" | \"item\" | \"px16\" | \"px24\" | \"none\"",
+      "optional": true,
+      "values": [
+        "component",
+        "item",
+        "px16",
+        "px24",
+        "none"
+      ],
+      "default": "component"
+    },
+    "selectable": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "selected": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "tone": {
+      "type": "'neutral' | 'danger' | 'success' | 'warning' | 'info'",
+      "optional": true,
+      "values": [
+        "neutral",
+        "danger",
+        "success",
+        "warning",
+        "info"
+      ],
+      "default": "neutral"
+    },
+    "variant": {
+      "type": "'default' | 'accent'",
+      "optional": true,
+      "values": [
+        "default",
+        "accent"
+      ],
+      "default": "default"
+    }
+  },
+  "CardBody": {},
+  "CardDescription": {},
+  "CardFacts": {
+    "items": {
+      "type": "CardFact[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "CardFooter": {},
+  "CardHeader": {
+    "metadata": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "CardMetric": {
+    "label": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "sub": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "tone": {
+      "type": "'neutral' | 'danger' | 'success' | 'warning' | 'info'",
+      "optional": true,
+      "values": [
+        "neutral",
+        "danger",
+        "success",
+        "warning",
+        "info"
+      ],
+      "default": "neutral"
+    },
+    "value": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "CardProgress": {
+    "label": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "max": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "100"
+    },
+    "tone": {
+      "type": "'neutral' | 'danger' | 'success' | 'warning' | 'info'",
+      "optional": true,
+      "values": [
+        "neutral",
+        "danger",
+        "success",
+        "warning",
+        "info"
+      ],
+      "default": "neutral"
+    },
+    "value": {
+      "type": "number",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "CardRow": {
+    "trailing": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "CardRowNote": {},
+  "CardRowTitle": {},
+  "CardSource": {
+    "avatar": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "name": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "time": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "CardTitle": {},
+  "Checkbox": {
+    "checked": {
+      "type": "boolean",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "indeterminate": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "label": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "onChange": {
+      "type": "(v: boolean) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "CodeBlock": {
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "code": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "collapsible": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "defaultExpanded": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "filename": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "language": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "truncateFromStart": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "variant": {
+      "type": "\"inline\" | \"block\"",
+      "optional": true,
+      "values": [
+        "inline",
+        "block"
+      ],
+      "default": "block"
+    }
+  },
+  "Combobox": {
+    "aria-describedby": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "aria-invalid": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "aria-label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "creatable": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "disabled": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "emptyMessage": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "No results"
+    },
+    "id": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "multiple": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onChange": {
+      "type": "((value: string) => void) | ((value: string[]) => void) | ((value: string[]) => void)",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "onCreate": {
+      "type": "(text: string) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "options": {
+      "type": "ComboboxOption[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "placeholder": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Select…"
+    },
+    "searchPlaceholder": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Search…"
+    },
+    "value": {
+      "type": "string | readonly string[] | null",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Composer": {
+    "attachments": {
+      "type": "ComposerAttachment[]",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultAttachments": {
+      "type": "ComposerAttachment[]",
+      "optional": true,
+      "values": null,
+      "default": "[]"
+    },
+    "defaultValue": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "disabled": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Message"
+    },
+    "onAttachmentsChange": {
+      "type": "((attachments: ComposerAttachment[]) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onSubmit": {
+      "type": "((submission: ComposerSubmission) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onValueChange": {
+      "type": "((value: string) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "pasteFoldThreshold": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "500"
+    },
+    "pending": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "placeholder": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "value": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Container": {
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "maxWidth": {
+      "type": "'content' | 'max'",
+      "optional": true,
+      "values": [
+        "content",
+        "max"
+      ],
+      "default": "max"
+    },
+    "padding": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "var(--semantic-space-surface-padding)"
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "DataTableSection": {
+    "actionsLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Actions"
+    },
+    "columns": {
+      "type": "TableColumn[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "emptyDescription": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "emptyTitle": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": "Nothing here yet"
+    },
+    "level": {
+      "type": "3 | 6 | 4 | 2 | 5",
+      "optional": true,
+      "values": null,
+      "default": "2"
+    },
+    "rows": {
+      "type": "DataTableSectionRow[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "toolbar": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "DestructiveSection": {
+    "actionLabel": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "cancelLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Cancel"
+    },
+    "confirmBody": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "confirmLabel": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "description": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "level": {
+      "type": "3 | 6 | 4 | 2 | 5",
+      "optional": true,
+      "values": null,
+      "default": "2"
+    },
+    "onConfirm": {
+      "type": "() => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Dialog": {
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "modal": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "open": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "DialogClose": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "DialogContent": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "container": {
+      "type": "HTMLElement | null",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "forceMount": {
+      "type": "true",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "hideClose": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "onCloseAutoFocus": {
+      "type": "((event: Event) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onEscapeKeyDown": {
+      "type": "((event: KeyboardEvent) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onFocusOutside": {
+      "type": "((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onInteractOutside": {
+      "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onOpenAutoFocus": {
+      "type": "((event: Event) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onPointerDownOutside": {
+      "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "DialogDescription": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "DialogFooter": {},
+  "DialogHeader": {},
+  "DialogOverlay": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "forceMount": {
+      "type": "true",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "DialogPortal": {
+    "children": {
+      "type": "React.ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "container": {
+      "type": "Element | DocumentFragment | null",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "forceMount": {
+      "type": "true",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "DialogTitle": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "DialogTrigger": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Disclosure": {
+    "accent": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "actions": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "contentStyle": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "label": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "open": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "preview": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "triggerStyle": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "variant": {
+      "type": "'panel' | 'nav' | 'card' | 'row'",
+      "optional": true,
+      "values": [
+        "panel",
+        "nav",
+        "card",
+        "row"
+      ],
+      "default": "panel"
+    }
+  },
+  "Divider": {
+    "orientation": {
+      "type": "\"horizontal\" | \"vertical\" | null",
+      "optional": true,
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal"
+    },
+    "spacing": {
+      "type": "string | number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "strong": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "variant": {
+      "type": "\"strong\" | \"default\" | null",
+      "optional": true,
+      "values": [
+        "strong",
+        "default"
+      ],
+      "default": "default"
+    }
+  },
+  "EmptyState": {
+    "action": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "description": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "icon": {
+      "type": "LucideIcon",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Field": {
+    "children": {
+      "type": "React.ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "mono": {
+      "type": "boolean | null",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "tone": {
+      "type": "\"success\" | \"danger\" | \"warning\" | \"info\" | \"neutral\" | null",
+      "optional": true,
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral"
+      ],
+      "default": "neutral"
+    },
+    "value": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Form": {},
+  "FormActions": {
+    "destructive": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "primary": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "secondary": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "sticky": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    }
+  },
+  "FormField": {
+    "children": {
+      "type": "ReactElement<any, string | JSXElementConstructor<any>>",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "description": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "error": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "htmlFor": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "required": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    }
+  },
+  "FormFieldShell": {
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "controlId": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "description": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "error": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "required": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    }
+  },
+  "Grid": {
+    "align": {
+      "type": "\"center\" | \"end\" | \"start\" | \"stretch\"",
+      "optional": true,
+      "values": [
+        "center",
+        "end",
+        "start",
+        "stretch"
+      ],
+      "default": "start"
+    },
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "div"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "columns": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "12"
+    },
+    "gap": {
+      "type": "'medium' | 'tight' | 'normal' | 'inset' | 'spacious'",
+      "optional": true,
+      "values": [
+        "medium",
+        "tight",
+        "normal",
+        "inset",
+        "spacious"
+      ],
+      "default": "inset"
+    },
+    "layout": {
+      "type": "'fixed' | 'auto-fit' | 'auto-fill'",
+      "optional": true,
+      "values": [
+        "fixed",
+        "auto-fit",
+        "auto-fill"
+      ],
+      "default": "fixed"
+    },
+    "minItemWidth": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "subgrid": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    }
+  },
+  "HdsRouterProvider": {
+    "adapter": {
+      "type": "HdsRouterAdapter",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "HdsThemeProvider": {
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "div"
+    },
+    "brand": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "children": {
+      "type": "React.ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "density": {
+      "type": "'comfortable' | 'compact'",
+      "optional": true,
+      "values": [
+        "comfortable",
+        "compact"
+      ],
+      "default": null
+    },
+    "fontFamily": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "fontFamilyDisplay": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "fontFamilyMono": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "theme": {
+      "type": "'light' | 'dark'",
+      "optional": true,
+      "values": [
+        "light",
+        "dark"
+      ],
+      "default": null
+    }
+  },
+  "Icon": {
+    "aria-hidden": {
+      "type": "boolean | \"true\" | \"false\"",
+      "optional": true,
+      "values": null,
+      "default": "true"
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "color": {
+      "type": "IconColor",
+      "optional": true,
+      "values": null,
+      "default": "currentColor"
+    },
+    "icon": {
+      "type": "LucideIcon",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "size": {
+      "type": "IconSize",
+      "optional": true,
+      "values": null,
+      "default": "small"
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "weight": {
+      "type": "\"fill\" | \"bold\" | \"light\" | \"thin\" | \"regular\" | \"duotone\"",
+      "optional": true,
+      "values": [
+        "fill",
+        "bold",
+        "light",
+        "thin",
+        "regular",
+        "duotone"
+      ],
+      "default": null
+    }
+  },
+  "InlineCode": {
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "compact": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "copyable": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "density": {
+      "type": "\"comfortable\" | \"compact\" | null",
+      "optional": true,
+      "values": [
+        "comfortable",
+        "compact"
+      ],
+      "default": "comfortable"
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "InlineLink": {
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "externalIcon": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "true"
+    },
+    "href": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "standalone": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    }
+  },
+  "Input": {
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "disabled": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "error": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "errorMessage": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "helperText": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "inputClassName": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "leadingVisual": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "loading": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "prefix": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    "suffix": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "textStyle": {
+      "type": "\"body\" | \"mono\"",
+      "optional": true,
+      "values": [
+        "body",
+        "mono"
+      ],
+      "default": "body"
+    },
+    "trailingVisual": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "type": {
+      "type": "'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number' | 'date' | 'time' | 'datetime-local'",
+      "optional": true,
+      "values": [
+        "text",
+        "email",
+        "password",
+        "search",
+        "tel",
+        "url",
+        "number",
+        "date",
+        "time",
+        "datetime-local"
+      ],
+      "default": "text"
+    }
+  },
+  "Kbd": {
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\" | null",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    }
+  },
+  "Menu": {
+    "children": {
+      "type": "React.ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "dir": {
+      "type": "(\"ltr\" | \"rtl\")",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "modal": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "open": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "MetaLine": {
+    "items": {
+      "type": "MetaLineItems",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "MetadataList": {
+    "footer": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "items": {
+      "type": "MetadataListItem[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "orientation": {
+      "type": "\"horizontal\" | \"vertical\" | null",
+      "optional": true,
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "vertical"
+    },
+    "variant": {
+      "type": "\"plain\" | \"divided\"",
+      "optional": true,
+      "values": [
+        "plain",
+        "divided"
+      ],
+      "default": "plain"
+    }
+  },
+  "MetricTile": {
+    "label": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "sub": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "tone": {
+      "type": "'neutral' | 'success' | 'warning' | 'danger' | 'info'",
+      "optional": true,
+      "values": [
+        "neutral",
+        "success",
+        "warning",
+        "danger",
+        "info"
+      ],
+      "default": "neutral"
+    },
+    "value": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "MetricTiles": {
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "NavList": {
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "NavListItem": {
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "current": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "href": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onSelect": {
+      "type": "(() => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "selected": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Page": {
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "maxWidth": {
+      "type": "'content' | 'max'",
+      "optional": true,
+      "values": [
+        "content",
+        "max"
+      ],
+      "default": "max"
+    },
+    "paddingY": {
+      "type": "'default' | 'compact' | 'none'",
+      "optional": true,
+      "values": [
+        "default",
+        "compact",
+        "none"
+      ],
+      "default": "default"
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "PageHeader": {
+    "actions": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "breadcrumb": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "description": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "level": {
+      "type": "PageHeaderLevel",
+      "optional": true,
+      "values": null,
+      "default": "1"
+    },
+    "metadata": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "status": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Pagination": {
+    "count": {
+      "type": "number",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Pagination"
+    },
+    "onPageChange": {
+      "type": "(page: number) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "page": {
+      "type": "number",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "siblingCount": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "1"
+    },
+    "variant": {
+      "type": "\"default\" | \"compact\"",
+      "optional": true,
+      "values": [
+        "default",
+        "compact"
+      ],
+      "default": "default"
+    }
+  },
+  "Pin": {
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "div"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "top": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "0"
+    }
+  },
+  "Popover": {
+    "children": {
+      "type": "React.ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "modal": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "open": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Progress": {
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Progress"
+    },
+    "max": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "100"
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\" | null",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    "tone": {
+      "type": "\"success\" | \"danger\" | \"warning\" | \"info\" | \"neutral\"",
+      "optional": true,
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral"
+      ],
+      "default": "neutral"
+    },
+    "value": {
+      "type": "number | null",
+      "optional": true,
+      "values": null,
+      "default": "null"
+    },
+    "variant": {
+      "type": "\"linear\" | \"circular\"",
+      "optional": true,
+      "values": [
+        "linear",
+        "circular"
+      ],
+      "default": "linear"
+    }
+  },
+  "Radio": {
+    "checked": {
+      "type": "boolean",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "onChange": {
+      "type": "(v: boolean) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Reveal": {
+    "animation": {
+      "type": "'fade' | 'fade-up' | 'fade-down' | 'scale'",
+      "optional": true,
+      "values": [
+        "fade",
+        "fade-up",
+        "fade-down",
+        "scale"
+      ],
+      "default": "fade-up"
+    },
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "div"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "SegmentedControl": {
+    "aria-label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "fullWidth": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onChange": {
+      "type": "(value: string) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "options": {
+      "type": "HdsSegmentedOption[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "railPadding": {
+      "type": "Padding<string | number>",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "segmentPaddingX": {
+      "type": "PaddingLeft<string | number>",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "size": {
+      "type": "NonNullable<\"sm\" | \"md\" | null> | undefined",
+      "optional": true,
+      "values": null,
+      "default": "md"
+    },
+    "value": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "variant": {
+      "type": "NonNullable<\"primary\" | \"secondary\" | null> | undefined",
+      "optional": true,
+      "values": null,
+      "default": "primary"
+    }
+  },
+  "Select": {
+    "aria-describedby": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "aria-invalid": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "container": {
+      "type": "HTMLElement | null",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "id": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "onChange": {
+      "type": "(v: string) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "options": {
+      "type": "{ value: string; label: string; }[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "placeholder": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Select…"
+    },
+    "showLabel": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "true"
+    },
+    "value": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Sidebar": {
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "div"
+    },
+    "children": {
+      "type": "[ReactNode, ReactNode]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "contentMin": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "50%"
+    },
+    "gap": {
+      "type": "'tight' | 'normal' | 'inset' | 'spacious'",
+      "optional": true,
+      "values": [
+        "tight",
+        "normal",
+        "inset",
+        "spacious"
+      ],
+      "default": "normal"
+    },
+    "side": {
+      "type": "'start' | 'end'",
+      "optional": true,
+      "values": [
+        "start",
+        "end"
+      ],
+      "default": "start"
+    },
+    "sideWidth": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "16rem"
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Skeleton": {
+    "height": {
+      "type": "string | number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "variant": {
+      "type": "\"text\" | \"circular\" | \"rectangular\" | null",
+      "optional": true,
+      "values": [
+        "text",
+        "circular",
+        "rectangular"
+      ],
+      "default": "rectangular"
+    },
+    "width": {
+      "type": "string | number",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Slider": {
+    "label": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "max": {
+      "type": "number",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "min": {
+      "type": "number",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "onChange": {
+      "type": "(v: number) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "step": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "1"
+    },
+    "value": {
+      "type": "number",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "valueText": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Spinner": {
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Loading"
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\" | null",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    }
+  },
+  "Stack": {
+    "align": {
+      "type": "'start' | 'center' | 'end' | 'stretch'",
+      "optional": true,
+      "values": [
+        "start",
+        "center",
+        "end",
+        "stretch"
+      ],
+      "default": null
+    },
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "div"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "direction": {
+      "type": "\"row\" | \"column\"",
+      "optional": true,
+      "values": [
+        "row",
+        "column"
+      ],
+      "default": "column"
+    },
+    "gap": {
+      "type": "\"tight\" | \"normal\" | \"inset\" | \"spacious\" | \"gap\" | \"medium\" | \"hairline\" | \"xs\" | \"stack\" | \"px1\" | \"px2\" | \"px4\" | \"px6\" | \"px8\" | \"px10\" | \"px12\" | \"px16\" | \"px20\" | \"px24\" | \"px28\" | \"px32\" | \"px40\" | \"px48\" | \"px64\" | \"px80\" | \"px96\" | \"px128\"",
+      "optional": true,
+      "values": [
+        "tight",
+        "normal",
+        "inset",
+        "spacious",
+        "gap",
+        "medium",
+        "hairline",
+        "xs",
+        "stack",
+        "px1",
+        "px2",
+        "px4",
+        "px6",
+        "px8",
+        "px10",
+        "px12",
+        "px16",
+        "px20",
+        "px24",
+        "px28",
+        "px32",
+        "px40",
+        "px48",
+        "px64",
+        "px80",
+        "px96",
+        "px128"
+      ],
+      "default": "tight"
+    },
+    "justify": {
+      "type": "'start' | 'center' | 'end' | 'space-between'",
+      "optional": true,
+      "values": [
+        "start",
+        "center",
+        "end",
+        "space-between"
+      ],
+      "default": null
+    },
+    "role": {
+      "type": "AriaRole",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "wrap": {
+      "type": "FlexWrap",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Stat": {
+    "label": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "sub": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "tone": {
+      "type": "\"success\" | \"danger\" | \"warning\" | \"info\" | \"neutral\" | null",
+      "optional": true,
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral"
+      ],
+      "default": "neutral"
+    },
+    "value": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "StatusListItem": {
+    "notes": {
+      "type": "ReactNode[]",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "tone": {
+      "type": "\"success\" | \"danger\" | \"warning\" | \"info\" | \"neutral\" | null",
+      "optional": true,
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral"
+      ],
+      "default": "neutral"
+    },
+    "trailing": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "StatusTile": {
+    "notes": {
+      "type": "ReactNode[]",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "tone": {
+      "type": "'success' | 'warning' | 'danger' | 'info' | 'neutral'",
+      "optional": true,
+      "values": [
+        "success",
+        "warning",
+        "danger",
+        "info",
+        "neutral"
+      ],
+      "default": "neutral"
+    },
+    "trailing": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Surface": {
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "div"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "overflow": {
+      "type": "Overflow",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "padding": {
+      "type": "\"component\" | \"item\" | \"px16\" | \"px24\" | \"none\"",
+      "optional": true,
+      "values": [
+        "component",
+        "item",
+        "px16",
+        "px24",
+        "none"
+      ],
+      "default": "component"
+    },
+    "shadow": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "theme": {
+      "type": "\"light\" | \"dark\"",
+      "optional": true,
+      "values": [
+        "light",
+        "dark"
+      ],
+      "default": null
+    }
+  },
+  "Switcher": {
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "div"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "gap": {
+      "type": "'tight' | 'normal' | 'inset' | 'spacious'",
+      "optional": true,
+      "values": [
+        "tight",
+        "normal",
+        "inset",
+        "spacious"
+      ],
+      "default": "normal"
+    },
+    "limit": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "threshold": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "30rem"
+    }
+  },
+  "Table": {
+    "caption": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "captionAction": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "columns": {
+      "type": "TableColumn[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "density": {
+      "type": "'compact' | 'comfortable'",
+      "optional": true,
+      "values": [
+        "compact",
+        "comfortable"
+      ],
+      "default": null
+    },
+    "description": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "emphasizeFirstColumn": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "flush": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "true"
+    },
+    "labelledBy": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "minWidth": {
+      "type": "string | number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "rows": {
+      "type": "TableRow[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "stickyHeader": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    }
+  },
+  "Tabs": {
+    "activationMode": {
+      "type": "\"automatic\" | \"manual\"",
+      "optional": true,
+      "values": [
+        "automatic",
+        "manual"
+      ],
+      "default": null
+    },
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultValue": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "dir": {
+      "type": "(\"ltr\" | \"rtl\")",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onValueChange": {
+      "type": "((value: string) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "orientation": {
+      "type": "\"horizontal\" | \"vertical\"",
+      "optional": true,
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": null
+    },
+    "value": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "TabsContent": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "forceMount": {
+      "type": "true",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "value": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "variant": {
+      "type": "\"panel\" | \"bare\" | null",
+      "optional": true,
+      "values": [
+        "panel",
+        "bare"
+      ],
+      "default": "panel"
+    }
+  },
+  "TabsList": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "loop": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "TabsTrigger": {
+    "asChild": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "value": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Tag": {
+    "active": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Text": {
+    "as": {
+      "type": "\"symbol\" | \"object\" | \"title\" | \"a\" | \"button\" | \"div\" | \"form\" | \"h2\" | \"h3\" | \"img\" | \"input\" | \"label\" | \"li\" | \"nav\" | \"ol\" | \"p\" | \"select\" | \"span\" | \"svg\" | \"ul\" | \"abbr\" | \"address\" | ... 158 more ...",
+      "optional": true,
+      "values": null,
+      "default": "defaultTagMap[variant]"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "lineClamp": {
+      "type": "TextLineClamp",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "style": {
+      "type": "CSSProperties",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "tone": {
+      "type": "'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'danger' | 'info'",
+      "optional": true,
+      "values": [
+        "primary",
+        "secondary",
+        "disabled",
+        "accent",
+        "success",
+        "warning",
+        "danger",
+        "info"
+      ],
+      "default": null
+    },
+    "truncate": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "variant": {
+      "type": "\"display\" | \"title\" | \"titleSm\" | \"body\" | \"ui\" | \"caption\" | \"mono\" | \"heading1\" | \"heading2\" | \"heading3\" | \"technical\" | \"eyebrow\" | \"badge\" | \"docLede\" | \"docBody\" | \"docSmall\" | \"docCode\"",
+      "optional": false,
+      "values": [
+        "display",
+        "title",
+        "titleSm",
+        "body",
+        "ui",
+        "caption",
+        "mono",
+        "heading1",
+        "heading2",
+        "heading3",
+        "technical",
+        "eyebrow",
+        "badge",
+        "docLede",
+        "docBody",
+        "docSmall",
+        "docCode"
+      ],
+      "default": null
+    },
+    "weight": {
+      "type": "'regular' | 'medium' | 'bold'",
+      "optional": true,
+      "values": [
+        "regular",
+        "medium",
+        "bold"
+      ],
+      "default": null
+    }
+  },
+  "Textarea": {
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "disabled": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "error": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "errorMessage": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "helperText": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "resize": {
+      "type": "\"none\" | \"both\" | \"vertical\"",
+      "optional": true,
+      "values": [
+        "none",
+        "both",
+        "vertical"
+      ],
+      "default": "vertical"
+    },
+    "textareaClassName": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "ThemeToggle": {
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "isDark": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onToggle": {
+      "type": "(() => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "Timeline": {
+    "aria-label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "locale": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "order": {
+      "type": "\"desc\" | \"asc\"",
+      "optional": true,
+      "values": [
+        "desc",
+        "asc"
+      ],
+      "default": "desc"
+    }
+  },
+  "TimelineItem": {
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "date": {
+      "type": "string | number | Date",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "icon": {
+      "type": "LucideIcon",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "locale": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "tone": {
+      "type": "'success' | 'danger' | 'warning' | 'info'",
+      "optional": true,
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info"
+      ],
+      "default": null
+    }
+  },
+  "Timestamp": {
+    "date": {
+      "type": "string | number | Date",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "format": {
+      "type": "'date' | 'time' | 'datetime' | 'relative'",
+      "optional": true,
+      "values": [
+        "date",
+        "time",
+        "datetime",
+        "relative"
+      ],
+      "default": "datetime"
+    },
+    "locale": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "now": {
+      "type": "string | number | Date",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "ToastProvider": {
+    "children": {
+      "type": "React.ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "duration": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "5000"
+    },
+    "swipeDirection": {
+      "type": "SwipeDirection",
+      "optional": true,
+      "values": null,
+      "default": "right"
+    }
+  },
+  "Toggle": {
+    "checked": {
+      "type": "boolean",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "onChange": {
+      "type": "(v: boolean) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "TokenField": {
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "disabled": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "error": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "errorMessage": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "fieldClassName": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "getTokenLabel": {
+      "type": "((token: string) => string)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "helperText": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "name": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onChange": {
+      "type": "(value: string) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "placeholder": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "required": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "rows": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": "4"
+    },
+    "tokenNoun": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "variable"
+    },
+    "tokenPattern": {
+      "type": "RegExp",
+      "optional": true,
+      "values": null,
+      "default": "/\\[([^[\\]\\n]{1,40})\\]/g"
+    },
+    "value": {
+      "type": "string",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "Tooltip": {
+    "children": {
+      "type": "React.ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "delayDuration": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "disableHoverableContent": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "open": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "VisuallyHidden": {
+    "as": {
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true,
+      "values": null,
+      "default": "span"
+    }
+  }
+}

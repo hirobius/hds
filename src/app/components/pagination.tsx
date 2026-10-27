@@ -97,7 +97,7 @@ const REACH_CLASS: Record<SlotReach, string | undefined> = {
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-const paginationListVariants = /* @__PURE__ */ cva('flex items-center gap-1', {
+const paginationListVariants = /* @__PURE__ */ cva('flex items-center gap-fixed-2xs', {
   variants: {
     variant: {
       default: 'flex-wrap',
@@ -131,6 +131,13 @@ export interface PaginationProps
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
+
+// The compact arrows are outlined (hds#886): a border-default edge at rest, and a disabled end keeps
+// the outline at reduced emphasis (transparent, the same border-default edge, content-disabled
+// icon) instead of the Button base's muted primary fill, so it reads as "not here" without looking
+// like a different control. Tertiary keeps its own hover and pressed fills.
+const compactArrowClass =
+  'border border-[color:var(--semantic-color-border-default)] disabled:bg-transparent';
 
 /** Paged navigation with first/last anchors, sibling pages, and ellipses. */
 export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, PaginationProps>(
@@ -183,6 +190,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
                 iconOnly
                 size="sm"
                 variant="tertiary"
+                className={compactArrowClass}
                 aria-label="Previous page"
                 disabled={page <= 1}
                 onClick={() => go(page - 1)}
@@ -199,6 +207,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
                 iconOnly
                 size="sm"
                 variant="tertiary"
+                className={compactArrowClass}
                 aria-label="Next page"
                 disabled={page >= count}
                 onClick={() => go(page + 1)}
@@ -233,7 +242,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
               <li
                 key={`ellipsis-${index}`}
                 aria-hidden="true"
-                className={cn('px-2 text-muted-foreground select-none', REACH_CLASS[reach])}
+                className={cn('px-scale-xs text-muted-foreground select-none', REACH_CLASS[reach])}
               >
                 …
               </li>
