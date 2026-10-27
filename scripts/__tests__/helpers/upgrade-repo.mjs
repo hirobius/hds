@@ -10,6 +10,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { CONTRACT_FILE, buildCssContract, formatContract } from '../../lib/css-contract.mjs';
 import { formatJson } from '../../upgrade/format.mjs';
+import { writePropsBaseline } from '../../upgrade/props.mjs';
 import { snapshotFromSource } from '../../upgrade/snapshot.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
@@ -120,5 +121,54 @@ export function cssRepo(css = RELEASED_CSS) {
     'docs/api/releases/0.20.0.json',
     formatJson({ ...snapshotFromSource(root), css: buildCssContract(root) }),
   );
+  return root;
+}
+
+/**
+ * The component-api.json rows of propsRepo()'s 0.20.0 release (hds#461): a
+ * cva Button whose defaults live only in its defaultVariants, as the real
+ * generator writes them (a variant union ends in `| null`).
+ */
+export const RELEASED_API = {
+  components: {
+    Button: {
+      filePath: 'src/button.tsx',
+      props: [
+        { name: 'onClick', type: '() => void', required: false },
+        { name: 'size', type: '"sm" | "md" | "lg" | null', required: false },
+        { name: 'variant', type: '"primary" | "secondary" | "tertiary" | null', required: false },
+      ],
+    },
+  },
+};
+
+/** button.tsx with a cva whose defaultVariants are `defaults`. */
+export function buttonSource(defaults = "size: 'md', variant: 'secondary'") {
+  return [
+    "import { cva } from 'class-variance-authority';",
+    "const buttonVariants = cva('btn', {",
+    "  variants: { size: { sm: '', md: '', lg: '' }, variant: { primary: '', secondary: '', tertiary: '' } },",
+    `  defaultVariants: { ${defaults} },`,
+    '});',
+    'export function Button() { return <button className={buttonVariants()} />; }',
+    '',
+  ].join('\n');
+}
+
+/**
+ * Writes the tree's src/app/data/component-api.json as generate-component-api
+ * would, and docs/api/props-baseline.json from it as `pnpm docs:api` does.
+ */
+export function writeComponentApi(root, api) {
+  write(root, 'src/app/data/component-api.json', JSON.stringify(api, null, 2));
+  writePropsBaseline(root);
+}
+
+/** releasedRepo() whose 0.20.0 snapshot carries the props section of RELEASED_API. */
+export function propsRepo(api = RELEASED_API) {
+  const root = releasedRepo();
+  write(root, 'src/button.tsx', buttonSource());
+  writeComponentApi(root, api);
+  recordRelease(root);
   return root;
 }

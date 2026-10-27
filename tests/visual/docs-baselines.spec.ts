@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 // @ts-expect-error -- plain ESM helper shared with the axe gate; no type declarations.
 import { DEMO_SELECTOR, discoverPages } from '../../scripts/lib/docs-axe.mjs';
-import { openThemed } from './theme';
+import { DEMO_SHOT, openThemed } from './theme';
 
 /**
  * hirobius/ops#726: local visual suite. Every component and pattern demo of the
@@ -35,11 +35,7 @@ test.describe('docs demo baselines @baseline', () => {
         const demo = page.locator(DEMO_SELECTOR).first();
         await expect(demo).toBeVisible();
         await page.mouse.move(0, 0);
-        await expect(demo).toHaveScreenshot(`${name}-${theme}.png`, {
-          animations: 'disabled',
-          caret: 'hide',
-          maxDiffPixelRatio: 0.002,
-        });
+        await expect(demo).toHaveScreenshot(`${name}-${theme}.png`, DEMO_SHOT);
       });
     }
   }

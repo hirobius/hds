@@ -42,7 +42,10 @@ export const EmptyState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Empty
       <div
         ref={ref}
         data-hds-component="EmptyState"
-        className={cn('flex flex-col gap-1 hds-type-ui italic text-muted-foreground', className)}
+        className={cn(
+          'flex flex-col gap-fixed-2xs hds-type-ui italic text-muted-foreground',
+          className,
+        )}
       >
         {icon && <Icon icon={icon} size="medium" />}
         <p className="m-0">{title}</p>

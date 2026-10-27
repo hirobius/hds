@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-27T09:22:45.196Z",
+  "generated": "2026-10-27T06:18:09.878Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -29,7 +29,7 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#19161a",
+    "primaryColor": "#4a4146",
     "primaryColorToken": "semantic.accent.rest",
     "font": "Plus Jakarta Sans variable 100–900, self-hosted",
     "spacingBase": "4px",
@@ -7534,7 +7534,7 @@
       "hidden": false,
       "docExempt": false,
       "filePath": "src/app/components/box.tsx",
-      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine.",
+      "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine. On React 19 the rules render as a hoisted `<style href precedence>` (so they are in server HTML); on React 18 they inject into a managed sheet in the browser.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -12045,7 +12045,7 @@
         "path": "primitive.color.graphite.50",
         "cssVar": "--primitive-color-graphite-50",
         "type": "color",
-        "description": "Graphite accent tint — faintest step; dark rest fill.",
+        "description": "Graphite accent tint — faintest step.",
         "value": "#f5f4f4"
       },
       {
@@ -12059,7 +12059,7 @@
         "path": "primitive.color.graphite.200",
         "cssVar": "--primitive-color-graphite-200",
         "type": "color",
-        "description": "Graphite accent — light warm-grey.",
+        "description": "Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill.",
         "value": "#cbc6c9"
       },
       {
@@ -12094,7 +12094,7 @@
         "path": "primitive.color.graphite.700",
         "cssVar": "--primitive-color-graphite-700",
         "type": "color",
-        "description": "Graphite accent — warm charcoal; light-mode accent text.",
+        "description": "Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA).",
         "value": "#4a4146"
       },
       {
@@ -12115,7 +12115,7 @@
         "path": "primitive.color.graphite.950",
         "cssVar": "--primitive-color-graphite-950",
         "type": "color",
-        "description": "Graphite accent — near-black; light rest fill.",
+        "description": "Graphite accent — near-black warm substrate.",
         "value": "#19161a"
       },
       {
@@ -12631,6 +12631,12 @@
         "value": "4px"
       },
       {
+        "path": "primitive.radius.6",
+        "cssVar": "--primitive-radius-6",
+        "type": "dimension",
+        "value": "6px"
+      },
+      {
         "path": "primitive.radius.8",
         "cssVar": "--primitive-radius-8",
         "type": "dimension",
@@ -13017,6 +13023,13 @@
         "value": "20px"
       },
       {
+        "path": "primitive.size.22",
+        "cssVar": "--primitive-size-22",
+        "type": "dimension",
+        "description": "22px size step.",
+        "value": "22px"
+      },
+      {
         "path": "primitive.size.24",
         "cssVar": "--primitive-size-24",
         "type": "dimension",
@@ -13310,12 +13323,12 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent fill, warm graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
-        "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#19161a",
+        "description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
+        "alias": "{primitive.color.graphite.700}",
+        "resolvedValue": "#4a4146",
         "dark": {
-          "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f5f4f4"
+          "alias": "{primitive.color.graphite.200}",
+          "resolvedValue": "#cbc6c9"
         }
       },
       {
@@ -14366,19 +14379,19 @@
         "path": "semantic.accent.rest",
         "cssVar": "--semantic-accent-rest",
         "type": "color",
-        "description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
-        "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#19161a",
+        "description": "Default accent fill for interactive elements at rest — warm graphite. Inverts per theme; pair with content.onAccent.",
+        "alias": "{primitive.color.graphite.700}",
+        "resolvedValue": "#4a4146",
         "dark": {
-          "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f5f4f4"
+          "alias": "{primitive.color.graphite.200}",
+          "resolvedValue": "#cbc6c9"
         }
       },
       {
         "path": "semantic.accent.hover",
         "cssVar": "--semantic-accent-hover",
         "type": "color",
-        "description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
+        "description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.800}",
         "resolvedValue": "#352e32",
         "dark": {
@@ -14390,12 +14403,12 @@
         "path": "semantic.accent.pressed",
         "cssVar": "--semantic-accent-pressed",
         "type": "color",
-        "description": "Accent fill on press (graphite.900 / 200).",
+        "description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
         "alias": "{primitive.color.graphite.900}",
         "resolvedValue": "#2a2428",
         "dark": {
-          "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#cbc6c9"
+          "alias": "{primitive.color.graphite.50}",
+          "resolvedValue": "#f5f4f4"
         }
       },
       {
@@ -14758,7 +14771,7 @@
         "type": "color",
         "description": "Nav item border color when active or selected.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.nav.text",
@@ -14902,7 +14915,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.tag.activeBorder",
@@ -14910,7 +14923,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.tag.activeHover",
@@ -15056,25 +15069,25 @@
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
-        "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
-        "alias": "{semantic.radius.action}",
-        "resolvedValue": "8px"
+        "description": "Figma value; code renders rounded-sm (role.radius - 2px).",
+        "alias": "{primitive.radius.6}",
+        "resolvedValue": "6px"
       },
       {
         "path": "component.badge.height",
         "cssVar": "--component-badge-height",
         "type": "dimension",
         "description": "Badge height.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "alias": "{primitive.size.22}",
+        "resolvedValue": "22px"
       },
       {
         "path": "component.badge.minWidth",
         "cssVar": "--component-badge-minWidth",
         "type": "dimension",
         "description": "Badge minimum width.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "alias": "{primitive.size.22}",
+        "resolvedValue": "22px"
       },
       {
         "path": "component.badge.paddingY",
@@ -15085,10 +15098,18 @@
         "resolvedValue": "2px"
       },
       {
+        "path": "component.badge.paddingShift",
+        "cssVar": "--component-badge-paddingShift",
+        "type": "dimension",
+        "description": "Label lift, taken from top padding to bottom.",
+        "alias": "{primitive.space.px1}",
+        "resolvedValue": "1px"
+      },
+      {
         "path": "component.badge.paddingX",
         "cssVar": "--component-badge-paddingX",
         "type": "dimension",
-        "description": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune).",
+        "description": "Horizontal padding inside the badge.",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -15098,7 +15119,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.button.bgHover",
@@ -15553,7 +15574,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "role.primary-foreground",

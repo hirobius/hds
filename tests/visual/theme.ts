@@ -1,6 +1,16 @@
 import type { Page } from '@playwright/test';
 
 /**
+ * Screenshot options shared by the demo baseline specs. The small tolerance absorbs
+ * edge antialiasing between Chromium revisions; a changed colour, size or layout still fails.
+ */
+export const DEMO_SHOT = {
+  animations: 'disabled',
+  caret: 'hide',
+  maxDiffPixelRatio: 0.002,
+} as const;
+
+/**
  * Open a docs route in one theme with motion reduced and fonts loaded: the
  * stored preference, the media query and the root attributes all agree, so a
  * snapshot never catches the page mid-switch.

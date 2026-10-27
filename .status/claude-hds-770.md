@@ -1,0 +1,1 @@
+Fix the browser-host symlink fallback to derive from the browsers root so the hermetic temp-root test passes (hds#770); the Box change's changeset box-sx-ssr-770 already covers shipping. skip-changeset

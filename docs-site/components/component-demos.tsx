@@ -780,7 +780,7 @@ function PaginationDemo() {
   const [page, setPage] = useState(3);
   const [item, setItem] = useState(1);
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-fixed-md">
       <Pagination count={10} page={page} onPageChange={setPage} />
       {/* Compact Previous and Next are outlined; the end you are on stays outlined, faded (hds#886). */}
       <Pagination variant="compact" label="Item" count={4} page={item} onPageChange={setItem} />
@@ -1251,8 +1251,15 @@ const SAMPLE_IMAGE =
 
 function AssetImgDemo() {
   return (
-    <div style={{ width: 'min(100%, 360px)' }}>
-      <AssetImg src={SAMPLE_IMAGE} alt="Sample artwork" naturalWidth={640} naturalHeight={360} />
+    // The frame holds the image's ratio, so the page does not reflow when it decodes (hds#770).
+    <div style={{ width: 'min(100%, 360px)', aspectRatio: '640 / 360' }}>
+      <AssetImg
+        src={SAMPLE_IMAGE}
+        alt="Sample artwork"
+        naturalWidth={640}
+        naturalHeight={360}
+        style={{ display: 'block', width: '100%', height: '100%' }}
+      />
     </div>
   );
 }

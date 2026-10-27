@@ -1,0 +1,1 @@
+Adoption ledger (hds#658, hds#659): `count-consumer-usage --history` samples a consumer once per UTC month into `history[]`; generated `docs/ADOPTION.md`, linked from the README, checked by `--check` (now on runGenerator).
