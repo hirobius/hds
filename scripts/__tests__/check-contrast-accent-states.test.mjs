@@ -26,8 +26,11 @@ describe('accent state contrast gate (hds#748)', () => {
   });
 });
 
-describe('dark accent state ordering (hds#748)', () => {
-  it('lightens step by step: hover > rest, pressed > hover, each at least 1.1:1 apart', async () => {
+// hds#748 had dark states lighten so onAccent stayed AA on a mid-grey rest. Since
+// hds#887 dark rest is near-white (graphite.50), so states step darker instead;
+// onAccent AA on each state is held by the contrast gate above.
+describe('dark accent state ordering (hds#748, hds#887)', () => {
+  it('darkens step by step: hover < rest, pressed < hover, each at least 1.1:1 apart', async () => {
     const { readFileSync } = await import('node:fs');
     const t = JSON.parse(readFileSync(resolve(root, 'hirobius.tokens.json'), 'utf8'));
     const prim = t.primitive.color.graphite;
@@ -41,9 +44,9 @@ describe('dark accent state ordering (hds#748)', () => {
     const L = (n) => lum(hex(t.semantic.accent[n].$extensions['com.figma.variables'].modes.Dark));
     const ratio = (a, b) => (a + 0.05) / (b + 0.05);
     const [rest, hover, pressed] = [L('rest'), L('hover'), L('pressed')];
-    expect(hover).toBeGreaterThan(rest);
-    expect(pressed).toBeGreaterThan(hover);
-    expect(ratio(hover, rest)).toBeGreaterThanOrEqual(1.1);
-    expect(ratio(pressed, hover)).toBeGreaterThanOrEqual(1.1);
+    expect(hover).toBeLessThan(rest);
+    expect(pressed).toBeLessThan(hover);
+    expect(ratio(rest, hover)).toBeGreaterThanOrEqual(1.1);
+    expect(ratio(hover, pressed)).toBeGreaterThanOrEqual(1.1);
   });
 });

@@ -164,15 +164,15 @@
       "graphite": {
         "50": {
           "$value": "#f5f4f4",
-          "$description": "Graphite accent tint — faintest step."
+          "$description": "Graphite accent tint — faintest step; dark-mode rest accent fill (hds#887)."
         },
         "100": {
           "$value": "#e9e7e8",
-          "$description": "Graphite accent — very light warm tint."
+          "$description": "Graphite accent — very light warm tint; dark-mode hover."
         },
         "200": {
           "$value": "#cbc6c9",
-          "$description": "Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill."
+          "$description": "Graphite accent — light warm-grey; dark-mode pressed."
         },
         "300": {
           "$value": "#b2abae",
@@ -192,7 +192,7 @@
         },
         "700": {
           "$value": "#4a4146",
-          "$description": "Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA)."
+          "$description": "Graphite accent — the warm charcoal step, a touch lighter since 0.27; light-mode accent text (white text as a fill is AAA)."
         },
         "800": {
           "$value": "#352e32",
@@ -204,7 +204,7 @@
         },
         "950": {
           "$value": "#19161a",
-          "$description": "Graphite accent — near-black warm substrate."
+          "$description": "Graphite accent — near-black warm substrate; light-mode rest accent fill (hds#887)."
         },
         "$description": "Graphite, the warm-charcoal brand accent scale. Feedback colors keep their own scales."
       },
@@ -1356,13 +1356,13 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.graphite.700}",
-          "$description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
+          "$value": "{primitive.color.graphite.950}",
+          "$description": "Accent fill, warm graphite. Near-black in light mode, near-white in dark mode so a primary Button never reads as disabled (hds#887); pair with content.onAccent.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.graphite.700}",
-                "Dark": "{primitive.color.graphite.200}"
+                "Light": "{primitive.color.graphite.950}",
+                "Dark": "{primitive.color.graphite.50}"
               }
             }
           }
@@ -2364,20 +2364,20 @@
     "accent": {
       "$type": "color",
       "rest": {
-        "$value": "{primitive.color.graphite.700}",
-        "$description": "Default accent fill for interactive elements at rest — warm graphite. Inverts per theme; pair with content.onAccent.",
+        "$value": "{primitive.color.graphite.950}",
+        "$description": "Default accent fill for interactive elements at rest — warm graphite, near-black in light and near-white in dark (hds#887). Inverts per theme; pair with content.onAccent.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.graphite.700}",
-              "Dark": "{primitive.color.graphite.200}"
+              "Light": "{primitive.color.graphite.950}",
+              "Dark": "{primitive.color.graphite.50}"
             }
           }
         }
       },
       "hover": {
         "$value": "{primitive.color.graphite.800}",
-        "$description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
+        "$description": "Accent fill on pointer hover: one visible step back toward the surface from rest (graphite.800 light, 100 dark); onAccent text stays AAA (hds#887).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2389,12 +2389,12 @@
       },
       "pressed": {
         "$value": "{primitive.color.graphite.900}",
-        "$description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
+        "$description": "Accent fill during active press: a further step from hover in dark (graphite.200), back toward rest in light (graphite.900); onAccent text stays AAA (hds#887).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
               "Light": "{primitive.color.graphite.900}",
-              "Dark": "{primitive.color.graphite.50}"
+              "Dark": "{primitive.color.graphite.200}"
             }
           }
         }
