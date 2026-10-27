@@ -165,7 +165,7 @@ Re-generates `componentInventory`, `componentSpecs` scaffolding, `tokens` snapsh
 
 1. Create the `.tsx` file with JSDoc `@category` tag.
 2. Run `pnpm manifest:generate` — the component appears in `componentInventory` and gets a scaffold `componentSpecs` entry with `tokenMapping`, `variantAxes`, `componentProperties` defaulted to empty.
-3. Hand-fill `tokens`, `figmaPropertyMapping`, `states`, `allowedChildren`, `requiredProps`, `a11yRules`, `variantAxes`, `componentProperties` either inline in the manifest or — preferably — in `scripts/build-tokens.mjs` so they survive re-generation. Do not hand-fill `props` or `propConstraints`: `scripts/enrich-manifest.mjs` owns both and rebuilds them from `src/app/data/component-api.json` on every run (hds#390), so add the component's props in code and they follow.
+3. Hand-fill `tokens`, `figmaPropertyMapping`, `states`, `allowedChildren`, `requiredProps`, `a11yRules`, `variantAxes`, `componentProperties` either inline in the manifest or — preferably — in `COMPONENT_SPEC_SEEDS` (`scripts/lib/token-manifest.mjs`) so they survive re-generation. Do not hand-fill `props` or `propConstraints`: `scripts/enrich-manifest.mjs` owns both and rebuilds them from `src/app/data/component-api.json` on every run (hds#390), so add the component's props in code and they follow.
 4. Run `pnpm validate:manifest` to confirm the spec is valid.
 5. Run `pnpm tokens` to propagate to docs and llms.txt.
 6. Figma masters are not generated from the manifest today. The in-house plugin that read `variantAxes` and `componentProperties` to build them is archived (ADR-018 §2); ADR-025 sets out the Code Connect plan this follows.

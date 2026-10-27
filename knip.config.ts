@@ -49,7 +49,7 @@ const config: KnipConfig = {
     'src/app/components/*.figma.ts',
   ],
   ignoreDependencies: [
-    // Type-only consumer (JSDoc `@type {{ ... }}` in scripts/build-tokens.mjs);
+    // Type-only consumer (JSDoc `@type {{ ... }}` in scripts/lib/token-emit/tailwind.mjs);
     // the runtime tailwind plugin loaded by vite is `@tailwindcss/vite`.
     'tailwindcss',
     // Used only via npx in api-extractor scripts; not a runtime dep.

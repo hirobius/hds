@@ -57,6 +57,9 @@ const WARN_ONLY = args.includes('--warn-only');
 // --all: include unstaged changes (manual / CI use). Default: staged-only (safe for pre-commit).
 const ALL_CHANGES = args.includes('--all');
 
+/** build-tokens.mjs writes the generated TS files from lib/token-emit/ts.mjs (hds#645). */
+const TS_EMITTER = ['scripts/build-tokens.mjs', 'scripts/lib/token-emit/ts.mjs'];
+
 /**
  * Map of auto-generated output files → their generator script(s).
  * Paths are relative to the repo root.
@@ -68,14 +71,22 @@ const AUTO_GEN_MAP = {
   'public/llms/': ['scripts/generate-llms-txt.mjs'],
   'DESIGN.md': ['scripts/build-design-md.mjs', 'DESIGN.source.md'],
   'DESIGN-HANDOFF.md': ['scripts/build-handoff.mjs', 'hirobius.tokens.json'],
-  'public/hds-manifest.json': ['scripts/generate-manifest.mjs', 'scripts/build-tokens.mjs'],
-  'src/styles/tokens.generated.css': ['scripts/build-tokens.mjs', 'hirobius.tokens.json'],
-  'src/app/design-system/generated-tokens.ts': ['scripts/build-tokens.mjs'],
-  'src/app/design-system/generated-token-values.ts': ['scripts/build-tokens.mjs'],
-  'src/app/design-system/generated-token-descriptions.ts': ['scripts/build-tokens.mjs'],
-  'src/app/design-system/generated-token-vars.d.ts': ['scripts/build-tokens.mjs'],
-  'src/app/design-system/generated-token-refs.ts': ['scripts/build-tokens.mjs'],
-  'tailwind.config.tokens.cjs': ['scripts/build-tokens.mjs'],
+  'public/hds-manifest.json': [
+    'scripts/generate-manifest.mjs',
+    'scripts/build-tokens.mjs',
+    'scripts/lib/token-manifest.mjs',
+  ],
+  'src/styles/tokens.generated.css': [
+    'scripts/build-tokens.mjs',
+    'scripts/lib/token-emit/css.mjs',
+    'hirobius.tokens.json',
+  ],
+  'src/app/design-system/generated-tokens.ts': TS_EMITTER,
+  'src/app/design-system/generated-token-values.ts': TS_EMITTER,
+  'src/app/design-system/generated-token-descriptions.ts': TS_EMITTER,
+  'src/app/design-system/generated-token-vars.d.ts': TS_EMITTER,
+  'src/app/design-system/generated-token-refs.ts': TS_EMITTER,
+  'tailwind.config.tokens.cjs': ['scripts/build-tokens.mjs', 'scripts/lib/token-emit/tailwind.mjs'],
 };
 
 /**

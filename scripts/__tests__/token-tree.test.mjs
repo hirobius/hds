@@ -79,7 +79,7 @@ describe('resolveAlias', () => {
 });
 
 describe('purity', () => {
-  it('importing token-tree and build-tokens reads no files from public/', () => {
+  it('importing token-tree, build-tokens and the emitter / manifest modules reads no files from public/', () => {
     // Copy scripts/ alone into a tree with no public/ and import both modules there.
     const dir = mkdtempSync(join(tmpdir(), 'tt-'));
     try {
@@ -89,7 +89,17 @@ describe('purity', () => {
       });
       symlinkSync(resolve(__dirname, '../../node_modules'), join(dir, 'node_modules'));
       copyFileSync(resolve(__dirname, '../../package.json'), join(dir, 'package.json'));
-      const code = `await import('./scripts/lib/token-tree.mjs'); await import('./scripts/build-tokens.mjs'); console.log('ok');`;
+      const modules = [
+        'lib/token-tree.mjs',
+        'lib/token-validate.mjs',
+        'lib/token-manifest.mjs',
+        'lib/token-emit/css.mjs',
+        'lib/token-emit/ts.mjs',
+        'lib/token-emit/tailwind.mjs',
+        'lib/token-emit/tenant.mjs',
+        'build-tokens.mjs',
+      ];
+      const code = `${modules.map((m) => `await import('./scripts/${m}');`).join(' ')} console.log('ok');`;
       const r = spawnSync(process.execPath, ['--input-type=module', '-e', code], {
         cwd: dir,
         encoding: 'utf8',

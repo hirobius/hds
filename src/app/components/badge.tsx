@@ -64,7 +64,7 @@ const badgeDotVariants = /* @__PURE__ */ cva('inline-block shrink-0 rounded-full
 // The dot diameter is a lookup, not a cva `size` axis: a cva contract axis must
 // be a Size property on the Figma Badge (check-figma-mapping), and that master
 // (31:15) has no dot yet. When the dot lands in Figma, move this into cva and
-// add `size` to Badge's variantAxes in scripts/build-tokens.mjs.
+// add `size` to Badge's variantAxes in scripts/lib/token-manifest.mjs.
 const BADGE_DOT_SIZE: Record<'sm' | 'md' | 'lg', string> = {
   sm: 'size-1.5',
   md: 'size-2',
