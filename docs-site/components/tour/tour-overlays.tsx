@@ -6,13 +6,14 @@ import {
   Dialog,
   Menu,
   Popover,
+  Sheet,
   Stack,
   Text,
   Tooltip,
   useToast,
 } from '@hirobius/design-system';
 
-/** Everything that opens on top of the page: a menu, a popover, a tooltip, a dialog and an alert dialog. */
+/** Everything that opens on top of the page: a menu, a popover, a tooltip, a dialog, an alert dialog and a sheet. */
 export function TourOverlays() {
   const { toast } = useToast();
   return (
@@ -91,6 +92,26 @@ export function TourOverlays() {
           </AlertDialog.Footer>
         </AlertDialog.Content>
       </AlertDialog>
+      <Sheet>
+        <Sheet.Trigger asChild>
+          <Button variant="secondary">Sort</Button>
+        </Sheet.Trigger>
+        <Sheet.Content>
+          <Sheet.Header>
+            <Sheet.Title>Sort consoles</Sheet.Title>
+            <Sheet.Description>A bottom sheet on a phone.</Sheet.Description>
+          </Sheet.Header>
+          <Sheet.Actions aria-label="Sort order">
+            <Sheet.Action current>Newest</Sheet.Action>
+            <Sheet.Action>Name</Sheet.Action>
+          </Sheet.Actions>
+          <Sheet.Footer>
+            <Sheet.Close asChild>
+              <Button variant="secondary">Done</Button>
+            </Sheet.Close>
+          </Sheet.Footer>
+        </Sheet.Content>
+      </Sheet>
     </Stack>
   );
 }
