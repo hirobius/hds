@@ -53,7 +53,7 @@ function unionMembers(type) {
       else if (ch === quote) quote = null;
     } else if (ch === '"' || ch === "'") quote = ch;
     else if ('([{<'.includes(ch)) depth++;
-    else if (')]}>'.includes(ch)) depth--;
+    else if (')]}'.includes(ch) || (ch === '>' && type[i - 1] !== '=')) depth--;
     else if (ch === '|' && depth === 0) {
       members.push(type.slice(start, i).trim());
       start = i + 1;
@@ -92,7 +92,12 @@ export function propsFromManifest(manifest, readSource) {
     if (!filePath) return {};
     if (!cvaDefaults.has(filePath)) {
       const source = readSource(filePath);
-      cvaDefaults.set(filePath, source ? extractCva(source).defaults : {});
+      // Only a cva axis's default: a plain prop that shares a name keeps none.
+      const { axes, defaults } = source ? extractCva(source) : { axes: {}, defaults: {} };
+      cvaDefaults.set(
+        filePath,
+        Object.fromEntries(Object.entries(defaults).filter(([name]) => Object.hasOwn(axes, name))),
+      );
     }
     return cvaDefaults.get(filePath);
   };

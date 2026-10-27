@@ -277,8 +277,8 @@ function propFacts(prev, next) {
           facts.push(fact({ kind: 'prop-value-removed', component, prop, value }));
         }
       }
-      if ((before.default ?? null) !== (after.default ?? null)) {
-        const [from, to] = [before.default ?? null, after.default ?? null];
+      const [from, to] = [before.default ?? null, after.default ?? null];
+      if (from !== to) {
         facts.push(fact({ kind: 'prop-default-changed', component, prop, from, to }));
       }
     }

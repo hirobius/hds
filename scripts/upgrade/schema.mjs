@@ -180,6 +180,11 @@ export const Detect = z
   .meta({ minProperties: 1 })
   .describe('How to find a use of the changed thing in consumer code. Any match is a use.');
 
+/**
+ * hds#461: a prop step names its component prop as data, not only in its id,
+ * so the prop-map codemod (hds#460) can rewrite `<Button size=...>` without
+ * parsing a subject string.
+ */
 export const Prop = z
   .object({
     component: z.string().min(1).describe('The component, as exported, such as Button.'),
