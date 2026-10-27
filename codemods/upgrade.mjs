@@ -101,7 +101,14 @@ const HEADINGS = {
   doByHand: 'Do by hand',
 };
 const SEVERITY = ['none', 'additive', 'look', 'behavior', 'breaking'];
-const REMOVING = new Set(['removed', 'moved', 'renamed', 'folded']);
+const REMOVING = new Set([
+  'removed',
+  'moved',
+  'renamed',
+  'folded',
+  'prop-renamed',
+  'prop-value-mapped',
+]);
 
 /** Kinds whose fix leaves what `detect` matches in place: a value or a behavior to check. */
 const CHECK_ONLY = new Set(['value-changed', 'behavior']);

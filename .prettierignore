@@ -42,6 +42,7 @@ fixtures/check-figma-fallbacks/**/snapshot.json
 # Schema generated from scripts/upgrade/schema.mjs. Their writers own the layout
 # and each --check compares bytes, so Prettier must not reflow them.
 docs/api/releases/
+docs/api/props-baseline.json
 upgrade/releases/
 upgrade/schema.json
 # Compiled from the ledgers by scripts/upgrade/compile.mjs (hds#451), whose

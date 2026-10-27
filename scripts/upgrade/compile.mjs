@@ -120,8 +120,15 @@ const HEADINGS = {
   doByHand: 'Do by hand',
 };
 
-/** Step kinds that take something public away (./ledger.mjs stepIsBreaking reads the same four). */
-const REMOVING = new Set(['removed', 'moved', 'renamed', 'folded']);
+/** Step kinds that take something public away (./ledger.mjs stepIsBreaking reads the same set). */
+const REMOVING = new Set([
+  'removed',
+  'moved',
+  'renamed',
+  'folded',
+  'prop-renamed',
+  'prop-value-mapped',
+]);
 
 /**
  * The list a ledger step belongs to, from its kind, impact and auto alone
