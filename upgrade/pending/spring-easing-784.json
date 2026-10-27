@@ -1,4 +1,17 @@
 {
   "impact": "look",
-  "plain": "Anything using --primitive-easing-elastic, --hds-motion-expressive-easing or the --hds-anim-appear, --hds-anim-entrance and --hds-anim-spin presets now animates with a small spring overshoot instead of being dropped as invalid CSS; check those animations look right."
+  "plain": "Anything using --primitive-easing-elastic, --hds-motion-expressive-easing or the --hds-anim-appear, --hds-anim-entrance and --hds-anim-spin presets now animates with a small spring overshoot instead of being dropped as invalid CSS; check those animations look right.",
+  "steps": [
+    {
+      "id": "value-changed/--primitive-easing-elastic",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--primitive-easing-elastic is now a valid linear() spring curve with about 11% overshoot, where the old spring(300, 20, 1) value was invalid CSS and the browser dropped it, so animations using it now overshoot slightly instead of falling back to their default easing.",
+      "detect": {
+        "cssVars": ["--primitive-easing-elastic"],
+        "cssVarWrites": ["--primitive-easing-elastic"]
+      },
+      "facts": ["css-var-changed:--primitive-easing-elastic::root"]
+    }
+  ]
 }
