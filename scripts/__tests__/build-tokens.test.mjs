@@ -31,6 +31,7 @@ import {
   buildDeprecationNotes,
   buildCSSVarDts,
   isCssEasing,
+  EASING_TYPES,
 } from '../build-tokens.mjs';
 import { readTokenSource } from '../lib/token-source.mjs';
 
@@ -1293,6 +1294,16 @@ describe('spring easing', () => {
     }
   });
 
+  it('still ends at 1 for a spring that never settles', () => {
+    const css = valueToCSS(
+      { type: 'spring', stiffness: 300, damping: 0, mass: 1 },
+      'spring',
+      false,
+    );
+    expect(isCssEasing(css)).toBe(true);
+    expect(stops(css).at(-1)).toBe(1);
+  });
+
   it('starts at 0, settles at 1 and overshoots once, about 11%', () => {
     const s = stops(valueToCSS(spring, 'spring', false));
     expect(s[0]).toBe(0);
@@ -1311,9 +1322,7 @@ describe('spring easing', () => {
   it('emits valid CSS for every easing token in hirobius.tokens.json', () => {
     const repo = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
     const raw = readTokenSource(join(repo, 'hirobius.tokens.json'));
-    const easing = [...walkTokens(raw)].filter((t) =>
-      ['cubicBezier', 'motionEasing', 'spring'].includes(t.type),
-    );
+    const easing = [...walkTokens(raw)].filter((t) => EASING_TYPES.includes(t.type));
     expect(easing.length).toBeGreaterThan(0);
     for (const t of easing) {
       expect([t.path.join('.'), isCssEasing(valueToCSS(t.value, t.type, false, raw))]).toEqual([

@@ -132,9 +132,14 @@ const EXEMPT_PATTERN = /^[ \t]*\/\/[ \t]*motion-ok:[ \t]*\S/m;
 const ARBITRARY_MOTION =
   /(?<![\w-])(?:(?:animate|duration|ease|delay)-\[[^\]\s]+\]|\[(?:transition|animation)(?:-[a-z-]+)?:[^\]\s]+\])/g;
 
-/** Source with comments blanked, so prose cannot satisfy a code pattern. */
-const stripComments = (src) =>
-  src.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:\\])\/\/.*$/gm, '$1');
+/**
+ * Source with comments blanked, so prose cannot satisfy a code pattern. One
+ * pass that skips string literals, so `'a//b'` or a `/*` inside a line comment
+ * cannot swallow real code.
+ */
+const COMMENT_OR_STRING =
+  /("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|`(?:\\.|[^`\\])*`)|\/\*[\s\S]*?\*\/|\/\/[^\n]*/g;
+const stripComments = (src) => src.replace(COMMENT_OR_STRING, (m, str) => str ?? ' ');
 
 const MISSING_MOTION =
   'Interactive component has no motion feedback.\n' +
@@ -160,7 +165,7 @@ function problemsIn(content) {
         '       Use a token, e.g. duration-[var(--primitive-duration-fast)], or a named utility.',
     );
   }
-  const isInteractive = INTERACTIVE_PATTERNS.some((p) => p.test(content));
+  const isInteractive = INTERACTIVE_PATTERNS.some((p) => p.test(code));
   if (isInteractive && !MOTION_PATTERNS.some((p) => p.test(code))) problems.push(MISSING_MOTION);
   return problems;
 }
@@ -218,6 +223,7 @@ if (failures.length === 0) {
   console.error(
     `\nâœ— Motion check failed — ${failures.length} component(s) have no motion feedback or hard-code it.\n`,
   );
+  console.error('  Hard-coded arbitrary motion values must use a token.');
   console.error('  Every interactive component needs at least one of:\n');
   console.error('    A) motion/react (motion.div, AnimatePresence, whileHover, etc.)');
   console.error('    B) CSS transition referencing hds.duration.* tokens');

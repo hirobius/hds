@@ -42,6 +42,19 @@ describe('check-motion', () => {
     expect(check(`/* className="transition" */\n${button('px-2')}`).ok).toBe(false);
   });
 
+  it('keeps code after a line comment that contains /* and after // in a string', () => {
+    expect(check(`// globs src/**/*.tsx\n${button('transition-colors')}`).ok).toBe(true);
+    expect(
+      check(
+        `const u = 'a//b'; export const B = () => <button className="transition-colors">Go</button>;\n`,
+      ).ok,
+    ).toBe(true);
+  });
+
+  it('does not treat a commented-out button as interactive', () => {
+    expect(check(`// <button onClick={go}>\nexport const X = () => <div />;\n`).ok).toBe(true);
+  });
+
   it('accepts a motion-ok line comment with a reason', () => {
     expect(check(`// motion-ok: morph lives in theme.css\n${button('px-2')}`).ok).toBe(true);
   });

@@ -93,6 +93,9 @@ export function springToCSS({ stiffness, damping, mass }, samples = 16) {
   return `linear(${stops.join(', ')})`;
 }
 
+/** Token types whose value compiles to a CSS easing function. */
+export const EASING_TYPES = ['cubicBezier', 'motionEasing', 'spring'];
+
 const EASING_KEYWORDS = new Set([
   'linear',
   'ease',
@@ -755,7 +758,7 @@ export function validateTokens(raw) {
     }
 
     // V6 — an easing must compile to a CSS easing a browser accepts (hds#784)
-    if (!isAlias && ['cubicBezier', 'motionEasing', 'spring'].includes(type)) {
+    if (!isAlias && EASING_TYPES.includes(type)) {
       const css = valueToCSS(value, type, false, raw);
       if (!isCssEasing(css)) errors.push(`V6 [${dotPath}] easing "${css}" is not valid CSS`);
     }
