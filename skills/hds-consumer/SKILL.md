@@ -217,6 +217,8 @@ Never:
 ## Do and don't
 
 - Use tokens only. No raw hex or px in `style`, `className` or `Box` `sx`; the lint rules below enforce this.
+- Never guess a token name: run `pnpm exec hds-tokens search <name or words>` first; it says whether the name exists and lists the nearest real ones.
+- Size vs space: `semantic.size.*` is an element's own width or height; `semantic.space.*` is the gap or padding between and inside elements.
 - No inline margins on children to fake sibling spacing; the parent layout primitive owns the gap.
 - Use an allow-listed HDS component where one exists instead of hand-rolling it.
 - Keep app-local tokens and styles under your own `--<prefix>-*` prefix, never inside DS-owned namespaces (`--primitive-*`, `--semantic-*`, `--component-*`, `--role-*`, `--hds-*`; `data-hds`, `data-theme`, `data-tenant`).
