@@ -226,22 +226,22 @@ export function renderInUseBlock(s) {
 
 /** The README with its "In use" block rendered from `snapshot`: what `--check` compares. */
 export function readmeWithUsage(readme, snapshot) {
-  return replaceBlock(readme, IN_USE_BLOCK, renderInUseBlock(snapshot));
+  return replaceBlock(readme, IN_USE_BLOCK, renderInUseBlock(snapshot), 'README.md');
 }
 
 /** docs/ADOPTION.md with its ledger block rendered from `snapshot`. */
 export function adoptionWithHistory(doc, snapshot) {
-  return replaceBlock(doc, ADOPTION_BLOCK, renderAdoptionBlock(snapshot));
+  return replaceBlock(doc, ADOPTION_BLOCK, renderAdoptionBlock(snapshot), 'docs/ADOPTION.md');
 }
 
-/** `text` with the `auto:start/end:<name>` block replaced by `block`. */
-export function replaceBlock(text, name, block) {
+/** `text` (the contents of `file`) with its `auto:start/end:<name>` block replaced by `block`. */
+export function replaceBlock(text, name, block, file = 'the file') {
   const start = `<!-- auto:start:${name} -->`;
   const end = `<!-- auto:end:${name} -->`;
   const from = text.indexOf(start);
   const to = text.indexOf(end);
   if (from === -1 || to === -1 || to < from)
-    throw new Error(`missing the ${start} … ${end} markers.`);
+    throw new Error(`${file} is missing the ${start} … ${end} markers.`);
   return `${text.slice(0, from)}${start}\n${block}${text.slice(to)}`;
 }
 
@@ -356,6 +356,10 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     : [argValue('--root'), process.env.OPS_ROOT].find((p) => p && existsSync(p));
   const manifest = () => JSON.parse(readFileSync(join(REPO, 'public/hds-manifest.json'), 'utf8'));
   const aliases = () => consumerAliases(readFileSync(join(REPO, 'src/index.ts'), 'utf8'));
+  if (!check && process.argv.includes('--history') && !root)
+    throw new Error(
+      'consumer:usage --history needs --root <full clone of the consumer> (or OPS_ROOT).',
+    );
   if (root && process.argv.includes('--history')) {
     const consumer = argValue('--consumer', 'hirobius/ops');
     if (!snapshot.consumers.apps.some((a) => a.id === consumer))
@@ -377,11 +381,13 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
       measure: (dir) => measureConsumer(dir, names, al),
     });
     snapshot.history = upsertHistory(snapshot.history, entry);
-    snapshot.consistency = consistencySummary(
-      latestHarnessEntry(
-        JSON.parse(readFileSync(join(REPO, 'eval/consistency/ledger.json'), 'utf8')),
-      ),
-    );
+    // A ledger with no harness run keeps the last one copied, not a blank.
+    snapshot.consistency =
+      consistencySummary(
+        latestHarnessEntry(
+          JSON.parse(readFileSync(join(REPO, 'eval/consistency/ledger.json'), 'utf8')),
+        ),
+      ) ?? snapshot.consistency;
     writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2) + '\n');
     console.log(`consumer:usage --history measured ${consumer}: ${entry.rows.length} months`);
   } else if (root) {

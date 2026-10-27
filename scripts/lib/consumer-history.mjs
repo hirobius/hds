@@ -24,8 +24,8 @@ import { join } from 'node:path';
 export const HISTORY_FROM = '2026-07';
 const WINDOW_START = '2026-07-01T00:00:00Z';
 const FIRST_MONTH_END = '2026-08-01T00:00:00Z';
-const RAW_CONTROL_RE = /<(button|input|select|textarea|table)\b/g;
 const RAW_CONTROLS = ['button', 'input', 'select', 'textarea', 'table'];
+const RAW_CONTROL_RE = new RegExp(`<(${RAW_CONTROLS.join('|')})\\b`, 'g');
 const PACKAGE = '@hirobius/design-system';
 
 const git = (root, ...args) =>
@@ -103,11 +103,12 @@ export function readHdsTags(hdsRoot) {
 
 /**
  * The highest semver among tags dated on or before `end` (not the newest one
- * created: a backport tag can be cut after a higher release), or null.
+ * created: a backport tag can be cut after a higher release), or null. The
+ * same cutoff as `rev-list --before=<end>`, which picks the month's commit.
  */
 export function hdsVersionAt(tags, end) {
   const cutoff = Date.parse(end) / 1000;
-  const eligible = tags.filter((t) => t.at < cutoff);
+  const eligible = tags.filter((t) => t.at <= cutoff);
   if (eligible.length === 0) return null;
   return eligible.reduce((a, b) => (cmpSemver(b.version, a.version) > 0 ? b : a)).tag.slice(1);
 }

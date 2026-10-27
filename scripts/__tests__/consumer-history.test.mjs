@@ -132,6 +132,8 @@ describe('measureHistory over a two-month fixture', () => {
 
   beforeAll(() => {
     app = initRepo();
+    commit(app, { 'package.json': pkg('^0.8.0') }, '2026-05-20T12:00:00Z');
+    commit(app, { 'package.json': pkg('^0.9.0') }, '2026-06-20T12:00:00Z');
     july = commit(
       app,
       {
@@ -219,6 +221,25 @@ describe('measureHistory over a two-month fixture', () => {
       ).toThrow(/shallow clone.*git fetch --depth=1000 origin main/);
     } finally {
       rmSync(shallow, { recursive: true, force: true });
+    }
+  });
+
+  it('passes on a shallow clone deep enough to reach past July', () => {
+    const deep = mkdtempSync(join(tmpdir(), 'hds-deep-'));
+    try {
+      execFileSync('git', ['clone', '-q', '--depth=4', `file://${app}`, deep]);
+      // Shallow, with the boundary at the June commit: outside the window.
+      expect(sh(deep, ['rev-parse', '--is-shallow-repository'])).toBe('true');
+      const out = measureHistory({
+        root: deep,
+        consumer: 'x',
+        hdsTags,
+        measure,
+        now: new Date('2026-08-20T00:00:00Z'),
+      });
+      expect(out.rows.map((r) => r.commit)).toEqual([july, august]);
+    } finally {
+      rmSync(deep, { recursive: true, force: true });
     }
   });
 
