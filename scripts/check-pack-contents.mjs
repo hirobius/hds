@@ -84,6 +84,7 @@ export const REQUIRED = [
   'codemods/upgrade.mjs',
   'codemods/registry.mjs',
   'codemods/lib/atomic-write.mjs',
+  'codemods/lib/deprecated.mjs',
   'codemods/lib/installed-version.mjs',
   'codemods/lib/project.mjs',
   'codemods/lib/record.mjs',

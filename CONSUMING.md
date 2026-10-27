@@ -148,6 +148,9 @@ pnpm changeset:version    # apply bumps, regenerate CHANGELOG.md, record the rel
 
 CI (`.github/workflows/release.yml`) automates steps 2–3 on merge to `main`.
 
+A bad release is deprecated, not unpublished: [docs/RELEASING.md](docs/RELEASING.md),
+"If a release is bad", has the commands and `pnpm release:yank`.
+
 Publishing to npm uses **Trusted Publishing (OIDC)**: no npm token exists. The
 package's Trusted Publisher entry on npmjs.com (org `hirobius`, repo `hds`,
 workflow `release.yml`, no environment) lets the workflow mint a short-lived

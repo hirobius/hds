@@ -19,7 +19,9 @@
  *      default branch wins (bumped by hand), and when the lockfile already
  *      says the target, its git history is read too (lib/project.mjs);
  *   2. refuses, changing nothing (exit 2), a version below the record's floor,
- *      a downgrade, or a target the record has no ledger for;
+ *      a downgrade, a target the record has no ledger for, or a --to that npm
+ *      marks deprecated (a yanked release, hds#472); with no --to, a
+ *      deprecated default target is skipped for the newest good one;
  *   3. applies the ledgers after the installed version up to the target,
  *      oldest first, plus any earlier step that takes a name away which the
  *      code still uses (a hand bump that skipped it): runs their codemods, bumps the dependency range (keeping
@@ -54,6 +56,7 @@ import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isEntry } from './jsx-fold.mjs';
 import { writeFileAtomic } from './lib/atomic-write.mjs';
+import { readDeprecated } from './lib/deprecated.mjs';
 import { HDS_PACKAGE } from './lib/installed-version.mjs';
 import {
   detectManager,
@@ -224,6 +227,7 @@ function createReport(record, options) {
     comingNext: [],
     doByHand: [],
     changedFiles: [],
+    skipped: [],
     refused: null,
     exitCode: 0,
   };
@@ -356,17 +360,40 @@ const WHY = {
  * Upgrade one project. Never throws for a consumer problem: a refusal is a
  * report with exitCode 2 and `refused` set, and nothing written.
  * @param {ReturnType<typeof parseArgs>['options']} options
- * @param {{ pkgDir?: string }} [env]
+ * @param {{ pkgDir?: string, deprecated?: Map<string, string> }} [env]
+ *   `deprecated`: version -> npm deprecation message (lib/deprecated.mjs)
  */
-export async function upgrade(options, { pkgDir = PKG_DIR } = {}) {
+export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map() } = {}) {
   const record = loadRecord(pkgDir);
   const report = createReport(record, options);
+  const known = record.ledgers.map((l) => l.version);
+
+  // ── 0. a yanked target: refuse an explicit one, skip a default one
+  if (deprecated.has(report.target)) {
+    const message = deprecated.get(report.target);
+    if (options.to) {
+      return refuse(
+        report,
+        `${report.target} is deprecated on npm (${message}): pass --to with a version that is not, or run npx ${HDS_PACKAGE}@latest upgrade.`,
+      );
+    }
+    const good = known
+      .filter((v) => compareVersions(v, report.target) < 0 && !deprecated.has(v))
+      .at(-1);
+    if (!good) {
+      return refuse(
+        report,
+        `${report.target} is deprecated on npm (${message}) and this copy knows no good version before it: run npx ${HDS_PACKAGE}@latest upgrade.`,
+      );
+    }
+    report.skipped.push({ version: report.target, reason: message });
+    report.target = good;
+  }
   const { target } = report;
   const apply = options.mode === 'apply';
   const root = options.root;
 
   // ── 1. what is installed, and refusals (nothing written before this ends)
-  const known = record.ledgers.map((l) => l.version);
   if (!known.includes(target)) {
     return refuse(
       report,
@@ -807,6 +834,9 @@ export function formatReport(report) {
       }[imp.source] ?? imp.source;
     out.push(`  ${imp.dir}  ${imp.from} -> ${report.target}  (installed version from ${where})`);
   }
+  for (const { version, reason } of report.skipped) {
+    out.push(`  Skipped ${version}: deprecated on npm (${reason}).`);
+  }
   if (report.split) {
     out.push(
       '  Workspace split: these importers start from different versions; each is upgraded from its own.',
@@ -893,7 +923,7 @@ export async function main(argv, invokedAs = '') {
   }
   let report;
   try {
-    report = await upgrade(options);
+    report = await upgrade(options, { deprecated: await readDeprecated() });
   } catch (error) {
     const changed =
       options.mode === 'apply'
