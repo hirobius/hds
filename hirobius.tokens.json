@@ -2950,7 +2950,7 @@
       "radius": {
         "$type": "dimension",
         "$value": "{primitive.radius.6}",
-        "$description": "Badge corner radius: 6px, one step under the 8px action radius (hds#757). Its own token, so a tenant reshapes Badge by overriding it (brutalist-demo pins it to 0)."
+        "$description": "Badge corner, one step under the action radius (hds#757); tenants override it to reshape Badge."
       },
       "height": {
         "$type": "dimension",
@@ -2970,7 +2970,7 @@
       "labelOffset": {
         "$type": "dimension",
         "$value": "{primitive.space.px1}",
-        "$description": "Optical centring (hds#757): the label moves up this much (top padding minus it, bottom padding plus it), so the x-height of a sentence-case label sits centred rather than the line box."
+        "$description": "Lifts the badge label this much so it sits optically centred (hds#757)."
       },
       "paddingX": {
         "$type": "dimension",

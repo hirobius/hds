@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-27T03:28:52.414Z",
+  "generated": "2026-10-27T03:32:38.725Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -14506,7 +14506,7 @@
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
-        "description": "Badge corner radius: 6px, one step under the 8px action radius (hds#757). Its own token, so a tenant reshapes Badge by overriding it (brutalist-demo pins it to 0).",
+        "description": "Badge corner, one step under the action radius (hds#757); tenants override it to reshape Badge.",
         "alias": "{primitive.radius.6}",
         "resolvedValue": "6px"
       },
@@ -14538,7 +14538,7 @@
         "path": "component.badge.labelOffset",
         "cssVar": "--component-badge-labelOffset",
         "type": "dimension",
-        "description": "Optical centring (hds#757): the label moves up this much (top padding minus it, bottom padding plus it), so the x-height of a sentence-case label sits centred rather than the line box.",
+        "description": "Lifts the badge label this much so it sits optically centred (hds#757).",
         "alias": "{primitive.space.px1}",
         "resolvedValue": "1px"
       },
