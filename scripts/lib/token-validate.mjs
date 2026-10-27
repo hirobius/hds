@@ -1,5 +1,8 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
-/** Structural validation of hirobius.tokens.json (hds#645). Pure. */
+/**
+ * Structural validation of hirobius.tokens.json (V1–V5). Pure (no fs); split
+ * out of scripts/build-tokens.mjs (hds#645).
+ */
 
 import { readModes } from './token-modes.mjs';
 import { resolveAlias, walkTokens } from './token-tree.mjs';

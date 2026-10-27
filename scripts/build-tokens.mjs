@@ -6,13 +6,22 @@
  * Compiles hirobius.tokens.json (W3C DTCG 2025.10) into:
  *   src/styles/tokens.generated.css             — CSS custom properties
  *   src/app/design-system/generated-tokens.ts   — TypeScript constants
+ *   (plus the token values / descriptions / refs / vars .d.ts, the manifest,
+ *   the Tailwind bridge, the deprecation table and the tenant / accent CSS)
  *
  * Run: node scripts/build-tokens.mjs
  * No dependencies required — pure Node.js ESM.
  *
- * The CLI only: reading, validation and writes. The pure parts live in
- * lib/token-tree.mjs, lib/token-validate.mjs, lib/token-emit/{css,ts,tailwind,tenant}.mjs
- * and lib/token-manifest.mjs (hds#645). Importing this file reads nothing.
+ * This file is the CLI. The work lives in pure modules (hds#645):
+ *   lib/token-tree.mjs         walk the tree, parse and resolve aliases
+ *   lib/token-validate.mjs     structural rules V1–V5
+ *   lib/token-emit/css.mjs     values → CSS, tokens.generated.css
+ *   lib/token-emit/ts.mjs      the generated-token*.ts files
+ *   lib/token-emit/tailwind.mjs tailwind.config.tokens.cjs
+ *   lib/token-emit/tenant.mjs  tenant / accent overlays
+ *   lib/token-manifest.mjs     public/hds-manifest.json (previous manifest passed in)
+ * Their names are re-exported here for existing importers (one release; then
+ * import the module directly). Importing this file reads no files.
  */
 
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
@@ -24,54 +33,26 @@ import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 import { walkTokens } from './lib/token-tree.mjs';
 import { validateTokens } from './lib/token-validate.mjs';
-import { buildTokensCSS } from './lib/token-emit/css.mjs';
-import { buildDeprecationNotes, buildTSFiles } from './lib/token-emit/ts.mjs';
-import { buildTailwindConfigCjs } from './lib/token-emit/tailwind.mjs';
+import { renderTokensCSS } from './lib/token-emit/css.mjs';
+import {
+  buildDeprecationNotes,
+  renderTokenDescriptionsTS,
+  renderTokenRefsTS,
+  renderTokenValuesTS,
+  renderTokenVarsDts,
+  renderTokensTS,
+} from './lib/token-emit/ts.mjs';
+import { renderTailwindConfig } from './lib/token-emit/tailwind.mjs';
 import { ACCENT_HEADER, buildTenantCSS } from './lib/token-emit/tenant.mjs';
 import { buildManifest as buildManifestFrom } from './lib/token-manifest.mjs';
 
-// Re-exported for the importers of this module (one release; removal is hds#933).
+// Re-exported for the importers of this module (one release; then import the lib module).
 export { DTCG_KEYS, resolveAlias, walkTokens } from './lib/token-tree.mjs';
 export { validateTokens } from './lib/token-validate.mjs';
-export {
-  pathToCSSVar,
-  aliasToCSSVar,
-  colorToCSS,
-  dimensionToCSS,
-  durationToCSS,
-  cubicBezierToCSS,
-  fontFamilyToCSS,
-  shadowPartToCSS,
-  shadowToCSS,
-  ELEVATION_SLOTS,
-  ELEVATION_NULL_FALLBACK,
-  expandElevation,
-  valueToCSS,
-  TYPO_PROPS,
-  TYPO_OPTIONAL_KEYS,
-  MOTION_PROPS,
-  expandTypography,
-  expandMotion,
-  expandTransition,
-  buildCSSSection,
-  buildCSSVarNames,
-} from './lib/token-emit/css.mjs';
-export {
-  buildTSTree,
-  buildTokenRefsTree,
-  buildDeprecationNotes,
-  serialize,
-  buildCSSVarDts,
-  buildRawValuesTree,
-  serializeRaw,
-  buildDescriptionsMap,
-} from './lib/token-emit/ts.mjs';
-export { tagDeprecatedTailwindKeys, buildTailwindThemeExtend } from './lib/token-emit/tailwind.mjs';
-export {
-  validateTenantOverlay,
-  indexDeprecatedAliases,
-  buildTenantCSS,
-} from './lib/token-emit/tenant.mjs';
+export * from './lib/token-emit/css.mjs';
+export * from './lib/token-emit/ts.mjs';
+export * from './lib/token-emit/tailwind.mjs';
+export * from './lib/token-emit/tenant.mjs';
 export { HIDDEN_TOKEN_PREFIXES } from './lib/token-manifest.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -81,9 +62,10 @@ const ROOT = join(__dirname, '..');
 const readSystemManifest = () =>
   JSON.parse(readFileSync(join(ROOT, 'public', 'hds-manifest.json'), 'utf8'));
 
-/** lib/token-manifest.mjs's buildManifest, defaulting to the manifest on disk. */
-export const buildManifest = (allTokens, raw, systemManifest = readSystemManifest()) =>
-  buildManifestFrom(allTokens, raw, systemManifest);
+/** lib/token-manifest.mjs buildManifest, reading the previous manifest when none is passed. */
+export function buildManifest(allTokens, raw, systemManifest = readSystemManifest()) {
+  return buildManifestFrom(allTokens, raw, systemManifest);
+}
 
 // ── CLI entry (runs only when invoked directly) ───────────────────────────────
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -100,6 +82,14 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
   const allTokens = [...walkTokens(raw)];
   const deprecationNotes = buildDeprecationNotes(allTokens);
+  const primitives = allTokens.filter((t) => t.path[0] === 'primitive');
+
+  const css = renderTokensCSS(raw, allTokens);
+  const ts = renderTokensTS(allTokens, deprecationNotes);
+  const tokenValuesTs = renderTokenValuesTS(primitives, raw);
+  const tokenDescriptionsTs = renderTokenDescriptionsTS(allTokens);
+  const tokenVarsDts = renderTokenVarsDts(allTokens, deprecationNotes);
+  const tokenRefsTs = renderTokenRefsTS(allTokens, deprecationNotes);
 
   mkdirSync(join(ROOT, 'src', 'styles'), { recursive: true });
   mkdirSync(join(ROOT, 'src', 'app', 'design-system'), { recursive: true });
@@ -108,13 +98,21 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   // The one CSS-variables file (hds#641). Written raw, not through writeGenerated:
   // it is in .prettierignore (the generator owns its format), and Prettier would
   // reflow it and change the bytes dist/tokens.css and dist/variables.css derive from.
+  writeFileSync(join(ROOT, 'src', 'styles', 'tokens.generated.css'), css);
+  writeFileSync(join(ROOT, 'src', 'app', 'design-system', 'generated-tokens.ts'), ts);
   writeFileSync(
-    join(ROOT, 'src', 'styles', 'tokens.generated.css'),
-    buildTokensCSS(allTokens, raw),
+    join(ROOT, 'src', 'app', 'design-system', 'generated-token-values.ts'),
+    tokenValuesTs,
   );
-  for (const [path, text] of Object.entries(buildTSFiles(allTokens, raw, deprecationNotes))) {
-    writeFileSync(join(ROOT, path), text);
-  }
+  writeFileSync(
+    join(ROOT, 'src', 'app', 'design-system', 'generated-token-descriptions.ts'),
+    tokenDescriptionsTs,
+  );
+  writeFileSync(
+    join(ROOT, 'src', 'app', 'design-system', 'generated-token-vars.d.ts'),
+    tokenVarsDts,
+  );
+  writeFileSync(join(ROOT, 'src', 'app', 'design-system', 'generated-token-refs.ts'), tokenRefsTs);
   const manifest = buildManifest(allTokens, raw);
   // Stable write: the `generated` ISO timestamp is volatile — only rewrite the
   // manifest when its substantive content changes, so unchanged builds don't
@@ -124,12 +122,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     JSON.stringify(manifest, null, 2) + '\n',
   );
 
-  // ── Tailwind theme bridge (CommonJS) ────────────────────────────────────
-  // tailwind.config.ts spreads this into its own theme.extend so utility
-  // classes like bg-background / text-foreground / shadow-floating resolve to
-  // the role/shadow CSS vars. Generated as CJS for compatibility with both
-  // Tailwind v3 (CommonJS config) and v4 (loadable from ESM via require()).
-  const tailwindConfigCjs = buildTailwindConfigCjs(allTokens, deprecationNotes);
+  const tailwindConfigCjs = renderTailwindConfig(allTokens, deprecationNotes);
   // Format before writing, or this file can never match what is committed.
   // JSON.stringify quotes every key (`'colors':`); lint-staged runs Prettier on
   // commit, which strips those quotes. So the generated bytes and the committed

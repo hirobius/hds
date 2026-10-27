@@ -85,6 +85,7 @@ const ACTIVE_DOCS =
           join(ROOT, 'DESIGN.source.md'),
           join(ROOT, 'DESIGN-HANDOFF.md'),
           join(ROOT, 'scripts', 'build-tokens.mjs'),
+          // The manifest builder that writes `brand` (moved out of build-tokens, hds#645).
           join(ROOT, 'scripts', 'lib', 'token-manifest.mjs'),
           join(ROOT, 'TASKS.md'),
           join(ROOT, 'src', 'app', 'data', 'projects.ts'),

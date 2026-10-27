@@ -49,15 +49,8 @@ const config: KnipConfig = {
     'src/app/components/*.figma.ts',
   ],
   ignoreDependencies: [
-    // Type-only consumer (JSDoc `@type {{ ... }}` in scripts/lib/token-emit/tailwind.mjs);
-    // the runtime tailwind plugin loaded by vite is `@tailwindcss/vite`.
-    'tailwindcss',
     // Used only via npx in api-extractor scripts; not a runtime dep.
     '@microsoft/api-extractor',
-    // Peer of @testing-library/react (now an explicit devDep, imported by
-    // tests/primitive-contracts/*.contract.test.tsx). @testing-library/dom is
-    // resolved transitively at runtime, not imported in source, so knip can't see it.
-    '@testing-library/dom',
   ],
   ignoreBinaries: [
     // `npx tsx` is invoked from the test:figma script (Figma Make sync) and

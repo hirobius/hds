@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import { openThemed } from './theme';
 
 /**
  * hds#768: local pixel baselines for the primary Button's states (rest, hover,
@@ -11,34 +12,15 @@ import { test, expect, type Page } from '@playwright/test';
  * Baselines are Linux Chromium (the remote container and CI), one shared copy.
  *
  * Needs `pnpm docs:publish` first. Update after an intended change with
- *   pnpm test:visual-docs:update
+ *   pnpm test:visual-baselines:update
  * and commit the changed PNGs in tests/visual/button-states.spec.ts-snapshots/.
  */
 const BUTTON = '/docs/components/button';
 type State = 'rest' | 'hover' | 'pressed';
 
-async function open(page: Page, theme: 'light' | 'dark') {
-  await page.addInitScript((t: string) => {
-    try {
-      localStorage.setItem('theme', t);
-    } catch {
-      /* storage blocked: the attributes set below still apply */
-    }
-  }, theme);
-  await page.emulateMedia({ reducedMotion: 'reduce', colorScheme: theme });
-  await page.goto(BUTTON);
-  await page.evaluate((t: string) => {
-    const el = document.documentElement;
-    el.setAttribute('data-theme', t);
-    el.classList.toggle('dark', t === 'dark');
-    el.classList.toggle('light', t === 'light');
-  }, theme);
-  await page.evaluate(() => document.fonts?.ready);
-}
-
 for (const theme of ['light', 'dark'] as const) {
-  test(`primary button states (${theme})`, async ({ page }) => {
-    await open(page, theme);
+  test(`primary button states (${theme}) @baseline`, async ({ page }) => {
+    await openThemed(page, BUTTON, theme);
     const btn = page
       .locator('.hds-demo-frame button[data-variant="primary"]:not([disabled])')
       .first();

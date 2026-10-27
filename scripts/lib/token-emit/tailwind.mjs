@@ -1,7 +1,8 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * Tailwind emitter: token scales → theme.extend, and the
- * tailwind.config.tokens.cjs text (hds#645). Pure — no fs at import or call time.
+ * Token → Tailwind emitter: the theme.extend bridge and the text of
+ * tailwind.config.tokens.cjs. Pure (no fs); split out of
+ * scripts/build-tokens.mjs (hds#645).
  */
 
 import { dimensionToCSS, pathToCSSVar } from './css.mjs';
@@ -18,8 +19,37 @@ export function tagDeprecatedTailwindKeys(json, notes) {
   return out;
 }
 
-/** Tracking names Tailwind already owns; buildTailwindThemeExtend leaves them alone (#283). */
-const TAILWIND_OWNED_TRACKING = new Set(['tighter', 'tight', 'normal', 'wide', 'wider', 'widest']);
+function trackingUtilities(primitiveLetterSpacing) {
+  // letterSpacing — emitted ONLY for token names Tailwind does not already own.
+  //
+  // fontSize (buildTailwindThemeExtend) deliberately collides: `text-sm` SHOULD mean the HDS rung.
+  // Tracking cannot do the same. Five of the six HDS names (tighter, tight,
+  // normal, wide, wider) are also Tailwind's, and silently redefining
+  // `tracking-tight` from -0.025em to the token's -0.01em changes every
+  // existing use of a stock utility — a different value under an unchanged
+  // name, which is the hardest kind of change to notice in review.
+  //
+  // So only the names Tailwind lacks are emitted. Today that is `caps`
+  // (0.06em), which is the one that was missing: with no `tracking-caps`,
+  // five components reached for `tracking-wide` — Tailwind's stock 0.025em,
+  // 42% of what the eyebrow token specifies. The gap in the config WAS the
+  // bypass (see #283).
+  const TAILWIND_OWNED_TRACKING = new Set([
+    'tighter',
+    'tight',
+    'normal',
+    'wide',
+    'wider',
+    'widest',
+  ]);
+  const letterSpacing = {};
+  for (const t of primitiveLetterSpacing) {
+    const name = t.path[t.path.length - 1];
+    if (TAILWIND_OWNED_TRACKING.has(name)) continue;
+    letterSpacing[name] = `var(${pathToCSSVar(t.path)})`;
+  }
+  return letterSpacing;
+}
 
 // ── Tailwind config emitter ────────────────────────────────────────────
 /**
@@ -183,26 +213,7 @@ export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
     fontSize[t.path[t.path.length - 1]] = `var(${pathToCSSVar(t.path)})`;
   }
 
-  // letterSpacing — emitted ONLY for token names Tailwind does not already own.
-  //
-  // fontSize above deliberately collides: `text-sm` SHOULD mean the HDS rung.
-  // Tracking cannot do the same. Five of the six HDS names (tighter, tight,
-  // normal, wide, wider) are also Tailwind's, and silently redefining
-  // `tracking-tight` from -0.025em to the token's -0.01em changes every
-  // existing use of a stock utility — a different value under an unchanged
-  // name, which is the hardest kind of change to notice in review.
-  //
-  // So only the names Tailwind lacks are emitted. Today that is `caps`
-  // (0.06em), which is the one that was missing: with no `tracking-caps`,
-  // five components reached for `tracking-wide` — Tailwind's stock 0.025em,
-  // 42% of what the eyebrow token specifies. The gap in the config WAS the
-  // bypass (see #283).
-  const letterSpacing = {};
-  for (const t of primitiveLetterSpacing) {
-    const name = t.path[t.path.length - 1];
-    if (TAILWIND_OWNED_TRACKING.has(name)) continue;
-    letterSpacing[name] = `var(${pathToCSSVar(t.path)})`;
-  }
+  const letterSpacing = trackingUtilities(primitiveLetterSpacing);
 
   return {
     colors,
@@ -216,12 +227,15 @@ export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
   };
 }
 
-// ── tailwind.config.tokens.cjs ───────────────────────────────────────────────
 /**
- * The tailwind.config.tokens.cjs text, before Prettier. `notes` is
- * buildDeprecationNotes(allTokens).
+ * The text of tailwind.config.tokens.cjs (before Prettier).
+ *
+ * tailwind.config.ts spreads this into its own theme.extend so utility
+ * classes like bg-background / text-foreground / shadow-floating resolve to
+ * the role/shadow CSS vars. Generated as CJS for compatibility with both
+ * Tailwind v3 (CommonJS config) and v4 (loadable from ESM via require()).
  */
-export function buildTailwindConfigCjs(allTokens, notes) {
+export function renderTailwindConfig(allTokens, deprecationNotes) {
   const roles = allTokens.filter((t) => t.path[0] === 'role');
   const semanticShadows = allTokens.filter(
     (t) => t.path[0] === 'semantic' && t.path[1] === 'shadow' && t.type === 'shadow',
@@ -247,7 +261,7 @@ export function buildTailwindConfigCjs(allTokens, notes) {
         t.path[0] === 'primitive' && t.path[1] === 'typography' && t.path[2] === 'letterSpacing',
     ),
   });
-  return `// GENERATED FILE — do not edit; mutate hirobius.tokens.json instead.
+  const tailwindConfigCjs = `// GENERATED FILE — do not edit; mutate hirobius.tokens.json instead.
 // Emitted by scripts/build-tokens.mjs.
 //
 // Tailwind theme extension bridging HDS role + semantic.shadow tokens to
@@ -256,10 +270,11 @@ export function buildTailwindConfigCjs(allTokens, notes) {
 /** @type {{ theme: { extend: import('tailwindcss').Config['theme']['extend'] } }} */
 const config = {
   theme: {
-    extend: ${tagDeprecatedTailwindKeys(JSON.stringify(tailwindExtend, null, 6), notes).replace(/\n/g, '\n    ')},
+    extend: ${tagDeprecatedTailwindKeys(JSON.stringify(tailwindExtend, null, 6), deprecationNotes).replace(/\n/g, '\n    ')},
   },
 };
 
 module.exports = config;
 `;
+  return tailwindConfigCjs;
 }

@@ -79,7 +79,7 @@ describe('resolveAlias', () => {
 });
 
 describe('purity', () => {
-  it('importing token-tree, build-tokens and the emitter / manifest modules reads no files from public/', () => {
+  it('importing token-tree, the emitters, the manifest builder and build-tokens reads no files from public/', () => {
     // Copy scripts/ alone into a tree with no public/ and import both modules there.
     const dir = mkdtempSync(join(tmpdir(), 'tt-'));
     try {

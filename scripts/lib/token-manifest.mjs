@@ -1,19 +1,28 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * Builds the public/hds-manifest.json object (hds#645). Pure: the previous
- * manifest is passed in, never read here.
+ * Builds public/hds-manifest.json from the token tree. Pure: the previous
+ * manifest (the system specs, inventory and component specs that
+ * generate-manifest and enrich-manifest wrote before build-tokens runs) is
+ * passed in, never read here. Split out of scripts/build-tokens.mjs (hds#645).
  */
 
 import { readModes } from './token-modes.mjs';
 import { resolveAlias } from './token-tree.mjs';
 import { ELEVATION_SLOTS, TYPO_PROPS, valueToCSS } from './token-emit/css.mjs';
 
-// ── Component spec seeds ────────────────────────────────────────────────────
 /**
- * Hand-kept spec fields for the components below; buildComponentSpecs lays them
- * over the previous manifest's entries.
+ * Token paths that stay in the package (CSS variables, types, `$deprecated` notes) but are left out
+ * of the manifest, as the docs leave out `$deprecated` tokens: lime / delight is hidden until it
+ * comes back (hds#857). Deprecated aliases with a replacement stay listed; these have none.
  */
-export const COMPONENT_SPEC_SEEDS = {
+export const HIDDEN_TOKEN_PREFIXES = ['semantic.accent.delight.', 'primitive.color.lime.'];
+const isHiddenToken = (t) => HIDDEN_TOKEN_PREFIXES.some((p) => t.path.join('.').startsWith(p));
+
+/**
+ * The Figma master shape and source facts build-tokens lays over each
+ * component's spec. Every other spec field comes from the previous manifest.
+ */
+const COMPONENT_SPEC_SEEDS = {
   Button: {
     sourcePath: 'src/app/components/button.tsx',
     sourceExport: 'Button',
@@ -21,7 +30,7 @@ export const COMPONENT_SPEC_SEEDS = {
     // rebuilds them from component-api.json (the code) on each run; a list
     // written here replaced that refresh whenever `pnpm tokens` ran last, so
     // the manifest depended on which command ran most recently (the hds#379
-    // failure, for props). buildComponentSpecs forwards the refreshed props.
+    // failure, for props). The spread above forwards the refreshed props.
     tokens: {
       background: 'role.primary',
       text: 'role.primary-foreground',
@@ -196,7 +205,7 @@ export const COMPONENT_SPEC_SEEDS = {
     // merges the component's JSDoc `@slot` tags into them (mergeSlots,
     // hds#339). A list written here replaced that merge, because build-tokens
     // runs after generate-manifest in `pnpm tokens`, and dropped Dialog's
-    // `@slot trigger`. buildComponentSpecs forwards the merged list as is.
+    // `@slot trigger`. The spread above forwards the merged list as is.
   },
   // ── Generative-subset components without bespoke seed data ──────────────
   // These get full props/tokens via auto-discovery + tokenMapping preservation.
@@ -283,17 +292,22 @@ export const COMPONENT_SPEC_SEEDS = {
   },
 };
 
-/** The previous manifest's specs with each seeded spec's keys laid over its entry. */
-export function buildComponentSpecs(previous) {
-  const specs = { ...(previous ?? {}) };
-  for (const [name, seed] of Object.entries(COMPONENT_SPEC_SEEDS)) {
-    specs[name] = { ...(previous?.[name] ?? {}), ...structuredClone(seed) };
-  }
-  return specs;
+/**
+ * The previous manifest's componentSpecs with each seed laid over its
+ * component (seed keys win; specs with no seed pass through unchanged).
+ */
+export function seedComponentSpecs(previous = {}) {
+  const seeded = Object.fromEntries(
+    Object.entries(COMPONENT_SPEC_SEEDS).map(([name, seed]) => [
+      name,
+      { ...(previous[name] ?? {}), ...structuredClone(seed) },
+    ]),
+  );
+  return { ...previous, ...seeded };
 }
 
-/** A token value → its resolved CSS string; an alias that does not resolve → null. */
-function cssValueResolver(raw) {
+/** A token value as CSS, with `{ref}` aliases resolved against `raw` (null when one cannot be). */
+function makeResolveValue(raw) {
   return (val, type) => {
     if (typeof val === 'string' && val.startsWith('{')) {
       try {
@@ -306,8 +320,8 @@ function cssValueResolver(raw) {
   };
 }
 
-/** One token's manifest entry: path, cssVar, value or alias, and its dark / compact modes. */
-function toManifestEntry(t, raw, resolveValue) {
+/** One token's manifest entry. */
+function formatTokenEntry(t, raw, resolveValue) {
   const entry = {
     path: t.path.join('.'),
     cssVar: t.type === 'motion' ? `--hds-motion-${t.path[2]}` : `--${t.path.join('-')}`,
@@ -377,26 +391,18 @@ function toManifestEntry(t, raw, resolveValue) {
   return entry;
 }
 
-// ── Manifest builder ─────────────────────────────────────────────────────────
-/**
- * Token paths that stay in the package (CSS variables, types, `$deprecated` notes) but are left out
- * of the manifest, as the docs leave out `$deprecated` tokens: lime / delight is hidden until it
- * comes back (hds#857). Deprecated aliases with a replacement stay listed; these have none.
- */
-export const HIDDEN_TOKEN_PREFIXES = ['semantic.accent.delight.', 'primitive.color.lime.'];
-const isHiddenToken = (t) => HIDDEN_TOKEN_PREFIXES.some((p) => t.path.join('.').startsWith(p));
-
 /**
  * Builds public/hds-manifest.json — a machine-readable snapshot of the full
  * token system for AI agents and LLMs building with or on top of HDS.
  * Auto-generated on every `pnpm tokens` run alongside tokens.generated.css.
- * `systemManifest` is the previous public/hds-manifest.json
- * (generate-manifest and enrich-manifest wrote it earlier in `pnpm tokens`); its
- * hand-kept and generated sections are forwarded. Pure: the caller reads it.
+ *
+ * @param {Array} allTokens        walkTokens(raw), spread
+ * @param {object} raw             the token tree
+ * @param {object} [systemManifest] the previous public/hds-manifest.json
  */
 export function buildManifest(allTokens, raw, systemManifest = {}) {
   const listedTokens = allTokens.filter((t) => !isHiddenToken(t));
-  const resolveValue = cssValueResolver(raw);
+  const resolveValue = makeResolveValue(raw);
 
   // Brand values — derived from token file so manifest stays in sync automatically.
   // 12t-typography-truth-up: corrected path (was raw.primitive.font.family.primary —
@@ -406,8 +412,8 @@ export function buildManifest(allTokens, raw, systemManifest = {}) {
   const fontName = Array.isArray(fontFamRaw)
     ? fontFamRaw[0]
     : String(fontFamRaw ?? 'Plus Jakarta Sans');
-  const componentSpecs = buildComponentSpecs(systemManifest.componentSpecs);
-  const format = (t) => toManifestEntry(t, raw, resolveValue);
+  const componentSpecs = seedComponentSpecs(systemManifest.componentSpecs);
+  const formatToken = (t) => formatTokenEntry(t, raw, resolveValue);
 
   return {
     name: 'Hirobius Design System',
@@ -486,10 +492,10 @@ export function buildManifest(allTokens, raw, systemManifest = {}) {
     // on every tokens rebuild.
     utilities: systemManifest.utilities ?? {},
     tokens: {
-      primitive: listedTokens.filter((t) => t.path[0] === 'primitive').map(format),
-      semantic: listedTokens.filter((t) => t.path[0] === 'semantic').map(format),
-      component: listedTokens.filter((t) => t.path[0] === 'component').map(format),
-      role: listedTokens.filter((t) => t.path[0] === 'role').map(format),
+      primitive: listedTokens.filter((t) => t.path[0] === 'primitive').map(formatToken),
+      semantic: listedTokens.filter((t) => t.path[0] === 'semantic').map(formatToken),
+      component: listedTokens.filter((t) => t.path[0] === 'component').map(formatToken),
+      role: listedTokens.filter((t) => t.path[0] === 'role').map(formatToken),
     },
     // hds#449: generate-manifest writes publicClasses (scripts/lib/public-classes.mjs);
     // forwarded verbatim, last, where that generator appends it.
