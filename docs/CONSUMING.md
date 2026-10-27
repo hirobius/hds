@@ -519,6 +519,35 @@ step (§11) as its final required step. It is generated from the manifest by
 npx skills add hirobius/hds --skill hds-consumer
 ```
 
+### Any HTML, CSS or JS site: `hds-check`
+
+The ESLint plugin reads React/JSX. For plain HTML/CSS sites, and for CSS inside
+JS template strings, the package ships `hds-check` (hds#664). It runs the same
+rule core HDS gates itself with, over `.html`, `.css`, `.js`, `.mjs` and `.cjs`:
+
+| Rule           | Fails on                                                                        | Exempt a line with    |
+| -------------- | ------------------------------------------------------------------------------- | --------------------- |
+| `no-uppercase` | `text-transform: uppercase`, the Tailwind `uppercase` class, small caps         | `uppercase-ok: <why>` |
+| `fonts`        | any family but Plus Jakarta Sans, Sora, IBM Plex Mono and their token fallbacks | `font-ok: <why>`      |
+| `shadows`      | a `box-shadow` that is not `var(--semantic-shadow-*)` (or the kit's `--shadow`) | `shadow-ok: <why>`    |
+| `raw-colors`   | hex, `rgb()` or `hsl()` outside a `var(--token, fallback)`                      | `color-ok: <why>`     |
+
+```bash
+pnpm exec hds-check src public          # exit 1 with file:line:col findings, 0 when clean
+pnpm exec hds-check . --json            # machine-readable
+pnpm exec hds-check theme.css --rule fonts
+```
+
+One CI step in a consumer repo (after install):
+
+```yaml
+- run: pnpm exec hds-check .
+```
+
+The marker goes on the line or the one above it (two above for `uppercase-ok`),
+in any comment form, and needs a reason. `node_modules`, `.git` and build output
+are skipped.
+
 ## Troubleshooting
 
 | Symptom                                            | Cause / fix                                                                                                                                                             |
