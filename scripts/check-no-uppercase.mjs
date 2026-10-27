@@ -69,9 +69,12 @@ const SKIP_DIRS = [
 // A `//` comment may also follow punctuation here (`{ // note`, `f(// note`).
 const COMMENT_LEADS = ' \t;,{(';
 
-/** Whether a repo-relative path is out of scope (tests prove translators). */
+/**
+ * Whether a repo-relative path is out of scope: tests prove translators, and
+ * the generated utility safelist (hds#449) only keeps already-shipped utilities emitted.
+ */
 export function isExempt(rel) {
-  return isSpecFile(rel);
+  return isSpecFile(rel) || rel === 'src/styles/utility-safelist.generated.css';
 }
 
 /** [regex, message] pairs applied to every line. */

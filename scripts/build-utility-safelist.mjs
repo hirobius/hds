@@ -23,7 +23,8 @@
  *
  * One `@source inline("<class>");` per line, so a diff shows each utility. A
  * class Tailwind cannot read back from an inline source (a quote, a
- * backslash, or braces, which it expands) is left out and reported.
+ * backslash, or braces, which it expands) is left out, and the CLI fails
+ * (with or without --check) until it is kept another way or removed by a step.
  *
  *   node scripts/build-utility-safelist.mjs [--root <dir>]           # write it
  *   node scripts/build-utility-safelist.mjs [--root <dir>] --check   # exit 1 when it is stale
@@ -144,11 +145,13 @@ async function main(argv) {
     fix: FIX,
     argv,
   });
-  if (!result.check) {
-    console.log(`  ${utilities.length} utilities kept`);
-    if (skipped.length > 0) {
-      console.log(`  left out (Tailwind cannot read them inline): ${skipped.join(' ')}`);
-    }
+  if (!result.check) console.log(`  ${utilities.length} utilities kept`);
+  // A shipped utility the list cannot carry would leave unnoticed, the very gap this closes.
+  if (skipped.length > 0) {
+    console.error(
+      `✗ build-utility-safelist: Tailwind cannot read these back from @source inline, so they are not kept: ${skipped.join(' ')}. Name each in a scanned file, or list utility-removed:<class> in a step.`,
+    );
+    return 1;
   }
   return result.exitCode;
 }

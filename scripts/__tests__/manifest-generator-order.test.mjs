@@ -34,6 +34,8 @@ const MANIFEST = join('public', 'hds-manifest.json');
 const TREE = [
   'mcp',
   'scripts',
+  // scripts/lib/css-contract.mjs reads the Tailwind preset with the upgrade command's helper.
+  'codemods/lib/preset.mjs',
   'src',
   'tenants',
   'hirobius.tokens.json',
