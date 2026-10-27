@@ -71,7 +71,7 @@ const dismissPill =
   'box-border inline-flex min-h-[var(--component-tag-minHeight)] max-w-full items-center whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid border-[var(--component-tag-border)] bg-[var(--component-tag-background)] py-[var(--component-tag-paddingY)] pr-0 pl-[var(--component-tag-paddingX)] text-[var(--component-tag-text)] hds-type-caption';
 
 const dismissButton =
-  // tier-ok: a 40px touch hit area is an a11y floor, not a design-scale choice (no semantic size; hds#750, hds#919)
+  // The 40px hit area borrows the compact row size (40px) until a touch size role lands (hds#750, hds#919)
   'hds-focus inline-flex size-[var(--semantic-size-row-compact)] my-[calc((1lh_-_var(--semantic-size-row-compact))/2)] shrink-0 cursor-pointer items-center justify-center rounded-[var(--component-tag-radius)] border-0 bg-transparent p-0 text-inherit transition-colors hover:text-[var(--semantic-color-content-primary)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
