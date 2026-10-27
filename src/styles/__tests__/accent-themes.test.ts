@@ -79,11 +79,10 @@ describe('graphite (default accent)', () => {
   });
 
   it('keeps hover a visible step from rest', () => {
-    for (const mode of ['Light', 'Dark'] as const) {
-      expect(
-        contrastRatio(hex('semantic.accent.rest', mode), hex('semantic.accent.hover', mode)),
-      ).toBeGreaterThanOrEqual(1.1);
-    }
+    const step = (mode: 'Light' | 'Dark') =>
+      contrastRatio(hex('semantic.accent.rest', mode), hex('semantic.accent.hover', mode));
+    expect(step('Light')).toBeGreaterThan(1.2);
+    expect(step('Dark')).toBeGreaterThanOrEqual(1.1);
   });
 });
 
