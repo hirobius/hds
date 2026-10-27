@@ -1,0 +1,1 @@
+Tag: `onDismiss` dismissible mode, a static pill whose X (40px hit area, "Remove <label>") alone removes it (hds#919, epic #863). Retires Roleforge's `.rjb-term` workaround. Figma Tag has no dismissible variant yet: Figma-lane follow-up.

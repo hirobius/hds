@@ -1096,7 +1096,7 @@
         },
         "$description": "120px size step. Backs semantic.size.tile."
       },
-      "$description": "Unaliased dimensional values.",
+      "$description": "Raw fixed dimensions; use semantic.size roles. Size is an element's own width or height; space is gaps and padding.",
       "interactive": {
         "$description": "Interactive control size minimums.",
         "min": {
@@ -1837,7 +1837,7 @@
     },
     "space": {
       "$type": "dimension",
-      "$description": "Semantic spacing tiers: subgrid, component, layout, section, scale.",
+      "$description": "Space: gaps and padding between and inside elements (subgrid, component, layout, section, scale). An element's own width/height is size.",
       "scale": {
         "$description": "hds#206 t-shirt scale (2xs–xl) for padding, margin and gap. Compact density (data-density=\"compact\") remaps sm–xl to 12/16/24/32px for dense apps.",
         "2xs": {
@@ -2639,7 +2639,7 @@
     },
     "size": {
       "$type": "dimension",
-      "$description": "Sizing roles for control glyphs, avatars and table rows. Roles sharing a value stay separate so each can change (hds#242).",
+      "$description": "Size roles: an element's own width or height. Gaps and padding are space. Shared-value roles stay separate (hds#242).",
       "control": {
         "$description": "Interactive control glyph/element sizing (checkbox glyph box, radio dot, slider track/fill, code-block copy-button-matched footprint).",
         "sm": {
