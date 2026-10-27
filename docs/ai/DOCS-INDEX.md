@@ -71,3 +71,4 @@ Written by a person; the registry carries when it was last re-read. `pnpm check:
 - `OPERATING_MAP.md`: Where each kind of information should go. Reviewed 2026-10-12, re-read within 90 days.
 - `DECISIONS.md`: Pointer to docs/adr, where decisions live. Reviewed 2026-10-12, re-read within 180 days.
 - `content-model.md`: Frontmatter schema and page templates for the docs MDX. Reviewed 2026-10-12, re-read within 120 days.
+- `docs/cleanup/DELETE-LIST.md`: knip + jscpd delete list, grouped into batches (hds#766). Reviewed 2026-10-27, re-read within 45 days.

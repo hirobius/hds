@@ -1,0 +1,16 @@
+{
+  "path": ["src", "scripts", "validators"],
+  "ignore": [
+    "**/generated-*.ts",
+    "**/*.figma.ts",
+    "**/__fixtures__/**",
+    "**/*.test.*",
+    "**/node_modules/**"
+  ],
+  "minLines": 10,
+  "minTokens": 70,
+  "reporters": ["console", "json"],
+  "output": "./.jscpd-report",
+  "threshold": 1,
+  "gitignore": true
+}

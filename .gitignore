@@ -191,3 +191,4 @@ content/docs/guides/providers.mdx
 
 # Gate step timings (TEMPORARY, remove 2026-10-31 — hds#912)
 .gate-timings.jsonl
+.jscpd-report/
