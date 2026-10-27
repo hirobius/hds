@@ -15,6 +15,10 @@
  * one (cssFacts below): a variable removed or changed per context, a public
  * class or a utility removed, an @font-face removed.
  *
+ * Prop facts (hds#461) come from the snapshots' props sections when both have
+ * one (propFacts below): a prop removed or renamed, a prop now required, an
+ * allowed value removed, a default changed.
+ *
  * Renames are not facts: a diff sees `HdsCheckbox` leave and nothing arrive.
  * The ledger names the survivor from the codemod's data.
  *
@@ -43,6 +47,14 @@ const CSS_FACT_KINDS = [
 /** True for the id of a CSS fact: only a snapshot with a `css` section can have it. */
 export const isCssFactId = (id) => CSS_FACT_KINDS.some((kind) => id.startsWith(`${kind}:`));
 
+/** The prop fact kinds (hds#461), read from both snapshots' `props` section. */
+const PROP_FACT_KINDS = [
+  'prop-removed',
+  'prop-required',
+  'prop-value-removed',
+  'prop-default-changed',
+];
+
 /** Fact kinds, in the order a diff lists them. */
 export const FACT_KINDS = [
   'removed',
@@ -57,6 +69,7 @@ export const FACT_KINDS = [
   'bin-removed',
   'bin-added',
   ...CSS_FACT_KINDS,
+  ...PROP_FACT_KINDS,
 ];
 
 /** The stable id of a fact. */
@@ -74,6 +87,12 @@ export function factId(fact) {
       return `${fact.kind}:${fact.name}:${fact.context}`;
     case 'font-face-removed':
       return `${fact.kind}:${fact.family}/${fact.weight}/${fact.style}`;
+    case 'prop-removed':
+    case 'prop-required':
+    case 'prop-default-changed':
+      return `${fact.kind}:${fact.component}.${fact.prop}`;
+    case 'prop-value-removed':
+      return `${fact.kind}:${fact.component}.${fact.prop}:${fact.value}`;
     default:
       return `${fact.kind}:${fact.name}`;
   }
@@ -84,6 +103,7 @@ function sortKey(fact) {
   if (fact.kind === 'moved') return [fact.from, fact.name];
   if (fact.kind === 'css-var-changed') return [fact.name, fact.context];
   if (fact.kind === 'font-face-removed') return [fact.family, fact.weight, fact.style];
+  if (PROP_FACT_KINDS.includes(fact.kind)) return [fact.component, fact.prop, fact.value ?? ''];
   return [fact.key ?? fact.name];
 }
 
@@ -227,10 +247,55 @@ function cssFacts(prev, next) {
 }
 
 /**
+ * The prop facts between two `props` sections (scripts/upgrade/props.mjs), for
+ * each component both have (a component that left is a removed export):
+ *
+ *   - prop-removed: a prop that left, renamed or not (a diff sees no rename;
+ *     a prop-renamed step names the survivor);
+ *   - prop-required: a prop that was optional or absent and is now required;
+ *   - prop-value-removed: an allowed value that left a prop both list values for;
+ *   - prop-default-changed: a prop both have whose default changed.
+ */
+function propFacts(prev, next) {
+  const facts = [];
+  for (const component of Object.keys(prev).sort()) {
+    const now = next[component];
+    if (!now) continue;
+    const was = prev[component];
+    for (const prop of Object.keys(was).sort()) {
+      const [before, after] = [was[prop], now[prop]];
+      if (!after) {
+        facts.push(fact({ kind: 'prop-removed', component, prop }));
+        continue;
+      }
+      if (before.optional && !after.optional) {
+        facts.push(fact({ kind: 'prop-required', component, prop }));
+      }
+      if (before.values && after.values) {
+        const kept = new Set(after.values);
+        for (const value of before.values.filter((v) => !kept.has(v)).sort()) {
+          facts.push(fact({ kind: 'prop-value-removed', component, prop, value }));
+        }
+      }
+      const [from, to] = [before.default ?? null, after.default ?? null];
+      if (from !== to) {
+        facts.push(fact({ kind: 'prop-default-changed', component, prop, from, to }));
+      }
+    }
+    for (const prop of Object.keys(now).sort()) {
+      if (!was[prop] && !now[prop].optional) {
+        facts.push(fact({ kind: 'prop-required', component, prop }));
+      }
+    }
+  }
+  return facts;
+}
+
+/**
  * Every fact between two snapshots, sorted by kind and then by entry and name.
  * CSS facts only when both carry a `css` section: a snapshot read from source
  * (snapshotFromSource) has none, because the stylesheets exist only after a
- * build.
+ * build. Prop facts only when both carry a `props` section.
  * @param {object} prev the older release's snapshot
  * @param {object} next the newer release's snapshot
  */
@@ -269,6 +334,7 @@ export function diffSnapshots(prev, next) {
       }),
     ),
     ...(prev.css && next.css ? cssFacts(prev.css, next.css) : []),
+    ...(prev.props && next.props ? propFacts(prev.props, next.props) : []),
   ];
   return facts.sort(compareFacts);
 }

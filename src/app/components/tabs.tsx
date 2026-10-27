@@ -83,8 +83,8 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
         onScroll?.(event);
       }}
       className={cn(
-        'flex h-10 items-center gap-6 overflow-x-auto whitespace-nowrap',
-        'mb-6',
+        'flex h-10 items-center gap-fixed-md overflow-x-auto whitespace-nowrap',
+        'mb-fixed-md',
         '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]',
         className,
       )}
@@ -100,7 +100,7 @@ export function TabsTrigger({
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'relative inline-flex items-center px-3 py-2 hds-type-ui hds-touch-row transition-colors',
+        'relative inline-flex items-center px-fixed-xs py-scale-xs hds-type-ui hds-touch-row transition-colors',
         // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
         'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
         'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
@@ -118,7 +118,7 @@ export function TabsTrigger({
 const tabsContentVariants = /* @__PURE__ */ cva('', {
   variants: {
     variant: {
-      panel: 'bg-accent/5 rounded-b-md p-6 -mt-6',
+      panel: 'bg-accent/5 rounded-b-md p-fixed-md -mt-fixed-md',
       bare: '',
     },
   },

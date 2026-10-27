@@ -97,7 +97,7 @@ const REACH_CLASS: Record<SlotReach, string | undefined> = {
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-const paginationListVariants = /* @__PURE__ */ cva('flex items-center gap-1', {
+const paginationListVariants = /* @__PURE__ */ cva('flex items-center gap-fixed-2xs', {
   variants: {
     variant: {
       default: 'flex-wrap',
@@ -242,7 +242,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
               <li
                 key={`ellipsis-${index}`}
                 aria-hidden="true"
-                className={cn('px-2 text-muted-foreground select-none', REACH_CLASS[reach])}
+                className={cn('px-scale-xs text-muted-foreground select-none', REACH_CLASS[reach])}
               >
                 …
               </li>

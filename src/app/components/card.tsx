@@ -371,8 +371,8 @@ const CardHeader = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardHeaderPr
       // (no full-width stretch). The 12px gap reads as a single header
       // section without crowding either zone.
       return (
-        <div ref={ref} className={cn('flex flex-col gap-3', pad, className)} {...props}>
-          <div className="flex flex-wrap items-center gap-2">{metadata}</div>
+        <div ref={ref} className={cn('flex flex-col gap-fixed-xs', pad, className)} {...props}>
+          <div className="flex flex-wrap items-center gap-scale-xs">{metadata}</div>
           <div className="flex flex-col space-y-1.5 min-w-0">{children}</div>
         </div>
       );
@@ -542,7 +542,7 @@ const CardRow = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardRowProps>(f
   // `cond && <Badge />` passes false: no trailing zone, so no stray gap.
   const hasTrailing = Boolean(trailing) || trailing === 0;
   return (
-    <div ref={ref} className={cn('flex items-start gap-3', className)} {...props}>
+    <div ref={ref} className={cn('flex items-start gap-fixed-xs', className)} {...props}>
       <div className="min-w-0 flex-1">{children}</div>
       {hasTrailing && <div className="shrink-0">{trailing}</div>}
     </div>
@@ -565,7 +565,7 @@ const CardRowNote = /* @__PURE__ */ React.forwardRef<
   return (
     <p
       ref={ref}
-      className={cn('m-0 mt-1 hds-type-caption text-muted-foreground', className)}
+      className={cn('m-0 mt-fixed-2xs hds-type-caption text-muted-foreground', className)}
       {...props}
     />
   );
@@ -607,7 +607,7 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
     { className, value, max = 100, label, tone = 'neutral', style, ...props },
     ref,
   ) {
-    const pad = usePartPadding('px-surface-padding pb-2');
+    const pad = usePartPadding('px-surface-padding pb-scale-xs');
     const clamped = Math.max(0, Math.min(value, max));
     const pct = max > 0 ? (clamped / max) * 100 : 0;
     return (

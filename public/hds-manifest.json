@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-27T08:38:28.191Z",
+  "generated": "2026-10-27T14:05:27.237Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12337,6 +12337,12 @@
         "value": "4px"
       },
       {
+        "path": "primitive.radius.6",
+        "cssVar": "--primitive-radius-6",
+        "type": "dimension",
+        "value": "6px"
+      },
+      {
         "path": "primitive.radius.8",
         "cssVar": "--primitive-radius-8",
         "type": "dimension",
@@ -12728,6 +12734,13 @@
         "type": "dimension",
         "description": "20px size step.",
         "value": "20px"
+      },
+      {
+        "path": "primitive.size.22",
+        "cssVar": "--primitive-size-22",
+        "type": "dimension",
+        "description": "22px size step.",
+        "value": "22px"
       },
       {
         "path": "primitive.size.24",
@@ -14790,25 +14803,25 @@
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
-        "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
-        "alias": "{semantic.radius.action}",
-        "resolvedValue": "8px"
+        "description": "Figma value; code renders rounded-sm (role.radius - 2px).",
+        "alias": "{primitive.radius.6}",
+        "resolvedValue": "6px"
       },
       {
         "path": "component.badge.height",
         "cssVar": "--component-badge-height",
         "type": "dimension",
         "description": "Badge height.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "alias": "{primitive.size.22}",
+        "resolvedValue": "22px"
       },
       {
         "path": "component.badge.minWidth",
         "cssVar": "--component-badge-minWidth",
         "type": "dimension",
         "description": "Badge minimum width.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "alias": "{primitive.size.22}",
+        "resolvedValue": "22px"
       },
       {
         "path": "component.badge.paddingY",
@@ -14819,10 +14832,18 @@
         "resolvedValue": "2px"
       },
       {
+        "path": "component.badge.paddingShift",
+        "cssVar": "--component-badge-paddingShift",
+        "type": "dimension",
+        "description": "Label lift, taken from top padding to bottom.",
+        "alias": "{primitive.space.px1}",
+        "resolvedValue": "1px"
+      },
+      {
         "path": "component.badge.paddingX",
         "cssVar": "--component-badge-paddingX",
         "type": "dimension",
-        "description": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune).",
+        "description": "Horizontal padding inside the badge.",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },

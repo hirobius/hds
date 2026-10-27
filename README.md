@@ -18,7 +18,7 @@ Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. Fro
 <!-- auto:start:front-door-counts -->
 
 - **61** public component modules, exported from `src/index.ts`
-- **484** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **487** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 
 <!-- auto:end:front-door-counts -->
 
@@ -46,6 +46,8 @@ An internal operations dashboard is one of 2 product apps that use components: *
 | ----------------- | ----- | ----------------------------------------- |
 | Product apps      | 2     | Components and tokens                     |
 | Token-level sites | 4     | Tokens and CSS only, no component imports |
+
+Month-by-month adoption in each product app, one row per measured commit: [docs/ADOPTION.md](docs/ADOPTION.md).
 
 [![Audit page of the product app](docs/images/product-app-audit.png)](docs/images/product-app-audit.png)
 

@@ -10,6 +10,16 @@ npx @hirobius/design-system@latest upgrade
 
 It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
 
+## If a release is bad
+
+A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` points back at the last good version. If you took it:
+
+1. Revert the upgrade PR (`git revert -m 1 <merge commit>`), so the code, package.json and lockfile go back together.
+2. Pin the exact last good version, with no `^`: `"@hirobius/design-system": "<last good version>"`, then install.
+3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
+
+There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
 ## 0.32.0
 
 Released 2026-10-24 (minor). 11 that look different.

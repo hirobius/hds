@@ -128,9 +128,24 @@ describe('Input horizontal padding (hds#393 review)', () => {
   const side = (el: Element, s: 'l' | 'r') => padClasses(el).filter((c) => c.startsWith(`p${s}-`));
 
   const SIZES = {
-    sm: { rest: ['pl-2', 'pr-2'], gap: ['pl-1.5', 'pr-1.5'], lead: 'pl-7', trail: 'pr-7' },
-    md: { rest: ['pl-3', 'pr-3'], gap: ['pl-2', 'pr-2'], lead: 'pl-9', trail: 'pr-9' },
-    lg: { rest: ['pl-4', 'pr-4'], gap: ['pl-2.5', 'pr-2.5'], lead: 'pl-11', trail: 'pr-11' },
+    sm: {
+      rest: ['pl-scale-xs', 'pr-scale-xs'],
+      gap: ['pl-1.5', 'pr-1.5'],
+      lead: 'pl-7',
+      trail: 'pr-7',
+    },
+    md: {
+      rest: ['pl-fixed-xs', 'pr-fixed-xs'],
+      gap: ['pl-scale-xs', 'pr-scale-xs'],
+      lead: 'pl-9',
+      trail: 'pr-9',
+    },
+    lg: {
+      rest: ['pl-fixed-sm', 'pr-fixed-sm'],
+      gap: ['pl-2.5', 'pr-2.5'],
+      lead: 'pl-11',
+      trail: 'pr-11',
+    },
   } as const;
 
   it.each(Object.keys(SIZES) as Array<keyof typeof SIZES>)(

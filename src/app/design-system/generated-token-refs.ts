@@ -187,6 +187,7 @@ export const tokenRefs = {
       "0": "var(--primitive-radius-0)",
       "2": "var(--primitive-radius-2)",
       "4": "var(--primitive-radius-4)",
+      "6": "var(--primitive-radius-6)",
       "8": "var(--primitive-radius-8)",
       "12": "var(--primitive-radius-12)",
       "16": "var(--primitive-radius-16)",
@@ -267,6 +268,7 @@ export const tokenRefs = {
       "12": "var(--primitive-size-12)",
       "16": "var(--primitive-size-16)",
       "20": "var(--primitive-size-20)",
+      "22": "var(--primitive-size-22)",
       "24": "var(--primitive-size-24)",
       "32": "var(--primitive-size-32)",
       "36": "var(--primitive-size-36)",
@@ -734,6 +736,7 @@ export const tokenRefs = {
       height: "var(--component-badge-height)",
       minWidth: "var(--component-badge-minWidth)",
       paddingY: "var(--component-badge-paddingY)",
+      paddingShift: "var(--component-badge-paddingShift)",
       paddingX: "var(--component-badge-paddingX)"
     },
     button: {

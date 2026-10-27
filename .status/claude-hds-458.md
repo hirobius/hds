@@ -1,0 +1,1 @@
+Smoke (hds#458): resolve/import lists derived from package.json#exports, no-window import of every JS subpath, dist bare-import audit (optional peers scoped to /form, /scroll), React 18.3 + 19 lanes, TS 5.6 floor + pinned TS typecheck, smoke tools pinned (no publint@latest). CONSUMING.md states the TS 5.6 floor.

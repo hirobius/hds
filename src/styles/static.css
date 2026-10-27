@@ -54,7 +54,13 @@
   height: var(--component-badge-height);
   min-width: var(--component-badge-minWidth);
   padding: var(--component-badge-paddingY) var(--component-badge-paddingX);
-  border-radius: var(--component-badge-radius);
+  /* hds#757: paddingShift moves from top to bottom so the label sits optically centred */
+  padding-top: calc(var(--component-badge-paddingY) - var(--component-badge-paddingShift));
+  padding-bottom: calc(var(--component-badge-paddingY) + var(--component-badge-paddingShift));
+  /* binding-ok: badge.radius rounded-sm twin, role.radius - 2px, so a tenant reshapes it */
+  border-radius: calc(
+    var(--role-radius) - 2px
+  ); /* tier-ok: same as the React Badge's rounded-sm (role radius - 2px); the offset has no token */
   /* neutral tone (default) */
   background-color: var(--component-badge-neutral-bg);
   color: var(--component-badge-neutral-text);

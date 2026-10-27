@@ -13,8 +13,12 @@ import {
   measureConsumer,
   parseRootAliases,
   renderInUseBlock,
+  renderAdoptionBlock,
+  replaceBlock,
   IN_USE_BLOCK,
+  ADOPTION_BLOCK,
 } from '../count-consumer-usage.mjs';
+import { formatGenerated } from '../lib/write-generated.mjs';
 
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const COMPONENTS = new Set(['Button', 'Page', 'Badge']);
@@ -253,5 +257,131 @@ describe('renderInUseBlock consumer split', () => {
     expect(out).toMatch(/is the only product app that uses components/);
     expect(out).not.toMatch(/one of 1/);
     expect(out).toMatch(/\| Product apps\s+\| 1 /);
+  });
+});
+
+describe('docs/ADOPTION.md (hds#659)', () => {
+  const doc = readFileSync(join(REPO, 'docs/ADOPTION.md'), 'utf8');
+  const snapshot = JSON.parse(readFileSync(join(REPO, 'docs/data/consumer-usage.json'), 'utf8'));
+  const sha = (c) => c.repeat(40);
+  const sample = {
+    consumers: {
+      apps: [
+        { id: 'hirobius/ops', label: 'Internal operations dashboard' },
+        { id: 'roleforge', label: 'Roleforge, a job-application tracker' },
+      ],
+    },
+    history: [
+      {
+        consumer: 'hirobius/ops',
+        ref: 'origin/main',
+        rows: [
+          {
+            month: '2026-07',
+            commit: sha('a'),
+            committedAt: '2026-07-30T10:00:00Z',
+            files: null,
+            components: null,
+            rawControls: null,
+            versionRange: null,
+            hdsVersion: '0.10.0',
+          },
+          {
+            month: '2026-08',
+            commit: sha('b'),
+            committedAt: '2026-08-30T10:00:00Z',
+            files: 12,
+            components: 9,
+            rawControls: { button: 3, input: 1, select: 0, textarea: 0, table: 2 },
+            versionRange: '^0.12.0',
+            hdsVersion: '0.12.0',
+          },
+        ],
+      },
+    ],
+    deprecationCycle: {
+      change: 'Pattern components moved to the `/patterns` subpath (0.20)',
+      consumer: 'hirobius/ops',
+      appliedAt: '2026-10-05',
+      commit: '39a68bc',
+      trackedIn: 'ops #460',
+    },
+    consistency: {
+      date: '2026-10-14',
+      packageVersion: '0.25.0',
+      commit: sha('c'),
+      measured: { builds: { passing: 2, of: 3 }, violations: 0, axe: 0, jaccardMin: 0.95 },
+      pass: false,
+    },
+  };
+  const out = renderAdoptionBlock(sample);
+
+  it('the committed block is the snapshot rendered, byte for byte', () => {
+    const m = doc.match(
+      new RegExp(
+        `<!-- auto:start:${ADOPTION_BLOCK} -->\\n([\\s\\S]*?)<!-- auto:end:${ADOPTION_BLOCK} -->`,
+      ),
+    );
+    expect(m).not.toBeNull();
+    expect(m[1]).toBe(renderAdoptionBlock(snapshot));
+    expect(replaceBlock(doc, ADOPTION_BLOCK, renderAdoptionBlock(snapshot))).toBe(doc);
+  });
+
+  it('renders one table per product app, short shas, n/a for a month with no src/', () => {
+    expect(out).toMatch(/^### Internal operations dashboard$/m);
+    expect(out).toMatch(/^### Roleforge, a job-application tracker$/m);
+    expect(out).toMatch(/\| 2026-07 \| `aaaaaaa` \| n\/a\s+\| n\/a/);
+    expect(out).toMatch(/\| 2026-08 \| `bbbbbbb` \| 12\s+\| 9\s+\| 6\s+\| \^0\.12\.0/);
+    expect(out).not.toContain(sha('b'));
+    // Roleforge has no history entry yet.
+    expect(out.split('### Roleforge')[1]).toMatch(/Not measured yet/);
+  });
+
+  it('shows the deprecation cycle as applied and the latest harness run', () => {
+    expect(out).toMatch(
+      /\| Pattern components moved .*\| Internal operations dashboard \| applied 2026-10-05 \| `39a68bc` \| `ops #460` \|/,
+    );
+    expect(out).not.toMatch(/not yet applied/);
+    expect(out).toMatch(
+      /\| 2026-10-14 \| 0\.25\.0\s+\| `ccccccc`\s+\| 2 of 3\s+\| 0\s+\| 0\s+\| 0\.95\s+\| no/,
+    );
+  });
+
+  it('is stable under Prettier, so lint-staged leaves it alone', async () => {
+    const file = join(REPO, 'docs/ADOPTION.md');
+    const rendered = replaceBlock(doc, ADOPTION_BLOCK, out);
+    expect(await formatGenerated(file, rendered)).toBe(rendered);
+    expect(await formatGenerated(file, doc)).toBe(doc);
+  });
+
+  it('names no private repository and makes no speed or bug claim', () => {
+    for (const text of [doc, out]) {
+      expect(text).not.toMatch(/hirobius\/(?!design-system)/);
+      expect(text).not.toMatch(/github\.com/);
+      expect(text.match(/dev.?speed|bug.?reduction|faster/gi) ?? []).toHaveLength(0);
+    }
+  });
+
+  it('the README "In use" block links it', () => {
+    const readme = readFileSync(join(REPO, 'README.md'), 'utf8');
+    expect(renderInUseBlock(snapshot)).toContain('[docs/ADOPTION.md](docs/ADOPTION.md)');
+    expect(readme).toContain('[docs/ADOPTION.md](docs/ADOPTION.md)');
+  });
+
+  it('every history entry is a declared app with increasing months and 40-hex commits', () => {
+    const ids = snapshot.consumers.apps.map((a) => a.id);
+    for (const h of snapshot.history) {
+      expect(ids).toContain(h.consumer);
+      const months = h.rows.map((r) => r.month);
+      expect([...months].sort()).toEqual(months);
+      expect(new Set(months).size).toBe(months.length);
+      for (const r of h.rows) {
+        expect(r.commit).toMatch(/^[0-9a-f]{40}$/);
+        for (const n of [r.files, r.components])
+          if (n !== null) expect(n).toBeGreaterThanOrEqual(0);
+        if (r.commit === snapshot.commit && h.consumer === snapshot.measuredFrom)
+          expect([r.files, r.components]).toEqual([snapshot.files, snapshot.components]);
+      }
+    }
   });
 });
