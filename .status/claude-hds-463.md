@@ -1,0 +1,1 @@
+Agent docs are version-stamped (hds#463): llms.txt, every slice, the consumer SKILL.md and the manifest name the package version (`check-version-stamps` in pretest; the hosted copy says `<release>+main <sha>`). New `public/llms/upgrade.txt` slice; the skill ships in the package and `upgrade` copies it into `.claude/skills/`.

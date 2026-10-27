@@ -37,10 +37,11 @@
  */
 
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join, dirname, extname, relative, resolve } from 'node:path';
+import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
-import { scanSources, findMarker, maskComments, isSpecFile } from './lib/source-scan.mjs';
+import { scanSources, isSpecFile } from './lib/source-scan.mjs';
+import { findUppercase } from '../bin/lib/visual-rules.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -53,7 +54,6 @@ const fixtureFile = process.env.FIXTURE_FILE;
 const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'tools', 'templates', 'tenants'];
 const SCAN_FILES = ['hirobius.tokens.json', 'figma/model.json', 'figma/snapshot.json'];
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.css', '.html', '.json'];
-const CODE_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.css']);
 const SKIP_DIRS = [
   'node_modules',
   '.git',
@@ -66,9 +66,6 @@ const SKIP_DIRS = [
   'fixtures',
 ];
 
-// A `//` comment may also follow punctuation here (`{ // note`, `f(// note`).
-const COMMENT_LEADS = ' \t;,{(';
-
 /**
  * Whether a repo-relative path is out of scope: tests prove translators, and
  * the generated utility safelist (hds#449) only keeps already-shipped utilities emitted.
@@ -77,101 +74,12 @@ export function isExempt(rel) {
   return isSpecFile(rel) || rel === 'src/styles/utility-safelist.generated.css';
 }
 
-/** [regex, message] pairs applied to every line. */
-const LINE_PATTERNS = [
-  [
-    /(?<![\w-])text-transform\s*:\s*uppercase\b/g,
-    'text-transform: uppercase (CSS or a Tailwind arbitrary property)',
-  ],
-  [/@apply\b[^;}\n]*(?<![\w-])uppercase(?![\w-])/g, '@apply uppercase'],
-  [
-    /(?<![\w-])(?:font-variant(?:-caps)?|fontVariant(?:Caps)?)\s*:\s*['"`]?(?:all-)?(?:small|petite)-caps\b/g,
-    'small caps (font-variant)',
-  ],
-  [/(?<![\w-])titling-caps\b/g, 'titling caps (font-variant)'],
-  [/['"]?\btextTransform['"]?\s*:\s*['"`]uppercase['"`]/g, 'textTransform: uppercase'],
-  [
-    /['"]?\btextCase['"]?\s*:\s*['"`](?:UPPER|SMALL_CAPS|SMALL_CAPS_FORCED)['"`]/g,
-    'textCase: UPPER (all caps in the Figma model)',
-  ],
-  [
-    /(?<!charAt\(0\))(?<!\[0\])\.(?:toUpperCase|toLocaleUpperCase)\s*\(/g,
-    '.toUpperCase() for display (only a first-letter capital, charAt(0) or [0], is sentence case)',
-  ],
-];
-
-// A string literal, single line, no nested quote of its own kind.
-const STRING_LITERAL = /'([^'\n]*)'|"([^"\n]*)"|`([^`\n]*)`/g;
-const CLASSY_TOKEN = /^[\w:/[\].()%#!&>*=,-]*[-:[\]/][\w:/[\].()%#!&>*=,-]*$/;
-
-/** Tailwind `uppercase` inside a class-list string literal. */
-function findClassUppercase(line) {
-  const hits = [];
-  for (const m of line.matchAll(STRING_LITERAL)) {
-    const body = m[1] ?? m[2] ?? m[3] ?? '';
-    const tokens = body.split(/\s+/).filter(Boolean);
-    const at = tokens.findIndex((t) => /^(?:[\w-]+:)*!?uppercase$/.test(t));
-    if (at === -1) continue;
-    // `textTransform: 'uppercase'` is its own pattern, not a class list.
-    if (/textTransform['"]?\s*:\s*$/.test(line.slice(0, m.index))) continue;
-    const others = tokens.filter((_, i) => i !== at);
-    if (others.length === 0 || others.some((t) => CLASSY_TOKEN.test(t))) {
-      hits.push(m.index + m[0].indexOf('uppercase'));
-    }
-  }
-  return hits;
-}
-
 /**
  * Violations in one file's text: { file, line, col, rule, message, sample }.
- * @param {string} text
- * @param {string} file repo-relative path (extension decides comment masking)
+ * The rule itself lives in bin/lib/visual-rules.mjs, shared with the consumer
+ * `hds-check` CLI (hds#664), so the gate and the CLI cannot drift.
  */
-export function findViolationsInText(text, file) {
-  const raw = text.split('\n');
-  const isCode = CODE_EXTENSIONS.has(extname(file));
-  const masked = (isCode ? maskComments(text, { leadChars: COMMENT_LEADS }) : text).split('\n');
-  const out = [];
-
-  const marker = (i) => {
-    const found = findMarker(raw, i, 'uppercase-ok', 2);
-    if (!found) return null;
-    return /[A-Za-z]{3}/.test(found.reason) ? 'ok' : 'bare';
-  };
-
-  masked.forEach((line, i) => {
-    if (!line.trim()) return;
-    const found = [];
-    for (const [re, what] of LINE_PATTERNS) {
-      if (re.source.includes('toUpperCase') && !isCode) continue;
-      for (const m of line.matchAll(re)) found.push([m.index, what]);
-    }
-    if (isCode || file.endsWith('.html')) {
-      for (const col of findClassUppercase(line)) found.push([col, 'Tailwind uppercase class']);
-    }
-    if (found.length === 0) return;
-    const mk = marker(i);
-    if (mk === 'ok') return;
-    found.sort((a, b) => a[0] - b[0]);
-    const seen = new Set();
-    for (const [col, what] of found) {
-      if (seen.has(col)) continue;
-      seen.add(col);
-      out.push({
-        file,
-        line: i + 1,
-        col,
-        rule: mk === 'bare' ? 'uppercase-ok-needs-reason' : 'no-uppercase',
-        message:
-          mk === 'bare'
-            ? `${what}: the uppercase-ok marker needs a reason after the colon`
-            : `${what}: the system never produces ALL CAPS, use sentence case`,
-        sample: raw[i].trim().slice(0, 140),
-      });
-    }
-  });
-  return out;
-}
+export const findViolationsInText = findUppercase;
 
 function defaultFiles() {
   const files = [

@@ -126,14 +126,6 @@
             "minLength": 1
           },
           "description": "Classes the manifest declares public beyond the hds-* prefix (public/hds-manifest.json publicClasses)."
-        },
-        "tailwindPreset": {
-          "description": "Every theme key of the ./tailwind-preset export, dotted and sorted (colors.card.DEFAULT); absent for a release that shipped no preset (hds#466).",
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
         }
       },
       "required": [
@@ -942,7 +934,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/vendored-preset, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
@@ -990,7 +982,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/vendored-preset, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
@@ -1038,7 +1030,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/vendored-preset, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
@@ -1086,7 +1078,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/vendored-preset, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual."
               },
               "plain": {
                 "type": "string",

@@ -1,0 +1,11 @@
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+h1 {
+  font-family: var(--primitive-typography-family-display, 'Sora', sans-serif);
+}
+code {
+  font:
+    400 14px/1.5 'IBM Plex Mono',
+    monospace;
+}

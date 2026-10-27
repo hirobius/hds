@@ -40,6 +40,8 @@ const TREE = [
   'tenants',
   'hirobius.tokens.json',
   'tsconfig.json',
+  // build-tokens stamps the manifest with the package version (hds#463).
+  'package.json',
   MANIFEST,
 ];
 

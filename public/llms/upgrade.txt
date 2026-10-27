@@ -1,0 +1,272 @@
+# Hirobius Design System - upgrade slice
+
+Version: 0.32.0
+
+See `public/llms.txt` for the index. Generated from the same sections as llms-full.txt.
+
+## Upgrading
+
+This text describes @hirobius/design-system 0.32.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
+
+Every name a release removed, moved or renamed, and what to use instead:
+
+| Old name | Use instead | Release |
+| --- | --- | --- |
+| `ActivityEvent` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityFeed` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityFeedProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityStatus` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityTone` | nothing: rewrite or delete the code | 0.20.0 |
+| `AppShell` | nothing: rewrite or delete the code | 0.20.0 |
+| `AppShellProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `AspectRatio` | Box style={{ aspectRatio: '16 / 9' }} | 0.20.0 |
+| `AspectRatioProps` | BoxProps | 0.20.0 |
+| `AssetImg` | `AssetImg` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `AssetImgProps` | `AssetImgProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `Bleed` | Box style={{ marginInline: 'calc(-1 * var(--semantic-space-scale-md))' }} | 0.20.0 |
+| `BleedProps` | BoxProps | 0.20.0 |
+| `ButtonGroup` | nothing: rewrite or delete the code | 0.20.0 |
+| `ButtonGroupProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Calendar` | nothing: rewrite or delete the code | 0.20.0 |
+| `CalendarProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Carousel` | nothing: rewrite or delete the code | 0.20.0 |
+| `CarouselProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `CaseStudyLayout` | nothing: rewrite or delete the code | 0.20.0 |
+| `CaseStudyLayoutProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Center` | Container maxWidth="content", with a Box style={{ paddingInline }} inside for the gutter | 0.20.0 |
+| `CenterProps` | ContainerProps | 0.20.0 |
+| `CinematicLink` | nothing: rewrite or delete the code | 0.20.0 |
+| `CinematicLinkProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `CircularProgress` | Progress variant="circular" | 0.20.0 |
+| `CircularProgressProps` | ProgressProps | 0.20.0 |
+| `Cluster` | Stack direction="row" wrap="wrap" align="center" | 0.20.0 |
+| `ClusterProps` | StackProps | 0.20.0 |
+| `CodeBlock` | `CodeBlock` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `CodeBlockProps` | `CodeBlockProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `CommandPalette` | nothing: rewrite or delete the code | 0.20.0 |
+| `CommandPaletteProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ComponentInstanceMatrix` | nothing: rewrite or delete the code | 0.20.0 |
+| `ContextMenu` | nothing: rewrite or delete the code | 0.20.0 |
+| `Cover` | Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }} around a Box style={{ marginBlock: 'auto' }} | 0.20.0 |
+| `CoverProps` | BoxProps | 0.20.0 |
+| `DateInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateRangeInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateRangeInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateTimeInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateTimeInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `DocLinkCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `DocLinkCardProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ErrorBoundary` | nothing: rewrite or delete the code | 0.20.0 |
+| `ErrorBoundaryProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ErrorPattern` | `ErrorPattern` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `ErrorPatternProps` | `ErrorPatternProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FieldWiring` | `FieldWiring` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FieldWiringInput` | `FieldWiringInput` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FileInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `FileInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Form` | `Form` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormField` | `FormField` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormFieldProps` | `FormFieldProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormFieldShell` | `FormFieldShell` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormFieldShellProps` | `FormFieldShellProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormProps` | `FormProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FoundationSwatch` | nothing: rewrite or delete the code | 0.20.0 |
+| `FoundationSwatchProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Frame` | Box style={{ aspectRatio: '16 / 9', overflow: 'hidden', borderRadius: hds.borderRadius.md }} | 0.20.0 |
+| `FrameProps` | BoxProps | 0.20.0 |
+| `HdsCheckbox` | Checkbox | 0.20.0 |
+| `HdsDocsShell` | nothing: rewrite or delete the code | 0.20.0 |
+| `HdsDocsShellProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `HdsRadio` | Radio | 0.20.0 |
+| `HdsSelect` | Select | 0.20.0 |
+| `HdsSlider` | Slider | 0.20.0 |
+| `HdsSystemDocLayout` | nothing: rewrite or delete the code | 0.20.0 |
+| `HdsToggle` | Toggle | 0.20.0 |
+| `HdsTooltip` | Tooltip | 0.20.0 |
+| `HeadingStack` | nothing: rewrite or delete the code | 0.20.0 |
+| `HeadingStackProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `HistoryCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `HistoryCardCommit` | nothing: rewrite or delete the code | 0.20.0 |
+| `HistoryCardProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `HoverCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `IconButton` | Button iconOnly label="…" iconLeft={<Icon icon={…} />} | 0.20.0 |
+| `IconButtonProps` | ButtonProps | 0.20.0 |
+| `InputGroup` | Input prefix / suffix | 0.20.0 |
+| `InputGroupProps` | InputProps | 0.20.0 |
+| `Lightbox` | nothing: rewrite or delete the code | 0.20.0 |
+| `LightboxProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `MultiSelector` | Combobox multiple | 0.20.0 |
+| `MultiSelectorOption` | ComboboxOption | 0.20.0 |
+| `MultiSelectorProps` | ComboboxMultipleProps | 0.20.0 |
+| `NavGroup` | nothing: rewrite or delete the code | 0.20.0 |
+| `NavGroupProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `NavItem` | nothing: rewrite or delete the code | 0.20.0 |
+| `NavProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `NotFoundPattern` | ErrorPattern displayText="404" message="Page not found" from @hirobius/design-system/patterns (hds-not-found-pattern rewrites it) | 0.20.0 |
+| `OverflowList` | nothing: rewrite or delete the code | 0.20.0 |
+| `OverflowListProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Page` | `Page` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `PageProps` | `PageProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `Reveal` | `Reveal` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `RevealAnimation` | `RevealAnimation` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `RevealProps` | `RevealProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `SelectableCard` | Card selectable selected onSelectedChange | 0.20.0 |
+| `SelectableCardProps` | CardProps | 0.20.0 |
+| `SideNav` | nothing: rewrite or delete the code | 0.20.0 |
+| `SideNavLevel` | nothing: rewrite or delete the code | 0.20.0 |
+| `SideNavProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Sketch` | nothing: rewrite or delete the code | 0.20.0 |
+| `SketchProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `StackedCardRail` | nothing: rewrite or delete the code | 0.20.0 |
+| `StackedCardRailCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `StackedCardRailProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `StatusTile` | `StatusTile` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `StatusTileProps` | `StatusTileProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `StatusTileTone` | `StatusTileTone` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `Step` | nothing: rewrite or delete the code | 0.20.0 |
+| `Stepper` | nothing: rewrite or delete the code | 0.20.0 |
+| `StepperField` | nothing: rewrite or delete the code | 0.20.0 |
+| `StepperFieldProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `StepperProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TextLockup` | nothing: rewrite or delete the code | 0.20.0 |
+| `TextLockupProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TileGrid` | Grid layout="auto-fill" minItemWidth="…" gap="medium" (hds-tile-grid rewrites it) | 0.20.0 |
+| `TileGridProps` | GridProps (minTileWidth is minItemWidth, gap 'sm' is 'medium') | 0.20.0 |
+| `TimeInput` | Input type="time" | 0.20.0 |
+| `TimeInputProps` | InputProps | 0.20.0 |
+| `ToggleButton` | Button pressed onPressedChange (variant="ghost" is variant="tertiary") | 0.20.0 |
+| `ToggleButtonProps` | ButtonProps | 0.20.0 |
+| `Token` | nothing: rewrite or delete the code | 0.20.0 |
+| `TokenProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Tokenizer` | nothing: rewrite or delete the code | 0.20.0 |
+| `TokenizerProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Toolbar` | nothing: rewrite or delete the code | 0.20.0 |
+| `ToolbarComponent` | nothing: rewrite or delete the code | 0.20.0 |
+| `TopNav` | nothing: rewrite or delete the code | 0.20.0 |
+| `TopNavProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TreeList` | nothing: rewrite or delete the code | 0.20.0 |
+| `TreeListProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TreeNode` | nothing: rewrite or delete the code | 0.20.0 |
+| `activityAvatarVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `activityToneVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `appShellVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `badgeVariants` | badgeVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `blockCodeTextVariants` | `blockCodeTextVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `blockContainerVariants` | `blockContainerVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `blockHeaderVariants` | `blockHeaderVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `blockquoteVariants` | blockquoteVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `buttonGroupVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `buttonVariants` | buttonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `cardVariants` | cardVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `carouselControlVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `chevronVariants` | `chevronVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `circularProgressVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `cmdkDescriptionVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `cmdkKindBadgeVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `cmdkRowVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `collapsibleToggleVariants` | `collapsibleToggleVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `copyButtonVariants` | `copyButtonVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `crumbLabelVariants` | crumbLabelVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `defaultActivityEvents` | nothing: rewrite or delete the code | 0.20.0 |
+| `disclosureTriggerVariants` | disclosureTriggerVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `docLinkCardVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `fieldValueVariants` | fieldValueVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `fileInputVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `hdsTimeInputVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `hdsToggleButtonVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `headingStackLevelVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `headingStackVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `inlineCodeTextVariants` | `inlineCodeTextVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `inlineCodeVariants` | inlineCodeVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `inlineWrapperVariants` | `inlineWrapperVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `inputVariants` | inputVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `kbdVariants` | kbdVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `metadataListVariants` | metadataListVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `navGroupLabelVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `navIndicatorVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `navItemVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `overflowBubbleVariants` | overflowBubbleVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `prePanelVariants` | `prePanelVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `progressTrackVariants` | progressTrackVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlDescriptionVariants` | segmentedControlDescriptionVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlFocusRingVariants` | segmentedControlFocusRingVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlIndicatorVariants` | segmentedControlIndicatorVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlItemVariants` | segmentedControlItemVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlLabelVariants` | segmentedControlLabelVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlRailVariants` | segmentedControlRailVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlWrapperVariants` | segmentedControlWrapperVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `selectableCardVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `sideNavVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `skeletonVariants` | skeletonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `spinnerVariants` | spinnerVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `statVariants` | statVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `statusDotVariants` | statusDotVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `statusListItemDotVariants` | statusListItemDotVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `stepMarkerVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `surfaceVariants` | surfaceVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tableDataCellVariants` | tableDataCellVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tableHeaderCellVariants` | tableHeaderCellVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tableSortButtonVariants` | tableSortButtonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tagButtonVariants` | tagButtonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tagPillVariants` | tagPillVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `textVariants` | textVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `textareaVariants` | textareaVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `toastIconVariants` | toastIconVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tokenLabelVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `tokenNodeInlineVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `tokenShellVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `useFieldWiring` | `useFieldWiring` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `--semantic-typography-eyebrow-text-transform` | The CSS variable --semantic-typography-eyebrow-text-transform is gone, so set text-transform: uppercase yourself where a label must stay uppercase. | 0.21.0 |
+| `StatusDot` | StatusDot and StatusDotProps are removed, so replace each <StatusDot tone size label> with <Badge dot tone size label> (BadgeProps for the type), moving any style to a wrapper element or a className first. | 0.21.0 |
+| `--primitive-color-apple-100` | --primitive-color-graphite-100 | 0.24.0 |
+| `--primitive-color-apple-200` | --primitive-color-graphite-200 | 0.24.0 |
+| `--primitive-color-apple-300` | --primitive-color-graphite-300 | 0.24.0 |
+| `--primitive-color-apple-400` | --primitive-color-graphite-400 | 0.24.0 |
+| `--primitive-color-apple-50` | --primitive-color-graphite-50 | 0.24.0 |
+| `--primitive-color-apple-500` | --primitive-color-graphite-500 (or a semantic accent token) | 0.24.0 |
+| `--primitive-color-apple-600` | --primitive-color-graphite-600 | 0.24.0 |
+| `--primitive-color-apple-700` | --primitive-color-graphite-700 | 0.24.0 |
+| `--primitive-color-apple-800` | --primitive-color-graphite-800 | 0.24.0 |
+| `--primitive-color-apple-900` | --primitive-color-graphite-900 | 0.24.0 |
+| `--primitive-color-apple-950` | --primitive-color-graphite-950 | 0.24.0 |
+| `--primitive-typography-letterSpacing-caps` | The CSS variable --primitive-typography-letterSpacing-caps and the tracking-caps class are gone because the system is sentence case, so delete them from your styles. | 0.25.0 |
+| `--hds-accent-bar` | Delete every var(--hds-accent-bar); status is shown in the content, not a coloured bar. | 0.27.0 |
+| `--leading-relaxed` | --semantic-typography-body-line-height or set your own line-height | 0.27.0 |
+| `BoardColumnTone` | Delete the BoardColumnTone import and the tone prop from every BoardColumn, and drop any var(--hds-accent-bar); status lives in the column title and count. | 0.27.0 |
+| `--component-button-secondary-border-pressed` | The secondary Button pressed border variable is gone, so delete any override of it, since the hover border now holds while pressed. | 0.28.0 |
+| `--color-blue-500` | --color-blue-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-indigo-600` | --color-indigo-600 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-purple-500` | --color-purple-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-red-500` | --color-red-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-red-700` | --color-red-700 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-slate-200` | The stray CSS variable --color-slate-200 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--color-slate-900` | The stray CSS variable --color-slate-900 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--color-stone-50` | The stray CSS variable --color-stone-50 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--container-5xl` | The stray CSS variable --container-5xl is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--ease-in-out` | --ease-in-out was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--font-serif` | The stray CSS variable --font-serif is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--tracking-wider` | The stray CSS variable --tracking-wider is no longer shipped; type tracking comes from the --semantic-typography-*-letter-spacing tokens, so use a type role instead. | 0.29.0 |
+| `hds-tag-btn` | the Tag component | 0.31.0 |
+| `hds-tag-pill` | the Tag component | 0.31.0 |
+
+## Deprecated: do not use in new code
+
+Still exported, but on the way out: do not write new code with them.
+
+- `Blockquote.size` (removed in 1.0.0): Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed.
+- `Box-sx-layout-names` (removed in 1.0.0): Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead.
+- `CardMetric` (removed in 1.0.0): Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `Divider.strong` (removed in 1.0.0): Divider's strong prop, deprecated since before 0.16.0, still works; use variant="strong" instead.
+- `InlineCode.compact` (removed in 1.0.0): InlineCode's compact prop, deprecated since before 0.16.0, still works; use density="compact" instead.
+- `MetricTile` (removed in 1.0.0): MetricTile is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `MetricTiles` (removed in 1.0.0): MetricTiles is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `Stack-gap-layout-names` (removed in 1.0.0): Stack gap names 'tight', 'normal', 'inset' and 'spacious' still work and do not warn yet, but are removed in 1.0.0, and Stack names no replacement until then.
+- `Stat` (removed in 1.0.0): Stat is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `StatusTile` (removed in 1.0.0): StatusTile still works until 1.0.0; replace it with <Card padding="item" className="border-0"><Card.Row trailing={trailing}><Card.RowTitle>{title}</Card.RowTitle> plus one <Card.RowNote> per note, and drop tone, which StatusTile never painted.
+- `Text-variants` (removed in 1.0.0): The Text variants heading1, heading2, heading3, technical, eyebrow, badge, docLede, docBody, docSmall and docCode still work but are deprecated; use title, mono, caption, body or ui instead.
+- `bg-[color:var(--semantic-color-feedback-bg-warning)]`, `border-[color:var(--semantic-color-feedback-warning)]/40`, `data-[highlighted]:text-foreground`, `data-[state=checked]:text-foreground`, `group-hover:opacity-100`, `h-3.5`, `max-w-2xl`, `p-16`, `pb-8`, `pt-1`, `sm:inline-block`, `sm:text-4xl`, `text-[color:var(--semantic-color-feedback-warning)]`, `text-muted-foreground/70`, `transition-[transform,opacity]`, `w-3.5` (removed in 1.0.0): Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind.
+- `hds.density` (removed in 1.0.0): hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs.
+- `typeStyles-aliases` (removed in 1.0.0): The hds.typeStyles keys from before the ramp (h1 to h3, heading1 to heading3, eyebrow, badge, micro, technical, small, label and the rest) and hds.semantic.typography label, labelDescriptive and labelTechnical still work but are deprecated; use display, title, body, ui, caption or mono instead.
+
+Deprecated design tokens are not listed: the `hds/no-deprecated-token` lint rule flags each use and names its replacement.
