@@ -372,7 +372,7 @@ describe('FormField error reaches the control (items 13, 14, 19)', () => {
       </>,
     );
     for (const root of Array.from(container.children)) {
-      expect((root as HTMLElement).className).toMatch(/\bgap-2\b/);
+      expect((root as HTMLElement).className).toMatch(/\bgap-scale-xs\b/);
       expect((root as HTMLElement).className).not.toMatch(/gap-1\.5/);
     }
   });
@@ -455,8 +455,9 @@ describe('Overflow (item 15) and shape (item 16)', () => {
     }
   });
   it('Badge, CodeBlock use the tenant-following radius, not a fixed value', () => {
+    // Badge sits a step under the action radius (rounded-sm, role.radius - 2px; hds#757).
     expect(render(<Badge>b</Badge>).container.firstElementChild!.className).toMatch(
-      /\brounded-md\b/,
+      /\brounded-sm\b/,
     );
     expect(src('code-block.tsx')).not.toMatch(/rounded-\[var\(--semantic-radius-action\)\]/);
   });

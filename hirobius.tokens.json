@@ -636,6 +636,12 @@
           "unit": "px"
         }
       },
+      "6": {
+        "$value": {
+          "value": 6,
+          "unit": "px"
+        }
+      },
       "8": {
         "$value": {
           "value": 8,
@@ -1031,6 +1037,14 @@
           "unit": "px"
         },
         "$description": "20px size step."
+      },
+      "22": {
+        "$type": "dimension",
+        "$value": {
+          "value": 22,
+          "unit": "px"
+        },
+        "$description": "22px size step."
       },
       "24": {
         "$type": "dimension",
@@ -2938,17 +2952,17 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{semantic.radius.action}",
-        "$description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius)."
+        "$value": "{primitive.radius.6}",
+        "$description": "Figma value; code renders rounded-sm (role.radius - 2px)."
       },
       "height": {
         "$type": "dimension",
-        "$value": "{primitive.size.20}",
+        "$value": "{primitive.size.22}",
         "$description": "Badge height."
       },
       "minWidth": {
         "$type": "dimension",
-        "$value": "{primitive.size.20}",
+        "$value": "{primitive.size.22}",
         "$description": "Badge minimum width."
       },
       "paddingY": {
@@ -2956,10 +2970,15 @@
         "$value": "{primitive.space.px2}",
         "$description": "Vertical padding inside the badge."
       },
+      "paddingShift": {
+        "$type": "dimension",
+        "$value": "{primitive.space.px1}",
+        "$description": "Label lift, taken from top padding to bottom."
+      },
       "paddingX": {
         "$type": "dimension",
         "$value": "{primitive.space.2}",
-        "$description": "Horizontal padding inside the badge (8px; 6px until the 2026-10 spacing prune)."
+        "$description": "Horizontal padding inside the badge."
       }
     },
     "button": {

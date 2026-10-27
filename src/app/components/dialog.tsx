@@ -135,7 +135,10 @@ const DialogFooter = /* @__PURE__ */ React.forwardRef<
   return (
     <div
       ref={ref}
-      className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-2', className)}
+      className={cn(
+        'flex flex-col-reverse gap-scale-xs sm:flex-row sm:justify-end sm:gap-scale-xs',
+        className,
+      )}
       {...props}
     />
   );

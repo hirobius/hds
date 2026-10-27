@@ -506,9 +506,9 @@ describe('Input accessibility contract', () => {
   it('a11y:input.clear-target-size the clear button spans the field height and is 24px or wider', () => {
     render(<Input label="Search" type="search" defaultValue="abc" size="sm" />);
     const clear = screen.getByRole('button', { name: 'Clear search' });
-    // inset-y-0 = the whole field height (>= 32px); px-2 + a 14px glyph = 30px wide.
+    // inset-y-0 = the whole field height (>= 32px); px-scale-xs (8px) + a 14px glyph = 30px wide.
     expect(clear.className).toContain('inset-y-0');
-    expect(clear.className).toContain('px-2');
+    expect(clear.className).toContain('px-scale-xs');
   });
 });
 

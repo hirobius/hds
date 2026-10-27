@@ -199,7 +199,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
             }
           }}
           className={cn(
-            'flex min-h-10 flex-wrap items-center gap-1 rounded-md border bg-background px-2 py-1',
+            'flex min-h-10 flex-wrap items-center gap-fixed-2xs rounded-md border bg-background px-scale-xs py-fixed-2xs',
             'focus-within:ring-2 focus-within:ring-ring',
             ariaInvalid ? 'border-destructive' : 'border-input',
             disabled && 'cursor-not-allowed',
@@ -215,7 +215,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
               disabled={disabled || option.disabled}
               onClick={() => removeAt(i)}
               className={cn(
-                'hds-focus hds-touch-row inline-flex h-7 items-center gap-1 rounded-sm bg-muted pl-2 pr-1',
+                'hds-focus hds-touch-row inline-flex h-7 items-center gap-fixed-2xs rounded-sm bg-muted pl-scale-xs pr-fixed-2xs',
                 'hds-type-caption text-foreground hover:bg-accent hover:text-accent-foreground',
                 'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
               )}
@@ -248,7 +248,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
             onFocus={() => setOpen(true)}
             onKeyDown={onKeyDown}
             className={cn(
-              'h-7 min-w-24 flex-1 bg-transparent px-1 hds-type-ui text-foreground outline-none',
+              'h-7 min-w-24 flex-1 bg-transparent px-fixed-2xs hds-type-ui text-foreground outline-none',
               'placeholder:text-muted-foreground disabled:cursor-not-allowed',
             )}
           />
@@ -274,7 +274,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
           role="listbox"
           aria-label={popupName}
           aria-multiselectable
-          className={cn('max-h-60 overflow-y-auto', rows.length > 0 && 'p-1')}
+          className={cn('max-h-60 overflow-y-auto', rows.length > 0 && 'p-fixed-2xs')}
         >
           {rows.map((row, i) => {
             const isActive = i === activeIndex;
@@ -294,7 +294,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
                   onMouseEnter={() => setActiveIndex(i)}
                   onClick={() => commit(row)}
                   className={cn(
-                    'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left hds-type-ui hds-touch-row outline-none',
+                    'flex w-full items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 text-left hds-type-ui hds-touch-row outline-none',
                     'data-[active=true]:bg-[var(--semantic-color-surface-sunken)] data-[active=true]:text-[var(--semantic-color-content-primary)]',
                     'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
                     'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
@@ -314,7 +314,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
           })}
         </ul>
         {rows.length === 0 ? (
-          <p className="m-1 px-2 py-6 text-center hds-type-ui text-muted-foreground">
+          <p className="m-fixed-2xs px-scale-xs py-fixed-md text-center hds-type-ui text-muted-foreground">
             {emptyMessage}
           </p>
         ) : null}

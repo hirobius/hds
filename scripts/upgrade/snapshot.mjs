@@ -22,6 +22,12 @@
  *   - exportsKeys: every package.json#exports key, stylesheets included;
  *   - dependencies, peerDependencies (with their optional flag), engines,
  *     bin (name -> path) and the package.json `files` list.
+ *   - props (hds#461): every component's props, with type, optional flag,
+ *     allowed values and default (scripts/upgrade/props.mjs). The source path
+ *     reads them from the tree's component-api.json (else the committed
+ *     docs/api/props-baseline.json); a package from the props-baseline.json it
+ *     ships. A release older than 0.33 ships none, so its snapshot has no
+ *     props section and diff.mjs reports prop facts only between two that do;
  *   - css (hds#449): the CSS contract of the stylesheets the package ships
  *     (scripts/build-css-contract.mjs): every custom property with its value
  *     per context, the class names, the @font-face entries and the @layer
@@ -88,6 +94,7 @@ import { collectModuleSymbols } from '../lib/check-public-api.mjs';
 import { TOOLING_EXPORTS, readJsExportEntries } from '../lib/package-entries.mjs';
 import { buildCssContract, readCssContract } from '../lib/css-contract.mjs';
 import { formatJson, sortedObject } from './format.mjs';
+import { buildProps, readPropsBaseline } from './props.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
@@ -150,6 +157,9 @@ function cssSection(dir) {
 /** `snapshot` with its css section last, when there is one. */
 const withCss = (snapshot, css) => (css ? { ...snapshot, css } : snapshot);
 
+/** `snapshot` with its props section, when there is one. */
+const withProps = (snapshot, props) => (props ? { ...snapshot, props } : snapshot);
+
 /**
  * The snapshot of an unpacked package directory (a published tarball's
  * `package/`, or the repo after build:lib).
@@ -171,7 +181,8 @@ export function snapshotPackage(dir) {
     }
     entries[key] = entryNames(dir, file);
   }
-  return withCss(packageFacts(pkg, exportsMap, entries), cssSection(dir));
+  const props = readPropsBaseline(dir);
+  return withCss(withProps(packageFacts(pkg, exportsMap, entries), props), cssSection(dir));
 }
 
 /**
@@ -210,7 +221,8 @@ export function snapshotFromSource(root, { css = null } = {}) {
     if (!file) throw new Error(`exports["${key}"] has no source snapshot.mjs can read`);
     entries[key] = entryNames(root, file);
   }
-  return withCss(packageFacts(pkg, exportsMap, entries), css);
+  const props = buildProps(root) ?? readPropsBaseline(root);
+  return withCss(withProps(packageFacts(pkg, exportsMap, entries), props), css);
 }
 
 /** `npm pack <spec>` into `destination`; returns the tarball path. */

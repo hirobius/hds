@@ -213,7 +213,7 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
       onPointerUp={handlers.onPointerUp}
       onPointerCancel={handlers.onPointerCancel}
       animate={{
-        y: isPressed ? hds.space.px1 : 0,
+        y: isPressed ? hds.semantic.space.subgrid.hairline : 0,
       }}
       className={toggleRootVariants({ state: visualState })}
     >
@@ -271,7 +271,7 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
       <motion.span
         className="text-muted-foreground"
         animate={{
-          x: isPressed ? hds.space.px1 : 0,
+          x: isPressed ? hds.semantic.space.subgrid.hairline : 0,
         }}
         transition={{
           duration: productiveMotion.duration,

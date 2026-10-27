@@ -783,7 +783,7 @@ function PaginationDemo() {
   const [page, setPage] = useState(3);
   const [item, setItem] = useState(1);
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-fixed-md">
       <Pagination count={10} page={page} onPageChange={setPage} />
       {/* Compact Previous and Next are outlined; the end you are on stays outlined, faded (hds#886). */}
       <Pagination variant="compact" label="Item" count={4} page={item} onPageChange={setItem} />
