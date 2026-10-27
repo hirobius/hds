@@ -12,23 +12,16 @@
  * public/hds-manifest.json keeps all three for the repo's own tooling.
  */
 
-export const BUNDLE_OMITTED_SPEC_FIELDS = ['figmaLink', 'consumers', 'a11yRules[].testId'];
-
 function slimSpec(spec) {
   const { figmaLink, consumers: _consumers, a11yRules, ...rest } = spec;
   const slim = { ...rest };
   // A figmaLink that differs from figmaUrl is information, not a duplicate.
   if (figmaLink != null && figmaLink !== spec.figmaUrl) slim.figmaLink = figmaLink;
-  if (Array.isArray(a11yRules)) {
-    slim.a11yRules = a11yRules.map(({ testId: _testId, ...rule }) => rule);
-  } else if (a11yRules !== undefined) {
-    slim.a11yRules = a11yRules;
-  }
+  if (a11yRules) slim.a11yRules = a11yRules.map(({ testId: _testId, ...rule }) => rule);
   return slim;
 }
 
 function slimSpecs(specs) {
-  if (!specs || typeof specs !== 'object') return specs;
   return Object.fromEntries(Object.entries(specs).map(([name, spec]) => [name, slimSpec(spec)]));
 }
 

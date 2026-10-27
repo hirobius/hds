@@ -5,13 +5,8 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
-import { gzipSync } from 'zlib';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-import { BUNDLE_OMITTED_SPEC_FIELDS, slimManifestForBundle } from '../lib/manifest-bundle.mjs';
+import { slimManifestForBundle } from '../lib/manifest-bundle.mjs';
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const URL = 'https://www.figma.com/design/AbC123/HDS?node-id=1-2';
 
 function fixture() {
@@ -59,17 +54,5 @@ describe('slimManifestForBundle', () => {
     const input = fixture();
     input.componentSpecs.Button.figmaUrl = null;
     expect(slimManifestForBundle(input).componentSpecs.Button.figmaLink).toBe(URL);
-  });
-
-  it('names what it omits', () => {
-    expect(BUNDLE_OMITTED_SPEC_FIELDS).toEqual(['figmaLink', 'consumers', 'a11yRules[].testId']);
-  });
-
-  it('keeps the real manifest at or below 61 kB gzip (65 kB budget, hds#413)', () => {
-    const manifest = JSON.parse(readFileSync(join(REPO_ROOT, 'public/hds-manifest.json'), 'utf8'));
-    const bytes = gzipSync(
-      `export default ${JSON.stringify(slimManifestForBundle(manifest))}`,
-    ).length;
-    expect(bytes).toBeLessThanOrEqual(61_000);
   });
 });

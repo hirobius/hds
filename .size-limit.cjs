@@ -95,7 +95,7 @@
  * Adrian to confirm or tighten.
  *
  * Measured again 2026-10-27 (hds#413), budget unchanged: 64.41 kB gzip on
- * main (936620e) -> 60.17 kB. dist/manifest.js now leaves out three fields
+ * main -> 60.19 kB. dist/manifest.js now leaves out three fields
  * public/hds-manifest.json keeps (scripts/lib/manifest-bundle.mjs): the
  * duplicate `figmaLink` (same URL as `figmaUrl`), `consumers` (HDS repo
  * importer paths) and `a11yRules[].testId` (HDS's own test ids).
