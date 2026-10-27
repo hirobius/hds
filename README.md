@@ -47,6 +47,8 @@ An internal operations dashboard is one of 2 product apps that use components: *
 | Product apps      | 2     | Components and tokens                     |
 | Token-level sites | 4     | Tokens and CSS only, no component imports |
 
+Month-by-month adoption in each product app, one row per measured commit: [docs/ADOPTION.md](docs/ADOPTION.md).
+
 [![Audit page of the product app](docs/images/product-app-audit.png)](docs/images/product-app-audit.png)
 
 <!-- auto:end:consumer-usage -->
