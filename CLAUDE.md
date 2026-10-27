@@ -188,6 +188,7 @@ may skip:
 - **A perf-budget failure (`pnpm size-limit` / `check:size`, Button probe) → `performance-optimization`** (Osmani; Pocock still owns build/test/review). The failure output now names it. Never raise a budget to get green.
 - **Charting a multi-decision lane → `/wayfinder`.**
 - **Design-touching UI → `/design-review`.**
+- **Docs copy → `humanizer`; UI 2nd pass → `web-design-guidelines`** (`.claude/skills/_vendor/anti-slop/ROUTING.md`).
 
 **Tracker config for `/to-tickets` + `/triage`** (they ask for it): the tracker
 is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
@@ -227,6 +228,7 @@ decisions.
 ## PR previews: screenshots, not Vercel (Adrian 2026-10-24, all repos)
 
 Vercel preview builds are OFF (production only). Every PR carries its own preview:
+
 1. Run the production build locally (`pnpm build` / `npm run build`) and serve the built app (`pnpm preview` / `npm run preview`, or the repo's screenshot tooling).
 2. Attach screenshots of the affected routes only: 390x844, light AND dark, plus a desktop shot if the route is used on desktop. At most ~6 images, inline in the PR body or a PR comment. Adrian reviews on his phone: no zips, nothing he has to build.
 3. Backend/infra PRs with no visual change: write "no visual change" instead.
