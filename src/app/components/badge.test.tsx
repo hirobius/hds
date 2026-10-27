@@ -5,6 +5,7 @@
  */
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
+import tokens from '../../../hirobius.tokens.json';
 import { Badge } from './badge';
 
 afterEach(cleanup);
@@ -103,5 +104,51 @@ describe('Badge count (hds#865)', () => {
     const { container } = render(<Badge>Draft</Badge>);
     expect(container.textContent).toBe('Draft');
     expect((container.firstElementChild as HTMLElement).className).not.toContain('tabular-nums');
+  });
+});
+
+describe('Badge shape tokens (hds#757)', () => {
+  const textBadge = () => {
+    const { container } = render(<Badge tone="info">Beta</Badge>);
+    return (container.firstElementChild as HTMLElement).className;
+  };
+
+  it('takes its corner from component.badge.radius, not the shared action radius', () => {
+    const cls = textBadge();
+    expect(cls).toContain('rounded-[var(--component-badge-radius)]');
+    expect(cls).not.toMatch(/\brounded-md\b/);
+  });
+
+  it('nudges the label up by component.badge.labelOffset (optical centring)', () => {
+    const cls = textBadge();
+    expect(cls).toContain(
+      'pt-[calc(var(--component-badge-paddingY)-var(--component-badge-labelOffset))]',
+    );
+    expect(cls).toContain(
+      'pb-[calc(var(--component-badge-paddingY)+var(--component-badge-labelOffset))]',
+    );
+  });
+
+  it('keeps height and min width on their tokens', () => {
+    const cls = textBadge();
+    expect(cls).toContain('h-[var(--component-badge-height)]');
+    expect(cls).toContain('min-w-[var(--component-badge-minWidth)]');
+  });
+});
+
+describe('Badge shape token values (hds#757)', () => {
+  const badge = tokens.component.badge;
+
+  it('is one step taller (22px, was 20px)', () => {
+    expect(badge.height.$value).toBe('{primitive.size.22}');
+    expect(badge.minWidth.$value).toBe('{primitive.size.22}');
+  });
+
+  it('sits its corner one step under the 8px action radius (6px)', () => {
+    expect(badge.radius.$value).toBe('{primitive.radius.6}');
+  });
+
+  it('lifts the label 1px', () => {
+    expect(badge.labelOffset.$value).toBe('{primitive.space.px1}');
   });
 });

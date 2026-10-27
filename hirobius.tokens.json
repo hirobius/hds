@@ -636,6 +636,13 @@
           "unit": "px"
         }
       },
+      "6": {
+        "$value": {
+          "value": 6,
+          "unit": "px"
+        },
+        "$description": "6px corner, one step under the 8px action radius. Backs component.badge.radius (hds#757)."
+      },
       "8": {
         "$value": {
           "value": 8,
@@ -1031,6 +1038,14 @@
           "unit": "px"
         },
         "$description": "20px size step."
+      },
+      "22": {
+        "$type": "dimension",
+        "$value": {
+          "value": 22,
+          "unit": "px"
+        },
+        "$description": "22px size step. Backs component.badge.height (hds#757)."
       },
       "24": {
         "$type": "dimension",
@@ -2934,23 +2949,28 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{semantic.radius.action}",
-        "$description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius)."
+        "$value": "{primitive.radius.6}",
+        "$description": "Badge corner radius: 6px, one step under the 8px action radius (hds#757). Its own token, so a tenant reshapes Badge by overriding it (brutalist-demo pins it to 0)."
       },
       "height": {
         "$type": "dimension",
-        "$value": "{primitive.size.20}",
-        "$description": "Badge height."
+        "$value": "{primitive.size.22}",
+        "$description": "Badge height (22px; 20px until hds#757)."
       },
       "minWidth": {
         "$type": "dimension",
-        "$value": "{primitive.size.20}",
-        "$description": "Badge minimum width."
+        "$value": "{primitive.size.22}",
+        "$description": "Badge minimum width, equal to the height so a one-digit count is square."
       },
       "paddingY": {
         "$type": "dimension",
         "$value": "{primitive.space.px2}",
-        "$description": "Vertical padding inside the badge."
+        "$description": "Vertical padding inside the badge, before the labelOffset nudge."
+      },
+      "labelOffset": {
+        "$type": "dimension",
+        "$value": "{primitive.space.px1}",
+        "$description": "Optical centring (hds#757): the label moves up this much (top padding minus it, bottom padding plus it), so the x-height of a sentence-case label sits centred rather than the line box."
       },
       "paddingX": {
         "$type": "dimension",

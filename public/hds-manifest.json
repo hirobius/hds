@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-24T04:14:09.174Z",
+  "generated": "2026-10-27T03:28:52.414Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12067,6 +12067,13 @@
         "value": "4px"
       },
       {
+        "path": "primitive.radius.6",
+        "cssVar": "--primitive-radius-6",
+        "type": "dimension",
+        "description": "6px corner, one step under the 8px action radius. Backs component.badge.radius (hds#757).",
+        "value": "6px"
+      },
+      {
         "path": "primitive.radius.8",
         "cssVar": "--primitive-radius-8",
         "type": "dimension",
@@ -12451,6 +12458,13 @@
         "type": "dimension",
         "description": "20px size step.",
         "value": "20px"
+      },
+      {
+        "path": "primitive.size.22",
+        "cssVar": "--primitive-size-22",
+        "type": "dimension",
+        "description": "22px size step. Backs component.badge.height (hds#757).",
+        "value": "22px"
       },
       {
         "path": "primitive.size.24",
@@ -14492,33 +14506,41 @@
         "path": "component.badge.radius",
         "cssVar": "--component-badge-radius",
         "type": "dimension",
-        "description": "The action radius, as DESIGN.md says for badges (the Badge component renders it through rounded-md, which follows a tenant role.radius).",
-        "alias": "{semantic.radius.action}",
-        "resolvedValue": "8px"
+        "description": "Badge corner radius: 6px, one step under the 8px action radius (hds#757). Its own token, so a tenant reshapes Badge by overriding it (brutalist-demo pins it to 0).",
+        "alias": "{primitive.radius.6}",
+        "resolvedValue": "6px"
       },
       {
         "path": "component.badge.height",
         "cssVar": "--component-badge-height",
         "type": "dimension",
-        "description": "Badge height.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "description": "Badge height (22px; 20px until hds#757).",
+        "alias": "{primitive.size.22}",
+        "resolvedValue": "22px"
       },
       {
         "path": "component.badge.minWidth",
         "cssVar": "--component-badge-minWidth",
         "type": "dimension",
-        "description": "Badge minimum width.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "description": "Badge minimum width, equal to the height so a one-digit count is square.",
+        "alias": "{primitive.size.22}",
+        "resolvedValue": "22px"
       },
       {
         "path": "component.badge.paddingY",
         "cssVar": "--component-badge-paddingY",
         "type": "dimension",
-        "description": "Vertical padding inside the badge.",
+        "description": "Vertical padding inside the badge, before the labelOffset nudge.",
         "alias": "{primitive.space.px2}",
         "resolvedValue": "2px"
+      },
+      {
+        "path": "component.badge.labelOffset",
+        "cssVar": "--component-badge-labelOffset",
+        "type": "dimension",
+        "description": "Optical centring (hds#757): the label moves up this much (top padding minus it, bottom padding plus it), so the x-height of a sentence-case label sits centred rather than the line box.",
+        "alias": "{primitive.space.px1}",
+        "resolvedValue": "1px"
       },
       {
         "path": "component.badge.paddingX",

@@ -192,6 +192,7 @@
 [data-brand='brutalist-demo'],
 [data-tenant='brutalist-demo'] {
   --role-radius: 0px; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --component-badge-radius: 0px; /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-space-surface-padding: var(
     --semantic-space-scale-sm
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
