@@ -288,6 +288,34 @@ Both use the values `sx` compiles, so there is no pixel width in your code.
 They answer narrow (`false` / `'base'`) on the server, in jsdom and without
 `matchMedia`, and update live as the viewport crosses a breakpoint.
 
+### Finding a token name — `hds-tokens search`
+
+Never guess a token name. Before you write a `var(--…)`, look it up:
+
+```sh
+pnpm exec hds-tokens search content tertiary
+# "content tertiary" is not a token. Nearest real names:
+#   --semantic-color-content-tertiary
+#     semantic.color.content.tertiary = {primitive.color.neutral.500}
+```
+
+The query can be a CSS variable, a token path or loose words. An exact name
+exits 0 and prints its value; anything else exits 1 with the five nearest real
+names. Add `--json` for machine-readable output. It reads the
+`hirobius.tokens.json` the package ships, offline.
+
+### Size vs space
+
+Two dimension scales, two jobs:
+
+- **`semantic.size.*`** sets an element's own fixed dimensions: width, height,
+  min-height (control glyphs, icons, avatars, tiles, table rows).
+- **`semantic.space.*`** sets gaps and padding, between and inside elements.
+
+If the value is a box's own width or height, it is `size`; if it is the
+distance between or inside boxes, it is `space`. Use the semantic roles, not
+`primitive.size.*` directly.
+
 ### Semantic feedback / status tokens
 
 For status UI (Saved / Applied / Interviewing / Offer / Rejected, or any

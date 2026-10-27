@@ -88,6 +88,13 @@ references when you use them on the server (`tokens.color.primary` in a layout,
 
 **Density.** Put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
 
+### Token names and size vs space
+
+Never guess a token name: `pnpm exec hds-tokens search content tertiary` says whether
+a name exists and lists the nearest real ones. Size vs space: `semantic.size.*`
+is an element's own width or height, `semantic.space.*` is the gap or padding
+between and inside elements. Details: [`docs/CONSUMING.md`](docs/CONSUMING.md) §7.
+
 ## 2.5. Lint discipline (optional)
 
 `@hirobius/eslint-plugin-hds` flags raw hex/px values in `style`, `className`,

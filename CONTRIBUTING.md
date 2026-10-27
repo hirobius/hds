@@ -74,6 +74,14 @@ tooling, or restore the cache are omitted because they are not gates.
 
 Never use `--no-verify`. When a gate fails, fix the cause.
 
+### Visual baselines (local, before a visual PR)
+
+`pnpm docs:publish && pnpm test:visual-baselines` compares every docs demo,
+light and dark, with the PNGs committed under `tests/visual/*-snapshots/`
+(hirobius/ops#726). After an intended visual change, run
+`pnpm test:visual-baselines:update`, look at the changed PNGs, and commit them
+with the change. Baselines are Linux Chromium (the remote container).
+
 ---
 
 ## Finding and recording work
