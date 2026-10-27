@@ -68,12 +68,12 @@ export const Breadcrumb = /* @__PURE__ */ React.forwardRef<HTMLElement, Breadcru
 
     return (
       <nav ref={ref} aria-label={label} className={cn('w-full', className)} {...props}>
-        <ol className="flex flex-wrap items-center gap-2">
+        <ol className="flex flex-wrap items-center gap-scale-xs">
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
             const linkable = Boolean(item.href) && !isLast;
             return (
-              <li key={`${item.label}-${index}`} className="inline-flex items-center gap-2">
+              <li key={`${item.label}-${index}`} className="inline-flex items-center gap-scale-xs">
                 {linkable ? (
                   <LinkComponent
                     to={item.href as string}

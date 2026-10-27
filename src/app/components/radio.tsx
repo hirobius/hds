@@ -278,7 +278,7 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
       </motion.span>
       <motion.span
         animate={{
-          x: isPressed ? hds.space.px1 : 0,
+          x: isPressed ? hds.semantic.space.subgrid.hairline : 0,
         }}
         transition={{
           duration: productiveMotion.duration,

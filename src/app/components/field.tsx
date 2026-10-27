@@ -58,7 +58,7 @@ export const Field = /* @__PURE__ */ React.forwardRef<HTMLDivElement, FieldProps
     <div
       ref={ref}
       data-tone={tone ?? 'neutral'}
-      className={cn('flex min-w-0 flex-col gap-1', className)}
+      className={cn('flex min-w-0 flex-col gap-fixed-2xs', className)}
       {...props}
     >
       <span className="hds-type-caption text-muted-foreground">{label}</span>
