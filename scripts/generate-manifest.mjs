@@ -313,6 +313,13 @@ for (const spec of Object.values(manifest.componentSpecs)) {
   }
 }
 
+// Specs carried over without rediscovery (compound parts) may still hold the
+// old `false` flags; drop them so every spec follows the write-only-when-true rule.
+for (const spec of Object.values(manifest.componentSpecs)) {
+  if (spec?.hidden === false) delete spec.hidden;
+  if (spec?.docExempt === false) delete spec.docExempt;
+}
+
 const utilities = {};
 for (const [name, spec] of Object.entries(manifest.componentSpecs)) {
   if (SECTION_BY_TIER[spec.tier] === 'utilities') {
