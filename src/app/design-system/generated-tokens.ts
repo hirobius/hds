@@ -409,9 +409,7 @@ export const tokens = {
         indent: "var(--semantic-space-sidebar-indent)",
         gap: "var(--semantic-space-sidebar-gap)",
         sectionGap: "var(--semantic-space-sidebar-sectionGap)",
-        railPadding: "var(--semantic-space-sidebar-railPadding)",
-        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280 @removeIn 1.0.0 */
-        railWidth: "var(--semantic-space-sidebar-railWidth)"
+        railPadding: "var(--semantic-space-sidebar-railPadding)"
       }
     },
     layout: {
@@ -523,13 +521,6 @@ export const tokens = {
   },
   component: {
     nav: {
-      bg: "var(--component-nav-bg)",
-      bgActive: "var(--component-nav-bgActive)",
-      borderActive: "var(--component-nav-borderActive)",
-      text: "var(--component-nav-text)",
-      textActive: "var(--component-nav-textActive)",
-      height: "var(--component-nav-height)",
-      paddingX: "var(--component-nav-paddingX)",
       paddingY: "var(--component-nav-paddingY)"
     },
     tag: {
@@ -665,11 +656,6 @@ export const tokens = {
     },
     inlineCode: {
       bg: "var(--component-inlineCode-bg)"
-    },
-    lightbox: {
-      backdrop: {
-        blur: "var(--component-lightbox-backdrop-blur)"
-      }
     }
   },
   role: {

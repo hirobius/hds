@@ -10,7 +10,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkUpgradeCss } from '../check-upgrade-css.mjs';
 import { checkUpgradeLedger } from '../check-upgrade-ledger.mjs';
-import { writeNote } from '../upgrade/note.mjs';
+import { PRESET_USE, tenantPattern, tenantPlain, writeNote } from '../upgrade/note.mjs';
 import { TODO_PLAIN } from '../upgrade/schema.mjs';
 import {
   PACKAGE,
@@ -114,6 +114,15 @@ describe('writeNote', () => {
           detect: { cssVars: ['--hds-space'], cssVarWrites: ['--hds-space'] },
           facts: ['css-var-removed:--hds-space'],
         },
+        // The pilot tenant overrode --hds-space, so its site re-themes: a tenant step.
+        {
+          id: 'tenant/pilot',
+          kind: 'tenant',
+          impact: 'look',
+          plain: tenantPlain('pilot'),
+          detect: { regex: [tenantPattern('pilot')] },
+          facts: ['css-var-removed:--hds-space'],
+        },
         {
           id: 'value-changed/--primitive-typography-size-xs',
           kind: 'value-changed',
@@ -138,6 +147,65 @@ describe('writeNote', () => {
     fillIn(root, 'css');
     expect(checkUpgradeCss(root).violations).toEqual([]);
     expect(rules(root)).toEqual([]);
+  });
+
+  // hds#449: a token the pilot tenant overrides, renamed, is a tenant step only its users see.
+  it('writes a tenant step tagged with the slug for a renamed token the tenant overrides, and one for a change under its [data-brand]', () => {
+    const root = cssRepo();
+    buildCss(root, RELEASED_CSS.replaceAll('--hds-space', '--hds-gap'));
+    changeset(root, 'rename', 'minor');
+    writeNote(root, { name: 'rename' });
+    const tenant = readNote(root, 'rename').steps.filter((step) => step.kind === 'tenant');
+    expect(tenant).toEqual([
+      {
+        id: 'tenant/pilot',
+        kind: 'tenant',
+        impact: 'look',
+        plain: tenantPlain('pilot'),
+        detect: { regex: [tenantPattern('pilot')] },
+        facts: ['css-var-removed:--hds-space'],
+      },
+    ]);
+    const pattern = new RegExp(tenant[0].detect.regex[0]);
+    expect(pattern.test('<HdsThemeProvider brand="pilot">')).toBe(true);
+    expect(pattern.test('<div data-brand="pilot">')).toBe(true);
+    expect(pattern.test('<div data-brand="pilot-two">')).toBe(false);
+    expect(pattern.test('<HdsThemeProvider brand="acme">')).toBe(false);
+
+    // A value that changed only under [data-brand=pilot] is the tenant's alone: no value-changed step.
+    const only = cssRepo();
+    buildCss(only, RELEASED_CSS.replace('--hds-space:6px', '--hds-space:8px'));
+    changeset(only, 'pilot', 'patch');
+    writeNote(only, { name: 'pilot' });
+    expect(readNote(only, 'pilot').steps.map((step) => step.id)).toEqual(['tenant/pilot']);
+    fillIn(only, 'pilot');
+    expect(checkUpgradeCss(only).violations).toEqual([]);
+  });
+
+  // hds#466: a key the Tailwind preset lost is a utility gone from a consumer's own build.
+  it('writes a breaking removed step for a preset key that left, detected where the preset is used', () => {
+    const root = cssRepo();
+    const contract = JSON.parse(readFileSync(join(root, 'dist/css-contract.json'), 'utf8'));
+    const release = JSON.parse(readFileSync(join(root, 'docs/api/releases/0.20.0.json'), 'utf8'));
+    release.css.tailwindPreset = ['colors.card.DEFAULT', 'spacing.4'];
+    write(root, 'docs/api/releases/0.20.0.json', JSON.stringify(release));
+    write(
+      root,
+      'dist/css-contract.json',
+      `${JSON.stringify({ ...contract, tailwindPreset: ['spacing.4'] })}\n`,
+    );
+    changeset(root, 'preset', 'minor');
+    writeNote(root, { name: 'preset' });
+    expect(readNote(root, 'preset').steps).toEqual([
+      {
+        id: 'removed/tailwind-preset/colors.card.DEFAULT',
+        kind: 'removed',
+        impact: 'breaking',
+        plain: TODO_PLAIN,
+        detect: { regex: [PRESET_USE] },
+        facts: ['preset-key-removed:colors.card.DEFAULT'],
+      },
+    ]);
   });
 
   it('writes one step for a name that left two entries', () => {

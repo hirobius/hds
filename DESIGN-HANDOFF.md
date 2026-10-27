@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 522 tokens, aliases, and TS refs in one shot.
+Checks all 513 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -401,7 +401,6 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `semantic.space.sidebar.gap`         | `16px`                 | 16px vertical spacing between items in sidebar and TOC stacks.                                                                              |
 | `semantic.space.sidebar.sectionGap`  | `12px`                 | 12px spacing between sidebar sections and grouped rail blocks.                                                                              |
 | `semantic.space.sidebar.railPadding` | `20px`                 | 20px outer padding for sidebar and TOC rails.                                                                                               |
-| `semantic.space.sidebar.railWidth`   | `280px`                | Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).                         |
 
 <!-- auto:end:semantic-space -->
 

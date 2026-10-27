@@ -34,7 +34,6 @@ export const SPACING_KEYS = [
   'sidebar-gap',
   'sidebar-sectionGap',
   'sidebar-railPadding',
-  'sidebar-railWidth',
   'px1',
   'px2',
   'px6',

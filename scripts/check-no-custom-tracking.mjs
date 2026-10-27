@@ -13,8 +13,8 @@
  *     resolves to), `inherit`, `unset` or `initial`
  *   - `@apply tracking-*`
  *
- * Not scanned: src/styles/tokens.generated.css (the token output itself),
- * comments, tests and fixtures. Exempt a line with
+ * Not scanned: src/styles/tokens.generated.css (the token output itself), the
+ * generated utility safelist, comments, tests and fixtures. Exempt a line with
  * `/* tracking-ok: <reason> *\/` on the same line or either line above; the
  * reason is required.
  *
@@ -37,7 +37,8 @@ const isFixtureMode =
 const fixtureFile = process.env.FIXTURE_FILE;
 
 const SKIP_DIRS = ['node_modules', '.git', 'dist', 'coverage', '__tests__', 'fixtures'];
-const GENERATED = ['src/styles/tokens.generated.css'];
+// The utility safelist (hds#449) names every utility the last release shipped, one of which is this rule's own fix.
+const GENERATED = ['src/styles/tokens.generated.css', 'src/styles/utility-safelist.generated.css'];
 
 const DECL_RE = /(?<![\w-])letter-spacing\s*:\s*([^;}\n]+)/g;
 const APPLY_RE = /@apply\b[^;}\n]*(?<![\w-])-?tracking-[^\s;}]+/g;

@@ -7,7 +7,7 @@
     "patterns": 13
   },
   "tokens": {
-    "total": 474
+    "total": 465
   },
   "contrast": {
     "textPairs": 36,
@@ -22,5 +22,5 @@
     "source": "docs/data/consumer-usage.json",
     "confirmedAt": "2026-10-01"
   },
-  "generatedFrom": "d4b36fb4d0995f4dfe24eada0994947fc0ce4a9a"
+  "generatedFrom": "722d60f0ab84fa0ced1c40bd8f074907c254a98d"
 }

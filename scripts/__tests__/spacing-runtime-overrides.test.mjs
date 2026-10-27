@@ -14,11 +14,11 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { existsSync, readFileSync, readdirSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
-import { chromiumPath } from '../lib/browser-host.mjs';
+import { chromiumForTests } from '../lib/browser-host.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
@@ -71,11 +71,10 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
  * with the attributes on <html> and on a nested element (a var() resolves where it
  * is declared, so the two can differ). Both must keep today's values.
  */
-// The pinned container browser if there is one (scripts/lib/browser-host.mjs),
-// else Playwright's own download, so the lock also runs on a developer machine
-// with `playwright install`. A path that does not exist is not a browser: skip.
-const CHROMIUM = chromiumPath() ?? chromium.executablePath();
-const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
+// scripts/lib/browser-host.mjs finds the browser; none means skip, unless
+// HDS_REQUIRE_BROWSER=1 (CI), where it throws.
+const CHROMIUM = chromiumForTests();
+const hasBrowser = Boolean(CHROMIUM);
 
 /** Today's surface.padding in px per tenant, [comfortable, compact] (2026-10 bump: scale 8/20/28/40/64; compact density for apps 8/12/16/24/32). */
 const SURFACE_PX = {

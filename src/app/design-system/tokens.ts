@@ -440,7 +440,6 @@ const hds = {
   effect: {
     blur: {
       subtle: 'var(--primitive-blur-8)',
-      lightboxBackdrop: 'var(--component-lightbox-backdrop-blur)',
     },
   },
   zIndex: {

@@ -154,6 +154,18 @@
           "['\"`]border\\.subdued['\"`]"
         ]
       }
+    },
+    {
+      "id": "tenant/brutalist-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the brutalist-demo brand (data-brand=\"brutalist-demo\") no longer get its surface padding override, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?brutalist-demo(?![\\w-])"
+        ]
+      },
+      "facts": ["css-var-removed:--semantic-space-component-padding"]
     }
   ]
 }

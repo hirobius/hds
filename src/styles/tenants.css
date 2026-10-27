@@ -115,12 +115,6 @@
   --component-tag-activeHover: var(
     --semantic-accent-hover
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --component-nav-bgActive: var(
-    --semantic-accent-subtle
-  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --component-nav-borderActive: var(
-    --semantic-color-surface-accent
-  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-accent-rest: var(
     --primitive-color-mauve-600
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */

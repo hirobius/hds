@@ -320,8 +320,6 @@
   --semantic-space-sidebar-gap: var(--primitive-space-4);
   --semantic-space-sidebar-sectionGap: var(--primitive-space-3);
   --semantic-space-sidebar-railPadding: var(--primitive-space-5);
-  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280 (removed in 1.0.0) */
-  --semantic-space-sidebar-railWidth: var(--primitive-size-width-280);
   --semantic-layout-width-content: var(--primitive-size-width-760);
   --semantic-layout-width-max: var(--primitive-size-width-1200);
   --semantic-layout-container-maxWidth: var(--primitive-size-width-1200);
@@ -471,13 +469,6 @@
   --semantic-zIndex-sticky: var(--primitive-zIndex-100);
 
   /* ── Component ─────────────────────────────────────────────────────────── */
-  --component-nav-bg: var(--semantic-color-surface-page);
-  --component-nav-bgActive: var(--semantic-accent-subtle);
-  --component-nav-borderActive: var(--semantic-color-surface-accent);
-  --component-nav-text: var(--semantic-color-content-secondary);
-  --component-nav-textActive: var(--semantic-color-content-primary);
-  --component-nav-height: var(--primitive-space-16);
-  --component-nav-paddingX: var(--primitive-space-6);
   --component-nav-paddingY: var(--primitive-space-2);
   --component-tag-background: var(--semantic-color-surface-muted);
   --component-tag-text: var(--semantic-color-content-secondary);
@@ -569,7 +560,6 @@
   --component-card-padding: var(--primitive-space-7);
   --component-card-gap: var(--semantic-space-scale-sm);
   --component-inlineCode-bg: var(--semantic-color-surface-overlay);
-  --component-lightbox-backdrop-blur: var(--primitive-blur-16);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
   --role-background: var(--semantic-color-surface-page);
@@ -662,11 +652,6 @@
   --semantic-elevation-floating-surface: var(--semantic-color-surface-raised);
   --semantic-elevation-overlay-surface: var(--semantic-color-surface-floating);
   --semantic-elevation-overlay-border: var(--semantic-color-border-default);
-  --component-nav-bg: var(--semantic-color-surface-page);
-  --component-nav-bgActive: var(--semantic-accent-subtle);
-  --component-nav-borderActive: var(--semantic-color-surface-accent);
-  --component-nav-text: var(--semantic-color-content-secondary);
-  --component-nav-textActive: var(--semantic-color-content-primary);
   --component-tag-background: var(--semantic-color-surface-muted);
   --component-tag-text: var(--semantic-color-content-secondary);
   --component-tag-border: var(--semantic-color-surface-muted);

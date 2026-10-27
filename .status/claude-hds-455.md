@@ -1,0 +1,2 @@
+Pixel locks (hds#455): one Chromium resolver in scripts/lib/browser-host.mjs (PLAYWRIGHT_CHROMIUM_PATH, then Playwright's build, then the newest /opt/pw-browsers/chromium-<rev>); every browser test uses `chromiumForTests()`, which throws under `HDS_REQUIRE_BROWSER=1` instead of skipping. With Chromium, 237 previously skipped browser tests run green. CI sets the variable in #454 step 4.
+Re-merged main: <root>/chromium file-only fallback kept in the single resolver; pin must be a file.

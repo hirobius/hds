@@ -312,8 +312,6 @@ declare module 'react' {
     '--semantic-space-sidebar-gap'?: string | undefined;
     '--semantic-space-sidebar-sectionGap'?: string | undefined;
     '--semantic-space-sidebar-railPadding'?: string | undefined;
-    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280 @removeIn 1.0.0 */
-    '--semantic-space-sidebar-railWidth'?: string | undefined;
     '--semantic-layout-width-content'?: string | undefined;
     '--semantic-layout-width-max'?: string | undefined;
     '--semantic-layout-container-maxWidth'?: string | undefined;
@@ -462,13 +460,6 @@ declare module 'react' {
     '--semantic-size-row-comfortable'?: string | undefined;
     '--semantic-zIndex-control'?: string | undefined;
     '--semantic-zIndex-sticky'?: string | undefined;
-    '--component-nav-bg'?: string | undefined;
-    '--component-nav-bgActive'?: string | undefined;
-    '--component-nav-borderActive'?: string | undefined;
-    '--component-nav-text'?: string | undefined;
-    '--component-nav-textActive'?: string | undefined;
-    '--component-nav-height'?: string | undefined;
-    '--component-nav-paddingX'?: string | undefined;
     '--component-nav-paddingY'?: string | undefined;
     '--component-tag-background'?: string | undefined;
     '--component-tag-text'?: string | undefined;
@@ -560,7 +551,6 @@ declare module 'react' {
     '--component-card-padding'?: string | undefined;
     '--component-card-gap'?: string | undefined;
     '--component-inlineCode-bg'?: string | undefined;
-    '--component-lightbox-backdrop-blur'?: string | undefined;
     '--role-background'?: string | undefined;
     '--role-foreground'?: string | undefined;
     '--role-card'?: string | undefined;
