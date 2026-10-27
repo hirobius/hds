@@ -37,6 +37,19 @@
         "css-var-changed:--component-badge-radius::root",
         "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
       ]
+    },
+    {
+      "id": "tenant/soft-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the soft-demo brand (data-brand=\"soft-demo\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": ["(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?soft-demo(?![\\w-])"]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-radius::root",
+        "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ]
     }
   ]
 }

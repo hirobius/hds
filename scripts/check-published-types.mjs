@@ -25,10 +25,12 @@
  * would make this gate permanently red, and a gate that is always red gets
  * deleted.
  *
- * EXCLUDED ENTRY POINTS — the four CSS subpaths. They resolve to stylesheets,
- * which have no types and no JavaScript, so attw reports NoResolution for
- * something working exactly as intended. `smoke:consumer` already proves they
- * resolve.
+ * EXCLUDED ENTRY POINTS — the CSS subpaths and `./tailwind-preset`. The CSS
+ * ones resolve to stylesheets, which have no types and no JavaScript, so attw
+ * reports NoResolution for something working exactly as intended. The preset
+ * is a CommonJS Tailwind config (`tailwind.config.tokens.cjs`) that Tailwind
+ * loads by path, never a typed import, so attw reports "No types" for it.
+ * `smoke:consumer` already proves they all resolve.
  *
  * Usage: node scripts/check-published-types.mjs
  * Exit codes: 0 = types resolve for every checked entry point, 1 = they do not.
@@ -41,8 +43,15 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-/** Stylesheet subpaths: real exports with nothing for attw to resolve. */
-const CSS_ENTRYPOINTS = ['tokens.css', 'styles.css', 'variables.css', 'static.css', 'fonts.css'];
+/** Untyped subpaths: real exports with nothing for attw to resolve (stylesheets, the CJS preset). */
+export const UNTYPED_ENTRYPOINTS = [
+  'tokens.css',
+  'styles.css',
+  'variables.css',
+  'static.css',
+  'fonts.css',
+  'tailwind-preset',
+];
 
 function main() {
   const types = path.join(ROOT, 'dist', 'types');
@@ -65,7 +74,7 @@ function main() {
       '--profile',
       'esm-only',
       '--exclude-entrypoints',
-      ...CSS_ENTRYPOINTS,
+      ...UNTYPED_ENTRYPOINTS,
     ],
     { cwd: ROOT, encoding: 'utf8', stdio: 'pipe' },
   );

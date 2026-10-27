@@ -45,7 +45,7 @@ import { fileURLToPath } from 'url';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { chromium } from 'playwright';
-import { chromiumPath } from '../lib/browser-host.mjs';
+import { chromiumForTests } from '../lib/browser-host.mjs';
 import { resolveSx } from '../../src/app/components/box-sx.ts';
 import { Stack } from '../../src/app/components/stack.tsx';
 import { Grid } from '../../src/app/components/grid.tsx';
@@ -270,8 +270,8 @@ const PAGE_CSS = [
   read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
 ].join('\n');
 
-const CHROMIUM = chromiumPath() ?? chromium.executablePath();
-const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
+const CHROMIUM = chromiumForTests();
+const hasBrowser = Boolean(CHROMIUM);
 
 async function measureAll() {
   const browser = await chromium.launch({ executablePath: CHROMIUM });

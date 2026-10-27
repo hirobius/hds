@@ -4,14 +4,14 @@
  * Button's hard edge (the face's bottom after translate, plus the edge offset) stays on the
  * same pixel, and the face moves 0 / -1 / +2px. Uses the shipped theme.css and tokens;
  * Tailwind is not compiled, so the box-shadow composition vars get Tailwind's initial
- * values here. Skips where Playwright has no Chromium.
+ * values here. Skips without Chromium (fails under HDS_REQUIRE_BROWSER=1).
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { existsSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
-import { chromiumPath } from '../lib/browser-host.mjs';
+import { chromiumForTests } from '../lib/browser-host.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
@@ -20,8 +20,8 @@ const CSS = [
   read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
 ].join('\n');
 const TW = `*{--tw-inset-shadow:0 0 #0000;--tw-inset-ring-shadow:0 0 #0000;--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;}`;
-const CHROMIUM = chromiumPath() ?? chromium.executablePath();
-const hasBrowser = existsSync(CHROMIUM);
+const CHROMIUM = chromiumForTests();
+const hasBrowser = Boolean(CHROMIUM);
 
 describe.skipIf(!hasBrowser)('Button hard edge in Chromium', () => {
   let browser;

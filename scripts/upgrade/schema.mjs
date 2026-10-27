@@ -504,6 +504,12 @@ export const CssContract = z
       .describe(
         'Classes the manifest declares public beyond the hds-* prefix (public/hds-manifest.json publicClasses).',
       ),
+    tailwindPreset: z
+      .array(z.string().min(1))
+      .optional()
+      .describe(
+        'Every theme key of the ./tailwind-preset export, dotted and sorted (colors.card.DEFAULT); absent for a release that shipped no preset (hds#466).',
+      ),
   })
   .strict()
   .describe(
@@ -544,7 +550,7 @@ const UpgradeItem = z
       .string()
       .min(1)
       .describe(
-        'The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual.',
+        'The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual.',
       ),
     plain: z.string().min(1).describe('What happened or what to do, in one sentence.'),
     importers: z

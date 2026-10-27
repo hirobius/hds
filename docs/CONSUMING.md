@@ -225,26 +225,50 @@ export function Example() {
 
 ### Subpath exports
 
-| Import                                  | What you get                                                                                                                                                                                                                            |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`               | The 45-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns` |
-| `@hirobius/design-system/styles.css`    | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                                                                                                                                 |
-| `@hirobius/design-system/fonts.css`     | Optional brand fonts: Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                   |
-| `@hirobius/design-system/tokens.css`    | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                                                                                                                             |
-| `@hirobius/design-system/variables.css` | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                                                                                                                            |
-| `@hirobius/design-system/tokens`        | Design-token values as typed TS                                                                                                                                                                                                         |
-| `@hirobius/design-system/cn`            | The `cn()` className-merge helper                                                                                                                                                                                                       |
-| `@hirobius/design-system/manifest`      | Machine-readable component inventory (`hds-manifest.json`)                                                                                                                                                                              |
-| `@hirobius/design-system/stats.json`    | Generated HDS numbers (component, core, pattern and token counts, contrast pairs, typography styles, consumer split), each computed from the code (`hds-stats.json`)                                                                    |
-| `@hirobius/design-system/contexts`      | React context providers, incl. the router seam (see below)                                                                                                                                                                              |
-| `@hirobius/design-system/form`          | Optional React Hook Form + Zod form adapter (see §8.5)                                                                                                                                                                                  |
-| `@hirobius/design-system/mui`           | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                                                                                                                                                          |
-| `@hirobius/design-system/brand`         | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                                                                                                                                   |
-| `@hirobius/design-system/scroll`        | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                                                                                                                            |
-| `@hirobius/design-system/static.css`    | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14)                                                                                                           |
-| `@hirobius/design-system/patterns`      | The 13 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                               |
-| `@hirobius/design-system/icons`         | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                                                                                                                                      |
-| `@hirobius/design-system/eslint-plugin` | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                                                                                                                             |
+| Import                                    | What you get                                                                                                                                                                                                                            |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@hirobius/design-system`                 | The 45-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns` |
+| `@hirobius/design-system/styles.css`      | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                                                                                                                                 |
+| `@hirobius/design-system/fonts.css`       | Optional brand fonts: Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                   |
+| `@hirobius/design-system/tokens.css`      | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                                                                                                                             |
+| `@hirobius/design-system/variables.css`   | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                                                                                                                            |
+| `@hirobius/design-system/tokens`          | Design-token values as typed TS                                                                                                                                                                                                         |
+| `@hirobius/design-system/cn`              | The `cn()` className-merge helper                                                                                                                                                                                                       |
+| `@hirobius/design-system/manifest`        | Machine-readable component inventory (`hds-manifest.json`)                                                                                                                                                                              |
+| `@hirobius/design-system/stats.json`      | Generated HDS numbers (component, core, pattern and token counts, contrast pairs, typography styles, consumer split), each computed from the code (`hds-stats.json`)                                                                    |
+| `@hirobius/design-system/contexts`        | React context providers, incl. the router seam (see below)                                                                                                                                                                              |
+| `@hirobius/design-system/form`            | Optional React Hook Form + Zod form adapter (see §8.5)                                                                                                                                                                                  |
+| `@hirobius/design-system/mui`             | Optional Material UI theme preset — maps HDS tokens to an MUI palette (see §6)                                                                                                                                                          |
+| `@hirobius/design-system/brand`           | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                                                                                                                                   |
+| `@hirobius/design-system/scroll`          | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                                                                                                                            |
+| `@hirobius/design-system/static.css`      | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14)                                                                                                           |
+| `@hirobius/design-system/patterns`        | The 13 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                               |
+| `@hirobius/design-system/icons`           | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                                                                                                                                      |
+| `@hirobius/design-system/eslint-plugin`   | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                                                                                                                             |
+| `@hirobius/design-system/tailwind-preset` | The Tailwind theme preset (CommonJS): HDS role colors, radii, shadows and spacing as theme keys, for an app that compiles its own Tailwind (see below)                                                                                  |
+
+### Your own Tailwind build — `/tailwind-preset`
+
+`styles.css` and `tokens.css` ship their utilities compiled, so most apps need no
+Tailwind config. An app that compiles its own Tailwind (to use `bg-card` or
+`rounded-scale-md` in its own markup, or for `eslint-plugin-tailwindcss`'s class
+vocabulary) imports the preset instead of copying `tailwind.config.tokens.cjs`:
+
+```js
+// tailwind.config.js (Tailwind v4: load it with @config "./tailwind.config.js")
+import hds from '@hirobius/design-system/tailwind-preset';
+
+export default {
+  content: ['./src/**/*.{ts,tsx}'],
+  presets: [hds],
+};
+```
+
+A copied file goes stale as HDS adds and renames keys. Each release records the
+preset's keys, so removing one ships with an upgrade step, and
+`npx @hirobius/design-system@latest upgrade` lists a vendored
+`tailwind.config.tokens.cjs` whose keys differ from the installed preset. The preset
+holds the role colors; the `feedback-*` utility colors stay in HDS's own config.
 
 ### Different markup per width — `useAtLeast` / `useBreakpoint`
 
@@ -542,6 +566,13 @@ the manifest, `llms.txt` and this guide separately. It carries the allow-list of
 importable components, the screen layout recipe, the do/don't rules, and the lint
 step (§11) as its final required step. It is generated from the manifest by
 `pnpm skill:generate` and drift-checked by `pnpm check:consumer-skill`.
+
+The skill ships in the package (`skills/hds-consumer/SKILL.md`), and its
+`metadata.hds-version` names the release it describes. When your project has a
+`.claude/skills/` folder, `npx @hirobius/design-system@latest upgrade` writes
+it there (in an `hds-consumer` folder), so it always matches the installed
+version. Without one, copy it from `node_modules`, or install the copy on
+GitHub main (it can describe a newer release than the one you have):
 
 ```bash
 npx skills add hirobius/hds --skill hds-consumer
