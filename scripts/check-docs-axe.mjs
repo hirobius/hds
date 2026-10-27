@@ -26,7 +26,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from 'playwright';
+import { launchChromium } from './lib/browser-host.mjs';
 import { AXE_TAGS, evaluateScan, loadAxeSource, validateAllowlist } from './lib/axe-gate.mjs';
 import {
   DEMO_SELECTOR,
@@ -45,26 +45,6 @@ const FREEZE_CSS =
 function arg(name, fallback) {
   const i = process.argv.indexOf(`--${name}`);
   return i > -1 ? process.argv[i + 1] : fallback;
-}
-
-async function launch() {
-  try {
-    return await chromium.launch();
-  } catch (err) {
-    const base = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';
-    const dirs = fs.existsSync(base)
-      ? fs
-          .readdirSync(base)
-          .filter((d) => /^chromium-\d+$/.test(d))
-          .sort()
-          .reverse()
-      : [];
-    for (const d of dirs) {
-      const exe = path.join(base, d, 'chrome-linux', 'chrome');
-      if (fs.existsSync(exe)) return chromium.launch({ executablePath: exe });
-    }
-    throw err;
-  }
 }
 
 async function scanOne(browser, base, route, theme) {
@@ -167,7 +147,7 @@ async function main() {
   const started = Date.now();
   const { server, port } = await serveStatic(dir);
   const base = `http://127.0.0.1:${port}`;
-  const browser = await launch();
+  const browser = await launchChromium();
 
   const jobs = routes.flatMap((route) => THEMES.map((theme) => ({ route, theme })));
   const scans = [];
