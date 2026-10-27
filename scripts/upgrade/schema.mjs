@@ -47,6 +47,8 @@ export const STEP_KINDS = [
   'moved',
   'renamed',
   'folded',
+  'prop-renamed',
+  'prop-value-mapped',
   'deprecated',
   'value-changed',
   'look',
@@ -178,6 +180,31 @@ export const Detect = z
   .meta({ minProperties: 1 })
   .describe('How to find a use of the changed thing in consumer code. Any match is a use.');
 
+/**
+ * hds#461: a prop step names its component prop as data, not only in its id,
+ * so the prop-map codemod (hds#460) can rewrite `<Button size=...>` without
+ * parsing a subject string.
+ */
+export const Prop = z
+  .object({
+    component: z.string().min(1).describe('The component, as exported, such as Button.'),
+    name: z.string().min(1).describe('The prop, as it was before the release.'),
+    to: z.string().min(1).optional().describe('For prop-renamed: the prop it is called now.'),
+    values: z
+      .record(z.string(), z.string())
+      .optional()
+      .describe('For prop-value-mapped: each removed value, mapped to the value to pass instead.'),
+  })
+  .strict()
+  .refine((prop) => Object.values(prop.values ?? {}).every(notTodo), {
+    message:
+      'prop.values still holds the TODO pnpm upgrade:note wrote; map each removed value to the one to pass instead',
+    path: ['values'],
+  })
+  .describe(
+    'The component prop a prop step is about (hds#461), with what the prop-map codemod rewrites it to.',
+  );
+
 /** The fields a release step and a pending step share, in schema order. */
 const stepFields = () => ({
   kind: z.enum(STEP_KINDS).describe('What changed.'),
@@ -200,6 +227,7 @@ const stepFields = () => ({
     .describe(
       'For a dependency or peer step: the range this package declared before the release, so a consumer that still imports it can add it back.',
     ),
+  prop: Prop.optional(),
   facts: z
     .array(z.string().min(1))
     .min(1)
@@ -208,6 +236,18 @@ const stepFields = () => ({
       'The ids of the snapshot-diff facts this step accounts for (scripts/upgrade/diff.mjs), such as removed:.:IconButton.',
     ),
 });
+
+/** hds#461: what the prop-map codemod (hds#460) needs from a prop step. */
+const propStepHasItsMap = [
+  (step) =>
+    (step.kind !== 'prop-renamed' || step.prop?.to !== undefined) &&
+    (step.kind !== 'prop-value-mapped' || step.prop?.values !== undefined),
+  {
+    message:
+      'a prop-renamed step names the new prop (prop.to), and a prop-value-mapped step maps each old value (prop.values)',
+    path: ['prop'],
+  },
+];
 
 const deprecationNamesRemoveIn = [
   (step) => step.kind !== 'deprecated' || step.removeIn !== undefined,
@@ -243,6 +283,7 @@ export const Step = z
     path: ['id'],
   })
   .refine(...deprecationNamesRemoveIn)
+  .refine(...propStepHasItsMap)
   .describe('One thing a consumer may have to do, or should know, when crossing this release.');
 
 export const Release = z
@@ -320,6 +361,7 @@ export const PendingStep = z
     path: ['id'],
   })
   .refine(...deprecationNamesRemoveIn)
+  .refine(...propStepHasItsMap)
   .describe('One step of a pending note: a release step whose id leaves out the version.');
 
 export const PendingNote = z
@@ -564,6 +606,11 @@ export const UpgradeReport = z
     comingNext: z.array(UpgradeItem),
     doByHand: z.array(UpgradeItem),
     changedFiles: z.array(z.string()).describe('Files written, relative to the project root.'),
+    skipped: z
+      .array(z.object({ version: version(), reason: z.string() }).strict())
+      .describe(
+        'Versions npm marks deprecated (a yanked release, hds#472) that the default target skipped, with the deprecation message.',
+      ),
     refused: z
       .string()
       .nullable()

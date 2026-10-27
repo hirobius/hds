@@ -140,7 +140,7 @@ export const FormFieldShell = /* @__PURE__ */ React.forwardRef<HTMLDivElement, F
     const descriptionId = `${controlId}-description`;
     const errorId = `${controlId}-error`;
     return (
-      <div ref={ref} className={cn('flex flex-col gap-2', className)}>
+      <div ref={ref} className={cn('flex flex-col gap-scale-xs', className)}>
         <label htmlFor={controlId} className="hds-type-ui text-foreground">
           {label}
           {required ? (

@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Nothing to change: the upgrade command now skips versions npm marks deprecated, and UPGRADING.md \"If a release is bad\" says how to roll back from one."
+}

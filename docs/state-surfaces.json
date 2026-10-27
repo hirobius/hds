@@ -56,6 +56,14 @@
       "check": "node scripts/count-consumer-usage.mjs --check"
     },
     {
+      "path": "docs/ADOPTION.md",
+      "describes": "Month-by-month HDS adoption in each product app, one row per commit (adoption ledger)",
+      "kind": "generated",
+      "by": "scripts/count-consumer-usage.mjs",
+      "section": "auto:adoption-history",
+      "check": "node scripts/count-consumer-usage.mjs --check"
+    },
+    {
       "path": "public/hds-stats.json",
       "describes": "The HDS numbers other repos read (component, core, pattern and token counts, contrast pairs, typography styles, the consumer split), each computed from the code",
       "kind": "generated",

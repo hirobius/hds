@@ -44,7 +44,14 @@ export function readKept(root) {
 }
 
 /** Step kinds that take something public away. */
-const REMOVING = new Set(['removed', 'moved', 'renamed', 'folded']);
+const REMOVING = new Set([
+  'removed',
+  'moved',
+  'renamed',
+  'folded',
+  'prop-renamed',
+  'prop-value-mapped',
+]);
 
 /**
  * The list a step belongs to, as UPGRADING.md prints it

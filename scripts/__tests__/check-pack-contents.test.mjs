@@ -124,7 +124,10 @@ describe('the repo front door stays out of the tarball (hds#613)', () => {
 
   it('package.json#files names neither of them', () => {
     const files = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).files;
-    expect(files.filter((f) => f.startsWith('docs/'))).toEqual(['docs/CONSUMING.md']);
+    expect(files.filter((f) => f.startsWith('docs/'))).toEqual([
+      'docs/CONSUMING.md',
+      'docs/api/props-baseline.json',
+    ]);
   });
 });
 
