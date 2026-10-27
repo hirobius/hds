@@ -22,6 +22,7 @@ import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { readModes } from './lib/token-modes.mjs';
 import { buildEdgeCSS, overlayEdgeVars } from './lib/raised-edge.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
+import { UPGRADE_COMMAND, cdnUrl, readPackageVersion } from './lib/version-stamp.mjs';
 
 import { darkAliasReemissions } from './lib/dark-alias-reemit.mjs';
 import { DTCG_KEYS, resolveAlias, walkTokens } from './lib/token-tree.mjs';
@@ -708,7 +709,12 @@ export function validateTokens(raw) {
 export const HIDDEN_TOKEN_PREFIXES = ['semantic.accent.delight.', 'primitive.color.lime.'];
 const isHiddenToken = (t) => HIDDEN_TOKEN_PREFIXES.some((p) => t.path.join('.').startsWith(p));
 
-export function buildManifest(allTokens, raw, systemManifest = readSystemManifest()) {
+export function buildManifest(
+  allTokens,
+  raw,
+  systemManifest = readSystemManifest(),
+  packageVersion = readPackageVersion(ROOT),
+) {
   const listedTokens = allTokens.filter((t) => !isHiddenToken(t));
   const resolveValue = (val, type) => {
     if (typeof val === 'string' && val.startsWith('{')) {
@@ -1092,7 +1098,17 @@ export function buildManifest(allTokens, raw, systemManifest = readSystemManifes
     source: 'hirobius.tokens.json',
     format: 'W3C DTCG 2025.10',
     docs: 'https://hirobius-hds-components.vercel.app/',
-    llmsTxt: 'https://hirobius-hds-components.vercel.app/llms.txt',
+    // hds#463: the release this manifest describes, and how to move off it.
+    // llmsTxt is pinned to that release, so an installed copy never points at
+    // text written for a newer one.
+    packageVersion,
+    upgrade: {
+      command: UPGRADE_COMMAND,
+      check: `${UPGRADE_COMMAND} --check`,
+      guide: cdnUrl(packageVersion, 'UPGRADING.md'),
+      names: cdnUrl(packageVersion, 'public/llms/upgrade.txt'),
+    },
+    llmsTxt: cdnUrl(packageVersion, 'llms.txt'),
     systemSpecs: systemManifest.systemSpecs ?? {
       engine: 'React + TypeScript',
       icons: 'Phosphor (Bold)',
@@ -1151,8 +1167,7 @@ export function buildManifest(allTokens, raw, systemManifest = readSystemManifes
     // drops it from public/hds-manifest.json on the next run.
     inventory: systemManifest.inventory ?? {},
     agentEntrypoint: 'llms.txt',
-    breakingChangePolicy:
-      'Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.',
+    breakingChangePolicy: `Below 1.0, a minor release may break (remove, move or rename a name) and a patch never does. Every change has a step in upgrade/releases/<version>.json; run ${UPGRADE_COMMAND} to apply them.`,
     componentSpecs,
     // utilities is produced by generate-manifest's tier-based section split
     // (8x-5). build-tokens runs after generate-manifest in `pnpm tokens`, so

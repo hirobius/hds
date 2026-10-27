@@ -10,6 +10,8 @@
  * hirobius.tokens.json).
  */
 
+import { versionLine } from './version-stamp.mjs';
+
 export const LLMS_BASE_URL = 'https://unpkg.com/@hirobius/design-system';
 
 export const llmsUrl = (pkgPath) => `${LLMS_BASE_URL}/${pkgPath}`;
@@ -20,7 +22,7 @@ const link = (name, path, note) => `- [${name}](${llmsUrl(path)}): ${note}`;
  * The index text. `slices` is [{ name, blurb }]; `summary` the one-line `> `
  * blockquote. No timestamp: the output is a pure function of its inputs.
  */
-export function buildLlmsIndex({ summary, slices }) {
+export function buildLlmsIndex({ summary, slices, version }) {
   const sections = [
     [
       'Start here',
@@ -97,5 +99,6 @@ export function buildLlmsIndex({ summary, slices }) {
     ],
   ];
   const body = sections.map(([title, lines]) => `## ${title}\n\n${lines.join('\n')}`).join('\n\n');
-  return `# Hirobius Design System\n\n> ${summary}\n\n${body}\n`;
+  // hds#463: which release this index describes (scripts/lib/version-stamp.mjs).
+  return `# Hirobius Design System\n\n> ${summary}\n\n${versionLine(version)}\n\n${body}\n`;
 }

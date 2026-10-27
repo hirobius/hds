@@ -2,6 +2,8 @@
 
 > Token-first React design system for product UIs, with machine-readable context for AI agents: which component to use for each screen need, the tokens, and the rules.
 
+Version: 0.32.0
+
 ## Start here
 
 - [AGENTS.md](https://unpkg.com/@hirobius/design-system/AGENTS.md): which component to use for each screen need, the imports, and the rules. Read it first.
@@ -18,6 +20,7 @@
 - [tokens.txt](https://unpkg.com/@hirobius/design-system/public/llms/tokens.txt): token rules and the quick token reference
 - [scroll.txt](https://unpkg.com/@hirobius/design-system/public/llms/scroll.txt): scroll-driven section recipe
 - [components.txt](https://unpkg.com/@hirobius/design-system/public/llms/components.txt): component inventory pointer, API pointer, props digest
+- [upgrade.txt](https://unpkg.com/@hirobius/design-system/public/llms/upgrade.txt): the upgrade command, every removed or renamed name with its replacement, deprecations
 
 ## Reference data
 

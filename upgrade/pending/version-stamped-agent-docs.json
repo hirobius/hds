@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The manifest's llmsTxt now points at this release's llms.txt on jsDelivr, and upgrade writes the hds-consumer skill into .claude/skills/ when that folder exists; nothing to change."
+}

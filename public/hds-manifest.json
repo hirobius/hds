@@ -2,11 +2,18 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-24T04:14:09.174Z",
+  "generated": "2026-10-27T05:29:46.759Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
-  "llmsTxt": "https://hirobius-hds-components.vercel.app/llms.txt",
+  "packageVersion": "0.32.0",
+  "upgrade": {
+    "command": "npx @hirobius/design-system@latest upgrade",
+    "check": "npx @hirobius/design-system@latest upgrade --check",
+    "guide": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.32.0/UPGRADING.md",
+    "names": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.32.0/public/llms/upgrade.txt"
+  },
+  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.32.0/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
@@ -407,7 +414,7 @@
     "namespaceViolations": []
   },
   "agentEntrypoint": "llms.txt",
-  "breakingChangePolicy": "Version increments on any prop rename, token path rename, or removed component. Additions are non-breaking.",
+  "breakingChangePolicy": "Below 1.0, a minor release may break (remove, move or rename a name) and a patch never does. Every change has a step in upgrade/releases/<version>.json; run npx @hirobius/design-system@latest upgrade to apply them.",
   "componentSpecs": {
     "Alert": {
       "category": "Feedback",

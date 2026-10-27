@@ -515,6 +515,13 @@ importable components, the screen layout recipe, the do/don't rules, and the lin
 step (§11) as its final required step. It is generated from the manifest by
 `pnpm skill:generate` and drift-checked by `pnpm check:consumer-skill`.
 
+The skill ships in the package (`skills/hds-consumer/SKILL.md`), and its
+`metadata.hds-version` names the release it describes. When your project has a
+`.claude/skills/` folder, `npx @hirobius/design-system@latest upgrade` writes
+it there (in an `hds-consumer` folder), so it always matches the installed
+version. Without one, copy it from `node_modules`, or install the copy on
+GitHub main (it can describe a newer release than the one you have):
+
 ```bash
 npx skills add hirobius/hds --skill hds-consumer
 ```

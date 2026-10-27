@@ -502,7 +502,7 @@ const UpgradeItem = z
       .string()
       .min(1)
       .describe(
-        'The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, or <codemod>/manual.',
+        'The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, or <codemod>/manual.',
       ),
     plain: z.string().min(1).describe('What happened or what to do, in one sentence.'),
     importers: z
