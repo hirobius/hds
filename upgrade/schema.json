@@ -1049,6 +1049,28 @@
           },
           "description": "Files written, relative to the project root."
         },
+        "skipped": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$",
+                "description": "A semver version, such as 0.20.0."
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "version",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Versions npm marks deprecated (a yanked release, hds#472) that the default target skipped, with the deprecation message."
+        },
         "refused": {
           "anyOf": [
             {
@@ -1092,6 +1114,7 @@
         "comingNext",
         "doByHand",
         "changedFiles",
+        "skipped",
         "refused",
         "exitCode"
       ],

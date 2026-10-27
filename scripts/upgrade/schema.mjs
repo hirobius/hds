@@ -564,6 +564,11 @@ export const UpgradeReport = z
     comingNext: z.array(UpgradeItem),
     doByHand: z.array(UpgradeItem),
     changedFiles: z.array(z.string()).describe('Files written, relative to the project root.'),
+    skipped: z
+      .array(z.object({ version: version(), reason: z.string() }).strict())
+      .describe(
+        'Versions npm marks deprecated (a yanked release, hds#472) that the default target skipped, with the deprecation message.',
+      ),
     refused: z
       .string()
       .nullable()

@@ -45,13 +45,11 @@ const surfaceVariants = /* @__PURE__ */ cva(
     variants: {
       padding: {
         component: 'p-[var(--semantic-space-surface-padding)]',
-        // The surface's fixed inset contract (not layout spacing): the primitive
-        // 16px/24px steps, so a tenant's semantic scale never moves them.
         item: 'p-[var(--semantic-space-scale-sm)]',
-        // tier-ok: fixed 16px inset contract, see comment above
-        px16: 'p-[var(--primitive-space-4)]',
-        // tier-ok: fixed 24px inset contract, see comment above
-        px24: 'p-[var(--primitive-space-6)]',
+        // The surface's fixed inset contract (not layout spacing): the fixed
+        // 16px/24px steps, which neither density nor a tenant moves.
+        px16: 'p-fixed-sm',
+        px24: 'p-fixed-md',
         none: 'p-0',
       },
       shadow: {

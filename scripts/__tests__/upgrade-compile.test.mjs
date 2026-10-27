@@ -11,6 +11,7 @@
  * hand from the fixture ledgers, not recomputed the way the compiler does.
  */
 import { describe, it, expect, afterEach, vi } from 'vitest';
+import { NO_BACKPORTS, rollbackLines } from '../upgrade/rollback.mjs';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -262,6 +263,14 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
         '3. Then work through its Do by hand list.',
         '',
         'This file covers every release after 0.10.0; from an older version, first reach 0.10.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.',
+        '',
+        '## If a release is bad',
+        '',
+        'A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` points back at the last good version. If you took it:',
+        '',
+        ...rollbackLines(),
+        '',
+        NO_BACKPORTS,
         '',
         '## 0.12.1',
         '',
