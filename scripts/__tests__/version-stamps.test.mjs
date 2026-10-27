@@ -15,7 +15,7 @@ import { generateLlmsTxt } from '../generate-llms-txt.mjs';
 import { REQUIRED } from '../check-pack-contents.mjs';
 import { copyAgentContext } from '../copy-agent-context.mjs';
 import { UPGRADE_COMMAND, hostedStamp, stampDrift, stampedFiles } from '../lib/version-stamp.mjs';
-import { removedNameRows, replacementOf } from '../lib/upgrade-digest.mjs';
+import { deprecatedRows, removedNameRows, replacementOf } from '../lib/upgrade-digest.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
@@ -55,9 +55,12 @@ describe('llms output carries the package version (hds#463)', () => {
 
   it('lists the deprecated names with the release that removes them', () => {
     const slice = outputs['public/llms/upgrade.txt'];
-    const { deprecated } = JSON.parse(read('upgrade/index.json'));
-    expect(deprecated.length).toBeGreaterThan(0);
+    const deprecated = deprecatedRows(ROOT);
+    expect(deprecated.map((d) => d.name)).toContain('StatusTile');
+    // Tokens stay out: agent docs never name a deprecated token.
+    expect(deprecated.map((d) => d.name)).not.toContain('semantic.space.layout.tight');
     for (const d of deprecated) expect(slice, d.name).toContain(`\`${d.name}\``);
+    expect(slice).toContain('hds/no-deprecated-token');
   });
 });
 
@@ -103,8 +106,7 @@ describe('consumer skill (hds#463)', () => {
   it('has Upgrading and Deprecated sections', () => {
     expect(skill).toContain('## Upgrading');
     expect(skill).toContain('## Deprecated: do not use in new code');
-    const { deprecated } = JSON.parse(read('upgrade/index.json'));
-    for (const d of deprecated) expect(skill, d.name).toContain(`\`${d.name}\``);
+    for (const d of deprecatedRows(ROOT)) expect(skill, d.name).toContain(`\`${d.name}\``);
   });
 
   it('makes the upgrade check the first step', () => {
@@ -126,11 +128,11 @@ describe('manifest (hds#463)', () => {
   it('names the package version, the upgrade command and a pinned llms.txt', () => {
     expect(m.packageVersion).toBe(VERSION);
     expect(m.upgrade.command).toBe(UPGRADE_COMMAND);
-    expect(m.upgrade.check).toBe(`${UPGRADE_COMMAND} --check`);
     expect(m.llmsTxt).toBe(
       `https://cdn.jsdelivr.net/npm/@hirobius/design-system@${VERSION}/llms.txt`,
     );
-    expect(m.breakingChangePolicy).toContain(UPGRADE_COMMAND);
+    // The upgrade object replaces the free-text policy (and keeps the entry in budget, hds#413).
+    expect(m.breakingChangePolicy).toBeUndefined();
   });
 });
 

@@ -63,15 +63,26 @@ export function removedNameRows(root) {
   return rows;
 }
 
-/** [{ name, removeIn, plain }] for every deprecated name still shipped (upgrade/index.json). */
+/**
+ * A deprecated token, which agent docs never name (agent-docs-no-deprecated-tokens,
+ * hidden-delight-tokens): an agent copies what it is shown. The lint owns them.
+ */
+const isToken = (d, step) => !!step?.detect?.cssVars || /^(?:primitive|semantic)[-.]/.test(d.name);
+
+export const DEPRECATED_TOKENS_NOTE =
+  'Deprecated design tokens are not listed: the `hds/no-deprecated-token` lint rule flags each use and names its replacement.';
+
+/** [{ name, removeIn, plain }] for every deprecated name still shipped (upgrade/index.json), tokens aside. */
 export function deprecatedRows(root) {
   const index = JSON.parse(readFileSync(join(root, 'upgrade/index.json'), 'utf8'));
   const steps = new Map(ledgers(root).flatMap((l) => l.steps.map((s) => [s.id, s])));
-  return (index.deprecated ?? []).map((d) => ({
-    name: d.name,
-    removeIn: d.removeIn,
-    plain: steps.get(d.step)?.plain ?? '',
-  }));
+  return (index.deprecated ?? [])
+    .filter((d) => !isToken(d, steps.get(d.step)))
+    .map((d) => ({
+      name: d.name,
+      removeIn: d.removeIn,
+      plain: steps.get(d.step)?.plain ?? '',
+    }));
 }
 
 /** One line per deprecation; names that share a step sentence share a line. */
@@ -106,5 +117,7 @@ ${rows.map((r) => `| \`${r.old}\` | ${r.replacement} | ${r.release} |`).join('\n
 Still exported, but on the way out: do not write new code with them.
 
 ${deprecatedLines(deprecated).join('\n')}
+
+${DEPRECATED_TOKENS_NOTE}
 `;
 }

@@ -1102,12 +1102,9 @@ export function buildManifest(
     // llmsTxt is pinned to that release, so an installed copy never points at
     // text written for a newer one.
     packageVersion,
-    upgrade: {
-      command: UPGRADE_COMMAND,
-      check: `${UPGRADE_COMMAND} --check`,
-      guide: cdnUrl(packageVersion, 'UPGRADING.md'),
-      names: cdnUrl(packageVersion, 'public/llms/upgrade.txt'),
-    },
+    // Kept to the command: the entry is at its hds#413 size budget. The
+    // removed-name table is public/llms/upgrade.txt, the guide UPGRADING.md.
+    upgrade: { command: UPGRADE_COMMAND },
     llmsTxt: cdnUrl(packageVersion, 'llms.txt'),
     systemSpecs: systemManifest.systemSpecs ?? {
       engine: 'React + TypeScript',
@@ -1167,7 +1164,7 @@ export function buildManifest(
     // drops it from public/hds-manifest.json on the next run.
     inventory: systemManifest.inventory ?? {},
     agentEntrypoint: 'llms.txt',
-    breakingChangePolicy: `Below 1.0, a minor release may break (remove, move or rename a name) and a patch never does. Every change has a step in upgrade/releases/<version>.json; run ${UPGRADE_COMMAND} to apply them.`,
+    // hds#463: `upgrade` replaces the old free-text breakingChangePolicy.
     componentSpecs,
     // utilities is produced by generate-manifest's tier-based section split
     // (8x-5). build-tokens runs after generate-manifest in `pnpm tokens`, so

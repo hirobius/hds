@@ -37,7 +37,7 @@ import { layoutRecipeSteps, layoutNegativeRules } from './lib/layout-recipe.mjs'
 import { coreByCategory, renderCoreSetByCategory } from './lib/core-set.mjs';
 import { rootFromArgv, runGenerator } from './lib/generated-check.mjs';
 import { UPGRADE_COMMAND } from './lib/version-stamp.mjs';
-import { deprecatedLines, deprecatedRows } from './lib/upgrade-digest.mjs';
+import { DEPRECATED_TOKENS_NOTE, deprecatedLines, deprecatedRows } from './lib/upgrade-digest.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -181,6 +181,8 @@ export function buildConsumerSkill({
             'Still exported until the release named, but do not write new code with them:',
             '',
             ...deprecatedLines(deprecated),
+            '',
+            DEPRECATED_TOKENS_NOTE,
             '',
           ]
         : []),
