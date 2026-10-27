@@ -606,6 +606,14 @@ Select — dropdown selector built on Radix Select (ADR-001 Radix convention). R
   - showLabel: boolean = true
   - value: string
 
+### Sheet
+Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+  - children: ReactNode
+  - defaultOpen: boolean
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+
 ### Sidebar
 Sidebar — fixed-width rail beside fluid content, no media query. Every Layout reference: https://every-layout.dev/layouts/sidebar/
   - as: ElementType<any, keyof IntrinsicElements> = div
@@ -721,9 +729,11 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline p
   - value: string
 
 ### Tag
-Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visi…
+Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.
   - active: boolean = false
   - children: ReactNode
+  - dismissLabel: string
+  - onDismiss: (() => void)
 
 ### Text
 Text — polymorphic typography primitive spanning the full HDS type ramp.

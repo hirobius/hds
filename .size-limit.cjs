@@ -94,6 +94,14 @@
  * headroom convention over 55.71 kB. Raised by the wave-2 merge train;
  * Adrian to confirm or tighten.
  *
+ * Re-baselined 2026-10-27, manifest entry only: main measured 64,995 B
+ * against the 65 kB budget (5 B of headroom), so any new component broke it.
+ * hds#690 adds Sheet and its compound parts (~1.7 kB gzip, 66.73 kB total).
+ * Content, not bloat: a documented public component. New budget 70 kB
+ * (~5% headroom, deliberately under the ~17% convention so the next real
+ * trim is still forced soon; the figmaUrl/figmaLink redundancy below is the
+ * obvious first cut). Adrian to confirm or tighten.
+ *
  * Known redundancy, not yet acted on: `figmaUrl` and `figmaLink` are
  * byte-identical on all 44 linked components. Dropping one would shrink this
  * entry, but it is a breaking change for manifest consumers.
@@ -165,7 +173,7 @@ module.exports = [
   {
     name: 'manifest (hds-manifest.json ESM)',
     path: 'dist/manifest.js',
-    limit: '65 kB',
+    limit: '70 kB',
     gzip: true,
   },
   {

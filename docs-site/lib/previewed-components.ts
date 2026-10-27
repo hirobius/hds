@@ -38,6 +38,7 @@ export const PREVIEWED_COMPONENTS = [
   'Progress',
   'Radio',
   'SegmentedControl',
+  'Sheet',
   'Skeleton',
   'Slider',
   'Spinner',
