@@ -1,1 +1,2 @@
 Spacing debt (hds#778): 119 raw/primitive spacing values in src/app/components move to equal-pixel, density-invariant semantic keys; the ratchet baseline drops 143 -> 24 (the rest have no equal-pixel semantic step) and now scans src/** and docs-site/**. One shared spacing grammar for the ratchet, hds/no-primitive-spacing and the hds-spacing-steps codemod. px6/px10 stay (0.31.0 kept them).
+cn() now tells tailwind-merge the named spacing keys (pre-existing gap: `cn('p-surface-padding','p-4')` kept both), so className overrides still win after the rename.
