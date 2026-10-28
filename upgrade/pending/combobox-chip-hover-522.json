@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Combobox chips and the Dialog and Sheet close buttons now change fill on hover in light and dark; drop any local CSS that added a hover fill to them."
+}

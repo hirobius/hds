@@ -217,7 +217,8 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
               onClick={() => removeAt(i)}
               className={cn(
                 'hds-focus hds-touch-row inline-flex h-7 items-center gap-fixed-2xs rounded-sm bg-muted pl-scale-xs pr-fixed-2xs',
-                'hds-type-caption text-foreground hover:bg-accent hover:text-accent-foreground',
+                // Hover steps to surface.sunken: `hover:bg-accent` (accentSubtle) equalled the `bg-muted` rest fill in light (1.01:1, hds#522).
+                'hds-type-caption text-foreground hover:bg-[var(--semantic-color-surface-sunken)]',
                 'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
               )}
             >
