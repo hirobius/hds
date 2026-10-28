@@ -28,6 +28,10 @@
  *     docs/api/props-baseline.json); a package from the props-baseline.json it
  *     ships. A release older than 0.33 ships none, so its snapshot has no
  *     props section and diff.mjs reports prop facts only between two that do;
+ *   - types (hds#467): each entry's exports as the TypeScript checker sees
+ *     them: value or type, signatures, static members, object key paths
+ *     (scripts/upgrade/types.mjs). Both paths read the committed (or shipped)
+ *     docs/api/types-baseline.json; a release older than it has none;
  *   - css (hds#449): the CSS contract of the stylesheets the package ships
  *     (scripts/build-css-contract.mjs): every custom property with its value
  *     per context, the class names, the @font-face entries and the @layer
@@ -95,6 +99,7 @@ import { TOOLING_EXPORTS, readJsExportEntries } from '../lib/package-entries.mjs
 import { buildCssContract, readCssContract } from '../lib/css-contract.mjs';
 import { formatJson, sortedObject } from './format.mjs';
 import { buildProps, readPropsBaseline } from './props.mjs';
+import { readTypesBaseline } from './types.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
@@ -160,6 +165,9 @@ const withCss = (snapshot, css) => (css ? { ...snapshot, css } : snapshot);
 /** `snapshot` with its props section, when there is one. */
 const withProps = (snapshot, props) => (props ? { ...snapshot, props } : snapshot);
 
+/** `snapshot` with its types section, when there is one. */
+const withTypes = (snapshot, types) => (types ? { ...snapshot, types } : snapshot);
+
 /**
  * The snapshot of an unpacked package directory (a published tarball's
  * `package/`, or the repo after build:lib).
@@ -182,7 +190,11 @@ export function snapshotPackage(dir) {
     entries[key] = entryNames(dir, file);
   }
   const props = readPropsBaseline(dir);
-  return withCss(withProps(packageFacts(pkg, exportsMap, entries), props), cssSection(dir));
+  const types = readTypesBaseline(dir);
+  return withCss(
+    withTypes(withProps(packageFacts(pkg, exportsMap, entries), props), types),
+    cssSection(dir),
+  );
 }
 
 /**
@@ -222,7 +234,10 @@ export function snapshotFromSource(root, { css = null } = {}) {
     entries[key] = entryNames(root, file);
   }
   const props = buildProps(root) ?? readPropsBaseline(root);
-  return withCss(withProps(packageFacts(pkg, exportsMap, entries), props), css);
+  // The committed baseline: building it takes a TypeScript program, and the
+  // upgrade gate fails a stale one (types.mjs).
+  const types = readTypesBaseline(root);
+  return withCss(withTypes(withProps(packageFacts(pkg, exportsMap, entries), props), types), css);
 }
 
 /** `npm pack <spec>` into `destination`; returns the tarball path. */
