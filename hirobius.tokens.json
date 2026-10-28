@@ -164,7 +164,7 @@
       "graphite": {
         "50": {
           "$value": "#f5f4f4",
-          "$description": "Graphite accent tint — faintest step."
+          "$description": "Graphite accent tint — faintest step; dark rest fill."
         },
         "100": {
           "$value": "#e9e7e8",
@@ -172,7 +172,7 @@
         },
         "200": {
           "$value": "#cbc6c9",
-          "$description": "Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill."
+          "$description": "Graphite accent — light warm-grey."
         },
         "300": {
           "$value": "#b2abae",
@@ -192,7 +192,7 @@
         },
         "700": {
           "$value": "#4a4146",
-          "$description": "Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA)."
+          "$description": "Graphite accent — warm charcoal; light-mode accent text."
         },
         "800": {
           "$value": "#352e32",
@@ -204,7 +204,7 @@
         },
         "950": {
           "$value": "#19161a",
-          "$description": "Graphite accent — near-black warm substrate."
+          "$description": "Graphite accent — near-black; light rest fill."
         },
         "$description": "Graphite, the warm-charcoal brand accent scale. Feedback colors keep their own scales."
       },
@@ -1370,13 +1370,13 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.graphite.700}",
-          "$description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
+          "$value": "{primitive.color.graphite.950}",
+          "$description": "Accent fill, warm graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.graphite.700}",
-                "Dark": "{primitive.color.graphite.200}"
+                "Light": "{primitive.color.graphite.950}",
+                "Dark": "{primitive.color.graphite.50}"
               }
             }
           }
@@ -2372,20 +2372,20 @@
     "accent": {
       "$type": "color",
       "rest": {
-        "$value": "{primitive.color.graphite.700}",
-        "$description": "Default accent fill for interactive elements at rest — warm graphite. Inverts per theme; pair with content.onAccent.",
+        "$value": "{primitive.color.graphite.950}",
+        "$description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.graphite.700}",
-              "Dark": "{primitive.color.graphite.200}"
+              "Light": "{primitive.color.graphite.950}",
+              "Dark": "{primitive.color.graphite.50}"
             }
           }
         }
       },
       "hover": {
         "$value": "{primitive.color.graphite.800}",
-        "$description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
+        "$description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2397,12 +2397,12 @@
       },
       "pressed": {
         "$value": "{primitive.color.graphite.900}",
-        "$description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
+        "$description": "Accent fill on press (graphite.900 / 200).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
               "Light": "{primitive.color.graphite.900}",
-              "Dark": "{primitive.color.graphite.50}"
+              "Dark": "{primitive.color.graphite.200}"
             }
           }
         }
