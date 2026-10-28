@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-27T22:40:28.279Z",
+  "generated": "2026-10-28T00:15:09.078Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12641,7 +12641,7 @@
         "cssVar": "--primitive-easing-elastic",
         "type": "spring",
         "description": "Spring response defined by stiffness, damping, and mass parameters.",
-        "value": "spring(300, 20, 1)"
+        "value": "linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)"
       },
       {
         "path": "primitive.shadow.color",
@@ -12913,7 +12913,7 @@
         "description": "For teaching moments and significant UI entries. Includes physics-based squish.",
         "composite": {
           "duration": "250ms",
-          "easing": "spring(300, 20, 1)"
+          "easing": "linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)"
         }
       },
       {
