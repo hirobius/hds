@@ -427,7 +427,7 @@
     "pixelmatch": "^7.1.0",
     "playwright": "^1.58.2",
     "pngjs": "^7.0.0",
-    "postcss": "8.5.10",
+    "postcss": "8.5.29",
     "prettier": "^3.8.3",
     "publint": "^0.3.21",
     "react": "18.3.1",
@@ -440,7 +440,7 @@
     "tailwindcss": "^4.2.4",
     "type-coverage": "^2.29.7",
     "typescript": "^6.0.2",
-    "vite": "6.4.2",
+    "vite": "6.4.4",
     "vite-bundle-visualizer": "^1.2.1",
     "vitest": "^4.1.0",
     "yaml": "^2.8.1",
@@ -451,10 +451,10 @@
   },
   "pnpm": {
     "overrides": {
-      "vite": "6.4.2",
+      "vite": "6.4.4",
       "picomatch": ">=4.0.4",
       "uuid": "14.0.0",
-      "postcss": "8.5.10"
+      "postcss": "8.5.29"
     },
     "onlyBuiltDependencies": [
       "esbuild"

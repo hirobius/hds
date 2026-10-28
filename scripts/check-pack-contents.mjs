@@ -10,6 +10,8 @@
  * and everything under `upgrade/` but the record: pending notes, frozen
  * sources). Forbidden entries match as a path prefix at the tarball root, not
  * as a substring: `dist/types/src/` is correct and must not be flagged.
+ * FORBIDDEN_NAMES adds file names refused at any depth (env files, .npmrc,
+ * private keys, sourcemaps), since `files` ships whole directories.
  *
  * Usage: node scripts/check-pack-contents.mjs [--require <path>]...
  * Requires `dist/` (run `pnpm build:lib` first; smoke:consumer does).
@@ -130,19 +132,34 @@ export const FORBIDDEN = [
 ];
 
 /**
+ * File names that never ship at any depth: env files, npm auth, private keys,
+ * and sourcemaps (they embed absolute build paths and source; vite.config.lib
+ * sets sourcemap: false, this catches a regression). Matched on the basename.
+ */
+export const FORBIDDEN_NAMES = [
+  /^\.env(\..+)?$/,
+  /^\.npmrc$/,
+  /\.(pem|key|p12|pfx)$/,
+  /^id_(rsa|dsa|ecdsa|ed25519)$/,
+  /\.map$/,
+];
+
+/**
  * @param {string[]} packedPaths
  * @param {{required: string[], forbidden: {prefix: string, allow?: string[]}[]}} rules
  */
 export function diffPackContents(packedPaths, { required, forbidden }) {
   const have = new Set(packedPaths);
   const missing = required.filter((p) => !have.has(p));
-  const bad = packedPaths.filter((p) =>
-    forbidden.some(
-      (f) =>
-        p.startsWith(f.prefix) &&
-        !(f.allow ?? []).includes(p) &&
-        !(f.allowPrefix ?? []).some((a) => p.startsWith(a)),
-    ),
+  const bad = packedPaths.filter(
+    (p) =>
+      FORBIDDEN_NAMES.some((re) => re.test(p.split('/').pop())) ||
+      forbidden.some(
+        (f) =>
+          p.startsWith(f.prefix) &&
+          !(f.allow ?? []).includes(p) &&
+          !(f.allowPrefix ?? []).some((a) => p.startsWith(a)),
+      ),
   );
   return { missing, forbidden: bad };
 }

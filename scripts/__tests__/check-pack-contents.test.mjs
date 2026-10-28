@@ -32,6 +32,33 @@ describe('diffPackContents', () => {
     expect(r.forbidden).toEqual(['src/index.ts', '.env.local']);
   });
 
+  it('flags credentials and sourcemaps at any depth, not only the root', () => {
+    const leaks = [
+      'dist/hirobius-ui.js.map',
+      'dist/chunks/a.css.map',
+      'mcp/.env',
+      'bin/.env.production',
+      'dist/.npmrc',
+      'codemods/lib/.npmrc',
+      'upgrade/releases/key.pem',
+      'mcp/id_rsa',
+      'bin/server.key',
+    ];
+    const r = diffPackContents([...good, ...leaks], { required: REQUIRED, forbidden: FORBIDDEN });
+    expect(r.forbidden).toEqual(leaks);
+  });
+
+  it('does not flag a token or key that is data (hirobius.tokens.json, dist/tokens.js)', () => {
+    const r = diffPackContents(
+      [...good, 'hirobius.tokens.json', 'dist/tokens.js', 'dist/keys.js'],
+      {
+        required: REQUIRED,
+        forbidden: FORBIDDEN,
+      },
+    );
+    expect(r.forbidden).toEqual([]);
+  });
+
   it('does not flag dist/types/src/ or the shipped component-api.json', () => {
     const r = diffPackContents(
       [...good, 'dist/types/src/index.d.ts', 'src/app/data/component-api.json'],
