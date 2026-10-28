@@ -131,6 +131,9 @@ function ButtonDemo() {
       <Button variant="secondary" shadow="none" hoverEffect="none">
         Flat (opt-out)
       </Button>
+      <Button variant="secondary" size="sm">
+        Small
+      </Button>
     </div>
   );
 }
@@ -140,7 +143,7 @@ function InputDemo() {
     <div style={{ display: 'grid', gap: SM, width: 'min(100%, 320px)' }}>
       <Input label="Project name" placeholder="Portfolio redesign" />
       <Input label="Start date" type="date" defaultValue="2026-10-01" />
-      <Input size="sm" placeholder="Small" aria-label="Small input" />
+      <Input size="sm" defaultValue="Small" aria-label="Small input" />
     </div>
   );
 }

@@ -108,7 +108,7 @@ const buttonVariants = /* @__PURE__ */ cva(
         info: 'border-transparent bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-info active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
       },
       size: {
-        sm: 'h-8 px-fixed-xs hds-type-caption [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
+        sm: 'h-8 px-fixed-xs hds-type-caption hds-touch-row [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
         md: 'h-10 px-fixed-sm py-scale-xs hds-type-ui [&_svg]:size-[var(--component-button-size-md-iconSize)]',
         lg: 'h-12 px-fixed-md hds-type-ui [&_svg]:size-[var(--component-button-size-lg-iconSize)]',
       },
@@ -151,7 +151,7 @@ const buttonVariants = /* @__PURE__ */ cva(
         variant: 'tertiary',
         className: 'hover:bg-transparent',
       },
-      { iconOnly: true, size: 'sm', className: 'w-8' },
+      { iconOnly: true, size: 'sm', className: 'w-8 hds-touch-target' },
       { iconOnly: true, size: 'md', className: 'w-10' },
       { iconOnly: true, size: 'lg', className: 'w-12' },
     ],

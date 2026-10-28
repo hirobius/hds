@@ -656,6 +656,7 @@ export const tokenRefs = {
         lg: "var(--semantic-size-icon-lg)"
       },
       avatar: "var(--semantic-size-avatar)",
+      touchTarget: "var(--semantic-size-touchTarget)",
       tile: "var(--semantic-size-tile)",
       row: {
         compact: "var(--semantic-size-row-compact)",

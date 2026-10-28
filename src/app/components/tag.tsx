@@ -43,7 +43,7 @@ const tagButtonVariants = /* @__PURE__ */ cva(
   // regulatory floor, not a design-scale choice; no semantic size scale exists
   // yet for dimensional primitives (see hds#186 follow-up).
   // tier-ok: regulatory a11y constant, not a design decision. hds#186
-  'group inline-flex min-w-[var(--primitive-size-interactive-min)] cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-inherit transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]',
+  'group inline-flex min-w-[var(--primitive-size-interactive-min)] hds-touch-row cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-inherit transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-tag-* sizing/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
@@ -66,13 +66,14 @@ const tagPillVariants = /* @__PURE__ */ cva(
 // can't remove it. The pill drops its end padding; the X's 40px hit area supplies
 // it (the 16px icon sits 12px from the edge, the pill's own paddingX). The X's
 // negative block margin makes it take one line box of height, so the 40px hit
-// area overhangs the pill instead of growing it.
+// area overhangs the pill instead of growing it. On touch, hds-touch-target lifts
+// it to semantic.size.touchTarget (44px, hds#750).
 const dismissPill =
   'box-border inline-flex min-h-[var(--component-tag-minHeight)] max-w-full items-center whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid border-[var(--component-tag-border)] bg-[var(--component-tag-background)] py-[var(--component-tag-paddingY)] pr-0 pl-[var(--component-tag-paddingX)] text-[var(--component-tag-text)] hds-type-caption';
 
 const dismissButton =
-  // The 40px hit area borrows the compact row size (40px) until a touch size role lands (hds#750, hds#919)
-  'hds-focus inline-flex size-[var(--semantic-size-row-compact)] my-[calc((1lh_-_var(--semantic-size-row-compact))/2)] shrink-0 cursor-pointer items-center justify-center rounded-[var(--component-tag-radius)] border-0 bg-transparent p-0 text-inherit transition-colors hover:text-[var(--semantic-color-content-primary)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]';
+  // The 40px hit area borrows the compact row size until a touch size role lands (hds#750, hds#919)
+  'hds-focus hds-touch-target inline-flex size-[var(--semantic-size-row-compact)] my-[calc((1lh_-_var(--semantic-size-row-compact))/2)] shrink-0 cursor-pointer items-center justify-center rounded-[var(--component-tag-radius)] border-0 bg-transparent p-0 text-inherit transition-colors hover:text-[var(--semantic-color-content-primary)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 

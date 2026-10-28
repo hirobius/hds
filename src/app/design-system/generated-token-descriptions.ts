@@ -296,6 +296,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.size.icon.md": "Medium icon box — matches --hds-icon-medium.",
   "semantic.size.icon.lg": "Large icon box — matches --hds-icon-large.",
   "semantic.size.avatar": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
+  "semantic.size.touchTarget": "Small-control minimum on a coarse pointer or narrow viewport (hds#750).",
   "semantic.size.tile": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403).",
   "semantic.size.row.compact": "Compact-density row minimum height.",
   "semantic.size.row.comfortable": "Comfortable-density row minimum height.",
