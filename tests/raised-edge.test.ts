@@ -101,7 +101,7 @@ describe('C2 reference edges (graphite defaults)', () => {
     near(shipped('Light').secondary, '#bdbec0', 1);
     near(shipped('Light').primary, '#010207', 1);
   });
-  it('dark: secondary ≈ neutral-700 #3d4147, primary ≈ #a5a6a9', () => {
+  it('dark: secondary ≈ #3d4147 (neutral-700 stepped down), primary ≈ #a5a6a9', () => {
     near(shipped('Dark').secondary, '#3d4147');
     near(shipped('Dark').primary, '#a5a6a9');
   });
