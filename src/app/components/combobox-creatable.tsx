@@ -12,6 +12,7 @@
 import * as React from 'react';
 import { Check, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { ACTIVE_OPTION_CLASS } from './listbox-nav';
 import { Icon } from './icon';
 import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
@@ -295,8 +296,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
                   onClick={() => commit(row)}
                   className={cn(
                     'flex w-full items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 text-left hds-type-ui hds-touch-row outline-none',
-                    'data-[active=true]:bg-[var(--semantic-color-surface-sunken)] data-[active=true]:text-[var(--semantic-color-content-primary)]',
-                    'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
+                    ACTIVE_OPTION_CLASS,
                     'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                   )}
                 >

@@ -77,10 +77,19 @@ export function loadRemovedNames() {
   ]);
 }
 
-/** What replaces a removed name that has a survivor (removed-0.20.json `replaced`), by name. */
+/**
+ * What replaces a removed name that has a survivor (removed-0.20.json `replaced`),
+ * or a name a later release reused for a new component (`reintroduced`), by name.
+ */
 export function loadReplacements() {
-  const { replaced = {} } = JSON.parse(readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'));
-  return new Map(Object.values(replaced).flatMap((names) => Object.entries(names)));
+  const { replaced = {}, reintroduced = {} } = JSON.parse(
+    readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'),
+  );
+  const { $comment: _comment, ...reused } = reintroduced;
+  return new Map([
+    ...Object.values(replaced).flatMap((names) => Object.entries(names)),
+    ...Object.entries(reused),
+  ]);
 }
 
 const ID = '[A-Za-z_$][\\w$]*';

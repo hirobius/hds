@@ -73,6 +73,7 @@
     "Checkbox",
     "CodeBlock",
     "Combobox",
+    "CommandPalette",
     "Composer",
     "Container",
     "DataTableSection",
@@ -1294,6 +1295,7 @@
         "src/app/components/code-block.tsx",
         "src/app/components/combobox-creatable.tsx",
         "src/app/components/combobox.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/hds-tooltip.tsx",
@@ -3322,6 +3324,7 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/async-state.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
@@ -3379,6 +3382,7 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
@@ -6385,9 +6389,11 @@
       },
       "consumers": [
         "src/app/components/combobox-creatable.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
+        "src/app/components/listbox-nav.ts",
         "src/app/components/select.tsx",
         "src/index.ts"
       ],
@@ -7106,6 +7112,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/text.tsx"
       ],
@@ -8644,6 +8651,7 @@
       },
       "consumers": [
         "src/app/components/combobox.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/popover.tsx",
@@ -11222,6 +11230,180 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null
+    },
+    "CommandPalette": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "hidden": false,
+      "docExempt": false,
+      "filePath": "src/app/components/command-palette.tsx",
+      "description": "CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain data; the palette filters, groups (in first-seen order) and navigates them, and calls `onSelect` with the chosen item. `open` is controlled; the ⌘K / Ctrl+K hotkey calls `onOpenChange` unless `hotkey={false}`. Argument chips for multi-step commands are a follow-up (hds#962). <CommandPalette open={open} onOpenChange={setOpen} items={commands} onSelect={(item) => run(item.id)} />",
+      "a11yRules": [
+        {
+          "rule": "The palette is a modal dialog named by its label, which also names the search field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.dialog-named"
+        },
+        {
+          "rule": "Cmd+K or Ctrl+K opens the palette with focus in the search field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.hotkey-focus"
+        },
+        {
+          "rule": "The search field is an expanded combobox that controls the listbox and exposes the active option through aria-activedescendant.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.combobox-state"
+        },
+        {
+          "rule": "Each group of results is a group named by its heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.groups-named"
+        },
+        {
+          "rule": "Options stay out of the tab order and Tab stays inside the dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.options-not-tabbable"
+        },
+        {
+          "rule": "ArrowDown and ArrowUp move the active option, skip disabled ones and wrap at the ends.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.arrow-keys"
+        },
+        {
+          "rule": "The active option reports aria-selected and a disabled one reports aria-disabled.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.option-state"
+        },
+        {
+          "rule": "An option is named by its label and described by its shortcut keys.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.shortcut-described"
+        },
+        {
+          "rule": "The match count is announced in a polite status as the list filters (4.1.3).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.result-count-announced"
+        },
+        {
+          "rule": "Escape closes the palette and returns focus to the element that had it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.escape-returns-focus"
+        },
+        {
+          "rule": "The open palette has no axe violations, with results or empty.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.axe-clean"
+        },
+        {
+          "rule": "Pass a label that says what the palette searches when it is not a general command palette.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "CommandPalette",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/listbox-nav.ts",
+        "src/patterns.ts"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "emptyMessage": {
+          "type": "string",
+          "default": "No results"
+        },
+        "hotkey": {
+          "type": "boolean",
+          "default": true
+        },
+        "items": {
+          "type": "readonly CommandPaletteItem[]"
+        },
+        "label": {
+          "type": "string",
+          "default": "Command palette"
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void"
+        },
+        "onSelect": {
+          "type": "(item: CommandPaletteItem) => void"
+        },
+        "open": {
+          "type": "boolean"
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Type a command or search…"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/components/command-palette",
+      "usage": {
+        "when": "Let people jump to a page or run a command from anywhere by typing, opened with ⌘K or Ctrl+K.",
+        "whenNot": "Picking a value for a form field, or a short action list on a button.",
+        "useInstead": [
+          {
+            "component": "Combobox",
+            "reason": "picking a value for a form field"
+          },
+          {
+            "component": "Menu",
+            "reason": "a short action list from a trigger"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Cmd+K/Ctrl+K",
+          "effect": "Opens or closes the palette from anywhere on the page."
+        },
+        {
+          "keys": "Character",
+          "effect": "Filters the items by label, keywords and group."
+        },
+        {
+          "keys": "ArrowDown/ArrowUp",
+          "effect": "Moves the active item, skipping disabled ones, and wraps at the ends."
+        },
+        {
+          "keys": "Enter",
+          "effect": "Runs the active item and closes the palette."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the palette and returns focus to where it was."
+        }
+      ],
+      "core": true
     },
     "HdsPhosphor": {
       "category": "Compiler",

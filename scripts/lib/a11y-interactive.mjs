@@ -48,6 +48,7 @@ export const INTERACTIVE = Object.freeze([
   'CodeBlock',
   'InlineCode',
   'Composer',
+  'CommandPalette',
   'ThemeToggle',
 ]);
 

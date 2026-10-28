@@ -75,6 +75,7 @@ import { Icon } from './icon';
 import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
 import { CreatableCombobox } from './combobox-creatable';
+import { ACTIVE_OPTION_CLASS, firstEnabledIndex, nextEnabledIndex } from './listbox-nav';
 
 /** @public */
 export interface ComboboxOption {
@@ -162,25 +163,6 @@ export interface ComboboxCreatableProps extends ComboboxBaseProps {
  * @public
  */
 export type ComboboxAnyProps = ComboboxProps | ComboboxMultipleProps | ComboboxCreatableProps;
-
-/** Index of the first selectable option, or 0 when none is (nothing to land on). */
-function firstEnabledIndex(list: readonly ComboboxOption[]): number {
-  const i = list.findIndex((o) => !o.disabled);
-  return i === -1 ? 0 : i;
-}
-
-/**
- * Next selectable index from `from` in `dir`, wrapping at the ends and skipping
- * disabled options. Returns `from` when every option is disabled.
- */
-function nextEnabledIndex(list: readonly ComboboxOption[], from: number, dir: 1 | -1): number {
-  const n = list.length;
-  for (let step = 1; step <= n; step++) {
-    const i = (((from + dir * step) % n) + n) % n;
-    if (!list[i].disabled) return i;
-  }
-  return from;
-}
 
 /** @public */
 export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, ComboboxAnyProps>(
@@ -444,8 +426,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                     onClick={() => commit(option)}
                     className={cn(
                       'flex w-full items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 text-left hds-type-ui hds-touch-row outline-none',
-                      'data-[active=true]:bg-[var(--semantic-color-surface-sunken)] data-[active=true]:text-[var(--semantic-color-content-primary)]',
-                      'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
+                      ACTIVE_OPTION_CLASS,
                       'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                     )}
                   >
