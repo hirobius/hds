@@ -12,6 +12,7 @@
 import * as React from 'react';
 import { Check, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { ACTIVE_OPTION_CLASS } from './listbox-nav';
 import { Icon } from './icon';
 import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
@@ -216,7 +217,8 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
               onClick={() => removeAt(i)}
               className={cn(
                 'hds-focus hds-touch-row inline-flex h-7 items-center gap-fixed-2xs rounded-sm bg-muted pl-scale-xs pr-fixed-2xs',
-                'hds-type-caption text-foreground hover:bg-accent hover:text-accent-foreground',
+                // Hover steps to surface.sunken: `hover:bg-accent` (accentSubtle) equalled the `bg-muted` rest fill in light (1.01:1, hds#522).
+                'hds-type-caption text-foreground hover:bg-[var(--semantic-color-surface-sunken)]',
                 'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
               )}
             >
@@ -295,8 +297,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
                   onClick={() => commit(row)}
                   className={cn(
                     'flex w-full items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 text-left hds-type-ui hds-touch-row outline-none',
-                    'data-[active=true]:bg-[var(--semantic-color-surface-sunken)] data-[active=true]:text-[var(--semantic-color-content-primary)]',
-                    'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
+                    ACTIVE_OPTION_CLASS,
                     'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                   )}
                 >

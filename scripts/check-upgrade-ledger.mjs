@@ -46,12 +46,16 @@
  *      Version PR, or in the ledger compile.mjs recorded for it), without
  *      upgrade/ALLOW_1_0 (the 1.0 cut is a decision, #396);
  *   5. docs/api/props-baseline.json is not the props baseline the tree's
- *      component-api.json gives (scripts/upgrade/props.mjs, hds#461).
+ *      component-api.json gives (scripts/upgrade/props.mjs, hds#461);
+ *   6. docs/api/types-baseline.json is not the types baseline the source
+ *      gives (scripts/upgrade/types.mjs, hds#467).
  *
  * The facts include prop facts (hds#461) once the release snapshot has a
  * props section: a prop removed or renamed, a prop now required and an
  * allowed value removed are breaking; a default changed (cva defaultVariants
- * included) is a look step.
+ * included) is a look step. Type facts (hds#467) likewise, once it has a
+ * types section: a value now type-only, a signature changed, a static member
+ * or an object key removed, each breaking.
  *
  * The fix it names is `pnpm upgrade:note`, which pre-fills the note from the
  * facts (scripts/upgrade/note.mjs).
@@ -87,6 +91,7 @@ import {
 import { compareVersions } from './upgrade/schema.mjs';
 import { COMPONENT_API, PROPS_BASELINE, propsBaselineFresh } from './upgrade/props.mjs';
 import { PACKAGE } from './upgrade/snapshot.mjs';
+import { TYPES_BASELINE, typesBaselineFresh } from './upgrade/types.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const NOTE = 'pnpm upgrade:note';
@@ -120,6 +125,14 @@ export function describeFact(fact) {
       return `${fact.component}'s prop ${fact.prop} no longer allows ${JSON.stringify(fact.value)}`;
     case 'prop-default-changed':
       return `${fact.component}'s prop ${fact.prop} default changed from ${fact.from ?? 'none'} to ${fact.to ?? 'none'}`;
+    case 'export-type-only':
+      return `${fact.name} is exported from ${entryName(fact.entry)} as a type only, so it no longer exists at runtime`;
+    case 'signature-changed':
+      return `${fact.name} (${entryName(fact.entry)}) changed signature from ${fact.from.join(' / ')} to ${fact.to.join(' / ') || 'none'}`;
+    case 'member-removed':
+      return `${fact.name}.${fact.member} (${entryName(fact.entry)}) is gone`;
+    case 'key-removed':
+      return `${fact.name}.${fact.path} (${entryName(fact.entry)}) is gone`;
     default:
       return fact.id;
   }
@@ -186,6 +199,16 @@ function propsBaselineViolations(root) {
   if (propsBaselineFresh(root)) return [];
   const message = `${PROPS_BASELINE} is not the props baseline ${COMPONENT_API} gives: run node scripts/upgrade/props.mjs (pnpm docs:api runs it after generate-component-api).`;
   return [violation(PROPS_BASELINE, 'props-baseline-stale', message)];
+}
+
+/**
+ * hds#467: docs/api/types-baseline.json ships and is the snapshot's types
+ * section, so it must be the one the source gives.
+ */
+function typesBaselineViolations(root) {
+  if (typesBaselineFresh(root)) return [];
+  const message = `${TYPES_BASELINE} is not the types baseline the source gives: run node scripts/upgrade/types.mjs (pnpm api:update runs it).`;
+  return [violation(TYPES_BASELINE, 'types-baseline-stale', message)];
 }
 
 function noteViolations(state, versionPr) {
@@ -477,6 +500,7 @@ export function checkUpgradeLedger(root = REPO) {
     state.changesets.length === 0 && compareVersions(state.version, state.previousVersion) > 0;
   const violations = [
     ...propsBaselineViolations(root),
+    ...typesBaselineViolations(root),
     ...factViolations(state),
     ...noteViolations(state, versionPr),
     ...bumpViolations(state, versionPr),

@@ -50,8 +50,14 @@
  *                  styles. Also stops scanning generated *.figma.ts Code Connect
  *                  templates, which carry a component's props but render nothing.
  *
+ * v3 (2026-10-27, hds#784): Comments are blanked before the motion patterns
+ *                  run, so prose naming "transition" no longer passes a file.
+ *                  `// motion-ok:` must be its own line comment with a reason.
+ *                  Arbitrary Tailwind motion values without a var(--…) token
+ *                  (animate-[spin_1s_linear], [transition:all_150ms]) now fail.
+ *
  * Usage: pnpm check:micromotion
- * Exempt: // motion-ok: <reason> on any line in the file
+ * Exempt: a `// motion-ok: <reason>` line comment anywhere in the file
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
@@ -115,7 +121,59 @@ const MOTION_PATTERNS = [
 ];
 
 // ── Per-file exemption ────────────────────────────────────────────────────────
-const EXEMPT_PATTERN = new RegExp(String.raw`\/\/\s*motion-ok:`);
+// A line comment of its own with a reason (hds#784). Matching the text anywhere
+// let a string literal, or a bare `// motion-ok:` with no reason, exempt a file.
+const EXEMPT_PATTERN = /^[ \t]*\/\/[ \t]*motion-ok:[ \t]*\S/m;
+
+// ── Hard-coded arbitrary motion values (hds#784) ──────────────────────────────
+// `animate-[spin_1s_linear]`, `[transition:all_150ms]`, `duration-[150ms]` and
+// `ease-[...]` set timing without a token, and matched none of the patterns
+// above, so they passed unseen. Built on a var(--…) token they are fine.
+const ARBITRARY_MOTION =
+  /(?<![\w-])(?:(?:animate|duration|ease|delay)-\[[^\]\s]+\]|\[(?:transition|animation)(?:-[a-z-]+)?:[^\]\s]+\])/g;
+
+/**
+ * Source with comments blanked, so prose cannot satisfy a code pattern. One
+ * pass that skips string literals, so `'a//b'` or a `/*` inside a line comment
+ * cannot swallow real code.
+ */
+const COMMENT_OR_STRING =
+  /("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|`(?:\\.|[^`\\])*`)|\/\*[\s\S]*?\*\/|\/\/[^\n]*/g;
+const stripComments = (src) => src.replace(COMMENT_OR_STRING, (m, str) => str ?? ' ');
+
+const MISSING_MOTION =
+  'Interactive component has no motion feedback.\n' +
+  '       Fix one of:\n' +
+  '         A) Import from "motion/react" and wrap elements with motion.* or AnimatePresence\n' +
+  '         B) Add CSS transition referencing hds.duration.* on state-changing elements\n' +
+  '         C) Add // motion-ok: <reason> to document why motion is intentionally absent\n' +
+  '\n' +
+  '       Example: transition: `background-color ${hds.duration.fast}s ease`\n' +
+  '       Example: import { motion } from "motion/react"; → <motion.div whileHover={{ ... }}>';
+
+/** Problems in one component file's source; empty when it passes. */
+function problemsIn(content) {
+  if (EXEMPT_PATTERN.test(content)) return [];
+  const code = stripComments(content);
+  const problems = [];
+  const hardCoded = [...code.matchAll(ARBITRARY_MOTION)]
+    .map((m) => m[0])
+    .filter((v) => !v.includes('var(--'));
+  if (hardCoded.length) {
+    problems.push(
+      `Hard-coded motion value: ${[...new Set(hardCoded)].join(', ')}.\n` +
+        '       Use a token, e.g. duration-[var(--primitive-duration-fast)], or a named utility.',
+    );
+  }
+  const isInteractive = INTERACTIVE_PATTERNS.some((p) => p.test(code));
+  if (isInteractive && !MOTION_PATTERNS.some((p) => p.test(code))) problems.push(MISSING_MOTION);
+  return problems;
+}
+
+function checkFile(full, content) {
+  const file = full.replace(ROOT + '/', '');
+  for (const msg of problemsIn(content)) failures.push({ file, msg });
+}
 
 // ── Scan ──────────────────────────────────────────────────────────────────────
 
@@ -141,32 +199,7 @@ function scanDir(dir) {
     if (entry.endsWith('.figma.ts')) continue;
     if (SKIP.has(entry)) continue;
 
-    const content = readFileSync(full, 'utf-8');
-
-    // Skip if explicitly exempted
-    if (EXEMPT_PATTERN.test(content)) continue;
-
-    // Is this file interactive?
-    const isInteractive = INTERACTIVE_PATTERNS.some((p) => p.test(content));
-    if (!isInteractive) continue;
-
-    // Does it satisfy the motion requirement?
-    const hasMotion = MOTION_PATTERNS.some((p) => p.test(content));
-    if (!hasMotion) {
-      const rel = full.replace(ROOT + '/', '');
-      failures.push({
-        file: rel,
-        msg:
-          'Interactive component has no motion feedback.\n' +
-          '       Fix one of:\n' +
-          '         A) Import from "motion/react" and wrap elements with motion.* or AnimatePresence\n' +
-          '         B) Add CSS transition referencing hds.duration.* on state-changing elements\n' +
-          '         C) Add // motion-ok: <reason> to document why motion is intentionally absent\n' +
-          '\n' +
-          '       Example: transition: `background-color ${hds.duration.fast}s ease`\n' +
-          '       Example: import { motion } from "motion/react"; → <motion.div whileHover={{ ... }}>',
-      });
-    }
+    checkFile(full, readFileSync(full, 'utf-8'));
   }
 }
 
@@ -175,25 +208,7 @@ if (isFixtureMode && fixtureFile) {
   const absPath = resolve(fixtureFile);
   const entry = absPath.split('/').pop() ?? '';
   if (!SKIP.has(entry) && (absPath.endsWith('.tsx') || absPath.endsWith('.ts'))) {
-    const content = readFileSync(absPath, 'utf-8');
-    if (!EXEMPT_PATTERN.test(content)) {
-      const isInteractive = INTERACTIVE_PATTERNS.some((p) => p.test(content));
-      if (isInteractive) {
-        const hasMotion = MOTION_PATTERNS.some((p) => p.test(content));
-        if (!hasMotion) {
-          const rel = absPath.replace(ROOT + '/', '');
-          failures.push({
-            file: rel,
-            msg:
-              'Interactive component has no motion feedback.\n' +
-              '       Fix one of:\n' +
-              '         A) Import from "motion/react" and wrap elements with motion.* or AnimatePresence\n' +
-              '         B) Add CSS transition referencing hds.duration.* on state-changing elements\n' +
-              '         C) Add // motion-ok: <reason> to document why motion is intentionally absent',
-          });
-        }
-      }
-    }
+    checkFile(absPath, readFileSync(absPath, 'utf-8'));
   }
 } else {
   scanDir(COMP_DIR);
@@ -206,8 +221,9 @@ if (failures.length === 0) {
   process.exit(0);
 } else {
   console.error(
-    `\nâœ— Motion check failed — ${failures.length} component(s) have no motion feedback.\n`,
+    `\nâœ— Motion check failed — ${failures.length} component(s) have no motion feedback or hard-code it.\n`,
   );
+  console.error('  Hard-coded arbitrary motion values must use a token.');
   console.error('  Every interactive component needs at least one of:\n');
   console.error('    A) motion/react (motion.div, AnimatePresence, whileHover, etc.)');
   console.error('    B) CSS transition referencing hds.duration.* tokens');

@@ -179,15 +179,20 @@ describe('floor and releaseVersions', () => {
 describe('the committed history (docs/api/releases, upgrade/releases)', () => {
   // Starts with, not equals: `changeset version` writes each new release's
   // snapshot and ledger (hds#451), so the list grows with every release.
-  it('starts at the 0.16.0 floor, and every later release has a ledger that covers its diff', () => {
-    expect(floor()).toBe('0.16.0');
-    expect(releaseVersions().slice(0, 6)).toEqual([
+  // 0.9.0 since hds#462: fleet repos pinned ^0.9 to ^0.15 when it was filed.
+  it('starts at the 0.9.0 floor, and every later release has a ledger that covers its diff', () => {
+    expect(floor()).toBe('0.9.0');
+    expect(releaseVersions().slice(0, 10)).toEqual([
+      '0.9.0',
+      '0.10.0',
+      '0.11.0',
+      '0.12.0',
+      '0.13.0',
+      '0.13.1',
+      '0.14.0',
+      '0.15.0',
       '0.16.0',
       '0.17.0',
-      '0.18.0',
-      '0.19.0',
-      '0.19.1',
-      '0.20.0',
     ]);
     expect(historyProblems()).toEqual([]);
   });
@@ -207,7 +212,7 @@ describe('every published release (upgrade/published.json)', () => {
     expect(versions).toEqual(expect.arrayContaining(['0.16.0', '0.20.0', '0.21.0']));
   });
 
-  it('has a snapshot and a ledger for each release after the 0.16.0 floor, and a snapshot for the floor', () => {
+  it('has a snapshot and a ledger for each release after the 0.9.0 floor, and a snapshot for the floor', () => {
     const missing = [];
     for (const version of versions.filter((v) => !v.includes('-'))) {
       if (compareVersions(version, floor()) < 0) continue;
@@ -218,7 +223,7 @@ describe('every published release (upgrade/published.json)', () => {
       }
     }
     expect(missing).toEqual([]);
-    expect(floor()).toBe('0.16.0');
+    expect(floor()).toBe('0.9.0');
   });
 
   it('lists every committed snapshot, so none records a version npm never published', () => {

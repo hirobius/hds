@@ -702,8 +702,8 @@
     },
     {
       "id": "check-ref-forwarding",
-      "description": "Verifies that HDS components rendering native form controls forward their ref to the underlying DOM element.",
-      "severity": "warn",
+      "description": "Verifies that HDS components rendering native form controls forward their ref to the underlying DOM element. Runs in pretest since hds#467, so pre-push and CI fail a form control that drops its ref (it used to fire only from check:fast, check:full and check:refs).",
+      "severity": "error",
       "gateScript": "scripts/check-ref-forwarding.mjs",
       "fixturePath": "fixtures/check-ref-forwarding",
       "owner": "Adrian",

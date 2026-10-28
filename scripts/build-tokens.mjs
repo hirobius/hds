@@ -14,7 +14,7 @@
  *
  * This file is the CLI. The work lives in pure modules (hds#645):
  *   lib/token-tree.mjs         walk the tree, parse and resolve aliases
- *   lib/token-validate.mjs     structural rules V1–V5
+ *   lib/token-validate.mjs     structural rules V1–V6
  *   lib/token-emit/css.mjs     values → CSS, tokens.generated.css
  *   lib/token-emit/ts.mjs      the generated-token*.ts files
  *   lib/token-emit/tailwind.mjs tailwind.config.tokens.cjs

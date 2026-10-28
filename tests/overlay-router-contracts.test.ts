@@ -97,7 +97,6 @@ describe.each(['Popover', 'Tooltip'])('%s contract', (name) => {
 
   it('is a public spec', () => {
     expect(spec(), `${name} has no spec`).toBeDefined();
-    // `hidden` is written only when true (hds#760).
     expect(spec().hidden).toBeUndefined();
   });
 

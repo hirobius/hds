@@ -1,0 +1,50 @@
+{
+  "version": "0.10.0",
+  "date": "2026-07-02",
+  "bump": "minor",
+  "summary": "The ./protocol subpath, the signed envelope of the retired Figma bridge, is removed.",
+  "backfilled": true,
+  "steps": [
+    {
+      "id": "0.10.0/exports/protocol",
+      "kind": "exports",
+      "impact": "breaking",
+      "plain": "The @hirobius/design-system/protocol subpath is removed; if your code imports it, copy protocol/envelope.mjs from the archive/figma-bridge branch into your own code.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/protocol",
+            "names": [
+              "CLOCK_SKEW_MS",
+              "MAX_AGE_MS",
+              "REPLAY_SET_LIMIT",
+              "_replaySetSize",
+              "_resetReplaySet",
+              "createEnvelope",
+              "default",
+              "stableStringify",
+              "verifyEnvelope"
+            ]
+          }
+        ],
+        "regex": [
+          "['\"]@hirobius/design-system/protocol['\"]"
+        ]
+      },
+      "facts": [
+        "removed:./protocol:CLOCK_SKEW_MS",
+        "removed:./protocol:MAX_AGE_MS",
+        "removed:./protocol:REPLAY_SET_LIMIT",
+        "removed:./protocol:_replaySetSize",
+        "removed:./protocol:_resetReplaySet",
+        "removed:./protocol:createEnvelope",
+        "removed:./protocol:default",
+        "removed:./protocol:stableStringify",
+        "removed:./protocol:verifyEnvelope",
+        "exports-key-removed:./protocol"
+      ],
+      "backfilled": true,
+      "source": "CHANGELOG.md:7"
+    }
+  ]
+}

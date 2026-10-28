@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-27T22:40:28.279Z",
+  "generated": "2026-10-28T00:15:09.078Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -73,6 +73,7 @@
     "Checkbox",
     "CodeBlock",
     "Combobox",
+    "CommandPalette",
     "Composer",
     "Container",
     "DataTableSection",
@@ -319,6 +320,7 @@
       "filePath": "src/app/components/alert.tsx",
       "description": "Alert - compact feedback surface with contextual severity.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34",
+      "figmaId": null,
       "preview": {
         "exportName": "Alert",
         "sizing": "panel"
@@ -482,6 +484,7 @@
       "filePath": "src/app/components/code-block.tsx",
       "description": "CodeBlock - code display with copy button and optional collapsible toggle.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154",
+      "figmaId": null,
       "preview": {
         "exportName": "CodeBlock",
         "sizing": "panel"
@@ -609,6 +612,7 @@
       "filePath": "src/app/components/container.tsx",
       "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
       "figmaUrl": null,
+      "figmaId": null,
       "preview": {
         "exportName": "Container",
         "sizing": "panel"
@@ -685,6 +689,7 @@
       "filePath": "src/app/components/disclosure.tsx",
       "description": "Disclosure - compact disclosure surface for optional explanatory content.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453",
+      "figmaId": null,
       "preview": {
         "exportName": "Disclosure",
         "sizing": "panel"
@@ -900,6 +905,7 @@
       "filePath": "src/app/components/divider.tsx",
       "description": "Divider — semantic separator between content regions.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-26",
+      "figmaId": null,
       "preview": {
         "exportName": "Divider",
         "sizing": "panel"
@@ -1002,6 +1008,7 @@
       "filePath": "src/app/components/error-pattern.tsx",
       "description": "ErrorPattern - governed recovery surface for routed application errors.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
+      "figmaId": null,
       "preview": {
         "exportName": "ErrorPattern",
         "sizing": "panel"
@@ -1088,6 +1095,7 @@
       "filePath": "src/app/components/grid.tsx",
       "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe; 0.20.0 removed TileGrid). - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
       "figmaUrl": null,
+      "figmaId": null,
       "preview": {
         "exportName": "Grid",
         "sizing": "panel"
@@ -1257,6 +1265,7 @@
       "filePath": "src/app/components/icon.tsx",
       "description": "Icon — semantic icon wrapper for Lucide icons.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2",
+      "figmaId": null,
       "preview": {
         "exportName": "Icon",
         "sizing": "panel"
@@ -1271,6 +1280,7 @@
         "src/app/components/code-block.tsx",
         "src/app/components/combobox-creatable.tsx",
         "src/app/components/combobox.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/hds-tooltip.tsx",
@@ -1412,6 +1422,7 @@
       "filePath": "src/app/components/inline-code.tsx",
       "description": "InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
+      "figmaId": null,
       "preview": {
         "exportName": "InlineCode",
         "sizing": "panel"
@@ -1500,6 +1511,7 @@
       "filePath": "src/app/components/inline-link.tsx",
       "description": "InlineLink ” inline navigation and external-link primitive for body copy.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
+      "figmaId": null,
       "preview": {
         "exportName": "InlineLink",
         "sizing": "panel"
@@ -1610,6 +1622,7 @@
       "filePath": "src/app/components/input.tsx",
       "description": "Input — text field primitive with label, helper, and error slots.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20",
+      "figmaId": null,
       "preview": {
         "exportName": "Input",
         "sizing": "panel"
@@ -1951,6 +1964,7 @@
       "filePath": "src/app/components/segmented-control.tsx",
       "description": "SegmentedControl \" segmented selection input for compact mutually-exclusive choices. The active×hover×pressed×disabled×secondary state matrix is expressed through `cva` compound variants keyed by `active` / `interaction` (the live-or-frozen-demo hover/pressed/rest sub-state) / `variant` / `disabled`, each resolving to the same `--semantic-*` custom properties the pre-Tailwind inline styles referenced — same tokens, same pixels, just Tailwind classes instead of a `style` object. Per ADR-015 this control keeps its own hover/focus tracking (per-segment `string | null` cardinality) rather than the shared `useInteractionState` single-element machine; only the class composition changed, not the state machine feeding it. When the segments outgrow the rail (a phone), the rail scrolls: it fades the hidden edge (`data-overflow`, the same mask as the tab list) and keeps the selected segment in view on mount and on change (hds#823).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
+      "figmaId": null,
       "preview": {
         "exportName": "SegmentedControl",
         "sizing": "panel"
@@ -2125,6 +2139,7 @@
       "filePath": "src/app/components/stack.tsx",
       "description": "Stack — one-dimensional layout primitive.",
       "figmaUrl": null,
+      "figmaId": null,
       "preview": {
         "exportName": "Stack",
         "sizing": "panel"
@@ -2361,6 +2376,7 @@
       "filePath": "src/app/components/table.tsx",
       "description": "Table - structured data table primitive for documentation and compact UI matrices.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300",
+      "figmaId": null,
       "preview": {
         "exportName": "Table",
         "sizing": "full"
@@ -2517,6 +2533,7 @@
       "filePath": "src/app/components/tag.tsx",
       "description": "Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
+      "figmaId": null,
       "preview": {
         "exportName": "Tag",
         "sizing": "panel"
@@ -2712,6 +2729,7 @@
       "filePath": "src/app/components/surface.tsx",
       "description": "Surface — governed inset surface primitive. Enforces the \"Surface Inset\" rule: backgrounds MUST have internal padding. - Default padding: surface.padding (cards, 28px / 24px compact) | scale.sm (items, 20px / 16px compact) - Default border: none (elevation model — use shadow for lift) - Radius: `rounded-lg` (role radius + 4px), the one container radius shared with Card - shadow prop: applies a two-layer elevation shadow for card lift Usage: <Surface>Card content</Surface> <Surface padding=\"item\">Compact item</Surface> <Surface shadow>Lifted card with elevation shadow.</Surface>",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27",
+      "figmaId": null,
       "preview": {
         "exportName": "Surface",
         "sizing": "panel"
@@ -2814,13 +2832,13 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
+      "docExempt": true,
       "sourcePath": "src/app/components/Surface.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27",
       "states": [
         "default"
       ],
       "docsPage": "/docs/components/surface",
-      "docExempt": true,
       "usage": {
         "when": "Give a block of content a background and padding, with no header or footer.",
         "whenNot": "Page layout, section spacing, width constraints, or content that needs slots.",
@@ -2845,6 +2863,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11",
+      "figmaId": null,
       "consumers": [
         "src/app/components/board.tsx",
         "src/app/components/box-sx.ts",
@@ -3262,6 +3281,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2022-31",
+      "figmaId": null,
       "preview": {
         "exportName": "Text",
         "sizing": "panel"
@@ -3270,6 +3290,7 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/async-state.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
@@ -3290,10 +3311,10 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
+      "docExempt": true,
       "sourcePath": "src/app/components/Text.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2022-31",
       "docsPage": "/docs/components/text",
-      "docExempt": true,
       "usage": {
         "when": "Set any text on the type ramp, with the element chosen by `as`.",
         "whenNot": "Navigation links, or a keyboard hint.",
@@ -3314,9 +3335,11 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-27",
+      "figmaId": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Dialog",
@@ -3324,6 +3347,7 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
@@ -3568,7 +3592,6 @@
         }
       },
       "docsPage": "/docs/components/dialog",
-      "docExempt": true,
       "usage": {
         "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
         "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
@@ -3618,6 +3641,7 @@
       "filePath": "src/app/components/button.tsx",
       "description": "Triggers an action when activated.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138",
       "tier": "primitive",
       "preview": {
@@ -3947,6 +3971,7 @@
       "filePath": "src/app/components/callout.tsx",
       "description": "Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback fill language as Alert, without Alert's icon or status role.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-85",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-85",
       "tier": "primitive",
       "preview": {
@@ -4011,6 +4036,7 @@
       "filePath": "src/app/components/empty-state.tsx",
       "description": "EmptyState — consistent no-data placeholder for lists, grids, and sections.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352",
       "tier": "primitive",
       "preview": {
@@ -4076,6 +4102,7 @@
       "filePath": "src/app/components/field.tsx",
       "description": "Caption label paired with a value — used in metadata grids and read-only forms.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81",
       "tier": "primitive",
       "preview": {
@@ -4172,6 +4199,7 @@
       "filePath": "src/app/components/page.tsx",
       "description": "Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewport edges on scroll. Use as the outermost element of any new page so vertical rhythm is consistent across the system without per-page reinvention. Footer: every page mounted under HDSLayout (the standard route shell) gets a shared footer rendered after this component's content, with bottom space below the footer owned by the layout shell. Page intentionally does not render its own footer — the shell is the single source of truth. Use Container directly only for full-bleed surfaces (sketches, hero sections, embedded canvases) where the page owns its own vertical padding. Usage: <Page> <Stack direction=\"column\" gap=\"spacious\">...</Stack> </Page> <Page maxWidth=\"content\" paddingY=\"compact\"> <article>...</article> </Page>",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -4236,6 +4264,7 @@
       "filePath": "src/app/components/stat.tsx",
       "description": "Headline metric — large value, caption label, optional sub-line.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-247",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-247",
       "tier": "primitive",
       "preview": {
@@ -4310,6 +4339,7 @@
       "filePath": "src/app/components/status-list-item.tsx",
       "description": "Status dot + title row with optional muted notes and trailing slot (e.g. badge).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350",
       "tier": "pattern",
       "preview": {
@@ -4378,6 +4408,7 @@
       "filePath": "src/app/components/status-tile.tsx",
       "description": "Block-layout sibling of StatusListItem. Renders a raised surface tile with title, optional muted notes, and a trailing slot for a badge or affordance. Status colour belongs in the trailing slot, never as a left rule on the tile — every tile should look the same so feedback signals stay reserved for genuinely interrupting states.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-292",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-292",
       "tier": "pattern",
       "preview": {
@@ -4538,6 +4569,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=31-15",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=31-15",
       "tier": "primitive",
       "preview": {
@@ -4579,6 +4611,7 @@
       "filePath": "src/app/components/asset-img.tsx",
       "description": "AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67",
       "tier": "primitive",
       "preview": {
@@ -4768,6 +4801,7 @@
       "filePath": "src/app/components/tabs.tsx",
       "description": "The tab set itself. Tagged here rather than in the file block because TabsList and TabsContent share this module and have no Figma node of their own — a file-level @figma would silently claim this node for all four.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89",
       "tier": "primitive",
       "preview": {
@@ -4904,6 +4938,7 @@
       "filePath": "src/app/components/tabs.tsx",
       "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below it (mb-6) separates the strip from its panel. - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px underline takes no extra height when it appears. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -4950,6 +4985,7 @@
       "filePath": "src/app/components/tabs.tsx",
       "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark. The selected tab is kept in view: on mount, and on change (smooth unless the user prefers reduced motion), so a selected tab is never left past the edge.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -4985,6 +5021,7 @@
       "filePath": "src/app/components/tabs.tsx",
       "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below it (mb-6) separates the strip from its panel. - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px underline takes no extra height when it appears. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -5019,6 +5056,7 @@
       "filePath": "src/app/components/radio.tsx",
       "description": "Radio — radio button with animated selection indicator.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17",
+      "figmaId": null,
       "preview": {
         "exportName": "Radio",
         "sizing": "panel"
@@ -5133,6 +5171,7 @@
       "filePath": "src/app/components/select.tsx",
       "description": "Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead, full keyboard (Home/End/PageUp-Down/wrap), Popper collision/flip positioning, and dismissal. The HDS surface is styled with the token-backed Tailwind idiom used by tabs.tsx / command-palette.tsx; `ref` targets the trigger button.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49",
+      "figmaId": null,
       "preview": {
         "exportName": "Select",
         "sizing": "panel"
@@ -5365,6 +5404,7 @@
       "filePath": "src/app/components/slider.tsx",
       "description": "Slider — range slider with label and value display.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265",
+      "figmaId": null,
       "preview": {
         "exportName": "Slider",
         "sizing": "panel"
@@ -5481,6 +5521,7 @@
       "filePath": "src/app/components/toggle.tsx",
       "description": "Toggle — boolean on/off toggle with animated thumb.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19",
+      "figmaId": null,
       "preview": {
         "exportName": "Toggle",
         "sizing": "panel"
@@ -5589,6 +5630,7 @@
       "filePath": "src/app/components/avatar.tsx",
       "description": "Circular avatar. Renders the image when available, else initials from `alt` or a person icon, with an optional status dot.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18",
       "tier": "primitive",
       "preview": {
@@ -5698,6 +5740,7 @@
       "filePath": "src/app/components/progress.tsx",
       "description": "Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-91",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-91",
       "tier": "primitive",
       "preview": {
@@ -5785,6 +5828,7 @@
       "filePath": "src/app/components/skeleton.tsx",
       "description": "Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
       "tier": "primitive",
       "preview": {
@@ -5849,6 +5893,7 @@
       "filePath": "src/app/components/spinner.tsx",
       "description": "Indeterminate spinner. Inherits the surrounding text color via currentColor.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-106",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-106",
       "tier": "primitive",
       "preview": {
@@ -5907,6 +5952,7 @@
       "filePath": "src/app/components/breadcrumb.tsx",
       "description": "Breadcrumb trail. Links route through the HDS router seam (plain anchors with no router, client-side nav when a router adapter is provided). The final item is marked aria-current=\"page\".",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-159",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-159",
       "tier": "pattern",
       "preview": {
@@ -5997,6 +6043,7 @@
       "filePath": "src/app/components/pagination.tsx",
       "description": "Paged navigation with first/last anchors, sibling pages, and ellipses.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194",
       "tier": "pattern",
       "preview": {
@@ -6131,9 +6178,11 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/toast.tsx",
       "description": "Provider + viewport for the toast system. Wrap the app root once.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-367",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-367",
       "tier": "pattern",
       "preview": {
@@ -6222,7 +6271,6 @@
         }
       ],
       "docsPage": "/docs/guides/providers",
-      "docExempt": true,
       "usage": {
         "when": "Confirm an action with a brief message that appears and dismisses itself, through useToast.",
         "whenNot": "A message people must act on or that must stay next to its content.",
@@ -6243,9 +6291,11 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/combobox.tsx",
       "description": "Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection (with `multiple`, a count and a removable chip per value); opening reveals a search field that filters the option list. `multiple creatable` is a chip input (a tag field): chips sit inline before the text input, suggestions open as you type, and Enter adds the typed text via `onCreate`. <Combobox multiple creatable options={skills} value={picked} onChange={setPicked} onCreate={(t) => setPicked((p) => [...p, t])} /> Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237",
       "tier": "pattern",
       "preview": {
@@ -6254,9 +6304,11 @@
       },
       "consumers": [
         "src/app/components/combobox-creatable.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
+        "src/app/components/listbox-nav.ts",
         "src/app/components/select.tsx",
         "src/index.ts"
       ],
@@ -6502,7 +6554,6 @@
         }
       ],
       "docsPage": "/docs/components/combobox",
-      "docExempt": true,
       "usage": {
         "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
         "whenNot": "A short list that needs no search, or an action list.",
@@ -6553,9 +6604,11 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-level @figma would claim this one for all three.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94",
       "tier": "pattern",
       "preview": {
@@ -6597,7 +6650,6 @@
         }
       ],
       "docsPage": "/docs/patterns/form",
-      "docExempt": true,
       "usage": {
         "when": "Wrap form fields so they stack with even spacing."
       }
@@ -6606,9 +6658,11 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement. Validation-library agnostic — pass `error` from whatever you use. For controls with an externally-managed callback ref (e.g. react-hook-form), use `FormFieldShell` + `useFieldWiring` instead.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "pattern",
       "preview": {
@@ -6702,16 +6756,17 @@
           "owner": "consumer"
         }
       ],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "FormFieldShell": {
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Presentational label + control slot + helper/error markup. Renders `children` verbatim — it does NOT clone — so it is safe to use with controls that own a callback ref. Pair it with `useFieldWiring` to apply ids/aria yourself.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "pattern",
       "preview": {
@@ -6769,16 +6824,17 @@
           "owner": "consumer"
         }
       ],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "HdsThemeProvider": {
       "category": "Theming",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/context/hds-theme.tsx",
       "description": "Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -6849,7 +6905,6 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/guides/providers",
-      "docExempt": true,
       "usage": {
         "when": "Wrap an app or region once to set theme, density and other root attributes for everything inside it.",
         "whenNot": "Styling a single component, or per-component overrides.",
@@ -6869,6 +6924,7 @@
       "filePath": "src/app/components/avatar-group.tsx",
       "description": "Renders up to `max` overlapping avatars followed by a `+N` overflow chip.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2030-63",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2030-63",
       "tier": "primitive",
       "preview": {
@@ -6912,6 +6968,7 @@
       "filePath": "src/app/components/blockquote.tsx",
       "description": "A quoted passage; pass `cite` for the source URL and `attribution` for a byline.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2024-18",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2024-18",
       "tier": "primitive",
       "preview": {
@@ -6952,6 +7009,7 @@
       "filePath": "src/app/components/kbd.tsx",
       "description": "Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9",
       "tier": "primitive",
       "preview": {
@@ -6959,6 +7017,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/text.tsx"
       ],
@@ -7002,6 +7061,7 @@
       "filePath": "src/app/components/timestamp.tsx",
       "description": "Presents a date/time with a machine-readable `dateTime` for accessibility.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2031-11",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2031-11",
       "tier": "primitive",
       "preview": {
@@ -7053,6 +7113,7 @@
       "filePath": "src/app/components/visually-hidden.tsx",
       "description": "Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-only control.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7097,6 +7158,7 @@
       "filePath": "src/app/components/metadata-list.tsx",
       "description": "Renders object metadata as a semantic `<dl>` of term/description pairs.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",
       "tier": "pattern",
       "preview": {
@@ -7148,9 +7210,11 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/alert-dialog.tsx",
       "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2035-24",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2035-24",
       "tier": "primitive",
       "preview": {
@@ -7255,7 +7319,6 @@
         }
       ],
       "docsPage": null,
-      "docExempt": true,
       "usage": {
         "when": "Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.",
         "whenNot": "A modal that collects input or shows content, or a confirmation after the action is done.",
@@ -7278,6 +7341,7 @@
       "filePath": "src/app/components/box.tsx",
       "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine. On React 19 the rules render as a hoisted `<style href precedence>` (so they are in server HTML); on React 18 they inject into a managed sheet in the browser.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7346,6 +7410,7 @@
       "filePath": "src/app/components/sidebar.tsx",
       "description": "Sidebar — fixed-width rail beside fluid content, no media query. Every Layout reference: https://every-layout.dev/layouts/sidebar/",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7418,6 +7483,7 @@
       "filePath": "src/app/components/switcher.tsx",
       "description": "Switcher — flips a row to a column below a width threshold, no media query. Every Layout reference: https://every-layout.dev/layouts/the-switcher/",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7482,6 +7548,7 @@
       "filePath": "src/app/components/pin.tsx",
       "description": "Pin — sticky-pin an element within its scroll region.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7531,6 +7598,7 @@
       "filePath": "src/app/components/reveal.tsx",
       "description": "Reveal — reveal-on-scroll primitive via CSS scroll-driven animation.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7589,6 +7657,7 @@
       "filePath": "src/app/components/textarea.tsx",
       "description": "Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the four states Default / Focus / Error / Disabled map to the focus-ring, `error`, and `disabled` treatments below.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14",
       "tier": "primitive",
       "preview": {
@@ -7700,6 +7769,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7726,6 +7796,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7752,6 +7823,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7778,6 +7850,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7809,6 +7882,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card.Metric — one label, a large value and an optional sub-line inside a Card.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7863,6 +7937,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7912,6 +7987,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7935,9 +8011,11 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -7960,16 +8038,17 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "DialogContent": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -8028,16 +8107,17 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "DialogDescription": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -8062,16 +8142,17 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "DialogFooter": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -8089,16 +8170,17 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "DialogHeader": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -8116,16 +8198,17 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "DialogOverlay": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -8154,16 +8237,17 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "DialogPortal": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -8196,16 +8280,17 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "DialogTitle": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -8230,16 +8315,17 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "DialogTrigger": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -8262,16 +8348,17 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "docExempt": true
+      "docsPage": null
     },
     "Tooltip": {
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
       "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15",
+      "figmaId": null,
       "tier": "primitive",
       "preview": {
         "exportName": "Tooltip",
@@ -8378,7 +8465,6 @@
         }
       ],
       "docsPage": "/docs/components/tooltip",
-      "docExempt": true,
       "usage": {
         "when": "Name an icon-only control, or add a short hint that appears on hover and keyboard focus.",
         "whenNot": "Anything interactive, text people need to finish a task, or a hint touch users must see (touch has no hover).",
@@ -8413,9 +8499,11 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/menu.tsx",
       "description": "Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59",
       "tier": "primitive",
       "preview": {
@@ -8424,6 +8512,7 @@
       },
       "consumers": [
         "src/app/components/combobox.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/popover.tsx",
@@ -8579,7 +8668,6 @@
         }
       ],
       "docsPage": "/docs/components/menu",
-      "docExempt": true,
       "usage": {
         "when": "Offer a list of actions from a trigger, closed until opened.",
         "whenNot": "Choosing one value for a form field, or a set of options that must stay visible.",
@@ -8626,9 +8714,11 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/popover.tsx",
       "description": "Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-32",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-32",
       "tier": "primitive",
       "preview": {
@@ -8732,7 +8822,6 @@
         }
       ],
       "docsPage": "/docs/components/popover",
-      "docExempt": true,
       "usage": {
         "when": "Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.",
         "whenNot": "A short label on hover or focus, a list of actions, or a decision that must block the page.",
@@ -8774,6 +8863,7 @@
       "filePath": "src/app/components/checkbox.tsx",
       "description": "Checkbox — custom-drawn checkbox with check / indeterminate glyph.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=35-29",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=35-29",
       "tier": "primitive",
       "preview": {
@@ -8880,6 +8970,7 @@
       "filePath": "src/app/components/form-actions.tsx",
       "description": "Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most. Gap is the tight layout token.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-87",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-87",
       "tier": "pattern",
       "preview": {
@@ -8937,6 +9028,7 @@
       "filePath": "src/app/components/metric-tiles.tsx",
       "description": "One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the eyebrow / h2 / caption scale) and adds the surface and the fixed height, so a tile needs no enclosing `Card`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-114",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-114",
       "tier": "pattern",
       "preview": {
@@ -8990,6 +9082,7 @@
       "filePath": "src/app/components/metric-tiles.tsx",
       "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth; at phone width (640px and under) it is capped at 2 columns. Use `StatusTile` for state with notes (never a number).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
       "tier": "pattern",
       "preview": {
@@ -9025,6 +9118,7 @@
       "filePath": "src/app/components/page-header.tsx",
       "description": "Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot. Every screen has exactly one. `display` and `h1` type are reserved for marketing and landing surfaces.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
       "tier": "pattern",
       "preview": {
@@ -9082,6 +9176,7 @@
       "filePath": "src/app/components/data-table-section.tsx",
       "description": "Section heading and toolbar over a `Table`. Row actions are consumer nodes in a trailing column, the table scrolls horizontally on narrow widths without a `minWidth` from the caller, and zero rows shows an `EmptyState`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-268",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-268",
       "tier": "pattern",
       "preview": {
@@ -9148,6 +9243,7 @@
       "filePath": "src/app/components/destructive-section.tsx",
       "description": "Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's confirm does. Place it last on the screen, below the form.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3",
       "tier": "pattern",
       "preview": {
@@ -9232,9 +9328,11 @@
       "category": "Theming",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/context/RouterContext.tsx",
       "description": "Provide a router adapter to all HDS components below. Wrap your app root once.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -9263,7 +9361,6 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/guides/providers",
-      "docExempt": true,
       "usage": {
         "when": "Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors."
       },
@@ -9283,6 +9380,7 @@
         }
       ],
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -9318,6 +9416,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card.RowNote — one muted caption line under the row's title; repeat it for more.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -9344,6 +9443,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card.RowTitle — the row's title, at the ui role.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -9370,6 +9470,7 @@
       "filePath": "src/app/components/board.tsx",
       "description": "Status columns that sit side by side from tablet width and stack in order, first column on top, below it. Read-only: it has no drag handlers.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -9415,6 +9516,7 @@
       "filePath": "src/app/components/board.tsx",
       "description": "One status column: a heading with the title and a count, then its items. The column is a labelled region and the count is part of the heading's name.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -9460,9 +9562,11 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/composer.tsx",
       "description": "Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer than `pasteFoldThreshold` characters never enters the field: it becomes an attachment card (a Tag) that opens a Dialog to edit or remove the text. Cmd/Ctrl+Enter submits; plain Enter stays a newline. `text` and `attachments` can each be controlled or uncontrolled; an uncontrolled composer clears itself after a submit.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277",
       "tier": "pattern",
       "preview": {
@@ -9582,7 +9686,6 @@
         }
       ],
       "docsPage": null,
-      "docExempt": true,
       "usage": {
         "when": "Capture a prompt or a quick note where a long paste should not flood the field.",
         "whenNot": "A plain multi-line field with no submit action, or a form with several fields.",
@@ -9601,6 +9704,7 @@
       "filePath": "src/app/components/timeline.tsx",
       "description": "The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-133",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-133",
       "tier": "pattern",
       "preview": {
@@ -9666,6 +9770,7 @@
       "filePath": "src/app/components/timeline.tsx",
       "description": "One event on a Timeline. Render it only as a child of Timeline.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "pattern",
       "preview": {
@@ -9722,6 +9827,7 @@
       "category": "Actions",
       "categorySource": "jsdoc",
       "governedCategory": true,
+      "docExempt": true,
       "filePath": "src/app/components/theme-toggle.tsx",
       "description": "One-button light/dark switch with a sun-to-moon morph.",
       "a11yRules": [
@@ -9768,6 +9874,7 @@
         }
       ],
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-51",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-51",
       "tier": "primitive",
       "preview": {
@@ -9800,7 +9907,6 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": null,
-      "docExempt": true,
       "usage": {
         "when": "A single header or menu control to switch between the light and dark theme.",
         "whenNot": "Choosing between three or more modes, or a setting that belongs in a form.",
@@ -9819,6 +9925,7 @@
       "filePath": "src/app/components/meta-line.tsx",
       "description": "Secondary facts on one line (\"Acme Cloud · Remote\"). Max two items per line so long strings in other languages never wrap mid-line; more facts go in more rows. The `hds/max-two-meta-items` lint rule enforces the same limit on bullet-joined text in JSX; it cannot see chains built in code (`[a, b, c].join(' · ')`), so those rely on this type and review.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-12",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-12",
       "tier": "primitive",
       "preview": {
@@ -9898,6 +10005,7 @@
         }
       ],
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-96",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-96",
       "tier": "pattern",
       "preview": {
@@ -10041,6 +10149,7 @@
         }
       ],
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-26",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-26",
       "tier": "pattern",
       "preview": {
@@ -10140,6 +10249,7 @@
         }
       ],
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "pattern",
       "preview": {
@@ -10235,6 +10345,7 @@
         }
       ],
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-141",
+      "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-141",
       "tier": "primitive",
       "preview": {
@@ -10339,6 +10450,7 @@
       "filePath": "src/app/components/card.tsx",
       "description": "Card.Facts — a wrapping caption row of icon + label facts, as a list.",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -10385,6 +10497,7 @@
         }
       ],
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -10517,6 +10630,7 @@
         }
       ],
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "primitive",
       "preview": {
@@ -10592,8 +10706,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10641,8 +10753,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10670,8 +10780,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10704,8 +10812,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10774,8 +10880,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10808,8 +10912,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10837,8 +10939,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10866,8 +10966,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10900,8 +10998,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10929,6 +11025,178 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null
+    },
+    "CommandPalette": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/command-palette.tsx",
+      "description": "CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain data; the palette filters, groups (in first-seen order) and navigates them, and calls `onSelect` with the chosen item. `open` is controlled; the ⌘K / Ctrl+K hotkey calls `onOpenChange` unless `hotkey={false}`. Argument chips for multi-step commands are a follow-up (hds#962). <CommandPalette open={open} onOpenChange={setOpen} items={commands} onSelect={(item) => run(item.id)} />",
+      "a11yRules": [
+        {
+          "rule": "The palette is a modal dialog named by its label, which also names the search field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.dialog-named"
+        },
+        {
+          "rule": "Cmd+K or Ctrl+K opens the palette with focus in the search field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.hotkey-focus"
+        },
+        {
+          "rule": "The search field is an expanded combobox that controls the listbox and exposes the active option through aria-activedescendant.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.combobox-state"
+        },
+        {
+          "rule": "Each group of results is a group named by its heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.groups-named"
+        },
+        {
+          "rule": "Options stay out of the tab order and Tab stays inside the dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.options-not-tabbable"
+        },
+        {
+          "rule": "ArrowDown and ArrowUp move the active option, skip disabled ones and wrap at the ends.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.arrow-keys"
+        },
+        {
+          "rule": "The active option reports aria-selected and a disabled one reports aria-disabled.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.option-state"
+        },
+        {
+          "rule": "An option is named by its label and described by its shortcut keys.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.shortcut-described"
+        },
+        {
+          "rule": "The match count is announced in a polite status as the list filters (4.1.3).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.result-count-announced"
+        },
+        {
+          "rule": "Escape closes the palette and returns focus to the element that had it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.escape-returns-focus"
+        },
+        {
+          "rule": "The open palette has no axe violations, with results or empty.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.axe-clean"
+        },
+        {
+          "rule": "Pass a label that says what the palette searches when it is not a general command palette.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "CommandPalette",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/listbox-nav.ts",
+        "src/patterns.ts"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "emptyMessage": {
+          "type": "string",
+          "default": "No results"
+        },
+        "hotkey": {
+          "type": "boolean",
+          "default": true
+        },
+        "items": {
+          "type": "readonly CommandPaletteItem[]"
+        },
+        "label": {
+          "type": "string",
+          "default": "Command palette"
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void"
+        },
+        "onSelect": {
+          "type": "(item: CommandPaletteItem) => void"
+        },
+        "open": {
+          "type": "boolean"
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Type a command or search…"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/components/command-palette",
+      "usage": {
+        "when": "Let people jump to a page or run a command from anywhere by typing, opened with ⌘K or Ctrl+K.",
+        "whenNot": "Picking a value for a form field, or a short action list on a button.",
+        "useInstead": [
+          {
+            "component": "Combobox",
+            "reason": "picking a value for a form field"
+          },
+          {
+            "component": "Menu",
+            "reason": "a short action list from a trigger"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Cmd+K/Ctrl+K",
+          "effect": "Opens or closes the palette from anywhere on the page."
+        },
+        {
+          "keys": "Character",
+          "effect": "Filters the items by label, keywords and group."
+        },
+        {
+          "keys": "ArrowDown/ArrowUp",
+          "effect": "Moves the active item, skipping disabled ones, and wraps at the ends."
+        },
+        {
+          "keys": "Enter",
+          "effect": "Runs the active item and closes the palette."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the palette and returns focus to where it was."
+        }
+      ],
+      "core": true
     },
     "HdsPhosphor": {
       "category": "Compiler",
@@ -11376,8 +11644,11 @@
       "category": "Internal",
       "categorySource": "internal-jsdoc",
       "governedCategory": true,
+      "hidden": true,
+      "docExempt": true,
       "filePath": "src/app/components/tooltip.tsx",
       "figmaUrl": null,
+      "figmaId": null,
       "figmaLink": null,
       "tier": "utility",
       "preview": {
@@ -11390,9 +11661,7 @@
       ],
       "tokenMapping": {},
       "variantAxes": [],
-      "componentProperties": [],
-      "hidden": true,
-      "docExempt": true
+      "componentProperties": []
     }
   },
   "tokens": {
@@ -12552,7 +12821,7 @@
         "cssVar": "--primitive-easing-elastic",
         "type": "spring",
         "description": "Spring response defined by stiffness, damping, and mass parameters.",
-        "value": "spring(300, 20, 1)"
+        "value": "linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)"
       },
       {
         "path": "primitive.shadow.color",
@@ -12824,7 +13093,7 @@
         "description": "For teaching moments and significant UI entries. Includes physics-based squish.",
         "composite": {
           "duration": "250ms",
-          "easing": "spring(300, 20, 1)"
+          "easing": "linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)"
         }
       },
       {
