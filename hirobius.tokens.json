@@ -823,6 +823,10 @@
           "$value": 500,
           "$description": "UI, labels and bold lead-ins (hds#847)."
         },
+        "semibold": {
+          "$value": 600,
+          "$description": "Button label weight (hds#760)."
+        },
         "bold": {
           "$value": 700
         },
@@ -1062,6 +1066,14 @@
         },
         "$description": "32px size step."
       },
+      "36": {
+        "$type": "dimension",
+        "$value": {
+          "value": 36,
+          "unit": "px"
+        },
+        "$description": "36px size step."
+      },
       "40": {
         "$type": "dimension",
         "$value": {
@@ -1070,6 +1082,14 @@
         },
         "$description": "40px size step."
       },
+      "44": {
+        "$type": "dimension",
+        "$value": {
+          "value": 44,
+          "unit": "px"
+        },
+        "$description": "44px size step."
+      },
       "48": {
         "$type": "dimension",
         "$value": {
@@ -1077,6 +1097,14 @@
           "unit": "px"
         },
         "$description": "48px size step."
+      },
+      "52": {
+        "$type": "dimension",
+        "$value": {
+          "value": 52,
+          "unit": "px"
+        },
+        "$description": "52px size step."
       },
       "64": {
         "$type": "dimension",
@@ -2976,6 +3004,11 @@
         "$value": "{primitive.space.2}",
         "$description": "Vertical button padding (8px, the md size; legacy flat alias of size.md.paddingY)."
       },
+      "fontWeight": {
+        "$type": "fontWeight",
+        "$value": "{primitive.typography.weight.semibold}",
+        "$description": "Button label weight."
+      },
       "size": {
         "sm": {
           "paddingX": {
@@ -3000,8 +3033,8 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.size.32}",
-            "$description": "Small button height (32px)."
+            "$value": "{primitive.size.36}",
+            "$description": "Small button height (36px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -3018,7 +3051,7 @@
           "paddingY": {
             "$type": "dimension",
             "$value": "{primitive.space.2}",
-            "$description": "Medium button vertical padding (8px; the 40px height drives the box)."
+            "$description": "Medium button vertical padding (8px; the 44px height drives the box)."
           },
           "fontSize": {
             "$type": "dimension",
@@ -3032,8 +3065,8 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.size.40}",
-            "$description": "Medium button height (40px)."
+            "$value": "{primitive.size.44}",
+            "$description": "Medium button height (44px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -3064,8 +3097,8 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.size.48}",
-            "$description": "Large button height (48px)."
+            "$value": "{primitive.size.52}",
+            "$description": "Large button height (52px)."
           },
           "itemSpacing": {
             "$type": "dimension",

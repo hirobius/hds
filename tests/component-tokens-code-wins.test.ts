@@ -42,7 +42,11 @@ const PX: Array<[string, string, string]> = [
   ['--component-button-paddingY', '8px', 'py-2'],
   ['--component-button-size-md-paddingY', '8px', 'py-2'],
   ['--component-button-size-sm-paddingX', '12px', 'px-3'],
-  ['--component-button-size-sm-height', '32px', 'h-8'],
+  [
+    '--component-button-size-sm-height',
+    '36px',
+    'h-[var(--component-button-size-sm-height)] (bound, hds#760)',
+  ],
   ['--component-button-size-sm-itemSpacing', '8px', 'base gap-2'],
   ['--component-button-size-lg-fontSize', '16px', 'hds-type-ui'],
   ['--component-input-paddingX', '12px', 'pl-3 pr-3'],

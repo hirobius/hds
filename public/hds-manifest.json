@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-28T02:18:09.826Z",
+  "generated": "2026-10-28T03:46:51.451Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -12684,6 +12684,13 @@
         "value": "500"
       },
       {
+        "path": "primitive.typography.weight.semibold",
+        "cssVar": "--primitive-typography-weight-semibold",
+        "type": "fontWeight",
+        "description": "Button label weight (hds#760).",
+        "value": "600"
+      },
+      {
         "path": "primitive.typography.weight.bold",
         "cssVar": "--primitive-typography-weight-bold",
         "type": "fontWeight",
@@ -12921,6 +12928,13 @@
         "value": "32px"
       },
       {
+        "path": "primitive.size.36",
+        "cssVar": "--primitive-size-36",
+        "type": "dimension",
+        "description": "36px size step.",
+        "value": "36px"
+      },
+      {
         "path": "primitive.size.40",
         "cssVar": "--primitive-size-40",
         "type": "dimension",
@@ -12928,11 +12942,25 @@
         "value": "40px"
       },
       {
+        "path": "primitive.size.44",
+        "cssVar": "--primitive-size-44",
+        "type": "dimension",
+        "description": "44px size step.",
+        "value": "44px"
+      },
+      {
         "path": "primitive.size.48",
         "cssVar": "--primitive-size-48",
         "type": "dimension",
         "description": "48px size step.",
         "value": "48px"
+      },
+      {
+        "path": "primitive.size.52",
+        "cssVar": "--primitive-size-52",
+        "type": "dimension",
+        "description": "52px size step.",
+        "value": "52px"
       },
       {
         "path": "primitive.size.64",
@@ -14991,6 +15019,14 @@
         "resolvedValue": "8px"
       },
       {
+        "path": "component.button.fontWeight",
+        "cssVar": "--component-button-fontWeight",
+        "type": "fontWeight",
+        "description": "Button label weight.",
+        "alias": "{primitive.typography.weight.semibold}",
+        "resolvedValue": "600"
+      },
+      {
         "path": "component.button.size.sm.paddingX",
         "cssVar": "--component-button-size-sm-paddingX",
         "type": "dimension",
@@ -15026,9 +15062,9 @@
         "path": "component.button.size.sm.height",
         "cssVar": "--component-button-size-sm-height",
         "type": "dimension",
-        "description": "Small button height (32px).",
-        "alias": "{primitive.size.32}",
-        "resolvedValue": "32px"
+        "description": "Small button height (36px).",
+        "alias": "{primitive.size.36}",
+        "resolvedValue": "36px"
       },
       {
         "path": "component.button.size.sm.itemSpacing",
@@ -15050,7 +15086,7 @@
         "path": "component.button.size.md.paddingY",
         "cssVar": "--component-button-size-md-paddingY",
         "type": "dimension",
-        "description": "Medium button vertical padding (8px; the 40px height drives the box).",
+        "description": "Medium button vertical padding (8px; the 44px height drives the box).",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -15074,9 +15110,9 @@
         "path": "component.button.size.md.height",
         "cssVar": "--component-button-size-md-height",
         "type": "dimension",
-        "description": "Medium button height (40px).",
-        "alias": "{primitive.size.40}",
-        "resolvedValue": "40px"
+        "description": "Medium button height (44px).",
+        "alias": "{primitive.size.44}",
+        "resolvedValue": "44px"
       },
       {
         "path": "component.button.size.md.itemSpacing",
@@ -15122,9 +15158,9 @@
         "path": "component.button.size.lg.height",
         "cssVar": "--component-button-size-lg-height",
         "type": "dimension",
-        "description": "Large button height (48px).",
-        "alias": "{primitive.size.48}",
-        "resolvedValue": "48px"
+        "description": "Large button height (52px).",
+        "alias": "{primitive.size.52}",
+        "resolvedValue": "52px"
       },
       {
         "path": "component.button.size.lg.itemSpacing",
