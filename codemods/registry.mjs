@@ -29,6 +29,7 @@ export const CODEMODS = Object.freeze({
   'hds-not-found-pattern': { file: 'not-found-pattern.mjs' },
   'hds-tile-grid': { file: 'tile-grid.mjs' },
   'hds-spacing-steps': { file: 'spacing-steps.mjs' },
+  'hds-prop-map': { file: 'prop-map.mjs' },
 });
 
 export const hasCodemod = (name) => Object.hasOwn(CODEMODS, name);
@@ -38,9 +39,11 @@ const toPosix = (p) => p.split(sep).join('/');
 /**
  * Run one codemod over `root`.
  * @param {string} name a bin name from CODEMODS
- * @param {{ root: string, write?: boolean, skip?: string[], child?: boolean, check?: boolean, dryRun?: boolean }} options
+ * @param {{ root: string, write?: boolean, skip?: string[], steps?: object[], child?: boolean, check?: boolean, dryRun?: boolean }} options
  *   In-process: `write` writes the edits, `skip` lists absolute directories not
- *   to enter. As a child: `check` / `dryRun` pass the flags of the same name.
+ *   to enter, `steps` are the ledger steps that name the codemod (a
+ *   ledger-driven one such as hds-prop-map takes its rules from them; the
+ *   others ignore them). As a child: `check` / `dryRun` pass the flags of the same name.
  */
 export async function runCodemod(name, options) {
   if (!hasCodemod(name)) {
@@ -61,6 +64,7 @@ export async function runCodemod(name, options) {
     root: options.root,
     write: options.write === true,
     skip: options.skip ?? [],
+    ...(options.steps ? { steps: options.steps } : {}),
   });
   const files = res.files.map((f) => toPosix(f.file));
   const manual = res.manual.map((m) => ({ ...m, file: toPosix(m.file) }));

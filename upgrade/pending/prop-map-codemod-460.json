@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "A new hds-prop-map codemod applies the prop renames and value changes the upgrade ledger lists, so the upgrade command fixes them for you."
+}
