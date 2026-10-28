@@ -2,4 +2,4 @@
 '@hirobius/design-system': patch
 ---
 
-Combobox `multiple` and `creatable` chips: hover now steps the fill to `surface.sunken`. It hovered to `bg-accent`, which matched the `bg-muted` rest fill in light (1.01:1), so the hover showed nothing (hds#522).
+Hover fills that showed nothing now show: Combobox `multiple` and `creatable` chips and the Dialog and Sheet close buttons hover to `surface.sunken`. They hovered to `bg-accent` (surface.accentSubtle), which in light equalled the chip's `bg-muted` rest fill (1.01:1) and all but equalled the white popover (1.10:1) (hds#522).
