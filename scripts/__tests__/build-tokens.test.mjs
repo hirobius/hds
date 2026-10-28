@@ -30,7 +30,10 @@ import {
   buildCSSSection,
   buildDeprecationNotes,
   buildCSSVarDts,
+  isCssEasing,
+  EASING_TYPES,
 } from '../build-tokens.mjs';
+import { readTokenSource } from '../lib/token-source.mjs';
 
 // ── pathToCSSVar ──────────────────────────────────────────────────────────────
 
@@ -1254,5 +1257,78 @@ describe('buildManifest', () => {
 
   it('keeps no health block in the committed public/hds-manifest.json', () => {
     expect(readJson('public/hds-manifest.json')).not.toHaveProperty('health');
+  });
+});
+
+// ── Easing tokens must be valid CSS (hds#784) ─────────────────────────────────
+
+describe('isCssEasing', () => {
+  it.each([
+    'linear',
+    'ease',
+    'ease-in-out',
+    'step-end',
+    'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    'steps(4, jump-end)',
+    'linear(0, 0.25 10%, 1.1, 1)',
+  ])('accepts %s', (v) => expect(isCssEasing(v)).toBe(true));
+
+  it.each([
+    'spring(300, 20, 1)',
+    'cubic-bezier(1.2, 0, 0.5, 1)',
+    'cubic-bezier(0, 0, 1)',
+    'linear()',
+    'bounce',
+  ])('rejects %s', (v) => expect(isCssEasing(v)).toBe(false));
+});
+
+describe('spring easing', () => {
+  const spring = { type: 'spring', stiffness: 300, damping: 20, mass: 1 };
+  const stops = (css) => css.slice('linear('.length, -1).split(',').map(Number);
+
+  it('emits a linear() curve, not the invalid spring() function', () => {
+    for (const type of ['spring', 'motionEasing']) {
+      const css = valueToCSS(spring, type, false);
+      expect(css).toMatch(/^linear\(/);
+      expect(isCssEasing(css)).toBe(true);
+    }
+  });
+
+  it('still ends at 1 for a spring that never settles', () => {
+    const css = valueToCSS(
+      { type: 'spring', stiffness: 300, damping: 0, mass: 1 },
+      'spring',
+      false,
+    );
+    expect(isCssEasing(css)).toBe(true);
+    expect(stops(css).at(-1)).toBe(1);
+  });
+
+  it('starts at 0, settles at 1 and overshoots once, about 11%', () => {
+    const s = stops(valueToCSS(spring, 'spring', false));
+    expect(s[0]).toBe(0);
+    expect(s.at(-1)).toBe(1);
+    expect(Math.max(...s)).toBeGreaterThan(1.09);
+    expect(Math.max(...s)).toBeLessThan(1.13);
+  });
+
+  it('fails validation for an easing that is not CSS (V6)', () => {
+    const raw = {
+      primitive: { easing: { $type: 'cubicBezier', bad: { $value: [1.5, 0, 0.5, 1] } } },
+    };
+    expect(validateTokens(raw).some((e) => e.startsWith('V6 [primitive.easing.bad]'))).toBe(true);
+  });
+
+  it('emits valid CSS for every easing token in hirobius.tokens.json', () => {
+    const repo = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+    const raw = readTokenSource(join(repo, 'hirobius.tokens.json'));
+    const easing = [...walkTokens(raw)].filter((t) => EASING_TYPES.includes(t.type));
+    expect(easing.length).toBeGreaterThan(0);
+    for (const t of easing) {
+      expect([t.path.join('.'), isCssEasing(valueToCSS(t.value, t.type, false, raw))]).toEqual([
+        t.path.join('.'),
+        true,
+      ]);
+    }
   });
 });

@@ -250,10 +250,18 @@ describe('Touch targets (item 6, and the highlight fill of item 21)', () => {
     expect(src(file)).toContain(cls);
     expect(src(file)).toMatch(touch);
   });
+  it.each(['combobox.tsx', 'combobox-creatable.tsx', 'command-palette.tsx'])(
+    '%s marks its active option with the shared listbox-nav look',
+    (file) => {
+      expect(src(file)).toContain('ACTIVE_OPTION_CLASS');
+      expect(src(file)).not.toMatch(/data-\[active=true\]:bg-accent/);
+    },
+  );
   it('combobox chip remove and options both use them', () => {
     expect((src('combobox.tsx').match(/hds-touch-row/g) ?? []).length).toBeGreaterThanOrEqual(2);
   });
-  it.each(['menu.tsx', 'select.tsx', 'combobox.tsx'])(
+  // Combobox and CommandPalette take the active-row look from listbox-nav.ts.
+  it.each(['menu.tsx', 'select.tsx', 'listbox-nav.ts'])(
     '%s highlight fill is a step from the popover surface, not shadcn bg-accent',
     (file) => {
       expect(src(file)).toMatch(/bg-\[var\(--semantic-color-surface-sunken\)\]/);

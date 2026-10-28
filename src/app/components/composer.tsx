@@ -24,6 +24,7 @@
  * @a11y consumer required Pass a label that names the purpose when more than one Composer is on a page; the default "Message" is the same on each.
  */
 
+// motion-ok: no motion of its own; Button, Tag, Textarea and Dialog carry their feedback.
 import * as React from 'react';
 import { cn } from '../../lib/utils';
 import { Badge } from './badge';

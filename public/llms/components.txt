@@ -238,6 +238,18 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - searchPlaceholder: string = Search…
   - value: string | readonly string[] | null
 
+### CommandPalette
+CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain…
+  - className: string
+  - emptyMessage: string = No results
+  - hotkey: boolean = true
+  - items: readonly CommandPaletteItem[]
+  - label: string = Command palette
+  - onOpenChange: (open: boolean) => void
+  - onSelect: (item: CommandPaletteItem) => void
+  - open: boolean
+  - placeholder: string = Type a command or search…
+
 ### Composer
 Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer t…
   - attachments: ComposerAttachment[]

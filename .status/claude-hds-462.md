@@ -1,0 +1,1 @@
+Upgrade ledger floor 0.16.0 → 0.9.0 (hds#462): snapshots for 0.9.0–0.15.0 (0.9.0–0.13.0 from git tags, npm unpublished them) and backfilled ledgers for 0.10.0–0.16.0 citing CHANGELOG commits; snapshot.mjs reads an untyped JS entry (0.9.0's ./protocol). MIGRATIONS corrects the 0.12.0 "zero external consumers" claim.

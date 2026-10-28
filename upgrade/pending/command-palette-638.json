@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New CommandPalette export; nothing to change, adopt it where an app hand-rolls a ⌘K box."
+}
