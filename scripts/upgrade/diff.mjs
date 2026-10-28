@@ -66,6 +66,9 @@ const PROP_FACT_KINDS = [
  */
 const DOM_FACT_KINDS = ['dom-changed'];
 
+/** True for the id of a dom fact (hds#468). */
+export const isDomFactId = (id) => DOM_FACT_KINDS.some((kind) => id.startsWith(`${kind}:`));
+
 /** Fact kinds, in the order a diff lists them. */
 export const FACT_KINDS = [
   'removed',

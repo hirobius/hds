@@ -73,7 +73,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { emitResult, hasJsonFlag } from './lib/gate-output.mjs';
-import { isCssFactId } from './upgrade/diff.mjs';
+import { isCssFactId, isDomFactId } from './upgrade/diff.mjs';
 import {
   BUMP_RANK,
   breakingBump,
@@ -197,7 +197,7 @@ function domStepViolations(state) {
   for (const note of state.notes) {
     for (const step of noteSteps(note)) {
       const ids = (Array.isArray(step.facts) ? step.facts : []).filter(
-        (id) => typeof id === 'string' && id.startsWith('dom-changed:'),
+        (id) => typeof id === 'string' && isDomFactId(id),
       );
       if (ids.length === 0) continue;
       if (step.kind === 'behavior' && step.detect?.regex?.length > 0) continue;

@@ -6,6 +6,7 @@
  * states and the data-* attributes, sorted. Classes, ids, inline styles and
  * the attributes that point at an id (aria-controls, for, ...) are left out:
  * they churn with useId and styling, and a consumer may not select on them.
+ * So are data-radix-* (Radix internals) and data-testid.
  *
  * An <svg>'s shapes are left out too: drawing is the visual baseline's job.
  *
@@ -33,7 +34,7 @@ const ID_REFS = new Set([
 const recorded = (name: string) =>
   name === 'role' ||
   (name.startsWith('aria-') && !ID_REFS.has(name)) ||
-  (name.startsWith('data-') && name !== 'data-testid');
+  (name.startsWith('data-') && name !== 'data-testid' && !name.startsWith('data-radix-'));
 
 const quote = (value: string) => JSON.stringify(value.replace(/\s+/g, ' ').trim());
 
