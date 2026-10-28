@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-28T00:15:09.078Z",
+  "generated": "2026-10-28T02:18:09.826Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -14575,6 +14575,14 @@
         "description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
         "alias": "{primitive.size.40}",
         "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.touchTarget",
+        "cssVar": "--semantic-size-touchTarget",
+        "type": "dimension",
+        "description": "Small-control minimum on a coarse pointer or narrow viewport (hds#750).",
+        "alias": "{primitive.size.interactive.min}",
+        "resolvedValue": "44px"
       },
       {
         "path": "semantic.size.tile",
