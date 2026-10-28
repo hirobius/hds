@@ -11222,6 +11222,126 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null
+    },
+    "HdsPhosphor": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized icon alias stub for JSX normalization.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "HdsFrame": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-internal frame primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "HdsHeading": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized heading primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "HdsLabel": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized label primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "HdsCaption": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized caption primitive stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "HdsCheckbox": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized checkbox instance stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "HdsChip": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized chip instance stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
+    "HdsAvatar": {
+      "category": "Compiler",
+      "filePath": "scripts/hds-jsx-compiler.mjs",
+      "description": "Compiler-recognized avatar instance stub for generated JSX validation.",
+      "hidden": true,
+      "tier": "utility",
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
     }
   },
   "utilities": {
