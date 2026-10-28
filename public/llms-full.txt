@@ -401,6 +401,10 @@ Every name a release removed, moved or renamed, and what to use instead:
 
 | Old name | Use instead | Release |
 | --- | --- | --- |
+| `Hds-prefix` | Twelve component families, such as HdsAlertDialog and HdsDateInput, lost their Hds prefix before any release shipped them, so import each by its bare name (AlertDialog, DateInput). | 0.12.0 |
+| `InfoPage` | InfoPage and InfoPageProps are removed with no replacement; it was portfolio scaffolding, so delete the code that uses it. | 0.12.0 |
+| `StatTone-FieldTone` | StatProps["tone"] and FieldProps["tone"] | 0.12.0 |
+| `primitive-typography-tokens` | Six unused typography tokens are removed (--primitive-typography-size-2xs, -weight-light, -weight-semibold, -letterSpacing-tighter, -wide and -wider); replace a var() that reads one with your own value. | 0.16.0 |
 | `ActivityEvent` | nothing: rewrite or delete the code | 0.20.0 |
 | `ActivityFeed` | nothing: rewrite or delete the code | 0.20.0 |
 | `ActivityFeedProps` | nothing: rewrite or delete the code | 0.20.0 |

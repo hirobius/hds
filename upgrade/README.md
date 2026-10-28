@@ -1,7 +1,7 @@
 # Upgrade ledger
 
 Each release of `@hirobius/design-system` gets one machine-readable record of
-what it changed for a consumer: `upgrade/releases/<version>.json`, from 0.17.0
+what it changed for a consumer: `upgrade/releases/<version>.json`, from 0.10.0
 on (see [The floor](#the-floor)). The upgrade
 command (`npx @hirobius/design-system@latest upgrade`, hds#452) reads it to run
 the codemods and report what is left, and UPGRADING.md and `upgrade/index.json`
@@ -61,7 +61,7 @@ of a release snapshot.
    deprecation, a rename) come from the CHANGELOG and cite its line.
 
 Releases that shipped before their ledgers were written are backfilled:
-0.17.0 to 0.21.0. `node scripts/upgrade/build-ledger.mjs <version>` builds each one from
+0.10.0 to 0.21.0 (0.10.0 to 0.16.0 since hds#462). `node scripts/upgrade/build-ledger.mjs <version>` builds each one from
 its two snapshots and inputs frozen in `upgrade/sources/<version>/`:
 `release.json` (the release fields, how its removed and moved names are
 classified, and the steps only the CHANGELOG records, each with its line and
@@ -73,13 +73,37 @@ test keeps every committed ledger equal to the build of its sources
 (`build-ledger.mjs --check`), and another that each cited line still holds its
 text.
 
+Of the 0.9.0 to 0.16.0 diffs, only 0.10.0 (the `./protocol` subpath) and
+0.12.0 (InfoPage, the StatTone and FieldTone types, the optional `lenis` peer)
+take anything away; the other steps of those ledgers come from each
+CHANGELOG section, and each needle there names the commit of its entry. The
+0.12.0 entry that drops the `Hds` prefix from 12 families says they shipped in
+0.12.0/0.13.0, but no snapshot exports an old name and 0.12.0 already exports
+each new one, so the rename landed before 0.12.0 was published: its steps
+list no fact and reach only code built against unpublished HDS.
+
 The 0.16.0 to 0.19.1 diffs hold only additions (`/patterns`, `/icons`, the
 `hds-patterns-subpath` bin, new names), so those ledgers carry the look,
 behavior and deprecation steps from each CHANGELOG section. 0.18.0 and 0.19.1
 have no step: nothing in them asks anything of a consumer. Every tarball from
-0.16.0 on has `dist/types` for each JS entry, so `snapshot.mjs` reads them all
+0.13.1 on has `dist/types` for each JS entry, so `snapshot.mjs` reads them all
 unchanged; a tarball without one would stop it with the entry named, rather
-than record a guess.
+than record a guess. 0.9.0's `./protocol` shipped as plain JavaScript with no
+`types` condition, and is read from the `.mjs` it points at.
+
+npm no longer serves 0.8.1 to 0.13.0 (they were unpublished; `npm view
+@hirobius/design-system time` still lists them). Their snapshots were read from
+the source tree at each release's git tag:
+
+```sh
+git worktree add /tmp/hds-0.12.0 v0.12.0
+node scripts/upgrade/snapshot.mjs --source /tmp/hds-0.12.0 --out docs/api/releases/0.12.0.json
+```
+
+The source path reads a tree to the same snapshot as the tarball built from
+it, less its css section: the source snapshots of v0.13.1 to v0.16.0 equal
+their tarball snapshots field for field. So those five have no css section,
+and the diff reports CSS facts only from the 0.13.1 to 0.14.0 diff on.
 
 A deprecated step's `removeIn` is what its release announced. When the release
 named no removal, it is the target a later release set, and the `$comment` of
@@ -92,7 +116,8 @@ took it away ("Removed early, in 0.20.0"), name by name when only some of its
 names went; `upgrade/index.json` lists only what is still deprecated.
 `scripts/__tests__/upgrade-deprecations.test.mjs` fails while a `@deprecated`
 on the public surface has no deprecation step (Divider `strong` and
-InlineCode `compact`, deprecated before the floor, are recorded from 0.22.0).
+InlineCode `compact`, deprecated before their releases had ledgers, are recorded
+from 0.22.0).
 
 0.21.0 shipped with an upgrade note for each of its seven changesets, but
 before the compiler (hds#451), so its ledger is built the same way from the
@@ -282,10 +307,10 @@ version and notes filled in.
 
 The floor is the oldest version the upgrade command can upgrade from. Below
 it, the command changes nothing and exits 2; follow CHANGELOG.md by hand up to
-the floor. It is 0.16.0, the oldest committed snapshot: the 0.17.0 to 0.21.0
+the floor. It is 0.9.0, the oldest committed snapshot: the 0.10.0 to 0.21.0
 ledgers cover every release after it through 0.21.0, so a consumer still on
-0.16.0 crosses no change up to 0.21.0
-that a step does not report.
+0.9.0 crosses no change up to 0.21.0 that a step does not report. It was
+0.16.0 until hds#462 found fleet repos pinned between `^0.9` and `^0.15`.
 
 `upgrade/published.json` lists every version npm has published. A test fails
 while a release after the floor has no snapshot or no ledger, so a release

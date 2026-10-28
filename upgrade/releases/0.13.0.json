@@ -1,0 +1,8 @@
+{
+  "version": "0.13.0",
+  "date": "2026-07-09",
+  "bump": "minor",
+  "summary": "Adds the CSS-only static.css layer and stops Icon logging a console error for token sizes; nothing to change.",
+  "backfilled": true,
+  "steps": []
+}
