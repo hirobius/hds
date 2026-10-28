@@ -4,7 +4,8 @@
  * hds-not-found-pattern (NotFoundPattern -> ErrorPattern) and hds-tile-grid
  * (TileGrid -> Grid). It ships with them as a package bin dependency, so it has
  * no dependencies; codemods/unrewritable.mjs masks the source and lists what a
- * codemod cannot see.
+ * codemod cannot see. hds-prop-map (codemods/prop-map.mjs) reuses its tag
+ * parser and walker.
  *
  * A fold rewrites one named import of the package root and every JSX element of
  * the name it binds:
@@ -31,7 +32,8 @@ import { findUnrewritable, maskSource } from './unrewritable.mjs';
 export const ROOT_PKG = '@hirobius/design-system';
 export const PATTERNS = `${ROOT_PKG}/patterns`;
 
-const EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
+/** The code files a codemod reads. */
+export const CODE_EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
 const SKIP_DIRS = new Set([
   'node_modules',
   'dist',
@@ -425,7 +427,7 @@ export function insertionPoint(source, tag, attr) {
  * `skip`: absolute directories not to enter (the upgrade command's nested
  * importers); `exts`: the file extensions to yield.
  */
-export function* walk(dir, skip = new Set(), exts = EXTS) {
+export function* walk(dir, skip = new Set(), exts = CODE_EXTS) {
   let entries;
   try {
     entries = readdirSync(dir, { withFileTypes: true });

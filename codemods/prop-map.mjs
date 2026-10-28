@@ -17,8 +17,10 @@
  * Steps apply in release order, so a rename and a later value map of the same
  * prop chain. Listed for a manual edit, naming the release from the step: a
  * value it cannot read (`direction={dir}`), and a tag that already sets the new
- * prop name. A spread is left alone. It reads .mdx as well as code. Running it
- * twice changes nothing.
+ * prop name. A spread is left alone. It reads .mdx as well as code; MDX prose
+ * goes through the same tokenizer (codemods/unrewritable.mjs), so a file it
+ * cannot read to its end is listed rather than passed. Running it twice
+ * changes nothing.
  *
  *   node codemods/prop-map.mjs [--root <dir>] [--ledger <file>] [--check] [--dry-run]
  *
@@ -35,12 +37,12 @@ import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { loadRecord } from './lib/record.mjs';
 import { compareVersions, isVersion } from './lib/semver.mjs';
 import { namedImports, namespaceImports } from './lib/scan.mjs';
-import { ROOT_PKG, editHunks, isEntry, parseTag, walk } from './jsx-fold.mjs';
+import { CODE_EXTS, ROOT_PKG, isEntry, parseTag, walk } from './jsx-fold.mjs';
 import { maskSource } from './unrewritable.mjs';
 
 const BIN = 'hds-prop-map';
 const HERE = dirname(fileURLToPath(import.meta.url));
-const EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts', '.mdx']);
+const EXTS = new Set([...CODE_EXTS, '.mdx']);
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 /**
@@ -72,23 +74,16 @@ export function rulesFromSteps(steps, fallback = 'the next release') {
         ...(s.kind === 'prop-renamed' ? { to } : { values }),
       };
     })
-    .map((rule, i) => ({ rule, i }))
-    .sort(
-      (a, b) =>
-        (isVersion(a.rule.version) && isVersion(b.rule.version)
-          ? compareVersions(a.rule.version, b.rule.version)
-          : 0) || a.i - b.i,
-    )
-    .map(({ rule }) => rule);
+    .sort((a, b) => {
+      // A pending step (no version yet) comes after every released one; the sort is stable.
+      const [x, y] = [isVersion(a.version), isVersion(b.version)];
+      return x && y ? compareVersions(a.version, b.version) : Number(y) - Number(x);
+    });
 }
 
-/** Every prop step the package ships, from its upgrade record. */
+/** Every step the package ships, from its upgrade record. A broken record throws. */
 export function shippedSteps(pkgDir = join(HERE, '..')) {
-  try {
-    return loadRecord(pkgDir).ledgers.flatMap((l) => l.steps ?? []);
-  } catch {
-    return [];
-  }
+  return loadRecord(pkgDir).ledgers.flatMap((l) => l.steps ?? []);
 }
 
 const isHds = (from) => from === ROOT_PKG || from.startsWith(`${ROOT_PKG}/`);
@@ -105,7 +100,8 @@ function tagNames(source, component) {
 }
 
 const lineOf = (source, at) => source.slice(0, at).split('\n').length;
-const STRING_EXPR = /^\s*(['"])([^'"\\\n]*)\1\s*$/;
+// A string or a template with no `${}`: `'vertical'`, `"vertical"`, `` `vertical` ``.
+const STRING_EXPR = /^\s*(['"`])([^'"`\\\n$]*)\1\s*$/;
 
 /** One rule over one source: the edits it makes and what it cannot do. */
 function applyRule(source, rule) {
@@ -162,6 +158,26 @@ function applyRule(source, rule) {
 }
 
 /**
+ * The changed lines between `before` and `after`, as hunks for `--dry-run`
+ * (the shape of jsx-fold's editHunks). A prop edit never adds or drops a line,
+ * so line i of one is line i of the other.
+ */
+function lineHunks(before, after) {
+  const a = before.split('\n');
+  const b = after.split('\n');
+  const hunks = [];
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] === b[i]) continue;
+    const last = hunks[hunks.length - 1];
+    if (last && last.line + last.before.length === i + 1) {
+      last.before.push(a[i]);
+      last.after.push(b[i]);
+    } else hunks.push({ line: i + 1, before: [a[i]], after: [b[i]] });
+  }
+  return hunks;
+}
+
+/**
  * Pure transform of one file's source: every rule, in order, each over the
  * output of the one before.
  * @param {string} source
@@ -171,17 +187,19 @@ export function transformSource(source, rules) {
   let out = source;
   let sites = 0;
   const manual = [];
-  const hunks = [];
+  const { unterminated } = maskSource(source);
+  if (unterminated)
+    manual.push(
+      `unreadable from line ${unterminated.line} (an unclosed ${unterminated.kind}, or a lone backtick or /* in prose); check its props by hand`,
+    );
   for (const rule of rules) {
     const r = applyRule(out, rule);
     manual.push(...r.manual);
-    if (r.edits.length === 0) continue;
-    hunks.push(...editHunks(out, r.edits));
     for (const e of r.edits.sort((x, y) => y.start - x.start))
       out = out.slice(0, e.start) + e.text + out.slice(e.end);
     sites += r.sites;
   }
-  return { source: out, changed: out !== source, sites, manual, edits: hunks };
+  return { source: out, changed: out !== source, sites, manual, edits: lineHunks(source, out) };
 }
 
 /**

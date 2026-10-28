@@ -147,6 +147,41 @@ describe('transformSource', () => {
   });
 });
 
+describe('review fixes', () => {
+  it('reads a template literal with no ${}', () => {
+    expect(one('<Stack direction={`vertical`} />;').source).toContain(
+      '<Stack direction={`column`} />;',
+    );
+  });
+
+  it('puts a pending step (no version) after every released one', () => {
+    const pending = { ...STEPS[1], id: 'prop-renamed/Button.tone' };
+    expect(rulesFromSteps([pending, STEPS[0]]).map((r) => r.version)).toEqual([
+      '9.1.0',
+      'the next release',
+    ]);
+  });
+
+  it('shows a line two steps change as one hunk against the original', () => {
+    const rules = [
+      { version: '1.0.0', component: 'Stack', name: 'dir', to: 'direction' },
+      { version: '1.1.0', component: 'Stack', name: 'direction', values: { vertical: 'column' } },
+    ];
+    const out = transformSource(
+      `import { Stack } from '${PKG}';\n<Stack dir="vertical" />;\n`,
+      rules,
+    );
+    expect(out.edits).toEqual([
+      { line: 2, before: ['<Stack dir="vertical" />;'], after: ['<Stack direction="column" />;'] },
+    ]);
+  });
+
+  it('lists a file it cannot read to its end', () => {
+    const out = one('<Stack direction="vertical" />;\nconst t = `open');
+    expect(out.manual.some((m) => m.startsWith('unreadable from line'))).toBe(true);
+  });
+});
+
 describe('runCodemod', () => {
   it('scans .mdx too, writes only when asked, and takes steps from the caller', () => {
     const dir = tree({
