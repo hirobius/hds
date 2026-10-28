@@ -64,7 +64,7 @@ describe('core component list', () => {
     for (const name of CORE_COMPONENTS) {
       const spec = manifest.componentSpecs[name];
       expect(spec, name).toBeDefined();
-      expect(spec.hidden, name).toBe(false);
+      expect(spec.hidden, name).toBeUndefined();
     }
   });
 });

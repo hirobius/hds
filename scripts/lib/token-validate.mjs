@@ -1,11 +1,12 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * Structural validation of hirobius.tokens.json (V1–V5). Pure (no fs); split
+ * Structural validation of hirobius.tokens.json (V1–V6). Pure (no fs); split
  * out of scripts/build-tokens.mjs (hds#645).
  */
 
 import { readModes } from './token-modes.mjs';
 import { resolveAlias, walkTokens } from './token-tree.mjs';
+import { EASING_TYPES, isCssEasing, valueToCSS } from './token-emit/css.mjs';
 
 // ── Token validator ───────────────────────────────────────────────────────────
 /**
@@ -26,6 +27,7 @@ import { resolveAlias, walkTokens } from './token-tree.mjs';
  *   V3 — No circular alias chains
  *   V4 — $extensions namespace must be "com.figma.variables" (not com.hirobius.*)
  *   V5 — Mode keys must be "Light" / "Dark" (capitalized)
+ *   V6 — Easing tokens must compile to a valid CSS easing
  */
 export function validateTokens(raw) {
   const errors = [];
@@ -114,6 +116,12 @@ export function validateTokens(raw) {
           errors.push(`V5 [${dotPath}] mode key "${key}" must be capitalized: "Light" / "Dark"`);
         }
       }
+    }
+
+    // V6 — an easing must compile to a CSS easing a browser accepts (hds#784)
+    if (!isAlias && EASING_TYPES.includes(type)) {
+      const css = valueToCSS(value, type, false, raw);
+      if (!isCssEasing(css)) errors.push(`V6 [${dotPath}] easing "${css}" is not valid CSS`);
     }
   }
 
