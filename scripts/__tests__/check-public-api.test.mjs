@@ -89,6 +89,25 @@ describe('diffSurfaces (check-public-api breaking-change guard)', () => {
     });
   });
 
+  it('does not report a symbol that moved between root modules (hds#467)', () => {
+    // Both modules are `export *` re-exports of the root entry, so a consumer
+    // importing Button from the package sees no change.
+    const baseline = { modules: { './a': ['Button', 'A'], './b': ['B'] } };
+    const current = { modules: { './a': ['A'], './b': ['B', 'Button'] } };
+    expect(diffSurfaces(baseline, current)).toEqual({ breakingChanges: [], additions: [] });
+    // ...also when the module it left is gone.
+    const merged = { modules: { './b': ['A', 'B', 'Button'] } };
+    expect(diffSurfaces(baseline, merged).breakingChanges).toEqual([]);
+  });
+
+  it('still reports a symbol that left a subpath for a root module (hds#467)', () => {
+    const baseline = { modules: { './a': ['A'], '@subpath/patterns': ['Page'] } };
+    const current = { modules: { './a': ['A', 'Page'], '@subpath/patterns': [] } };
+    expect(diffSurfaces(baseline, current).breakingChanges).toEqual([
+      { kind: 'symbol-removed', module: '@subpath/patterns', symbol: 'Page' },
+    ]);
+  });
+
   it('reports no changes when the surface is identical', () => {
     const surface = { modules: { './app/components/button': ['Button', 'ButtonProps'] } };
 
@@ -149,6 +168,34 @@ describe('collectPublicApi walks every package.json#exports JS entry (hds#390)',
         '@subpath/patterns': ['A', 'AProps', 'B', 'BPart'],
         '@subpath/contexts': ['ThemeProvider', 'useTheme'],
       });
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it('records the root barrel’s export * as and package re-exports, so removing one fails (hds#467)', () => {
+    const root = fixture();
+    try {
+      writeFileSync(
+        join(root, 'src/index.ts'),
+        "export * from './app/components/a';\nexport * as parts from './app/components/b';\nexport * from 'clsx';\n",
+      );
+      const before = collectPublicApi(root);
+      expect(before.modules['(barrel)']).toEqual(['* from clsx', 'parts']);
+      writeFileSync(
+        join(root, 'src/index.ts'),
+        "export * from './app/components/a';\nexport * from 'clsx';\n",
+      );
+      expect(diffSurfaces(before, collectPublicApi(root)).breakingChanges).toEqual([
+        { kind: 'symbol-removed', module: '(barrel)', symbol: 'parts' },
+      ]);
+      writeFileSync(
+        join(root, 'src/index.ts'),
+        "export * from './app/components/a';\nexport * as parts from './app/components/b';\n",
+      );
+      expect(diffSurfaces(before, collectPublicApi(root)).breakingChanges).toEqual([
+        { kind: 'symbol-removed', module: '(barrel)', symbol: '* from clsx' },
+      ]);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

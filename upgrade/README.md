@@ -195,6 +195,22 @@ renamed. `check-upgrade-ledger` also fails a committed baseline that is not
 the one component-api.json gives. Releases up to 0.32.0 ship no baseline, so
 prop facts start with the first release recorded after it.
 
+### Type facts (hds#467)
+
+`docs/api/types-baseline.json` (`node scripts/upgrade/types.mjs`, which `pnpm
+api:update` and `prebuild:lib` run) lists what each export of each JS entry is,
+read with the TypeScript checker (`getExportsOfModule`, so `export * as` and
+package re-exports count): `kind` (`value` or `type`), a callable's
+`signatures`, its own static `members` (Menu's `Item`) and a plain object's
+`keys`, four levels deep (`hds.color.content.primary`). It ships, and a
+release snapshot's `types` section is that file. The diff adds type facts
+between two snapshots that both have one: `export-type-only`,
+`signature-changed`, `member-removed` and `key-removed` (only the top key of a
+removed group), each breaking. `pnpm upgrade:note` pre-fills a `removed` or
+`behavior` step. `check-upgrade-ledger` also fails a committed baseline the
+source no longer gives. Releases up to 0.32.0 ship none, so type facts start
+with the first release recorded after it.
+
 ## At release time
 
 `pnpm changeset:version` (which the release workflow runs to open the Version
