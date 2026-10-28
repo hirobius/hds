@@ -84,7 +84,7 @@ const segmentedControlRailVariants = /* @__PURE__ */ cva(
 // …` short-circuit.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- segment button color/spacing/motion tokens have no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlItemVariants = /* @__PURE__ */ cva(
-  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-md border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center hds-touch-row transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
+  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-md border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center hds-touch-target transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
   {
     variants: {
       size: {

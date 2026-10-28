@@ -12,11 +12,37 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { discoverHdsComponents, readComponentTags } from '../component-discovery.mjs';
+import {
+  discoverHdsComponents,
+  readComponentTags,
+  summarizeSharedFileDescriptions,
+} from '../component-discovery.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const NODE_URL =
   'https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=1-2';
+
+describe('summarizeSharedFileDescriptions (manifest budget, hds#413)', () => {
+  const file = 'Card — a surface (12d). Long slot anatomy prose.';
+  it('gives parts that borrow a shared file block only its first sentence', () => {
+    const out = summarizeSharedFileDescriptions([
+      {
+        name: 'Card',
+        filePath: 'card.tsx',
+        description: 'Card — own.',
+        descriptionSource: 'export',
+      },
+      { name: 'CardBody', filePath: 'card.tsx', description: file, descriptionSource: 'file' },
+    ]);
+    expect(out.map((c) => c.description)).toEqual(['Card — own.', 'Card — a surface (12d).']);
+  });
+  it('keeps the whole file block for a file with one export', () => {
+    const out = summarizeSharedFileDescriptions([
+      { name: 'Tag', filePath: 'tag.tsx', description: file, descriptionSource: 'file' },
+    ]);
+    expect(out[0].description).toBe(file);
+  });
+});
 
 describe('readComponentTags', () => {
   it('carries the contract tags and keeps their text out of the description', () => {

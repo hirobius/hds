@@ -647,6 +647,16 @@
       "firingChannel": "on-demand"
     },
     {
+      "id": "check-docs-touch-targets",
+      "description": "Loads the built docs-site pages of the small controls (sm Button, Tabs and SegmentedControl triggers, Tag, Disclosure trigger, Input clear) on a 390x844 touch phone and a 1024x768 touch tablet (only `pointer: coarse` lifts it there) and fails when a matched control is under --semantic-size-touchTarget (44px) in either axis, or a selector matches nothing (hds#750). Targets: scripts/docs-touch-targets.json. Needs `pnpm docs:publish` first. Fixtures: fixtures/check-docs-touch-targets/{passing,violating}.example.d with targets.json, passed with --dir and --targets; tests/check-docs-touch-targets.test.ts proves the gate bites. CI wiring is a human-only follow-up (workflow edit).",
+      "severity": "error",
+      "gateScript": "scripts/check-docs-touch-targets.mjs",
+      "fixturePath": "fixtures/check-docs-touch-targets",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand"
+    },
+    {
       "id": "check-llms-txt",
       "description": "Keeps public/llms.txt (and the package-root llms.txt mirror) a conformant llms.txt index (hds#592): an H1, a one-line '> ' summary, every link absolute and under the one LLMS_BASE_URL in scripts/lib/llms-index.mjs, pointing at a file that exists and ships in package.json#files, and no timestamp. The body (voice, recipes, card anatomy) lives in public/llms-full.txt. Runs in pretest. Fixtures: fixtures/check-llms-txt/{passing,violating}.example.txt, a file passed through FIXTURE_FILE.",
       "severity": "error",

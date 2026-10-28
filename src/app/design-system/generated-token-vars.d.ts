@@ -475,6 +475,7 @@ declare module 'react' {
     '--semantic-size-icon-md'?: string | undefined;
     '--semantic-size-icon-lg'?: string | undefined;
     '--semantic-size-avatar'?: string | undefined;
+    '--semantic-size-touchTarget'?: string | undefined;
     '--semantic-size-tile'?: string | undefined;
     '--semantic-size-row-compact'?: string | undefined;
     '--semantic-size-row-comfortable'?: string | undefined;

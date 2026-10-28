@@ -359,7 +359,7 @@ describe('Pagination accessibility contract', () => {
       expect(cls).toContain('w-[var(--component-button-size-sm-height)]');
     }
     expect(themeCss).toMatch(
-      /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--primitive-size-interactive-min\)/,
+      /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--semantic-size-touchTarget\)/,
     );
   });
 });

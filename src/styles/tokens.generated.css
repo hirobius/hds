@@ -482,6 +482,7 @@
   --semantic-size-icon-md: var(--primitive-size-20);
   --semantic-size-icon-lg: var(--primitive-size-24);
   --semantic-size-avatar: var(--primitive-size-40);
+  --semantic-size-touchTarget: var(--primitive-size-interactive-min);
   --semantic-size-tile: var(--primitive-size-120);
   --semantic-size-row-compact: var(--primitive-size-40);
   --semantic-size-row-comfortable: var(--primitive-size-48);

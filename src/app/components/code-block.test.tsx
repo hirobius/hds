@@ -144,7 +144,7 @@ describe('CodeBlock accessibility contract', () => {
         expect(copy.className).toContain('py-[var(--semantic-space-subgrid-gap)]');
       }
       expect(css('theme.css')).toMatch(
-        /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--primitive-size-interactive-min\)/,
+        /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--semantic-size-touchTarget\)/,
       );
     },
   );
