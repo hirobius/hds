@@ -22,6 +22,7 @@ export const PREVIEWED_COMPONENTS = [
   'Card',
   'Combobox',
   'Composer',
+  'CommandPalette',
   'Container',
   'Disclosure',
   'Divider',

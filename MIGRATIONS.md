@@ -188,6 +188,33 @@ tile 2px larger and move its content 1px in.
 | `tone`           | nothing: drop it (it set only a `data-hds-metrics` attribute)                 |
 | `StatusTileTone` | your own union, or `BadgeProps['tone']` when it feeds a Badge's tone          |
 
+## Before 0.16.0: what the upgrade command now covers (hds#462)
+
+The upgrade command upgrades from 0.9.0 on. The 0.10.0 to 0.16.0 releases
+shipped before the cycle above existed, so their breaking changes had no
+deprecation window and no codemod. Their ledgers were written afterwards from
+each CHANGELOG entry and its commit (`upgrade/releases/0.10.0.json` to
+`0.16.0.json`), and the command reports each change your code meets:
+
+| Release | Change                                                                                                          | What to do                                                                            |
+| ------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| 0.10.0  | `@hirobius/design-system/protocol` is removed                                                                   | copy the envelope module from the `archive/figma-bridge` branch                       |
+| 0.12.0  | `Stat` and `Field` drop `tone="default"`; `StatTone` and `FieldTone` are removed                                | pass `tone="neutral"`; use `StatProps['tone']`, `FieldProps['tone']`                  |
+| 0.12.0  | `Card`'s `tone` splits into `variant` and `tone`; `Card.Progress` and `Card.Metric` drop `default` and `accent` | `tone="default"`/`"accent"` on Card becomes `variant`; on the parts, `tone="neutral"` |
+| 0.12.0  | 12 component families lose the `Hds` prefix (`HdsAlertDialog` becomes `AlertDialog`)                            | import the bare name                                                                  |
+| 0.12.0  | `InfoPage` is removed                                                                                           | delete the code that uses it                                                          |
+| 0.14.0  | `TenantProvider` takes the tenant as a `slug` prop                                                              | pass `slug`                                                                           |
+| 0.16.0  | six unused primitive typography tokens are removed                                                              | replace each `var()` with your own value                                              |
+
+The 0.12.0 CHANGELOG entry for the `Hds` prefix rename says
+the families had "zero external consumers". Nobody checked that against the
+fleet: when hds#462 was filed, several hirobius repos still pinned ranges from
+`^0.9` to `^0.15`. The published tarballs settle the rename itself: none of
+them exports an `Hds`-prefixed name of those families, so it reaches only code
+built against unpublished HDS. A consumer claim is checked with `pnpm
+upgrade:consumers` ([Who is a consumer](https://github.com/hirobius/hds/blob/main/upgrade/README.md#who-is-a-consumer))
+before it justifies a break.
+
 ## 0.20.0 removals (2026-10-01)
 
 The first removal batches under step 4. hds#389 R1 removes names deprecated in
@@ -363,7 +390,7 @@ HoverCard also leave the curated core set; with Menu, Popover, Tooltip and HdsRo
 | `cmdkDescriptionVariants`   | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `cmdkKindBadgeVariants`     | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `cmdkRowVariants`           | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
-| `CommandPalette`            | `/patterns` | No replacement; the command palette is dropped.                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `CommandPalette`            | `/patterns` | No replacement in 0.20.0. A new root `CommandPalette` (hds#638) takes `items` and `onSelect`; it is not a drop-in.                              | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `CommandPaletteProps`       | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `ContextMenu`               | root        | No replacement; the right-click menu is dropped. `Menu` covers a menu behind a visible trigger.                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `DateInput`                 | root        | The date picker is dropped (ADR-034). Use `Input type="date"`.                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |

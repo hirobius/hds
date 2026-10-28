@@ -67,4 +67,6 @@ export const CORE_COMPONENTS = [
   'MetaLine',
   // hds#817
   'NavList',
+  // hds#638
+  'CommandPalette',
 ];

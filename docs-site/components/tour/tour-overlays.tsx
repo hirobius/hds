@@ -3,6 +3,7 @@
 import {
   AlertDialog,
   Button,
+  CommandPalette,
   Dialog,
   Menu,
   Popover,
@@ -12,10 +13,12 @@ import {
   Tooltip,
   useToast,
 } from '@hirobius/design-system';
+import { useState } from 'react';
 
-/** Everything that opens on top of the page: a menu, a popover, a tooltip, a dialog, an alert dialog and a sheet. */
+/** Everything that opens on top of the page: a menu, a popover, a tooltip, a dialog, an alert dialog, a sheet and a command palette. */
 export function TourOverlays() {
   const { toast } = useToast();
+  const [paletteOpen, setPaletteOpen] = useState(false);
   return (
     <Stack direction="row" gap="normal" wrap="wrap">
       <Menu>
@@ -112,6 +115,20 @@ export function TourOverlays() {
           </Sheet.Footer>
         </Sheet.Content>
       </Sheet>
+      <Button variant="secondary" onClick={() => setPaletteOpen(true)}>
+        Search commands
+      </Button>
+      <CommandPalette
+        open={paletteOpen}
+        onOpenChange={setPaletteOpen}
+        hotkey={false}
+        items={[
+          { id: 'export', label: 'Export tokens', group: 'Console' },
+          { id: 'copy', label: 'Copy link', group: 'Console' },
+          { id: 'releases', label: 'Go to releases', group: 'Navigation', shortcut: ['G', 'R'] },
+        ]}
+        onSelect={(item) => toast({ title: item.label, tone: 'info' })}
+      />
     </Stack>
   );
 }

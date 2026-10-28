@@ -23,6 +23,7 @@ import {
   Card,
   Checkbox,
   Combobox,
+  CommandPalette,
   Composer,
   Container,
   Dialog,
@@ -711,6 +712,36 @@ function ComposerDemo() {
   );
 }
 
+const PALETTE_ITEMS = [
+  { id: 'new-issue', label: 'New issue', group: 'Actions', shortcut: ['C'] },
+  { id: 'invite', label: 'Invite a teammate', group: 'Actions', keywords: ['member', 'user'] },
+  { id: 'archive', label: 'Archive project', group: 'Actions', disabled: true },
+  { id: 'inbox', label: 'Go to inbox', group: 'Navigation', shortcut: ['G', 'I'] },
+  { id: 'settings', label: 'Open settings', group: 'Navigation', keywords: ['preferences'] },
+  { id: 'theme', label: 'Switch theme', group: 'Preferences', shortcut: ['⌘', 'J'] },
+];
+
+function CommandPaletteDemo() {
+  const [open, setOpen] = useState(false);
+  const [ran, setRan] = useState<string | null>(null);
+  return (
+    <div style={demoRow}>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Search commands
+      </Button>
+      {ran && <span>Ran: {ran}</span>}
+      <CommandPalette
+        open={open}
+        onOpenChange={setOpen}
+        items={PALETTE_ITEMS}
+        onSelect={(item) => setRan(item.label)}
+        // ⌘K already opens the docs search here, so the demo opens from its button only.
+        hotkey={false}
+      />
+    </div>
+  );
+}
+
 function ThemeToggleDemo() {
   // Local state only: the demo shows the morph without switching the docs theme.
   const [dark, setDark] = useState(false);
@@ -1298,6 +1329,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Icon: IconDemo,
   InlineLink: InlineLinkDemo,
   Composer: ComposerDemo,
+  CommandPalette: CommandPaletteDemo,
   Kbd: KbdDemo,
   MetaLine: MetaLineDemo,
   NavList: NavListDemo,

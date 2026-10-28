@@ -979,6 +979,62 @@
       "default": null
     }
   },
+  "CommandPalette": {
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "emptyMessage": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "No results"
+    },
+    "hotkey": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "true"
+    },
+    "items": {
+      "type": "readonly CommandPaletteItem[]",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Command palette"
+    },
+    "onOpenChange": {
+      "type": "(open: boolean) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "onSelect": {
+      "type": "(item: CommandPaletteItem) => void",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "open": {
+      "type": "boolean",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "placeholder": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Type a command or search…"
+    }
+  },
   "Composer": {
     "attachments": {
       "type": "ComposerAttachment[]",

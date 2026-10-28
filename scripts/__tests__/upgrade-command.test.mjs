@@ -288,22 +288,69 @@ describe('installed version from each lockfile format', () => {
   });
 });
 
+// hds#462: the floor is 0.9.0, so a consumer that pinned ^0.9 is walked
+// through the backfilled 0.10.0 to 0.16.0 ledgers instead of being refused.
+describe('old-app fixture (lockfile at 0.9.0, the floor)', () => {
+  const OLD_APP = () =>
+    makeProject({
+      'package.json': pkgJson('old-app', { [PKG]: '^0.9.0', react: '^18.3.1' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.9.0' }),
+      'src/bridge.ts': `import { createEnvelope } from '${PKG}/protocol';\nexport const e = createEnvelope;\n`,
+      'src/Shell.tsx': [
+        `import { TenantProvider } from '${PKG}/contexts';`,
+        `import { Card, Stat, HdsAlertDialog } from '${PKG}';`,
+        '',
+        'export function Shell() {',
+        '  return (',
+        '    <TenantProvider>',
+        '      <Card tone="accent" />',
+        '      <Stat label="Users" value="12" tone="default" />',
+        '      <HdsAlertDialog />',
+        '    </TenantProvider>',
+        '  );',
+        '}',
+        '',
+      ].join('\n'),
+    });
+
+  it('lists the ./protocol, tone, Hds-prefix and TenantProvider steps, and is not refused', () => {
+    const { code, report } = json(OLD_APP(), '--check');
+    expect(report.refused).toBeNull();
+    expect(report.importers[0]).toMatchObject({ from: '0.9.0', source: 'lockfile' });
+    const listed = ids([...report.doByHand, ...report.fixedForYou, ...report.looksDifferent]);
+    expect(listed).toEqual(
+      expect.arrayContaining([
+        '0.10.0/exports/protocol',
+        '0.12.0/prop-value-mapped/Stat-tone',
+        '0.12.0/manual/Card-tone-variant',
+        '0.12.0/renamed/Hds-prefix',
+        '0.14.0/tenant/TenantProvider-slug',
+      ]),
+    );
+    // Only what the code uses.
+    expect(listed).not.toContain('0.12.0/prop-value-mapped/Field-tone');
+    expect(listed).not.toContain('0.12.0/removed/InfoPage');
+    expect(code).toBe(1);
+    expect(UpgradeReport.safeParse(report).success).toBe(true);
+  });
+});
+
 describe('refusals change nothing', () => {
   const floorMessage =
-    'Installed 0.9.0 is older than the oldest release this tool can upgrade from (0.16.0). Follow MIGRATIONS.md by hand up to 0.16.0, or ask in hirobius/hds.';
+    'Installed 0.8.1 is older than the oldest release this tool can upgrade from (0.9.0). Follow MIGRATIONS.md by hand up to 0.9.0, or ask in hirobius/hds.';
 
   it('below the floor: exit 2, the exact floor message, no file changed, never done', () => {
     const root = makeProject({
-      'package.json': pkgJson('old-app', { [PKG]: '^0.9.0' }),
+      'package.json': pkgJson('old-app', { [PKG]: '^0.8.1' }),
       'src/a.tsx': `import { HdsCheckbox } from '${PKG}';\n`,
     });
     const before = snapshotTree(root);
-    const res = run(root, '--from', '0.9.0');
+    const res = run(root, '--from', '0.8.1');
     expect(res.code).toBe(2);
     expect(res.stdout + res.stderr).toContain(floorMessage);
     expect(res.stdout + res.stderr).not.toMatch(/^Done/m);
     expect(snapshotTree(root)).toEqual(before);
-    const asJson = json(root, '--from', '0.9.0');
+    const asJson = json(root, '--from', '0.8.1');
     expect(asJson.code).toBe(2);
     expect(asJson.report.refused).toBe(floorMessage);
     expect(UpgradeReport.safeParse(asJson.report).success).toBe(true);
@@ -505,12 +552,12 @@ describe('already bumped by hand', () => {
 
   it('history below the floor: checks from the floor with a note, never the floor refusal', () => {
     const root = makeProject({
-      'package.json': pkgJson('app-pnpm', { [PKG]: '^0.15.0' }),
-      'pnpm-lock.yaml': pnpmLock({ '.': '0.15.0' }),
+      'package.json': pkgJson('app-pnpm', { [PKG]: '^0.8.1' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.8.1' }),
     });
     git(root, 'init', '-q');
     git(root, 'add', '-A');
-    git(root, 'commit', '-qm', 'on 0.15.0');
+    git(root, 'commit', '-qm', 'on 0.8.1');
     writeFiles(root, {
       'package.json': pkgJson('app-pnpm', { [PKG]: `^${TO}` }),
       'pnpm-lock.yaml': pnpmLock({ '.': TO }),
@@ -518,10 +565,10 @@ describe('already bumped by hand', () => {
     git(root, 'commit', '-qam', `to ${TO}`);
     const { code, report } = json(root, '--check');
     expect(report.refused).toBeNull();
-    expect(report.importers[0]).toMatchObject({ from: '0.16.0', source: 'git-log' });
+    expect(report.importers[0]).toMatchObject({ from: '0.9.0', source: 'git-log' });
     const note = report.doByHand.find((i) => i.id === 'tool/below-floor');
     expect(note).toMatchObject({ blocking: false });
-    expect(note.plain).toContain('0.15.0');
+    expect(note.plain).toContain('0.8.1');
     expect(note.plain).toContain('MIGRATIONS.md');
     expect(code).toBe(0);
     expect(UpgradeReport.safeParse(report).success).toBe(true);
@@ -650,13 +697,13 @@ describe('workspaces', () => {
     const root = makeProject({
       'package.json': { name: 'mono', private: true },
       'pnpm-workspace.yaml': "packages:\n  - 'apps/*'\n",
-      'pnpm-lock.yaml': pnpmLock({ 'apps/old': '0.15.0' }),
-      'apps/old/package.json': pkgJson('old', { [PKG]: '^0.15.0' }),
+      'pnpm-lock.yaml': pnpmLock({ 'apps/old': '0.8.1' }),
+      'apps/old/package.json': pkgJson('old', { [PKG]: '^0.8.1' }),
     });
     const res = run(root, '--check');
     expect(res.code).toBe(2);
     expect(res.stderr).toContain(
-      'Installed 0.15.0 is older than the oldest release this tool can upgrade from (0.16.0).',
+      'Installed 0.8.1 is older than the oldest release this tool can upgrade from (0.9.0).',
     );
     expect(res.stderr).toContain('In apps/old.');
   });
