@@ -1,1 +1,2 @@
 Button: taller, bolder buttons bound to size.<s>.height and fontWeight tokens (#760). Review: restored the icon-only width binding that a main merge dropped; refreshed pagination and inline-code markup snapshots.
+Merged main again; inline-code expectations follow the var() sizing.
