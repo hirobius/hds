@@ -78,12 +78,16 @@ describe('pattern name list', () => {
   it('holds every name the root exported from the 21 removed modules, types and parts included', () => {
     // 15 of the 21 modules were then deleted in 0.20.0 (hds#394 wave 4a): their
     // names are in codemods/removed-0.20.json, which the codemod reports instead.
-    const { modules: removedModules } = JSON.parse(
+    const { modules: removedModules, reintroduced = {} } = JSON.parse(
       readFileSync(join(REPO, 'codemods/removed-0.20.json'), 'utf8'),
     );
+    // A deleted module whose path a later component reused (command-palette.tsx,
+    // hds#638) is still a removal: its new exports are not the old ones.
+    const reused = (file) => (removedModules[file] ?? []).some((n) => n in reintroduced);
     const exported = ROOT_REMOVED_MODULES.flatMap((m) => {
       const file = `src/app/components/${m}.tsx`;
-      if (existsSync(join(REPO, file))) return collectModuleSymbols(join(REPO, file));
+      if (existsSync(join(REPO, file)) && !reused(file))
+        return collectModuleSymbols(join(REPO, file));
       expect(removedModules[file], `${file} is gone but not in removed-0.20.json`).toBeDefined();
       return [];
     });
