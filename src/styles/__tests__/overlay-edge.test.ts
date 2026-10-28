@@ -65,8 +65,8 @@ describe.each<Mode>(['Light', 'Dark'])('overlay edge in %s', (mode) => {
     expect(edge).toBeGreaterThanOrEqual(FLOOR[mode]);
   });
 
-  it('fills overlays per the open-layout spec (white / #262626)', () => {
-    expect(hex(FILL, mode)).toBe(mode === 'Light' ? '#ffffff' : '#262626');
+  it('fills overlays per the open-layout spec (white / neutral.800 #212630)', () => {
+    expect(hex(FILL, mode)).toBe(mode === 'Light' ? '#ffffff' : '#212630');
   });
 
   it('keeps popover text at WCAG AA on the overlay fill', () => {

@@ -1,0 +1,361 @@
+{
+  "impact": "look",
+  "plain": "Greys and graphite now lean slightly blue (midnight) and the dark page is #060a13 instead of pure black, so check any screen that pairs HDS greys with your own hard-coded greys or black.",
+  "steps": [
+    {
+      "id": "value-changed/--hds-edge-kbd",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The raised edge under buttons and Kbd follows the tinted fills; nothing to change unless you override --hds-edge-kbd.",
+      "detect": {
+        "cssVars": ["--hds-edge-kbd"],
+        "cssVarWrites": ["--hds-edge-kbd"]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-kbd::root",
+        "css-var-changed:--hds-edge-kbd:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-kbd:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--hds-edge-secondary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The raised edge under buttons and Kbd follows the tinted fills; nothing to change unless you override --hds-edge-secondary.",
+      "detect": {
+        "cssVars": ["--hds-edge-secondary"],
+        "cssVarWrites": ["--hds-edge-secondary"]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-secondary::root",
+        "css-var-changed:--hds-edge-secondary:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-secondary:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-100",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-100 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-100"],
+        "cssVarWrites": ["--primitive-color-graphite-100"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-100::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-200",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-200 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-200"],
+        "cssVarWrites": ["--primitive-color-graphite-200"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-200::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-300",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-300 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-300"],
+        "cssVarWrites": ["--primitive-color-graphite-300"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-300::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-400",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-400 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-400"],
+        "cssVarWrites": ["--primitive-color-graphite-400"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-400::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-50 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-50"],
+        "cssVarWrites": ["--primitive-color-graphite-50"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-50::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-500",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-500 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-500"],
+        "cssVarWrites": ["--primitive-color-graphite-500"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-500::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-600",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-600 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-600"],
+        "cssVarWrites": ["--primitive-color-graphite-600"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-600::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-700",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-700 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-700"],
+        "cssVarWrites": ["--primitive-color-graphite-700"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-700::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-800",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-800 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-800"],
+        "cssVarWrites": ["--primitive-color-graphite-800"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-800::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-900",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-900 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-900"],
+        "cssVarWrites": ["--primitive-color-graphite-900"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-900::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-950",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-950 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-950"],
+        "cssVarWrites": ["--primitive-color-graphite-950"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-950::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-100",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-100 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-100"],
+        "cssVarWrites": ["--primitive-color-neutral-100"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-100::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-200",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-200 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-200"],
+        "cssVarWrites": ["--primitive-color-neutral-200"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-200::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-300",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-300 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-300"],
+        "cssVarWrites": ["--primitive-color-neutral-300"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-300::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-350",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-350 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-350"],
+        "cssVarWrites": ["--primitive-color-neutral-350"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-350::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-400",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-400 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-400"],
+        "cssVarWrites": ["--primitive-color-neutral-400"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-400::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-450",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-450 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-450"],
+        "cssVarWrites": ["--primitive-color-neutral-450"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-450::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-50 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-50"],
+        "cssVarWrites": ["--primitive-color-neutral-50"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-50::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-500",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-500 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-500"],
+        "cssVarWrites": ["--primitive-color-neutral-500"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-500::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-550",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-550 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-550"],
+        "cssVarWrites": ["--primitive-color-neutral-550"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-550::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-600",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-600 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-600"],
+        "cssVarWrites": ["--primitive-color-neutral-600"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-600::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-700",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-700 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-700"],
+        "cssVarWrites": ["--primitive-color-neutral-700"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-700::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-800",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-800 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-800"],
+        "cssVarWrites": ["--primitive-color-neutral-800"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-800::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-850",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-850 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-850"],
+        "cssVarWrites": ["--primitive-color-neutral-850"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-850::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-900",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-900 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-900"],
+        "cssVarWrites": ["--primitive-color-neutral-900"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-900::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-950",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-950 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-950"],
+        "cssVarWrites": ["--primitive-color-neutral-950"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-950::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-neutral-black",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "neutral.black is now #060a13 (midnight), not #000000; use your own #000000 where you need true black.",
+      "detect": {
+        "cssVars": ["--primitive-color-neutral-black"],
+        "cssVarWrites": ["--primitive-color-neutral-black"]
+      },
+      "facts": ["css-var-changed:--primitive-color-neutral-black::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-muted",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark muted fills (surface.muted) moved to the new neutral.750 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-muted"],
+        "cssVarWrites": ["--semantic-color-surface-muted"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-raised",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark cards (surface.raised) moved to the new neutral.825 step so they stay distinct from the midnight page; if you set this variable yourself, check your cards in dark mode.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-raised"],
+        "cssVarWrites": ["--semantic-color-surface-raised"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]"
+      ]
+    }
+  ]
+}

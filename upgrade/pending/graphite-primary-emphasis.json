@@ -45,7 +45,8 @@
       "facts": [
         "css-var-changed:--hds-edge-primary::root",
         "css-var-changed:--hds-edge-primary:[data-theme=\"dark\"]",
-        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]"
       ]
     },
     {
@@ -76,7 +77,9 @@
         "css-var-changed:--semantic-accent-rest::root",
         "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
         "css-var-changed:--semantic-color-surface-accent::root",
-        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]"
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-lilac][data-theme=dark],[data-tenant=accent-lilac][data-theme=dark]"
       ]
     },
     {
@@ -96,7 +99,9 @@
         "css-var-changed:--semantic-accent-rest::root",
         "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
         "css-var-changed:--semantic-color-surface-accent::root",
-        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]"
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
       ]
     }
   ]

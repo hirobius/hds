@@ -97,13 +97,13 @@ describe.each(MODES)('raised edges (%s)', (mode) => {
 
 // Primary edges follow the graphite fill, near-black / near-white since hds#887.
 describe('C2 reference edges (graphite defaults)', () => {
-  it('light: secondary ≈ #bebebe, primary ≈ #020203', () => {
-    near(shipped('Light').secondary, '#bebebe', 1);
-    near(shipped('Light').primary, '#020203', 1);
+  it('light: secondary ≈ #bdbec0, primary ≈ #010207', () => {
+    near(shipped('Light').secondary, '#bdbec0', 1);
+    near(shipped('Light').primary, '#010207', 1);
   });
-  it('dark: secondary ≈ neutral-700 #404040, primary ≈ #a4a4a4', () => {
-    near(shipped('Dark').secondary, '#404040');
-    near(shipped('Dark').primary, '#a4a4a4');
+  it('dark: secondary ≈ neutral-700 #3d4147, primary ≈ #a5a6a9', () => {
+    near(shipped('Dark').secondary, '#3d4147');
+    near(shipped('Dark').primary, '#a5a6a9');
   });
 });
 

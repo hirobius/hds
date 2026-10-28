@@ -22,7 +22,9 @@ declare module 'react' {
     '--primitive-color-neutral-550'?: string | undefined;
     '--primitive-color-neutral-600'?: string | undefined;
     '--primitive-color-neutral-700'?: string | undefined;
+    '--primitive-color-neutral-750'?: string | undefined;
     '--primitive-color-neutral-800'?: string | undefined;
+    '--primitive-color-neutral-825'?: string | undefined;
     '--primitive-color-neutral-850'?: string | undefined;
     '--primitive-color-neutral-900'?: string | undefined;
     '--primitive-color-neutral-950'?: string | undefined;
