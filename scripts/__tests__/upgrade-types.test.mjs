@@ -7,7 +7,8 @@
  */
 import { describe, it, expect, afterEach } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { checkUpgradeLedger } from '../check-upgrade-ledger.mjs';
 import { diffSnapshots } from '../upgrade/diff.mjs';
 import { factImpact } from '../upgrade/ledger.mjs';
@@ -23,6 +24,8 @@ import {
   typesRepo,
   write,
 } from './helpers/upgrade-repo.mjs';
+
+const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 
 afterEach(cleanUpRepos);
 
@@ -69,6 +72,12 @@ describe('buildTypes', () => {
     const types = buildTypes(root)['.'];
     expect(types.CalloutProps).toEqual({ kind: 'type' });
     expect(types.Menu).toEqual({ kind: 'type' });
+  });
+
+  it('commits no absolute path: an import("/...") would differ between machines', () => {
+    const committed = readFileSync(join(REPO, 'docs/api/types-baseline.json'), 'utf8');
+    expect(committed).not.toMatch(/import\("/);
+    expect(committed).not.toContain(REPO);
   });
 
   it('is the snapshot’s types section', () => {
