@@ -105,7 +105,7 @@
       "id": "tenant/accent-pair-demo",
       "kind": "tenant",
       "impact": "look",
-      "plain": "Pages themed with the accent-pair-demo brand (data-brand=\"accent-pair-demo\") may look different, so check them after upgrading.",
+      "plain": "Pages themed with the accent-pair-demo brand (data-brand=\"accent-pair-demo\") no longer get its nav active colors and its accent fill is now near-black/near-white, so check them after upgrading.",
       "detect": {
         "regex": [
           "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])"
@@ -113,7 +113,14 @@
       },
       "facts": [
         "css-var-removed:--component-nav-bgActive",
-        "css-var-removed:--component-nav-borderActive"
+        "css-var-removed:--component-nav-borderActive",
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accent::root",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]"
       ]
     }
   ]
