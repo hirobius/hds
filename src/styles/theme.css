@@ -361,16 +361,21 @@
   .w-10[class*='h-10'] {
     min-width: var(--primitive-size-interactive-min);
   }
+}
 
-  /* -- Row and small-button touch targets (hds#522) --------------------------
-   * Checkbox/Radio/Toggle rows, Pagination buttons and the copy buttons are
-   * below 44px on touch. The class lifts the hit area only; desktop is unchanged. */
+/* -- Touch size for small controls (hds#522, hds#750) -------------------------
+ * sm Button, Tabs and SegmentedControl triggers, Tag, Disclosure trigger, Input
+ * clear, Checkbox/Radio/Toggle rows, Pagination and the copy buttons sit under
+ * 44px. On a coarse pointer (any phone or tablet, whatever its width) or a narrow
+ * viewport, the hooks lift them to semantic.size.touchTarget. A fine pointer on a
+ * wide viewport matches neither query, so desktop density is unchanged. */
+@media (max-width: 639px), (pointer: coarse) {
   .hds-touch-row {
-    min-height: var(--primitive-size-interactive-min);
+    min-height: var(--semantic-size-touchTarget);
   }
   .hds-touch-target {
-    min-height: var(--primitive-size-interactive-min);
-    min-width: var(--primitive-size-interactive-min);
+    min-height: var(--semantic-size-touchTarget);
+    min-width: var(--semantic-size-touchTarget);
   }
 }
 
