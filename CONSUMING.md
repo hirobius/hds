@@ -90,6 +90,22 @@ references when you use them on the server (`tokens.color.primary` in a layout,
 
 **Density.** Put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
 
+### What you may select on
+
+In tests and styles, select HDS elements only by:
+
+- Role and accessible name, as a screen reader meets them: `getByRole('button', { name: 'Save' })`.
+- ARIA states such as `aria-checked`, `aria-selected`, `aria-expanded` and `aria-disabled`.
+- The `data-*` attributes HDS renders, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-radix-*`, which belong to Radix.
+- The `hds-*` classes and the manifest's `publicClasses`, which the CSS contract tracks.
+- Never other class names, ids, tag names or how elements nest: those change without an upgrade step.
+
+A change to a role, a name, a state or a `data-*` value ships as a `behavior`
+upgrade step whose detect pattern finds the code that relied on it, so
+`npx @hirobius/design-system@latest upgrade --check` points you at it. The
+record is [`docs/baselines/dom-a11y.json`](docs/baselines/dom-a11y.json), one
+entry per docs demo.
+
 ### Token names and size vs space
 
 Never guess a token name: `pnpm exec hds-tokens search content tertiary` says whether

@@ -47,6 +47,18 @@ export const SKILL_PATH = 'skills/hds-consumer/SKILL.md';
 export const LINT_INSTALL_LINE =
   'pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"';
 
+/**
+ * What a consumer's tests and styles may select on (hds#468). Copied verbatim
+ * into CONSUMING.md "What you may select on" (a test pins the match).
+ */
+export const SELECT_ON = [
+  "Role and accessible name, as a screen reader meets them: `getByRole('button', { name: 'Save' })`.",
+  'ARIA states such as `aria-checked`, `aria-selected`, `aria-expanded` and `aria-disabled`.',
+  'The `data-*` attributes HDS renders, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-radix-*`, which belong to Radix.',
+  "The `hds-*` classes and the manifest's `publicClasses`, which the CSS contract tracks.",
+  'Never other class names, ids, tag names or how elements nest: those change without an upgrade step.',
+];
+
 const PKG = '@hirobius/design-system';
 const PATTERNS = `${PKG}/patterns`;
 
@@ -216,6 +228,12 @@ export function buildConsumerSkill({
       "## Do and don't",
       '',
       dos.map((d) => `- ${d}`).join('\n'),
+      '',
+      '## What you may select on',
+      '',
+      'In tests and styles, select HDS elements only by:',
+      '',
+      SELECT_ON.map((rule) => `- ${rule}`).join('\n'),
       '',
       '## Steps',
       '',

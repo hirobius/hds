@@ -20,6 +20,9 @@
  * one (propFacts below): a prop removed or renamed, a prop now required, an
  * allowed value removed, a default changed.
  *
+ * Dom facts (hds#468) come from the snapshots' dom sections when both have one
+ * (domFacts below): a demo whose roles, names, states or data-* changed.
+ *
  * Renames are not facts: a diff sees `HdsCheckbox` leave and nothing arrive.
  * The ledger names the survivor from the codemod's data.
  *
@@ -57,6 +60,12 @@ const PROP_FACT_KINDS = [
   'prop-default-changed',
 ];
 
+/**
+ * hds#468: a demo whose DOM and accessibility outline changed (roles, accessible
+ * names, states, data-* attributes; ./dom.mjs), read from both snapshots' `dom` section.
+ */
+const DOM_FACT_KINDS = ['dom-changed'];
+
 /** Fact kinds, in the order a diff lists them. */
 export const FACT_KINDS = [
   'removed',
@@ -72,6 +81,7 @@ export const FACT_KINDS = [
   'bin-added',
   ...CSS_FACT_KINDS,
   ...PROP_FACT_KINDS,
+  ...DOM_FACT_KINDS,
 ];
 
 /** The stable id of a fact. */
@@ -335,6 +345,18 @@ function propFacts(prev, next) {
 }
 
 /**
+ * The dom facts between two `dom` sections (./dom.mjs, hds#468): one
+ * dom-changed per demo both record whose outline differs. A demo that left
+ * goes with its component, a removed export.
+ */
+function domFacts(prev, next) {
+  return Object.keys(prev)
+    .sort()
+    .filter((name) => next[name] && !same(prev[name], next[name]))
+    .map((name) => fact({ kind: 'dom-changed', name }));
+}
+
+/**
  * Every fact between two snapshots, sorted by kind and then by entry and name.
  * CSS facts only when both carry a `css` section: a snapshot read from source
  * (snapshotFromSource) has none, because the stylesheets exist only after a
@@ -378,6 +400,7 @@ export function diffSnapshots(prev, next) {
     ),
     ...(prev.css && next.css ? cssFacts(prev.css, next.css) : []),
     ...(prev.props && next.props ? propFacts(prev.props, next.props) : []),
+    ...(prev.dom && next.dom ? domFacts(prev.dom, next.dom) : []),
   ];
   return facts.sort(compareFacts);
 }

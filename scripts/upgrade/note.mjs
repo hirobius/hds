@@ -181,6 +181,10 @@ function draftFor(fact) {
         impact,
         detect: { jsx: [fact.component] },
       };
+    // hds#468: the gate refuses this step until its author adds detect.regex,
+    // the selector or query consumer code would use on what changed.
+    case 'dom-changed':
+      return { id: `behavior/${fact.name}.dom`, impact, detect: { jsx: [fact.name] } };
     default:
       throw new Error(`no step for a ${fact.kind} fact`);
   }

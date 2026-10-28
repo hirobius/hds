@@ -266,6 +266,16 @@ Never:
 - Route gaps upstream: a missing component or token is an issue and PR against HDS, not a downstream patch.
 - Mark the HDS scope with `data-hds` on `<html>`, `<body>` or a wrapper, and on portal containers for overlays that render into `document.body`.
 
+## What you may select on
+
+In tests and styles, select HDS elements only by:
+
+- Role and accessible name, as a screen reader meets them: `getByRole('button', { name: 'Save' })`.
+- ARIA states such as `aria-checked`, `aria-selected`, `aria-expanded` and `aria-disabled`.
+- The `data-*` attributes HDS renders, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-radix-*`, which belong to Radix.
+- The `hds-*` classes and the manifest's `publicClasses`, which the CSS contract tracks.
+- Never other class names, ids, tag names or how elements nest: those change without an upgrade step.
+
 ## Steps
 
 Finish every task with the last step below.

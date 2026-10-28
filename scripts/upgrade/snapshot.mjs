@@ -95,6 +95,7 @@ import { TOOLING_EXPORTS, readJsExportEntries } from '../lib/package-entries.mjs
 import { buildCssContract, readCssContract } from '../lib/css-contract.mjs';
 import { formatJson, sortedObject } from './format.mjs';
 import { buildProps, readPropsBaseline } from './props.mjs';
+import { readDomBaseline } from './dom.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
@@ -160,6 +161,9 @@ const withCss = (snapshot, css) => (css ? { ...snapshot, css } : snapshot);
 /** `snapshot` with its props section, when there is one. */
 const withProps = (snapshot, props) => (props ? { ...snapshot, props } : snapshot);
 
+/** `snapshot` with its dom section (hds#468), when there is one. */
+const withDom = (snapshot, dom) => (dom ? { ...snapshot, dom } : snapshot);
+
 /**
  * The snapshot of an unpacked package directory (a published tarball's
  * `package/`, or the repo after build:lib).
@@ -222,7 +226,11 @@ export function snapshotFromSource(root, { css = null } = {}) {
     entries[key] = entryNames(root, file);
   }
   const props = buildProps(root) ?? readPropsBaseline(root);
-  return withCss(withProps(packageFacts(pkg, exportsMap, entries), props), css);
+  const facts = withDom(
+    withProps(packageFacts(pkg, exportsMap, entries), props),
+    readDomBaseline(root),
+  );
+  return withCss(facts, css);
 }
 
 /** `npm pack <spec>` into `destination`; returns the tarball path. */
