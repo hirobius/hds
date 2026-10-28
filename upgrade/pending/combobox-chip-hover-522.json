@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Combobox selection chips now darken on hover in light theme; drop any local CSS that added a chip hover fill."
+}
