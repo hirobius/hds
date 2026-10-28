@@ -54,7 +54,7 @@ export async function runCodemod(name, options) {
   const file = join(HERE, CODEMODS[name].file);
   if (options.child) {
     // A child run gets no `steps`: hds-prop-map then reads the steps this
-    // package ships, as `npx hds-prop-map` does (--ledger names another file).
+    // package ships, as the bin run alone does (--ledger names another file).
     const args = [file, '--root', options.root];
     if (options.check) args.push('--check');
     if (options.dryRun) args.push('--dry-run');
