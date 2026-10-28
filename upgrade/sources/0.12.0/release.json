@@ -1,5 +1,5 @@
 {
-  "$comment": "Frozen inputs of the 0.12.0 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.12.0 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.12.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.12.0 shipped (its section starts on line 3); its needle names the commit of the entry and is the text that finds the line. npm no longer serves the tarballs up to 0.13.0, so the snapshots up to that release were read from the source tree at its git tag (snapshot.mjs --source), which reads to the same snapshot as the tarball less its css section (checked against the 0.13.1 to 0.16.0 tarballs). The Hds prefix rename (254d9eb) sits in the 0.12.0 section, and its entry says those families shipped in 0.12.0/0.13.0. The snapshots decide it: no snapshot exports any of the 13 Hds-prefixed names, and 0.12.0 already exports each new one, so the rename landed before 0.12.0 was published. Its steps reach only code built against unpublished HDS, so they list no fact.",
+  "$comment": "Frozen inputs of the 0.12.0 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.12.0 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.12.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.12.0 shipped (its section starts on line 3); its needle is the text that finds the line, and opens with the commit of the entry when the entry names one. npm no longer serves the tarballs up to 0.13.0, so the snapshots up to that release were read from the source tree at its git tag (snapshot.mjs --source), which reads to the same snapshot as the tarball less its css section (checked against the 0.13.1 to 0.16.0 tarballs). The Hds prefix rename (254d9eb) sits in the 0.12.0 section, and its entry says those families shipped in 0.12.0/0.13.0. The snapshots decide it: no snapshot exports any of the 13 Hds-prefixed names, and 0.12.0 already exports each new one, so the rename landed before 0.12.0 was published. Its steps reach only code built against unpublished HDS, so they list no fact.",
   "version": "0.12.0",
   "previous": "0.11.0",
   "date": "2026-07-08",
@@ -38,8 +38,8 @@
       "detect": {
         "regex": ["<Stat\\b[^>]*\\btone=\\{?\\s*['\"]default['\"]"]
       },
-      "needle": "Breaking (value rename): `Stat` and `Field` rename their `tone=\"default\"`",
-      "source": "CHANGELOG.md:140"
+      "needle": "4420596: Variant contract (#60, Phase 1)",
+      "source": "CHANGELOG.md:138"
     },
     {
       "kind": "prop-value-mapped",
@@ -56,8 +56,8 @@
       "detect": {
         "regex": ["<Field\\b[^>]*\\btone=\\{?\\s*['\"]default['\"]"]
       },
-      "needle": "Breaking (value rename): `Stat` and `Field` rename their `tone=\"default\"`",
-      "source": "CHANGELOG.md:140"
+      "needle": "4420596: Variant contract (#60, Phase 1)",
+      "source": "CHANGELOG.md:138"
     },
     {
       "kind": "removed",
@@ -73,8 +73,8 @@
         ]
       },
       "facts": ["removed:.:FieldTone", "removed:.:StatTone"],
-      "needle": "Breaking (value rename): `Stat` and `Field` rename their `tone=\"default\"`",
-      "source": "CHANGELOG.md:140"
+      "needle": "4420596: Variant contract (#60, Phase 1)",
+      "source": "CHANGELOG.md:138"
     },
     {
       "kind": "manual",
@@ -84,8 +84,8 @@
       "detect": {
         "regex": ["<Card\\s[^>]*\\btone=\\{?\\s*['\"](?:default|accent)['\"]"]
       },
-      "needle": "Breaking (value rename): `Card`'s single `tone` prop is now two axes",
-      "source": "CHANGELOG.md:144"
+      "needle": "cca9ba0: Variant contract (#60, Phase 3)",
+      "source": "CHANGELOG.md:142"
     },
     {
       "kind": "manual",
@@ -97,8 +97,8 @@
           "<Card\\.?(?:Progress|Metric)\\b[^>]*\\btone=\\{?\\s*['\"](?:default|accent)['\"]"
         ]
       },
-      "needle": "`Card.Progress` and `Card.Metric`'s `tone` prop drops the `'accent'` value",
-      "source": "CHANGELOG.md:149"
+      "needle": "cca9ba0: Variant contract (#60, Phase 3)",
+      "source": "CHANGELOG.md:142"
     },
     {
       "kind": "renamed",

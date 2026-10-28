@@ -207,7 +207,7 @@ each CHANGELOG entry and its commit (`upgrade/releases/0.10.0.json` to
 | 0.14.0  | `TenantProvider` takes the tenant as a `slug` prop                                                              | pass `slug`                                                                           |
 | 0.16.0  | six unused primitive typography tokens are removed                                                              | replace each `var()` with your own value                                              |
 
-**A correction.** The 0.12.0 CHANGELOG entry for the `Hds` prefix rename says
+The 0.12.0 CHANGELOG entry for the `Hds` prefix rename says
 the families had "zero external consumers". Nobody checked that against the
 fleet: when hds#462 was filed, several hirobius repos still pinned ranges from
 `^0.9` to `^0.15`. The published tarballs settle the rename itself: none of

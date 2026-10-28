@@ -1,5 +1,5 @@
 {
-  "$comment": "Frozen inputs of the 0.16.0 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.16.0 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.16.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.16.0 shipped (its section starts on line 3); its needle names the commit of the entry and is the text that finds the line.",
+  "$comment": "Frozen inputs of the 0.16.0 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.16.0 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.16.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.16.0 shipped (its section starts on line 3); its needle is the text that finds the line, and opens with the commit of the entry when the entry names one. The type-ramp entry names no commit; the tokens left in a00eda30 (refactor(tokens): delete six tokens and a second, shadow type ramp).",
   "version": "0.16.0",
   "previous": "0.15.0",
   "date": "2026-09-26",

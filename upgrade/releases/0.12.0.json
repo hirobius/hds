@@ -49,7 +49,7 @@
         "removed:.:StatTone"
       ],
       "backfilled": true,
-      "source": "CHANGELOG.md:140"
+      "source": "CHANGELOG.md:138"
     },
     {
       "id": "0.12.0/renamed/Hds-prefix",
@@ -99,7 +99,7 @@
         }
       },
       "backfilled": true,
-      "source": "CHANGELOG.md:140"
+      "source": "CHANGELOG.md:138"
     },
     {
       "id": "0.12.0/prop-value-mapped/Stat-tone",
@@ -119,7 +119,7 @@
         }
       },
       "backfilled": true,
-      "source": "CHANGELOG.md:140"
+      "source": "CHANGELOG.md:138"
     },
     {
       "id": "0.12.0/peer/lenis",
@@ -143,7 +143,7 @@
         ]
       },
       "backfilled": true,
-      "source": "CHANGELOG.md:144"
+      "source": "CHANGELOG.md:142"
     },
     {
       "id": "0.12.0/manual/CardProgress-CardMetric-tone",
@@ -156,7 +156,7 @@
         ]
       },
       "backfilled": true,
-      "source": "CHANGELOG.md:149"
+      "source": "CHANGELOG.md:142"
     }
   ]
 }
