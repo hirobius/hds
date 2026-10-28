@@ -8,7 +8,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 import { resolveAlias } from '../../../scripts/build-tokens.mjs';
-import { contrastRatio, hexToLuminance } from '../../app/utils/colorUtils';
+import { contrastRatio } from '../../app/utils/colorUtils';
 
 const ROOT = resolve(__dirname, '../../..');
 const TOKENS = JSON.parse(readFileSync(resolve(ROOT, 'hirobius.tokens.json'), 'utf8')) as Record<
@@ -45,13 +45,26 @@ const BLACK = '#000000';
 const INK = 'primitive.color.neutral.900';
 
 describe('graphite (default accent)', () => {
-  it('is a touch lighter in light mode and a touch darker in dark mode than 0.26', () => {
-    expect(hexToLuminance(hex('semantic.accent.rest', 'Light'))).toBeGreaterThan(
-      hexToLuminance('#433a3f'),
-    );
-    expect(hexToLuminance(hex('semantic.accent.rest', 'Dark'))).toBeLessThan(
-      hexToLuminance('#d4d0d2'),
-    );
+  // hds#887: the 0.27 graphite fill (#4a4146 / #cbc6c9) read washed-out and, in
+  // dark, close to disabled. Rest is now near-black / near-white.
+  it('fills near-black in light and near-white in dark (hds#887)', () => {
+    expect(hex('semantic.accent.rest', 'Light')).toBe('#19161a');
+    expect(hex('semantic.accent.rest', 'Dark')).toBe('#f5f4f4');
+    for (const mode of ['Light', 'Dark'] as const) {
+      expect(hex('semantic.color.surface.accent', mode)).toBe(hex('semantic.accent.rest', mode));
+    }
+  });
+
+  it('stands well clear of the page and the disabled primary fill (hds#887)', () => {
+    for (const mode of ['Light', 'Dark'] as const) {
+      const fill = hex('semantic.color.surface.accent', mode);
+      expect(contrastRatio(fill, hex('semantic.color.surface.page', mode))).toBeGreaterThanOrEqual(
+        15,
+      );
+      expect(contrastRatio(fill, hex('semantic.color.surface.muted', mode))).toBeGreaterThanOrEqual(
+        13,
+      );
+    }
   });
 
   it('keeps on-accent text AAA in both modes', () => {
@@ -66,9 +79,10 @@ describe('graphite (default accent)', () => {
   });
 
   it('keeps hover a visible step from rest', () => {
-    expect(
-      contrastRatio(hex('semantic.accent.rest', 'Light'), hex('semantic.accent.hover', 'Light')),
-    ).toBeGreaterThan(1.2);
+    const step = (mode: 'Light' | 'Dark') =>
+      contrastRatio(hex('semantic.accent.rest', mode), hex('semantic.accent.hover', mode));
+    expect(step('Light')).toBeGreaterThan(1.2);
+    expect(step('Dark')).toBeGreaterThanOrEqual(1.1);
   });
 });
 
