@@ -32,7 +32,8 @@ gates on it.
   `docs/api/releases/` are built from the published tarballs and diffed.
 - **Backfill.** Ledgers for 0.17.0 to 0.20.0 were written from the tarballs, with
   frozen per-release sources so later edits cannot rewrite a shipped ledger. The
-  floor is 0.16.0 (hds#450, PR #542).
+  floor is 0.16.0 (hds#450, PR #542), lowered to 0.9.0 by hds#462 with backfilled
+  ledgers for 0.10.0 to 0.16.0.
 - **Gate.** `check-upgrade-ledger` runs in `pretest`. It fails a fact with no step, a
   changeset with no `upgrade/pending` note, and a breaking change under less than a
   minor below 1.0. It also fails a major bump or a 1.0 version without

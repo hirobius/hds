@@ -1,0 +1,30 @@
+{
+  "$comment": "Frozen inputs of the 0.14.0 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.14.0 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.14.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.14.0 shipped (its section starts on line 3); its needle names the commit of the entry and is the text that finds the line.",
+  "version": "0.14.0",
+  "previous": "0.13.1",
+  "date": "2026-09-23",
+  "summary": "TenantProvider takes the tenant as a slug prop, dev warnings fire in consumer builds, and types resolve under node16.",
+  "backfilled": true,
+  "steps": [
+    {
+      "kind": "tenant",
+      "subject": "TenantProvider-slug",
+      "impact": "behavior",
+      "plain": "TenantProvider no longer reads VITE_TENANT_SLUG, which never worked once installed; pass the tenant as its slug prop, or it sets no data-brand or data-tenant attribute.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/contexts",
+            "names": ["TenantProvider"]
+          }
+        ],
+        "jsx": ["TenantProvider"]
+      },
+      "done": {
+        "regex": ["<TenantProvider\\b[^>]*\\bslug="]
+      },
+      "needle": "**Breaking:** `TenantProvider` takes the tenant as a `slug` prop instead of reading an",
+      "source": "CHANGELOG.md:22"
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "$comment": "Frozen inputs of the 0.12.0 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.12.0 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.12.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.12.0 shipped (its section starts on line 3); its needle names the commit of the entry and is the text that finds the line. npm no longer serves the tarballs up to 0.13.0, so the snapshots up to that release were read from the source tree at its git tag (snapshot.mjs --source), which reads to the same snapshot as the tarball less its css section (checked against the 0.13.1 to 0.16.0 tarballs). The Hds prefix rename (254d9eb) sits in the 0.12.0 section, and its entry says those families shipped in 0.12.0/0.13.0. The snapshots decide it: no snapshot exports any of the 13 Hds-prefixed names, and 0.12.0 already exports each new one, so the rename landed before 0.12.0 was published. Its steps reach only code built against unpublished HDS, so they list no fact.",
+  "version": "0.12.0",
+  "previous": "0.11.0",
+  "date": "2026-07-08",
+  "summary": "Stat, Field and Card move to the shared tone set and InfoPage is removed; adds dozens of components, /brand and /scroll.",
+  "backfilled": true,
+  "steps": [
+    {
+      "kind": "removed",
+      "subject": "InfoPage",
+      "impact": "breaking",
+      "plain": "InfoPage and InfoPageProps are removed with no replacement; it was portfolio scaffolding, so delete the code that uses it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["InfoPage", "InfoPageProps"]
+          }
+        ]
+      },
+      "facts": ["removed:.:InfoPage", "removed:.:InfoPageProps"],
+      "needle": "36e3eb1: Remove `InfoPage` from the public API (#49)",
+      "source": "CHANGELOG.md:123"
+    },
+    {
+      "kind": "prop-value-mapped",
+      "subject": "Stat-tone",
+      "impact": "breaking",
+      "plain": "Stat no longer takes tone=\"default\"; pass tone=\"neutral\" or leave tone out, which renders the same.",
+      "prop": {
+        "component": "Stat",
+        "name": "tone",
+        "values": {
+          "default": "neutral"
+        }
+      },
+      "detect": {
+        "regex": ["<Stat\\b[^>]*\\btone=\\{?\\s*['\"]default['\"]"]
+      },
+      "needle": "Breaking (value rename): `Stat` and `Field` rename their `tone=\"default\"`",
+      "source": "CHANGELOG.md:140"
+    },
+    {
+      "kind": "prop-value-mapped",
+      "subject": "Field-tone",
+      "impact": "breaking",
+      "plain": "Field no longer takes tone=\"default\"; pass tone=\"neutral\" or leave tone out, which renders the same.",
+      "prop": {
+        "component": "Field",
+        "name": "tone",
+        "values": {
+          "default": "neutral"
+        }
+      },
+      "detect": {
+        "regex": ["<Field\\b[^>]*\\btone=\\{?\\s*['\"]default['\"]"]
+      },
+      "needle": "Breaking (value rename): `Stat` and `Field` rename their `tone=\"default\"`",
+      "source": "CHANGELOG.md:140"
+    },
+    {
+      "kind": "removed",
+      "subject": "StatTone-FieldTone",
+      "impact": "breaking",
+      "plain": "The StatTone and FieldTone types are removed; use StatProps[\"tone\"] and FieldProps[\"tone\"] instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["StatTone", "FieldTone"]
+          }
+        ]
+      },
+      "facts": ["removed:.:FieldTone", "removed:.:StatTone"],
+      "needle": "Breaking (value rename): `Stat` and `Field` rename their `tone=\"default\"`",
+      "source": "CHANGELOG.md:140"
+    },
+    {
+      "kind": "manual",
+      "subject": "Card-tone-variant",
+      "impact": "breaking",
+      "plain": "Card's tone prop is split in two: change tone=\"default\" to variant=\"default\" and tone=\"accent\" to variant=\"accent\"; tone=\"success\", \"warning\" and \"danger\" stay as they are.",
+      "detect": {
+        "regex": ["<Card\\s[^>]*\\btone=\\{?\\s*['\"](?:default|accent)['\"]"]
+      },
+      "needle": "Breaking (value rename): `Card`'s single `tone` prop is now two axes",
+      "source": "CHANGELOG.md:144"
+    },
+    {
+      "kind": "manual",
+      "subject": "CardProgress-CardMetric-tone",
+      "impact": "breaking",
+      "plain": "Card.Progress and Card.Metric no longer take tone=\"default\" or tone=\"accent\"; pass tone=\"neutral\", or leave tone out, for the old default look.",
+      "detect": {
+        "regex": [
+          "<Card\\.?(?:Progress|Metric)\\b[^>]*\\btone=\\{?\\s*['\"](?:default|accent)['\"]"
+        ]
+      },
+      "needle": "`Card.Progress` and `Card.Metric`'s `tone` prop drops the `'accent'` value",
+      "source": "CHANGELOG.md:149"
+    },
+    {
+      "kind": "renamed",
+      "subject": "Hds-prefix",
+      "impact": "breaking",
+      "plain": "Twelve component families, such as HdsAlertDialog and HdsDateInput, lost their Hds prefix before any release shipped them, so import each by its bare name (AlertDialog, DateInput).",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsToggleButton",
+              "HdsAlertDialog",
+              "HdsHoverCard",
+              "HdsContextMenu",
+              "HdsAspectRatio",
+              "HdsMultiSelector",
+              "HdsMultiSelectorOption",
+              "HdsLightbox",
+              "HdsCalendar",
+              "HdsTimeInput",
+              "HdsDateInput",
+              "HdsDateRangeInput",
+              "HdsDateTimeInput"
+            ]
+          }
+        ]
+      },
+      "needle": "254d9eb: Drop the `Hds` prefix from 12 net-new leaf component families",
+      "source": "CHANGELOG.md:75"
+    },
+    {
+      "kind": "peer",
+      "subject": "lenis",
+      "impact": "none",
+      "plain": "lenis is a new optional peer dependency, needed only if you use SmoothScroll from the new @hirobius/design-system/scroll subpath.",
+      "facts": ["peer-changed:lenis"],
+      "needle": "b1057ac: Add the `@hirobius/design-system/scroll` subpath (#116)",
+      "source": "CHANGELOG.md:137"
+    }
+  ]
+}

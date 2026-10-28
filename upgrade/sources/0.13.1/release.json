@@ -1,0 +1,9 @@
+{
+  "$comment": "Frozen inputs of the 0.13.1 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.13.1 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.13.1.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.13.1 shipped (its section starts on line 3); its needle names the commit of the entry and is the text that finds the line.",
+  "version": "0.13.1",
+  "previous": "0.13.0",
+  "date": "2026-09-20",
+  "summary": "Manifest Figma links, package metadata and a tenant overlay CSS fix; nothing for a consumer to change.",
+  "backfilled": true,
+  "steps": []
+}

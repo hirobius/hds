@@ -72,6 +72,10 @@
  * source path skipped them while the tarball path read them, so every tree
  * after 0.21.0 diffed to removed:./eslint-plugin:default, a fact nobody made.
  *
+ * An entry that ships plain JavaScript with no `types` condition (0.9.0's
+ * ./protocol, protocol/envelope.mjs) is read from the file it points at, on
+ * both paths, so its removal in 0.10.0 is a fact (hds#462).
+ *
  * Usage:
  *   node scripts/upgrade/snapshot.mjs --from-npm <version>   # writes docs/api/releases/<version>.json
  *   node scripts/upgrade/snapshot.mjs --from-npm <version> --check   # exit 1 if that file differs
@@ -91,7 +95,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { collectModuleSymbols } from '../lib/check-public-api.mjs';
-import { TOOLING_EXPORTS, readJsExportEntries } from '../lib/package-entries.mjs';
+import { TOOLING_EXPORTS, readJsExportEntries, untypedJsFile } from '../lib/package-entries.mjs';
 import { buildCssContract, readCssContract } from '../lib/css-contract.mjs';
 import { formatJson, sortedObject } from './format.mjs';
 import { buildProps, readPropsBaseline } from './props.mjs';
@@ -106,7 +110,9 @@ export const RELEASES_DIR = join(REPO, 'docs/api/releases');
  */
 function moduleId(dir, file) {
   const path = relative(dir, file).split(sep).join('/');
-  return path.replace(/^dist\/types\//, '').replace(/\.d\.[cm]?ts$|\.[cm]?ts$|\.tsx$/, '');
+  return path
+    .replace(/^dist\/types\//, '')
+    .replace(/\.d\.[cm]?ts$|\.[cm]?ts$|\.tsx$|\.[cm]?js$/, '');
 }
 
 function binMap(pkg) {
@@ -144,6 +150,20 @@ function packageFacts(pkg, exportsMap, entries) {
 const exportsOf = (pkg) =>
   typeof pkg.exports === 'string' ? { '.': pkg.exports } : (pkg.exports ?? {});
 
+/**
+ * The file of an entry that ships untyped JavaScript (untypedJsFile), which
+ * must be in `root`; null for any other entry.
+ */
+function shippedJsFile(root, key, value) {
+  const rel = untypedJsFile(value);
+  if (!rel) return null;
+  const file = join(root, rel);
+  if (!existsSync(file)) {
+    throw new Error(`exports["${key}"] ships ${rel} with no types, and it is not in ${root}`);
+  }
+  return file;
+}
+
 const readPackageJson = (dir) => JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
 
 /**
@@ -172,6 +192,11 @@ export function snapshotPackage(dir) {
   for (const key of Object.keys(exportsMap)) {
     const value = exportsMap[key];
     if (!value || typeof value !== 'object') continue; // stylesheets, ./package.json
+    const js = shippedJsFile(dir, key, value);
+    if (js) {
+      entries[key] = entryNames(dir, js);
+      continue;
+    }
     if (typeof value.types !== 'string') {
       throw new Error(`exports["${key}"] has no types condition, so its names cannot be read`);
     }
@@ -217,7 +242,10 @@ export function snapshotFromSource(root, { css = null } = {}) {
   const entries = {};
   for (const [key, value] of Object.entries(exportsMap)) {
     if (!value || typeof value !== 'object') continue; // stylesheets, ./package.json
-    const file = built.get(key) ?? (TOOLING_EXPORTS.has(key) && shippedTypesFile(root, key, value));
+    const file =
+      built.get(key) ??
+      shippedJsFile(root, key, value) ??
+      (TOOLING_EXPORTS.has(key) && shippedTypesFile(root, key, value));
     if (!file) throw new Error(`exports["${key}"] has no source snapshot.mjs can read`);
     entries[key] = entryNames(root, file);
   }

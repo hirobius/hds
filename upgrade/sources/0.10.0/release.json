@@ -1,0 +1,49 @@
+{
+  "$comment": "Frozen inputs of the 0.10.0 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.10.0 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.10.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.10.0 shipped (its section starts on line 3); its needle names the commit of the entry and is the text that finds the line. npm no longer serves the tarballs up to 0.13.0, so the snapshots up to that release were read from the source tree at its git tag (snapshot.mjs --source), which reads to the same snapshot as the tarball less its css section (checked against the 0.13.1 to 0.16.0 tarballs).",
+  "version": "0.10.0",
+  "previous": "0.9.0",
+  "date": "2026-07-02",
+  "summary": "The ./protocol subpath, the signed envelope of the retired Figma bridge, is removed.",
+  "backfilled": true,
+  "steps": [
+    {
+      "kind": "exports",
+      "subject": "protocol",
+      "impact": "breaking",
+      "plain": "The @hirobius/design-system/protocol subpath is removed; if your code imports it, copy protocol/envelope.mjs from the archive/figma-bridge branch into your own code.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/protocol",
+            "names": [
+              "CLOCK_SKEW_MS",
+              "MAX_AGE_MS",
+              "REPLAY_SET_LIMIT",
+              "_replaySetSize",
+              "_resetReplaySet",
+              "createEnvelope",
+              "default",
+              "stableStringify",
+              "verifyEnvelope"
+            ]
+          }
+        ],
+        "regex": ["['\"]@hirobius/design-system/protocol['\"]"]
+      },
+      "facts": [
+        "removed:./protocol:CLOCK_SKEW_MS",
+        "removed:./protocol:MAX_AGE_MS",
+        "removed:./protocol:REPLAY_SET_LIMIT",
+        "removed:./protocol:_replaySetSize",
+        "removed:./protocol:_resetReplaySet",
+        "removed:./protocol:createEnvelope",
+        "removed:./protocol:default",
+        "removed:./protocol:stableStringify",
+        "removed:./protocol:verifyEnvelope",
+        "exports-key-removed:./protocol"
+      ],
+      "needle": "d371372: **BREAKING:** remove the `./protocol` subpath export",
+      "source": "CHANGELOG.md:7"
+    }
+  ]
+}

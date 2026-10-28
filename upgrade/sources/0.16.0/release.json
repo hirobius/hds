@@ -1,0 +1,54 @@
+{
+  "$comment": "Frozen inputs of the 0.16.0 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.16.0 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.16.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.16.0 shipped (its section starts on line 3); its needle names the commit of the entry and is the text that finds the line.",
+  "version": "0.16.0",
+  "previous": "0.15.0",
+  "date": "2026-09-26",
+  "summary": "Six unused typography tokens are removed and five docs-internal components are deprecated; adds HdsSelect at the root.",
+  "backfilled": true,
+  "steps": [
+    {
+      "kind": "removed",
+      "subject": "primitive-typography-tokens",
+      "impact": "breaking",
+      "plain": "Six unused typography tokens are removed (--primitive-typography-size-2xs, -weight-light, -weight-semibold, -letterSpacing-tighter, -wide and -wider); replace a var() that reads one with your own value.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-size-2xs",
+          "--primitive-typography-weight-light",
+          "--primitive-typography-weight-semibold",
+          "--primitive-typography-letterSpacing-tighter",
+          "--primitive-typography-letterSpacing-wide",
+          "--primitive-typography-letterSpacing-wider"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-typography-size-2xs",
+        "css-var-removed:--primitive-typography-weight-light",
+        "css-var-removed:--primitive-typography-weight-semibold",
+        "css-var-removed:--primitive-typography-letterSpacing-tighter",
+        "css-var-removed:--primitive-typography-letterSpacing-wide",
+        "css-var-removed:--primitive-typography-letterSpacing-wider"
+      ],
+      "needle": "**Removes six unused primitive tokens**",
+      "source": "CHANGELOG.md:12"
+    },
+    {
+      "kind": "deprecated",
+      "each": ["ComponentInstanceMatrix", "FoundationSwatch", "Sketch", "Token", "CinematicLink"],
+      "subject": "{name}",
+      "impact": "none",
+      "removeIn": "1.0.0",
+      "plain": "{name} is docs-internal and deprecated: it warns once and will leave the package, so stop importing it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["{name}"]
+          }
+        ]
+      },
+      "needle": "**Deprecations:** `ComponentInstanceMatrix`, `FoundationSwatch`, `Sketch`, `Token` and `CinematicLink`",
+      "source": "CHANGELOG.md:10"
+    }
+  ]
+}
