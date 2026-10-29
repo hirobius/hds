@@ -698,3 +698,16 @@ Daily check: version still 0.32.0, but main changed tokens since the last sync (
 Session total: 2 calls
 
 Calls logged for 2026-10-27: 2 of 200 (2).
+
+## 2026-10-29 · button/accent token sync on 0.32.0 main 86dae99 (branch claude/figma-release-sync-0.32.0)
+
+Main removed 9 orphan tokens (13e62f4) and changed button/accent tokens (#950, #939). delta.js cannot delete, so Adrian was asked on 10-28 to delete the 9 by hand; this run re-bases with snapshot-diff.js first.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                     | Result                                                                                  |
+| --- | ---------- | ---------------- | ---- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| 1   | 15:56      | `create_session` | read | open file session                                                           | OK; session opened                                                                      |
+| 2   | 15:56      | `use_figma`      | read | read-only probe: do the 9 variables code removed still exist in the library | OK; all 9 still present (503 variables), so no push; still waiting on the hand deletion |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-29: 2 of 200 (2).
