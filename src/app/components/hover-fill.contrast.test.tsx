@@ -21,6 +21,7 @@ import { Sheet } from './sheet';
 import { Avatar } from './avatar';
 import { AvatarGroup } from './avatar-group';
 import { Kbd } from './kbd';
+import { Callout } from './callout';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 
 beforeAll(() => {
@@ -168,6 +169,11 @@ const REST_CASES: Record<string, RestCase> = {
       </AvatarGroup>
     ),
     find: () => screen.getByText('+1'),
+    on: ['--role-background', '--role-card'],
+  },
+  'Callout accent': {
+    render: () => <Callout tone="accent">Note</Callout>,
+    find: () => screen.getByText('Note').closest('div') as HTMLElement,
     on: ['--role-background', '--role-card'],
   },
   Kbd: {

@@ -2869,6 +2869,7 @@
         "src/app/components/avatar.tsx",
         "src/app/components/board.tsx",
         "src/app/components/box-sx.ts",
+        "src/app/components/callout.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/kbd.tsx",
