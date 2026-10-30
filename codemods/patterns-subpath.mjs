@@ -4,14 +4,14 @@
  *
  * Rewrites `import { Page } from '@hirobius/design-system'` to
  * `import { Page } from '@hirobius/design-system/patterns'` for every name the
- * root stopped exporting in 0.20.0 (hds#389 R1): the 21 pattern components and
+ * root stopped exporting when the patterns moved (hds#389 R1): the 21 pattern components and
  * their props types, parts, hooks and `*Variants`. The list also holds the five
  * modules that were only ever on `/patterns` (PageHeader, MetricTiles,
  * FormActions, DestructiveSection, DataTableSection); no root import of those
  * ever resolved, so including them changes nothing. StatusTile (with
  * StatusTileProps and StatusTileTone) left the root for `/patterns` in the same
- * release (hds#389 D5, hds#395), so it moves the same way. Names removed outright in
- * 0.20.0 are in removed-0.20.json and are reported, not moved. Other named imports
+ * release (hds#389 D5, hds#395), so it moves the same way. Names that release
+ * removed outright are reported, not moved. Other named imports
  * stay on the root. Aliases, `type` modifiers and multi-line layout
  * are preserved; an existing `/patterns` import of the same kind is extended
  * instead of duplicated. Imports are read with comments, strings and templates
@@ -33,23 +33,33 @@
  * `@hirobius/design-system/patterns` exports and the root does not, generated
  * by `pnpm codemod:names` (scripts/build-codemod-pattern-names.mjs).
  *
- * A name 0.20.0 removed with no replacement (codemods/removed-0.20.json, hds#394)
- * has nowhere to move: an import of one from the root or `/patterns` is reported
- * for a manual edit ("removed in 0.20.0, no replacement") and `--check` exits 1.
- * A removed name that folded into a survivor (`replaced` in that file, hds#394
- * wave 4b) is reported the same way, naming the survivor instead
- * ("removed in 0.20.0, use Button iconOnly"). NotFoundPattern and TileGrid
- * (hds#395) have codemods of their own: hds-not-found-pattern and hds-tile-grid.
+ * A name removed with no replacement in a release this codemod works on (a
+ * `removed` or `folded` step in the same ledger as its `moved` steps, hds#394,
+ * hds#956) has nowhere to move: an import of one from any entry those steps
+ * touch (the root and `/patterns`) is reported for a manual edit ("removed in
+ * <release>, no replacement", the release read from the step) and `--check`
+ * exits 1, and so is a namespace import or module-loading call of one of those
+ * entries that reads it (`import * as P from '…/patterns'; P.Calendar`). A
+ * removed name that folded into a survivor (`replaced` in
+ * codemods/removed-0.20.json, hds#394 wave 4b) is reported the same way,
+ * naming the survivor instead ("use Button iconOnly"). NotFoundPattern and
+ * TileGrid (hds#395) have codemods of their own: hds-not-found-pattern and
+ * hds-tile-grid.
+ *
+ * The move itself takes any from/to entry (`transformSource(source, names,
+ * { from, to })`); the bin moves the root's names to `/patterns`.
  */
 import { readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findUnrewritable as findHidden, maskSource } from './unrewritable.mjs';
+import { removalsFor, removedText } from './lib/removals.mjs';
 
 const ROOT_PKG = '@hirobius/design-system';
 const SUBPATH = `${ROOT_PKG}/patterns`;
 const HERE = dirname(fileURLToPath(import.meta.url));
+const BIN = 'hds-patterns-subpath';
 const EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
 const SKIP_DIRS = new Set([
   'node_modules',
@@ -66,7 +76,11 @@ export function loadPatternNames() {
   return new Set(names);
 }
 
-/** Names 0.20.0 removed (codemods/removed-0.20.json `modules` and `replaced`): reported, never moved. */
+/**
+ * The names the patterns release removed (codemods/removed-0.20.json `modules`
+ * and `replaced`, held equal to that release's ledger by a test): reported,
+ * never moved.
+ */
 export function loadRemovedNames() {
   const { modules, replaced = {} } = JSON.parse(
     readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'),
@@ -222,17 +236,74 @@ export function findUnrewritable(source, names = loadPatternNames()) {
   return findHidden(source, ROOT_PKG, names);
 }
 
-/** Each named import or re-export of a removed name from the root or `/patterns`, in source order. */
-export function findRemoved(source, removed = loadRemovedNames(), use = loadReplacements()) {
+/**
+ * The unrewritable scan for every entry the steps touch (hds#956): a read of a
+ * moved name off the root is a move by hand, as findUnrewritable says; a read
+ * of a removed name off any entry is reported as a removal, with its release.
+ * Each item is `{ stmt, removed? }`; a line two entries share is listed once.
+ */
+export function findHiddenUses(
+  source,
+  names = loadPatternNames(),
+  removed = loadRemovedNames(),
+  use = loadReplacements(),
+  { versions, entries } = loadRemovals(),
+) {
+  const out = new Map();
+  for (const pkg of entries) {
+    const moving = pkg === ROOT_PKG ? names : new Set();
+    for (const stmt of findHidden(source, pkg, [...moving, ...removed])) {
+      const m = /^(.*) \(uses ([^)]*)\)$/.exec(stmt);
+      if (!m) {
+        out.set(stmt, { stmt });
+        continue;
+      }
+      const read = m[2].split(', ');
+      const moved = read.filter((n) => moving.has(n));
+      const gone = read.filter((n) => removed.has(n) && !moving.has(n));
+      if (moved.length > 0) {
+        const line = `${m[1]} (uses ${moved.join(', ')})`;
+        out.set(line, { stmt: line });
+      }
+      if (gone.length > 0) {
+        const line = `${m[1]} (uses ${gone.map((n) => `${n}: ${removedNote(n, versions, use)}`).join('; ')})`;
+        out.set(line, { stmt: line, removed: true });
+      }
+    }
+  }
+  return [...out.values()];
+}
+
+/**
+ * The release each removed name went in, from the ledger steps (hds#956), and
+ * every entry those steps and the codemod's own touch.
+ * @param {object[]} [steps] ledger steps (default: every shipped step)
+ */
+export function loadRemovals(steps) {
+  const { names, entries } = removalsFor(BIN, steps);
+  return { versions: names, entries };
+}
+
+/** How the report names a removed name: its release, then its survivor or "no replacement". */
+const removedNote = (name, versions, use) =>
+  `${removedText(versions.get(name))}, ${use.has(name) ? `use ${use.get(name)}` : 'no replacement'}`;
+
+/** Each named import or re-export of a removed name from an entry the steps touch, in source order. */
+export function findRemoved(
+  source,
+  removed = loadRemovedNames(),
+  use = loadReplacements(),
+  { versions, entries } = loadRemovals(),
+) {
   const { code } = maskSource(source);
   const found = [];
-  for (const pkg of [ROOT_PKG, SUBPATH])
+  for (const pkg of entries)
     for (const st of statements(source, code, pkg))
       for (const { name } of st.specs)
         if (removed.has(name))
           found.push({
             at: st.from,
-            text: `${name} from '${pkg}' (removed in 0.20.0, ${use.has(name) ? `use ${use.get(name)}` : 'no replacement'})`,
+            text: `${name} from '${pkg}' (${removedNote(name, versions, use)})`,
           });
   return found.sort((a, b) => a.at - b.at).map((f) => f.text);
 }
@@ -277,20 +348,20 @@ function render(
  * @returns {{ source: string, changed: boolean, sites: number, moved: string[],
  *   edits: {before: string, after: string}[] }}
  */
-export function transformSource(source, names) {
+export function transformSource(source, names, { from = ROOT_PKG, to = SUBPATH } = {}) {
   const { code } = maskSource(source);
   const moved = [];
   const edits = [];
 
   // An existing `import { … } from '/patterns'` of each kind absorbs moved names.
   const targets = {};
-  for (const st of statements(source, code, SUBPATH)) {
+  for (const st of statements(source, code, to)) {
     if (st.kw !== 'import' || st.def) continue;
     targets[st.typeKw ? 'type' : 'value'] ??= { st, add: [], endComments: [] };
   }
 
   const replacements = [];
-  for (const st of statements(source, code, ROOT_PKG)) {
+  for (const st of statements(source, code, from)) {
     const go = st.specs.filter((s) => names.has(s.name));
     if (go.length === 0) continue;
     moved.push(...go.map((s) => s.name));
@@ -306,7 +377,7 @@ export function transformSource(source, names) {
         render(st, {
           ...st,
           specs: keep,
-          pkg: ROOT_PKG,
+          pkg: from,
           indent,
           headMid: st.headMid,
           tailMid: st.tailMid,
@@ -323,7 +394,7 @@ export function transformSource(source, names) {
             ...st,
             specs: go,
             endComment,
-            pkg: SUBPATH,
+            pkg: to,
             indent,
             headMid: movesEntirely ? st.headMid : undefined,
             tailMid: movesEntirely ? st.tailMid : undefined,
@@ -346,9 +417,7 @@ export function transformSource(source, names) {
       from: st.from,
       to: st.to,
       indent,
-      lines: [
-        render({ ...st, def: undefined }, { ...st, specs, endComment, pkg: SUBPATH, indent }),
-      ],
+      lines: [render({ ...st, def: undefined }, { ...st, specs, endComment, pkg: to, indent })],
     });
   }
 
@@ -394,8 +463,13 @@ export function runCodemod({
   names = loadPatternNames(),
   removed = loadRemovedNames(),
   replacements = loadReplacements(),
+  versions,
   skip = [],
 }) {
+  // Removals come from every shipped step: the steps the upgrade command passes
+  // are only the ones naming this codemod, which hold no removals.
+  const removals = loadRemovals();
+  if (versions) removals.versions = versions;
   const files = [];
   const manual = [];
   const moved = new Set();
@@ -408,9 +482,9 @@ export function runCodemod({
       continue; // unreadable: nothing to rewrite
     }
     if (!src.includes(ROOT_PKG)) continue;
-    for (const stmt of findUnrewritable(src, names))
-      manual.push({ file: relative(root, file), stmt });
-    for (const stmt of findRemoved(src, removed, replacements))
+    for (const hidden of findHiddenUses(src, names, removed, replacements, removals))
+      manual.push({ file: relative(root, file), ...hidden });
+    for (const stmt of findRemoved(src, removed, replacements, removals))
       manual.push({ file: relative(root, file), stmt, removed: true });
     const r = transformSource(src, names);
     if (!r.changed) continue;
