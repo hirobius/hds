@@ -48,7 +48,10 @@
  *   5. docs/api/props-baseline.json is not the props baseline the tree's
  *      component-api.json gives (scripts/upgrade/props.mjs, hds#461);
  *   6. docs/api/types-baseline.json is not the types baseline the source
- *      gives (scripts/upgrade/types.mjs, hds#467).
+ *      gives (scripts/upgrade/types.mjs, hds#467);
+ *   7. a step lists a dom-changed fact (hds#468) but is not a behavior step
+ *      with detect.regex: the selector or query that finds consumer code
+ *      relying on the old role, name, state or data-* attribute.
  *
  * The facts include prop facts (hds#461) once the release snapshot has a
  * props section: a prop removed or renamed, a prop now required and an
@@ -56,6 +59,10 @@
  * included) is a look step. Type facts (hds#467) likewise, once it has a
  * types section: a value now type-only, a signature changed, a static member
  * or an object key removed, each breaking.
+ *
+ * Dom facts (hds#468) come once the release snapshot has a dom section
+ * (docs/baselines/dom-a11y.json, scripts/upgrade/dom.mjs): a demo whose roles,
+ * accessible names, states or data-* attributes changed is a behavior fact.
  *
  * The fix it names is `pnpm upgrade:note`, which pre-fills the note from the
  * facts (scripts/upgrade/note.mjs).
@@ -70,7 +77,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { emitResult, hasJsonFlag } from './lib/gate-output.mjs';
-import { isCssFactId } from './upgrade/diff.mjs';
+import { isCssFactId, isDomFactId } from './upgrade/diff.mjs';
 import {
   BUMP_RANK,
   breakingBump,
@@ -91,6 +98,7 @@ import {
 import { compareVersions } from './upgrade/schema.mjs';
 import { COMPONENT_API, PROPS_BASELINE, propsBaselineFresh } from './upgrade/props.mjs';
 import { PACKAGE } from './upgrade/snapshot.mjs';
+import { DOM_BASELINE } from './upgrade/dom.mjs';
 import { TYPES_BASELINE, typesBaselineFresh } from './upgrade/types.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -125,6 +133,8 @@ export function describeFact(fact) {
       return `${fact.component}'s prop ${fact.prop} no longer allows ${JSON.stringify(fact.value)}`;
     case 'prop-default-changed':
       return `${fact.component}'s prop ${fact.prop} default changed from ${fact.from ?? 'none'} to ${fact.to ?? 'none'}`;
+    case 'dom-changed':
+      return `the ${fact.name} demo's roles, accessible names, states or data-* attributes changed (${DOM_BASELINE})`;
     case 'export-type-only':
       return `${fact.name} is exported from ${entryName(fact.entry)} as a type only, so it no longer exists at runtime`;
     case 'signature-changed':
@@ -187,7 +197,34 @@ function factViolations(state) {
       );
     }
   }
-  return [...uncovered, ...unknown];
+  return [...uncovered, ...unknown, ...domStepViolations(state)];
+}
+
+/**
+ * hds#468: a step for a dom-changed fact is a behavior step whose detect.regex
+ * finds the consumer code that selects on what changed (a role query, a
+ * [data-*] selector), so `hds-upgrade` can point at it.
+ */
+function domStepViolations(state) {
+  const out = [];
+  for (const note of state.notes) {
+    for (const step of noteSteps(note)) {
+      const ids = (Array.isArray(step.facts) ? step.facts : []).filter(
+        (id) => typeof id === 'string' && isDomFactId(id),
+      );
+      if (ids.length === 0) continue;
+      if (step.kind === 'behavior' && step.detect?.regex?.length > 0) continue;
+      out.push(
+        violation(
+          note.file,
+          'dom-step-without-detect',
+          `${note.file}: step ${step.id} lists ${ids.join(', ')}, so it must be a behavior step (kind behavior) with detect.regex: the selector or query a consumer would use on the old role, name, state or data-* value, such as getByRole\\(['"]row or \\[data-state=.open.\\].`,
+          { facts: ids },
+        ),
+      );
+    }
+  }
+  return out;
 }
 
 /**

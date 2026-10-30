@@ -175,6 +175,29 @@ export function propsRepo(api = RELEASED_API) {
 }
 
 /**
+ * The DOM and accessibility baseline of domRepo()'s 0.20.0 release (hds#468):
+ * one demo's element lines and screen-reader stops, as
+ * tests/dom-a11y-baseline.test.tsx records them.
+ */
+export const RELEASED_DOM = {
+  Table: {
+    dom: ['div role="table"', '  div role="row"', '    div data-slot="label" role="cell"'],
+    reader: ['table, Projects', 'row, Alpha', 'cell, Alpha'],
+  },
+};
+
+export const writeDomBaseline = (root, dom) =>
+  write(root, 'docs/baselines/dom-a11y.json', formatJson(dom));
+
+/** releasedRepo() whose 0.20.0 snapshot carries the dom section of RELEASED_DOM. */
+export function domRepo(dom = RELEASED_DOM) {
+  const root = releasedRepo();
+  writeDomBaseline(root, dom);
+  recordRelease(root);
+  return root;
+}
+
+/**
  * The source of typesRepo()'s 0.20.0 release (hds#467): a compound Menu, a
  * hook and a tokens object, each re-exported from the root.
  */

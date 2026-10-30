@@ -349,6 +349,7 @@
     "stats:build": "node scripts/build-stats-json.mjs",
     "sync:health": "node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/build-tokens.mjs && node scripts/audit-tokens.mjs --report-only && node scripts/build-design-md.mjs",
     "test": "vitest run --passWithNoTests",
+    "dom:baseline": "HDS_UPDATE_DOM_A11Y=1 vitest run tests/dom-a11y-baseline.test.tsx",
     "test:compiler": "node -e \"import('./scripts/hds-jsx-compiler.mjs').then(m => console.log(JSON.stringify(m.compile(process.argv[1]), null, 2)))\" --",
     "test:coverage": "vitest run --coverage",
     "test:figma": "npx tsx scripts/figma-sync.ts",

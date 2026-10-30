@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "CONSUMING.md and the consumer skill now list what your tests and styles may select on; a change to any of it ships as a behavior upgrade step."
+}
