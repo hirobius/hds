@@ -240,7 +240,10 @@ export function findUnrewritable(source, names = loadPatternNames()) {
  * The unrewritable scan for every entry the steps touch (hds#956): a read of a
  * moved name off the root is a move by hand, as findUnrewritable says; a read
  * of a removed name off any entry is reported as a removal, with its release.
- * Each item is `{ stmt, removed? }`; a line two entries share is listed once.
+ * Each item is `{ stmt, gone? }`: `gone` marks a removal read. It is not
+ * `removed`, which the upgrade command leaves to the ledger's removed step:
+ * that step's `detect` sees named imports only, so a read through a namespace
+ * would be lost. A line two entries share is listed once.
  */
 export function findHiddenUses(
   source,
@@ -267,7 +270,7 @@ export function findHiddenUses(
       }
       if (gone.length > 0) {
         const line = `${m[1]} (uses ${gone.map((n) => `${n}: ${removedNote(n, versions, use)}`).join('; ')})`;
-        out.set(line, { stmt: line, removed: true });
+        out.set(line, { stmt: line, gone: true });
       }
     }
   }
@@ -515,7 +518,7 @@ function main(argv) {
   // An unreadable file names its own fix; the rest need the names moved by hand.
   const manualLines = res.manual.map(
     (m) =>
-      `  ${m.file}: ${m.stmt}${m.removed || m.stmt.startsWith('unreadable ') ? '' : ` (move pattern names to '${SUBPATH}' by hand)`}`,
+      `  ${m.file}: ${m.stmt}${m.removed || m.gone || m.stmt.startsWith('unreadable ') ? '' : ` (move pattern names to '${SUBPATH}' by hand)`}`,
   );
   if (args.check) {
     if (res.sites > 0 || res.manual.length > 0) {

@@ -40,7 +40,7 @@ describe('the unrewritable scan covers every entry a step touches', () => {
       {
         file: 'a.tsx',
         stmt: `import * as P from '${SUB}' (uses Calendar: removed in 0.20.0, no replacement)`,
-        removed: true,
+        gone: true,
       },
     ]);
   });
@@ -48,7 +48,8 @@ describe('the unrewritable scan covers every entry a step touches', () => {
   it('names the survivor for a root namespace read of a folded name', () => {
     writeFileSync(join(dir, 'a.tsx'), `import * as H from '${ROOT}';\nH.IconButton;\n`);
     const [m] = runSubpath({ root: dir }).manual;
-    expect(m.removed).toBe(true);
+    expect(m.gone).toBe(true);
+    expect(m.removed).toBeUndefined(); // the upgrade command lists it, no ledger step does
     expect(m.stmt).toMatch(/\(uses IconButton: removed in 0\.20\.0, use Button iconOnly/);
   });
 
