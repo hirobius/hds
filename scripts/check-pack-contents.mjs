@@ -93,6 +93,7 @@ export const REQUIRED = [
   'upgrade/schema.json',
   'upgrade/index.json',
   'upgrade/kept.json',
+  'upgrade/detects.json',
   ...LEDGERS,
   // The upgrade command (hds#452): the bin npx runs, the codemod registry it
   // drives and the helpers it imports.
@@ -129,7 +130,12 @@ export const FORBIDDEN = [
   // upgrade/sources/ (a ledger's frozen inputs) and anything else are inputs.
   {
     prefix: 'upgrade/',
-    allow: ['upgrade/schema.json', 'upgrade/index.json', 'upgrade/kept.json'],
+    allow: [
+      'upgrade/schema.json',
+      'upgrade/index.json',
+      'upgrade/kept.json',
+      'upgrade/detects.json',
+    ],
     allowPrefix: ['upgrade/releases/'],
   },
 ];

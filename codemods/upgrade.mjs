@@ -718,6 +718,8 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
         continue;
       }
       if (done || (hits !== null && hits.length === 0)) continue;
+      // Additive with no detector: nothing to do unless the code opts in.
+      if (hits === null && step.impact === 'additive') continue;
       const list = listOf(step) === 'looksDifferent' ? 'looksDifferent' : 'doByHand';
       if (list === 'looksDifferent' && hits === null) continue;
       addItem(report, list, {
