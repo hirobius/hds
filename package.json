@@ -121,6 +121,7 @@
     "upgrade/schema.json",
     "upgrade/index.json",
     "upgrade/kept.json",
+    "upgrade/detects.json",
     "upgrade/releases/",
     "src/app/data/component-api.json",
     "docs/api/props-baseline.json",

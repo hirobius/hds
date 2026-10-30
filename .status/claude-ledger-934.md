@@ -1,0 +1,1 @@
+Upgrade ledger: upgrade/detects.json gives frozen detector-less steps a detector, and an additive step with none is never Do by hand, so a CSS-only consumer gets 0 Do-by-hand items from 0.16.0 (#934).

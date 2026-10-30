@@ -18,17 +18,36 @@ const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'));
 
 /**
  * @param {string} pkgDir the package root (the directory holding package.json)
+ * @param {{ detects?: Map<string, any> }} [opts] detects: readDetects, given to steps with none
  * @returns {{ version: string, index: any, ledgers: any[], kept: Map<string, { in: string, plain: string }> }}
  */
-export function loadRecord(pkgDir) {
+export function loadRecord(pkgDir, { detects = readDetects(pkgDir) } = {}) {
   const { version } = readJson(join(pkgDir, 'package.json'));
   const index = readJson(join(pkgDir, 'upgrade/index.json'));
   const ledgers = index.versions
     .map((v) => join(pkgDir, 'upgrade/releases', `${v.version}.json`))
     .filter((file) => existsSync(file))
     .map(readJson)
+    .map((ledger) => ({
+      ...ledger,
+      steps: ledger.steps.map((step) =>
+        !step.detect && detects.has(step.id) ? { ...step, detect: detects.get(step.id) } : step,
+      ),
+    }))
     .sort((a, b) => compareVersions(a.version, b.version));
   return { version, index, ledgers, kept: readKept(pkgDir) };
+}
+
+/**
+ * upgrade/detects.json: detectors for released steps whose frozen note had
+ * none (hds#934), by step id. Without one such a step reached every consumer,
+ * since nothing could tell whether the code uses it.
+ * @param {string} root the package root
+ * @returns {Map<string, any>}
+ */
+export function readDetects(root) {
+  const file = join(root, 'upgrade/detects.json');
+  return new Map(existsSync(file) ? Object.entries(readJson(file).detects ?? {}) : []);
 }
 
 /**

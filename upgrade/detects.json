@@ -1,0 +1,14 @@
+{
+  "$comment": "Detectors for released steps whose frozen note (upgrade/sources/<version>/notes/) had none, by step id (hds#934). Without one a step reaches every consumer, since nothing can tell whether the code uses it. Hand-kept; read by codemods/lib/record.mjs, which gives each to its step when the record loads.",
+  "detects": {
+    "0.26.0/manual/typed-icon-color-table-width": {
+      "jsx": ["Icon", "Table"]
+    },
+    "0.27.0/behavior/meta-line-max-two": {
+      "regex": ["@hirobius/design-system/eslint-plugin"]
+    },
+    "0.27.0/tenant/data-accent-cobalt": {
+      "regex": ["data-accent"]
+    }
+  }
+}
