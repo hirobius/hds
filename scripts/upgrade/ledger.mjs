@@ -66,20 +66,29 @@ const BREAKING_FACTS = new Set([
 const LOOK_FACTS = new Set(['css-var-changed', 'font-face-removed', 'prop-default-changed']);
 
 /**
+ * Facts that change what a consumer's selectors, tests or assistive technology
+ * meet while every name still resolves (hds#468: a demo's roles, names, states
+ * or data-* attributes).
+ */
+const BEHAVIOR_FACTS = new Set(['dom-changed']);
+
+/**
  * What a fact does to a consumer that does nothing: breaking when it removes
  * or moves something public, drops a dependency, narrows a peer (or makes one
  * required, or adds or drops a required one, which npm and pnpm install for
  * the consumer) or raises engines; additive when it only adds or widens.
  * A CSS value change or a removed font face is look; a removed utility is
- * none. scripts/check-upgrade-ledger.mjs and scripts/check-upgrade-css.mjs
+ * none; a changed DOM and accessibility outline is behavior.
+ * scripts/check-upgrade-ledger.mjs and scripts/check-upgrade-css.mjs
  * bump by it; `pnpm upgrade:note` guesses a step's impact from it.
  * @param {{ kind: string, from?: any, to?: any }} fact
- * @returns {'none' | 'additive' | 'look' | 'breaking'}
+ * @returns {'none' | 'additive' | 'look' | 'behavior' | 'breaking'}
  */
 export function factImpact(fact) {
   if (ADDITIVE_FACTS.has(fact.kind)) return 'additive';
   if (BREAKING_FACTS.has(fact.kind)) return 'breaking';
   if (LOOK_FACTS.has(fact.kind)) return 'look';
+  if (BEHAVIOR_FACTS.has(fact.kind)) return 'behavior';
   if (INFO_FACTS.has(fact.kind)) return 'none';
   const { from, to } = fact;
   if (fact.kind === 'peer-changed') {

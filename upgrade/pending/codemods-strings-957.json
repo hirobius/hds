@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The upgrade command now reads .astro, .vue and .svelte files, and flags HDS names in strings and prompts that no longer exist."
+}

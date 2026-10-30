@@ -33,7 +33,7 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#19161a",
+    "primaryColor": "#0f1726",
     "primaryColorToken": "semantic.accent.rest",
     "font": "Plus Jakarta Sans variable 100–900, self-hosted",
     "spacingBase": "4px",
@@ -11675,105 +11675,126 @@
         "cssVar": "--primitive-color-neutral-50",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#fafafa"
+        "value": "#f9fafc"
       },
       {
         "path": "primitive.color.neutral.100",
         "cssVar": "--primitive-color-neutral-100",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#f5f5f5"
+        "value": "#f4f5f7"
       },
       {
         "path": "primitive.color.neutral.200",
         "cssVar": "--primitive-color-neutral-200",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#e5e5e5"
+        "value": "#e4e5e7"
       },
       {
         "path": "primitive.color.neutral.300",
         "cssVar": "--primitive-color-neutral-300",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#d4d4d4"
+        "value": "#d3d4d6"
       },
       {
         "path": "primitive.color.neutral.350",
         "cssVar": "--primitive-color-neutral-350",
         "type": "color",
         "description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).",
-        "value": "#b4b4b4"
+        "value": "#b2b4b8"
       },
       {
         "path": "primitive.color.neutral.400",
         "cssVar": "--primitive-color-neutral-400",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#a3a3a3"
+        "value": "#a0a3a8"
       },
       {
         "path": "primitive.color.neutral.450",
         "cssVar": "--primitive-color-neutral-450",
         "type": "color",
-        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).",
-        "value": "#909090"
+        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).",
+        "value": "#8d9096"
       },
       {
         "path": "primitive.color.neutral.500",
         "cssVar": "--primitive-color-neutral-500",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#737373"
+        "value": "#6f737b"
       },
       {
         "path": "primitive.color.neutral.550",
         "cssVar": "--primitive-color-neutral-550",
         "type": "color",
         "description": "Dark surface.softHover (C2).",
-        "value": "#626262"
+        "value": "#5e626a"
       },
       {
         "path": "primitive.color.neutral.600",
         "cssVar": "--primitive-color-neutral-600",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#525252"
+        "value": "#4d525b"
       },
       {
         "path": "primitive.color.neutral.700",
         "cssVar": "--primitive-color-neutral-700",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#404040"
+        "value": "#3b404a"
+      },
+      {
+        "path": "primitive.color.neutral.725",
+        "cssVar": "--primitive-color-neutral-725",
+        "type": "color",
+        "description": "Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522).",
+        "value": "#272c36"
+      },
+      {
+        "path": "primitive.color.neutral.750",
+        "cssVar": "--primitive-color-neutral-750",
+        "type": "color",
+        "description": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755).",
+        "value": "#252a34"
       },
       {
         "path": "primitive.color.neutral.800",
         "cssVar": "--primitive-color-neutral-800",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#262626"
+        "value": "#212630"
+      },
+      {
+        "path": "primitive.color.neutral.825",
+        "cssVar": "--primitive-color-neutral-825",
+        "type": "color",
+        "description": "Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755).",
+        "value": "#1b202a"
       },
       {
         "path": "primitive.color.neutral.850",
         "cssVar": "--primitive-color-neutral-850",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#1a1a1a"
+        "value": "#151a24"
       },
       {
         "path": "primitive.color.neutral.900",
         "cssVar": "--primitive-color-neutral-900",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#111111"
+        "value": "#0c111b"
       },
       {
         "path": "primitive.color.neutral.950",
         "cssVar": "--primitive-color-neutral-950",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#0a0a0a"
+        "value": "#060a13"
       },
       {
         "path": "primitive.color.neutral.white",
@@ -11787,7 +11808,7 @@
         "cssVar": "--primitive-color-neutral-black",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#000000"
+        "value": "#060a13"
       },
       {
         "path": "primitive.color.blue.50",
@@ -11927,77 +11948,77 @@
         "cssVar": "--primitive-color-graphite-50",
         "type": "color",
         "description": "Graphite accent tint — faintest step; dark rest fill.",
-        "value": "#f5f4f4"
+        "value": "#f2f4f8"
       },
       {
         "path": "primitive.color.graphite.100",
         "cssVar": "--primitive-color-graphite-100",
         "type": "color",
-        "description": "Graphite accent — very light warm tint.",
-        "value": "#e9e7e8"
+        "description": "Graphite accent — very light midnight tint.",
+        "value": "#e5e8ed"
       },
       {
         "path": "primitive.color.graphite.200",
         "cssVar": "--primitive-color-graphite-200",
         "type": "color",
-        "description": "Graphite accent — light warm-grey.",
-        "value": "#cbc6c9"
+        "description": "Graphite accent — light midnight grey.",
+        "value": "#c4c8cf"
       },
       {
         "path": "primitive.color.graphite.300",
         "cssVar": "--primitive-color-graphite-300",
         "type": "color",
         "description": "Graphite accent — soft mid-light step; dark-mode hover/link.",
-        "value": "#b2abae"
+        "value": "#a8aeb8"
       },
       {
         "path": "primitive.color.graphite.400",
         "cssVar": "--primitive-color-graphite-400",
         "type": "color",
-        "description": "Graphite accent — mid warm-grey step.",
-        "value": "#8b8488"
+        "description": "Graphite accent — mid midnight-grey step.",
+        "value": "#7f8794"
       },
       {
         "path": "primitive.color.graphite.500",
         "cssVar": "--primitive-color-graphite-500",
         "type": "color",
         "description": "Graphite accent — mid step.",
-        "value": "#655e62"
+        "value": "#586170"
       },
       {
         "path": "primitive.color.graphite.600",
         "cssVar": "--primitive-color-graphite-600",
         "type": "color",
         "description": "Graphite accent — mid-dark step.",
-        "value": "#544d51"
+        "value": "#465061"
       },
       {
         "path": "primitive.color.graphite.700",
         "cssVar": "--primitive-color-graphite-700",
         "type": "color",
-        "description": "Graphite accent — warm charcoal; light-mode accent text.",
-        "value": "#4a4146"
+        "description": "Graphite accent — midnight charcoal; light-mode accent text.",
+        "value": "#3a4457"
       },
       {
         "path": "primitive.color.graphite.800",
         "cssVar": "--primitive-color-graphite-800",
         "type": "color",
         "description": "Graphite accent — deep step; light-mode hover.",
-        "value": "#352e32"
+        "value": "#263043"
       },
       {
         "path": "primitive.color.graphite.900",
         "cssVar": "--primitive-color-graphite-900",
         "type": "color",
         "description": "Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.",
-        "value": "#2a2428"
+        "value": "#1c2638"
       },
       {
         "path": "primitive.color.graphite.950",
         "cssVar": "--primitive-color-graphite-950",
         "type": "color",
         "description": "Graphite accent — near-black; light rest fill.",
-        "value": "#19161a"
+        "value": "#0f1726"
       },
       {
         "path": "primitive.color.cobalt.50",
@@ -12024,7 +12045,7 @@
         "path": "primitive.color.cobalt.300",
         "cssVar": "--primitive-color-cobalt-300",
         "type": "color",
-        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.86:1 on black).",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.41:1 on black).",
         "value": "#8a97f8"
       },
       {
@@ -13165,7 +13186,7 @@
         "resolvedValue": "#ffffff",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#000000"
+          "resolvedValue": "#060a13"
         }
       },
       {
@@ -13174,10 +13195,10 @@
         "type": "color",
         "description": "Subtle elevated surface (cards, sections)",
         "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#fafafa",
+        "resolvedValue": "#f9fafc",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.825}",
+          "resolvedValue": "#1b202a"
         }
       },
       {
@@ -13186,10 +13207,10 @@
         "type": "color",
         "description": "Deeper surface layer",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "resolvedValue": "#212630"
         }
       },
       {
@@ -13201,7 +13222,7 @@
         "resolvedValue": "#ffffff",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "resolvedValue": "#212630"
         }
       },
       {
@@ -13210,10 +13231,10 @@
         "type": "color",
         "description": "Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.",
         "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
+        "resolvedValue": "#0c111b",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#000000"
+          "resolvedValue": "#060a13"
         }
       },
       {
@@ -13222,7 +13243,7 @@
         "type": "color",
         "description": "Inverted background for contrast sections",
         "alias": "{primitive.color.neutral.black}",
-        "resolvedValue": "#000000",
+        "resolvedValue": "#060a13",
         "dark": {
           "alias": "{primitive.color.neutral.white}",
           "resolvedValue": "#ffffff"
@@ -13232,12 +13253,12 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent fill, warm graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
+        "description": "Accent fill, midnight graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#19161a",
+        "resolvedValue": "#0f1726",
         "dark": {
           "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f5f4f4"
+          "resolvedValue": "#f2f4f8"
         }
       },
       {
@@ -13246,10 +13267,10 @@
         "type": "color",
         "description": "Faint accent tint for hover states or highlights.",
         "alias": "{primitive.color.graphite.50}",
-        "resolvedValue": "#f5f4f4",
+        "resolvedValue": "#f2f4f8",
         "dark": {
           "alias": "{primitive.color.graphite.800}",
-          "resolvedValue": "#352e32"
+          "resolvedValue": "#263043"
         }
       },
       {
@@ -13258,10 +13279,10 @@
         "type": "color",
         "description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "resolvedValue": "#3b404a"
         }
       },
       {
@@ -13270,10 +13291,10 @@
         "type": "color",
         "description": "Background for an actively pressed interactive surface.",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "resolvedValue": "#e4e5e7",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#000000"
+          "resolvedValue": "#060a13"
         }
       },
       {
@@ -13282,10 +13303,10 @@
         "type": "color",
         "description": "Background for a persistently selected item (active tab, checked row).",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "resolvedValue": "#e4e5e7",
         "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "alias": "{primitive.color.neutral.725}",
+          "resolvedValue": "#272c36"
         }
       },
       {
@@ -13294,10 +13315,10 @@
         "type": "color",
         "description": "Muted background for low-emphasis content blocks.",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "alias": "{primitive.color.neutral.750}",
+          "resolvedValue": "#252a34"
         }
       },
       {
@@ -13306,10 +13327,10 @@
         "type": "color",
         "description": "Recessed background for inset wells (inputs, code blocks, nested panels).",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "resolvedValue": "#e4e5e7",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "resolvedValue": "#3b404a"
         }
       },
       {
@@ -13318,10 +13339,10 @@
         "type": "color",
         "description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "resolvedValue": "#e4e5e7",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -13330,10 +13351,10 @@
         "type": "color",
         "description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
         "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d4d4d4",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.550}",
-          "resolvedValue": "#626262"
+          "resolvedValue": "#5e626a"
         }
       },
       {
@@ -13341,10 +13362,10 @@
         "cssVar": "--semantic-color-content-primary",
         "type": "color",
         "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
+        "resolvedValue": "#0c111b",
         "dark": {
           "alias": "{primitive.color.neutral.100}",
-          "resolvedValue": "#f5f5f5"
+          "resolvedValue": "#f4f5f7"
         }
       },
       {
@@ -13352,10 +13373,10 @@
         "cssVar": "--semantic-color-content-secondary",
         "type": "color",
         "alias": "{primitive.color.neutral.600}",
-        "resolvedValue": "#525252",
+        "resolvedValue": "#4d525b",
         "dark": {
           "alias": "{primitive.color.neutral.350}",
-          "resolvedValue": "#b4b4b4"
+          "resolvedValue": "#b2b4b8"
         }
       },
       {
@@ -13364,10 +13385,10 @@
         "type": "color",
         "description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
         "alias": "{primitive.color.neutral.500}",
-        "resolvedValue": "#737373",
+        "resolvedValue": "#6f737b",
         "dark": {
           "alias": "{primitive.color.neutral.450}",
-          "resolvedValue": "#909090"
+          "resolvedValue": "#8d9096"
         }
       },
       {
@@ -13375,10 +13396,10 @@
         "cssVar": "--semantic-color-content-disabled",
         "type": "color",
         "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d4d4d4",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -13386,10 +13407,10 @@
         "cssVar": "--semantic-color-content-inverse",
         "type": "color",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
           "alias": "{primitive.color.neutral.900}",
-          "resolvedValue": "#111111"
+          "resolvedValue": "#0c111b"
         }
       },
       {
@@ -13398,10 +13419,10 @@
         "type": "color",
         "description": "Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#4a4146",
+        "resolvedValue": "#3a4457",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#b2abae"
+          "resolvedValue": "#a8aeb8"
         }
       },
       {
@@ -13410,10 +13431,10 @@
         "type": "color",
         "description": "Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.",
         "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#fafafa",
+        "resolvedValue": "#f9fafc",
         "dark": {
           "alias": "{primitive.color.graphite.900}",
-          "resolvedValue": "#2a2428"
+          "resolvedValue": "#1c2638"
         }
       },
       {
@@ -13456,12 +13477,12 @@
         "path": "semantic.color.border.default",
         "cssVar": "--semantic-color-border-default",
         "type": "color",
-        "description": "Hairline and divider border. Light is warm graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
+        "description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
         "alias": "{primitive.color.graphite.200}",
-        "resolvedValue": "#cbc6c9",
+        "resolvedValue": "#c4c8cf",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -13470,10 +13491,10 @@
         "type": "color",
         "description": "Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.",
         "alias": "{primitive.color.neutral.500}",
-        "resolvedValue": "#737373",
+        "resolvedValue": "#6f737b",
         "dark": {
           "alias": "{primitive.color.neutral.500}",
-          "resolvedValue": "#737373"
+          "resolvedValue": "#6f737b"
         }
       },
       {
@@ -13482,10 +13503,10 @@
         "type": "color",
         "description": "Lowest-contrast border for resting hairline edges on flat surfaces.",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "resolvedValue": "#3b404a"
         }
       },
       {
@@ -13493,10 +13514,10 @@
         "cssVar": "--semantic-color-border-strong",
         "type": "color",
         "alias": "{primitive.color.graphite.300}",
-        "resolvedValue": "#b2abae",
+        "resolvedValue": "#a8aeb8",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -13505,10 +13526,10 @@
         "type": "color",
         "description": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#4a4146",
+        "resolvedValue": "#3a4457",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#b2abae"
+          "resolvedValue": "#a8aeb8"
         }
       },
       {
@@ -13544,7 +13565,7 @@
         "resolvedValue": "#282c34",
         "dark": {
           "alias": "{primitive.color.neutral.500}",
-          "resolvedValue": "#737373"
+          "resolvedValue": "#6f737b"
         }
       },
       {
@@ -13663,7 +13684,7 @@
         "type": "color",
         "description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).",
         "alias": "{primitive.color.neutral.black}",
-        "resolvedValue": "#000000",
+        "resolvedValue": "#060a13",
         "dark": {
           "alias": "{primitive.color.neutral.white}",
           "resolvedValue": "#ffffff"
@@ -14198,10 +14219,10 @@
         "type": "color",
         "description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#19161a",
+        "resolvedValue": "#0f1726",
         "dark": {
           "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f5f4f4"
+          "resolvedValue": "#f2f4f8"
         }
       },
       {
@@ -14210,10 +14231,10 @@
         "type": "color",
         "description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
         "alias": "{primitive.color.graphite.800}",
-        "resolvedValue": "#352e32",
+        "resolvedValue": "#263043",
         "dark": {
           "alias": "{primitive.color.graphite.100}",
-          "resolvedValue": "#e9e7e8"
+          "resolvedValue": "#e5e8ed"
         }
       },
       {
@@ -14222,10 +14243,10 @@
         "type": "color",
         "description": "Accent fill on press (graphite.900 / 200).",
         "alias": "{primitive.color.graphite.900}",
-        "resolvedValue": "#2a2428",
+        "resolvedValue": "#1c2638",
         "dark": {
           "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#cbc6c9"
+          "resolvedValue": "#c4c8cf"
         }
       },
       {
@@ -14234,10 +14255,10 @@
         "type": "color",
         "description": "Accent fill for inactive or unselected accent elements.",
         "alias": "{primitive.color.neutral.400}",
-        "resolvedValue": "#a3a3a3",
+        "resolvedValue": "#a0a3a8",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -14246,10 +14267,10 @@
         "type": "color",
         "description": "Accent fill for disabled accent elements.",
         "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d4d4d4",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "resolvedValue": "#3b404a"
         }
       },
       {
@@ -14258,10 +14279,10 @@
         "type": "color",
         "description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#4a4146",
+        "resolvedValue": "#3a4457",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#b2abae"
+          "resolvedValue": "#a8aeb8"
         }
       },
       {
@@ -14270,10 +14291,10 @@
         "type": "color",
         "description": "Accent content color on pointer hover.",
         "alias": "{primitive.color.graphite.800}",
-        "resolvedValue": "#352e32",
+        "resolvedValue": "#263043",
         "dark": {
           "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#cbc6c9"
+          "resolvedValue": "#c4c8cf"
         }
       },
       {
@@ -14282,10 +14303,10 @@
         "type": "color",
         "description": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
         "alias": "{primitive.color.graphite.50}",
-        "resolvedValue": "#f5f4f4",
+        "resolvedValue": "#f2f4f8",
         "dark": {
           "alias": "{primitive.color.graphite.800}",
-          "resolvedValue": "#352e32"
+          "resolvedValue": "#263043"
         }
       },
       {
@@ -14410,7 +14431,7 @@
           "shadow": null,
           "border": {
             "alias": "{semantic.color.border.subtle}",
-            "resolvedValue": "#f5f5f5"
+            "resolvedValue": "#f4f5f7"
           }
         }
       },
@@ -14422,7 +14443,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#fafafa"
+            "resolvedValue": "#f9fafc"
           },
           "shadow": {
             "alias": "{semantic.shadow.subtle}",
@@ -14439,7 +14460,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#fafafa"
+            "resolvedValue": "#f9fafc"
           },
           "shadow": {
             "alias": "{semantic.shadow.floating}",
@@ -14464,7 +14485,7 @@
           },
           "border": {
             "alias": "{semantic.color.border.default}",
-            "resolvedValue": "#cbc6c9"
+            "resolvedValue": "#c4c8cf"
           }
         }
       },
@@ -14588,7 +14609,7 @@
         "type": "color",
         "description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.tag.text",
@@ -14596,7 +14617,7 @@
         "type": "color",
         "description": "Unselected tag text color (the active label uses activeText).",
         "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#525252"
+        "resolvedValue": "#4d525b"
       },
       {
         "path": "component.tag.border",
@@ -14604,7 +14625,7 @@
         "type": "color",
         "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.tag.radius",
@@ -14676,7 +14697,7 @@
         "type": "color",
         "description": "Text color when the tag is active.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "component.tag.activeBackground",
@@ -14684,7 +14705,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#0f1726"
       },
       {
         "path": "component.tag.activeBorder",
@@ -14692,7 +14713,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#0f1726"
       },
       {
         "path": "component.tag.activeHover",
@@ -14700,7 +14721,7 @@
         "type": "color",
         "description": "Active tag hover fill color.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "#352e32"
+        "resolvedValue": "#263043"
       },
       {
         "path": "component.badge.fontSize",
@@ -14724,7 +14745,7 @@
         "type": "color",
         "description": "Badge text color.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.badge.bg",
@@ -14744,7 +14765,7 @@
         "type": "color",
         "description": "Neutral badge fill.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.badge.neutral.text",
@@ -14752,7 +14773,7 @@
         "type": "color",
         "description": "Neutral badge text color.",
         "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#525252"
+        "resolvedValue": "#4d525b"
       },
       {
         "path": "component.badge.info.bg",
@@ -14888,7 +14909,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#0f1726"
       },
       {
         "path": "component.button.bgHover",
@@ -14896,7 +14917,7 @@
         "type": "color",
         "description": "Primary button hover fill.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "#352e32"
+        "resolvedValue": "#263043"
       },
       {
         "path": "component.button.bgPressed",
@@ -14904,7 +14925,7 @@
         "type": "color",
         "description": "Primary button pressed fill (hds#748).",
         "alias": "{semantic.accent.pressed}",
-        "resolvedValue": "#2a2428"
+        "resolvedValue": "#1c2638"
       },
       {
         "path": "component.button.text",
@@ -14912,7 +14933,7 @@
         "type": "color",
         "description": "Primary button text color.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "component.button.radius",
@@ -15096,7 +15117,7 @@
         "type": "color",
         "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.disabled}",
-        "resolvedValue": "#d4d4d4"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.primary.bgDisabled",
@@ -15104,7 +15125,7 @@
         "type": "color",
         "description": "Disabled primary button fill.",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.button.secondary.bg.rest",
@@ -15112,7 +15133,7 @@
         "type": "color",
         "description": "Secondary button fill: soft tonal, no border (hds#891).",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e5e5e5"
+        "resolvedValue": "#e4e5e7"
       },
       {
         "path": "component.button.secondary.bg.hover",
@@ -15120,7 +15141,7 @@
         "type": "color",
         "description": "Secondary button hover fill (the wipe layer's colour).",
         "alias": "{semantic.color.surface.softHover}",
-        "resolvedValue": "#d4d4d4"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.secondary.bg.pressed",
@@ -15128,7 +15149,7 @@
         "type": "color",
         "description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e5e5e5"
+        "resolvedValue": "#e4e5e7"
       },
       {
         "path": "component.button.secondary.border.rest",
@@ -15136,7 +15157,7 @@
         "type": "color",
         "description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#737373"
+        "resolvedValue": "#6f737b"
       },
       {
         "path": "component.button.secondary.border.hover",
@@ -15144,7 +15165,7 @@
         "type": "color",
         "description": "Secondary button hover border. Unused by Button since hds#891 (soft fill, no border); kept for consumers.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#4a4146"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "component.button.secondary.border.disabled",
@@ -15160,7 +15181,7 @@
         "type": "color",
         "description": "Secondary button text color.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.button.tertiary.bg.hover",
@@ -15168,7 +15189,7 @@
         "type": "color",
         "description": "Ghost button hover (wipe) fill.",
         "alias": "{semantic.color.surface.hover}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.button.tertiary.bg.pressed",
@@ -15176,7 +15197,7 @@
         "type": "color",
         "description": "Ghost button pressed fill.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e5e5e5"
+        "resolvedValue": "#e4e5e7"
       },
       {
         "path": "component.input.bg",
@@ -15190,14 +15211,14 @@
         "cssVar": "--component-input-text",
         "type": "color",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.input.border",
         "cssVar": "--component-input-border",
         "type": "color",
         "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#737373"
+        "resolvedValue": "#6f737b"
       },
       {
         "path": "component.input.borderError",
@@ -15232,14 +15253,14 @@
         "cssVar": "--component-card-bg",
         "type": "color",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "component.card.border",
         "cssVar": "--component-card-border",
         "type": "color",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#cbc6c9"
+        "resolvedValue": "#c4c8cf"
       },
       {
         "path": "component.card.radius",
@@ -15269,7 +15290,7 @@
         "type": "color",
         "description": "Inline code chip background.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       }
     ],
     "role": [
@@ -15287,7 +15308,7 @@
         "type": "color",
         "description": "Default text on background. shadcn role: foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.card",
@@ -15295,7 +15316,7 @@
         "type": "color",
         "description": "Card surface. shadcn role: card.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "role.card-foreground",
@@ -15303,7 +15324,7 @@
         "type": "color",
         "description": "Text on card. shadcn role: card-foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.popover",
@@ -15319,7 +15340,7 @@
         "type": "color",
         "description": "Modal backdrop colour role. Apply alpha in the class, e.g. bg-scrim/60.",
         "alias": "{semantic.color.surface.scrim}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.pressed-overlay",
@@ -15327,7 +15348,7 @@
         "type": "color",
         "description": "Pressed-state overlay colour role. Apply alpha in the class, e.g. inset-shadow-pressed-overlay/5.",
         "alias": "{semantic.color.state.pressed.overlay}",
-        "resolvedValue": "#000000"
+        "resolvedValue": "#060a13"
       },
       {
         "path": "role.popover-foreground",
@@ -15335,7 +15356,7 @@
         "type": "color",
         "description": "Text on popover. shadcn role: popover-foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.primary",
@@ -15343,7 +15364,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#0f1726"
       },
       {
         "path": "role.primary-foreground",
@@ -15351,7 +15372,7 @@
         "type": "color",
         "description": "Text/icons on primary surface. shadcn role: primary-foreground.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "role.secondary",
@@ -15359,7 +15380,7 @@
         "type": "color",
         "description": "Secondary action surface. shadcn role: secondary.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "role.secondary-foreground",
@@ -15367,7 +15388,7 @@
         "type": "color",
         "description": "Text on secondary surface. shadcn role: secondary-foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.muted",
@@ -15375,7 +15396,7 @@
         "type": "color",
         "description": "Muted/quiet bg (skeletons, disabled inputs). shadcn role: muted.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "role.muted-foreground",
@@ -15383,7 +15404,7 @@
         "type": "color",
         "description": "Muted text. shadcn role: muted-foreground.",
         "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#525252"
+        "resolvedValue": "#4d525b"
       },
       {
         "path": "role.accent",
@@ -15391,7 +15412,7 @@
         "type": "color",
         "description": "Hover/active tinted bg. shadcn role: accent.",
         "alias": "{semantic.color.surface.accentSubtle}",
-        "resolvedValue": "#f5f4f4"
+        "resolvedValue": "#f2f4f8"
       },
       {
         "path": "role.accent-foreground",
@@ -15399,7 +15420,7 @@
         "type": "color",
         "description": "Text on accent surface. shadcn role: accent-foreground.",
         "alias": "{semantic.color.content.accent}",
-        "resolvedValue": "#4a4146"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "role.destructive",
@@ -15415,7 +15436,7 @@
         "type": "color",
         "description": "Text on destructive surface. shadcn role: destructive-foreground.",
         "alias": "{semantic.color.content.inverse}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "role.border",
@@ -15423,7 +15444,7 @@
         "type": "color",
         "description": "Default border. shadcn role: border.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#cbc6c9"
+        "resolvedValue": "#c4c8cf"
       },
       {
         "path": "role.input",
@@ -15431,7 +15452,7 @@
         "type": "color",
         "description": "Input field border. shadcn role: input.",
         "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#737373"
+        "resolvedValue": "#6f737b"
       },
       {
         "path": "role.ring",
@@ -15439,7 +15460,7 @@
         "type": "color",
         "description": "Focus ring color. shadcn role: ring.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#4a4146"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "role.radius",

@@ -77,6 +77,7 @@ import {
 } from './lib/preset.mjs';
 import { comingNextSteps, listOf, loadRecord } from './lib/record.mjs';
 import { MAX_BYTES, collectFiles, fileMentions, matchDetect } from './lib/scan.mjs';
+import { componentSpecs, findStringWarnings } from './lib/strings.mjs';
 import { bumpRange, compareVersions, isVersion } from './lib/semver.mjs';
 import { hasCodemod, runCodemod } from './registry.mjs';
 
@@ -422,6 +423,8 @@ const WHY = {
  */
 export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map() } = {}) {
   const record = loadRecord(pkgDir);
+  const allSteps = record.ledgers.flatMap((l) => l.steps ?? []);
+  const components = componentSpecs(pkgDir);
   const report = createReport(record, options);
   const known = record.ledgers.map((l) => l.version);
 
@@ -673,6 +676,21 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
       }
     } else if (apply && codemods.length > 0) now = scan();
 
+    // HDS names in strings and comments (prompts, snippets): checked, never rewritten.
+    for (const f of now) {
+      if (f.kind !== 'code') continue;
+      for (const w of findStringWarnings(f.text, { steps: allSteps, components })) {
+        addItem(report, 'doByHand', {
+          id: `tool/string/${w.text}`,
+          plain: `A string or comment names ${w.text.replace(/\.$/, '')} (line ${w.line}), so check it by hand: it may describe another library.`,
+          importer: dir,
+          files: rel([f.rel]),
+          impact: 'none',
+          blocking: false,
+        });
+      }
+    }
+
     for (const step of steps) {
       if (step.kind === 'deprecated') continue; // Coming next, below
       const done = step.done && matchDetect(step.done, now).length > 0;
@@ -718,6 +736,8 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
         continue;
       }
       if (done || (hits !== null && hits.length === 0)) continue;
+      // Additive with no detector: nothing to do unless the code opts in.
+      if (hits === null && step.impact === 'additive') continue;
       const list = listOf(step) === 'looksDifferent' ? 'looksDifferent' : 'doByHand';
       if (list === 'looksDifferent' && hits === null) continue;
       addItem(report, list, {

@@ -2,8 +2,8 @@
 /**
  * tile-grid codemod (hds#395, hds#389's 2026-10-01 decision update)
  *
- * 0.20.0 removed TileGrid from the package root. Grid renders its recipe since
- * hds#393: `layout="auto-fill"` with `minItemWidth`, and the fixed 12px
+ * The patterns release (hds#389) removed TileGrid from the package root. Grid
+ * renders its recipe since hds#393: `layout="auto-fill"` with `minItemWidth`, and the fixed 12px
  * `medium` gap step. TileGrid defaulted to 260px tiles on a 12px gap; Grid
  * defaults to 280px and 32px, so the rewrite always writes both:
  *
@@ -38,7 +38,15 @@
  *                 name, or a file that cannot be read to its end, included)
  *   --dry-run     write nothing; print each changed line before (-) and after (+), exit 0
  */
-import { ROOT_PKG, foldComponent, insertionPoint, isEntry, main, runFold } from './jsx-fold.mjs';
+import {
+  ROOT_PKG,
+  foldComponent,
+  foldRule,
+  insertionPoint,
+  isEntry,
+  main,
+  runFold,
+} from './jsx-fold.mjs';
 import { maskSource } from './unrewritable.mjs';
 
 /** TileGrid's default width, which Grid does not share. */
@@ -205,7 +213,7 @@ function nullishness(code) {
 }
 
 /** @type {import('./jsx-fold.mjs').FoldRule} */
-export const RULE = Object.freeze({
+export const RULE = foldRule({
   name: 'TileGrid',
   survivor: 'Grid',
   survivorFrom: ROOT_PKG,

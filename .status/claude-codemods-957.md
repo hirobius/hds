@@ -1,0 +1,1 @@
+Codemods + upgrade scan read .astro/.vue/.svelte (one CODE_EXTS in jsx-fold); codemods/lib/strings.mjs warns on HDS names in strings/comments (manifest enums, ledger removals) as non-blocking tool/string items (hds#957).

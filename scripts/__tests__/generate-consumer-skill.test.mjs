@@ -17,6 +17,7 @@ import {
   buildConsumerSkill,
   firstSentence,
   LINT_INSTALL_LINE,
+  SELECT_ON,
   SKILL_PATH,
 } from '../generate-consumer-skill.mjs';
 import { layoutRecipeSteps, layoutNegativeRules } from '../lib/layout-recipe.mjs';
@@ -299,6 +300,15 @@ describe('committed skills/hds-consumer/SKILL.md', () => {
 
   it('lint install line appears verbatim in docs/CONSUMING.md', () => {
     expect(read('docs/CONSUMING.md')).toContain(LINT_INSTALL_LINE);
+  });
+
+  it('"What you may select on" matches CONSUMING.md line for line (hds#468)', () => {
+    const consuming = read('CONSUMING.md');
+    expect(consuming).toContain('### What you may select on');
+    for (const rule of SELECT_ON) expect(consuming).toContain(`- ${rule}`);
+    const out = build();
+    expect(out.match(/^## What you may select on$/gm)).toHaveLength(1);
+    for (const rule of SELECT_ON) expect(out).toContain(`- ${rule}`);
   });
 });
 

@@ -49,6 +49,8 @@
       "facts": [
         "css-var-changed:--component-badge-radius::root",
         "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--semantic-color-surface-raised:[data-brand=soft-demo][data-theme=dark],[data-tenant=soft-demo][data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]",
         "css-var-removed:--semantic-space-component-padding"
       ]
     }
