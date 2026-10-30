@@ -1,6 +1,0 @@
-{
-  "ok": true,
-  "selector": "//COMPONENT[@name=NonExistent]",
-  "count": 0,
-  "nodes": []
-}
