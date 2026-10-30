@@ -20,8 +20,8 @@
  *   lib/token-emit/tailwind.mjs tailwind.config.tokens.cjs
  *   lib/token-emit/tenant.mjs  tenant / accent overlays
  *   lib/token-manifest.mjs     public/hds-manifest.json (previous manifest passed in)
- * Their names are re-exported here for existing importers (one release; then
- * import the module directly). Importing this file reads no files.
+ * Import those modules directly; this file exports only the CLI's
+ * buildManifest wrapper. Importing it reads no files.
  */
 
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
@@ -46,15 +46,6 @@ import { renderTailwindConfig } from './lib/token-emit/tailwind.mjs';
 import { ACCENT_HEADER, buildTenantCSS } from './lib/token-emit/tenant.mjs';
 import { buildManifest as buildManifestFrom } from './lib/token-manifest.mjs';
 import { readPackageVersion } from './lib/version-stamp.mjs';
-
-// Re-exported for the importers of this module (one release; then import the lib module).
-export { DTCG_KEYS, resolveAlias, walkTokens } from './lib/token-tree.mjs';
-export { validateTokens } from './lib/token-validate.mjs';
-export * from './lib/token-emit/css.mjs';
-export * from './lib/token-emit/ts.mjs';
-export * from './lib/token-emit/tailwind.mjs';
-export * from './lib/token-emit/tenant.mjs';
-export { HIDDEN_TOKEN_PREFIXES } from './lib/token-manifest.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');

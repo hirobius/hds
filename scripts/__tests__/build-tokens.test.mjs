@@ -6,33 +6,32 @@ import { tmpdir } from 'os';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { transform } from 'lightningcss';
+import { buildManifest } from '../build-tokens.mjs';
+import { resolveAlias, walkTokens } from '../lib/token-tree.mjs';
+import { validateTokens } from '../lib/token-validate.mjs';
 import {
   pathToCSSVar,
   aliasToCSSVar,
-  resolveAlias,
   colorToCSS,
   dimensionToCSS,
   durationToCSS,
   cubicBezierToCSS,
   fontFamilyToCSS,
-  walkTokens,
-  indexDeprecatedAliases,
   valueToCSS,
-  serialize,
   shadowToCSS,
   expandElevation,
   ELEVATION_SLOTS,
-  validateTokens,
-  buildTailwindThemeExtend,
-  validateTenantOverlay,
-  buildTenantCSS,
-  buildManifest,
   buildCSSSection,
-  buildDeprecationNotes,
-  buildCSSVarDts,
   isCssEasing,
   EASING_TYPES,
-} from '../build-tokens.mjs';
+} from '../lib/token-emit/css.mjs';
+import { serialize, buildDeprecationNotes, buildCSSVarDts } from '../lib/token-emit/ts.mjs';
+import { buildTailwindThemeExtend } from '../lib/token-emit/tailwind.mjs';
+import {
+  indexDeprecatedAliases,
+  validateTenantOverlay,
+  buildTenantCSS,
+} from '../lib/token-emit/tenant.mjs';
 import { readTokenSource } from '../lib/token-source.mjs';
 
 // ── pathToCSSVar ──────────────────────────────────────────────────────────────
