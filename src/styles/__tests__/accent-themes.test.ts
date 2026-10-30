@@ -48,8 +48,8 @@ describe('graphite (default accent)', () => {
   // hds#887: the 0.27 graphite fill (#4a4146 / #cbc6c9) read washed-out and, in
   // dark, close to disabled. Rest is now near-black / near-white.
   it('fills near-black in light and near-white in dark (hds#887)', () => {
-    expect(hex('semantic.accent.rest', 'Light')).toBe('#19161a');
-    expect(hex('semantic.accent.rest', 'Dark')).toBe('#f5f4f4');
+    expect(hex('semantic.accent.rest', 'Light')).toBe('#0f1726');
+    expect(hex('semantic.accent.rest', 'Dark')).toBe('#f2f4f8');
     for (const mode of ['Light', 'Dark'] as const) {
       expect(hex('semantic.color.surface.accent', mode)).toBe(hex('semantic.accent.rest', mode));
     }

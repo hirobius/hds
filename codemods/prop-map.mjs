@@ -31,17 +31,15 @@
  *   --dry-run        write nothing; print each changed line before (-) and after (+), exit 0
  */
 import { readFileSync } from 'node:fs';
-import { dirname, join, relative, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { relative, resolve } from 'node:path';
 import { writeFileAtomic } from './lib/atomic-write.mjs';
-import { loadRecord } from './lib/record.mjs';
+import { shippedSteps } from './lib/removals.mjs';
 import { compareVersions, isVersion } from './lib/semver.mjs';
 import { namedImports, namespaceImports } from './lib/scan.mjs';
 import { CODE_EXTS, ROOT_PKG, isEntry, parseTag, walk } from './jsx-fold.mjs';
 import { maskSource } from './unrewritable.mjs';
 
 const BIN = 'hds-prop-map';
-const HERE = dirname(fileURLToPath(import.meta.url));
 const EXTS = new Set([...CODE_EXTS, '.mdx']);
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -81,10 +79,7 @@ export function rulesFromSteps(steps, fallback = 'the next release') {
     });
 }
 
-/** Every step the package ships, from its upgrade record. A broken record throws. */
-export function shippedSteps(pkgDir = join(HERE, '..')) {
-  return loadRecord(pkgDir).ledgers.flatMap((l) => l.steps ?? []);
-}
+export { shippedSteps };
 
 const isHds = (from) => from === ROOT_PKG || from.startsWith(`${ROOT_PKG}/`);
 

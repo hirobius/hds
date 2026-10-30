@@ -7,63 +7,75 @@
       "$type": "color",
       "neutral": {
         "50": {
-          "$value": "#fafafa",
+          "$value": "#f9fafc",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "100": {
-          "$value": "#f5f5f5",
+          "$value": "#f4f5f7",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "200": {
-          "$value": "#e5e5e5",
+          "$value": "#e4e5e7",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "300": {
-          "$value": "#d4d4d4",
+          "$value": "#d3d4d6",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "400": {
-          "$value": "#a3a3a3",
+          "$value": "#a0a3a8",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "350": {
-          "$value": "#b4b4b4",
+          "$value": "#b2b4b8",
           "$description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary)."
         },
         "450": {
-          "$value": "#909090",
-          "$description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black)."
+          "$value": "#8d9096",
+          "$description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black)."
         },
         "500": {
-          "$value": "#737373",
+          "$value": "#6f737b",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "550": {
-          "$value": "#626262",
+          "$value": "#5e626a",
           "$description": "Dark surface.softHover (C2)."
         },
         "600": {
-          "$value": "#525252",
+          "$value": "#4d525b",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "700": {
-          "$value": "#404040",
+          "$value": "#3b404a",
           "$description": "Specific value within the neutral range at a defined lightness step."
+        },
+        "725": {
+          "$value": "#272c36",
+          "$description": "Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522)."
+        },
+        "750": {
+          "$value": "#252a34",
+          "$description": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755)."
         },
         "800": {
-          "$value": "#262626",
+          "$value": "#212630",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
+        "825": {
+          "$value": "#1b202a",
+          "$description": "Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755)."
+        },
         "850": {
-          "$value": "#1a1a1a",
+          "$value": "#151a24",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "900": {
-          "$value": "#111111",
+          "$value": "#0c111b",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "950": {
-          "$value": "#0a0a0a",
+          "$value": "#060a13",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "$description": "Discrete values within the neutral range at defined lightness steps.",
@@ -72,7 +84,7 @@
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
         "black": {
-          "$value": "#000000",
+          "$value": "#060a13",
           "$description": "Specific value within the neutral range at a defined lightness step."
         }
       },
@@ -163,50 +175,50 @@
       },
       "graphite": {
         "50": {
-          "$value": "#f5f4f4",
+          "$value": "#f2f4f8",
           "$description": "Graphite accent tint — faintest step; dark rest fill."
         },
         "100": {
-          "$value": "#e9e7e8",
-          "$description": "Graphite accent — very light warm tint."
+          "$value": "#e5e8ed",
+          "$description": "Graphite accent — very light midnight tint."
         },
         "200": {
-          "$value": "#cbc6c9",
-          "$description": "Graphite accent — light warm-grey."
+          "$value": "#c4c8cf",
+          "$description": "Graphite accent — light midnight grey."
         },
         "300": {
-          "$value": "#b2abae",
+          "$value": "#a8aeb8",
           "$description": "Graphite accent — soft mid-light step; dark-mode hover/link."
         },
         "400": {
-          "$value": "#8b8488",
-          "$description": "Graphite accent — mid warm-grey step."
+          "$value": "#7f8794",
+          "$description": "Graphite accent — mid midnight-grey step."
         },
         "500": {
-          "$value": "#655e62",
+          "$value": "#586170",
           "$description": "Graphite accent — mid step."
         },
         "600": {
-          "$value": "#544d51",
+          "$value": "#465061",
           "$description": "Graphite accent — mid-dark step."
         },
         "700": {
-          "$value": "#4a4146",
-          "$description": "Graphite accent — warm charcoal; light-mode accent text."
+          "$value": "#3a4457",
+          "$description": "Graphite accent — midnight charcoal; light-mode accent text."
         },
         "800": {
-          "$value": "#352e32",
+          "$value": "#263043",
           "$description": "Graphite accent — deep step; light-mode hover."
         },
         "900": {
-          "$value": "#2a2428",
+          "$value": "#1c2638",
           "$description": "Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text."
         },
         "950": {
-          "$value": "#19161a",
+          "$value": "#0f1726",
           "$description": "Graphite accent — near-black; light rest fill."
         },
-        "$description": "Graphite, the warm-charcoal brand accent scale. Feedback colors keep their own scales."
+        "$description": "Graphite, the midnight-charcoal brand accent scale (hue 262, hds#755). Feedback colors keep their own scales."
       },
       "cobalt": {
         "50": {
@@ -223,7 +235,7 @@
         },
         "300": {
           "$value": "#8a97f8",
-          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.86:1 on black)."
+          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.41:1 on black)."
         },
         "400": {
           "$value": "#5b71fa",
@@ -1344,7 +1356,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.50}",
-                "Dark": "{primitive.color.neutral.850}"
+                "Dark": "{primitive.color.neutral.825}"
               }
             }
           }
@@ -1399,7 +1411,7 @@
         },
         "accent": {
           "$value": "{primitive.color.graphite.950}",
-          "$description": "Accent fill, warm graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
+          "$description": "Accent fill, midnight graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1452,7 +1464,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.200}",
-                "Dark": "{primitive.color.neutral.800}"
+                "Dark": "{primitive.color.neutral.725}"
               }
             }
           }
@@ -1464,7 +1476,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.100}",
-                "Dark": "{primitive.color.neutral.800}"
+                "Dark": "{primitive.color.neutral.750}"
               }
             }
           }
@@ -1627,7 +1639,7 @@
       "border": {
         "default": {
           "$value": "{primitive.color.graphite.200}",
-          "$description": "Hairline and divider border. Light is warm graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
+          "$description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {

@@ -550,7 +550,7 @@ const UpgradeItem = z
       .string()
       .min(1)
       .describe(
-        'The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual.',
+        'The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, tool/string/<warning> (an HDS name in a string or comment that the ledger or manifest says is wrong), or <codemod>/manual.',
       ),
     plain: z.string().min(1).describe('What happened or what to do, in one sentence.'),
     importers: z

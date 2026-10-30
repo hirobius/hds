@@ -120,7 +120,9 @@
         "css-var-changed:--semantic-accent-rest::root",
         "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
         "css-var-changed:--semantic-color-surface-accent::root",
-        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]"
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
       ]
     }
   ]
