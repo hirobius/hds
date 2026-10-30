@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Avatar, AvatarGroup's +N bubble, Kbd and the active Tab and its panel now have a fill that shows on a Card and on the page; drop any local CSS that darkened them."
+}
