@@ -38,8 +38,23 @@ import { removedIn, removedText } from './lib/removals.mjs';
 export const ROOT_PKG = '@hirobius/design-system';
 export const PATTERNS = `${ROOT_PKG}/patterns`;
 
-/** The code files a codemod reads. */
-export const CODE_EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
+/**
+ * The code files a codemod reads: script files, and the single-file components
+ * whose script block or frontmatter imports HDS (.astro, .vue, .svelte, hds#957).
+ */
+export const CODE_EXTS = new Set([
+  '.ts',
+  '.tsx',
+  '.js',
+  '.jsx',
+  '.mjs',
+  '.cjs',
+  '.mts',
+  '.cts',
+  '.astro',
+  '.vue',
+  '.svelte',
+]);
 const SKIP_DIRS = new Set([
   'node_modules',
   'dist',
