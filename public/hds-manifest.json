@@ -462,6 +462,7 @@
         }
       },
       "docsPage": "/docs/components/alert",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a persistent inline message with a severity, next to the content it concerns.",
         "whenNot": "A brief confirmation that should disappear on its own, or a status label.",
@@ -604,6 +605,7 @@
       "sourcePath": "src/app/components/CodeBlock.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154",
       "docsPage": "/docs/patterns/code-block",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a code sample with a copy button, optionally collapsed."
       }
@@ -666,6 +668,7 @@
       "sourcePath": "src/app/components/Container.tsx",
       "figmaLink": null,
       "docsPage": "/docs/components/utilities",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Constrain a page region to the content or maximum width and centre it.",
         "whenNot": "Spacing between siblings, columns, or a surface with padding.",
@@ -893,6 +896,9 @@
       "sourcePath": "src/app/components/Disclosure.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453",
       "docsPage": "/docs/components/disclosure",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Hide optional explanatory content behind a heading that people can expand. An expandable list row (one-line preview, actions beside the trigger) is variant=\"row\".",
         "whenNot": "Content people must see, or switching between panels.",
@@ -994,6 +1000,9 @@
         }
       },
       "docsPage": "/docs/components/divider",
+      "publicDataAttributes": [
+        "data-variant"
+      ],
       "usage": {
         "when": "Separate two blocks of content with a thin line.",
         "whenNot": "Spacing alone would do, or the separation needs a container.",
@@ -1095,6 +1104,9 @@
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
       "docsPage": "/docs/patterns/error-pattern",
+      "publicDataAttributes": [
+        "data-role"
+      ],
       "usage": {
         "when": "Show an error with a short message and a Back button, in place or as a full page."
       }
@@ -1254,6 +1266,7 @@
       "sourcePath": "src/app/components/Grid.tsx",
       "figmaLink": null,
       "docsPage": "/docs/components/grid",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Lay out content in columns that adapt to the screen width, or line up nested content with subgrid.",
         "whenNot": "A single row or column, or styling a surface.",
@@ -1413,6 +1426,7 @@
       "sourcePath": "src/app/components/Icon.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2",
       "docsPage": "/docs/components/icon",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a Lucide icon at a set size and color.",
         "whenNot": "A control someone can activate, or a picture that carries content.",
@@ -1518,7 +1532,8 @@
       "docExempt": false,
       "sourcePath": "src/app/components/InlineCode.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "InlineLink": {
       "category": "Navigation",
@@ -1617,6 +1632,7 @@
       "sourcePath": "src/app/components/InlineLink.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
       "docsPage": "/docs/components/inline-link",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Link to a route or external URL from inside body copy.",
         "whenNot": "An action that changes something, or a control that needs button styling.",
@@ -1957,6 +1973,10 @@
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20",
       "docsPage": "/docs/components/input",
+      "publicDataAttributes": [
+        "data-size",
+        "data-state"
+      ],
       "usage": {
         "when": "Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots.",
         "whenNot": "Multi-line text, or choosing from a fixed list of options.",
@@ -2134,6 +2154,9 @@
       "sourcePath": "src/app/components/SegmentedControl.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
       "docsPage": "/docs/components/segmented-control",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Switch between two to five mutually exclusive views or modes in a compact row.",
         "whenNot": "A form choice that submits with the form, or more than five options.",
@@ -2376,6 +2399,7 @@
       "sourcePath": "src/app/components/Stack.tsx",
       "figmaLink": null,
       "docsPage": "/docs/components/stack",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Space items in a row or column with even gaps.",
         "whenNot": "Multi-column layout, or giving content a background or padding.",
@@ -2536,6 +2560,9 @@
       "sourcePath": "src/app/components/Table.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300",
       "docsPage": "/docs/components/table",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Show rows of structured data in aligned columns, with optional sorting.",
         "whenNot": "A single record, a short list of links, or content that reflows as cards.",
@@ -2738,6 +2765,10 @@
       "sourcePath": "src/app/components/Tag.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "docsPage": "/docs/components/tag",
+      "publicDataAttributes": [
+        "data-active",
+        "data-dismissible"
+      ],
       "usage": {
         "when": "Show an interactive filter or category chip that people can toggle.",
         "whenNot": "A read-only status or count label.",
@@ -2868,6 +2899,7 @@
         "default"
       ],
       "docsPage": "/docs/components/surface",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Give a block of content a background and padding, with no header or footer.",
         "whenNot": "Page layout, section spacing, width constraints, or content that needs slots.",
@@ -3216,6 +3248,15 @@
         }
       },
       "docsPage": "/docs/components/card",
+      "publicDataAttributes": [
+        "data-bordered",
+        "data-format",
+        "data-interactive",
+        "data-padding",
+        "data-slot",
+        "data-tone",
+        "data-variant"
+      ],
       "usage": {
         "when": "Group related content on a raised surface with header, body, footer and row slots, or as one selectable option.",
         "whenNot": "A bare padded background with no slot anatomy, or a single headline figure.",
@@ -3346,6 +3387,7 @@
       "sourcePath": "src/app/components/Text.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2022-31",
       "docsPage": "/docs/components/text",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Set any text on the type ramp, with the element chosen by `as`.",
         "whenNot": "Navigation links, or a keyboard hint.",
@@ -3623,6 +3665,9 @@
         }
       },
       "docsPage": "/docs/components/dialog",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
         "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
@@ -3985,6 +4030,12 @@
         }
       },
       "docsPage": "/docs/components/button",
+      "publicDataAttributes": [
+        "data-hover-effect",
+        "data-pressed",
+        "data-tone",
+        "data-variant"
+      ],
       "usage": {
         "when": "Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed.",
         "whenNot": "Navigating to another page, where a link is the correct element.",
@@ -4062,7 +4113,8 @@
           "required": false
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "EmptyState": {
       "category": "Display",
@@ -4115,6 +4167,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/empty-state",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step.",
         "whenNot": "Content that is still loading, or a full-page error.",
@@ -4219,6 +4272,9 @@
         }
       ],
       "docsPage": "/docs/components/field",
+      "publicDataAttributes": [
+        "data-tone"
+      ],
       "usage": {
         "when": "Show a labelled read-only value, such as a name and its value in a detail view.",
         "whenNot": "Editable input, or a single headline figure.",
@@ -4294,6 +4350,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/page",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Wrap a screen in the standard width and padding."
       }
@@ -4368,6 +4425,7 @@
         }
       ],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line.",
         "whenNot": "A row of headline numbers on a screen, or a status with a trailing badge."
@@ -4444,7 +4502,8 @@
           "required": true
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "StatusTile": {
       "category": "Display",
@@ -4502,6 +4561,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/status-tile",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a titled status block with optional notes and a trailing badge or affordance.",
         "whenNot": "A headline number (never a value), or a row inside a list.",
@@ -4637,6 +4697,9 @@
       ],
       "tokenMapping": {},
       "docsPage": "/docs/components/badge",
+      "publicDataAttributes": [
+        "data-tone"
+      ],
       "usage": {
         "when": "Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
@@ -4841,6 +4904,7 @@
         }
       ],
       "docsPage": "/docs/patterns/asset-img",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show an image that scales to its frame, with a placeholder if it fails to load."
       }
@@ -4968,6 +5032,10 @@
         }
       ],
       "docsPage": "/docs/components/tabs",
+      "publicDataAttributes": [
+        "data-orientation",
+        "data-state"
+      ],
       "usage": {
         "when": "Switch between panels of related content in the same place, one visible at a time.",
         "whenNot": "A compact mode switch with no panels, or content that must all be visible.",
@@ -5031,7 +5099,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "TabsList": {
       "category": "Navigation",
@@ -5069,7 +5138,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "TabsTrigger": {
       "category": "Navigation",
@@ -5106,7 +5176,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Radio": {
       "category": "Inputs",
@@ -5205,6 +5276,7 @@
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17",
       "docsPage": "/docs/components/radio",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Choose exactly one option from a small set that should stay visible together.",
         "whenNot": "Independent yes/no options, or a long list of options.",
@@ -5414,6 +5486,9 @@
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49",
       "docsPage": "/docs/components/select",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Choose one value from a short list of options in a form field.",
         "whenNot": "Firing actions, or choosing from a list long enough to need search.",
@@ -5567,6 +5642,7 @@
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265",
       "docsPage": "/docs/components/slider",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Pick a number within a known range by dragging, when the exact value matters less than the position.",
         "whenNot": "A precise number the person must type or read exactly.",
@@ -5674,6 +5750,7 @@
       "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19",
       "docsPage": "/docs/components/toggle",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Switch one setting on or off, with the effect applying immediately.",
         "whenNot": "A choice that only takes effect after submitting a form, or picking from several options.",
@@ -5786,6 +5863,9 @@
         }
       ],
       "docsPage": "/docs/components/avatar",
+      "publicDataAttributes": [
+        "data-size"
+      ],
       "usage": {
         "when": "Show a person or entity as an image with an initials fallback, or a neutral person icon when nobody is signed in; add a status dot for a state such as unsynced. As an account button, pass it as the iconLeft of a tertiary iconOnly Button.",
         "whenNot": "A generic pictogram, or a status marker on its own.",
@@ -5876,6 +5956,11 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/progress",
+      "publicDataAttributes": [
+        "data-state",
+        "data-tone",
+        "data-variant"
+      ],
       "usage": {
         "when": "Show how far a task has got, as a bar or ring that is determinate or indeterminate.",
         "whenNot": "A wait of unknown length with no bar, or content that is still loading.",
@@ -5943,6 +6028,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/skeleton",
+      "publicDataAttributes": [
+        "data-variant"
+      ],
       "usage": {
         "when": "Reserve the shape of content that is still loading, so the layout does not jump.",
         "whenNot": "A task with measurable progress, or a wait with no layout to reserve.",
@@ -6004,6 +6092,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/spinner",
+      "publicDataAttributes": [
+        "data-size"
+      ],
       "usage": {
         "when": "Show that something is loading when the wait is short or has no measurable end.",
         "whenNot": "A task with measurable progress, or a region whose layout is known.",
@@ -6097,6 +6188,7 @@
         }
       ],
       "docsPage": "/docs/components/breadcrumb",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show where the current page sits in a hierarchy and link back up it.",
         "whenNot": "Switching between sibling views, or stepping through pages of results.",
@@ -6241,6 +6333,7 @@
         }
       ],
       "docsPage": "/docs/components/pagination",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Move between pages of a long result set, with truncated page numbers.",
         "whenNot": "A hierarchy trail, or a short list that fits on one page.",
@@ -6351,6 +6444,7 @@
         }
       ],
       "docsPage": "/docs/guides/providers",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Confirm an action with a brief message that appears and dismisses itself, through useToast.",
         "whenNot": "A message people must act on or that must stay next to its content.",
@@ -6633,6 +6727,7 @@
         }
       ],
       "docsPage": "/docs/components/combobox",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
         "whenNot": "A short list that needs no search, or an action list.",
@@ -6730,6 +6825,7 @@
         }
       ],
       "docsPage": "/docs/patterns/form",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Wrap form fields so they stack with even spacing."
       }
@@ -6837,7 +6933,8 @@
           "owner": "consumer"
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "FormFieldShell": {
       "category": "Inputs",
@@ -6906,7 +7003,8 @@
           "owner": "consumer"
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "HdsThemeProvider": {
       "category": "Theming",
@@ -6988,6 +7086,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/guides/providers",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Wrap an app or region once to set theme, density and other root attributes for everything inside it.",
         "whenNot": "Styling a single component, or per-component overrides.",
@@ -7044,7 +7143,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Blockquote": {
       "category": "Typography",
@@ -7087,7 +7187,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Kbd": {
       "category": "Display",
@@ -7130,6 +7231,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/kbd",
+      "publicDataAttributes": [
+        "data-size"
+      ],
       "usage": {
         "when": "Show a keyboard key or shortcut hint inline, as a native kbd element.",
         "whenNot": "Code samples, or a control that runs the shortcut.",
@@ -7194,7 +7298,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "VisuallyHidden": {
       "category": "Utility",
@@ -7231,6 +7336,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/utilities",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Give assistive technology a label or description that sighted people do not need to see.",
         "whenNot": "Text everyone should read, or hiding an element from assistive technology too.",
@@ -7298,7 +7404,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "AlertDialog": {
       "category": "Overlays",
@@ -7414,6 +7521,7 @@
         }
       ],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.",
         "whenNot": "A modal that collects input or shows content, or a confirmation after the action is done.",
@@ -7479,6 +7587,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/utilities",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Build one-off layout that no named layout primitive covers, using token keys through `sx`.",
         "whenNot": "Ordinary vertical or horizontal spacing, columns, or page-width constraint.",
@@ -7573,6 +7682,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "aiRules": "Reach for this named layout intent before Box/sx. Sidebar expects EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid."
     },
     "Switcher": {
@@ -7640,6 +7750,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "aiRules": "Reach for this named layout intent before Box/sx. gap MUST use a semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Stack with `direction=\"row\"` and `wrap=\"wrap\"`."
     },
     "Pin": {
@@ -7692,6 +7803,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "aiRules": "`top` is a CSS length offset (a dimension, not a spacing step). Give the pinned element a TALLER scrolling parent so it has room to travel. For the scroll-scrubbed animation inside a pinned scene, use CSS `animation-timeline` (see Reveal) or `useScrollProgress` from `@hirobius/design-system/scroll`. See ADR-021."
     },
     "Reveal": {
@@ -7750,6 +7862,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/reveal",
+      "publicDataAttributes": [
+        "data-reveal"
+      ],
       "usage": {
         "when": "Fade content in as it scrolls into view."
       },
@@ -7857,6 +7972,9 @@
         }
       ],
       "docsPage": "/docs/components/textarea",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Collect multi-line free text such as a message, note or description.",
         "whenNot": "A single line of text, or choosing from a list.",
@@ -7896,7 +8014,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardDescription": {
       "category": "Display",
@@ -7925,7 +8044,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardFooter": {
       "category": "Display",
@@ -7954,7 +8074,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardHeader": {
       "category": "Display",
@@ -7988,7 +8109,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardMetric": {
       "category": "Display",
@@ -8040,6 +8162,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show one headline figure (a KPI, a count, a total) with its label inside a Card.",
         "whenNot": "A metric outside a Card, or several figures that share one label."
@@ -8097,7 +8220,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardTitle": {
       "category": "Display",
@@ -8126,7 +8250,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogClose": {
       "category": "Overlays",
@@ -8160,7 +8285,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogContent": {
       "category": "Overlays",
@@ -8230,7 +8356,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogDescription": {
       "category": "Overlays",
@@ -8266,7 +8393,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogFooter": {
       "category": "Overlays",
@@ -8295,7 +8423,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogHeader": {
       "category": "Overlays",
@@ -8324,7 +8453,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogOverlay": {
       "category": "Overlays",
@@ -8364,7 +8494,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogPortal": {
       "category": "Overlays",
@@ -8408,7 +8539,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogTitle": {
       "category": "Overlays",
@@ -8444,7 +8576,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogTrigger": {
       "category": "Overlays",
@@ -8478,7 +8611,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Tooltip": {
       "category": "Overlays",
@@ -8596,6 +8730,9 @@
         }
       ],
       "docsPage": "/docs/components/tooltip",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Name an icon-only control, or add a short hint that appears on hover and keyboard focus.",
         "whenNot": "Anything interactive, text people need to finish a task, or a hint touch users must see (touch has no hover).",
@@ -8799,6 +8936,9 @@
         }
       ],
       "docsPage": "/docs/components/menu",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Offer a list of actions from a trigger, closed until opened.",
         "whenNot": "Choosing one value for a form field, or a set of options that must stay visible.",
@@ -8954,6 +9094,9 @@
         }
       ],
       "docsPage": "/docs/components/popover",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.",
         "whenNot": "A short label on hover or focus, a list of actions, or a decision that must block the page.",
@@ -9081,6 +9224,7 @@
         }
       ],
       "docsPage": "/docs/components/checkbox",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Let people tick one or more independent options, or a parent choice that is partly selected.",
         "whenNot": "An immediate on/off setting, or a choice of exactly one option from a set.",
@@ -9153,6 +9297,9 @@
         }
       ],
       "docsPage": "/docs/patterns/form-actions",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Lay out a form's buttons in a fixed order: danger on the left, then secondary, then primary on the right."
       }
@@ -9207,6 +9354,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show one key number with its label, inside a MetricTiles row."
       },
@@ -9245,6 +9393,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/metric-tiles",
+      "publicDataAttributes": [
+        "data-tone"
+      ],
       "usage": {
         "when": "Show a row of key numbers, one tile each."
       },
@@ -9307,6 +9458,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/page-header",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Open a screen with its title, plus optional breadcrumb, status and actions."
       }
@@ -9376,6 +9530,9 @@
         }
       ],
       "docsPage": "/docs/patterns/data-table-section",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Put a heading and toolbar above a Table."
       }
@@ -9466,6 +9623,9 @@
         }
       ],
       "docsPage": "/docs/patterns/destructive-section",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Put a dangerous action, such as delete, in its own section with a warning and a confirm step."
       }
@@ -9508,6 +9668,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/guides/providers",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors."
       },
@@ -9553,6 +9714,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lines, and a Badge in `trailing`.",
         "whenNot": "A headline number, or a card with a full header, body and footer."
@@ -9585,7 +9747,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardRowTitle": {
       "category": "Display",
@@ -9614,7 +9777,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Board": {
       "category": "Layout",
@@ -9648,6 +9812,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage.",
         "whenNot": "Rows of columns and cells that sort or filter, or a board people rearrange by dragging.",
@@ -9704,6 +9869,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Hold the cards for one status inside a Board, with a heading that announces the count.",
         "whenNot": "Standing alone outside a Board, or a list with no status.",
@@ -9844,6 +10010,7 @@
         }
       ],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Capture a prompt or a quick note where a long paste should not flood the field.",
         "whenNot": "A plain multi-line field with no submit action, or a form with several fields.",
@@ -9907,6 +10074,11 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [
+        "data-format",
+        "data-timeline-marker",
+        "data-tone"
+      ],
       "usage": {
         "when": "Show a dated history of events, such as shipped releases or client activity, grouped under day headings.",
         "whenNot": "A list with no dates, or steps someone completes in order.",
@@ -9983,7 +10155,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "ThemeToggle": {
       "category": "Actions",
@@ -10070,6 +10243,9 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": null,
+      "publicDataAttributes": [
+        "data-theme-state"
+      ],
       "usage": {
         "when": "A single header or menu control to switch between the light and dark theme.",
         "whenNot": "Choosing between three or more modes, or a setting that belongs in a form.",
@@ -10115,6 +10291,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/meta-line",
+      "publicDataAttributes": [
+        "data-meta-separator"
+      ],
       "usage": {
         "when": "Show one or two secondary facts on a single line, joined by a bullet (\"Acme Cloud · Remote\").",
         "whenNot": "Three or more facts, or labelled key-value pairs.",
@@ -10240,6 +10419,10 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": "/docs/patterns/async-state",
+      "publicDataAttributes": [
+        "data-slot",
+        "data-status"
+      ],
       "usage": {
         "when": "Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content.",
         "whenNot": "Content that is always there, a task with measurable progress, or a full-page routed error.",
@@ -10341,6 +10524,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": "/docs/components/nav-list",
+      "publicDataAttributes": [],
       "usage": {
         "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
         "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
@@ -10459,6 +10643,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
         "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
@@ -10601,6 +10786,10 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": null,
+      "publicDataAttributes": [
+        "data-state",
+        "data-token"
+      ],
       "usage": {
         "when": "Edit a template or message in which placeholders such as [Name] must stay whole: each one is a chip that is stepped over and deleted as one unit.",
         "whenNot": "Plain multi-line text with no placeholders, or a single line.",
@@ -10648,6 +10837,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show an entity's quick facts (location, salary, type) under its title.",
         "whenNot": "Term and description pairs (use MetadataList) or text with no icons (use MetaLine)."
@@ -10705,6 +10895,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Open an entity card (a job, a lead, a listing) with where it came from and when, above Card.Header.",
         "whenNot": "A status or label for the card (use Card.Header `metadata`) or a person's byline in prose."
@@ -10848,6 +11039,9 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": null,
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Open a short menu or form from the bottom edge on a phone (sort, row actions, status, a quick edit), centred like a Dialog on wider screens.",
         "whenNot": "A long or multi-step form, a confirmation of a destructive action, or a few actions on desktop only.",
@@ -10928,7 +11122,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetActions": {
       "category": "Overlays",
@@ -10957,7 +11152,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetClose": {
       "category": "Overlays",
@@ -10991,7 +11187,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetContent": {
       "category": "Overlays",
@@ -11061,7 +11258,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetDescription": {
       "category": "Overlays",
@@ -11095,7 +11293,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetFooter": {
       "category": "Overlays",
@@ -11124,7 +11323,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetHeader": {
       "category": "Overlays",
@@ -11153,7 +11353,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetTitle": {
       "category": "Overlays",
@@ -11187,7 +11388,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetTrigger": {
       "category": "Overlays",
@@ -11221,7 +11423,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "HdsPhosphor": {
       "category": "Compiler",
@@ -11359,7 +11562,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsFrame": {
       "category": "Compiler",
@@ -11474,7 +11678,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsHeading": {
       "category": "Compiler",
@@ -11531,7 +11736,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsLabel": {
       "category": "Compiler",
@@ -11575,7 +11781,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsCaption": {
       "category": "Compiler",
@@ -11615,7 +11822,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsCheckbox": {
       "category": "Compiler",
@@ -11631,7 +11839,8 @@
       "requiredProps": [],
       "a11yRules": [],
       "storyFiles": [],
-      "storyIds": []
+      "storyIds": [],
+      "publicDataAttributes": []
     },
     "HdsChip": {
       "category": "Compiler",
@@ -11647,7 +11856,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsAvatar": {
       "category": "Compiler",
@@ -11663,7 +11873,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "ExpandTooltip": {
       "category": "Internal",
@@ -11686,7 +11897,8 @@
       ],
       "tokenMapping": {},
       "variantAxes": [],
-      "componentProperties": []
+      "componentProperties": [],
+      "publicDataAttributes": []
     }
   },
   "tokens": {

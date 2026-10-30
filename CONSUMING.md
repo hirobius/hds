@@ -96,7 +96,7 @@ In tests and styles, select HDS elements only by:
 
 - Role and accessible name, as a screen reader meets them: `getByRole('button', { name: 'Save' })`.
 - ARIA states such as `aria-checked`, `aria-selected`, `aria-expanded` and `aria-disabled`.
-- The `data-*` attributes HDS renders, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-radix-*`, which belong to Radix.
+- The `data-*` attributes a component lists in the manifest's `publicDataAttributes`, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-hds-*`, which are internal, or `data-radix-*`, which belong to Radix.
 - The `hds-*` classes and the manifest's `publicClasses`, which the CSS contract tracks.
 - Never other class names, ids, tag names or how elements nest: those change without an upgrade step.
 

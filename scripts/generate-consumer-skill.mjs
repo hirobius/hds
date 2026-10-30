@@ -54,7 +54,7 @@ export const LINT_INSTALL_LINE =
 export const SELECT_ON = [
   "Role and accessible name, as a screen reader meets them: `getByRole('button', { name: 'Save' })`.",
   'ARIA states such as `aria-checked`, `aria-selected`, `aria-expanded` and `aria-disabled`.',
-  'The `data-*` attributes HDS renders, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-radix-*`, which belong to Radix.',
+  "The `data-*` attributes a component lists in the manifest's `publicDataAttributes`, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-hds-*`, which are internal, or `data-radix-*`, which belong to Radix.",
   "The `hds-*` classes and the manifest's `publicClasses`, which the CSS contract tracks.",
   'Never other class names, ids, tag names or how elements nest: those change without an upgrade step.',
 ];
@@ -114,6 +114,23 @@ function allowList(manifest, barrelSource) {
       ...items.map((i) => (i.line ? `- \`${i.name}\` — ${i.line}` : `- \`${i.name}\``)),
     ].join('\n');
   });
+}
+
+/**
+ * Each component's `publicDataAttributes` (hds#960), one line per component
+ * that has any, sorted by name; nothing when none has.
+ */
+export function dataAttributesSection(manifest) {
+  const specs = { ...(manifest.componentSpecs ?? {}), ...(manifest.utilities ?? {}) };
+  const lines = Object.keys(specs)
+    .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+    .filter((name) => !specs[name]?.deprecated && specs[name]?.publicDataAttributes?.length)
+    .map(
+      (name) =>
+        `- \`${name}\`: ${specs[name].publicDataAttributes.map((a) => `\`${a}\``).join(', ')}`,
+    );
+  if (lines.length === 0) return [];
+  return ['The `data-*` attributes each component renders for you to select on:', '', ...lines, ''];
 }
 
 /** The "## Core set" section (hds#374), or nothing when no spec carries `core: true`. */
@@ -235,6 +252,7 @@ export function buildConsumerSkill({
       '',
       SELECT_ON.map((rule) => `- ${rule}`).join('\n'),
       '',
+      ...dataAttributesSection(manifest),
       '## Steps',
       '',
       'Finish every task with the last step below.',
