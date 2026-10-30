@@ -33,7 +33,7 @@ HDS ships three typefaces — each with a distinct role:
 - **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `400` mono, `500` medium, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `700` bold.
+Weights declared: `400` regular, `400` mono, `500` medium, `600` semibold, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `600` semibold, `700` bold.
 
 ### Type ramp
 
@@ -190,6 +190,10 @@ A tag input is a creatable Combobox (`<Combobox multiple creatable>`): chips inl
 
 When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
+### Touch size (hds#750)
+
+On a coarse pointer (any phone or tablet) or a viewport under 640px, small controls lift to `semantic.size.touchTarget` (`--semantic-size-touchTarget`, 44px): sm Button (icon-only sm in both axes), Tabs trigger, SegmentedControl option, Tag and its dismiss X, Disclosure trigger, Input clear, Combobox chips, Checkbox/Radio/Toggle rows and Pagination. It is on by default, with no prop; a fine pointer on a wide viewport keeps desktop density. A custom control opts in with the `hds-touch-row` class (height) or `hds-touch-target` (height and width). Hosts can delete their own touch-size overrides. `pnpm check:docs-touch-targets` measures the docs demos on a 390px phone and a 1024px touch tablet.
+
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
 Every HDS card surface must conform to this anatomy exactly. No creative interpretation is permitted on any of these properties.
@@ -273,6 +277,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (473 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (479 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

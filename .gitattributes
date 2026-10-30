@@ -9,3 +9,17 @@
 *.webp  binary
 *.ico   binary
 *.gz    binary
+
+# Generated files (hds#977): a merge never stops on them. The hds-generated
+# driver (scripts/merge-generated.mjs, registered by pnpm install) merges what
+# does not overlap and keeps ours where it does; .husky/post-merge then runs
+# `pnpm regen` to rebuild them from source. Keep this list equal to
+# `node scripts/regen.mjs --list` (scripts/__tests__/merge-generated.test.mjs).
+public/hds-manifest.json      merge=hds-generated
+docs/api/types-baseline.json  merge=hds-generated
+docs/sync-map.json            merge=hds-generated
+DESIGN-HANDOFF.md             merge=hds-generated
+DESIGN.md                     merge=hds-generated
+README.md                     merge=hds-generated
+public/hds-stats.json         merge=hds-generated
+public/llms-full.txt          merge=hds-generated

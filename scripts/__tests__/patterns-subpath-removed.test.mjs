@@ -20,6 +20,8 @@ import { collectPublicApi } from '../lib/check-public-api.mjs';
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CODEMOD = join(REPO, 'codemods/patterns-subpath.mjs');
 const DATA = JSON.parse(readFileSync(join(REPO, 'codemods/removed-0.20.json'), 'utf8'));
+// Names 0.20.0 removed that a later release reused for a new component (hds#638).
+const REINTRODUCED = new Set(Object.keys(DATA.reintroduced ?? {}).filter((k) => k !== '$comment'));
 const ROOT = '@hirobius/design-system';
 const SUB = '@hirobius/design-system/patterns';
 
@@ -32,7 +34,9 @@ describe('codemods/removed-0.20.json', () => {
   );
 
   it('lists no name the root or /patterns still exports', () => {
-    const back = [...loadRemovedNames()].filter((name) => exported.has(name));
+    const back = [...loadRemovedNames()].filter(
+      (name) => exported.has(name) && !REINTRODUCED.has(name),
+    );
     expect(back).toEqual([]);
   });
 
@@ -40,7 +44,7 @@ describe('codemods/removed-0.20.json', () => {
     for (const [file, names] of Object.entries(DATA.modules)) {
       if (existsSync(join(REPO, file))) {
         expect(
-          names.filter((n) => !n.endsWith('Variants')),
+          names.filter((n) => !n.endsWith('Variants') && !REINTRODUCED.has(n)),
           file,
         ).toEqual([]);
       }

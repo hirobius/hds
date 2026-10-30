@@ -24,6 +24,7 @@
  * @a11y consumer required Place it where a keyboard user finds it early (the header), and keep one per page; the name already says the next theme, so do not add a visible label that contradicts it.
  */
 
+// motion-ok: the sun-to-moon morph is CSS in theme.css (.hds-theme-toggle), timed on --primitive-duration-long.
 import * as React from 'react';
 import { cn } from '../../lib/utils';
 import { isDevelopment } from '../../lib/env';

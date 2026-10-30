@@ -41,22 +41,22 @@ describe('Button contract', () => {
     expect(el?.className).not.toContain('bg-primary');
   });
 
-  it('size=sm emits h-8 class', () => {
+  it('size=sm binds its height token', () => {
     const { container } = render(<Button size="sm">Label</Button>);
     const el = container.querySelector('button');
-    expect(el?.className).toContain('h-8');
+    expect(el?.className).toContain('h-[var(--component-button-size-sm-height)]');
   });
 
-  it('size=md emits h-10 class', () => {
+  it('size=md binds its height token', () => {
     const { container } = render(<Button size="md">Label</Button>);
     const el = container.querySelector('button');
-    expect(el?.className).toContain('h-10');
+    expect(el?.className).toContain('h-[var(--component-button-size-md-height)]');
   });
 
-  it('size=lg emits h-12 class', () => {
+  it('size=lg binds its height token', () => {
     const { container } = render(<Button size="lg">Label</Button>);
     const el = container.querySelector('button');
-    expect(el?.className).toContain('h-12');
+    expect(el?.className).toContain('h-[var(--component-button-size-lg-height)]');
   });
 
   it('data-variant attribute reflects the variant prop', () => {

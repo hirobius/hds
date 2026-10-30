@@ -240,8 +240,10 @@ for (const entry of activeDiscoveredComponents) {
     category,
     categorySource,
     governedCategory: categorySource === 'jsdoc' || categorySource === 'internal-jsdoc',
-    hidden,
-    docExempt: entry.docExempt,
+    // Written only when true (hds#784): `false` on every spec cost ~95 B of
+    // the manifest's gzip budget, and every reader treats a missing flag as false.
+    hidden: hidden || undefined,
+    docExempt: entry.docExempt || undefined,
     filePath: entry.filePath,
     description: entry.description || current.description,
     ...(contract.usage ? { usage: contract.usage } : {}),
@@ -309,6 +311,13 @@ for (const spec of Object.values(manifest.componentSpecs)) {
   if (spec && 'figmaLink' in spec) {
     spec.figmaLink = resolveFigmaLink(spec.figmaLink, spec.figmaUrl);
   }
+}
+
+// Specs carried over without rediscovery (compound parts) may still hold the
+// old `false` flags; drop them so every spec follows the write-only-when-true rule.
+for (const spec of Object.values(manifest.componentSpecs)) {
+  if (spec?.hidden === false) delete spec.hidden;
+  if (spec?.docExempt === false) delete spec.docExempt;
 }
 
 const utilities = {};

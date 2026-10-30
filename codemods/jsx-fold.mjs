@@ -4,7 +4,8 @@
  * hds-not-found-pattern (NotFoundPattern -> ErrorPattern) and hds-tile-grid
  * (TileGrid -> Grid). It ships with them as a package bin dependency, so it has
  * no dependencies; codemods/unrewritable.mjs masks the source and lists what a
- * codemod cannot see.
+ * codemod cannot see. hds-prop-map (codemods/prop-map.mjs) reuses its tag
+ * parser and walker.
  *
  * A fold rewrites one named import of the package root and every JSX element of
  * the name it binds:
@@ -31,7 +32,8 @@ import { findUnrewritable, maskSource } from './unrewritable.mjs';
 export const ROOT_PKG = '@hirobius/design-system';
 export const PATTERNS = `${ROOT_PKG}/patterns`;
 
-const EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
+/** The code files a codemod reads. */
+export const CODE_EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
 const SKIP_DIRS = new Set([
   'node_modules',
   'dist',
@@ -153,7 +155,7 @@ function closeBrace(code, at) {
 }
 
 /** The attributes of the opening tag whose name ends at `from`, up to its `>` or `/>`; null when it does not parse. */
-function parseTag(source, code, from) {
+export function parseTag(source, code, from) {
   const attrs = [];
   let i = from;
   const skip = () => {
@@ -258,7 +260,7 @@ function addSpec(source, st, text) {
  * @param {string} source
  * @param {Edit[]} edits
  */
-function editHunks(source, edits) {
+export function editHunks(source, edits) {
   const clusters = [];
   for (const e of [...edits].sort((a, b) => a.start - b.start || a.end - b.end)) {
     const from = lineStart(source, e.start);
@@ -421,8 +423,11 @@ export function insertionPoint(source, tag, attr) {
   return attr ? { at: attr.start, sep } : { at: tag.nameEnd, sep };
 }
 
-/** `skip`: absolute directories not to enter (the upgrade command's nested importers). */
-function* walk(dir, skip = new Set()) {
+/**
+ * `skip`: absolute directories not to enter (the upgrade command's nested
+ * importers); `exts`: the file extensions to yield.
+ */
+export function* walk(dir, skip = new Set(), exts = CODE_EXTS) {
   let entries;
   try {
     entries = readdirSync(dir, { withFileTypes: true });
@@ -435,8 +440,8 @@ function* walk(dir, skip = new Set()) {
     if (SKIP_DIRS.has(entry.name)) continue;
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
-      if (!skip.has(full)) yield* walk(full, skip);
-    } else if (entry.isFile() && EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
+      if (!skip.has(full)) yield* walk(full, skip, exts);
+    } else if (entry.isFile() && exts.has(full.slice(full.lastIndexOf('.')))) yield full;
   }
 }
 

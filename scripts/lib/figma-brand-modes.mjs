@@ -22,7 +22,7 @@
 
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { validateTenantOverlay } from '../build-tokens.mjs';
+import { validateTenantOverlay } from './token-emit/tenant.mjs';
 
 export const BRAND_MODES_FILE = 'figma/brand-modes.json';
 const SLUG = /^[a-z0-9-]+$/;

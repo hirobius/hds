@@ -254,37 +254,37 @@
         "50": {
           "$value": "#f2fbd6",
           "$description": "Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.",
-          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
         },
         "100": {
           "$value": "#e3f6a8",
           "$description": "Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.",
-          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
         },
         "200": {
           "$value": "#cdee6a",
           "$description": "Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.",
-          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
         },
         "300": {
           "$value": "#b8e62e",
           "$description": "Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.",
-          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
         },
         "400": {
           "$value": "#93ba1c",
           "$description": "Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.",
-          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
         },
         "600": {
           "$value": "#6e8f0b",
           "$description": "Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus.",
-          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
         },
         "800": {
           "$value": "#445807",
           "$description": "Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.",
-          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+          "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
         }
       },
       "mauve": {
@@ -823,6 +823,10 @@
           "$value": 500,
           "$description": "UI, labels and bold lead-ins (hds#847)."
         },
+        "semibold": {
+          "$value": 600,
+          "$description": "Button label weight (hds#760)."
+        },
         "bold": {
           "$value": 700
         },
@@ -1062,6 +1066,14 @@
         },
         "$description": "32px size step."
       },
+      "36": {
+        "$type": "dimension",
+        "$value": {
+          "value": 36,
+          "unit": "px"
+        },
+        "$description": "36px size step."
+      },
       "40": {
         "$type": "dimension",
         "$value": {
@@ -1070,6 +1082,14 @@
         },
         "$description": "40px size step."
       },
+      "44": {
+        "$type": "dimension",
+        "$value": {
+          "value": 44,
+          "unit": "px"
+        },
+        "$description": "44px size step."
+      },
       "48": {
         "$type": "dimension",
         "$value": {
@@ -1077,6 +1097,14 @@
           "unit": "px"
         },
         "$description": "48px size step."
+      },
+      "52": {
+        "$type": "dimension",
+        "$value": {
+          "value": 52,
+          "unit": "px"
+        },
+        "$description": "52px size step."
       },
       "64": {
         "$type": "dimension",
@@ -1624,7 +1652,7 @@
         "subdued": {
           "$value": "{primitive.color.graphite.200}",
           "$description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
-          "$deprecated": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
+          "$deprecated": "border consolidation 2026-10-12, removed in 1.0.0 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1966,7 +1994,7 @@
         "gap": {
           "$value": "{semantic.space.scale.xs}",
           "$description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.",
-          "$deprecated": "hds#206 — use semantic.space.scale.xs"
+          "$deprecated": "hds#206, removed in 1.0.0 — use semantic.space.scale.xs"
         },
         "medium": {
           "$value": "{primitive.space.3}",
@@ -1975,14 +2003,14 @@
         "padding": {
           "$value": "{semantic.space.surface.padding}",
           "$description": "Inset for cards, forms and panels (follows surface.padding). DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
-          "$deprecated": "hds#206 — use semantic.space.surface.padding"
+          "$deprecated": "hds#206, removed in 1.0.0 — use semantic.space.surface.padding"
         }
       },
       "layout": {
         "tight": {
           "$value": "{primitive.space.5}",
           "$description": "20px (12px compact). Deprecated alias (hds#206): use semantic.space.scale.sm.",
-          "$deprecated": "hds#206 — use semantic.space.scale.sm",
+          "$deprecated": "hds#206, removed in 1.0.0 — use semantic.space.scale.sm",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1994,7 +2022,7 @@
         "normal": {
           "$value": "{primitive.space.7}",
           "$description": "28px (16px compact). Deprecated alias (hds#206): use semantic.space.scale.md.",
-          "$deprecated": "hds#206 — use semantic.space.scale.md",
+          "$deprecated": "hds#206, removed in 1.0.0 — use semantic.space.scale.md",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2006,12 +2034,12 @@
         "gutter": {
           "$value": "{semantic.space.region.gutter}",
           "$description": "Column and region gutters (follows region.gutter). DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
-          "$deprecated": "hds#206 — use semantic.space.region.gutter"
+          "$deprecated": "hds#206, removed in 1.0.0 — use semantic.space.region.gutter"
         },
         "inset": {
           "$value": "{primitive.space.10}",
           "$description": "40px (24px compact). Deprecated alias (hds#206): use semantic.space.scale.lg.",
-          "$deprecated": "hds#206 — use semantic.space.scale.lg",
+          "$deprecated": "hds#206, removed in 1.0.0 — use semantic.space.scale.lg",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2023,7 +2051,7 @@
         "spacious": {
           "$value": "{primitive.space.16}",
           "$description": "64px (32px compact). Deprecated alias (hds#206): use semantic.space.scale.xl.",
-          "$deprecated": "hds#206 — use semantic.space.scale.xl",
+          "$deprecated": "hds#206, removed in 1.0.0 — use semantic.space.scale.xl",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2270,7 +2298,7 @@
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
         "$description": "deprecated: use semantic.typography.title",
-        "$deprecated": "hds#483 — use semantic.typography.title",
+        "$deprecated": "hds#483, removed in 1.0.0 — use semantic.typography.title",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2290,7 +2318,7 @@
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
         "$description": "deprecated: use semantic.typography.title",
-        "$deprecated": "hds#483 — use semantic.typography.title",
+        "$deprecated": "hds#483, removed in 1.0.0 — use semantic.typography.title",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2310,7 +2338,7 @@
           "lineHeight": "{primitive.typography.lineHeight.tight}"
         },
         "$description": "deprecated: use semantic.typography.title",
-        "$deprecated": "hds#483 — use semantic.typography.title",
+        "$deprecated": "hds#483, removed in 1.0.0 — use semantic.typography.title",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2330,7 +2358,7 @@
           "lineHeight": "{primitive.typography.lineHeight.normal}"
         },
         "$description": "deprecated: use semantic.typography.caption",
-        "$deprecated": "hds#483 — use semantic.typography.caption",
+        "$deprecated": "hds#483, removed in 1.0.0 — use semantic.typography.caption",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2471,7 +2499,7 @@
         "base": {
           "$value": "{primitive.color.lime.300}",
           "$description": "Lime fill for delight moments only (win badge, \"new\" tag, confetti). Never buttons, links or focus. Text: accent.delight.onDelight.",
-          "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code",
+          "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2484,7 +2512,7 @@
         "deep": {
           "$value": "{primitive.color.lime.600}",
           "$description": "Deep lime for delight line art and confetti. Decorative only: never text, buttons, links or focus.",
-          "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code",
+          "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2497,7 +2525,7 @@
         "pale": {
           "$value": "{primitive.color.lime.50}",
           "$description": "Pale lime tint behind a delight moment, such as a best-fit row. Text is ink. Never buttons, links, focus.",
-          "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code",
+          "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2510,7 +2538,7 @@
         "onDelight": {
           "$value": "{primitive.color.neutral.900}",
           "$description": "Ink text and icons on any delight fill, in both modes (12.95:1 on delight.base). Never white.",
-          "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code",
+          "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2688,6 +2716,10 @@
         "$value": "{primitive.size.40}",
         "$description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242)."
       },
+      "touchTarget": {
+        "$value": "{primitive.size.interactive.min}",
+        "$description": "Small-control minimum on a coarse pointer or narrow viewport (hds#750)."
+      },
       "tile": {
         "$value": "{primitive.size.120}",
         "$description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403)."
@@ -2817,7 +2849,7 @@
         "$type": "color",
         "$value": "{semantic.color.content.primary}",
         "$description": "Badge text color.",
-        "$deprecated": "hds#595 — use component.badge.<tone>.text (one per tone)"
+        "$deprecated": "hds#595, removed in 1.0.0 — use component.badge.<tone>.text (one per tone)"
       },
       "bg": {
         "$type": "color",
@@ -2831,7 +2863,7 @@
           }
         },
         "$description": "Badge background color.",
-        "$deprecated": "hds#595 — use component.badge.<tone>.bg (one per tone)"
+        "$deprecated": "hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone)"
       },
       "neutral": {
         "bg": {
@@ -2972,6 +3004,11 @@
         "$value": "{primitive.space.2}",
         "$description": "Vertical button padding (8px, the md size; legacy flat alias of size.md.paddingY)."
       },
+      "fontWeight": {
+        "$type": "fontWeight",
+        "$value": "{primitive.typography.weight.semibold}",
+        "$description": "Button label weight."
+      },
       "size": {
         "sm": {
           "paddingX": {
@@ -2996,8 +3033,8 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.size.32}",
-            "$description": "Small button height (32px)."
+            "$value": "{primitive.size.36}",
+            "$description": "Small button height (36px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -3014,7 +3051,7 @@
           "paddingY": {
             "$type": "dimension",
             "$value": "{primitive.space.2}",
-            "$description": "Medium button vertical padding (8px; the 40px height drives the box)."
+            "$description": "Medium button vertical padding (8px; the 44px height drives the box)."
           },
           "fontSize": {
             "$type": "dimension",
@@ -3028,8 +3065,8 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.size.40}",
-            "$description": "Medium button height (40px)."
+            "$value": "{primitive.size.44}",
+            "$description": "Medium button height (44px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -3060,8 +3097,8 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.size.48}",
-            "$description": "Large button height (48px)."
+            "$value": "{primitive.size.52}",
+            "$description": "Large button height (52px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -3105,7 +3142,7 @@
             "$type": "color",
             "$value": "{semantic.color.border.interactive}",
             "$description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
-            "$deprecated": "hds#891 soft surfaces: secondary Button has no border"
+            "$deprecated": "hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0"
           },
           "hover": {
             "$type": "color",
@@ -3116,7 +3153,7 @@
             "$type": "color",
             "$value": "{semantic.color.border.subdued}",
             "$description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
-            "$deprecated": "hds#891 soft surfaces: secondary Button has no border"
+            "$deprecated": "hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0"
           }
         },
         "text": {

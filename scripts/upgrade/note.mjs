@@ -185,6 +185,20 @@ function draftFor(fact) {
     // the selector or query consumer code would use on what changed.
     case 'dom-changed':
       return { id: `behavior/${fact.name}.dom`, impact, detect: { jsx: [fact.name] } };
+    // hds#467: type facts, found where the export, its member or its key is used.
+    case 'export-type-only':
+      return { id: `removed/${fact.name}`, impact, detect: imports(fact.entry) };
+    case 'signature-changed':
+      return { id: `behavior/${fact.name}`, impact, detect: imports(fact.entry) };
+    case 'member-removed':
+    case 'key-removed': {
+      const used = `${fact.name}.${fact.member ?? fact.path}`;
+      return {
+        id: `removed/${used}`,
+        impact,
+        detect: { regex: [`\\b${escapeRegExp(used)}\\b`] },
+      };
+    }
     default:
       throw new Error(`no step for a ${fact.kind} fact`);
   }

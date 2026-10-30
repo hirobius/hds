@@ -28,6 +28,10 @@
  *     docs/api/props-baseline.json); a package from the props-baseline.json it
  *     ships. A release older than 0.33 ships none, so its snapshot has no
  *     props section and diff.mjs reports prop facts only between two that do;
+ *   - types (hds#467): each entry's exports as the TypeScript checker sees
+ *     them: value or type, signatures, static members, object key paths
+ *     (scripts/upgrade/types.mjs). Both paths read the committed (or shipped)
+ *     docs/api/types-baseline.json; a release older than it has none;
  *   - css (hds#449): the CSS contract of the stylesheets the package ships
  *     (scripts/build-css-contract.mjs): every custom property with its value
  *     per context, the class names, the @font-face entries and the @layer
@@ -72,6 +76,10 @@
  * source path skipped them while the tarball path read them, so every tree
  * after 0.21.0 diffed to removed:./eslint-plugin:default, a fact nobody made.
  *
+ * An entry that ships plain JavaScript with no `types` condition (0.9.0's
+ * ./protocol, protocol/envelope.mjs) is read from the file it points at, on
+ * both paths, so its removal in 0.10.0 is a fact (hds#462).
+ *
  * Usage:
  *   node scripts/upgrade/snapshot.mjs --from-npm <version>   # writes docs/api/releases/<version>.json
  *   node scripts/upgrade/snapshot.mjs --from-npm <version> --check   # exit 1 if that file differs
@@ -91,11 +99,12 @@ import { tmpdir } from 'node:os';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { collectModuleSymbols } from '../lib/check-public-api.mjs';
-import { TOOLING_EXPORTS, readJsExportEntries } from '../lib/package-entries.mjs';
+import { TOOLING_EXPORTS, readJsExportEntries, untypedJsFile } from '../lib/package-entries.mjs';
 import { buildCssContract, readCssContract } from '../lib/css-contract.mjs';
 import { formatJson, sortedObject } from './format.mjs';
 import { buildProps, readPropsBaseline } from './props.mjs';
 import { readDomBaseline } from './dom.mjs';
+import { readTypesBaseline } from './types.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
@@ -107,7 +116,9 @@ export const RELEASES_DIR = join(REPO, 'docs/api/releases');
  */
 function moduleId(dir, file) {
   const path = relative(dir, file).split(sep).join('/');
-  return path.replace(/^dist\/types\//, '').replace(/\.d\.[cm]?ts$|\.[cm]?ts$|\.tsx$/, '');
+  return path
+    .replace(/^dist\/types\//, '')
+    .replace(/\.d\.[cm]?ts$|\.[cm]?ts$|\.tsx$|\.[cm]?js$/, '');
 }
 
 function binMap(pkg) {
@@ -145,6 +156,20 @@ function packageFacts(pkg, exportsMap, entries) {
 const exportsOf = (pkg) =>
   typeof pkg.exports === 'string' ? { '.': pkg.exports } : (pkg.exports ?? {});
 
+/**
+ * The file of an entry that ships untyped JavaScript (untypedJsFile), which
+ * must be in `root`; null for any other entry.
+ */
+function shippedJsFile(root, key, value) {
+  const rel = untypedJsFile(value);
+  if (!rel) return null;
+  const file = join(root, rel);
+  if (!existsSync(file)) {
+    throw new Error(`exports["${key}"] ships ${rel} with no types, and it is not in ${root}`);
+  }
+  return file;
+}
+
 const readPackageJson = (dir) => JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
 
 /**
@@ -163,6 +188,8 @@ const withProps = (snapshot, props) => (props ? { ...snapshot, props } : snapsho
 
 /** `snapshot` with its dom section (hds#468), when there is one. */
 const withDom = (snapshot, dom) => (dom ? { ...snapshot, dom } : snapshot);
+/** `snapshot` with its types section, when there is one. */
+const withTypes = (snapshot, types) => (types ? { ...snapshot, types } : snapshot);
 
 /**
  * The snapshot of an unpacked package directory (a published tarball's
@@ -176,6 +203,11 @@ export function snapshotPackage(dir) {
   for (const key of Object.keys(exportsMap)) {
     const value = exportsMap[key];
     if (!value || typeof value !== 'object') continue; // stylesheets, ./package.json
+    const js = shippedJsFile(dir, key, value);
+    if (js) {
+      entries[key] = entryNames(dir, js);
+      continue;
+    }
     if (typeof value.types !== 'string') {
       throw new Error(`exports["${key}"] has no types condition, so its names cannot be read`);
     }
@@ -186,7 +218,11 @@ export function snapshotPackage(dir) {
     entries[key] = entryNames(dir, file);
   }
   const props = readPropsBaseline(dir);
-  return withCss(withProps(packageFacts(pkg, exportsMap, entries), props), cssSection(dir));
+  const types = readTypesBaseline(dir);
+  return withCss(
+    withTypes(withProps(packageFacts(pkg, exportsMap, entries), props), types),
+    cssSection(dir),
+  );
 }
 
 /**
@@ -221,13 +257,19 @@ export function snapshotFromSource(root, { css = null } = {}) {
   const entries = {};
   for (const [key, value] of Object.entries(exportsMap)) {
     if (!value || typeof value !== 'object') continue; // stylesheets, ./package.json
-    const file = built.get(key) ?? (TOOLING_EXPORTS.has(key) && shippedTypesFile(root, key, value));
+    const file =
+      built.get(key) ??
+      shippedJsFile(root, key, value) ??
+      (TOOLING_EXPORTS.has(key) && shippedTypesFile(root, key, value));
     if (!file) throw new Error(`exports["${key}"] has no source snapshot.mjs can read`);
     entries[key] = entryNames(root, file);
   }
   const props = buildProps(root) ?? readPropsBaseline(root);
+  // The committed baseline: building it takes a TypeScript program, and the
+  // upgrade gate fails a stale one (types.mjs).
+  const types = readTypesBaseline(root);
   const facts = withDom(
-    withProps(packageFacts(pkg, exportsMap, entries), props),
+    withTypes(withProps(packageFacts(pkg, exportsMap, entries), props), types),
     readDomBaseline(root),
   );
   return withCss(facts, css);

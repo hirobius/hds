@@ -105,7 +105,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 45 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 46 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -143,6 +143,7 @@ The 45 components of the ratified core set: brand-neutral, composable, imported 
 - NavList (Navigation)
 - Pagination (Navigation)
 - Tabs (Navigation)
+- CommandPalette (Overlays)
 - Dialog (Overlays)
 - Menu (Overlays)
 - Popover (Overlays)
@@ -175,6 +176,7 @@ CardSource: Open an entity card (a job, a lead, a listing) with where it came fr
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
+CommandPalette: [core] Let people jump to a page or run a command from anywhere by typing, opened with ⌘K or Ctrl+K. Use instead: Combobox, Menu
 Composer: Capture a prompt or a quick note where a long paste should not flood the field. Use instead: Textarea
 Container: [core] Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
 DataTableSection: Put a heading and toolbar above a Table.
@@ -401,6 +403,10 @@ Every name a release removed, moved or renamed, and what to use instead:
 
 | Old name | Use instead | Release |
 | --- | --- | --- |
+| `Hds-prefix` | Twelve component families, such as HdsAlertDialog and HdsDateInput, lost their Hds prefix before any release shipped them, so import each by its bare name (AlertDialog, DateInput). | 0.12.0 |
+| `InfoPage` | InfoPage and InfoPageProps are removed with no replacement; it was portfolio scaffolding, so delete the code that uses it. | 0.12.0 |
+| `StatTone-FieldTone` | StatProps["tone"] and FieldProps["tone"] | 0.12.0 |
+| `primitive-typography-tokens` | Six unused typography tokens are removed (--primitive-typography-size-2xs, -weight-light, -weight-semibold, -letterSpacing-tighter, -wide and -wider); replace a var() that reads one with your own value. | 0.16.0 |
 | `ActivityEvent` | nothing: rewrite or delete the code | 0.20.0 |
 | `ActivityFeed` | nothing: rewrite or delete the code | 0.20.0 |
 | `ActivityFeedProps` | nothing: rewrite or delete the code | 0.20.0 |
@@ -708,7 +714,7 @@ HDS ships three typefaces — each with a distinct role:
 - **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `400` mono, `500` medium, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `700` bold.
+Weights declared: `400` regular, `400` mono, `500` medium, `600` semibold, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `600` semibold, `700` bold.
 
 ### Type ramp
 
@@ -865,6 +871,10 @@ A tag input is a creatable Combobox (`<Combobox multiple creatable>`): chips inl
 
 When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
+### Touch size (hds#750)
+
+On a coarse pointer (any phone or tablet) or a viewport under 640px, small controls lift to `semantic.size.touchTarget` (`--semantic-size-touchTarget`, 44px): sm Button (icon-only sm in both axes), Tabs trigger, SegmentedControl option, Tag and its dismiss X, Disclosure trigger, Input clear, Combobox chips, Checkbox/Radio/Toggle rows and Pagination. It is on by default, with no prop; a fine pointer on a wide viewport keeps desktop density. A custom control opts in with the `hds-touch-row` class (height) or `hds-touch-target` (height and width). Hosts can delete their own touch-size overrides. `pnpm check:docs-touch-targets` measures the docs demos on a 390px phone and a 1024px touch tablet.
+
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
 Every HDS card surface must conform to this anatomy exactly. No creative interpretation is permitted on any of these properties.
@@ -948,7 +958,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (473 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (479 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -1096,24 +1106,24 @@ Card — a raised surface with slot anatomy: header, body, footer, and a row for
   - variant: 'default' | 'accent' = default
 
 ### CardBody
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardDescription
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardFacts
 Card.Facts — a wrapping caption row of icon + label facts, as a list.
   - items: CardFact[]
 
 ### CardFooter
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardHeader
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
   - metadata: ReactNode
 
 ### CardProgress
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
   - label: ReactNode
   - max: number = 100
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -1136,7 +1146,7 @@ Card.Source — the entity's origin on one row: avatar, name and time.
   - time: ReactNode
 
 ### CardTitle
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### Checkbox
 Checkbox — custom-drawn checkbox with check / indeterminate glyph.
@@ -1173,6 +1183,18 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
   - value: string | readonly string[] | null
+
+### CommandPalette
+CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain…
+  - className: string
+  - emptyMessage: string = No results
+  - hotkey: boolean = true
+  - items: readonly CommandPaletteItem[]
+  - label: string = Command palette
+  - onOpenChange: (open: boolean) => void
+  - onSelect: (item: CommandPaletteItem) => void
+  - open: boolean
+  - placeholder: string = Type a command or search…
 
 ### Composer
 Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer t…
@@ -1229,11 +1251,11 @@ Tagged per-export, not on the file block: this module exports ten components and
   - open: boolean
 
 ### DialogClose
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogContent
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
   - container: HTMLElement | null
   - forceMount: true
@@ -1246,32 +1268,32 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
   - onPointerDownOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)
 
 ### DialogDescription
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogFooter
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
 
 ### DialogHeader
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
 
 ### DialogOverlay
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
   - forceMount: true
 
 ### DialogPortal
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - children: React.ReactNode
   - container: Element | DocumentFragment | null
   - forceMount: true
 
 ### DialogTitle
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogTrigger
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### Disclosure
@@ -1650,7 +1672,7 @@ The tab set itself. Tagged here rather than in the file block because TabsList a
   - value: string
 
 ### TabsContent
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below …
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - forceMount: true
   - value: string
@@ -1662,7 +1684,7 @@ The tab strip. When tabs scroll out of view it fades the hidden edge (`data-over
   - loop: boolean
 
 ### TabsTrigger
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below …
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - value: string
 

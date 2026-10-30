@@ -44,6 +44,7 @@ fixtures/check-figma-fallbacks/**/snapshot.json
 docs/api/releases/
 docs/api/props-baseline.json
 docs/baselines/dom-a11y.json
+docs/api/types-baseline.json
 upgrade/releases/
 upgrade/schema.json
 # Compiled from the ledgers by scripts/upgrade/compile.mjs (hds#451), whose

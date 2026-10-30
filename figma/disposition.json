@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-27",
+  "generatedAt": "2026-10-28",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 123,
+    "total": 124,
     "byClass": {
-      "library": 73,
+      "library": 74,
       "slot": 29,
       "layout": 9,
       "internal": 12
     },
     "libraryLinked": 68,
-    "libraryMissing": 5,
+    "libraryMissing": 6,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -273,6 +273,14 @@
       "category": "Inputs",
       "tier": "pattern",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237"
+    },
+    {
+      "name": "CommandPalette",
+      "class": "library",
+      "parent": null,
+      "category": "Overlays",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Composer",

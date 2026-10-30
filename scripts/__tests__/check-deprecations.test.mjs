@@ -32,6 +32,7 @@ function withCopy(fn) {
   const dir = mkdtempSync(join(tmpdir(), 'hds-deprecations-'));
   try {
     cpSync(join(ROOT, 'package.json'), join(dir, 'package.json'));
+    cpSync(join(ROOT, 'hirobius.tokens.json'), join(dir, 'hirobius.tokens.json'));
     cpSync(join(ROOT, 'src'), join(dir, 'src'), { recursive: true });
     return fn(dir);
   } finally {
@@ -177,6 +178,53 @@ describe('check-deprecations', () => {
         );
         const { status, output } = run(dir);
         expect(output).toMatch(/@removeIn "1\.0" is not a valid semver/);
+        expect(status).toBe(1);
+      });
+    });
+  });
+
+  // hds#469: a `$deprecated` token is on the public surface too (./tokens,
+  // variables.css), so its note must name the version it leaves in.
+  describe('$deprecated tokens in hirobius.tokens.json (hds#469)', () => {
+    const LEAF = 'semantic.space.section.heroMax';
+
+    /** Set the `$deprecated` note of `semantic.space.section.heroMax` in the copy. */
+    function setNote(dir, note) {
+      edit(dir, 'hirobius.tokens.json', (src) => {
+        const tree = JSON.parse(src);
+        const leaf = tree.semantic.space.section.heroMax;
+        expect(leaf.$deprecated).toBeTruthy();
+        leaf.$deprecated = note;
+        return JSON.stringify(tree, null, 2);
+      });
+    }
+
+    it('fails on a $deprecated token whose note names no removal version', () => {
+      withCopy((dir) => {
+        setNote(dir, 'probe — use semantic.space.section.inset');
+        const { status, output } = run(dir);
+        expect(output).toContain('hirobius.tokens.json');
+        expect(output).toContain(LEAF);
+        expect(output).toMatch(/removed in <semver>/);
+        expect(status).toBe(1);
+      });
+    });
+
+    it('fails on a $deprecated token that is past its removal version', () => {
+      withCopy((dir) => {
+        setNote(dir, 'probe, removed in 0.1.0 — use semantic.space.section.inset');
+        const { status, output } = run(dir);
+        expect(output).toContain(LEAF);
+        expect(output).toMatch(/removed in 0\.1\.0 is past-due/);
+        expect(status).toBe(1);
+      });
+    });
+
+    it('fails on a $deprecated: true token, which carries no note at all', () => {
+      withCopy((dir) => {
+        setNote(dir, true);
+        const { status, output } = run(dir);
+        expect(output).toContain(LEAF);
         expect(status).toBe(1);
       });
     });

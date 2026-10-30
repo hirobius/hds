@@ -76,7 +76,7 @@
     {
       "key": "elastic",
       "label": "Elastic",
-      "values": "spring(300, 20, 1)",
+      "values": "spring: stiffness 300, damping 20, mass 1 (linear() in CSS)",
       "curve": [0.18, 0.9, 0.32, 1.18],
       "description": "Bouncy motion with a small overshoot and return.",
       "spring": {

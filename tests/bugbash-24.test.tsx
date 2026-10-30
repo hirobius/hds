@@ -223,10 +223,10 @@ describe('SegmentedControl (items 6, 8, 15)', () => {
     await userEvent.tab();
     expect(screen.getByRole('radio', { name: 'Day' }).getAttribute('aria-checked')).toBe('true');
   });
-  it('segments carry the touch-row hook and a phone-sized default inline padding', () => {
+  it('segments carry the touch-target hook (both axes, hds#750) and a phone-sized default inline padding', () => {
     render(<Harness />);
     for (const r of screen.getAllByRole('radio')) {
-      expect(r.className).toMatch(/hds-touch-row/);
+      expect(r.className).toMatch(/hds-touch-target/);
       expect(r.className).toMatch(/px-\[var\(--semantic-space-scale-xs\)\]/);
       expect(r.style.paddingLeft).toBe('');
     }
@@ -250,10 +250,18 @@ describe('Touch targets (item 6, and the highlight fill of item 21)', () => {
     expect(src(file)).toContain(cls);
     expect(src(file)).toMatch(touch);
   });
+  it.each(['combobox.tsx', 'combobox-creatable.tsx', 'command-palette.tsx'])(
+    '%s marks its active option with the shared listbox-nav look',
+    (file) => {
+      expect(src(file)).toContain('ACTIVE_OPTION_CLASS');
+      expect(src(file)).not.toMatch(/data-\[active=true\]:bg-accent/);
+    },
+  );
   it('combobox chip remove and options both use them', () => {
     expect((src('combobox.tsx').match(/hds-touch-row/g) ?? []).length).toBeGreaterThanOrEqual(2);
   });
-  it.each(['menu.tsx', 'select.tsx', 'combobox.tsx'])(
+  // Combobox and CommandPalette take the active-row look from listbox-nav.ts.
+  it.each(['menu.tsx', 'select.tsx', 'listbox-nav.ts'])(
     '%s highlight fill is a step from the popover surface, not shadcn bg-accent',
     (file) => {
       expect(src(file)).toMatch(/bg-\[var\(--semantic-color-surface-sunken\)\]/);
