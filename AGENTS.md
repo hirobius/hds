@@ -118,11 +118,12 @@ QUALITY BAR: Public npm package. Backward compatibility matters. Tests required,
 Rules for any autonomous loop in this repo:
 
 - One issue per PR. Small steps. Never push to main.
-- The gate (ralph/gate.sh) must pass before any PR. No exceptions.
+- The gate (ralph/gate.sh) must pass **locally** before any PR. No exceptions.
 - Fight entropy: leave the code better than you found it.
 - No shortcut that creates debt someone else pays for.
 - Merges are HUMAN-approved: `ralph-approved` on the PR, or the issue
-  pre-tagged `ralph-auto` (batch approval). Never merge yourself.
+  pre-tagged `ralph-auto` (batch approval), plus an independent
+  `Reviewed: PASS — <sha>` comment for the head commit. Never merge yourself.
 
 Loop mechanics (see `ralph/README.md` for the full contract):
 
@@ -136,6 +137,22 @@ Loop mechanics (see `ralph/README.md` for the full contract):
   claim refs, or `ralph/{.lock,runs.jsonl,logs/}` — the harness owns those.
 - The engine is org-level: workflows are thin callers into
   `hirobius/ralph/.github/workflows/ralph-{run,gate}-reusable.yml@v1`.
+  **They do not run:** GitHub Actions is disabled here (below), so the loop and
+  `ralph-gate` only run when someone starts them by hand.
+
+## GitHub Actions is off (Adrian, 2026-10-30)
+
+Actions is disabled on hirobius/hds to keep it free. CI, Chromatic,
+`ralph-gate`, `claude.yml` and the Actions release (with npm provenance) never
+run, so never wait on them or treat a missing check as pass or fail. Leave
+`.github/workflows/` alone.
+
+- **Check locally before push:** the husky hooks, plus `pnpm typecheck && pnpm test`
+  (and `pnpm smoke:consumer` for anything that ships). Paste the results into the PR.
+- **Merge rule:** an independent `Reviewed: PASS — <sha>` comment on the PR,
+  from someone other than the author, naming the head commit. A new push voids it.
+- **Release:** local only, `pnpm release:local` (owner, npm 2FA). Agents never
+  merge, publish or release. See `docs/RELEASING.md`.
 
 ## PR previews: screenshots, not Vercel (Adrian 2026-10-24, all repos)
 

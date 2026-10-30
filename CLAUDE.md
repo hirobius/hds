@@ -19,6 +19,25 @@ _"North-star drift: park or proceed?"_ — then do what Adrian decides.
 - **NEVER git push from local machines.** Local commits only — with one exception: remote Claude Code sessions (Claude Code on the web / GitHub integration) may push to their designated `claude/*` working branch. Pushing to `main` or any other branch remains forbidden everywhere.
 - **NEVER run `pnpm check:release` or deploy commands.**
 
+## GitHub Actions is OFF (Adrian, 2026-10-30)
+
+Actions is disabled on hirobius/hds to keep the repo free. Nothing in
+`.github/workflows/` runs: no CI, no Chromatic, no `ralph-gate`, no `claude.yml`,
+no Actions-based release or npm provenance. Don't wait for, cite, or re-run
+checks there, and don't edit `.github/workflows/` to "fix" it.
+
+- **Checks run locally, before push.** The husky pre-commit and pre-push hooks
+  are the gate; on top of them run `pnpm typecheck && pnpm test` and, for
+  anything that ships, `pnpm smoke:consumer`. Paste the commands and results in
+  the PR's Evidence section. A PR with no local evidence is not ready.
+- **Merges need an independent review comment:** `Reviewed: PASS — <sha>` on
+  the PR, from a reviewer that did not write the change (another session or a
+  human), naming the head commit it checked. A new push voids it. Agents never
+  merge their own PR.
+- **Releases stay local:** `pnpm release:local` (dry run) and
+  `pnpm release:local --publish`, owner only, with npm 2FA. No provenance.
+  Agents never publish. Steps: `docs/RELEASING.md`.
+
 ---
 
 ## Autonomy charter — let it drive (Adrian, 2026-10-05)
@@ -43,7 +62,7 @@ This charter outranks the process rules below (not the HARD RULES above).
   follow Adrian's call. Rules here are defaults, not dogma — propose deleting
   any that cost more than they save.
 - **Outcome checks over process rules.** Protect quality with automated checks
-  (typecheck, tests, CI, branch protection), not with more steps for agents to
+  (typecheck, tests, local hooks, branch protection), not with more steps for agents to
   remember. When a failure happens, prefer a check that catches it over a new
   paragraph of instructions.
 - **Veto after, not approve before.** Report what you decided and why in a line
@@ -59,7 +78,7 @@ This charter outranks the process rules below (not the HARD RULES above).
 ## 1. AGENT EXECUTION PROTOCOL (MANDATORY)
 
 1. **PRE-FILTER:** Before writing any code, analyze if the user's request affects UI, Layout, CSS, or Components.
-2. **AUTO-VALIDATE:** If UI/Layout is affected, you MUST autonomously run `pnpm typecheck` and `pnpm test` after writing your code changes, but BEFORE you generate your final response to the user. (The old `pnpm test:layout` Playwright suite was retired in #161 — the docs site (`docs-site/`, `docsUrl` in `figma/links.json`) is the visual verification surface: `check-docs-axe` gates its accessibility and the Chromatic docs job its visual regression.)
+2. **AUTO-VALIDATE:** If UI/Layout is affected, you MUST autonomously run `pnpm typecheck` and `pnpm test` after writing your code changes, but BEFORE you generate your final response to the user. (The old `pnpm test:layout` Playwright suite was retired in #161 — the docs site (`docs-site/`, `docsUrl` in `figma/links.json`) is the visual verification surface: `check-docs-axe` gates its accessibility, run locally; the Chromatic job no longer runs, so attach before/after screenshots for visual changes.)
 3. **SELF-HEAL:** If your automated tests fail, do not ask the user for help. Read the terminal output, identify your CSS/layout math error, fix the code, and re-run the tests until they pass.
 4. **FINALIZATION:** Only report back to the user when the tests are 100% green. Do not claim a task is complete if the tests are failing.
 
