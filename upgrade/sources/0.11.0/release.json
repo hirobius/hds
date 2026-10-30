@@ -1,0 +1,9 @@
+{
+  "$comment": "Frozen inputs of the 0.11.0 ledger (hds#462), read by scripts/upgrade/build-ledger.mjs. 0.11.0 shipped before ledgers existed, so its record was written after the fact from its snapshot (docs/api/releases/0.11.0.json) and its CHANGELOG section. Each CHANGELOG.md:<line> is numbered as the file read when 0.11.0 shipped (its section starts on line 3); its needle is the text that finds the line, and opens with the commit of the entry when the entry names one. npm no longer serves the tarballs up to 0.13.0, so the snapshots up to that release were read from the source tree at its git tag (snapshot.mjs --source), which reads to the same snapshot as the tarball less its css section (checked against the 0.13.1 to 0.16.0 tarballs).",
+  "version": "0.11.0",
+  "previous": "0.10.0",
+  "date": "2026-07-04",
+  "summary": "Adds HdsTooltip, HdsThemeProvider with useHdsTheme, Textarea and a caption type style; nothing to change.",
+  "backfilled": true,
+  "steps": []
+}

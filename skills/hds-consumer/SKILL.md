@@ -63,7 +63,7 @@ Subpath exports:
 
 ## Core set
 
-The 45 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
+The 46 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
 
 - **Actions:** `Button`
 - **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
@@ -71,7 +71,7 @@ The 45 components of the ratified core set (`core: true` in the manifest): brand
 - **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
 - **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`
 - **Navigation:** `Breadcrumb`, `InlineLink`, `NavList`, `Pagination`, `Tabs`
-- **Overlays:** `Dialog`, `Menu`, `Popover`, `Tooltip`
+- **Overlays:** `CommandPalette`, `Dialog`, `Menu`, `Popover`, `Tooltip`
 - **Theming:** `HdsRouterProvider`, `HdsThemeProvider`
 - **Typography:** `MetaLine`, `Text`
 - **Utility:** `VisuallyHidden`
@@ -168,6 +168,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 ### Overlays
 
 - `AlertDialog` — AlertDialog root + parts.
+- `CommandPalette` — CommandPalette — ⌘K search and command box: a modal search field over grouped results.
 - `Dialog` — Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.
 - `DialogClose` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `DialogContent` — Dialog — modal dialog (shadcn baseline, compound parts).

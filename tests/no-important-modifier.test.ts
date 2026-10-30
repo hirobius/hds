@@ -147,9 +147,9 @@ const isTestOrDoc = (rel: string) =>
   /\.mdx?$/.test(rel);
 
 /**
- * Paths src/styles/theme.css keeps from Tailwind with `@source not`: the
- * release snapshots (hds#449) record every class each published stylesheet
- * carried, `!` utilities of old releases included, and Tailwind never reads them.
+ * Paths Tailwind never reads: src/styles/theme.css scans only src/ (hds#936), so
+ * the release snapshots (hds#449), which record every class each published
+ * stylesheet carried, `!` utilities of old releases included, stay out.
  */
 const NOT_SCANNED = /^docs\/api\/releases\//;
 
@@ -176,9 +176,9 @@ const trailing = (cls: string) => `${cls}${BANG}`;
 
 describe('no important modifier in component class strings', () => {
   it('relies on theme.css keeping the release snapshots from Tailwind', () => {
-    expect(readFileSync(join(ROOT, 'src/styles/theme.css'), 'utf8')).toContain(
-      '@source not "../../docs/api/releases";',
-    );
+    const theme = readFileSync(join(ROOT, 'src/styles/theme.css'), 'utf8');
+    expect(theme).toContain("@import 'tailwindcss' source(none);");
+    expect(theme).toMatch(/^@source "\.\.\/\*\*\/\*\.\{ts,tsx\}";$/m);
   });
 
   it('finds no important-modified utility in src/app/components/*.tsx', () => {

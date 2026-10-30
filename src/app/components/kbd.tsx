@@ -13,11 +13,11 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
-// One styling axis (size). Chrome is a muted key cap on the neutral surface —
+// One styling axis (size). Chrome is a sunken key cap (surface.sunken, so it shows on a raised Card) —
 // no second hue, a border.strong edge and the 2px hard key shadow from .hds-kbd (theme.css; no layout size), font-medium (never bold), all spacing on the 8px grid.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border.strong has no Tailwind border-color utility name; var()-based so still token-driven
 const kbdVariants = /* @__PURE__ */ cva(
-  'hds-kbd inline-flex items-center justify-center whitespace-nowrap align-middle select-none rounded border border-[color:var(--semantic-color-border-strong)] bg-muted text-muted-foreground',
+  'hds-kbd inline-flex items-center justify-center whitespace-nowrap align-middle select-none rounded border border-[color:var(--semantic-color-border-strong)] bg-[var(--semantic-color-surface-sunken)] text-muted-foreground',
   {
     variants: {
       size: {

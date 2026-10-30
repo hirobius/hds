@@ -227,7 +227,8 @@
       "  button aria-pressed=\"false\" data-hover-effect=\"wipe\" data-pressed=\"false\" data-variant=\"secondary\"",
       "  button data-hover-effect=\"wipe\" data-variant=\"tertiary\"",
       "  button data-hover-effect=\"wipe\" data-tone=\"danger\" data-variant=\"secondary\"",
-      "  button data-variant=\"secondary\""
+      "  button data-variant=\"secondary\"",
+      "  button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\""
     ],
     "reader": [
       "button, Primary",
@@ -236,7 +237,8 @@
       "button, Toggle, not pressed",
       "button, Tertiary",
       "button, Danger",
-      "button, Flat (opt-out)"
+      "button, Flat (opt-out)",
+      "button, Small"
     ]
   },
   "Card": {
@@ -379,6 +381,16 @@
       "group, Skills",
       "button, Remove React",
       "combobox, Skills, has popup listbox, not expanded, autocomplete in list"
+    ]
+  },
+  "CommandPalette": {
+    "dom": [
+      "div",
+      "  button data-hover-effect=\"wipe\" data-variant=\"secondary\"",
+      "  span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "button, Search commands"
     ]
   },
   "Composer": {
@@ -679,12 +691,15 @@
       "      input data-size=\"md\" data-state=\"filled\"",
       "  div",
       "    div",
-      "      input aria-label=\"Small input\" data-size=\"sm\" data-state=\"default\""
+      "      input aria-label=\"Small input\" data-size=\"sm\" data-state=\"filled\"",
+      "      button aria-label=\"Clear input\"",
+      "        svg aria-hidden=\"true\""
     ],
     "reader": [
       "textbox, Project name, placeholder Portfolio redesign",
       "Start date, 2026-10-01",
-      "textbox, Small input, placeholder Small"
+      "textbox, Small input, Small",
+      "button, Clear input"
     ]
   },
   "Kbd": {

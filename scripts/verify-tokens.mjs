@@ -16,14 +16,14 @@
 import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { walkTokens } from './lib/token-tree.mjs';
 import {
   pathToCSSVar,
-  walkTokens,
   TYPO_PROPS,
   TYPO_OPTIONAL_KEYS,
   MOTION_PROPS,
   ELEVATION_SLOTS,
-} from './build-tokens.mjs';
+} from './lib/token-emit/css.mjs';
 import { readModes } from './lib/token-modes.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
@@ -35,7 +35,7 @@ const ROOT = join(__dirname, '..');
  * Returns the expected CSS sub-var names for a typography composite token.
  * Optional keys (e.g. maxWidth) are only emitted when the composite value
  * actually defines them — matching the behaviour of expandTypography in
- * build-tokens.mjs so verify-tokens does not flag absent optional vars as
+ * lib/token-emit/css.mjs so verify-tokens does not flag absent optional vars as
  * missing.
  */
 export function expandedTypoVars(path, value) {

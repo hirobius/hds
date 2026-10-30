@@ -295,6 +295,44 @@ describe('snapshotFromSource', () => {
   });
 });
 
+// 0.9.0 shipped ./protocol as plain JavaScript with no types condition
+// (protocol/envelope.mjs). Its names are read from the file it ships, the same
+// way on either path, so its removal in 0.10.0 is a fact the ledger reports.
+describe('an entry that ships untyped JavaScript', () => {
+  const PROTOCOL = [
+    'export const MAX_AGE_MS = 300000;',
+    'export function createEnvelope() {}',
+    'export default { createEnvelope };',
+    '',
+  ].join('\n');
+  const withProtocol = (dir) => {
+    const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
+    pkg.exports['./protocol'] = {
+      import: './protocol/envelope.mjs',
+      default: './protocol/envelope.mjs',
+    };
+    writeFileSync(join(dir, 'package.json'), JSON.stringify(pkg));
+    writer(dir)('protocol/envelope.mjs', PROTOCOL);
+    return dir;
+  };
+  const NAMES = {
+    MAX_AGE_MS: 'protocol/envelope',
+    createEnvelope: 'protocol/envelope',
+    default: 'protocol/envelope',
+  };
+
+  it('is read from the file it ships, from the source tree and from the package alike', () => {
+    expect(snapshotFromSource(withProtocol(sourcePackage())).entries['./protocol']).toEqual(NAMES);
+    expect(snapshotPackage(withProtocol(builtPackage())).entries['./protocol']).toEqual(NAMES);
+  });
+
+  it('names the entry when the file it points at is missing', () => {
+    const dir = withProtocol(sourcePackage());
+    rmSync(join(dir, 'protocol/envelope.mjs'));
+    expect(() => snapshotFromSource(dir)).toThrow(/\.\/protocol.*envelope\.mjs/);
+  });
+});
+
 /**
  * Stands in for `npm pack <spec>`: writes the tarball npm would of the built
  * package `src` (under `package/`), so no test touches the network.
@@ -556,17 +594,22 @@ describe('committed release snapshots (docs/api/releases)', () => {
     expect(unexplainedRemovals(removed, minor, [])).toEqual(removed);
   });
 
-  // 0.16.0 is the floor (hds#450): ops and folio resolved it when hds#450 was
-  // filed, so an upgrade crosses every later release, each diffed from its snapshot.
+  // 0.9.0 is the floor (hds#462, lowered from hds#450's 0.16.0): fleet repos
+  // pinned ^0.9 to ^0.15 when it was filed, so an upgrade crosses every later
+  // release, each diffed from its snapshot. npm no longer serves 0.9.0 to
+  // 0.13.0, so those were read from the source at their git tags.
   // Starts with, not equals: each release's version run (hds#451) adds its own.
-  it('holds a snapshot of every release from the 0.16.0 floor, each named for its version and fitting the schema', () => {
-    expect(versions.slice(0, 6)).toEqual([
+  it('holds a snapshot of every release from the 0.9.0 floor, each named for its version and fitting the schema', () => {
+    expect(versions.slice(0, 9)).toEqual([
+      '0.9.0',
+      '0.10.0',
+      '0.11.0',
+      '0.12.0',
+      '0.13.0',
+      '0.13.1',
+      '0.14.0',
+      '0.15.0',
       '0.16.0',
-      '0.17.0',
-      '0.18.0',
-      '0.19.0',
-      '0.19.1',
-      '0.20.0',
     ]);
     for (const version of versions) {
       const snapshot = read(`docs/api/releases/${version}.json`);

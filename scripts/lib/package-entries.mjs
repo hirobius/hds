@@ -18,6 +18,21 @@ import { join } from 'node:path';
 export const TOOLING_EXPORTS = new Set(['./eslint-plugin']);
 
 /**
+ * The file an entry that ships plain JavaScript with no `types` condition
+ * points at (0.9.0's ./protocol, protocol/envelope.mjs), else null. Like a
+ * tooling entry it is not built from src/, so these gates skip it; the release
+ * snapshot reads its names from that file.
+ *
+ * @param {unknown} value an exports entry
+ * @returns {string | null}
+ */
+export function untypedJsFile(value) {
+  if (!value || typeof value !== 'object' || value.types !== undefined) return null;
+  const file = value.import ?? value.default;
+  return typeof file === 'string' && /\.[cm]?js$/.test(file) ? file : null;
+}
+
+/**
  * Each JS entry of package.json#exports, mapped from its `types` path
  * (`./dist/types/<path>.d.ts`, emitted by build:types from source) back to
  * the source file. Stylesheets and `./package.json` are strings, not
@@ -30,7 +45,9 @@ export function readJsExportEntries(root) {
   const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
   const entries = [];
   for (const [key, value] of Object.entries(pkg.exports ?? {})) {
-    if (!value || typeof value !== 'object' || TOOLING_EXPORTS.has(key)) continue;
+    if (!value || typeof value !== 'object' || TOOLING_EXPORTS.has(key) || untypedJsFile(value)) {
+      continue;
+    }
     const types = value.types;
     if (typeof types !== 'string' || !/^\.\/dist\/types\/.+\.d\.ts$/.test(types)) {
       throw new Error(

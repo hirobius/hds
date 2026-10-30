@@ -159,13 +159,23 @@ describe('TabsContent variant (hds#819)', () => {
   it('defaults to the tinted panel pulled up under the strip', () => {
     render(<Panel />);
     expect(cls()).toEqual(
-      expect.arrayContaining(['bg-accent/5', 'rounded-b-md', 'p-fixed-md', '-mt-fixed-md']),
+      expect.arrayContaining([
+        'bg-[var(--semantic-color-surface-selected)]',
+        'rounded-b-md',
+        'p-fixed-md',
+        '-mt-fixed-md',
+      ]),
     );
   });
 
   it('bare drops the fill, padding, radius and pull-up', () => {
     render(<Panel variant="bare" />);
-    for (const c of ['bg-accent/5', 'rounded-b-md', 'p-fixed-md', '-mt-fixed-md'])
+    for (const c of [
+      'bg-[var(--semantic-color-surface-selected)]',
+      'rounded-b-md',
+      'p-fixed-md',
+      '-mt-fixed-md',
+    ])
       expect(cls()).not.toContain(c);
   });
 });

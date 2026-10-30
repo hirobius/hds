@@ -54,6 +54,12 @@ const BREAKING_FACTS = new Set([
   'prop-removed',
   'prop-required',
   'prop-value-removed',
+  // hds#467: an export a consumer uses at runtime, a compound part or an
+  // object key stops existing, or a callable takes or returns something else.
+  'export-type-only',
+  'signature-changed',
+  'member-removed',
+  'key-removed',
 ]);
 
 /** CSS facts that change how a page looks while every name still resolves. */

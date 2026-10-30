@@ -22,6 +22,9 @@
  *
  * Dom facts (hds#468) come from the snapshots' dom sections when both have one
  * (domFacts below): a demo whose roles, names, states or data-* changed.
+ * Type facts (hds#467) come from the snapshots' types section when both have
+ * one (typeFacts below): a value now exported as a type only, a callable's
+ * signature changed, a static member (Menu.Item) or an object key removed.
  *
  * Renames are not facts: a diff sees `HdsCheckbox` leave and nothing arrive.
  * The ledger names the survivor from the codemod's data.
@@ -68,6 +71,8 @@ const DOM_FACT_KINDS = ['dom-changed'];
 
 /** True for the id of a dom fact (hds#468). */
 export const isDomFactId = (id) => DOM_FACT_KINDS.some((kind) => id.startsWith(`${kind}:`));
+/** The type fact kinds (hds#467), read from both snapshots' `types` section. */
+const TYPE_FACT_KINDS = ['export-type-only', 'signature-changed', 'member-removed', 'key-removed'];
 
 /** Fact kinds, in the order a diff lists them. */
 export const FACT_KINDS = [
@@ -85,6 +90,7 @@ export const FACT_KINDS = [
   ...CSS_FACT_KINDS,
   ...PROP_FACT_KINDS,
   ...DOM_FACT_KINDS,
+  ...TYPE_FACT_KINDS,
 ];
 
 /** The stable id of a fact. */
@@ -108,6 +114,13 @@ export function factId(fact) {
       return `${fact.kind}:${fact.component}.${fact.prop}`;
     case 'prop-value-removed':
       return `${fact.kind}:${fact.component}.${fact.prop}:${fact.value}`;
+    case 'export-type-only':
+    case 'signature-changed':
+      return `${fact.kind}:${fact.entry}:${fact.name}`;
+    case 'member-removed':
+      return `${fact.kind}:${fact.entry}:${fact.name}.${fact.member}`;
+    case 'key-removed':
+      return `${fact.kind}:${fact.entry}:${fact.name}.${fact.path}`;
     default:
       return `${fact.kind}:${fact.name}`;
   }
@@ -119,6 +132,9 @@ function sortKey(fact) {
   if (fact.kind === 'css-var-changed') return [fact.name, fact.context];
   if (fact.kind === 'font-face-removed') return [fact.family, fact.weight, fact.style];
   if (PROP_FACT_KINDS.includes(fact.kind)) return [fact.component, fact.prop, fact.value ?? ''];
+  if (TYPE_FACT_KINDS.includes(fact.kind)) {
+    return [fact.entry, fact.name, fact.member ?? fact.path ?? ''];
+  }
   return [fact.key ?? fact.name];
 }
 
@@ -360,6 +376,49 @@ function domFacts(prev, next) {
 }
 
 /**
+ * The type facts between two `types` sections (scripts/upgrade/types.mjs),
+ * for each export both have in the same entry (one that left is a removed or
+ * moved export):
+ *
+ *   - export-type-only: a value now exported as a type only;
+ *   - signature-changed: a callable value whose call or construct signatures
+ *     changed (a hook's parameters or return type);
+ *   - member-removed: a static member that left a callable value (Menu.Item);
+ *   - key-removed: a key path that left an object value (hds.color.x), only
+ *     the top one: a removed group is one fact, not one per key under it.
+ */
+function typeFacts(prev, next) {
+  const facts = [];
+  for (const entry of Object.keys(prev).sort()) {
+    const now = next[entry];
+    if (!now) continue;
+    for (const name of Object.keys(prev[entry]).sort()) {
+      const [before, after] = [prev[entry][name], now[name]];
+      if (!after || before.kind !== 'value') continue;
+      if (after.kind !== 'value') {
+        facts.push(fact({ kind: 'export-type-only', entry, name }));
+        continue;
+      }
+      if (before.signatures && !same(before.signatures, after.signatures)) {
+        const [from, to] = [before.signatures, after.signatures ?? []];
+        facts.push(fact({ kind: 'signature-changed', entry, name, from, to }));
+      }
+      const members = new Set(after.members ?? []);
+      for (const member of before.members ?? []) {
+        if (!members.has(member)) facts.push(fact({ kind: 'member-removed', entry, name, member }));
+      }
+      const keys = new Set(after.keys ?? []);
+      const gone = new Set((before.keys ?? []).filter((path) => !keys.has(path)));
+      const parentGone = (path) => gone.has(path.slice(0, path.lastIndexOf('.')));
+      for (const path of gone) {
+        if (!parentGone(path)) facts.push(fact({ kind: 'key-removed', entry, name, path }));
+      }
+    }
+  }
+  return facts;
+}
+
+/**
  * Every fact between two snapshots, sorted by kind and then by entry and name.
  * CSS facts only when both carry a `css` section: a snapshot read from source
  * (snapshotFromSource) has none, because the stylesheets exist only after a
@@ -404,6 +463,7 @@ export function diffSnapshots(prev, next) {
     ...(prev.css && next.css ? cssFacts(prev.css, next.css) : []),
     ...(prev.props && next.props ? propFacts(prev.props, next.props) : []),
     ...(prev.dom && next.dom ? domFacts(prev.dom, next.dom) : []),
+    ...(prev.types && next.types ? typeFacts(prev.types, next.types) : []),
   ];
   return facts.sort(compareFacts);
 }

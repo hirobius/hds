@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The package now ships docs/api/types-baseline.json, listing what each export is: value or type, its signatures, static members and object keys."
+}
