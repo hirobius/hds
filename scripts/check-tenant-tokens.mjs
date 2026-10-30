@@ -23,7 +23,7 @@ import { readFileSync, readdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import { validateTenantOverlay } from './build-tokens.mjs';
+import { validateTenantOverlay } from './lib/token-emit/tenant.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

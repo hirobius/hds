@@ -38,7 +38,7 @@ import { fileURLToPath } from 'url';
 
 import { brandAccent } from './lib/brand-truth.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
-import { springToCSS } from './build-tokens.mjs';
+import { springToCSS } from './lib/token-emit/css.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
