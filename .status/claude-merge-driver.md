@@ -1,1 +1,1 @@
-claude/merge-driver: generated files get the hds-generated merge driver (.gitattributes) and `pnpm regen` runs from .husky/post-merge/post-rewrite (hds#977).
+claude/merge-driver: generated files get the hds-generated merge driver (.gitattributes); `pnpm regen` runs from .husky/post-merge, post-rewrite and post-commit, and warns when a partly hand-written file had an overlapping edit (hds#977).
