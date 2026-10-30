@@ -98,7 +98,7 @@ export default {
     },
     schema: [],
     messages: {
-      deprecated: '"{{text}}" is a deprecated token ({{note}}), removed in {{removeIn}}.{{fix}}',
+      deprecated: '"{{text}}" is a deprecated token ({{note}}).{{fix}}',
     },
   },
   create(context) {
@@ -108,7 +108,7 @@ export default {
       context.report({
         node,
         messageId: 'deprecated',
-        data: { text, note: d.note, removeIn: d.removeIn, fix: fix ? ` Use ${fix}.` : '' },
+        data: { text, note: d.note, fix: fix ? ` Use ${fix}.` : '' },
       });
     }
 
