@@ -26,7 +26,8 @@ if (!existsSync(HOOKS_DIR)) {
 // The merge driver for generated files (hds#977) lives in .git/config, which
 // git never reads from the repo. It changes no hook, so it is set even where
 // HUSKY=0 skips the hooks below.
-installMergeDriver(ROOT);
+if (!installMergeDriver(ROOT))
+  console.warn('⚠ could not register the hds-generated merge driver (git config)');
 
 // `prepare` runs on install AND on `npm publish` / `npm pack`. In CI (and any
 // environment that sets HUSKY=0 to disable git hooks — e.g. the changesets

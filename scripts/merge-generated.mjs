@@ -8,10 +8,12 @@
  * lines it keeps ours instead of writing conflict markers, so the merge never
  * stops on a generated file. It does not take one whole side: README.md and
  * DESIGN-HANDOFF.md are only partly generated, so their side's prose outside
- * the overlap still lands. A JSON file whose line merge does not parse keeps
- * our whole side, since the generators read some of them back. It then leaves
- * a marker in the git dir, and .husky/post-merge (`regen.mjs --after-merge`)
- * rebuilds the files from source.
+ * the overlap still lands. Their prose inside an overlap does not, so for those
+ * two files it warns and names the file in the marker, and the regen that
+ * follows repeats the warning. A JSON file whose line merge does not parse
+ * keeps our whole side, since the generators read some of them back. It then
+ * leaves a marker in the git dir, and .husky/post-merge, post-rewrite and
+ * post-commit (`regen.mjs --after-merge`) rebuild the files from source.
  *
  * git reads drivers only from .git/config, never from the repo, so
  * scripts/setup-hooks.mjs (pnpm install's `prepare`) registers it with
@@ -26,6 +28,9 @@ import { fileURLToPath } from 'node:url';
 import { markerPath } from './regen.mjs';
 
 export const DRIVER = 'hds-generated';
+
+/** Generated files with hand-written prose around the generated parts. */
+export const PARTLY_GENERATED = new Set(['README.md', 'DESIGN-HANDOFF.md']);
 
 const SELF = fileURLToPath(import.meta.url);
 
@@ -51,14 +56,22 @@ export function pickMerged(path, merged, ours) {
 if (process.argv[1] && resolve(process.argv[1]) === SELF) {
   const [base, current, other, path = current] = process.argv.slice(2);
   const ours = readFileSync(current, 'utf8');
-  const res = spawnSync('git', ['merge-file', '-p', '--ours', current, base, other], {
-    encoding: 'utf8',
-    maxBuffer: 256 * 1024 * 1024,
-  });
-  // merge-file exits with the conflict count (0 with --ours) or negative on error.
+  const mergeFile = (...flags) =>
+    spawnSync('git', ['merge-file', '-p', ...flags, current, base, other], {
+      encoding: 'utf8',
+      maxBuffer: 256 * 1024 * 1024,
+    });
+  // merge-file exits with the conflict count (0 with --ours), or above 127 on error.
+  const overlaps = PARTLY_GENERATED.has(path) ? mergeFile().status : 0;
+  const res = mergeFile('--ours');
   const merged = res.status === 0 ? res.stdout : ours;
   writeFileSync(current, pickMerged(path, merged, ours));
+  if (overlaps > 0 && overlaps < 128)
+    console.error(
+      `⚠ ${path}: both sides changed the same lines; kept ours there (hds#977). Check their edit.`,
+    );
   const marker = markerPath(process.cwd());
-  if (marker) writeFileSync(marker, `${path}\n`, { flag: 'a' });
+  if (marker)
+    writeFileSync(marker, overlaps > 0 ? `overlap ${path}\n` : `${path}\n`, { flag: 'a' });
   process.exit(0);
 }

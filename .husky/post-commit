@@ -16,4 +16,9 @@ ROOT="$(git rev-parse --show-toplevel)"
 nohup node "$ROOT/scripts/orchestration-watcher.mjs" --once --quiet \
   >/dev/null 2>&1 </dev/null &
 
+# hds#977: a merge that stopped on a real conflict fires no post-merge once it
+# is committed, and a cherry-pick never does; rebuild the generated files the
+# hds-generated driver kept one side of (a no-op unless it ran).
+node "$ROOT/scripts/regen.mjs" --after-merge
+
 exit 0

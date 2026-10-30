@@ -14,7 +14,8 @@
  *     (scripts/merge-generated.mjs) that never stops a merge on them;
  *   - `node scripts/setup-hooks.mjs` (pnpm install's `prepare`) registers that
  *     driver in .git/config, since git never reads a driver from the repo;
- *   - `.husky/post-merge` and `.husky/post-rewrite` run `--after-merge`, which
+ *   - `.husky/post-merge`, `post-rewrite` and `post-commit` (a merge that
+ *     stopped on a real conflict, a cherry-pick) run `--after-merge`, which
  *     regenerates only when the driver ran.
  *
  *   pnpm regen                                # rebuild them all
@@ -22,7 +23,7 @@
  *   node scripts/regen.mjs --list             # print the generated files, one per line
  */
 import { spawnSync } from 'node:child_process';
-import { existsSync, rmSync } from 'node:fs';
+import { existsSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -96,8 +97,20 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   if (argv.includes('--after-merge')) {
     const marker = markerPath();
     if (!marker || !existsSync(marker)) process.exit(0);
+    const overlapped = [
+      ...new Set(
+        readFileSync(marker, 'utf8')
+          .split('\n')
+          .filter((line) => line.startsWith('overlap '))
+          .map((line) => line.slice('overlap '.length)),
+      ),
+    ];
     rmSync(marker);
     console.log('regen: the merge kept one side of a generated file; rebuilding them (hds#977)');
+    for (const file of overlapped)
+      console.warn(
+        `⚠ regen: ${file} had an edit on both sides of the same lines; ours was kept there, check theirs`,
+      );
     // A hook must not fail the merge it follows: report and leave the fix to `pnpm regen`.
     if (!regen(ROOT)) {
       console.error('✗ regen failed; fix the error above, then run: pnpm regen');

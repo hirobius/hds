@@ -71,7 +71,7 @@ describe('the hds-generated merge driver', () => {
     expect(readFileSync(join(dir, 'README.md'), 'utf8')).toBe(
       'count: 11\n\nour intro\n\nnotes, with their new line\n',
     );
-    expect(existsSync(join(gitDir(dir), MARKER))).toBe(true);
+    expect(readFileSync(join(gitDir(dir), MARKER), 'utf8')).toBe('overlap README.md\n');
   });
 
   it('keeps our whole JSON file when the line merge would not parse', () => {
@@ -107,5 +107,6 @@ describe('repo wiring', () => {
     expect(read('scripts/setup-hooks.mjs')).toContain('installMergeDriver');
     expect(read('.husky/post-merge')).toMatch(/scripts\/regen\.mjs"? --after-merge/);
     expect(read('.husky/post-rewrite')).toMatch(/scripts\/regen\.mjs"? --after-merge/);
+    expect(read('.husky/post-commit')).toMatch(/scripts\/regen\.mjs"? --after-merge/);
   });
 });
