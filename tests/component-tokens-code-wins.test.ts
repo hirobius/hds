@@ -10,39 +10,18 @@
  * `scripts/check-component-token-binding.mjs` is the repo-wide ratchet.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-
-const ROOT = resolve(__dirname, '..');
-const tokensCss = readFileSync(resolve(ROOT, 'src/styles/tokens.generated.css'), 'utf8');
-
-function block(selector: string): Record<string, string> {
-  const start = tokensCss.indexOf(`${selector} {`);
-  expect(start, `no ${selector} block in tokens.generated.css`).toBeGreaterThanOrEqual(0);
-  const body = tokensCss.slice(start, tokensCss.indexOf('\n}', start));
-  const out: Record<string, string> = {};
-  for (const m of body.matchAll(/^\s*(--[\w-]+):\s*(.+?);/gm)) out[m[1]] = m[2];
-  return out;
-}
-const light = block(':root');
-const dark = { ...light, ...block('[data-theme="dark"]') };
-
-function resolveVar(vars: Record<string, string>, name: string): string {
-  let value = vars[name];
-  for (let i = 0; value !== undefined && i < 10; i++) {
-    const ref = value.match(/^var\((--[\w-]+)\)$/);
-    if (!ref) return value;
-    value = vars[ref[1]];
-  }
-  throw new Error(`could not resolve ${name}`);
-}
+import { resolveVar } from './helpers/token-sheet';
 
 /** token var -> [what the code renders, as a px string or the var of the semantic role it resolves to] */
 const PX: Array<[string, string, string]> = [
   ['--component-button-paddingY', '8px', 'py-2'],
   ['--component-button-size-md-paddingY', '8px', 'py-2'],
   ['--component-button-size-sm-paddingX', '12px', 'px-3'],
-  ['--component-button-size-sm-height', '32px', 'h-8'],
+  [
+    '--component-button-size-sm-height',
+    '36px',
+    'h-[var(--component-button-size-sm-height)] (bound, hds#760)',
+  ],
   ['--component-button-size-sm-itemSpacing', '8px', 'base gap-2'],
   ['--component-button-size-lg-fontSize', '16px', 'hds-type-ui'],
   ['--component-input-paddingX', '12px', 'pl-3 pr-3'],
@@ -72,14 +51,14 @@ const COLOR: Array<[string, string, string]> = [
 
 describe('component dimension tokens equal the rendered code value', () => {
   it.each(PX)('%s is %s (%s)', (name, px) => {
-    expect(resolveVar(light, name)).toBe(px);
-    expect(resolveVar(dark, name)).toBe(px);
+    expect(resolveVar(name, 'light')).toBe(px);
+    expect(resolveVar(name, 'dark')).toBe(px);
   });
 });
 
 describe('component colour tokens equal the rendered code colour', () => {
   it.each(COLOR)('%s resolves like %s (%s) in light and dark', (name, role) => {
-    expect(resolveVar(light, name)).toBe(resolveVar(light, role));
-    expect(resolveVar(dark, name)).toBe(resolveVar(dark, role));
+    expect(resolveVar(name, 'light')).toBe(resolveVar(role, 'light'));
+    expect(resolveVar(name, 'dark')).toBe(resolveVar(role, 'dark'));
   });
 });

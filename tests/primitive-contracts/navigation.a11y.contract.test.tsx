@@ -354,9 +354,9 @@ describe('Pagination accessibility contract', () => {
     expect(screen.getByRole('button', { name: 'Page 3' }).className).toContain('hds-touch-target');
     for (const name of ['Previous page', 'Next page']) {
       const cls = screen.getByRole('button', { name }).className.split(/\s+/);
-      // size sm: h-8 w-8 = 32px, over the 24px floor (WCAG 2.5.8)
-      expect(cls).toContain('h-8');
-      expect(cls).toContain('w-8');
+      // size sm: a 36px square bound to the sm height token, over the 24px floor (WCAG 2.5.8)
+      expect(cls).toContain('h-[var(--component-button-size-sm-height)]');
+      expect(cls).toContain('w-[var(--component-button-size-sm-height)]');
     }
     expect(themeCss).toMatch(
       /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--semantic-size-touchTarget\)/,

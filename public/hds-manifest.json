@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-28T05:28:28.432Z",
+  "generated": "2026-10-28T03:46:51.451Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -2865,10 +2865,14 @@
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
+        "src/app/components/avatar-group.tsx",
+        "src/app/components/avatar.tsx",
         "src/app/components/board.tsx",
         "src/app/components/box-sx.ts",
+        "src/app/components/callout.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
+        "src/app/components/kbd.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/segmented-control.tsx",
@@ -12684,6 +12688,13 @@
         "value": "500"
       },
       {
+        "path": "primitive.typography.weight.semibold",
+        "cssVar": "--primitive-typography-weight-semibold",
+        "type": "fontWeight",
+        "description": "Button label weight (hds#760).",
+        "value": "600"
+      },
+      {
         "path": "primitive.typography.weight.bold",
         "cssVar": "--primitive-typography-weight-bold",
         "type": "fontWeight",
@@ -12921,6 +12932,13 @@
         "value": "32px"
       },
       {
+        "path": "primitive.size.36",
+        "cssVar": "--primitive-size-36",
+        "type": "dimension",
+        "description": "36px size step.",
+        "value": "36px"
+      },
+      {
         "path": "primitive.size.40",
         "cssVar": "--primitive-size-40",
         "type": "dimension",
@@ -12928,11 +12946,25 @@
         "value": "40px"
       },
       {
+        "path": "primitive.size.44",
+        "cssVar": "--primitive-size-44",
+        "type": "dimension",
+        "description": "44px size step.",
+        "value": "44px"
+      },
+      {
         "path": "primitive.size.48",
         "cssVar": "--primitive-size-48",
         "type": "dimension",
         "description": "48px size step.",
         "value": "48px"
+      },
+      {
+        "path": "primitive.size.52",
+        "cssVar": "--primitive-size-52",
+        "type": "dimension",
+        "description": "52px size step.",
+        "value": "52px"
       },
       {
         "path": "primitive.size.64",
@@ -13445,6 +13477,18 @@
         }
       },
       {
+        "path": "semantic.color.border.subdued",
+        "cssVar": "--semantic-color-border-subdued",
+        "type": "color",
+        "description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
+        "alias": "{primitive.color.graphite.200}",
+        "resolvedValue": "#cbc6c9",
+        "dark": {
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
+        }
+      },
+      {
         "path": "semantic.color.border.subtle",
         "cssVar": "--semantic-color-border-subtle",
         "type": "color",
@@ -13790,12 +13834,84 @@
         "resolvedValue": "4px"
       },
       {
+        "path": "semantic.space.component.gap",
+        "cssVar": "--semantic-space-component-gap",
+        "type": "dimension",
+        "description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.",
+        "alias": "{semantic.space.scale.xs}",
+        "resolvedValue": "8px"
+      },
+      {
         "path": "semantic.space.component.medium",
         "cssVar": "--semantic-space-component-medium",
         "type": "dimension",
         "description": "12px adjacent form fields and medium intra-component gaps.",
         "alias": "{primitive.space.3}",
         "resolvedValue": "12px"
+      },
+      {
+        "path": "semantic.space.component.padding",
+        "cssVar": "--semantic-space-component-padding",
+        "type": "dimension",
+        "description": "Inset for cards, forms and panels (follows surface.padding). DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
+        "alias": "{semantic.space.surface.padding}",
+        "resolvedValue": "28px"
+      },
+      {
+        "path": "semantic.space.layout.tight",
+        "cssVar": "--semantic-space-layout-tight",
+        "type": "dimension",
+        "description": "20px (12px compact). Deprecated alias (hds#206): use semantic.space.scale.sm.",
+        "alias": "{primitive.space.5}",
+        "resolvedValue": "20px",
+        "compact": {
+          "alias": "{primitive.space.3}",
+          "resolvedValue": "12px"
+        }
+      },
+      {
+        "path": "semantic.space.layout.normal",
+        "cssVar": "--semantic-space-layout-normal",
+        "type": "dimension",
+        "description": "28px (16px compact). Deprecated alias (hds#206): use semantic.space.scale.md.",
+        "alias": "{primitive.space.7}",
+        "resolvedValue": "28px",
+        "compact": {
+          "alias": "{primitive.space.4}",
+          "resolvedValue": "16px"
+        }
+      },
+      {
+        "path": "semantic.space.layout.gutter",
+        "cssVar": "--semantic-space-layout-gutter",
+        "type": "dimension",
+        "description": "Column and region gutters (follows region.gutter). DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
+        "alias": "{semantic.space.region.gutter}",
+        "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.space.layout.inset",
+        "cssVar": "--semantic-space-layout-inset",
+        "type": "dimension",
+        "description": "40px (24px compact). Deprecated alias (hds#206): use semantic.space.scale.lg.",
+        "alias": "{primitive.space.10}",
+        "resolvedValue": "40px",
+        "compact": {
+          "alias": "{primitive.space.6}",
+          "resolvedValue": "24px"
+        }
+      },
+      {
+        "path": "semantic.space.layout.spacious",
+        "cssVar": "--semantic-space-layout-spacious",
+        "type": "dimension",
+        "description": "64px (32px compact). Deprecated alias (hds#206): use semantic.space.scale.xl.",
+        "alias": "{primitive.space.16}",
+        "resolvedValue": "64px",
+        "compact": {
+          "alias": "{primitive.space.8}",
+          "resolvedValue": "32px"
+        }
       },
       {
         "path": "semantic.space.section.stack",
@@ -14907,6 +15023,14 @@
         "resolvedValue": "8px"
       },
       {
+        "path": "component.button.fontWeight",
+        "cssVar": "--component-button-fontWeight",
+        "type": "fontWeight",
+        "description": "Button label weight.",
+        "alias": "{primitive.typography.weight.semibold}",
+        "resolvedValue": "600"
+      },
+      {
         "path": "component.button.size.sm.paddingX",
         "cssVar": "--component-button-size-sm-paddingX",
         "type": "dimension",
@@ -14942,9 +15066,9 @@
         "path": "component.button.size.sm.height",
         "cssVar": "--component-button-size-sm-height",
         "type": "dimension",
-        "description": "Small button height (32px).",
-        "alias": "{primitive.size.32}",
-        "resolvedValue": "32px"
+        "description": "Small button height (36px).",
+        "alias": "{primitive.size.36}",
+        "resolvedValue": "36px"
       },
       {
         "path": "component.button.size.sm.itemSpacing",
@@ -14966,7 +15090,7 @@
         "path": "component.button.size.md.paddingY",
         "cssVar": "--component-button-size-md-paddingY",
         "type": "dimension",
-        "description": "Medium button vertical padding (8px; the 40px height drives the box).",
+        "description": "Medium button vertical padding (8px; the 44px height drives the box).",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -14990,9 +15114,9 @@
         "path": "component.button.size.md.height",
         "cssVar": "--component-button-size-md-height",
         "type": "dimension",
-        "description": "Medium button height (40px).",
-        "alias": "{primitive.size.40}",
-        "resolvedValue": "40px"
+        "description": "Medium button height (44px).",
+        "alias": "{primitive.size.44}",
+        "resolvedValue": "44px"
       },
       {
         "path": "component.button.size.md.itemSpacing",
@@ -15038,9 +15162,9 @@
         "path": "component.button.size.lg.height",
         "cssVar": "--component-button-size-lg-height",
         "type": "dimension",
-        "description": "Large button height (48px).",
-        "alias": "{primitive.size.48}",
-        "resolvedValue": "48px"
+        "description": "Large button height (52px).",
+        "alias": "{primitive.size.52}",
+        "resolvedValue": "52px"
       },
       {
         "path": "component.button.size.lg.itemSpacing",
@@ -15111,7 +15235,7 @@
         "cssVar": "--component-button-secondary-border-disabled",
         "type": "color",
         "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
-        "alias": "{semantic.color.border.default}",
+        "alias": "{semantic.color.border.subdued}",
         "resolvedValue": "#cbc6c9"
       },
       {

@@ -6,33 +6,32 @@ import { tmpdir } from 'os';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { transform } from 'lightningcss';
+import { buildManifest } from '../build-tokens.mjs';
+import { resolveAlias, walkTokens } from '../lib/token-tree.mjs';
+import { validateTokens } from '../lib/token-validate.mjs';
 import {
   pathToCSSVar,
   aliasToCSSVar,
-  resolveAlias,
   colorToCSS,
   dimensionToCSS,
   durationToCSS,
   cubicBezierToCSS,
   fontFamilyToCSS,
-  walkTokens,
-  indexDeprecatedAliases,
   valueToCSS,
-  serialize,
   shadowToCSS,
   expandElevation,
   ELEVATION_SLOTS,
-  validateTokens,
-  buildTailwindThemeExtend,
-  validateTenantOverlay,
-  buildTenantCSS,
-  buildManifest,
   buildCSSSection,
-  buildDeprecationNotes,
-  buildCSSVarDts,
   isCssEasing,
   EASING_TYPES,
-} from '../build-tokens.mjs';
+} from '../lib/token-emit/css.mjs';
+import { serialize, buildDeprecationNotes, buildCSSVarDts } from '../lib/token-emit/ts.mjs';
+import { buildTailwindThemeExtend } from '../lib/token-emit/tailwind.mjs';
+import {
+  indexDeprecatedAliases,
+  validateTenantOverlay,
+  buildTenantCSS,
+} from '../lib/token-emit/tenant.mjs';
 import { readTokenSource } from '../lib/token-source.mjs';
 
 // ── pathToCSSVar ──────────────────────────────────────────────────────────────
@@ -251,7 +250,7 @@ describe('deprecated tokens in the build outputs', () => {
     path: ['semantic', 'space', 'layout', 'tight'],
     type: 'dimension',
     value: '{semantic.space.scale.sm}',
-    deprecated: 'hds#206 — use semantic.space.scale.sm',
+    deprecated: 'hds#206, removed in 1.0.0 — use semantic.space.scale.sm',
   };
   const notes = buildDeprecationNotes([
     dep,
@@ -262,21 +261,21 @@ describe('deprecated tokens in the build outputs', () => {
     const { rootLines } = buildCSSSection([dep], 'Semantic');
     const i = rootLines.findIndex((l) => l.includes('--semantic-space-layout-tight:'));
     expect(rootLines[i - 1]).toBe(
-      '  /* @deprecated hds#206 — use semantic.space.scale.sm (removed in 1.0.0) */',
+      '  /* @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm */',
     );
   });
 
   it('the TS tree tags the leaf @deprecated with @removeIn', () => {
     const out = serialize({ semantic: { space: { layout: { tight: 'var(--x)' } } } }, 1, notes);
     expect(out).toContain(
-      '/** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */\n        tight: "var(--x)"',
+      '/** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm @removeIn 1.0.0 */\n        tight: "var(--x)"',
     );
   });
 
   it('the CSSProperties augmentation tags the var @deprecated', () => {
     const dts = buildCSSVarDts(['--semantic-space-layout-tight', '--semantic-x'], notes);
     expect(dts).toContain(
-      "    /** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */\n    '--semantic-space-layout-tight'?: string | undefined;",
+      "    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm @removeIn 1.0.0 */\n    '--semantic-space-layout-tight'?: string | undefined;",
     );
     expect(dts).toContain("\n    '--semantic-x'?: string | undefined;");
     expect(dts).not.toMatch(/@deprecated[^\n]*\n {4}'--semantic-x'/);

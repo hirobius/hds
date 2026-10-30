@@ -45,8 +45,9 @@
  *      a variable or class as removed, and dist/*.css still carries it:
  *      something the build scans (UPGRADING.md named a removed utility in
  *      0.27.0) compiled the removed name back in, so the tarball would
- *      contradict its own notes. Exclude that file with `@source not` in
- *      src/styles/theme.css.
+ *      contradict its own notes. Tailwind reads only the .ts/.tsx files in src/
+ *      (hds#936): drop the name from that file, or exclude it with
+ *      `@source not` in src/styles/theme.css.
  *
  * The fix it names is `pnpm upgrade:note`, which pre-fills a removed step for
  * a removal and a value-changed step (impact look) for a value change, each
@@ -213,7 +214,7 @@ function stillShipped(root, version, contract) {
       violation(
         CONTRACT_FILE,
         'removed-still-shipped',
-        `${kind === 'css-var-removed' ? name : `.${name}`} is listed as removed in upgrade/releases/${version}.json but dist/*.css still carries it. Tailwind compiles any name it finds in a scanned file, so a file that names it (UPGRADING.md, a doc) is being scanned: add it to the @source not lines in src/styles/theme.css, then run ${BUILD}.`,
+        `${kind === 'css-var-removed' ? name : `.${name}`} is listed as removed in upgrade/releases/${version}.json but dist/*.css still carries it. Tailwind compiles any name it finds in a scanned file, so a file under src/ that names it is being scanned (Tailwind reads src/**/*.{ts,tsx}): drop the name, or exclude the file with an @source not line in src/styles/theme.css, then run ${BUILD}.`,
         { name },
       ),
     );

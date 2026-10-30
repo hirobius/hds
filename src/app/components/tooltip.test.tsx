@@ -9,7 +9,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
-import { resolveAlias } from '../../../scripts/build-tokens.mjs';
+import { resolveAlias } from '../../../scripts/lib/token-tree.mjs';
 import { contrastRatio } from '../utils/colorUtils';
 import { ExpandTooltip } from './tooltip';
 

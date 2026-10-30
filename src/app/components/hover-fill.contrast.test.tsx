@@ -7,17 +7,22 @@
  * buttons (1.10:1 on the popover). The hover fill must differ from what is under
  * it by 1.15:1 or more in light and dark. The colours come from the rendered
  * classes resolved against the shipped token sheet, as in
- * segmented-control.contrast.test.tsx (one shared resolver: hds#961).
+ * segmented-control.contrast.test.tsx, through the shared resolver
+ * (tests/helpers/token-sheet.ts, hds#961).
  */
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import type { ReactElement } from 'react';
 import { describe, it, expect, beforeAll, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import { contrastRatio } from '../utils/colorUtils';
+import { color } from '../../../tests/helpers/token-sheet';
 import { Combobox, type ComboboxOption } from './combobox';
 import { Dialog } from './dialog';
 import { Sheet } from './sheet';
+import { Avatar } from './avatar';
+import { AvatarGroup } from './avatar-group';
+import { Kbd } from './kbd';
+import { Callout } from './callout';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 
 beforeAll(() => {
   if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
@@ -25,28 +30,6 @@ beforeAll(() => {
 });
 
 afterEach(cleanup);
-
-const css = readFileSync(resolve(process.cwd(), 'src/styles/tokens.generated.css'), 'utf8');
-
-/** The custom-property declarations of the first block opened by `selector`. */
-function block(selector: string): Record<string, string> {
-  const start = css.indexOf(`${selector} {`);
-  if (start < 0) throw new Error(`no ${selector} block in the token sheet`);
-  const body = css.slice(start, css.indexOf('\n}', start));
-  const vars: Record<string, string> = {};
-  for (const m of body.matchAll(/^\s*(--[\w-]+):\s*([^;]+);/gm)) vars[m[1]] = m[2].trim();
-  return vars;
-}
-
-const ROOT = block(':root');
-const THEMES = { light: ROOT, dark: { ...ROOT, ...block('[data-theme="dark"]') } } as const;
-
-function color(name: string, theme: keyof typeof THEMES): string {
-  let value = THEMES[theme][name];
-  while (value?.startsWith('var(')) value = THEMES[theme][value.slice(4, -1).trim()];
-  if (!value?.startsWith('#')) throw new Error(`${name} (${theme}) does not resolve to a hex`);
-  return value;
-}
 
 /** The custom property a class paints: `bg-muted` → --role-muted, `bg-[var(--x)]` → --x. */
 function paintedVar(className: string, pattern: RegExp): string {
@@ -128,6 +111,104 @@ const CASES: Record<string, Case> = {
     under: '--role-popover',
   },
 };
+
+/** A fill class, plain or behind a variant: `bg-muted`, `data-[state=active]:bg-[var(--x)]`. */
+const FILL =
+  /(?:^|\s)(?:[\w-]+(?:\[[^\]]+\])?:)?bg-(?:\[var\((--[\w-]+)\)\]|(muted|accent(?:\/\d+)?))(?:\s|$)/;
+
+function fillVar(className: string): string {
+  const m = className.match(FILL);
+  if (!m) throw new Error(`no fill in "${className}"`);
+  if (m[2]?.includes('/'))
+    throw new Error(`"${m[2]}" is a tint at opacity: no solid fill to measure`);
+  return m[1] ?? `--role-${m[2]}`;
+}
+
+interface RestCase {
+  render: () => ReactElement;
+  find: (container: HTMLElement) => HTMLElement;
+  /** The surfaces the element is drawn on. */
+  on: string[];
+}
+
+// Rest fills (hds#522, the rest of the shadcn-token audit): `bg-muted` is 1.04:1
+// on a raised Card in light, and the Tabs `bg-accent/5` tint is near-invisible.
+const REST_CASES: Record<string, RestCase> = {
+  Avatar: {
+    render: () => <Avatar name="Ada Lovelace" />,
+    find: (c) => c.firstElementChild as HTMLElement,
+    on: ['--role-background', '--role-card'],
+  },
+  'AvatarGroup overflow': {
+    render: () => (
+      <AvatarGroup max={1}>
+        <Avatar name="Ada Lovelace" />
+        <Avatar name="Grace Hopper" />
+      </AvatarGroup>
+    ),
+    find: () => screen.getByText('+1'),
+    on: ['--role-background', '--role-card'],
+  },
+  'Callout accent': {
+    render: () => <Callout tone="accent">Note</Callout>,
+    find: () => screen.getByText('Note').closest('div') as HTMLElement,
+    on: ['--role-background', '--role-card'],
+  },
+  Kbd: {
+    render: () => <Kbd>K</Kbd>,
+    find: (c) => c.querySelector('kbd') as HTMLElement,
+    on: ['--role-background', '--role-card'],
+  },
+  'Tabs active trigger': {
+    render: () => <TabsCase />,
+    find: () => screen.getByRole('tab', { selected: true }),
+    on: ['--role-background', '--role-card'],
+  },
+  'Tabs panel': {
+    render: () => <TabsCase />,
+    find: () => screen.getByRole('tabpanel'),
+    on: ['--role-background', '--role-card'],
+  },
+};
+
+function TabsCase() {
+  return (
+    <Tabs defaultValue="a">
+      <TabsList>
+        <TabsTrigger value="a">A</TabsTrigger>
+        <TabsTrigger value="b">B</TabsTrigger>
+      </TabsList>
+      <TabsContent value="a">Panel</TabsContent>
+    </Tabs>
+  );
+}
+
+describe('rest fills differ from the surface they sit on (hds#522)', () => {
+  for (const [name, c] of Object.entries(REST_CASES)) {
+    for (const theme of ['light', 'dark'] as const) {
+      for (const under of c.on) {
+        it(`${name} on ${under}: 1.15:1 or more (${theme})`, () => {
+          const { container } = render(c.render());
+          const fill = fillVar(c.find(container).className);
+          expect(contrastRatio(color(under, theme), color(fill, theme))).toBeGreaterThanOrEqual(
+            1.15,
+          );
+        });
+      }
+    }
+  }
+
+  // The initials and key legends sit on the new fill: they keep 4.5:1.
+  for (const name of ['Avatar', 'AvatarGroup overflow', 'Kbd'])
+    for (const theme of ['light', 'dark'] as const)
+      it(`${name} text keeps 4.5:1 on its fill (${theme})`, () => {
+        const { container } = render(REST_CASES[name].render());
+        const fill = fillVar(REST_CASES[name].find(container).className);
+        expect(
+          contrastRatio(color('--role-muted-foreground', theme), color(fill, theme)),
+        ).toBeGreaterThanOrEqual(4.5);
+      });
+});
 
 describe('hover fills differ from what is under them (hds#522)', () => {
   for (const [name, c] of Object.entries(CASES)) {

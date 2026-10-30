@@ -12,7 +12,7 @@ import { readFileSync } from 'fs';
 import { execFileSync } from 'child_process';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { buildCSSSection } from '../build-tokens.mjs';
+import { buildCSSSection } from '../lib/token-emit/css.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const generated = readFileSync(join(ROOT, 'src/styles/tokens.generated.css'), 'utf8');

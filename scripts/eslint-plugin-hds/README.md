@@ -123,8 +123,8 @@ spellings: a CSS var (`var(--semantic-space-section-heroMax)`), a member chain
 version it leaves in and the replacement:
 
 ```text
-"--semantic-space-section-heroMax" is a deprecated token (hds#206 — use semantic.space.scale.sm),
-removed in 1.0.0. Use --semantic-space-scale-sm.
+"--semantic-space-section-heroMax" is a deprecated token (2026-10 zero-use audit, removed in
+1.0.0 — use semantic.space.section.inset (96px)). Use --semantic-space-section-inset.
 ```
 
 The list is `rules/deprecated-tokens.json`, which the token build writes, so a

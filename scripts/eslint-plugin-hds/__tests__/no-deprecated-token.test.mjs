@@ -30,7 +30,6 @@ ruleTester.run('no-deprecated-token', rule, {
           data: {
             text: '--semantic-space-section-heroMax',
             note: '2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)',
-            removeIn: '1.0.0',
             fix: ' Use --semantic-space-section-inset.',
           },
         },
@@ -52,7 +51,6 @@ ruleTester.run('no-deprecated-token', rule, {
           data: {
             text: 'py-section-heroMax',
             note: '2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)',
-            removeIn: '1.0.0',
             fix: ' Use py-section-inset.',
           },
         },
@@ -70,8 +68,7 @@ ruleTester.run('no-deprecated-token', rule, {
           messageId: 'deprecated',
           data: {
             text: '--semantic-typography-h1-font-size',
-            note: 'hds#483 — use semantic.typography.title',
-            removeIn: '1.0.0',
+            note: 'hds#483, removed in 1.0.0 — use semantic.typography.title',
             fix: ' Use --semantic-typography-title-font-size.',
           },
         },
