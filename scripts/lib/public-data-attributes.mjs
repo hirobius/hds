@@ -31,7 +31,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   AsyncState: ['data-slot', 'data-status'],
   Avatar: ['data-size'],
   Badge: ['data-tone'],
-  Button: ['data-hover-effect', 'data-pressed', 'data-tone', 'data-variant'],
+  Button: ['data-hover-effect', 'data-pressed', 'data-size', 'data-tone', 'data-variant'],
   Card: [
     'data-bordered',
     'data-format',

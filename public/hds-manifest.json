@@ -4004,6 +4004,7 @@
       "publicDataAttributes": [
         "data-hover-effect",
         "data-pressed",
+        "data-size",
         "data-tone",
         "data-variant"
       ],
@@ -11367,6 +11368,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": "/docs/components/command-palette",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Let people jump to a page or run a command from anywhere by typing, opened with ⌘K or Ctrl+K.",
         "whenNot": "Picking a value for a form field, or a short action list on a button.",
