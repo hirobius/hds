@@ -108,6 +108,7 @@ export const REQUIRED = [
   'codemods/lib/removals.mjs',
   'codemods/lib/scan.mjs',
   'codemods/lib/semver.mjs',
+  'codemods/lib/strings.mjs',
 ];
 
 /**

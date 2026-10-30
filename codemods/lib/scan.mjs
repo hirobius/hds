@@ -5,7 +5,8 @@
  * Node builtins only: this runs on consumer machines from the published
  * package. Each detector reads the files it can mean something in:
  *
- *   imports, jsx, bareImports   code (.ts .tsx .js .jsx .mjs .cjs .mts .cts .mdx)
+ *   imports, jsx, bareImports   code (.ts .tsx .js .jsx .mjs .cjs .mts .cts .mdx
+ *                               .astro .vue .svelte)
  *   classes                     code (className / class attributes), CSS
  *                               selectors and @apply, HTML class attributes
  *   cssVars, cssVarWrites       code, CSS and HTML
@@ -30,7 +31,20 @@ export const SKIP_DIRS = new Set([
   'coverage',
 ]);
 
-const CODE = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts', '.mdx']);
+const CODE = new Set([
+  '.ts',
+  '.tsx',
+  '.js',
+  '.jsx',
+  '.mjs',
+  '.cjs',
+  '.mts',
+  '.cts',
+  '.mdx',
+  '.astro',
+  '.vue',
+  '.svelte',
+]);
 const STYLE = new Set(['.css', '.scss']);
 const MARKUP = new Set(['.html']);
 

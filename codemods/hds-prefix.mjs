@@ -39,9 +39,9 @@ import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { relative, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findUnrewritable as findHidden, maskSource } from './unrewritable.mjs';
+import { CODE_EXTS } from './jsx-fold.mjs';
 
 const ROOT_PKG = '@hirobius/design-system';
-const EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
 const SKIP_DIRS = new Set([
   'node_modules',
   'dist',
@@ -156,7 +156,7 @@ function* walk(dir, skip = new Set()) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
       if (!skip.has(full)) yield* walk(full, skip);
-    } else if (entry.isFile() && EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
+    } else if (entry.isFile() && CODE_EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
   }
 }
 

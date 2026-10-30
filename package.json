@@ -147,6 +147,7 @@
     "codemods/lib/removals.mjs",
     "codemods/lib/scan.mjs",
     "codemods/lib/semver.mjs",
+    "codemods/lib/strings.mjs",
     "AGENTS.md",
     "mcp/",
     "bin/",
