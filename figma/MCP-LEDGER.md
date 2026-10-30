@@ -711,3 +711,16 @@ Main removed 9 orphan tokens (13e62f4) and changed button/accent tokens (#950, #
 Session total: 2 calls
 
 Calls logged for 2026-10-29: 2 of 200 (2).
+
+## 2026-10-30 · button/accent token sync on 0.32.0 main 62f66bc (branch claude/figma-release-sync-0.32.0)
+
+Daily check: plan still shows updated 13 · created 6; probe whether Adrian removed the 9 variables code dropped.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                     | Result                                                                                  |
+| --- | ---------- | ---------------- | ---- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| 1   | 16:12      | `create_session` | read | open file session                                                           | OK; session opened                                                                      |
+| 2   | 16:12      | `use_figma`      | read | read-only probe: do the 9 variables code removed still exist in the library | OK; all 9 still present (503 variables), so no push; still waiting on the hand deletion |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-30: 2 of 200 (2).
