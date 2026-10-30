@@ -117,14 +117,14 @@ The lime delight accent is for delight moments only: a streak or win badge, a "n
 ### `hds/no-deprecated-token`
 
 Fails any token marked `$deprecated` in `hirobius.tokens.json`, in three
-spellings: a CSS var (`var(--semantic-space-layout-tight)`), a member chain
-(`hds.semantic.space.layout.tight`) and a Tailwind key in `className` /
-`cn()` (`p-layout-tight`). The message quotes the deprecation note, the
+spellings: a CSS var (`var(--semantic-space-section-heroMax)`), a member chain
+(`hds.semantic.space.section.heroMax`) and a Tailwind key in `className` /
+`cn()` (`py-section-heroMax`). The message quotes the deprecation note, the
 version it leaves in and the replacement:
 
 ```text
-"--semantic-space-layout-tight" is a deprecated token (hds#206, removed in 1.0.0 — use
-semantic.space.scale.sm). Use --semantic-space-scale-sm.
+"--semantic-space-section-heroMax" is a deprecated token (2026-10 zero-use audit, removed in
+1.0.0 — use semantic.space.section.inset (96px)). Use --semantic-space-section-inset.
 ```
 
 The list is `rules/deprecated-tokens.json`, which the token build writes, so a

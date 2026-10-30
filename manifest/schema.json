@@ -300,7 +300,7 @@
     "tokenBinding": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Maps slot CSS/Figma properties to design-token paths. Each value is a dot-delimited token path string (e.g. 'semantic.color.surface.raised', 'semantic.space.layout.tight') that resolves through hirobius.tokens.json. Null entries explicitly suppress a property; absent entries fall back to component defaults.",
+      "description": "Maps slot CSS/Figma properties to design-token paths. Each value is a dot-delimited token path string (e.g. 'semantic.color.surface.raised', 'semantic.space.scale.sm') that resolves through hirobius.tokens.json. Null entries explicitly suppress a property; absent entries fall back to component defaults.",
       "properties": {
         "fill": {
           "type": ["string", "null"],

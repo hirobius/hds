@@ -276,8 +276,6 @@ declare module 'react' {
     '--semantic-color-content-danger'?: string | undefined;
     '--semantic-color-border-default'?: string | undefined;
     '--semantic-color-border-interactive'?: string | undefined;
-    /** @deprecated border consolidation 2026-10-12, removed in 1.0.0 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) @removeIn 1.0.0 */
-    '--semantic-color-border-subdued'?: string | undefined;
     '--semantic-color-border-subtle'?: string | undefined;
     '--semantic-color-border-strong'?: string | undefined;
     '--semantic-color-border-accent'?: string | undefined;
@@ -312,21 +310,7 @@ declare module 'react' {
     '--semantic-space-subgrid-hairline'?: string | undefined;
     '--semantic-space-subgrid-xs'?: string | undefined;
     '--semantic-space-subgrid-gap'?: string | undefined;
-    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xs @removeIn 1.0.0 */
-    '--semantic-space-component-gap'?: string | undefined;
     '--semantic-space-component-medium'?: string | undefined;
-    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.surface.padding @removeIn 1.0.0 */
-    '--semantic-space-component-padding'?: string | undefined;
-    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm @removeIn 1.0.0 */
-    '--semantic-space-layout-tight'?: string | undefined;
-    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.md @removeIn 1.0.0 */
-    '--semantic-space-layout-normal'?: string | undefined;
-    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.region.gutter @removeIn 1.0.0 */
-    '--semantic-space-layout-gutter'?: string | undefined;
-    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.lg @removeIn 1.0.0 */
-    '--semantic-space-layout-inset'?: string | undefined;
-    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xl @removeIn 1.0.0 */
-    '--semantic-space-layout-spacious'?: string | undefined;
     '--semantic-space-section-stack'?: string | undefined;
     '--semantic-space-section-inset'?: string | undefined;
     /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) @removeIn 1.0.0 */

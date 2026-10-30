@@ -20,10 +20,8 @@ function deprecatedVars(node, path = [], out = []) {
   return out;
 }
 
-// Files that still read a deprecated token on purpose: box-sx.ts keeps the deprecated
-// spacing aliases working for consumers, tenants.css overrides component.padding.
-// Shrink this list, never grow it (follow-up to hds#789).
-const KNOWN_READERS = ['src/app/components/box-sx.ts', 'src/styles/tenants.css'];
+// No file reads a deprecated token on purpose: box-sx.ts and tenants.css did until
+// hds#625 removed the spacing aliases. Keep it that way (follow-up to hds#789).
 
 function sourceFiles(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -37,14 +35,13 @@ function sourceFiles(dir, out = []) {
 describe('src/ reads no deprecated token', () => {
   const vars = deprecatedVars(tree);
   it('finds the deprecated tokens', () => {
-    expect(vars).toContain('--semantic-color-border-subdued');
-    expect(vars).toContain('--semantic-space-layout-inset');
+    expect(vars).toContain('--component-button-secondary-border-disabled');
+    expect(vars).toContain('--semantic-space-section-heroMax');
   });
   it('has no reads of them in src/ (generated files and theme.css declare them, so they are exempt)', () => {
     const hits = [];
     for (const file of sourceFiles(join(root, 'src'))) {
       if (/\.generated\.css$|styles\/theme\.css$|design-system\/generated-/.test(file)) continue; // declarations, not reads
-      if (KNOWN_READERS.some((k) => file.endsWith(k))) continue;
       const text = readFileSync(file, 'utf8');
       for (const v of vars) {
         if (new RegExp(`${v}(?![\\w-])`).test(text))

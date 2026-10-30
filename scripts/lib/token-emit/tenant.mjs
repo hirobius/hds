@@ -71,7 +71,8 @@ export function validateTenantOverlay(overlay, baseRaw, slug) {
 /**
  * Maps each canonical token path to the CSS vars of its `$deprecated` aliases
  * (base leaves whose `$value` is exactly `{canonical.path}`), e.g.
- * `semantic.space.surface.padding` → [`--semantic-space-component-padding`].
+ * `semantic.space.surface.padding` → [`--semantic-space-component-padding`] (until
+ * hds#625 removed that alias).
  *
  * Why: tokens.generated.css declares an alias on :root as `var(--canonical)`, and a
  * custom property is computed where it is declared. A tenant overlay that

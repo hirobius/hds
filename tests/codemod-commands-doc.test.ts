@@ -23,6 +23,7 @@ const FIRST_SHIPPED: Record<string, [number, number]> = {
   'hds-not-found-pattern': [0, 20],
   'hds-tile-grid': [0, 20],
   'hds-spacing-steps': [0, 27],
+  'hds-token-aliases': [0, 33],
   // Ledger-driven prop renames and value maps (hds#460).
   'hds-prop-map': [0, 33],
   // Not a codemod, but a bin all the same: the hds MCP server (hds#515).

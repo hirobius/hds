@@ -9,7 +9,7 @@
       "props": {
         "fill": "semantic.color.surface.raised",
         "layoutMode": "VERTICAL",
-        "itemSpacing": "semantic.space.layout.tight",
+        "itemSpacing": "semantic.space.scale.sm",
         "primaryAxisSizingMode": "AUTO",
         "counterAxisSizingMode": "AUTO"
       }

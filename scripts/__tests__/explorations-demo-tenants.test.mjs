@@ -185,7 +185,6 @@ const PROBES = {
   ],
   radiusNested: [`border-radius:${tailwind.theme.extend.borderRadius.sm}`, 'borderTopLeftRadius'],
   surfacePadding: ['padding-top:var(--semantic-space-surface-padding)', 'paddingTop'],
-  surfacePaddingAlias: ['padding-top:var(--semantic-space-component-padding)', 'paddingTop'],
   raised: ['background-color:var(--semantic-color-surface-raised)', 'backgroundColor'],
   roleCard: ['background-color:var(--role-card)', 'backgroundColor'],
   page: ['background-color:var(--semantic-color-surface-page)', 'backgroundColor'],
@@ -291,8 +290,8 @@ describe.skipIf(!hasBrowser)('soft-demo: computed, light and dark, on <html> and
   it.each(SCOPES)('surfaces get room: 40px comfortable, 16px compact (%s)', async (scope) => {
     const comfortable = await measure({ brand: 'soft-demo', scope });
     const compact = await measure({ brand: 'soft-demo', scope, density: 'compact' });
-    expect([comfortable.surfacePadding, comfortable.surfacePaddingAlias]).toEqual(['40px', '40px']);
-    expect([compact.surfacePadding, compact.surfacePaddingAlias]).toEqual(['16px', '16px']);
+    expect(comfortable.surfacePadding).toBe('40px');
+    expect(compact.surfacePadding).toBe('16px');
     expect((await measure({ scope })).surfacePadding).toBe('28px'); // default (scale.md)
   });
 
