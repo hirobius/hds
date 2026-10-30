@@ -60,7 +60,7 @@ Written by a person; the registry carries when it was last re-read. `pnpm check:
 - `docs/ai/NORTH_STAR.md`: What HDS is for, who it serves and its non-goals. Reviewed 2026-10-12, re-read within 180 days.
 - `docs/agents`: Issue-tracker, triage-label and domain-doc config the engineering skills read. Reviewed 2026-10-12, re-read within 120 days.
 - `docs/ROADMAP.md`: Backlog and technical debt for the design-system repo. Reviewed 2026-10-12, re-read within 45 days.
-- `CONTRIBUTING.md`: Dev setup and contribution rules. Reviewed 2026-10-12, re-read within 90 days.
+- `CONTRIBUTING.md`: Dev setup and contribution rules. Reviewed 2026-10-30, re-read within 90 days.
 - `CONSUMING.md`: Short consumption guide shipped in the package. Reviewed 2026-10-12, re-read within 90 days.
 - `docs/CONSUMING.md`: The canonical consumption guide. Reviewed 2026-10-12, re-read within 90 days.
 - `.github/ISSUE_TEMPLATE`: Bug and feature request templates. Reviewed 2026-10-12, re-read within 120 days.
