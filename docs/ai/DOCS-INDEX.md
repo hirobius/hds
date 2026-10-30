@@ -55,7 +55,7 @@ Written by a person; the registry carries when it was last re-read. `pnpm check:
 - `DESIGN.source.md`: Narrative rules of the visual spec (the editable source of DESIGN.md). Reviewed 2026-10-12, re-read within 90 days.
 - `DESIGN-HANDOFF.md` (manual sections): Hand-written sections around the generated token tables. Reviewed 2026-10-12, re-read within 90 days.
 - `MIGRATIONS.md`: How HDS deprecates and removes public API, and the removals shipped so far. Reviewed 2026-10-12, re-read within 90 days.
-- `docs/ENGINEERING.md`: How HDS is engineered: sources of truth, enforcement, shipping, design and code sync. Reviewed 2026-10-30, re-read within 90 days.
+- `docs/ENGINEERING.md`: How HDS is engineered: sources of truth, enforcement, shipping, design and code sync. Reviewed 2026-10-12, re-read within 90 days.
 - `CLAUDE.md`: Policy and routing for agents working in this repo. Reviewed 2026-10-12, re-read within 60 days.
 - `docs/ai/NORTH_STAR.md`: What HDS is for, who it serves and its non-goals. Reviewed 2026-10-12, re-read within 180 days.
 - `docs/agents`: Issue-tracker, triage-label and domain-doc config the engineering skills read. Reviewed 2026-10-12, re-read within 120 days.

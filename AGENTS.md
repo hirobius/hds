@@ -122,8 +122,8 @@ Rules for any autonomous loop in this repo:
 - Fight entropy: leave the code better than you found it.
 - No shortcut that creates debt someone else pays for.
 - Merges are HUMAN-approved: `ralph-approved` on the PR, or the issue
-  pre-tagged `ralph-auto` (batch approval), plus an independent
-  `Reviewed: PASS — <sha>` comment for the head commit. Never merge yourself.
+  pre-tagged `ralph-auto` (batch approval), plus an independent PASS review
+  comment for the head commit (format in CLAUDE.md). Never merge yourself.
 
 Loop mechanics (see `ralph/README.md` for the full contract):
 
@@ -149,9 +149,10 @@ run, so never wait on them or treat a missing check as pass or fail. Leave
 
 - **Check locally before push:** the husky hooks, plus `pnpm typecheck && pnpm test`
   (and `pnpm smoke:consumer` for anything that ships). Paste the results into the PR.
-- **Merge rule:** an independent `Reviewed: PASS — <sha>` comment on the PR,
-  from someone other than the author, naming the head commit. A new push voids it.
-- **Release:** local only, `pnpm release:local` (owner, npm 2FA). Agents never
+- **Merge rule:** an independent PASS review comment on the PR (format in
+  CLAUDE.md), from someone other than the author, naming the head commit. A new
+  push voids it.
+- **Release:** local only, `pnpm release:local` (Adrian, npm 2FA). Agents never
   merge, publish or release. See `docs/RELEASING.md`.
 
 ## PR previews: screenshots, not Vercel (Adrian 2026-10-24, all repos)
