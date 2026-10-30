@@ -173,11 +173,15 @@ an Upgrade block.
 
 ```bash
 pnpm changeset add        # record a patch/minor/major bump + notes
-pnpm changeset:version    # apply bumps, regenerate CHANGELOG.md, record the release (scripts/upgrade/compile.mjs) and refresh docs/api/api-baseline.json
-# commit + push to main → the Release workflow publishes to public npm
+pnpm changeset:version    # on a branch: apply bumps, regenerate CHANGELOG.md, record the release (scripts/upgrade/compile.mjs) and refresh docs/api/api-baseline.json
+# open the "Version Packages" PR; after review + merge, on a clean main:
+pnpm release:local --publish   # owner only, npm 2FA
 ```
 
-CI (`.github/workflows/release.yml`) automates steps 2–3 on merge to `main`.
+GitHub Actions is disabled on this repo (2026-10-30), so
+`.github/workflows/release.yml` never runs and releases carry no npm provenance.
+The full steps are in [docs/RELEASING.md](docs/RELEASING.md). The Trusted
+Publishing and `RELEASE_PAT` notes below describe that dormant workflow.
 
 A bad release is deprecated, not unpublished: [docs/RELEASING.md](docs/RELEASING.md),
 "If a release is bad", has the commands and `pnpm release:yank`.
