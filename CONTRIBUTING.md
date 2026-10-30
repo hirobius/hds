@@ -24,6 +24,16 @@ pnpm dev          # Vite dev server
 | `public/hds-manifest.json` | Machine-readable component inventory — generated                 |
 | `docs/state-surfaces.json` | Every file that describes state: generated, checked or editorial |
 
+### Merging main into a branch
+
+Generated files (the manifest, sync map, README counts, stats, `DESIGN.md`,
+`DESIGN-HANDOFF.md`, `llms-full.txt`, the types baseline) never stop a merge.
+`.gitattributes` gives them the `hds-generated` driver, which `pnpm install`
+registers. Where both sides changed the same lines it keeps your side, and
+`.husky/post-merge` then runs `pnpm regen` to rebuild them from source. Commit
+what it rebuilt. Run `pnpm regen` yourself after a merge made without the hooks
+(hds#977).
+
 ---
 
 ## Gates

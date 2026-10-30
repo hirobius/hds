@@ -328,6 +328,7 @@
     "pretypecheck": "node scripts/audit-tokens.mjs --report-only",
     "preview:build": "vite build --config preview/vite.config.mjs",
     "promote": "node scripts/promote.mjs",
+    "regen": "node scripts/regen.mjs",
     "readme:counts": "node scripts/build-readme-counts.mjs",
     "release": "pnpm build:lib && pnpm smoke:consumer --skip-build && changeset publish",
     "release:local": "node scripts/release-local.mjs",

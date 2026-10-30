@@ -13,6 +13,7 @@ import { existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import installHusky from 'husky';
+import { installMergeDriver } from './merge-generated.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const HOOKS_DIR = join(ROOT, '.git');
@@ -21,6 +22,11 @@ if (!existsSync(HOOKS_DIR)) {
   // Not a git repo (e.g. CI artifact unzip) — skip silently.
   process.exit(0);
 }
+
+// The merge driver for generated files (hds#977) lives in .git/config, which
+// git never reads from the repo. It changes no hook, so it is set even where
+// HUSKY=0 skips the hooks below.
+installMergeDriver(ROOT);
 
 // `prepare` runs on install AND on `npm publish` / `npm pack`. In CI (and any
 // environment that sets HUSKY=0 to disable git hooks — e.g. the changesets

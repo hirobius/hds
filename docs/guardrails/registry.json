@@ -1063,6 +1063,16 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "scope": "full-tree"
+    },
+    {
+      "id": "regen",
+      "description": "Rebuilds every committed generated file in dependency order (pnpm regen). As `--after-merge` from .husky/post-merge and .husky/post-rewrite it runs only when the hds-generated merge driver (scripts/merge-generated.mjs, .gitattributes) kept one side of a generated file, and never fails the merge (hds#977).",
+      "severity": "warn",
+      "gateScript": "scripts/regen.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "post-merge"
     }
   ]
 }
