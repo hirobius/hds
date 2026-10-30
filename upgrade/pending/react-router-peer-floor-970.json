@@ -1,0 +1,17 @@
+{
+  "impact": "breaking",
+  "plain": "If your app uses react-router below 7.18.2, upgrade it to 7.18.2 or later (older 7.x releases have security advisories).",
+  "steps": [
+    {
+      "id": "peer/react-router",
+      "kind": "peer",
+      "impact": "breaking",
+      "plain": "If your app uses react-router below 7.18.2, upgrade it to 7.18.2 or later (older 7.x releases have security advisories).",
+      "detect": {
+        "bareImports": ["react-router"]
+      },
+      "range": "^7.0.0",
+      "facts": ["peer-changed:react-router"]
+    }
+  ]
+}
