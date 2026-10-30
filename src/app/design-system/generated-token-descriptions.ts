@@ -22,6 +22,7 @@ export const tokenDescriptions: Record<string, string> = {
   "primitive.color.neutral.550": "Dark surface.softHover (C2).",
   "primitive.color.neutral.600": "Neutral ramp step for surfaces and text.",
   "primitive.color.neutral.700": "Neutral ramp step for surfaces and text.",
+  "primitive.color.neutral.725": "Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522).",
   "primitive.color.neutral.750": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755).",
   "primitive.color.neutral.800": "Neutral ramp step for surfaces and text.",
   "primitive.color.neutral.825": "Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755).",

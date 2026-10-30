@@ -24,6 +24,7 @@
   --primitive-color-neutral-550: #5e626a;
   --primitive-color-neutral-600: #4d525b;
   --primitive-color-neutral-700: #3b404a;
+  --primitive-color-neutral-725: #272c36;
   --primitive-color-neutral-750: #252a34;
   --primitive-color-neutral-800: #212630;
   --primitive-color-neutral-825: #1b202a;
@@ -623,7 +624,7 @@
   --semantic-color-surface-accentSubtle: var(--primitive-color-graphite-800);
   --semantic-color-surface-hover: var(--primitive-color-neutral-700);
   --semantic-color-surface-pressed: var(--primitive-color-neutral-black);
-  --semantic-color-surface-selected: var(--primitive-color-neutral-800);
+  --semantic-color-surface-selected: var(--primitive-color-neutral-725);
   --semantic-color-surface-muted: var(--primitive-color-neutral-750);
   --semantic-color-surface-sunken: var(--primitive-color-neutral-700);
   --semantic-color-surface-soft: var(--primitive-color-neutral-600);

@@ -344,6 +344,20 @@
       ]
     },
     {
+      "id": "value-changed/--semantic-color-surface-selected",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark selected fills (surface.selected: the active tab, a checked row) moved to the new neutral.725 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-selected"],
+        "cssVarWrites": ["--semantic-color-surface-selected"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-selected:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-selected:[data-theme=dark]"
+      ]
+    },
+    {
       "id": "value-changed/--semantic-color-surface-raised",
       "kind": "value-changed",
       "impact": "look",

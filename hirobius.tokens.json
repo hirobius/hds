@@ -50,6 +50,10 @@
           "$value": "#3b404a",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
+        "725": {
+          "$value": "#272c36",
+          "$description": "Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522)."
+        },
         "750": {
           "$value": "#252a34",
           "$description": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755)."
@@ -1460,7 +1464,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.neutral.200}",
-                "Dark": "{primitive.color.neutral.800}"
+                "Dark": "{primitive.color.neutral.725}"
               }
             }
           }

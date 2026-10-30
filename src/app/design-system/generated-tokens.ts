@@ -18,6 +18,7 @@ export const tokens = {
         "550": "var(--primitive-color-neutral-550)",
         "600": "var(--primitive-color-neutral-600)",
         "700": "var(--primitive-color-neutral-700)",
+        "725": "var(--primitive-color-neutral-725)",
         "750": "var(--primitive-color-neutral-750)",
         "800": "var(--primitive-color-neutral-800)",
         "825": "var(--primitive-color-neutral-825)",

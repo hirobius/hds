@@ -11,7 +11,9 @@
  * Lifting black to L 0.145 drops the dark page/raised and muted/raised steps under the
  * dark-surfaces.test.ts floors (1.2:1, 1.1:1), so two steps were added for those slots:
  * neutral.825 (dark surface.raised) and neutral.750 (dark surface.muted). Their SOURCE greys
- * were chosen to clear those floors.
+ * were chosen to clear those floors. neutral.725 (dark surface.selected) clears the 1.15:1
+ * rest-fill floor on a raised card (hover-fill.contrast.test.tsx, hds#522), which 800 no
+ * longer does once raised is 825.
  *
  * hirobius.tokens.json holds the results as hex (the contrast gate reads hex only);
  * scripts/__tests__/midnight-tint.test.mjs recomputes them from SOURCE.
@@ -47,6 +49,7 @@ export const SOURCE = {
     550: '#626262',
     600: '#525252',
     700: '#404040',
+    725: '#2c2c2c',
     750: '#2a2a2a',
     800: '#262626',
     825: '#202020',
