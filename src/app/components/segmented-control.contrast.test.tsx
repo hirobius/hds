@@ -8,11 +8,10 @@
  * token sheet: `dist/variables.css` is `src/styles/tokens.generated.css` verbatim
  * plus a banner (scripts/build-vars-css.mjs).
  */
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { describe, it, expect, beforeAll, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import { contrastRatio } from '../utils/colorUtils';
+import { color } from '../../../tests/helpers/token-sheet';
 import { SegmentedControl } from './segmented-control';
 
 beforeAll(() => {
@@ -21,29 +20,6 @@ beforeAll(() => {
 });
 
 afterEach(cleanup);
-
-const css = readFileSync(resolve(process.cwd(), 'src/styles/tokens.generated.css'), 'utf8');
-
-/** The custom-property declarations of the first block opened by `selector`. */
-function block(selector: string): Record<string, string> {
-  const start = css.indexOf(`${selector} {`);
-  if (start < 0) throw new Error(`no ${selector} block in the token sheet`);
-  const body = css.slice(start, css.indexOf('\n}', start));
-  const vars: Record<string, string> = {};
-  for (const m of body.matchAll(/^\s*(--[\w-]+):\s*([^;]+);/gm)) vars[m[1]] = m[2].trim();
-  return vars;
-}
-
-const ROOT = block(':root');
-const THEMES = { light: ROOT, dark: { ...ROOT, ...block('[data-theme="dark"]') } } as const;
-
-/** Resolve a custom property to a hex colour in a theme. */
-function color(name: string, theme: keyof typeof THEMES): string {
-  let value = THEMES[theme][name];
-  while (value?.startsWith('var(')) value = THEMES[theme][value.slice(4, -1).trim()];
-  if (!value?.startsWith('#')) throw new Error(`${name} (${theme}) does not resolve to a hex`);
-  return value;
-}
 
 /** The custom property a Tailwind arbitrary class paints, e.g. bg-[var(--x)] → --x. */
 function paintedVar(className: string, pattern: RegExp): string {
