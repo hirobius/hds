@@ -216,6 +216,36 @@ describe('PendingNote (upgrade/pending/<changeset>.json, hds#448)', () => {
     expect(paths(bad)).toContain('steps.0.done.regex.0');
   });
 
+  /** hds#955: a token step maps each old path under `hds.` to the new one. */
+  const tokenMove = () => ({
+    impact: 'none',
+    plain: 'hds.density.md is hds.semantic.space.scale.sm now.',
+    steps: [
+      {
+        id: 'deprecated/hds.density',
+        kind: 'deprecated',
+        impact: 'none',
+        plain: 'hds.density is deprecated; use hds.semantic.space.scale one step down.',
+        auto: { codemod: 'hds-token-keys', args: [] },
+        removeIn: '1.0.0',
+        tokens: { 'density.md': 'semantic.space.scale.sm' },
+      },
+    ],
+  });
+
+  it('accepts a step that maps token paths for hds-token-keys (tokens)', () => {
+    expect(parse(tokenMove()).error?.issues ?? []).toEqual([]);
+  });
+
+  it('rejects a token path that is not a dotted name, and an empty map', () => {
+    const bad = tokenMove();
+    bad.steps[0].tokens = { 'hds.density.md': 'semantic space' };
+    expect(paths(bad)).toEqual(expect.arrayContaining(['steps.0.tokens']));
+    const empty = tokenMove();
+    empty.steps[0].tokens = {};
+    expect(paths(empty)).toContain('steps.0.tokens');
+  });
+
   const cases = {
     'a note with no impact': ['impact', (n) => delete n.impact],
     'an impact other than none with no plain line': ['plain', (n) => delete n.plain],

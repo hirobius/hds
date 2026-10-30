@@ -1,0 +1,22 @@
+{
+  "impact": "none",
+  "plain": "A new hds-token-keys codemod rewrites the deprecated hds.density steps to their hds.semantic.space.scale twins, so the upgrade command moves them for you.",
+  "steps": [
+    {
+      "id": "deprecated/hds.density",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "hds.density is deprecated; the upgrade command rewrites hds.density.sm to hds.semantic.space.scale.xs (md to sm, lg to md, xl to lg, xl2 to xl), the same pixels. density.xs, xl3 and xl4 have no scale step: use hds.space.px4, px64 or px80, which do not shrink under compact density.",
+      "auto": { "codemod": "hds-token-keys", "args": [] },
+      "detect": { "regex": ["\\bhds\\.density\\b"] },
+      "removeIn": "1.0.0",
+      "tokens": {
+        "density.sm": "semantic.space.scale.xs",
+        "density.md": "semantic.space.scale.sm",
+        "density.lg": "semantic.space.scale.md",
+        "density.xl": "semantic.space.scale.lg",
+        "density.xl2": "semantic.space.scale.xl"
+      }
+    }
+  ]
+}
