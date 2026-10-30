@@ -45,14 +45,15 @@
  *     • font     → --hds-font-family / -mono / -display  (defaults below)
  */
 
-/* hds#936: Tailwind reads the shipping source under src/ and nothing else. It used to scan the
-   whole repo and keep files out one `@source not` line at a time; every test, script, fixture or
-   doc that named a class string the list missed shipped it in ./tokens.css and ./styles.css
-   (release snapshots, changelogs, upgrade notes, lint-rule tests and their fixtures).
+/* hds#936: Tailwind reads the shipping source (the .ts and .tsx files under src/) and nothing
+   else. It used to scan the whole repo and keep files out one `@source not` line at a time; every
+   test, script, fixture or doc that named a class string the list missed shipped it in ./tokens.css
+   and ./styles.css (release snapshots, changelogs, upgrade notes, lint-rule tests and their
+   fixtures).
    Tests are excluded for the same reason: they feed made-up class strings to the components. */
 @import 'tailwindcss' source(none);
 @config "../../tailwind.config.ts";
-@source "../";
+@source "../**/*.{ts,tsx}";
 @source not "../**/*.test.{ts,tsx}";
 @source not "../**/__tests__";
 

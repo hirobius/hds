@@ -178,7 +178,7 @@ describe('no important modifier in component class strings', () => {
   it('relies on theme.css keeping the release snapshots from Tailwind', () => {
     const theme = readFileSync(join(ROOT, 'src/styles/theme.css'), 'utf8');
     expect(theme).toContain("@import 'tailwindcss' source(none);");
-    expect(theme).toMatch(/^@source "\.\.\/";$/m);
+    expect(theme).toMatch(/^@source "\.\.\/\*\*\/\*\.\{ts,tsx\}";$/m);
   });
 
   it('finds no important-modified utility in src/app/components/*.tsx', () => {

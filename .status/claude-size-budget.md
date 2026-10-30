@@ -1,1 +1,1 @@
-claude/size-budget: tokens.css 24.68→22.50 kB gz, styles.css 23.91→21.73 kB gz — Tailwind scans src/ only, 136 leaked utilities dropped, 37 duplicate hand-written utilities removed (hds#936).
+claude/size-budget: tokens.css 24.68→22.55 kB gz, styles.css 23.91→21.79 kB gz — Tailwind scans src/ .ts/.tsx only, 136 leaked utilities dropped, 32 duplicate hand-written utilities removed (hds#936).

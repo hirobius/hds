@@ -324,6 +324,21 @@
     border-color: transparent;
   }
 
+  .bg-transparent {
+    background: transparent;
+  }
+  .bg-current {
+    background: currentColor;
+  }
+  .bg-\[color\:var\(--semantic-color-feedback-error\)\] {
+    background: var(--semantic-color-feedback-error);
+  }
+  .hover\:bg-\[color\:var\(--semantic-accent-hover\)\]:hover {
+    background: var(--semantic-accent-hover);
+  }
+  .active\:bg-\[color\:var\(--semantic-accent-pressed\)\]:active {
+    background: var(--semantic-accent-pressed);
+  }
   .bg-page {
     background: var(--semantic-color-surface-page);
   }
