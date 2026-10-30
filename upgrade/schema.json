@@ -956,7 +956,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, tool/string/<warning> (an HDS name in a string or comment that the ledger or manifest says is wrong), or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
@@ -1004,7 +1004,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, tool/string/<warning> (an HDS name in a string or comment that the ledger or manifest says is wrong), or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
@@ -1052,7 +1052,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, tool/string/<warning> (an HDS name in a string or comment that the ledger or manifest says is wrong), or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
@@ -1100,7 +1100,7 @@
               "id": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, or <codemod>/manual."
+                "description": "The ledger step id (0.21.0/removed/StatusDot), or a tool item: range, tool/two-copies, tool/no-history, tool/range, tool/install, tool/typecheck, tool/not-read, tool/skill, tool/vendored-preset, tool/string/<warning> (an HDS name in a string or comment that the ledger or manifest says is wrong), or <codemod>/manual."
               },
               "plain": {
                 "type": "string",
