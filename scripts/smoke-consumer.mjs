@@ -203,6 +203,10 @@ const importChecks = [
     assert.ok(Array.isArray(m.default?.configs?.recommended), 'eslint-plugin recommended config missing');
     assert.equal(typeof m.default.rules['no-raw-controls'], 'object', 'no-raw-controls rule missing');
   }],
+  // hds#466: the Tailwind preset a consumer spreads instead of copying tailwind.config.tokens.cjs.
+  [PKG + '/tailwind-preset', (m) => {
+    assert.equal(typeof m.default?.theme?.extend?.colors, 'object', 'preset theme.extend.colors missing');
+  }],
   [PKG + '/mui', (m) => {
     assert.equal(typeof m.hdsMuiThemeOptions, 'function', 'hdsMuiThemeOptions missing');
     const opts = m.hdsMuiThemeOptions();

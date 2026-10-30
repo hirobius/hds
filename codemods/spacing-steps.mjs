@@ -44,6 +44,7 @@ const EXTS = new Set([
   '.scss',
   '.less',
   '.html',
+  '.astro',
   '.vue',
   '.svelte',
   '.json',

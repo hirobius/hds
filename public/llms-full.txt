@@ -1,5 +1,7 @@
 # Hirobius Design System
 
+Version: 0.32.0
+
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## Agents Using The Package: Start Here
@@ -103,7 +105,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 45 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 46 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -141,6 +143,7 @@ The 45 components of the ratified core set: brand-neutral, composable, imported 
 - NavList (Navigation)
 - Pagination (Navigation)
 - Tabs (Navigation)
+- CommandPalette (Overlays)
 - Dialog (Overlays)
 - Menu (Overlays)
 - Popover (Overlays)
@@ -173,6 +176,7 @@ CardSource: Open an entity card (a job, a lead, a listing) with where it came fr
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
+CommandPalette: [core] Let people jump to a page or run a command from anywhere by typing, opened with ⌘K or Ctrl+K. Use instead: Combobox, Menu
 Composer: Capture a prompt or a quick note where a long paste should not flood the field. Use instead: Textarea
 Container: [core] Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
 DataTableSection: Put a heading and toolbar above a Table.
@@ -323,6 +327,7 @@ Load only what the task needs. Same text as this file (`public/llms-full.txt`), 
 - `public/llms/tokens.txt` - token rules and the quick token reference
 - `public/llms/scroll.txt` - scroll-driven section recipe
 - `public/llms/components.txt` - component inventory pointer, API pointer, props digest
+- `public/llms/upgrade.txt` - upgrade steps, removals, deprecations
 
 - `public/llms-full.txt` - the full bundle: this text + the full `DESIGN.md` + a compact props digest for every component.
 
@@ -390,6 +395,277 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 4. Use `hirobius.tokens.json` (and generated CSS vars) for styling decisions, never raw hex or ad hoc values.
 5. Run `pnpm tokens:audit` or `pnpm build` after changes that affect docs, tokens, or manifests.
 
+## Upgrading
+
+This text describes @hirobius/design-system 0.32.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
+
+Every name a release removed, moved or renamed, and what to use instead:
+
+| Old name | Use instead | Release |
+| --- | --- | --- |
+| `Hds-prefix` | Twelve component families, such as HdsAlertDialog and HdsDateInput, lost their Hds prefix before any release shipped them, so import each by its bare name (AlertDialog, DateInput). | 0.12.0 |
+| `InfoPage` | InfoPage and InfoPageProps are removed with no replacement; it was portfolio scaffolding, so delete the code that uses it. | 0.12.0 |
+| `StatTone-FieldTone` | StatProps["tone"] and FieldProps["tone"] | 0.12.0 |
+| `primitive-typography-tokens` | Six unused typography tokens are removed (--primitive-typography-size-2xs, -weight-light, -weight-semibold, -letterSpacing-tighter, -wide and -wider); replace a var() that reads one with your own value. | 0.16.0 |
+| `ActivityEvent` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityFeed` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityFeedProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityStatus` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityTone` | nothing: rewrite or delete the code | 0.20.0 |
+| `AppShell` | nothing: rewrite or delete the code | 0.20.0 |
+| `AppShellProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `AspectRatio` | Box style={{ aspectRatio: '16 / 9' }} | 0.20.0 |
+| `AspectRatioProps` | BoxProps | 0.20.0 |
+| `AssetImg` | `AssetImg` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `AssetImgProps` | `AssetImgProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `Bleed` | Box style={{ marginInline: 'calc(-1 * var(--semantic-space-scale-md))' }} | 0.20.0 |
+| `BleedProps` | BoxProps | 0.20.0 |
+| `ButtonGroup` | nothing: rewrite or delete the code | 0.20.0 |
+| `ButtonGroupProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Calendar` | nothing: rewrite or delete the code | 0.20.0 |
+| `CalendarProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Carousel` | nothing: rewrite or delete the code | 0.20.0 |
+| `CarouselProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `CaseStudyLayout` | nothing: rewrite or delete the code | 0.20.0 |
+| `CaseStudyLayoutProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Center` | Container maxWidth="content", with a Box style={{ paddingInline }} inside for the gutter | 0.20.0 |
+| `CenterProps` | ContainerProps | 0.20.0 |
+| `CinematicLink` | nothing: rewrite or delete the code | 0.20.0 |
+| `CinematicLinkProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `CircularProgress` | Progress variant="circular" | 0.20.0 |
+| `CircularProgressProps` | ProgressProps | 0.20.0 |
+| `Cluster` | Stack direction="row" wrap="wrap" align="center" | 0.20.0 |
+| `ClusterProps` | StackProps | 0.20.0 |
+| `CodeBlock` | `CodeBlock` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `CodeBlockProps` | `CodeBlockProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `CommandPalette` | nothing: rewrite or delete the code | 0.20.0 |
+| `CommandPaletteProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ComponentInstanceMatrix` | nothing: rewrite or delete the code | 0.20.0 |
+| `ContextMenu` | nothing: rewrite or delete the code | 0.20.0 |
+| `Cover` | Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }} around a Box style={{ marginBlock: 'auto' }} | 0.20.0 |
+| `CoverProps` | BoxProps | 0.20.0 |
+| `DateInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateRangeInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateRangeInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateTimeInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateTimeInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `DocLinkCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `DocLinkCardProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ErrorBoundary` | nothing: rewrite or delete the code | 0.20.0 |
+| `ErrorBoundaryProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ErrorPattern` | `ErrorPattern` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `ErrorPatternProps` | `ErrorPatternProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FieldWiring` | `FieldWiring` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FieldWiringInput` | `FieldWiringInput` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FileInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `FileInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Form` | `Form` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormField` | `FormField` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormFieldProps` | `FormFieldProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormFieldShell` | `FormFieldShell` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormFieldShellProps` | `FormFieldShellProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormProps` | `FormProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FoundationSwatch` | nothing: rewrite or delete the code | 0.20.0 |
+| `FoundationSwatchProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Frame` | Box style={{ aspectRatio: '16 / 9', overflow: 'hidden', borderRadius: hds.borderRadius.md }} | 0.20.0 |
+| `FrameProps` | BoxProps | 0.20.0 |
+| `HdsCheckbox` | Checkbox | 0.20.0 |
+| `HdsDocsShell` | nothing: rewrite or delete the code | 0.20.0 |
+| `HdsDocsShellProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `HdsRadio` | Radio | 0.20.0 |
+| `HdsSelect` | Select | 0.20.0 |
+| `HdsSlider` | Slider | 0.20.0 |
+| `HdsSystemDocLayout` | nothing: rewrite or delete the code | 0.20.0 |
+| `HdsToggle` | Toggle | 0.20.0 |
+| `HdsTooltip` | Tooltip | 0.20.0 |
+| `HeadingStack` | nothing: rewrite or delete the code | 0.20.0 |
+| `HeadingStackProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `HistoryCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `HistoryCardCommit` | nothing: rewrite or delete the code | 0.20.0 |
+| `HistoryCardProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `HoverCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `IconButton` | Button iconOnly label="…" iconLeft={<Icon icon={…} />} | 0.20.0 |
+| `IconButtonProps` | ButtonProps | 0.20.0 |
+| `InputGroup` | Input prefix / suffix | 0.20.0 |
+| `InputGroupProps` | InputProps | 0.20.0 |
+| `Lightbox` | nothing: rewrite or delete the code | 0.20.0 |
+| `LightboxProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `MultiSelector` | Combobox multiple | 0.20.0 |
+| `MultiSelectorOption` | ComboboxOption | 0.20.0 |
+| `MultiSelectorProps` | ComboboxMultipleProps | 0.20.0 |
+| `NavGroup` | nothing: rewrite or delete the code | 0.20.0 |
+| `NavGroupProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `NavItem` | nothing: rewrite or delete the code | 0.20.0 |
+| `NavProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `NotFoundPattern` | ErrorPattern displayText="404" message="Page not found" from @hirobius/design-system/patterns (hds-not-found-pattern rewrites it) | 0.20.0 |
+| `OverflowList` | nothing: rewrite or delete the code | 0.20.0 |
+| `OverflowListProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Page` | `Page` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `PageProps` | `PageProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `Reveal` | `Reveal` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `RevealAnimation` | `RevealAnimation` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `RevealProps` | `RevealProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `SelectableCard` | Card selectable selected onSelectedChange | 0.20.0 |
+| `SelectableCardProps` | CardProps | 0.20.0 |
+| `SideNav` | nothing: rewrite or delete the code | 0.20.0 |
+| `SideNavLevel` | nothing: rewrite or delete the code | 0.20.0 |
+| `SideNavProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Sketch` | nothing: rewrite or delete the code | 0.20.0 |
+| `SketchProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `StackedCardRail` | nothing: rewrite or delete the code | 0.20.0 |
+| `StackedCardRailCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `StackedCardRailProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `StatusTile` | `StatusTile` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `StatusTileProps` | `StatusTileProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `StatusTileTone` | `StatusTileTone` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `Step` | nothing: rewrite or delete the code | 0.20.0 |
+| `Stepper` | nothing: rewrite or delete the code | 0.20.0 |
+| `StepperField` | nothing: rewrite or delete the code | 0.20.0 |
+| `StepperFieldProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `StepperProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TextLockup` | nothing: rewrite or delete the code | 0.20.0 |
+| `TextLockupProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TileGrid` | Grid layout="auto-fill" minItemWidth="…" gap="medium" (hds-tile-grid rewrites it) | 0.20.0 |
+| `TileGridProps` | GridProps (minTileWidth is minItemWidth, gap 'sm' is 'medium') | 0.20.0 |
+| `TimeInput` | Input type="time" | 0.20.0 |
+| `TimeInputProps` | InputProps | 0.20.0 |
+| `ToggleButton` | Button pressed onPressedChange (variant="ghost" is variant="tertiary") | 0.20.0 |
+| `ToggleButtonProps` | ButtonProps | 0.20.0 |
+| `Token` | nothing: rewrite or delete the code | 0.20.0 |
+| `TokenProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Tokenizer` | nothing: rewrite or delete the code | 0.20.0 |
+| `TokenizerProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Toolbar` | nothing: rewrite or delete the code | 0.20.0 |
+| `ToolbarComponent` | nothing: rewrite or delete the code | 0.20.0 |
+| `TopNav` | nothing: rewrite or delete the code | 0.20.0 |
+| `TopNavProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TreeList` | nothing: rewrite or delete the code | 0.20.0 |
+| `TreeListProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TreeNode` | nothing: rewrite or delete the code | 0.20.0 |
+| `activityAvatarVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `activityToneVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `appShellVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `badgeVariants` | badgeVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `blockCodeTextVariants` | `blockCodeTextVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `blockContainerVariants` | `blockContainerVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `blockHeaderVariants` | `blockHeaderVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `blockquoteVariants` | blockquoteVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `buttonGroupVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `buttonVariants` | buttonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `cardVariants` | cardVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `carouselControlVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `chevronVariants` | `chevronVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `circularProgressVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `cmdkDescriptionVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `cmdkKindBadgeVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `cmdkRowVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `collapsibleToggleVariants` | `collapsibleToggleVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `copyButtonVariants` | `copyButtonVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `crumbLabelVariants` | crumbLabelVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `defaultActivityEvents` | nothing: rewrite or delete the code | 0.20.0 |
+| `disclosureTriggerVariants` | disclosureTriggerVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `docLinkCardVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `fieldValueVariants` | fieldValueVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `fileInputVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `hdsTimeInputVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `hdsToggleButtonVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `headingStackLevelVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `headingStackVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `inlineCodeTextVariants` | `inlineCodeTextVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `inlineCodeVariants` | inlineCodeVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `inlineWrapperVariants` | `inlineWrapperVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `inputVariants` | inputVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `kbdVariants` | kbdVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `metadataListVariants` | metadataListVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `navGroupLabelVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `navIndicatorVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `navItemVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `overflowBubbleVariants` | overflowBubbleVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `prePanelVariants` | `prePanelVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `progressTrackVariants` | progressTrackVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlDescriptionVariants` | segmentedControlDescriptionVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlFocusRingVariants` | segmentedControlFocusRingVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlIndicatorVariants` | segmentedControlIndicatorVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlItemVariants` | segmentedControlItemVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlLabelVariants` | segmentedControlLabelVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlRailVariants` | segmentedControlRailVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlWrapperVariants` | segmentedControlWrapperVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `selectableCardVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `sideNavVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `skeletonVariants` | skeletonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `spinnerVariants` | spinnerVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `statVariants` | statVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `statusDotVariants` | statusDotVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `statusListItemDotVariants` | statusListItemDotVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `stepMarkerVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `surfaceVariants` | surfaceVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tableDataCellVariants` | tableDataCellVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tableHeaderCellVariants` | tableHeaderCellVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tableSortButtonVariants` | tableSortButtonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tagButtonVariants` | tagButtonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tagPillVariants` | tagPillVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `textVariants` | textVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `textareaVariants` | textareaVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `toastIconVariants` | toastIconVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tokenLabelVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `tokenNodeInlineVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `tokenShellVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `useFieldWiring` | `useFieldWiring` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `--semantic-typography-eyebrow-text-transform` | The CSS variable --semantic-typography-eyebrow-text-transform is gone, so set text-transform: uppercase yourself where a label must stay uppercase. | 0.21.0 |
+| `StatusDot` | StatusDot and StatusDotProps are removed, so replace each <StatusDot tone size label> with <Badge dot tone size label> (BadgeProps for the type), moving any style to a wrapper element or a className first. | 0.21.0 |
+| `--primitive-color-apple-100` | --primitive-color-graphite-100 | 0.24.0 |
+| `--primitive-color-apple-200` | --primitive-color-graphite-200 | 0.24.0 |
+| `--primitive-color-apple-300` | --primitive-color-graphite-300 | 0.24.0 |
+| `--primitive-color-apple-400` | --primitive-color-graphite-400 | 0.24.0 |
+| `--primitive-color-apple-50` | --primitive-color-graphite-50 | 0.24.0 |
+| `--primitive-color-apple-500` | --primitive-color-graphite-500 (or a semantic accent token) | 0.24.0 |
+| `--primitive-color-apple-600` | --primitive-color-graphite-600 | 0.24.0 |
+| `--primitive-color-apple-700` | --primitive-color-graphite-700 | 0.24.0 |
+| `--primitive-color-apple-800` | --primitive-color-graphite-800 | 0.24.0 |
+| `--primitive-color-apple-900` | --primitive-color-graphite-900 | 0.24.0 |
+| `--primitive-color-apple-950` | --primitive-color-graphite-950 | 0.24.0 |
+| `--primitive-typography-letterSpacing-caps` | The CSS variable --primitive-typography-letterSpacing-caps and the tracking-caps class are gone because the system is sentence case, so delete them from your styles. | 0.25.0 |
+| `--hds-accent-bar` | Delete every var(--hds-accent-bar); status is shown in the content, not a coloured bar. | 0.27.0 |
+| `--leading-relaxed` | --semantic-typography-body-line-height or set your own line-height | 0.27.0 |
+| `BoardColumnTone` | Delete the BoardColumnTone import and the tone prop from every BoardColumn, and drop any var(--hds-accent-bar); status lives in the column title and count. | 0.27.0 |
+| `--component-button-secondary-border-pressed` | The secondary Button pressed border variable is gone, so delete any override of it, since the hover border now holds while pressed. | 0.28.0 |
+| `--color-blue-500` | --color-blue-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-indigo-600` | --color-indigo-600 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-purple-500` | --color-purple-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-red-500` | --color-red-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-red-700` | --color-red-700 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-slate-200` | The stray CSS variable --color-slate-200 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--color-slate-900` | The stray CSS variable --color-slate-900 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--color-stone-50` | The stray CSS variable --color-stone-50 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--container-5xl` | The stray CSS variable --container-5xl is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--ease-in-out` | --ease-in-out was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--font-serif` | The stray CSS variable --font-serif is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--tracking-wider` | The stray CSS variable --tracking-wider is no longer shipped; type tracking comes from the --semantic-typography-*-letter-spacing tokens, so use a type role instead. | 0.29.0 |
+| `hds-tag-btn` | the Tag component | 0.31.0 |
+| `hds-tag-pill` | the Tag component | 0.31.0 |
+
+## Deprecated: do not use in new code
+
+Still exported, but on the way out: do not write new code with them.
+
+- `Blockquote.size` (removed in 1.0.0): Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed.
+- `Box-sx-layout-names` (removed in 1.0.0): Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead.
+- `CardMetric` (removed in 1.0.0): Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `Divider.strong` (removed in 1.0.0): Divider's strong prop, deprecated since before 0.16.0, still works; use variant="strong" instead.
+- `InlineCode.compact` (removed in 1.0.0): InlineCode's compact prop, deprecated since before 0.16.0, still works; use density="compact" instead.
+- `MetricTile` (removed in 1.0.0): MetricTile is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `MetricTiles` (removed in 1.0.0): MetricTiles is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `Stack-gap-layout-names` (removed in 1.0.0): Stack gap names 'tight', 'normal', 'inset' and 'spacious' still work and do not warn yet, but are removed in 1.0.0, and Stack names no replacement until then.
+- `Stat` (removed in 1.0.0): Stat is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `StatusTile` (removed in 1.0.0): StatusTile still works until 1.0.0; replace it with <Card padding="item" className="border-0"><Card.Row trailing={trailing}><Card.RowTitle>{title}</Card.RowTitle> plus one <Card.RowNote> per note, and drop tone, which StatusTile never painted.
+- `Text-variants` (removed in 1.0.0): The Text variants heading1, heading2, heading3, technical, eyebrow, badge, docLede, docBody, docSmall and docCode still work but are deprecated; use title, mono, caption, body or ui instead.
+- `bg-[color:var(--semantic-color-feedback-bg-warning)]`, `border-[color:var(--semantic-color-feedback-warning)]/40`, `data-[highlighted]:text-foreground`, `data-[state=checked]:text-foreground`, `group-hover:opacity-100`, `h-3.5`, `max-w-2xl`, `p-16`, `pb-8`, `pt-1`, `sm:inline-block`, `sm:text-4xl`, `text-[color:var(--semantic-color-feedback-warning)]`, `text-muted-foreground/70`, `transition-[transform,opacity]`, `w-3.5` (removed in 1.0.0): Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind.
+- `hds.density` (removed in 1.0.0): hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs.
+- `typeStyles-aliases` (removed in 1.0.0): The hds.typeStyles keys from before the ramp (h1 to h3, heading1 to heading3, eyebrow, badge, micro, technical, small, label and the rest) and hds.semantic.typography label, labelDescriptive and labelTechnical still work but are deprecated; use display, title, body, ui, caption or mono instead.
+
+Deprecated design tokens are not listed: the `hds/no-deprecated-token` lint rule flags each use and names its replacement.
+
 ## Key Files
 
 - `public/hds-manifest.json` - canonical machine-readable system inventory, metadata, and token snapshot
@@ -418,7 +694,7 @@ Hirobius is a clean, structured visual language that bridges digital precision a
 <!-- auto:start:colors -->
 **One accent — one neutral system.**
 
-- **Accent** (`#4A4146`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent** (`#19161A`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
 - **Accent theme — Cobalt** (`#112DE8`): opt-in swap of the accent tokens only. Set `data-accent="cobalt"` on `<html>` (source `accents/cobalt/tokens.json`); graphite stays the default. Still one accent per screen.
 - **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.
@@ -438,7 +714,7 @@ HDS ships three typefaces — each with a distinct role:
 - **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `400` mono, `500` medium, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `700` bold.
+Weights declared: `400` regular, `400` mono, `500` medium, `600` semibold, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `600` semibold, `700` bold.
 
 ### Type ramp
 
@@ -595,6 +871,10 @@ A tag input is a creatable Combobox (`<Combobox multiple creatable>`): chips inl
 
 When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
 
+### Touch size (hds#750)
+
+On a coarse pointer (any phone or tablet) or a viewport under 640px, small controls lift to `semantic.size.touchTarget` (`--semantic-size-touchTarget`, 44px): sm Button (icon-only sm in both axes), Tabs trigger, SegmentedControl option, Tag and its dismiss X, Disclosure trigger, Input clear, Combobox chips, Checkbox/Radio/Toggle rows and Pagination. It is on by default, with no prop; a fine pointer on a wide viewport keeps desktop density. A custom control opts in with the `hds-touch-row` class (height) or `hds-touch-target` (height and width). Hosts can delete their own touch-size overrides. `pnpm check:docs-touch-targets` measures the docs demos on a 390px phone and a 1024px touch tablet.
+
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
 Every HDS card surface must conform to this anatomy exactly. No creative interpretation is permitted on any of these properties.
@@ -678,7 +958,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (482 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (479 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -826,24 +1106,24 @@ Card — a raised surface with slot anatomy: header, body, footer, and a row for
   - variant: 'default' | 'accent' = default
 
 ### CardBody
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardDescription
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardFacts
 Card.Facts — a wrapping caption row of icon + label facts, as a list.
   - items: CardFact[]
 
 ### CardFooter
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardHeader
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
   - metadata: ReactNode
 
 ### CardProgress
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
   - label: ReactNode
   - max: number = 100
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -866,7 +1146,7 @@ Card.Source — the entity's origin on one row: avatar, name and time.
   - time: ReactNode
 
 ### CardTitle
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### Checkbox
 Checkbox — custom-drawn checkbox with check / indeterminate glyph.
@@ -903,6 +1183,18 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
   - value: string | readonly string[] | null
+
+### CommandPalette
+CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain…
+  - className: string
+  - emptyMessage: string = No results
+  - hotkey: boolean = true
+  - items: readonly CommandPaletteItem[]
+  - label: string = Command palette
+  - onOpenChange: (open: boolean) => void
+  - onSelect: (item: CommandPaletteItem) => void
+  - open: boolean
+  - placeholder: string = Type a command or search…
 
 ### Composer
 Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer t…
@@ -959,11 +1251,11 @@ Tagged per-export, not on the file block: this module exports ten components and
   - open: boolean
 
 ### DialogClose
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogContent
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
   - container: HTMLElement | null
   - forceMount: true
@@ -976,32 +1268,32 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
   - onPointerDownOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)
 
 ### DialogDescription
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogFooter
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
 
 ### DialogHeader
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
 
 ### DialogOverlay
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
   - forceMount: true
 
 ### DialogPortal
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - children: React.ReactNode
   - container: Element | DocumentFragment | null
   - forceMount: true
 
 ### DialogTitle
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogTrigger
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### Disclosure
@@ -1380,7 +1672,7 @@ The tab set itself. Tagged here rather than in the file block because TabsList a
   - value: string
 
 ### TabsContent
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below …
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - forceMount: true
   - value: string
@@ -1392,7 +1684,7 @@ The tab strip. When tabs scroll out of view it fades the hidden edge (`data-over
   - loop: boolean
 
 ### TabsTrigger
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below …
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - value: string
 

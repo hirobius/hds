@@ -68,10 +68,70 @@ describe('checkUpgradeCss', () => {
       stepFor('removed/--hds-space', 'breaking', ['css-var-removed:--hds-space']),
     );
     result = checkUpgradeCss(root);
-    expect(rules(result)).toEqual(['bump-too-small']);
+    expect(rules(result)).toEqual(['bump-too-small', 'css-tenant-without-step']);
     expect(messages(result)).toContain('minor');
 
     changeset(root, 'drop-space', 'minor');
+    // The pilot tenant overrode --hds-space: its users need the tenant step too.
+    result = checkUpgradeCss(root);
+    expect(rules(result)).toEqual(['css-tenant-without-step']);
+    expect(messages(result)).toContain('tenant/pilot');
+
+    const removed = stepFor('removed/--hds-space', 'breaking', ['css-var-removed:--hds-space']);
+    removed.steps.push(stepFor('tenant/pilot', 'look', ['css-var-removed:--hds-space']).steps[0]);
+    note(root, 'drop-space', removed);
+    expect(checkUpgradeCss(root).violations).toEqual([]);
+  });
+
+  it('covers a change under [data-brand=pilot] with the tenant step alone', () => {
+    const root = cssRepo();
+    buildCss(root, RELEASED_CSS.replace('--hds-space:6px', '--hds-space:8px'));
+    const fact = 'css-var-changed:--hds-space:[data-brand=pilot],[data-tenant=pilot]';
+    expect(checkUpgradeCss(root).violations.map((v) => v.fact)).toEqual([fact]);
+    changeset(root, 'pilot', 'patch');
+    note(root, 'pilot', stepFor('value-changed/--hds-space', 'look', [fact]));
+    expect(rules(checkUpgradeCss(root))).toEqual(['css-tenant-without-step']);
+    note(root, 'pilot', stepFor('tenant/pilot', 'look', [fact]));
+    expect(checkUpgradeCss(root).violations).toEqual([]);
+  });
+
+  // hds#466: a consumer that compiles its own Tailwind with the preset loses the utility.
+  it('fails a removed Tailwind preset key with no step, and as breaking under a patch', () => {
+    const root = cssRepo();
+    const release = JSON.parse(readFileSync(join(root, 'docs/api/releases/0.20.0.json'), 'utf8'));
+    release.css.tailwindPreset = ['colors.card.DEFAULT', 'spacing.4'];
+    write(root, 'docs/api/releases/0.20.0.json', formatJson(release));
+    editPkg(root, (pkg) => {
+      pkg.exports['./tailwind-preset'] = './tailwind.config.tokens.cjs';
+    });
+    write(
+      root,
+      'tailwind.config.tokens.cjs',
+      "module.exports = { theme: { extend: { colors: { card: { DEFAULT: 'var(--card)' } }, spacing: { 4: '1rem' } } } };\n",
+    );
+    buildCss(root, RELEASED_CSS);
+    expect(checkUpgradeCss(root).violations).toEqual([]);
+
+    write(
+      root,
+      'tailwind.config.tokens.cjs',
+      "module.exports = { theme: { extend: { spacing: { 4: '1rem' } } } };\n",
+    );
+    buildCss(root, RELEASED_CSS);
+    let result = checkUpgradeCss(root);
+    expect(rules(result)).toEqual(['css-fact-without-step']);
+    expect(result.violations[0].fact).toBe('preset-key-removed:colors.card.DEFAULT');
+    expect(messages(result)).toContain('pnpm upgrade:note');
+
+    changeset(root, 'drop-card', 'patch');
+    const fact = 'preset-key-removed:colors.card.DEFAULT';
+    note(
+      root,
+      'drop-card',
+      stepFor('removed/tailwind-preset/colors.card.DEFAULT', 'breaking', [fact]),
+    );
+    expect(rules(checkUpgradeCss(root))).toEqual(['bump-too-small']);
+    changeset(root, 'drop-card', 'minor');
     expect(checkUpgradeCss(root).violations).toEqual([]);
   });
 
@@ -214,7 +274,7 @@ describe('checkUpgradeCss: a release does not ship what it removed', () => {
     const result = checkUpgradeCss(root);
     expect(rules(result)).toContain('removed-still-shipped');
     expect(messages(result)).toContain(`--${name}`);
-    expect(messages(result)).toContain('UPGRADING.md');
+    expect(messages(result)).toContain('@source not');
   });
 
   it('passes once the stylesheet no longer carries them', () => {
@@ -226,9 +286,10 @@ describe('checkUpgradeCss: a release does not ship what it removed', () => {
 });
 
 describe('theme.css keeps release prose out of the Tailwind scan', () => {
-  it('excludes UPGRADING.md like CHANGELOG.md', () => {
+  it('scans only src/, so UPGRADING.md and CHANGELOG.md are never read (hds#936)', () => {
     const theme = readFileSync(join(REPO, 'src/styles/theme.css'), 'utf8');
-    expect(theme).toContain('@source not "../../UPGRADING.md";');
+    expect(theme).toContain("@import 'tailwindcss' source(none);");
+    expect(theme).toMatch(/^@source "\.\.\/\*\*\/\*\.\{ts,tsx\}";$/m);
   });
 });
 

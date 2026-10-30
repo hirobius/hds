@@ -29,8 +29,7 @@ ruleTester.run('no-deprecated-token', rule, {
           messageId: 'deprecated',
           data: {
             text: '--semantic-space-layout-tight',
-            note: 'hds#206 — use semantic.space.scale.sm',
-            removeIn: '1.0.0',
+            note: 'hds#206, removed in 1.0.0 — use semantic.space.scale.sm',
             fix: ' Use --semantic-space-scale-sm.',
           },
         },
@@ -51,8 +50,7 @@ ruleTester.run('no-deprecated-token', rule, {
           messageId: 'deprecated',
           data: {
             text: 'p-layout-tight',
-            note: 'hds#206 — use semantic.space.scale.sm',
-            removeIn: '1.0.0',
+            note: 'hds#206, removed in 1.0.0 — use semantic.space.scale.sm',
             fix: ' Use p-scale-sm.',
           },
         },
@@ -70,8 +68,7 @@ ruleTester.run('no-deprecated-token', rule, {
           messageId: 'deprecated',
           data: {
             text: '--semantic-typography-h1-font-size',
-            note: 'hds#483 — use semantic.typography.title',
-            removeIn: '1.0.0',
+            note: 'hds#483, removed in 1.0.0 — use semantic.typography.title',
             fix: ' Use --semantic-typography-title-font-size.',
           },
         },

@@ -1,5 +1,7 @@
 # Hirobius Design System - tokens slice
 
+Version: 0.32.0
+
 See `public/llms.txt` for the index. Generated from the same sections as llms-full.txt.
 
 ## Tokens (Primary Source Of Truth)

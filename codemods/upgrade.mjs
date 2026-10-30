@@ -27,10 +27,12 @@
  *      code still uses (a hand bump that skipped it): runs their codemods, bumps the dependency range (keeping
  *      its operator), and adds back a dependency the package stopped
  *      installing that the code still imports;
- *   4. installs with the project's package manager and runs its typecheck
+ *   4. when the project has a .claude/skills/ folder, writes the hds-consumer
+ *      skill this package ships to .claude/skills/hds-consumer/ (hds#463);
+ *   5. installs with the project's package manager and runs its typecheck
  *      script (or tsc --noEmit); a lockfile still short of the target after
  *      that is Do by hand, so the command never says done before an install;
- *   5. prints four lists: Fixed for you, Looks different (only what the code
+ *   6. prints four lists: Fixed for you, Looks different (only what the code
  *      uses), Coming next (deprecations, with the release that removes them)
  *      and Do by hand (what the code still uses and has not changed yet).
  *
@@ -66,8 +68,16 @@ import {
   nodeModulesVersion,
   readRootLockfile,
 } from './lib/project.mjs';
+import {
+  PRESET_EXPORT,
+  VENDORED_PRESET,
+  loadPreset,
+  presetDiff,
+  themeKeys,
+} from './lib/preset.mjs';
 import { comingNextSteps, listOf, loadRecord } from './lib/record.mjs';
 import { MAX_BYTES, collectFiles, fileMentions, matchDetect } from './lib/scan.mjs';
+import { componentSpecs, findStringWarnings } from './lib/strings.mjs';
 import { bumpRange, compareVersions, isVersion } from './lib/semver.mjs';
 import { hasCodemod, runCodemod } from './registry.mjs';
 
@@ -80,6 +90,11 @@ const readJson = (file) => {
 };
 
 const PKG_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+/** The consumer skill this package ships (hds#463), and the version its frontmatter names. */
+const SKILL_NAME = 'hds-consumer';
+const SKILL_FILE = `skills/${SKILL_NAME}/SKILL.md`;
+const skillVersion = (text) => /^\s+hds-version: "([^"]+)"$/m.exec(text)?.[1] ?? null;
 
 export const USAGE = `usage: npx ${HDS_PACKAGE}@latest upgrade [flags]
 
@@ -95,6 +110,42 @@ export const USAGE = `usage: npx ${HDS_PACKAGE}@latest upgrade [flags]
   --help             print this
 
 Exit 0: done. 1: work left. 2: refused (nothing was changed) or an error.`;
+
+/** The theme keys of the preset the package at `pkgDir` exports, or null when it has none. */
+function installedPresetKeys(pkgDir) {
+  const target = readJson(join(pkgDir, 'package.json'))?.exports?.[PRESET_EXPORT];
+  if (typeof target !== 'string') return null;
+  try {
+    return themeKeys(loadPreset(join(pkgDir, target)));
+  } catch {
+    return null;
+  }
+}
+
+const someOf = (keys) =>
+  `${keys.slice(0, 5).join(', ')}${keys.length > 5 ? `, and ${keys.length - 5} more` : ''}`;
+
+/**
+ * The Do by hand item for a vendored copy of the preset (hds#466) whose keys
+ * differ from the installed one, or null when it matches. A copy goes stale
+ * silently: its utilities and lint vocabulary stop matching HDS.
+ */
+function vendoredPresetItem(file, rel, installed) {
+  const fix = `import ${HDS_PACKAGE}/tailwind-preset instead of keeping a copy`;
+  let keys;
+  try {
+    keys = themeKeys(loadPreset(file));
+  } catch (error) {
+    return `${rel} looks like a copy of the HDS Tailwind preset but could not be read (${String(error.message).split('\n')[0]}), so ${fix}.`;
+  }
+  const { missing, extra } = presetDiff(keys, installed);
+  if (missing.length === 0 && extra.length === 0) return null;
+  const parts = [
+    missing.length > 0 ? `it lacks ${someOf(missing)}` : null,
+    extra.length > 0 ? `it has ${someOf(extra)}, which HDS no longer does` : null,
+  ].filter(Boolean);
+  return `${rel} is a copy of the HDS Tailwind preset that has drifted from the installed one (${parts.join('; ')}), so ${fix}.`;
+}
 
 const LISTS = ['fixedForYou', 'looksDifferent', 'comingNext', 'doByHand'];
 const HEADINGS = {
@@ -372,6 +423,8 @@ const WHY = {
  */
 export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map() } = {}) {
   const record = loadRecord(pkgDir);
+  const allSteps = record.ledgers.flatMap((l) => l.steps ?? []);
+  const components = componentSpecs(pkgDir);
   const report = createReport(record, options);
   const known = record.ledgers.map((l) => l.version);
 
@@ -489,6 +542,7 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
 
   // ── 2. each importer: codemods, range, dependencies, lists
   const changed = new Set();
+  const presetKeys = installedPresetKeys(pkgDir);
   for (const [i, importer] of importers.entries()) {
     const { from } = versions[i];
     const dir = importer.dir;
@@ -582,12 +636,13 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
     for (const name of codemods) {
       let res;
       try {
-        res = await runCodemod(
-          name,
-          overlay
+        res = await runCodemod(name, {
+          ...(overlay
             ? { root: overlay, write: true, skip: [] }
-            : { root: importer.abs, write: apply, skip: importer.nested },
-        );
+            : { root: importer.abs, write: apply, skip: importer.nested }),
+          // A ledger-driven codemod (hds-prop-map) takes its rules from these.
+          steps: steps.filter((s) => s.auto?.codemod === name),
+        });
       } catch (error) {
         addItem(report, 'doByHand', {
           id: `${name}/failed`,
@@ -620,6 +675,21 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
         rmSync(overlay, { recursive: true, force: true });
       }
     } else if (apply && codemods.length > 0) now = scan();
+
+    // HDS names in strings and comments (prompts, snippets): checked, never rewritten.
+    for (const f of now) {
+      if (f.kind !== 'code') continue;
+      for (const w of findStringWarnings(f.text, { steps: allSteps, components })) {
+        addItem(report, 'doByHand', {
+          id: `tool/string/${w.text}`,
+          plain: `A string or comment names ${w.text.replace(/\.$/, '')} (line ${w.line}), so check it by hand: it may describe another library.`,
+          importer: dir,
+          files: rel([f.rel]),
+          impact: 'none',
+          blocking: false,
+        });
+      }
+    }
 
     for (const step of steps) {
       if (step.kind === 'deprecated') continue; // Coming next, below
@@ -666,6 +736,8 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
         continue;
       }
       if (done || (hits !== null && hits.length === 0)) continue;
+      // Additive with no detector: nothing to do unless the code opts in.
+      if (hits === null && step.impact === 'additive') continue;
       const list = listOf(step) === 'looksDifferent' ? 'looksDifferent' : 'doByHand';
       if (list === 'looksDifferent' && hits === null) continue;
       addItem(report, list, {
@@ -688,6 +760,22 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
         importer: dir,
         files: rel(hits),
         removeIn: step.removeIn,
+      });
+    }
+
+    for (const file of presetKeys ? now.filter((f) => VENDORED_PRESET.test(f.rel)) : []) {
+      const plain = vendoredPresetItem(
+        join(importer.abs, file.rel),
+        under(dir, file.rel),
+        presetKeys,
+      );
+      if (!plain) continue;
+      addItem(report, 'doByHand', {
+        id: 'tool/vendored-preset',
+        plain,
+        importer: dir,
+        files: [under(dir, file.rel)],
+        blocking: false,
       });
     }
 
@@ -736,6 +824,37 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
         plain: `The lockfile holds two copies of HDS (${lock.versions.join(' and ')}): something other than your package.json pulls in ${extra.join(' and ')}, so find it with \`${WHY[manager] ?? WHY.npm}\` and update or dedupe it.`,
         files: [lockfile],
         impact: 'breaking',
+      });
+    }
+  }
+
+  // ── 3b. the consumer skill (hds#463): a project that keeps agent skills in
+  // .claude/skills/ gets the copy this package ships, so its agents read the
+  // text for the version installed. Only a copy that describes the target.
+  const skillDir = join(root, '.claude', 'skills');
+  const shipped = join(pkgDir, SKILL_FILE);
+  if (existsSync(skillDir) && statSync(skillDir).isDirectory() && existsSync(shipped)) {
+    const text = readFileSync(shipped, 'utf8');
+    const rel = `.claude/skills/${SKILL_NAME}/SKILL.md`;
+    const dest = join(root, rel);
+    const shippedFor = skillVersion(text);
+    if (shippedFor !== target) {
+      addItem(report, 'doByHand', {
+        id: 'tool/skill',
+        plain: `This copy of ${HDS_PACKAGE} ships the ${SKILL_NAME} skill for ${shippedFor ?? 'another version'}, not ${target}, so ${rel} was left as is: run npx ${HDS_PACKAGE}@${target} upgrade --to ${target} to write the skill for ${target}.`,
+        files: [rel],
+        blocking: false,
+      });
+    } else if (!existsSync(dest) || readFileSync(dest, 'utf8') !== text) {
+      if (apply) {
+        mkdirSync(dirname(dest), { recursive: true });
+        writeFileAtomic(dest, text);
+        changed.add(rel);
+      }
+      addItem(report, 'fixedForYou', {
+        id: 'tool/skill',
+        plain: `Wrote the ${SKILL_NAME} skill for ${target} to ${rel}, so agents in this project read the version installed.`,
+        files: [rel],
       });
     }
   }

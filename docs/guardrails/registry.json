@@ -155,7 +155,7 @@
     },
     {
       "id": "check-deprecations",
-      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc on the public surface (src/app/components, src/app/layouts, src/index.ts, src/patterns.ts and every package.json#exports JS entry with its re-exports) must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version). Runs in pretest since hds#389 D6.",
+      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc on the public surface (src/app/components, src/app/layouts, src/index.ts, src/patterns.ts and every package.json#exports JS entry with its re-exports) must carry a future @removeIn <semver>, and every $deprecated token in hirobius.tokens.json must say \"removed in <semver>\" (hds#469); fails when a deprecation goes past-due (removeIn <= current package version). Runs in pretest since hds#389 D6.",
       "severity": "warn",
       "gateScript": "scripts/check-deprecations.mjs",
       "fixturePath": "fixtures/check-deprecations",
@@ -647,11 +647,32 @@
       "firingChannel": "on-demand"
     },
     {
+      "id": "check-docs-touch-targets",
+      "description": "Loads the built docs-site pages of the small controls (sm Button, Tabs and SegmentedControl triggers, Tag, Disclosure trigger, Input clear) on a 390x844 touch phone and a 1024x768 touch tablet (only `pointer: coarse` lifts it there) and fails when a matched control is under --semantic-size-touchTarget (44px) in either axis, or a selector matches nothing (hds#750). Targets: scripts/docs-touch-targets.json. Needs `pnpm docs:publish` first. Fixtures: fixtures/check-docs-touch-targets/{passing,violating}.example.d with targets.json, passed with --dir and --targets; tests/check-docs-touch-targets.test.ts proves the gate bites. CI wiring is a human-only follow-up (workflow edit).",
+      "severity": "error",
+      "gateScript": "scripts/check-docs-touch-targets.mjs",
+      "fixturePath": "fixtures/check-docs-touch-targets",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand"
+    },
+    {
       "id": "check-llms-txt",
       "description": "Keeps public/llms.txt (and the package-root llms.txt mirror) a conformant llms.txt index (hds#592): an H1, a one-line '> ' summary, every link absolute and under the one LLMS_BASE_URL in scripts/lib/llms-index.mjs, pointing at a file that exists and ships in package.json#files, and no timestamp. The body (voice, recipes, card anatomy) lives in public/llms-full.txt. Runs in pretest. Fixtures: fixtures/check-llms-txt/{passing,violating}.example.txt, a file passed through FIXTURE_FILE.",
       "severity": "error",
       "gateScript": "scripts/check-llms-txt.mjs",
       "fixturePath": "fixtures/check-llms-txt",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-version-stamps",
+      "description": "Fails when an agent doc does not name package.json's version (hds#463): the Version: line of llms.txt, public/llms.txt, public/llms-full.txt and every public/llms/*.txt slice, metadata.hds-version in skills/hds-consumer/SKILL.md, and packageVersion in public/hds-manifest.json. They ship in the tarball as committed, so drift here is a tarball that lies about its version. pnpm changeset:version regenerates them; --root checks another tree, such as an unpacked tarball. Runs in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-version-stamps.mjs",
+      "fixturePath": null,
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pnpm-meta",
@@ -691,8 +712,8 @@
     },
     {
       "id": "check-ref-forwarding",
-      "description": "Verifies that HDS components rendering native form controls forward their ref to the underlying DOM element.",
-      "severity": "warn",
+      "description": "Verifies that HDS components rendering native form controls forward their ref to the underlying DOM element. Runs in pretest since hds#467, so pre-push and CI fail a form control that drops its ref (it used to fire only from check:fast, check:full and check:refs).",
+      "severity": "error",
       "gateScript": "scripts/check-ref-forwarding.mjs",
       "fixturePath": "fixtures/check-ref-forwarding",
       "owner": "Adrian",
@@ -1042,6 +1063,16 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "scope": "full-tree"
+    },
+    {
+      "id": "regen",
+      "description": "Rebuilds every committed generated file in dependency order (pnpm regen). As `--after-merge` from .husky/post-merge, post-rewrite and post-commit it runs only when the hds-generated merge driver (scripts/merge-generated.mjs, .gitattributes) kept one side of a generated file, and never fails the merge (hds#977).",
+      "severity": "warn",
+      "gateScript": "scripts/regen.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "post-merge"
     }
   ]
 }

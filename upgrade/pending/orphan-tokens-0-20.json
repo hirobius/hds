@@ -1,0 +1,127 @@
+{
+  "impact": "breaking",
+  "plain": "Nine tokens left over from the components removed in 0.20.0 are gone; replace any var() that still reads one with the token named in its step.",
+  "steps": [
+    {
+      "id": "removed/--component-lightbox-backdrop-blur",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-lightbox-backdrop-blur) and hds.effect.blur.lightboxBackdrop with var(--primitive-blur-16), the same 16px.",
+      "detect": {
+        "cssVars": ["--component-lightbox-backdrop-blur"],
+        "cssVarWrites": ["--component-lightbox-backdrop-blur"]
+      },
+      "facts": ["css-var-removed:--component-lightbox-backdrop-blur"]
+    },
+    {
+      "id": "removed/--component-nav-bg",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-bg) with var(--semantic-color-surface-page), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": ["--component-nav-bg"],
+        "cssVarWrites": ["--component-nav-bg"]
+      },
+      "facts": ["css-var-removed:--component-nav-bg"]
+    },
+    {
+      "id": "removed/--component-nav-bgActive",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-bgActive) with var(--semantic-accent-subtle), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": ["--component-nav-bgActive"],
+        "cssVarWrites": ["--component-nav-bgActive"]
+      },
+      "facts": ["css-var-removed:--component-nav-bgActive"]
+    },
+    {
+      "id": "removed/--component-nav-borderActive",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-borderActive) with var(--semantic-color-surface-accent), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": ["--component-nav-borderActive"],
+        "cssVarWrites": ["--component-nav-borderActive"]
+      },
+      "facts": ["css-var-removed:--component-nav-borderActive"]
+    },
+    {
+      "id": "removed/--component-nav-height",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-height) with var(--primitive-space-16), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": ["--component-nav-height"],
+        "cssVarWrites": ["--component-nav-height"]
+      },
+      "facts": ["css-var-removed:--component-nav-height"]
+    },
+    {
+      "id": "removed/--component-nav-paddingX",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-paddingX) with var(--primitive-space-6), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": ["--component-nav-paddingX"],
+        "cssVarWrites": ["--component-nav-paddingX"]
+      },
+      "facts": ["css-var-removed:--component-nav-paddingX"]
+    },
+    {
+      "id": "removed/--component-nav-text",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-text) with var(--semantic-color-content-secondary), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": ["--component-nav-text"],
+        "cssVarWrites": ["--component-nav-text"]
+      },
+      "facts": ["css-var-removed:--component-nav-text"]
+    },
+    {
+      "id": "removed/--component-nav-textActive",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-textActive) with var(--semantic-color-content-primary), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": ["--component-nav-textActive"],
+        "cssVarWrites": ["--component-nav-textActive"]
+      },
+      "facts": ["css-var-removed:--component-nav-textActive"]
+    },
+    {
+      "id": "removed/--semantic-space-sidebar-railWidth",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--semantic-space-sidebar-railWidth) and the sidebar-railWidth Tailwind key with var(--primitive-size-width-280), the same 280px.",
+      "detect": {
+        "cssVars": ["--semantic-space-sidebar-railWidth"],
+        "cssVarWrites": ["--semantic-space-sidebar-railWidth"]
+      },
+      "facts": ["css-var-removed:--semantic-space-sidebar-railWidth"]
+    },
+    {
+      "id": "tenant/accent-pair-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-pair-demo brand (data-brand=\"accent-pair-demo\") no longer get its nav active colors and its accent fill is now near-black/near-white, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-bgActive",
+        "css-var-removed:--component-nav-borderActive",
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accent::root",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]"
+      ]
+    }
+  ]
+}

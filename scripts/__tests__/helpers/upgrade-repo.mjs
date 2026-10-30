@@ -11,6 +11,7 @@ import { dirname, join } from 'node:path';
 import { CONTRACT_FILE, buildCssContract, formatContract } from '../../lib/css-contract.mjs';
 import { formatJson } from '../../upgrade/format.mjs';
 import { writePropsBaseline } from '../../upgrade/props.mjs';
+import { writeTypesBaseline } from '../../upgrade/types.mjs';
 import { snapshotFromSource } from '../../upgrade/snapshot.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
@@ -169,6 +170,40 @@ export function propsRepo(api = RELEASED_API) {
   const root = releasedRepo();
   write(root, 'src/button.tsx', buttonSource());
   writeComponentApi(root, api);
+  recordRelease(root);
+  return root;
+}
+
+/**
+ * The source of typesRepo()'s 0.20.0 release (hds#467): a compound Menu, a
+ * hook and a tokens object, each re-exported from the root.
+ */
+export const RELEASED_TYPES_SOURCE = {
+  'src/index.ts': [
+    "export * from './button';",
+    "export * from './callout';",
+    "export * from './menu';",
+    "export * from './hooks';",
+    "export * from './tokens';",
+    '',
+  ].join('\n'),
+  'src/menu.tsx': [
+    'function MenuRoot() { return null; }',
+    'function MenuItem() { return null; }',
+    'function MenuGroup() { return null; }',
+    'export const Menu = Object.assign(MenuRoot, { Item: MenuItem, Group: MenuGroup });',
+    '',
+  ].join('\n'),
+  'src/hooks.ts': 'export function useCount(start: number): number { return start; }\n',
+  'src/tokens.ts':
+    "export const hds = { color: { content: { primary: '#000', secondary: '#666' } }, space: { sm: '4px' } };\n",
+};
+
+/** releasedRepo() whose 0.20.0 snapshot carries the types section of RELEASED_TYPES_SOURCE. */
+export function typesRepo() {
+  const root = releasedRepo();
+  for (const [rel, text] of Object.entries(RELEASED_TYPES_SOURCE)) write(root, rel, text);
+  writeTypesBaseline(root);
   recordRelease(root);
   return root;
 }

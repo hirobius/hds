@@ -93,20 +93,20 @@ const config = {
         'subgrid-hairline': 'var(--semantic-space-subgrid-hairline)',
         'subgrid-xs': 'var(--semantic-space-subgrid-xs)',
         'subgrid-gap': 'var(--semantic-space-subgrid-gap)',
-        // @deprecated hds#206 — use semantic.space.scale.xs @removeIn 1.0.0
+        // @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xs @removeIn 1.0.0
         'component-gap': 'var(--semantic-space-component-gap)',
         'component-medium': 'var(--semantic-space-component-medium)',
-        // @deprecated hds#206 — use semantic.space.surface.padding @removeIn 1.0.0
+        // @deprecated hds#206, removed in 1.0.0 — use semantic.space.surface.padding @removeIn 1.0.0
         'component-padding': 'var(--semantic-space-component-padding)',
-        // @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0
+        // @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm @removeIn 1.0.0
         'layout-tight': 'var(--semantic-space-layout-tight)',
-        // @deprecated hds#206 — use semantic.space.scale.md @removeIn 1.0.0
+        // @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.md @removeIn 1.0.0
         'layout-normal': 'var(--semantic-space-layout-normal)',
-        // @deprecated hds#206 — use semantic.space.region.gutter @removeIn 1.0.0
+        // @deprecated hds#206, removed in 1.0.0 — use semantic.space.region.gutter @removeIn 1.0.0
         'layout-gutter': 'var(--semantic-space-layout-gutter)',
-        // @deprecated hds#206 — use semantic.space.scale.lg @removeIn 1.0.0
+        // @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.lg @removeIn 1.0.0
         'layout-inset': 'var(--semantic-space-layout-inset)',
-        // @deprecated hds#206 — use semantic.space.scale.xl @removeIn 1.0.0
+        // @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xl @removeIn 1.0.0
         'layout-spacious': 'var(--semantic-space-layout-spacious)',
         'section-stack': 'var(--semantic-space-section-stack)',
         'section-inset': 'var(--semantic-space-section-inset)',
@@ -116,8 +116,6 @@ const config = {
         'sidebar-gap': 'var(--semantic-space-sidebar-gap)',
         'sidebar-sectionGap': 'var(--semantic-space-sidebar-sectionGap)',
         'sidebar-railPadding': 'var(--semantic-space-sidebar-railPadding)',
-        // @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280 @removeIn 1.0.0
-        'sidebar-railWidth': 'var(--semantic-space-sidebar-railWidth)',
         px1: 'var(--primitive-space-px1)',
         px2: 'var(--primitive-space-px2)',
         px6: 'var(--primitive-space-px6)',

@@ -40,6 +40,7 @@
     "TimelineItem:no-demo",
     "TimelineItem:no-figma-link",
     "TokenField:no-page",
+    "CommandPalette:no-figma-link",
     "Sheet:no-page",
     "Sheet:no-figma-link",
     "SheetAction:no-page",

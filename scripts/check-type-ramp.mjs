@@ -86,6 +86,8 @@ const EXEMPT_FILES = new Set([
   'src/app/design-system/tokens.ts',
   'src/app/components/text.tsx',
   'src/styles/tokens.generated.css',
+  // hds#449: keeps already-shipped utilities emitted; it adds none.
+  'src/styles/utility-safelist.generated.css',
   'src/styles/static.css',
   'src/styles/tenants.css',
   'src/styles/fonts.css',

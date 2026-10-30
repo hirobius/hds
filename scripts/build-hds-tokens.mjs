@@ -23,20 +23,18 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-// Re-use the existing build-tokens utilities so token resolution stays
+// Re-use the token lib modules build-tokens.mjs uses so token resolution stays
 // in sync with the main tokens.css build.
+import { walkTokens, resolveAlias } from './lib/token-tree.mjs';
 import {
-  walkTokens,
   pathToCSSVar,
   valueToCSS,
-  resolveAlias,
   expandTypography,
   expandMotion,
   expandElevation,
   TYPO_PROPS,
-  buildTSTree,
-  serialize,
-} from './build-tokens.mjs';
+} from './lib/token-emit/css.mjs';
+import { buildTSTree, serialize } from './lib/token-emit/ts.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

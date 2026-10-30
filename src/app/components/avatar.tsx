@@ -22,8 +22,9 @@ import { Icon } from './icon';
 // ── Variants ───────────────────────────────────────────────────────────────────
 // The root is not overflow-hidden, so a status dot can sit on the rim; the face
 // span inside clips the image to the circle.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface.sunken has no Tailwind-theme utility; var()-based so still token-driven (bg-muted was 1.04:1 on a raised Card, hds#522)
 const avatarVariants = /* @__PURE__ */ cva(
-  'relative inline-flex shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground select-none',
+  'relative inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--semantic-color-surface-sunken)] text-muted-foreground select-none',
   {
     variants: {
       size: {

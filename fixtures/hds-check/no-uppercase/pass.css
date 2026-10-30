@@ -1,0 +1,7 @@
+/* Sentence case only; never text-transform: uppercase. */
+.eyebrow {
+  text-transform: none;
+}
+.legacy {
+  text-transform: uppercase; /* uppercase-ok: brand wordmark, approved */
+}

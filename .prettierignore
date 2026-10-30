@@ -43,6 +43,7 @@ fixtures/check-figma-fallbacks/**/snapshot.json
 # and each --check compares bytes, so Prettier must not reflow them.
 docs/api/releases/
 docs/api/props-baseline.json
+docs/api/types-baseline.json
 upgrade/releases/
 upgrade/schema.json
 # Compiled from the ledgers by scripts/upgrade/compile.mjs (hds#451), whose

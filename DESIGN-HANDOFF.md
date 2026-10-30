@@ -14,7 +14,7 @@
 
 | Attribute         | Value                                                        |
 | ----------------- | ------------------------------------------------------------ |
-| Brand accent      | `#4A4146` (`semantic.accent.rest`)                           |
+| Brand accent      | `#19161A` (`semantic.accent.rest`)                           |
 | Font              | Plus Jakarta Sans (self-hosted) + IBM Plex Mono (monospace)  |
 | Neutral scale     | True monochromatic — equal RGB channels, no warm/cool tint   |
 | Spacing base      | 4px                                                          |
@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 530 tokens, aliases, and TS refs in one shot.
+Checks all 527 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -119,17 +119,17 @@ Checks all 530 tokens, aliases, and TS refs in one shot.
 | `primitive.color.green.400`                         | `#34d399`                   | Specific value within the green range at a defined lightness step.                                                            |
 | `primitive.color.green.700`                         | `#047857`                   | Specific value within the green range at a defined lightness step.                                                            |
 | `primitive.color.green.950`                         | `#022c22`                   | Specific value within the green range at a defined lightness step.                                                            |
-| `primitive.color.graphite.50`                       | `#f5f4f4`                   | Graphite accent tint — faintest step.                                                                                         |
+| `primitive.color.graphite.50`                       | `#f5f4f4`                   | Graphite accent tint — faintest step; dark rest fill.                                                                         |
 | `primitive.color.graphite.100`                      | `#e9e7e8`                   | Graphite accent — very light warm tint.                                                                                       |
-| `primitive.color.graphite.200`                      | `#cbc6c9`                   | Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill.                                     |
+| `primitive.color.graphite.200`                      | `#cbc6c9`                   | Graphite accent — light warm-grey.                                                                                            |
 | `primitive.color.graphite.300`                      | `#b2abae`                   | Graphite accent — soft mid-light step; dark-mode hover/link.                                                                  |
 | `primitive.color.graphite.400`                      | `#8b8488`                   | Graphite accent — mid warm-grey step.                                                                                         |
 | `primitive.color.graphite.500`                      | `#655e62`                   | Graphite accent — mid step.                                                                                                   |
 | `primitive.color.graphite.600`                      | `#544d51`                   | Graphite accent — mid-dark step.                                                                                              |
-| `primitive.color.graphite.700`                      | `#4a4146`                   | Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA).                |
+| `primitive.color.graphite.700`                      | `#4a4146`                   | Graphite accent — warm charcoal; light-mode accent text.                                                                      |
 | `primitive.color.graphite.800`                      | `#352e32`                   | Graphite accent — deep step; light-mode hover.                                                                                |
 | `primitive.color.graphite.900`                      | `#2a2428`                   | Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.                                          |
-| `primitive.color.graphite.950`                      | `#19161a`                   | Graphite accent — near-black warm substrate.                                                                                  |
+| `primitive.color.graphite.950`                      | `#19161a`                   | Graphite accent — near-black; light rest fill.                                                                                |
 | `primitive.color.cobalt.50`                         | `#eef0fe`                   | Cobalt accent (opt-in, data-accent="cobalt") — faintest step; selected and subtle accent background.                          |
 | `primitive.color.cobalt.100`                        | `#dce1fd`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 100.                                                                 |
 | `primitive.color.cobalt.200`                        | `#b4bbf4`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 200.                                                                 |
@@ -198,9 +198,9 @@ Checks all 530 tokens, aliases, and TS refs in one shot.
 
 | Token                               | Light                            | Dark                             | Role                                                                                                                                |
 | ----------------------------------- | -------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.accent.rest`              | `{primitive.color.graphite.700}` | `{primitive.color.graphite.200}` | Default accent fill for interactive elements at rest                                                                                |
-| `semantic.accent.hover`             | `{primitive.color.graphite.800}` | `{primitive.color.graphite.100}` | Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).               |
-| `semantic.accent.pressed`           | `{primitive.color.graphite.900}` | `{primitive.color.graphite.50}`  | Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).            |
+| `semantic.accent.rest`              | `{primitive.color.graphite.950}` | `{primitive.color.graphite.50}`  | Accent fill at rest                                                                                                                 |
+| `semantic.accent.hover`             | `{primitive.color.graphite.800}` | `{primitive.color.graphite.100}` | Accent fill on hover, one step from rest (graphite.800 / 100).                                                                      |
+| `semantic.accent.pressed`           | `{primitive.color.graphite.900}` | `{primitive.color.graphite.200}` | Accent fill on press (graphite.900 / 200).                                                                                          |
 | `semantic.accent.inactive`          | `{primitive.color.neutral.400}`  | `{primitive.color.neutral.600}`  | Accent fill for inactive or unselected accent elements.                                                                             |
 | `semantic.accent.disabled`          | `{primitive.color.neutral.300}`  | `{primitive.color.neutral.700}`  | Accent fill for disabled accent elements.                                                                                           |
 | `semantic.accent.content`           | `{primitive.color.graphite.700}` | `{primitive.color.graphite.300}` | Accent-intent text/icon color on neutral surfaces (graphite)                                                                        |
@@ -227,7 +227,7 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.surface.floating`       | {primitive.color.neutral.white} | {primitive.color.neutral.800}   | Overlay fill (menus, popovers, listboxes, toasts, dialogs). Pair with a border.default hairline to separate from surface.muted.             |
 | `semantic.color.surface.scrim`          | {primitive.color.neutral.900}   | {primitive.color.neutral.black} | Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.                                         |
 | `semantic.color.surface.inverse`        | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Inverted background for contrast sections                                                                                                   |
-| `semantic.color.surface.accent`         | {primitive.color.graphite.700}  | {primitive.color.graphite.200}  | Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.                                   |
+| `semantic.color.surface.accent`         | {primitive.color.graphite.950}  | {primitive.color.graphite.50}   | Accent fill, warm graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.                                  |
 | `semantic.color.surface.accentSubtle`   | {primitive.color.graphite.50}   | {primitive.color.graphite.800}  | Faint accent tint for hover states or highlights.                                                                                           |
 | `semantic.color.surface.hover`          | {primitive.color.neutral.100}   | {primitive.color.neutral.700}   | Background for a hovered interactive surface (menu items, chips, tertiary buttons).                                                         |
 | `semantic.color.surface.pressed`        | {primitive.color.neutral.200}   | {primitive.color.neutral.black} | Background for an actively pressed interactive surface.                                                                                     |
@@ -409,7 +409,6 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `semantic.space.sidebar.gap`         | `16px`                      | 16px vertical spacing between items in sidebar and TOC stacks.                                                                                                         |
 | `semantic.space.sidebar.sectionGap`  | `12px`                      | 12px spacing between sidebar sections and grouped rail blocks.                                                                                                         |
 | `semantic.space.sidebar.railPadding` | `20px`                      | 20px outer padding for sidebar and TOC rails.                                                                                                                          |
-| `semantic.space.sidebar.railWidth`   | `280px`                     | Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).                                                    |
 
 <!-- auto:end:semantic-space -->
 
@@ -433,8 +432,11 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `primitive.size.22`              | `22px`  | 22px size step.                            |
 | `primitive.size.24`              | `24px`  | 24px size step.                            |
 | `primitive.size.32`              | `32px`  | 32px size step.                            |
+| `primitive.size.36`              | `36px`  | 36px size step.                            |
 | `primitive.size.40`              | `40px`  | 40px size step.                            |
+| `primitive.size.44`              | `44px`  | 44px size step.                            |
 | `primitive.size.48`              | `48px`  | 48px size step.                            |
+| `primitive.size.52`              | `52px`  | 52px size step.                            |
 | `primitive.size.64`              | `64px`  | 64px size step.                            |
 | `primitive.size.80`              | `80px`  | 80px size step.                            |
 | `primitive.size.96`              | `96px`  | 96px size step.                            |
@@ -505,16 +507,16 @@ Or via `useTheme().setDensity('compact')`
 
 ### Primitive motion base
 
-| Token                         | Value                          | Use                                                                    |
-| ----------------------------- | ------------------------------ | ---------------------------------------------------------------------- |
-| `primitive.duration.instant`  | `100ms`                        | Immediate state changes and rapid dismissals                           |
-| `primitive.duration.short`    | `150ms`                        | Productive micro-interactions                                          |
-| `primitive.duration.medium`   | `250ms`                        | Expressive entrances and teaching moments                              |
-| `primitive.duration.long`     | `400ms`                        | Spatial movement and page travel                                       |
-| `primitive.easing.emphasized` | `cubic-bezier(0.4, 0, 0.2, 1)` | Cubic bezier with balanced input and output tangents.                  |
-| `primitive.easing.decelerate` | `cubic-bezier(0, 0, 0.2, 1)`   | Cubic bezier with steep initial gain and constrained tail velocity.    |
-| `primitive.easing.accelerate` | `cubic-bezier(0.4, 0, 1, 1)`   | Cubic bezier with restrained initial gain and steep terminal velocity. |
-| `primitive.easing.elastic`    | `spring(300, 20, 1)`           | Spring response defined by stiffness, damping, and mass parameters.    |
+| Token                         | Value                                                                                              | Use                                                                    |
+| ----------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `primitive.duration.instant`  | `100ms`                                                                                            | Immediate state changes and rapid dismissals                           |
+| `primitive.duration.short`    | `150ms`                                                                                            | Productive micro-interactions                                          |
+| `primitive.duration.medium`   | `250ms`                                                                                            | Expressive entrances and teaching moments                              |
+| `primitive.duration.long`     | `400ms`                                                                                            | Spatial movement and page travel                                       |
+| `primitive.easing.emphasized` | `cubic-bezier(0.4, 0, 0.2, 1)`                                                                     | Cubic bezier with balanced input and output tangents.                  |
+| `primitive.easing.decelerate` | `cubic-bezier(0, 0, 0.2, 1)`                                                                       | Cubic bezier with steep initial gain and constrained tail velocity.    |
+| `primitive.easing.accelerate` | `cubic-bezier(0.4, 0, 1, 1)`                                                                       | Cubic bezier with restrained initial gain and steep terminal velocity. |
+| `primitive.easing.elastic`    | `linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)` | Spring response defined by stiffness, damping, and mass parameters.    |
 
 ### Semantic motion intents
 
@@ -620,7 +622,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 
 <!-- auto:start:agent-constraints -->
 
-- **One accent color:** `#4A4146` (`semantic.accent.rest`) only — no other hues
+- **One accent color:** `#19161A` (`semantic.accent.rest`) only — no other hues
 - **Body / UI typeface:** Plus Jakarta Sans — use Sora Bold (700) for display and title headings and IBM Plex Mono for code; no other faces
 - **Action radius:** `8px` for interactive controls; `12px` containers (`rounded-lg`, one step above the action radius)
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale

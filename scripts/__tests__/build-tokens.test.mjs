@@ -6,31 +6,33 @@ import { tmpdir } from 'os';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { transform } from 'lightningcss';
+import { buildManifest } from '../build-tokens.mjs';
+import { resolveAlias, walkTokens } from '../lib/token-tree.mjs';
+import { validateTokens } from '../lib/token-validate.mjs';
 import {
   pathToCSSVar,
   aliasToCSSVar,
-  resolveAlias,
   colorToCSS,
   dimensionToCSS,
   durationToCSS,
   cubicBezierToCSS,
   fontFamilyToCSS,
-  walkTokens,
-  indexDeprecatedAliases,
   valueToCSS,
-  serialize,
   shadowToCSS,
   expandElevation,
   ELEVATION_SLOTS,
-  validateTokens,
-  buildTailwindThemeExtend,
+  buildCSSSection,
+  isCssEasing,
+  EASING_TYPES,
+} from '../lib/token-emit/css.mjs';
+import { serialize, buildDeprecationNotes, buildCSSVarDts } from '../lib/token-emit/ts.mjs';
+import { buildTailwindThemeExtend } from '../lib/token-emit/tailwind.mjs';
+import {
+  indexDeprecatedAliases,
   validateTenantOverlay,
   buildTenantCSS,
-  buildManifest,
-  buildCSSSection,
-  buildDeprecationNotes,
-  buildCSSVarDts,
-} from '../build-tokens.mjs';
+} from '../lib/token-emit/tenant.mjs';
+import { readTokenSource } from '../lib/token-source.mjs';
 
 // ── pathToCSSVar ──────────────────────────────────────────────────────────────
 
@@ -248,7 +250,7 @@ describe('deprecated tokens in the build outputs', () => {
     path: ['semantic', 'space', 'layout', 'tight'],
     type: 'dimension',
     value: '{semantic.space.scale.sm}',
-    deprecated: 'hds#206 — use semantic.space.scale.sm',
+    deprecated: 'hds#206, removed in 1.0.0 — use semantic.space.scale.sm',
   };
   const notes = buildDeprecationNotes([
     dep,
@@ -259,21 +261,21 @@ describe('deprecated tokens in the build outputs', () => {
     const { rootLines } = buildCSSSection([dep], 'Semantic');
     const i = rootLines.findIndex((l) => l.includes('--semantic-space-layout-tight:'));
     expect(rootLines[i - 1]).toBe(
-      '  /* @deprecated hds#206 — use semantic.space.scale.sm (removed in 1.0.0) */',
+      '  /* @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm */',
     );
   });
 
   it('the TS tree tags the leaf @deprecated with @removeIn', () => {
     const out = serialize({ semantic: { space: { layout: { tight: 'var(--x)' } } } }, 1, notes);
     expect(out).toContain(
-      '/** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */\n        tight: "var(--x)"',
+      '/** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm @removeIn 1.0.0 */\n        tight: "var(--x)"',
     );
   });
 
   it('the CSSProperties augmentation tags the var @deprecated', () => {
     const dts = buildCSSVarDts(['--semantic-space-layout-tight', '--semantic-x'], notes);
     expect(dts).toContain(
-      "    /** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */\n    '--semantic-space-layout-tight'?: string | undefined;",
+      "    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm @removeIn 1.0.0 */\n    '--semantic-space-layout-tight'?: string | undefined;",
     );
     expect(dts).toContain("\n    '--semantic-x'?: string | undefined;");
     expect(dts).not.toMatch(/@deprecated[^\n]*\n {4}'--semantic-x'/);
@@ -1254,5 +1256,78 @@ describe('buildManifest', () => {
 
   it('keeps no health block in the committed public/hds-manifest.json', () => {
     expect(readJson('public/hds-manifest.json')).not.toHaveProperty('health');
+  });
+});
+
+// ── Easing tokens must be valid CSS (hds#784) ─────────────────────────────────
+
+describe('isCssEasing', () => {
+  it.each([
+    'linear',
+    'ease',
+    'ease-in-out',
+    'step-end',
+    'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    'steps(4, jump-end)',
+    'linear(0, 0.25 10%, 1.1, 1)',
+  ])('accepts %s', (v) => expect(isCssEasing(v)).toBe(true));
+
+  it.each([
+    'spring(300, 20, 1)',
+    'cubic-bezier(1.2, 0, 0.5, 1)',
+    'cubic-bezier(0, 0, 1)',
+    'linear()',
+    'bounce',
+  ])('rejects %s', (v) => expect(isCssEasing(v)).toBe(false));
+});
+
+describe('spring easing', () => {
+  const spring = { type: 'spring', stiffness: 300, damping: 20, mass: 1 };
+  const stops = (css) => css.slice('linear('.length, -1).split(',').map(Number);
+
+  it('emits a linear() curve, not the invalid spring() function', () => {
+    for (const type of ['spring', 'motionEasing']) {
+      const css = valueToCSS(spring, type, false);
+      expect(css).toMatch(/^linear\(/);
+      expect(isCssEasing(css)).toBe(true);
+    }
+  });
+
+  it('still ends at 1 for a spring that never settles', () => {
+    const css = valueToCSS(
+      { type: 'spring', stiffness: 300, damping: 0, mass: 1 },
+      'spring',
+      false,
+    );
+    expect(isCssEasing(css)).toBe(true);
+    expect(stops(css).at(-1)).toBe(1);
+  });
+
+  it('starts at 0, settles at 1 and overshoots once, about 11%', () => {
+    const s = stops(valueToCSS(spring, 'spring', false));
+    expect(s[0]).toBe(0);
+    expect(s.at(-1)).toBe(1);
+    expect(Math.max(...s)).toBeGreaterThan(1.09);
+    expect(Math.max(...s)).toBeLessThan(1.13);
+  });
+
+  it('fails validation for an easing that is not CSS (V6)', () => {
+    const raw = {
+      primitive: { easing: { $type: 'cubicBezier', bad: { $value: [1.5, 0, 0.5, 1] } } },
+    };
+    expect(validateTokens(raw).some((e) => e.startsWith('V6 [primitive.easing.bad]'))).toBe(true);
+  });
+
+  it('emits valid CSS for every easing token in hirobius.tokens.json', () => {
+    const repo = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+    const raw = readTokenSource(join(repo, 'hirobius.tokens.json'));
+    const easing = [...walkTokens(raw)].filter((t) => EASING_TYPES.includes(t.type));
+    expect(easing.length).toBeGreaterThan(0);
+    for (const t of easing) {
+      expect([t.path.join('.'), isCssEasing(valueToCSS(t.value, t.type, false, raw))]).toEqual([
+        t.path.join('.'),
+        true,
+      ]);
+    }
   });
 });

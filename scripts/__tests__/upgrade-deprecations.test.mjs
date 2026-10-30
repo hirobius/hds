@@ -5,7 +5,7 @@
  * finds a use of it and whose removeIn is its `@removeIn`. So UPGRADING.md's
  * Coming next and upgrade/index.json `deprecated` (which the upgrade command
  * reads) never miss one, the way they missed Divider `strong` and
- * InlineCode `compact`, deprecated before the 0.16.0 floor.
+ * InlineCode `compact`, deprecated before their releases had ledgers.
  *
  * A use is written the way a consumer writes it: `hds.semantic.space.
  * component.padding` for a token object key, `<Divider strong` for a prop,

@@ -46,7 +46,9 @@
  * scripts/lib/gate-output.mjs into another repo, add docs/state-surfaces.json,
  * and run it. A referenced path that .gitignore covers counts as present (build
  * output). Optional registry keys: `ignoreReferences` (path prefixes to skip
- * outright), `alwaysOn` (files checked for derived facts) and
+ * outright), `alwaysOn` (files checked for derived facts), `gatedFacts`
+ * ([{ path, line, check }]: an alwaysOn line matching the `line` regex that the
+ * `check` command keeps true is not a derived fact, hds#463) and
  * `alsoScan` (markdown files scanned even when unregistered; default README, CLAUDE, CONTRIBUTING,
  * AGENTS) and `registerAll` (directories whose markdown must all be registered).
  *
@@ -464,6 +466,28 @@ export function checkStateSurfaces({
   // Always-on files (every session reads them first) hold rules, read order and
   // pointers only: a version, count, issue list or dated state is derived, so it
   // is stated live elsewhere and goes stale here.
+  // gatedFacts (hds#463): a line a named gate keeps true, such as the package
+  // version stamp in llms.txt (check-version-stamps), cannot go stale, so it is
+  // exempt. Only that line pattern, only in that file.
+  const gated = [];
+  for (const g of reg.gatedFacts ?? []) {
+    const label = `gatedFacts ${g?.path ?? '(no path)'}`;
+    if (
+      typeof g?.path !== 'string' ||
+      typeof g?.line !== 'string' ||
+      typeof g?.check !== 'string'
+    ) {
+      add(registry, 'REGISTRY_INVALID', `${label}: needs "path", "line" (a regex) and "check".`);
+      continue;
+    }
+    const problem = checkProblem(root, g.check);
+    if (problem) {
+      add(registry, 'REGISTRY_INVALID', `${label}: ${problem}`);
+      continue;
+    }
+    gated.push({ path: g.path, line: new RegExp(g.line) });
+  }
+  const isGated = (file, raw) => gated.some((g) => g.path === file && g.line.test(raw));
   for (const file of reg.alwaysOn ?? []) {
     if (!existsSync(join(root, file))) {
       add(
@@ -473,7 +497,10 @@ export function checkStateSurfaces({
       );
       continue;
     }
-    proseLines(readFileSync(join(root, file), 'utf8')).forEach((line, i) => {
+    const text = readFileSync(join(root, file), 'utf8');
+    const raw = text.split('\n');
+    proseLines(text).forEach((line, i) => {
+      if (isGated(file, raw[i])) return;
       for (const f of derivedFacts(line)) {
         add(
           file,

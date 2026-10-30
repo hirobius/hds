@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "On a touch tablet, small controls (sm Button, Tabs, SegmentedControl, Tag, Disclosure, Input clear) now grow to 44px: re-check dense toolbars there, and delete any host CSS that raised them yourself."
+}

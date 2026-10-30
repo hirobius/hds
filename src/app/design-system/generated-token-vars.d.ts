@@ -68,19 +68,19 @@ declare module 'react' {
     '--primitive-color-cobalt-700'?: string | undefined;
     '--primitive-color-cobalt-800'?: string | undefined;
     '--primitive-color-cobalt-900'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-50'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-100'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-200'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-300'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-400'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-600'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-800'?: string | undefined;
     '--primitive-color-mauve-50'?: string | undefined;
     '--primitive-color-mauve-100'?: string | undefined;
@@ -174,6 +174,7 @@ declare module 'react' {
     '--primitive-typography-size-code'?: string | undefined;
     '--primitive-typography-weight-regular'?: string | undefined;
     '--primitive-typography-weight-medium'?: string | undefined;
+    '--primitive-typography-weight-semibold'?: string | undefined;
     '--primitive-typography-weight-bold'?: string | undefined;
     '--primitive-typography-weight-display'?: string | undefined;
     '--primitive-typography-weight-mono'?: string | undefined;
@@ -209,8 +210,11 @@ declare module 'react' {
     '--primitive-size-22'?: string | undefined;
     '--primitive-size-24'?: string | undefined;
     '--primitive-size-32'?: string | undefined;
+    '--primitive-size-36'?: string | undefined;
     '--primitive-size-40'?: string | undefined;
+    '--primitive-size-44'?: string | undefined;
     '--primitive-size-48'?: string | undefined;
+    '--primitive-size-52'?: string | undefined;
     '--primitive-size-64'?: string | undefined;
     '--primitive-size-80'?: string | undefined;
     '--primitive-size-96'?: string | undefined;
@@ -269,7 +273,7 @@ declare module 'react' {
     '--semantic-color-content-danger'?: string | undefined;
     '--semantic-color-border-default'?: string | undefined;
     '--semantic-color-border-interactive'?: string | undefined;
-    /** @deprecated border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) @removeIn 1.0.0 */
+    /** @deprecated border consolidation 2026-10-12, removed in 1.0.0 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) @removeIn 1.0.0 */
     '--semantic-color-border-subdued'?: string | undefined;
     '--semantic-color-border-subtle'?: string | undefined;
     '--semantic-color-border-strong'?: string | undefined;
@@ -305,20 +309,20 @@ declare module 'react' {
     '--semantic-space-subgrid-hairline'?: string | undefined;
     '--semantic-space-subgrid-xs'?: string | undefined;
     '--semantic-space-subgrid-gap'?: string | undefined;
-    /** @deprecated hds#206 — use semantic.space.scale.xs @removeIn 1.0.0 */
+    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xs @removeIn 1.0.0 */
     '--semantic-space-component-gap'?: string | undefined;
     '--semantic-space-component-medium'?: string | undefined;
-    /** @deprecated hds#206 — use semantic.space.surface.padding @removeIn 1.0.0 */
+    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.surface.padding @removeIn 1.0.0 */
     '--semantic-space-component-padding'?: string | undefined;
-    /** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */
+    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm @removeIn 1.0.0 */
     '--semantic-space-layout-tight'?: string | undefined;
-    /** @deprecated hds#206 — use semantic.space.scale.md @removeIn 1.0.0 */
+    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.md @removeIn 1.0.0 */
     '--semantic-space-layout-normal'?: string | undefined;
-    /** @deprecated hds#206 — use semantic.space.region.gutter @removeIn 1.0.0 */
+    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.region.gutter @removeIn 1.0.0 */
     '--semantic-space-layout-gutter'?: string | undefined;
-    /** @deprecated hds#206 — use semantic.space.scale.lg @removeIn 1.0.0 */
+    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.lg @removeIn 1.0.0 */
     '--semantic-space-layout-inset'?: string | undefined;
-    /** @deprecated hds#206 — use semantic.space.scale.xl @removeIn 1.0.0 */
+    /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xl @removeIn 1.0.0 */
     '--semantic-space-layout-spacious'?: string | undefined;
     '--semantic-space-section-stack'?: string | undefined;
     '--semantic-space-section-inset'?: string | undefined;
@@ -328,8 +332,6 @@ declare module 'react' {
     '--semantic-space-sidebar-gap'?: string | undefined;
     '--semantic-space-sidebar-sectionGap'?: string | undefined;
     '--semantic-space-sidebar-railPadding'?: string | undefined;
-    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use primitive.size.width.280 @removeIn 1.0.0 */
-    '--semantic-space-sidebar-railWidth'?: string | undefined;
     '--semantic-layout-width-content'?: string | undefined;
     '--semantic-layout-width-max'?: string | undefined;
     '--semantic-layout-container-maxWidth'?: string | undefined;
@@ -378,45 +380,45 @@ declare module 'react' {
     '--semantic-typography-mono-letter-spacing'?: string | undefined;
     '--semantic-typography-mono-line-height'?: string | undefined;
     '--semantic-typography-mono-max-width'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-font-family'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-font-size'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-font-weight'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-letter-spacing'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-line-height'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-font-family'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-font-size'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-font-weight'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-letter-spacing'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-line-height'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-font-family'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-font-size'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-font-weight'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-letter-spacing'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-line-height'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-font-family'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-font-size'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-font-weight'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-letter-spacing'?: string | undefined;
-    /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-line-height'?: string | undefined;
     '--semantic-typography-lineHeight-none'?: string | undefined;
     '--semantic-docs-space-section'?: string | undefined;
@@ -432,13 +434,13 @@ declare module 'react' {
     '--semantic-accent-content'?: string | undefined;
     '--semantic-accent-contentHover'?: string | undefined;
     '--semantic-accent-subtle'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--semantic-accent-delight-base'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--semantic-accent-delight-deep'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--semantic-accent-delight-pale'?: string | undefined;
-    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--semantic-accent-delight-onDelight'?: string | undefined;
     '--semantic-radius-action'?: string | undefined;
     '--semantic-radius-control'?: string | undefined;
@@ -473,18 +475,12 @@ declare module 'react' {
     '--semantic-size-icon-md'?: string | undefined;
     '--semantic-size-icon-lg'?: string | undefined;
     '--semantic-size-avatar'?: string | undefined;
+    '--semantic-size-touchTarget'?: string | undefined;
     '--semantic-size-tile'?: string | undefined;
     '--semantic-size-row-compact'?: string | undefined;
     '--semantic-size-row-comfortable'?: string | undefined;
     '--semantic-zIndex-control'?: string | undefined;
     '--semantic-zIndex-sticky'?: string | undefined;
-    '--component-nav-bg'?: string | undefined;
-    '--component-nav-bgActive'?: string | undefined;
-    '--component-nav-borderActive'?: string | undefined;
-    '--component-nav-text'?: string | undefined;
-    '--component-nav-textActive'?: string | undefined;
-    '--component-nav-height'?: string | undefined;
-    '--component-nav-paddingX'?: string | undefined;
     '--component-nav-paddingY'?: string | undefined;
     '--component-tag-background'?: string | undefined;
     '--component-tag-text'?: string | undefined;
@@ -503,9 +499,9 @@ declare module 'react' {
     '--component-tag-activeHover'?: string | undefined;
     '--component-badge-fontSize'?: string | undefined;
     '--component-badge-fontWeight'?: string | undefined;
-    /** @deprecated hds#595 — use component.badge.<tone>.text (one per tone) @removeIn 1.0.0 */
+    /** @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.text (one per tone) @removeIn 1.0.0 */
     '--component-badge-text'?: string | undefined;
-    /** @deprecated hds#595 — use component.badge.<tone>.bg (one per tone) @removeIn 1.0.0 */
+    /** @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) @removeIn 1.0.0 */
     '--component-badge-bg'?: string | undefined;
     '--component-badge-neutral-bg'?: string | undefined;
     '--component-badge-neutral-text'?: string | undefined;
@@ -532,6 +528,7 @@ declare module 'react' {
     '--component-button-radius'?: string | undefined;
     '--component-button-paddingX'?: string | undefined;
     '--component-button-paddingY'?: string | undefined;
+    '--component-button-fontWeight'?: string | undefined;
     '--component-button-size-sm-paddingX'?: string | undefined;
     '--component-button-size-sm-paddingY'?: string | undefined;
     '--component-button-size-sm-fontSize'?: string | undefined;
@@ -555,10 +552,10 @@ declare module 'react' {
     '--component-button-secondary-bg-rest'?: string | undefined;
     '--component-button-secondary-bg-hover'?: string | undefined;
     '--component-button-secondary-bg-pressed'?: string | undefined;
-    /** @deprecated hds#891 soft surfaces: secondary Button has no border @removeIn 1.0.0 */
+    /** @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 @removeIn 1.0.0 */
     '--component-button-secondary-border-rest'?: string | undefined;
     '--component-button-secondary-border-hover'?: string | undefined;
-    /** @deprecated hds#891 soft surfaces: secondary Button has no border @removeIn 1.0.0 */
+    /** @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 @removeIn 1.0.0 */
     '--component-button-secondary-border-disabled'?: string | undefined;
     '--component-button-secondary-text'?: string | undefined;
     '--component-button-tertiary-bg-hover'?: string | undefined;
@@ -576,7 +573,6 @@ declare module 'react' {
     '--component-card-padding'?: string | undefined;
     '--component-card-gap'?: string | undefined;
     '--component-inlineCode-bg'?: string | undefined;
-    '--component-lightbox-backdrop-blur'?: string | undefined;
     '--role-background'?: string | undefined;
     '--role-foreground'?: string | undefined;
     '--role-card'?: string | undefined;
