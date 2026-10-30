@@ -42,13 +42,19 @@ describe('demoDataAttributes', () => {
     expect(
       demoDataAttributes([
         'svg aria-hidden="true" data-hds-icon',
-        '  span data-tone="x data-fake" data-active',
+        '  span data-tone="x data-fake y" data-active',
       ]),
     ).toEqual(['data-active', 'data-tone']);
   });
 });
 
 describe('sourceDataAttributes', () => {
+  it('skips comments', () => {
+    expect(sourceDataAttributes('/* data-x= */ // data-y: z\n<a data-z={1} />')).toEqual([
+      'data-z',
+    ]);
+  });
+
   it('reads JSX attributes, object keys and dataset writes', () => {
     expect(
       sourceDataAttributes(
@@ -114,10 +120,10 @@ describe('the repo', () => {
   it('declares only what the demos render, and every rendered public data-* attribute', () => {
     const repoBaseline = readJson('docs/baselines/dom-a11y.json');
     const repoSources = Object.fromEntries(
-      Object.keys(repoBaseline).map((name) => [
-        name,
-        readFileSync(join(REPO, specs[name].filePath), 'utf8'),
-      ]),
+      Object.keys(repoBaseline).map((name) => {
+        expect(specs[name]?.filePath, `${name} has a demo but no manifest spec`).toBeTruthy();
+        return [name, readFileSync(join(REPO, specs[name].filePath), 'utf8')];
+      }),
     );
     const violations = checkPublicDataAttributes({
       declared: PUBLIC_DATA_ATTRIBUTES,

@@ -89,7 +89,9 @@ const sorted = (values) => [...new Set(values)].sort((a, b) => (a < b ? -1 : a >
 export function demoDataAttributes(domLines) {
   const names = [];
   for (const line of domLines) {
-    for (const m of line.matchAll(/(?:^|\s)(data-[a-z0-9-]+)(?==|\s|$)/g)) names.push(m[1]);
+    // Values are JSON strings: drop them so a value cannot read as a name.
+    const bare = line.replace(/="(?:[^"\\]|\\.)*"/g, '=');
+    for (const m of bare.matchAll(/(?:^|\s)(data-[a-z0-9-]+)(?==|\s|$)/g)) names.push(m[1]);
   }
   return sorted(names.filter(isPublicDataAttribute));
 }
@@ -98,6 +100,8 @@ const kebab = (camel) => camel.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 
 /** The data-* attributes a source file writes, sorted, public or not. */
 export function sourceDataAttributes(source) {
+  // Comments can name attributes the code never writes.
+  source = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/[^\n]*/g, '$1');
   const names = [];
   for (const m of source.matchAll(/['"]?(data-[a-z][a-z0-9-]*)['"]?\s*[=:]/g)) names.push(m[1]);
   for (const m of source.matchAll(/dataset(?:\.([A-Za-z]\w*)|\[['"]([A-Za-z]\w*)['"]\])/g)) {
