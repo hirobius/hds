@@ -41,7 +41,8 @@ export function loadRecord(pkgDir, { detects = readDetects(pkgDir) } = {}) {
 /**
  * upgrade/detects.json: detectors for released steps whose frozen note had
  * none (hds#934), by step id. Without one such a step reached every consumer,
- * since nothing could tell whether the code uses it.
+ * since nothing could tell whether the code uses it. Only the command reads
+ * it: compile.mjs reads a step's detect for deprecations alone, and none is one.
  * @param {string} root the package root
  * @returns {Map<string, any>}
  */

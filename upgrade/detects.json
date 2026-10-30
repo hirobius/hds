@@ -8,7 +8,7 @@
       "regex": ["@hirobius/design-system/eslint-plugin"]
     },
     "0.27.0/tenant/data-accent-cobalt": {
-      "regex": ["data-accent"]
+      "regex": ["data-accent=[\"']?cobalt"]
     }
   }
 }

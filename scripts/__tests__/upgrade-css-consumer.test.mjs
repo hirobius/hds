@@ -70,6 +70,13 @@ describe('folio-shaped CSS-only consumer, 0.16.0 to current', () => {
   });
 });
 
+posix('leaves out the cobalt accent for another data-accent value', () => {
+  const { report } = check(
+    folio({ 'index.html': '<html data-accent="lime"><body></body></html>\n' }),
+  );
+  expect(ids(report.doByHand)).not.toContain('0.27.0/tenant/data-accent-cobalt');
+});
+
 describe('upgrade/detects.json', () => {
   const detects = readDetects(REPO);
   const steps = new Map(
@@ -81,6 +88,8 @@ describe('upgrade/detects.json', () => {
     for (const [id, detect] of detects) {
       expect(steps.has(id), id).toBe(true);
       expect(steps.get(id).detect, id).toBeUndefined();
+      // compile.mjs reads detect for deprecations, never this file.
+      expect(steps.get(id).kind, id).not.toBe('deprecated');
       expect(() => Detect.parse(detect), id).not.toThrow();
     }
   });
