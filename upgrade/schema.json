@@ -857,15 +857,11 @@
           ]
         },
         "lockfile": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The lockfile read, by name, or null."
+          "description": "The lockfile read, by name, or null.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "importers": {
           "type": "array",
@@ -908,15 +904,11 @@
                 "description": "The range package.json declared."
               },
               "newRange": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "The range at the target, or null when it cannot be rewritten."
+                "description": "The range at the target, or null when it cannot be rewritten.",
+                "type": [
+                  "string",
+                  "null"
+                ]
               }
             },
             "required": [
@@ -1156,15 +1148,11 @@
           "description": "Versions npm marks deprecated (a yanked release, hds#472) that the default target skipped, with the deprecation message."
         },
         "refused": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Why the command refused (exit 2), having changed nothing; null otherwise."
+          "description": "Why the command refused (exit 2), having changed nothing; null otherwise.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "exitCode": {
           "anyOf": [
