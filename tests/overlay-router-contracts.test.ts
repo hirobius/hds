@@ -97,7 +97,7 @@ describe.each(['Popover', 'Tooltip'])('%s contract', (name) => {
 
   it('is a public spec', () => {
     expect(spec(), `${name} has no spec`).toBeDefined();
-    expect(spec().hidden).toBe(false);
+    expect(spec().hidden).toBeUndefined();
   });
 
   it('says when to use it', () => {
@@ -155,9 +155,9 @@ describe('HdsRouterProvider spec', () => {
       category: 'Theming',
       tier: 'primitive',
       docExempt: true,
-      hidden: false,
       filePath: 'src/app/context/RouterContext.tsx',
     });
+    expect(specs.HdsRouterProvider.hidden).toBeUndefined();
   });
 
   it('says when to use it', () => {

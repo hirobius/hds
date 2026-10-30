@@ -53,6 +53,12 @@
  * entry without also removing the merged description, or `validate-guardrail-
  * registry` will see the same gate declared twice.
  *
+ * hds#467: the root entry's modules are one surface, so a symbol moving from
+ * one root module to another is not a removal, and the barrel's own `export *
+ * as ns` and package re-exports are recorded under `(barrel)`. What a name is
+ * (value or type, signature, members, object keys) is the types baseline's
+ * job: scripts/upgrade/types.mjs, read by the upgrade gate.
+ *
  * When `dist/types/` exists in the future this script can be retired in
  * favour of api-extractor without touching consumers.
  *
@@ -304,7 +310,20 @@ function collectBarrelMap(entry = ENTRY) {
 
     if (moduleSpecifier && ts.isStringLiteral(moduleSpecifier)) {
       const specifier = moduleSpecifier.text;
-      if (!specifier.startsWith('.')) continue; // skip package re-exports
+      // hds#467: `export * as ns` and a package re-export are names the root
+      // gives consumers like any other, so they belong to the barrel; both
+      // used to be skipped, and removing one passed the gate.
+      if (statement.exportClause && ts.isNamespaceExport(statement.exportClause)) {
+        inlineBarrelSymbols.add(statement.exportClause.name.text);
+        continue;
+      }
+      if (!specifier.startsWith('.')) {
+        if (isWildcard) inlineBarrelSymbols.add(`* from ${specifier}`);
+        else
+          for (const element of statement.exportClause.elements)
+            inlineBarrelSymbols.add(element.name.text);
+        continue;
+      }
       const modulePath = resolveRelativeImport(entry, specifier);
       if (!modulePath) {
         throw new Error(
@@ -408,9 +427,22 @@ export function diffSurfaces(baseline, current) {
 
   const baselineModules = new Set(Object.keys(baseline.modules ?? {}));
   const currentModules = new Set(Object.keys(current.modules ?? {}));
+  // hds#467: the root entry's modules are one surface to a consumer, so a
+  // symbol that moved from one root module to another is neither removed nor
+  // added. A subpath (`@subpath/<name>`) is its own entry and still counts.
+  const isRootModule = (moduleKey) => !moduleKey.startsWith('@subpath/');
+  const rootSymbols = (surface) =>
+    new Set(
+      Object.entries(surface.modules ?? {})
+        .filter(([moduleKey]) => isRootModule(moduleKey))
+        .flatMap(([, symbols]) => symbols),
+    );
+  const [baselineRoot, currentRoot] = [rootSymbols(baseline), rootSymbols(current)];
 
   for (const moduleKey of baselineModules) {
     if (!currentModules.has(moduleKey)) {
+      const symbols = baseline.modules[moduleKey] ?? [];
+      if (isRootModule(moduleKey) && symbols.every((symbol) => currentRoot.has(symbol))) continue;
       breakingChanges.push({
         kind: 'module-removed',
         module: moduleKey,
@@ -422,6 +454,7 @@ export function diffSurfaces(baseline, current) {
     const currentSymbols = new Set(current.modules[moduleKey] ?? []);
     for (const symbol of baselineSymbols) {
       if (!currentSymbols.has(symbol)) {
+        if (isRootModule(moduleKey) && currentRoot.has(symbol)) continue;
         breakingChanges.push({
           kind: 'symbol-removed',
           module: moduleKey,
@@ -431,6 +464,7 @@ export function diffSurfaces(baseline, current) {
     }
     for (const symbol of currentSymbols) {
       if (!baselineSymbols.has(symbol)) {
+        if (isRootModule(moduleKey) && baselineRoot.has(symbol)) continue;
         additions.push({
           kind: 'symbol-added',
           module: moduleKey,

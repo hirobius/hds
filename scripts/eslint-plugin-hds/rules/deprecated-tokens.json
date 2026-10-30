@@ -10,7 +10,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "primitive.color.lime.100",
@@ -21,7 +21,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "primitive.color.lime.200",
@@ -32,7 +32,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "primitive.color.lime.300",
@@ -43,7 +43,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "primitive.color.lime.400",
@@ -54,7 +54,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "primitive.color.lime.600",
@@ -65,7 +65,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "primitive.color.lime.800",
@@ -76,7 +76,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code"
+      "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "semantic.color.border.subdued",
@@ -87,7 +87,7 @@
       "replacementCssVar": "--semantic-color-border-default",
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)"
+      "note": "border consolidation 2026-10-12, removed in 1.0.0 — use semantic.color.border.default (Dark differs: neutral.600 vs 800)"
     },
     {
       "path": "semantic.space.component.gap",
@@ -98,7 +98,7 @@
       "replacementCssVar": "--semantic-space-scale-xs",
       "replacementTailwind": "scale-xs",
       "removeIn": "1.0.0",
-      "note": "hds#206 — use semantic.space.scale.xs"
+      "note": "hds#206, removed in 1.0.0 — use semantic.space.scale.xs"
     },
     {
       "path": "semantic.space.component.padding",
@@ -109,7 +109,7 @@
       "replacementCssVar": "--semantic-space-surface-padding",
       "replacementTailwind": "surface-padding",
       "removeIn": "1.0.0",
-      "note": "hds#206 — use semantic.space.surface.padding"
+      "note": "hds#206, removed in 1.0.0 — use semantic.space.surface.padding"
     },
     {
       "path": "semantic.space.layout.tight",
@@ -120,7 +120,7 @@
       "replacementCssVar": "--semantic-space-scale-sm",
       "replacementTailwind": "scale-sm",
       "removeIn": "1.0.0",
-      "note": "hds#206 — use semantic.space.scale.sm"
+      "note": "hds#206, removed in 1.0.0 — use semantic.space.scale.sm"
     },
     {
       "path": "semantic.space.layout.normal",
@@ -131,7 +131,7 @@
       "replacementCssVar": "--semantic-space-scale-md",
       "replacementTailwind": "scale-md",
       "removeIn": "1.0.0",
-      "note": "hds#206 — use semantic.space.scale.md"
+      "note": "hds#206, removed in 1.0.0 — use semantic.space.scale.md"
     },
     {
       "path": "semantic.space.layout.gutter",
@@ -142,7 +142,7 @@
       "replacementCssVar": "--semantic-space-region-gutter",
       "replacementTailwind": "region-gutter",
       "removeIn": "1.0.0",
-      "note": "hds#206 — use semantic.space.region.gutter"
+      "note": "hds#206, removed in 1.0.0 — use semantic.space.region.gutter"
     },
     {
       "path": "semantic.space.layout.inset",
@@ -153,7 +153,7 @@
       "replacementCssVar": "--semantic-space-scale-lg",
       "replacementTailwind": "scale-lg",
       "removeIn": "1.0.0",
-      "note": "hds#206 — use semantic.space.scale.lg"
+      "note": "hds#206, removed in 1.0.0 — use semantic.space.scale.lg"
     },
     {
       "path": "semantic.space.layout.spacious",
@@ -164,7 +164,7 @@
       "replacementCssVar": "--semantic-space-scale-xl",
       "replacementTailwind": "scale-xl",
       "removeIn": "1.0.0",
-      "note": "hds#206 — use semantic.space.scale.xl"
+      "note": "hds#206, removed in 1.0.0 — use semantic.space.scale.xl"
     },
     {
       "path": "semantic.space.section.heroMax",
@@ -186,7 +186,7 @@
       "replacementCssVar": "--semantic-typography-title",
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hds#483 — use semantic.typography.title"
+      "note": "hds#483, removed in 1.0.0 — use semantic.typography.title"
     },
     {
       "path": "semantic.typography.h2",
@@ -197,7 +197,7 @@
       "replacementCssVar": "--semantic-typography-title",
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hds#483 — use semantic.typography.title"
+      "note": "hds#483, removed in 1.0.0 — use semantic.typography.title"
     },
     {
       "path": "semantic.typography.h3",
@@ -208,7 +208,7 @@
       "replacementCssVar": "--semantic-typography-title",
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hds#483 — use semantic.typography.title"
+      "note": "hds#483, removed in 1.0.0 — use semantic.typography.title"
     },
     {
       "path": "semantic.typography.eyebrow",
@@ -219,7 +219,7 @@
       "replacementCssVar": "--semantic-typography-caption",
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hds#483 — use semantic.typography.caption"
+      "note": "hds#483, removed in 1.0.0 — use semantic.typography.caption"
     },
     {
       "path": "semantic.docs.space.paragraph",
@@ -252,7 +252,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code"
+      "note": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "semantic.accent.delight.deep",
@@ -263,7 +263,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code"
+      "note": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "semantic.accent.delight.pale",
@@ -274,7 +274,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code"
+      "note": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "semantic.accent.delight.onDelight",
@@ -285,7 +285,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code"
+      "note": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0"
     },
     {
       "path": "component.badge.text",
@@ -296,7 +296,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hds#595 — use component.badge.<tone>.text (one per tone)"
+      "note": "hds#595, removed in 1.0.0 — use component.badge.<tone>.text (one per tone)"
     },
     {
       "path": "component.badge.bg",
@@ -307,7 +307,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hds#595 — use component.badge.<tone>.bg (one per tone)"
+      "note": "hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone)"
     },
     {
       "path": "component.button.secondary.border.rest",
@@ -318,7 +318,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hds#891 soft surfaces: secondary Button has no border"
+      "note": "hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0"
     },
     {
       "path": "component.button.secondary.border.disabled",
@@ -329,7 +329,7 @@
       "replacementCssVar": null,
       "replacementTailwind": null,
       "removeIn": "1.0.0",
-      "note": "hds#891 soft surfaces: secondary Button has no border"
+      "note": "hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0"
     }
   ]
 }

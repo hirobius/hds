@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-28T00:47:52.557Z",
+  "generated": "2026-10-28T03:46:51.451Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -33,7 +33,7 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#0f1726",
+    "primaryColor": "#19161a",
     "primaryColorToken": "semantic.accent.rest",
     "font": "Plus Jakarta Sans variable 100–900, self-hosted",
     "spacingBase": "4px",
@@ -73,6 +73,7 @@
     "Checkbox",
     "CodeBlock",
     "Combobox",
+    "CommandPalette",
     "Composer",
     "Container",
     "DataTableSection",
@@ -316,7 +317,6 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/alert.tsx",
       "description": "Alert - compact feedback surface with contextual severity.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34",
@@ -425,7 +425,6 @@
         }
       ],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/Alert.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34",
       "props": {
@@ -482,7 +481,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/code-block.tsx",
       "description": "CodeBlock - code display with copy button and optional collapsible toggle.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154",
@@ -600,7 +598,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/CodeBlock.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154",
       "docsPage": "/docs/patterns/code-block",
@@ -612,7 +609,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/container.tsx",
       "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
       "figmaUrl": null,
@@ -662,7 +658,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/Container.tsx",
       "figmaLink": null,
       "docsPage": "/docs/components/utilities",
@@ -691,7 +686,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/disclosure.tsx",
       "description": "Disclosure - compact disclosure surface for optional explanatory content.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453",
@@ -861,7 +855,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "pattern",
-      "docExempt": false,
       "slots": [
         {
           "name": "root",
@@ -909,7 +902,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/divider.tsx",
       "description": "Divider — semantic separator between content regions.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-26",
@@ -945,7 +937,6 @@
         }
       ],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/Divider.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-26",
       "props": {
@@ -1014,7 +1005,6 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/error-pattern.tsx",
       "description": "ErrorPattern - governed recovery surface for routed application errors.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
@@ -1092,7 +1082,6 @@
         }
       ],
       "tier": "template",
-      "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
       "docsPage": "/docs/patterns/error-pattern",
       "usage": {
@@ -1103,7 +1092,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/grid.tsx",
       "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe; 0.20.0 removed TileGrid). - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
       "figmaUrl": null,
@@ -1250,7 +1238,6 @@
         }
       ],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/Grid.tsx",
       "figmaLink": null,
       "docsPage": "/docs/components/grid",
@@ -1275,7 +1262,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/icon.tsx",
       "description": "Icon — semantic icon wrapper for Lucide icons.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2",
@@ -1294,6 +1280,7 @@
         "src/app/components/code-block.tsx",
         "src/app/components/combobox-creatable.tsx",
         "src/app/components/combobox.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/hds-tooltip.tsx",
@@ -1409,7 +1396,6 @@
         }
       ],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/Icon.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2",
       "docsPage": "/docs/components/icon",
@@ -1433,7 +1419,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/inline-code.tsx",
       "description": "InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
@@ -1515,7 +1500,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/InlineCode.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
       "docsPage": null
@@ -1524,7 +1508,6 @@
       "category": "Navigation",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/inline-link.tsx",
       "description": "InlineLink ” inline navigation and external-link primitive for body copy.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
@@ -1613,7 +1596,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/InlineLink.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
       "docsPage": "/docs/components/inline-link",
@@ -1637,7 +1619,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/input.tsx",
       "description": "Input — text field primitive with label, helper, and error slots.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20",
@@ -1954,7 +1935,6 @@
         }
       ],
       "tier": "primitive",
-      "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20",
       "docsPage": "/docs/components/input",
       "usage": {
@@ -1981,7 +1961,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/segmented-control.tsx",
       "description": "SegmentedControl \" segmented selection input for compact mutually-exclusive choices. The active×hover×pressed×disabled×secondary state matrix is expressed through `cva` compound variants keyed by `active` / `interaction` (the live-or-frozen-demo hover/pressed/rest sub-state) / `variant` / `disabled`, each resolving to the same `--semantic-*` custom properties the pre-Tailwind inline styles referenced — same tokens, same pixels, just Tailwind classes instead of a `style` object. Per ADR-015 this control keeps its own hover/focus tracking (per-segment `string | null` cardinality) rather than the shared `useInteractionState` single-element machine; only the class composition changed, not the state machine feeding it. When the segments outgrow the rail (a phone), the rail scrolls: it fades the hidden edge (`data-overflow`, the same mask as the tab list) and keeps the selected segment in view on mount and on change (hds#823).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
@@ -2130,7 +2109,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/SegmentedControl.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
       "docsPage": "/docs/components/segmented-control",
@@ -2158,7 +2136,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/stack.tsx",
       "description": "Stack — one-dimensional layout primitive.",
       "figmaUrl": null,
@@ -2372,7 +2349,6 @@
         }
       ],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/Stack.tsx",
       "figmaLink": null,
       "docsPage": "/docs/components/stack",
@@ -2397,7 +2373,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/table.tsx",
       "description": "Table - structured data table primitive for documentation and compact UI matrices.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300",
@@ -2532,7 +2507,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/Table.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300",
       "docsPage": "/docs/components/table",
@@ -2556,7 +2530,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/tag.tsx",
       "description": "Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
@@ -2734,7 +2707,6 @@
         "minHeight": "component.tag.minHeight"
       },
       "tier": "primitive",
-      "docExempt": false,
       "sourcePath": "src/app/components/Tag.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "docsPage": "/docs/components/tag",
@@ -2754,7 +2726,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/surface.tsx",
       "description": "Surface — governed inset surface primitive. Enforces the \"Surface Inset\" rule: backgrounds MUST have internal padding. - Default padding: surface.padding (cards, 28px / 24px compact) | scale.sm (items, 20px / 16px compact) - Default border: none (elevation model — use shadow for lift) - Radius: `rounded-lg` (role radius + 4px), the one container radius shared with Card - shadow prop: applies a two-layer elevation shadow for card lift Usage: <Surface>Card content</Surface> <Surface padding=\"item\">Compact item</Surface> <Surface shadow>Lifted card with elevation shadow.</Surface>",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27",
@@ -2889,16 +2860,19 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/card.tsx",
       "description": "Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11",
       "figmaId": null,
       "consumers": [
+        "src/app/components/avatar-group.tsx",
+        "src/app/components/avatar.tsx",
         "src/app/components/board.tsx",
         "src/app/components/box-sx.ts",
+        "src/app/components/callout.tsx",
         "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
+        "src/app/components/kbd.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/segmented-control.tsx",
@@ -3135,7 +3109,6 @@
         }
       ],
       "tier": "primitive",
-      "docExempt": false,
       "compoundMembers": [
         "Header",
         "Title",
@@ -3233,7 +3206,6 @@
       "category": "Typography",
       "filePath": "src/app/components/text.tsx",
       "description": "Text — polymorphic typography primitive spanning the full HDS type ramp.",
-      "hidden": false,
       "props": {
         "as": {
           "type": "\"symbol\" | \"object\" | \"title\" | \"a\" | \"button\" | \"div\" | \"form\" | \"h2\" | \"h3\" | \"img\" | \"input\" | \"label\" | \"li\" | \"nav\" | \"ol\" | \"p\" | \"select\" | \"span\" | \"svg\" | \"ul\" | \"abbr\" | \"address\" | ... 158 more ...",
@@ -3322,6 +3294,7 @@
         "src/app/components/alert-dialog.tsx",
         "src/app/components/async-state.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
@@ -3366,7 +3339,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
       "description": "Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.",
@@ -3379,6 +3351,7 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/popover.tsx",
@@ -3669,8 +3642,6 @@
       "category": "Actions",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/button.tsx",
       "description": "Triggers an action when activated.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138",
@@ -4001,8 +3972,6 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/callout.tsx",
       "description": "Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback fill language as Alert, without Alert's icon or status role.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-85",
@@ -4068,8 +4037,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/empty-state.tsx",
       "description": "EmptyState — consistent no-data placeholder for lists, grids, and sections.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352",
@@ -4136,8 +4103,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/field.tsx",
       "description": "Caption label paired with a value — used in metadata grids and read-only forms.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81",
@@ -4235,8 +4200,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/page.tsx",
       "description": "Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewport edges on scroll. Use as the outermost element of any new page so vertical rhythm is consistent across the system without per-page reinvention. Footer: every page mounted under HDSLayout (the standard route shell) gets a shared footer rendered after this component's content, with bottom space below the footer owned by the layout shell. Page intentionally does not render its own footer — the shell is the single source of truth. Use Container directly only for full-bleed surfaces (sketches, hero sections, embedded canvases) where the page owns its own vertical padding. Usage: <Page> <Stack direction=\"column\" gap=\"spacious\">...</Stack> </Page> <Page maxWidth=\"content\" paddingY=\"compact\"> <article>...</article> </Page>",
       "figmaUrl": null,
@@ -4302,8 +4265,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/stat.tsx",
       "description": "Headline metric — large value, caption label, optional sub-line.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-247",
@@ -4379,8 +4340,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/status-list-item.tsx",
       "description": "Status dot + title row with optional muted notes and trailing slot (e.g. badge).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350",
@@ -4450,8 +4409,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/status-tile.tsx",
       "description": "Block-layout sibling of StatusListItem. Renders a raised surface tile with title, optional muted notes, and a trailing slot for a badge or affordance. Status colour belongs in the trailing slot, never as a left rule on the tile — every tile should look the same so feedback signals stay reserved for genuinely interrupting states.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-292",
@@ -4615,8 +4572,6 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=31-15",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=31-15",
@@ -4657,8 +4612,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/asset-img.tsx",
       "description": "AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-67",
@@ -4849,8 +4802,6 @@
       "category": "Navigation",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
       "description": "The tab set itself. Tagged here rather than in the file block because TabsList and TabsContent share this module and have no Figma node of their own — a file-level @figma would silently claim this node for all four.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89",
@@ -4988,10 +4939,8 @@
       "category": "Navigation",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below it (mb-6) separates the strip from its panel. - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px underline takes no extra height when it appears. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5037,8 +4986,6 @@
       "category": "Navigation",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
       "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark. The selected tab is kept in view: on mount, and on change (smooth unless the user prefers reduced motion), so a selected tab is never left past the edge.",
       "figmaUrl": null,
@@ -5075,10 +5022,8 @@
       "category": "Navigation",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern (hds#891 soft surfaces): - TabsList draws no divider at rest: space below it (mb-6) separates the strip from its panel. - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px underline takes no extra height when it appears. - Active state pairs the underline with a soft `bg-accent/5` tint that extends down into TabsContent — the active tab visually \"claims\" its content panel (folder-tab affordance, modern-soft). Overflow: TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`) for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the edge that has hidden tabs (`data-overflow`), and the selected tab is scrolled into view on mount and on change (Radix does not; hds#823). The trigger's focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn outside the list box (an outer ring was cut on the first/last tab).",
+      "description": "Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5112,7 +5057,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/radio.tsx",
       "description": "Radio — radio button with animated selection indicator.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17",
@@ -5202,7 +5146,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17",
       "docsPage": "/docs/components/radio",
       "usage": {
@@ -5229,7 +5172,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/select.tsx",
       "description": "Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead, full keyboard (Home/End/PageUp-Down/wrap), Popper collision/flip positioning, and dismissal. The HDS surface is styled with the token-backed Tailwind idiom used by tabs.tsx / command-palette.tsx; `ref` targets the trigger button.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49",
@@ -5411,7 +5353,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49",
       "docsPage": "/docs/components/select",
       "usage": {
@@ -5464,7 +5405,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/slider.tsx",
       "description": "Slider — range slider with label and value display.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265",
@@ -5564,7 +5504,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265",
       "docsPage": "/docs/components/slider",
       "usage": {
@@ -5583,7 +5522,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "filePath": "src/app/components/toggle.tsx",
       "description": "Toggle — boolean on/off toggle with animated thumb.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19",
@@ -5671,7 +5609,6 @@
       "variantAxes": [],
       "componentProperties": [],
       "tier": "primitive",
-      "docExempt": false,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19",
       "docsPage": "/docs/components/toggle",
       "usage": {
@@ -5694,8 +5631,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/avatar.tsx",
       "description": "Circular avatar. Renders the image when available, else initials from `alt` or a person icon, with an optional status dot.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=34-18",
@@ -5806,8 +5741,6 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/progress.tsx",
       "description": "Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-91",
@@ -5896,8 +5829,6 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/skeleton.tsx",
       "description": "Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
@@ -5963,8 +5894,6 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/spinner.tsx",
       "description": "Indeterminate spinner. Inherits the surrounding text color via currentColor.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-106",
@@ -6024,8 +5953,6 @@
       "category": "Navigation",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/breadcrumb.tsx",
       "description": "Breadcrumb trail. Links route through the HDS router seam (plain anchors with no router, client-side nav when a router adapter is provided). The final item is marked aria-current=\"page\".",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-159",
@@ -6117,8 +6044,6 @@
       "category": "Navigation",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/pagination.tsx",
       "description": "Paged navigation with first/last anchors, sibling pages, and ellipses.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194",
@@ -6257,7 +6182,6 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/toast.tsx",
       "description": "Provider + viewport for the toast system. Wrap the app root once.",
@@ -6371,7 +6295,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/combobox.tsx",
       "description": "Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection (with `multiple`, a count and a removable chip per value); opening reveals a search field that filters the option list. `multiple creatable` is a chip input (a tag field): chips sit inline before the text input, suggestions open as you type, and Enter adds the typed text via `onCreate`. <Combobox multiple creatable options={skills} value={picked} onChange={setPicked} onCreate={(t) => setPicked((p) => [...p, t])} /> Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
@@ -6385,9 +6308,11 @@
       },
       "consumers": [
         "src/app/components/combobox-creatable.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
+        "src/app/components/listbox-nav.ts",
         "src/app/components/select.tsx",
         "src/index.ts"
       ],
@@ -6683,7 +6608,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-level @figma would claim this one for all three.",
@@ -6738,7 +6662,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement. Validation-library agnostic — pass `error` from whatever you use. For controls with an externally-managed callback ref (e.g. react-hook-form), use `FormFieldShell` + `useFieldWiring` instead.",
@@ -6843,7 +6766,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Presentational label + control slot + helper/error markup. Renders `children` verbatim — it does NOT clone — so it is safe to use with controls that own a callback ref. Pair it with `useFieldWiring` to apply ids/aria yourself.",
@@ -6912,7 +6834,6 @@
       "category": "Theming",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/context/hds-theme.tsx",
       "description": "Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.",
@@ -7004,8 +6925,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/avatar-group.tsx",
       "description": "Renders up to `max` overlapping avatars followed by a `+N` overflow chip.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2030-63",
@@ -7050,8 +6969,6 @@
       "category": "Typography",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/blockquote.tsx",
       "description": "A quoted passage; pass `cite` for the source URL and `attribution` for a byline.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2024-18",
@@ -7093,8 +7010,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/kbd.tsx",
       "description": "Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9",
@@ -7106,6 +7021,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/text.tsx"
       ],
@@ -7146,8 +7062,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/timestamp.tsx",
       "description": "Presents a date/time with a machine-readable `dateTime` for accessibility.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2031-11",
@@ -7200,8 +7114,6 @@
       "category": "Utility",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/visually-hidden.tsx",
       "description": "Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-only control.",
       "figmaUrl": null,
@@ -7247,8 +7159,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/metadata-list.tsx",
       "description": "Renders object metadata as a semantic `<dl>` of term/description pairs.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",
@@ -7304,7 +7214,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/alert-dialog.tsx",
       "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
@@ -7433,8 +7342,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/box.tsx",
       "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine. On React 19 the rules render as a hoisted `<style href precedence>` (so they are in server HTML); on React 18 they inject into a managed sheet in the browser.",
       "figmaUrl": null,
@@ -7504,8 +7411,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sidebar.tsx",
       "description": "Sidebar — fixed-width rail beside fluid content, no media query. Every Layout reference: https://every-layout.dev/layouts/sidebar/",
       "figmaUrl": null,
@@ -7579,8 +7484,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/switcher.tsx",
       "description": "Switcher — flips a row to a column below a width threshold, no media query. Every Layout reference: https://every-layout.dev/layouts/the-switcher/",
       "figmaUrl": null,
@@ -7646,8 +7549,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/pin.tsx",
       "description": "Pin — sticky-pin an element within its scroll region.",
       "figmaUrl": null,
@@ -7698,8 +7599,6 @@
       "category": "Motion",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/reveal.tsx",
       "description": "Reveal — reveal-on-scroll primitive via CSS scroll-driven animation.",
       "figmaUrl": null,
@@ -7759,8 +7658,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/textarea.tsx",
       "description": "Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the four states Default / Focus / Error / Disabled map to the focus-ring, `error`, and `disabled` treatments below.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14",
@@ -7873,10 +7770,8 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7902,10 +7797,8 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7931,10 +7824,8 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7960,10 +7851,8 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -7994,8 +7883,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
       "description": "Card.Metric — one label, a large value and an optional sub-line inside a Card.",
       "figmaUrl": null,
@@ -8051,10 +7938,8 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8103,10 +7988,8 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §\"Card Anatomy\"). Status, progress, and metadata are layout-bearing — they live in slots, never inline next to prose. <Card variant=\"accent\"> <Card.Header metadata={<Badge tone=\"warning\">in-progress</Badge>}> <Card.Title>Discovery phase</Card.Title> <Card.Description>Stakeholder interviews and audit prep.</Card.Description> </Card.Header> <Card.Progress value={42} max={100} label=\"5 / 12 tasks\" /> <Card.Metric label=\"Retainer\" value=\"$3,500\" sub=\"Active\" /> <Card.Body>…</Card.Body> <Card.Footer>…</Card.Footer> </Card> A compact titled status (what StatusTile was, hds#622) is one Row: <Card padding=\"item\" className=\"border-0\"> <Card.Row trailing={<Badge tone=\"success\">Synced</Badge>}> <Card.RowTitle>Figma sync</Card.RowTitle> <Card.RowNote>Last run 2 hours ago</Card.RowNote> </Card.Row> </Card> An entity card (a job, a lead, a listing) opens with Card.Source and closes with Card.Facts; the title and actions stay in Header and Footer. Slot reservations: - Header: title (h3) + optional description (caption) + optional metadata zone (right-aligned, holds <Badge> / <Tag> for status, never raw spans). - Progress: full-width 4px bar in a reserved 16px vertical rail. Owns its spacing — never crowds adjacent prose. - Metric: single label + big value (title) + optional sub-line. Reserved vertical block. Use multiple side-by-side via flex/grid container. - Body: prose, lists, structured content. NO inline status, progress, or thin colored bars. Group sections via separate <Card.Body> blocks. - Source: the entity's origin on one row, above the title: an Avatar (size sm), a name and a Timestamp. No padding of its own inside a padded Card. - Facts: a wrapping caption row of icon + label pairs (location, salary, type), rendered as a list. Icons are 16px and decorative. - Footer: actions, secondary metadata, timestamps. - Row: title (ui) + muted caption notes, with a right-hand `trailing` zone for a <Badge> or one affordance. No padding of its own: pair it with `padding=\"item\"` for the compact tile, and `className=\"border-0\"` to drop Card's resting 1px transparent border: the tile is then StatusTile's box. `variant`: 'default' (borderless) | 'accent' (2px accent border) — the structural axis, for highlighted entries like \"recommended package\". `tone`: neutral | danger | success | warning | info — the fixed feedback axis (#60 variant contract), for status-driven cards where the border IS the signal. `variant`/`tone` together replace hand-rolled `pkgHighlight`-style overrides. Legacy props (padding / gap / noPadding / as / style) are retained. Existing callers that pass raw children continue to work; new callers should prefer compound parts + `padding=\"none\"`. The default variant is BORDERLESS at rest (12d-3 outline rule) — depth comes from whitespace/dividers, not an edge. A resting 1px border is opt-in via `bordered` (border.default), a feedback `tone`, or `accent` (border.accent). Elevation tokens are not bound by default. `asChild` makes the whole card one link or button (its child element, e.g. `<a href>` or a router `Link`): it gets the focus ring and the interactive-card hover (DESIGN.md): `scale(1.02)` and a lift to `elevation.raised`, with no transform under reduced motion. <Card asChild> <a href=\"/ops/leads\"><Card.Title>Leads</Card.Title></a> </Card>",
+      "description": "Card — surface container with slot anatomy (12d-card-anatomy).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8132,10 +8015,9 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8166,10 +8048,9 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8236,10 +8117,9 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8272,10 +8152,9 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8301,10 +8180,9 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8330,10 +8208,9 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8370,10 +8247,9 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8414,10 +8290,9 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8450,10 +8325,9 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/dialog.tsx",
-      "description": "Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with role tokens. Provides focus trap, scroll lock, ESC-to-close, backdrop scrim, and portal mounting out of the box. <Dialog> <Dialog.Trigger asChild> <Button>Open</Button> </Dialog.Trigger> <Dialog.Content> <Dialog.Header> <Dialog.Title>Confirm</Dialog.Title> <Dialog.Description>Are you sure?</Dialog.Description> </Dialog.Header> <Dialog.Footer> <Dialog.Close asChild> <Button variant=\"secondary\">Cancel</Button> </Dialog.Close> </Dialog.Footer> </Dialog.Content> </Dialog> Surface uses role.popover (semantic.color.surface.floating) + a border.default hairline + shadow-overlay (semantic.shadow.overlay from 8e-1). The scrim is role.scrim (semantic.color.surface.scrim) at 60% alpha: dark in both themes, black in dark mode. The overlay portals into the nearest `data-hds` scope so it inherits the active theme; pass `container` to override. The close affordance is rendered as an absolutely-positioned X inside Content; pass `hideClose` to opt out for fully-custom layouts.",
+      "description": "Dialog — modal dialog (shadcn baseline, compound parts).",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -8484,7 +8358,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
       "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
@@ -8630,7 +8503,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/menu.tsx",
       "description": "Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
@@ -8644,6 +8516,7 @@
       },
       "consumers": [
         "src/app/components/combobox.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/popover.tsx",
@@ -8845,7 +8718,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/popover.tsx",
       "description": "Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
@@ -8992,8 +8864,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/checkbox.tsx",
       "description": "Checkbox — custom-drawn checkbox with check / indeterminate glyph.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=35-29",
@@ -9101,8 +8971,6 @@
       "category": "Actions",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/form-actions.tsx",
       "description": "Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most. Gap is the tight layout token.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-87",
@@ -9161,8 +9029,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/metric-tiles.tsx",
       "description": "One metric tile: eyebrow label, `heading2` value, caption sub line, on a raised surface at one fixed min-height. Wraps `Card.Metric` (the sibling with the eyebrow / h2 / caption scale) and adds the surface and the fixed height, so a tile needs no enclosing `Card`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-114",
@@ -9217,8 +9083,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/metric-tiles.tsx",
       "description": "A row of `MetricTile`s. The grid has `min(tiles, 4)` columns, so three tiles fill three columns and never leave an empty fourth; at phone width (640px and under) it is capped at 2 columns. Use `StatusTile` for state with notes (never a number).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-89",
@@ -9255,8 +9119,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/page-header.tsx",
       "description": "Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot. Every screen has exactly one. `display` and `h1` type are reserved for marketing and landing surfaces.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
@@ -9315,8 +9177,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/data-table-section.tsx",
       "description": "Section heading and toolbar over a `Table`. Row actions are consumer nodes in a trailing column, the table scrolls horizontally on narrow widths without a `minWidth` from the caller, and zero rows shows an `EmptyState`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2075-268",
@@ -9384,8 +9244,6 @@
       "category": "Actions",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/destructive-section.tsx",
       "description": "Titled danger zone, a danger `Callout` (the shared feedback fill, no border of its own) holding a title, an explanation, and one danger `Button` that opens an `AlertDialog`. Pressing the button never runs the action; only the dialog's confirm does. Place it last on the screen, below the form.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2076-3",
@@ -9474,7 +9332,6 @@
       "category": "Theming",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/context/RouterContext.tsx",
       "description": "Provide a router adapter to all HDS components below. Wrap your app root once.",
@@ -9517,8 +9374,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
       "description": "Card.Row — a title with muted notes and a trailing slot, inside a Card.",
       "slots": [
@@ -9562,8 +9417,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
       "description": "Card.RowNote — one muted caption line under the row's title; repeat it for more.",
       "figmaUrl": null,
@@ -9591,8 +9444,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
       "description": "Card.RowTitle — the row's title, at the ui role.",
       "figmaUrl": null,
@@ -9620,8 +9471,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/board.tsx",
       "description": "Status columns that sit side by side from tablet width and stack in order, first column on top, below it. Read-only: it has no drag handlers.",
       "figmaUrl": null,
@@ -9668,8 +9517,6 @@
       "category": "Layout",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/board.tsx",
       "description": "One status column: a heading with the title and a count, then its items. The column is a labelled region and the count is part of the heading's name.",
       "figmaUrl": null,
@@ -9719,7 +9566,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/composer.tsx",
       "description": "Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer than `pasteFoldThreshold` characters never enters the field: it becomes an attachment card (a Tag) that opens a Dialog to edit or remove the text. Cmd/Ctrl+Enter submits; plain Enter stays a newline. `text` and `attachments` can each be controlled or uncontrolled; an uncontrolled composer clears itself after a submit.",
@@ -9859,8 +9705,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/timeline.tsx",
       "description": "The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-133",
@@ -9927,8 +9771,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/timeline.tsx",
       "description": "One event on a Timeline. Render it only as a child of Timeline.",
       "figmaUrl": null,
@@ -9989,7 +9831,6 @@
       "category": "Actions",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
       "docExempt": true,
       "filePath": "src/app/components/theme-toggle.tsx",
       "description": "One-button light/dark switch with a sun-to-moon morph.",
@@ -10085,8 +9926,6 @@
       "category": "Typography",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/meta-line.tsx",
       "description": "Secondary facts on one line (\"Acme Cloud · Remote\"). Max two items per line so long strings in other languages never wrap mid-line; more facts go in more rows. The `hds/max-two-meta-items` lint rule enforces the same limit on bullet-joined text in JSX; it cannot see chains built in code (`[a, b, c].join(' · ')`), so those rely on this type and review.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-12",
@@ -10131,8 +9970,6 @@
       "category": "Feedback",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/async-state.tsx",
       "description": "One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into \"Still trying…\" after `slowAfterMs`), `error` (a danger `Alert` and a Retry `Button`, with offline wording when the browser reports no connection), `empty` (your node) and `ready` (children). The wrapper is a labelled region; while loading only the skeleton block is aria-busy. After Retry, focus moves to the region (tabIndex -1) once the button unmounts, so a keyboard user is not dropped on the page.",
       "a11yRules": [
@@ -10263,8 +10100,6 @@
       "category": "Navigation",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/nav-list.tsx",
       "description": "A vertical list of rows (links, or buttons that select in place), one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected. Tagged here rather than in the file block because NavListItem shares this module and maps to its own Figma set through figma/mapping-overrides.json.",
       "a11yRules": [
@@ -10365,8 +10200,6 @@
       "category": "Navigation",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/nav-list.tsx",
       "description": "One row of a NavList. With `href` it is a link routed through the HDS router seam (a plain anchor with no router) and sets aria-current=\"page\" when `current`. With `onSelect` it is a button that selects in place and sets aria-current=\"true\" when `selected`. `href` and `onSelect` are exclusive.",
       "a11yRules": [
@@ -10482,8 +10315,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/token-field.tsx",
       "description": "TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips. The value stays a plain string. The field is a contenteditable textbox that draws each match of `tokenPattern` as a chip; every edit that could split a chip (Backspace or Delete beside one, the arrows, Enter, paste, drop) goes through the pure model in token-field-model.ts. A ref handle inserts at the caret and reads or sets the selection as string offsets (hds#826).",
       "a11yRules": [
@@ -10620,8 +10451,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
       "description": "Card.Facts — a wrapping caption row of icon + label facts, as a list.",
       "figmaUrl": null,
@@ -10657,8 +10486,6 @@
       "category": "Display",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/card.tsx",
       "description": "Card.Source — the entity's origin on one row: avatar, name and time.",
       "slots": [
@@ -10714,8 +10541,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).",
       "a11yRules": [
@@ -10885,8 +10710,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10934,8 +10757,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10963,8 +10784,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -10997,8 +10816,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -11067,8 +10884,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -11101,8 +10916,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -11130,8 +10943,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -11159,8 +10970,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -11193,8 +11002,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "hidden": false,
-      "docExempt": false,
       "filePath": "src/app/components/sheet.tsx",
       "description": "Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690). Built on the same Radix Dialog primitive as `Dialog`, so it keeps that contract: focus trap, scroll lock, Escape and scrim click close it, focus returns to the trigger, the overlay portals into the nearest `data-hds` scope, and `Sheet.Title` / `Sheet.Description` name and describe it. <Sheet> <Sheet.Trigger asChild> <Button variant=\"secondary\">Sort</Button> </Sheet.Trigger> <Sheet.Content> <Sheet.Header> <Sheet.Title>Sort by</Sheet.Title> </Sheet.Header> <Sheet.Actions> <Sheet.Action current onClick={…}>Newest</Sheet.Action> <Sheet.Action onClick={…}>Company</Sheet.Action> <Sheet.Action tone=\"danger\" onClick={…}>Remove</Sheet.Action> </Sheet.Actions> </Sheet.Content> </Sheet> Below the `sm` breakpoint (640px) `Sheet.Content` docks to the bottom edge, full width, with a grab handle and the device's bottom safe-area inset added under its padding. It stays above the on-screen keyboard: while open it mirrors `window.visualViewport` into two local CSS variables, so a sheet with a field in it is never covered. It slides up on entry with the productive motion token, which `prefers-reduced-motion` zeroes. From `sm` up it is the centred Dialog panel. Layout lives in `.hds-sheet` (src/styles/theme.css).",
       "figmaUrl": null,
@@ -11222,6 +11029,178 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null
+    },
+    "CommandPalette": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/command-palette.tsx",
+      "description": "CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain data; the palette filters, groups (in first-seen order) and navigates them, and calls `onSelect` with the chosen item. `open` is controlled; the ⌘K / Ctrl+K hotkey calls `onOpenChange` unless `hotkey={false}`. Argument chips for multi-step commands are a follow-up (hds#962). <CommandPalette open={open} onOpenChange={setOpen} items={commands} onSelect={(item) => run(item.id)} />",
+      "a11yRules": [
+        {
+          "rule": "The palette is a modal dialog named by its label, which also names the search field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.dialog-named"
+        },
+        {
+          "rule": "Cmd+K or Ctrl+K opens the palette with focus in the search field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.hotkey-focus"
+        },
+        {
+          "rule": "The search field is an expanded combobox that controls the listbox and exposes the active option through aria-activedescendant.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.combobox-state"
+        },
+        {
+          "rule": "Each group of results is a group named by its heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.groups-named"
+        },
+        {
+          "rule": "Options stay out of the tab order and Tab stays inside the dialog.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.options-not-tabbable"
+        },
+        {
+          "rule": "ArrowDown and ArrowUp move the active option, skip disabled ones and wrap at the ends.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.arrow-keys"
+        },
+        {
+          "rule": "The active option reports aria-selected and a disabled one reports aria-disabled.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.option-state"
+        },
+        {
+          "rule": "An option is named by its label and described by its shortcut keys.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.shortcut-described"
+        },
+        {
+          "rule": "The match count is announced in a polite status as the list filters (4.1.3).",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.result-count-announced"
+        },
+        {
+          "rule": "Escape closes the palette and returns focus to the element that had it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.escape-returns-focus"
+        },
+        {
+          "rule": "The open palette has no axe violations, with results or empty.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.axe-clean"
+        },
+        {
+          "rule": "Pass a label that says what the palette searches when it is not a general command palette.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "CommandPalette",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/listbox-nav.ts",
+        "src/patterns.ts"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "emptyMessage": {
+          "type": "string",
+          "default": "No results"
+        },
+        "hotkey": {
+          "type": "boolean",
+          "default": true
+        },
+        "items": {
+          "type": "readonly CommandPaletteItem[]"
+        },
+        "label": {
+          "type": "string",
+          "default": "Command palette"
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void"
+        },
+        "onSelect": {
+          "type": "(item: CommandPaletteItem) => void"
+        },
+        "open": {
+          "type": "boolean"
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "Type a command or search…"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/components/command-palette",
+      "usage": {
+        "when": "Let people jump to a page or run a command from anywhere by typing, opened with ⌘K or Ctrl+K.",
+        "whenNot": "Picking a value for a form field, or a short action list on a button.",
+        "useInstead": [
+          {
+            "component": "Combobox",
+            "reason": "picking a value for a form field"
+          },
+          {
+            "component": "Menu",
+            "reason": "a short action list from a trigger"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Cmd+K/Ctrl+K",
+          "effect": "Opens or closes the palette from anywhere on the page."
+        },
+        {
+          "keys": "Character",
+          "effect": "Filters the items by label, keywords and group."
+        },
+        {
+          "keys": "ArrowDown/ArrowUp",
+          "effect": "Moves the active item, skipping disabled ones, and wraps at the ends."
+        },
+        {
+          "keys": "Enter",
+          "effect": "Runs the active item and closes the palette."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the palette and returns focus to where it was."
+        }
+      ],
+      "core": true
     },
     "HdsPhosphor": {
       "category": "Compiler",
@@ -11696,119 +11675,105 @@
         "cssVar": "--primitive-color-neutral-50",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#f9fafc"
+        "value": "#fafafa"
       },
       {
         "path": "primitive.color.neutral.100",
         "cssVar": "--primitive-color-neutral-100",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#f4f5f7"
+        "value": "#f5f5f5"
       },
       {
         "path": "primitive.color.neutral.200",
         "cssVar": "--primitive-color-neutral-200",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#e4e5e7"
+        "value": "#e5e5e5"
       },
       {
         "path": "primitive.color.neutral.300",
         "cssVar": "--primitive-color-neutral-300",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#d3d4d6"
+        "value": "#d4d4d4"
       },
       {
         "path": "primitive.color.neutral.350",
         "cssVar": "--primitive-color-neutral-350",
         "type": "color",
         "description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).",
-        "value": "#b2b4b8"
+        "value": "#b4b4b4"
       },
       {
         "path": "primitive.color.neutral.400",
         "cssVar": "--primitive-color-neutral-400",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#a0a3a8"
+        "value": "#a3a3a3"
       },
       {
         "path": "primitive.color.neutral.450",
         "cssVar": "--primitive-color-neutral-450",
         "type": "color",
-        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).",
-        "value": "#8d9096"
+        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).",
+        "value": "#909090"
       },
       {
         "path": "primitive.color.neutral.500",
         "cssVar": "--primitive-color-neutral-500",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#6f737b"
+        "value": "#737373"
       },
       {
         "path": "primitive.color.neutral.550",
         "cssVar": "--primitive-color-neutral-550",
         "type": "color",
         "description": "Dark surface.softHover (C2).",
-        "value": "#5e626a"
+        "value": "#626262"
       },
       {
         "path": "primitive.color.neutral.600",
         "cssVar": "--primitive-color-neutral-600",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#4d525b"
+        "value": "#525252"
       },
       {
         "path": "primitive.color.neutral.700",
         "cssVar": "--primitive-color-neutral-700",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#3b404a"
-      },
-      {
-        "path": "primitive.color.neutral.750",
-        "cssVar": "--primitive-color-neutral-750",
-        "type": "color",
-        "description": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755).",
-        "value": "#252a34"
+        "value": "#404040"
       },
       {
         "path": "primitive.color.neutral.800",
         "cssVar": "--primitive-color-neutral-800",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#212630"
-      },
-      {
-        "path": "primitive.color.neutral.825",
-        "cssVar": "--primitive-color-neutral-825",
-        "type": "color",
-        "description": "Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755).",
-        "value": "#1b202a"
+        "value": "#262626"
       },
       {
         "path": "primitive.color.neutral.850",
         "cssVar": "--primitive-color-neutral-850",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#151a24"
+        "value": "#1a1a1a"
       },
       {
         "path": "primitive.color.neutral.900",
         "cssVar": "--primitive-color-neutral-900",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#0c111b"
+        "value": "#111111"
       },
       {
         "path": "primitive.color.neutral.950",
         "cssVar": "--primitive-color-neutral-950",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#060a13"
+        "value": "#0a0a0a"
       },
       {
         "path": "primitive.color.neutral.white",
@@ -11822,7 +11787,7 @@
         "cssVar": "--primitive-color-neutral-black",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#060a13"
+        "value": "#000000"
       },
       {
         "path": "primitive.color.blue.50",
@@ -11962,77 +11927,77 @@
         "cssVar": "--primitive-color-graphite-50",
         "type": "color",
         "description": "Graphite accent tint — faintest step; dark rest fill.",
-        "value": "#f2f4f8"
+        "value": "#f5f4f4"
       },
       {
         "path": "primitive.color.graphite.100",
         "cssVar": "--primitive-color-graphite-100",
         "type": "color",
-        "description": "Graphite accent — very light midnight tint.",
-        "value": "#e5e8ed"
+        "description": "Graphite accent — very light warm tint.",
+        "value": "#e9e7e8"
       },
       {
         "path": "primitive.color.graphite.200",
         "cssVar": "--primitive-color-graphite-200",
         "type": "color",
-        "description": "Graphite accent — light midnight grey.",
-        "value": "#c4c8cf"
+        "description": "Graphite accent — light warm-grey.",
+        "value": "#cbc6c9"
       },
       {
         "path": "primitive.color.graphite.300",
         "cssVar": "--primitive-color-graphite-300",
         "type": "color",
         "description": "Graphite accent — soft mid-light step; dark-mode hover/link.",
-        "value": "#a8aeb8"
+        "value": "#b2abae"
       },
       {
         "path": "primitive.color.graphite.400",
         "cssVar": "--primitive-color-graphite-400",
         "type": "color",
-        "description": "Graphite accent — mid midnight-grey step.",
-        "value": "#7f8794"
+        "description": "Graphite accent — mid warm-grey step.",
+        "value": "#8b8488"
       },
       {
         "path": "primitive.color.graphite.500",
         "cssVar": "--primitive-color-graphite-500",
         "type": "color",
         "description": "Graphite accent — mid step.",
-        "value": "#586170"
+        "value": "#655e62"
       },
       {
         "path": "primitive.color.graphite.600",
         "cssVar": "--primitive-color-graphite-600",
         "type": "color",
         "description": "Graphite accent — mid-dark step.",
-        "value": "#465061"
+        "value": "#544d51"
       },
       {
         "path": "primitive.color.graphite.700",
         "cssVar": "--primitive-color-graphite-700",
         "type": "color",
-        "description": "Graphite accent — midnight charcoal; light-mode accent text.",
-        "value": "#3a4457"
+        "description": "Graphite accent — warm charcoal; light-mode accent text.",
+        "value": "#4a4146"
       },
       {
         "path": "primitive.color.graphite.800",
         "cssVar": "--primitive-color-graphite-800",
         "type": "color",
         "description": "Graphite accent — deep step; light-mode hover.",
-        "value": "#263043"
+        "value": "#352e32"
       },
       {
         "path": "primitive.color.graphite.900",
         "cssVar": "--primitive-color-graphite-900",
         "type": "color",
         "description": "Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.",
-        "value": "#1c2638"
+        "value": "#2a2428"
       },
       {
         "path": "primitive.color.graphite.950",
         "cssVar": "--primitive-color-graphite-950",
         "type": "color",
         "description": "Graphite accent — near-black; light rest fill.",
-        "value": "#0f1726"
+        "value": "#19161a"
       },
       {
         "path": "primitive.color.cobalt.50",
@@ -12059,7 +12024,7 @@
         "path": "primitive.color.cobalt.300",
         "cssVar": "--primitive-color-cobalt-300",
         "type": "color",
-        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.41:1 on black).",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.86:1 on black).",
         "value": "#8a97f8"
       },
       {
@@ -12723,6 +12688,13 @@
         "value": "500"
       },
       {
+        "path": "primitive.typography.weight.semibold",
+        "cssVar": "--primitive-typography-weight-semibold",
+        "type": "fontWeight",
+        "description": "Button label weight (hds#760).",
+        "value": "600"
+      },
+      {
         "path": "primitive.typography.weight.bold",
         "cssVar": "--primitive-typography-weight-bold",
         "type": "fontWeight",
@@ -12860,7 +12832,7 @@
         "cssVar": "--primitive-easing-elastic",
         "type": "spring",
         "description": "Spring response defined by stiffness, damping, and mass parameters.",
-        "value": "spring(300, 20, 1)"
+        "value": "linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)"
       },
       {
         "path": "primitive.shadow.color",
@@ -12960,6 +12932,13 @@
         "value": "32px"
       },
       {
+        "path": "primitive.size.36",
+        "cssVar": "--primitive-size-36",
+        "type": "dimension",
+        "description": "36px size step.",
+        "value": "36px"
+      },
+      {
         "path": "primitive.size.40",
         "cssVar": "--primitive-size-40",
         "type": "dimension",
@@ -12967,11 +12946,25 @@
         "value": "40px"
       },
       {
+        "path": "primitive.size.44",
+        "cssVar": "--primitive-size-44",
+        "type": "dimension",
+        "description": "44px size step.",
+        "value": "44px"
+      },
+      {
         "path": "primitive.size.48",
         "cssVar": "--primitive-size-48",
         "type": "dimension",
         "description": "48px size step.",
         "value": "48px"
+      },
+      {
+        "path": "primitive.size.52",
+        "cssVar": "--primitive-size-52",
+        "type": "dimension",
+        "description": "52px size step.",
+        "value": "52px"
       },
       {
         "path": "primitive.size.64",
@@ -13132,7 +13125,7 @@
         "description": "For teaching moments and significant UI entries. Includes physics-based squish.",
         "composite": {
           "duration": "250ms",
-          "easing": "spring(300, 20, 1)"
+          "easing": "linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)"
         }
       },
       {
@@ -13172,7 +13165,7 @@
         "resolvedValue": "#ffffff",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#060a13"
+          "resolvedValue": "#000000"
         }
       },
       {
@@ -13181,10 +13174,10 @@
         "type": "color",
         "description": "Subtle elevated surface (cards, sections)",
         "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#f9fafc",
+        "resolvedValue": "#fafafa",
         "dark": {
-          "alias": "{primitive.color.neutral.825}",
-          "resolvedValue": "#1b202a"
+          "alias": "{primitive.color.neutral.850}",
+          "resolvedValue": "#1a1a1a"
         }
       },
       {
@@ -13193,10 +13186,10 @@
         "type": "color",
         "description": "Deeper surface layer",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "resolvedValue": "#f5f5f5",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#212630"
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -13208,7 +13201,7 @@
         "resolvedValue": "#ffffff",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#212630"
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -13217,10 +13210,10 @@
         "type": "color",
         "description": "Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.",
         "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#0c111b",
+        "resolvedValue": "#111111",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#060a13"
+          "resolvedValue": "#000000"
         }
       },
       {
@@ -13229,7 +13222,7 @@
         "type": "color",
         "description": "Inverted background for contrast sections",
         "alias": "{primitive.color.neutral.black}",
-        "resolvedValue": "#060a13",
+        "resolvedValue": "#000000",
         "dark": {
           "alias": "{primitive.color.neutral.white}",
           "resolvedValue": "#ffffff"
@@ -13239,12 +13232,12 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent fill, midnight graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
+        "description": "Accent fill, warm graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#0f1726",
+        "resolvedValue": "#19161a",
         "dark": {
           "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f2f4f8"
+          "resolvedValue": "#f5f4f4"
         }
       },
       {
@@ -13253,10 +13246,10 @@
         "type": "color",
         "description": "Faint accent tint for hover states or highlights.",
         "alias": "{primitive.color.graphite.50}",
-        "resolvedValue": "#f2f4f8",
+        "resolvedValue": "#f5f4f4",
         "dark": {
           "alias": "{primitive.color.graphite.800}",
-          "resolvedValue": "#263043"
+          "resolvedValue": "#352e32"
         }
       },
       {
@@ -13265,10 +13258,10 @@
         "type": "color",
         "description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "resolvedValue": "#f5f5f5",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#3b404a"
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -13277,10 +13270,10 @@
         "type": "color",
         "description": "Background for an actively pressed interactive surface.",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "resolvedValue": "#e5e5e5",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#060a13"
+          "resolvedValue": "#000000"
         }
       },
       {
@@ -13289,10 +13282,10 @@
         "type": "color",
         "description": "Background for a persistently selected item (active tab, checked row).",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "resolvedValue": "#e5e5e5",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#212630"
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -13301,10 +13294,10 @@
         "type": "color",
         "description": "Muted background for low-emphasis content blocks.",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "resolvedValue": "#f5f5f5",
         "dark": {
-          "alias": "{primitive.color.neutral.750}",
-          "resolvedValue": "#252a34"
+          "alias": "{primitive.color.neutral.800}",
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -13313,10 +13306,10 @@
         "type": "color",
         "description": "Recessed background for inset wells (inputs, code blocks, nested panels).",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "resolvedValue": "#e5e5e5",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#3b404a"
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -13325,10 +13318,10 @@
         "type": "color",
         "description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "resolvedValue": "#e5e5e5",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#4d525b"
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -13337,10 +13330,10 @@
         "type": "color",
         "description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
         "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "resolvedValue": "#d4d4d4",
         "dark": {
           "alias": "{primitive.color.neutral.550}",
-          "resolvedValue": "#5e626a"
+          "resolvedValue": "#626262"
         }
       },
       {
@@ -13348,10 +13341,10 @@
         "cssVar": "--semantic-color-content-primary",
         "type": "color",
         "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#0c111b",
+        "resolvedValue": "#111111",
         "dark": {
           "alias": "{primitive.color.neutral.100}",
-          "resolvedValue": "#f4f5f7"
+          "resolvedValue": "#f5f5f5"
         }
       },
       {
@@ -13359,10 +13352,10 @@
         "cssVar": "--semantic-color-content-secondary",
         "type": "color",
         "alias": "{primitive.color.neutral.600}",
-        "resolvedValue": "#4d525b",
+        "resolvedValue": "#525252",
         "dark": {
           "alias": "{primitive.color.neutral.350}",
-          "resolvedValue": "#b2b4b8"
+          "resolvedValue": "#b4b4b4"
         }
       },
       {
@@ -13371,10 +13364,10 @@
         "type": "color",
         "description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
         "alias": "{primitive.color.neutral.500}",
-        "resolvedValue": "#6f737b",
+        "resolvedValue": "#737373",
         "dark": {
           "alias": "{primitive.color.neutral.450}",
-          "resolvedValue": "#8d9096"
+          "resolvedValue": "#909090"
         }
       },
       {
@@ -13382,10 +13375,10 @@
         "cssVar": "--semantic-color-content-disabled",
         "type": "color",
         "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "resolvedValue": "#d4d4d4",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#4d525b"
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -13393,10 +13386,10 @@
         "cssVar": "--semantic-color-content-inverse",
         "type": "color",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "resolvedValue": "#f5f5f5",
         "dark": {
           "alias": "{primitive.color.neutral.900}",
-          "resolvedValue": "#0c111b"
+          "resolvedValue": "#111111"
         }
       },
       {
@@ -13405,10 +13398,10 @@
         "type": "color",
         "description": "Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#3a4457",
+        "resolvedValue": "#4a4146",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#a8aeb8"
+          "resolvedValue": "#b2abae"
         }
       },
       {
@@ -13417,10 +13410,10 @@
         "type": "color",
         "description": "Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.",
         "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#f9fafc",
+        "resolvedValue": "#fafafa",
         "dark": {
           "alias": "{primitive.color.graphite.900}",
-          "resolvedValue": "#1c2638"
+          "resolvedValue": "#2a2428"
         }
       },
       {
@@ -13463,12 +13456,12 @@
         "path": "semantic.color.border.default",
         "cssVar": "--semantic-color-border-default",
         "type": "color",
-        "description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
+        "description": "Hairline and divider border. Light is warm graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
         "alias": "{primitive.color.graphite.200}",
-        "resolvedValue": "#c4c8cf",
+        "resolvedValue": "#cbc6c9",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#4d525b"
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -13477,10 +13470,10 @@
         "type": "color",
         "description": "Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.",
         "alias": "{primitive.color.neutral.500}",
-        "resolvedValue": "#6f737b",
+        "resolvedValue": "#737373",
         "dark": {
           "alias": "{primitive.color.neutral.500}",
-          "resolvedValue": "#6f737b"
+          "resolvedValue": "#737373"
         }
       },
       {
@@ -13489,10 +13482,10 @@
         "type": "color",
         "description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
         "alias": "{primitive.color.graphite.200}",
-        "resolvedValue": "#c4c8cf",
+        "resolvedValue": "#cbc6c9",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#212630"
+          "resolvedValue": "#262626"
         }
       },
       {
@@ -13501,10 +13494,10 @@
         "type": "color",
         "description": "Lowest-contrast border for resting hairline edges on flat surfaces.",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "resolvedValue": "#f5f5f5",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#3b404a"
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -13512,10 +13505,10 @@
         "cssVar": "--semantic-color-border-strong",
         "type": "color",
         "alias": "{primitive.color.graphite.300}",
-        "resolvedValue": "#a8aeb8",
+        "resolvedValue": "#b2abae",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#4d525b"
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -13524,10 +13517,10 @@
         "type": "color",
         "description": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#3a4457",
+        "resolvedValue": "#4a4146",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#a8aeb8"
+          "resolvedValue": "#b2abae"
         }
       },
       {
@@ -13563,7 +13556,7 @@
         "resolvedValue": "#282c34",
         "dark": {
           "alias": "{primitive.color.neutral.500}",
-          "resolvedValue": "#6f737b"
+          "resolvedValue": "#737373"
         }
       },
       {
@@ -13682,7 +13675,7 @@
         "type": "color",
         "description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).",
         "alias": "{primitive.color.neutral.black}",
-        "resolvedValue": "#060a13",
+        "resolvedValue": "#000000",
         "dark": {
           "alias": "{primitive.color.neutral.white}",
           "resolvedValue": "#ffffff"
@@ -14289,10 +14282,10 @@
         "type": "color",
         "description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#0f1726",
+        "resolvedValue": "#19161a",
         "dark": {
           "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f2f4f8"
+          "resolvedValue": "#f5f4f4"
         }
       },
       {
@@ -14301,10 +14294,10 @@
         "type": "color",
         "description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
         "alias": "{primitive.color.graphite.800}",
-        "resolvedValue": "#263043",
+        "resolvedValue": "#352e32",
         "dark": {
           "alias": "{primitive.color.graphite.100}",
-          "resolvedValue": "#e5e8ed"
+          "resolvedValue": "#e9e7e8"
         }
       },
       {
@@ -14313,10 +14306,10 @@
         "type": "color",
         "description": "Accent fill on press (graphite.900 / 200).",
         "alias": "{primitive.color.graphite.900}",
-        "resolvedValue": "#1c2638",
+        "resolvedValue": "#2a2428",
         "dark": {
           "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#c4c8cf"
+          "resolvedValue": "#cbc6c9"
         }
       },
       {
@@ -14325,10 +14318,10 @@
         "type": "color",
         "description": "Accent fill for inactive or unselected accent elements.",
         "alias": "{primitive.color.neutral.400}",
-        "resolvedValue": "#a0a3a8",
+        "resolvedValue": "#a3a3a3",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#4d525b"
+          "resolvedValue": "#525252"
         }
       },
       {
@@ -14337,10 +14330,10 @@
         "type": "color",
         "description": "Accent fill for disabled accent elements.",
         "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "resolvedValue": "#d4d4d4",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#3b404a"
+          "resolvedValue": "#404040"
         }
       },
       {
@@ -14349,10 +14342,10 @@
         "type": "color",
         "description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#3a4457",
+        "resolvedValue": "#4a4146",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#a8aeb8"
+          "resolvedValue": "#b2abae"
         }
       },
       {
@@ -14361,10 +14354,10 @@
         "type": "color",
         "description": "Accent content color on pointer hover.",
         "alias": "{primitive.color.graphite.800}",
-        "resolvedValue": "#263043",
+        "resolvedValue": "#352e32",
         "dark": {
           "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#c4c8cf"
+          "resolvedValue": "#cbc6c9"
         }
       },
       {
@@ -14373,10 +14366,10 @@
         "type": "color",
         "description": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
         "alias": "{primitive.color.graphite.50}",
-        "resolvedValue": "#f2f4f8",
+        "resolvedValue": "#f5f4f4",
         "dark": {
           "alias": "{primitive.color.graphite.800}",
-          "resolvedValue": "#263043"
+          "resolvedValue": "#352e32"
         }
       },
       {
@@ -14501,7 +14494,7 @@
           "shadow": null,
           "border": {
             "alias": "{semantic.color.border.subtle}",
-            "resolvedValue": "#f4f5f7"
+            "resolvedValue": "#f5f5f5"
           }
         }
       },
@@ -14513,7 +14506,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#f9fafc"
+            "resolvedValue": "#fafafa"
           },
           "shadow": {
             "alias": "{semantic.shadow.subtle}",
@@ -14530,7 +14523,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#f9fafc"
+            "resolvedValue": "#fafafa"
           },
           "shadow": {
             "alias": "{semantic.shadow.floating}",
@@ -14555,7 +14548,7 @@
           },
           "border": {
             "alias": "{semantic.color.border.default}",
-            "resolvedValue": "#c4c8cf"
+            "resolvedValue": "#cbc6c9"
           }
         }
       },
@@ -14616,6 +14609,14 @@
         "resolvedValue": "40px"
       },
       {
+        "path": "semantic.size.touchTarget",
+        "cssVar": "--semantic-size-touchTarget",
+        "type": "dimension",
+        "description": "Small-control minimum on a coarse pointer or narrow viewport (hds#750).",
+        "alias": "{primitive.size.interactive.min}",
+        "resolvedValue": "44px"
+      },
+      {
         "path": "semantic.size.tile",
         "cssVar": "--semantic-size-tile",
         "type": "dimension",
@@ -14671,7 +14672,7 @@
         "type": "color",
         "description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.tag.text",
@@ -14679,7 +14680,7 @@
         "type": "color",
         "description": "Unselected tag text color (the active label uses activeText).",
         "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#4d525b"
+        "resolvedValue": "#525252"
       },
       {
         "path": "component.tag.border",
@@ -14687,7 +14688,7 @@
         "type": "color",
         "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.tag.radius",
@@ -14759,7 +14760,7 @@
         "type": "color",
         "description": "Text color when the tag is active.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#fafafa"
       },
       {
         "path": "component.tag.activeBackground",
@@ -14767,7 +14768,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#0f1726"
+        "resolvedValue": "#19161a"
       },
       {
         "path": "component.tag.activeBorder",
@@ -14775,7 +14776,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#0f1726"
+        "resolvedValue": "#19161a"
       },
       {
         "path": "component.tag.activeHover",
@@ -14783,7 +14784,7 @@
         "type": "color",
         "description": "Active tag hover fill color.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "#263043"
+        "resolvedValue": "#352e32"
       },
       {
         "path": "component.badge.fontSize",
@@ -14807,7 +14808,7 @@
         "type": "color",
         "description": "Badge text color.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#0c111b"
+        "resolvedValue": "#111111"
       },
       {
         "path": "component.badge.bg",
@@ -14827,7 +14828,7 @@
         "type": "color",
         "description": "Neutral badge fill.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.badge.neutral.text",
@@ -14835,7 +14836,7 @@
         "type": "color",
         "description": "Neutral badge text color.",
         "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#4d525b"
+        "resolvedValue": "#525252"
       },
       {
         "path": "component.badge.info.bg",
@@ -14971,7 +14972,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#0f1726"
+        "resolvedValue": "#19161a"
       },
       {
         "path": "component.button.bgHover",
@@ -14979,7 +14980,7 @@
         "type": "color",
         "description": "Primary button hover fill.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "#263043"
+        "resolvedValue": "#352e32"
       },
       {
         "path": "component.button.bgPressed",
@@ -14987,7 +14988,7 @@
         "type": "color",
         "description": "Primary button pressed fill (hds#748).",
         "alias": "{semantic.accent.pressed}",
-        "resolvedValue": "#1c2638"
+        "resolvedValue": "#2a2428"
       },
       {
         "path": "component.button.text",
@@ -14995,7 +14996,7 @@
         "type": "color",
         "description": "Primary button text color.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#fafafa"
       },
       {
         "path": "component.button.radius",
@@ -15020,6 +15021,14 @@
         "description": "Vertical button padding (8px, the md size; legacy flat alias of size.md.paddingY).",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
+      },
+      {
+        "path": "component.button.fontWeight",
+        "cssVar": "--component-button-fontWeight",
+        "type": "fontWeight",
+        "description": "Button label weight.",
+        "alias": "{primitive.typography.weight.semibold}",
+        "resolvedValue": "600"
       },
       {
         "path": "component.button.size.sm.paddingX",
@@ -15057,9 +15066,9 @@
         "path": "component.button.size.sm.height",
         "cssVar": "--component-button-size-sm-height",
         "type": "dimension",
-        "description": "Small button height (32px).",
-        "alias": "{primitive.size.32}",
-        "resolvedValue": "32px"
+        "description": "Small button height (36px).",
+        "alias": "{primitive.size.36}",
+        "resolvedValue": "36px"
       },
       {
         "path": "component.button.size.sm.itemSpacing",
@@ -15081,7 +15090,7 @@
         "path": "component.button.size.md.paddingY",
         "cssVar": "--component-button-size-md-paddingY",
         "type": "dimension",
-        "description": "Medium button vertical padding (8px; the 40px height drives the box).",
+        "description": "Medium button vertical padding (8px; the 44px height drives the box).",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -15105,9 +15114,9 @@
         "path": "component.button.size.md.height",
         "cssVar": "--component-button-size-md-height",
         "type": "dimension",
-        "description": "Medium button height (40px).",
-        "alias": "{primitive.size.40}",
-        "resolvedValue": "40px"
+        "description": "Medium button height (44px).",
+        "alias": "{primitive.size.44}",
+        "resolvedValue": "44px"
       },
       {
         "path": "component.button.size.md.itemSpacing",
@@ -15153,9 +15162,9 @@
         "path": "component.button.size.lg.height",
         "cssVar": "--component-button-size-lg-height",
         "type": "dimension",
-        "description": "Large button height (48px).",
-        "alias": "{primitive.size.48}",
-        "resolvedValue": "48px"
+        "description": "Large button height (52px).",
+        "alias": "{primitive.size.52}",
+        "resolvedValue": "52px"
       },
       {
         "path": "component.button.size.lg.itemSpacing",
@@ -15171,7 +15180,7 @@
         "type": "color",
         "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.disabled}",
-        "resolvedValue": "#d3d4d6"
+        "resolvedValue": "#d4d4d4"
       },
       {
         "path": "component.button.primary.bgDisabled",
@@ -15179,7 +15188,7 @@
         "type": "color",
         "description": "Disabled primary button fill.",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.button.secondary.bg.rest",
@@ -15187,7 +15196,7 @@
         "type": "color",
         "description": "Secondary button fill: soft tonal, no border (hds#891).",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#e5e5e5"
       },
       {
         "path": "component.button.secondary.bg.hover",
@@ -15195,7 +15204,7 @@
         "type": "color",
         "description": "Secondary button hover fill (the wipe layer's colour).",
         "alias": "{semantic.color.surface.softHover}",
-        "resolvedValue": "#d3d4d6"
+        "resolvedValue": "#d4d4d4"
       },
       {
         "path": "component.button.secondary.bg.pressed",
@@ -15203,7 +15212,7 @@
         "type": "color",
         "description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#e5e5e5"
       },
       {
         "path": "component.button.secondary.border.rest",
@@ -15211,7 +15220,7 @@
         "type": "color",
         "description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#6f737b"
+        "resolvedValue": "#737373"
       },
       {
         "path": "component.button.secondary.border.hover",
@@ -15219,7 +15228,7 @@
         "type": "color",
         "description": "Secondary button hover border. Unused by Button since hds#891 (soft fill, no border); kept for consumers.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#3a4457"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "component.button.secondary.border.disabled",
@@ -15227,7 +15236,7 @@
         "type": "color",
         "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.subdued}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#cbc6c9"
       },
       {
         "path": "component.button.secondary.text",
@@ -15235,7 +15244,7 @@
         "type": "color",
         "description": "Secondary button text color.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#0c111b"
+        "resolvedValue": "#111111"
       },
       {
         "path": "component.button.tertiary.bg.hover",
@@ -15243,7 +15252,7 @@
         "type": "color",
         "description": "Ghost button hover (wipe) fill.",
         "alias": "{semantic.color.surface.hover}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "component.button.tertiary.bg.pressed",
@@ -15251,7 +15260,7 @@
         "type": "color",
         "description": "Ghost button pressed fill.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#e5e5e5"
       },
       {
         "path": "component.input.bg",
@@ -15265,14 +15274,14 @@
         "cssVar": "--component-input-text",
         "type": "color",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#0c111b"
+        "resolvedValue": "#111111"
       },
       {
         "path": "component.input.border",
         "cssVar": "--component-input-border",
         "type": "color",
         "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#6f737b"
+        "resolvedValue": "#737373"
       },
       {
         "path": "component.input.borderError",
@@ -15307,14 +15316,14 @@
         "cssVar": "--component-card-bg",
         "type": "color",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#fafafa"
       },
       {
         "path": "component.card.border",
         "cssVar": "--component-card-border",
         "type": "color",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#cbc6c9"
       },
       {
         "path": "component.card.radius",
@@ -15344,7 +15353,7 @@
         "type": "color",
         "description": "Inline code chip background.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#f5f5f5"
       }
     ],
     "role": [
@@ -15362,7 +15371,7 @@
         "type": "color",
         "description": "Default text on background. shadcn role: foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#0c111b"
+        "resolvedValue": "#111111"
       },
       {
         "path": "role.card",
@@ -15370,7 +15379,7 @@
         "type": "color",
         "description": "Card surface. shadcn role: card.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#fafafa"
       },
       {
         "path": "role.card-foreground",
@@ -15378,7 +15387,7 @@
         "type": "color",
         "description": "Text on card. shadcn role: card-foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#0c111b"
+        "resolvedValue": "#111111"
       },
       {
         "path": "role.popover",
@@ -15394,7 +15403,7 @@
         "type": "color",
         "description": "Modal backdrop colour role. Apply alpha in the class, e.g. bg-scrim/60.",
         "alias": "{semantic.color.surface.scrim}",
-        "resolvedValue": "#0c111b"
+        "resolvedValue": "#111111"
       },
       {
         "path": "role.pressed-overlay",
@@ -15402,7 +15411,7 @@
         "type": "color",
         "description": "Pressed-state overlay colour role. Apply alpha in the class, e.g. inset-shadow-pressed-overlay/5.",
         "alias": "{semantic.color.state.pressed.overlay}",
-        "resolvedValue": "#060a13"
+        "resolvedValue": "#000000"
       },
       {
         "path": "role.popover-foreground",
@@ -15410,7 +15419,7 @@
         "type": "color",
         "description": "Text on popover. shadcn role: popover-foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#0c111b"
+        "resolvedValue": "#111111"
       },
       {
         "path": "role.primary",
@@ -15418,7 +15427,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#0f1726"
+        "resolvedValue": "#19161a"
       },
       {
         "path": "role.primary-foreground",
@@ -15426,7 +15435,7 @@
         "type": "color",
         "description": "Text/icons on primary surface. shadcn role: primary-foreground.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#fafafa"
       },
       {
         "path": "role.secondary",
@@ -15434,7 +15443,7 @@
         "type": "color",
         "description": "Secondary action surface. shadcn role: secondary.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#fafafa"
       },
       {
         "path": "role.secondary-foreground",
@@ -15442,7 +15451,7 @@
         "type": "color",
         "description": "Text on secondary surface. shadcn role: secondary-foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#0c111b"
+        "resolvedValue": "#111111"
       },
       {
         "path": "role.muted",
@@ -15450,7 +15459,7 @@
         "type": "color",
         "description": "Muted/quiet bg (skeletons, disabled inputs). shadcn role: muted.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "role.muted-foreground",
@@ -15458,7 +15467,7 @@
         "type": "color",
         "description": "Muted text. shadcn role: muted-foreground.",
         "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#4d525b"
+        "resolvedValue": "#525252"
       },
       {
         "path": "role.accent",
@@ -15466,7 +15475,7 @@
         "type": "color",
         "description": "Hover/active tinted bg. shadcn role: accent.",
         "alias": "{semantic.color.surface.accentSubtle}",
-        "resolvedValue": "#f2f4f8"
+        "resolvedValue": "#f5f4f4"
       },
       {
         "path": "role.accent-foreground",
@@ -15474,7 +15483,7 @@
         "type": "color",
         "description": "Text on accent surface. shadcn role: accent-foreground.",
         "alias": "{semantic.color.content.accent}",
-        "resolvedValue": "#3a4457"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "role.destructive",
@@ -15490,7 +15499,7 @@
         "type": "color",
         "description": "Text on destructive surface. shadcn role: destructive-foreground.",
         "alias": "{semantic.color.content.inverse}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#f5f5f5"
       },
       {
         "path": "role.border",
@@ -15498,7 +15507,7 @@
         "type": "color",
         "description": "Default border. shadcn role: border.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#cbc6c9"
       },
       {
         "path": "role.input",
@@ -15506,7 +15515,7 @@
         "type": "color",
         "description": "Input field border. shadcn role: input.",
         "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#6f737b"
+        "resolvedValue": "#737373"
       },
       {
         "path": "role.ring",
@@ -15514,7 +15523,7 @@
         "type": "color",
         "description": "Focus ring color. shadcn role: ring.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#3a4457"
+        "resolvedValue": "#4a4146"
       },
       {
         "path": "role.radius",

@@ -6,7 +6,7 @@
  *     strip from its panel.
  *   - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px
  *     underline takes no extra height when it appears.
- *   - Active state pairs the underline with a soft `bg-accent/5` tint that
+ *   - Active state pairs the underline with a `surface.selected` fill that
  *     extends down into TabsContent — the active tab visually "claims" its
  *     content panel (folder-tab affordance, modern-soft).
  *
@@ -103,7 +103,7 @@ export function TabsTrigger({
         'relative inline-flex items-center px-fixed-xs py-scale-xs hds-type-ui hds-touch-row transition-colors',
         // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
         'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
-        'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
+        'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-[var(--semantic-color-surface-selected)]',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
         'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
         className,
@@ -115,10 +115,11 @@ export function TabsTrigger({
 
 // `panel` is the tinted surface pulled up under the strip (in-page tabs); `bare` sits on the page,
 // for tabs that are an app's top-level nav or a page's sections (hds#819).
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface.selected has no Tailwind-theme utility; the old bg-accent/5 tint was near-invisible (hds#522)
 const tabsContentVariants = /* @__PURE__ */ cva('', {
   variants: {
     variant: {
-      panel: 'bg-accent/5 rounded-b-md p-fixed-md -mt-fixed-md',
+      panel: 'bg-[var(--semantic-color-surface-selected)] rounded-b-md p-fixed-md -mt-fixed-md',
       bare: '',
     },
   },

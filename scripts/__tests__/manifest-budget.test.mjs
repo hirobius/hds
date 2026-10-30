@@ -48,4 +48,13 @@ describe('manifest bundle budget (hds#413)', () => {
       `manifest ~${Math.round(estimate)} B gzip vs ${limit} B budget — use the performance-optimization skill; do not raise the budget`,
     ).toBeLessThanOrEqual(limit);
   });
+
+  // hds#784: `hidden: false` / `docExempt: false` on every spec cost ~95 B gzip.
+  it('writes the hidden and docExempt flags only when true', () => {
+    const manifest = JSON.parse(readFileSync(join(ROOT, 'public/hds-manifest.json'), 'utf8'));
+    const falseFlags = Object.entries(manifest.componentSpecs).flatMap(([name, spec]) =>
+      ['hidden', 'docExempt'].filter((k) => spec[k] === false).map((k) => `${name}.${k}`),
+    );
+    expect(falseFlags).toEqual([]);
+  });
 });

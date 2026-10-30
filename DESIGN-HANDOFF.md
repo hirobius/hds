@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 523 tokens, aliases, and TS refs in one shot.
+Checks all 529 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -434,8 +434,11 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `primitive.size.22`              | `22px`  | 22px size step.                            |
 | `primitive.size.24`              | `24px`  | 24px size step.                            |
 | `primitive.size.32`              | `32px`  | 32px size step.                            |
+| `primitive.size.36`              | `36px`  | 36px size step.                            |
 | `primitive.size.40`              | `40px`  | 40px size step.                            |
+| `primitive.size.44`              | `44px`  | 44px size step.                            |
 | `primitive.size.48`              | `48px`  | 48px size step.                            |
+| `primitive.size.52`              | `52px`  | 52px size step.                            |
 | `primitive.size.64`              | `64px`  | 64px size step.                            |
 | `primitive.size.80`              | `80px`  | 80px size step.                            |
 | `primitive.size.96`              | `96px`  | 96px size step.                            |
@@ -506,16 +509,16 @@ Or via `useTheme().setDensity('compact')`
 
 ### Primitive motion base
 
-| Token                         | Value                          | Use                                                                    |
-| ----------------------------- | ------------------------------ | ---------------------------------------------------------------------- |
-| `primitive.duration.instant`  | `100ms`                        | Immediate state changes and rapid dismissals                           |
-| `primitive.duration.short`    | `150ms`                        | Productive micro-interactions                                          |
-| `primitive.duration.medium`   | `250ms`                        | Expressive entrances and teaching moments                              |
-| `primitive.duration.long`     | `400ms`                        | Spatial movement and page travel                                       |
-| `primitive.easing.emphasized` | `cubic-bezier(0.4, 0, 0.2, 1)` | Cubic bezier with balanced input and output tangents.                  |
-| `primitive.easing.decelerate` | `cubic-bezier(0, 0, 0.2, 1)`   | Cubic bezier with steep initial gain and constrained tail velocity.    |
-| `primitive.easing.accelerate` | `cubic-bezier(0.4, 0, 1, 1)`   | Cubic bezier with restrained initial gain and steep terminal velocity. |
-| `primitive.easing.elastic`    | `spring(300, 20, 1)`           | Spring response defined by stiffness, damping, and mass parameters.    |
+| Token                         | Value                                                                                              | Use                                                                    |
+| ----------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `primitive.duration.instant`  | `100ms`                                                                                            | Immediate state changes and rapid dismissals                           |
+| `primitive.duration.short`    | `150ms`                                                                                            | Productive micro-interactions                                          |
+| `primitive.duration.medium`   | `250ms`                                                                                            | Expressive entrances and teaching moments                              |
+| `primitive.duration.long`     | `400ms`                                                                                            | Spatial movement and page travel                                       |
+| `primitive.easing.emphasized` | `cubic-bezier(0.4, 0, 0.2, 1)`                                                                     | Cubic bezier with balanced input and output tangents.                  |
+| `primitive.easing.decelerate` | `cubic-bezier(0, 0, 0.2, 1)`                                                                       | Cubic bezier with steep initial gain and constrained tail velocity.    |
+| `primitive.easing.accelerate` | `cubic-bezier(0.4, 0, 1, 1)`                                                                       | Cubic bezier with restrained initial gain and steep terminal velocity. |
+| `primitive.easing.elastic`    | `linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)` | Spring response defined by stiffness, damping, and mass parameters.    |
 
 ### Semantic motion intents
 

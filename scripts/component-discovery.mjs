@@ -239,11 +239,35 @@ export function readComponentTags(source, exportName) {
     // module, and MetricTile (a part) must not join MetricTiles (the composition).
     screenPattern: componentTags.screenPattern,
     description: stripJsDocBlock(componentBlock) || stripJsDocBlock(fileBlock),
+    descriptionSource: stripJsDocBlock(componentBlock)
+      ? 'export'
+      : stripJsDocBlock(fileBlock)
+        ? 'file'
+        : null,
     ...mergeContract(componentBlock, fileBlock),
     // hds#390: the export's own block wins; a file-block @deprecated retires
     // every export of the module.
     deprecation: parseDeprecation(componentBlock) ?? parseDeprecation(fileBlock),
   };
+}
+
+const firstSentence = (text) => text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;
+
+/**
+ * A part with no JSDoc of its own (CardBody, DialogTitle) borrows its file's block.
+ * In a file with two or more exports, a borrowing part keeps only the block's
+ * first sentence: the full block repeated per part was most of the manifest's
+ * gzip budget (hds#413). A file's only export keeps the whole block.
+ */
+export function summarizeSharedFileDescriptions(components) {
+  const exportsPerFile = new Map();
+  for (const c of components)
+    exportsPerFile.set(c.filePath, (exportsPerFile.get(c.filePath) ?? 0) + 1);
+  return components.map((c) =>
+    c.descriptionSource === 'file' && exportsPerFile.get(c.filePath) > 1
+      ? { ...c, description: firstSentence(c.description) }
+      : c,
+  );
 }
 
 export function discoverHdsComponents() {
@@ -281,6 +305,7 @@ export function discoverHdsComponents() {
         tier,
         screenPattern,
         description,
+        descriptionSource,
         usage,
         slots,
         keyboard,
@@ -311,6 +336,7 @@ export function discoverHdsComponents() {
         name,
         filePath: toRelativePath(filePath),
         description,
+        descriptionSource,
         category,
         hidden: internal,
         ignored: false,
@@ -336,13 +362,14 @@ export function discoverHdsComponents() {
     }
   }
 
-  components.sort((a, b) => a.name.localeCompare(b.name) || a.filePath.localeCompare(b.filePath));
+  const summarized = summarizeSharedFileDescriptions(components);
+  summarized.sort((a, b) => a.name.localeCompare(b.name) || a.filePath.localeCompare(b.filePath));
   namespaceViolations.sort(
     (a, b) => a.name.localeCompare(b.name) || a.filePath.localeCompare(b.filePath),
   );
 
   return {
-    components,
+    components: summarized,
     namespaceViolations,
   };
 }

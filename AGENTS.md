@@ -15,7 +15,7 @@ For agents building UI with `@hirobius/design-system`. Read this first. It settl
 
 These are the recommended components: the ratified core set plus every component the needs below name. The ratified core alone is the `core: true` flag in the manifest.
 
-- `@hirobius/design-system`: `Alert`, `AlertDialog`, `Avatar`, `AvatarGroup`, `Badge`, `Blockquote`, `Box`, `Breadcrumb`, `Button`, `Card`, `Checkbox`, `Combobox`, `Container`, `Dialog`, `Disclosure`, `Divider`, `EmptyState`, `Field`, `Grid`, `HdsRouterProvider`, `HdsThemeProvider`, `Icon`, `InlineLink`, `Input`, `Kbd`, `Menu`, `MetaLine`, `MetadataList`, `NavList`, `Pagination`, `Pin`, `Popover`, `Progress`, `Radio`, `SegmentedControl`, `Select`, `Sidebar`, `Skeleton`, `Slider`, `Spinner`, `Stack`, `Surface`, `Switcher`, `Table`, `Tabs`, `TabsContent`, `TabsList`, `TabsTrigger`, `Tag`, `Text`, `Textarea`, `Timestamp`, `ToastProvider`, `Toggle`, `Tooltip`, `VisuallyHidden`, `useToast`.
+- `@hirobius/design-system`: `Alert`, `AlertDialog`, `Avatar`, `AvatarGroup`, `Badge`, `Blockquote`, `Box`, `Breadcrumb`, `Button`, `Card`, `Checkbox`, `Combobox`, `CommandPalette`, `Container`, `Dialog`, `Disclosure`, `Divider`, `EmptyState`, `Field`, `Grid`, `HdsRouterProvider`, `HdsThemeProvider`, `Icon`, `InlineLink`, `Input`, `Kbd`, `Menu`, `MetaLine`, `MetadataList`, `NavList`, `Pagination`, `Pin`, `Popover`, `Progress`, `Radio`, `SegmentedControl`, `Select`, `Sidebar`, `Skeleton`, `Slider`, `Spinner`, `Stack`, `Surface`, `Switcher`, `Table`, `Tabs`, `TabsContent`, `TabsList`, `TabsTrigger`, `Tag`, `Text`, `Textarea`, `Timestamp`, `ToastProvider`, `Toggle`, `Tooltip`, `VisuallyHidden`, `useToast`.
 - `@hirobius/design-system/patterns`: `DataTableSection`, `DestructiveSection`, `Form`, `FormActions`, `MetricTile`, `MetricTiles`, `Page`, `PageHeader`. These are not in the root barrel.
 - Load one stylesheet once at the app root and put `data-hds` on the root element (`CONSUMING.md`).
 
@@ -140,6 +140,7 @@ Loop mechanics (see `ralph/README.md` for the full contract):
 ## PR previews: screenshots, not Vercel (Adrian 2026-10-24, all repos)
 
 Vercel preview builds are OFF (production only). Every PR carries its own preview:
+
 1. Run the production build locally (`pnpm build` / `npm run build`) and serve the built app (`pnpm preview` / `npm run preview`, or the repo's screenshot tooling).
 2. Attach screenshots of the affected routes only: 390x844, light AND dark, plus a desktop shot if the route is used on desktop. At most ~6 images, inline in the PR body or a PR comment. Adrian reviews on his phone: no zips, nothing he has to build.
 3. Backend/infra PRs with no visual change: write "no visual change" instead.

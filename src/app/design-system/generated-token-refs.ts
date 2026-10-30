@@ -86,19 +86,19 @@ export const tokenRefs = {
         "900": "var(--primitive-color-cobalt-900)"
       },
       lime: {
-        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         "50": "var(--primitive-color-lime-50)",
-        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         "100": "var(--primitive-color-lime-100)",
-        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         "200": "var(--primitive-color-lime-200)",
-        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         "300": "var(--primitive-color-lime-300)",
-        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         "400": "var(--primitive-color-lime-400)",
-        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         "600": "var(--primitive-color-lime-600)",
-        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         "800": "var(--primitive-color-lime-800)"
       },
       mauve: {
@@ -222,6 +222,7 @@ export const tokenRefs = {
       weight: {
         regular: "var(--primitive-typography-weight-regular)",
         medium: "var(--primitive-typography-weight-medium)",
+        semibold: "var(--primitive-typography-weight-semibold)",
         bold: "var(--primitive-typography-weight-bold)",
         display: "var(--primitive-typography-weight-display)",
         mono: "var(--primitive-typography-weight-mono)"
@@ -272,8 +273,11 @@ export const tokenRefs = {
       "22": "var(--primitive-size-22)",
       "24": "var(--primitive-size-24)",
       "32": "var(--primitive-size-32)",
+      "36": "var(--primitive-size-36)",
       "40": "var(--primitive-size-40)",
+      "44": "var(--primitive-size-44)",
       "48": "var(--primitive-size-48)",
+      "52": "var(--primitive-size-52)",
       "64": "var(--primitive-size-64)",
       "80": "var(--primitive-size-80)",
       "96": "var(--primitive-size-96)",
@@ -365,7 +369,7 @@ export const tokenRefs = {
       border: {
         default: "var(--semantic-color-border-default)",
         interactive: "var(--semantic-color-border-interactive)",
-        /** @deprecated border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) @removeIn 1.0.0 */
+        /** @deprecated border consolidation 2026-10-12, removed in 1.0.0 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) @removeIn 1.0.0 */
         subdued: "var(--semantic-color-border-subdued)",
         subtle: "var(--semantic-color-border-subtle)",
         strong: "var(--semantic-color-border-strong)",
@@ -425,22 +429,22 @@ export const tokenRefs = {
         gap: "var(--semantic-space-subgrid-gap)"
       },
       component: {
-        /** @deprecated hds#206 — use semantic.space.scale.xs @removeIn 1.0.0 */
+        /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xs @removeIn 1.0.0 */
         gap: "var(--semantic-space-component-gap)",
         medium: "var(--semantic-space-component-medium)",
-        /** @deprecated hds#206 — use semantic.space.surface.padding @removeIn 1.0.0 */
+        /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.surface.padding @removeIn 1.0.0 */
         padding: "var(--semantic-space-component-padding)"
       },
       layout: {
-        /** @deprecated hds#206 — use semantic.space.scale.sm @removeIn 1.0.0 */
+        /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm @removeIn 1.0.0 */
         tight: "var(--semantic-space-layout-tight)",
-        /** @deprecated hds#206 — use semantic.space.scale.md @removeIn 1.0.0 */
+        /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.md @removeIn 1.0.0 */
         normal: "var(--semantic-space-layout-normal)",
-        /** @deprecated hds#206 — use semantic.space.region.gutter @removeIn 1.0.0 */
+        /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.region.gutter @removeIn 1.0.0 */
         gutter: "var(--semantic-space-layout-gutter)",
-        /** @deprecated hds#206 — use semantic.space.scale.lg @removeIn 1.0.0 */
+        /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.lg @removeIn 1.0.0 */
         inset: "var(--semantic-space-layout-inset)",
-        /** @deprecated hds#206 — use semantic.space.scale.xl @removeIn 1.0.0 */
+        /** @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xl @removeIn 1.0.0 */
         spacious: "var(--semantic-space-layout-spacious)"
       },
       section: {
@@ -535,7 +539,7 @@ export const tokenRefs = {
         lineHeight: "var(--semantic-typography-mono-line-height)",
         maxWidth: "var(--semantic-typography-mono-max-width)"
       },
-      /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+      /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
       h1: {
         fontFamily: "var(--semantic-typography-h1-font-family)",
         fontSize: "var(--semantic-typography-h1-font-size)",
@@ -543,7 +547,7 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-h1-letter-spacing)",
         lineHeight: "var(--semantic-typography-h1-line-height)"
       },
-      /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+      /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
       h2: {
         fontFamily: "var(--semantic-typography-h2-font-family)",
         fontSize: "var(--semantic-typography-h2-font-size)",
@@ -551,7 +555,7 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-h2-letter-spacing)",
         lineHeight: "var(--semantic-typography-h2-line-height)"
       },
-      /** @deprecated hds#483 — use semantic.typography.title @removeIn 1.0.0 */
+      /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
       h3: {
         fontFamily: "var(--semantic-typography-h3-font-family)",
         fontSize: "var(--semantic-typography-h3-font-size)",
@@ -559,7 +563,7 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-h3-letter-spacing)",
         lineHeight: "var(--semantic-typography-h3-line-height)"
       },
-      /** @deprecated hds#483 — use semantic.typography.caption @removeIn 1.0.0 */
+      /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
       eyebrow: {
         fontFamily: "var(--semantic-typography-eyebrow-font-family)",
         fontSize: "var(--semantic-typography-eyebrow-font-size)",
@@ -590,13 +594,13 @@ export const tokenRefs = {
       contentHover: "var(--semantic-accent-contentHover)",
       subtle: "var(--semantic-accent-subtle)",
       delight: {
-        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         base: "var(--semantic-accent-delight-base)",
-        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         deep: "var(--semantic-accent-delight-deep)",
-        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         pale: "var(--semantic-accent-delight-pale)",
-        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code @removeIn 1.0.0 */
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
         onDelight: "var(--semantic-accent-delight-onDelight)"
       }
     },
@@ -658,6 +662,7 @@ export const tokenRefs = {
         lg: "var(--semantic-size-icon-lg)"
       },
       avatar: "var(--semantic-size-avatar)",
+      touchTarget: "var(--semantic-size-touchTarget)",
       tile: "var(--semantic-size-tile)",
       row: {
         compact: "var(--semantic-size-row-compact)",
@@ -693,9 +698,9 @@ export const tokenRefs = {
     badge: {
       fontSize: "var(--component-badge-fontSize)",
       fontWeight: "var(--component-badge-fontWeight)",
-      /** @deprecated hds#595 — use component.badge.<tone>.text (one per tone) @removeIn 1.0.0 */
+      /** @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.text (one per tone) @removeIn 1.0.0 */
       text: "var(--component-badge-text)",
-      /** @deprecated hds#595 — use component.badge.<tone>.bg (one per tone) @removeIn 1.0.0 */
+      /** @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) @removeIn 1.0.0 */
       bg: "var(--component-badge-bg)",
       neutral: {
         bg: "var(--component-badge-neutral-bg)",
@@ -736,6 +741,7 @@ export const tokenRefs = {
       radius: "var(--component-button-radius)",
       paddingX: "var(--component-button-paddingX)",
       paddingY: "var(--component-button-paddingY)",
+      fontWeight: "var(--component-button-fontWeight)",
       size: {
         sm: {
           paddingX: "var(--component-button-size-sm-paddingX)",
@@ -773,10 +779,10 @@ export const tokenRefs = {
           pressed: "var(--component-button-secondary-bg-pressed)"
         },
         border: {
-          /** @deprecated hds#891 soft surfaces: secondary Button has no border @removeIn 1.0.0 */
+          /** @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 @removeIn 1.0.0 */
           rest: "var(--component-button-secondary-border-rest)",
           hover: "var(--component-button-secondary-border-hover)",
-          /** @deprecated hds#891 soft surfaces: secondary Button has no border @removeIn 1.0.0 */
+          /** @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 @removeIn 1.0.0 */
           disabled: "var(--component-button-secondary-border-disabled)"
         },
         text: "var(--component-button-secondary-text)"

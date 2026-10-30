@@ -15,7 +15,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
-import { resolveAlias } from '../../../scripts/build-tokens.mjs';
+import { resolveAlias } from '../../../scripts/lib/token-tree.mjs';
 import { contrastRatio } from '../../app/utils/colorUtils';
 
 const TOKENS = JSON.parse(

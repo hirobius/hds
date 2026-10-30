@@ -1,0 +1,162 @@
+{
+  "version": "0.12.0",
+  "date": "2026-07-08",
+  "bump": "minor",
+  "summary": "Stat, Field and Card move to the shared tone set and InfoPage is removed; adds dozens of components, /brand and /scroll.",
+  "backfilled": true,
+  "steps": [
+    {
+      "id": "0.12.0/removed/InfoPage",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "InfoPage and InfoPageProps are removed with no replacement; it was portfolio scaffolding, so delete the code that uses it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "InfoPage",
+              "InfoPageProps"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:InfoPage",
+        "removed:.:InfoPageProps"
+      ],
+      "backfilled": true,
+      "source": "CHANGELOG.md:123"
+    },
+    {
+      "id": "0.12.0/removed/StatTone-FieldTone",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The StatTone and FieldTone types are removed; use StatProps[\"tone\"] and FieldProps[\"tone\"] instead.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "StatTone",
+              "FieldTone"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:FieldTone",
+        "removed:.:StatTone"
+      ],
+      "backfilled": true,
+      "source": "CHANGELOG.md:138"
+    },
+    {
+      "id": "0.12.0/renamed/Hds-prefix",
+      "kind": "renamed",
+      "impact": "breaking",
+      "plain": "Twelve component families, such as HdsAlertDialog and HdsDateInput, lost their Hds prefix before any release shipped them, so import each by its bare name (AlertDialog, DateInput).",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "HdsToggleButton",
+              "HdsAlertDialog",
+              "HdsHoverCard",
+              "HdsContextMenu",
+              "HdsAspectRatio",
+              "HdsMultiSelector",
+              "HdsMultiSelectorOption",
+              "HdsLightbox",
+              "HdsCalendar",
+              "HdsTimeInput",
+              "HdsDateInput",
+              "HdsDateRangeInput",
+              "HdsDateTimeInput"
+            ]
+          }
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:75"
+    },
+    {
+      "id": "0.12.0/prop-value-mapped/Field-tone",
+      "kind": "prop-value-mapped",
+      "impact": "breaking",
+      "plain": "Field no longer takes tone=\"default\"; pass tone=\"neutral\" or leave tone out, which renders the same.",
+      "detect": {
+        "regex": [
+          "<Field\\b[^>]*\\btone=\\{?\\s*['\"]default['\"]"
+        ]
+      },
+      "prop": {
+        "component": "Field",
+        "name": "tone",
+        "values": {
+          "default": "neutral"
+        }
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:138"
+    },
+    {
+      "id": "0.12.0/prop-value-mapped/Stat-tone",
+      "kind": "prop-value-mapped",
+      "impact": "breaking",
+      "plain": "Stat no longer takes tone=\"default\"; pass tone=\"neutral\" or leave tone out, which renders the same.",
+      "detect": {
+        "regex": [
+          "<Stat\\b[^>]*\\btone=\\{?\\s*['\"]default['\"]"
+        ]
+      },
+      "prop": {
+        "component": "Stat",
+        "name": "tone",
+        "values": {
+          "default": "neutral"
+        }
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:138"
+    },
+    {
+      "id": "0.12.0/peer/lenis",
+      "kind": "peer",
+      "impact": "none",
+      "plain": "lenis is a new optional peer dependency, needed only if you use SmoothScroll from the new @hirobius/design-system/scroll subpath.",
+      "facts": [
+        "peer-changed:lenis"
+      ],
+      "backfilled": true,
+      "source": "CHANGELOG.md:137"
+    },
+    {
+      "id": "0.12.0/manual/Card-tone-variant",
+      "kind": "manual",
+      "impact": "breaking",
+      "plain": "Card's tone prop is split in two: change tone=\"default\" to variant=\"default\" and tone=\"accent\" to variant=\"accent\"; tone=\"success\", \"warning\" and \"danger\" stay as they are.",
+      "detect": {
+        "regex": [
+          "<Card\\s[^>]*\\btone=\\{?\\s*['\"](?:default|accent)['\"]"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:142"
+    },
+    {
+      "id": "0.12.0/manual/CardProgress-CardMetric-tone",
+      "kind": "manual",
+      "impact": "breaking",
+      "plain": "Card.Progress and Card.Metric no longer take tone=\"default\" or tone=\"accent\"; pass tone=\"neutral\", or leave tone out, for the old default look.",
+      "detect": {
+        "regex": [
+          "<Card\\.?(?:Progress|Metric)\\b[^>]*\\btone=\\{?\\s*['\"](?:default|accent)['\"]"
+        ]
+      },
+      "backfilled": true,
+      "source": "CHANGELOG.md:142"
+    }
+  ]
+}

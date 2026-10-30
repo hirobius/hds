@@ -38,6 +38,7 @@ import { fileURLToPath } from 'url';
 
 import { brandAccent } from './lib/brand-truth.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
+import { springToCSS } from './lib/token-emit/css.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -374,7 +375,7 @@ export function buildMotion(raw) {
     const tok = 'primitive.easing.' + path.join('.');
     const val =
       value && typeof value === 'object' && value.type === 'spring'
-        ? `spring(${value.stiffness}, ${value.damping}, ${value.mass})`
+        ? springToCSS(value)
         : Array.isArray(value)
           ? `cubic-bezier(${value.join(', ')})`
           : String(value);
@@ -397,7 +398,7 @@ export function buildMotion(raw) {
     const durationText = `\`${resolveRef(duration, raw)}\``;
     const easingText =
       easing && typeof easing === 'object' && easing.type === 'spring'
-        ? `\`spring(${easing.stiffness}, ${easing.damping}, ${easing.mass})\``
+        ? `\`${springToCSS(easing)}\``
         : `\`${resolveRef(easing, raw)}\``;
     semanticLines.push(row(`\`${tok}\``, durationText, easingText, desc ?? ''));
   }

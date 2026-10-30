@@ -23,6 +23,7 @@ import {
   Card,
   Checkbox,
   Combobox,
+  CommandPalette,
   Composer,
   Container,
   Dialog,
@@ -130,6 +131,9 @@ function ButtonDemo() {
       <Button variant="secondary" shadow="none" hoverEffect="none">
         Flat (opt-out)
       </Button>
+      <Button variant="secondary" size="sm">
+        Small
+      </Button>
     </div>
   );
 }
@@ -139,7 +143,7 @@ function InputDemo() {
     <div style={{ display: 'grid', gap: SM, width: 'min(100%, 320px)' }}>
       <Input label="Project name" placeholder="Portfolio redesign" />
       <Input label="Start date" type="date" defaultValue="2026-10-01" />
-      <Input size="sm" placeholder="Small" aria-label="Small input" />
+      <Input size="sm" defaultValue="Small" aria-label="Small input" />
     </div>
   );
 }
@@ -707,6 +711,36 @@ function ComposerDemo() {
         }
       />
       {sent && <p style={{ margin: 0 }}>Sent: {sent}</p>}
+    </div>
+  );
+}
+
+const PALETTE_ITEMS = [
+  { id: 'new-issue', label: 'New issue', group: 'Actions', shortcut: ['C'] },
+  { id: 'invite', label: 'Invite a teammate', group: 'Actions', keywords: ['member', 'user'] },
+  { id: 'archive', label: 'Archive project', group: 'Actions', disabled: true },
+  { id: 'inbox', label: 'Go to inbox', group: 'Navigation', shortcut: ['G', 'I'] },
+  { id: 'settings', label: 'Open settings', group: 'Navigation', keywords: ['preferences'] },
+  { id: 'theme', label: 'Switch theme', group: 'Preferences', shortcut: ['⌘', 'J'] },
+];
+
+function CommandPaletteDemo() {
+  const [open, setOpen] = useState(false);
+  const [ran, setRan] = useState<string | null>(null);
+  return (
+    <div style={demoRow}>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Search commands
+      </Button>
+      {ran && <span>Ran: {ran}</span>}
+      <CommandPalette
+        open={open}
+        onOpenChange={setOpen}
+        items={PALETTE_ITEMS}
+        onSelect={(item) => setRan(item.label)}
+        // ⌘K already opens the docs search here, so the demo opens from its button only.
+        hotkey={false}
+      />
     </div>
   );
 }
@@ -1298,6 +1332,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Icon: IconDemo,
   InlineLink: InlineLinkDemo,
   Composer: ComposerDemo,
+  CommandPalette: CommandPaletteDemo,
   Kbd: KbdDemo,
   MetaLine: MetaLineDemo,
   NavList: NavListDemo,

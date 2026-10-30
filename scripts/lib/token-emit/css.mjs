@@ -5,7 +5,6 @@
  * Pure (no fs); split out of scripts/build-tokens.mjs (hds#645).
  */
 
-import { removeInOf } from '../token-deprecations.mjs';
 import { readModes } from '../token-modes.mjs';
 import { buildEdgeCSS } from '../raised-edge.mjs';
 import { darkAliasReemissions } from '../dark-alias-reemit.mjs';
@@ -39,6 +38,74 @@ export function durationToCSS({ value, unit }) {
 
 export function cubicBezierToCSS(val) {
   return `cubic-bezier(${val.join(', ')})`;
+}
+
+/**
+ * A spring as a CSS linear() curve (hds#784). CSS has no spring() function, so
+ * the old `spring(300, 20, 1)` output was an invalid value that broke every var
+ * built on it. Simulates the spring from 0 to rest and samples it at evenly
+ * spaced times; the transition's duration then stretches the curve.
+ */
+export function springToCSS({ stiffness, damping, mass }, samples = 16) {
+  const dt = 1 / 2000;
+  const xs = [];
+  let x = 0;
+  let v = 0;
+  for (let t = 0; t < 10; t += dt) {
+    xs.push(x);
+    v += ((-stiffness * (x - 1) - damping * v) / mass) * dt;
+    x += v * dt;
+  }
+  // Settled: the last moment the spring is more than 1% from rest.
+  let end = xs.length - 1;
+  while (end > 0 && Math.abs(xs[end] - 1) < 0.01) end--;
+  const stops = [];
+  for (let i = 0; i <= samples; i++) {
+    const at = Math.round((i / samples) * (end + 1));
+    stops.push(i === samples ? 1 : Number(xs[at].toFixed(2)));
+  }
+  return `linear(${stops.join(', ')})`;
+}
+
+/** Token types whose value compiles to a CSS easing function. */
+export const EASING_TYPES = ['cubicBezier', 'motionEasing', 'spring'];
+
+const EASING_KEYWORDS = new Set([
+  'linear',
+  'ease',
+  'ease-in',
+  'ease-out',
+  'ease-in-out',
+  'step-start',
+  'step-end',
+]);
+const NUM = String.raw`-?(?:\d+\.?\d*|\.\d+)`;
+const LINEAR_STOP = new RegExp(String.raw`^${NUM}(?:\s+${NUM}%){0,2}$`);
+
+/** True when `value` is a valid CSS <easing-function> (transition-timing-function). */
+export function isCssEasing(value) {
+  const v = String(value).trim();
+  if (EASING_KEYWORDS.has(v)) return true;
+  const fn = /^([a-z-]+)\((.*)\)$/.exec(v);
+  if (!fn) return false;
+  const args = fn[2].split(',').map((a) => a.trim());
+  switch (fn[1]) {
+    case 'cubic-bezier': {
+      if (args.length !== 4 || !args.every((a) => new RegExp(`^${NUM}$`).test(a))) return false;
+      const [x1, , x2] = args.map(Number);
+      return x1 >= 0 && x1 <= 1 && x2 >= 0 && x2 <= 1;
+    }
+    case 'steps':
+      return (
+        /^[1-9]\d*$/.test(args[0]) &&
+        args.length <= 2 &&
+        (args.length === 1 || /^(?:jump-(?:start|end|none|both)|start|end)$/.test(args[1]))
+      );
+    case 'linear':
+      return args.length >= 2 && args.every((a) => LINEAR_STOP.test(a));
+    default:
+      return false;
+  }
 }
 
 export function fontFamilyToCSS(val) {
@@ -110,12 +177,10 @@ export function valueToCSS(val, type, preserveAlias, root = null) {
     case 'cubicBezier':
       return cubicBezierToCSS(val);
     case 'motionEasing':
-      if (val && typeof val === 'object' && val.type === 'spring') {
-        return `spring(${val.stiffness}, ${val.damping}, ${val.mass})`;
-      }
+      if (val && typeof val === 'object' && val.type === 'spring') return springToCSS(val);
       return cubicBezierToCSS(val);
     case 'spring':
-      return `spring(${val.stiffness}, ${val.damping}, ${val.mass})`;
+      return springToCSS(val);
     case 'fontFamily':
       return fontFamilyToCSS(val);
     case 'fontWeight':
@@ -198,7 +263,8 @@ export function buildCSSSection(tokens, label, root = null) {
     const cssVar = pathToCSSVar(path);
     const preserveAlias = path[0] !== 'primitive';
     if (deprecated) {
-      rootLines.push(`  /* @deprecated ${deprecated} (removed in ${removeInOf(deprecated)}) */`);
+      // The note names its removal version (check-deprecations, hds#469).
+      rootLines.push(`  /* @deprecated ${deprecated} */`);
     }
 
     if (type === 'typography') {

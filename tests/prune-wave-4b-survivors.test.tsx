@@ -47,7 +47,11 @@ describe('IconButton -> Button iconOnly', () => {
   });
 
   it('keeps the square size ramp and the variants', () => {
-    const sizes = { sm: 'w-8', md: 'w-10', lg: 'w-12' } as const;
+    const sizes = {
+      sm: 'w-[var(--component-button-size-sm-height)]',
+      md: 'w-[var(--component-button-size-md-height)]',
+      lg: 'w-[var(--component-button-size-lg-height)]',
+    } as const;
     for (const [size, width] of Object.entries(sizes)) {
       render(
         <Button

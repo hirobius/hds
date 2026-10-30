@@ -1,0 +1,8 @@
+{
+  "version": "0.15.0",
+  "date": "2026-09-23",
+  "bump": "minor",
+  "summary": "Exports every component's props type and marks React bundles 'use client' for the Next.js App Router; nothing to change.",
+  "backfilled": true,
+  "steps": []
+}

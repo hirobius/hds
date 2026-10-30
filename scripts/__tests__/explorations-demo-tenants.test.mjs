@@ -31,12 +31,9 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
 import { chromiumForTests } from '../lib/browser-host.mjs';
-import {
-  buildTenantCSS,
-  pathToCSSVar,
-  validateTenantOverlay,
-  walkTokens,
-} from '../build-tokens.mjs';
+import { walkTokens } from '../lib/token-tree.mjs';
+import { pathToCSSVar } from '../lib/token-emit/css.mjs';
+import { buildTenantCSS, validateTenantOverlay } from '../lib/token-emit/tenant.mjs';
 import { readTokenSource } from '../lib/token-source.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');

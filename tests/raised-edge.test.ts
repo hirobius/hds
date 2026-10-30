@@ -17,6 +17,7 @@ import {
   resolveHex,
   toOklch,
 } from '../scripts/lib/raised-edge.mjs';
+import { THEMES } from './helpers/token-sheet';
 
 const read = (p: string) => readFileSync(resolve(process.cwd(), p), 'utf8');
 const raw = JSON.parse(read('hirobius.tokens.json'));
@@ -26,21 +27,15 @@ const MODES = ['Light', 'Dark'] as const;
 type Mode = (typeof MODES)[number];
 const KEYS = Object.keys(EDGE_FILLS);
 
-/** The --hds-edge-* values a CSS block (selector start → `}`) declares. */
-function block(text: string, selector: string): Record<string, string> {
-  const at = text.indexOf(selector + '{');
-  const from = at > -1 ? at : text.indexOf(selector + ' {');
-  if (from < 0) return {};
-  const body = text.slice(from, text.indexOf('}', from));
-  return Object.fromEntries(
-    [...body.matchAll(/--hds-edge-([a-z]+):\s*(#[0-9a-f]{6})/g)].map((m) => [m[1], m[2]]),
-  );
-}
-
-/** What a theme actually resolves to: the light block, then the dark block over it. */
+/** The --hds-edge-* values a theme actually resolves to, keyed by edge name. */
 function shipped(mode: Mode): Record<string, string> {
-  const light = block(css, ':root');
-  return mode === 'Light' ? light : { ...light, ...block(css, '[data-theme="dark"]') };
+  const vars = THEMES[mode === 'Light' ? 'light' : 'dark'];
+  return Object.fromEntries(
+    Object.entries(vars).flatMap(([name, value]) => {
+      const m = name.match(/^--hds-edge-([a-z]+)$/);
+      return m ? [[m[1], value]] : [];
+    }),
+  );
 }
 
 /** The rule, written out independently of the generator. */
