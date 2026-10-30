@@ -20,7 +20,10 @@ const fixture = {
     space: {
       scale: { sm: { $value: '{x}' } },
       layout: {
-        tight: { $value: '{x}', $deprecated: 'hds#206 — use semantic.space.scale.sm' },
+        tight: {
+          $value: '{x}',
+          $deprecated: 'hds#206, removed in 1.0.0 — use semantic.space.scale.sm',
+        },
       },
     },
     radius: { old: { $value: '{x}', $deprecated: 'gone, removed in 0.30.0 — use nothing' } },
@@ -42,12 +45,14 @@ describe('collectDeprecations', () => {
       replacementCssVar: '--semantic-space-scale-sm',
       replacementTailwind: 'scale-sm',
       removeIn: '1.0.0',
-      note: 'hds#206 — use semantic.space.scale.sm',
+      note: 'hds#206, removed in 1.0.0 — use semantic.space.scale.sm',
     });
   });
 
   it('reads "removed in X" and leaves replacement null when none resolves', () => {
     const all = collectDeprecations(fixture);
+    // A note that names no version has no removeIn; check-deprecations fails it (hds#469).
+    expect(all.find((d) => d.path === 'component.badge.bg').removeIn).toBeNull();
     const old = all.find((d) => d.path === 'semantic.radius.old');
     expect(old.removeIn).toBe('0.30.0');
     expect(old.replacement).toBeNull();

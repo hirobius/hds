@@ -70,19 +70,19 @@
   --primitive-color-cobalt-700: #1f17c4;
   --primitive-color-cobalt-800: #191c7d;
   --primitive-color-cobalt-900: #0b0658;
-  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
   --primitive-color-lime-50: #f2fbd6;
-  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
   --primitive-color-lime-100: #e3f6a8;
-  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
   --primitive-color-lime-200: #cdee6a;
-  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
   --primitive-color-lime-300: #b8e62e;
-  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
   --primitive-color-lime-400: #93ba1c;
-  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
   --primitive-color-lime-600: #6e8f0b;
-  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
   --primitive-color-lime-800: #445807;
   --primitive-color-mauve-50: #fff0f6;
   --primitive-color-mauve-100: #f4e2ea;
@@ -281,7 +281,7 @@
   --semantic-color-content-danger: var(--primitive-color-red-700);
   --semantic-color-border-default: var(--primitive-color-graphite-200);
   --semantic-color-border-interactive: var(--primitive-color-neutral-500);
-  /* @deprecated border consolidation 2026-10-12 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) (removed in 1.0.0) */
+  /* @deprecated border consolidation 2026-10-12, removed in 1.0.0 — use semantic.color.border.default (Dark differs: neutral.600 vs 800) */
   --semantic-color-border-subdued: var(--primitive-color-graphite-200);
   --semantic-color-border-subtle: var(--primitive-color-neutral-100);
   --semantic-color-border-strong: var(--primitive-color-graphite-300);
@@ -317,24 +317,24 @@
   --semantic-space-subgrid-hairline: var(--primitive-space-px1);
   --semantic-space-subgrid-xs: var(--primitive-space-px2);
   --semantic-space-subgrid-gap: var(--primitive-space-1);
-  /* @deprecated hds#206 — use semantic.space.scale.xs (removed in 1.0.0) */
+  /* @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xs */
   --semantic-space-component-gap: var(--semantic-space-scale-xs);
   --semantic-space-component-medium: var(--primitive-space-3);
-  /* @deprecated hds#206 — use semantic.space.surface.padding (removed in 1.0.0) */
+  /* @deprecated hds#206, removed in 1.0.0 — use semantic.space.surface.padding */
   --semantic-space-component-padding: var(--semantic-space-surface-padding);
-  /* @deprecated hds#206 — use semantic.space.scale.sm (removed in 1.0.0) */
+  /* @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.sm */
   --semantic-space-layout-tight: var(--primitive-space-5);
-  /* @deprecated hds#206 — use semantic.space.scale.md (removed in 1.0.0) */
+  /* @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.md */
   --semantic-space-layout-normal: var(--primitive-space-7);
-  /* @deprecated hds#206 — use semantic.space.region.gutter (removed in 1.0.0) */
+  /* @deprecated hds#206, removed in 1.0.0 — use semantic.space.region.gutter */
   --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
-  /* @deprecated hds#206 — use semantic.space.scale.lg (removed in 1.0.0) */
+  /* @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.lg */
   --semantic-space-layout-inset: var(--primitive-space-10);
-  /* @deprecated hds#206 — use semantic.space.scale.xl (removed in 1.0.0) */
+  /* @deprecated hds#206, removed in 1.0.0 — use semantic.space.scale.xl */
   --semantic-space-layout-spacious: var(--primitive-space-16);
   --semantic-space-section-stack: var(--primitive-space-24);
   --semantic-space-section-inset: var(--primitive-space-24);
-  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) (removed in 1.0.0) */
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) */
   --semantic-space-section-heroMax: var(--primitive-space-32);
   --semantic-space-sidebar-indent: var(--primitive-space-3);
   --semantic-space-sidebar-gap: var(--primitive-space-4);
@@ -395,28 +395,28 @@
   --semantic-typography-mono-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-mono-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-mono-max-width: 60ch;
-  /* @deprecated hds#483 — use semantic.typography.title (removed in 1.0.0) */
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */
   /* semantic.typography.h1 */
   --semantic-typography-h1-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h1-font-size: var(--primitive-typography-size-title);
   --semantic-typography-h1-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h1-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h1-line-height: var(--primitive-typography-lineHeight-tight);
-  /* @deprecated hds#483 — use semantic.typography.title (removed in 1.0.0) */
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */
   /* semantic.typography.h2 */
   --semantic-typography-h2-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h2-font-size: var(--primitive-typography-size-title);
   --semantic-typography-h2-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h2-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h2-line-height: var(--primitive-typography-lineHeight-tight);
-  /* @deprecated hds#483 — use semantic.typography.title (removed in 1.0.0) */
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */
   /* semantic.typography.h3 */
   --semantic-typography-h3-font-family: var(--primitive-typography-family-display);
   --semantic-typography-h3-font-size: var(--primitive-typography-size-title);
   --semantic-typography-h3-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h3-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h3-line-height: var(--primitive-typography-lineHeight-tight);
-  /* @deprecated hds#483 — use semantic.typography.caption (removed in 1.0.0) */
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption */
   /* semantic.typography.eyebrow */
   --semantic-typography-eyebrow-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-sm);
@@ -425,9 +425,9 @@
   --semantic-typography-eyebrow-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-lineHeight-none: var(--primitive-typography-lineHeight-none);
   --semantic-docs-space-section: var(--semantic-space-scale-xl);
-  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) (removed in 1.0.0) */
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) */
   --semantic-docs-space-paragraph: var(--primitive-space-7);
-  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs (removed in 1.0.0) */
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs */
   --semantic-docs-space-inline: var(--primitive-space-2);
   --semantic-accent-rest: var(--primitive-color-graphite-950);
   --semantic-accent-hover: var(--primitive-color-graphite-800);
@@ -437,13 +437,13 @@
   --semantic-accent-content: var(--primitive-color-graphite-700);
   --semantic-accent-contentHover: var(--primitive-color-graphite-800);
   --semantic-accent-subtle: var(--primitive-color-graphite-50);
-  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-base: var(--primitive-color-lime-300);
-  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-deep: var(--primitive-color-lime-600);
-  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-pale: var(--primitive-color-lime-50);
-  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code (removed in 1.0.0) */
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
   --semantic-radius-action: var(--primitive-radius-8);
   --semantic-radius-control: var(--primitive-radius-4);
@@ -508,9 +508,9 @@
   --component-tag-activeHover: var(--semantic-accent-hover);
   --component-badge-fontSize: var(--primitive-typography-size-sm);
   --component-badge-fontWeight: var(--primitive-typography-weight-medium);
-  /* @deprecated hds#595 — use component.badge.<tone>.text (one per tone) (removed in 1.0.0) */
+  /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.text (one per tone) */
   --component-badge-text: var(--semantic-color-content-primary);
-  /* @deprecated hds#595 — use component.badge.<tone>.bg (one per tone) (removed in 1.0.0) */
+  /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) */
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
   --component-badge-neutral-bg: var(--semantic-color-surface-overlay);
   --component-badge-neutral-text: var(--semantic-color-content-secondary);
@@ -561,10 +561,10 @@
   --component-button-secondary-bg-rest: var(--semantic-color-surface-soft);
   --component-button-secondary-bg-hover: var(--semantic-color-surface-softHover);
   --component-button-secondary-bg-pressed: var(--semantic-color-surface-soft);
-  /* @deprecated hds#891 soft surfaces: secondary Button has no border (removed in 1.0.0) */
+  /* @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 */
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
-  /* @deprecated hds#891 soft surfaces: secondary Button has no border (removed in 1.0.0) */
+  /* @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 */
   --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
   --component-button-secondary-text: var(--semantic-color-content-primary);
   --component-button-tertiary-bg-hover: var(--semantic-color-surface-hover);
