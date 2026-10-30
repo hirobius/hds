@@ -104,6 +104,7 @@ export const REQUIRED = [
   'codemods/lib/preset.mjs',
   'codemods/lib/project.mjs',
   'codemods/lib/record.mjs',
+  'codemods/lib/removals.mjs',
   'codemods/lib/scan.mjs',
   'codemods/lib/semver.mjs',
 ];

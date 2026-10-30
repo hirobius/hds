@@ -2,7 +2,7 @@
 /**
  * hds-prefix codemod (hds#389 R1, follows hds#315)
  *
- * 0.20.0 removed the six `Hds*` aliases from the package root: HdsCheckbox,
+ * The patterns release (hds#389) removed the six `Hds*` aliases from the package root: HdsCheckbox,
  * HdsRadio, HdsSelect, HdsSlider, HdsToggle and HdsTooltip. Each is the same
  * component under its bare name. This rewrites the import specifier only, and
  * keeps the name the file already uses:
@@ -19,6 +19,10 @@
  * same component. Renaming the local binding to the bare name afterwards is
  * optional and a manual edit. Only named imports and re-exports whose source is
  * exactly the package root are rewritten, and running it twice changes nothing.
+ *
+ * The rename takes any map and entry (hds#956): `transformSource(source,
+ * renames, from)` rewrites the named imports of `from`; the bin renames
+ * RENAMES on the root.
  *
  *   node codemods/hds-prefix.mjs [--root <dir>] [--check] [--dry-run]
  *
@@ -62,9 +66,9 @@ const ID = '[A-Za-z_$][\\w$]*';
 // Matched on the masked source (codemods/unrewritable.mjs), where comments are
 // blank and the specifier is a run of spaces between its quotes:
 // at a line start or after `;`: import|export, type?, default?, { body }, from, quote.
-const namedRe = () =>
+const namedRe = (pkg) =>
   new RegExp(
-    `(?:^|(?<=;))[ \\t]*(?:import|export)(?:\\s+type)?\\s*(?:${ID}\\s*,\\s*)?\\{([^}]*)\\}\\s*from\\s*(['"]) {${ROOT_PKG.length}}\\2`,
+    `(?:^|(?<=;))[ \\t]*(?:import|export)(?:\\s+type)?\\s*(?:${ID}\\s*,\\s*)?\\{([^}]*)\\}\\s*from\\s*(['"]) {${pkg.length}}\\2`,
     'gm',
   );
 // One specifier, between commas: `type`? name, then `as alias`?
@@ -72,21 +76,23 @@ const specRe = new RegExp(`^(\\s*(?:type\\s+)?)(${ID})(\\s+as\\s+${ID})?\\s*$`);
 
 /**
  * Pure transform of one file's source: rewrites the Hds* specifiers of each
- * named import or re-export from the package root, and nothing else.
+ * named import or re-export from `from` (the package root by default), and
+ * nothing else.
  * @param {string} source
  * @param {Record<string, string>} [renames]
+ * @param {string} [from] the entry whose imports are renamed
  * @returns {{ source: string, changed: boolean, sites: number, renamed: string[],
  *   edits: { line: number, before: string, after: string }[] }}
  */
-export function transformSource(source, renames = RENAMES) {
+export function transformSource(source, renames = RENAMES, from = ROOT_PKG) {
   const { code } = maskSource(source);
   const renamed = new Set();
   const changes = [];
   let sites = 0;
 
-  for (const m of code.matchAll(namedRe())) {
-    const quoteAt = m.index + m[0].length - ROOT_PKG.length - 2;
-    if (!source.startsWith(ROOT_PKG, quoteAt + 1)) continue;
+  for (const m of code.matchAll(namedRe(from))) {
+    const quoteAt = m.index + m[0].length - from.length - 2;
+    if (!source.startsWith(from, quoteAt + 1)) continue;
     const bodyAt = m.index + m[0].indexOf('{') + 1;
     let touched = false;
     let at = bodyAt;
@@ -131,8 +137,8 @@ export function transformSource(source, renames = RENAMES) {
  * that reads an Hds* name off something (`HDS.HdsSlider`, `m['HdsToggle']`,
  * `const { HdsRadio } = …`). The alias binding the codemod writes is not a read.
  */
-export function findUnrewritable(source, renames = RENAMES) {
-  return findHidden(source, ROOT_PKG, Object.keys(renames));
+export function findUnrewritable(source, renames = RENAMES, from = ROOT_PKG) {
+  return findHidden(source, from, Object.keys(renames));
 }
 
 /** `skip`: absolute directories not to enter (the upgrade command's nested importers). */
@@ -155,7 +161,7 @@ function* walk(dir, skip = new Set()) {
 }
 
 /** Scan a directory. Writes only when `write` is true; `skip` lists directories not to enter. */
-export function runCodemod({ root, write = false, renames = RENAMES, skip = [] }) {
+export function runCodemod({ root, write = false, renames = RENAMES, from = ROOT_PKG, skip = [] }) {
   const files = [];
   const manual = [];
   const renamed = new Set();
@@ -167,9 +173,9 @@ export function runCodemod({ root, write = false, renames = RENAMES, skip = [] }
     } catch {
       continue; // unreadable: nothing to rewrite
     }
-    if (!src.includes(ROOT_PKG)) continue;
-    const r = transformSource(src, renames);
-    for (const stmt of findUnrewritable(r.source, renames))
+    if (!src.includes(from)) continue;
+    const r = transformSource(src, renames, from);
+    for (const stmt of findUnrewritable(r.source, renames, from))
       manual.push({ file: relative(root, file), stmt });
     if (!r.changed) continue;
     files.push({ file: relative(root, file), sites: r.sites, renamed: r.renamed, edits: r.edits });
