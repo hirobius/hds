@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-30T14:55:58.146Z",
+  "generated": "2026-10-30T17:09:03.408Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -15173,7 +15173,7 @@
         "type": "color",
         "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#cbc6c9"
+        "resolvedValue": "#c4c8cf"
       },
       {
         "path": "component.button.secondary.text",
