@@ -224,7 +224,11 @@ describe('CLI', () => {
     // that the default set is read once per run (a default parameter) is not observed.
     for (const f of ['a', 'b', 'c'])
       writeFileSync(join(dir, `src/${f}.tsx`), `import { Button, Toolbar } from '${ROOT}';\n`);
-    const res = runCodemod({ root: dir, removed: new Set(['Button']) });
+    const res = runCodemod({
+      root: dir,
+      removed: new Set(['Button']),
+      versions: new Map([['Button', '0.20.0']]),
+    });
     expect(res.manual.map((m) => m.stmt)).toEqual(
       Array(3).fill(`Button from '${ROOT}' (removed in 0.20.0, no replacement)`),
     );

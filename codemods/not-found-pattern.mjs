@@ -2,9 +2,10 @@
 /**
  * not-found-pattern codemod (hds#395, hds#389's 2026-10-01 decision update)
  *
- * 0.20.0 removed NotFoundPattern from the package root. It took no props and
- * rendered `<ErrorPattern displayText="404" message="Page not found" />`, so
- * this writes that element in its place, with ErrorPattern imported from
+ * The patterns release (hds#389) removed NotFoundPattern from the package
+ * root. It took no props and rendered `<ErrorPattern displayText="404"
+ * message="Page not found" />`, so this writes that element in its place, with
+ * ErrorPattern imported from
  * `@hirobius/design-system/patterns`:
  *
  *   import { NotFoundPattern } from '@hirobius/design-system';
@@ -32,28 +33,15 @@
  *                 name, or a file that cannot be read to its end, included)
  *   --dry-run     write nothing; print each changed line before (-) and after (+), exit 0
  */
-import { PATTERNS, foldComponent, insertionPoint, isEntry, main, runFold } from './jsx-fold.mjs';
+import { PATTERNS, foldComponent, foldRule, isEntry, main, runFold } from './jsx-fold.mjs';
 
-/** @type {import('./jsx-fold.mjs').FoldRule} */
-export const RULE = Object.freeze({
+/** A data rule (codemods/jsx-fold.mjs foldRule): it sets the props NotFoundPattern hard-coded. */
+export const RULE = foldRule({
   name: 'NotFoundPattern',
   survivor: 'ErrorPattern',
   survivorFrom: PATTERNS,
-  rewrite(tag, source) {
-    if (tag.attrs.some((a) => a.kind === 'spread'))
-      return { manual: 'a spread could carry displayText or message; rewrite it by hand' };
-    const set = tag.attrs.find((a) => a.name === 'displayText' || a.name === 'message');
-    if (set)
-      return {
-        manual: `NotFoundPattern ignored ${set.name}, ErrorPattern would render it; rewrite it by hand`,
-      };
-    const { at, sep } = insertionPoint(source, tag, null);
-    return {
-      edits: [
-        { start: at, end: at, text: `${sep}displayText="404"${sep}message="Page not found"` },
-      ],
-    };
-  },
+  set: { displayText: '404', message: 'Page not found' },
+  forbid: ['displayText', 'message'],
 });
 
 /** Pure transform of one file's source (codemods/jsx-fold.mjs `foldComponent`). */

@@ -5,7 +5,6 @@
  * Pure (no fs); split out of scripts/build-tokens.mjs (hds#645).
  */
 
-import { removeInOf } from '../token-deprecations.mjs';
 import { readModes } from '../token-modes.mjs';
 import { buildEdgeCSS } from '../raised-edge.mjs';
 import { darkAliasReemissions } from '../dark-alias-reemit.mjs';
@@ -264,7 +263,8 @@ export function buildCSSSection(tokens, label, root = null) {
     const cssVar = pathToCSSVar(path);
     const preserveAlias = path[0] !== 'primitive';
     if (deprecated) {
-      rootLines.push(`  /* @deprecated ${deprecated} (removed in ${removeInOf(deprecated)}) */`);
+      // The note names its removal version (check-deprecations, hds#469).
+      rootLines.push(`  /* @deprecated ${deprecated} */`);
     }
 
     if (type === 'typography') {

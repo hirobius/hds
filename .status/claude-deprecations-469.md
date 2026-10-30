@@ -1,0 +1,1 @@
+check-deprecations reads hirobius.tokens.json: every `$deprecated` token note must say "removed in <semver>" (future), hds#469. All 27 notes now name 1.0.0; the CSS emitter no longer appends a default.

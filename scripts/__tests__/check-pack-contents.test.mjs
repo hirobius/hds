@@ -251,6 +251,7 @@ describe('the upgrade record in the tarball', () => {
     );
     const upgradeEntries = files.filter((f) => f === 'upgrade' || f.startsWith('upgrade/'));
     expect(upgradeEntries.sort()).toEqual([
+      'upgrade/detects.json',
       'upgrade/index.json',
       'upgrade/kept.json',
       'upgrade/releases/',

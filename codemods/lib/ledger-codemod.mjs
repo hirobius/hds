@@ -8,25 +8,19 @@
  * Node builtins only.
  */
 import { readFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { loadRecord } from './record.mjs';
+import { resolve } from 'node:path';
+import { shippedSteps, stepVersion as releaseOf } from './removals.mjs';
 import { compareVersions, isVersion } from './semver.mjs';
 
-const PKG_DIR = join(dirname(fileURLToPath(import.meta.url)), '../..');
-
-/** Every step the package ships, from its upgrade record. A broken record throws. */
-export function shippedSteps(pkgDir = PKG_DIR) {
-  return loadRecord(pkgDir).ledgers.flatMap((l) => l.steps ?? []);
-}
+// The shipped steps have one home, lib/removals.mjs (hds#956), which reads them once.
+export { shippedSteps };
 
 /**
  * The release a step's id names; a pending note's ids leave out the version,
  * so its steps take `fallback`.
  */
 export function stepVersion(step, fallback = 'the next release') {
-  const head = step.id.split('/')[0];
-  return isVersion(head) ? head : fallback;
+  return releaseOf(step) ?? fallback;
 }
 
 /** Sort rules by `version`: a pending one (no version yet) after every released one; stable. */
