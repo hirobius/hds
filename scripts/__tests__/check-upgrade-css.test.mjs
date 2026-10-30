@@ -286,9 +286,10 @@ describe('checkUpgradeCss: a release does not ship what it removed', () => {
 });
 
 describe('theme.css keeps release prose out of the Tailwind scan', () => {
-  it('excludes UPGRADING.md like CHANGELOG.md', () => {
+  it('scans only src/, so UPGRADING.md and CHANGELOG.md are never read (hds#936)', () => {
     const theme = readFileSync(join(REPO, 'src/styles/theme.css'), 'utf8');
-    expect(theme).toContain('@source not "../../UPGRADING.md";');
+    expect(theme).toContain("@import 'tailwindcss' source(none);");
+    expect(theme).toMatch(/^@source "\.\.\/";$/m);
   });
 });
 

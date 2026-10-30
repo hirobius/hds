@@ -248,42 +248,6 @@
   .p-12 {
     padding: 3rem;
   }
-  .px-3 {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-  }
-  .px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  .px-5 {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-  }
-  .px-7 {
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
-  }
-  .py-1\.5 {
-    padding-top: 0.375rem;
-    padding-bottom: 0.375rem;
-  }
-  .py-2\.5 {
-    padding-top: 0.625rem;
-    padding-bottom: 0.625rem;
-  }
-  .py-3 {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-  }
-  .py-3\.5 {
-    padding-top: 0.875rem;
-    padding-bottom: 0.875rem;
-  }
-  .py-16 {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
   .pt-3 {
     padding-top: 0.75rem;
   }
@@ -297,10 +261,6 @@
     padding-bottom: 3rem;
   }
 
-  .mx-auto {
-    margin-left: auto;
-    margin-right: auto;
-  }
   .mb-2 {
     margin-bottom: 0.5rem;
   }
@@ -346,9 +306,6 @@
     border-bottom-width: 1px;
     border-bottom-style: solid;
   }
-  .border-b-0 {
-    border-bottom-width: 0;
-  }
   .border-r {
     border-right-width: 1px;
     border-right-style: solid;
@@ -366,19 +323,7 @@
   .border-transparent {
     border-color: transparent;
   }
-  .hover\:border-\[color\:var\(--semantic-color-content-primary\)\]:hover {
-    border-color: var(--semantic-color-content-primary);
-  }
-  .hover\:border-\[color\:var\(--semantic-color-content-secondary\)\]:hover {
-    border-color: var(--semantic-color-content-secondary);
-  }
 
-  .bg-transparent {
-    background: transparent;
-  }
-  .bg-current {
-    background: currentColor;
-  }
   .bg-page {
     background: var(--semantic-color-surface-page);
   }
@@ -390,15 +335,6 @@
   }
   .bg-surface-raised {
     background: var(--semantic-color-surface-raised);
-  }
-  .bg-\[color\:var\(--semantic-color-feedback-error\)\] {
-    background: var(--semantic-color-feedback-error);
-  }
-  .hover\:bg-\[color\:var\(--semantic-accent-hover\)\]:hover {
-    background: var(--semantic-accent-hover);
-  }
-  .active\:bg-\[color\:var\(--semantic-accent-pressed\)\]:active {
-    background: var(--semantic-accent-pressed);
   }
 
   .text {
@@ -443,12 +379,6 @@
   }
   .hover\:text:hover {
     color: var(--semantic-color-content-primary);
-  }
-  .hover\:text-\[color\:var\(--semantic-color-surface-accent\)\]:hover {
-    color: var(--semantic-color-surface-accent);
-  }
-  .no-underline {
-    text-decoration: none;
   }
 
   .cursor-pointer {
@@ -503,18 +433,6 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
-  .duration-200 {
-    transition-duration: 200ms;
-  }
-  .duration-300 {
-    transition-duration: 300ms;
-  }
-  .duration-500 {
-    transition-duration: 500ms;
-  }
-  .ease-out {
-    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-  }
 
   .origin-right {
     transform-origin: right;
@@ -546,60 +464,6 @@
   @media (prefers-reduced-motion: no-preference) {
     .animate-spin {
       animation: hds-utility-spin 1s linear infinite;
-    }
-  }
-
-  @media (min-width: 640px) {
-    .sm\:grid-cols-\[180px_1fr\] {
-      grid-template-columns: 180px 1fr;
-    }
-    .sm\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .sm\:grid-cols-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-    .sm\:px-8 {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .md\:flex-row {
-      flex-direction: row;
-    }
-    .md\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .md\:h-56 {
-      height: 14rem;
-    }
-    .md\:justify-start {
-      justify-content: flex-start;
-    }
-    .md\:px-12 {
-      padding-left: 3rem;
-      padding-right: 3rem;
-    }
-    .md\:w-56 {
-      width: 14rem;
-    }
-    .md\:w-auto {
-      width: auto;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .lg\:grid-cols-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .xl\:px-16 {
-      padding-left: 4rem;
-      padding-right: 4rem;
     }
   }
 }
