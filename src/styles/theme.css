@@ -74,7 +74,6 @@
   /* hds#206: region.gutter steps on the t-shirt scale (lg 40px, sm 20px below 640px;
    * 24px and 12px under compact). Every value here is a scale step or a 4px-grid
    * primitive, raised 2026-10 with the type ramp bump. */
-  /* The deprecated --semantic-space-layout-gutter follows via its tokens.css alias. */
   --semantic-space-region-gutter: var(--semantic-space-scale-lg);
   --semantic-space-layout-gap: var(--semantic-space-scale-md);
   /* section.stack (96px, 48px compact) comes from tokens.generated.css: a copy here
@@ -1069,7 +1068,6 @@ input[data-search-input='true'] {
 @media (max-width: 639px) {
   [data-density='compact'] {
     --semantic-space-region-gutter: var(--semantic-space-scale-sm);
-    --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
     --semantic-space-layout-gap: var(--semantic-space-scale-sm);
     --semantic-layout-grid-gap: var(--semantic-space-scale-sm);
     --semantic-space-section-stack: var(--primitive-space-12);

@@ -63,10 +63,10 @@ Subpath exports:
 
 ## Core set
 
-The 46 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
+The 47 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
 
 - **Actions:** `Button`
-- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
+- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`, `Timeline`
 - **Feedback:** `Alert`, `Badge`, `Progress`, `Skeleton`, `Spinner`, `ToastProvider`
 - **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
 - **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`
@@ -266,6 +266,53 @@ Never:
 - Re-theme through a tenant overlay activated with `data-tenant`, not by overriding DS tokens.
 - Route gaps upstream: a missing component or token is an issue and PR against HDS, not a downstream patch.
 - Mark the HDS scope with `data-hds` on `<html>`, `<body>` or a wrapper, and on portal containers for overlays that render into `document.body`.
+
+## What you may select on
+
+In tests and styles, select HDS elements only by:
+
+- Role and accessible name, as a screen reader meets them: `getByRole('button', { name: 'Save' })`.
+- ARIA states such as `aria-checked`, `aria-selected`, `aria-expanded` and `aria-disabled`.
+- The `data-*` attributes a component lists in the manifest's `publicDataAttributes`, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-hds-*`, which are internal, or `data-radix-*`, which belong to Radix.
+- The `hds-*` classes and the manifest's `publicClasses`, which the CSS contract tracks.
+- Never other class names, ids, tag names or how elements nest: those change without an upgrade step.
+
+The `data-*` attributes each component renders for you to select on:
+
+- `AsyncState`: `data-slot`, `data-status`
+- `Avatar`: `data-size`
+- `Badge`: `data-tone`
+- `Button`: `data-hover-effect`, `data-pressed`, `data-size`, `data-tone`, `data-variant`
+- `Card`: `data-bordered`, `data-format`, `data-interactive`, `data-padding`, `data-slot`, `data-tone`, `data-variant`
+- `DataTableSection`: `data-slot`
+- `DestructiveSection`: `data-slot`
+- `Dialog`: `data-state`
+- `Disclosure`: `data-state`
+- `Divider`: `data-variant`
+- `ErrorPattern`: `data-role`
+- `Field`: `data-tone`
+- `FormActions`: `data-slot`
+- `Input`: `data-size`, `data-state`
+- `Kbd`: `data-size`
+- `Menu`: `data-state`
+- `MetaLine`: `data-meta-separator`
+- `PageHeader`: `data-slot`
+- `Popover`: `data-state`
+- `Progress`: `data-state`, `data-tone`, `data-variant`
+- `Reveal`: `data-reveal`
+- `SegmentedControl`: `data-state`
+- `Select`: `data-state`
+- `Sheet`: `data-state`
+- `Skeleton`: `data-variant`
+- `Spinner`: `data-size`
+- `Table`: `data-slot`
+- `Tabs`: `data-orientation`, `data-state`
+- `Tag`: `data-active`, `data-dismissible`
+- `Textarea`: `data-state`
+- `ThemeToggle`: `data-theme-state`
+- `Timeline`: `data-format`, `data-timeline-marker`, `data-tone`
+- `TokenField`: `data-state`, `data-token`
+- `Tooltip`: `data-state`
 
 ## Steps
 

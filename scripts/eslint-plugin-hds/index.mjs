@@ -15,6 +15,7 @@ import { readFileSync } from 'node:fs';
 import maxTwoMetaItems from './rules/max-two-meta-items.mjs';
 import noCustomTracking from './rules/no-custom-tracking.mjs';
 import noDelightOnActions from './rules/no-delight-on-actions.mjs';
+import noDeprecatedImport from './rules/no-deprecated-import.mjs';
 import noDeprecatedToken from './rules/no-deprecated-token.mjs';
 import noPrimitiveSpacing from './rules/no-primitive-spacing.mjs';
 import noRawControls from './rules/no-raw-controls.mjs';
@@ -37,6 +38,7 @@ const plugin = {
     'max-two-meta-items': maxTwoMetaItems,
     'no-custom-tracking': noCustomTracking,
     'no-delight-on-actions': noDelightOnActions,
+    'no-deprecated-import': noDeprecatedImport,
     'no-deprecated-token': noDeprecatedToken,
     'no-primitive-spacing': noPrimitiveSpacing,
     'no-raw-controls': noRawControls,
@@ -57,6 +59,7 @@ plugin.configs = {
         'hds/max-two-meta-items': 'error',
         'hds/no-custom-tracking': 'error',
         'hds/no-delight-on-actions': 'error',
+        'hds/no-deprecated-import': 'warn',
         'hds/no-deprecated-token': 'error',
         'hds/no-primitive-spacing': 'error',
         'hds/no-raw-controls': 'error',

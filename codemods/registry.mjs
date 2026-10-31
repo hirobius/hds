@@ -29,7 +29,9 @@ export const CODEMODS = Object.freeze({
   'hds-not-found-pattern': { file: 'not-found-pattern.mjs' },
   'hds-tile-grid': { file: 'tile-grid.mjs' },
   'hds-spacing-steps': { file: 'spacing-steps.mjs' },
+  'hds-token-aliases': { file: 'token-aliases.mjs' },
   'hds-prop-map': { file: 'prop-map.mjs' },
+  'hds-css-vars': { file: 'css-vars.mjs' },
 });
 
 export const hasCodemod = (name) => Object.hasOwn(CODEMODS, name);

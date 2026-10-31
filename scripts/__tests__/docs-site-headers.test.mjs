@@ -38,15 +38,35 @@ describe('docs-site security headers', () => {
 
   it('sends a CSP that blocks plugins, base hijack, framing and off-site scripts', () => {
     const csp = parseCsp(catchAll()['content-security-policy']);
-    expect(csp['default-src']).toEqual(["'self'"]);
+    expect(csp['default-src']).toBeUndefined();
+    for (const d of [
+      'style-src',
+      'img-src',
+      'font-src',
+      'connect-src',
+      'worker-src',
+      'media-src',
+      'frame-src',
+      'manifest-src',
+    ]) {
+      expect(csp[d], d).toBeDefined();
+    }
     expect(csp['object-src']).toEqual(["'none'"]);
     expect(csp['base-uri']).toEqual(["'self'"]);
     expect(csp['frame-ancestors']).toEqual(["'self'"]);
     expect(csp['form-action']).toEqual(["'self'"]);
-    // Static export: Next inlines its RSC payload, so 'unsafe-inline' stays
-    // until scripts are hashed (tracked separately). No remote script origin.
+    // hds#972: script-src / default-src live in a per-page <meta> CSP with
+    // sha256 hashes (scripts/hash-docs-csp.mjs at docs:publish). Header CSPs
+    // intersect with it, so the header must not loosen scripts.
     for (const src of csp['script-src'] ?? []) {
-      expect(src).not.toMatch(/^https?:|^\*|unsafe-eval/);
+      expect(src).not.toMatch(/^https?:|^\*|unsafe-eval|unsafe-inline/);
     }
+  });
+
+  it('hashes inline scripts at docs:publish', () => {
+    const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
+    expect(pkg.scripts['docs:publish']).toMatch(
+      /pnpm docs:build && node scripts\/hash-docs-csp\.mjs docs-site\/out/,
+    );
   });
 });

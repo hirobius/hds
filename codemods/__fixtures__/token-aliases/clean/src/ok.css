@@ -1,0 +1,5 @@
+.ok {
+  gap: var(--semantic-space-component-medium);
+  padding: var(--semantic-space-layout-gap) var(--semantic-space-scale-sm);
+  border-color: var(--semantic-color-border-default);
+}

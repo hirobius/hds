@@ -18,6 +18,7 @@ import { compactContract, mergeSlots } from './lib/jsdoc-contract.mjs';
 import { figmaLinkCoverage, resolveFigmaLink } from './lib/figma-link.mjs';
 import { applyCoreFlag } from './lib/core-set.mjs';
 import { publicClasses } from './lib/public-classes.mjs';
+import { PUBLIC_DATA_ATTRIBUTES } from './lib/public-data-attributes.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -355,6 +356,15 @@ manifest.inventory.namespaceViolations = namespaceViolations;
 // hds#449: the classes consumers may write themselves (hds-focus, the
 // static.css set); removing one is a breaking CSS fact (scripts/check-upgrade-css.mjs).
 manifest.publicClasses = publicClasses(ROOT);
+
+// hds#960: the data-* attributes each component promises consumers may select
+// on; scripts/lib/public-data-attributes.mjs holds the list and its check.
+for (const [name, spec] of [
+  ...Object.entries(manifest.componentSpecs),
+  ...Object.entries(manifest.utilities),
+]) {
+  spec.publicDataAttributes = PUBLIC_DATA_ATTRIBUTES[name] ?? [];
+}
 
 writeJson(MANIFEST_PATH, manifest);
 

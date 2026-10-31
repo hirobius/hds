@@ -38,8 +38,10 @@ what it rebuilt. Run `pnpm regen` yourself after a merge made without the hooks
 
 ## Gates
 
-Three places run gates: `.husky/pre-commit`, `.husky/pre-push` and
-`.github/workflows/ci.yml`. The table below mirrors them step for step;
+Two places run gates: `.husky/pre-commit` and `.husky/pre-push`. GitHub Actions
+is disabled on this repo (2026-10-30), so `.github/workflows/ci.yml` never runs;
+its `ci` rows below stay for reference and as the list to run by hand before a
+push. Merges need an independent `Reviewed: PASS — <sha>` PR comment. The table below mirrors them step for step;
 `scripts/__tests__/contributing-gates.test.mjs` fails when it drifts, so edit the
 hook or workflow and this table together. CI steps that only check out, set up
 tooling, or restore the cache are omitted because they are not gates.

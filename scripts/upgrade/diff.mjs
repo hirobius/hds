@@ -20,6 +20,8 @@
  * one (propFacts below): a prop removed or renamed, a prop now required, an
  * allowed value removed, a default changed.
  *
+ * Dom facts (hds#468) come from the snapshots' dom sections when both have one
+ * (domFacts below): a demo whose roles, names, states or data-* changed.
  * Type facts (hds#467) come from the snapshots' types section when both have
  * one (typeFacts below): a value now exported as a type only, a callable's
  * signature changed, a static member (Menu.Item) or an object key removed.
@@ -61,6 +63,14 @@ const PROP_FACT_KINDS = [
   'prop-default-changed',
 ];
 
+/**
+ * hds#468: a demo whose DOM and accessibility outline changed (roles, accessible
+ * names, states, data-* attributes; ./dom.mjs), read from both snapshots' `dom` section.
+ */
+const DOM_FACT_KINDS = ['dom-changed'];
+
+/** True for the id of a dom fact (hds#468). */
+export const isDomFactId = (id) => DOM_FACT_KINDS.some((kind) => id.startsWith(`${kind}:`));
 /** The type fact kinds (hds#467), read from both snapshots' `types` section. */
 const TYPE_FACT_KINDS = ['export-type-only', 'signature-changed', 'member-removed', 'key-removed'];
 
@@ -79,6 +89,7 @@ export const FACT_KINDS = [
   'bin-added',
   ...CSS_FACT_KINDS,
   ...PROP_FACT_KINDS,
+  ...DOM_FACT_KINDS,
   ...TYPE_FACT_KINDS,
 ];
 
@@ -353,6 +364,18 @@ function propFacts(prev, next) {
 }
 
 /**
+ * The dom facts between two `dom` sections (./dom.mjs, hds#468): one
+ * dom-changed per demo both record whose outline differs. A demo that left
+ * goes with its component, a removed export.
+ */
+function domFacts(prev, next) {
+  return Object.keys(prev)
+    .sort()
+    .filter((name) => next[name] && !same(prev[name], next[name]))
+    .map((name) => fact({ kind: 'dom-changed', name }));
+}
+
+/**
  * The type facts between two `types` sections (scripts/upgrade/types.mjs),
  * for each export both have in the same entry (one that left is a removed or
  * moved export):
@@ -439,6 +462,7 @@ export function diffSnapshots(prev, next) {
     ),
     ...(prev.css && next.css ? cssFacts(prev.css, next.css) : []),
     ...(prev.props && next.props ? propFacts(prev.props, next.props) : []),
+    ...(prev.dom && next.dom ? domFacts(prev.dom, next.dom) : []),
     ...(prev.types && next.types ? typeFacts(prev.types, next.types) : []),
   ];
   return facts.sort(compareFacts);

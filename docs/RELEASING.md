@@ -1,14 +1,47 @@
 # Releasing @hirobius/design-system
 
-How a release is cut lives in [CONSUMING.md](../CONSUMING.md), "Maintainers:
-cutting a release". This file is what to do when one goes wrong.
+GitHub Actions is disabled on hirobius/hds (Adrian, 2026-10-30) to keep the repo
+free. `.github/workflows/release.yml` never runs, so every release is cut by hand
+by the owner. Agents never merge, publish or release.
+
+## Who
+
+Owner only (Adrian), from his own laptop, signed in with `npm login` on an
+account that can publish the package. npm asks for 2FA at publish.
+
+## Steps
+
+1. **Version PR.** On a branch, run `pnpm changeset:version`. It applies the
+   pending `.changeset/*.md`, bumps the version, writes the changelog and
+   rebuilds the release artifacts. Open it as the "Version Packages" PR.
+2. **Check locally.** Run `pnpm typecheck && pnpm test && pnpm smoke:consumer`
+   and paste the results into the PR. No CI will run them.
+3. **Review.** The PR needs an independent `Reviewed: PASS — <sha>` comment for
+   its head commit, from someone other than the author. A new push voids it.
+4. **Merge** the PR (owner), then pull `main` locally.
+5. **Dry run.** `pnpm release:local`: every check, the build, the consumer smoke
+   and `pnpm publish --dry-run`. Publishes nothing, needs no login.
+6. **Publish.** `pnpm release:local --publish`. It refuses unless HEAD is a clean
+   checkout of `origin/main` with no pending changesets, and stops if the
+   version is already on npm.
+
+## What changed from the Actions release
+
+- **No provenance.** npm provenance came from OIDC in Actions. Don't pass
+  `--provenance`; it fails outside a supported CI.
+- **The tag stays local.** `changeset publish` tags `v<version>` on the laptop;
+  pushing from a laptop is forbidden (CLAUDE.md §0).
+- **No Chromatic, no CI.** Visual changes carry before/after screenshots in the
+  PR; checks are the husky hooks plus the commands in step 2.
+
+Script: `scripts/release-local.mjs` (ops#771). The rest of this file is what
+to do when a release goes wrong.
 
 ## If a release is bad
 
 npm never unpublishes a version people may already have installed, so a bad
 release is **deprecated** and `latest` is moved back to the last good version.
-Trusted Publishing only grants the release workflow publish rights, so these
-two commands need Adrian's own npm login (an owner of the package).
+These two commands need Adrian's own npm login (an owner of the package).
 
 1. See what the yank will do. It is a dry run unless you pass `--apply`:
 

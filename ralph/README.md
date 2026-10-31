@@ -1,5 +1,8 @@
 # Ralph — the autonomous issue→PR loop
 
+> **GitHub Actions is disabled on hirobius/hds (2026-10-30).** The workflow
+> callers below never fire: run `ralph/gate.sh` locally before any PR.
+
 Deterministic, auditable, human-approved. GitHub **is** the state store:
 `ralph-ready` label = queue · claim refs = locks · branches/PRs = work product
 · comments = audit trail. All state changes go through `gh` — nothing else.

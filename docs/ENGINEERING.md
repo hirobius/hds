@@ -69,7 +69,9 @@ automatically, in three tiers:
 - **Every push and every PR** — `pnpm test` runs its `pretest` chain of gates
   (manifest, deprecations, focus states, docs, the upgrade ledger) before the
   unit and contract tests, then a consumer smoke build.
-- **CI only** — Figma drift, bundle budgets, and accessibility on the docs site.
+- **On demand** — Figma drift, bundle budgets, and accessibility on the docs
+  site. These were the CI tier; GitHub Actions is disabled on this repo
+  (2026-10-30), so they run by hand before push.
 
 The rest of the registry is **on demand**: audits you run when you need them
 (`pnpm check:full` runs the full set), kept out of the hooks on purpose. What the
@@ -79,9 +81,9 @@ automatic gates prevent, by example:
   below WCAG AA — checked in both light and dark, on every commit.
 - **`check-type-ramp`** rejects font sizes and weights that fall off the type
   ramp, on every commit, so type can't quietly fork into one-off values.
-- **`check-upgrade-ledger`** fails the push and CI when a consumer-facing change
+- **`check-upgrade-ledger`** fails the push when a consumer-facing change
   has no upgrade note (§5), so the migration path can't fall behind the code.
-- **`check-figma-drift`** fails CI when a hand edit in Figma diverges from the
+- **`check-figma-drift`** fails, run before push, when a hand edit in Figma diverges from the
   code model, keeping code the single source of truth (§6).
 
 ### Proof-of-firing: who tests the tests
@@ -156,9 +158,11 @@ cause-by-cause analysis:
 ## 5. Shipping and the consumer upgrade path
 
 Releases are cut with [Changesets](https://github.com/changesets/changesets): a
-PR that changes the published package adds a changeset, and on a push to `main`
-`.github/workflows/release.yml` opens a "Version Packages" PR whose merge
-publishes to public npm with provenance.
+PR that changes the published package adds a changeset, a reviewed "Version
+Packages" PR applies them, and the owner publishes from a laptop with
+`pnpm release:local --publish` (npm 2FA). GitHub Actions is disabled on this
+repo, so `.github/workflows/release.yml` never runs and releases carry no npm
+provenance. Steps: [`RELEASING.md`](RELEASING.md).
 
 Upgrading a design system normally breaks its consumers. HDS codifies the
 migration instead of documenting it and hoping: every consumer-facing change

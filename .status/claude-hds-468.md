@@ -1,0 +1,1 @@
+hds#468: DOM and accessibility baseline (docs/baselines/dom-a11y.json) and dom-changed behavior facts in the upgrade gate; check-reduced-motion registered as ralph-gate; "What you may select on" in CONSUMING.md and the consumer skill.

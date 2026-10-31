@@ -4,10 +4,10 @@
  *
  * semantic.space.component.padding (tenant + density override in
  * tenants.css) and semantic.space.layout.gutter (responsive override in
- * theme.css) are renamed to semantic.space.surface.padding and
+ * theme.css) were renamed to semantic.space.surface.padding and
  * semantic.space.region.gutter. Their overrides are expressed as steps on
- * the t-shirt scale, and the old names stay as $deprecated aliases so
- * consumers that have not run the codemod keep the same computed values.
+ * the t-shirt scale. The old names stayed as $deprecated aliases until 0.33.0
+ * removed them (hds#625; the hds-token-aliases codemod moves consumers).
  *
  * The last block renders the real stylesheets in Chromium and locks the
  * computed pixels for every tenant x density x breakpoint (hds#206 finish).
@@ -31,11 +31,9 @@ describe('canonical overridable spacing tokens', () => {
     expect(space.region.gutter.$value).toBe('{semantic.space.scale.lg}');
   });
 
-  it('keeps component.padding and layout.gutter as $deprecated aliases of the new names', () => {
-    expect(space.component.padding.$value).toBe('{semantic.space.surface.padding}');
-    expect(space.component.padding.$deprecated).toMatch(/surface\.padding/);
-    expect(space.layout.gutter.$value).toBe('{semantic.space.region.gutter}');
-    expect(space.layout.gutter.$deprecated).toMatch(/region\.gutter/);
+  it('component.padding and layout.gutter are gone (hds#625)', () => {
+    expect(space.component.padding).toBeUndefined();
+    expect(space.layout).toBeUndefined();
   });
 });
 
@@ -48,41 +46,30 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
     expect(overlay.semantic.space.component).toBeUndefined();
   });
 
-  it('tenants.css overrides the new var and re-anchors the deprecated alias', () => {
+  it('tenants.css overrides the new var and no removed alias', () => {
     const css = read('src/styles/tenants.css');
     expect(css).toMatch(/--semantic-space-surface-padding: var\(\s*--semantic-space-scale-sm\s*\)/);
     expect(css).toMatch(/--semantic-space-surface-padding: var\(\s*--semantic-space-scale-xs\s*\)/);
-    expect(css).toMatch(
-      /--semantic-space-component-padding: var\(\s*--semantic-space-surface-padding\s*\)/,
-    );
-    expect(css).not.toMatch(/--semantic-space-component-padding: var\(\s*--primitive-/);
+    expect(css).not.toMatch(/--semantic-space-component-padding\s*:/);
   });
 
   it('theme.css sets region.gutter responsively from scale steps, not raw px', () => {
     const css = read('src/styles/theme.css');
     expect(css).toContain('--semantic-space-region-gutter: var(--semantic-space-scale-lg);');
     expect(css).toContain('--semantic-space-region-gutter: var(--semantic-space-scale-sm);');
-    // The deprecated alias is only re-declared inside a compact scope (hds#336), so
-    // nested scopes resolve it against the remapped scale; everywhere else it follows
-    // region.gutter via its :root alias in tokens.generated.css.
-    const outsideCompact = css.replace(/(:where\()?\[data-density='compact'\]\)?\s*\{[^}]*\}/g, '');
-    expect(outsideCompact).not.toMatch(/--semantic-space-layout-gutter\s*:/);
+    expect(css).not.toMatch(/--semantic-space-layout-gutter\s*:/);
   });
 
-  it('tokens.generated.css declares the deprecated aliases as var() of the new names', () => {
+  it('tokens.generated.css declares no removed alias', () => {
     const css = read('src/styles/tokens.generated.css');
-    expect(css).toContain(
-      '--semantic-space-component-padding: var(--semantic-space-surface-padding);',
-    );
-    expect(css).toContain('--semantic-space-layout-gutter: var(--semantic-space-region-gutter);');
+    expect(css).not.toMatch(/--semantic-space-(component-padding|layout-gutter)\s*:/);
   });
 });
 
 /*
  * The computed pixels, not just the CSS text. Every tenant x density x breakpoint,
  * with the attributes on <html> and on a nested element (a var() resolves where it
- * is declared, so the two can differ). The deprecated name must compute to the same
- * pixels as its replacement in every cell, and both must keep today's values.
+ * is declared, so the two can differ). Both must keep today's values.
  */
 // scripts/lib/browser-host.mjs finds the browser; none means skip, unless
 // HDS_REQUIRE_BROWSER=1 (CI), where it throws.
@@ -113,9 +100,7 @@ const PAGE_CSS = [
 
 const PROBE =
   'display:block;padding-top:var(--semantic-space-surface-padding);' +
-  'padding-right:var(--semantic-space-component-padding);' +
-  'padding-bottom:var(--semantic-space-region-gutter);' +
-  'padding-left:var(--semantic-space-layout-gutter)';
+  'padding-bottom:var(--semantic-space-region-gutter)';
 
 describe('every tenant has a row in the computed-value table', () => {
   it('matches the tenants/ directory', () => {
@@ -169,11 +154,11 @@ describe.skipIf(!hasBrowser)('computed spacing, every tenant x density x breakpo
 
       for (const width of Object.keys(GUTTER_PX).map(Number)) {
         await page.setViewportSize({ width, height: 600 });
-        const [surface, padding, region, gutter] = await page.evaluate((probe) => {
+        const [surface, region] = await page.evaluate((probe) => {
           const el = document.getElementById('p');
           el.style.cssText = probe;
           const s = getComputedStyle(el);
-          return [s.paddingTop, s.paddingRight, s.paddingBottom, s.paddingLeft].map(parseFloat);
+          return [s.paddingTop, s.paddingBottom].map(parseFloat);
         }, PROBE);
         const where = `${width}px`;
         expect({ where, surface, region }).toEqual({
@@ -181,7 +166,6 @@ describe.skipIf(!hasBrowser)('computed spacing, every tenant x density x breakpo
           surface: SURFACE_PX[tenant][d],
           region: GUTTER_PX[width][d],
         });
-        expect({ where, padding, gutter }).toEqual({ where, padding: surface, gutter: region });
       }
     },
   );
