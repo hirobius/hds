@@ -403,6 +403,14 @@ pre {
   box-shadow: var(--semantic-shadow-overlay);
 }
 
+/* Search result rows: Fumadocs rounds them (rounded-lg), and the dialog is portalled outside
+   #nd-docs-layout, so the layout-chrome rule below never reaches them — in the default Corners
+   setting they kept Fumadocs' radius and only the Sharp override squared them. The HDS radius
+   token reaches them in every setting (hds#806). */
+#fd-search-list [role='option'] {
+  border-radius: var(--semantic-radius-action);
+}
+
 /* Sidebar search trigger (components/search-trigger.tsx, hds#903): a raised row with the
    shortcut drawn by the HDS Kbd. Tokens only, so Corners reaches it. */
 .hds-docs-search {
