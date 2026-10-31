@@ -3,7 +3,7 @@
   "version": "0.32.0",
   "components": {
     "publicModules": 62,
-    "core": 46,
+    "core": 47,
     "patterns": 13
   },
   "tokens": {
@@ -22,5 +22,5 @@
     "source": "docs/data/consumer-usage.json",
     "confirmedAt": "2026-10-01"
   },
-  "generatedFrom": "7da8406d3469cc92882bddd6f8c046bde7aa71c9"
+  "generatedFrom": "bd7eddc5a3ca3e70fc3a3b225b546d2c44c2dfff"
 }

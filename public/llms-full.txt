@@ -105,7 +105,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 46 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 47 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -115,6 +115,7 @@ The 46 components of the ratified core set: brand-neutral, composable, imported 
 - Icon (Display)
 - Kbd (Display)
 - Table (Display)
+- Timeline (Display)
 - Alert (Feedback)
 - Badge (Feedback)
 - Progress (Feedback)
@@ -221,7 +222,7 @@ Tag: [core] Show an interactive filter or category chip that people can toggle. 
 Text: [core] Set any text on the type ramp, with the element chosen by `as`. Use instead: InlineLink, Kbd
 Textarea: [core] Collect multi-line free text such as a message, note or description. Use instead: Input
 ThemeToggle: A single header or menu control to switch between the light and dark theme. Use instead: SegmentedControl
-Timeline: Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
+Timeline: [core] Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
 TokenField: Edit a template or message in which placeholders such as [Name] must stay whole: each one is a chip that is stepped over and deleted as one unit. Use instead: Textarea, Input

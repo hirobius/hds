@@ -69,4 +69,6 @@ export const CORE_COMPONENTS = [
   'NavList',
   // hds#638
   'CommandPalette',
+  // hds#637
+  'Timeline',
 ];
