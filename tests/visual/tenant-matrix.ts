@@ -20,9 +20,9 @@ export const PRIMITIVES = ['button', 'card', 'input', 'badge', 'alert', 'table']
 
 export type Brand = (typeof BRANDS)[number];
 export type Density = (typeof DENSITIES)[number];
-export type Theme = (typeof THEMES)[number];
+type Theme = (typeof THEMES)[number];
 
-export interface MatrixCase {
+interface MatrixCase {
   route: string;
   /** Snapshot file stem: `<primitive>--<brand>--<density>--<theme>`. */
   name: string;
