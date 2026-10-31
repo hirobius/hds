@@ -287,6 +287,12 @@
         "(props: CommandPaletteProps & RefAttributes<HTMLDivElement>): ReactNode"
       ]
     },
+    "CommandPaletteArgument": {
+      "kind": "type"
+    },
+    "CommandPaletteArgumentOption": {
+      "kind": "type"
+    },
     "CommandPaletteItem": {
       "kind": "type"
     },

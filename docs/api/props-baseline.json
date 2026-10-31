@@ -1017,7 +1017,7 @@
       "default": null
     },
     "onSelect": {
-      "type": "(item: CommandPaletteItem) => void",
+      "type": "(item: CommandPaletteItem, args?: Readonly<Record<string, string>> | undefined) => void",
       "optional": false,
       "values": null,
       "default": null

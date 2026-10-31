@@ -2570,6 +2570,7 @@
         "src/app/components/box.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/pin.tsx",
@@ -11239,7 +11240,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/command-palette.tsx",
-      "description": "CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain data; the palette filters, groups (in first-seen order) and navigates them, and calls `onSelect` with the chosen item. `open` is controlled; the ⌘K / Ctrl+K hotkey calls `onOpenChange` unless `hotkey={false}`. Argument chips for multi-step commands are a follow-up (hds#962). <CommandPalette open={open} onOpenChange={setOpen} items={commands} onSelect={(item) => run(item.id)} />",
+      "description": "CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain data; the palette filters, groups (in first-seen order) and navigates them, and calls `onSelect` with the chosen item. `open` is controlled; the ⌘K / Ctrl+K hotkey calls `onOpenChange` unless `hotkey={false}`. An item with `args` is a multi-step command: picking it does not run it. Instead the palette walks its arguments in order — the command and each chosen argument show as Tag chips before the field — and only then calls `onSelect(item, args)` with a record of argument id to chosen value (an option's id, or the typed text for a free-text argument). Backspace on an empty field, or a chip's remove button, steps back. <CommandPalette open={open} onOpenChange={setOpen} items={commands} onSelect={(item) => run(item.id)} />",
       "a11yRules": [
         {
           "rule": "The palette is a modal dialog named by its label, which also names the search field.",
@@ -11294,6 +11295,24 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:command-palette.result-count-announced"
+        },
+        {
+          "rule": "Picking a command with arguments shows the command and each chosen argument as a removable Tag chip before the search field, and focus stays in the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.argument-chips"
+        },
+        {
+          "rule": "Backspace in an empty search field during an argument step removes the last chip and steps back, with focus staying in the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.chip-backspace"
+        },
+        {
+          "rule": "Each argument step is announced in the polite status with the argument's name and its position among the command's arguments.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.argument-step-announced"
         },
         {
           "rule": "Escape closes the palette and returns focus to the element that had it.",
@@ -11352,7 +11371,7 @@
           "type": "(open: boolean) => void"
         },
         "onSelect": {
-          "type": "(item: CommandPaletteItem) => void"
+          "type": "(item: CommandPaletteItem, args?: Readonly<Record<string, string>> | undefined) => void"
         },
         "open": {
           "type": "boolean"
@@ -11398,7 +11417,11 @@
         },
         {
           "keys": "Enter",
-          "effect": "Runs the active item and closes the palette."
+          "effect": "Runs the active item and closes the palette; on a command with arguments it picks the item as the next step instead."
+        },
+        {
+          "keys": "Backspace",
+          "effect": "On an empty field during an argument step, removes the last chip and steps back."
         },
         {
           "keys": "Escape",
