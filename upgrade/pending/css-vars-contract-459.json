@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The upgrade command lists any HDS CSS variable your code reads or writes that the new release does not ship, so you can replace it by hand."
+}
