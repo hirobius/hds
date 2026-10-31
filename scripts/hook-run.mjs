@@ -11,8 +11,6 @@
  * Green: one summary line. Red: only the failing stage's excerpt, the full-log
  * path, and the stage's own exit code. HOOK_VERBOSE=1 runs the hook file
  * as-is with full streaming output. Same commands, same exit codes.
- * TEMPORARY until 2026-10-31 (hds#912): pre-push also prints per-stage "⏱"
- * lines and a timing table (not under HOOK_VERBOSE=1).
  */
 import { spawnSync, execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -26,14 +24,6 @@ import {
   stageLabel,
   summaryLine,
 } from './lib/hook-output.mjs';
-import {
-  TIMINGS_FILE,
-  appendRecord,
-  buildRecord,
-  formatTable,
-  headSha,
-  stepLine,
-} from './lib/gate-timings.mjs';
 
 const hook = process.argv[2];
 if (!hook) {
@@ -74,25 +64,6 @@ let logFile = null;
   }
 }
 
-// TEMPORARY (remove 2026-10-31, hds#912): pre-push
-// prints per-stage "⏱" lines and a slowest-first table, and appends one JSON
-// line per run to .gate-timings.jsonl, green or red.
-const timed = hook === 'pre-push';
-const timings = [];
-function finishTimings() {
-  if (!timed) return;
-  const totalMs = performance.now() - t0;
-  console.log(formatTable(timings, totalMs));
-  try {
-    appendRecord(
-      path.join(root, TIMINGS_FILE),
-      buildRecord({ runner: 'pre-push', steps: timings, totalMs, sha: headSha() }),
-    );
-  } catch {
-    /* timing must never block a push */
-  }
-}
-
 const t0 = performance.now();
 const labels = [];
 for (const { name, cmd } of stages) {
@@ -100,21 +71,14 @@ for (const { name, cmd } of stages) {
   const r = spawnSync('sh', ['-c', cmd], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
   const out = `${r.stdout ?? ''}${r.stderr ?? ''}`;
   const ms = performance.now() - start;
-  if (timed) {
-    const step = name.replace(/…$/, '');
-    timings.push({ name: step, ms, ok: r.status === 0 });
-    console.log(stepLine(step, ms));
-  }
   if (logFile)
     fs.appendFileSync(logFile, `\n===== ${name} :: ${cmd} (${formatDuration(ms)}) =====\n${out}`);
   if (r.status !== 0) {
     console.error(`✗ ${hook}: ${name} failed (exit ${r.status ?? 'signal'}) — ${cmd}`);
     console.error(failureExcerpt(out));
     if (logFile) console.error(`full log: ${logFile}  (HOOK_VERBOSE=1 for live output)`);
-    finishTimings();
     process.exit(r.status ?? 1);
   }
   labels.push(stageLabel(name, out));
 }
-finishTimings();
 console.log(summaryLine(hook, labels, performance.now() - t0));
