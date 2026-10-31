@@ -1,1 +1,1 @@
-hds#1010 J3 slice 1: check-no-uppercase and check-no-custom-tracking share reportLineViolations (scripts/lib/source-scan.mjs); output unchanged.
+hds#1010 slice 2: check-no-status-clutter reports through shared reportLineViolations/isFixtureRun.
