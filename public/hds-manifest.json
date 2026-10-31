@@ -9918,7 +9918,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/timeline",
       "publicDataAttributes": [
         "data-format",
         "data-timeline-marker",
@@ -9938,7 +9938,8 @@
           }
         ]
       },
-      "aiRules": "Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only."
+      "aiRules": "Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only.",
+      "core": true
     },
     "TimelineItem": {
       "category": "Display",
