@@ -17,6 +17,11 @@
  *   2. that semver must be GREATER than the current package.json version
  *      (a past-due deprecation is a failure — remove it, with its codemod)
  *
+ * The comparison version is the NEXT release when changesets are pending
+ * (hds#469): the highest pending bump applied to the current version. A PR
+ * whose minor changeset makes a `@removeIn` past due fails on that PR, not
+ * one release later on the Version PR.
+ *
  * A tag counts only at the start of a JSDoc line, the way the manifest reads
  * it (scripts/lib/jsdoc-contract.mjs parseDeprecation): a one-line
  * `/** @deprecated … *\/` is a deprecation, but a `@removeIn` written later on
@@ -44,6 +49,7 @@ import { dirname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { gt, isVersion } from '../codemods/lib/semver.mjs';
 import { parseDeprecation } from './lib/jsdoc-contract.mjs';
+import { changesetBump, nextVersion } from './lib/next-version.mjs';
 import { readJsExportEntries } from './lib/package-entries.mjs';
 import { collectDeprecations } from './lib/token-deprecations.mjs';
 
@@ -57,8 +63,20 @@ const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 // In fixture mode, override the "current version" so fixtures are deterministic
-// regardless of the real package version.
-const COMPARE_VERSION = isFixtureMode ? '1.0.0' : CURRENT_VERSION;
+// regardless of the real package version. Otherwise main() raises it to the
+// next release when pending changesets bump the package (hds#469).
+let COMPARE_VERSION = isFixtureMode ? '1.0.0' : CURRENT_VERSION;
+let COMPARE_LABEL = isFixtureMode ? 'fixture 1.0.0' : `current ${CURRENT_VERSION}`;
+
+/** The version the pending changesets at `root` will ship as, or null when none bump this package. */
+function pendingNextVersion(root) {
+  const dir = join(root, '.changeset');
+  if (!existsSync(dir)) return null;
+  const bumps = readdirSync(dir)
+    .filter((f) => f.endsWith('.md') && f !== 'README.md')
+    .map((f) => changesetBump(readFileSync(join(dir, f), 'utf-8'), PKG.name));
+  return nextVersion(CURRENT_VERSION, bumps);
+}
 
 const JSDOC_RE = /\/\*\*[\s\S]*?\*\//g;
 
@@ -79,7 +97,7 @@ function findViolations(content) {
     }
     if (isVersion(COMPARE_VERSION) && !gt(deprecation.removeIn, COMPARE_VERSION)) {
       out.push(
-        `@removeIn ${deprecation.removeIn} is past-due (<= current ${COMPARE_VERSION}) — remove the API + ship its codemod`,
+        `@removeIn ${deprecation.removeIn} is past-due (<= ${COMPARE_LABEL}) — remove the API + ship its codemod`,
       );
     }
   }
@@ -100,7 +118,7 @@ function findTokenViolations(tree) {
       );
     } else if (isVersion(COMPARE_VERSION) && !gt(removeIn, COMPARE_VERSION)) {
       out.push(
-        `${path}: removed in ${removeIn} is past-due (<= current ${COMPARE_VERSION}) — remove the token + ship its codemod`,
+        `${path}: removed in ${removeIn} is past-due (<= ${COMPARE_LABEL}) — remove the token + ship its codemod`,
       );
     }
   }
@@ -165,6 +183,14 @@ export function deprecationScope(root) {
 }
 
 function main() {
+  if (!isFixtureMode) {
+    const next = pendingNextVersion(ROOT);
+    if (next) {
+      COMPARE_VERSION = next;
+      COMPARE_LABEL = `next release ${next} (pending changesets)`;
+    }
+  }
+
   const entries = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : deprecationScope(ROOT);
 
   const violations = [];
@@ -187,7 +213,7 @@ function main() {
 
   if (violations.length === 0) {
     console.log(
-      `✓ check-deprecations — every @deprecated has a future @removeIn target (${entries.length} files).`,
+      `✓ check-deprecations — every @deprecated has a future @removeIn target (${entries.length} files, against ${COMPARE_LABEL}).`,
     );
     process.exit(0);
   }

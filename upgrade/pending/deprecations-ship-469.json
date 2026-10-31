@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The package now ships deprecations.json (every deprecated export, prop, prop value and token, plus the names past releases removed), and the ESLint plugin adds hds/no-deprecated-import and hds/no-removed-import, which read it; a deprecated Text variant value now also warns once at runtime."
+}

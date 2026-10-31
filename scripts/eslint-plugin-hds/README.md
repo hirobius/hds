@@ -77,7 +77,9 @@ export default [
 | [`hds/max-two-meta-items`](#hdsmax-two-meta-items)                   | error   | Bullet-separated lines (`A · B · C`) with three or more items; use `MetaLine`, one row per extra item. |
 | [`hds/no-custom-tracking`](#hdsno-custom-tracking)                   | error   | Letter-spacing not from a type token: `tracking-*`, `[letter-spacing:…]`, inline `letterSpacing`.      |
 | [`hds/no-delight-on-actions`](#hdsno-delight-on-actions)             | error   | The lime delight accent (`semantic.accent.delight.*`) on a button, a link or a focus style.            |
+| [`hds/no-deprecated-import`](#hdsno-deprecated-import)               | error   | Importing a deprecated export of the package; the message names its removal version and replacement.   |
 | [`hds/no-deprecated-token`](#hdsno-deprecated-token)                 | error   | A `$deprecated` token as a CSS var, `hds.*` member or Tailwind key; the message names the replacement. |
+| [`hds/no-removed-import`](#hdsno-removed-import)                     | error   | Importing a name a shipped release removed; the message names the release and the migration.           |
 | [`hds/no-primitive-spacing`](#hdsno-primitive-spacing)               | error   | Primitive spacing steps (`--primitive-space-*`, `hds.space.pxN`, Tailwind `p-4`); use semantic tokens. |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
 | [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                    |
@@ -114,6 +116,22 @@ export default [
 
 The lime delight accent is for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Flags a delight reference (CSS var, token path or arbitrary Tailwind value) in the props of `<button>`, `<a>` or any `*Button` / `*Link` component, in a `focus:` / `focus-visible:` / `focus-within:` class, and anywhere in a button or link component file. Actions and focus take `semantic.accent.*`.
 
+### `hds/no-deprecated-import`
+
+Fails an import of a deprecated export of `@hirobius/design-system` (any
+entry point). The message quotes the deprecation notice, the version it is
+removed in and the replacement, when one is named:
+
+```text
+"Stat" is deprecated in @hirobius/design-system (No replacement planned: compose a Card
+with the type roles (caption label, display/title value).) and is removed in 1.0.0.
+```
+
+The list is the installed package's `deprecations.json`, generated from the
+same `@deprecated` JSDoc the package gates on, so a newly deprecated export
+fails with no rule change — and a consumer on an older release is judged by
+that release's list.
+
 ### `hds/no-deprecated-token`
 
 Fails any token marked `$deprecated` in `hirobius.tokens.json`, in three
@@ -129,6 +147,23 @@ version it leaves in and the replacement:
 
 The list is `rules/deprecated-tokens.json`, which the token build writes, so a
 newly deprecated token fails with no rule change.
+
+### `hds/no-removed-import`
+
+Fails an import of a name a shipped release already removed from that entry
+point — the import resolves to nothing. The message names the release that
+took it and the migration the upgrade ledger recorded:
+
+```text
+"StatusDot" was removed from @hirobius/design-system in 0.21.0. StatusDot and
+StatusDotProps are removed, so replace each <StatusDot tone size label> with
+<Badge dot tone size label> (BadgeProps for the type), moving any style to a
+wrapper element or a className first.
+```
+
+The list is the installed package's `deprecations.json`, generated from the
+upgrade ledgers. A name is only flagged at the entry it was removed from: a
+component that moved to `/patterns` still imports fine from there.
 
 ### `hds/no-primitive-spacing`
 

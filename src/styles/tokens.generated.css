@@ -650,10 +650,15 @@
   --semantic-accent-content: var(--primitive-color-graphite-300);
   --semantic-accent-contentHover: var(--primitive-color-graphite-200);
   --semantic-accent-subtle: var(--primitive-color-graphite-800);
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-base: var(--primitive-color-lime-300);
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-deep: var(--primitive-color-lime-600);
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-pale: var(--primitive-color-lime-50);
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
+  /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) */
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
@@ -738,9 +743,13 @@
   --semantic-typography-body-font-size: var(--primitive-typography-size-compactBody);
   --semantic-typography-ui-font-size: var(--primitive-typography-size-sm);
   --semantic-typography-caption-font-size: var(--primitive-typography-size-compactCaption);
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */
   --semantic-typography-h1-font-size: var(--primitive-typography-size-2xl);
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */
   --semantic-typography-h2-font-size: var(--primitive-typography-size-2xl);
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */
   --semantic-typography-h3-font-size: var(--primitive-typography-size-2xl);
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption */
   --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-compactCaption);
   --semantic-space-surface-padding: var(--semantic-space-scale-md);
   --semantic-space-region-gutter: var(--semantic-space-scale-lg);

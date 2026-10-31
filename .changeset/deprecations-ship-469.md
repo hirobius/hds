@@ -1,0 +1,5 @@
+---
+'@hirobius/design-system': patch
+---
+
+Deprecations now reach consumers (hds#469). The package ships `deprecations.json` — every deprecated export, prop, prop value and token with its removal version, plus every name a shipped release already removed — generated from the `@deprecated` JSDoc, `hirobius.tokens.json` and the upgrade ledgers, and kept fresh by a pretest check. The ESLint plugin gains `hds/no-deprecated-import` and `hds/no-removed-import`, which read the installed package's record: importing `Stat` names its removal version, and importing `StatusDot` names 0.21.0 and the Badge migration. `check-deprecations` now compares `@removeIn` against the next release computed from pending changesets, so the PR whose changeset makes a removal past due fails on that PR. A deprecated token's dark and compact re-declarations in `variables.css` carry the `/* @deprecated */` comment too, and a deprecated `Text` variant value (`heading1`, `docBody`, …) now fires the ADR-014 `warnOnce` runtime warning naming the role it reads as. No component output changes.

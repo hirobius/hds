@@ -5,8 +5,9 @@
  * Expected variables are spelled out literally (the issue's mapping), not
  * derived from the component's own table.
  */
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
+import { __resetDeprecationWarnings } from '../../lib/deprecation';
 import { Text, type TextProps, type TextTone } from './text';
 
 afterEach(cleanup);
@@ -188,5 +189,26 @@ describe('Text overflow props absent', () => {
     render(both);
     // At runtime a caller that bypasses the types gets the one line.
     expect(overflowClasses(screen.getByText('both'))).toEqual(['block', 'truncate']);
+  });
+});
+
+describe('Text deprecated variant aliases (hds#469)', () => {
+  beforeEach(() => __resetDeprecationWarnings());
+  afterEach(() => vi.restoreAllMocks());
+
+  it('warns once when a deprecated variant value is used, naming its role', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    render(<Text variant="heading1">one</Text>);
+    render(<Text variant="heading1">two</Text>);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0][0]).toContain("Text variant 'heading1' is deprecated");
+    expect(warn.mock.calls[0][0]).toContain("Use 'title'");
+    expect(warn.mock.calls[0][0]).toContain('removed in 1.0.0');
+  });
+
+  it('does not warn for a current variant value', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    render(<Text variant="title">fine</Text>);
+    expect(warn).not.toHaveBeenCalled();
   });
 });

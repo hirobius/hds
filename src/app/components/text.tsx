@@ -19,6 +19,7 @@ import {
 } from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+import { warnOnce } from '../../lib/deprecation';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -247,6 +248,23 @@ export type TextProps = TextOverflowProps & {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
+// The deprecated variant aliases (the @deprecated tags on TextVariant) and
+// the role each one reads as. ADR-014 step 1 for a deprecated prop value is a
+// runtime warnOnce, so using an alias tells the consumer once per session
+// (hds#469); the alias still renders exactly as the role it points at.
+const DEPRECATED_VARIANT_ROLES: Partial<Record<TextVariant, TextVariant>> = {
+  heading1: 'title',
+  heading2: 'title',
+  heading3: 'title',
+  technical: 'mono',
+  eyebrow: 'caption',
+  badge: 'caption',
+  docLede: 'body',
+  docBody: 'body',
+  docSmall: 'ui',
+  docCode: 'mono',
+};
+
 export const Text = /* @__PURE__ */ forwardRef<HTMLElement, TextProps>(function Text(
   {
     children,
@@ -262,6 +280,13 @@ export const Text = /* @__PURE__ */ forwardRef<HTMLElement, TextProps>(function 
   },
   ref,
 ) {
+  const deprecatedRole = DEPRECATED_VARIANT_ROLES[variant];
+  if (deprecatedRole) {
+    warnOnce(
+      `Text.variant.${variant}`,
+      `Text variant '${variant}' is deprecated (hds#483) and is removed in 1.0.0. Use '${deprecatedRole}', which it now reads.`,
+    );
+  }
   // The types allow one of the two; a caller that passes both gets the one line.
   const clamp = truncate ? undefined : lineClamp;
   return (

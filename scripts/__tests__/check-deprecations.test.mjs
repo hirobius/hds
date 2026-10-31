@@ -230,6 +230,45 @@ describe('check-deprecations', () => {
     });
   });
 
+  // hds#469: the comparison version is the next release when changesets are
+  // pending, so the PR whose changeset makes a removal past due fails itself.
+  describe('compares against the next release from pending changesets (hds#469)', () => {
+    const PROBE = '\n/**\n * @deprecated Probe.\n * @removeIn 0.33.0\n */\nexport const __p = 1;\n';
+
+    function withChangeset(dir, bump) {
+      mkdirSync(join(dir, '.changeset'), { recursive: true });
+      writeFileSync(
+        join(dir, '.changeset', 'probe.md'),
+        `---\n'@hirobius/design-system': ${bump}\n---\n\nProbe.\n`,
+      );
+    }
+
+    it('passes when the removal is past the current version and no changeset is pending', () => {
+      withCopy((dir) => {
+        edit(dir, 'src/patterns.ts', (src) => src + PROBE);
+        expect(run(dir).status).toBe(0);
+      });
+    });
+
+    it('fails when a pending minor changeset makes the removal past due on this PR', () => {
+      withCopy((dir) => {
+        withChangeset(dir, 'minor');
+        edit(dir, 'src/patterns.ts', (src) => src + PROBE);
+        const { status, output } = run(dir);
+        expect(output).toMatch(/@removeIn 0\.33\.0 is past-due \(<= next release 0\.33\.0/);
+        expect(status).toBe(1);
+      });
+    });
+
+    it('passes when only a patch is pending: the next release stays below the removal', () => {
+      withCopy((dir) => {
+        withChangeset(dir, 'patch');
+        edit(dir, 'src/patterns.ts', (src) => src + PROBE);
+        expect(run(dir).status).toBe(0);
+      });
+    });
+  });
+
   it('runs in pretest, as the registry declares (hds#389 D6)', () => {
     const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
     expect(pkg.scripts.pretest).toContain('node scripts/check-deprecations.mjs');
