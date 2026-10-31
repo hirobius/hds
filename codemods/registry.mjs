@@ -31,6 +31,7 @@ export const CODEMODS = Object.freeze({
   'hds-spacing-steps': { file: 'spacing-steps.mjs' },
   'hds-token-aliases': { file: 'token-aliases.mjs' },
   'hds-prop-map': { file: 'prop-map.mjs' },
+  'hds-css-vars': { file: 'css-vars.mjs' },
 });
 
 export const hasCodemod = (name) => Object.hasOwn(CODEMODS, name);
