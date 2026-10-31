@@ -328,6 +328,17 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-impeccable-detect",
+      "description": "Design anti-pattern detector wrapping `npx impeccable detect` (pbakaus/impeccable, Apache-2.0): deterministic typography / color / layout rules, no LLM, no API key. Exits 78 (skip) when npx or the network is unavailable. Restored for hds#553.",
+      "severity": "warn",
+      "gateScript": "scripts/check-impeccable-detect.mjs",
+      "fixturePath": "fixtures/check-impeccable-detect",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand",
+      "supportsJson": true
+    },
+    {
       "id": "check-layout-discipline",
       "description": "Flags raw px/number layout values (margin*, padding*, position, top/right/bottom/left/inset, gap/rowGap/columnGap, flexBasis) inside inline style={{…}} in src/app/components. Points violators at Box sx (the sanctioned escape hatch) or a named layout primitive (Stack/Grid/Container) instead of check-hardcoded-spacing's generic token-var fix. Introduced with #98 (layout-consistency epic #95, workstream 4).",
       "severity": "warn",

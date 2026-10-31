@@ -269,6 +269,7 @@
     "check:style-props": "node scripts/check-style-discipline.mjs --style-props-only",
     "check:state-surfaces": "node scripts/check-state-surfaces.mjs",
     "check:state-surfaces:strict": "node scripts/check-state-surfaces.mjs --strict-review",
+    "check:impeccable": "node scripts/check-impeccable-detect.mjs",
     "check:steering-budget": "node scripts/check-steering-budget.mjs",
     "check:sync-map": "node scripts/check-sync-map.mjs",
     "check:skills-lock": "node scripts/check-skills-lock.mjs",
