@@ -2927,12 +2927,6 @@
     "HdsMuiThemeOptions": {
       "kind": "type"
     },
-    "default": {
-      "kind": "value",
-      "signatures": [
-        "(): HdsMuiThemeOptions"
-      ]
-    },
     "hdsMuiThemeOptions": {
       "kind": "value",
       "signatures": [
