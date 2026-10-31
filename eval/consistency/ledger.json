@@ -232,6 +232,48 @@
       },
       "pass": false,
       "notes": "Harness run over eval/consistency/runs/2026-10-14. After arm on 0.25.0, generators as subagents without the hds MCP server (runs/2026-10-14/NOTES.md). after-sonnet imported Form from the package root instead of /patterns; AGENTS.md recipe gap filed as hds#715."
+    },
+    {
+      "date": "2026-10-31",
+      "source": "harness",
+      "packageVersion": "0.32.0",
+      "tarballSha256": "060931cb8f7ba0562b17953ee6df602c6bad514cb5ae270c83238bd0a0289f50",
+      "commit": "1226b49f4340e80d468812af693d6b7cccf3288d",
+      "apps": ["after-haiku", "after-opus", "after-sonnet"],
+      "measured": {
+        "builds": {
+          "passing": 2,
+          "of": 3
+        },
+        "violations": 0,
+        "axe": 0,
+        "jaccardMin": 1,
+        "lightDiffMax": null
+      },
+      "detail": {
+        "jaccard": [1, 1, 1],
+        "lightDiff": []
+      },
+      "thresholds": {
+        "builds": {
+          "min": 3,
+          "of": 3
+        },
+        "violations": {
+          "max": 0
+        },
+        "axe": {
+          "max": 0
+        },
+        "jaccard": {
+          "min": 0.85
+        },
+        "lightDiff": {
+          "max": 1.5
+        }
+      },
+      "pass": false,
+      "notes": "Harness run over eval/consistency/runs/2026-10-07. Rescore (hds#593) of the after-arm sources exactly as delivered in 2026-10-07, run against package 0.32.0; the original 2026-10-07 run (package packed from ff73142) was never ledger-recorded — its result stands in runs/2026-10-07/NOTES.md. The component-set fix held: Jaccard 1 on every pair (2026-10-05 baseline minimum 0.4091). after-haiku fails tsc with the same three errors as in 2026-10-07 (implicit-any parameters at App.tsx 39 and 61; useState(null) narrowing at 101), so builds stay 2/3 and the full run measures no light diff; a supplementary two-app scoring of after-opus and after-sonnet (fixture input, no ledger entry) measured light and dark diff 0%. The 2026-10-07 generation ran without the hds MCP server attached (deviation in the run notes), so that after-arm piece is still untested. Diagnosis: eval/consistency/DIAGNOSIS-2026-10-07.md."
     }
   ]
 }
