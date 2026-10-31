@@ -8,10 +8,10 @@
       "type": "FRAME",
       "props": {
         "fill": "semantic.color.surface.raised",
-        "padding": "semantic.space.component.padding",
+        "padding": "semantic.space.surface.padding",
         "radius": "semantic.radius.action",
         "layoutMode": "VERTICAL",
-        "itemSpacing": "semantic.space.layout.tight",
+        "itemSpacing": "semantic.space.scale.sm",
         "primaryAxisSizingMode": "AUTO",
         "counterAxisSizingMode": "AUTO"
       }

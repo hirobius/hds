@@ -103,6 +103,7 @@ import { TOOLING_EXPORTS, readJsExportEntries, untypedJsFile } from '../lib/pack
 import { buildCssContract, readCssContract } from '../lib/css-contract.mjs';
 import { formatJson, sortedObject } from './format.mjs';
 import { buildProps, readPropsBaseline } from './props.mjs';
+import { readDomBaseline } from './dom.mjs';
 import { readTypesBaseline } from './types.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
@@ -185,6 +186,8 @@ const withCss = (snapshot, css) => (css ? { ...snapshot, css } : snapshot);
 /** `snapshot` with its props section, when there is one. */
 const withProps = (snapshot, props) => (props ? { ...snapshot, props } : snapshot);
 
+/** `snapshot` with its dom section (hds#468), when there is one. */
+const withDom = (snapshot, dom) => (dom ? { ...snapshot, dom } : snapshot);
 /** `snapshot` with its types section, when there is one. */
 const withTypes = (snapshot, types) => (types ? { ...snapshot, types } : snapshot);
 
@@ -265,7 +268,11 @@ export function snapshotFromSource(root, { css = null } = {}) {
   // The committed baseline: building it takes a TypeScript program, and the
   // upgrade gate fails a stale one (types.mjs).
   const types = readTypesBaseline(root);
-  return withCss(withTypes(withProps(packageFacts(pkg, exportsMap, entries), props), types), css);
+  const facts = withDom(
+    withTypes(withProps(packageFacts(pkg, exportsMap, entries), props), types),
+    readDomBaseline(root),
+  );
+  return withCss(facts, css);
 }
 
 /** `npm pack <spec>` into `destination`; returns the tarball path. */

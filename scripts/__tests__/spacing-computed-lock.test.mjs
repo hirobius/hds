@@ -396,6 +396,17 @@ const expected = (css, cell, value) => {
   return SCALE_BUMP[map][value] ?? value;
 };
 
+// The third: hds#625 removed the semantic.space.layout.* vars Box sx's deprecated
+// names read, so they read the scale step each names. Those vars had carried the
+// scale's values at both densities since the compact move, so only the emitted
+// var name changes; the computed lock still reads the fixture's CSS (fixedStep).
+const REMOVED_LAYOUT_VARS = { tight: 'sm', normal: 'md', inset: 'lg', spacious: 'xl' };
+const renamed = (css) =>
+  css.replace(
+    /--semantic-space-layout-(tight|normal|inset|spacious)\b/g,
+    (m, name) => `--semantic-space-scale-${REMOVED_LAYOUT_VARS[name]}`,
+  );
+
 describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
   const fixture = existsSync(FIXTURE)
     ? JSON.parse(readFileSync(FIXTURE, 'utf8'))
@@ -410,7 +421,7 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
   it.each(PROBES.filter((p) => !ADDED.has(p.key)).map((p) => p.key))(
     '%s emits the CSS it emitted on c506c3b',
     (key) => {
-      expect(emitted[key]).toBe(fixture.emitted[key]);
+      expect(emitted[key]).toBe(renamed(fixture.emitted[key]));
     },
   );
 
@@ -433,7 +444,7 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
       (key) => {
         const want = fixture.computed[key]
           .split(' ')
-          .map((v, i) => expected(emitted[key], fixture.cells[i], v));
+          .map((v, i) => expected(fixture.emitted[key], fixture.cells[i], v));
         const got = computed[key].split(' ');
         const diffs = fixture.cells
           .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))

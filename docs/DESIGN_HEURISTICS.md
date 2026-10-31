@@ -14,7 +14,7 @@ Art-direction rules for layout decisions when the design system does not already
 
 ## Outer Inset
 
-- The outermost page container must include `padding={hds.semantic.space.layout.inset}`.
+- The outermost page container must include `padding={hds.semantic.space.scale.lg}`.
 - This 32px inset is mandatory so content never rides the browser edge.
 
 ## Visual Horizon

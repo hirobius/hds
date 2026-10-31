@@ -155,8 +155,8 @@ type ClosedSpacingVocabulary = Extract<SpacingVocabulary, { readonly closed: tru
  *   spacious → var(--semantic-space-scale-xl)
  *
  * They read the scale steps, so compact density tightens them. Box `sx`'s
- * deprecated names of the same spelling read the fixed layout vars instead
- * (BOX_SX_SPACING below). scripts/check-layout-gap-vocabulary.mjs fails a
+ * deprecated names of the same spelling read them too (BOX_SX_SPACING
+ * below). scripts/check-layout-gap-vocabulary.mjs fails a
  * second copy anywhere else in src/.
  */
 export const LAYOUT_GAP_NAMES = {
@@ -186,21 +186,15 @@ export const LAYOUT_GAP = {
 
 /**
  * Box `sx`: the t-shirt scale, plus the deprecated 'tight' | 'normal' |
- * 'inset' | 'spacious' at the vars they read before hds#206. Those are
- * `semantic.space.layout.*`, fixed pixels that compact density does not
- * remap, unlike the scale steps (and unlike Stack's same four names), so
- * they keep their layout var until they are removed in 1.0. The internal
- * spacing codemod skips this file, so it cannot rewrite them to scale steps
- * and change compact pixels. Each warns once in dev (ADR-014 step 1).
+ * 'inset' | 'spacious'. They read the scale steps, like Stack's same four
+ * names, since the `semantic.space.layout.*` vars they read before went
+ * (hds#625). Each warns once in dev (ADR-014 step 1) until removed in 1.0.
  */
 const BOX_SX_SPACING = {
   names: {
     ...SPACE_SCALE,
     ...SPACE_FIXED,
-    tight: 'var(--semantic-space-layout-tight)',
-    normal: 'var(--semantic-space-layout-normal)',
-    inset: 'var(--semantic-space-layout-inset)',
-    spacious: 'var(--semantic-space-layout-spacious)',
+    ...LAYOUT_GAP_NAMES,
   },
   numbers: 'units',
 } satisfies SpacingVocabulary;
@@ -290,7 +284,7 @@ const COLOR_PROP_MAP: Record<string, string> = {
 
 const CONTENT_KEYS = new Set(['primary', 'secondary', 'disabled', 'inverse', 'accent']);
 const SURFACE_KEYS = new Set(['page', 'raised', 'overlay', 'accent']);
-const BORDER_KEYS = new Set(['default', 'subtle', 'subdued', 'strong', 'accent']);
+const BORDER_KEYS = new Set(['default', 'subtle', 'strong', 'accent']);
 const FEEDBACK_KEYS = new Set(['success', 'warning', 'error', 'info']);
 const ACCENT_KEYS = new Set(['hover', 'pressed', 'subtle', 'content']);
 
@@ -325,7 +319,7 @@ function buildDeclarations(key: string, value: SxValue): string[] {
     if (step) {
       warnOnce(
         `box-sx-spacing-${value}`,
-        `Box sx spacing name '${value}' is deprecated (hds#206) and is removed in 1.0.0. Use '${step}': same pixels at the default density, tighter under compact (MIGRATIONS.md).`,
+        `Box sx spacing name '${value}' is deprecated (hds#206) and is removed in 1.0.0. Use '${step}', which it now reads (MIGRATIONS.md).`,
       );
     }
     // Typed so a closed vocabulary here, which can resolve to undefined, fails typecheck.

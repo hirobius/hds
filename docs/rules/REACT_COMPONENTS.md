@@ -117,8 +117,8 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 
 ### Table
 
-- Frame: a `semantic.borderWidth.default` border in `semantic.color.border.subdued`, rounded, no fill. Header band: `semantic.color.surface.raised`.
-- Cell dividers: `semantic.borderWidth.default` in `semantic.color.border.subdued`, under every body row but the last and before every body cell but the first. No zebra fill. Never hardcode a hex or rgb color for dividers.
+- Frame: a `semantic.borderWidth.default` border in `semantic.color.border.default`, rounded, no fill. Header band: `semantic.color.surface.raised`.
+- Cell dividers: `semantic.borderWidth.default` in `semantic.color.border.default`, under every body row but the last and before every body cell but the first. No zebra fill. Never hardcode a hex or rgb color for dividers.
 - Header labels use `hds.typeStyles.ui` (medium, sentence case); body text is the ui size at the body (regular) weight; `emphasizeFirstColumn` sets the first column back to medium. Never bold in a table.
 - A column without a `width` never shrinks below its content (`minmax(min-content, 1fr)`, one `semantic.size.tile` floor); when columns cannot fit, the table scrolls inside its own region with an edge fade. Never clip a cell.
 - Row hover: use `var(--semantic-color-surface-overlay)` as a background tint. No custom colors.

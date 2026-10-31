@@ -92,10 +92,8 @@ describe('tokens.generated.css carries the compact block', () => {
     expect(at(false)).toEqual([4, 8, 20, 28, 40, 64]);
   });
 
-  it('remaps layout tight/normal/inset/spacious to 12/16/24/32px', () => {
-    const names = ['tight', 'normal', 'inset', 'spacious'];
-    expect(names.map((n) => px(`--semantic-space-layout-${n}`, true))).toEqual([12, 16, 24, 32]);
-    expect(names.map((n) => px(`--semantic-space-layout-${n}`, false))).toEqual([20, 28, 40, 64]);
+  it('declares none of the layout aliases 0.33.0 removed (hds#625)', () => {
+    expect(generated).not.toMatch(/--semantic-space-layout-(tight|normal|inset|spacious|gutter):/);
   });
 
   it('section stack is 48px; region gutter and grid gap follow their scale steps', () => {
@@ -107,7 +105,7 @@ describe('tokens.generated.css carries the compact block', () => {
   });
 
   it('re-declares aliases so a nested compact scope resolves against the remap', () => {
-    for (const alias of ['--semantic-space-surface-padding', '--semantic-space-layout-gutter']) {
+    for (const alias of ['--semantic-space-surface-padding', '--semantic-space-region-gutter']) {
       expect(compactBlock).toMatch(new RegExp(`\\s${alias}:`));
     }
   });

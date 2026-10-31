@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-28T03:46:51.451Z",
+  "generated": "2026-10-30T17:09:03.408Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -33,7 +33,7 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#19161a",
+    "primaryColor": "#0f1726",
     "primaryColorToken": "semantic.accent.rest",
     "font": "Plus Jakarta Sans variable 100–900, self-hosted",
     "spacingBase": "4px",
@@ -461,6 +461,7 @@
         }
       },
       "docsPage": "/docs/components/alert",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a persistent inline message with a severity, next to the content it concerns.",
         "whenNot": "A brief confirmation that should disappear on its own, or a status label.",
@@ -601,6 +602,7 @@
       "sourcePath": "src/app/components/CodeBlock.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-154",
       "docsPage": "/docs/patterns/code-block",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a code sample with a copy button, optionally collapsed."
       }
@@ -661,6 +663,7 @@
       "sourcePath": "src/app/components/Container.tsx",
       "figmaLink": null,
       "docsPage": "/docs/components/utilities",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Constrain a page region to the content or maximum width and centre it.",
         "whenNot": "Spacing between siblings, columns, or a surface with padding.",
@@ -886,6 +889,9 @@
       "sourcePath": "src/app/components/Disclosure.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453",
       "docsPage": "/docs/components/disclosure",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Hide optional explanatory content behind a heading that people can expand. An expandable list row (one-line preview, actions beside the trigger) is variant=\"row\".",
         "whenNot": "Content people must see, or switching between panels.",
@@ -985,6 +991,9 @@
         }
       },
       "docsPage": "/docs/components/divider",
+      "publicDataAttributes": [
+        "data-variant"
+      ],
       "usage": {
         "when": "Separate two blocks of content with a thin line.",
         "whenNot": "Spacing alone would do, or the separation needs a container.",
@@ -1084,6 +1093,9 @@
       "tier": "template",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-839",
       "docsPage": "/docs/patterns/error-pattern",
+      "publicDataAttributes": [
+        "data-role"
+      ],
       "usage": {
         "when": "Show an error with a short message and a Back button, in place or as a full page."
       }
@@ -1241,6 +1253,7 @@
       "sourcePath": "src/app/components/Grid.tsx",
       "figmaLink": null,
       "docsPage": "/docs/components/grid",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Lay out content in columns that adapt to the screen width, or line up nested content with subgrid.",
         "whenNot": "A single row or column, or styling a surface.",
@@ -1399,6 +1412,7 @@
       "sourcePath": "src/app/components/Icon.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=27-2",
       "docsPage": "/docs/components/icon",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a Lucide icon at a set size and color.",
         "whenNot": "A control someone can activate, or a picture that carries content.",
@@ -1502,7 +1516,8 @@
       "tier": "primitive",
       "sourcePath": "src/app/components/InlineCode.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "InlineLink": {
       "category": "Navigation",
@@ -1599,6 +1614,7 @@
       "sourcePath": "src/app/components/InlineLink.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
       "docsPage": "/docs/components/inline-link",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Link to a route or external URL from inside body copy.",
         "whenNot": "An action that changes something, or a control that needs button styling.",
@@ -1937,6 +1953,10 @@
       "tier": "primitive",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20",
       "docsPage": "/docs/components/input",
+      "publicDataAttributes": [
+        "data-size",
+        "data-state"
+      ],
       "usage": {
         "when": "Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots.",
         "whenNot": "Multi-line text, or choosing from a fixed list of options.",
@@ -2112,6 +2132,9 @@
       "sourcePath": "src/app/components/SegmentedControl.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
       "docsPage": "/docs/components/segmented-control",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Switch between two to five mutually exclusive views or modes in a compact row.",
         "whenNot": "A form choice that submits with the form, or more than five options.",
@@ -2352,6 +2375,7 @@
       "sourcePath": "src/app/components/Stack.tsx",
       "figmaLink": null,
       "docsPage": "/docs/components/stack",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Space items in a row or column with even gaps.",
         "whenNot": "Multi-column layout, or giving content a background or padding.",
@@ -2510,6 +2534,9 @@
       "sourcePath": "src/app/components/Table.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300",
       "docsPage": "/docs/components/table",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Show rows of structured data in aligned columns, with optional sorting.",
         "whenNot": "A single record, a short list of links, or content that reflows as cards.",
@@ -2710,6 +2737,10 @@
       "sourcePath": "src/app/components/Tag.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "docsPage": "/docs/components/tag",
+      "publicDataAttributes": [
+        "data-active",
+        "data-dismissible"
+      ],
       "usage": {
         "when": "Show an interactive filter or category chip that people can toggle.",
         "whenNot": "A read-only status or count label.",
@@ -2839,6 +2870,7 @@
         "default"
       ],
       "docsPage": "/docs/components/surface",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Give a block of content a background and padding, with no header or footer.",
         "whenNot": "Page layout, section spacing, width constraints, or content that needs slots.",
@@ -3189,6 +3221,15 @@
         }
       },
       "docsPage": "/docs/components/card",
+      "publicDataAttributes": [
+        "data-bordered",
+        "data-format",
+        "data-interactive",
+        "data-padding",
+        "data-slot",
+        "data-tone",
+        "data-variant"
+      ],
       "usage": {
         "when": "Group related content on a raised surface with header, body, footer and row slots, or as one selectable option.",
         "whenNot": "A bare padded background with no slot anatomy, or a single headline figure.",
@@ -3319,6 +3360,7 @@
       "sourcePath": "src/app/components/Text.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2022-31",
       "docsPage": "/docs/components/text",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Set any text on the type ramp, with the element chosen by `as`.",
         "whenNot": "Navigation links, or a keyboard hint.",
@@ -3596,6 +3638,9 @@
         }
       },
       "docsPage": "/docs/components/dialog",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
         "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
@@ -3956,6 +4001,13 @@
         }
       },
       "docsPage": "/docs/components/button",
+      "publicDataAttributes": [
+        "data-hover-effect",
+        "data-pressed",
+        "data-size",
+        "data-tone",
+        "data-variant"
+      ],
       "usage": {
         "when": "Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed.",
         "whenNot": "Navigating to another page, where a link is the correct element.",
@@ -4031,7 +4083,8 @@
           "required": false
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "EmptyState": {
       "category": "Display",
@@ -4082,6 +4135,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/empty-state",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step.",
         "whenNot": "Content that is still loading, or a full-page error.",
@@ -4184,6 +4238,9 @@
         }
       ],
       "docsPage": "/docs/components/field",
+      "publicDataAttributes": [
+        "data-tone"
+      ],
       "usage": {
         "when": "Show a labelled read-only value, such as a name and its value in a detail view.",
         "whenNot": "Editable input, or a single headline figure.",
@@ -4257,6 +4314,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/page",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Wrap a screen in the standard width and padding."
       }
@@ -4329,6 +4387,7 @@
         }
       ],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show one headline figure inline, inside prose or a dense list, with its label and an optional sub-line.",
         "whenNot": "A row of headline numbers on a screen, or a status with a trailing badge."
@@ -4403,7 +4462,8 @@
           "required": true
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "StatusTile": {
       "category": "Display",
@@ -4459,6 +4519,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/status-tile",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a titled status block with optional notes and a trailing badge or affordance.",
         "whenNot": "A headline number (never a value), or a row inside a list.",
@@ -4592,6 +4653,9 @@
       ],
       "tokenMapping": {},
       "docsPage": "/docs/components/badge",
+      "publicDataAttributes": [
+        "data-tone"
+      ],
       "usage": {
         "when": "Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
@@ -4794,6 +4858,7 @@
         }
       ],
       "docsPage": "/docs/patterns/asset-img",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show an image that scales to its frame, with a placeholder if it fails to load."
       }
@@ -4919,6 +4984,10 @@
         }
       ],
       "docsPage": "/docs/components/tabs",
+      "publicDataAttributes": [
+        "data-orientation",
+        "data-state"
+      ],
       "usage": {
         "when": "Switch between panels of related content in the same place, one visible at a time.",
         "whenNot": "A compact mode switch with no panels, or content that must all be visible.",
@@ -4980,7 +5049,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "TabsList": {
       "category": "Navigation",
@@ -5016,7 +5086,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "TabsTrigger": {
       "category": "Navigation",
@@ -5051,7 +5122,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Radio": {
       "category": "Inputs",
@@ -5148,6 +5220,7 @@
       "tier": "primitive",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17",
       "docsPage": "/docs/components/radio",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Choose exactly one option from a small set that should stay visible together.",
         "whenNot": "Independent yes/no options, or a long list of options.",
@@ -5355,6 +5428,9 @@
       "tier": "primitive",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49",
       "docsPage": "/docs/components/select",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Choose one value from a short list of options in a form field.",
         "whenNot": "Firing actions, or choosing from a list long enough to need search.",
@@ -5506,6 +5582,7 @@
       "tier": "primitive",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265",
       "docsPage": "/docs/components/slider",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Pick a number within a known range by dragging, when the exact value matters less than the position.",
         "whenNot": "A precise number the person must type or read exactly.",
@@ -5611,6 +5688,7 @@
       "tier": "primitive",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19",
       "docsPage": "/docs/components/toggle",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Switch one setting on or off, with the effect applying immediately.",
         "whenNot": "A choice that only takes effect after submitting a form, or picking from several options.",
@@ -5721,6 +5799,9 @@
         }
       ],
       "docsPage": "/docs/components/avatar",
+      "publicDataAttributes": [
+        "data-size"
+      ],
       "usage": {
         "when": "Show a person or entity as an image with an initials fallback, or a neutral person icon when nobody is signed in; add a status dot for a state such as unsynced. As an account button, pass it as the iconLeft of a tertiary iconOnly Button.",
         "whenNot": "A generic pictogram, or a status marker on its own.",
@@ -5809,6 +5890,11 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/progress",
+      "publicDataAttributes": [
+        "data-state",
+        "data-tone",
+        "data-variant"
+      ],
       "usage": {
         "when": "Show how far a task has got, as a bar or ring that is determinate or indeterminate.",
         "whenNot": "A wait of unknown length with no bar, or content that is still loading.",
@@ -5874,6 +5960,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/skeleton",
+      "publicDataAttributes": [
+        "data-variant"
+      ],
       "usage": {
         "when": "Reserve the shape of content that is still loading, so the layout does not jump.",
         "whenNot": "A task with measurable progress, or a wait with no layout to reserve.",
@@ -5933,6 +6022,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/spinner",
+      "publicDataAttributes": [
+        "data-size"
+      ],
       "usage": {
         "when": "Show that something is loading when the wait is short or has no measurable end.",
         "whenNot": "A task with measurable progress, or a region whose layout is known.",
@@ -6024,6 +6116,7 @@
         }
       ],
       "docsPage": "/docs/components/breadcrumb",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show where the current page sits in a hierarchy and link back up it.",
         "whenNot": "Switching between sibling views, or stepping through pages of results.",
@@ -6166,6 +6259,7 @@
         }
       ],
       "docsPage": "/docs/components/pagination",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Move between pages of a long result set, with truncated page numbers.",
         "whenNot": "A hierarchy trail, or a short list that fits on one page.",
@@ -6275,6 +6369,7 @@
         }
       ],
       "docsPage": "/docs/guides/providers",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Confirm an action with a brief message that appears and dismisses itself, through useToast.",
         "whenNot": "A message people must act on or that must stay next to its content.",
@@ -6558,6 +6653,7 @@
         }
       ],
       "docsPage": "/docs/components/combobox",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
         "whenNot": "A short list that needs no search, or an action list.",
@@ -6654,6 +6750,7 @@
         }
       ],
       "docsPage": "/docs/patterns/form",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Wrap form fields so they stack with even spacing."
       }
@@ -6760,7 +6857,8 @@
           "owner": "consumer"
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "FormFieldShell": {
       "category": "Inputs",
@@ -6828,7 +6926,8 @@
           "owner": "consumer"
         }
       ],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "HdsThemeProvider": {
       "category": "Theming",
@@ -6909,6 +7008,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/guides/providers",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Wrap an app or region once to set theme, density and other root attributes for everything inside it.",
         "whenNot": "Styling a single component, or per-component overrides.",
@@ -6963,7 +7063,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Blockquote": {
       "category": "Typography",
@@ -7004,7 +7105,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Kbd": {
       "category": "Display",
@@ -7046,6 +7148,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/kbd",
+      "publicDataAttributes": [
+        "data-size"
+      ],
       "usage": {
         "when": "Show a keyboard key or shortcut hint inline, as a native kbd element.",
         "whenNot": "Code samples, or a control that runs the shortcut.",
@@ -7108,7 +7213,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "VisuallyHidden": {
       "category": "Utility",
@@ -7143,6 +7249,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/utilities",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Give assistive technology a label or description that sighted people do not need to see.",
         "whenNot": "Text everyone should read, or hiding an element from assistive technology too.",
@@ -7208,7 +7315,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "AlertDialog": {
       "category": "Overlays",
@@ -7323,6 +7431,7 @@
         }
       ],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.",
         "whenNot": "A modal that collects input or shows content, or a confirmation after the action is done.",
@@ -7386,6 +7495,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/utilities",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Build one-off layout that no named layout primitive covers, using token keys through `sx`.",
         "whenNot": "Ordinary vertical or horizontal spacing, columns, or page-width constraint.",
@@ -7478,6 +7588,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "aiRules": "Reach for this named layout intent before Box/sx. Sidebar expects EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid."
     },
     "Switcher": {
@@ -7543,6 +7654,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "aiRules": "Reach for this named layout intent before Box/sx. gap MUST use a semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Stack with `direction=\"row\"` and `wrap=\"wrap\"`."
     },
     "Pin": {
@@ -7593,6 +7705,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "aiRules": "`top` is a CSS length offset (a dimension, not a spacing step). Give the pinned element a TALLER scrolling parent so it has room to travel. For the scroll-scrubbed animation inside a pinned scene, use CSS `animation-timeline` (see Reveal) or `useScrollProgress` from `@hirobius/design-system/scroll`. See ADR-021."
     },
     "Reveal": {
@@ -7649,6 +7762,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/reveal",
+      "publicDataAttributes": [
+        "data-reveal"
+      ],
       "usage": {
         "when": "Fade content in as it scrolls into view."
       },
@@ -7754,6 +7870,9 @@
         }
       ],
       "docsPage": "/docs/components/textarea",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Collect multi-line free text such as a message, note or description.",
         "whenNot": "A single line of text, or choosing from a list.",
@@ -7791,7 +7910,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardDescription": {
       "category": "Display",
@@ -7818,7 +7938,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardFooter": {
       "category": "Display",
@@ -7845,7 +7966,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardHeader": {
       "category": "Display",
@@ -7877,7 +7999,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardMetric": {
       "category": "Display",
@@ -7927,6 +8050,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show one headline figure (a KPI, a count, a total) with its label inside a Card.",
         "whenNot": "A metric outside a Card, or several figures that share one label."
@@ -7982,7 +8106,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardTitle": {
       "category": "Display",
@@ -8009,7 +8134,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogClose": {
       "category": "Overlays",
@@ -8042,7 +8168,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogContent": {
       "category": "Overlays",
@@ -8111,7 +8238,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogDescription": {
       "category": "Overlays",
@@ -8146,7 +8274,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogFooter": {
       "category": "Overlays",
@@ -8174,7 +8303,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogHeader": {
       "category": "Overlays",
@@ -8202,7 +8332,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogOverlay": {
       "category": "Overlays",
@@ -8241,7 +8372,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogPortal": {
       "category": "Overlays",
@@ -8284,7 +8416,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogTitle": {
       "category": "Overlays",
@@ -8319,7 +8452,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "DialogTrigger": {
       "category": "Overlays",
@@ -8352,7 +8486,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Tooltip": {
       "category": "Overlays",
@@ -8469,6 +8604,9 @@
         }
       ],
       "docsPage": "/docs/components/tooltip",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Name an icon-only control, or add a short hint that appears on hover and keyboard focus.",
         "whenNot": "Anything interactive, text people need to finish a task, or a hint touch users must see (touch has no hover).",
@@ -8672,6 +8810,9 @@
         }
       ],
       "docsPage": "/docs/components/menu",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Offer a list of actions from a trigger, closed until opened.",
         "whenNot": "Choosing one value for a form field, or a set of options that must stay visible.",
@@ -8826,6 +8967,9 @@
         }
       ],
       "docsPage": "/docs/components/popover",
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.",
         "whenNot": "A short label on hover or focus, a list of actions, or a decision that must block the page.",
@@ -8951,6 +9095,7 @@
         }
       ],
       "docsPage": "/docs/components/checkbox",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Let people tick one or more independent options, or a parent choice that is partly selected.",
         "whenNot": "An immediate on/off setting, or a choice of exactly one option from a set.",
@@ -9021,6 +9166,9 @@
         }
       ],
       "docsPage": "/docs/patterns/form-actions",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Lay out a form's buttons in a fixed order: danger on the left, then secondary, then primary on the right."
       }
@@ -9073,6 +9221,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show one key number with its label, inside a MetricTiles row."
       },
@@ -9109,6 +9258,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/metric-tiles",
+      "publicDataAttributes": [
+        "data-tone"
+      ],
       "usage": {
         "when": "Show a row of key numbers, one tile each."
       },
@@ -9169,6 +9321,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/patterns/page-header",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Open a screen with its title, plus optional breadcrumb, status and actions."
       }
@@ -9236,6 +9391,9 @@
         }
       ],
       "docsPage": "/docs/patterns/data-table-section",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Put a heading and toolbar above a Table."
       }
@@ -9324,6 +9482,9 @@
         }
       ],
       "docsPage": "/docs/patterns/destructive-section",
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "Put a dangerous action, such as delete, in its own section with a warning and a confirm step."
       }
@@ -9365,6 +9526,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/guides/providers",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors."
       },
@@ -9408,6 +9570,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lines, and a Badge in `trailing`.",
         "whenNot": "A headline number, or a card with a full header, body and footer."
@@ -9438,7 +9601,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CardRowTitle": {
       "category": "Display",
@@ -9465,7 +9629,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "Board": {
       "category": "Layout",
@@ -9497,6 +9662,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage.",
         "whenNot": "Rows of columns and cells that sort or filter, or a board people rearrange by dragging.",
@@ -9551,6 +9717,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Hold the cards for one status inside a Board, with a heading that announces the count.",
         "whenNot": "Standing alone outside a Board, or a list with no status.",
@@ -9690,6 +9857,7 @@
         }
       ],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Capture a prompt or a quick note where a long paste should not flood the field.",
         "whenNot": "A plain multi-line field with no submit action, or a form with several fields.",
@@ -9751,6 +9919,11 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [
+        "data-format",
+        "data-timeline-marker",
+        "data-tone"
+      ],
       "usage": {
         "when": "Show a dated history of events, such as shipped releases or client activity, grouped under day headings.",
         "whenNot": "A list with no dates, or steps someone completes in order.",
@@ -9825,7 +9998,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "ThemeToggle": {
       "category": "Actions",
@@ -9911,6 +10085,9 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": null,
+      "publicDataAttributes": [
+        "data-theme-state"
+      ],
       "usage": {
         "when": "A single header or menu control to switch between the light and dark theme.",
         "whenNot": "Choosing between three or more modes, or a setting that belongs in a form.",
@@ -9954,6 +10131,9 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": "/docs/components/meta-line",
+      "publicDataAttributes": [
+        "data-meta-separator"
+      ],
       "usage": {
         "when": "Show one or two secondary facts on a single line, joined by a bullet (\"Acme Cloud · Remote\").",
         "whenNot": "Three or more facts, or labelled key-value pairs.",
@@ -10077,6 +10257,10 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": "/docs/patterns/async-state",
+      "publicDataAttributes": [
+        "data-slot",
+        "data-status"
+      ],
       "usage": {
         "when": "Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content.",
         "whenNot": "Content that is always there, a task with measurable progress, or a full-page routed error.",
@@ -10176,6 +10360,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": "/docs/components/nav-list",
+      "publicDataAttributes": [],
       "usage": {
         "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
         "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
@@ -10292,6 +10477,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
         "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
@@ -10432,6 +10618,10 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": null,
+      "publicDataAttributes": [
+        "data-state",
+        "data-token"
+      ],
       "usage": {
         "when": "Edit a template or message in which placeholders such as [Name] must stay whole: each one is a chip that is stepped over and deleted as one unit.",
         "whenNot": "Plain multi-line text with no placeholders, or a single line.",
@@ -10477,6 +10667,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Show an entity's quick facts (location, salary, type) under its title.",
         "whenNot": "Term and description pairs (use MetadataList) or text with no icons (use MetaLine)."
@@ -10532,6 +10723,7 @@
       "requiredProps": [],
       "a11yRules": [],
       "docsPage": null,
+      "publicDataAttributes": [],
       "usage": {
         "when": "Open an entity card (a job, a lead, a listing) with where it came from and when, above Card.Header.",
         "whenNot": "A status or label for the card (use Card.Header `metadata`) or a person's byline in prose."
@@ -10673,6 +10865,9 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": null,
+      "publicDataAttributes": [
+        "data-state"
+      ],
       "usage": {
         "when": "Open a short menu or form from the bottom edge on a phone (sort, row actions, status, a quick edit), centred like a Dialog on wider screens.",
         "whenNot": "A long or multi-step form, a confirmation of a destructive action, or a few actions on desktop only.",
@@ -10751,7 +10946,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetActions": {
       "category": "Overlays",
@@ -10778,7 +10974,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetClose": {
       "category": "Overlays",
@@ -10810,7 +11007,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetContent": {
       "category": "Overlays",
@@ -10878,7 +11076,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetDescription": {
       "category": "Overlays",
@@ -10910,7 +11109,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetFooter": {
       "category": "Overlays",
@@ -10937,7 +11137,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetHeader": {
       "category": "Overlays",
@@ -10964,7 +11165,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetTitle": {
       "category": "Overlays",
@@ -10996,7 +11198,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "SheetTrigger": {
       "category": "Overlays",
@@ -11028,7 +11231,8 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null
+      "docsPage": null,
+      "publicDataAttributes": []
     },
     "CommandPalette": {
       "category": "Overlays",
@@ -11164,6 +11368,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": "/docs/components/command-palette",
+      "publicDataAttributes": [],
       "usage": {
         "when": "Let people jump to a page or run a command from anywhere by typing, opened with ⌘K or Ctrl+K.",
         "whenNot": "Picking a value for a form field, or a short action list on a button.",
@@ -11338,7 +11543,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsFrame": {
       "category": "Compiler",
@@ -11453,7 +11659,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsHeading": {
       "category": "Compiler",
@@ -11510,7 +11717,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsLabel": {
       "category": "Compiler",
@@ -11554,7 +11762,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsCaption": {
       "category": "Compiler",
@@ -11594,7 +11803,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsCheckbox": {
       "category": "Compiler",
@@ -11610,7 +11820,8 @@
       "requiredProps": [],
       "a11yRules": [],
       "storyFiles": [],
-      "storyIds": []
+      "storyIds": [],
+      "publicDataAttributes": []
     },
     "HdsChip": {
       "category": "Compiler",
@@ -11626,7 +11837,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "HdsAvatar": {
       "category": "Compiler",
@@ -11642,7 +11854,8 @@
       "a11yRules": [],
       "preview": {},
       "tokenMapping": {},
-      "tier": "utility"
+      "tier": "utility",
+      "publicDataAttributes": []
     },
     "ExpandTooltip": {
       "category": "Internal",
@@ -11665,7 +11878,8 @@
       ],
       "tokenMapping": {},
       "variantAxes": [],
-      "componentProperties": []
+      "componentProperties": [],
+      "publicDataAttributes": []
     }
   },
   "tokens": {
@@ -11675,105 +11889,126 @@
         "cssVar": "--primitive-color-neutral-50",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#fafafa"
+        "value": "#f9fafc"
       },
       {
         "path": "primitive.color.neutral.100",
         "cssVar": "--primitive-color-neutral-100",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#f5f5f5"
+        "value": "#f4f5f7"
       },
       {
         "path": "primitive.color.neutral.200",
         "cssVar": "--primitive-color-neutral-200",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#e5e5e5"
+        "value": "#e4e5e7"
       },
       {
         "path": "primitive.color.neutral.300",
         "cssVar": "--primitive-color-neutral-300",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#d4d4d4"
+        "value": "#d3d4d6"
       },
       {
         "path": "primitive.color.neutral.350",
         "cssVar": "--primitive-color-neutral-350",
         "type": "color",
         "description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).",
-        "value": "#b4b4b4"
+        "value": "#b2b4b8"
       },
       {
         "path": "primitive.color.neutral.400",
         "cssVar": "--primitive-color-neutral-400",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#a3a3a3"
+        "value": "#a0a3a8"
       },
       {
         "path": "primitive.color.neutral.450",
         "cssVar": "--primitive-color-neutral-450",
         "type": "color",
-        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).",
-        "value": "#909090"
+        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).",
+        "value": "#8d9096"
       },
       {
         "path": "primitive.color.neutral.500",
         "cssVar": "--primitive-color-neutral-500",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#737373"
+        "value": "#6f737b"
       },
       {
         "path": "primitive.color.neutral.550",
         "cssVar": "--primitive-color-neutral-550",
         "type": "color",
         "description": "Dark surface.softHover (C2).",
-        "value": "#626262"
+        "value": "#5e626a"
       },
       {
         "path": "primitive.color.neutral.600",
         "cssVar": "--primitive-color-neutral-600",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#525252"
+        "value": "#4d525b"
       },
       {
         "path": "primitive.color.neutral.700",
         "cssVar": "--primitive-color-neutral-700",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#404040"
+        "value": "#3b404a"
+      },
+      {
+        "path": "primitive.color.neutral.725",
+        "cssVar": "--primitive-color-neutral-725",
+        "type": "color",
+        "description": "Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522).",
+        "value": "#272c36"
+      },
+      {
+        "path": "primitive.color.neutral.750",
+        "cssVar": "--primitive-color-neutral-750",
+        "type": "color",
+        "description": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755).",
+        "value": "#252a34"
       },
       {
         "path": "primitive.color.neutral.800",
         "cssVar": "--primitive-color-neutral-800",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#262626"
+        "value": "#212630"
+      },
+      {
+        "path": "primitive.color.neutral.825",
+        "cssVar": "--primitive-color-neutral-825",
+        "type": "color",
+        "description": "Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755).",
+        "value": "#1b202a"
       },
       {
         "path": "primitive.color.neutral.850",
         "cssVar": "--primitive-color-neutral-850",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#1a1a1a"
+        "value": "#151a24"
       },
       {
         "path": "primitive.color.neutral.900",
         "cssVar": "--primitive-color-neutral-900",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#111111"
+        "value": "#0c111b"
       },
       {
         "path": "primitive.color.neutral.950",
         "cssVar": "--primitive-color-neutral-950",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#0a0a0a"
+        "value": "#060a13"
       },
       {
         "path": "primitive.color.neutral.white",
@@ -11787,7 +12022,7 @@
         "cssVar": "--primitive-color-neutral-black",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
-        "value": "#000000"
+        "value": "#060a13"
       },
       {
         "path": "primitive.color.blue.50",
@@ -11927,77 +12162,77 @@
         "cssVar": "--primitive-color-graphite-50",
         "type": "color",
         "description": "Graphite accent tint — faintest step; dark rest fill.",
-        "value": "#f5f4f4"
+        "value": "#f2f4f8"
       },
       {
         "path": "primitive.color.graphite.100",
         "cssVar": "--primitive-color-graphite-100",
         "type": "color",
-        "description": "Graphite accent — very light warm tint.",
-        "value": "#e9e7e8"
+        "description": "Graphite accent — very light midnight tint.",
+        "value": "#e5e8ed"
       },
       {
         "path": "primitive.color.graphite.200",
         "cssVar": "--primitive-color-graphite-200",
         "type": "color",
-        "description": "Graphite accent — light warm-grey.",
-        "value": "#cbc6c9"
+        "description": "Graphite accent — light midnight grey.",
+        "value": "#c4c8cf"
       },
       {
         "path": "primitive.color.graphite.300",
         "cssVar": "--primitive-color-graphite-300",
         "type": "color",
         "description": "Graphite accent — soft mid-light step; dark-mode hover/link.",
-        "value": "#b2abae"
+        "value": "#a8aeb8"
       },
       {
         "path": "primitive.color.graphite.400",
         "cssVar": "--primitive-color-graphite-400",
         "type": "color",
-        "description": "Graphite accent — mid warm-grey step.",
-        "value": "#8b8488"
+        "description": "Graphite accent — mid midnight-grey step.",
+        "value": "#7f8794"
       },
       {
         "path": "primitive.color.graphite.500",
         "cssVar": "--primitive-color-graphite-500",
         "type": "color",
         "description": "Graphite accent — mid step.",
-        "value": "#655e62"
+        "value": "#586170"
       },
       {
         "path": "primitive.color.graphite.600",
         "cssVar": "--primitive-color-graphite-600",
         "type": "color",
         "description": "Graphite accent — mid-dark step.",
-        "value": "#544d51"
+        "value": "#465061"
       },
       {
         "path": "primitive.color.graphite.700",
         "cssVar": "--primitive-color-graphite-700",
         "type": "color",
-        "description": "Graphite accent — warm charcoal; light-mode accent text.",
-        "value": "#4a4146"
+        "description": "Graphite accent — midnight charcoal; light-mode accent text.",
+        "value": "#3a4457"
       },
       {
         "path": "primitive.color.graphite.800",
         "cssVar": "--primitive-color-graphite-800",
         "type": "color",
         "description": "Graphite accent — deep step; light-mode hover.",
-        "value": "#352e32"
+        "value": "#263043"
       },
       {
         "path": "primitive.color.graphite.900",
         "cssVar": "--primitive-color-graphite-900",
         "type": "color",
         "description": "Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.",
-        "value": "#2a2428"
+        "value": "#1c2638"
       },
       {
         "path": "primitive.color.graphite.950",
         "cssVar": "--primitive-color-graphite-950",
         "type": "color",
         "description": "Graphite accent — near-black; light rest fill.",
-        "value": "#19161a"
+        "value": "#0f1726"
       },
       {
         "path": "primitive.color.cobalt.50",
@@ -12024,7 +12259,7 @@
         "path": "primitive.color.cobalt.300",
         "cssVar": "--primitive-color-cobalt-300",
         "type": "color",
-        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.86:1 on black).",
+        "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.41:1 on black).",
         "value": "#8a97f8"
       },
       {
@@ -13165,7 +13400,7 @@
         "resolvedValue": "#ffffff",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#000000"
+          "resolvedValue": "#060a13"
         }
       },
       {
@@ -13174,10 +13409,10 @@
         "type": "color",
         "description": "Subtle elevated surface (cards, sections)",
         "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#fafafa",
+        "resolvedValue": "#f9fafc",
         "dark": {
-          "alias": "{primitive.color.neutral.850}",
-          "resolvedValue": "#1a1a1a"
+          "alias": "{primitive.color.neutral.825}",
+          "resolvedValue": "#1b202a"
         }
       },
       {
@@ -13186,10 +13421,10 @@
         "type": "color",
         "description": "Deeper surface layer",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "resolvedValue": "#212630"
         }
       },
       {
@@ -13201,7 +13436,7 @@
         "resolvedValue": "#ffffff",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "resolvedValue": "#212630"
         }
       },
       {
@@ -13210,10 +13445,10 @@
         "type": "color",
         "description": "Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.",
         "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
+        "resolvedValue": "#0c111b",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#000000"
+          "resolvedValue": "#060a13"
         }
       },
       {
@@ -13222,7 +13457,7 @@
         "type": "color",
         "description": "Inverted background for contrast sections",
         "alias": "{primitive.color.neutral.black}",
-        "resolvedValue": "#000000",
+        "resolvedValue": "#060a13",
         "dark": {
           "alias": "{primitive.color.neutral.white}",
           "resolvedValue": "#ffffff"
@@ -13232,12 +13467,12 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent fill, warm graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
+        "description": "Accent fill, midnight graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#19161a",
+        "resolvedValue": "#0f1726",
         "dark": {
           "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f5f4f4"
+          "resolvedValue": "#f2f4f8"
         }
       },
       {
@@ -13246,10 +13481,10 @@
         "type": "color",
         "description": "Faint accent tint for hover states or highlights.",
         "alias": "{primitive.color.graphite.50}",
-        "resolvedValue": "#f5f4f4",
+        "resolvedValue": "#f2f4f8",
         "dark": {
           "alias": "{primitive.color.graphite.800}",
-          "resolvedValue": "#352e32"
+          "resolvedValue": "#263043"
         }
       },
       {
@@ -13258,10 +13493,10 @@
         "type": "color",
         "description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "resolvedValue": "#3b404a"
         }
       },
       {
@@ -13270,10 +13505,10 @@
         "type": "color",
         "description": "Background for an actively pressed interactive surface.",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "resolvedValue": "#e4e5e7",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#000000"
+          "resolvedValue": "#060a13"
         }
       },
       {
@@ -13282,10 +13517,10 @@
         "type": "color",
         "description": "Background for a persistently selected item (active tab, checked row).",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "resolvedValue": "#e4e5e7",
         "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "alias": "{primitive.color.neutral.725}",
+          "resolvedValue": "#272c36"
         }
       },
       {
@@ -13294,10 +13529,10 @@
         "type": "color",
         "description": "Muted background for low-emphasis content blocks.",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "alias": "{primitive.color.neutral.750}",
+          "resolvedValue": "#252a34"
         }
       },
       {
@@ -13306,10 +13541,10 @@
         "type": "color",
         "description": "Recessed background for inset wells (inputs, code blocks, nested panels).",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "resolvedValue": "#e4e5e7",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "resolvedValue": "#3b404a"
         }
       },
       {
@@ -13318,10 +13553,10 @@
         "type": "color",
         "description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
         "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e5e5e5",
+        "resolvedValue": "#e4e5e7",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -13330,10 +13565,10 @@
         "type": "color",
         "description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
         "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d4d4d4",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.550}",
-          "resolvedValue": "#626262"
+          "resolvedValue": "#5e626a"
         }
       },
       {
@@ -13341,10 +13576,10 @@
         "cssVar": "--semantic-color-content-primary",
         "type": "color",
         "alias": "{primitive.color.neutral.900}",
-        "resolvedValue": "#111111",
+        "resolvedValue": "#0c111b",
         "dark": {
           "alias": "{primitive.color.neutral.100}",
-          "resolvedValue": "#f5f5f5"
+          "resolvedValue": "#f4f5f7"
         }
       },
       {
@@ -13352,10 +13587,10 @@
         "cssVar": "--semantic-color-content-secondary",
         "type": "color",
         "alias": "{primitive.color.neutral.600}",
-        "resolvedValue": "#525252",
+        "resolvedValue": "#4d525b",
         "dark": {
           "alias": "{primitive.color.neutral.350}",
-          "resolvedValue": "#b4b4b4"
+          "resolvedValue": "#b2b4b8"
         }
       },
       {
@@ -13364,10 +13599,10 @@
         "type": "color",
         "description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
         "alias": "{primitive.color.neutral.500}",
-        "resolvedValue": "#737373",
+        "resolvedValue": "#6f737b",
         "dark": {
           "alias": "{primitive.color.neutral.450}",
-          "resolvedValue": "#909090"
+          "resolvedValue": "#8d9096"
         }
       },
       {
@@ -13375,10 +13610,10 @@
         "cssVar": "--semantic-color-content-disabled",
         "type": "color",
         "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d4d4d4",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -13386,10 +13621,10 @@
         "cssVar": "--semantic-color-content-inverse",
         "type": "color",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
           "alias": "{primitive.color.neutral.900}",
-          "resolvedValue": "#111111"
+          "resolvedValue": "#0c111b"
         }
       },
       {
@@ -13398,10 +13633,10 @@
         "type": "color",
         "description": "Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#4a4146",
+        "resolvedValue": "#3a4457",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#b2abae"
+          "resolvedValue": "#a8aeb8"
         }
       },
       {
@@ -13410,10 +13645,10 @@
         "type": "color",
         "description": "Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.",
         "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#fafafa",
+        "resolvedValue": "#f9fafc",
         "dark": {
           "alias": "{primitive.color.graphite.900}",
-          "resolvedValue": "#2a2428"
+          "resolvedValue": "#1c2638"
         }
       },
       {
@@ -13456,12 +13691,12 @@
         "path": "semantic.color.border.default",
         "cssVar": "--semantic-color-border-default",
         "type": "color",
-        "description": "Hairline and divider border. Light is warm graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
+        "description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
         "alias": "{primitive.color.graphite.200}",
-        "resolvedValue": "#cbc6c9",
+        "resolvedValue": "#c4c8cf",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -13470,22 +13705,10 @@
         "type": "color",
         "description": "Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.",
         "alias": "{primitive.color.neutral.500}",
-        "resolvedValue": "#737373",
+        "resolvedValue": "#6f737b",
         "dark": {
           "alias": "{primitive.color.neutral.500}",
-          "resolvedValue": "#737373"
-        }
-      },
-      {
-        "path": "semantic.color.border.subdued",
-        "cssVar": "--semantic-color-border-subdued",
-        "type": "color",
-        "description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
-        "alias": "{primitive.color.graphite.200}",
-        "resolvedValue": "#cbc6c9",
-        "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#262626"
+          "resolvedValue": "#6f737b"
         }
       },
       {
@@ -13494,10 +13717,10 @@
         "type": "color",
         "description": "Lowest-contrast border for resting hairline edges on flat surfaces.",
         "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f5f5f5",
+        "resolvedValue": "#f4f5f7",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "resolvedValue": "#3b404a"
         }
       },
       {
@@ -13505,10 +13728,10 @@
         "cssVar": "--semantic-color-border-strong",
         "type": "color",
         "alias": "{primitive.color.graphite.300}",
-        "resolvedValue": "#b2abae",
+        "resolvedValue": "#a8aeb8",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -13517,10 +13740,10 @@
         "type": "color",
         "description": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#4a4146",
+        "resolvedValue": "#3a4457",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#b2abae"
+          "resolvedValue": "#a8aeb8"
         }
       },
       {
@@ -13556,7 +13779,7 @@
         "resolvedValue": "#282c34",
         "dark": {
           "alias": "{primitive.color.neutral.500}",
-          "resolvedValue": "#737373"
+          "resolvedValue": "#6f737b"
         }
       },
       {
@@ -13675,7 +13898,7 @@
         "type": "color",
         "description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).",
         "alias": "{primitive.color.neutral.black}",
-        "resolvedValue": "#000000",
+        "resolvedValue": "#060a13",
         "dark": {
           "alias": "{primitive.color.neutral.white}",
           "resolvedValue": "#ffffff"
@@ -13834,84 +14057,12 @@
         "resolvedValue": "4px"
       },
       {
-        "path": "semantic.space.component.gap",
-        "cssVar": "--semantic-space-component-gap",
-        "type": "dimension",
-        "description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.",
-        "alias": "{semantic.space.scale.xs}",
-        "resolvedValue": "8px"
-      },
-      {
         "path": "semantic.space.component.medium",
         "cssVar": "--semantic-space-component-medium",
         "type": "dimension",
         "description": "12px adjacent form fields and medium intra-component gaps.",
         "alias": "{primitive.space.3}",
         "resolvedValue": "12px"
-      },
-      {
-        "path": "semantic.space.component.padding",
-        "cssVar": "--semantic-space-component-padding",
-        "type": "dimension",
-        "description": "Inset for cards, forms and panels (follows surface.padding). DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
-        "alias": "{semantic.space.surface.padding}",
-        "resolvedValue": "28px"
-      },
-      {
-        "path": "semantic.space.layout.tight",
-        "cssVar": "--semantic-space-layout-tight",
-        "type": "dimension",
-        "description": "20px (12px compact). Deprecated alias (hds#206): use semantic.space.scale.sm.",
-        "alias": "{primitive.space.5}",
-        "resolvedValue": "20px",
-        "compact": {
-          "alias": "{primitive.space.3}",
-          "resolvedValue": "12px"
-        }
-      },
-      {
-        "path": "semantic.space.layout.normal",
-        "cssVar": "--semantic-space-layout-normal",
-        "type": "dimension",
-        "description": "28px (16px compact). Deprecated alias (hds#206): use semantic.space.scale.md.",
-        "alias": "{primitive.space.7}",
-        "resolvedValue": "28px",
-        "compact": {
-          "alias": "{primitive.space.4}",
-          "resolvedValue": "16px"
-        }
-      },
-      {
-        "path": "semantic.space.layout.gutter",
-        "cssVar": "--semantic-space-layout-gutter",
-        "type": "dimension",
-        "description": "Column and region gutters (follows region.gutter). DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
-        "alias": "{semantic.space.region.gutter}",
-        "resolvedValue": "40px"
-      },
-      {
-        "path": "semantic.space.layout.inset",
-        "cssVar": "--semantic-space-layout-inset",
-        "type": "dimension",
-        "description": "40px (24px compact). Deprecated alias (hds#206): use semantic.space.scale.lg.",
-        "alias": "{primitive.space.10}",
-        "resolvedValue": "40px",
-        "compact": {
-          "alias": "{primitive.space.6}",
-          "resolvedValue": "24px"
-        }
-      },
-      {
-        "path": "semantic.space.layout.spacious",
-        "cssVar": "--semantic-space-layout-spacious",
-        "type": "dimension",
-        "description": "64px (32px compact). Deprecated alias (hds#206): use semantic.space.scale.xl.",
-        "alias": "{primitive.space.16}",
-        "resolvedValue": "64px",
-        "compact": {
-          "alias": "{primitive.space.8}",
-          "resolvedValue": "32px"
-        }
       },
       {
         "path": "semantic.space.section.stack",
@@ -14282,10 +14433,10 @@
         "type": "color",
         "description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#19161a",
+        "resolvedValue": "#0f1726",
         "dark": {
           "alias": "{primitive.color.graphite.50}",
-          "resolvedValue": "#f5f4f4"
+          "resolvedValue": "#f2f4f8"
         }
       },
       {
@@ -14294,10 +14445,10 @@
         "type": "color",
         "description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
         "alias": "{primitive.color.graphite.800}",
-        "resolvedValue": "#352e32",
+        "resolvedValue": "#263043",
         "dark": {
           "alias": "{primitive.color.graphite.100}",
-          "resolvedValue": "#e9e7e8"
+          "resolvedValue": "#e5e8ed"
         }
       },
       {
@@ -14306,10 +14457,10 @@
         "type": "color",
         "description": "Accent fill on press (graphite.900 / 200).",
         "alias": "{primitive.color.graphite.900}",
-        "resolvedValue": "#2a2428",
+        "resolvedValue": "#1c2638",
         "dark": {
           "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#cbc6c9"
+          "resolvedValue": "#c4c8cf"
         }
       },
       {
@@ -14318,10 +14469,10 @@
         "type": "color",
         "description": "Accent fill for inactive or unselected accent elements.",
         "alias": "{primitive.color.neutral.400}",
-        "resolvedValue": "#a3a3a3",
+        "resolvedValue": "#a0a3a8",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#525252"
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -14330,10 +14481,10 @@
         "type": "color",
         "description": "Accent fill for disabled accent elements.",
         "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d4d4d4",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#404040"
+          "resolvedValue": "#3b404a"
         }
       },
       {
@@ -14342,10 +14493,10 @@
         "type": "color",
         "description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance.",
         "alias": "{primitive.color.graphite.700}",
-        "resolvedValue": "#4a4146",
+        "resolvedValue": "#3a4457",
         "dark": {
           "alias": "{primitive.color.graphite.300}",
-          "resolvedValue": "#b2abae"
+          "resolvedValue": "#a8aeb8"
         }
       },
       {
@@ -14354,10 +14505,10 @@
         "type": "color",
         "description": "Accent content color on pointer hover.",
         "alias": "{primitive.color.graphite.800}",
-        "resolvedValue": "#352e32",
+        "resolvedValue": "#263043",
         "dark": {
           "alias": "{primitive.color.graphite.200}",
-          "resolvedValue": "#cbc6c9"
+          "resolvedValue": "#c4c8cf"
         }
       },
       {
@@ -14366,10 +14517,10 @@
         "type": "color",
         "description": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
         "alias": "{primitive.color.graphite.50}",
-        "resolvedValue": "#f5f4f4",
+        "resolvedValue": "#f2f4f8",
         "dark": {
           "alias": "{primitive.color.graphite.800}",
-          "resolvedValue": "#352e32"
+          "resolvedValue": "#263043"
         }
       },
       {
@@ -14494,7 +14645,7 @@
           "shadow": null,
           "border": {
             "alias": "{semantic.color.border.subtle}",
-            "resolvedValue": "#f5f5f5"
+            "resolvedValue": "#f4f5f7"
           }
         }
       },
@@ -14506,7 +14657,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#fafafa"
+            "resolvedValue": "#f9fafc"
           },
           "shadow": {
             "alias": "{semantic.shadow.subtle}",
@@ -14523,7 +14674,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#fafafa"
+            "resolvedValue": "#f9fafc"
           },
           "shadow": {
             "alias": "{semantic.shadow.floating}",
@@ -14548,7 +14699,7 @@
           },
           "border": {
             "alias": "{semantic.color.border.default}",
-            "resolvedValue": "#cbc6c9"
+            "resolvedValue": "#c4c8cf"
           }
         }
       },
@@ -14672,7 +14823,7 @@
         "type": "color",
         "description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.tag.text",
@@ -14680,7 +14831,7 @@
         "type": "color",
         "description": "Unselected tag text color (the active label uses activeText).",
         "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#525252"
+        "resolvedValue": "#4d525b"
       },
       {
         "path": "component.tag.border",
@@ -14688,7 +14839,7 @@
         "type": "color",
         "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.tag.radius",
@@ -14760,7 +14911,7 @@
         "type": "color",
         "description": "Text color when the tag is active.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "component.tag.activeBackground",
@@ -14768,7 +14919,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#0f1726"
       },
       {
         "path": "component.tag.activeBorder",
@@ -14776,7 +14927,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#0f1726"
       },
       {
         "path": "component.tag.activeHover",
@@ -14784,7 +14935,7 @@
         "type": "color",
         "description": "Active tag hover fill color.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "#352e32"
+        "resolvedValue": "#263043"
       },
       {
         "path": "component.badge.fontSize",
@@ -14808,7 +14959,7 @@
         "type": "color",
         "description": "Badge text color.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.badge.bg",
@@ -14828,7 +14979,7 @@
         "type": "color",
         "description": "Neutral badge fill.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.badge.neutral.text",
@@ -14836,7 +14987,7 @@
         "type": "color",
         "description": "Neutral badge text color.",
         "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#525252"
+        "resolvedValue": "#4d525b"
       },
       {
         "path": "component.badge.info.bg",
@@ -14972,7 +15123,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#0f1726"
       },
       {
         "path": "component.button.bgHover",
@@ -14980,7 +15131,7 @@
         "type": "color",
         "description": "Primary button hover fill.",
         "alias": "{semantic.accent.hover}",
-        "resolvedValue": "#352e32"
+        "resolvedValue": "#263043"
       },
       {
         "path": "component.button.bgPressed",
@@ -14988,7 +15139,7 @@
         "type": "color",
         "description": "Primary button pressed fill (hds#748).",
         "alias": "{semantic.accent.pressed}",
-        "resolvedValue": "#2a2428"
+        "resolvedValue": "#1c2638"
       },
       {
         "path": "component.button.text",
@@ -14996,7 +15147,7 @@
         "type": "color",
         "description": "Primary button text color.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "component.button.radius",
@@ -15180,7 +15331,7 @@
         "type": "color",
         "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.disabled}",
-        "resolvedValue": "#d4d4d4"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.primary.bgDisabled",
@@ -15188,7 +15339,7 @@
         "type": "color",
         "description": "Disabled primary button fill.",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.button.secondary.bg.rest",
@@ -15196,7 +15347,7 @@
         "type": "color",
         "description": "Secondary button fill: soft tonal, no border (hds#891).",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e5e5e5"
+        "resolvedValue": "#e4e5e7"
       },
       {
         "path": "component.button.secondary.bg.hover",
@@ -15204,7 +15355,7 @@
         "type": "color",
         "description": "Secondary button hover fill (the wipe layer's colour).",
         "alias": "{semantic.color.surface.softHover}",
-        "resolvedValue": "#d4d4d4"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.secondary.bg.pressed",
@@ -15212,7 +15363,7 @@
         "type": "color",
         "description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e5e5e5"
+        "resolvedValue": "#e4e5e7"
       },
       {
         "path": "component.button.secondary.border.rest",
@@ -15220,7 +15371,7 @@
         "type": "color",
         "description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#737373"
+        "resolvedValue": "#6f737b"
       },
       {
         "path": "component.button.secondary.border.hover",
@@ -15228,15 +15379,15 @@
         "type": "color",
         "description": "Secondary button hover border. Unused by Button since hds#891 (soft fill, no border); kept for consumers.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#4a4146"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "component.button.secondary.border.disabled",
         "cssVar": "--component-button-secondary-border-disabled",
         "type": "color",
         "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
-        "alias": "{semantic.color.border.subdued}",
-        "resolvedValue": "#cbc6c9"
+        "alias": "{semantic.color.border.default}",
+        "resolvedValue": "#c4c8cf"
       },
       {
         "path": "component.button.secondary.text",
@@ -15244,7 +15395,7 @@
         "type": "color",
         "description": "Secondary button text color.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.button.tertiary.bg.hover",
@@ -15252,7 +15403,7 @@
         "type": "color",
         "description": "Ghost button hover (wipe) fill.",
         "alias": "{semantic.color.surface.hover}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "component.button.tertiary.bg.pressed",
@@ -15260,7 +15411,7 @@
         "type": "color",
         "description": "Ghost button pressed fill.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e5e5e5"
+        "resolvedValue": "#e4e5e7"
       },
       {
         "path": "component.input.bg",
@@ -15274,14 +15425,14 @@
         "cssVar": "--component-input-text",
         "type": "color",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.input.border",
         "cssVar": "--component-input-border",
         "type": "color",
         "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#737373"
+        "resolvedValue": "#6f737b"
       },
       {
         "path": "component.input.borderError",
@@ -15316,14 +15467,14 @@
         "cssVar": "--component-card-bg",
         "type": "color",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "component.card.border",
         "cssVar": "--component-card-border",
         "type": "color",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#cbc6c9"
+        "resolvedValue": "#c4c8cf"
       },
       {
         "path": "component.card.radius",
@@ -15353,7 +15504,7 @@
         "type": "color",
         "description": "Inline code chip background.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       }
     ],
     "role": [
@@ -15371,7 +15522,7 @@
         "type": "color",
         "description": "Default text on background. shadcn role: foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.card",
@@ -15379,7 +15530,7 @@
         "type": "color",
         "description": "Card surface. shadcn role: card.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "role.card-foreground",
@@ -15387,7 +15538,7 @@
         "type": "color",
         "description": "Text on card. shadcn role: card-foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.popover",
@@ -15403,7 +15554,7 @@
         "type": "color",
         "description": "Modal backdrop colour role. Apply alpha in the class, e.g. bg-scrim/60.",
         "alias": "{semantic.color.surface.scrim}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.pressed-overlay",
@@ -15411,7 +15562,7 @@
         "type": "color",
         "description": "Pressed-state overlay colour role. Apply alpha in the class, e.g. inset-shadow-pressed-overlay/5.",
         "alias": "{semantic.color.state.pressed.overlay}",
-        "resolvedValue": "#000000"
+        "resolvedValue": "#060a13"
       },
       {
         "path": "role.popover-foreground",
@@ -15419,7 +15570,7 @@
         "type": "color",
         "description": "Text on popover. shadcn role: popover-foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.primary",
@@ -15427,7 +15578,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#19161a"
+        "resolvedValue": "#0f1726"
       },
       {
         "path": "role.primary-foreground",
@@ -15435,7 +15586,7 @@
         "type": "color",
         "description": "Text/icons on primary surface. shadcn role: primary-foreground.",
         "alias": "{semantic.color.content.onAccent}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "role.secondary",
@@ -15443,7 +15594,7 @@
         "type": "color",
         "description": "Secondary action surface. shadcn role: secondary.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#fafafa"
+        "resolvedValue": "#f9fafc"
       },
       {
         "path": "role.secondary-foreground",
@@ -15451,7 +15602,7 @@
         "type": "color",
         "description": "Text on secondary surface. shadcn role: secondary-foreground.",
         "alias": "{semantic.color.content.primary}",
-        "resolvedValue": "#111111"
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "role.muted",
@@ -15459,7 +15610,7 @@
         "type": "color",
         "description": "Muted/quiet bg (skeletons, disabled inputs). shadcn role: muted.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "role.muted-foreground",
@@ -15467,7 +15618,7 @@
         "type": "color",
         "description": "Muted text. shadcn role: muted-foreground.",
         "alias": "{semantic.color.content.secondary}",
-        "resolvedValue": "#525252"
+        "resolvedValue": "#4d525b"
       },
       {
         "path": "role.accent",
@@ -15475,7 +15626,7 @@
         "type": "color",
         "description": "Hover/active tinted bg. shadcn role: accent.",
         "alias": "{semantic.color.surface.accentSubtle}",
-        "resolvedValue": "#f5f4f4"
+        "resolvedValue": "#f2f4f8"
       },
       {
         "path": "role.accent-foreground",
@@ -15483,7 +15634,7 @@
         "type": "color",
         "description": "Text on accent surface. shadcn role: accent-foreground.",
         "alias": "{semantic.color.content.accent}",
-        "resolvedValue": "#4a4146"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "role.destructive",
@@ -15499,7 +15650,7 @@
         "type": "color",
         "description": "Text on destructive surface. shadcn role: destructive-foreground.",
         "alias": "{semantic.color.content.inverse}",
-        "resolvedValue": "#f5f5f5"
+        "resolvedValue": "#f4f5f7"
       },
       {
         "path": "role.border",
@@ -15507,7 +15658,7 @@
         "type": "color",
         "description": "Default border. shadcn role: border.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#cbc6c9"
+        "resolvedValue": "#c4c8cf"
       },
       {
         "path": "role.input",
@@ -15515,7 +15666,7 @@
         "type": "color",
         "description": "Input field border. shadcn role: input.",
         "alias": "{semantic.color.border.interactive}",
-        "resolvedValue": "#737373"
+        "resolvedValue": "#6f737b"
       },
       {
         "path": "role.ring",
@@ -15523,7 +15674,7 @@
         "type": "color",
         "description": "Focus ring color. shadcn role: ring.",
         "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#4a4146"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "role.radius",

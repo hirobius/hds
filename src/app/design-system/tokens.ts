@@ -143,8 +143,7 @@ const hds = {
       },
     },
     space: {
-      // hds#206 — canonical t-shirt spacing scale (slice 1: #297). Prefer this
-      // over the deprecated `component`/`layout` aliases below for new code.
+      // hds#206 — canonical t-shirt spacing scale (slice 1: #297).
       scale: {
         xs: 'var(--semantic-space-scale-xs)',
         sm: 'var(--semantic-space-scale-sm)',
@@ -168,27 +167,10 @@ const hds = {
         hairline: 'var(--semantic-space-subgrid-hairline)',
         xs: 'var(--semantic-space-subgrid-xs)',
       },
-      component: {
-        /**
-         * @deprecated hds#206 — use `semantic.space.surface.padding`.
-         * @removeIn 1.0.0
-         */
-        padding: 'var(--semantic-space-surface-padding)',
-        /**
-         * @deprecated hds#206 — use `semantic.space.scale.xs`.
-         * @removeIn 1.0.0
-         */
-        gap: 'var(--semantic-space-scale-xs)',
-      },
       stack: {
         gap: 'var(--semantic-space-section-stack)',
       },
       layout: {
-        /**
-         * @deprecated hds#206 — use `semantic.space.region.gutter`.
-         * @removeIn 1.0.0
-         */
-        gutter: 'var(--semantic-space-region-gutter)',
         gap: 'var(--semantic-space-layout-gap)',
         section: 'var(--semantic-layout-section-paddingY)',
       },

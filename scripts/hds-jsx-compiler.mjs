@@ -357,7 +357,7 @@ function attrsToProps(tagName, attrs, textContent) {
     // The LLM puts padding/radius in CSS (stripped by compiler), so we inject
     // the canonical HDS tokens here instead of raw numbers.
     if (/\bcard\b/.test(cls)) {
-      if (p.padding == null) p.padding = 'semantic.space.component.padding';
+      if (p.padding == null) p.padding = 'semantic.space.surface.padding';
       if (p.radius == null) p.radius = 'semantic.radius.action';
     }
     if (!p.stroke && /\bborder\b/.test(cls)) p.stroke = 'semantic.color.border.default';
@@ -394,7 +394,7 @@ function attrsToProps(tagName, attrs, textContent) {
     if (!p.layoutMode) p.layoutMode = 'VERTICAL';
     if (!p.fill) p.fill = 'semantic.color.surface.page';
     // Use a token path so itemSpacing gets a Figma variable binding.
-    if (p.itemSpacing == null) p.itemSpacing = 'semantic.space.layout.tight';
+    if (p.itemSpacing == null) p.itemSpacing = 'semantic.space.scale.sm';
     // Always opt-in to auto-layout sizing so frames hug their children rather
     // than staying at Figma's default 100×100. Explicit width/height props
     // override this in streamApplyGeometry (resize() is called when they exist).

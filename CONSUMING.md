@@ -90,6 +90,22 @@ references when you use them on the server (`tokens.color.primary` in a layout,
 
 **Density.** Put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
 
+### What you may select on
+
+In tests and styles, select HDS elements only by:
+
+- Role and accessible name, as a screen reader meets them: `getByRole('button', { name: 'Save' })`.
+- ARIA states such as `aria-checked`, `aria-selected`, `aria-expanded` and `aria-disabled`.
+- The `data-*` attributes a component lists in the manifest's `publicDataAttributes`, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-hds-*`, which are internal, or `data-radix-*`, which belong to Radix.
+- The `hds-*` classes and the manifest's `publicClasses`, which the CSS contract tracks.
+- Never other class names, ids, tag names or how elements nest: those change without an upgrade step.
+
+A change to a role, a name, a state or a `data-*` value ships as a `behavior`
+upgrade step whose detect pattern finds the code that relied on it, so
+`npx @hirobius/design-system@latest upgrade --check` points you at it. The
+record is [`docs/baselines/dom-a11y.json`](docs/baselines/dom-a11y.json), one
+entry per docs demo.
+
 ### Token names and size vs space
 
 Never guess a token name: `pnpm exec hds-tokens search content tertiary` says whether
@@ -157,11 +173,15 @@ an Upgrade block.
 
 ```bash
 pnpm changeset add        # record a patch/minor/major bump + notes
-pnpm changeset:version    # apply bumps, regenerate CHANGELOG.md, record the release (scripts/upgrade/compile.mjs) and refresh docs/api/api-baseline.json
-# commit + push to main → the Release workflow publishes to public npm
+pnpm changeset:version    # on a branch: apply bumps, regenerate CHANGELOG.md, record the release (scripts/upgrade/compile.mjs) and refresh docs/api/api-baseline.json
+# open the "Version Packages" PR; after review + merge, on a clean main:
+pnpm release:local --publish   # owner only, npm 2FA
 ```
 
-CI (`.github/workflows/release.yml`) automates steps 2–3 on merge to `main`.
+GitHub Actions is disabled on this repo (2026-10-30), so
+`.github/workflows/release.yml` never runs and releases carry no npm provenance.
+The full steps are in [docs/RELEASING.md](docs/RELEASING.md). The Trusted
+Publishing and `RELEASE_PAT` notes below describe that dormant workflow.
 
 A bad release is deprecated, not unpublished: [docs/RELEASING.md](docs/RELEASING.md),
 "If a release is bad", has the commands and `pnpm release:yank`.
