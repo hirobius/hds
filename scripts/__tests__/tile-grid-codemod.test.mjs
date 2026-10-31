@@ -369,8 +369,7 @@ describe('CLI', () => {
   // The CLI fixtures only (typecheck/ is read by the typecheck test above); node_modules
   // is gitignored, so that fixture is built here rather than committed.
   const fx = useCodemodFixture('tile-grid', {
-    nodeModules: `import { TileGrid } from '${ROOT}';
-`,
+    nodeModules: `import { TileGrid } from '${ROOT}';\n`,
     only: ['needs-rewrite', 'clean'],
   });
 

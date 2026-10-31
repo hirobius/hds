@@ -196,8 +196,7 @@ describe('package', () => {
 describe('CLI', () => {
   // node_modules is gitignored, so the fixture is built here rather than committed.
   const fx = useCodemodFixture('not-found-pattern', {
-    nodeModules: `import { NotFoundPattern } from '${ROOT}';
-`,
+    nodeModules: `import { NotFoundPattern } from '${ROOT}';\n`,
   });
 
   const { run } = fx;
