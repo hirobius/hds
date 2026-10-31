@@ -72,5 +72,3 @@ export const Callout = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CalloutP
     );
   },
 );
-
-export default Callout;
