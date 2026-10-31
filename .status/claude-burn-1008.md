@@ -1,1 +1,1 @@
-hds#1008 J1 slice: shared scripts/__tests__/helpers/gate-runner.mjs; four gate tests switched (jscpd 101->94 clones).
+hds#1008: codemod tests share helpers/codemod-fixture.mjs on gate-runner (jscpd scripts/**tests** 95 -> 89 clones).
