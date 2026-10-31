@@ -967,3 +967,36 @@ a code[data-density] {
   font-size: var(--semantic-typography-ui-font-size);
   font-weight: var(--semantic-typography-ui-font-weight);
 }
+
+/* /upgrade/?from=X&to=Y (hds#464): one phone-first column. */
+.hds-upgrade-page {
+  box-sizing: border-box;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: var(--primitive-space-6, 1.5rem) var(--primitive-space-4, 1rem);
+  overflow-wrap: anywhere;
+}
+.hds-upgrade-page pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.hds-upgrade-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitive-space-3, 0.75rem);
+  align-items: end;
+}
+.hds-upgrade-form label {
+  display: grid;
+  gap: var(--primitive-space-1, 0.25rem);
+}
+.hds-upgrade-form select,
+.hds-upgrade-form button {
+  min-height: 2.75rem;
+}
+.hds-upgrade-list {
+  padding-left: var(--primitive-space-5, 1.25rem);
+}
+.hds-upgrade-list li {
+  margin-block: var(--primitive-space-2, 0.5rem);
+}
