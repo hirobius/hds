@@ -1,1 +1,1 @@
-hds#1008: codemod tests share helpers/codemod-fixture.mjs on gate-runner (jscpd scripts/**tests** 95 -> 89 clones).
+hds#1008 J1 slice 3: figma-\* tests share helpers/figma-temp-root.mjs (jscpd 121 -> 111 clones).
