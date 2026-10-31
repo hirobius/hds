@@ -9,18 +9,20 @@
  * renders each rewrite and compares it with TileGrid in Chromium.
  * Seams: `transformSource` (pure) and the CLI (`--root`, `--check`, `--dry-run`).
  */
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import ts from 'typescript';
 import { transformSource } from '../../codemods/tile-grid.mjs';
+import {
+  REPO,
+  codemodPaths,
+  expectCodemodWired,
+  runCli,
+  useFixtureDir,
+} from './helpers/codemod-harness.mjs';
 
-const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
-const CODEMOD = join(REPO, 'codemods/tile-grid.mjs');
-const FIXTURES = join(REPO, 'codemods/__fixtures__/tile-grid');
+const { CODEMOD, FIXTURES } = codemodPaths('tile-grid');
 const ROOT = '@hirobius/design-system';
 
 const one = (body, imports = `import { TileGrid } from '${ROOT}';`) =>
@@ -362,31 +364,20 @@ describe('the rewrite typechecks (TypeScript 6 rejects `??` on a width that is n
 });
 
 describe('package', () => {
-  it('ships the codemod as the hds-tile-grid bin', () => {
-    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-    expect(pkg.bin['hds-tile-grid']).toBe('codemods/tile-grid.mjs');
-    expect(pkg.files).toContain('codemods/tile-grid.mjs');
-  });
+  it('ships the codemod as the hds-tile-grid bin', () => expectCodemodWired('tile-grid'));
 });
 
 describe('CLI', () => {
+  const sandbox = useFixtureDir(FIXTURES, 'hds-tile-grid-', {
+    // The CLI fixtures only: typecheck/ is read by the typecheck test above.
+    only: ['needs-rewrite', 'clean'],
+    decoy: `import { TileGrid } from '${ROOT}';\n`,
+  });
   let dir;
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'hds-tile-grid-'));
-    // The CLI fixtures only: typecheck/ is read by the typecheck test above.
-    for (const own of ['needs-rewrite', 'clean'])
-      cpSync(join(FIXTURES, own), join(dir, own), { recursive: true });
-    // node_modules is gitignored, so the fixture is built here rather than committed.
-    mkdirSync(join(dir, 'clean/node_modules/x'), { recursive: true });
-    writeFileSync(
-      join(dir, 'clean/node_modules/x/index.js'),
-      `import { TileGrid } from '${ROOT}';\n`,
-    );
+    dir = sandbox();
   });
-  afterEach(() => rmSync(dir, { recursive: true, force: true }));
-
-  const run = (...args) =>
-    spawnSync('node', [CODEMOD, '--root', dir, ...args], { encoding: 'utf8' });
+  const run = (...args) => runCli(CODEMOD, dir, ...args);
 
   it('--check exits 1 before a rewrite and writes nothing', () => {
     const before = readFileSync(join(dir, 'needs-rewrite/src/SurfacesRail.tsx'), 'utf8');

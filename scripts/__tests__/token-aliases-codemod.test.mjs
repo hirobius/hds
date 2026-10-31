@@ -3,18 +3,19 @@
  * spacing aliases, removed in 0.33.0 (hds#625), become the tokens replacing them.
  * Seams: `transformSource` (pure), `runCodemod`, the CLI, and the package wiring.
  */
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { transformSource, runCodemod, SPACE, COLOR } from '../../codemods/token-aliases.mjs';
-import { CODEMODS } from '../../codemods/registry.mjs';
+import {
+  REPO,
+  codemodPaths,
+  describeCodemodCli,
+  expectCodemodWired,
+  useFixtureDir,
+} from './helpers/codemod-harness.mjs';
 
-const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
-const CODEMOD = join(REPO, 'codemods/token-aliases.mjs');
-const FIXTURES = join(REPO, 'codemods/__fixtures__/token-aliases');
+const { FIXTURES } = codemodPaths('token-aliases');
 
 describe('transformSource', () => {
   it.each([
@@ -113,17 +114,13 @@ describe('transformSource', () => {
 });
 
 describe('runCodemod', () => {
+  const sandbox = useFixtureDir(FIXTURES, 'hds-token-aliases-', {
+    decoy: 'hds.semantic.space.component.gap;\n',
+  });
   let dir;
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'hds-token-aliases-'));
-    cpSync(FIXTURES, dir, { recursive: true });
-    mkdirSync(join(dir, 'clean/node_modules/x'), { recursive: true });
-    writeFileSync(
-      join(dir, 'clean/node_modules/x/index.js'),
-      'hds.semantic.space.component.gap;\n',
-    );
+    dir = sandbox();
   });
-  afterEach(() => rmSync(dir, { recursive: true, force: true }));
 
   it('reports files and sites without writing, and skips node_modules and clean files', () => {
     const before = readFileSync(join(dir, 'needs-rewrite/src/panel.css'), 'utf8');
@@ -163,59 +160,20 @@ describe('runCodemod', () => {
   });
 });
 
-describe('CLI', () => {
-  let dir;
-  beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'hds-token-aliases-cli-'));
-    cpSync(FIXTURES, dir, { recursive: true });
-  });
-  afterEach(() => rmSync(dir, { recursive: true, force: true }));
-  const run = (root, ...args) =>
-    spawnSync('node', [CODEMOD, '--root', root, ...args], { encoding: 'utf8' });
-
-  it('--check exits 1 when a rewrite is needed and writes nothing', () => {
-    const file = join(dir, 'needs-rewrite/src/panel.tsx');
-    const before = readFileSync(file, 'utf8');
-    const r = run(dir, '--check');
-    expect(r.status).toBe(1);
-    expect(r.stderr).toMatch(/panel\.tsx/);
-    expect(readFileSync(file, 'utf8')).toBe(before);
-  });
-
-  it('--check exits 0 on a clean tree', () => {
-    const r = run(join(dir, 'clean'), '--check');
-    expect(r.status).toBe(0);
-    expect(r.stderr).toBe('');
-  });
-
-  it('--dry-run prints -/+ lines, exits 0 and writes nothing', () => {
-    const file = join(dir, 'needs-rewrite/src/panel.css');
-    const before = readFileSync(file, 'utf8');
-    const r = run(dir, '--dry-run');
-    expect(r.status).toBe(0);
-    const lines = r.stdout.split('\n');
-    expect(lines).toContain('-   padding: var(--semantic-space-component-padding);');
-    expect(lines).toContain('+   padding: var(--semantic-space-surface-padding);');
-    expect(readFileSync(file, 'utf8')).toBe(before);
-  });
-
-  it('a real run rewrites, then --check exits 0 and a second run rewrites 0 files', () => {
-    expect(run(dir).status).toBe(0);
-    expect(run(dir, '--check').status).toBe(0);
-    expect(run(dir).stdout).toMatch(/rewrote 0 files/);
-  });
-
-  it('rejects an unknown argument with exit 2', () => {
-    expect(run(dir, '--nope').status).toBe(2);
-  });
+describeCodemodCli({
+  name: 'token-aliases',
+  prefix: 'hds-token-aliases-cli-',
+  checkFile: 'needs-rewrite/src/panel.tsx',
+  dryRun: {
+    file: 'needs-rewrite/src/panel.css',
+    minus: '-   padding: var(--semantic-space-component-padding);',
+    plus: '+   padding: var(--semantic-space-surface-padding);',
+  },
 });
 
 describe('wiring', () => {
   it('is registered and in package.json#bin and #files', () => {
-    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-    expect(CODEMODS['hds-token-aliases']).toEqual({ file: 'token-aliases.mjs' });
-    expect(pkg.bin['hds-token-aliases']).toBe('codemods/token-aliases.mjs');
-    expect(pkg.files).toContain('codemods/token-aliases.mjs');
+    expectCodemodWired('token-aliases');
   });
 
   it('maps every removed alias to a token the source still has', () => {
