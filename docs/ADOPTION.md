@@ -10,11 +10,21 @@ Re-measure from a full clone: `node scripts/count-consumer-usage.mjs --root <clo
 
 ### Internal operations dashboard
 
-Not measured yet.
+| Month   | Commit    | Files | Components | Raw controls | HDS range | HDS release |
+| ------- | --------- | ----- | ---------- | ------------ | --------- | ----------- |
+| 2026-07 | `4d8ded4` | 29    | 20         | 43           | ^0.13.0   | 0.13.0      |
+| 2026-08 | `4d8ded4` | 29    | 20         | 43           | ^0.13.0   | 0.13.0      |
+| 2026-09 | `76ef65e` | 33    | 24         | 33           | ^0.16.0   | 0.19.1      |
+| 2026-10 | `aab75a7` | 87    | 34         | 4            | 0.31.0    | 0.32.0      |
 
 ### Roleforge, a job-application tracker
 
-Not measured yet.
+| Month   | Commit    | Files | Components | Raw controls | HDS range | HDS release |
+| ------- | --------- | ----- | ---------- | ------------ | --------- | ----------- |
+| 2026-07 | `3bc74e2` | 16    | 18         | 1            | ^0.13.0   | 0.13.0      |
+| 2026-08 | `3ba0c3b` | 17    | 18         | 1            | ^0.13.0   | 0.13.0      |
+| 2026-09 | `3ba0c3b` | 17    | 18         | 1            | ^0.13.0   | 0.19.1      |
+| 2026-10 | `e946751` | 101   | 43         | 2            | 0.32.0    | 0.32.0      |
 
 ### Deprecation cycle
 

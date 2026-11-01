@@ -76,6 +76,22 @@ describe('check-no-status-clutter: registry, pretest, fixtures and the repo', ()
     expect(ok.status).toBe(0);
   });
 
+  it('keeps its human report through the shared reportLineViolations (hds#1010)', () => {
+    const r = spawnSync(process.execPath, [GATE], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        HDS_FIXTURE_MODE: '1',
+        FIXTURE_FILE: 'fixtures/check-no-status-clutter/violating.example.tsx',
+      },
+    });
+    expect(r.status).toBe(1);
+    expect(r.stderr).toMatch(/✗ check-no-status-clutter: \d+ status dot or accent bar:/);
+    expect(r.stderr).toContain('[no-badge-dot]');
+    expect(r.stderr).toContain('Exempt a line with // status-clutter-ok: <reason>.');
+  });
+
   it('passes over the repo', () => {
     expect(run().status).toBe(0);
   });

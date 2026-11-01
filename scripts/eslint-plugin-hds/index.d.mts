@@ -10,9 +10,11 @@ interface HdsPlugin {
   rules: Record<
     | 'no-custom-tracking'
     | 'no-delight-on-actions'
+    | 'no-deprecated-import'
     | 'no-deprecated-token'
     | 'no-primitive-spacing'
     | 'no-raw-controls'
+    | 'no-removed-import'
     | 'no-raw-hex'
     | 'no-raw-px-spacing'
     | 'no-status-clutter'

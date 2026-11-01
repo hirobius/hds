@@ -28,21 +28,11 @@ import {
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
 import { createFakeFigma } from './helpers/fake-figma.mjs';
 import { fixtureModel, newFixtureFile } from './helpers/figma-fixture.mjs';
+import { LINKS, RETIRED_KEY, STAGING_KEY } from './helpers/figma-temp-root.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const model = fixtureModel();
 
-const LINKS = Object.freeze({
-  docsUrl: 'https://hirobius-design-system.vercel.app',
-  libraryFileKey: 'LIBRARYKEY000000000000',
-  libraryFileName: 'HDS Tokens & Components',
-  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
-  // HDS Staging, the draft workbench (ADR-026, A4): in links.json, and never a target.
-  stagingFileKey: 'STAGINGKEY000000000000',
-  stagingFileName: 'HDS Staging',
-});
-const RETIRED_KEY = LINKS.retiredFiles[0].fileKey;
-const STAGING_KEY = LINKS.stagingFileKey;
 /** A use_figma push script for the fixture links (the library above). */
 const pushScript = (options = {}) => buildUseFigmaPushScript(model, { ...options, links: LINKS });
 const snapshotScript = () => buildUseFigmaSnapshotScript(LINKS);

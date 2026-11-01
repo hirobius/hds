@@ -39,6 +39,26 @@ function Page() {
   );
 }
 
+const MULTI: CommandPaletteItem[] = [
+  {
+    id: 'move',
+    label: 'Move issue',
+    group: 'Actions',
+    args: [
+      {
+        id: 'project',
+        label: 'Project',
+        options: [
+          { id: 'web', label: 'Website' },
+          { id: 'api', label: 'API platform' },
+        ],
+      },
+      { id: 'note', label: 'Note' },
+    ],
+  },
+  { id: 'inbox', label: 'Go to inbox', group: 'Navigation' },
+];
+
 const field = () => screen.getByRole('combobox', { name: 'Command palette' });
 
 describe('CommandPalette accessibility contract', () => {
@@ -143,6 +163,60 @@ describe('CommandPalette accessibility contract', () => {
     await u.keyboard('{Escape}');
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
     expect(document.activeElement).toBe(opener);
+  });
+
+  it('a11y:command-palette.argument-chips - a multi-step command shows the command and each chosen argument as a removable Tag chip before the field', async () => {
+    const u = user();
+    render(<CommandPalette open items={MULTI} onOpenChange={() => {}} onSelect={() => {}} />);
+    const input = field();
+    input.focus();
+    await u.keyboard('{Enter}');
+    // Picking the command did not close the palette; it became a chip and the
+    // first argument's options replaced the command list.
+    expect(screen.getByRole('dialog')).toBeTruthy();
+    const chip = screen.getByRole('button', { name: 'Remove Move issue' });
+    expect(chip).toBeTruthy();
+    expect(input.compareDocumentPosition(chip) & Node.DOCUMENT_POSITION_PRECEDING).toBeTruthy();
+    await u.keyboard('{ArrowDown}');
+    await u.keyboard('{Enter}');
+    // Enter on the first option picked it (arrow moved past it to API platform).
+    expect(screen.getByRole('button', { name: 'Remove API platform' })).toBeTruthy();
+    expect(document.activeElement).toBe(input);
+  });
+
+  it('a11y:command-palette.chip-backspace - Backspace in an empty field removes the last chip and steps back, focus staying in the field', async () => {
+    const u = user();
+    render(<CommandPalette open items={MULTI} onOpenChange={() => {}} onSelect={() => {}} />);
+    const input = field();
+    input.focus();
+    await u.keyboard('{Enter}');
+    await u.keyboard('{Enter}');
+    expect(screen.getByRole('button', { name: 'Remove Website' })).toBeTruthy();
+    await u.keyboard('{Backspace}');
+    expect(screen.queryByRole('button', { name: 'Remove Website' })).toBeNull();
+    expect(document.activeElement).toBe(input);
+    // The argument step is current again: its options are the listbox rows.
+    expect(screen.getAllByRole('option').map((o) => o.textContent)).toEqual([
+      'Website',
+      'API platform',
+    ]);
+    await u.keyboard('{Backspace}');
+    expect(screen.queryByRole('button', { name: 'Remove Move issue' })).toBeNull();
+    expect(document.activeElement).toBe(input);
+  });
+
+  it('a11y:command-palette.argument-step-announced - each argument step is announced in the polite status with its name and position', async () => {
+    const u = user();
+    render(<CommandPalette open items={MULTI} onOpenChange={() => {}} onSelect={() => {}} />);
+    const input = field();
+    input.focus();
+    await u.keyboard('{Enter}');
+    const status = screen.getByRole('status');
+    expect(status.textContent).toContain('Project');
+    expect(status.textContent).toContain('1 of 2');
+    await u.keyboard('{Enter}');
+    expect(status.textContent).toContain('Note');
+    expect(status.textContent).toContain('2 of 2');
   });
 
   it('a11y:command-palette.axe-clean - the open palette has no axe violations, filtered or empty', async () => {

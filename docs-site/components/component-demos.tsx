@@ -718,6 +718,22 @@ function ComposerDemo() {
 const PALETTE_ITEMS = [
   { id: 'new-issue', label: 'New issue', group: 'Actions', shortcut: ['C'] },
   { id: 'invite', label: 'Invite a teammate', group: 'Actions', keywords: ['member', 'user'] },
+  {
+    id: 'move-issue',
+    label: 'Move issue',
+    group: 'Actions',
+    args: [
+      {
+        id: 'project',
+        label: 'Project',
+        options: [
+          { id: 'website', label: 'Website' },
+          { id: 'mobile', label: 'Mobile app' },
+        ],
+      },
+      { id: 'note', label: 'Note' },
+    ],
+  },
   { id: 'archive', label: 'Archive project', group: 'Actions', disabled: true },
   { id: 'inbox', label: 'Go to inbox', group: 'Navigation', shortcut: ['G', 'I'] },
   { id: 'settings', label: 'Open settings', group: 'Navigation', keywords: ['preferences'] },
@@ -737,7 +753,15 @@ function CommandPaletteDemo() {
         open={open}
         onOpenChange={setOpen}
         items={PALETTE_ITEMS}
-        onSelect={(item) => setRan(item.label)}
+        onSelect={(item, args) =>
+          setRan(
+            args
+              ? `${item.label} (${Object.entries(args)
+                  .map(([name, value]) => `${name}: ${value}`)
+                  .join(', ')})`
+              : item.label,
+          )
+        }
         // ⌘K already opens the docs search here, so the demo opens from its button only.
         hotkey={false}
       />

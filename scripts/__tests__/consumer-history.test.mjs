@@ -14,6 +14,7 @@ import {
   latestHarnessEntry,
   measureHistory,
   monthsBetween,
+  normalizeRange,
   readHdsTags,
   upsertHistory,
 } from '../lib/consumer-history.mjs';
@@ -55,6 +56,18 @@ describe('monthsBetween', () => {
       { month: '2026-12', end: '2027-01-01T00:00:00Z' },
       { month: '2027-01', end: '2027-02-01T00:00:00Z' },
     ]);
+  });
+});
+
+describe('normalizeRange', () => {
+  it('reads a registry tarball spec as its exact version', () => {
+    expect(
+      normalizeRange(
+        'https://registry.npmjs.org/@hirobius/design-system/-/design-system-0.31.0.tgz',
+      ),
+    ).toBe('0.31.0');
+    expect(normalizeRange('^0.13.0')).toBe('^0.13.0');
+    expect(normalizeRange(null)).toBe(null);
   });
 });
 

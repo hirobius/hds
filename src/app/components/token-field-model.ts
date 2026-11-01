@@ -14,10 +14,10 @@
 export const DEFAULT_TOKEN_PATTERN = /\[([^[\]\n]{1,40})\]/g;
 
 /** One run of the value: plain text, or one token. Joined back, the runs are the value. */
-export type TokenSegment = { kind: 'text'; text: string } | { kind: 'token'; token: string };
+type TokenSegment = { kind: 'text'; text: string } | { kind: 'token'; token: string };
 
 /** An edit's result: the new value and where the caret goes. */
-export interface TokenEdit {
+interface TokenEdit {
   value: string;
   caret: number;
 }
@@ -45,7 +45,7 @@ export function splitTokens(
 }
 
 /** Where each token sits, as [start, end) offsets. */
-export function tokenSpans(value: string, pattern?: RegExp): Array<[number, number]> {
+function tokenSpans(value: string, pattern?: RegExp): Array<[number, number]> {
   const spans: Array<[number, number]> = [];
   let at = 0;
   for (const s of splitTokens(value, pattern)) {

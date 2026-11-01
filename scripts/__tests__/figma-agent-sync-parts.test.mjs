@@ -7,17 +7,7 @@
  */
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { createHash } from 'crypto';
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from 'fs';
-import { tmpdir } from 'os';
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import vm from 'vm';
@@ -25,7 +15,6 @@ import { parse } from 'acorn';
 import {
   hdsChecksum,
   hdsPlan,
-  hdsRunPush,
   hdsRunSnapshot,
   hdsSummarize,
   hdsSummaryLine,
@@ -34,51 +23,28 @@ import { buildPushPayload, buildUseFigmaReceiptScript } from '../lib/figma-scrip
 import { DELTA_PRUNE_REFUSAL, buildUseFigmaDeltaScript } from '../lib/figma-agent-sync.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
-import { FIXTURE_TOKENS_PATH, fixtureModel } from './helpers/figma-fixture.mjs';
+import { fixtureModel } from './helpers/figma-fixture.mjs';
 import { ingestReceipt } from '../figma-snapshot.mjs';
 import { formatDeltaRun, runDeltaCommand, writeDeltaScript } from '../figma-push.mjs';
-import { createFakeFigma, textStyleFonts } from './helpers/fake-figma.mjs';
+import {
+  LINKS,
+  COMMIT,
+  NOTHING_LINE,
+  pushedLibrary,
+  useTempRoots,
+} from './helpers/figma-temp-root.mjs';
 
 // Real-model scenarios build and run dozens of scripts; a loaded CI runner needs the room.
 vi.setConfig({ testTimeout: 60000, hookTimeout: 60000 });
 
-const LINKS = Object.freeze({
-  docsUrl: 'https://hirobius-design-system.vercel.app',
-  libraryFileKey: 'LIBRARYKEY000000000000',
-  libraryFileName: 'HDS Tokens & Components',
-  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
-  stagingFileKey: 'STAGINGKEY000000000000',
-  stagingFileName: 'HDS Staging',
-});
-const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const copy = (value) => JSON.parse(JSON.stringify(value));
 const variableOf = (model, path) =>
   model.collections.flatMap((c) => c.variables).find((v) => v.path === path);
 
-let dirs = [];
 afterEach(() => {
   vi.useRealTimers();
-  dirs.forEach((dir) => rmSync(dir, { recursive: true, force: true }));
-  dirs = [];
 });
-const tempRoot = () => {
-  const root = mkdtempSync(join(tmpdir(), 'hds-agent-parts-'));
-  dirs.push(root);
-  copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
-  mkdirSync(join(root, 'figma'), { recursive: true });
-  writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(LINKS, null, 2));
-  return root;
-};
-const pushedLibrary = async (model) => {
-  const figma = createFakeFigma({
-    fileName: LINKS.libraryFileName,
-    fonts: textStyleFonts(model.textStyles),
-  });
-  figma.fileKey = LINKS.libraryFileKey;
-  const { payload, checksum } = buildPushPayload(model);
-  await hdsRunPush(figma, payload, checksum);
-  return figma;
-};
+const tempRoot = useTempRoots('hds-agent-parts-');
 /** The library after `base` was pushed, its snapshot committed, and main moved to `edit(base)`. */
 async function pending({ base = fixtureModel(), edit, ...options }) {
   const root = tempRoot();
@@ -122,7 +88,6 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
 // ── Harness ──────────────────────────────────────────────────────────────────
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const real = loadFigmaInputs(REPO).model;
-const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 
 /** Runs a script the way use_figma does: async, top-level await and return, `figma` in scope. */
 async function run(text, figma) {

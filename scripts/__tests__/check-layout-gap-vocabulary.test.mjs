@@ -8,17 +8,21 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
+import {
+  ROOT,
+  runGate,
+  fixtureRunner,
+  runExemptionsOn,
+  registryEntry,
+} from './helpers/gate-runner.mjs';
 import {
   findViolationsInText,
   isExempt,
   LAYOUT_GAP_NAMES,
 } from '../check-layout-gap-vocabulary.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const GATE = 'scripts/check-layout-gap-vocabulary.mjs';
 
 const find = (text) => findViolationsInText(text, 'fake.tsx');
@@ -177,8 +181,7 @@ describe('isExempt', () => {
 });
 
 describe('the gate blocks at pre-commit', () => {
-  const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
-  const entry = registry.gates.find((g) => g.id === 'check-layout-gap-vocabulary');
+  const entry = registryEntry('check-layout-gap-vocabulary');
 
   it('is registered as an error that fires at pre-commit, with its fixtures', () => {
     expect(entry).toMatchObject({
@@ -196,16 +199,7 @@ describe('the gate blocks at pre-commit', () => {
     expect(hook).toMatch(/^node scripts\/check-layout-gap-vocabulary\.mjs$/m);
   });
 
-  const runOn = (fixture) =>
-    spawnSync(process.execPath, [GATE, '--json'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-      env: {
-        ...process.env,
-        HDS_FIXTURE_MODE: '1',
-        FIXTURE_FILE: `fixtures/check-layout-gap-vocabulary/${fixture}`,
-      },
-    });
+  const runOn = fixtureRunner(GATE, 'fixtures/check-layout-gap-vocabulary');
 
   it('exits 1 on the violating fixture, reporting each private entry as an error', () => {
     const run = runOn('violating.example.tsx');
@@ -230,7 +224,7 @@ describe('the gate blocks at pre-commit', () => {
   });
 
   it('finds nothing in src/ (pnpm test runs this in CI, where the hook does not)', () => {
-    const run = spawnSync(process.execPath, [GATE], { cwd: ROOT, encoding: 'utf8' });
+    const run = runGate(GATE);
     expect(run.stderr).toBe('');
     expect(run.status).toBe(0);
   });
@@ -243,11 +237,7 @@ describe('its exemption marker (hds#404)', () => {
       // check:full runs check-exemptions over src/ and scripts/, and an unknown
       // `*-ok:` marker fails it. This gate documents `layout-gap-ok`, and this
       // suite exercises it.
-      const run = spawnSync(process.execPath, ['scripts/check-exemptions.mjs'], {
-        cwd: ROOT,
-        encoding: 'utf8',
-        env: { ...process.env, HDS_FIXTURE_MODE: '1', FIXTURE_FILE: file },
-      });
+      const run = runExemptionsOn(file);
       expect(run.stderr).not.toMatch(/unknown exemption marker "layout-gap-ok"/);
       expect(run.status).toBe(0);
     },

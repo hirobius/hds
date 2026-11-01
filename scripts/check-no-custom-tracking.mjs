@@ -25,15 +25,20 @@
 import { readFileSync } from 'node:fs';
 import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
-import { scanSources, findMarker, maskComments } from './lib/source-scan.mjs';
+import { hasJsonFlag } from './lib/gate-output.mjs';
+import {
+  scanSources,
+  findMarker,
+  maskComments,
+  isFixtureRun,
+  reportLineViolations,
+} from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const isFixtureMode = isFixtureRun(process.argv);
 const fixtureFile = process.env.FIXTURE_FILE;
 
 const SKIP_DIRS = ['node_modules', '.git', 'dist', 'coverage', '__tests__', 'fixtures'];
@@ -108,39 +113,15 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
   }
 
-  if (jsonMode) {
-    emitResult(
-      {
-        violations: violations.map((v) => ({
-          file: v.file,
-          line: v.line,
-          rule: v.rule,
-          severity: 'error',
-          message: v.message,
-          sample: v.sample,
-        })),
-        summary: { total: violations.length },
-        ok: violations.length === 0,
-      },
-      true,
-    );
-    process.exit(violations.length === 0 ? 0 : 1);
-  }
-
-  if (violations.length === 0) {
-    console.log('[ok] check-no-custom-tracking: all letter-spacing comes from type tokens');
-    process.exit(0);
-  }
-  console.error(
-    `\n✗ check-no-custom-tracking: ${violations.length} hand-set letter-spacing${violations.length === 1 ? '' : 's'}:\n`,
+  process.exit(
+    reportLineViolations(violations, jsonMode, {
+      gate: 'check-no-custom-tracking',
+      ok: 'all letter-spacing comes from type tokens',
+      noun: (n) => `hand-set letter-spacing${n === 1 ? '' : 's'}:`,
+      fix: [
+        '\nFix: use var(--semantic-typography-<role>-letter-spacing) or a .hds-type-<role> class.',
+        '  Exempt a line with /* tracking-ok: <reason> */ (the reason is required).\n',
+      ],
+    }),
   );
-  for (const v of violations) {
-    console.error(`  ${v.file}:${v.line}  [${v.rule}] ${v.message}`);
-    console.error(`    ${v.sample}`);
-  }
-  console.error(
-    '\nFix: use var(--semantic-typography-<role>-letter-spacing) or a .hds-type-<role> class.',
-  );
-  console.error('  Exempt a line with /* tracking-ok: <reason> */ (the reason is required).\n');
-  process.exit(1);
 }

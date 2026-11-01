@@ -80,6 +80,15 @@ import { MAX_BYTES, collectFiles, fileMentions, matchDetect } from './lib/scan.m
 import { componentSpecs, findStringWarnings } from './lib/strings.mjs';
 import { bumpRange, compareVersions, isVersion } from './lib/semver.mjs';
 import { hasCodemod, runCodemod } from './registry.mjs';
+import {
+  classFindings,
+  compilesOwnTailwind,
+  contractFindings,
+  knownClasses,
+  knownVars,
+  readContract,
+  CONTRACT_FILE,
+} from './css-vars.mjs';
 
 const readJson = (file) => {
   try {
@@ -543,6 +552,10 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
   // ── 2. each importer: codemods, range, dependencies, lists
   const changed = new Set();
   const presetKeys = installedPresetKeys(pkgDir);
+  // hds#459: the target's CSS contract; a release that shipped none skips the check.
+  const contract = readContract(join(pkgDir, CONTRACT_FILE));
+  const knownCssVars = contract ? knownVars(contract) : null;
+  const knownCssClasses = contract ? knownClasses(contract) : null;
   for (const [i, importer] of importers.entries()) {
     const { from } = versions[i];
     const dir = importer.dir;
@@ -687,6 +700,60 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
           files: rel([f.rel]),
           impact: 'none',
           blocking: false,
+        });
+      }
+    }
+
+    // HDS variables the target does not ship (hds#459): a read resolves to
+    // nothing and a write sets a variable nothing reads. Removed names a
+    // ledger step lists are left to that step, which says the fix.
+    if (knownCssVars) {
+      const listed = new Set(allSteps.flatMap((s) => s.detect?.cssVars ?? []));
+      const unknown = new Map();
+      for (const f of now) {
+        if (!f.text.includes('--')) continue;
+        for (const hit of contractFindings(f.text, knownCssVars)) {
+          if (hit.kind !== 'unknown' || listed.has(hit.name)) continue;
+          if (!unknown.has(hit.name)) unknown.set(hit.name, new Set());
+          unknown.get(hit.name).add(f.rel);
+        }
+      }
+      for (const [name, files] of unknown) {
+        addItem(report, 'doByHand', {
+          id: `hds-css-vars/unknown/${name}`,
+          plain: `${name} is not a variable ${HDS_PACKAGE} ${target} ships, so it reads as unset (or, written, nothing reads it); replace it by hand with one the release declares.`,
+          importer: dir,
+          files: rel([...files].sort()),
+          impact: 'breaking',
+        });
+      }
+    }
+
+    // HDS-shaped class tokens the target does not ship (hds#459): an hds-*
+    // class or a Tailwind variant (`hover:underline`) styles nothing. A
+    // consumer that compiles its own Tailwind may generate it: info only.
+    if (knownCssClasses) {
+      const own = compilesOwnTailwind(importer.pkg);
+      const unknown = new Map();
+      for (const f of now) {
+        if (!f.text.includes('class')) continue;
+        for (const hit of classFindings(f.text, knownCssClasses)) {
+          if (!unknown.has(hit.name)) unknown.set(hit.name, new Set());
+          unknown.get(hit.name).add(f.rel);
+        }
+      }
+      for (const [name, files] of unknown) {
+        const utility = !name.startsWith('hds-');
+        const info = own && utility;
+        addItem(report, 'doByHand', {
+          id: `hds-css-classes/unknown/${name}`,
+          plain: info
+            ? `${name} is not a class ${HDS_PACKAGE} ${target} ships; your own Tailwind build may generate it, so check it renders.`
+            : `${name} is not a class ${HDS_PACKAGE} ${target} ships, so it styles nothing; replace it by hand with one the release declares.`,
+          importer: dir,
+          files: rel([...files].sort()),
+          impact: info ? 'none' : 'breaking',
+          ...(info ? { blocking: false } : {}),
         });
       }
     }
