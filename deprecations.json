@@ -686,20 +686,8 @@
       "note": "AppShell is removed with no drop-in replacement, so rewrite or delete the code that imports it."
     },
     {
-      "name": "AppShell",
-      "from": "@hirobius/design-system/patterns",
-      "removedIn": "0.20.0",
-      "note": "AppShell is removed with no drop-in replacement, so rewrite or delete the code that imports it."
-    },
-    {
       "name": "AppShellProps",
       "from": "@hirobius/design-system",
-      "removedIn": "0.20.0",
-      "note": "AppShellProps is removed with no drop-in replacement, so rewrite or delete the code that imports it."
-    },
-    {
-      "name": "AppShellProps",
-      "from": "@hirobius/design-system/patterns",
       "removedIn": "0.20.0",
       "note": "AppShellProps is removed with no drop-in replacement, so rewrite or delete the code that imports it."
     },
