@@ -49,6 +49,4 @@ Components read semantic, component and role tokens, never primitives. That indi
 
 1. Edit `hirobius.tokens.json`, keeping primitive → semantic → component: a raw value goes in a primitive, and semantic and component tokens alias it.
 2. Run `pnpm tokens:verify` to rebuild every output and check it.
-3. Commit the token file and the regenerated outputs together.
-
-Contrast is checked on every commit: a change that drops a text and background pair below WCAG AA, in light or dark, can't land. The full rules are in [TOKEN_GOVERNANCE.md](https://github.com/hirobius/hds/blob/main/TOKEN_GOVERNANCE.md).
+3. Commit the token file and the regenerated outputs together. Contrast is checked on every commit — a change that drops a text and background pair below WCAG AA, in light or dark, can't land; the full rules are in [TOKEN_GOVERNANCE.md](https://github.com/hirobius/hds/blob/main/TOKEN_GOVERNANCE.md).
