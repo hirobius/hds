@@ -39,16 +39,15 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
-import { scanSources, isSpecFile } from './lib/source-scan.mjs';
+import { hasJsonFlag } from './lib/gate-output.mjs';
+import { scanSources, isSpecFile, isFixtureRun, reportLineViolations } from './lib/source-scan.mjs';
 import { findUppercase } from '../bin/lib/visual-rules.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const isFixtureMode = isFixtureRun(process.argv);
 const fixtureFile = process.env.FIXTURE_FILE;
 
 const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'tools', 'templates', 'tenants'];
@@ -107,37 +106,15 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
   }
 
-  if (jsonMode) {
-    emitResult(
-      {
-        violations: violations.map((v) => ({
-          file: v.file,
-          line: v.line,
-          rule: v.rule,
-          severity: 'error',
-          message: v.message,
-          sample: v.sample,
-        })),
-        summary: { total: violations.length },
-        ok: violations.length === 0,
-      },
-      true,
-    );
-    process.exit(violations.length === 0 ? 0 : 1);
-  }
-
-  if (violations.length === 0) {
-    console.log('[ok] check-no-uppercase: nothing in the system transforms text to uppercase');
-    process.exit(0);
-  }
-  console.error(
-    `\n✗ check-no-uppercase: ${violations.length} place${violations.length === 1 ? '' : 's'} that make ALL CAPS text:\n`,
+  process.exit(
+    reportLineViolations(violations, jsonMode, {
+      gate: 'check-no-uppercase',
+      ok: 'nothing in the system transforms text to uppercase',
+      noun: (n) => `place${n === 1 ? '' : 's'} that make ALL CAPS text:`,
+      fix: [
+        '\nFix: drop the transform and write the text in sentence case.',
+        '  Exempt a line with // uppercase-ok: <reason> (the reason is required).\n',
+      ],
+    }),
   );
-  for (const v of violations) {
-    console.error(`  ${v.file}:${v.line}  [${v.rule}] ${v.message}`);
-    console.error(`    ${v.sample}`);
-  }
-  console.error('\nFix: drop the transform and write the text in sentence case.');
-  console.error('  Exempt a line with // uppercase-ok: <reason> (the reason is required).\n');
-  process.exit(1);
 }

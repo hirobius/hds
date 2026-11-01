@@ -14,7 +14,8 @@
  *
  * Rules per `@deprecated` JSDoc block:
  *   1. must include `@removeIn <semver>` (e.g. `@removeIn 1.0.0`)
- *   2. that semver must be GREATER than the current package.json version
+ *   2. that semver must be GREATER than the version the pending changesets
+ *      release (package.json's version when none are pending; hds#469)
  *      (a past-due deprecation is a failure — remove it, with its codemod)
  *
  * A tag counts only at the start of a JSDoc line, the way the manifest reads
@@ -46,6 +47,7 @@ import { gt, isVersion } from '../codemods/lib/semver.mjs';
 import { parseDeprecation } from './lib/jsdoc-contract.mjs';
 import { readJsExportEntries } from './lib/package-entries.mjs';
 import { collectDeprecations } from './lib/token-deprecations.mjs';
+import { nextVersion, readPendingBumps } from './lib/next-version.mjs';
 
 const ROOT = process.cwd();
 const SOURCE_DIRS = ['src/app/components', 'src/app/layouts'];
@@ -58,7 +60,14 @@ const isFixtureMode =
 const fixtureFile = process.env.FIXTURE_FILE;
 // In fixture mode, override the "current version" so fixtures are deterministic
 // regardless of the real package version.
-const COMPARE_VERSION = isFixtureMode ? '1.0.0' : CURRENT_VERSION;
+// Otherwise compare against the version the pending changesets release
+// (hds#469), so the PR whose changeset makes a @removeIn due fails itself.
+const NEXT_VERSION = nextVersion(CURRENT_VERSION, readPendingBumps(ROOT, PKG.name));
+const COMPARE_VERSION = isFixtureMode ? '1.0.0' : NEXT_VERSION;
+const COMPARE_LABEL =
+  !isFixtureMode && NEXT_VERSION !== CURRENT_VERSION
+    ? `next ${NEXT_VERSION}, from pending changesets`
+    : `current ${COMPARE_VERSION}`;
 
 const JSDOC_RE = /\/\*\*[\s\S]*?\*\//g;
 
@@ -79,7 +88,7 @@ function findViolations(content) {
     }
     if (isVersion(COMPARE_VERSION) && !gt(deprecation.removeIn, COMPARE_VERSION)) {
       out.push(
-        `@removeIn ${deprecation.removeIn} is past-due (<= current ${COMPARE_VERSION}) — remove the API + ship its codemod`,
+        `@removeIn ${deprecation.removeIn} is past-due (<= ${COMPARE_LABEL}) — remove the API + ship its codemod`,
       );
     }
   }
@@ -100,7 +109,7 @@ function findTokenViolations(tree) {
       );
     } else if (isVersion(COMPARE_VERSION) && !gt(removeIn, COMPARE_VERSION)) {
       out.push(
-        `${path}: removed in ${removeIn} is past-due (<= current ${COMPARE_VERSION}) — remove the token + ship its codemod`,
+        `${path}: removed in ${removeIn} is past-due (<= ${COMPARE_LABEL}) — remove the token + ship its codemod`,
       );
     }
   }

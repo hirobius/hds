@@ -1,0 +1,1 @@
+Docs-only remainder of hds#468 (board ops#988): adds the "What you may select on" section to docs/CONSUMING.md, mirroring the section already in skills/hds-consumer/SKILL.md (landed in #965) — the manifest publicDataAttributes list for consumers. No src/ changes, nothing ships. skip-changeset

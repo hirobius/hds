@@ -373,6 +373,14 @@
       "check": "node scripts/figma-links.mjs --check"
     },
     {
+      "path": "docs/cleanup/DELETE-LIST.md",
+      "describes": "The F8 cleanup inventory: knip delete-only batches and jscpd dedupe batches, with both ratchets' current counts (hds#766)",
+      "kind": "editorial",
+      "owner": "Adrian",
+      "reviewedAt": "2026-10-12",
+      "maxAgeDays": 90
+    },
+    {
       "path": "docs/guardrails/registry.json",
       "describes": "Every gate, where it fires and its proof-of-firing fixtures",
       "kind": "checked",
