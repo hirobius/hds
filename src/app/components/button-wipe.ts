@@ -14,7 +14,7 @@
  * transition, so enter goes idle -> (reflow) -> in.
  */
 
-export type WipeEdge = 'left' | 'right' | 'top' | 'bottom';
+type WipeEdge = 'left' | 'right' | 'top' | 'bottom';
 
 const SELECTOR = '[data-hover-effect="wipe"]';
 

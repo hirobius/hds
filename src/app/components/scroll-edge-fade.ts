@@ -59,7 +59,7 @@ export function useScrollEdgeFade<T extends HTMLElement>() {
  * fade width clear so the item does not sit under the edge fade (`inline: 'nearest'`).
  * Element.scrollIntoView is not used because it also scrolls the page to the control.
  */
-export function revealInline(container: HTMLElement, item: HTMLElement, smooth: boolean): void {
+function revealInline(container: HTMLElement, item: HTMLElement, smooth: boolean): void {
   const box = container.getBoundingClientRect();
   const target = item.getBoundingClientRect();
   const fade =

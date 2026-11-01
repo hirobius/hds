@@ -41,15 +41,14 @@ Card, pass `bordered`.
 ## Buttons: soft fill, hard shadow, wipe
 
 - Secondary is a soft tonal fill (`surface.soft`), no border.
-- Primary and secondary carry the hard shadow on a **fixed base**: the bottom of the edge never
-  moves. At rest the edge is 3px; on hover the button lifts 1px onto a 4px edge; on press it
-  sinks 2px onto a 1px edge. Tertiary is the ghost: no edge, no movement, a `surface.hover` fill
-  on hover and a deeper one on press. Kbd carries a 2px edge.
+- Primary and secondary carry the hard shadow on a **fixed base**: the bottom edge never
+  moves — 3px at rest, 4px on hover (the button lifts 1px), 1px on press (it sinks 2px).
+  Tertiary is the ghost: no edge, no movement, a `surface.hover` fill on hover, deeper on
+  press. Kbd carries a 2px edge.
 - The edge is the item's **own fill, stepped darker** (chroma ×0.7225, same hue): primary from
   the accent, secondary from the soft fill, a tone from its tone fill, Kbd from its key fill. In
-  light it drops two OKLCH steps (lightness −0.12); in dark a third of the way to the card, so
-  it is always darker than the fill and never glows. The values ship as `--hds-edge-*`; set
-  `--hds-btn-edge` or `--hds-kbd-edge` to override one.
+  light it drops two OKLCH steps (lightness −0.12); in dark a third of the way to the card. The
+  values ship as `--hds-edge-*`; set `--hds-btn-edge` or `--hds-kbd-edge` to override one.
 - Selected states (a pressed toggle, the selected segment, a selected filter Tag) take the
   primary fill and the primary edge.
 - The hover fill wipes in from the edge the pointer enters.

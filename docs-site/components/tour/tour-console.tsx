@@ -94,7 +94,8 @@ export function TourConsole({ data }: { data: TourData }) {
     <HdsThemeProvider className="hds-tour">
       <HdsRouterProvider adapter={adapter}>
         <ToastProvider>
-          <Surface padding="none" overflow="visible">
+          {/* A plain frame, not a Surface: the cards inside must not sit in a card (hds#1046). */}
+          <Box>
             <Pin>
               <Surface padding="item">
                 <Switcher gap="tight">
@@ -235,7 +236,7 @@ export function TourConsole({ data }: { data: TourData }) {
                 </Page>
               </Container>
             </Sidebar>
-          </Surface>
+          </Box>
         </ToastProvider>
       </HdsRouterProvider>
     </HdsThemeProvider>

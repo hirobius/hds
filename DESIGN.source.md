@@ -133,6 +133,8 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 
 An entity card (a job, a lead, a listing) fills four zones in this order: `Card.Source` (an `Avatar` size `sm`, the source name, a `Timestamp`), `Card.Header` with the `Card.Title`, `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list), and the actions in `Card.Footer`. Facts are icon + text only; term and description pairs stay in `MetadataList`, and a text-only line stays in `MetaLine`. Status goes in the header `metadata` slot, never in the facts row.
 
+**No cards within cards, ever (hds#1046).** A `Card` or section surface (`Surface`, `Callout`, or any raised or bordered wrapper) never contains another `Card` or surface. This covers the **section surface wrapping a card list**: a "Review new" section drawn as a card holding a list of job cards is wrong. Declare the group with type hierarchy instead (a section title, a count, surrounding metadata) on a plain region, and separate list items with spacing or dividers. `hds/no-nested-cards` (in `hds/recommended`) fails on it; list your own wrappers that draw a card or a surface in its `cards` / `surfaces` options.
+
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
 
 ## Screen Patterns

@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HDS delight explorations</title>
+    <meta
+      name="description"
+      content="Three directions, subtle to bold, for a more playful HDS. Exploration only: no token in hirobius.tokens.json changes."
+    />
+    <!--
+  Exploration, not a token change (2026-10-17). Everything below is scoped to this page.
+  Reference: MetalBear's site (metalbear.com) for mood only. No brand colour, face or asset is copied:
+  their purple #756DF3 / yellow #FFCB7D / ink #232141 and Unbounded face are deliberately not used.
+
+  Fonts (all SIL Open Font License 1.1, served by Google Fonts, free for commercial use and embedding):
+  - Plus Jakarta Sans  (HDS text face today)       github.com/tokotype/PlusJakartaSans  OFL-1.1
+  - IBM Plex Mono      (HDS mono face today)       github.com/IBM/plex                  OFL-1.1
+  - Bricolage Grotesque (display, directions 2-3)  github.com/ateliertriay/bricolage    OFL-1.1
+
+  How the page is built:
+  - `.hds` / `.hds[data-theme="dark"]` copy the current HDS semantic tokens (src/styles/tokens.generated.css,
+    resolved to hex) under their real names, so every override below maps to a real token.
+  - `.d1 .hds`, `.d2 .hds`, `.d3 .hds` override those tokens per direction. Tokens HDS does not have
+    yet are prefixed `--x-` and counted as "new" in the comparison table.
+  - The comparison table is computed at load time from these stylesheets (token counts) and from the
+    rendered colours (WCAG 2.x contrast), so it cannot drift from the specimens.
+-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
+    />
+    <style>
+      /* ---------- Page chrome (this document, not a direction) ---------- */
+      :root {
+        --page-bg: #ffffff;
+        --page-fg: #111111;
+        --page-muted: #525252;
+        --page-rule: #e5e5e5;
+        --page-sunken: #fafafa;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --page-bg: #000000;
+          --page-fg: #f5f5f5;
+          --page-muted: #b4b4b4;
+          --page-rule: #404040;
+          --page-sunken: #1a1a1a;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme='dark'] {
+        --page-bg: #000000;
+        --page-fg: #f5f5f5;
+        --page-muted: #b4b4b4;
+        --page-rule: #404040;
+        --page-sunken: #1a1a1a;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+      }
+      body {
+        background: var(--page-bg);
+        color: var(--page-fg);
+        font:
+          400 18px/1.6 'Plus Jakarta Sans',
+          system-ui,
+          sans-serif;
+      }
+      .doc {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 48px 16px 96px;
+      }
+      .doc > header {
+        max-width: 760px;
+        padding-bottom: 48px;
+      }
+      .doc h1 {
+        font-size: 48px;
+        line-height: 1.1;
+        margin: 8px 0 16px;
+        letter-spacing: -0.02em;
+      }
+      .doc h2 {
+        font-size: 24px;
+        line-height: 1.3;
+        margin: 0 0 8px;
+      }
+      .doc p {
+        margin: 0 0 16px;
+        color: var(--page-muted);
+      }
+      .doc .meta {
+        font:
+          400 14px/1.5 'IBM Plex Mono',
+          monospace;
+        color: var(--page-muted);
+      }
+      .band {
+        border-top: 1px solid var(--page-rule);
+        padding: 48px 0;
+      }
+      .band-head {
+        display: grid;
+        gap: 4px;
+        max-width: 760px;
+        margin-bottom: 24px;
+      }
+      .band-head ul {
+        margin: 8px 0 0;
+        padding-left: 20px;
+        color: var(--page-muted);
+        font-size: 16px;
+      }
+      .pair {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+        gap: 24px;
+      }
+      .mode-label {
+        font:
+          500 14px/1.4 'IBM Plex Mono',
+          monospace;
+        color: var(--page-muted);
+        margin: 0 0 8px;
+      }
+      .theme-toggle {
+        font: inherit;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--page-rule);
+        background: transparent;
+        color: var(--page-fg);
+        cursor: pointer;
+      }
+      table.cmp {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+      }
+      .cmp-wrap {
+        overflow-x: auto;
+      }
+      table.cmp th,
+      table.cmp td {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--page-rule);
+        vertical-align: top;
+      }
+      table.cmp th {
+        font-weight: 500;
+        color: var(--page-muted);
+        font-size: 14px;
+      }
+      table.cmp td.num {
+        font-family: 'IBM Plex Mono', monospace;
+        white-space: nowrap;
+      }
+      .pass {
+        color: #047857;
+      }
+      .fail {
+        color: #b91c1c;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) .pass {
+          color: #4ade80;
+        }
+        :root:not([data-theme='light']) .fail {
+          color: #f87171;
+        }
+      }
+      :root[data-theme='dark'] .pass {
+        color: #4ade80;
+      }
+      :root[data-theme='dark'] .fail {
+        color: #f87171;
+      }
+      .reco {
+        max-width: 760px;
+      }
+      .reco ol {
+        padding-left: 20px;
+        color: var(--page-muted);
+      }
+      .reco strong {
+        color: var(--page-fg);
+      }
+
+      /* ---------- HDS today: semantic tokens, resolved from tokens.generated.css ---------- */
+      .hds {
+        --semantic-color-surface-page: #ffffff;
+        --semantic-color-surface-raised: #fafafa;
+        --semantic-color-surface-muted: #f5f5f5;
+        --semantic-color-content-primary: #111111;
+        --semantic-color-content-secondary: #525252;
+        --semantic-color-content-onAccent: #fafafa;
+        --semantic-color-border-default: #e5e5e5;
+        --semantic-color-border-subtle: #f5f5f5;
+        --semantic-color-border-interactive: #737373;
+        --semantic-accent-rest: #433a3f;
+        --semantic-accent-hover: #352e32;
+        --semantic-accent-subtle: #f5f4f4;
+        --semantic-accent-content: #433a3f;
+        --semantic-color-feedback-success: #047857;
+        --semantic-color-feedback-success-bg: #ecfdf5;
+        --semantic-radius-action: 8px;
+        --role-radius-container: calc(var(--semantic-radius-action) + 4px);
+        --semantic-shadow-subtle: 0 1px 2px rgb(0 0 0 / 0.04), 0 1px 1px rgb(0 0 0 / 0.06);
+        --semantic-font-text: 'Plus Jakarta Sans', system-ui, sans-serif;
+        --semantic-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+        --semantic-font-display: var(--semantic-font-text);
+        --semantic-typography-display-size: 48px;
+        --semantic-typography-display-leading: 1.1;
+        --semantic-typography-display-tracking: -0.02em;
+        --semantic-typography-title-size: 24px;
+        --semantic-space-surface-padding: 24px;
+        --semantic-space-scale-md: 24px;
+        --semantic-motion-productive: 150ms cubic-bezier(0.2, 0, 0, 1);
+        /* Tokens HDS does not have yet default to "off" so the base renders as HDS today */
+        --x-accent-2: var(--semantic-accent-rest);
+        --x-kicker-bg: transparent;
+        --x-kicker-fg: var(--semantic-color-content-secondary);
+        --x-kicker-radius: 0;
+        --x-kicker-pad: 0;
+        --x-card-shadow: none;
+        --x-card-border: 0 solid transparent;
+        --x-press-transform: none;
+        --x-hover-transform: none;
+
+        background: var(--semantic-color-surface-page);
+        color: var(--semantic-color-content-primary);
+        font-family: var(--semantic-font-text);
+        border: 1px solid var(--page-rule);
+        border-radius: 12px;
+        padding: var(--semantic-space-scale-md);
+        display: grid;
+        gap: calc(var(--semantic-space-scale-md) * 1.5);
+        overflow: hidden;
+      }
+      .hds[data-theme='dark'] {
+        --semantic-color-surface-page: #000000;
+        --semantic-color-surface-raised: #1a1a1a;
+        --semantic-color-surface-muted: #262626;
+        --semantic-color-content-primary: #f5f5f5;
+        --semantic-color-content-secondary: #b4b4b4;
+        --semantic-color-content-onAccent: #2a2428;
+        --semantic-color-border-default: #525252;
+        --semantic-color-border-subtle: #404040;
+        --semantic-accent-rest: #d4d0d2;
+        --semantic-accent-hover: #b2abae;
+        --semantic-accent-subtle: #352e32;
+        --semantic-accent-content: #b2abae;
+        --semantic-color-feedback-success: #4ade80;
+        --semantic-color-feedback-success-bg: #052e1c;
+        --semantic-shadow-subtle: 0 1px 2px rgb(0 0 0 / 0.4);
+      }
+
+      /* ---------- Direction 1: Warmer graphite ---------- */
+      .d1 .hds {
+        --semantic-color-surface-page: #fcfbfa;
+        --semantic-color-surface-raised: #ffffff;
+        --semantic-radius-action: 12px;
+        --role-radius-container: 20px;
+        --x-accent-2: #c2410c;
+        --x-kicker-fg: #c2410c;
+        --x-card-shadow: 6px 6px 18px -8px rgb(67 58 63 / 0.28);
+      }
+      .d1 .hds[data-theme='dark'] {
+        --semantic-color-surface-page: #19161a;
+        --semantic-color-surface-raised: #2a2428;
+        --x-accent-2: #ff9a6e;
+        --x-kicker-fg: #ff9a6e;
+        --x-card-shadow: 6px 6px 18px -8px rgb(0 0 0 / 0.7);
+      }
+
+      /* ---------- Direction 2: Expressive type ---------- */
+      .d2 .hds {
+        --semantic-font-display: 'Bricolage Grotesque', var(--semantic-font-text);
+        --semantic-typography-display-size: 56px;
+        --semantic-typography-display-leading: 1;
+        --semantic-typography-display-tracking: -0.035em;
+        --semantic-typography-title-size: 26px;
+        --semantic-accent-rest: #0b6b5d;
+        --semantic-accent-hover: #08574b;
+        --semantic-accent-subtle: #e6f4f1;
+        --semantic-accent-content: #0b6b5d;
+        --semantic-color-content-onAccent: #ffffff;
+        --semantic-radius-action: 10px;
+        --role-radius-container: 16px;
+        --x-accent-2: #ffc4ad;
+        --x-kicker-bg: #ffc4ad;
+        --x-kicker-fg: #5c1e0a;
+        --x-kicker-radius: 999px;
+        --x-kicker-pad: 4px 12px;
+      }
+      .d2 .hds[data-theme='dark'] {
+        --semantic-accent-rest: #6fd6c2;
+        --semantic-accent-hover: #93e2d2;
+        --semantic-accent-subtle: #0b2e29;
+        --semantic-accent-content: #6fd6c2;
+        --semantic-color-content-onAccent: #062a24;
+        --x-accent-2: #ffb08f;
+        --x-kicker-bg: #3d1a0e;
+        --x-kicker-fg: #ffb08f;
+      }
+
+      /* ---------- Direction 3: Full delight ---------- */
+      .d3 .hds {
+        --semantic-color-surface-page: #fff6ea;
+        --semantic-color-surface-raised: #ffffff;
+        --semantic-color-surface-muted: #ffe9cf;
+        --semantic-color-content-primary: #19161a;
+        --semantic-color-content-secondary: #4a4247;
+        --semantic-color-content-onAccent: #19161a;
+        --semantic-color-border-default: #19161a;
+        --semantic-color-border-subtle: #e9d9c4;
+        --semantic-color-border-interactive: #19161a;
+        --semantic-accent-rest: #ff5b3a;
+        --semantic-accent-hover: #ff7556;
+        --semantic-accent-subtle: #ffe0d6;
+        --semantic-accent-content: #b5300f;
+        --semantic-radius-action: 14px;
+        --role-radius-container: 24px;
+        --semantic-font-display: 'Bricolage Grotesque', var(--semantic-font-text);
+        --semantic-typography-display-size: 64px;
+        --semantic-typography-display-leading: 0.95;
+        --semantic-typography-display-tracking: -0.045em;
+        --semantic-typography-title-size: 28px;
+        --semantic-space-surface-padding: 28px;
+        --semantic-space-scale-md: 32px;
+        --semantic-motion-productive: 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        --x-accent-2: #8fe3c8;
+        --x-kicker-bg: #19161a;
+        --x-kicker-fg: #8fe3c8;
+        --x-kicker-radius: 999px;
+        --x-kicker-pad: 4px 14px;
+        --x-card-border: 2px solid var(--semantic-color-border-default);
+        --x-card-shadow: 5px 5px 0 var(--semantic-color-border-default);
+        --x-press-transform: translate(3px, 3px) scale(0.97);
+        --x-hover-transform: translate(-2px, -2px);
+      }
+      .d3 .hds[data-theme='dark'] {
+        --semantic-color-surface-page: #19161a;
+        --semantic-color-surface-raised: #2a2428;
+        --semantic-color-surface-muted: #352e32;
+        --semantic-color-content-primary: #fff6ea;
+        --semantic-color-content-secondary: #d4c9bd;
+        --semantic-color-border-default: #fff6ea;
+        --semantic-color-border-subtle: #4a4247;
+        --semantic-color-border-interactive: #fff6ea;
+        --semantic-accent-subtle: #4a1d12;
+        --semantic-accent-content: #ff9a80;
+        --x-kicker-bg: #8fe3c8;
+        --x-kicker-fg: #19161a;
+        --x-card-shadow: 5px 5px 0 #8fe3c8;
+      }
+
+      /* ---------- Specimens (read only tokens) ---------- */
+      .hds .eyebrow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .crumb {
+        font: 500 14px/1.4 var(--semantic-font-text);
+        color: var(--semantic-color-content-secondary);
+      }
+      .logo-slot {
+        inline-size: 40px;
+        block-size: 40px;
+        flex: none;
+        border: 1.5px dashed var(--semantic-color-content-secondary);
+        border-radius: var(--semantic-radius-action);
+        display: grid;
+        place-items: center;
+        font: 500 10px/1 var(--semantic-font-mono);
+        color: var(--semantic-color-content-secondary);
+        text-align: center;
+      }
+      .kicker {
+        justify-self: start;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--x-kicker-bg);
+        color: var(--x-kicker-fg);
+        border-radius: var(--x-kicker-radius);
+        padding: var(--x-kicker-pad);
+        font: 500 14px/1.4 var(--semantic-font-mono);
+      }
+      .d1 .kicker::before {
+        content: '';
+        inline-size: 8px;
+        block-size: 8px;
+        border-radius: 999px;
+        background: var(--x-accent-2);
+      }
+      .ph {
+        display: grid;
+        gap: 12px;
+      }
+      .ph h3 {
+        margin: 0;
+        font-family: var(--semantic-font-display);
+        font-weight: 700;
+        font-size: var(--semantic-typography-display-size);
+        line-height: var(--semantic-typography-display-leading);
+        letter-spacing: var(--semantic-typography-display-tracking);
+      }
+      .d3 .ph h3 {
+        font-weight: 800;
+      }
+      .ph p {
+        margin: 0;
+        color: var(--semantic-color-content-secondary);
+        font-size: 18px;
+        line-height: 1.6;
+        max-width: 34ch;
+      }
+      .ph .tok {
+        font: 400 14px/1.5 var(--semantic-font-mono);
+        color: var(--semantic-color-content-secondary);
+      }
+
+      .btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .btn {
+        font: 500 16px/1 var(--semantic-font-text);
+        padding: 12px 18px;
+        min-block-size: 44px;
+        border-radius: var(--semantic-radius-action);
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition:
+          transform var(--semantic-motion-productive),
+          box-shadow var(--semantic-motion-productive),
+          background-color var(--semantic-motion-productive);
+      }
+      .btn.primary {
+        background: var(--semantic-accent-rest);
+        color: var(--semantic-color-content-onAccent);
+      }
+      .btn.primary:hover {
+        background: var(--semantic-accent-hover);
+      }
+      .btn.secondary {
+        background: transparent;
+        color: var(--semantic-color-content-primary);
+        border-color: var(--semantic-color-border-interactive);
+      }
+      .btn.tertiary {
+        background: transparent;
+        color: var(--semantic-accent-content);
+      }
+      .btn:focus-visible {
+        outline: 2px solid var(--semantic-accent-rest);
+        outline-offset: 2px;
+      }
+      .d2 .btn.secondary {
+        border-color: var(--semantic-accent-rest);
+        color: var(--semantic-accent-content);
+      }
+      .d3 .btn {
+        border: 2px solid var(--semantic-color-border-default);
+        box-shadow: 3px 3px 0 var(--semantic-color-border-default);
+        font-weight: 700;
+        padding: 12px 22px;
+      }
+      .d3 .btn.secondary {
+        background: var(--x-accent-2);
+        color: #19161a;
+      }
+      .d3 .btn.tertiary {
+        box-shadow: none;
+        border-color: transparent;
+        text-decoration: underline 2px;
+        text-underline-offset: 4px;
+      }
+      .d3 .btn:hover {
+        transform: var(--x-hover-transform);
+        box-shadow: 5px 5px 0 var(--semantic-color-border-default);
+      }
+      .d3 .btn:active {
+        transform: var(--x-press-transform);
+        box-shadow: 0 0 0 var(--semantic-color-border-default);
+      }
+      .d3 .btn.tertiary:hover,
+      .d3 .btn.tertiary:active {
+        box-shadow: none;
+      }
+
+      .card {
+        background: var(--semantic-color-surface-raised);
+        border-radius: var(--role-radius-container);
+        border: var(--x-card-border);
+        box-shadow: var(--x-card-shadow);
+        padding: var(--semantic-space-surface-padding);
+        display: grid;
+        gap: 12px;
+        transition:
+          transform var(--semantic-motion-productive),
+          box-shadow var(--semantic-motion-productive);
+      }
+      .card h4 {
+        margin: 0;
+        font: 700 var(--semantic-typography-title-size)/1.25 var(--semantic-font-display);
+        letter-spacing: calc(var(--semantic-typography-display-tracking) / 2);
+      }
+      .card p {
+        margin: 0;
+        color: var(--semantic-color-content-secondary);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .card .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .d3 .card:hover {
+        transform: var(--x-hover-transform);
+        box-shadow: 8px 8px 0 var(--semantic-color-border-default);
+      }
+      .d3 .hds[data-theme='dark'] .card:hover {
+        box-shadow: 8px 8px 0 var(--x-accent-2);
+      }
+      .meter {
+        block-size: 8px;
+        border-radius: 999px;
+        background: var(--semantic-color-surface-muted);
+        overflow: hidden;
+      }
+      .meter > i {
+        display: block;
+        block-size: 100%;
+        inline-size: 64%;
+        background: var(--semantic-accent-rest);
+        border-radius: inherit;
+      }
+      .d1 .meter > i,
+      .d2 .meter > i {
+        background: linear-gradient(
+          90deg,
+          var(--semantic-accent-rest) 0 82%,
+          var(--x-accent-2) 82%
+        );
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font: 500 14px/1 var(--semantic-font-text);
+        padding: 6px 10px;
+        border-radius: var(--semantic-radius-action);
+        background: var(--semantic-color-feedback-success-bg);
+        color: var(--semantic-color-feedback-success);
+      }
+      .badge::before {
+        content: '';
+        inline-size: 6px;
+        block-size: 6px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+      .d2 .badge,
+      .d3 .badge {
+        border-radius: 999px;
+      }
+      .d3 .badge {
+        border: 2px solid var(--semantic-color-border-default);
+        background: var(--x-accent-2);
+        color: #19161a;
+      }
+
+      .trow-wrap {
+        overflow-x: auto;
+      }
+      table.trow {
+        inline-size: 100%;
+        border-collapse: collapse;
+        font: 500 16px/1.4 var(--semantic-font-text);
+      }
+      table.trow th {
+        text-align: left;
+        font: 500 14px/1.4 var(--semantic-font-text);
+        color: var(--semantic-color-content-secondary);
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--semantic-color-border-default);
+      }
+      table.trow td {
+        padding: 12px;
+        border-bottom: 1px solid var(--semantic-color-border-subtle);
+        white-space: nowrap;
+      }
+      table.trow td.mono {
+        font: 400 15px/1.4 var(--semantic-font-mono);
+        color: var(--semantic-color-content-secondary);
+      }
+      table.trow tr.hl td {
+        background: var(--semantic-accent-subtle);
+      }
+      .d3 table.trow th {
+        border-bottom-width: 2px;
+      }
+      .d3 table.trow tr.hl td:first-child {
+        border-radius: 12px 0 0 12px;
+      }
+      .d3 table.trow tr.hl td:last-child {
+        border-radius: 0 12px 12px 0;
+      }
+
+      .avatar {
+        inline-size: 32px;
+        block-size: 32px;
+        border-radius: 8px;
+        display: inline-grid;
+        place-items: center;
+        font: 700 14px/1 var(--semantic-font-display);
+        background: var(--semantic-color-surface-muted);
+        color: var(--semantic-color-content-primary);
+        vertical-align: middle;
+        margin-right: 10px;
+        flex: none;
+      }
+      .d2 .avatar {
+        border-radius: 999px;
+      }
+      .d3 .avatar {
+        border-radius: 10px;
+        border: 2px solid var(--semantic-color-border-default);
+        background: var(--x-accent-2);
+        color: #19161a;
+      }
+
+      /* Roleforge Companies at 390 */
+      .phone {
+        inline-size: 390px;
+        max-inline-size: 100%;
+        justify-self: center;
+        background: var(--semantic-color-surface-page);
+        border: 1px solid var(--semantic-color-border-default);
+        border-radius: 32px;
+        overflow: hidden;
+        display: grid;
+      }
+      .d3 .phone {
+        border-width: 2px;
+      }
+      .phone .bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+      }
+      .phone .bar .logo-slot {
+        inline-size: 32px;
+        block-size: 32px;
+        font-size: 8px;
+      }
+      .phone .bar strong {
+        font: 700 18px/1.2 var(--semantic-font-display);
+        flex: 1;
+      }
+      .phone .bar .icon {
+        inline-size: 36px;
+        block-size: 36px;
+        border-radius: 999px;
+        background: var(--semantic-color-surface-muted);
+        display: grid;
+        place-items: center;
+      }
+      .phone .body {
+        padding: 0 16px 16px;
+        display: grid;
+        gap: 16px;
+      }
+      .phone h5 {
+        margin: 4px 0 0;
+        font: 700 var(--semantic-typography-title-size)/1.1 var(--semantic-font-display);
+        letter-spacing: calc(var(--semantic-typography-display-tracking) / 1.5);
+      }
+      .d3 .phone h5 {
+        font-size: 36px;
+        font-weight: 800;
+      }
+      .search {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 14px;
+        min-block-size: 44px;
+        border: 1px solid var(--semantic-color-border-interactive);
+        border-radius: var(--semantic-radius-action);
+        color: var(--semantic-color-content-secondary);
+        font-size: 16px;
+        background: var(--semantic-color-surface-raised);
+      }
+      .d3 .search {
+        border-width: 2px;
+      }
+      .chips {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+      }
+      .chip {
+        flex: none;
+        padding: 8px 14px;
+        min-block-size: 36px;
+        border-radius: 999px;
+        border: 1px solid var(--semantic-color-border-interactive);
+        font: 500 14px/1.4 var(--semantic-font-text);
+        background: transparent;
+        color: var(--semantic-color-content-primary);
+      }
+      .chip[aria-pressed='true'] {
+        background: var(--semantic-accent-rest);
+        color: var(--semantic-color-content-onAccent);
+        border-color: var(--semantic-accent-rest);
+      }
+      .d3 .chip {
+        border-width: 2px;
+      }
+      .d3 .chip[aria-pressed='true'] {
+        border-color: var(--semantic-color-border-default);
+      }
+      .co-list {
+        display: grid;
+        gap: 10px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .co {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 14px;
+        background: var(--semantic-color-surface-raised);
+        border-radius: var(--role-radius-container);
+        border: var(--x-card-border);
+        box-shadow: var(--x-card-shadow);
+        transition:
+          transform var(--semantic-motion-productive),
+          box-shadow var(--semantic-motion-productive);
+      }
+      .d3 .co {
+        box-shadow: 3px 3px 0 var(--semantic-color-border-default);
+      }
+      .d3 .hds[data-theme='dark'] .co {
+        box-shadow: 3px 3px 0 var(--x-accent-2);
+      }
+      .d3 .co:active {
+        transform: var(--x-press-transform);
+        box-shadow: none;
+      }
+      .co .who {
+        flex: 1;
+        min-inline-size: 0;
+        display: grid;
+      }
+      .co .who b {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .co .who span {
+        font-size: 14px;
+        color: var(--semantic-color-content-secondary);
+      }
+      .co .n {
+        font: 500 14px/1 var(--semantic-font-mono);
+        color: var(--semantic-color-content-secondary);
+      }
+      .fab {
+        margin: 0 16px 20px;
+        inline-size: calc(100% - 32px);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .hds * {
+          transition: none !important;
+        }
+        .d3 .btn:hover,
+        .d3 .btn:active,
+        .d3 .card:hover,
+        .d3 .co:active {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="doc">
+      <header>
+        <p class="meta">
+          docs/explorations/2026-10-delight · 2026-10-17 · exploration, no token change
+        </p>
+        <h1>Making HDS more delightful</h1>
+        <p>
+          Three directions, from subtle to bold. Each one renders the same set: the docs Foundations
+          header, a button set, a card, a Companies table row and the Roleforge Companies screen at
+          390px, in light and dark. Every specimen reads HDS's real token names; a direction only
+          overrides values, scoped to this page.
+        </p>
+        <p>
+          MetalBear's site is the mood reference: big confident type, a warm two-colour accent,
+          chunky cards with hard shadows, pill kickers and open space. None of their colours,
+          typeface or assets are used. A dashed square marks where the new hydra logo goes.
+        </p>
+        <button class="theme-toggle" type="button" id="pageTheme">Page theme: system</button>
+      </header>
+
+      <section class="band d1" aria-labelledby="d1h"></section>
+      <section class="band d2" aria-labelledby="d2h"></section>
+      <section class="band d3" aria-labelledby="d3h"></section>
+
+      <section class="band" aria-labelledby="cmph">
+        <div class="band-head">
+          <p class="meta">Comparison</p>
+          <h2 id="cmph">What each direction changes</h2>
+          <p>
+            Token counts are read from this page's stylesheet; contrast ratios are measured from the
+            rendered colours. AA is 4.5:1 for text and 3:1 for large text and UI edges.
+          </p>
+        </div>
+        <div class="cmp-wrap"><table class="cmp" id="cmpSummary"></table></div>
+        <h2 style="margin-top: 40px">Contrast, pair by pair</h2>
+        <div class="cmp-wrap"><table class="cmp" id="cmpContrast"></table></div>
+      </section>
+
+      <section class="band reco" aria-labelledby="recoh">
+        <p class="meta">Recommendation</p>
+        <h2 id="recoh">Ship direction 2 as the system, keep direction 3 as a tenant</h2>
+        <ol>
+          <li>
+            <strong>Adopt direction 2 (Expressive type) in the core.</strong> The display face and
+            pill kickers carry most of the personality MetalBear has, while touching only the
+            display and title steps, the accent ramp and one new kicker role. Product screens like
+            Roleforge stay calm because body, UI and table text do not change.
+          </li>
+          <li>
+            <strong>Take two pieces of direction 1 with it:</strong> the rounder radius (one knob,
+            <code>role.radius</code>) and the soft offset shadow on interactive cards only. Both fit
+            the current elevation model.
+          </li>
+          <li>
+            <strong>Make direction 3 a demo tenant, not the default.</strong> It is the most fun,
+            and all its pairs pass AA, but it breaks five written rules in
+            <code>DESIGN.md</code> (tinted surfaces, border plus shadow, transform on press, bouncy
+            motion, two accents). That is exactly what a tenant overlay is for, like
+            <code>brutalist-demo</code>; the hydra logo could debut there.
+          </li>
+          <li>
+            <strong>Before any token change:</strong> an ADR for the second accent and display face,
+            the <code>DESIGN.md</code> rules it amends, and the hydra logo in the slot to check the
+            palette against it.
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <template id="specimen">
+      <div class="hds">
+        <div class="ph">
+          <div class="eyebrow">
+            <span class="crumb">Docs / Foundations</span
+            ><span class="logo-slot" role="img" aria-label="Hydra logo placeholder">hydra</span>
+          </div>
+          <span class="kicker">Stable · 427 tokens</span>
+          <h3>Foundations</h3>
+          <p>Colour, type, space, radius and motion: the values every component reads.</p>
+          <span class="tok">hirobius.tokens.json</span>
+        </div>
+        <div class="btns">
+          <button class="btn primary" type="button">Add company</button>
+          <button class="btn secondary" type="button">Import list</button>
+          <button class="btn tertiary" type="button">Skip for now</button>
+        </div>
+        <article class="card">
+          <span class="kicker">This week</span>
+          <h4>Applications moving</h4>
+          <p>Nine of fourteen applications got a reply. Two interviews are booked for Thursday.</p>
+          <div class="meter" role="img" aria-label="64 percent replied"><i></i></div>
+          <div class="row">
+            <span class="badge">On track</span
+            ><button class="btn tertiary" type="button">See pipeline</button>
+          </div>
+        </article>
+        <div class="trow-wrap">
+          <table class="trow">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Open roles</th>
+                <th>Stage</th>
+                <th>Last touch</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hl">
+                <td><span class="avatar">N</span>Northwind Labs</td>
+                <td class="mono">3</td>
+                <td><span class="badge">Interview</span></td>
+                <td class="mono">2d ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="phone" role="group" aria-label="Roleforge Companies screen at 390 pixels">
+          <div class="bar">
+            <span class="logo-slot" role="img" aria-label="Hydra logo placeholder">hydra</span
+            ><strong>Roleforge</strong><span class="icon" aria-hidden="true">⌕</span>
+          </div>
+          <div class="body">
+            <div class="ph" style="gap: 8px">
+              <span class="kicker">12 tracked</span>
+              <h5>Companies</h5>
+            </div>
+            <div class="search">Search companies</div>
+            <div class="chips">
+              <button class="chip" type="button" aria-pressed="true">All</button
+              ><button class="chip" type="button" aria-pressed="false">Interviewing</button
+              ><button class="chip" type="button" aria-pressed="false">Applied</button
+              ><button class="chip" type="button" aria-pressed="false">Saved</button>
+            </div>
+            <ul class="co-list">
+              <li class="co">
+                <span class="avatar">N</span
+                ><span class="who"><b>Northwind Labs</b><span>Interview Thursday</span></span
+                ><span class="n">3 roles</span>
+              </li>
+              <li class="co">
+                <span class="avatar">K</span
+                ><span class="who"><b>Kestrel Health</b><span>Applied 5 days ago</span></span
+                ><span class="n">1 role</span>
+              </li>
+              <li class="co">
+                <span class="avatar">O</span
+                ><span class="who"><b>Orbit Freight</b><span>Recruiter replied</span></span
+                ><span class="n">2 roles</span>
+              </li>
+            </ul>
+          </div>
+          <button class="btn primary fab" type="button">Add company</button>
+        </div>
+      </div>
+    </template>
+
+    <script>
+      const DIRS = [
+        {
+          id: 'd1',
+          name: 'Warmer graphite',
+          step: 'Direction 1 · subtle',
+          lede: 'Keep the structure and the graphite accent. Add one warm ember accent, rounder corners and a soft offset shadow on cards.',
+          changes: [
+            'Radius knob 8 → 12px (containers 20px)',
+            'Ember second accent for kickers and progress only',
+            'Soft offset shadow on cards',
+            'Warm white page in light, graphite-950 in dark',
+          ],
+          rules: 'Breaks 2: card shadow at rest; warm-tinted page neutral',
+        },
+        {
+          id: 'd2',
+          name: 'Expressive type',
+          step: 'Direction 2 · medium',
+          lede: 'Bricolage Grotesque on the display and title steps only, a pine and peach accent pair, and pill kickers. Body, UI and table text stay as they are.',
+          changes: [
+            'Display face on display + title steps',
+            'Pine accent replaces graphite; peach as second accent',
+            'Pill kickers in mono',
+            'Pill badges and avatars',
+          ],
+          rules: 'Breaks 1: a second accent hue',
+        },
+        {
+          id: 'd3',
+          name: 'Full delight',
+          step: 'Direction 3 · bold',
+          lede: 'Cream and ink with an ember-red and mint pair, a big tight display face, hard offset shadows, generous spacing and micro-interactions: hover lift and press squish.',
+          changes: [
+            'New palette: cream, ink, ember red, mint',
+            'Display 64px, tight leading and tracking',
+            '2px ink borders with hard offset shadows',
+            'Spacing one step up; spring motion; press squish',
+          ],
+          rules:
+            'Breaks 5: tinted surfaces, border + shadow, transform on press, bouncy motion, second accent',
+        },
+      ];
+
+      const tpl = document.getElementById('specimen');
+      for (const d of DIRS) {
+        const band = document.querySelector('.band.' + d.id);
+        band.innerHTML = `<div class="band-head"><p class="meta">${d.step}</p><h2 id="${d.id}h">${d.name}</h2><p>${d.lede}</p><ul>${d.changes.map((c) => `<li>${c}</li>`).join('')}</ul></div><div class="pair"></div>`;
+        for (const mode of ['light', 'dark']) {
+          const col = document.createElement('div');
+          col.innerHTML = `<p class="mode-label">${mode}</p>`;
+          const node = tpl.content.firstElementChild.cloneNode(true);
+          node.dataset.theme = mode;
+          col.appendChild(node);
+          band.querySelector('.pair').appendChild(col);
+        }
+      }
+
+      // --- Token counts, read from the stylesheet so they match what renders ---
+      function overrides(dirId) {
+        const changed = new Set(),
+          added = new Set();
+        for (const sheet of document.styleSheets) {
+          let rules;
+          try {
+            rules = sheet.cssRules;
+          } catch {
+            continue;
+          }
+          for (const r of rules) {
+            if (!r.selectorText || !r.selectorText.startsWith('.' + dirId + ' .hds')) continue;
+            for (const p of r.style)
+              if (p.startsWith('--')) (p.startsWith('--x-') ? added : changed).add(p);
+          }
+        }
+        return { changed, added };
+      }
+
+      // --- WCAG 2.x contrast, from rendered colours ---
+      const probe = document.createElement('i');
+      function rgb(color, scope) {
+        probe.style.color = color;
+        scope.appendChild(probe);
+        const m = getComputedStyle(probe)
+          .color.match(/[\d.]+/g)
+          .map(Number);
+        probe.remove();
+        return m;
+      }
+      function lum([r, g, b]) {
+        const f = (c) => {
+          c /= 255;
+          return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+        };
+        return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+      }
+      function ratio(a, b) {
+        const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m);
+        return (x + 0.05) / (y + 0.05);
+      }
+
+      const PAIRS = [
+        [
+          'Body text on page',
+          '--semantic-color-content-primary',
+          '--semantic-color-surface-page',
+          4.5,
+        ],
+        [
+          'Secondary text on page',
+          '--semantic-color-content-secondary',
+          '--semantic-color-surface-page',
+          4.5,
+        ],
+        [
+          'Secondary text on card',
+          '--semantic-color-content-secondary',
+          '--semantic-color-surface-raised',
+          4.5,
+        ],
+        [
+          'Primary button label',
+          '--semantic-color-content-onAccent',
+          '--semantic-accent-rest',
+          4.5,
+        ],
+        [
+          'Tertiary button on page',
+          '--semantic-accent-content',
+          '--semantic-color-surface-page',
+          4.5,
+        ],
+        ['Kicker text', '--x-kicker-fg', '--x-kicker-bg', 4.5],
+        [
+          'Text on highlighted row',
+          '--semantic-color-content-primary',
+          '--semantic-accent-subtle',
+          4.5,
+        ],
+        [
+          'Input / button edge on page',
+          '--semantic-color-border-interactive',
+          '--semantic-color-surface-page',
+          3,
+        ],
+      ];
+
+      const summary = [],
+        contrast = [];
+      for (const d of DIRS) {
+        const { changed, added } = overrides(d.id);
+        let pass = 0,
+          total = 0;
+        for (const mode of ['light', 'dark']) {
+          const scope = document.querySelector(`.band.${d.id} .hds[data-theme="${mode}"]`);
+          const cs = getComputedStyle(scope);
+          for (const [label, fg, bg, min] of PAIRS) {
+            let bgVal = cs.getPropertyValue(bg).trim();
+            // A transparent kicker sits on the page
+            if (bgVal === 'transparent')
+              bgVal = cs.getPropertyValue('--semantic-color-surface-page').trim();
+            const r = ratio(rgb(cs.getPropertyValue(fg).trim(), scope), rgb(bgVal, scope));
+            const ok = r >= min;
+            total++;
+            if (ok) pass++;
+            contrast.push(
+              `<tr><td>${d.name}</td><td>${mode}</td><td>${label}</td><td class="num">${r.toFixed(2)}:1</td><td class="${ok ? 'pass' : 'fail'}">${ok ? 'Pass' : 'Fail'} (AA ${min}:1)</td></tr>`,
+            );
+          }
+        }
+        summary.push(
+          `<tr><td>${d.name}</td><td>${d.changes.join('; ')}</td><td class="num">${changed.size} changed + ${added.size} new</td><td class="num ${pass === total ? 'pass' : 'fail'}">${pass}/${total} pass</td><td>${d.rules}</td></tr>`,
+        );
+      }
+      document.getElementById('cmpSummary').innerHTML =
+        `<thead><tr><th>Direction</th><th>What changes</th><th>Tokens touched</th><th>AA pairs</th><th>DESIGN.md rules</th></tr></thead><tbody>${summary.join('')}</tbody>`;
+      document.getElementById('cmpContrast').innerHTML =
+        `<thead><tr><th>Direction</th><th>Mode</th><th>Pair</th><th>Ratio</th><th>Result</th></tr></thead><tbody>${contrast.join('')}</tbody>`;
+
+      // --- Page theme toggle (page chrome only; specimens always show both modes) ---
+      const btn = document.getElementById('pageTheme');
+      const order = ['system', 'light', 'dark'];
+      let cur = 'system';
+      try {
+        cur = localStorage.getItem('delight-theme') || 'system';
+      } catch {}
+      function apply() {
+        if (cur === 'system') delete document.documentElement.dataset.theme;
+        else document.documentElement.dataset.theme = cur;
+        btn.textContent = 'Page theme: ' + cur;
+      }
+      apply();
+      btn.addEventListener('click', () => {
+        cur = order[(order.indexOf(cur) + 1) % 3];
+        apply();
+        try {
+          localStorage.setItem('delight-theme', cur);
+        } catch {}
+      });
+    </script>
+  </body>
+</html>

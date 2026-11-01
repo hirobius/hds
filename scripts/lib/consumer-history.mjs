@@ -155,12 +155,23 @@ function exportCommit(root, sha, dir) {
   return present;
 }
 
+/**
+ * The dependency spec as a reader expects it: a registry tarball URL (a
+ * consumer pinned to `…/design-system-0.31.0.tgz`) is that exact version.
+ *
+ * @param {string | null} spec
+ */
+export function normalizeRange(spec) {
+  const m = typeof spec === 'string' && spec.match(/\/design-system-(\d+\.\d+\.\d+[\w.-]*)\.tgz$/);
+  return m ? m[1] : spec;
+}
+
 function versionRange(dir) {
   const pkgPath = join(dir, 'package.json');
   if (!existsSync(pkgPath)) return null;
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
   for (const k of ['dependencies', 'devDependencies', 'peerDependencies'])
-    if (pkg[k]?.[PACKAGE]) return pkg[k][PACKAGE];
+    if (pkg[k]?.[PACKAGE]) return normalizeRange(pkg[k][PACKAGE]);
   return null;
 }
 

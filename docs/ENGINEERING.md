@@ -150,10 +150,23 @@ explicit imports list in `AGENTS.md`, import paths in every MCP answer, and a
 "pick by need" guide that names the right component _and_ the wrong one agents
 reached for.
 
+The after arm built on those fixes has now been scored (the ledger's
+2026-10-31 entry: the as-delivered 2026-10-07 apps rescored against the
+current package). The divergence is gone from that sample: every pair of apps
+chose the identical component set (Jaccard 1.0, up from a 0.4091 minimum), and
+the two apps that built render pixel-identical. The run still fails, on a
+different measure: one app's TypeScript does not type-check — unannotated
+parameters and a `useState(null)` that narrows to `null` — a failure mode the
+docs said nothing about, so the guide's rules now cover strict typing. One
+piece of the after arm is still untested: the generators ran without the MCP
+server attached, so what the server adds on top of the written guide is
+unknown.
+
 Method and frozen run conditions: [`eval/consistency/`](../eval/consistency/README.md)
 · results over time: [`ledger.json`](../eval/consistency/ledger.json) · the
-cause-by-cause analysis:
-[`DIAGNOSIS-2026-10-05.md`](../eval/consistency/DIAGNOSIS-2026-10-05.md).
+cause-by-cause analyses:
+[`DIAGNOSIS-2026-10-05.md`](../eval/consistency/DIAGNOSIS-2026-10-05.md) ·
+[`DIAGNOSIS-2026-10-07.md`](../eval/consistency/DIAGNOSIS-2026-10-07.md).
 
 ## 5. Shipping and the consumer upgrade path
 

@@ -287,6 +287,12 @@
         "(props: CommandPaletteProps & RefAttributes<HTMLDivElement>): ReactNode"
       ]
     },
+    "CommandPaletteArgument": {
+      "kind": "type"
+    },
+    "CommandPaletteArgumentOption": {
+      "kind": "type"
+    },
     "CommandPaletteItem": {
       "kind": "type"
     },
@@ -2926,12 +2932,6 @@
     },
     "HdsMuiThemeOptions": {
       "kind": "type"
-    },
-    "default": {
-      "kind": "value",
-      "signatures": [
-        "(): HdsMuiThemeOptions"
-      ]
     },
     "hdsMuiThemeOptions": {
       "kind": "value",

@@ -103,13 +103,18 @@ describe('runSteps', () => {
     expect(runSteps(false)[0]).toEqual(['pnpm', ['install', '--frozen-lockfile']]);
     expect(runSteps(true)[0]).toEqual(['pnpm', ['install', '--frozen-lockfile']]);
   });
+  it('audits the shipped (prod) graph at high+ before building (hds#969)', () => {
+    const audit = ['pnpm', ['audit', '--prod', '--audit-level', 'high']];
+    expect(runSteps(false)[1]).toEqual(audit);
+    expect(runSteps(true)[1]).toEqual(audit);
+  });
   it('then builds, smokes, and ends with the publish step', () => {
     const steps = runSteps(true);
-    expect(steps.slice(1, 3)).toEqual([
+    expect(steps.slice(2, 4)).toEqual([
       ['pnpm', ['build:lib']],
       ['pnpm', ['smoke:consumer', '--skip-build']],
     ]);
-    expect(steps[3]).toEqual(publishStep(true));
+    expect(steps[4]).toEqual(publishStep(true));
   });
 });
 

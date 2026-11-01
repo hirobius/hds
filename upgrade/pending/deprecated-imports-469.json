@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "Turn on hds/no-deprecated-import (in recommended as a warning) to see which deprecated imports you still use and the version that removes them."
+}

@@ -18,7 +18,7 @@ import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
 import type { ComboboxOption } from './combobox';
 
-export interface CreatableComboboxProps {
+interface CreatableComboboxProps {
   options: ComboboxOption[];
   value: readonly string[];
   onChange: (value: string[]) => void;

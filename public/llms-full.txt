@@ -105,7 +105,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 46 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 47 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -115,6 +115,7 @@ The 46 components of the ratified core set: brand-neutral, composable, imported 
 - Icon (Display)
 - Kbd (Display)
 - Table (Display)
+- Timeline (Display)
 - Alert (Feedback)
 - Badge (Feedback)
 - Progress (Feedback)
@@ -221,7 +222,7 @@ Tag: [core] Show an interactive filter or category chip that people can toggle. 
 Text: [core] Set any text on the type ramp, with the element chosen by `as`. Use instead: InlineLink, Kbd
 Textarea: [core] Collect multi-line free text such as a message, note or description. Use instead: Input
 ThemeToggle: A single header or menu control to switch between the light and dark theme. Use instead: SegmentedControl
-Timeline: Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
+Timeline: [core] Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
 TokenField: Edit a template or message in which placeholders such as [Name] must stay whole: each one is a chip that is stepped over and deleted as one unit. Use instead: Textarea, Input
@@ -892,6 +893,8 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 
 An entity card (a job, a lead, a listing) fills four zones in this order: `Card.Source` (an `Avatar` size `sm`, the source name, a `Timestamp`), `Card.Header` with the `Card.Title`, `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list), and the actions in `Card.Footer`. Facts are icon + text only; term and description pairs stay in `MetadataList`, and a text-only line stays in `MetaLine`. Status goes in the header `metadata` slot, never in the facts row.
 
+**No cards within cards, ever (hds#1046).** A `Card` or section surface (`Surface`, `Callout`, or any raised or bordered wrapper) never contains another `Card` or surface. This covers the **section surface wrapping a card list**: a "Review new" section drawn as a card holding a list of job cards is wrong. Declare the group with type hierarchy instead (a section title, a count, surrounding metadata) on a plain region, and separate list items with spacing or dividers. `hds/no-nested-cards` (in `hds/recommended`) fails on it; list your own wrappers that draw a card or a surface in its `cards` / `surfaces` options.
+
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
 
 ## Screen Patterns
@@ -1192,7 +1195,7 @@ CommandPalette — ⌘K search and command box: a modal search field over groupe
   - items: readonly CommandPaletteItem[]
   - label: string = Command palette
   - onOpenChange: (open: boolean) => void
-  - onSelect: (item: CommandPaletteItem) => void
+  - onSelect: (item: CommandPaletteItem, args?: Readonly<Record<string, string>> | undefined)…
   - open: boolean
   - placeholder: string = Type a command or search…
 
