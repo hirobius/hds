@@ -84,6 +84,8 @@ import {
   classFindings,
   compilesOwnTailwind,
   contractFindings,
+  valueChanges,
+  varUses,
   knownClasses,
   knownVars,
   readContract,
@@ -324,6 +326,18 @@ function addItem(
   }
   if (importer && !item.importers.includes(importer)) item.importers.push(importer);
   for (const f of files) if (!item.files.includes(f)) item.files.push(f);
+}
+
+/**
+ * The css-contract.json of the HDS copy installed for `dir`: the nearest
+ * node_modules copy from `dir` up to `root`, or null (an older release shipped none).
+ */
+function installedContract(dir, root) {
+  for (let d = resolve(dir); ; d = dirname(d)) {
+    const c = readContract(join(d, 'node_modules', HDS_PACKAGE, CONTRACT_FILE));
+    if (c) return c;
+    if (d === resolve(root) || dirname(d) === d) return null;
+  }
 }
 
 const refuse = (report, message) => {
@@ -725,6 +739,43 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
           importer: dir,
           files: rel([...files].sort()),
           impact: 'breaking',
+        });
+      }
+    }
+
+    // HDS variables whose value changes between the installed and the target
+    // release (hds#459), reported only where this importer reads or writes one.
+    // A crossed ledger value-changed step already says it, in its own words.
+    if (contract) {
+      const changes = valueChanges(installedContract(importer.abs, root), contract);
+      for (const s of steps)
+        if (s.kind === 'value-changed') for (const n of s.detect?.cssVars ?? []) changes.delete(n);
+      const used = new Map();
+      if (changes.size > 0)
+        for (const f of now) {
+          if (!f.text.includes('--')) continue;
+          for (const [name, u] of varUses(f.text)) {
+            if (!changes.has(name)) continue;
+            const acc = used.get(name) ?? { read: false, write: false, files: new Set() };
+            acc.read ||= u.read;
+            acc.write ||= u.write;
+            acc.files.add(f.rel);
+            used.set(name, acc);
+          }
+        }
+      for (const [name, u] of [...used].sort(([a], [b]) => a.localeCompare(b))) {
+        const { from, to } = changes.get(name);
+        const show = (v) =>
+          Object.entries(v)
+            .map(([ctx, val]) => `${ctx} ${val}`)
+            .join(', ');
+        const verbs = [u.read && 'reads', u.write && 'sets'].filter(Boolean).join(' and ');
+        addItem(report, 'looksDifferent', {
+          id: `hds-css-vars/value/${name}`,
+          plain: `${name} changes value in ${target} (${show(from)} → ${show(to)}) and your code ${verbs} it, so check it still looks right${u.write ? ' and your override still fits' : ''}.`,
+          importer: dir,
+          files: rel([...u.files].sort()),
+          impact: 'look',
         });
       }
     }
