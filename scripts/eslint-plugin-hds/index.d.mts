@@ -12,6 +12,7 @@ interface HdsPlugin {
     | 'no-delight-on-actions'
     | 'no-deprecated-import'
     | 'no-deprecated-token'
+    | 'no-nested-cards'
     | 'no-primitive-spacing'
     | 'no-raw-controls'
     | 'no-removed-import'
