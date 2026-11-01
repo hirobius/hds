@@ -779,7 +779,6 @@ Results: no live component has an unstyled text layer, so no binding write was m
 
 Session total: 3 calls
 
-
 ## 2026-11-02 · hds#637 Timeline library redraw (library `2VgBbVpKiDnu0aftJEVyBQ`, staging `C85ZXnwtVc4AteeIOZfXRC`)
 
 | #   | Time (UTC) | Tool             | Kind  | Purpose                                                                     | Result                                                                           |
@@ -800,3 +799,16 @@ Results: library TimelineItem is now `2252:127` (Tone x Detail, matching the cod
 Session total: 10 calls
 
 Calls logged for 2026-11-02: 13 of 200 (3 and 10).
+
+## 2026-11-01 · token sync on 0.32.0 main 5922574
+
+Daily check: version unchanged; plan still blocked on the 21 hand deletions. Probe whether they are done.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                      | Result                                               |
+| --- | ---------- | ---------------- | ---- | ---------------------------------------------------------------------------- | ---------------------------------------------------- |
+| 1   | 16:47      | `create_session` | read | open file session                                                            | OK; session opened                                   |
+| 2   | 16:47      | `use_figma`      | read | read-only probe: do the 21 variables code removed still exist in the library | OK; all 21 still present (503 variables), so no push |
+
+Session total: 2 calls
+
+Calls logged for 2026-11-01: 2 of 200 (2).
