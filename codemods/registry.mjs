@@ -32,6 +32,7 @@ export const CODEMODS = Object.freeze({
   'hds-token-aliases': { file: 'token-aliases.mjs' },
   'hds-prop-map': { file: 'prop-map.mjs' },
   'hds-token-keys': { file: 'token-keys.mjs' },
+  'hds-css-vars': { file: 'css-vars.mjs' },
 });
 
 export const hasCodemod = (name) => Object.hasOwn(CODEMODS, name);

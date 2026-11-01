@@ -455,15 +455,29 @@ function normaliseLang(lang?: string): string | undefined {
   return undefined;
 }
 
-function tokenizeTs(src: string): Token[] {
+/** Runs `re` over `src`, filling gaps between matches with plain tokens; `emit` turns one match into tokens. */
+function scanTokens(
+  src: string,
+  re: RegExp,
+  emit: (m: RegExpExecArray, tokens: Token[]) => void,
+): Token[] {
   const tokens: Token[] = [];
-  // Combined regex: comments, strings, numbers, identifiers
-  const re =
-    /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`)|(\b\d[\d_.eE+-]*\b)|([A-Za-z_$][\w$]*)/g;
   let last = 0;
   let m: RegExpExecArray | null;
   while ((m = re.exec(src)) !== null) {
     if (m.index > last) tokens.push({ kind: 'plain', value: src.slice(last, m.index) });
+    emit(m, tokens);
+    last = re.lastIndex;
+  }
+  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
+  return tokens;
+}
+
+function tokenizeTs(src: string): Token[] {
+  // Combined regex: comments, strings, numbers, identifiers
+  const re =
+    /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`)|(\b\d[\d_.eE+-]*\b)|([A-Za-z_$][\w$]*)/g;
+  return scanTokens(src, re, (m, tokens) => {
     if (m[1]) tokens.push({ kind: 'comment', value: m[1] });
     else if (m[2]) tokens.push({ kind: 'string', value: m[2] });
     else if (m[3]) tokens.push({ kind: 'number', value: m[3] });
@@ -473,38 +487,24 @@ function tokenizeTs(src: string): Token[] {
       else if (/^[A-Z]/.test(word)) tokens.push({ kind: 'type', value: word });
       else tokens.push({ kind: 'plain', value: word });
     }
-    last = re.lastIndex;
-  }
-  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
-  return tokens;
+  });
 }
 
 function tokenizeJson(src: string): Token[] {
-  const tokens: Token[] = [];
   const re = /("(?:\\.|[^"\\])*")(\s*:)?|(\b-?\d[\d.eE+-]*\b)|\b(true|false|null)\b/g;
-  let last = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(src)) !== null) {
-    if (m.index > last) tokens.push({ kind: 'plain', value: src.slice(last, m.index) });
+  return scanTokens(src, re, (m, tokens) => {
     if (m[1]) {
       tokens.push({ kind: m[2] ? 'type' : 'string', value: m[1] });
       if (m[2]) tokens.push({ kind: 'plain', value: m[2] });
     } else if (m[3]) tokens.push({ kind: 'number', value: m[3] });
     else if (m[4]) tokens.push({ kind: 'keyword', value: m[4] });
-    last = re.lastIndex;
-  }
-  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
-  return tokens;
+  });
 }
 
 function tokenizeCss(src: string): Token[] {
-  const tokens: Token[] = [];
   const re =
     /(\/\*[\s\S]*?\*\/)|('(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*")|(--[A-Za-z_-][\w-]*)|(#[0-9a-fA-F]{3,8}\b|\b\d[\d.]*(?:px|rem|em|%|vh|vw|s|ms)?\b)|([A-Za-z_-][\w-]*)/g;
-  let last = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(src)) !== null) {
-    if (m.index > last) tokens.push({ kind: 'plain', value: src.slice(last, m.index) });
+  return scanTokens(src, re, (m, tokens) => {
     if (m[1]) tokens.push({ kind: 'comment', value: m[1] });
     else if (m[2]) tokens.push({ kind: 'string', value: m[2] });
     else if (m[3]) tokens.push({ kind: 'type', value: m[3] });
@@ -515,20 +515,13 @@ function tokenizeCss(src: string): Token[] {
         value: m[5],
       });
     }
-    last = re.lastIndex;
-  }
-  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
-  return tokens;
+  });
 }
 
 function tokenizeHtml(src: string): Token[] {
-  const tokens: Token[] = [];
   const re =
     /(<!--[\s\S]*?-->)|(<\/?)([A-Za-z][\w-]*)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|([A-Za-z_-][\w-]*)(=)/g;
-  let last = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(src)) !== null) {
-    if (m.index > last) tokens.push({ kind: 'plain', value: src.slice(last, m.index) });
+  return scanTokens(src, re, (m, tokens) => {
     if (m[1]) tokens.push({ kind: 'comment', value: m[1] });
     else if (m[2] && m[3]) {
       tokens.push({ kind: 'plain', value: m[2] });
@@ -538,10 +531,7 @@ function tokenizeHtml(src: string): Token[] {
       tokens.push({ kind: 'type', value: m[5] });
       tokens.push({ kind: 'plain', value: m[6] });
     }
-    last = re.lastIndex;
-  }
-  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
-  return tokens;
+  });
 }
 
 function renderHighlighted(code: string, language?: string): ReactNode {

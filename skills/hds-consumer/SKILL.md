@@ -63,10 +63,10 @@ Subpath exports:
 
 ## Core set
 
-The 46 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
+The 47 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
 
 - **Actions:** `Button`
-- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
+- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`, `Timeline`
 - **Feedback:** `Alert`, `Badge`, `Progress`, `Skeleton`, `Spinner`, `ToastProvider`
 - **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
 - **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`
@@ -231,6 +231,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 
 ### Layout
 
+- `AppShell` — AppShell — the app frame for web apps: header, sidebar, main and an optional aside (hds#875).
 - `Page` — Page — standard page shell.
 - `PageHeader` — Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot.
 

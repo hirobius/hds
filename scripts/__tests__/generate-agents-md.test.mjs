@@ -104,6 +104,14 @@ describe('buildAgentsMd', () => {
     expect(md).toMatch(/raw `<form>`/);
   });
 
+  it('carries the strict-typing rule from the 2026-10-07 after-arm diagnosis', () => {
+    const md = buildAgentsMd(inputs());
+    const rules = section(md, 'Rules');
+    expect(rules).toContain('type-checked strictly');
+    expect(rules).toContain('useState<string | null>(null)');
+    expect(rules).toContain('implicit `any`');
+  });
+
   it('points at the MCP server and the lint plugin shipped in the package', () => {
     const md = buildAgentsMd(inputs());
     expect(md).toContain('hds-mcp');

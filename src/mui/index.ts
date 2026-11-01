@@ -70,5 +70,3 @@ export function hdsMuiThemeOptions(): HdsMuiThemeOptions {
     },
   };
 }
-
-export default hdsMuiThemeOptions;

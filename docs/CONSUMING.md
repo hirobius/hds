@@ -227,7 +227,7 @@ export function Example() {
 
 | Import                                    | What you get                                                                                                                                                                                                                            |
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`                 | The 46-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns` |
+| `@hirobius/design-system`                 | The 47-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns` |
 | `@hirobius/design-system/styles.css`      | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                                                                                                                                 |
 | `@hirobius/design-system/fonts.css`       | Optional brand fonts: Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                   |
 | `@hirobius/design-system/tokens.css`      | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                                                                                                                             |
@@ -242,7 +242,7 @@ export function Example() {
 | `@hirobius/design-system/brand`           | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                                                                                                                                   |
 | `@hirobius/design-system/scroll`          | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                                                                                                                            |
 | `@hirobius/design-system/static.css`      | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14)                                                                                                           |
-| `@hirobius/design-system/patterns`        | The 13 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                               |
+| `@hirobius/design-system/patterns`        | The 14 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                               |
 | `@hirobius/design-system/icons`           | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                                                                                                                                      |
 | `@hirobius/design-system/eslint-plugin`   | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                                                                                                                             |
 | `@hirobius/design-system/tailwind-preset` | The Tailwind theme preset (CommonJS): HDS role colors, radii, shadows and spacing as theme keys, for an app that compiles its own Tailwind (see below)                                                                                  |
@@ -511,6 +511,53 @@ it consumes tokens via
 `@hirobius/design-system/variables.css`, keeps every extension under `--lb-*`,
 mirrors its brand through a tenant overlay, and pins consumed paths with a
 CI-enforced drift guard.
+
+## What you may select on
+
+In tests and styles, select HDS elements only by:
+
+- Role and accessible name, as a screen reader meets them: `getByRole('button', { name: 'Save' })`.
+- ARIA states such as `aria-checked`, `aria-selected`, `aria-expanded` and `aria-disabled`.
+- The `data-*` attributes a component lists in the manifest's `publicDataAttributes`, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-hds-*`, which are internal, or `data-radix-*`, which belong to Radix.
+- The `hds-*` classes and the manifest's `publicClasses`, which the CSS contract tracks.
+- Never other class names, ids, tag names or how elements nest: those change without an upgrade step.
+
+The `data-*` attributes each component renders for you to select on:
+
+- `AsyncState`: `data-slot`, `data-status`
+- `Avatar`: `data-size`
+- `Badge`: `data-tone`
+- `Button`: `data-hover-effect`, `data-pressed`, `data-size`, `data-tone`, `data-variant`
+- `Card`: `data-bordered`, `data-format`, `data-interactive`, `data-padding`, `data-slot`, `data-tone`, `data-variant`
+- `DataTableSection`: `data-slot`
+- `DestructiveSection`: `data-slot`
+- `Dialog`: `data-state`
+- `Disclosure`: `data-state`
+- `Divider`: `data-variant`
+- `ErrorPattern`: `data-role`
+- `Field`: `data-tone`
+- `FormActions`: `data-slot`
+- `Input`: `data-size`, `data-state`
+- `Kbd`: `data-size`
+- `Menu`: `data-state`
+- `MetaLine`: `data-meta-separator`
+- `PageHeader`: `data-slot`
+- `Popover`: `data-state`
+- `Progress`: `data-state`, `data-tone`, `data-variant`
+- `Reveal`: `data-reveal`
+- `SegmentedControl`: `data-state`
+- `Select`: `data-state`
+- `Sheet`: `data-state`
+- `Skeleton`: `data-variant`
+- `Spinner`: `data-size`
+- `Table`: `data-slot`
+- `Tabs`: `data-orientation`, `data-state`
+- `Tag`: `data-active`, `data-dismissible`
+- `Textarea`: `data-state`
+- `ThemeToggle`: `data-theme-state`
+- `Timeline`: `data-format`, `data-timeline-marker`, `data-tone`
+- `TokenField`: `data-state`, `data-token`
+- `Tooltip`: `data-state`
 
 ## 11. Lint discipline — the consumer ESLint plugin
 

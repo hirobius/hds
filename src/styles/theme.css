@@ -170,7 +170,7 @@
   --hds-anim-enter: var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing);
   --hds-anim-entrance: var(--hds-motion-expressive-duration) var(--hds-motion-expressive-easing);
   --hds-anim-skeleton: var(--hds-motion-spatial-duration) ease-in-out infinite;
-  --hds-anim-spin: calc(var(--hds-motion-spatial-duration) * 8) var(--hds-motion-expressive-easing);
+  --hds-anim-spin: calc(var(--hds-motion-spatial-duration) * 8) linear;
 
   /* -- Accent ramp (blue scale aliases — raw stop access) --------------------- */
   --hds-accent-50: var(--primitive-color-blue-50);
@@ -443,6 +443,28 @@
   animation: hds-skeleton-shimmer var(--hds-anim-skeleton);
   /* sunken, not raised: a placeholder on a Card or Surface (raised) must differ from it */
   background: var(--semantic-color-surface-sunken);
+}
+
+/* Tabs change cue (hds#938): the panel that becomes active fades and rises in on the
+ * productive motion token; static under reduced motion. */
+@keyframes hds-tabs-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--primitive-space-1));
+  }
+}
+
+@layer components {
+  .hds-tabs-content[data-state='active'] {
+    animation: hds-tabs-enter var(--hds-motion-productive-duration)
+      var(--hds-motion-productive-easing);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hds-tabs-content {
+      animation: none;
+    }
+  }
 }
 
 /* --- Sheet (hds#690) ----------------------------------------------------------

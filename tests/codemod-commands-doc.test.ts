@@ -28,6 +28,7 @@ const FIRST_SHIPPED: Record<string, [number, number]> = {
   'hds-prop-map': [0, 33],
   // Ledger-driven hds.a.b token path rewrites (hds#955).
   'hds-token-keys': [0, 33],
+  'hds-css-vars': [0, 33],
   // Not a codemod, but a bin all the same: the hds MCP server (hds#515).
   'hds-mcp': [0, 21],
   // Visual-rules CLI (hds#664). Lands in a 0.32.x patch; this table has no patch

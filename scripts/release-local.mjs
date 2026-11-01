@@ -106,6 +106,10 @@ export function publishStep(publish) {
 export function runSteps(publish) {
   return [
     ['pnpm', ['install', '--frozen-lockfile']],
+    // Shipped-graph audit gate (hds#969): the published package's production
+    // dependencies must carry no high+ advisories. Runs before the build so a
+    // dirty graph fails the release in seconds, not after the smoke.
+    ['pnpm', ['audit', '--prod', '--audit-level', 'high']],
     ['pnpm', ['build:lib']],
     ['pnpm', ['smoke:consumer', '--skip-build']],
     publishStep(publish),

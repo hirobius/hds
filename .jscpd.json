@@ -1,0 +1,14 @@
+{
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/generated-*.ts",
+    "**/fixtures/**",
+    "**/*.golden.json"
+  ],
+  "minLines": 5,
+  "minTokens": 50,
+  "mode": "mild",
+  "reporters": ["console"],
+  "threshold": 1.65
+}

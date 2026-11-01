@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-10-28",
+  "generatedAt": "2026-11-01",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,11 +22,11 @@
     }
   },
   "summary": {
-    "total": 124,
+    "total": 125,
     "byClass": {
       "library": 74,
       "slot": 29,
-      "layout": 9,
+      "layout": 10,
       "internal": 12
     },
     "libraryLinked": 68,
@@ -49,6 +49,14 @@
       "category": "Overlays",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2035-24"
+    },
+    {
+      "name": "AppShell",
+      "class": "layout",
+      "parent": null,
+      "category": "Layout",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "AssetImg",

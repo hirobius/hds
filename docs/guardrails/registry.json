@@ -76,6 +76,16 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-behaviour-detectors",
+      "description": "Behaviour detectors (hds#468): one local gate (pnpm check:behaviour) running the DOM and accessibility baseline (docs/baselines/dom-a11y.json), the SSR hydration-mismatch gate and the console budget (docs/guardrails/baselines/console-allowlist.json), each with its fixture proof. The baselines are ratchets: a diff needs an upgrade step. The same tests also run in pnpm test, so pre-push fires them.",
+      "severity": "error",
+      "gateScript": "scripts/check-behaviour-detectors.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "on-demand"
+    },
+    {
       "id": "check-binding-drift",
       "description": "Soft gate that catches the failure mode where a component starts referencing a component-tier CSS variable that the masters pipeline doesn't know to bind.",
       "severity": "warn",
@@ -208,6 +218,17 @@
       "firingChannel": "ci-pr"
     },
     {
+      "id": "check-dupes",
+      "description": "Duplication ratchet (hds#766): runs jscpd over src, scripts, tests and validators via scripts/check-dupes.mjs and fails when the duplicated-line percentage rises above the threshold in .jscpd.json, set to the count measured the day the gate landed (1.883% on 2026-10-31, threshold 1.89) and lowered only in the PR that removes clones. Generated files, fixtures and golden files are ignored. On-demand channel: run by hand during cleanup sweeps (pnpm check:dupes), not wired into a hook — the registry taxonomy's name for a hand-run gate (check-validator-wiring reserves 'manual' for tools with no package.json alias).",
+      "severity": "warn",
+      "gateScript": "scripts/check-dupes.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "on-demand",
+      "supportsJson": true
+    },
+    {
       "id": "check-exemptions",
       "description": "Keeps escape hatches visible and well-formed. Checks that only known exemption markers are used and every exemption marker includes a non-empty reason after the colon.",
       "severity": "warn",
@@ -326,6 +347,17 @@
       "supportsJson": true,
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
+      "id": "check-impeccable-detect",
+      "description": "Design anti-pattern detector wrapping `npx impeccable detect` (pbakaus/impeccable, Apache-2.0): deterministic typography / color / layout rules, no LLM, no API key. Exits 78 (skip) when npx or the network is unavailable. Restored for hds#553.",
+      "severity": "warn",
+      "gateScript": "scripts/check-impeccable-detect.mjs",
+      "fixturePath": "fixtures/check-impeccable-detect",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand",
+      "supportsJson": true
     },
     {
       "id": "check-layout-discipline",
@@ -706,7 +738,7 @@
       "fixturePath": "fixtures/check-reduced-motion",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ralph-gate"
+      "firingChannel": "on-demand"
     },
     {
       "id": "check-ref-forwarding",

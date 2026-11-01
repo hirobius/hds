@@ -51,6 +51,26 @@ const config: KnipConfig = {
   ignoreDependencies: [
     // Used only via npx in api-extractor scripts; not a runtime dep.
     '@microsoft/api-extractor',
+    // Spawned as the `attw` binary by scripts/check-published-types.mjs;
+    // never imported (hds#766 batch 3).
+    '@arethetypeswrong/cli',
+    // Resolved straight from node_modules by scripts/lib/axe-gate.mjs and
+    // tests/helpers/axe.ts (axe-core is its dependency, not ours).
+    '@axe-core/playwright',
+    // Invoked as the `cyclonedx-npm` binary by scripts/audit-sbom.mjs.
+    '@cyclonedx/cyclonedx-npm',
+    // Spawned via `pnpm exec` by scripts/lib/mojibake.mjs (check:mojibake).
+    'editorconfig-checker',
+    // Run by scripts/check-dupes.mjs (check:dupes, hds#766) straight from
+    // node_modules/.bin — the duplication ratchet binary itself.
+    'jscpd',
+    // Run via `pnpm exec publint` by scripts/smoke-consumer.mjs.
+    'publint',
+    // Optional peer of the package; installed so src and tests can resolve
+    // it (src/app/context/RouterContext.tsx imports it).
+    'react-router',
+    // Run by scripts/audit-bundle.mjs (manual bundle-composition report).
+    'vite-bundle-visualizer',
   ],
   ignoreBinaries: [
     // `npx tsx` is invoked from the test:figma script (Figma Make sync) and

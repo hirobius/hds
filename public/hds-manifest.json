@@ -45,6 +45,7 @@
   "componentInventory": [
     "Alert",
     "AlertDialog",
+    "AppShell",
     "AssetImg",
     "AsyncState",
     "Avatar",
@@ -1113,6 +1114,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/app-shell.tsx",
         "src/app/components/board.tsx",
         "src/app/components/box-sx.ts",
         "src/app/components/box.tsx",
@@ -1285,6 +1287,7 @@
       },
       "consumers": [
         "src/app/components/alert.tsx",
+        "src/app/components/app-shell.tsx",
         "src/app/components/avatar.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/button.tsx",
@@ -2168,6 +2171,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/app-shell.tsx",
         "src/app/components/async-state.tsx",
         "src/app/components/board.tsx",
         "src/app/components/box-sx.ts",
@@ -2408,7 +2412,6 @@
       "consumers": [
         "src/app/components/board.tsx",
         "src/app/components/data-table-section.tsx",
-        "src/app/data/manifest-types.ts",
         "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
@@ -2570,6 +2573,7 @@
         "src/app/components/box.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/card.tsx",
+        "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/pin.tsx",
@@ -2766,6 +2770,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/app-shell.tsx",
         "src/app/components/board.tsx",
         "src/app/components/card.tsx",
         "src/app/components/container.tsx",
@@ -3699,6 +3704,7 @@
       },
       "consumers": [
         "src/app/components/alert-dialog.tsx",
+        "src/app/components/app-shell.tsx",
         "src/app/components/async-state.tsx",
         "src/app/components/avatar.tsx",
         "src/app/components/button-wipe.ts",
@@ -4268,6 +4274,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/app-shell.tsx",
         "src/app/components/container.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/surface.tsx",
@@ -5139,6 +5146,7 @@
       },
       "consumers": [
         "src/app/components/checkbox.tsx",
+        "src/app/components/control-color-fade.ts",
         "src/app/components/segmented-control.tsx",
         "src/app/components/toggle.tsx",
         "src/app/hooks/useInteractionState.ts"
@@ -5609,6 +5617,7 @@
       },
       "consumers": [
         "src/app/components/checkbox.tsx",
+        "src/app/components/control-color-fade.ts",
         "src/app/components/radio.tsx",
         "src/app/hooks/useInteractionState.ts"
       ],
@@ -7231,6 +7240,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/app-shell.tsx",
         "src/app/components/board.tsx"
       ],
       "tokenMapping": {},
@@ -7532,6 +7542,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/app-shell.tsx",
         "src/app/components/box-sx.ts",
         "src/app/hooks/useBreakpoint.ts"
       ],
@@ -8653,6 +8664,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/app-shell.tsx",
         "src/app/components/combobox.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/data-table-section.tsx",
@@ -9019,6 +9031,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/control-color-fade.ts",
         "src/app/components/radio.tsx",
         "src/app/components/toggle.tsx"
       ],
@@ -9918,7 +9931,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/timeline",
       "publicDataAttributes": [
         "data-format",
         "data-timeline-marker",
@@ -9938,7 +9951,8 @@
           }
         ]
       },
-      "aiRules": "Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only."
+      "aiRules": "Pass TimelineItem children with a `date`; Timeline groups and sorts them, so never pre-group or add your own day headings. Put optional detail in the item's children, not in `title`. Tone takes feedback tones only.",
+      "core": true
     },
     "TimelineItem": {
       "category": "Display",
@@ -10833,7 +10847,9 @@
         "exportName": "Sheet",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/app-shell.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -11239,7 +11255,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/command-palette.tsx",
-      "description": "CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain data; the palette filters, groups (in first-seen order) and navigates them, and calls `onSelect` with the chosen item. `open` is controlled; the ⌘K / Ctrl+K hotkey calls `onOpenChange` unless `hotkey={false}`. Argument chips for multi-step commands are a follow-up (hds#962). <CommandPalette open={open} onOpenChange={setOpen} items={commands} onSelect={(item) => run(item.id)} />",
+      "description": "CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain data; the palette filters, groups (in first-seen order) and navigates them, and calls `onSelect` with the chosen item. `open` is controlled; the ⌘K / Ctrl+K hotkey calls `onOpenChange` unless `hotkey={false}`. An item with `args` is a multi-step command: picking it does not run it. Instead the palette walks its arguments in order — the command and each chosen argument show as Tag chips before the field — and only then calls `onSelect(item, args)` with a record of argument id to chosen value (an option's id, or the typed text for a free-text argument). Backspace on an empty field, or a chip's remove button, steps back. <CommandPalette open={open} onOpenChange={setOpen} items={commands} onSelect={(item) => run(item.id)} />",
       "a11yRules": [
         {
           "rule": "The palette is a modal dialog named by its label, which also names the search field.",
@@ -11294,6 +11310,24 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:command-palette.result-count-announced"
+        },
+        {
+          "rule": "Picking a command with arguments shows the command and each chosen argument as a removable Tag chip before the search field, and focus stays in the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.argument-chips"
+        },
+        {
+          "rule": "Backspace in an empty search field during an argument step removes the last chip and steps back, with focus staying in the field.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.chip-backspace"
+        },
+        {
+          "rule": "Each argument step is announced in the polite status with the argument's name and its position among the command's arguments.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.argument-step-announced"
         },
         {
           "rule": "Escape closes the palette and returns focus to the element that had it.",
@@ -11352,7 +11386,7 @@
           "type": "(open: boolean) => void"
         },
         "onSelect": {
-          "type": "(item: CommandPaletteItem) => void"
+          "type": "(item: CommandPaletteItem, args?: Readonly<Record<string, string>> | undefined) => void"
         },
         "open": {
           "type": "boolean"
@@ -11398,7 +11432,11 @@
         },
         {
           "keys": "Enter",
-          "effect": "Runs the active item and closes the palette."
+          "effect": "Runs the active item and closes the palette; on a command with arguments it picks the item as the next step instead."
+        },
+        {
+          "keys": "Backspace",
+          "effect": "On an empty field during an argument step, removes the last chip and steps back."
         },
         {
           "keys": "Escape",
@@ -11406,6 +11444,150 @@
         }
       ],
       "core": true
+    },
+    "AppShell": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/app-shell.tsx",
+      "description": "AppShell — the app frame for web apps: header, sidebar, main and an optional aside (hds#875).",
+      "a11yRules": [
+        {
+          "rule": "Header, nav, main and aside render as banner, navigation, main and complementary landmarks.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:app-shell.landmarks"
+        },
+        {
+          "rule": "The rail toggle carries aria-expanded and aria-controls pointing at the nav.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:app-shell.toggle-expanded"
+        },
+        {
+          "rule": "The menu sheet is a dialog named by sidebarLabel.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:app-shell.sheet-named"
+        },
+        {
+          "rule": "Render one h1 inside main per page.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "header",
+          "description": "The top bar (brand, search, account), inside the banner landmark.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "sidebar",
+          "description": "The navigation, inside the nav landmark: a rail from lg, a sheet below.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "main",
+          "description": "The page content, inside the main landmark.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "aside",
+          "description": "An optional detail panel, inside a complementary landmark.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "AppShell",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/patterns.ts"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {
+        "aside": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "asideLabel": {
+          "type": "string",
+          "default": "Details"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "collapsed": {
+          "type": "boolean",
+          "optional": true
+        },
+        "defaultCollapsed": {
+          "type": "boolean",
+          "default": false
+        },
+        "header": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "onCollapsedChange": {
+          "type": "(collapsed: boolean) => void",
+          "optional": true
+        },
+        "persistKey": {
+          "type": "string",
+          "optional": true
+        },
+        "sidebar": {
+          "type": "ReactNode | ((state: AppShellSidebarState) => ReactNode)"
+        },
+        "sidebarLabel": {
+          "type": "string",
+          "default": "Main"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/patterns/app-shell",
+      "usage": {
+        "when": "The outer frame of a web app: a top bar, a navigation rail or sheet, the page, and an optional detail panel.",
+        "whenNot": "A marketing page, a single form, or a layout inside a page.",
+        "useInstead": [
+          {
+            "component": "Page",
+            "reason": "a single document-style page with no app navigation"
+          },
+          {
+            "component": "Sidebar",
+            "reason": "a rail beside content inside a page"
+          }
+        ]
+      },
+      "keyboard": [
+        {
+          "keys": "Enter/Space",
+          "effect": "On the toggle, collapses or expands the rail (lg and up) or opens the menu sheet (below lg)."
+        },
+        {
+          "keys": "Escape",
+          "effect": "Closes the menu sheet and returns focus to the Menu button."
+        }
+      ],
+      "aiRules": "Pass the nav as `sidebar` (a node, or a function of `{ collapsed }` to draw an icon-only rail) and the page as children. Do not put a second `<main>`, `<header>` or `<nav>` landmark for the same regions inside it. Structure: Stack (header over body), Grid (rail, main, aside columns) and Surface (header and rail fill). Widths are CSS lengths on local `--hds-local-appshell-*` variables; spacing and colour are HDS tokens. Structural references (no code copied): Primer PageLayout, shadcn/ui sidebar blocks, the common SaaS frame. Slice 1 of #863; a bottom tab bar variant and moving Roleforge and Ops over are follow-up slices."
     },
     "HdsPhosphor": {
       "category": "Compiler",

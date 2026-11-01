@@ -287,6 +287,12 @@
         "(props: CommandPaletteProps & RefAttributes<HTMLDivElement>): ReactNode"
       ]
     },
+    "CommandPaletteArgument": {
+      "kind": "type"
+    },
+    "CommandPaletteArgumentOption": {
+      "kind": "type"
+    },
     "CommandPaletteItem": {
       "kind": "type"
     },
@@ -2927,12 +2933,6 @@
     "HdsMuiThemeOptions": {
       "kind": "type"
     },
-    "default": {
-      "kind": "value",
-      "signatures": [
-        "(): HdsMuiThemeOptions"
-      ]
-    },
     "hdsMuiThemeOptions": {
       "kind": "value",
       "signatures": [
@@ -2941,6 +2941,18 @@
     }
   },
   "./patterns": {
+    "AppShell": {
+      "kind": "value",
+      "signatures": [
+        "({ children, header, sidebar, sidebarLabel, aside, asideLabel, collapsed: collapsedProp, defaultCollapsed, onCollapsedChange, persistKey, className, }: AppShellProps): Element"
+      ]
+    },
+    "AppShellProps": {
+      "kind": "type"
+    },
+    "AppShellSidebarState": {
+      "kind": "type"
+    },
     "AssetImg": {
       "kind": "value",
       "signatures": [

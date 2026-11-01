@@ -23,16 +23,7 @@
  *     hds-manifest.json.
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { parse } from './parse-jsx.mjs';
-
-const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-
-function loadManifest() {
-  return JSON.parse(fs.readFileSync(path.join(ROOT, 'public/hds-manifest.json'), 'utf8'));
-}
+import { walkJsx, getElementName, loadManifest, parseOrError } from './lib/jsx.mjs';
 
 function effectiveSpecs(manifestOverride) {
   const real = loadManifest().componentSpecs || {};
@@ -40,24 +31,6 @@ function effectiveSpecs(manifestOverride) {
     return { ...real, ...manifestOverride.componentSpecs };
   }
   return real;
-}
-
-function walkJsx(node, visitor) {
-  if (!node || typeof node !== 'object') return;
-  if (node.type === 'JSXElement') visitor(node);
-  for (const key of Object.keys(node)) {
-    const child = node[key];
-    if (Array.isArray(child)) child.forEach((c) => walkJsx(c, visitor));
-    else if (child && typeof child === 'object') walkJsx(child, visitor);
-  }
-}
-
-function getElementName(node) {
-  const name = node.openingElement?.name;
-  if (!name) return null;
-  if (name.type === 'JSXIdentifier') return name.name;
-  if (name.type === 'JSXMemberExpression') return `${name.object.name}.${name.property.name}`;
-  return null;
 }
 
 function specHasTokens(spec) {
@@ -113,21 +86,14 @@ export default async function validate(input) {
     jsxString = '';
   }
 
-  const parsed = parse(jsxString);
-  if (!parsed.ok) {
-    return {
-      ok: false,
-      errors: [
-        { path: '', code: 'PARSE_ERROR', message: parsed.error, suggestion: 'Fix JSX syntax' },
-      ],
-    };
-  }
+  const { ast, result } = parseOrError(jsxString);
+  if (result) return result;
 
   const specs = effectiveSpecs(manifestOverride);
   const errors = [];
   const reported = new Set();
 
-  walkJsx(parsed.ast, (element) => {
+  walkJsx(ast, (element) => {
     const name = getElementName(element);
     if (!name) return;
     if (name[0] === name[0].toLowerCase()) return;

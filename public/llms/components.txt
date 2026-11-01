@@ -35,6 +35,20 @@ AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled 
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
+### AppShell
+AppShell — the app frame for web apps: header, sidebar, main and an optional aside (hds#875).
+  - aside: ReactNode
+  - asideLabel: string = Details
+  - children: ReactNode
+  - className: string
+  - collapsed: boolean
+  - defaultCollapsed: boolean = false
+  - header: ReactNode
+  - onCollapsedChange: ((collapsed: boolean) => void)
+  - persistKey: string
+  - sidebar: ReactNode | ((state: AppShellSidebarState) => ReactNode)
+  - sidebarLabel: string = Main
+
 ### AssetImg
 AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.
   - alt: string
@@ -246,7 +260,7 @@ CommandPalette — ⌘K search and command box: a modal search field over groupe
   - items: readonly CommandPaletteItem[]
   - label: string = Command palette
   - onOpenChange: (open: boolean) => void
-  - onSelect: (item: CommandPaletteItem) => void
+  - onSelect: (item: CommandPaletteItem, args?: Readonly<Record<string, string>> | undefined)…
   - open: boolean
   - placeholder: string = Type a command or search…
 
