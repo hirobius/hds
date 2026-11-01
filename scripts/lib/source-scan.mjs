@@ -321,8 +321,10 @@ export function isFixtureRun(argv, env = process.env) {
  * `\n✗ <gate>: <n> <noun(n)>\n`, then `  file:line  [rule] message` and
  * `    sample` per violation, then each `fix` line on stderr. A file-level
  * violation (no `line`, no `sample`, e.g. a token-file check) prints `  file  [rule] message`.
+ * A violation's optional `extra` object is spread into its JSON entry between
+ * `message` and `sample` (check-hardcoded-spacing keeps its `prop`/`value`).
  *
- * @param {Array<{file:string,line?:number|null,rule:string,message:string,sample?:string}>} violations
+ * @param {Array<{file:string,line?:number|null,rule:string,message:string,sample?:string,extra?:object}>} violations
  * @param {boolean} jsonMode
  * @param {{ gate: string, ok: string, noun: (n: number) => string, fix: string[] }} opts
  * @returns {0|1}
@@ -338,6 +340,7 @@ export function reportLineViolations(violations, jsonMode, { gate, ok, noun, fix
           rule: v.rule,
           severity: 'error',
           message: v.message,
+          ...v.extra,
           sample: v.sample,
         })),
         summary: { total: violations.length },
