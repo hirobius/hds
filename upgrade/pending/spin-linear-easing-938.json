@@ -1,0 +1,17 @@
+{
+  "impact": "look",
+  "plain": "Spinners built on the --hds-anim-spin preset now rotate at a constant speed instead of pulsing with the expressive spring; no action is needed unless a design relied on the pulsing motion.",
+  "steps": [
+    {
+      "id": "value-changed/--hds-anim-spin",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Spinners built on the --hds-anim-spin preset now rotate at a constant speed instead of pulsing with the expressive spring; no action is needed unless a design relied on the pulsing motion.",
+      "detect": {
+        "cssVars": ["--hds-anim-spin"],
+        "cssVarWrites": ["--hds-anim-spin"]
+      },
+      "facts": ["css-var-changed:--hds-anim-spin::root"]
+    }
+  ]
+}
