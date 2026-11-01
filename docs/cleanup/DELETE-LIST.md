@@ -22,7 +22,7 @@ pnpm check:dupes -- --reporters console,json --output report/
 | Gate  | Where                                          | Count on 2026-10-31                                          | Rule                                                                                           |
 | ----- | ---------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
 | knip  | `pnpm check:knip-ratchet` (`--max-issues`)     | 0 (was 12, then 7)                                           | Error-level issues only; lower it in the PR that removes them                                  |
-| jscpd | `pnpm check:dupes` (`.jscpd.json` `threshold`) | 1.883% of 188,904 lines (348 clones, 3,557 duplicated lines) | Threshold sits at 1.84 (1.83% after hds#1008 batch J1); lower it in the PR that removes clones |
+| jscpd | `pnpm check:dupes` (`.jscpd.json` `threshold`) | 1.883% of 188,904 lines (348 clones, 3,557 duplicated lines) | Threshold sits at 1.74 (1.73% after hds#1011 batch J4); lower it in the PR that removes clones |
 
 jscpd ignores generated files (`generated-*.ts`), `fixtures/` and
 `*.golden.json`: inputs and outputs, not code anyone can deduplicate.

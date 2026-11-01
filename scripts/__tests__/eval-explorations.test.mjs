@@ -7,18 +7,9 @@
  * pack, prepare, build, render, axe), the CLI by spawning it over run
  * directories written to temp dirs. No network, no browser, no ledger.
  */
-import { afterAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import {
-  cpSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from 'node:fs';
-import os from 'node:os';
+import { cpSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readDirection } from '../lib/explorations/direction.mjs';
@@ -32,6 +23,7 @@ import {
   direction,
   writeDirection,
 } from './helpers/explorations-fixtures.mjs';
+import { runEvalCli, useTmpDirs } from './helpers/eval-harness.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -49,15 +41,7 @@ const CLIENT_TENANT = (() => {
   }
   throw new Error('tenants/ has no non-demo tenant to test the client-tenant gates with');
 })();
-const tmpDirs = [];
-const makeTmp = (prefix = 'eval-explorations-') => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), prefix));
-  tmpDirs.push(dir);
-  return dir;
-};
-afterAll(() => {
-  for (const d of tmpDirs) rmSync(d, { recursive: true, force: true });
-});
+const makeTmp = useTmpDirs('eval-explorations-');
 
 const PACKED = {
   tarball: '/x/pkg.tgz',
@@ -549,17 +533,7 @@ describe('pnpm eval:consistency -- --explorations (CLI, offline)', () => {
 });
 
 describe('pnpm eval:consistency -- --gaps and --pii (CLI)', () => {
-  const run = (args) => {
-    const r = spawnSync(
-      process.execPath,
-      [path.join(ROOT, 'scripts/eval-consistency.mjs'), ...args],
-      {
-        cwd: ROOT,
-        encoding: 'utf8',
-      },
-    );
-    return { code: r.status, out: `${r.stdout}${r.stderr}` };
-  };
+  const run = runEvalCli;
   const gap = (screen, direction, over = {}) => ({
     screen,
     direction,
@@ -648,17 +622,7 @@ describe('pnpm eval:consistency -- --gaps and --pii (CLI)', () => {
 
 describe('the committed dummy run, eval/explorations/fixtures/runs/2026-10-13', () => {
   const RUN = 'eval/explorations/fixtures/runs/2026-10-13';
-  const run = (args) => {
-    const r = spawnSync(
-      process.execPath,
-      [path.join(ROOT, 'scripts/eval-consistency.mjs'), ...args],
-      {
-        cwd: ROOT,
-        encoding: 'utf8',
-      },
-    );
-    return { code: r.status, out: `${r.stdout}${r.stderr}` };
-  };
+  const run = runEvalCli;
 
   it('passes every static gate: A and B clean, C with its one violation listed', () => {
     const r = run(['--explorations', RUN, '--offline']);
