@@ -26,6 +26,7 @@ import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
+import { CONTROL_COLOR_FADE } from './control-color-fade';
 import { Icon } from './icon';
 
 /** Checkbox — custom-drawn checkbox with check / indeterminate glyph. */
@@ -226,11 +227,8 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
             ease: productiveMotion.easing,
           }}
           className={checkboxGlyphVariants({ state: visualState, on: isOn })}
-          // motion-ok: background-color/border-color swap on state change; the CSS
-          // transition (not a framer `animate` target) is left inline so the color
-          // fade keeps working even though the colors themselves now live in cva.
           style={{
-            transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
+            transition: CONTROL_COLOR_FADE,
           }}
         >
           {indeterminate ? (

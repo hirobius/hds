@@ -25,6 +25,7 @@ import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
+import { CONTROL_COLOR_FADE } from './control-color-fade';
 
 /** Toggle — boolean on/off toggle with animated thumb. */
 export type HdsToggleDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
@@ -249,12 +250,8 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
           duration: productiveMotion.duration,
           ease: productiveMotion.easing,
         }}
-        // motion-ok: background-color/border-color swap on state change; the CSS
-        // transition (not a framer `animate` target) is left inline so the color
-        // fade keeps working even though the colors themselves now live in cva —
-        // same technique as checkbox.tsx's glyph.
         style={{
-          transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
+          transition: CONTROL_COLOR_FADE,
         }}
         className={toggleTrackVariants({ on: checked, disabled: isDisabled })}
       >
