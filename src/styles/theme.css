@@ -518,6 +518,116 @@
   }
 }
 
+/* --- Toast swipe + exit (hds#938) --------------------------------------------
+ * Radix owns the swipe gesture: it tracks the pointer and stamps the Root
+ * with data-swipe (move / cancel / end), data-swipe-direction and the
+ * --radix-toast-swipe-* custom properties. The visual layer lives here:
+ *   move   — the toast follows the pointer through the swipe-move vars;
+ *   cancel — a swipe that did not pass the threshold snaps back on the
+ *            productive motion tokens;
+ *   end / closed — the toast slides out toward the swipe edge on the exit
+ *            tokens. A button/timer dismiss never swiped, so its end vars
+ *            are unset and the same keyframes start from rest (0px
+ *            fallbacks) — one consistent exit either way. The slide travels
+ *            the toast's own size plus the viewport padding
+ *            (--semantic-space-fixed-sm, the Viewport's p-fixed-sm) so no
+ *            sliver is left on screen when the animation ends.
+ * Token-timed only, no new token values. Under reduced motion the follow
+ * and the slide are dropped entirely and Radix unmounts at once.
+ * In @layer components so a consumer's utility className still wins. */
+@keyframes hds-toast-out-right {
+  from {
+    transform: translateX(var(--radix-toast-swipe-end-x, 0px));
+  }
+  to {
+    transform: translateX(
+      calc(var(--radix-toast-swipe-end-x, 0px) + 100% + var(--semantic-space-fixed-sm))
+    );
+  }
+}
+
+@keyframes hds-toast-out-left {
+  from {
+    transform: translateX(var(--radix-toast-swipe-end-x, 0px));
+  }
+  to {
+    transform: translateX(
+      calc(var(--radix-toast-swipe-end-x, 0px) - 100% - var(--semantic-space-fixed-sm))
+    );
+  }
+}
+
+@keyframes hds-toast-out-up {
+  from {
+    transform: translateY(var(--radix-toast-swipe-end-y, 0px));
+  }
+  to {
+    transform: translateY(
+      calc(var(--radix-toast-swipe-end-y, 0px) - 100% - var(--semantic-space-fixed-sm))
+    );
+  }
+}
+
+@keyframes hds-toast-out-down {
+  from {
+    transform: translateY(var(--radix-toast-swipe-end-y, 0px));
+  }
+  to {
+    transform: translateY(
+      calc(var(--radix-toast-swipe-end-y, 0px) + 100% + var(--semantic-space-fixed-sm))
+    );
+  }
+}
+
+@layer components {
+  .hds-toast[data-swipe='move'] {
+    transform: translate(
+      var(--radix-toast-swipe-move-x, 0px),
+      var(--radix-toast-swipe-move-y, 0px)
+    );
+  }
+
+  .hds-toast[data-swipe='cancel'] {
+    transform: translate(0, 0);
+    transition: transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+  }
+
+  .hds-toast[data-swipe='end'][data-swipe-direction='right'],
+  .hds-toast[data-state='closed'][data-swipe-direction='right'] {
+    animation: hds-toast-out-right var(--hds-motion-exit-duration) var(--hds-motion-exit-easing)
+      forwards;
+  }
+
+  .hds-toast[data-swipe='end'][data-swipe-direction='left'],
+  .hds-toast[data-state='closed'][data-swipe-direction='left'] {
+    animation: hds-toast-out-left var(--hds-motion-exit-duration) var(--hds-motion-exit-easing)
+      forwards;
+  }
+
+  .hds-toast[data-swipe='end'][data-swipe-direction='up'],
+  .hds-toast[data-state='closed'][data-swipe-direction='up'] {
+    animation: hds-toast-out-up var(--hds-motion-exit-duration) var(--hds-motion-exit-easing)
+      forwards;
+  }
+
+  .hds-toast[data-swipe='end'][data-swipe-direction='down'],
+  .hds-toast[data-state='closed'][data-swipe-direction='down'] {
+    animation: hds-toast-out-down var(--hds-motion-exit-duration) var(--hds-motion-exit-easing)
+      forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hds-toast {
+      animation: none;
+      transition: none;
+    }
+
+    .hds-toast[data-swipe='move'] {
+      transform: none;
+    }
+  }
+}
+
 /* --- Audit overlay --------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   :root {

@@ -4,9 +4,14 @@
  *
  * Radix Toast touches APIs jsdom lacks (ResizeObserver, matchMedia) — polyfilled.
  */
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { ToastProvider, useToast } from './toast';
+
+const theme = readFileSync(resolve(__dirname, '../../styles/theme.css'), 'utf8');
+const toastCss = theme.slice(theme.indexOf('Toast swipe + exit'));
 
 beforeAll(() => {
   // @ts-expect-error — minimal jsdom polyfills for Radix Toast.
@@ -60,6 +65,51 @@ describe('Toast', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<Orphan />)).toThrow(/ToastProvider/);
     spy.mockRestore();
+  });
+});
+
+describe('Toast swipe-follow + slide-out exit (hds#938)', () => {
+  it('marks the root with the hds-toast hook and the Radix state the theme.css layer keys off', () => {
+    render(
+      <ToastProvider>
+        <Trigger />
+      </ToastProvider>,
+    );
+    fireEvent.click(screen.getByText('fire'));
+    const root = screen.getByText('Saved').closest('li') as HTMLElement;
+    expect(root.className).toMatch(/(^|\s)hds-toast(\s|$)/);
+    // Radix stamps the provider's swipe direction on the root at all times;
+    // theme.css picks the exit keyframes from it.
+    expect(root.getAttribute('data-swipe-direction')).toBe('right');
+    expect(root.getAttribute('data-state')).toBe('open');
+  });
+
+  it('follows the pointer during a swipe through the Radix swipe-move vars', () => {
+    expect(toastCss).toContain(".hds-toast[data-swipe='move']");
+    expect(toastCss).toContain('var(--radix-toast-swipe-move-x, 0px)');
+    expect(toastCss).toContain('var(--radix-toast-swipe-move-y, 0px)');
+  });
+
+  it('snaps a cancelled swipe back on the productive motion tokens', () => {
+    expect(toastCss).toContain(".hds-toast[data-swipe='cancel']");
+    expect(toastCss).toContain('var(--hds-motion-productive-duration)');
+  });
+
+  it('slides a dismissed toast out toward the swipe edge on the exit tokens, swipe or not', () => {
+    expect(toastCss).toContain('@keyframes hds-toast-out-right');
+    expect(toastCss).toContain("[data-swipe='end'][data-swipe-direction='right']");
+    // A button/timer dismiss never swiped: the closed state takes the same exit.
+    expect(toastCss).toContain("[data-state='closed'][data-swipe-direction='right']");
+    expect(toastCss).toContain('var(--hds-motion-exit-duration)');
+    // From rest — a non-swipe dismiss has no swipe-end vars set.
+    expect(toastCss).toContain('var(--radix-toast-swipe-end-x, 0px)');
+  });
+
+  it('drops the follow and the slide under reduced motion', () => {
+    const reduced = toastCss.slice(toastCss.indexOf('prefers-reduced-motion'));
+    expect(reduced).toContain('.hds-toast');
+    expect(reduced).toContain('animation: none');
+    expect(reduced).toContain('transform: none');
   });
 });
 

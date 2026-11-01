@@ -37,7 +37,10 @@
  * focus: say how else to do it ("Undo from Recently removed") when the label alone is not enough.
  */
 // motion-ok: Radix Toast manages enter/exit/swipe mounting and the auto-dismiss
-// lifecycle; this module renders its themed surface + live region only.
+// lifecycle; this module renders its themed surface + live region only. The
+// swipe-follow / slide-out visuals are CSS, in theme.css (.hds-toast): Radix
+// stamps data-swipe / data-swipe-direction and the --radix-toast-swipe-* vars,
+// theme.css turns them into transform/animation on the existing motion tokens.
 
 import * as React from 'react';
 import * as ToastPrimitive from '@radix-ui/react-toast';
@@ -180,7 +183,7 @@ export function ToastProvider({
                 if (!open) remove(t.id);
               }}
               className={cn(
-                'pointer-events-auto relative flex w-full items-start gap-fixed-xs',
+                'hds-toast pointer-events-auto relative flex w-full items-start gap-fixed-xs',
                 // Not `p-4 pr-8`: utilities.css ships an unlayered .p-4 that beat pr-8, so the text ran under
                 // the X at every width. Below sm the dismiss button grows to its 44px touch target
                 // (right-2 + 44px = 52px), so the text column steps in to 64px there (on the spacing grid).
