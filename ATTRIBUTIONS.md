@@ -52,6 +52,16 @@ Use this file to track:
 - Pinned commit: `1401c8b8030e023baeebb31781a6653fe8e93026`
 - License link: [MIT license](https://github.com/addyosmani/agent-skills/blob/main/LICENSE)
 
+### Impeccable
+
+- Registry ID: library-impeccable
+- Type: Vendored agent skill (`.claude/skills/impeccable/`, pinned in `skills-lock.json`) + design anti-pattern detector CLI
+- Usage: curated command subset (critique, polish, audit, harden, typeset, layout + support refs/scripts), committed unmodified; `npx impeccable detect` wrapped by `scripts/check-impeccable-detect.mjs`
+- License: Apache-2.0
+- Source: [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
+- Pinned commit: `630fc2682a5bd39b25a8e61f74b6b3f14f2b1e21`
+- License link: [Apache-2.0 license](https://github.com/pbakaus/impeccable/blob/main/LICENSE)
+
 ## Design-System And Documentation References
 
 These are not copied implementations. They are reference points used for structure, conventions, or quality baseline.

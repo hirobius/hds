@@ -403,6 +403,14 @@ pre {
   box-shadow: var(--semantic-shadow-overlay);
 }
 
+/* Search result rows: Fumadocs rounds them (rounded-lg), and the dialog is portalled outside
+   #nd-docs-layout, so the layout-chrome rule below never reaches them — in the default Corners
+   setting they kept Fumadocs' radius and only the Sharp override squared them. The HDS radius
+   token reaches them in every setting (hds#806). */
+#fd-search-list [role='option'] {
+  border-radius: var(--semantic-radius-action);
+}
+
 /* Sidebar search trigger (components/search-trigger.tsx, hds#903): a raised row with the
    shortcut drawn by the HDS Kbd. Tokens only, so Corners reaches it. */
 .hds-docs-search {
@@ -966,4 +974,54 @@ a code[data-density] {
 :is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button).wrap-anywhere {
   font-size: var(--semantic-typography-ui-font-size);
   font-weight: var(--semantic-typography-ui-font-weight);
+}
+
+/* /upgrade/?from=X&to=Y (hds#464): one phone-first column. */
+.hds-upgrade-page {
+  box-sizing: border-box;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: var(--primitive-space-6, 1.5rem) var(--primitive-space-4, 1rem);
+  overflow-wrap: anywhere;
+}
+.hds-upgrade-page pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.hds-upgrade-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitive-space-3, 0.75rem);
+  align-items: end;
+}
+.hds-upgrade-form label {
+  display: grid;
+  gap: var(--primitive-space-1, 0.25rem);
+}
+.hds-upgrade-form select,
+.hds-upgrade-form button {
+  min-height: 2.75rem;
+}
+.hds-upgrade-list {
+  padding-left: var(--primitive-space-5, 1.25rem);
+}
+.hds-upgrade-list li {
+  margin-block: var(--primitive-space-2, 0.5rem);
+}
+/* The build line under the title: which release + main sha these docs were built from. */
+.hds-upgrade-build {
+  margin-block: var(--primitive-space-1, 0.25rem) var(--primitive-space-4, 1rem);
+  color: var(--semantic-color-content-secondary);
+}
+/* The CSS-only toggle sits in the form row but lays out inline, not as a field grid. */
+.hds-upgrade-form .hds-upgrade-css-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-space-2, 0.5rem);
+  min-height: 2.75rem;
+}
+.hds-upgrade-css-toggle input {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
 }

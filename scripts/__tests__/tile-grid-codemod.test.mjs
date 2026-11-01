@@ -9,20 +9,16 @@
  * renders each rewrite and compares it with TileGrid in Chromium.
  * Seams: `transformSource` (pure) and the CLI (`--root`, `--check`, `--dry-run`).
  */
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { codemodPaths, useCodemodFixture, expectShipped } from './helpers/codemod-fixture.mjs';
 import ts from 'typescript';
 import { transformSource } from '../../codemods/tile-grid.mjs';
-import {
-  REPO,
-  codemodPaths,
-  expectCodemodWired,
-  runCli,
-  useFixtureDir,
-} from './helpers/codemod-harness.mjs';
 
-const { CODEMOD, FIXTURES } = codemodPaths('tile-grid');
+const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
+const { FIXTURES } = codemodPaths('tile-grid');
 const ROOT = '@hirobius/design-system';
 
 const one = (body, imports = `import { TileGrid } from '${ROOT}';`) =>
@@ -364,45 +360,47 @@ describe('the rewrite typechecks (TypeScript 6 rejects `??` on a width that is n
 });
 
 describe('package', () => {
-  it('ships the codemod as the hds-tile-grid bin', () => expectCodemodWired('tile-grid'));
+  it('ships the codemod as the hds-tile-grid bin', () => {
+    expectShipped('tile-grid');
+  });
 });
 
 describe('CLI', () => {
-  const sandbox = useFixtureDir(FIXTURES, 'hds-tile-grid-', {
-    // The CLI fixtures only: typecheck/ is read by the typecheck test above.
+  // The CLI fixtures only (typecheck/ is read by the typecheck test above); node_modules
+  // is gitignored, so that fixture is built here rather than committed.
+  const fx = useCodemodFixture('tile-grid', {
+    nodeModules: `import { TileGrid } from '${ROOT}';\n`,
     only: ['needs-rewrite', 'clean'],
-    decoy: `import { TileGrid } from '${ROOT}';\n`,
   });
-  let dir;
-  beforeEach(() => {
-    dir = sandbox();
-  });
-  const run = (...args) => runCli(CODEMOD, dir, ...args);
+
+  const { run } = fx;
 
   it('--check exits 1 before a rewrite and writes nothing', () => {
-    const before = readFileSync(join(dir, 'needs-rewrite/src/SurfacesRail.tsx'), 'utf8');
+    const before = readFileSync(join(fx.dir, 'needs-rewrite/src/SurfacesRail.tsx'), 'utf8');
     const r = run('--check');
     expect(r.status).toBe(1);
     expect(r.stderr).toMatch(/SurfacesRail\.tsx: 1 site/);
     expect(r.stderr).toMatch(/ClientDashboard\.tsx: 2 sites/);
-    expect(readFileSync(join(dir, 'needs-rewrite/src/SurfacesRail.tsx'), 'utf8')).toBe(before);
+    expect(readFileSync(join(fx.dir, 'needs-rewrite/src/SurfacesRail.tsx'), 'utf8')).toBe(before);
   });
 
   it('--dry-run reports counts and the changed lines, exits 0 and writes nothing', () => {
-    const before = readFileSync(join(dir, 'needs-rewrite/src/ClientDashboard.tsx'), 'utf8');
+    const before = readFileSync(join(fx.dir, 'needs-rewrite/src/ClientDashboard.tsx'), 'utf8');
     const r = run('--dry-run');
     expect(r.status).toBe(0);
     expect(r.stdout).toMatch(/would rewrite 2 files, 3 sites/);
     const lines = r.stdout.split('\n');
     expect(lines).toContain('-       <TileGrid minTileWidth="260px" gap="sm">');
     expect(lines).toContain('+       <Grid layout="auto-fill" minItemWidth="260px" gap="medium">');
-    expect(readFileSync(join(dir, 'needs-rewrite/src/ClientDashboard.tsx'), 'utf8')).toBe(before);
+    expect(readFileSync(join(fx.dir, 'needs-rewrite/src/ClientDashboard.tsx'), 'utf8')).toBe(
+      before,
+    );
   });
 
   it('a real run rewrites, then --check exits 0 and a second run is a no-op; clean files and node_modules are untouched', () => {
-    const clean = readFileSync(join(dir, 'clean/src/migrated.tsx'), 'utf8');
+    const clean = readFileSync(join(fx.dir, 'clean/src/migrated.tsx'), 'utf8');
     expect(run().status).toBe(0);
-    const page = readFileSync(join(dir, 'needs-rewrite/src/ClientDashboard.tsx'), 'utf8');
+    const page = readFileSync(join(fx.dir, 'needs-rewrite/src/ClientDashboard.tsx'), 'utf8');
     expect(page).toContain(`import { Page, Stack, Badge, Grid, EmptyState } from '${ROOT}';`);
     expect(page).toContain(
       '<Grid key={lane.id} layout="auto-fill" minItemWidth="280px" gap="medium">',
@@ -412,19 +410,19 @@ describe('CLI', () => {
     expect(check.stderr).toBe('');
     expect(check.status).toBe(0);
     expect(run().stdout).toMatch(/rewrote 0 files/);
-    expect(readFileSync(join(dir, 'needs-rewrite/src/ClientDashboard.tsx'), 'utf8')).toBe(page);
-    expect(readFileSync(join(dir, 'clean/src/migrated.tsx'), 'utf8')).toBe(clean);
-    expect(readFileSync(join(dir, 'clean/node_modules/x/index.js'), 'utf8')).toContain(
+    expect(readFileSync(join(fx.dir, 'needs-rewrite/src/ClientDashboard.tsx'), 'utf8')).toBe(page);
+    expect(readFileSync(join(fx.dir, 'clean/src/migrated.tsx'), 'utf8')).toBe(clean);
+    expect(readFileSync(join(fx.dir, 'clean/node_modules/x/index.js'), 'utf8')).toContain(
       '{ TileGrid }',
     );
   });
 
   it('--check exits 1 and lists a site it cannot rewrite, before and after a real run', () => {
     writeFileSync(
-      join(dir, 'clean/src/xs.tsx'),
+      join(fx.dir, 'clean/src/xs.tsx'),
       `import { TileGrid } from '${ROOT}';\nexport const X = () => <TileGrid gap="xs"><i /></TileGrid>;\n`,
     );
-    const root = join(dir, 'clean');
+    const root = join(fx.dir, 'clean');
     const r = run('--check', '--root', root);
     expect(r.status).toBe(1);
     expect(r.stderr).toMatch(/xs\.tsx: <TileGrid> at line 2: gap="xs"/);

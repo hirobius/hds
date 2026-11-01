@@ -35,6 +35,37 @@ describe('utilities.css cascade layer', () => {
   });
 });
 
+describe('no hand-written copies of Tailwind utilities (#938)', () => {
+  // Tailwind emits these itself. A hand-written copy lands later in the same layer, so the
+  // minifier keeps it in place of Tailwind's and it beats same-specificity variants such as
+  // `sm:hidden`, `sm:flex-row` and `sm:justify-end`.
+  const owned = [
+    '.block',
+    '.inline-block',
+    '.inline-flex',
+    '.flex',
+    '.grid',
+    '.flex-col',
+    '.flex-wrap',
+    '.justify-center',
+    '.justify-between',
+    '.justify-end',
+    '.justify-start',
+    '.cursor-pointer',
+    '.cursor-not-allowed',
+    '.pointer-events-auto',
+    '.pointer-events-none',
+  ];
+
+  it('leaves them to Tailwind', () => {
+    const found: string[] = [];
+    root.walkRules((r) => {
+      for (const s of r.selectors) if (owned.includes(s)) found.push(s);
+    });
+    expect(found).toEqual([]);
+  });
+});
+
 describe('mono-type.css cascade position (#754)', () => {
   const mono = postcss.parse(read('mono-type.css'));
 

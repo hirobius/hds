@@ -36,20 +36,18 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
-import { readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag } from './lib/gate-output.mjs';
-import { scanFiles, reportAndExit } from './lib/violation-gate-cli.mjs';
-import { scanSources, isSpecFile } from './lib/source-scan.mjs';
+import { scanSources, isSpecFile, isFixtureRun, reportLineViolations } from './lib/source-scan.mjs';
 import { findUppercase } from '../bin/lib/visual-rules.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const isFixtureMode = isFixtureRun(process.argv);
 const fixtureFile = process.env.FIXTURE_FILE;
 
 const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'tools', 'templates', 'tenants'];
@@ -102,16 +100,21 @@ function defaultFiles() {
 // ── CLI entry ─────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : defaultFiles();
-  const violations = scanFiles(files, findViolationsInText, ROOT);
-  reportAndExit({
-    violations,
-    jsonMode,
-    gate: 'check-no-uppercase',
-    okMessage: '[ok] check-no-uppercase: nothing in the system transforms text to uppercase',
-    failHeading: (n) => `${n} place${n === 1 ? '' : 's'} that make ALL CAPS text`,
-    footer: [
-      'Fix: drop the transform and write the text in sentence case.',
-      '  Exempt a line with // uppercase-ok: <reason> (the reason is required).',
-    ],
-  });
+  const violations = [];
+  for (const f of files) {
+    const rel = relative(ROOT, f).replace(/\\/g, '/');
+    violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
+  }
+
+  process.exit(
+    reportLineViolations(violations, jsonMode, {
+      gate: 'check-no-uppercase',
+      ok: 'nothing in the system transforms text to uppercase',
+      noun: (n) => `place${n === 1 ? '' : 's'} that make ALL CAPS text:`,
+      fix: [
+        '\nFix: drop the transform and write the text in sentence case.',
+        '  Exempt a line with // uppercase-ok: <reason> (the reason is required).\n',
+      ],
+    }),
+  );
 }

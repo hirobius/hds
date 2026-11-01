@@ -15,7 +15,7 @@ For agents building UI with `@hirobius/design-system`. Read this first. It settl
 
 These are the recommended components: the ratified core set plus every component the needs below name. The ratified core alone is the `core: true` flag in the manifest.
 
-- `@hirobius/design-system`: `Alert`, `AlertDialog`, `Avatar`, `AvatarGroup`, `Badge`, `Blockquote`, `Box`, `Breadcrumb`, `Button`, `Card`, `Checkbox`, `Combobox`, `CommandPalette`, `Container`, `Dialog`, `Disclosure`, `Divider`, `EmptyState`, `Field`, `Grid`, `HdsRouterProvider`, `HdsThemeProvider`, `Icon`, `InlineLink`, `Input`, `Kbd`, `Menu`, `MetaLine`, `MetadataList`, `NavList`, `Pagination`, `Pin`, `Popover`, `Progress`, `Radio`, `SegmentedControl`, `Select`, `Sidebar`, `Skeleton`, `Slider`, `Spinner`, `Stack`, `Surface`, `Switcher`, `Table`, `Tabs`, `TabsContent`, `TabsList`, `TabsTrigger`, `Tag`, `Text`, `Textarea`, `Timestamp`, `ToastProvider`, `Toggle`, `Tooltip`, `VisuallyHidden`, `useToast`.
+- `@hirobius/design-system`: `Alert`, `AlertDialog`, `Avatar`, `AvatarGroup`, `Badge`, `Blockquote`, `Box`, `Breadcrumb`, `Button`, `Card`, `Checkbox`, `Combobox`, `CommandPalette`, `Container`, `Dialog`, `Disclosure`, `Divider`, `EmptyState`, `Field`, `Grid`, `HdsRouterProvider`, `HdsThemeProvider`, `Icon`, `InlineLink`, `Input`, `Kbd`, `Menu`, `MetaLine`, `MetadataList`, `NavList`, `Pagination`, `Pin`, `Popover`, `Progress`, `Radio`, `SegmentedControl`, `Select`, `Sidebar`, `Skeleton`, `Slider`, `Spinner`, `Stack`, `Surface`, `Switcher`, `Table`, `Tabs`, `TabsContent`, `TabsList`, `TabsTrigger`, `Tag`, `Text`, `Textarea`, `Timeline`, `Timestamp`, `ToastProvider`, `Toggle`, `Tooltip`, `VisuallyHidden`, `useToast`.
 - `@hirobius/design-system/patterns`: `DataTableSection`, `DestructiveSection`, `Form`, `FormActions`, `MetricTile`, `MetricTiles`, `Page`, `PageHeader`. These are not in the root barrel.
 - Load one stylesheet once at the app root and put `data-hds` on the root element (`CONSUMING.md`).
 
@@ -84,6 +84,7 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 - No raw `<button>`, `<input>`, `<select>`, `<textarea>` or `<form>`: use `Button`, `Input`, `Select`, `Textarea`, `Form`.
 - Every control has an accessible name: fields take `label`, a repeated row action takes an `aria-label` naming its row.
 - Section headings come from the pattern that owns the section (`title` props). Do not add a `Text` heading the screen does not ask for.
+- The app is type-checked strictly and unannotated code fails the build: give `useState` an explicit type when the value can be `null` (`useState<string | null>(null)`), and annotate handler and callback parameters instead of leaving them implicit `any`.
 
 ## Voice
 

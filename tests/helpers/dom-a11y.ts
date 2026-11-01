@@ -66,7 +66,7 @@ export function domLines(root: Element): string[] {
  * wraps from the last stop back to the first rather than saying "end of
  * document", so the walk ends when it is back at its first stop.
  */
-export async function readerLines(container: Element, maxStops = 5000): Promise<string[]> {
+async function readerLines(container: Element, maxStops = 5000): Promise<string[]> {
   const lines: string[] = [];
   await virtual.start({ container });
   try {

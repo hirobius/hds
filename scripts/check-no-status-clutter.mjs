@@ -25,18 +25,24 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
+import { readFileSync } from 'node:fs';
 import { join, dirname, extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag } from './lib/gate-output.mjs';
-import { scanFiles, reportAndExit } from './lib/violation-gate-cli.mjs';
-import { scanSources, findMarker, maskComments, isSpecFile } from './lib/source-scan.mjs';
+import {
+  scanSources,
+  findMarker,
+  maskComments,
+  isSpecFile,
+  isFixtureRun,
+  reportLineViolations,
+} from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const isFixtureMode = isFixtureRun(process.argv);
 const fixtureFile = process.env.FIXTURE_FILE;
 
 const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'templates', 'tenants'];
@@ -148,15 +154,20 @@ export function defaultFiles() {
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : defaultFiles();
-  const violations = scanFiles(files, findViolationsInText, ROOT);
-  reportAndExit({
-    violations,
-    jsonMode,
-    gate: 'check-no-status-clutter',
-    okMessage: '[ok] check-no-status-clutter: no status dots or coloured accent bars',
-    failHeading: (n) => `${n} status dot or accent bar`,
-    footer: [
-      'Fix: remove it; show status in the content (a text Badge). Exempt a line with // status-clutter-ok: <reason>.',
-    ],
-  });
+  const violations = [];
+  for (const f of files) {
+    const rel = relative(ROOT, f).replace(/\\/g, '/');
+    violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
+  }
+
+  process.exit(
+    reportLineViolations(violations, jsonMode, {
+      gate: 'check-no-status-clutter',
+      ok: 'no status dots or coloured accent bars',
+      noun: () => 'status dot or accent bar:',
+      fix: [
+        '\nFix: remove it; show status in the content (a text Badge). Exempt a line with // status-clutter-ok: <reason>.\n',
+      ],
+    }),
+  );
 }

@@ -22,18 +22,23 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
+import { readFileSync } from 'node:fs';
 import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag } from './lib/gate-output.mjs';
-import { scanFiles, reportAndExit } from './lib/violation-gate-cli.mjs';
-import { scanSources, findMarker, maskComments } from './lib/source-scan.mjs';
+import {
+  scanSources,
+  findMarker,
+  maskComments,
+  isFixtureRun,
+  reportLineViolations,
+} from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const isFixtureMode = isFixtureRun(process.argv);
 const fixtureFile = process.env.FIXTURE_FILE;
 
 const SKIP_DIRS = ['node_modules', '.git', 'dist', 'coverage', '__tests__', 'fixtures'];
@@ -102,16 +107,21 @@ function defaultFiles() {
 // ── CLI entry ─────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : defaultFiles();
-  const violations = scanFiles(files, findViolationsInText, ROOT);
-  reportAndExit({
-    violations,
-    jsonMode,
-    gate: 'check-no-custom-tracking',
-    okMessage: '[ok] check-no-custom-tracking: all letter-spacing comes from type tokens',
-    failHeading: (n) => `${n} hand-set letter-spacing${n === 1 ? '' : 's'}`,
-    footer: [
-      'Fix: use var(--semantic-typography-<role>-letter-spacing) or a .hds-type-<role> class.',
-      '  Exempt a line with /* tracking-ok: <reason> */ (the reason is required).',
-    ],
-  });
+  const violations = [];
+  for (const f of files) {
+    const rel = relative(ROOT, f).replace(/\\/g, '/');
+    violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
+  }
+
+  process.exit(
+    reportLineViolations(violations, jsonMode, {
+      gate: 'check-no-custom-tracking',
+      ok: 'all letter-spacing comes from type tokens',
+      noun: (n) => `hand-set letter-spacing${n === 1 ? '' : 's'}:`,
+      fix: [
+        '\nFix: use var(--semantic-typography-<role>-letter-spacing) or a .hds-type-<role> class.',
+        '  Exempt a line with /* tracking-ok: <reason> */ (the reason is required).\n',
+      ],
+    }),
+  );
 }

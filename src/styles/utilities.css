@@ -33,22 +33,6 @@
   .z-50 {
     z-index: 50;
   }
-
-  .block {
-    display: block;
-  }
-  .inline-block {
-    display: inline-block;
-  }
-  .inline-flex {
-    display: inline-flex;
-  }
-  .flex {
-    display: flex;
-  }
-  .grid {
-    display: grid;
-  }
   .align-middle {
     vertical-align: middle;
   }
@@ -58,12 +42,6 @@
   }
   .flex-none {
     flex: none;
-  }
-  .flex-col {
-    flex-direction: column;
-  }
-  .flex-wrap {
-    flex-wrap: wrap;
   }
   .flex-shrink-0 {
     flex-shrink: 0;
@@ -79,18 +57,6 @@
   }
   .items-stretch {
     align-items: stretch;
-  }
-  .justify-center {
-    justify-content: center;
-  }
-  .justify-between {
-    justify-content: space-between;
-  }
-  .justify-end {
-    justify-content: flex-end;
-  }
-  .justify-start {
-    justify-content: flex-start;
   }
 
   .grid-cols-1 {
@@ -394,19 +360,6 @@
   }
   .hover\:text:hover {
     color: var(--semantic-color-content-primary);
-  }
-
-  .cursor-pointer {
-    cursor: pointer;
-  }
-  .cursor-not-allowed {
-    cursor: not-allowed;
-  }
-  .pointer-events-auto {
-    pointer-events: auto;
-  }
-  .pointer-events-none {
-    pointer-events: none;
   }
   .opacity-40 {
     opacity: 0.4;
