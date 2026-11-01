@@ -37,6 +37,7 @@
 
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
+import { emitResult } from './gate-output.mjs';
 
 // ── Scan roots ───────────────────────────────────────────────────────────────
 
@@ -298,4 +299,62 @@ export { maskComments } from '../../bin/lib/visual-rules.mjs';
 /** 1-based line number of a character index in `text`. */
 export function lineOf(text, index) {
   return text.slice(0, index).split('\n').length;
+}
+
+/**
+ * Whether a gate runs in fixture mode (`--fixture-mode` or HDS_FIXTURE_MODE=1).
+ *
+ * @param {readonly string[]} argv
+ * @param {Record<string, string|undefined>} [env]
+ * @returns {boolean}
+ */
+export function isFixtureRun(argv, env = process.env) {
+  return argv.includes('--fixture-mode') || env.HDS_FIXTURE_MODE === '1';
+}
+
+/**
+ * Shared report for line-scoped gates whose violations are
+ * `{ file, line, rule, message, sample }` (hds#1010; gate-output.mjs is ops-canonical, so it lives here). Prints the JSON payload
+ * or the human report and returns the exit code; the caller exits.
+ *
+ * Human shape: `[ok] <gate>: <ok>` when clean, else
+ * `\n✗ <gate>: <n> <noun(n)>\n`, then `  file:line  [rule] message` and
+ * `    sample` per violation, then each `fix` line on stderr.
+ *
+ * @param {Array<{file:string,line:number,rule:string,message:string,sample:string}>} violations
+ * @param {boolean} jsonMode
+ * @param {{ gate: string, ok: string, noun: (n: number) => string, fix: string[] }} opts
+ * @returns {0|1}
+ */
+export function reportLineViolations(violations, jsonMode, { gate, ok, noun, fix }) {
+  const code = violations.length === 0 ? 0 : 1;
+  if (jsonMode) {
+    emitResult(
+      {
+        violations: violations.map((v) => ({
+          file: v.file,
+          line: v.line,
+          rule: v.rule,
+          severity: 'error',
+          message: v.message,
+          sample: v.sample,
+        })),
+        summary: { total: violations.length },
+        ok: code === 0,
+      },
+      true,
+    );
+    return code;
+  }
+  if (code === 0) {
+    console.log(`[ok] ${gate}: ${ok}`);
+    return 0;
+  }
+  console.error(`\n✗ ${gate}: ${violations.length} ${noun(violations.length)}\n`);
+  for (const v of violations) {
+    console.error(`  ${v.file}:${v.line}  [${v.rule}] ${v.message}`);
+    console.error(`    ${v.sample}`);
+  }
+  for (const line of fix) console.error(line);
+  return 1;
 }

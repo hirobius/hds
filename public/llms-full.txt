@@ -1193,7 +1193,7 @@ CommandPalette — ⌘K search and command box: a modal search field over groupe
   - items: readonly CommandPaletteItem[]
   - label: string = Command palette
   - onOpenChange: (open: boolean) => void
-  - onSelect: (item: CommandPaletteItem) => void
+  - onSelect: (item: CommandPaletteItem, args?: Readonly<Record<string, string>> | undefined)…
   - open: boolean
   - placeholder: string = Type a command or search…
 

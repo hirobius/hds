@@ -230,6 +230,39 @@ describe('check-deprecations', () => {
     });
   });
 
+  // hds#469: the PR whose changeset makes a @removeIn past due fails on that PR.
+  describe('compares against the version pending changesets release (hds#469)', () => {
+    const PROBE =
+      '\n/**\n * @deprecated Probe.\n * @removeIn 0.100.0\n */\nexport const __p = 1;\n';
+    const changeset = (bump) => `---\n'@hirobius/design-system': ${bump}\n---\n\nProbe.\n`;
+
+    function setup(dir, bump) {
+      edit(dir, 'package.json', (src) =>
+        JSON.stringify({ ...JSON.parse(src), version: '0.99.4' }, null, 2),
+      );
+      edit(dir, 'src/patterns.ts', (src) => src + PROBE);
+      mkdirSync(join(dir, '.changeset'), { recursive: true });
+      writeFileSync(join(dir, '.changeset', 'README.md'), '# Changesets\n');
+      if (bump) writeFileSync(join(dir, '.changeset', 'probe.md'), changeset(bump));
+    }
+
+    it('fails when a pending minor changeset reaches a @removeIn', () => {
+      withCopy((dir) => {
+        setup(dir, 'minor');
+        const { status, output } = run(dir);
+        expect(output).toMatch(/@removeIn 0\.100\.0 is past-due \(<= next 0\.100\.0/);
+        expect(status).toBe(1);
+      });
+    });
+
+    it('passes the same @removeIn with only a patch changeset pending', () => {
+      withCopy((dir) => {
+        setup(dir, 'patch');
+        expect(run(dir).output).not.toMatch(/@removeIn 0\.100\.0 is past-due/);
+      });
+    });
+  });
+
   it('runs in pretest, as the registry declares (hds#389 D6)', () => {
     const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
     expect(pkg.scripts.pretest).toContain('node scripts/check-deprecations.mjs');

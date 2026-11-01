@@ -1,0 +1,21 @@
+{
+  "impact": "breaking",
+  "plain": "Import hdsMuiThemeOptions by name from @hirobius/design-system/mui; the default export is gone.",
+  "steps": [
+    {
+      "id": "removed/default",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Import hdsMuiThemeOptions by name from @hirobius/design-system/mui; the default export is gone.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/mui",
+            "names": ["default"]
+          }
+        ]
+      },
+      "facts": ["removed:./mui:default"]
+    }
+  ]
+}

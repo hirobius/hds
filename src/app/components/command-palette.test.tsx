@@ -24,7 +24,11 @@ const ITEMS: CommandPaletteItem[] = [
   { id: 'inbox', label: 'Go to inbox', group: 'Navigation', shortcut: ['G', 'I'] },
 ];
 
-function Harness(props: { onSelect?: (item: CommandPaletteItem) => void; defaultOpen?: boolean }) {
+function Harness(props: {
+  onSelect?: (item: CommandPaletteItem, args?: Readonly<Record<string, string>>) => void;
+  defaultOpen?: boolean;
+  items?: CommandPaletteItem[];
+}) {
   const [open, setOpen] = React.useState(props.defaultOpen ?? true);
   return (
     <>
@@ -32,12 +36,32 @@ function Harness(props: { onSelect?: (item: CommandPaletteItem) => void; default
       <CommandPalette
         open={open}
         onOpenChange={setOpen}
-        items={ITEMS}
+        items={props.items ?? ITEMS}
         onSelect={props.onSelect ?? (() => {})}
       />
     </>
   );
 }
+
+const MULTI: CommandPaletteItem[] = [
+  {
+    id: 'move',
+    label: 'Move issue',
+    group: 'Actions',
+    args: [
+      {
+        id: 'project',
+        label: 'Project',
+        options: [
+          { id: 'web', label: 'Website' },
+          { id: 'api', label: 'API platform', keywords: ['backend'] },
+        ],
+      },
+      { id: 'note', label: 'Note' },
+    ],
+  },
+  { id: 'inbox', label: 'Go to inbox', group: 'Navigation' },
+];
 
 const field = () => screen.getByRole('combobox', { name: 'Command palette' }) as HTMLInputElement;
 const active = () => {
@@ -144,6 +168,82 @@ describe('CommandPalette', () => {
     );
     fireEvent.keyDown(document, { key: 'k', metaKey: true });
     expect(onOpenChange).not.toHaveBeenCalled();
+  });
+
+  it('a command with arguments steps instead of running, showing the command as a chip', () => {
+    const onSelect = vi.fn();
+    render(<Harness items={MULTI} onSelect={onSelect} />);
+    fireEvent.click(screen.getByRole('option', { name: /Move issue/ }));
+    expect(onSelect).not.toHaveBeenCalled();
+    expect(screen.getByTestId('state').textContent).toBe('open');
+    // The command is a chip before the field, and the first argument's options are listed.
+    expect(screen.getByRole('button', { name: 'Remove Move issue' })).toBeTruthy();
+    expect(optionNames()).toEqual(['Website', 'API platform']);
+    expect(field().placeholder).toBe('Pick Project…');
+  });
+
+  it('filters argument options by label and keywords', () => {
+    render(<Harness items={MULTI} />);
+    fireEvent.click(screen.getByRole('option', { name: /Move issue/ }));
+    fireEvent.change(field(), { target: { value: 'backend' } });
+    expect(optionNames()).toEqual(['API platform']);
+  });
+
+  it('completes a multi-step command end to end: pick an option, type free text, runs with all arguments', () => {
+    const onSelect = vi.fn();
+    render(<Harness items={MULTI} onSelect={onSelect} />);
+    fireEvent.click(screen.getByRole('option', { name: /Move issue/ }));
+    fireEvent.click(screen.getByRole('option', { name: /Website/ }));
+    // The picked argument is a chip too, and the step moves to the free-text argument.
+    expect(screen.getByRole('button', { name: 'Remove Website' })).toBeTruthy();
+    expect(field().placeholder).toBe('Enter Note…');
+    fireEvent.change(field(), { target: { value: 'For Friday' } });
+    fireEvent.keyDown(field(), { key: 'Enter' });
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith(MULTI[0], { project: 'web', note: 'For Friday' });
+    expect(screen.getByTestId('state').textContent).toBe('closed');
+  });
+
+  it('Enter on an empty free-text argument does not run the command', () => {
+    const onSelect = vi.fn();
+    render(<Harness items={MULTI} onSelect={onSelect} />);
+    fireEvent.click(screen.getByRole('option', { name: /Move issue/ }));
+    fireEvent.click(screen.getByRole('option', { name: /Website/ }));
+    fireEvent.keyDown(field(), { key: 'Enter' });
+    expect(onSelect).not.toHaveBeenCalled();
+    expect(screen.getByTestId('state').textContent).toBe('open');
+  });
+
+  it('Backspace on an empty field removes the last chip and steps back', () => {
+    render(<Harness items={MULTI} />);
+    fireEvent.click(screen.getByRole('option', { name: /Move issue/ }));
+    fireEvent.click(screen.getByRole('option', { name: /Website/ }));
+    fireEvent.keyDown(field(), { key: 'Backspace' });
+    // The argument chip is gone and its options are listed again.
+    expect(screen.queryByRole('button', { name: 'Remove Website' })).toBeNull();
+    expect(optionNames()).toEqual(['Website', 'API platform']);
+    fireEvent.keyDown(field(), { key: 'Backspace' });
+    // The command chip is gone too: back to the top-level command list.
+    expect(screen.queryByRole('button', { name: 'Remove Move issue' })).toBeNull();
+    expect(optionNames()).toEqual(['Move issue', 'Go to inbox']);
+  });
+
+  it('Backspace with text in the field leaves the chips alone', () => {
+    render(<Harness items={MULTI} />);
+    fireEvent.click(screen.getByRole('option', { name: /Move issue/ }));
+    fireEvent.change(field(), { target: { value: 'web' } });
+    fireEvent.keyDown(field(), { key: 'Backspace' });
+    expect(screen.getByRole('button', { name: 'Remove Move issue' })).toBeTruthy();
+  });
+
+  it('dismissing a chip steps back to that argument and returns focus to the field', () => {
+    render(<Harness items={MULTI} />);
+    fireEvent.click(screen.getByRole('option', { name: /Move issue/ }));
+    fireEvent.click(screen.getByRole('option', { name: /Website/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Remove Website' }));
+    expect(screen.queryByRole('button', { name: 'Remove Website' })).toBeNull();
+    expect(optionNames()).toEqual(['Website', 'API platform']);
+    expect(document.activeElement).toBe(field());
   });
 
   it('clears the query when it reopens', () => {
