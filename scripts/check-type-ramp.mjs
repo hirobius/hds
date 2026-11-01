@@ -37,10 +37,10 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
-import { readFileSync } from 'node:fs';
 import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { hasJsonFlag } from './lib/gate-output.mjs';
+import { scanFiles, reportAndExit } from './lib/violation-gate-cli.mjs';
 import { scanSources, suppressionFor, maskComments, isSpecFile } from './lib/source-scan.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
@@ -247,50 +247,20 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
           skipDirs: SKIP_DIRS,
         }).filter((f) => !isExempt(relative(ROOT, f).replace(/\\/g, '/')));
 
-  const violations = [];
-  for (const f of files) {
-    const rel = relative(ROOT, f).replace(/\\/g, '/');
-    violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
-  }
+  const violations = scanFiles(files, findViolationsInText, ROOT);
   if (!(isFixtureMode && fixtureFile)) {
     violations.push(...findTokenViolations(readTokenSource(join(ROOT, 'hirobius.tokens.json'))));
   }
-
-  if (jsonMode) {
-    emitResult(
-      {
-        violations: violations.map((v) => ({
-          file: v.file,
-          line: v.line,
-          rule: v.rule,
-          severity: 'error',
-          message: v.message,
-          ...(v.sample ? { sample: v.sample } : {}),
-        })),
-        summary: { total: violations.length },
-        ok: violations.length === 0,
-      },
-      true,
-    );
-    process.exit(violations.length === 0 ? 0 : 1);
-  }
-
-  if (violations.length === 0) {
-    console.log(
+  reportAndExit({
+    violations,
+    jsonMode,
+    gate: 'check-type-ramp',
+    okMessage:
       '[ok] check-type-ramp: src/ uses the seven roles only (display, title, titleSm, body, ui, caption, mono)',
-    );
-    process.exit(0);
-  }
-  console.error(
-    `\n✗ check-type-ramp: ${violations.length} use${violations.length === 1 ? '' : 's'} off the type ramp (hds#486):\n`,
-  );
-  for (const v of violations) {
-    console.error(`  ${v.file}${v.line ? `:${v.line}` : ''}  [${v.rule}] ${v.message}`);
-    if (v.sample) console.error(`    ${v.sample}`);
-  }
-  console.error(
-    '\nFix: use <Text variant="…">, hds.typeStyles.<role> or the .hds-type-<role> class,',
-  );
-  console.error('  or suppress with // type-ramp-ok: <reason>\n');
-  process.exit(1);
+    failHeading: (n) => `${n} use${n === 1 ? '' : 's'} off the type ramp (hds#486)`,
+    footer: [
+      'Fix: use <Text variant="…">, hds.typeStyles.<role> or the .hds-type-<role> class,',
+      '  or suppress with // type-ramp-ok: <reason>',
+    ],
+  });
 }

@@ -25,10 +25,10 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
-import { readFileSync } from 'node:fs';
 import { join, dirname, extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { hasJsonFlag } from './lib/gate-output.mjs';
+import { scanFiles, reportAndExit } from './lib/violation-gate-cli.mjs';
 import { scanSources, findMarker, maskComments, isSpecFile } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -148,42 +148,15 @@ export function defaultFiles() {
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : defaultFiles();
-  const violations = [];
-  for (const f of files) {
-    const rel = relative(ROOT, f).replace(/\\/g, '/');
-    violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
-  }
-
-  if (jsonMode) {
-    emitResult(
-      {
-        violations: violations.map((v) => ({
-          file: v.file,
-          line: v.line,
-          rule: v.rule,
-          severity: 'error',
-          message: v.message,
-          sample: v.sample,
-        })),
-        summary: { total: violations.length },
-        ok: violations.length === 0,
-      },
-      true,
-    );
-    process.exit(violations.length === 0 ? 0 : 1);
-  }
-
-  if (violations.length === 0) {
-    console.log('[ok] check-no-status-clutter: no status dots or coloured accent bars');
-    process.exit(0);
-  }
-  console.error(`\n✗ check-no-status-clutter: ${violations.length} status dot or accent bar:\n`);
-  for (const v of violations) {
-    console.error(`  ${v.file}:${v.line}  [${v.rule}] ${v.message}`);
-    console.error(`    ${v.sample}`);
-  }
-  console.error(
-    '\nFix: remove it; show status in the content (a text Badge). Exempt a line with // status-clutter-ok: <reason>.\n',
-  );
-  process.exit(1);
+  const violations = scanFiles(files, findViolationsInText, ROOT);
+  reportAndExit({
+    violations,
+    jsonMode,
+    gate: 'check-no-status-clutter',
+    okMessage: '[ok] check-no-status-clutter: no status dots or coloured accent bars',
+    failHeading: (n) => `${n} status dot or accent bar`,
+    footer: [
+      'Fix: remove it; show status in the content (a text Badge). Exempt a line with // status-clutter-ok: <reason>.',
+    ],
+  });
 }

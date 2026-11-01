@@ -22,10 +22,10 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
-import { readFileSync } from 'node:fs';
 import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { hasJsonFlag } from './lib/gate-output.mjs';
+import { scanFiles, reportAndExit } from './lib/violation-gate-cli.mjs';
 import { scanSources, findMarker, maskComments } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -102,45 +102,16 @@ function defaultFiles() {
 // ── CLI entry ─────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : defaultFiles();
-  const violations = [];
-  for (const f of files) {
-    const rel = relative(ROOT, f).replace(/\\/g, '/');
-    violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
-  }
-
-  if (jsonMode) {
-    emitResult(
-      {
-        violations: violations.map((v) => ({
-          file: v.file,
-          line: v.line,
-          rule: v.rule,
-          severity: 'error',
-          message: v.message,
-          sample: v.sample,
-        })),
-        summary: { total: violations.length },
-        ok: violations.length === 0,
-      },
-      true,
-    );
-    process.exit(violations.length === 0 ? 0 : 1);
-  }
-
-  if (violations.length === 0) {
-    console.log('[ok] check-no-custom-tracking: all letter-spacing comes from type tokens');
-    process.exit(0);
-  }
-  console.error(
-    `\n✗ check-no-custom-tracking: ${violations.length} hand-set letter-spacing${violations.length === 1 ? '' : 's'}:\n`,
-  );
-  for (const v of violations) {
-    console.error(`  ${v.file}:${v.line}  [${v.rule}] ${v.message}`);
-    console.error(`    ${v.sample}`);
-  }
-  console.error(
-    '\nFix: use var(--semantic-typography-<role>-letter-spacing) or a .hds-type-<role> class.',
-  );
-  console.error('  Exempt a line with /* tracking-ok: <reason> */ (the reason is required).\n');
-  process.exit(1);
+  const violations = scanFiles(files, findViolationsInText, ROOT);
+  reportAndExit({
+    violations,
+    jsonMode,
+    gate: 'check-no-custom-tracking',
+    okMessage: '[ok] check-no-custom-tracking: all letter-spacing comes from type tokens',
+    failHeading: (n) => `${n} hand-set letter-spacing${n === 1 ? '' : 's'}`,
+    footer: [
+      'Fix: use var(--semantic-typography-<role>-letter-spacing) or a .hds-type-<role> class.',
+      '  Exempt a line with /* tracking-ok: <reason> */ (the reason is required).',
+    ],
+  });
 }
