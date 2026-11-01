@@ -116,7 +116,7 @@ export function TabsTrigger({
 // `panel` is the tinted surface pulled up under the strip (in-page tabs); `bare` sits on the page,
 // for tabs that are an app's top-level nav or a page's sections (hds#819).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface.selected has no Tailwind-theme utility; the old bg-accent/5 tint was near-invisible (hds#522)
-const tabsContentVariants = /* @__PURE__ */ cva('', {
+const tabsContentVariants = /* @__PURE__ */ cva('hds-tabs-content', {
   variants: {
     variant: {
       panel: 'bg-[var(--semantic-color-surface-selected)] rounded-b-md p-fixed-md -mt-fixed-md',

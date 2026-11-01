@@ -1,1 +1,1 @@
-Dropped 15 hand-written utilities Tailwind already emits, so sm:/disabled: variants win (#938).
+Tabs: the active panel fades and rises in on the productive motion token, static under reduced motion (hds#938).

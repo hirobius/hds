@@ -60,6 +60,7 @@ export default [
       'hds/no-delight-on-actions': 'error',
       'hds/no-deprecated-import': 'warn',
       'hds/no-deprecated-token': 'error',
+      'hds/no-nested-cards': 'error',
       'hds/no-primitive-spacing': 'error',
       'hds/no-raw-controls': 'error',
       'hds/no-removed-import': 'error',
@@ -81,6 +82,7 @@ export default [
 | [`hds/no-delight-on-actions`](#hdsno-delight-on-actions)             | error   | The lime delight accent (`semantic.accent.delight.*`) on a button, a link or a focus style.            |
 | [`hds/no-deprecated-import`](#hdsno-deprecated-import)               | warn    | An import of a `@deprecated` export; the message names its removal version.                            |
 | [`hds/no-deprecated-token`](#hdsno-deprecated-token)                 | error   | A `$deprecated` token as a CSS var, `hds.*` member or Tailwind key; the message names the replacement. |
+| [`hds/no-nested-cards`](#hdsno-nested-cards)                         | error   | A `Card` or section surface (`Surface`, `Callout`) inside another; group with type hierarchy.          |
 | [`hds/no-primitive-spacing`](#hdsno-primitive-spacing)               | error   | Primitive spacing steps (`--primitive-space-*`, `hds.space.pxN`, Tailwind `p-4`); use semantic tokens. |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
 | [`hds/no-removed-import`](#hdsno-removed-import)                     | error   | An import of an export the installed version has reached the `@removeIn` of.                           |
@@ -141,6 +143,23 @@ version it leaves in and the replacement:
 
 The list is `rules/deprecated-tokens.json`, which the token build writes, so a
 newly deprecated token fails with no rule change.
+
+### `hds/no-nested-cards`
+
+No cards within cards, ever (hds#1046). Reports `nested` when a card (`Card`) or
+section surface (`Surface`, `Callout`) renders inside another card or section
+surface, at any depth in the same JSX tree, including the common **section
+surface wrapping a card list** (`<Surface><h2>Review new</h2>{jobs.map(j =>
+<Card/>)}</Surface>`). Declare the group with type hierarchy instead (a section
+title, a count, metadata) on a plain region, and separate list items with
+spacing or dividers. Compound parts (`Card.Header`, `Card.Row`) are not cards.
+Names imported from `@hirobius/design-system` are followed through aliases; a
+same-named import from another module is ignored.
+
+Options: `cards` and `surfaces` (string arrays) add your own wrappers that draw
+a card or a surface, e.g. `{ cards: ['ListCard'], surfaces: ['PipelinePanel'] }`.
+A wrapper defined in its own component is only seen where its JSX nests, so list
+your wrappers here.
 
 ### `hds/no-primitive-spacing`
 
