@@ -20,9 +20,27 @@ import {
 
 type HeadingProps = HTMLAttributes<HTMLHeadingElement>;
 
+// Fumadocs' Callout, Card/Cards and CodeBlockTabs are dropped from the MDX map (hds#806): no
+// docs content uses them, and leaving them in would render Fumadocs chrome the Corners and
+// Shadow switches don't reach. When content first needs one, map it to the HDS Alert, Card or
+// Tabs here instead of restoring the Fumadocs component.
+const {
+  Callout: _fumadocsCallout,
+  CalloutContainer: _fumadocsCalloutContainer,
+  CalloutTitle: _fumadocsCalloutTitle,
+  CalloutDescription: _fumadocsCalloutDescription,
+  Card: _fumadocsCard,
+  Cards: _fumadocsCards,
+  CodeBlockTab: _fumadocsCodeBlockTab,
+  CodeBlockTabs: _fumadocsCodeBlockTabs,
+  CodeBlockTabsList: _fumadocsCodeBlockTabsList,
+  CodeBlockTabsTrigger: _fumadocsCodeBlockTabsTrigger,
+  ...baseMdxComponents
+} = defaultMdxComponents;
+
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
-    ...defaultMdxComponents,
+    ...baseMdxComponents,
     // Plain headings: keep the id the contents rail links to, drop the
     // per-heading copy-link button.
     h2: (props: HeadingProps) => <h2 {...props} />,
