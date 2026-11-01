@@ -54,6 +54,24 @@ describe('reportLineViolations', () => {
       '  Exempt a line.\n',
     ]);
   });
+  it('carries per-violation extra fields into JSON, between message and sample', () => {
+    const withExtra = { ...v, extra: { prop: 'gap', value: '16px' } };
+    const r = capture(() => reportLineViolations([withExtra], true, opts));
+    expect(r.code).toBe(1);
+    const [entry] = JSON.parse(r.out.join('')).violations;
+    expect(Object.keys(entry)).toEqual([
+      'file',
+      'line',
+      'rule',
+      'severity',
+      'message',
+      'prop',
+      'value',
+      'sample',
+    ]);
+    expect(entry.prop).toBe('gap');
+    expect(entry.value).toBe('16px');
+  });
   it('emits the canonical JSON shape in json mode', () => {
     const r = capture(() => reportLineViolations([v], true, opts));
     expect(r.code).toBe(1);
