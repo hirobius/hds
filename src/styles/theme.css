@@ -170,7 +170,7 @@
   --hds-anim-enter: var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing);
   --hds-anim-entrance: var(--hds-motion-expressive-duration) var(--hds-motion-expressive-easing);
   --hds-anim-skeleton: var(--hds-motion-spatial-duration) ease-in-out infinite;
-  --hds-anim-spin: calc(var(--hds-motion-spatial-duration) * 8) var(--hds-motion-expressive-easing);
+  --hds-anim-spin: calc(var(--hds-motion-spatial-duration) * 8) linear;
 
   /* -- Accent ramp (blue scale aliases — raw stop access) --------------------- */
   --hds-accent-50: var(--primitive-color-blue-50);
