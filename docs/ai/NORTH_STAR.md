@@ -46,7 +46,8 @@ design-system _engineering_, not just styling.**
 - **Not a do-everything, opinion-free kit.** A system flexible enough for
   "anything" has no spine. HDS's strength is a committed, distinctive visual
   identity — today a high-contrast, near-monochrome base, with a branded accent
-  system planned. The opinion is a chosen identity, not a specific palette;
+  system planned (a primary accent + a supporting one). The opinion is a chosen
+  identity, not a specific palette;
   flex it through the token knob, not by diluting it into a neutral kit.
 - **Not a per-project component fork.** New visual needs are met by tokens /
   tenants, or a schema-fitting new component — never by copying a component and
