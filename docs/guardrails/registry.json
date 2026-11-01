@@ -76,6 +76,16 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-behaviour-detectors",
+      "description": "Behaviour detectors (hds#468): one local gate (pnpm check:behaviour) running the DOM and accessibility baseline (docs/baselines/dom-a11y.json), the SSR hydration-mismatch gate and the console budget (docs/guardrails/baselines/console-allowlist.json), each with its fixture proof. The baselines are ratchets: a diff needs an upgrade step. The same tests also run in pnpm test, so pre-push fires them.",
+      "severity": "error",
+      "gateScript": "scripts/check-behaviour-detectors.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "on-demand"
+    },
+    {
       "id": "check-binding-drift",
       "description": "Soft gate that catches the failure mode where a component starts referencing a component-tier CSS variable that the masters pipeline doesn't know to bind.",
       "severity": "warn",
@@ -326,6 +336,17 @@
       "supportsJson": true,
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
+      "id": "check-impeccable-detect",
+      "description": "Design anti-pattern detector wrapping `npx impeccable detect` (pbakaus/impeccable, Apache-2.0): deterministic typography / color / layout rules, no LLM, no API key. Exits 78 (skip) when npx or the network is unavailable. Restored for hds#553.",
+      "severity": "warn",
+      "gateScript": "scripts/check-impeccable-detect.mjs",
+      "fixturePath": "fixtures/check-impeccable-detect",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand",
+      "supportsJson": true
     },
     {
       "id": "check-layout-discipline",
@@ -706,7 +727,7 @@
       "fixturePath": "fixtures/check-reduced-motion",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "ralph-gate"
+      "firingChannel": "on-demand"
     },
     {
       "id": "check-ref-forwarding",

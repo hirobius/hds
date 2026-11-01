@@ -32,7 +32,7 @@ export const THEMES = {
   light: ROOT,
   dark: { ...ROOT, ...block('[data-theme="dark"]') },
 } as const;
-export type Theme = keyof typeof THEMES;
+type Theme = keyof typeof THEMES;
 
 /** A custom property's value in a theme, following `var(--x)` chains. */
 export function resolveVar(name: string, theme: Theme): string {

@@ -58,9 +58,11 @@ export default [
       'hds/max-two-meta-items': 'error',
       'hds/no-custom-tracking': 'error',
       'hds/no-delight-on-actions': 'error',
+      'hds/no-deprecated-import': 'warn',
       'hds/no-deprecated-token': 'error',
       'hds/no-primitive-spacing': 'error',
       'hds/no-raw-controls': 'error',
+      'hds/no-removed-import': 'error',
       'hds/no-raw-hex': 'error',
       'hds/no-raw-px-spacing': 'error',
       'hds/sx-token-first': 'error',
@@ -82,6 +84,7 @@ export default [
 | [`hds/no-removed-import`](#hdsno-removed-import)                     | error   | Importing a name a shipped release removed; the message names the release and the migration.           |
 | [`hds/no-primitive-spacing`](#hdsno-primitive-spacing)               | error   | Primitive spacing steps (`--primitive-space-*`, `hds.space.pxN`, Tailwind `p-4`); use semantic tokens. |
 | [`hds/no-raw-controls`](#hdsno-raw-controls)                         | error   | Raw `<button>`, `<input>`, `<select>`, `<textarea>`, `<form>` where an HDS component exists.           |
+| [`hds/no-removed-import`](#hdsno-removed-import)                     | error   | An import of an export the installed version has reached the `@removeIn` of.                           |
 | [`hds/no-raw-hex`](#hdsno-raw-hex)                                   | error   | Raw hex colors (`#fff`, `#ff00aa`) in `style={{…}}` or `className`.                                    |
 | [`hds/no-raw-px-spacing`](#hdsno-raw-px-spacing)                     | error   | Raw `'Npx'` strings or bare numbers on `margin`/`padding`/`gap` family props in `style={{…}}`.         |
 | [`hds/no-status-clutter`](#hdsno-status-clutter)                     | error   | `<Badge dot>` and a coloured left-border accent bar (`border-l-2`..`8` plus a tone colour).            |

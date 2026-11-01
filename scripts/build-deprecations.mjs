@@ -1,134 +1,68 @@
-#!/usr/bin/env node
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * build-deprecations.mjs — write the shipped `deprecations.json` (hds#469).
+ * build-deprecations.mjs (hds#469)
  *
- * Consumers only saw a deprecation as editor strikethrough. This record is
- * the machine-readable list, generated from the sources that already carry
- * the truth (lib/deprecations.mjs): the public surface's `@deprecated`
- * JSDoc (exports, props, prop values), the `$deprecated` tokens, and the
- * shipped upgrade ledgers (what each release removed). The eslint rules
- * `hds/no-deprecated-import` and `hds/no-removed-import` read the installed
- * package's copy of this file.
+ * Writes scripts/eslint-plugin-hds/rules/deprecated-exports.json: every
+ * exported component / type a `@deprecated` JSDoc block sits on, plus every
+ * deprecated prop and prop value (string-literal union member), each with its
+ * `@removeIn` version. It ships inside the package (the rules/ folder is in
+ * package.json#files), and hds/no-deprecated-import reads it, so a consumer's
+ * lint names a deprecated import and when it goes. The token half is
+ * deprecated-tokens.json (scripts/build-tokens.mjs).
  *
- * Usage:
- *   node scripts/build-deprecations.mjs           rewrite deprecations.json
- *   node scripts/build-deprecations.mjs --check   fail when it is stale (pretest)
+ * Scope matches check-deprecations.mjs: top-level files of src/app/components,
+ * plus src/index.ts and src/patterns.ts. A drift test
+ * (scripts/__tests__/export-deprecations.test.mjs) fails when the committed
+ * file is stale.
+ *
+ * Usage: node scripts/build-deprecations.mjs (from the package root)
  */
-import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs';
-import { dirname, join, relative, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import ts from 'typescript';
-import { deprecationScope } from './check-deprecations.mjs';
-import { buildDeprecations, deprecationsInFile, removedFromLedgers } from './lib/deprecations.mjs';
-import { readJsExportEntries } from './lib/package-entries.mjs';
-import { collectDeprecations } from './lib/token-deprecations.mjs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { collectExportDeprecations, collectPropDeprecations } from './lib/export-deprecations.mjs';
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = join(ROOT, 'deprecations.json');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const OUT = join(ROOT, 'scripts', 'eslint-plugin-hds', 'rules', 'deprecated-exports.json');
 
-const isSource = (file) => /\.tsx?$/.test(file) && existsSync(file) && statSync(file).isFile();
-
-/** The module a relative specifier names, or null for a non-TS target. */
-function resolveModule(fromFile, specifier) {
-  const base = resolve(dirname(fromFile), specifier);
-  return (
-    [base, `${base}.ts`, `${base}.tsx`, join(base, 'index.ts'), join(base, 'index.tsx')].find(
-      isSource,
-    ) ?? null
-  );
-}
-
-const REEXPORT_RE =
-  /^\s*export\s+(?:type\s+)?(?:\*(?:\s+as\s+\w+)?|\{[^}]*\})\s*from\s*['"](\.{1,2}\/[^'"]+)['"]/gm;
-
-/** The names one source file exports: its own exported declarations and its export lists. */
-function exportedNames(file) {
-  const text = readFileSync(file, 'utf-8');
-  const kind = file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
-  const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
-  const names = new Set();
-  for (const stmt of source.statements) {
-    if (ts.isExportDeclaration(stmt)) {
-      if (stmt.exportClause && ts.isNamedExports(stmt.exportClause)) {
-        for (const el of stmt.exportClause.elements) names.add(el.name.text);
-      } else if (stmt.exportClause && ts.isNamespaceExport(stmt.exportClause)) {
-        names.add(stmt.exportClause.name.text);
-      }
-      continue;
-    }
-    const exported = stmt.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword);
-    if (!exported) continue;
-    if (ts.isVariableStatement(stmt)) {
-      for (const decl of stmt.declarationList.declarations) {
-        if (ts.isIdentifier(decl.name)) names.add(decl.name.text);
-      }
-    } else if (stmt.name) names.add(stmt.name.text);
+function sources() {
+  const dir = join(ROOT, 'src', 'app', 'components');
+  const files = readdirSync(dir)
+    .filter((f) => /\.tsx?$/.test(f) && !/\.(test|spec|stories)\./.test(f))
+    .sort()
+    .map((f) => join(dir, f));
+  for (const f of ['src/index.ts', 'src/patterns.ts']) {
+    if (existsSync(join(ROOT, f))) files.push(join(ROOT, f));
   }
-  return names;
+  return files;
 }
 
-/**
- * `${specifier} ${name}` for every name each package entry exports today,
- * following relative re-exports — the live surface the removed list is
- * checked against, so a name an entry exports again is not listed as removed.
- */
-function liveExports(root, pkg) {
-  const live = new Set();
-  for (const { key, file } of readJsExportEntries(root)) {
-    const specifier = key === '.' ? pkg.name : `${pkg.name}/${key.slice(2)}`;
-    const seen = new Set();
-    const queue = [file];
-    while (queue.length) {
-      const current = queue.pop();
-      if (seen.has(current)) continue;
-      seen.add(current);
-      for (const name of exportedNames(current)) live.add(`${specifier} ${name}`);
-      for (const m of readFileSync(current, 'utf-8').matchAll(REEXPORT_RE)) {
-        const target = resolveModule(current, m[1]);
-        if (target) queue.push(target);
-      }
-    }
+export function buildDeprecationsJson() {
+  const exports = [];
+  const props = [];
+  const propValues = [];
+  for (const abs of sources()) {
+    const content = readFileSync(abs, 'utf8');
+    const file = relative(ROOT, abs).replaceAll('\\', '/');
+    exports.push(...collectExportDeprecations(content, file));
+    const found = collectPropDeprecations(content, file);
+    props.push(...found.props);
+    propValues.push(...found.propValues);
   }
-  return live;
+  return `${JSON.stringify(
+    {
+      $comment:
+        'Generated by scripts/build-deprecations.mjs from @deprecated JSDoc on exported declarations, props and prop values. Do not edit.',
+      exports,
+      props,
+      propValues,
+    },
+    null,
+    2,
+  )}\n`;
 }
 
-/** The full record for the tree at `root`, as it should be committed. */
-export function renderDeprecations(root) {
-  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf-8'));
-  const api = deprecationScope(root).flatMap((file) =>
-    deprecationsInFile(relative(root, file).replace(/\\/g, '/'), readFileSync(file, 'utf-8')),
-  );
-  const tokensTree = JSON.parse(readFileSync(join(root, 'hirobius.tokens.json'), 'utf-8'));
-  const releasesDir = join(root, 'upgrade', 'releases');
-  const ledgers = readdirSync(releasesDir)
-    .filter((f) => f.endsWith('.json'))
-    .map((f) => JSON.parse(readFileSync(join(releasesDir, f), 'utf-8')));
-  const record = buildDeprecations({
-    version: pkg.version,
-    api,
-    tokens: collectDeprecations(tokensTree),
-    removed: removedFromLedgers(ledgers),
-    liveExports: liveExports(root, pkg),
-  });
-  return `${JSON.stringify(record, null, 2)}\n`;
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  writeFileSync(OUT, buildDeprecationsJson());
+  console.log(`wrote ${relative(ROOT, OUT)}`);
 }
-
-function main() {
-  const next = renderDeprecations(ROOT);
-  if (process.argv.includes('--check')) {
-    const current = existsSync(OUT) ? readFileSync(OUT, 'utf-8') : '';
-    if (current !== next) {
-      console.error(
-        '✗ deprecations.json is stale — run `node scripts/build-deprecations.mjs` and commit the result.',
-      );
-      process.exit(1);
-    }
-    console.log('✓ deprecations.json is fresh.');
-    return;
-  }
-  writeFileSync(OUT, next);
-  console.log('✓ deprecations.json written.');
-}
-
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

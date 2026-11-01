@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "hds/no-removed-import (an error in recommended) flags an import of an export that the installed version has already removed, so nothing fires before 1.0.0."
+}

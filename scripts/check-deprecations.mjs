@@ -14,13 +14,9 @@
  *
  * Rules per `@deprecated` JSDoc block:
  *   1. must include `@removeIn <semver>` (e.g. `@removeIn 1.0.0`)
- *   2. that semver must be GREATER than the current package.json version
+ *   2. that semver must be GREATER than the version the pending changesets
+ *      release (package.json's version when none are pending; hds#469)
  *      (a past-due deprecation is a failure — remove it, with its codemod)
- *
- * The comparison version is the NEXT release when changesets are pending
- * (hds#469): the highest pending bump applied to the current version. A PR
- * whose minor changeset makes a `@removeIn` past due fails on that PR, not
- * one release later on the Version PR.
  *
  * A tag counts only at the start of a JSDoc line, the way the manifest reads
  * it (scripts/lib/jsdoc-contract.mjs parseDeprecation): a one-line
@@ -49,9 +45,9 @@ import { dirname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { gt, isVersion } from '../codemods/lib/semver.mjs';
 import { parseDeprecation } from './lib/jsdoc-contract.mjs';
-import { changesetBump, nextVersion } from './lib/next-version.mjs';
 import { readJsExportEntries } from './lib/package-entries.mjs';
 import { collectDeprecations } from './lib/token-deprecations.mjs';
+import { nextVersion, readPendingBumps } from './lib/next-version.mjs';
 
 const ROOT = process.cwd();
 const SOURCE_DIRS = ['src/app/components', 'src/app/layouts'];
@@ -63,20 +59,15 @@ const isFixtureMode =
   process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
 const fixtureFile = process.env.FIXTURE_FILE;
 // In fixture mode, override the "current version" so fixtures are deterministic
-// regardless of the real package version. Otherwise main() raises it to the
-// next release when pending changesets bump the package (hds#469).
-let COMPARE_VERSION = isFixtureMode ? '1.0.0' : CURRENT_VERSION;
-let COMPARE_LABEL = isFixtureMode ? 'fixture 1.0.0' : `current ${CURRENT_VERSION}`;
-
-/** The version the pending changesets at `root` will ship as, or null when none bump this package. */
-function pendingNextVersion(root) {
-  const dir = join(root, '.changeset');
-  if (!existsSync(dir)) return null;
-  const bumps = readdirSync(dir)
-    .filter((f) => f.endsWith('.md') && f !== 'README.md')
-    .map((f) => changesetBump(readFileSync(join(dir, f), 'utf-8'), PKG.name));
-  return nextVersion(CURRENT_VERSION, bumps);
-}
+// regardless of the real package version.
+// Otherwise compare against the version the pending changesets release
+// (hds#469), so the PR whose changeset makes a @removeIn due fails itself.
+const NEXT_VERSION = nextVersion(CURRENT_VERSION, readPendingBumps(ROOT, PKG.name));
+const COMPARE_VERSION = isFixtureMode ? '1.0.0' : NEXT_VERSION;
+const COMPARE_LABEL =
+  !isFixtureMode && NEXT_VERSION !== CURRENT_VERSION
+    ? `next ${NEXT_VERSION}, from pending changesets`
+    : `current ${COMPARE_VERSION}`;
 
 const JSDOC_RE = /\/\*\*[\s\S]*?\*\//g;
 
@@ -183,14 +174,6 @@ export function deprecationScope(root) {
 }
 
 function main() {
-  if (!isFixtureMode) {
-    const next = pendingNextVersion(ROOT);
-    if (next) {
-      COMPARE_VERSION = next;
-      COMPARE_LABEL = `next release ${next} (pending changesets)`;
-    }
-  }
-
   const entries = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : deprecationScope(ROOT);
 
   const violations = [];
@@ -213,7 +196,7 @@ function main() {
 
   if (violations.length === 0) {
     console.log(
-      `✓ check-deprecations — every @deprecated has a future @removeIn target (${entries.length} files, against ${COMPARE_LABEL}).`,
+      `✓ check-deprecations — every @deprecated has a future @removeIn target (${entries.length} files).`,
     );
     process.exit(0);
   }

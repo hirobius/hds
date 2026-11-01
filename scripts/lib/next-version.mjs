@@ -1,49 +1,48 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * next-version.mjs — the version the pending changesets will ship as.
+ * The version the pending changesets will release (hds#469), so
+ * check-deprecations fails the PR whose changeset makes a `@removeIn` past due
+ * instead of the later Version PR. Same arithmetic as `changeset version`:
+ * the largest pending bump wins; a major from 0.x goes to 1.0.0. A pre-release
+ * current version is returned as is (pre mode numbers its own releases).
  *
- * check-deprecations used to compare `@removeIn` only against the current
- * package version, so it went red on the Version PR — one release too late
- * for the PR that caused it (hds#469). Reading the pending changesets'
- * bumps instead makes a PR whose own changeset pushes a removal past due
- * fail on that PR.
- *
- * Pure: callers hand in changeset texts; no fs here.
+ * Pure apart from readPendingBumps, which only reads `.changeset/*.md`.
  */
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+import { parseVersion } from '../../codemods/lib/semver.mjs';
 
 const RANK = { patch: 1, minor: 2, major: 3 };
+const FRONT_MATTER = /^---\r?\n([\s\S]*?)\r?\n---/;
 
-/**
- * The bump one changeset's frontmatter declares for `packageName`, or null
- * when it does not name the package. Frontmatter is the `---` block at the
- * top: `'@hirobius/design-system': minor`.
- * @param {string} text a .changeset/*.md file
- * @param {string} packageName
- * @returns {'major'|'minor'|'patch'|null}
- */
-export function changesetBump(text, packageName) {
-  const frontmatter = /^---\n([\s\S]*?)\n---/.exec(String(text ?? ''));
-  if (!frontmatter) return null;
-  for (const line of frontmatter[1].split('\n')) {
-    const m = /^['"]?([^'":]+?)['"]?\s*:\s*(major|minor|patch)\s*$/.exec(line.trim());
-    if (m && m[1] === packageName) return m[2];
+/** The bump a changeset's front matter gives `pkg`, or null. */
+export function bumpOf(text, pkg) {
+  const fm = FRONT_MATTER.exec(String(text))?.[1];
+  if (!fm) return null;
+  for (const line of fm.split(/\r?\n/)) {
+    const m = /^\s*['"]?([^'":]+)['"]?\s*:\s*(major|minor|patch)\s*$/.exec(line);
+    if (m && m[1].trim() === pkg) return m[2];
   }
   return null;
 }
 
-/**
- * `current` bumped by the strongest of `bumps` (changesets semantics: the
- * highest bump wins). Null when there is nothing pending.
- * @param {string} current an X.Y.Z version
- * @param {Array<string|null>} bumps
- * @returns {string|null}
- */
+/** @param {string} current @param {string[]} bumps */
 export function nextVersion(current, bumps) {
-  const real = bumps.filter(Boolean);
-  if (!real.length) return null;
-  const top = real.reduce((a, b) => (RANK[b] > RANK[a] ? b : a));
-  const [x, y, z] = current.split('.').map(Number);
-  if (top === 'major') return `${x + 1}.0.0`;
-  if (top === 'minor') return `${x}.${y + 1}.0`;
-  return `${x}.${y}.${z + 1}`;
+  const v = parseVersion(current);
+  if (!v || v.prerelease.length) return current;
+  const top = bumps.reduce((a, b) => ((RANK[b] ?? 0) > (RANK[a] ?? 0) ? b : a), null);
+  if (top === 'major') return `${v.major + 1}.0.0`;
+  if (top === 'minor') return `${v.major}.${v.minor + 1}.0`;
+  if (top === 'patch') return `${v.major}.${v.minor}.${v.patch + 1}`;
+  return current;
+}
+
+/** Every pending bump for `pkg` in `<root>/.changeset` (none when the dir is absent). */
+export function readPendingBumps(root, pkg) {
+  const dir = join(root, '.changeset');
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.md') && f !== 'README.md')
+    .map((f) => bumpOf(readFileSync(join(dir, f), 'utf-8'), pkg))
+    .filter(Boolean);
 }

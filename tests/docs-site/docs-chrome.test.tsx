@@ -158,6 +158,40 @@ describe('slice 2: sidebar, drawer, contents rail, images', () => {
   });
 });
 
+describe('slice 3: search result rows and the MDX map (hds#806)', () => {
+  const css = () => read('docs-site/app/globals.css');
+
+  it('gives search result rows the HDS radius token, not the Sharp override', () => {
+    // The dialog is portalled outside #nd-docs-layout, so the layout-chrome rule cannot
+    // reach the rows; this rule is keyed on the result list itself.
+    const body = /#fd-search-list \[role='option'\]\s*\{([^}]*)\}/.exec(css())?.[1] ?? '';
+    expect(body).toContain('border-radius: var(--semantic-radius-action)');
+  });
+
+  it('drops the unused Fumadocs components from the MDX map', () => {
+    const mdx = read('docs-site/mdx-components.tsx');
+    // The defaults are spread only after the Fumadocs chrome is destructured out.
+    expect(mdx).toMatch(/\.\.\.baseMdxComponents/);
+    expect(mdx).not.toMatch(/\.\.\.defaultMdxComponents/);
+    for (const name of [
+      'Callout',
+      'Card',
+      'Cards',
+      'CodeBlockTab',
+      'CodeBlockTabs',
+      'CodeBlockTabsList',
+      'CodeBlockTabsTrigger',
+    ]) {
+      expect(mdx).toContain(`${name}: _fumadocs${name},`);
+    }
+    // The HDS mappings that slices 1-2 landed stay in the map.
+    expect(mdx).toMatch(/table:\s*MdxTable/);
+    expect(mdx).toMatch(/code:\s*MdxCode/);
+    expect(mdx).toMatch(/img:\s*MdxImg/);
+    expect(mdx).toMatch(/pre:\s*MdxPre/);
+  });
+});
+
 describe('sidebar group labels and drawer header (hds#860)', () => {
   afterEach(cleanup);
   const css = () => read('docs-site/app/globals.css');

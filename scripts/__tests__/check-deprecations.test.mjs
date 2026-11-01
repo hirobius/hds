@@ -230,41 +230,35 @@ describe('check-deprecations', () => {
     });
   });
 
-  // hds#469: the comparison version is the next release when changesets are
-  // pending, so the PR whose changeset makes a removal past due fails itself.
-  describe('compares against the next release from pending changesets (hds#469)', () => {
-    const PROBE = '\n/**\n * @deprecated Probe.\n * @removeIn 0.33.0\n */\nexport const __p = 1;\n';
+  // hds#469: the PR whose changeset makes a @removeIn past due fails on that PR.
+  describe('compares against the version pending changesets release (hds#469)', () => {
+    const PROBE =
+      '\n/**\n * @deprecated Probe.\n * @removeIn 0.100.0\n */\nexport const __p = 1;\n';
+    const changeset = (bump) => `---\n'@hirobius/design-system': ${bump}\n---\n\nProbe.\n`;
 
-    function withChangeset(dir, bump) {
-      mkdirSync(join(dir, '.changeset'), { recursive: true });
-      writeFileSync(
-        join(dir, '.changeset', 'probe.md'),
-        `---\n'@hirobius/design-system': ${bump}\n---\n\nProbe.\n`,
+    function setup(dir, bump) {
+      edit(dir, 'package.json', (src) =>
+        JSON.stringify({ ...JSON.parse(src), version: '0.99.4' }, null, 2),
       );
+      edit(dir, 'src/patterns.ts', (src) => src + PROBE);
+      mkdirSync(join(dir, '.changeset'), { recursive: true });
+      writeFileSync(join(dir, '.changeset', 'README.md'), '# Changesets\n');
+      if (bump) writeFileSync(join(dir, '.changeset', 'probe.md'), changeset(bump));
     }
 
-    it('passes when the removal is past the current version and no changeset is pending', () => {
+    it('fails when a pending minor changeset reaches a @removeIn', () => {
       withCopy((dir) => {
-        edit(dir, 'src/patterns.ts', (src) => src + PROBE);
-        expect(run(dir).status).toBe(0);
-      });
-    });
-
-    it('fails when a pending minor changeset makes the removal past due on this PR', () => {
-      withCopy((dir) => {
-        withChangeset(dir, 'minor');
-        edit(dir, 'src/patterns.ts', (src) => src + PROBE);
+        setup(dir, 'minor');
         const { status, output } = run(dir);
-        expect(output).toMatch(/@removeIn 0\.33\.0 is past-due \(<= next release 0\.33\.0/);
+        expect(output).toMatch(/@removeIn 0\.100\.0 is past-due \(<= next 0\.100\.0/);
         expect(status).toBe(1);
       });
     });
 
-    it('passes when only a patch is pending: the next release stays below the removal', () => {
+    it('passes the same @removeIn with only a patch changeset pending', () => {
       withCopy((dir) => {
-        withChangeset(dir, 'patch');
-        edit(dir, 'src/patterns.ts', (src) => src + PROBE);
-        expect(run(dir).status).toBe(0);
+        setup(dir, 'patch');
+        expect(run(dir).output).not.toMatch(/@removeIn 0\.100\.0 is past-due/);
       });
     });
   });

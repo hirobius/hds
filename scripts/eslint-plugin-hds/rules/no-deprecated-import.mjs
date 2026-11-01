@@ -1,57 +1,48 @@
 /**
- * hds/no-deprecated-import
+ * hds/no-deprecated-import (hds#469)
  *
- * Importing a deprecated export of @hirobius/design-system is an error, and
- * the message says when it goes and what replaces it. Until hds#469 a
- * deprecation reached a consumer only as editor strikethrough; this rule is
- * the lint half of the shipped record. The deprecated names come from the
- * installed package's deprecations.json (rules/deprecations-data.mjs),
- * generated from the same `@deprecated` JSDoc check-deprecations gates, so
- * a newly deprecated export is caught with no edit here. Token-object keys
- * (`hds.typeStyles.h1`) are member paths, not import names — the record
- * lists them as dotted names, and this rule leaves them to the JSDoc.
+ * Warns on an import of a `@deprecated` export of @hirobius/design-system
+ * (any entry), naming the version that removes it. Reads
+ * deprecated-exports.json, which scripts/build-deprecations.mjs writes from
+ * the package's JSDoc, so the installed package's own data drives the rule.
  */
-import { deprecationsData, isHdsSource } from './deprecations-data.mjs';
+import { readFileSync } from 'node:fs';
 
-const byName = new Map(
-  deprecationsData()
-    .exports.filter((e) => !e.name.includes('.'))
-    .map((e) => [e.name, e]),
+const { exports: DEPRECATED } = JSON.parse(
+  readFileSync(new URL('./deprecated-exports.json', import.meta.url), 'utf8'),
 );
+const byName = new Map(DEPRECATED.map((d) => [d.name, d]));
+const isHds = (source) =>
+  source === '@hirobius/design-system' || source.startsWith('@hirobius/design-system/');
 
+/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Disallow importing a deprecated export of @hirobius/design-system — the message names its removal version and replacement.',
-      recommended: true,
-      url: 'https://github.com/hirobius/hds/blob/main/scripts/eslint-plugin-hds/README.md#hdsno-deprecated-import',
-    },
+    type: 'suggestion',
+    docs: { description: 'Flag imports of deprecated @hirobius/design-system exports.' },
     schema: [],
     messages: {
-      deprecated:
-        '"{{name}}" is deprecated in @hirobius/design-system ({{notice}}) and is removed in {{removeIn}}.{{fix}}',
+      deprecated: '{{name}} is deprecated and is removed in {{removeIn}}: {{note}}{{instead}}',
     },
   },
   create(context) {
     return {
       ImportDeclaration(node) {
-        const source = node.source.value;
-        if (typeof source !== 'string' || !isHdsSource(source)) return;
-        for (const specifier of node.specifiers) {
-          if (specifier.type !== 'ImportSpecifier') continue;
-          const imported = specifier.imported.name ?? specifier.imported.value;
-          const entry = byName.get(imported);
-          if (!entry) continue;
+        if (typeof node.source.value !== 'string' || !isHds(node.source.value)) return;
+        for (const spec of node.specifiers) {
+          if (spec.type !== 'ImportSpecifier') continue;
+          const name =
+            spec.imported.type === 'Identifier' ? spec.imported.name : spec.imported.value;
+          const d = byName.get(name);
+          if (!d) continue;
           context.report({
-            node: specifier,
+            node: spec,
             messageId: 'deprecated',
             data: {
-              name: imported,
-              notice: entry.notice,
-              removeIn: entry.removeIn ?? 'a future release',
-              fix: entry.useInstead ? ` Use ${entry.useInstead} instead.` : '',
+              name,
+              removeIn: d.removeIn ?? 'a future version',
+              note: d.note,
+              instead: d.useInstead ? ` Use ${d.useInstead}.` : '',
             },
           });
         }

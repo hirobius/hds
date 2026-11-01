@@ -1,51 +1,86 @@
 /**
- * hds/no-removed-import
+ * hds/no-removed-import (hds#469)
  *
- * Importing a name a shipped release already removed from
- * @hirobius/design-system is an error: the import resolves to nothing, and
- * the message names the release that took it and the migration the upgrade
- * ledger recorded. The removed names come from the installed package's
- * deprecations.json (rules/deprecations-data.mjs), generated from the
- * upgrade ledgers' `detect.imports`, so a removal is caught with no edit
- * here. A name is only flagged at the entry point it was removed from —
- * a name that moved to `/patterns` still imports fine from there.
+ * Errors on an import of a @hirobius/design-system export whose `@removeIn`
+ * version the installed package has reached: the export is gone (or about to
+ * be), so the build would break. Below removeIn, hds/no-deprecated-import
+ * warns instead. Reads deprecated-exports.json and the installed package's
+ * own version (the package.json three levels up, where this file ships);
+ * the `version` option overrides it.
  */
-import { deprecationsData, isHdsSource } from './deprecations-data.mjs';
+import { readFileSync } from 'node:fs';
 
-const byKey = new Map(deprecationsData().removed.map((r) => [`${r.from} ${r.name}`, r]));
+const { exports: DEPRECATED } = JSON.parse(
+  readFileSync(new URL('./deprecated-exports.json', import.meta.url), 'utf8'),
+);
+const byName = new Map(DEPRECATED.filter((d) => d.removeIn).map((d) => [d.name, d]));
+const isHds = (source) =>
+  source === '@hirobius/design-system' || source.startsWith('@hirobius/design-system/');
 
+function installedVersion() {
+  try {
+    const pkg = JSON.parse(readFileSync(new URL('../../../package.json', import.meta.url), 'utf8'));
+    return pkg.name === '@hirobius/design-system' ? pkg.version : null;
+  } catch {
+    return null;
+  }
+}
+const INSTALLED = installedVersion();
+
+/** True when `version` is at or past `removeIn` (a prerelease is before its core). */
+export function isAtOrPast(version, removeIn) {
+  const parse = (v) => {
+    const [core, pre] = String(v).split('-');
+    return { nums: core.split('.').map((n) => Number.parseInt(n, 10) || 0), pre: Boolean(pre) };
+  };
+  const a = parse(version);
+  const b = parse(removeIn);
+  for (let i = 0; i < 3; i++) {
+    if ((a.nums[i] ?? 0) !== (b.nums[i] ?? 0)) return (a.nums[i] ?? 0) > (b.nums[i] ?? 0);
+  }
+  return !a.pre || b.pre;
+}
+
+/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',
     docs: {
       description:
-        'Disallow importing a name a shipped @hirobius/design-system release removed — the message names the release and the migration.',
-      recommended: true,
-      url: 'https://github.com/hirobius/hds/blob/main/scripts/eslint-plugin-hds/README.md#hdsno-removed-import',
+        'Flag imports of @hirobius/design-system exports removed in the installed version.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: { version: { type: 'string' } },
+        additionalProperties: false,
+      },
+    ],
     messages: {
-      removed: '"{{name}}" was removed from {{from}} in {{removedIn}}. {{note}}',
+      removed:
+        '{{name}} is removed in {{removeIn}} and @hirobius/design-system {{version}} is installed.{{instead}}',
     },
   },
   create(context) {
+    const version = context.options[0]?.version ?? INSTALLED;
+    if (!version) return {};
     return {
       ImportDeclaration(node) {
-        const source = node.source.value;
-        if (typeof source !== 'string' || !isHdsSource(source)) return;
-        for (const specifier of node.specifiers) {
-          if (specifier.type !== 'ImportSpecifier') continue;
-          const imported = specifier.imported.name ?? specifier.imported.value;
-          const entry = byKey.get(`${source} ${imported}`);
-          if (!entry) continue;
+        if (typeof node.source.value !== 'string' || !isHds(node.source.value)) return;
+        for (const spec of node.specifiers) {
+          if (spec.type !== 'ImportSpecifier') continue;
+          const name =
+            spec.imported.type === 'Identifier' ? spec.imported.name : spec.imported.value;
+          const d = byName.get(name);
+          if (!d || !isAtOrPast(version, d.removeIn)) continue;
           context.report({
-            node: specifier,
+            node: spec,
             messageId: 'removed',
             data: {
-              name: imported,
-              from: entry.from,
-              removedIn: entry.removedIn,
-              note: entry.note,
+              name,
+              removeIn: d.removeIn,
+              version,
+              instead: d.useInstead ? ` Use ${d.useInstead}.` : '',
             },
           });
         }

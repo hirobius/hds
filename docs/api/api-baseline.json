@@ -14,7 +14,7 @@
     "./icons": "src/icons.ts"
   },
   "version": "0.32.0",
-  "generatedAt": "2026-10-24",
+  "generatedAt": "2026-10-31",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -48,7 +48,7 @@
       "SxValue"
     ],
     "./app/components/button": ["Button", "ButtonProps"],
-    "./app/components/callout": ["Callout", "CalloutProps", "default"],
+    "./app/components/callout": ["Callout", "CalloutProps"],
     "./app/components/field": ["Field", "FieldProps"],
     "./app/components/stat": ["Stat", "StatProps"],
     "./app/components/status-list-item": [
@@ -113,6 +113,11 @@
       "ComposerProps",
       "ComposerSubmission"
     ],
+    "./app/components/command-palette": [
+      "CommandPalette",
+      "CommandPaletteItem",
+      "CommandPaletteProps"
+    ],
     "./app/components/theme-toggle": ["ThemeToggle", "ThemeToggleProps"],
     "./app/components/checkbox": ["Checkbox", "CheckboxProps", "HdsCheckboxDemoState"],
     "./app/components/radio": ["HdsRadioDemoState", "Radio", "RadioProps"],
@@ -136,7 +141,14 @@
       "TableSortDirection"
     ],
     "./app/components/tag": ["Tag", "TagProps"],
-    "./app/components/text": ["Text", "TextProps", "TextTone", "TextVariant", "TextWeight"],
+    "./app/components/text": [
+      "Text",
+      "TextLineClamp",
+      "TextProps",
+      "TextTone",
+      "TextVariant",
+      "TextWeight"
+    ],
     "./app/components/kbd": ["Kbd", "KbdProps"],
     "./app/components/timestamp": ["Timestamp", "TimestampFormat", "TimestampProps"],
     "./app/components/blockquote": ["Blockquote", "BlockquoteProps"],
@@ -158,6 +170,7 @@
     "./app/components/visually-hidden": ["VisuallyHidden", "VisuallyHiddenProps"],
     "./app/components/avatar-group": ["AvatarGroup", "AvatarGroupProps"],
     "./app/components/alert-dialog": ["AlertDialog", "AlertDialogContentProps"],
+    "./app/components/sheet": ["Sheet", "SheetActionProps", "SheetContentProps", "SheetProps"],
     "./app/components/metadata-list": ["MetadataList", "MetadataListItem", "MetadataListProps"],
     "./app/components/sidebar": ["Sidebar", "SidebarProps"],
     "./app/components/switcher": ["Switcher", "SwitcherProps"],
@@ -191,7 +204,7 @@
       "useToast"
     ],
     "@subpath/tokens": ["ct", "default", "tokenValues"],
-    "@subpath/cn": ["cn"],
+    "@subpath/cn": ["SPACING_KEYS", "cn"],
     "@subpath/manifest": ["default"],
     "@subpath/contexts": [
       "FontProvider",
@@ -224,7 +237,7 @@
       "HdsFormProps",
       "useHdsForm"
     ],
-    "@subpath/mui": ["HdsMuiPalette", "HdsMuiThemeOptions", "default", "hdsMuiThemeOptions"],
+    "@subpath/mui": ["HdsMuiPalette", "HdsMuiThemeOptions", "hdsMuiThemeOptions"],
     "@subpath/brand": ["BrandPalette", "brandOverlayCss", "brandOverlayStyle", "brandOverlayVars"],
     "@subpath/scroll": [
       "ScrollOffset",

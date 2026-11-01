@@ -26,6 +26,7 @@ const FIRST_SHIPPED: Record<string, [number, number]> = {
   'hds-token-aliases': [0, 33],
   // Ledger-driven prop renames and value maps (hds#460).
   'hds-prop-map': [0, 33],
+  'hds-css-vars': [0, 33],
   // Not a codemod, but a bin all the same: the hds MCP server (hds#515).
   'hds-mcp': [0, 21],
   // Visual-rules CLI (hds#664). Lands in a 0.32.x patch; this table has no patch
