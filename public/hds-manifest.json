@@ -2408,7 +2408,6 @@
       "consumers": [
         "src/app/components/board.tsx",
         "src/app/components/data-table-section.tsx",
-        "src/app/data/manifest-types.ts",
         "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},

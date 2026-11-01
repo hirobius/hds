@@ -9,27 +9,26 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { changesetBump, nextVersion } from '../lib/next-version.mjs';
+import { bumpOf, nextVersion } from '../lib/next-version.mjs';
 import { buildDeprecations, deprecationsInFile, removedFromLedgers } from '../lib/deprecations.mjs';
 import { renderDeprecations } from '../build-deprecations.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const PKG = '@hirobius/design-system';
 
-describe('changesetBump / nextVersion', () => {
+describe('bumpOf / nextVersion', () => {
   it('reads the bump for this package out of frontmatter', () => {
-    expect(changesetBump(`---\n'${PKG}': minor\n---\n\nBody.\n`, PKG)).toBe('minor');
-    expect(changesetBump(`---\n"${PKG}": patch\n---\n`, PKG)).toBe('patch');
-    expect(changesetBump(`---\n'other-pkg': major\n---\n`, PKG)).toBeNull();
-    expect(changesetBump('no frontmatter here', PKG)).toBeNull();
+    expect(bumpOf(`---\n'${PKG}': minor\n---\n\nBody.\n`, PKG)).toBe('minor');
+    expect(bumpOf(`---\n"${PKG}": patch\n---\n`, PKG)).toBe('patch');
+    expect(bumpOf(`---\n'other-pkg': major\n---\n`, PKG)).toBeNull();
+    expect(bumpOf('no frontmatter here', PKG)).toBeNull();
   });
 
-  it('applies the strongest pending bump, and nothing when none is pending', () => {
+  it('applies the strongest pending bump, and the current version when none is pending', () => {
     expect(nextVersion('0.32.0', ['patch', 'minor', 'patch'])).toBe('0.33.0');
     expect(nextVersion('0.32.0', ['patch'])).toBe('0.32.1');
     expect(nextVersion('0.32.0', ['major'])).toBe('1.0.0');
-    expect(nextVersion('0.32.0', [null, null])).toBeNull();
-    expect(nextVersion('0.32.0', [])).toBeNull();
+    expect(nextVersion('0.32.0', [])).toBe('0.32.0');
   });
 });
 
