@@ -2941,6 +2941,18 @@
     }
   },
   "./patterns": {
+    "AppShell": {
+      "kind": "value",
+      "signatures": [
+        "({ children, header, sidebar, sidebarLabel, aside, asideLabel, collapsed: collapsedProp, defaultCollapsed, onCollapsedChange, persistKey, className, }: AppShellProps): Element"
+      ]
+    },
+    "AppShellProps": {
+      "kind": "type"
+    },
+    "AppShellSidebarState": {
+      "kind": "type"
+    },
     "AssetImg": {
       "kind": "value",
       "signatures": [

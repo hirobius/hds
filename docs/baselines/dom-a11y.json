@@ -30,6 +30,33 @@
       "alert"
     ]
   },
+  "AppShell": {
+    "dom": [
+      "div",
+      "  div data-hds-component=\"AppShell\" data-hds-metrics=\"wide:false,collapsed:false\"",
+      "    header data-hds-component=\"Surface\" data-hds-metrics=\"padding:item\" data-hds-surface=\"true\"",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        button aria-expanded=\"false\" aria-haspopup=\"dialog\" aria-label=\"Open menu\" data-hover-effect=\"wipe\" data-size=\"sm\" data-state=\"closed\" data-variant=\"tertiary\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "        span aria-hidden=\"true\" data-hds-portal-anchor",
+      "        div",
+      "          p",
+      "    div data-hds-component=\"Grid\" data-hds-grid=\"true\" data-hds-metrics=\"gap:inset\"",
+      "      main data-hds-component=\"Surface\" data-hds-metrics=\"padding:component\" data-hds-surface=\"true\"",
+      "        h2",
+      "        aside aria-label=\"Details\"",
+      "          p"
+    ],
+    "reader": [
+      "banner",
+      "button, Open menu, not expanded, has popup dialog",
+      "paragraph",
+      "main",
+      "heading, Pipeline, level 2",
+      "complementary, Details",
+      "paragraph"
+    ]
+  },
   "AssetImg": {
     "dom": [
       "div",

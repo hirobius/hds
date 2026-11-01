@@ -232,6 +232,7 @@ The pattern-tier components (screen shells, page sections, feeds, rails, pickers
 
 ### Layout
 
+- `AppShell` — AppShell — the app frame for web apps: header, sidebar, main and an optional aside (hds#875).
 - `Page` — Page — standard page shell.
 - `PageHeader` — Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot.
 

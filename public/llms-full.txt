@@ -161,6 +161,7 @@ One line per component that declares when to use it (`@usage` / `@useInstead` in
 
 Alert: [core] Show a persistent inline message with a severity, next to the content it concerns. Use instead: ToastProvider, Badge
 AlertDialog: Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons. Use instead: Dialog, ToastProvider
+AppShell: The outer frame of a web app: a top bar, a navigation rail or sheet, the page, and an optional detail panel. Use instead: Page, Sidebar
 AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
 AsyncState: Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content. Use instead: Skeleton, Alert, EmptyState
 Avatar: [core] Show a person or entity as an image with an initials fallback, or a neutral person icon when nobody is signed in; add a status dot for a state such as unsynced. As an account button, pass it as the iconLeft of a tertiary iconOnly Button. Use instead: Icon, Badge
@@ -983,6 +984,20 @@ AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled 
   - defaultOpen: boolean
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
+
+### AppShell
+AppShell — the app frame for web apps: header, sidebar, main and an optional aside (hds#875).
+  - aside: ReactNode
+  - asideLabel: string = Details
+  - children: ReactNode
+  - className: string
+  - collapsed: boolean
+  - defaultCollapsed: boolean = false
+  - header: ReactNode
+  - onCollapsedChange: ((collapsed: boolean) => void)
+  - persistKey: string
+  - sidebar: ReactNode | ((state: AppShellSidebarState) => ReactNode)
+  - sidebarLabel: string = Main
 
 ### AssetImg
 AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.
