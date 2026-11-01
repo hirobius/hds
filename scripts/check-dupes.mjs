@@ -7,7 +7,7 @@
  * (src, scripts, tests, validators) and fails when the duplicated-line
  * percentage rises above the `threshold` in .jscpd.json. The threshold is
  * the count measured the day the gate landed (1.883% on 2026-10-31, so
- * the threshold sits at 1.84 after hds#1008) and only ever moves down — lower it in the
+ * the threshold sits at 1.74 after hds#1011) and only ever moves down — lower it in the
  * same PR that removes clones. Generated files, fixtures and golden
  * files are ignored in .jscpd.json: they are inputs and outputs, not
  * code anyone can deduplicate.

@@ -4,11 +4,10 @@
  * Every metric is tested at its module seam with small hand-computed fixtures;
  * the CLI is tested by spawning it. No network, no browser.
  */
-import { afterAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { scanApp, stripComments } from '../lib/consistency/violations.mjs';
 import { spawnSync } from 'node:child_process';
-import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import os from 'node:os';
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PNG } from 'pngjs';
@@ -25,19 +24,12 @@ import {
 } from '../lib/consistency/ledger.mjs';
 import { compareStatus, checkRepo, checkSurfaces } from '../lib/consistency/status-sync.mjs';
 import { extractImports, jaccard, pairwiseJaccard } from '../lib/consistency/jaccard.mjs';
+import { runEvalCli, useTmpDirs } from './helpers/eval-harness.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const png = (name) => readFileSync(path.join(ROOT, 'eval/consistency/fixtures/png', name));
 
-const tmpDirs = [];
-const makeTmp = (prefix) => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), prefix));
-  tmpDirs.push(dir);
-  return dir;
-};
-afterAll(() => {
-  for (const d of tmpDirs) rmSync(d, { recursive: true, force: true });
-});
+const makeTmp = useTmpDirs();
 
 const kinds = (hits) => hits.map((h) => h.kind).sort();
 
@@ -728,17 +720,7 @@ describe('status-sync: status.json and README against the latest ledger entry', 
 });
 
 describe('pnpm eval:consistency (CLI, offline)', () => {
-  const run = (...args) => {
-    const r = spawnSync(
-      process.execPath,
-      [path.join(ROOT, 'scripts/eval-consistency.mjs'), ...args],
-      {
-        cwd: ROOT,
-        encoding: 'utf8',
-      },
-    );
-    return { code: r.status, out: `${r.stdout}${r.stderr}` };
-  };
+  const run = (...args) => runEvalCli(args);
   const fixtures = 'eval/consistency/fixtures';
 
   it('exits 0 on the pass fixtures and says what it did not measure', () => {

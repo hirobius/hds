@@ -7,19 +7,10 @@
  * themselves (pack, build, render, axe-run) are exercised by running
  * `pnpm eval:consistency -- --apps <dir>`, never by `pnpm test`.
  */
-import { afterAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import {
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from 'node:fs';
-import os from 'node:os';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PNG } from 'pngjs';
@@ -42,19 +33,12 @@ import { stageApp } from '../lib/consistency/stage.mjs';
 import { runLive } from '../lib/consistency/live.mjs';
 import { readLedger, summaryLine, validateEntry } from '../lib/consistency/ledger.mjs';
 import { evaluate } from '../lib/consistency/evaluate.mjs';
+import { useTmpDirs } from './helpers/eval-harness.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const THRESHOLDS = readLedger(path.join(ROOT, 'eval/consistency/ledger.json')).thresholds;
 
-const tmpDirs = [];
-const makeTmp = (prefix) => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), prefix));
-  tmpDirs.push(dir);
-  return dir;
-};
-afterAll(() => {
-  for (const d of tmpDirs) rmSync(d, { recursive: true, force: true });
-});
+const makeTmp = useTmpDirs();
 
 function solidPng(width, height, [r, g, b]) {
   const img = new PNG({ width, height });

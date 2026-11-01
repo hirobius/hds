@@ -7,17 +7,7 @@
  */
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { createHash } from 'crypto';
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from 'fs';
-import { tmpdir } from 'os';
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import vm from 'vm';
@@ -34,41 +24,28 @@ import { buildPushPayload, buildUseFigmaReceiptScript } from '../lib/figma-scrip
 import { DELTA_PRUNE_REFUSAL, buildUseFigmaDeltaScript } from '../lib/figma-agent-sync.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
-import { FIXTURE_TOKENS_PATH, fixtureModel } from './helpers/figma-fixture.mjs';
-import { ingestReceipt } from '../figma-snapshot.mjs';
+import { fixtureModel } from './helpers/figma-fixture.mjs';
 import { formatDeltaRun, runDeltaCommand, writeDeltaScript } from '../figma-push.mjs';
 import { createFakeFigma, textStyleFonts } from './helpers/fake-figma.mjs';
+import {
+  COMMIT,
+  LINKS,
+  copy,
+  ingest,
+  newVariable,
+  spaceRenamer,
+  tempRoots,
+  variableOf,
+} from './helpers/figma-agent-sync-shared.mjs';
 
 // Real-model scenarios build and run dozens of scripts; a loaded CI runner needs the room.
 vi.setConfig({ testTimeout: 60000, hookTimeout: 60000 });
 
-const LINKS = Object.freeze({
-  docsUrl: 'https://hirobius-design-system.vercel.app',
-  libraryFileKey: 'LIBRARYKEY000000000000',
-  libraryFileName: 'HDS Tokens & Components',
-  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
-  stagingFileKey: 'STAGINGKEY000000000000',
-  stagingFileName: 'HDS Staging',
-});
-const COMMIT = '0123456789abcdef0123456789abcdef01234567';
-const copy = (value) => JSON.parse(JSON.stringify(value));
-const variableOf = (model, path) =>
-  model.collections.flatMap((c) => c.variables).find((v) => v.path === path);
-
-let dirs = [];
+const { tempRoot, cleanup } = tempRoots('hds-agent-parts-');
 afterEach(() => {
   vi.useRealTimers();
-  dirs.forEach((dir) => rmSync(dir, { recursive: true, force: true }));
-  dirs = [];
+  cleanup();
 });
-const tempRoot = () => {
-  const root = mkdtempSync(join(tmpdir(), 'hds-agent-parts-'));
-  dirs.push(root);
-  copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
-  mkdirSync(join(root, 'figma'), { recursive: true });
-  writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(LINKS, null, 2));
-  return root;
-};
 const pushedLibrary = async (model) => {
   const figma = createFakeFigma({
     fileName: LINKS.libraryFileName,
@@ -154,15 +131,6 @@ async function runParts(parts, figma) {
   }
   return saved;
 }
-const ingest = (root, reads) =>
-  ingestReceipt({
-    root,
-    files: reads.map((read, i) => {
-      const path = join(root, `result-${i}.json`);
-      writeFileSync(path, JSON.stringify(read));
-      return path;
-    }),
-  });
 /**
  * A snapshot without what two runs of the same plan do not share: the clocks
  * a run stamps, and the ids Figma hands out (parts create an aliased variable
@@ -202,14 +170,6 @@ const typeRamp = (model) => {
   return model;
 };
 
-/** A new variable like `from`, at `path`, named `name`, with `valuesByMode`. */
-const newVariable = (model, from, path, name, valuesByMode) => ({
-  ...copy(variableOf(model, from)),
-  path,
-  name,
-  codeSyntax: { WEB: `var(--${path.replaceAll('.', '-')})` },
-  valuesByMode,
-});
 /** A semantic token with a role aliasing it, and a description rewritten. */
 const describeAndCreate = (model) => {
   variableOf(model, 'primitive.space.2').description = 'Two steps, retuned.';
@@ -619,27 +579,7 @@ describe('parts converge to what one delta.js gives, whatever the change', () =>
         `primitive.space-px.${String(v.valuesByMode.Default.value).replace('.', '_')}`,
       ]),
     );
-    const renamed = (model) => {
-      const to = (path) => renames[path] || path;
-      model.collections.forEach((c) =>
-        c.variables.forEach((v) => {
-          if (renames[v.path]) {
-            v.path = to(v.path);
-            v.name = v.path.replace('primitive.space-px.', 'space-px/');
-            v.codeSyntax = { WEB: `var(--${v.path.replaceAll('.', '-')})` };
-          }
-          Object.values(v.valuesByMode).forEach(
-            (entry) => 'alias' in entry && (entry.alias = to(entry.alias)),
-          );
-        }),
-      );
-      model.textStyles.forEach((style) =>
-        Object.keys(style.boundVariables).forEach(
-          (field) => (style.boundVariables[field] = to(style.boundVariables[field])),
-        ),
-      );
-      return model;
-    };
+    const renamed = spaceRenamer(renames);
     const split = await pending({
       base: real,
       edit: renamed,

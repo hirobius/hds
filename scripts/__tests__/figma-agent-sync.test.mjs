@@ -17,17 +17,7 @@
  * on a temporary repo root. Nothing here reaches a network or Figma.
  */
 import { describe, it, expect, afterEach } from 'vitest';
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from 'fs';
-import { tmpdir } from 'os';
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import vm from 'vm';
@@ -55,45 +45,32 @@ import {
   runDeltaCommand,
   writeDeltaScript,
 } from '../figma-push.mjs';
-import { ingestReceipt } from '../figma-snapshot.mjs';
-import { FIXTURE_TOKENS_PATH, fixtureModel } from './helpers/figma-fixture.mjs';
+import { fixtureModel } from './helpers/figma-fixture.mjs';
 import { createFakeFigma, seededFakeFigma, textStyleFonts } from './helpers/fake-figma.mjs';
+import {
+  COMMIT,
+  LINKS,
+  copy,
+  ingest,
+  newVariable,
+  spaceRenamer,
+  tempRoots,
+  variableOf,
+} from './helpers/figma-agent-sync-shared.mjs';
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
 
-const LINKS = Object.freeze({
-  docsUrl: 'https://hirobius-design-system.vercel.app',
-  libraryFileKey: 'LIBRARYKEY000000000000',
-  libraryFileName: 'HDS Tokens & Components',
-  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
-  // HDS Staging, the draft workbench (ADR-026, A4): in links.json, and never a target.
-  stagingFileKey: 'STAGINGKEY000000000000',
-  stagingFileName: 'HDS Staging',
-});
 const RETIRED_KEY = LINKS.retiredFiles[0].fileKey;
 const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 
-let dirs = [];
+const { tempRoot, cleanup } = tempRoots('hds-agent-sync-');
 afterEach(() => {
-  dirs.forEach((dir) => rmSync(dir, { recursive: true, force: true }));
-  dirs = [];
+  cleanup();
 });
-const tempRoot = () => {
-  const root = mkdtempSync(join(tmpdir(), 'hds-agent-sync-'));
-  dirs.push(root);
-  copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
-  mkdirSync(join(root, 'figma'), { recursive: true });
-  writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(LINKS, null, 2));
-  return root;
-};
 const snapshotPath = (root) => join(root, 'figma', 'snapshot.json');
 /** Every character use_figma escapes, plus an entity typed as text (it must come back as typed). */
 const TRICKY = `Use "brand" tones, don't <mix> & match; x&quot;y stays literal.`;
 
-const copy = (value) => JSON.parse(JSON.stringify(value));
-const variableOf = (model, path) =>
-  model.collections.flatMap((c) => c.variables).find((v) => v.path === path);
 /** The fixture model with descriptions use_figma would escape. */
 const trickyModel = () => {
   const model = copy(fixtureModel());
@@ -160,17 +137,6 @@ describe('the pin on the committed figma/snapshot.json', () => {
 });
 
 // ── The fast path ────────────────────────────────────────────────────────────
-/** A new variable like `from`, at `path`, named `name`, with `valuesByMode`. */
-const newVariable = (model, from, path, name, valuesByMode) => {
-  const like = variableOf(model, from);
-  return {
-    ...copy(like),
-    path,
-    name,
-    codeSyntax: { WEB: `var(--${path.replaceAll('.', '-')})` },
-    valuesByMode,
-  };
-};
 /** Today's kind of change (2026-10-01): descriptions rewritten, and a semantic token with a role that aliases it. */
 const describeAndCreate = (model) => {
   variableOf(model, 'primitive.space.2').description = `Two steps: "tight" <gap> & more.`;
@@ -294,16 +260,6 @@ async function pending({
   return { root, figma, next, renames, built, snapshotFile };
 }
 
-/** Saves what use_figma returned, as an agent does, and ingests it with --from-receipt. */
-const ingest = (root, reads) =>
-  ingestReceipt({
-    root,
-    files: reads.map((read, i) => {
-      const path = join(root, `result-${i}.json`);
-      writeFileSync(path, JSON.stringify(read));
-      return path;
-    }),
-  });
 const committedPlanLine = (s) =>
   planAgainstSnapshot({
     model: s.next,
@@ -862,27 +818,7 @@ describe('delta.js for the real model (the library pushed from main, then a chan
       ]),
     );
     expect(new Set(Object.values(renames)).size).toBe(19);
-    const renamed = (model) => {
-      const to = (path) => renames[path] || path;
-      model.collections.forEach((c) =>
-        c.variables.forEach((v) => {
-          if (renames[v.path]) {
-            v.path = to(v.path);
-            v.name = v.path.replace('primitive.space-px.', 'space-px/');
-            v.codeSyntax = { WEB: `var(--${v.path.replaceAll('.', '-')})` };
-          }
-          Object.values(v.valuesByMode).forEach(
-            (entry) => 'alias' in entry && (entry.alias = to(entry.alias)),
-          );
-        }),
-      );
-      model.textStyles.forEach((style) =>
-        Object.keys(style.boundVariables).forEach(
-          (field) => (style.boundVariables[field] = to(style.boundVariables[field])),
-        ),
-      );
-      return model;
-    };
+    const renamed = spaceRenamer(renames);
     const s = await pending({ base: real, edit: renamed, renames });
     expect(s.built.line).toBe('updated 19 · created 0 · deleted 0');
     expect(s.built.chars).toBeLessThanOrEqual(45000);

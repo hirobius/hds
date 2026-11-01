@@ -9,10 +9,10 @@
 
 import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findViolationsInText, findTokenViolations, isExempt, ROLES } from '../check-type-ramp.mjs';
+import { usePrecommitGate } from './helpers/precommit-gate-harness.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const GATE = 'scripts/check-type-ramp.mjs';
@@ -167,35 +167,7 @@ describe('findTokenViolations: the token file itself', () => {
 });
 
 describe('the gate blocks at pre-commit', () => {
-  const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
-  const entry = registry.gates.find((g) => g.id === 'check-type-ramp');
-
-  it('is registered as an error that fires at pre-commit, with its fixtures', () => {
-    expect(entry).toMatchObject({
-      gateScript: GATE,
-      severity: 'error',
-      firingChannel: 'pre-commit',
-      firingChannels: ['pre-commit'],
-      fixturePath: 'fixtures/check-type-ramp',
-      supportsJson: true,
-    });
-  });
-
-  it('runs in .husky/pre-commit', () => {
-    const hook = readFileSync(join(ROOT, '.husky/pre-commit'), 'utf8');
-    expect(hook).toMatch(/^node scripts\/check-type-ramp\.mjs$/m);
-  });
-
-  const runOn = (fixture) =>
-    spawnSync(process.execPath, [GATE, '--json'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-      env: {
-        ...process.env,
-        HDS_FIXTURE_MODE: '1',
-        FIXTURE_FILE: `fixtures/check-type-ramp/${fixture}`,
-      },
-    });
+  const { runOn, runRepo } = usePrecommitGate('check-type-ramp');
 
   it('exits 1 on the canary, naming each file:line', () => {
     const run = runOn('violating.example.tsx');
@@ -236,7 +208,7 @@ describe('the gate blocks at pre-commit', () => {
   });
 
   it('finds nothing in src/ or the token file (pnpm test runs this in CI, where the hook does not)', () => {
-    const run = spawnSync(process.execPath, [GATE], { cwd: ROOT, encoding: 'utf8' });
+    const run = runRepo();
     expect(run.stderr).toBe('');
     expect(run.status).toBe(0);
   });
