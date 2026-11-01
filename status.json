@@ -5,10 +5,10 @@
   "note": "State is derived: ops reads release from package.json and next/blocked from issue labels. Only focus and phase are written by hand.",
   "updatedAt": "2026-11-01T07:15:00Z",
   "consistency": {
-    "date": "2026-10-14",
+    "date": "2026-10-31",
     "source": "harness",
     "pass": false,
-    "jaccardMin": 0.95,
+    "jaccardMin": 1,
     "lightDiffMax": null
   }
 }
