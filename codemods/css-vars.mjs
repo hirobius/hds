@@ -118,6 +118,103 @@ export function contractFindings(source, known) {
   return out;
 }
 
+/**
+ * Every HDS-namespace name (no --tw-*) `source` names, and whether it reads
+ * it (var(), or any mention that is not a declaration) or writes it.
+ * @returns {Map<string, { read: boolean, write: boolean }>}
+ */
+export function varUses(source) {
+  const uses = new Map();
+  for (const m of source.matchAll(HDS_NAME)) {
+    const name = m[0];
+    if (name.startsWith('--tw-')) continue;
+    const write = /^\s*:/.test(source.slice(m.index + name.length));
+    const u = uses.get(name) ?? { read: false, write: false };
+    if (write) u.write = true;
+    else u.read = true;
+    uses.set(name, u);
+  }
+  return uses;
+}
+
+/** A variable's value in each context, merged across a contract's bundles. */
+function valuesOf(contract) {
+  const out = new Map();
+  for (const bundle of Object.values(contract?.bundles ?? {}))
+    for (const [name, ctx] of Object.entries(bundle?.variables ?? {})) {
+      if (name.startsWith('--tw-')) continue;
+      out.set(name, { ...(out.get(name) ?? {}), ...ctx });
+    }
+  return out;
+}
+
+const sameValues = (a, b) => {
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  for (const k of keys) if (a[k] !== b[k]) return false;
+  return true;
+};
+
+/**
+ * Variables both contracts declare whose value changed in any context.
+ * Added or removed names are not value changes (the unknown-name check owns removals).
+ * @returns {Map<string, { from: Record<string, string>, to: Record<string, string> }>}
+ */
+export function valueChanges(source, target) {
+  const out = new Map();
+  if (!source || !target) return out;
+  const before = valuesOf(source);
+  for (const [name, to] of valuesOf(target)) {
+    const from = before.get(name);
+    if (from && !sameValues(from, to)) out.set(name, { from, to });
+  }
+  return out;
+}
+
+/** Every class a css-contract.json names in any bundle, plus its publicClasses. */
+export function knownClasses(contract) {
+  const known = new Set(contract?.publicClasses ?? []);
+  for (const bundle of Object.values(contract?.bundles ?? {}))
+    for (const name of bundle?.classes ?? []) known.add(name);
+  return known;
+}
+
+/** True when a package.json lists tailwindcss, so the consumer compiles its own utilities. */
+export function compilesOwnTailwind(pkg) {
+  if (!pkg) return false;
+  return ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'].some(
+    (field) => Boolean(pkg[field]?.tailwindcss),
+  );
+}
+
+// class="…", className="…", className={'…'}, className={`…`} (no interpolation read).
+const CLASS_ATTR = /\bclass(?:Name)?\s*=\s*\{?\s*(["'`])([^"'`]*)\1/g;
+// HDS-shaped tokens: an hds-* class, or a Tailwind variant (`hover:underline`, `sm:block`).
+const HDS_CLASS = /^(?:hds-[\w-]+|[a-z][\w-]*(?:\[[^\]]*\])?:[^\s:][^\s]*)$/;
+
+/**
+ * Each HDS-shaped class token in a class / className attribute of `source`
+ * that `known` does not hold, once per line. A consumer's own classes (no
+ * hds- prefix, no variant) are never checked.
+ * @returns {{ name: string, line: number }[]}
+ */
+export function classFindings(source, known) {
+  const out = [];
+  const seen = new Set();
+  for (const m of source.matchAll(CLASS_ATTR)) {
+    const valueAt = m.index + m[0].length - m[2].length - 1;
+    for (const t of m[2].matchAll(/\S+/g)) {
+      const name = t[0];
+      if (t[0].includes('${') || !HDS_CLASS.test(name) || known.has(name)) continue;
+      const line = lineOf(source, valueAt + t.index);
+      const key = `${line}:${name}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ name, line });
+    }
+  }
+  return out;
+}
+
 const lineOf = (source, at) => source.slice(0, at).split('\n').length;
 
 function lineHunks(before, after) {

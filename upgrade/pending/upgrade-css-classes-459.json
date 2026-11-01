@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The upgrade command now lists hds-* and Tailwind variant classes your markup uses that the release does not ship; nothing to change."
+}

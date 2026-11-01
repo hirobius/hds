@@ -1,0 +1,9 @@
+# Supply-chain policy (hds#969, hirobius/ops#939, POSTURE.md §2.3).
+# A new version must be 3 days old before pnpm resolves it (worm releases are pulled within hours).
+minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - '@hirobius/*'
+# Refuse a version whose publish provenance/trust is weaker than an earlier one.
+trustPolicy: no-downgrade
+# Transitive deps may not come from git or arbitrary tarball URLs.
+blockExoticSubdeps: true

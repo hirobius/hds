@@ -1,0 +1,4 @@
+{
+  "impact": "behavior",
+  "plain": "If `hds/no-nested-cards` now fails your lint, drop the outer surface and head the group with a section title and count on a plain region, or list your own card wrappers in its `cards` / `surfaces` options."
+}

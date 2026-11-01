@@ -1,4 +1,5 @@
-import { loadUpgradeIndex, loadUpgradeReleases } from '@/lib/site-data';
+import { loadBuildSha, loadUpgradeIndex, loadUpgradeReleases } from '@/lib/site-data';
+import { formatBuildLabel } from '@/lib/upgrade-range';
 import { UpgradeRangeView } from '@/components/upgrade-range';
 
 export const metadata = {
@@ -23,7 +24,12 @@ export default function UpgradePage() {
   }));
   return (
     <main className="hds-upgrade">
-      <UpgradeRangeView releases={releases} latest={index.latest} floor={index.floor} />
+      <UpgradeRangeView
+        releases={releases}
+        latest={index.latest}
+        floor={index.floor}
+        buildLabel={formatBuildLabel(index.latest, loadBuildSha())}
+      />
     </main>
   );
 }

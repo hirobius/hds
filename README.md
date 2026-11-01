@@ -249,6 +249,14 @@ The gates are deterministic and need no browser or live site:
 Work in progress, shown as it stands. These are questions the system is still
 testing, not features it promises.
 
+### Delight directions
+
+Could HDS be more playful without losing its discipline? A static page renders
+three directions, subtle to bold, on the current tokens with page-scoped
+overrides, and measures token reach and AA contrast for each:
+[`docs/explorations/2026-10-delight/index.html`](docs/explorations/2026-10-delight/index.html).
+No token has changed.
+
 ### Agent consistency
 
 Can the public docs alone make different agents build the same screen? Three
@@ -261,10 +269,10 @@ source only). The screen spec, thresholds and ledger live in
 printed by `pnpm eval:consistency -- --summary`:
 
 ```text
-Agent consistency 2026-10-14 (harness, design-system 0.25.0): FAIL - builds 2/3, violations 0, axe 0, Jaccard min 0.95 (limit >= 0.85), light diff not measured (an app did not build)
+Agent consistency 2026-10-31 (harness, design-system 0.32.0): FAIL - builds 2/3, violations 0, axe 0, Jaccard min 1 (limit >= 0.85), light diff not measured (an app did not build)
 ```
 
-The baseline misses its thresholds, and they stay where they are: the useful
+The latest run still misses a threshold, and they stay where they are: the useful
 output is where the agents diverge, which points at the docs to fix next. The
 eval measures the docs; it does not gate merges or constrain how agents work.
 
