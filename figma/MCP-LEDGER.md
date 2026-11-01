@@ -737,3 +737,19 @@ Daily check: plan now shows updated 42 · created 9; probe whether Adrian remove
 Session total: 2 calls
 
 Calls logged for 2026-10-31: 2 of 200 (2).
+
+## 2026-11-01 · hds#622 StatusTile to Deprecated (branch claude/burn-622)
+
+Library `2VgBbVpKiDnu0aftJEVyBQ`. One `get_figma_skill` load (figma-use) plus a `create_session`, not counted as reads.
+
+| #   | Time (UTC) | Tool        | Kind  | Purpose                                                                                                                               | Result                                                                                              |
+| --- | ---------- | ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| 1   | --         | `use_figma` | read  | Find the StatusTile and Deprecated pages                                                                                              | OK; StatusTile 88:252, Deprecated 2157:826                                                          |
+| 2   | --         | `use_figma` | read  | List StatusTile page 88:252                                                                                                           | OK; one COMPONENT_SET StatusTile 88:292 (320x501)                                                   |
+| 3   | --         | `use_figma` | write | Move 88:292 to Deprecated 2157:826 below its items, rename `_StatusTile (now Card.Row)`, append a deprecation note to its description | OK; 88:292 on 2157:826 at (0, 2601); page 88:252 now empty and kept (no deletes). Nothing published |
+
+Results: StatusTile now lives on Deprecated with a pointer to Card.Row (MIGRATIONS.md "StatusTile folds into Card"); same component set, so its key and instances are unchanged. No screenshots (the sandbox cannot download them); verified by readback. Adrian publishes.
+
+Session total: 3 calls
+
+Calls logged for 2026-11-01: 3 of 200 (3).
