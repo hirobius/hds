@@ -118,6 +118,51 @@ export function contractFindings(source, known) {
   return out;
 }
 
+/** Every class a css-contract.json names in any bundle, plus its publicClasses. */
+export function knownClasses(contract) {
+  const known = new Set(contract?.publicClasses ?? []);
+  for (const bundle of Object.values(contract?.bundles ?? {}))
+    for (const name of bundle?.classes ?? []) known.add(name);
+  return known;
+}
+
+/** True when a package.json lists tailwindcss, so the consumer compiles its own utilities. */
+export function compilesOwnTailwind(pkg) {
+  if (!pkg) return false;
+  return ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'].some(
+    (field) => Boolean(pkg[field]?.tailwindcss),
+  );
+}
+
+// class="…", className="…", className={'…'}, className={`…`} (no interpolation read).
+const CLASS_ATTR = /\bclass(?:Name)?\s*=\s*\{?\s*(["'`])([^"'`]*)\1/g;
+// HDS-shaped tokens: an hds-* class, or a Tailwind variant (`hover:underline`, `sm:block`).
+const HDS_CLASS = /^(?:hds-[\w-]+|[a-z][\w-]*(?:\[[^\]]*\])?:[^\s:][^\s]*)$/;
+
+/**
+ * Each HDS-shaped class token in a class / className attribute of `source`
+ * that `known` does not hold, once per line. A consumer's own classes (no
+ * hds- prefix, no variant) are never checked.
+ * @returns {{ name: string, line: number }[]}
+ */
+export function classFindings(source, known) {
+  const out = [];
+  const seen = new Set();
+  for (const m of source.matchAll(CLASS_ATTR)) {
+    const valueAt = m.index + m[0].length - m[2].length - 1;
+    for (const t of m[2].matchAll(/\S+/g)) {
+      const name = t[0];
+      if (t[0].includes('${') || !HDS_CLASS.test(name) || known.has(name)) continue;
+      const line = lineOf(source, valueAt + t.index);
+      const key = `${line}:${name}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ name, line });
+    }
+  }
+  return out;
+}
+
 const lineOf = (source, at) => source.slice(0, at).split('\n').length;
 
 function lineHunks(before, after) {
