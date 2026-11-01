@@ -62,3 +62,11 @@ export function upgradeRange(
   out.codemods = [...codemods.values()];
   return out;
 }
+
+/**
+ * The page header's build label: the hosted docs build from main, not from a
+ * release, so say both (`0.32.0+main abcdef1`).
+ */
+export function builtFrom(latest: string, sha: string | null | undefined): string {
+  return sha ? `${latest}+main ${sha.slice(0, 7)}` : `${latest}+main`;
+}

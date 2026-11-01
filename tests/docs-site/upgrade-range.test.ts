@@ -6,7 +6,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { upgradeRange } from '../../docs-site/lib/upgrade-range';
+import { builtFrom, upgradeRange } from '../../docs-site/lib/upgrade-range';
 import type { LedgerRelease } from '../../docs-site/lib/upgrade-ledger';
 
 const rel = (version: string, steps: LedgerRelease['steps']): LedgerRelease => ({
@@ -89,5 +89,15 @@ describe('upgradeRange', () => {
     ]);
     expect(r.codemods.map((c) => c.command)).toContain('hds-patterns-subpath');
     expect(r.removals.length).toBeGreaterThan(0);
+  });
+});
+
+describe('builtFrom', () => {
+  it('names the last release plus the main commit the site was built from', () => {
+    expect(builtFrom('0.32.0', 'abcdef1234567890')).toBe('0.32.0+main abcdef1');
+  });
+  it('says the release alone when no commit is known', () => {
+    expect(builtFrom('0.32.0', undefined)).toBe('0.32.0+main');
+    expect(builtFrom('0.32.0', '')).toBe('0.32.0+main');
   });
 });

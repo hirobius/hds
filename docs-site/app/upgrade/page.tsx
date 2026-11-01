@@ -1,5 +1,18 @@
 import { loadUpgradeIndex, loadUpgradeReleases } from '@/lib/site-data';
+import { execSync } from 'node:child_process';
 import { UpgradeRangeView } from '@/components/upgrade-range';
+import { builtFrom } from '@/lib/upgrade-range';
+
+function buildSha(): string | undefined {
+  if (process.env.VERCEL_GIT_COMMIT_SHA) return process.env.VERCEL_GIT_COMMIT_SHA;
+  try {
+    return execSync('git rev-parse HEAD', { stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString()
+      .trim();
+  } catch {
+    return undefined;
+  }
+}
 
 export const metadata = {
   title: 'Upgrade steps · Hirobius Design System',
@@ -23,7 +36,12 @@ export default function UpgradePage() {
   }));
   return (
     <main className="hds-upgrade">
-      <UpgradeRangeView releases={releases} latest={index.latest} floor={index.floor} />
+      <UpgradeRangeView
+        releases={releases}
+        latest={index.latest}
+        floor={index.floor}
+        built={builtFrom(index.latest, buildSha())}
+      />
     </main>
   );
 }

@@ -32,10 +32,13 @@ export function UpgradeRangeView({
   releases,
   latest,
   floor,
+  built,
 }: {
   releases: LedgerRelease[];
   latest: string;
   floor: string;
+  /** `<last release>+main <sha>`: the site builds from main. */
+  built: string;
 }) {
   const [range, setRange] = useState<{ from: string | null; to: string | null } | null>(null);
   useEffect(() => {
@@ -51,6 +54,9 @@ export function UpgradeRangeView({
   return (
     <article className="hds-upgrade-page">
       <h1>Upgrade steps</h1>
+      <p className="hds-upgrade-built">
+        Built from <code>{built}</code>
+      </p>
       <form className="hds-upgrade-form" method="get">
         <label>
           From
