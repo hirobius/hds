@@ -19,9 +19,10 @@
  */
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
+import { GAP_KINDS, gapKey, rankGapGroups } from './gap-rank.mjs';
 import { DIRECTION_LETTERS, SCREEN_IDS, parseDirectionId, screenOrder } from './spec.mjs';
 
-export const GAP_KINDS = ['token', 'component', 'pattern', 'rule', 'bug'];
+export { GAP_KINDS, gapKey };
 
 const REQUIRED = ['screen', 'direction', 'kind', 'needed', 'didInstead', 'proposal', 'evidence'];
 const OPTIONAL = ['id'];
@@ -88,73 +89,16 @@ export function validateGapLog(log, expected = {}) {
   return { ok: problems.length === 0, problems, gaps: problems.length === 0 ? log : [] };
 }
 
-const fold = (text) =>
-  String(text)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
-
-/** What makes two gaps the same gap: the id, else the kind plus the folded wording. */
-export const gapKey = (g) => g.id ?? `${g.kind}:${fold(g.needed)}`;
-
-const unique = (list) => [...new Set(list)];
-
 /**
  * Rank gaps by how many distinct screens hit them (a screen counts once however
  * many of its directions hit it), then by total hits, then by key.
  * @param {object[]} gaps valid gap objects from any number of logs
  */
-export function aggregateGaps(gaps) {
-  // a stable order in, so the representative wording and the evidence list never depend on read order
-  const ordered = gaps
-    .map((g, index) => ({ g, index }))
-    .sort(
-      (a, b) =>
-        screenOrder(a.g.screen) - screenOrder(b.g.screen) ||
-        a.g.direction.localeCompare(b.g.direction) ||
-        a.index - b.index,
-    )
-    .map(({ g }) => g);
-
-  const groups = new Map();
-  for (const g of ordered) {
-    const key = gapKey(g);
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(g);
-  }
-
-  const ranked = [...groups].map(([key, members]) => {
-    const kindCounts = new Map();
-    for (const m of members) kindCounts.set(m.kind, (kindCounts.get(m.kind) ?? 0) + 1);
-    const kinds = GAP_KINDS.filter((k) => kindCounts.has(k));
-    const kind = kinds.reduce((best, k) => (kindCounts.get(k) > kindCounts.get(best) ? k : best));
-    const screens = unique(members.map((m) => m.screen));
-    const directions = Object.fromEntries(DIRECTION_LETTERS.map((d) => [d, 0]));
-    for (const m of members) directions[m.direction] += 1;
-    return {
-      key,
-      id: members.find((m) => m.id)?.id ?? null,
-      kind,
-      kinds,
-      needed: members[0].needed,
-      screens,
-      screenCount: screens.length,
-      hits: members.length,
-      directions,
-      proposals: unique(members.map((m) => m.proposal)),
-      didInstead: unique(members.map((m) => m.didInstead)),
-      evidence: members.map((m) => ({
-        screen: m.screen,
-        direction: m.direction,
-        evidence: m.evidence,
-      })),
-    };
+export const aggregateGaps = (gaps) =>
+  rankGapGroups(gaps, {
+    compareScreens: (a, b) => screenOrder(a) - screenOrder(b),
+    letters: DIRECTION_LETTERS,
   });
-
-  return ranked.sort(
-    (a, b) => b.screenCount - a.screenCount || b.hits - a.hits || a.key.localeCompare(b.key),
-  );
-}
 
 const DATE_DIR = /^\d{4}-\d{2}-\d{2}$/;
 const subdirs = (dir) =>

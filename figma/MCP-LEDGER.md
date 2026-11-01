@@ -659,3 +659,81 @@ Results: `updated 92 · created 41 · deleted 0` is in the library (model ab5db0
 Session total: 8 calls
 
 Calls logged for 2026-10-22: 8 of 200 (8).
+
+## 2026-10-23 · release sync 0.31.1 (branch claude/figma-release-sync-0.31.1)
+
+Daily release check found 0.31.1. The 0.30.0/0.31.0 push already landed on 2026-10-22 (section above); plan against that snapshot: updated 0 · created 1 · deleted 0 (semantic.link.underlineThickness).
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                                                                                                 | Result                                                                                 |
+| --- | ---------- | ---------------- | ----- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 1   | 15:49      | `create_session` | read  | Library: open the MCP session for the 0.31.1 sync                                                                       | OK; session opened                                                                     |
+| 2   | 15:49      | `use_figma`      | write | Library: delta.js unmodified (snapshot 6fb0af52, model 06a31a3e, main 2e36c32): create semantic.link.underlineThickness | OK; created link/underlineThickness (VariableID:2239:2), post 560374a9, 1 receipt page |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-23: 2 of 200 (2).
+
+## 2026-10-24 · release sync 0.32.0 (branch claude/figma-release-sync-0.32.0)
+
+Daily release check found 0.32.0. Branch merges the unmerged 0.31.1 sync (hds#908) so the snapshot is current. Plan: updated 2 · created 3 · deleted 0 (neutral.550, surface.soft/softHover dark, button tertiary bg hover/pressed).
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                              | Result                                                                                                                     |
+| --- | ---------- | ---------------- | ----- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 15:48      | `create_session` | read  | open file session for the 0.32.0 delta push          | OK; session opened                                                                                                         |
+| 2   | 15:48      | `use_figma`      | write | delta.js unmodified (model df1f4f37, commit b13042c) | OK; created neutral/550, button/tertiary/bg/hover + pressed, updated surface soft/softHover; post 08a86902, 1 receipt page |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-24: 2 of 200 (2).
+
+## 2026-10-27 · token sync on 0.32.0 main d6a34b0 (branch claude/figma-release-sync-0.32.0)
+
+Daily check: version still 0.32.0, but main changed tokens since the last sync (badge #927). Plan: updated 4 · created 3 · deleted 0 (radius.6, size.22, badge radius/height/minWidth/paddingShift/paddingX).
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                     | Result                                                                                                                          |
+| --- | ---------- | ---------------- | ----- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 15:59      | `create_session` | read  | open file session for the badge token delta | OK; session opened                                                                                                              |
+| 2   | 15:59      | `use_figma`      | write | delta.js unmodified (commit 85898a4)        | OK; created radius/6, size/22, badge/paddingShift; updated badge radius/height/minWidth/paddingX; post 04c1e4d2, 1 receipt page |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-27: 2 of 200 (2).
+
+## 2026-10-29 · button/accent token sync on 0.32.0 main 86dae99 (branch claude/figma-release-sync-0.32.0)
+
+Main removed 9 orphan tokens (13e62f4) and changed button/accent tokens (#950, #939). delta.js cannot delete, so Adrian was asked on 10-28 to delete the 9 by hand; this run re-bases with snapshot-diff.js first.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                     | Result                                                                                  |
+| --- | ---------- | ---------------- | ---- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| 1   | 15:56      | `create_session` | read | open file session                                                           | OK; session opened                                                                      |
+| 2   | 15:56      | `use_figma`      | read | read-only probe: do the 9 variables code removed still exist in the library | OK; all 9 still present (503 variables), so no push; still waiting on the hand deletion |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-29: 2 of 200 (2).
+
+## 2026-10-30 · button/accent token sync on 0.32.0 main 62f66bc (branch claude/figma-release-sync-0.32.0)
+
+Daily check: plan still shows updated 13 · created 6; probe whether Adrian removed the 9 variables code dropped.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                     | Result                                                                                  |
+| --- | ---------- | ---------------- | ---- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| 1   | 16:12      | `create_session` | read | open file session                                                           | OK; session opened                                                                      |
+| 2   | 16:12      | `use_figma`      | read | read-only probe: do the 9 variables code removed still exist in the library | OK; all 9 still present (503 variables), so no push; still waiting on the hand deletion |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-30: 2 of 200 (2).
+
+## 2026-10-31 · token sync on 0.32.0 main c9c40d1 (branch claude/figma-release-sync-0.32.0)
+
+Daily check: plan now shows updated 42 · created 9; probe whether Adrian removed the 9 variables code dropped.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                     | Result                                                                                  |
+| --- | ---------- | ---------------- | ---- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| 1   | 15:47      | `create_session` | read | open file session                                                           | OK; session opened                                                                      |
+| 2   | 15:47      | `use_figma`      | read | read-only probe: do the 9 variables code removed still exist in the library | OK; all 9 still present (503 variables), so no push; still waiting on the hand deletion |
+
+Session total: 2 calls
+
+Calls logged for 2026-10-31: 2 of 200 (2).
