@@ -737,3 +737,18 @@ Daily check: plan now shows updated 42 · created 9; probe whether Adrian remove
 Session total: 2 calls
 
 Calls logged for 2026-10-31: 2 of 200 (2).
+
+## 2026-11-01 · hds#637 Timeline staging draft (file `C85ZXnwtVc4AteeIOZfXRC`, HDS Staging)
+
+| #   | Time (UTC) | Tool                   | Kind  | Purpose                                                    | Result                                                                |
+| --- | ---------- | ---------------------- | ----- | ---------------------------------------------------------- | --------------------------------------------------------------------- |
+| 1   | 22:07      | `create_session`       | read  | open file session                                          | OK                                                                    |
+| 2   | 22:07      | `use_figma`            | read  | list pages and top-level nodes                             | OK                                                                    |
+| 3   | 22:07      | `search_design_system` | read  | find library variables and text styles for Timeline        | OK                                                                    |
+| 4   | 22:08      | `use_figma`            | write | draw TimelineItem set (Tone x Detail) + Timeline on Page 1 | OK; set `92:3197` (variants `92:3107`..`92:3187`), Timeline `92:3198` |
+| 5   | 22:08      | `use_figma`            | read  | screenshot both                                            | OK; Timeline items overlapped                                         |
+| 6   | 22:09      | `use_figma`            | write | variants hug height; instances hug in `92:3198`            | OK; no overlap                                                        |
+
+Session total: 6 calls
+
+Calls logged for 2026-11-01: 6 of 200 (6).
