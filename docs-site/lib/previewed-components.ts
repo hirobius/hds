@@ -5,6 +5,7 @@
  * preview yet" note on their generated page instead of a broken demo.
  */
 export const PREVIEWED_COMPONENTS = [
+  'AppShell',
   'Button',
   'Input',
   'Select',
