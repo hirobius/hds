@@ -1008,3 +1008,20 @@ a code[data-density] {
 .hds-upgrade-list li {
   margin-block: var(--primitive-space-2, 0.5rem);
 }
+/* The build line under the title: which release + main sha these docs were built from. */
+.hds-upgrade-build {
+  margin-block: var(--primitive-space-1, 0.25rem) var(--primitive-space-4, 1rem);
+  color: var(--semantic-color-content-secondary);
+}
+/* The CSS-only toggle sits in the form row but lays out inline, not as a field grid. */
+.hds-upgrade-form .hds-upgrade-css-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-space-2, 0.5rem);
+  min-height: 2.75rem;
+}
+.hds-upgrade-css-toggle input {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+}
