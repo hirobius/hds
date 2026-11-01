@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-const css = readFileSync(new URL('../theme.css', import.meta.url), 'utf8');
+const css = readFileSync(resolve(__dirname, '../theme.css'), 'utf8');
 
 describe('Tabs change cue CSS (hds#938)', () => {
   it('animates the active panel in on motion tokens only', () => {
