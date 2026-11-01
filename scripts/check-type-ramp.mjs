@@ -40,8 +40,14 @@
 import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag } from './lib/gate-output.mjs';
-import { scanFiles, reportAndExit } from './lib/violation-gate-cli.mjs';
-import { scanSources, suppressionFor, maskComments, isSpecFile } from './lib/source-scan.mjs';
+import { readFileSync } from 'node:fs';
+import {
+  scanSources,
+  suppressionFor,
+  maskComments,
+  isSpecFile,
+  reportLineViolations,
+} from './lib/source-scan.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -247,20 +253,23 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
           skipDirs: SKIP_DIRS,
         }).filter((f) => !isExempt(relative(ROOT, f).replace(/\\/g, '/')));
 
-  const violations = scanFiles(files, findViolationsInText, ROOT);
+  const violations = [];
+  for (const f of files) {
+    const rel = relative(ROOT, f).replace(/\\/g, '/');
+    violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
+  }
   if (!(isFixtureMode && fixtureFile)) {
     violations.push(...findTokenViolations(readTokenSource(join(ROOT, 'hirobius.tokens.json'))));
   }
-  reportAndExit({
-    violations,
-    jsonMode,
-    gate: 'check-type-ramp',
-    okMessage:
-      '[ok] check-type-ramp: src/ uses the seven roles only (display, title, titleSm, body, ui, caption, mono)',
-    failHeading: (n) => `${n} use${n === 1 ? '' : 's'} off the type ramp (hds#486)`,
-    footer: [
-      'Fix: use <Text variant="…">, hds.typeStyles.<role> or the .hds-type-<role> class,',
-      '  or suppress with // type-ramp-ok: <reason>',
-    ],
-  });
+  process.exit(
+    reportLineViolations(violations, jsonMode, {
+      gate: 'check-type-ramp',
+      ok: 'src/ uses the seven roles only (display, title, titleSm, body, ui, caption, mono)',
+      noun: (n) => `use${n === 1 ? '' : 's'} off the type ramp (hds#486):`,
+      fix: [
+        '\nFix: use <Text variant="…">, hds.typeStyles.<role> or the .hds-type-<role> class,',
+        '  or suppress with // type-ramp-ok: <reason>\n',
+      ],
+    }),
+  );
 }

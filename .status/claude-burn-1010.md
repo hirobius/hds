@@ -1,1 +1,1 @@
-hds#1010: batch J3 shared gate CLI tail (scripts/lib/violation-gate-cli.mjs, check-type-ramp) and gap ranking (scripts/lib/explorations/gap-rank.mjs); slice 2 on main reports the no-* gates through reportLineViolations.
+hds#1010: batch J3 gap ranking (scripts/lib/explorations/gap-rank.mjs); check-type-ramp reports through reportLineViolations like the no-\* gates.

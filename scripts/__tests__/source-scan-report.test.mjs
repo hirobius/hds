@@ -27,6 +27,17 @@ function capture(fn) {
 afterEach(() => vi.restoreAllMocks());
 
 describe('reportLineViolations', () => {
+  it('prints a file-level violation (no line, no sample) without them', () => {
+    const fileLevel = { file: 'tokens.json', line: null, rule: 'r', message: 'bad' };
+    const r = capture(() => reportLineViolations([fileLevel], false, opts));
+    expect(r.code).toBe(1);
+    expect(r.err).toEqual([
+      '\n✗ check-x: 1 thing:\n',
+      '  tokens.json  [r] bad',
+      '\nFix: do it.',
+      '  Exempt a line.\n',
+    ]);
+  });
   it('prints the ok line and returns 0 when clean', () => {
     const r = capture(() => reportLineViolations([], false, opts));
     expect(r.code).toBe(0);
